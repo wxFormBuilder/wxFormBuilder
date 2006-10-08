@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="5" />
+	<Project>
+		<Option title="Additional Components Plugin" />
+		<Option pch_mode="0" />
+		<Option default_target="" />
+		<Option compiler="gcc" />
+		<Option virtualFolders="" />
+		<Build>
+			<Target title="Debug">
+				<Option output="..\..\bin\plugins\additional\libadditionald.dll" />
+				<Option object_output=".objsd" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="..\..\..\bin\wxformbuilder" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D__WXDEBUG" />
+					<Add directory="$(#WX.lib)\gcc_dll\mswd" />
+				</Compiler>
+				<Linker>
+					<Add library="ticppd" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="d" />
+				</Environment>
+			</Target>
+			<Target title="Debug (Unicode)">
+				<Option output="..\..\bin\plugins\additional\libadditionald.dll" />
+				<Option object_output=".objsud" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="..\..\..\bin\wxformbuilderd.exe" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D__WXDEBUG" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-DUNICODE" />
+				</Compiler>
+				<Linker>
+					<Add library="ticppd" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="ud" />
+				</Environment>
+			</Target>
+			<Target title="Release">
+				<Option output="..\..\bin\plugins\additional\libadditional.dll" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="\usr\src\wxfb2\bin\wxformbuilder" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-DNDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="ticpp" />
+				</Linker>
+			</Target>
+			<Target title="Release (Unicode)">
+				<Option output="..\..\bin\plugins\additional\libadditional.dll" />
+				<Option object_output=".objsu" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="\usr\src\wxfb2\bin\wxformbuilder" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-DNDEBUG" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-DUNICODE" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="ticpp" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="u" />
+				</Environment>
+			</Target>
+			<Environment>
+				<Variable name="sdk" value="..\..\sdk" />
+				<Variable name="WX_SUFFIX" value="" />
+				<Variable name="WX_VER" value="27" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DWIN32" />
+			<Add option="-D_WINDOWS" />
+			<Add option="-DHAVE_W32API_H" />
+			<Add option="-DBUILD_DLL" />
+			<Add option="-D__WX__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DWXUSINGDLL" />
+			<Add option="-DTIXML_USE_TICPP" />
+			<Add directory="$(#WX.include)" />
+			<Add directory="$(sdk)\tinyxml" />
+			<Add directory="$(sdk)\plugin_interface" />
+		</Compiler>
+		<Linker>
+			<Add library="fbPluginInterface$(WX_SUFFIX)" />
+			<Add library="wxmsw$(WX_VER)$(WX_SUFFIX)" />
+			<Add directory="$(#WX.lib)\gcc_dll" />
+			<Add directory="$(sdk)\lib" />
+		</Linker>
+		<Unit filename="additional.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="bookutils.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

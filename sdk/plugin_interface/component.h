@@ -1,0 +1,247 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+// Copyright (C) 2005 José Antonio Hurtado
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+//
+// Written by
+//   José Antonio Hurtado - joseantonio.hurtado@gmail.com
+//   Juan Antonio Ortega  - jortegalalmolda@gmail.com
+//
+///////////////////////////////////////////////////////////////////////////////
+
+#ifndef __COMPONENT_H__
+#define __COMPONENT_H__
+
+
+#include "wx/wx.h"
+#include <wx/dynarray.h>
+#include "tinyxml.h"
+#include <wx/string.h>
+
+
+#define COMPONENT_TYPE_ABSTRACT 0
+#define COMPONENT_TYPE_WINDOW   1
+#define COMPONENT_TYPE_SIZER    2
+
+using namespace std;
+
+class IComponent;
+
+// Secciones de la generacción de código
+enum
+{
+  CG_DECLARATION,
+  CG_CONSTRUCTION,
+  CG_POST_CONSTRUCTION,
+  CG_SETTINGS
+};
+
+// Lenguajes de programación para la generacción de código
+enum
+{
+  CG_CPP
+};
+
+
+// interfaz para plugins
+// la idea es proporcionar una interfaz para acceder a las propiedades del
+// objeto de manera segura desde el plugin.
+
+class IObject
+{
+ public:
+  virtual bool     IsNull (const wxString& pname) = 0;
+  virtual int      GetPropertyAsInteger (const wxString& pname) = 0;
+  virtual wxFont   GetPropertyAsFont    (const wxString& pname) = 0;
+  virtual wxColour GetPropertyAsColour  (const wxString& pname) = 0;
+  virtual wxString GetPropertyAsString  (const wxString& pname) = 0;
+  virtual wxPoint  GetPropertyAsPoint   (const wxString& pname) = 0;
+  virtual wxSize   GetPropertyAsSize    (const wxString& pname) = 0;
+  virtual wxBitmap GetPropertyAsBitmap  (const wxString& pname) = 0;
+  virtual wxArrayInt GetPropertyAsArrayInt(const wxString& pname) = 0;
+  virtual wxArrayString GetPropertyAsArrayString(const wxString& pname) = 0;
+  virtual double GetPropertyAsFloat(const wxString& pname) = 0;
+  virtual wxString GetClassName() = 0;
+  virtual ~IObject(){}
+};
+
+// Interfaz para almacenar todos los componentes de un plugin
+// es una clase abstracta y será el objeto que exportará la DLL.
+class IComponentLibrary
+{
+ public:
+
+  // usadas por el plugin para registrar los componentes y macros
+  virtual void RegisterComponent(const wxString &text, IComponent *c) = 0;
+  virtual void RegisterMacro(const wxString &text, const int value) = 0;
+  virtual void RegisterMacroSynonymous(const wxString &text, const wxString &name) = 0;
+
+  // usadas por wxFormBuilder para extraer los componentes y macros
+  virtual IComponent* GetComponent(unsigned int idx) = 0;
+  virtual wxString    GetComponentName(unsigned int idx) = 0;
+  virtual wxString    GetMacroName(unsigned int i) = 0;
+  virtual int         GetMacroValue(unsigned int i) = 0;
+  //virtual wxString    GetMacroSynonymous(unsigned int i) = 0;
+  //virtual wxString    GetSynonymousName(unsigned int i) = 0;
+  virtual bool FindSynonymous(const wxString& syn, wxString& trans) = 0;
+
+  virtual unsigned int GetMacroCount() = 0;
+  virtual unsigned int GetComponentCount() = 0;
+  //virtual unsigned int GetSynonymousCount() = 0;
+  virtual ~IComponentLibrary(){}
+};
+
+/**
+ * Component Interface
+ */
+class IComponent
+{
+ public:
+  /**
+   * Create an instance of the wxObject and return a pointer
+   */
+  virtual wxObject* Create( IObject* obj, wxObject* parent ) = 0;
+
+  /**
+   * Allows components to do something after they have been created.
+   * For example, Abstract components like NotebookPage and SizerItem can
+   * add the actual widget to the Notebook or sizer.
+   *
+   * @param wxobject The object which was just created.
+   * @param wxparent The wxWidgets parent - the wxObject that the created object was added to.
+   */
+  virtual void OnCreated( wxObject* wxobject, wxWindow* wxparent ) = 0;
+
+  /**
+   * Allows components to respond when selected in object tree.
+   * For example, when a wxNotebook's page is selected, it can switch to that page
+   */
+  virtual void OnSelected( wxObject* wxobject ) = 0;
+
+  /**
+   * Export the object to an XRC node
+   */
+  virtual TiXmlElement* ExportToXrc( IObject* obj ) = 0;
+
+  /**
+   * Converts from an XRC element to a wxFormBuilder project file XML element
+   */
+  virtual TiXmlElement* ImportFromXrc( TiXmlElement* xrcObj ) = 0;
+
+
+  virtual int GetComponentType() = 0;
+  virtual ~IComponent(){}
+};
+
+/**
+Interface to the "Manager" class in the application.
+Essentially a collection of utility functions that take a wxObject* and do something useful.
+
+*/
+class IManager
+{
+public:
+	/**
+	Get the count of the children of this object.
+	*/
+	virtual size_t GetChildCount( wxObject* wxobject ) = 0;
+
+	/**
+	Get a child of the object.
+	@param childIndex Index of the child to get.
+	*/
+	virtual wxObject* GetChild( wxObject* wxobject, size_t childIndex ) = 0;
+
+	/**
+	Get the parent of the object.
+	*/
+	virtual wxObject* GetParent( wxObject* wxobject ) = 0;
+
+	/**
+	Get the corresponding object interface pointer for the object.
+	This allows easy read only access to properties.
+	*/
+	virtual IObject* GetIObject( wxObject* wxobject ) = 0;
+
+	/**
+	Modify a property of the object.
+	@param property The name of the property to modify.
+	@param value The new value for the property.
+	@param allowUndo If true, the property change will be placed into the undo stack, if false it will be modified silently.
+	*/
+	virtual void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true ) = 0;
+
+	/**
+	Select the object in the object tree
+	*/
+	virtual void SelectObject( wxObject* wxobject ) = 0;
+
+	virtual ~IManager(){}
+};
+
+// Used to identify wxObject* that must be manually deleted
+class wxNoObject : public wxObject
+{
+public:
+	void Destroy()
+	{
+		delete this;
+	}
+};
+
+#ifdef BUILD_DLL
+	#define DLL_FUNC extern "C" WXEXPORT
+#else
+	#define DLL_FUNC extern "C"
+#endif
+
+// Function that the application calls to get the library
+DLL_FUNC IComponentLibrary* GetComponentLibrary( IManager* manager );
+
+#define BEGIN_LIBRARY()  															\
+\
+extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary( IManager* manager ) 	\
+{ 																					\
+  IComponentLibrary* lib = new ComponentLibrary();
+
+#define END_LIBRARY()  \
+	return lib; }
+
+#define MACRO( name ) \
+  lib->RegisterMacro( wxT(#name), name );
+
+#define SYNONYMOUS( syn, name ) \
+  lib->RegisterMacroSynonymous( wxT(#syn), wxT(#name) );
+
+#define _REGISTER_COMPONENT( name, class, type )\
+  {                                     		\
+    ComponentBase* c = new class();     		\
+    c->__SetComponentType( type );        		\
+    c->__SetManager( manager );					\
+    lib->RegisterComponent( wxT(name), c ); 	\
+  }
+
+#define WINDOW_COMPONENT( name, class ) \
+  _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_WINDOW )
+
+#define SIZER_COMPONENT( name,class ) \
+  _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_SIZER )
+
+#define ABSTRACT_COMPONENT( name, class ) \
+  _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_ABSTRACT )
+
+#endif //__COMPONENT_H__

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package name="Additional" lib="libadditional" icon="calendar16x16.xpm" desc="wxWidgets additional controls">
+  <objectinfo class="wxCalendarCtrl" icon="calendar.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_calendar</property>
+    <property name="style" type="bitlist">
+      <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
+      <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
+      <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
+      <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
+      <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
+      <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
+      <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
+  </objectinfo>
+
+  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_datePicker</property>
+    <property name="style" type="bitlist">
+      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
+      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
+      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
+      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
+      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+  </objectinfo>
+
+  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_htmlWin</property>
+    <property name="style" type="bitlist">
+      <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
+      <option name="wxHW_SCROLLBAR_AUTO"  help="Display scrollbars only if page's size exceeds window's size." />
+      <option name="wxHW_NO_SELECTION"    help="Don't allow the user to select text." />wxHW_SCROLLBAR_AUTO</property>
+  </objectinfo>
+
+  <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_treeCtrl</property>
+    <property name="style" type="bitlist">
+      <option name="wxTR_EDIT_LABELS"             help="Use this style if you wish the user to be able to edit labels in the tree control." />
+      <option name="wxTR_NO_BUTTONS"              help="For convenience to document that no buttons are to be drawn." />
+      <option name="wxTR_HAS_BUTTONS"             help="Use this style to show + and - buttons to the left of parent items." />
+      <option name="wxTR_TWIST_BUTTONS"           help="??" />
+      <option name="wxTR_NO_LINES"                help="Use this style to hide vertical level connectors." />
+      <option name="wxTR_FULL_ROW_HIGHLIGHT"      help="Use this style to have the background colour and the selection highlight extend over the entire horizontal row of the tree control window. (This flag is ignored under Windows unless you specify wxTR_NO_LINES as well.)" />
+      <option name="wxTR_LINES_AT_ROOT"           help="Use this style to show lines between root nodes. Only applicable if wxTR_HIDE_ROOT is set and wxTR_NO_LINES is not set." />
+      <option name="wxTR_HIDE_ROOT"               help="Use this style to suppress the display of the root node, effectively causing the first-level nodes to appear as a series of root nodes." />
+      <option name="wxTR_ROW_LINES"               help="Use this style to draw a contrasting border between displayed rows." />
+      <option name="wxTR_HAS_VARIABLE_ROW_HEIGHT" help="Use this style to cause row heights to be just big enough to fit the content. If not set, all rows use the largest row height. The default is that this flag is unset. Generic only." />
+      <option name="wxTR_SINGLE"                  help="For convenience to document that only one item may be selected at a time. Selecting another item causes the current selection, if any, to be deselected. This is the default." />
+      <option name="wxTR_MULTIPLE"                help="Use this style to allow a range of items to be selected. If a second range is selected, the current range, if any, is deselected." />
+      <option name="wxTR_EXTENDED"                help="Use this style to allow disjoint items to be selected. (Only partially implemented; may not work in all cases.)" />
+      <option name="wxTR_DEFAULT_STYLE"           help="The set of flags that are closest to the defaults for the native control for a particular toolkit." />wxTR_DEFAULT_STYLE</property>
+  </objectinfo>
+
+  <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_radioBtn</property>
+    <property name="label" type="wxString_i18n">RadioBtn</property>
+    <property name="style" type="bitlist">
+      <option name="wxRB_GROUP"        help="Marks the beginning of a new group of radio buttons." />
+      <option name="wxRB_SINGLE"       help="In some circumstances, radio buttons that are not consecutive siblings trigger a hang bug in Windows (only). If this happens, add this style to mark the button as not belonging to a group, and implement the mutually-exclusive group behaviour yourself." />
+      <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
+    <property name="value" type="bool">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_toggleBtn</property>
+    <property name="label" type="wxString_i18n">Toggle me!</property>
+    <property name="value" type="bool">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_scrollBar</property>
+    <property name="value" help="The position of the scrollbar in scroll units." type="text">0</property>
+    <property name="range" help="The maximum position of the scrollbar." type="text">100</property>
+    <property name="thumbsize" help="The size of the thumb, or visible portion of the scrollbar, in scroll units." type="text">1</property>
+    <property name="pagesize" help="This is the number of scroll units that will be scrolled when the user pages up or down." type="text">1</property>
+    <property name="style" type="option">
+      <option name="wxSB_HORIZONTAL" help="Specifies a horizontal scrollbar." />
+      <option name="wxSB_VERTICAL"   help="Specifies a vertical scrollbar." />wxSB_HORIZONTAL</property>
+  </objectinfo>
+
+  <objectinfo class="wxSpinCtrl" icon="spin_ctrl.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_spinCtrl</property>
+    <property name="value" type="wxString"></property>
+    <property name="min" type="text"     help="Minimal value.">0</property>
+    <property name="max" type="text"     help="Maximal value.">10</property>
+    <property name="initial" type="text" help="Initial value.">0</property>
+    <property name="style" type="bitlist">
+      <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
+      <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />wxSP_ARROW_KEYS</property>
+  </objectinfo>
+
+  <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_spinBtn</property>
+    <property name="style" type="bitlist">
+      <option name="wxSP_HORIZONTAL" help="Specifies a horizontal spin button (note that this style is not supported in wxGTK)." />
+      <option name="wxSP_VERTICAL"   help="Specifies a vertical spin button." />
+      <option name="wxSP_ARROW_KEYS" help="The user can use arrow keys to change the value." />
+      <option name="wxSP_WRAP"       help="The value wraps at the minimum and maximum." /></property>
+  </objectinfo>
+
+  <objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_splitter</property>
+    <property name="style" type="bitlist">
+      <option name="wxSP_3D"                  help="Draws a 3D effect border and sash." />
+      <option name="wxSP_3DSASH"              help="Draws a 3D effect sash. (To see the 3D sash under Windows XP theming, use wxSP_NO_XP_THEME)" />
+      <option name="wxSP_3DBORDER"            help="Synonym for wxSP_BORDER." />
+      <option name="wxSP_BORDER"              help="Draws a standard border." />
+      <option name="wxSP_NOBORDER"            help="No border (default)." />
+      <option name="wxSP_NO_XP_THEME"         help="Under Windows XP, switches off the attempt to draw the splitter using Windows XP theming, so the borders and sash will take on the pre-XP look." />
+      <option name="wxSP_PERMIT_UNSPLIT"      help="Always allow to unsplit, even with the minimum pane size other than zero." />
+      <option name="wxSP_LIVE_UPDATE"         help="Don't draw XOR line but resize the child windows immediately." />wxSP_3D</property>
+    <property name="splitmode" type="option">
+      <option name="wxSPLIT_VERTICAL"         help="Specifies a vertical split window." />
+      <option name="wxSPLIT_HORIZONTAL"       help="Specifies a horizontal split window." />wxSPLIT_VERTICAL</property>
+    <property name="sashpos" type="text"      help="The initial sash position.">0</property>
+	<property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
+  </objectinfo>
+
+  <objectinfo class="splitteritem" type="splitteritem" />
+
+  <objectinfo class="wxCheckListBox" icon="checkbox.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_checkList</property>
+    <property name="style" type="bitlist">
+      <option name="wxLB_SINGLE"    help="Single-selection list." />
+      <option name="wxLB_MULTIPLE"  help="Multiple-selection list: the user can toggle multiple items on and off." />
+      <option name="wxLB_EXTENDED"  help="Extended-selection list: the user can select multiple items using the SHIFT key and the mouse or special key combinations." />
+      <option name="wxLB_HSCROLL"   help="Create horizontal scrollbar if contents are too wide (Windows only)." />
+      <option name="wxLB_ALWAYS_SB" help="Always show a vertical scrollbar." />
+      <option name="wxLB_NEEDED_SB" help="Only create a vertical scrollbar if needed." />
+      <option name="wxLB_SORT"      help="The listbox contents are sorted in alphabetical order." /></property>
+    <property name="choices" type="stringlist" help="List of default values." />
+  </objectinfo>
+
+  <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_notebook</property>
+    <property name="bitmapsize" type="wxSize" help="Size of page images"/>
+    <property name="style" type="bitlist">
+      <option name="wxNB_TOP"         help="Place tabs on the top side." />
+      <option name="wxNB_LEFT"        help="Place tabs on the left side." />
+      <option name="wxNB_RIGHT"       help="Place tabs on the right side." />
+      <option name="wxNB_BOTTOM"      help="Place tabs under instead of above the notebook pages." />
+      <option name="wxNB_FIXEDWIDTH"  help="All tabs will have same width. (Windows only)" />
+      <option name="wxNB_MULTILINE"   help="There can be several rows of tabs. (Windows only)" />
+      <option name="wxNB_NOPAGETHEME" help="Display a solid colour on notebook pages, and not a gradient, which can reduce performance. (Windows only)" />
+      <option name="wxNB_FLAT"        help="Show tabs in a flat style. (Windows only)" />
+    </property>
+  </objectinfo>
+
+  <objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
+    <property name="label" type="wxString_i18n">a page</property>
+    <property name="bitmap" type="bitmap" help="Page Image"/>
+    <property name="select" type="bool" help="Select Page when Adding">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_listbook</property>
+    <property name="bitmapsize" type="wxSize" help="Size of page images"/>
+    <property name="style" type="bitlist">
+      <option name="wxLB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
+      <option name="wxLB_TOP"     help="Place labels above the page area." />
+      <option name="wxLB_LEFT"    help="Place labels on the left side." />
+      <option name="wxLB_RIGHT"   help="Place labels on the right side." />
+      <option name="wxLB_BOTTOM"  help="Place labels below the page area." />wxLB_DEFAULT</property>
+  </objectinfo>
+
+  <objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
+    <property name="label" type="wxString_i18n">a page</property>
+    <property name="bitmap" type="bitmap" help="Page Image"/>
+    <property name="select" type="bool" help="Select Page when Adding">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxChoicebook" icon="choicebook.xpm" type="choicebook">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_choicebook</property>
+    <property name="style" type="bitlist">
+      <option name="wxCHB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
+      <option name="wxCHB_TOP"     help="Place labels above the page area." />
+      <option name="wxCHB_LEFT"    help="Place labels on the left side." />
+      <option name="wxCHB_RIGHT"   help="Place labels on the right side." />
+      <option name="wxCHB_BOTTOM"  help="Place labels below the page area." />wxCHB_DEFAULT</property>
+  </objectinfo>
+
+  <objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">
+    <property name="label" type="wxString_i18n">a page</property>
+    <property name="select" type="bool" help="Select Page when Adding">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxScrolledWindow" icon="scrollwin.xpm" type="container">
+    <inherits class="wxWindow">
+		<property name="window_style">wxHSCROLL|wxVSCROLL</property>
+	</inherits>
+    <property name="name" type="text">m_scrolledWindow</property>
+    <property name="scroll_rate_x" type="text" help="Set the horizontal scrolling increment.">5</property>
+    <property name="scroll_rate_y" type="text" help="Set the vertical scrolling increment.">5</property>
+  </objectinfo>
+
+</package>

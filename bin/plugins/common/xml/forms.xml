@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package name="Forms" lib="libcommon" icon="frame16x16.png" desc="wxWidgets windows">
+  <objectinfo class="Frame" icon="frame.xpm" type="form">
+    <inherits class="wxWindow">
+		<property name="window_style">wxTAB_TRAVERSAL</property>
+		<property name="size" type="wxSize">500,300</property>
+	</inherits>
+	<property name="name" type="text" hidden="1">MyFrame</property>
+    <property name="title" type="wxString" />
+    <property name="style" type="bitlist">
+      <option name="wxDEFAULT_FRAME_STYLE" help="Defined as wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN" />
+      <option name="wxICONIZE" help="Display the frame iconized (minimized). Windows only."/>
+      <option name="wxCAPTION" help="Puts a caption on the frame."/>
+      <option name="wxMINIMIZE" help="Identical to wxICONIZE. Windows only."/>
+      <option name="wxMINIMIZE_BOX" help="Displays a minimize box on the frame."/>
+      <option name="wxMAXIMIZE" help="Displays the frame maximized. Windows only."/>
+      <option name="wxMAXIMIZE_BOX" help="Displays a maximize box on the frame." />
+      <option name="wxCLOSE_BOX" help="Displays a close box on the frame." />
+      <option name="wxSTAY_ON_TOP" help="Stay on top of all other windows, see also wxFRAME_FLOAT_ON_PARENT."/>
+      <option name="wxSYSTEM_MENU" help="Displays a system menu."/>
+      <option name="wxRESIZE_BORDER" help="Displays a resizeable border around the window."/>
+      <option name="wxFRAME_TOOL_WINDOW" help="Causes a frame with a small titlebar to be created; the frame does not appear in the taskbar under Windows or GTK+."/>
+      <option name="wxFRAME_NO_TASKBAR" help="Creates an otherwise normal frame but it does not appear in the taskbar under Windows or GTK+ (note that it will minimize to the desktop window under Windows which may seem strange to the users and thus it might be better to use this style only without wxMINIMIZE_BOX style). In wxGTK, the flag is respected only if GTK+ is at least version 2.2 and the window manager supports _NET_WM_STATE_SKIP_TASKBAR hint. Has no effect under other platforms."/>
+      <option name="wxFRAME_FLOAT_ON_PARENT" help="The frame will always be on top of its parent (unlike wxSTAY_ON_TOP). A frame created with this style must have a non-NULL parent."/>
+      <option name="wxFRAME_SHAPED" help="Windows with this style are allowed to have their shape changed with the SetShape method."/>
+	  wxDEFAULT_FRAME_STYLE
+	</property>
+    <property name="extra_style" type="bitlist">
+	  <option name="wxFRAME_EX_CONTEXTHELP" help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. Note that this is an extended style and must be set by calling SetExtraStyle before Create is called (two-step construction). You cannot use this style together with wxMAXIMIZE_BOX or wxMINIMIZE_BOX, so you should use wxDEFAULT_FRAME_STYLE & ~ (wxMINIMIZE_BOX | wxMAXIMIZE_BOX) for the frames having this style (the dialogs don't have a minimize or a maximize box by default)"/>
+      <option name="wxFRAME_EX_METAL" help="On Mac OS X, frames with this style will be shown with a metallic look. This is an extra style."/>
+	</property>
+	<property name="center" type="option"		help="Centers the dialog box on the display in the chosen direction.">
+	  <option name=""/>
+      <option name="wxHORIZONTAL"/>
+      <option name="wxVERTICAL"/>
+      <option name="wxBOTH"/>
+	</property>
+  </objectinfo>
+
+  <objectinfo class="Panel" icon="panel.xpm" type="form">
+    <inherits class="wxWindow">
+		<property name="window_style">wxTAB_TRAVERSAL</property>
+		<property name="size" type="wxSize">500,300</property>
+	</inherits>
+    <property name="name" type="text" hidden="1">MyPanel</property>
+  </objectinfo>
+
+  <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
+    <inherits class="wxWindow" />
+    <property name="name" type="text" hidden="1">MyDialog</property>
+    <property name="title" type="wxString" />
+    <property name="style" type="bitlist">
+      <option name="wxCAPTION" 					help="Puts a caption on the dialog box." />
+      <option name="wxDEFAULT_DIALOG_STYLE" 	help="Equivalent to a combination of wxCAPTION, wxCLOSE_BOX and wxSYSTEM_MENU (the last one is not used under Unix)" />
+      <option name="wxRESIZE_BORDER" 			help="Display a resizeable frame around the window." />
+      <option name="wxSYSTEM_MENU"				help="Display a system menu."/>
+      <option name="wxCLOSE_BOX"				help="Displays a close box on the dialog." />
+      <option name="wxMAXIMIZE_BOX" 			help="Displays a maximize box on the dialog." />
+      <option name="wxMINIMIZE_BOX"				help="Displays a minimize box on the dialog." />
+      <option name="wxTHICK_FRAME"				help="Display a thick frame around the window." />
+      <option name="wxSTAY_ON_TOP"				help="The dialog stays on top of all other windows." />
+      <option name="wxNO_3D"					help="Under Windows, specifies that the child controls should not have 3D borders unless specified in the control."/>
+      <option name="wxDIALOG_NO_PARENT"			help="By default, a dialog created with a NULL parent window will be given the application's top level window as parent. Use this style to prevent this from happening and create an orphan dialog. This is not recommended for modal dialogs."/>
+	  wxDEFAULT_DIALOG_STYLE
+	</property>
+	<property name="extra_style" type="bitlist">
+	  <option name="wxDIALOG_EX_CONTEXTHELP"	help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. Note that this is an extended style and must be set by calling SetExtraStyle before Create is called (two-step construction)."/>
+      <option name="wxDIALOG_EX_METAL" 			help="On Mac OS X, frames with this style will be shown with a metallic look. This is an extra style."/>
+	</property>
+	<property name="center" type="option"		help="Centers the dialog box on the display in the chosen direction.">
+	  <option name=""/>
+      <option name="wxHORIZONTAL"/>
+      <option name="wxVERTICAL"/>
+      <option name="wxBOTH"/>
+	</property>
+  </objectinfo>
+
+</package>

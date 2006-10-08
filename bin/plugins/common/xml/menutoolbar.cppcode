@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="C++">
+  <templates class="wxWindow">
+    <template name="toolbar_add">#parent $name->AddControl( $name );</template>
+  </templates>
+  
+  <templates class="wxStatusBar">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = #wxparent $name->CreateStatusBar( $fields, $style #ifnotnull $window_style @{ |$window_style @}, $id );</template>
+  </templates>
+  
+  <templates class="wxMenuBar">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/menu.h&gt;</template>
+    <template name="after_addchild">#wxparent $name->SetMenuBar( $name );</template>
+  </templates>
+
+  <templates class="wxMenu">
+    <template name="declaration">wxMenu* $name;</template>
+    <template name="construction">$name = new wxMenu();</template>
+    <template name="include">@#include &lt;wx/menu.h&gt;</template>
+    <template name="menu_add">#parent $name->Append( $name, $label );</template>
+  </templates>
+
+  <templates class="submenu">
+    <template name="declaration">wxMenu* $name;</template>
+    <template name="construction">$name = new wxMenu();</template>
+    <template name="include">@#include &lt;wx/menu.h&gt;</template>
+    <template name="menu_add">#parent $name->Append( -1, $label, $name );</template>
+  </templates>
+
+  <templates class="wxMenuItem">
+    <template name="construction">wxMenuItem* $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );</template>
+    <template name="settings">
+      #ifequal $enabled "0"
+      @{$name->Enable( $enabled ); #nl @}
+
+      #ifequal $kind "wxITEM_CHECK"
+      @{
+        #ifequal $checked "1"
+        @{ $name->Check( $checked ); #nl @}
+      @}
+
+      #ifequal $kind "wxITEM_RADIO"
+      @{
+        #ifequal $checked "1"
+        @{ $name->Check( $checked ); #nl @}
+      @}
+    </template>
+    <template name="menuitem_add">
+		#ifnotnull $bitmap
+		@{ 
+			@#ifdef __WXMSW__ #nl
+			$name->SetBitmaps( $bitmap #ifnotnull $unchecked_bitmap @{, $unchecked_bitmap @} ); #nl 
+			@#elif defined( __WXGTK__ ) #nl
+			$name->SetBitmap( $bitmap ); #nl
+			@#endif #nl
+		@}
+		#ifnull $bitmap
+		@{
+			#ifnotnull $unchecked_bitmap
+			@{
+				@#ifdef __WXMSW__ #nl
+				$name->SetBitmaps( wxNullBitmap, $unchecked_bitmap ); #nl
+				@#endif #nl
+			@}
+		@}
+		#parent $name->Append( $name );
+	</template>
+    <template name="include">@#include &lt;wx/menu.h&gt;</template>
+  </templates>
+
+  <templates class="separator">
+    <template name="construction"></template>
+    <template name="settings"></template>
+    <template name="menuitem_add">#parent $name->AppendSeparator();</template>
+    <template name="include">@#include &lt;wx/menu.h&gt;</template>
+  </templates>
+
+  <templates class="wxToolBar">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+      $name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id );
+      #ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
+      #ifnotnull $separation @{ #nl $name->SetToolSeparation( $separation ); @}
+      #ifnotnull $margins    @{ #nl $name->SetMargins( $margins ); @}
+      #ifnotnull $packing    @{ #nl $name->SetToolPacking( $packing ); @}
+    </template>
+    <template name="after_addchild">$name->Realize();</template>
+  </templates>
+
+  <templates class="tool">
+    <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, wxITEM_NORMAL, $tooltip, $statusbar );</template>
+  </templates>
+  
+  <templates class="toolSeparator">
+    <template name="construction">#parent $name->AddSeparator();</template>
+  </templates>
+</codegen>

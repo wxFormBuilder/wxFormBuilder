@@ -1,0 +1,171 @@
+﻿                     wxFormBuilder ChangeLog
+************************************************************************
+
+10-07-2006 Version 3.00.02 (Beta 1)
+* Fixed generation bugs in submenu and wxCheckList (now wxCheckListBox)
+  These were caused by subclass in version 2.00.75. This closes FS#20.
+* Changed title of save dialog box from "Open Project" to "Save Project"
+  This closes FS#18.
+* Fixed xrc generation of static bitmap using patch supplied by henrique.
+  This closes FS#16
+* Added subclassing on forms. This closes FS#21.
+* Fixed C++ output of value property for wxGauge.
++ Added center property for wxDialog and wxFrame. This closes FS#17.
++ Individual directoryies for each plug-in.
++ Toolbar seperators. This closes FS#11.
++ Possiblity to group plugin components with toolbar separators.
+^ Premake script for sdk projects.
+^ Renamed contrib to wxAddition plug-in.
+^ Palette now remembers tab order.
+^ Major ripup/redesign of the plugin interface.
+~ Plugin directory out of src.
+~ wxAdditions plug-in to the wxAdditions repository.
+
+09-13-2006 Version 2.00.75
++ Added subclass and user_headers properties. This closes FS#5.
+
+09-07-2006 Version 2.00.74
+* Fixed behaviour of wxSize and wxPoint properties when NumLock was
+  on (and possibly others).
+
+08-28-2006  Version 2.00.73
+^ File size for wxAdditions in the wxFormBuilder installer.
+* Fixed behaviour of wxSizer::Fit(). This fixes FS#9
+
+08-25-2006  Version 2.00.72
++ Replaced wxPlot with wxPlotCtrl
+^ Made checkbox the default for boolean properties.
+* Fixed xrc generation for bitmap properties (bug FS#4)
+^ Automatic linking to wxAdditions is now done through a 
+  header distributed with wxAddtions, this is now independent 
+  of the version of wxWidgets.
+- Removed project option for wxWidgets Version.
+
+08-18-2006  Version 2.00.71
++ Added a new project option for wxWidgets Version. 
+  Currently it can be 2.7+ and 2.6+.
++ Added support for wxWidgets v2.7.0 for code generation.
+
+08-15-2006  Version 2.00.70
+* Fixed the background colour of wxPanel.
+* Fixed bitmap behavior on menu items.
++ Added wxScintilla shortcuts (Ctrl-C, Ctrl-V, Ctrl-X).
++ Added "Default" in the wxPropertyGrid colour selector 
+  (some controls don't have the BtnFace colour by default).
++ Added the properties checked and style to wxCheckBox.
+^ Set the default background color of wxFlatNotebook to ButtonFace.
+^ Updated wxFB's URL in the generated C++ code.
+
+08-03-2006  Version 2.00.69
+* Fixed bug where the first page of listbook, choicebook, and flatnotebook
+  was always selected on refresh.
+
+08-01-2006  Version 2.00.68
+* Updated the executable in the installer. Opps ;-).
+
+08-01-2006  Version 2.00.67
+^ Updated icons to look a bit more modern.
++ Option to make Microsoft BOM for UTF-8 files added to project settings.
+
+07-27-2006  Version 2.00.66
+* Fix XRC styles importation.
+
+07-27-2006  Version 2.00.65
+^ Made it so the unique names are created with numbers instead of '_'.
+
+07-26-2006  Version 2.00.64
+^ Made the wxAdditions installer do better checks to determine if the user
+  has wxWidgets installed before deciding where the default directory will be.
+~ Moved the download location for wxAdditions to a sourceforge hosted server.
+
+07-25-2006  Version 2.00.63
+^ Fixed a spelling mistake in the installer.
+
+07-25-2006  Version 2.00.62
+^ Added a description in the installer about wxAdditions.
+
+07-24-2006  Version 2.00.61
+^ Installer to dynamically download wxAdditions.
+^ wxPropgrid v1.2
+
+07-21-2006  Version 2.00.60
+* Fixed Unicode support.
+* Fixed style not working in a frame and dialog.
+^ Code generation for wxRadioBox and wxChoice improved.
+
+07-14-2006  Version 2.00.59
++ Added wxScintilla control to contrib.
+^ Installer Maintenance release.
+
+07-14-2006  Version 2.00.58
+* Fixed Unicode xrc output bug.
++ Replaced common icons with new look.
++ Project Conversion supported.
+
+07-06-2006  Version 2.00.57
+* Fixed wxMenuBar 'style' property.
++ Added the move right/left to the right-click menu.
+
+06-28-2006  Version 2.00.56
+* Fixed handling of default values for inherited properties.
+
+06-27-2006  Version 2.00.55
++ Added refresh call to object inspector panel.
++ Added code generation for the extra_style property.
+* Stopped combining bitlists with the same name.
+* Fixed wxPropertyGridManager disappearing-toolbar bug. (Linux)
+
+06-22-2006  Version 2.00.54
++ This changelog is in the installer.
+* UTF-8 file generation occurrs by default in the unicode build.
+* Changed the xrc to xml conversions to use the wxConvCurrent conversion.
+
+06-21-2006  Version 2.00.53
++ Support for wxScrolledWindow.
++ Can now set images on wxNotebook and wxFlatNotebook tabs.
++ Can now set images on wxListbook.
++ Control IDs can now be generated as an enumeration instead of a list of #defines.
++ Now supports internationalization.
++ Can now set the encoding on XRC files.
++ Now building in Unicode for better Cross-Platform support.
++ Now supports “flexible_direction” and “non_flexible_grow_mode” on wxFlexGridSizer.
++ Now supports Sort style on wxComboBox.
+* Message box titles now begin with a lowercase “w”.
+- Strange empty lines in generated code.
+
+06-05-2006  Version 2.00.52
++ Support for wxListbook.
++ Support for wxChoicebook.
++ Added help in the GUI for all properties.
+
+05-17-2006  Version 2.00.51
++ Can now use images from windows .rc files for all image properties.
+
+02-10-2006  Version 1.10 - 2.00.50
++ Support for wxPlotWindow.
++ Support for wxPropertyGrid.
++ Support for wxPropertyGridManager.
++ Support for wxFlatNotebook.
++ Support for awxLed.
++ Support for wxStaticBoxSizer.
++ Icons to wxFlatnotebook tabs.
++ Folding to scintilla control.
++ Line numbers to scintilla control.
++ Minimum size property to wxWindow.
++ Code is genereted in the GUI when switching to the notebook page, without
+    requiring a click of the "Code Generation" button.
+^ Toolbar icons.
+^ Interface now using wxFlatNotebook.
+^ Now using the latest propgrid source.
+^ Interface now using propgrid manager.
+^ Interface now using wxScintilla.
+^ Change wxColor property to show a list of system colors.
+^ All icons can now be customized from the xml files
+^ Change "option" to "proportion" on sizeritems.
+^ Switch to tabs for indentation.
+* Background color issues in the palette.
+- Typedefs for easier understanding
+_______________________________________________________________________
+Legend:
+
+‘+’ = Addition, ‘*’ = Bug Fix, ‘-‘ = Removed, ‘~’ = Move, ‘^’ = Updated
