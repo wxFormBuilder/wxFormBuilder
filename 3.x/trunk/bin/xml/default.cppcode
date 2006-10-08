@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="C++">
+  <templates class="Project">
+    <template name="header_preamble">
+      // Define WX_GCH in order to support precompiled headers with GCC compiler. #nl
+      // You have to create the header &quot;wx_pch.h&quot; and include all files needed    #nl
+      // for compile your gui inside it. #nl
+      // Then, compile it and place the file &quot;wx_pch.h.gch&quot; into the same #nl
+      // directory that &quot;wx_pch.h&quot;. #nl
+      @#ifdef WX_GCH               #nl
+	@#include &lt;wx_pch.h&gt; #nl
+      @#else                       #nl
+        @#include &lt;wx/wx.h&gt;  #nl
+      @#endif                      #nl
+    </template>
+    <template name="header_epilogue">
+      ///////////////////////////////////////////////////////////////////////////
+    </template>
+    <template name="cpp_preamble">
+      @#include &quot;wx/wxprec.h&quot;   #nl
+                                #nl
+      @#ifdef __BORLANDC__      #nl
+        @#pragma hdrstop        #nl
+      @#endif //__BORLANDC__    #nl
+                                #nl
+      @#ifndef WX_PRECOMP       #nl
+      @#include &lt;wx/wx.h&gt; #nl
+      @#endif //WX_PRECOMP
+	</template>
+    <template name="cpp_epilogue">
+      ///////////////////////////////////////////////////////////////////////////
+    </template>
+	<templates class="wxWindow">
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ $name->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ $name->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ $name->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ $name->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ $name->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ $name->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ $name->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotnull $minimum_size
+			@{ $name->SetMinSize( $minimum_size ); #nl @}
+		</template>
+	<template name="toolbar_add">#parent $name->AddControl( $name );</template>
+  </templates>
+  </templates>
+</codegen>
+

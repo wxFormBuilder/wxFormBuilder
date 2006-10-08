@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="C++">
+
+  <templates class="sizer">
+    <template name="settings">
+	  #ifnotnull $minimum_size
+	  @{ $name->SetMinSize($minimum_size); @}
+    </template>
+  </templates>
+
+  <templates class="sizeritem">
+    <template name="window_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
+    <template name="sizer_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
+  </templates>
+
+  <templates class="wxBoxSizer">
+    <template name="declaration">wxBoxSizer* $name;</template>
+    <template name="construction">$name = new wxBoxSizer( $orient ); #nl</template>
+  </templates>
+
+  <templates class="wxStaticBoxSizer">
+    <template name="declaration">wxStaticBoxSizer* $name;</template>
+    <template name="construction">$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, -1, $label ), $orient ); #nl</template>
+  </templates>
+
+  <templates class="wxGridSizer">
+    <template name="declaration">wxGridSizer* $name;</template>
+    <template name="construction">$name = new wxGridSizer( $rows, $cols, $vgap, $hgap ); #nl</template>
+  </templates>
+
+  <templates class="wxFlexGridSizer">
+    <template name="declaration">wxFlexGridSizer* $name;</template>
+    <template name="construction">$name = new wxFlexGridSizer( $rows, $cols, $vgap, $hgap );
+      #ifnotnull $growablecols
+      @{
+        #foreach $growablecols
+        @{ $name->AddGrowableCol( #pred ); @}
+      @}
+
+      #ifnotnull $growablerows
+      @{
+        #foreach $growablerows
+        @{ $name->AddGrowableRow( #pred ); @}
+      @}
+      #ifnotnull $flexible_direction
+      @{ #nl $name->SetFlexibleDirection( $flexible_direction ); @}
+
+      #ifnotnull $non_flexible_grow_mode
+      @{ #nl  $name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
+       #nl
+    </template>
+  </templates>
+  <templates class="wxStdDialogButtonSizer">
+    <template name="declaration">wxStdDialogButtonSizer* $name;</template>
+    <template name="construction">$name = new wxStdDialogButtonSizer();
+		#ifequal $OK "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_OK ) ); @}
+
+		#ifequal $Yes "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_YES ) ); @}
+
+		#ifequal $Save "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_SAVE ) ); @}
+
+		#ifequal $Apply "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_APPLY ) ); @}
+
+		#ifequal $No "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_NO ) ); @}
+
+		#ifequal $Cancel "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_CANCEL ) ); @}
+
+		#ifequal $Help "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_HELP ) ); @}
+
+		#ifequal $ContextHelp "1"
+		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_CONTEXT_HELP ) ); @}
+
+		 #nl $name->Realize();
+	</template>
+  </templates>
+
+  <templates class="spacer">
+    <template name="spacer_add">#parent $name->Add( $width, $height, $proportion, $flag, $border ); #nl</template>
+  </templates>
+
+</codegen>
+

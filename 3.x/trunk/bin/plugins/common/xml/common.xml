@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package name="Common" lib="libcommon" icon="button16x16.xpm" desc="wxWidgets common controls">
+
+  <objectinfo class="wxButton" icon="button.xpm" type="widget">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_button</property>
+    <property name="style" type="bitlist">
+      <option name="wxBU_LEFT"      help="Left-justifies the label. Windows and GTK+ only."/>
+      <option name="wxBU_TOP"       help="Aligns the label to the top of the button. Windows and GTK+ only."/>
+      <option name="wxBU_RIGHT"     help="Right-justifies the bitmap label. Windows and GTK+ only."/>
+      <option name="wxBU_BOTTOM"    help="Aligns the label to the bottom of the button. Windows and GTK+ only."/>
+      <option name="wxBU_EXACTFIT"  help="Creates the button as small as possible instead of making it of the standard size (which is the default behaviour)."/>
+      <option name="wxNO_BORDER"    help="Creates a flat button. Windows and GTK+ only."/>
+    </property>
+    <property name="label" type="wxString_i18n">MyButton</property>
+  </objectinfo>
+
+  <objectinfo class="wxBitmapButton" icon="bitmap_button.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_bpButton</property>
+    <property name="style" type="bitlist">
+      <option name="wxBU_LEFT"      help="Left-justifies the bitmap label. WIN32 only."/>
+      <option name="wxBU_TOP"       help="Aligns the bitmap label to the top of the button. WIN32 only."/>
+      <option name="wxBU_RIGHT"     help="Right-justifies the bitmap label. WIN32 only."/>
+      <option name="wxBU_BOTTOM"    help="Aligns the bitmap label to the bottom of the button. WIN32 only."/>
+      <option name="wxBU_AUTODRAW"  help="If this is specified, the button will be drawn automatically using the label bitmap only, providing a 3D-look border. If this style is not specified, the button will be drawn without borders and using all provided bitmaps. (Windows Only)"/>wxBU_AUTODRAW</property>
+    <property name="bitmap" type="bitmap" />
+  </objectinfo>
+
+  <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_staticText</property>
+    <property name="style" type="bitlist">
+      <option name="wxALIGN_LEFT"       help="Align the text to the left."/>
+      <option name="wxALIGN_RIGHT"      help="Align the text to the right."/>
+      <option name="wxALIGN_CENTRE"     help="Center the text (horizontally)."/>
+      <option name="wxST_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the text when SetLabel is called. If this style flag is given, the control will not change its size (this style is especially useful with controls which also have wxALIGN_RIGHT or CENTER style because otherwise they won't make sense any longer after a call to SetLabel)."/>
+    </property>
+    <property name="label" type="wxString_i18n">MyLabel</property>
+  </objectinfo>
+  
+  <objectinfo class="wxTextCtrl" icon="text_ctrl.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_textCtrl</property>
+    <property name="style" type="bitlist">
+      <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+      <option name="wxTE_PROCESS_TAB"   help="The control will receive wxEVT_CHAR events for TAB pressed - normally, TAB is used for passing to the next control in a dialog instead. For the control created with this style, you can still use Ctrl-Enter to pass to the next control from the keyboard."/>
+      <option name="wxTE_MULTILINE"     help="The text control allows multiple lines."/>
+      <option name="wxTE_PASSWORD"      help="The text will be echoed as asterisks."/>
+      <option name="wxTE_READONLY"      help="The text will not be user-editable."/>
+      <option name="wxTE_RICH"          help="Use rich text control under Windows, this allows to have more than 64KB of text in the control even under Win9x. This style is ignored under other platforms."/>
+      <option name="wxTE_RICH2"         help="Use rich text control version 2.0 or 3.0 under Windows, this style is ignored under other platforms."/>
+      <option name="wxTE_AUTO_URL"      help="Highlight the URLs and generate the wxTextUrlEvents when mouse events occur over them. This style is only supported for wxTE_RICH Windows and multi-line wxGTK2 text controls."/>
+      <option name="wxTE_NOHIDESEL"     help="By default, the Windows text control doesn't show the selection when it doesn't have focus - use this style to force it to always show it. It doesn't do anything under other platforms."/>
+      <option name="wxHSCROLL"          help="A horizontal scrollbar will be created and used, so that text won't be wrapped. No effect under wxGTK1."/>
+      <option name="wxTE_LEFT"          help="The text in the control will be left-justified (default)."/>
+      <option name="wxTE_CENTRE"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
+      <option name="wxTE_RIGHT"         help="The text in the control will be right-justified (currently wxMSW and wxGTK2 only)."/>
+      <option name="wxTE_DONTWRAP"      help="Same as wxHSCROLL style: don't wrap at all, show horizontal scrollbar instead."/>
+      <option name="wxTE_CHARWRAP"      help="Wrap the lines too long to be shown entirely at any position (wxUniv and wxGTK2 only)."/>
+      <option name="wxTE_WORDWRAP"      help="Wrap the lines too long to be shown entirely at word boundaries (wxUniv and wxGTK2 only)."/>
+      <option name="wxTE_BESTWRAP"      help="Wrap the lines at word boundaries or at any other character if there are words longer than the window width (this is the default)."/>
+      <option name="wxTE_CAPITALIZE"    help="On PocketPC and Smartphone, causes the first letter to be capitalized."/>
+    </property>
+    <property name="value" type="wxString_i18n" />
+    <property name="maxlength" type="text" help="The maximum length of user-entered text."/>
+  </objectinfo>
+
+  <objectinfo class="wxStaticBitmap" icon="static_bitmap.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_bitmap</property>
+    <property name="bitmap" type="bitmap" />
+  </objectinfo>
+  
+  <objectinfo class="wxComboBox" icon="combo_box.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_comboBox</property>
+    <property name="value" type="wxString_i18n">Combo!</property>
+    <property name="choices" type="stringlist" help="Contents of the Combo Box"></property>
+    <property name="style" type="bitlist">
+      <option name="wxCB_SIMPLE"    help="Creates a combobox with a permanently displayed list. Windows only."/>
+      <option name="wxCB_DROPDOWN"  help="Creates a combobox with a drop-down list."/>
+      <option name="wxCB_READONLY"  help="Same as wxCB_DROPDOWN but only the strings specified as the combobox choices can be selected, it is impossible to select (even from a program) a string which is not in the choices list."/>
+      <option name="wxCB_SORT"      help="Sorts the entries in the list alphabetically."/>
+    </property>
+  </objectinfo>
+  
+  <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_choice</property>
+    <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
+    <property name="selection" type="text"     help="Initial selected choice.">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_listBox</property>
+    <property name="choices" type="stringlist" help="Contents of the List Box."/>
+    <property name="style" type="bitlist" help="Note that wxLB_SINGLE, wxLB_MULTIPLE and wxLB_EXTENDED styles are mutually exclusive and you can specify at most one of them (single selection is the default).">
+      <option name="wxLB_SINGLE"               help="Single-selection list."/>
+      <option name="wxLB_MULTIPLE"             help="Multiple-selection list: the user can toggle multiple items on and off."/>
+      <option name="wxLB_EXTENDED"             help="Extended-selection list: the user can select multiple items using the SHIFT key and the mouse or special key combinations."/>
+      <option name="wxLB_HSCROLL"              help="Create horizontal scrollbar if contents are too wide (Windows only)."/>
+      <option name="wxLB_ALWAYS_SB"            help="Always show a vertical scrollbar."/>
+      <option name="wxLB_NEEDED_SB"            help="Only create a vertical scrollbar if needed."/>
+      <option name="wxLB_SORT"                 help="The listbox contents are sorted in alphabetical order."/>
+    </property>
+  </objectinfo>
+  
+  <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_listCtrl</property>
+    <property name="style" type="bitlist">
+      <option name="wxLC_LIST"            help="Multicolumn list view, with optional small icons. Columns are computed automatically, i.e. you don't set columns as in wxLC_REPORT. In other words, the list wraps, unlike a wxListBox." />
+      <option name="wxLC_REPORT"          help="Single or multicolumn report view, with optional header." />
+      <option name="wxLC_VIRTUAL"         help="The application provides items text on demand. May only be used with wxLC_REPORT." />
+      <option name="wxLC_ICON"            help="Large icon view, with optional labels." />
+      <option name="wxLC_SMALL_ICON"      help="Small icon view, with optional labels." />
+      <option name="wxLC_ALIGN_TOP"       help="Icons align to the top. Windows default. (Windows only)" />
+      <option name="wxLC_ALIGN_LEFT"      help="Icons align to the left." />
+      <option name="wxLC_AUTOARRANGE"     help="Icons arrange themselves. (Windows only)" />
+      <option name="wxLC_EDIT_LABELS"     help="Labels are editable: the application will be notified when editing starts." />
+      <option name="wxLC_NO_HEADER"       help="No header in report mode." />
+      <option name="wxLC_SINGLE_SEL"      help="Single selection (default is multiple)." />
+      <option name="wxLC_SORT_ASCENDING"  help="Sort in ascending order (must still supply a comparison callback in SortItems." />
+      <option name="wxLC_SORT_DESCENDING" help="Sort in descending order (must still supply a comparison callback in SortItems." />
+      <option name="wxLC_HRULES"          help="Draws light horizontal rules between rows in report mode." />
+      <option name="wxLC_VRULES"          help="Draws light vertical rules between columns in report mode." />wxLC_ICON</property>
+  </objectinfo>
+  
+  <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_checkBox</property>
+    <property name="label" type="wxString_i18n">Check Me!</property>
+    <property name="style" type="bitlist">
+      <option name="wxCHK_2STATE"       help="Create a 2-state checkbox. This is the default."/>
+      <option name="wxCHK_3STATE"      help="Create a 3-state checkbox. Not implemented in wxMGL, wxOS2 and wxGTK built against GTK+ 1.2."/>
+      <option name="wxCHK_ALLOW_3RD_STATE_FOR_USER"     help="By default a user can't set a 3-state checkbox to the third state. It can only be done from code. Using this flags allows the user to set the checkbox to the third state by clicking."/>
+      <option name="wxALIGN_RIGHT" help="Makes the text appear on the left of the checkbox."/>
+    </property>
+    <property name="checked" type="bool">0</property>
+  </objectinfo>
+
+  <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_radioBox</property>
+    <property name="choices" type="stringlist"  help="Contents of the Radio Box.">'Radio Button'</property>
+    <property name="label" type="wxString">wxRadioBox</property>
+    <property name="majorDimension" type="text" help="Specifies the maximum number of rows (if style contains wxRA_SPECIFY_ROWS) or columns (if style contains wxRA_SPECIFY_COLS) for a two-dimensional radiobox.">1</property>
+    <property name="style" type="bitlist">
+      <option name="wxRA_SPECIFY_ROWS"          help="The major dimension parameter refers to the maximum number of rows."/>
+      <option name="wxRA_SPECIFY_COLS"          help="The major dimension parameter refers to the maximum number of columns."/>
+      <option name="wxRA_USE_CHECKBOX"          help="Use of the checkbox controls instead of radio buttons. (currently supported only on PalmOS)"/>wxRA_SPECIFY_COLS</property>
+  </objectinfo>
+
+  <objectinfo class="wxStaticLine" icon="static_line.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_staticline</property>
+    <property name="style" type="bitlist">
+      <option name="wxLI_HORIZONTAL" help="Creates a horizontal line."/>
+      <option name="wxLI_VERTICAL"   help="Creates a vertical line."/>wxLI_HORIZONTAL</property>
+  </objectinfo>
+
+  <objectinfo class="wxSlider" icon="slider.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_slider</property>
+    <property name="value" type="text"    help="Initial position for the slider.">50</property>
+    <property name="minValue" type="text" help="Minimum slider position.">0</property>
+    <property name="maxValue" type="text" help="Maximum slider position.">100</property>
+    <property name="style" type="bitlist">
+      <option name="wxSL_HORIZONTAL"      help="Displays the slider horizontally." />
+      <option name="wxSL_VERTICAL"        help="Displays the slider vertically." />
+      <option name="wxSL_AUTOTICKS"       help="Displays tick marks." />
+      <option name="wxSL_LABELS"          help="Displays minimum, maximum and value labels." />
+      <option name="wxSL_LEFT"            help="Displays ticks on the left and forces the slider to be vertical." />
+      <option name="wxSL_RIGHT"           help="Displays ticks on the right and forces the slider to be vertical." />
+      <option name="wxSL_TOP"             help="Displays ticks on the top." />
+      <option name="wxSL_BOTTOM"          help="Displays ticks on the bottom (this is the default)." />
+      <option name="wxSL_SELRANGE"        help="Allows the user to select a range on the slider. Windows only." />
+      <option name="wxSL_INVERSE"         help="Inverses the mininum and maximum endpoints on the slider. Not compatible with wxSL_SELRANGE." />wxSL_HORIZONTAL</property>
+  </objectinfo>
+
+  <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_gauge</property>
+    <property name="range" type="text" help="Integer range (maximum value) of the gauge.">100</property>
+    <property name="value" type="text" help="Initial position for the gauge."></property>
+    <property name="style" type="bitlist">
+      <option name="wxGA_HORIZONTAL"   help="Creates a horizontal gauge. "/>
+      <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
+      <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
+  </objectinfo>
+  
+  <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_grid</property>
+    <property name="rows" type="text" help="Number of Rows.">5</property>
+    <property name="cols" type="text" help="Number of Columns.">5</property>
+  </objectinfo>
+  
+  <objectinfo class="wxPanel" icon="panel.xpm" type="container">
+    <inherits class="wxWindow">
+        <property name="window_style">wxTAB_TRAVERSAL</property>
+	</inherits>
+    <property name="name" type="text">m_panel</property>
+  </objectinfo>
+  
+</package>

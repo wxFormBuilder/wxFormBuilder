@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="C++">
+
+	<templates class="Frame">
+		<template name="base">
+			#ifnotnull $subclass
+			@{ public $subclass @}
+			
+			#ifnull $subclass
+			@{ public wxFrame @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :	
+			
+			#ifnotnull $subclass
+			@{ $subclass @}
+			
+			#ifnull $subclass
+			@{ wxFrame@}( parent, id, title, pos, size, style )
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $extra_style
+			@{ this->SetExtraStyle( $extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotnull $minimum_size
+			@{ this->SetMinSize( $minimum_size ); #nl @}
+			
+			#ifnotnull $center
+			@{ this->Centre( $center ); #nl @}
+		</template>
+	</templates>
+
+	<templates class="Panel">
+		<template name="base">
+			#ifnotnull $subclass
+			@{ public $subclass @}
+			
+			#ifnull $subclass
+			@{ public wxPanel @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, int id = -1, wxPoint pos = $pos, wxSize size = $size, int style = $window_style );
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) :			
+			
+			#ifnotnull $subclass
+			@{ $subclass @}
+			
+			#ifnull $subclass
+			@{ wxPanel@}( parent, id, pos, size, style )
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotnull $minimum_size
+			@{ this->SetMinSize( $minimum_size ); #nl @}
+		</template>
+	</templates>
+
+	<templates class="Dialog">
+		<template name="base">
+			#ifnotnull $subclass
+			@{ public $subclass @}
+			
+			#ifnull $subclass
+			@{ public wxDialog @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :			
+			
+			#ifnotnull $subclass
+			@{ $subclass @}
+			
+			#ifnull $subclass
+			@{ wxDialog@}( parent, id, title, pos, size, style )
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $extra_style
+			@{ this->SetExtraStyle( $extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotnull $minimum_size
+			@{ this->SetMinSize( $minimum_size ); #nl @}
+			
+			#ifnotnull $center
+			@{ this->Centre( $center ); #nl @}
+		</template>
+	</templates>
+
+</codegen>
+

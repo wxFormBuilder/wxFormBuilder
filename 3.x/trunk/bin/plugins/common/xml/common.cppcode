@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="C++">
+
+  <templates class="wxButton">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/button.h&gt;</template>
+  </templates>
+
+  <templates class="wxBitmapButton">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
+  </templates>
+
+  <templates class="wxPanel">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
+    <template name="include">@#include &lt;wx/panel.h&gt;</template>
+  </templates>
+
+  <templates class="wxTextCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+	<template name="settings">
+		#ifnotnull $maxlength
+		@{ $name->SetMaxLength( $maxlength ); @}
+	</template>
+  </templates>
+
+  <templates class="wxStaticText">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+  </templates>
+
+  <templates class="wxCheckBox">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+	  $name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} ); #nl
+	  #ifnotequal $checked "0"
+		@{ $name->SetValue(true); #nl @}
+	</template>
+  </templates>
+
+  <templates class="wxComboBox">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+      $name = new #class( #wxparent $name, $id, $value, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
+      #foreach $choices
+      @{ $name->Append( #pred ); @}
+    </template>
+  </templates>
+
+  <templates class="wxListBox">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+      $name = new #class( #wxparent $name, $id, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
+      #foreach $choices
+      @{ $name->Append( #pred ); @}
+    </template>
+  </templates>
+
+  <templates class="wxRadioBox">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+        wxString $name #append Choices[] = { $choices }; #nl
+        int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
+        $name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} );
+    </template>
+  </templates>
+
+  <templates class="wxGrid">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
+    <template name="settings">$name->CreateGrid( $rows, $cols );</template>
+    <template name="include">@#include &lt;wx/grid.h&gt;</template>
+  </templates>
+
+  <templates class="wxStaticBitmap">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style );</template>
+    <template name="include">@#include &lt;wx/statbmp.h&gt;</template>
+  </templates>
+
+  <templates class="wxStaticLine">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/statline.h&gt;</template>
+  </templates>
+
+  <templates class="wxListCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/listctrl.h&gt;</template>
+  </templates>
+
+  <templates class="wxChoice">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+        wxString $name #append Choices[] = { $choices }; #nl
+        int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
+        $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $window_style );
+    </template>
+    <template name="include">@#include &lt;wx/choice.h&gt;</template>
+  </templates>
+
+  <templates class="wxGauge">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="settings">
+		#ifnotnull $value
+		@{ $name->SetValue( $value ); @}
+	</template>
+	<template name="include">@#include &lt;wx/gauge.h&gt;</template>
+  </templates>
+
+  <templates class="wxSlider">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="include">@#include &lt;wx/slider.h&gt;</template>
+  </templates>
+
+</codegen>

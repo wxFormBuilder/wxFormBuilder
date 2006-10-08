@@ -1,0 +1,3 @@
+#include "wx/msw/wx.rc"
+
+A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "wxfbTest.ico"

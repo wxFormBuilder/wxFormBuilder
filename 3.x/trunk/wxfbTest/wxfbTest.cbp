@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="4" />
+	<Project>
+		<Option title="wxfbTest" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\wxfbTest.exe" />
+				<Option object_output="obj\Debug\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D__WXDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add library="wxexpatd" />
+					<Add library="wxjpegd" />
+					<Add library="wxpngd" />
+					<Add library="wxtiffd" />
+					<Add library="wxzlibd" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="d" />
+				</Environment>
+			</Target>
+			<Target title="Debug (Unicode)">
+				<Option output="bin\DebugUnicode\wxfbTest.exe" />
+				<Option object_output="obj\DebugUnicode\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-O0" />
+					<Add option="-D_DEBUG" />
+					<Add option="-D__WXDEBUG" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-D_UNICODE" />
+				</Compiler>
+				<Linker>
+					<Add library="wxexpatd" />
+					<Add library="wxjpegd" />
+					<Add library="wxpngd" />
+					<Add library="wxtiffd" />
+					<Add library="wxzlibd" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="ud" />
+				</Environment>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\wxfbTest.exe" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="wxexpat" />
+					<Add library="wxjpeg" />
+					<Add library="wxpng" />
+					<Add library="wxtiff" />
+					<Add library="wxzlib" />
+				</Linker>
+			</Target>
+			<Target title="Release (Unicode)">
+				<Option output="bin\ReleaseUnicode\wxfbTest.exe" />
+				<Option object_output="obj\ReleaseUnicode\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectResourceIncludeDirsRelation="0" />
+				<Compiler>
+					<Add option="-Os" />
+					<Add option="-O3" />
+					<Add option="-DwxUSE_UNICODE" />
+					<Add option="-D_UNICODE" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="wxexpat" />
+					<Add library="wxjpeg" />
+					<Add library="wxpng" />
+					<Add library="wxtiff" />
+					<Add library="wxzlib" />
+				</Linker>
+				<Environment>
+					<Variable name="WX_SUFFIX" value="u" />
+				</Environment>
+			</Target>
+			<Environment>
+				<Variable name="WX_SUFFIX" value="" />
+				<Variable name="WX_VER" value="26" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-include wx_pch.h" />
+			<Add option="-DWIN32" />
+			<Add option="-D_WINDOWS" />
+			<Add option="-DHAVE_W32API_H" />
+			<Add option="-DBUILD_DLL" />
+			<Add option="-D__WX__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DUSE_PCH" />
+			<Add directory="$(#WX.include)" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#WX.include)" />
+		</ResourceCompiler>
+		<Linker>
+			<Add library="wxmsw$(WX_VER)$(WX_SUFFIX)" />
+			<Add library="wxregex$(WX_SUFFIX)" />
+			<Add library="advapi32" />
+			<Add library="comctl32" />
+			<Add library="comdlg32" />
+			<Add library="ctl3d32" />
+			<Add library="gdi32" />
+			<Add library="glu32" />
+			<Add library="odbc32" />
+			<Add library="odbccp32" />
+			<Add library="ole32" />
+			<Add library="oleaut32" />
+			<Add library="opengl32" />
+			<Add library="rpcrt4" />
+			<Add library="shell32" />
+			<Add library="shlwapi" />
+			<Add library="uuid" />
+			<Add library="version" />
+			<Add library="winmm" />
+			<Add library="winspool" />
+			<Add library="wsock32" />
+			<Add directory="$(#WX.lib)\gcc_lib" />
+			<Add directory="$(#wxadditions.lib)\gcc_lib" />
+		</Linker>
+		<Unit filename="app.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="app.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="main.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="main.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wx_pch.h">
+			<Option compilerVar="CPP" />
+			<Option link="0" />
+			<Option weight="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wxfbTest.fbp">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wxfbTest.ico">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wxfbTest.rc">
+			<Option compilerVar="WINDRES" />
+			<Option objectName="wxfbTest.res" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wxfbTest_GUI.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="wxfbTest_GUI.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+  Definiciones de los tipos de clases
+  -----------------------------------
+
+  En este fichero se especifican las definiciones de los tipos
+  de objetos de wxFormBuilder. A cada componente (ObjectInfo) se
+  le especifica un tipo definido aqu.
+
+  Los tipos determinan las reglas de ubicacin dentro del rbol de
+  objetos, y mediante ciertos atributos se indica a wxFormBuilder
+  cmo debe tratar el objeto.
+
+  name [text]    : identificador del tipo
+  item ["0"/"1"] : flag que indica si el tipo de objeto es un item o un objeto normal.
+                        Los items son objetos ficticios que encapsulan otro objeto (p.e. "sizeritem").
+                        Los items no se muestran en el arbol de objetos, ni en la paleta de componentes
+                        son creados automticamente.
+			Nota: el nombre del tipo item ha de coincidir con el nombre de la clase.
+
+
+  -->
+<definitions>
+
+  <objtype name="project">
+    <childtype name="form" />
+  </objtype>
+
+  <objtype name="interface" />
+
+  <objtype name="form">
+    <childtype name="sizer" nmax="1" />
+    <childtype name="menubar" nmax="1" />
+    <childtype name="statusbar" nmax="1" />
+    <childtype name="toolbar" nmax="1" />
+  </objtype>
+
+  <objtype name="widget" />
+	<objtype name="expanded_widget" />
+
+  <objtype name="sizer">
+    <childtype name="sizeritem" />
+    <childtype name="spacer" />
+  </objtype>
+
+  <objtype name="container">
+    <childtype name="sizer" nmax="1" />
+  </objtype>
+
+  <objtype name="sizeritem" item="1">
+    <childtype name="widget" nmax="1" />
+	<childtype name="expanded_widget" nmax="1" />
+    <childtype name="container" nmax="1" />
+    <childtype name="sizer" nmax="1" />
+    <childtype name="notebook" nmax="1" />
+    <childtype name="flatnotebook" nmax="1" />
+    <childtype name="listbook" nmax="1" />
+    <childtype name="choicebook" nmax="1" />
+    <childtype name="splitter" nmax="1" />
+  </objtype>
+
+  <objtype name="spacer" />
+
+  <objtype name="splitter" >
+    <childtype name="splitteritem" nmax="2" />
+  </objtype>
+
+  <objtype name="splitteritem" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+
+  <objtype name="notebook" >
+    <childtype name="notebookpage" />
+  </objtype>
+
+  <objtype name="notebookpage" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+
+  <objtype name="flatnotebook" >
+    <childtype name="flatnotebookpage" />
+  </objtype>
+
+  <objtype name="flatnotebookpage" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+
+  <objtype name="listbook" >
+    <childtype name="listbookpage" />
+  </objtype>
+
+  <objtype name="listbookpage" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+
+  <objtype name="choicebook" >
+    <childtype name="choicebookpage" />
+  </objtype>
+
+  <objtype name="choicebookpage" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+
+
+  <objtype name="menubar">
+    <childtype name="menu" />
+  </objtype>
+
+  <objtype name="menu">
+    <childtype name="menuitem" />
+    <childtype name="submenu" />
+  </objtype>
+
+  <objtype name="menuitem" />
+
+  <objtype name="submenu">
+    <childtype name="menuitem" />
+    <childtype name="submenu" />
+  </objtype>
+
+  <objtype name="statusbar" />
+
+  <objtype name="toolbar">
+    <childtype name="tool" />
+    <childtype name="widget" />
+		<childtype name="expanded_widget" />
+  </objtype>
+
+  <objtype name="tool" />
+
+</definitions>
+

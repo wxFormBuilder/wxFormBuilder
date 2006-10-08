@@ -1,0 +1,27 @@
+/* XPM */
+static char *ot_menuitem_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 5 1",
+"  c #0066CC",
+". c magenta",
+"X c #808080",
+"o c gray100",
+"O c None",
+/* pixels */
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OXXXXXXXXXXXXXXO",
+"OXooooooooooooXO",
+"OXooooooooooooXO",
+"OXoo        ooXO",
+"OXoo        ooXO",
+"OXooooooooooooXO",
+"OXooooooooooooXO",
+"OXXXXXXXXXXXXXXO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO",
+"OOOOOOOOOOOOOOOO"
+};
