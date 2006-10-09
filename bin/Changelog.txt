@@ -1,6 +1,9 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 
+10-07-2006 Version 3.00.03 (Beta 1)
+* Fixed wxWindow settings code generation.
+
 10-07-2006 Version 3.00.02 (Beta 1)
 * Fixed generation bugs in submenu and wxCheckList (now wxCheckListBox)
   These were caused by subclass in version 2.00.75. This closes FS#20.
