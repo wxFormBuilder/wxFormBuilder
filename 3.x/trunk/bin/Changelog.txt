@@ -1,5 +1,7 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.04
+* Fixed visual editor for subpanels.
 
 10-08-2006 Version 3.00.03 (Beta 1)
 * Fixed wxWindow settings code generation.
