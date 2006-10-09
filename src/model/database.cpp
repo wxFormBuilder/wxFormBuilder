@@ -489,20 +489,28 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
 						try
 						{
 							wxFileName nextXmlFile( nextPluginXmlPath + wxFILE_SEP_PATH + packageXmlFile );
+							if ( !nextXmlFile.IsAbsolute() )
+							{
+								nextXmlFile.MakeAbsolute();
+							}
 							PObjectPackage package = LoadPackage( _STDSTR(nextXmlFile.GetFullPath()), nextPluginIconPath );
 							if ( package )
 							{
+								// Setup the inheritance for base classes
+								wxFileName fullNextPluginPath( nextPluginPath );
+								if ( !fullNextPluginPath.IsAbsolute() )
+								{
+									fullNextPluginPath.MakeAbsolute();
+								}
+								SetupPackage( _STDSTR(nextXmlFile.GetFullPath()), fullNextPluginPath.GetFullPath(), manager );
 
-									// Setup the inheritance for base classes
-									SetupPackage( _STDSTR(nextXmlFile.GetFullPath()), nextPluginPath, manager );
-
-									// Load the C++ code tempates
-									nextXmlFile.SetExt( wxT("cppcode") );
-									LoadCodeGen( _STDSTR(nextXmlFile.GetFullPath()) );
-									if ( !packages.insert( PackageMap::value_type( package->GetPackageName(), package ) ).second )
-									{
-										wxLogError( _("There are two plugins named \"%s\""), package->GetPackageName().c_str() );
-									}
+								// Load the C++ code tempates
+								nextXmlFile.SetExt( wxT("cppcode") );
+								LoadCodeGen( _STDSTR(nextXmlFile.GetFullPath()) );
+								if ( !packages.insert( PackageMap::value_type( package->GetPackageName(), package ) ).second )
+								{
+									wxLogError( _("There are two plugins named \"%s\""), package->GetPackageName().c_str() );
+								}
 							}
 						}
 						catch ( wxFBException& ex )
