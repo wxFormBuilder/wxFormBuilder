@@ -294,7 +294,7 @@ void VisualEditor::Create()
 				// Recursively generate the ObjectTree
 				try
 				{
-					Generate( child, m_back, m_back );
+					Generate( child, m_back, NULL );
 				}
 				catch ( wxFBException& ex )
 				{
@@ -422,13 +422,19 @@ void VisualEditor::Generate( shared_ptr< ObjectBase > obj, wxWindow* wxparent, w
 	comp->OnCreated( createdObject, new_wxparent );
 
 	// If the created object is a sizer and the parent object is a window, set the sizer to the window
-	if ( createdSizer != NULL )
+	if (
+			( createdSizer != NULL && NULL != wxDynamicCast( parentObject, wxWindow ) )
+			||
+			( NULL == parentObject && createdSizer != NULL )
+		)
 	{
-		if ( wxparent == parentObject )
+		wxparent->SetSizer( createdSizer );
+		if ( parentObject )
 		{
-			wxparent->SetSizer( createdSizer );
-			wxparent->Layout();
+			createdSizer->SetSizeHints( wxparent );
 		}
+		wxparent->SetAutoLayout(true);
+		wxparent->Layout();
 	}
 }
 
