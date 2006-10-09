@@ -1,7 +1,7 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 
-10-07-2006 Version 3.00.03 (Beta 1)
+10-08-2006 Version 3.00.03 (Beta 1)
 * Fixed wxWindow settings code generation.
 
 10-07-2006 Version 3.00.02 (Beta 1)
@@ -14,9 +14,9 @@
 * Added subclassing on forms. This closes FS#21.
 * Fixed C++ output of value property for wxGauge.
 + Added center property for wxDialog and wxFrame. This closes FS#17.
-+ Individual directoryies for each plug-in.
-+ Toolbar seperators. This closes FS#11.
-+ Possiblity to group plugin components with toolbar separators.
++ Individual directories for each plug-in.
++ Toolbar separators. This closes FS#11.
++ Possibility to group plugin components with toolbar separators.
 ^ Premake script for sdk projects.
 ^ Renamed contrib to wxAddition plug-in.
 ^ Palette now remembers tab order.
