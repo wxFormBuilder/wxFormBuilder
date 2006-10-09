@@ -9,17 +9,17 @@
 		</Project>
 		<Project filename="plugins/common/common-unix.cbp">
 			<Depends filename="sdk/tinyxml/TiCPP.cbp" />
-			<Depends filename="sdk/plugin_interface/Plugin Interface.cbp" />
+			<Depends filename="sdk/plugin_interface/plugin_interface-unix.cbp" />
 		</Project>
 		<Project filename="plugins/additional/additional-unix.cbp">
 			<Depends filename="sdk/tinyxml/TiCPP.cbp" />
-			<Depends filename="sdk/plugin_interface/Plugin Interface.cbp" />
+			<Depends filename="sdk/plugin_interface/plugin_interface-unix.cbp" />
 		</Project>
 		<Project filename="plugins/layout/layout-unix.cbp">
 			<Depends filename="sdk/tinyxml/TiCPP.cbp" />
-			<Depends filename="sdk/plugin_interface/Plugin Interface.cbp" />
+			<Depends filename="sdk/plugin_interface/plugin_interface-unix.cbp" />
 		</Project>
 		<Project filename="sdk/tinyxml/TiCPP.cbp" />
-		<Project filename="sdk/plugin_interface/Plugin Interface.cbp" />
+		<Project filename="sdk/plugin_interface/plugin_interface-unix.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>
