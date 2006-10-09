@@ -30,7 +30,8 @@
     <template name="cpp_epilogue">
       ///////////////////////////////////////////////////////////////////////////
     </template>
-	<templates class="wxWindow">
+  </templates>
+  <templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ $name->SetExtraStyle( $window_extra_style ); #nl @}
@@ -57,7 +58,6 @@
 			@{ $name->SetMinSize( $minimum_size ); #nl @}
 		</template>
 	<template name="toolbar_add">#parent $name->AddControl( $name );</template>
-  </templates>
   </templates>
 </codegen>
 
