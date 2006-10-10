@@ -99,6 +99,7 @@ class MainFrame : public wxFrame
   void OnMoveRight (wxCommandEvent &event);
   void OnChangeAlignment (wxCommandEvent &event);
   void OnChangeBorder(wxCommandEvent& e);
+  void OnXrcPreview(wxCommandEvent& e);
   void OnFlatNotebookPageChanged( wxNotebookChooserEvent& event );
 
   void OnProjectLoaded( wxFBEvent& event );

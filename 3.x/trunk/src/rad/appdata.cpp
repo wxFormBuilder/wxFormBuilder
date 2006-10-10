@@ -28,14 +28,18 @@
 #include "utils/typeconv.h"
 #include "utils/debug.h"
 #include "codegen/codegen.h"
+#include "rad/cpppanel/cpppanel.h"
 #include "bitmaps.h"
 #include "rad/wxfbevent.h"
+#include "codegen/xrccg.h"
 #include "wxfbmanager.h"
 
 #include <ticpp.h>
 #include <set>
 #include <wx/tokenzr.h>
 #include <wx/ffile.h>
+#include <wx/filename.h>
+#include <wx/xrc/xmlres.h>
 
 using namespace TypeConv;
 
@@ -1606,6 +1610,57 @@ void ApplicationData::CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj)
 			NotifyProjectRefresh();
 		}
 	}
+}
+
+void ApplicationData::ShowXrcPreview()
+{
+    shared_ptr<ObjectBase> form = GetSelectedForm();
+    if (form == NULL) return;
+    wxString className = form->GetClassName();
+
+    XrcCodeGenerator codegen;
+    wxString filePath = wxFileName::CreateTempFileName(_T("wxFB"));
+    shared_ptr<CodeWriter> cw(new FileCodeWriter(filePath));
+
+    codegen.SetWriter(cw);
+    codegen.GenerateCode(m_project);
+
+    wxString workingDir = ::wxGetCwd();
+    // We change the current directory so that the relative paths work properly
+    ::wxSetWorkingDirectory(GetProjectPath());
+    wxXmlResource *res = wxXmlResource::Get();
+    res->Load(filePath);
+
+    if (className == _T("Frame"))
+    {
+        wxFrame *frame = new wxFrame();
+        res->LoadFrame(frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString(_T("name")));
+        frame->SetSize(form->GetPropertyAsSize(_T("size")));
+        frame->CenterOnScreen();
+        frame->Show();
+    }
+    else if (className == _T("Dialog"))
+    {
+        wxDialog dialog;
+        res->LoadDialog(&dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString(_T("name")));
+        dialog.SetSize(form->GetPropertyAsSize(_T("size")));
+        dialog.CenterOnScreen();
+        dialog.ShowModal();
+    }
+    else if (className == _T("Panel"))
+    {
+        wxDialog dialog(wxTheApp->GetTopWindow(), -1, _T("Dialog"), wxDefaultPosition,
+            wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+        wxPanel *panel = new wxPanel();
+        res->LoadPanel(panel, &dialog, form->GetPropertyAsString(_T("name")));
+        dialog.SetClientSize(panel->GetSize());
+        dialog.SetSize(form->GetPropertyAsSize(_T("size")));
+        dialog.CenterOnScreen();
+        dialog.ShowModal();
+    }
+    ::wxSetWorkingDirectory(workingDir);
+    res->Unload(filePath);
+    ::wxRemoveFile(filePath);
 }
 
 bool ApplicationData::CanPasteObject()
