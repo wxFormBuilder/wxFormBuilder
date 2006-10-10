@@ -1,9 +1,7 @@
-if ( OS == "windows") then
-	package.name = "Plugin Interface"
-else
-	package.name = "plugin_interface-unix"
-end
+package.name = "Plugin Interface"
+
 package.kind = "lib"
+package.libdir = "../lib"
 package.language = "c++"
 package.files = { matchfiles( "*.h", "*.cpp" ) }
 
