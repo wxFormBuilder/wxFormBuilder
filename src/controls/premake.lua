@@ -7,5 +7,6 @@ end
 project.libdir = "lib"
 
 -- Add sdk projects here.
-dopackage( "" )
-dopackage( "" )
+dopackage( "propgrid" )
+--dopackage( "wxFlatNotebook" )
+--dopackage( "wxScintilla" )
