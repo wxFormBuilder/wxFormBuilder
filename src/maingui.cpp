@@ -40,6 +40,7 @@
 #include <wx/filename.h>
 #include <wx/image.h>
 #include <wx/sysopt.h>
+#include <wx/xrc/xmlres.h>
 
 #include <memory>
 #include "maingui.h"
@@ -49,6 +50,7 @@ IMPLEMENT_APP(MyApp)
 bool MyApp::OnInit()
 {
   wxInitAllImageHandlers();
+  wxXmlResource::Get()->InitAllHandlers();
 
   // Obtenemos la ruta del ejecutable
   wxString exeFile(argv[0]);

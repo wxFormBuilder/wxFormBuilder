@@ -84,6 +84,8 @@
 #define ID_MOVE_LEFT	  134
 #define ID_MOVE_RIGHT     135
 
+#define ID_PREVIEW_XRC    136
+
 BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 	EVT_MENU(ID_NEW_PRJ,MainFrame::OnNewProject)
 	EVT_MENU(ID_SAVE_PRJ,MainFrame::OnSaveProject)
@@ -116,6 +118,7 @@ BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 	EVT_MENU(ID_ALIGN_BOTTOM,MainFrame::OnChangeAlignment)
 	EVT_MENU(ID_ALIGN_CENTER_V,MainFrame::OnChangeAlignment)
 	EVT_MENU_RANGE(ID_BORDER_LEFT, ID_BORDER_BOTTOM, MainFrame::OnChangeBorder)
+	EVT_MENU(ID_PREVIEW_XRC, MainFrame::OnXrcPreview)
 	EVT_CLOSE(MainFrame::OnClose)
 	EVT_NOTEBOOKCHOOSER_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
@@ -181,6 +184,9 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 	menuEdit->Append(ID_ALIGN_CENTER_H, wxT("&Align Center Vertical"),   wxT("Align item to the center vertically"));
 	menuEdit->Append(ID_ALIGN_BOTTOM,   wxT("&Align Bottom"),         wxT("Align item to the bottom"));
 
+	wxMenu *menuView = new wxMenu;
+	menuView->Append(ID_PREVIEW_XRC, wxT("XRC window"), wxT("Show a preview of the XRC window"));
+
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append(ID_ABOUT, wxT("&About...\tF1"), wxT("Show about dialog"));
 
@@ -189,6 +195,7 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append(menuFile, wxT("&File"));
 	menuBar->Append(menuEdit, wxT("&Edit"));
+	menuBar->Append(menuView, wxT("&View"));
 	menuBar->Append(menuHelp, wxT("&Help"));
 
 	// ... and attach this menu bar to the frame
@@ -859,6 +866,11 @@ void MainFrame::OnChangeBorder(wxCommandEvent& e)
 
 	AppData()->ToggleBorderFlag(AppData()->GetSelectedObject(), border);
 	UpdateLayoutTools();
+}
+
+void MainFrame::OnXrcPreview(wxCommandEvent& WXUNUSED(e))
+{
+    AppData()->ShowXrcPreview();
 }
 
 bool MainFrame::SaveWarning()

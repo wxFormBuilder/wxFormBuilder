@@ -225,6 +225,7 @@ public:
   void ChangeAlignment (shared_ptr<ObjectBase> obj, int align, bool vertical);
   void ToggleBorderFlag(shared_ptr<ObjectBase> obj, int border);
   void CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj);
+  void ShowXrcPreview();
 
   // Servicios para los observadores
   shared_ptr<ObjectBase> GetSelectedObject();
