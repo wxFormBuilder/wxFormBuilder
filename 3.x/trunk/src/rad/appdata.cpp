@@ -40,6 +40,7 @@
 #include <wx/ffile.h>
 #include <wx/filename.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/snglinst.h>
 
 using namespace TypeConv;
 
@@ -340,7 +341,7 @@ ApplicationData* ApplicationData::Get(const wxString &rootdir)
 
 void ApplicationData::Destroy()
 {
-  if (!s_instance)
+  if (s_instance)
     delete s_instance;
 
   s_instance = NULL;
@@ -813,6 +814,17 @@ void ApplicationData::ModifyProperty(shared_ptr<Property> prop, wxString str)
 
 void ApplicationData::SaveProject(const wxString &filename)
 {
+	// Make sure this file is not already open
+	if ( !VerifySingleInstance( filename, false ) )
+	{
+		if ( wxYES == wxMessageBox( wxT("You cannot save over a file that is currently open in another instance.\nWould you like to switch to that instance?"),
+										wxT("Open in Another Instance"), wxICON_QUESTION | wxYES_NO, wxTheApp->GetTopWindow() ) )
+		{
+			VerifySingleInstance( filename, true );
+		}
+		return;
+	}
+
 	TiXmlDocument *doc = m_project->Serialize();
 	m_modFlag = false;
 	doc->SaveFile(filename.mb_str( wxConvUTF8 ));
@@ -826,6 +838,17 @@ void ApplicationData::SaveProject(const wxString &filename)
 bool ApplicationData::LoadProject(const wxString &file)
 {
 	Debug::Print( wxT("LOADING") );
+
+	if ( !wxFileName::FileExists( file ) )
+	{
+		wxLogError( wxT("This file does not exist: %s"), file.c_str() );
+		return false;
+	}
+
+	if ( !VerifySingleInstance( file ) )
+	{
+		return false;
+	}
 
 	bool result = false;
 
@@ -1250,6 +1273,8 @@ void ApplicationData::NewProject()
 	m_cmdProc.Reset();
 	m_projectFile = wxT("");
 	SetProjectPath(wxT(""));
+	m_server.reset();
+	m_checker.reset();
 	NotifyProjectRefresh();
 }
 
@@ -1795,5 +1820,105 @@ void ApplicationData::NotifyProjectRefresh()
   NotifyEvent( event );
 }
 
+bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo )
+{
+	// Possible send a message to the running instance through this string later, for now it is left empty
+	wxString expression = wxEmptyString;
+
+	// Make path absolute
+	wxFileName path( file );
+	if ( !path.IsOk() )
+	{
+		wxLogError( wxT("This path is invalid: %s"), file.c_str() );
+		return false;
+	}
+
+	if ( !path.IsAbsolute() )
+	{
+		if ( !path.MakeAbsolute() )
+		{
+			wxLogError( wxT("Could not make path absolute: %s"), file.c_str() );
+			return false;
+		}
+	}
+
+	// Check for single instance
+
+	// Create lockfile/mutex name
+	wxString name = wxString::Format( wxT("wxFormBuilder-%s-%s"), wxGetUserId().c_str(), path.GetFullPath().c_str() );
+
+	// Get forbidden characters
+	wxString forbidden = wxFileName::GetForbiddenChars();
+
+	// Repace forbidded characters
+	for ( size_t c = 0; c < forbidden.Length(); ++c )
+	{
+		wxString bad( forbidden.GetChar( c ) );
+		name.Replace( bad.c_str(), wxT("_") );
+	}
+
+	// Check to see if I already have a server with this name - if so, no need to make another!
+	if ( m_server.get() )
+	{
+		if ( m_server->m_name == name )
+		{
+			return true;
+		}
+	}
+
+    std::auto_ptr< wxSingleInstanceChecker > checker( new wxSingleInstanceChecker( name ) );
+    if ( !checker->IsAnotherRunning() )
+	{
+		// This is the first instance of this project, so setup a server and save the single instance checker
+		std::auto_ptr< AppServer > server( new AppServer( name ) );
+		if ( !server->Create( name ) )
+		{
+			wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
+			return false;
+		}
+		m_checker = checker;
+		m_server = server;
+		return true;
+	}
+	else if ( switchTo )
+    {
+		// Suspend logging, because error messages here are not useful
+		//wxLogNull logNo;
+
+		// There is another app, so connect and send the expression
+		std::auto_ptr< AppClient > client( new AppClient );
+
+		// Create the connection
+		std::auto_ptr< wxConnectionBase > connection( client->MakeConnection( wxT("localhost"), name, wxT("wxFormBuilder") ) );
+
+		if ( connection.get() )
+		{
+			// Ask the other app to execute the expression or raise itself
+			connection->Execute( expression );
+			connection->Disconnect();
+		}
+    }
+    return false;
+}
+
+bool AppConnection::OnExecute( const wxString &topic, wxChar *data, int size, wxIPCFormat format )
+{
+	wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
+
+	if ( !frame )
+	{
+		return false;
+	}
+
+	//wxString expression( data );
+	if ( frame->IsIconized() )
+	{
+		frame->Iconize( false );
+	}
+	frame->Raise();
+
+	return true;
+
+}
 
 

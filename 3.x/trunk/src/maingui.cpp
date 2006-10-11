@@ -115,4 +115,7 @@ bool MyApp::OnInit()
   return TRUE;
 }
 
-// OnQuit?? -> AppDataDestroy()
+MyApp::~MyApp()
+{
+	AppDataDestroy();
+}
