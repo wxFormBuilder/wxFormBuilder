@@ -29,6 +29,8 @@
 #include "model/database.h"
 #include "rad/cmdproc.h"
 #include <set>
+#include <wx/ipc.h>
+#include <memory>
 
 namespace ticpp
 {
@@ -41,13 +43,15 @@ class Property;
 class wxFBEvent;
 class wxFBManager;
 
+class wxSingleInstanceChecker;
+class AppServer;
+
 #define AppData()         (ApplicationData::Get())
 #define AppDataInit(path) (ApplicationData::Get(path))
 #define AppDataDestroy()  (ApplicationData::Destroy())
 
-// Now this class is a singleton class.
-// We don't need DataObservable interface since Observers are wxEvtHandlers
-class ApplicationData// : public DataObservable
+// This class is a singleton class.
+class ApplicationData
 {
  private:
   static ApplicationData *s_instance;
@@ -74,7 +78,9 @@ class ApplicationData// : public DataObservable
   typedef vector< wxEvtHandler* > HandlerVector;
   HandlerVector m_handlers;
 
-   //friend class ItemPopupMenu;
+  // Only allow one instance of a project to be loaded at a time
+  std::auto_ptr< wxSingleInstanceChecker > m_checker;
+  std::auto_ptr< AppServer > m_server;
 
   void NotifyEvent( wxFBEvent& event );
 
@@ -188,7 +194,8 @@ class ApplicationData// : public DataObservable
   ApplicationData(const wxString &rootdir = wxT(".") );
 
 
-  //
+  // Only allow one instance of a project
+  bool VerifySingleInstance( const wxString& file, bool switchTo = true );
 
 public:
 
@@ -264,6 +271,41 @@ public:
   void SetApplicationPath(const wxString &path) { m_exePath = path; };
 };
 
+/* Only allow one instance of a project */
 
+// Connection class, for use by both communicationg instances
+class AppConnection: public wxConnection
+{
+public:
+	AppConnection(){}
+	~AppConnection(){}
+
+	bool OnExecute( const wxString& topic, wxChar* data, int size, wxIPCFormat format );
+};
+
+// Server class, for listening to connection requests
+class AppServer: public wxServer
+{
+public:
+	const wxString m_name;
+
+	AppServer( const wxString& name ) : m_name( name ){}
+
+	wxConnectionBase* OnAcceptConnection( const wxString& topic )
+	{
+		return new AppConnection();
+	}
+};
+
+// Client class, to be used by subsequent instances in OnInit
+class AppClient: public wxClient
+{
+public:
+	AppClient(){}
+	wxConnectionBase* OnMakeConnection()
+	{
+		return new AppConnection;
+	}
+};
 
 #endif //__APP_DATA__

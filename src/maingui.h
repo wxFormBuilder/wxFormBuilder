@@ -11,6 +11,7 @@ private:
 
 public:
   virtual bool OnInit();
+  ~MyApp();
 };
 
 DECLARE_APP(MyApp)
