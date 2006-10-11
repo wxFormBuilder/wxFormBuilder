@@ -378,6 +378,21 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 		m_header->WriteLn( wxT("") );
 	}
 
+	// Generate the subclass set
+	set< wxString > subclasses;
+	GenSubclassForwardDeclarations( project, &subclasses );
+
+	// Write the forward declaration lines
+	set< wxString >::iterator subclass_it;
+	for ( subclass_it = subclasses.begin(); subclass_it != subclasses.end(); ++subclass_it )
+	{
+		m_header->WriteLn( *subclass_it );
+	}
+	if ( !subclasses.empty() )
+	{
+		m_header->WriteLn( wxT("") );
+	}
+
 	code = GetCode( project, wxT("header_epilogue") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("") );
@@ -388,6 +403,22 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	m_source->WriteLn( wxT("") );
 
 	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\""));
+
+	// User Headers
+	set< wxString > user_headers;
+	shared_ptr<Property> user_headers_prop = project->GetProperty( wxT("user_headers") );
+	if ( user_headers_prop )
+	{
+		wxArrayString array = user_headers_prop->GetValueAsArrayString();
+		for ( unsigned int i = 0; i < array.Count(); i++ )
+		{
+			if ( user_headers.insert( array[i] ).second )
+			{
+				m_source->WriteLn( wxT("#include \"") + array[i] + wxT("\"") );
+			}
+		}
+	}
+
 	m_source->WriteLn( wxT("") );
 	GenXpmIncludes( project );
 
@@ -556,19 +587,29 @@ void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
 	}
 }
 
+void CppCodeGenerator::GenSubclassForwardDeclarations( shared_ptr< ObjectBase > obj, set< wxString >* subclasses )
+{
+	// Call GenSubclassForwardDeclarations on all children as well
+	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
+	{
+		GenSubclassForwardDeclarations( obj->GetChild( i ), subclasses );
+	}
+
+	// Fill the set
+	shared_ptr< Property > subclass = obj->GetProperty( wxT("subclass") );
+	if ( subclass )
+	{
+		wxString val = subclass->GetValueAsString();
+		if ( !val.empty() )
+		{
+			subclasses->insert( wxT("class ") + val + wxT(";") );
+		}
+	}
+}
+
 void CppCodeGenerator::GenIncludes( shared_ptr<ObjectBase> project, set<wxString>* includes)
 {
 	GenObjectIncludes( project, includes );
-
-	shared_ptr<Property> user_headers = project->GetProperty( wxT("user_headers") );
-	if ( user_headers )
-	{
-		wxArrayString array = user_headers->GetValueAsArrayString();
-		for ( unsigned int i = 0 ; i < array.Count(); i++ )
-		{
-			includes->insert( wxT("#include \"") + array[i] + wxT("\"") );
-		}
-	}
 }
 
 void CppCodeGenerator::GenObjectIncludes( shared_ptr< ObjectBase > project, set< wxString >* includes )
@@ -576,7 +617,7 @@ void CppCodeGenerator::GenObjectIncludes( shared_ptr< ObjectBase > project, set<
 	// Call GenIncludes on all children as well
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
-		GenIncludes( project->GetChild(i), includes );
+		GenObjectIncludes( project->GetChild(i), includes );
 	}
 
 	// Fill the set
