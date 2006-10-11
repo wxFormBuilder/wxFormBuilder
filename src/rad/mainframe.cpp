@@ -137,9 +137,17 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 : wxFrame(parent,id,wxT("wxFormBuilder v.0.1"),wxDefaultPosition,wxSize(1000,800))
 {
 
-	wxIcon ico;
-	ico.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app")));
-	SetIcon( ico );
+	wxIconBundle bundle;
+
+	wxIcon ico16;
+	ico16.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app16")));
+	bundle.AddIcon( ico16 );
+
+	wxIcon ico32;
+	ico32.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app32"),32));
+	bundle.AddIcon( ico32 );
+
+	SetIcons( bundle );
 
 	wxString date(wxT(__DATE__));
 	wxString time(wxT(__TIME__));

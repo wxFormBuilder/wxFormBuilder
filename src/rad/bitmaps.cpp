@@ -25,7 +25,7 @@
 
 #include "bitmaps.h"
 #include "tinyxml.h"
-#include "icons/unknown.xpm"
+#include "unknown.h"
 #include <wx/image.h>
 #include "utils/typeconv.h"
 
