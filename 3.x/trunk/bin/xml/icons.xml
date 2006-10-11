@@ -2,7 +2,8 @@
 <icons>
 
 	<!-- Main Application Icon-->
-	<icon name="app" 			file="wxwin16x16.xpm"/>
+	<icon name="app16" 			file="wxwin16x16.xpm"/>
+	<icon name="app32" 			file="logo.png"/>
 
 	<!-- Toolbar Icons -->
 	<icon name="new" 			file="new.png"			/>
