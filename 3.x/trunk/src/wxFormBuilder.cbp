@@ -120,9 +120,10 @@
 			<Add option="-D__WX__" />
 			<Add option="-D__WXMSW__" />
 			<Add option="-DWXUSINGDLL" />
+			<Add option="-DWXUSINGDLL_FNB" />
 			<Add option="-DTIXML_USE_TICPP" />
 			<Add directory="$(#wx.include)" />
-			<Add directory="$(#wxadditions.include)" />
+			<Add directory="controls\include" />
 			<Add directory="$(boost)" />
 			<Add directory="..\src" />
 			<Add directory="$(sdk)\tinyxml" />
@@ -153,7 +154,7 @@
 			<Add library="winspool" />
 			<Add library="wsock32" />
 			<Add directory="$(#WX.lib)\gcc_dll" />
-			<Add directory="$(#wxadditions.lib)\gcc_dll" />
+			<Add directory="controls\lib\gcc_dll" />
 			<Add directory="$(sdk)\lib" />
 		</Linker>
 		<Unit filename="codegen\codegen.cpp">
@@ -210,6 +211,15 @@
 			<Option target="Release" />
 			<Option target="Release (Unicode)" />
 			<Option target="Debug (Unicode)" />
+		</Unit>
+		<Unit filename="maingui.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
 		</Unit>
 		<Unit filename="model\database.cpp">
 			<Option compilerVar="CPP" />
