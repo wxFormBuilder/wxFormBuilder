@@ -46,9 +46,10 @@ class wxFBManager;
 class wxSingleInstanceChecker;
 class AppServer;
 
-#define AppData()         (ApplicationData::Get())
-#define AppDataInit(path) (ApplicationData::Get(path))
-#define AppDataDestroy()  (ApplicationData::Destroy())
+#define AppData()         	(ApplicationData::Get())
+#define AppDataCreate(path) (ApplicationData::Get(path))
+#define AppDataInit()		(ApplicationData::Initialize())
+#define AppDataDestroy()  	(ApplicationData::Destroy())
 
 // This class is a singleton class.
 class ApplicationData
@@ -70,7 +71,6 @@ class ApplicationData
   CommandProcessor m_cmdProc;
   wxString m_projectFile;
   wxString m_projectPath;
-  wxString m_exePath;
 
   shared_ptr< wxFBManager > m_manager;
 
@@ -193,14 +193,16 @@ class ApplicationData
   // hiden constructor
   ApplicationData(const wxString &rootdir = wxT(".") );
 
-
-  // Only allow one instance of a project
-  bool VerifySingleInstance( const wxString& file, bool switchTo = true );
-
 public:
 
   static ApplicationData* Get(const wxString &rootdir = wxT(".") );
+
+  // Force the static AppData instance to Init()
+  static void Initialize();
   static void Destroy();
+
+  // Initialize application
+  void LoadApp();
 
   // Hold a pointer to the wxFBManager
   shared_ptr< wxFBManager > GetManager();
@@ -267,8 +269,11 @@ public:
   const wxString &GetProjectPath() { return m_projectPath; };
   void SetProjectPath(const wxString &path) { m_projectPath = path; };
 
-  const wxString &GetApplicationPath() { return m_exePath; };
-  void SetApplicationPath(const wxString &path) { m_exePath = path; };
+  const wxString &GetApplicationPath() { return m_rootDir; };
+  void SetApplicationPath(const wxString &path) { m_rootDir = path; };
+
+  // Only allow one instance of a project
+  bool VerifySingleInstance( const wxString& file, bool switchTo = true );
 };
 
 /* Only allow one instance of a project */

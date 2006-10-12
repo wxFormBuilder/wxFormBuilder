@@ -27,11 +27,11 @@
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
-    #pragma hdrstop
+#pragma hdrstop
 #endif
 
 #ifndef WX_PRECOMP
-  #include "wx/wx.h"
+#include "wx/wx.h"
 #endif
 
 #include <wx/splash.h>
@@ -45,74 +45,94 @@
 #include <memory>
 #include "maingui.h"
 
-IMPLEMENT_APP(MyApp)
+IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
-  wxInitAllImageHandlers();
-  wxXmlResource::Get()->InitAllHandlers();
+	wxApp::SetVendorName( wxT( " wxFormBuilder" ) );
+	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
-  // Obtenemos la ruta del ejecutable
-  wxString exeFile(argv[0]);
-  wxFileName appFileName(exeFile);
-  wxString path = appFileName.GetPath();
+	// Get the path of the executable
+	wxString exeFile( argv[0] );
+	wxFileName appFileName( exeFile );
+	wxString path = appFileName.GetPath();
 
-  AppDataInit( path );
+	// Create singleton AppData - wait to initialize until sure that this is not the second
+	// instance of a project file.
+	AppDataCreate( path );
 
-  // Guardamos la ruta del ejecutable
-  AppData()->SetApplicationPath(path);
+	// Get project to load
+	// If the project is already loaded in another instance, switch to that instance and quit
+	wxString projectToLoad = wxEmptyString;
+	if ( argc > 1 )
+	{
+		wxString arg( argv[1] );
+		if ( ::wxFileExists( arg ) )
+		{
+			if ( !AppData()->VerifySingleInstance( arg ) )
+			{
+				return false;
+			}
+			else
+			{
+				projectToLoad = arg;
+			}
+		}
+	}
 
-  wxSystemOptions::SetOption(wxT("msw.remap"), 0);
-  wxSystemOptions::SetOption(wxT("msw.staticbox.optimized-paint"), 0);
+	// Init handlers
+	wxInitAllImageHandlers();
+	wxXmlResource::Get()->InitAllHandlers();
+
+	// Init AppData
+	AppDataInit();
+
+	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
+	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );
 
 #ifndef _DEBUG
-  wxBitmap bitmap;
-  std::auto_ptr< wxSplashScreen > splash;
-  if (bitmap.LoadFile(path + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("splash.png"), wxBITMAP_TYPE_PNG))
-  {
-	splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen(bitmap, wxSPLASH_CENTRE_ON_SCREEN|wxSPLASH_TIMEOUT,
-          3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-          wxSIMPLE_BORDER|wxSTAY_ON_TOP) );
-  }
+	wxBitmap bitmap;
+	std::auto_ptr< wxSplashScreen > splash;
+	if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
+	{
+		splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
+				 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
+				 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
+	}
 #endif
 
-  wxApp::SetVendorName( wxT(" wxFormBuilder") );
-  wxApp::SetAppName( wxT(" wxFormBuilder") );
+	wxYield();
 
-  wxYield();
+#ifdef __WXFB_DEBUG__
+	m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
+	m_old_log = wxLog::SetActiveTarget( m_log );
+#endif //__WXFB_DEBUG__
 
-  #ifdef __WXFB_DEBUG__
-  m_log = new wxLogWindow(NULL,wxT("Logging"));
-  m_old_log = wxLog::SetActiveTarget(m_log);
-  #endif //__WXFB_DEBUG__
+	MainFrame *frame = new MainFrame( NULL );
+	frame->Show( TRUE );
+	SetTopWindow( frame );
 
-
-
-  MainFrame *frame = new MainFrame(NULL);
-  frame->Show(TRUE);
-  SetTopWindow(frame);
-
-  #ifdef __WXFB_DEBUG__
-  frame->AddChild(m_log->GetFrame());
-  #endif //__WXFB_DEBUG__
-
-  if (argc > 1)
-  {
-    wxString arg(argv[1]);
-
-    if (::wxFileExists(arg))
-    {
-      // No va bien (en mainframe aparece untitled)
-      if (AppData()->LoadProject(arg))
-        frame->InsertRecentProject(arg);
-
-      return TRUE;
-    }
-  }
+#ifdef __WXFB_DEBUG__
+	frame->AddChild( m_log->GetFrame() );
+#endif //__WXFB_DEBUG__
 
 
-  AppData()->NewProject();
-  return TRUE;
+	// No va bien (en mainframe aparece untitled)
+	if ( !projectToLoad.empty() )
+	{
+		if ( AppData()->LoadProject( projectToLoad ) )
+		{
+			frame->InsertRecentProject( projectToLoad );
+			return true;
+		}
+		else
+		{
+			wxLogError( wxT( "Unable to load project: %s" ), projectToLoad.c_str() );
+		}
+	}
+
+	AppData()->NewProject();
+	return true;
 }
 
 MyApp::~MyApp()
