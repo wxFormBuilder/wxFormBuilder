@@ -347,6 +347,11 @@ void ApplicationData::Destroy()
   s_instance = NULL;
 }
 
+void ApplicationData::Initialize()
+{
+	ApplicationData* appData = ApplicationData::Get();
+	appData->LoadApp();
+}
 
 ApplicationData::ApplicationData(const wxString &rootdir)
 :
@@ -356,10 +361,14 @@ m_manager( new wxFBManager ),
 m_fbpVerMajor( 1 ),
 m_fbpVerMinor( 4 )
 {
-	AppBitmaps::LoadBitmaps( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH + wxT("icons.xml"), m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH );
 	m_objDb->SetXmlPath(_STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ) ;
 	m_objDb->SetIconPath( _STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH ) );
 	m_objDb->SetPluginPath( m_rootDir + wxFILE_SEP_PATH + wxT("plugins") + wxFILE_SEP_PATH ) ;
+}
+
+void ApplicationData::LoadApp()
+{
+	AppBitmaps::LoadBitmaps( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH + wxT("icons.xml"), m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH );
 	m_objDb->LoadObjectTypes();
 	m_objDb->LoadPlugins( m_manager );
 }
