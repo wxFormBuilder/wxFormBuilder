@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.04
+10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
 * Fixed circular subclassing. This resolves FS#32.
 * Fixed Alt-Tab icon. This resolves FS#34.
