@@ -7,7 +7,14 @@
 typedef wxFlatNotebook wxNotebookChooser;
 typedef wxFlatNotebookImageList wxNotebookChooserImageList;
 typedef wxFlatNotebookEvent wxNotebookChooserEvent;
-#define ChooseNotebook( parent, id ) wxFlatNotebook( parent, id, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS );
+
+#ifdef __WXGTK__
+#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG
+#else
+#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS
+#endif
+
+#define ChooseNotebook( parent, id ) wxFlatNotebook( parent, id, wxDefaultPosition, wxDefaultSize, NOTEBOOK_STYLE );
 #define EVT_NOTEBOOKCHOOSER_PAGE_CHANGED EVT_FLATNOTEBOOK_PAGE_CHANGED
 
 #else

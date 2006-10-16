@@ -53,8 +53,8 @@
 			<Add option="-DNOPCH" />
 			<Add option="-DNO_GCC_PRAGMA" />
 			<Add option="-DTIXML_USE_TICPP" />
-			<Add option="-DUSE_WXNOTEBOOK" />
 			<Add option="-D_UNICODE" />
+			<Add option="-D__WXGTK__" />
 			<Add directory="../sdk/boost_1_31_0_smart_ptr" />
 			<Add directory="../src" />
 			<Add directory="controls/include" />

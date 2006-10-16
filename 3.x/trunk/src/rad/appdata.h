@@ -298,7 +298,14 @@ public:
 
 	wxConnectionBase* OnAcceptConnection( const wxString& topic )
 	{
-		return new AppConnection();
+		if ( topic == wxT("wxFormBuilder") )
+		{
+			return new AppConnection();
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 };
 
