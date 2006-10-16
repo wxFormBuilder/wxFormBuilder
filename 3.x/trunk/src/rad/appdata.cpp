@@ -1866,9 +1866,9 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		name.Replace( bad.c_str(), wxT("_") );
 	}
 
-	#ifdef __WXGTK__
+	#ifndef __WXMSW__
 	name.Replace( wxT("/"), wxT("_") );
-	name.insert( 0, wxT("4242") );
+	int port = 4242;
 	#endif
 
 	// Check to see if I already have a server with this name - if so, no need to make another!
@@ -1884,8 +1884,25 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
     if ( !checker->IsAnotherRunning() )
 	{
 		// This is the first instance of this project, so setup a server and save the single instance checker
+		#ifndef __WXMSW__
+		{
+			wxString nameWithPort = wxString::Format( "%i%s", port, name.c_str() );
+			wxLogNull stopLogging
+			std::auto_ptr< AppServer > server( new AppServer( name ) );
+			for ( int i = port; i < port + 20; ++i )
+			{
+			  if( server->Create( nameWithPort ) )
+			  {
+			  	break;
+			  }
+			}
+		}
+		#else
+			wxString nameWithPort = name;
+		#endif
+
 		std::auto_ptr< AppServer > server( new AppServer( name ) );
-		if ( !server->Create( name ) )
+		if ( !server->Create( nameWithPort ) )
 		{
 			wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
 			return false;
@@ -1905,34 +1922,65 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		// Create the connection
 		std::auto_ptr< wxConnectionBase > connection( client->MakeConnection( wxT("localhost"), name, wxT("wxFormBuilder") ) );
 
-		if ( connection.get() )
+		/*if ( connection.get() )
 		{
-			// Ask the other app to execute the expression or raise itself
+			// Ask the other app to raise itself
 			connection->Execute( expression );
 			connection->Disconnect();
-		}
+		}*/
     }
     return false;
 }
 
+wxConnectionBase* AppServer::OnAcceptConnection( const wxString& topic )
+{
+	if ( topic == wxT("wxFormBuilder") )
+	{
+		wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
+		if ( !frame )
+		{
+			return NULL;
+		}
+
+		//wxString expression( data );
+		if ( frame->IsIconized() )
+		{
+			frame->Iconize( false );
+		}
+
+		frame->Raise();
+		frame->Enable();
+
+
+		return NULL;
+		//return new AppConnection();
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
 bool AppConnection::OnExecute( const wxString &topic, wxChar *data, int size, wxIPCFormat format )
 {
-	wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
-
+/*	wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
 	if ( !frame )
 	{
 		return false;
 	}
+	frame->Enable();
 
 	//wxString expression( data );
 	if ( frame->IsIconized() )
 	{
 		frame->Iconize( false );
 	}
+
 	frame->Raise();
 
+	return false;
+	*/
 	return true;
-
 }
 
 
