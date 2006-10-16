@@ -295,18 +295,7 @@ public:
 	const wxString m_name;
 
 	AppServer( const wxString& name ) : m_name( name ){}
-
-	wxConnectionBase* OnAcceptConnection( const wxString& topic )
-	{
-		if ( topic == wxT("wxFormBuilder") )
-		{
-			return new AppConnection();
-		}
-		else
-		{
-			return NULL;
-		}
-	}
+	wxConnectionBase* OnAcceptConnection( const wxString& topic );
 };
 
 // Client class, to be used by subsequent instances in OnInit

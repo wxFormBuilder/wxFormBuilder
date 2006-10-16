@@ -342,6 +342,8 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 	// realmente este es el sitio donde hacerlo ?????
 	//m_objTree->AddCustomKeysHandler(new CustomKeysEvtHandler(data));
 	AppData()->AddHandler( this->GetEventHandler() );
+
+	wxTheApp->SetTopWindow( this );
 };
 
 
