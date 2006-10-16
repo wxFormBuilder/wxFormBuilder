@@ -1866,6 +1866,11 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		name.Replace( bad.c_str(), wxT("_") );
 	}
 
+	#ifdef __WXGTK__
+	name.Replace( wxT("/"), wxT("_") );
+	name.insert( 0, wxT("4242") );
+	#endif
+
 	// Check to see if I already have a server with this name - if so, no need to make another!
 	if ( m_server.get() )
 	{
