@@ -3,13 +3,17 @@ project.configs = { "Debug", "Debug (Unicode)", "Release", "Release (Unicode)" }
 
 project.libdir = "lib"
 dofile( "../../../premake/wrap_wxconfig.lua" )
+
+-- Path to wx-config.
 wxconfigPath = ".." .. wxCFG_PATH_SEP .. ".." .. wxCFG_PATH_SEP .. ".." .. wxCFG_PATH_SEP .. "premake" .. wxCFG_PATH_SEP
-wxCfgInit( wxconfigPath )
+-- Create a wxCfg object.
+cfg = wxCfg:new()
+cfg:Init( wxconfigPath )
 
 --Test out functionality
-print( "wxWidgets version = " .. wxCfgGetWxVersion() )
-print( "wxWidgets Libs = " .. wxCfgGetLibs() )
-print( "wxWidgets cflags = " .. wxCfgGetCFlags() )
+print( "wxWidgets version = " .. cfg:GetWxVersion() )
+print( "wxWidgets Libs = " .. cfg:GetLibs() )
+print( "wxWidgets cflags = " .. cfg:GetCFlags() )
 
 -- Add sdk projects here.
 dopackage( "propgrid" )
