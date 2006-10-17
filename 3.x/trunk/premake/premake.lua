@@ -5,6 +5,9 @@ end
 
 project.path = "../"
 
--- Add sdk projects here.
+-- Add packages here.
 dopackage( "../sdk/plugin_interface" )
 dopackage( "../sdk/tinyxml" )
+dopackage( "../src/controls/build/propgrid" )
+dopackage( "../src/controls/build/wxFlatNotebook" )
+dopackage( "../src/controls/build/wxScintilla" )
