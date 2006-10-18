@@ -265,6 +265,7 @@ public:
 
   const int m_fbpVerMajor;
   const int m_fbpVerMinor;
+  const int m_port;
 
   const wxString &GetProjectPath() { return m_projectPath; };
   void SetProjectPath(const wxString &path) { m_projectPath = path; };
@@ -274,6 +275,7 @@ public:
 
   // Only allow one instance of a project
   bool VerifySingleInstance( const wxString& file, bool switchTo = true );
+  bool CreateServer( const wxString& name );
 };
 
 /* Only allow one instance of a project */
@@ -282,7 +284,7 @@ public:
 class AppConnection: public wxConnection
 {
 public:
-	AppConnection(){}
+	AppConnection(){wxLogMessage(wxT("yo"));}
 	~AppConnection(){}
 
 	bool OnExecute( const wxString& topic, wxChar* data, int size, wxIPCFormat format );
@@ -303,10 +305,7 @@ class AppClient: public wxClient
 {
 public:
 	AppClient(){}
-	wxConnectionBase* OnMakeConnection()
-	{
-		return new AppConnection;
-	}
+	wxConnectionBase* OnMakeConnection();
 };
 
 #endif //__APP_DATA__
