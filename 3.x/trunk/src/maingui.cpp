@@ -120,9 +120,23 @@ bool MyApp::OnInit()
 	// No va bien (en mainframe aparece untitled)
 	if ( !projectToLoad.empty() )
 	{
-		if ( AppData()->LoadProject( projectToLoad ) )
+		wxFileName path( projectToLoad );
+		if ( !path.IsOk() )
 		{
-			frame->InsertRecentProject( projectToLoad );
+			wxLogError( wxT("This path is invalid: %s"), projectToLoad.c_str() );
+		}
+
+		if ( !path.IsAbsolute() )
+		{
+			if ( !path.MakeAbsolute() )
+			{
+				wxLogError( wxT("Could not make path absolute: %s"), projectToLoad.c_str() );
+			}
+		}
+
+		if ( AppData()->LoadProject( path.GetFullPath() ) )
+		{
+			frame->InsertRecentProject( path.GetFullPath() );
 			return true;
 		}
 		else
