@@ -1880,7 +1880,13 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		}
 	}
 
-    std::auto_ptr< wxSingleInstanceChecker > checker( new wxSingleInstanceChecker( name ) );
+    std::auto_ptr< wxSingleInstanceChecker > checker;
+    {
+        // Suspend logging, because error messages here are not useful
+        wxLogNull stopLogging;
+        checker.reset( new wxSingleInstanceChecker( name ) );
+    }
+
     if ( !checker->IsAnotherRunning() )
 	{
 		// This is the first instance of this project, so setup a server and save the single instance checker

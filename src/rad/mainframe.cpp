@@ -134,13 +134,13 @@ BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 END_EVENT_TABLE()
 
 MainFrame::MainFrame(wxWindow *parent, int id)
-: wxFrame(parent,id,wxT("wxFormBuilder v.0.1"),wxDefaultPosition,wxSize(1000,800))
+: wxFrame(parent,id,wxT("wxFormBuilder v.0.1"),wxDefaultPosition,wxSize(1000,800),wxDEFAULT_FRAME_STYLE)
 {
 
 	wxIconBundle bundle;
 
 	wxIcon ico16;
-	ico16.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app16")));
+	ico16.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app16"),16));
 	bundle.AddIcon( ico16 );
 
 	wxIcon ico32;
