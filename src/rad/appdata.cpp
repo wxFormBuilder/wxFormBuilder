@@ -1903,8 +1903,14 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 
 		// Cannot have a client and a server at the same time, due to the implementation of wxTCPServer and wxTCPClient,
 		// so temporarily drop the server if there is one
-		bool hadServer = ( m_server.get() != NULL );
-		m_server.reset();
+		bool hadServer = false;
+		wxString oldName;
+		if ( m_server.get() != NULL )
+		{
+			oldName = m_server->m_name;
+			m_server.reset();
+			hadServer = true;
+		}
 
 		// Create the client
 		std::auto_ptr< AppClient > client( new AppClient );
@@ -1928,7 +1934,7 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		// Create the server again, if necessary
 		if ( hadServer )
 		{
-			CreateServer( name );
+			CreateServer( oldName );
 		}
     }
     return false;

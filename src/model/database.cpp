@@ -569,8 +569,16 @@ void ObjectDatabase::SetupPackage( std::string file, wxString libPath, shared_pt
 			// Allows plugin dependency dlls to be next to plugin dll in windows
 			wxString workingDir = ::wxGetCwd();
 			wxFileName::SetCwd( libPath );
-
-			ImportComponentLibrary( libPath + wxFILE_SEP_PATH + _WXSTR(lib), manager );
+			try
+			{
+				ImportComponentLibrary( libPath + wxFILE_SEP_PATH + _WXSTR(lib), manager );
+			}
+			catch ( ... )
+			{
+				// Put Cwd back
+				wxFileName::SetCwd( workingDir );
+				throw;
+			}
 
 			// Put Cwd back
 			wxFileName::SetCwd( workingDir );
