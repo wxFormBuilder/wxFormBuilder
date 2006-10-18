@@ -68,7 +68,7 @@
 			<Add library="`wx-config --debug=$(DEBUG) --basename`_propgrid-`wx-config --release`" />
 			<Add library="`wx-config --debug=$(DEBUG) --basename`_scintilla-`wx-config --release`" />
 			<Add directory="$(sdk)/lib" />
-			<Add directory="controls/lib" />
+			<Add directory="controls/lib/gcc_dll" />
 		</Linker>
 		<Unit filename="codegen/codegen.cpp">
 			<Option compilerVar="CPP" />
