@@ -359,7 +359,8 @@ m_rootDir( rootdir ),
 m_objDb( new ObjectDatabase() ),
 m_manager( new wxFBManager ),
 m_fbpVerMajor( 1 ),
-m_fbpVerMinor( 4 )
+m_fbpVerMinor( 4 ),
+m_port( 4242 )
 {
 	m_objDb->SetXmlPath(_STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ) ;
 	m_objDb->SetIconPath( _STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH ) );
@@ -1868,7 +1869,6 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 
 	#ifndef __WXMSW__
 	name.Replace( wxT("/"), wxT("_") );
-	int port = 4242;
 	#endif
 
 	// Check to see if I already have a server with this name - if so, no need to make another!
@@ -1884,50 +1884,52 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
     if ( !checker->IsAnotherRunning() )
 	{
 		// This is the first instance of this project, so setup a server and save the single instance checker
-		#ifndef __WXMSW__
+		if ( CreateServer( name ) )
 		{
-			wxString nameWithPort = wxString::Format( "%i%s", port, name.c_str() );
-			wxLogNull stopLogging
-			std::auto_ptr< AppServer > server( new AppServer( name ) );
-			for ( int i = port; i < port + 20; ++i )
-			{
-			  if( server->Create( nameWithPort ) )
-			  {
-			  	break;
-			  }
-			}
+			m_checker = checker;
+			return true;
 		}
-		#else
-			wxString nameWithPort = name;
-		#endif
-
-		std::auto_ptr< AppServer > server( new AppServer( name ) );
-		if ( !server->Create( nameWithPort ) )
+		else
 		{
-			wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
 			return false;
 		}
-		m_checker = checker;
-		m_server = server;
-		return true;
 	}
 	else if ( switchTo )
     {
 		// Suspend logging, because error messages here are not useful
-		//wxLogNull logNo;
+		//wxLogNull stopLogging;
 
 		// There is another app, so connect and send the expression
+
+		// Cannot have a client and a server at the same time, due to the implementation of wxTCPServer and wxTCPClient,
+		// so temporarily drop the server if there is one
+		bool hadServer = ( m_server.get() != NULL );
+		m_server.reset();
+
+		// Create the client
 		std::auto_ptr< AppClient > client( new AppClient );
 
 		// Create the connection
-		std::auto_ptr< wxConnectionBase > connection( client->MakeConnection( wxT("localhost"), name, wxT("wxFormBuilder") ) );
+		std::auto_ptr< wxConnectionBase > connection;
+		#ifdef __WXMSW__
+			connection.reset( client->MakeConnection( wxT("localhost"), name, wxT("wxFormBuilder") ) );
+		#else
+			for ( int i = m_port; i < m_port + 20; ++i )
+			{
+				wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
+				connection.reset( client->MakeConnection( wxT("localhost"), nameWithPort, wxT("wxFormBuilder") ) );
+			}
+		#endif
 
-		/*if ( connection.get() )
+		// Drop the connection and client
+		connection.reset();
+		client.reset();
+
+		// Create the server again, if necessary
+		if ( hadServer )
 		{
-			// Ask the other app to raise itself
-			connection->Execute( expression );
-			connection->Disconnect();
-		}*/
+			CreateServer( name );
+		}
     }
     return false;
 }
@@ -1941,46 +1943,57 @@ wxConnectionBase* AppServer::OnAcceptConnection( const wxString& topic )
 		{
 			return NULL;
 		}
+		frame->Enable();
 
-		//wxString expression( data );
 		if ( frame->IsIconized() )
 		{
 			frame->Iconize( false );
 		}
 
 		frame->Raise();
-		frame->Enable();
-
-
-		return NULL;
-		//return new AppConnection();
 	}
-	else
-	{
-		return NULL;
-	}
+
+	return NULL;
+}
+
+wxConnectionBase* AppClient::OnMakeConnection()
+{
+	return NULL;
 }
 
 bool AppConnection::OnExecute( const wxString &topic, wxChar *data, int size, wxIPCFormat format )
 {
-/*	wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
-	if ( !frame )
-	{
-		return false;
-	}
-	frame->Enable();
-
-	//wxString expression( data );
-	if ( frame->IsIconized() )
-	{
-		frame->Iconize( false );
-	}
-
-	frame->Raise();
-
-	return false;
-	*/
 	return true;
 }
 
+bool ApplicationData::CreateServer( const wxString& name )
+{
+	// Suspend logging, because error messages here are not useful
+	//wxLogNull stopLogging;
+
+	std::auto_ptr< AppServer > server( new AppServer( name ) );
+
+	#ifdef __WXMSW__
+		if ( server->Create( name ) )
+		{
+			m_server = server;
+			return true;
+		}
+	#else
+	{
+		for ( int i = m_port; i < m_port + 20; ++i )
+		{
+			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
+			if( server->Create( nameWithPort ) )
+			{
+				m_server = server;
+				return true;
+			}
+		}
+	}
+	#endif
+
+	wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
+	return false;
+}
 
