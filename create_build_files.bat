@@ -1,0 +1,13 @@
+@echo off
+
+echo Genrerating the Code::Blocks projects and workspaces...
+premake\premake-win32.exe --target cb-gcc
+echo done...
+echo.
+
+echo Generating the GNU makefiles...
+premake\premake-win32.exe --target gnu
+echo done...
+echo.
+
+echo Done generating all makefiles for wxFormBuilder.
