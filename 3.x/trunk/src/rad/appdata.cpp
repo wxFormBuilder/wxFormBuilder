@@ -1867,6 +1867,12 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 		name.Replace( bad.c_str(), wxT("_") );
 	}
 
+	// Paths are not case sensitive in windows
+	#ifdef __WXMSW__
+	name = name.MakeLower();
+	#endif
+
+	// GetForbiddenChars is missing "/" in unix
 	#ifndef __WXMSW__
 	name.Replace( wxT("/"), wxT("_") );
 	#endif
@@ -1903,7 +1909,7 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 	else if ( switchTo )
     {
 		// Suspend logging, because error messages here are not useful
-		//wxLogNull stopLogging;
+		wxLogNull stopLogging;
 
 		// There is another app, so connect and send the expression
 
