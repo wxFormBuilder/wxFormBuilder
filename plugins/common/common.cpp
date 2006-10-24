@@ -273,7 +273,6 @@ public:
 
 void ComponentEvtHandler::OnText( wxCommandEvent& event )
 {
-	#ifdef __WXMSW__
 	wxTextCtrl* tc = wxDynamicCast( m_window, wxTextCtrl );
 	if ( tc != NULL )
 	{
@@ -281,7 +280,6 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event )
 		tc->SetInsertionPointEnd();
 		tc->SetFocus();
 	}
-	#endif
 }
 
 class StaticTextComponent : public ComponentBase

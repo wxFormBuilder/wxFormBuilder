@@ -92,6 +92,9 @@ class VisualEditor : public wxScrolledWindow
   // Prevent OnSelected in components
   bool m_stopSelectedEvent;
 
+  // Prevent OnModified in components
+  bool m_stopModifiedEvent;
+
   DECLARE_EVENT_TABLE()
 
  protected:
@@ -106,7 +109,8 @@ class VisualEditor : public wxScrolledWindow
   ~VisualEditor();
   void OnResizeBackPanel (wxCommandEvent &event);
   void OnPaintPanel (wxPaintEvent &event);
-  void PreventOnSelected( bool prevent = true ){ m_stopSelectedEvent = prevent; }
+  void PreventOnSelected( bool prevent = true );
+  void PreventOnModified( bool prevent = true );
 
   void Setup();
   void UpdateVirtualSize();

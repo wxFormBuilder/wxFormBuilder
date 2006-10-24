@@ -19,6 +19,29 @@
 #define CHECK_OBJECT_BASE( RETURN ) \
 	CHECK_NULL( obj, _("ObjectBase"), RETURN )
 
+// Classes to unset flags in VisualEditor during the destructor - this prevents
+// forgetting to unset the flag
+class FlagFlipper
+{
+private:
+	VisualEditor* m_visualEditor;
+	void (VisualEditor::*m_flagFunction)( bool );
+
+public:
+	FlagFlipper( VisualEditor* visualEdit, void (VisualEditor::*flagFunction)( bool ) )
+	:
+	m_visualEditor( visualEdit ),
+	m_flagFunction( flagFunction )
+	{
+		( m_visualEditor->*m_flagFunction )( true );
+	}
+
+	~FlagFlipper()
+	{
+		( m_visualEditor->*m_flagFunction )( false );
+	}
+};
+
 wxFBManager::wxFBManager()
 :
 m_visualEdit( NULL )
@@ -98,6 +121,9 @@ void wxFBManager::ModifyProperty( wxObject* wxobject, wxString property, wxStrin
 {
 	CHECK_VISUAL_EDITOR()
 
+	// Prevent modified event in visual editor - no need to redraw when the change is happening in the editor!
+	FlagFlipper stopModifiedEvent( m_visualEdit, &VisualEditor::PreventOnModified );
+
 	CHECK_WX_OBJECT()
 
 	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
@@ -127,7 +153,7 @@ void wxFBManager::SelectObject( wxObject* wxobject )
 	CHECK_VISUAL_EDITOR()
 
 	// Prevent loop of selection events
-	m_visualEdit->PreventOnSelected( true );
+	FlagFlipper stopSelectedEvent( m_visualEdit, &VisualEditor::PreventOnSelected );
 
 	CHECK_WX_OBJECT()
 
@@ -136,6 +162,4 @@ void wxFBManager::SelectObject( wxObject* wxobject )
 	CHECK_OBJECT_BASE()
 
 	AppData()->SelectObject( obj );
-
-	m_visualEdit->PreventOnSelected( false );
 }
