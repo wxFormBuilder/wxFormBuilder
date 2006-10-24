@@ -65,7 +65,8 @@ END_EVENT_TABLE()
 VisualEditor::VisualEditor(wxWindow *parent)
 :
 wxScrolledWindow(parent,-1,wxDefaultPosition,wxDefaultSize,wxSUNKEN_BORDER),
-m_stopSelectedEvent( false )
+m_stopSelectedEvent( false ),
+m_stopModifiedEvent( false )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 
@@ -529,6 +530,15 @@ void VisualEditor::SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window )
 }
 
 /////////////////////////////////////////////////////////////////////////////
+void VisualEditor::PreventOnSelected( bool prevent )
+{
+	m_stopSelectedEvent = prevent;
+}
+
+void VisualEditor::PreventOnModified( bool prevent )
+{
+	m_stopModifiedEvent = prevent;
+}
 
 void VisualEditor::OnProjectLoaded ( wxFBEvent &event )
 {
@@ -696,11 +706,14 @@ void VisualEditor::OnObjectRemoved( wxFBObjectEvent &event )
 
 void VisualEditor::OnPropertyModified( wxFBPropertyEvent &event )
 {
-    PObjectBase aux = m_back->GetSelectedObject();
-	Create();
-	wxFBObjectEvent objEvent( wxEVT_FB_OBJECT_SELECTED, aux );
-	this->ProcessEvent( objEvent );
-	UpdateVirtualSize();
+	if ( !m_stopModifiedEvent )
+	{
+		PObjectBase aux = m_back->GetSelectedObject();
+		Create();
+		wxFBObjectEvent objEvent( wxEVT_FB_OBJECT_SELECTED, aux );
+		this->ProcessEvent( objEvent );
+		UpdateVirtualSize();
+	}
 }
 
 void VisualEditor::OnProjectRefresh( wxFBEvent &event )
