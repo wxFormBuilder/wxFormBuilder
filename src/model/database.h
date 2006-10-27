@@ -124,8 +124,8 @@ class ObjectDatabase
   typedef vector<wxDynamicLibrary *> CLibraryVector;
   typedef set<wxString> MacroSet;
 
-  std::string m_xmlPath;
-  std::string m_iconPath;
+  wxString m_xmlPath;
+  wxString m_iconPath;
   wxString m_pluginPath;
   map< wxString, shared_ptr< ObjectInfo > > m_objs;
   PackageVector m_pkgs;
@@ -149,13 +149,13 @@ class ObjectDatabase
    * Carga las plantillas de generación de código de un fichero
    * xml de código dado
    */
-  void LoadCodeGen( std::string file);
+  void LoadCodeGen( const wxString& file );
 
   /**
    * Carga los objetos de un paquete con todas sus propiedades salvo
    * los objetos heredados
    */
-  PObjectPackage LoadPackage( std::string file, wxString iconPath = wxEmptyString );
+  PObjectPackage LoadPackage( const wxString& file, const wxString& iconPath = wxEmptyString );
 
   void ParseProperties( ticpp::Element* elem_obj, shared_ptr<ObjectInfo> obj_info, shared_ptr< PropertyCategory > category );
 
@@ -169,7 +169,7 @@ class ObjectDatabase
    * Incluye la información heredada de los objetos de un paquete.
    * En la segunda pasada configura cada paquete con sus objetos base.
    */
-  void SetupPackage( std::string file, wxString libPath, shared_ptr< wxFBManager > manager );
+  void SetupPackage( const wxString& file, const wxString& libPath, shared_ptr< wxFBManager > manager );
 
   /**
    * Determina si el tipo de objeto hay que incluirlo en la paleta de
@@ -203,20 +203,21 @@ class ObjectDatabase
   /**
    * Configura la ruta donde se encuentran los ficheros con la descripción.
    */
-  void SetXmlPath( std::string path) { m_xmlPath = path; }
+  void SetXmlPath( const wxString& path ) { m_xmlPath = path; }
 
   /**
    * Configura la ruta donde se encuentran los iconos asociados a los objetos.
    */
-  void SetIconPath( std::string path) { m_iconPath = path; }
-  void SetPluginPath( wxString path) { m_pluginPath = path; }
+  void SetIconPath( const wxString& path)  { m_iconPath = path; }
+  void SetPluginPath( const wxString& path ) { m_pluginPath = path; }
 
   /**
    * Obtiene la ruta donde se encuentran los ficheros con la descripción de
    * objetos.
    */
-  std::string GetXmlPath()          { return m_xmlPath; }
-  wxString GetPluginPath()          { return m_pluginPath; }
+  wxString GetXmlPath()		{ return m_xmlPath; 		}
+  wxString GetIconPath()	{ return m_iconPath; 		}
+  wxString GetPluginPath()	{ return m_pluginPath; 		}
 
   /**
    * Carga las definiciones de tipos de objetos.
