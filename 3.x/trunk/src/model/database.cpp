@@ -446,8 +446,8 @@ bool IncludeInPalette(wxString type)
 void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
 {
 	// Load some default templates
-	LoadPackage( m_xmlPath + "default.xml", _WXSTR(m_iconPath) );
-	LoadCodeGen( m_xmlPath + "default.cppcode" );
+	LoadPackage( m_xmlPath + wxT("default.xml"), m_iconPath );
+	LoadCodeGen( m_xmlPath + wxT("default.cppcode") );
 
 	// Map to temporarily hold plugins.
 	// Used to both set page order and to prevent two plugins with the same name.
@@ -493,7 +493,7 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
 							{
 								nextXmlFile.MakeAbsolute();
 							}
-							PObjectPackage package = LoadPackage( _STDSTR(nextXmlFile.GetFullPath()), nextPluginIconPath );
+							PObjectPackage package = LoadPackage( nextXmlFile.GetFullPath(), nextPluginIconPath );
 							if ( package )
 							{
 								// Setup the inheritance for base classes
@@ -502,11 +502,11 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
 								{
 									fullNextPluginPath.MakeAbsolute();
 								}
-								SetupPackage( _STDSTR(nextXmlFile.GetFullPath()), fullNextPluginPath.GetFullPath(), manager );
+								SetupPackage( nextXmlFile.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
 
 								// Load the C++ code tempates
 								nextXmlFile.SetExt( wxT("cppcode") );
-								LoadCodeGen( _STDSTR(nextXmlFile.GetFullPath()) );
+								LoadCodeGen( nextXmlFile.GetFullPath() );
 								if ( !packages.insert( PackageMap::value_type( package->GetPackageName(), package ) ).second )
 								{
 									wxLogError( _("There are two plugins named \"%s\""), package->GetPackageName().c_str() );
@@ -552,14 +552,14 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
     }
 }
 
-void ObjectDatabase::SetupPackage( std::string file, wxString libPath, shared_ptr< wxFBManager > manager )
+void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath, shared_ptr< wxFBManager > manager )
 {
 	try
 	{
-		ticpp::Document doc( file );
+		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 
-		ticpp::Element* root = doc.FirstChildElement(PACKAGE_TAG);
+		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
 
 		// get the library to import
 		std::string lib;
@@ -653,11 +653,11 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			);
 }
 
-void ObjectDatabase::LoadCodeGen( std::string file)
+void ObjectDatabase::LoadCodeGen( const wxString& file )
 {
 	try
 	{
-		ticpp::Document doc( file );
+		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 
 		// read the codegen element
@@ -702,13 +702,13 @@ void ObjectDatabase::LoadCodeGen( std::string file)
 	}
 }
 
-PObjectPackage ObjectDatabase::LoadPackage( std::string file, wxString iconPath )
+PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString& iconPath )
 {
 	PObjectPackage package;
 
 	try
 	{
-		ticpp::Document doc( file );
+		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 
 		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
@@ -1023,7 +1023,8 @@ void ObjectDatabase::InitPropertyTypes()
 
 bool ObjectDatabase::LoadObjectTypes()
 {
-	TiXmlDocument doc( m_xmlPath + '/' + "objtypes.xml" );
+	wxString xmlPath = m_xmlPath + wxT("objtypes.xml");
+	TiXmlDocument doc( xmlPath.mb_str( wxConvFile ) );
 
 	if ( doc.LoadFile() )
 	{

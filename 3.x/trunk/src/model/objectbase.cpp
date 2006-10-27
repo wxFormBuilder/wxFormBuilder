@@ -29,7 +29,7 @@
 #include "utils/typeconv.h"
 #include "utils/stringutils.h"
 #include "rad/appdata.h"
-#include <sstream>
+#include <ticpp.h>
 
 int ObjectBase::s_instances = 0;
 
@@ -462,51 +462,53 @@ int ObjectBase::Deep()
 //  return s;
 //}
 
-TiXmlElement* ObjectBase::SerializeObject()
+void ObjectBase::SerializeObject( ticpp::Element* serializedElement )
 {
-	TiXmlElement *element = new TiXmlElement("object");
-	element->SetAttribute("class", _STDSTR( GetClassName() ));
+	ticpp::Element element( "object" );
+	element.SetAttribute( "class", _STDSTR( GetClassName() ) );
 
-	for (unsigned int i=0; i< GetPropertyCount(); i++)
+	for ( unsigned int i = 0; i < GetPropertyCount(); i++ )
 	{
-		shared_ptr<Property> prop = GetProperty(i);
-		TiXmlElement *prop_element = new TiXmlElement("property");
-		prop_element->SetAttribute("name", _STDSTR(prop->GetName() ));
-
-		TiXmlText* prop_value = new TiXmlText( _STDSTR(prop->GetValue()));
-		prop_element->LinkEndChild(prop_value);
-		element->LinkEndChild(prop_element);
+		shared_ptr< Property > prop = GetProperty( i );
+		ticpp::Element prop_element( "property" );
+		prop_element.SetAttribute( "name", _STDSTR( prop->GetName() ) );
+		prop_element.SetText( _STDSTR( prop->GetValue() ) );
+		element.LinkEndChild( &prop_element );
 	}
 
-	for (unsigned int i=0 ; i < GetChildCount() ; i++)
+	for ( unsigned int i = 0 ; i < GetChildCount(); i++ )
 	{
-		shared_ptr<ObjectBase> child = GetChild(i);
-		TiXmlElement * child_element = child->SerializeObject();
-		element->LinkEndChild(child_element);
+		shared_ptr< ObjectBase > child = GetChild( i );
+		ticpp::Element child_element;
+		child->SerializeObject( &child_element );
+		element.LinkEndChild( &child_element );
 	}
 
-	return element;
+	*serializedElement = element;
 }
 
-TiXmlDocument* ObjectBase::Serialize()
+void ObjectBase::Serialize( ticpp::Document* serializedDocument )
 {
-	TiXmlDocument *document = new TiXmlDocument("document");
+	ticpp::Document document( "document" );
 
-	TiXmlDeclaration* dec = new TiXmlDeclaration("1.0", "UTF-8", "yes");
-	document->LinkEndChild( dec );
+	ticpp::Declaration dec( "1.0", "UTF-8", "yes" );
+	document.LinkEndChild( &dec );
 
-	TiXmlElement* root = new TiXmlElement( "wxFormBuilder_Project" );
+	ticpp::Element root( "wxFormBuilder_Project" );
 
-	TiXmlElement* fileVersion = new TiXmlElement( "FileVersion" );
-	fileVersion->SetAttribute( "major", AppData()->m_fbpVerMajor );
-	fileVersion->SetAttribute( "minor", AppData()->m_fbpVerMinor );
+	ticpp::Element fileVersion( "FileVersion" );
+	fileVersion.SetAttribute( "major", AppData()->m_fbpVerMajor );
+	fileVersion.SetAttribute( "minor", AppData()->m_fbpVerMinor );
 
-	root->LinkEndChild( fileVersion );
+	root.LinkEndChild( &fileVersion );
 
-	TiXmlElement *element = SerializeObject();
-	root->LinkEndChild(element);
-	document->LinkEndChild(root);
-	return document;
+	ticpp::Element element;
+	SerializeObject( &element );
+
+	root.LinkEndChild( &element );
+	document.LinkEndChild( &root );
+
+	*serializedDocument = document;
 }
 
 unsigned int ObjectBase::GetChildPosition(shared_ptr<ObjectBase> obj)

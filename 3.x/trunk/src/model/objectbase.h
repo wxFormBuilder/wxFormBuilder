@@ -225,6 +225,12 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 
+namespace ticpp
+{
+	class Document;
+	class Element;
+}
+
 class ObjectBase : public IObject, public enable_shared_from_this<ObjectBase>
 {
 private:
@@ -250,7 +256,7 @@ protected:
 	map< wxString,shared_ptr<Property> >&  GetProperties() { return m_properties; };
 
 	// Crea un elemento del objeto
-	virtual TiXmlElement* SerializeObject();
+	void SerializeObject( ticpp::Element* serializedElement );
 
 	// devuelve el puntero "this"
 	shared_ptr<ObjectBase> GetThis()
@@ -400,7 +406,7 @@ public:
 	/**
 	* Obtiene el documento xml del arbol tomando como raíz el nodo actual.
 	*/
-	TiXmlDocument* Serialize();
+	void Serialize( ticpp::Document* serializedDocument );
 
 	/**
 	* Añade un hijo al objeto.

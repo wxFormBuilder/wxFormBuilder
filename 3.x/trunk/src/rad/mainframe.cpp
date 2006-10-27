@@ -40,6 +40,7 @@
 #include "rad/about.h"
 #include "rad/wxfbevent.h"
 #include "wxfbmanager.h"
+#include "utils/wxfbexception.h"
 
 #include <wx/filename.h>
 
@@ -428,8 +429,15 @@ void MainFrame::OnSaveProject(wxCommandEvent &event)
 		OnSaveAsProject(event);
 	else
 	{
-		AppData()->SaveProject(filename);
-		InsertRecentProject(filename);
+		try
+		{
+			AppData()->SaveProject(filename);
+			InsertRecentProject(filename);
+		}
+		catch ( wxFBException& ex )
+		{
+			wxLogError( ex.what() );
+		}
 	}
 }
 
@@ -443,8 +451,15 @@ void MainFrame::OnSaveAsProject(wxCommandEvent &event)
 	{
 		m_currentDir = dialog->GetDirectory();
 		wxString filename = dialog->GetPath();
-		AppData()->SaveProject(filename); // FIXME: debe devolver bool.
-		InsertRecentProject(filename);
+		try
+		{
+			AppData()->SaveProject(filename);
+			InsertRecentProject(filename);
+		}
+		catch ( wxFBException& ex )
+		{
+			wxLogError( ex.what() );
+		}
 	};
 
 	dialog->Destroy();
@@ -493,7 +508,7 @@ void MainFrame::OnImportXrc(wxCommandEvent &event)
 	if (dialog->ShowModal() == wxID_OK)
 	{
 		m_currentDir = dialog->GetDirectory();
-		TiXmlDocument doc(_STDSTR(dialog->GetPath()));
+		TiXmlDocument doc( dialog->GetPath().mb_str( wxConvFile ) );
 		if (doc.LoadFile())
 		{
 			XrcLoader xrc;
@@ -504,10 +519,10 @@ void MainFrame::OnImportXrc(wxCommandEvent &event)
 				AppData()->MergeProject(project);
 			}
 			else
-				wxLogMessage(wxT("Error al importar XRC"));
+				wxLogError(wxT("Error while importing XRC"));
 		}
 		else
-			wxLogMessage(wxT("Error al cargar archivo XRC"));
+			wxLogError(wxT("Error while loading XRC"));
 	}
 
 	dialog->Destroy();

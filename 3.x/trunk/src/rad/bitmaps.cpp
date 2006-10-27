@@ -61,7 +61,7 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 	m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
 
 	bool result = false;
-	TiXmlDocument doc( _STDSTR( filepath ) );
+	TiXmlDocument doc( filepath.mb_str( wxConvFile ) );
 	result = doc.LoadFile();
 
 	if (result)

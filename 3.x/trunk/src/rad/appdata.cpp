@@ -33,6 +33,7 @@
 #include "rad/wxfbevent.h"
 #include "codegen/xrccg.h"
 #include "wxfbmanager.h"
+#include "utils/wxfbexception.h"
 
 #include <ticpp.h>
 #include <set>
@@ -362,14 +363,14 @@ m_fbpVerMajor( 1 ),
 m_fbpVerMinor( 4 ),
 m_port( 4242 )
 {
-	m_objDb->SetXmlPath(_STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ) ;
-	m_objDb->SetIconPath( _STDSTR( m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH ) );
+	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ;
+	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH );
 	m_objDb->SetPluginPath( m_rootDir + wxFILE_SEP_PATH + wxT("plugins") + wxFILE_SEP_PATH ) ;
 }
 
 void ApplicationData::LoadApp()
 {
-	AppBitmaps::LoadBitmaps( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH + wxT("icons.xml"), m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH );
+	AppBitmaps::LoadBitmaps( m_objDb->GetXmlPath() + wxT("icons.xml"), m_objDb->GetIconPath() );
 	m_objDb->LoadObjectTypes();
 	m_objDb->LoadPlugins( m_manager );
 }
@@ -822,7 +823,7 @@ void ApplicationData::ModifyProperty(shared_ptr<Property> prop, wxString str)
 	}
 }
 
-void ApplicationData::SaveProject(const wxString &filename)
+void ApplicationData::SaveProject( const wxString& filename )
 {
 	// Make sure this file is not already open
 	if ( !VerifySingleInstance( filename, false ) )
@@ -835,14 +836,26 @@ void ApplicationData::SaveProject(const wxString &filename)
 		return;
 	}
 
-	TiXmlDocument *doc = m_project->Serialize();
-	m_modFlag = false;
-	doc->SaveFile(filename.mb_str( wxConvUTF8 ));
-	m_projectFile = filename;
-	SetProjectPath(::wxPathOnly(filename));
-	delete doc;
+	try
+	{
+		ticpp::Document doc;
+		m_project->Serialize( &doc );
+		doc.SaveFile( std::string( filename.mb_str( wxConvFile ) ) );
 
-	NotifyProjectSaved();
+		m_projectFile = filename;
+		SetProjectPath( ::wxPathOnly( filename ) );
+		m_modFlag = false;
+		NotifyProjectSaved();
+	}
+	catch ( ticpp::Exception& ex )
+	{
+		wxString message = _WXSTR( ex.m_details );
+		if ( message.empty() )
+		{
+			message = wxString( ex.m_details.c_str(), wxConvFile );
+		}
+		THROW_WXFBEX( message )
+	}
 }
 
 bool ApplicationData::LoadProject(const wxString &file)
@@ -863,7 +876,7 @@ bool ApplicationData::LoadProject(const wxString &file)
 	bool result = false;
 
 	TiXmlDocument doc = TiXmlDocument();
-	if ( doc.LoadFile( file.mb_str( wxConvUTF8 ) ) )
+	if ( doc.LoadFile( file.mb_str( wxConvFile ) ) )
 	{
 		TiXmlNode* root = doc.RootElement();
 		if ( NULL == root )
@@ -1026,7 +1039,7 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 			}
 		}
 
-		ticpp::Document doc( _STDSTR( path ) );
+		ticpp::Document doc( std::string( path.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 		ticpp::Element* root = doc.FirstChildElement();
 		if ( root->Value() == string("object") )
