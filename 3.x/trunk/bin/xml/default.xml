@@ -16,7 +16,7 @@
 	<category name="C++ Properties">
 		<property name="use_enum" type="bool" help="For C++ Only. Generate an enumeration for control IDs instead of a list of #defines">0</property>
 		<property name="internationalize" type="bool" help="For C++ Only. Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
-		<property name="use_microsoft_bom" type="bool" help="For C++ Only. Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
+		<property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only. Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
 		<property name="user_headers" type="stringlist" help="For C++ Only. Extra headers to include in the generated header file."/>
 	</category>
   </objectinfo>

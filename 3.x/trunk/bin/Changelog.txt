@@ -1,6 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.05
+* Generation of Microsoft BOM on UTF-8 files is now disabled on
+  platforms other than WXMSW. This resolves FS#46.
 * Fixed crash when editing the value of a wxTextCtrl in the designer,
   under certain conditions. This resolves FS#45.
 * Fixed problems with paths including non-English characters.
