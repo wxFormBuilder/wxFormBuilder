@@ -1,6 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.05
+* wxRadioBox can now use internationalization on its label, too.
+  This resolves FS#50.
 * Generation of Microsoft BOM on UTF-8 files is now disabled on
   platforms other than WXMSW. This resolves FS#46.
 * Fixed crash when editing the value of a wxTextCtrl in the designer,
