@@ -369,9 +369,11 @@ void FileCodeWriter::Clear()
 {
 	m_file.Create(m_filename,true);
 
+	#ifdef __WXMSW__
 	if ( m_useMicrosoftBOM )
 	{
 		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
 		m_file.Write( microsoftBOM, 3 );
 	}
+	#endif
 }
