@@ -1,6 +1,7 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.05
+* Now generating all empty strings as wxEmptyString. This resolves FS#52.
 * wxRadioBox can now use internationalization on its label, too.
   This resolves FS#50.
 * Generation of Microsoft BOM on UTF-8 files is now disabled on

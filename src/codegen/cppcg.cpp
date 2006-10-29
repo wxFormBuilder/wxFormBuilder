@@ -73,18 +73,32 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 	{
 	case PT_WXSTRING:
 		{
-			result << wxT("wxT(\"") << CppCodeGenerator::ConvertCppString( value ) << wxT("\")");
+			if ( value.empty() )
+			{
+				result << wxT("wxEmptyString");
+			}
+			else
+			{
+				result << wxT("wxT(\"") << CppCodeGenerator::ConvertCppString( value ) << wxT("\")");
+			}
 			break;
 		}
 	case PT_WXSTRING_I18N:
 		{
-			if ( m_i18n )
+			if ( value.empty() )
 			{
-				result << wxT("_(\"") << CppCodeGenerator::ConvertCppString(value) << wxT("\")");
+				result << wxT("wxEmptyString");
 			}
 			else
 			{
-				result << wxT("wxT(\"") << CppCodeGenerator::ConvertCppString(value) << wxT("\")");
+				if ( m_i18n )
+				{
+					result << wxT("_(\"") << CppCodeGenerator::ConvertCppString(value) << wxT("\")");
+				}
+				else
+				{
+					result << wxT("wxT(\"") << CppCodeGenerator::ConvertCppString(value) << wxT("\")");
+				}
 			}
 			break;
 		}
