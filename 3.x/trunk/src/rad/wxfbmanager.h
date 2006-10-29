@@ -17,7 +17,7 @@ public:
 	void SetVisualEditor( VisualEditor* visualEdit );
 	size_t GetChildCount( wxObject* wxobject );
 	wxObject* GetChild( wxObject* wxobject, size_t childIndex );
-	wxObject* wxFBManager::GetParent( wxObject* wxobject );
+	wxObject* GetParent( wxObject* wxobject );
 	IObject* GetIObject( wxObject* wxobject );
 	wxObject* GetWxObject( boost::shared_ptr< ObjectBase > obj );
 
