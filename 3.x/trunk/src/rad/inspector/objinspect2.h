@@ -62,6 +62,12 @@ class wxFBPropertyEvent;
 class wxFBObjectEvent;
 class wxFBEvent;
 
+enum {
+  wxFB_OI_DEFAULT_STYLE,
+  wxFB_OI_MULTIPAGE_STYLE,
+  wxFB_OI_SINGLE_PAGE_STYLE
+};
+
 class ObjectInspector : public wxPanel
 {
  private:
@@ -70,6 +76,7 @@ class ObjectInspector : public wxPanel
 
   shared_ptr<ObjectBase> m_currentSel;
   wxPropertyGridManager *m_pg;
+  int m_style;
 
   int StringToBits(const wxString& strVal, wxPGChoices& constants);
   void CreateCategory( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, map< wxString, shared_ptr< Property > >& map );
@@ -84,12 +91,14 @@ class ObjectInspector : public wxPanel
  protected:
 
  public:
-  ObjectInspector(wxWindow *parent, int id);
+  ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
   ~ObjectInspector();
 
   void OnObjectSelected( wxFBObjectEvent& event );
   void OnProjectRefresh( wxFBEvent& event );
   void OnPropertyModified( wxFBPropertyEvent& event );
+
+  void CreatePropertyGridManager();
 
   DECLARE_EVENT_TABLE()
 };

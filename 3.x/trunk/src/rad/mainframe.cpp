@@ -23,7 +23,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "mainframe.h"
-#include "wx/splitter.h"
+
 #include "wx/config.h"
 #include "utils/debug.h"
 #include "utils/typeconv.h"
@@ -41,7 +41,6 @@
 #include "rad/wxfbevent.h"
 #include "wxfbmanager.h"
 #include "utils/wxfbexception.h"
-
 #include <wx/filename.h>
 
 #include <rad/appdata.h>
@@ -134,12 +133,18 @@ BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 
 END_EVENT_TABLE()
 
-MainFrame::MainFrame(wxWindow *parent, int id)
-: wxFrame(parent,id,wxT("wxFormBuilder v.0.1"),wxDefaultPosition,wxSize(1000,800),wxDEFAULT_FRAME_STYLE)
+MainFrame::MainFrame(wxWindow *parent, int id, int style)
+: wxFrame(parent,id,wxT("wxFormBuilder v.0.1"),wxDefaultPosition,wxSize(1000,800),wxDEFAULT_FRAME_STYLE),
+  m_style(style)
 {
+  // initialize the splitters, wxAUI doesn't use them
+  m_leftSplitter = m_rightSplitter = NULL;
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // Setup frame icons, title bar, status bar, menubar and toolbar
+  /////////////////////////////////////////////////////////////////////////////
 	wxIconBundle bundle;
-
 	wxIcon ico16;
 	ico16.CopyFromBitmap( AppBitmaps::GetBitmap(wxT("app16"),16));
 	bundle.AddIcon( ico16 );
@@ -156,192 +161,102 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 
-	wxMenu *menuFile = new wxMenu;
-	menuFile->Append(ID_NEW_PRJ, wxT("&New"), wxT("create an empty project"));
-	menuFile->Append(ID_OPEN_PRJ, wxT("&Open...\tF2"), wxT("Open a project"));
-
-	menuFile->Append(ID_SAVE_PRJ,          wxT("&Save\tCtrl+S"), wxT("Save current project"));
-	menuFile->Append(ID_SAVE_AS_PRJ, wxT("Save &As...\tF3"), wxT("Save current project as..."));
-	menuFile->AppendSeparator();
-	menuFile->Append(ID_IMPORT_XRC, wxT("&Import XRC..."), wxT("Import XRC file"));
-	menuFile->AppendSeparator();
-	menuFile->Append(ID_GENERATE_CODE, wxT("&Generate Code\tF8"), wxT("Generate Code"));
-	menuFile->AppendSeparator();
-	menuFile->Append(ID_QUIT, wxT("E&xit\tAlt-F4"), wxT("Quit wxFormBuilder"));
-	menuFile->AppendSeparator();
-
-	wxMenu *menuEdit = new wxMenu;
-	menuEdit->Append(ID_UNDO, wxT("&Undo \tCtrl+Z"), wxT("Undo changes"));
-	menuEdit->Append(ID_REDO, wxT("&Redo \tCtrl+Y"), wxT("Redo changes"));
-	menuEdit->AppendSeparator();
-	menuEdit->Append(ID_COPY, wxT("&Copy \tCtrl+C"), wxT("Copy selected object"));
-	menuEdit->Append(ID_CUT, wxT("&Cut \tCtrl+X"), wxT("Cut selected object"));
-	menuEdit->Append(ID_PASTE, wxT("&Paste \tCtrl+V"), wxT("Paste on selected object"));
-	menuEdit->Append(ID_DELETE, wxT("&Delete \tCtrl+D"), wxT("Delete selected object"));
-	menuEdit->AppendSeparator();
-	menuEdit->Append(ID_EXPAND, wxT("&Toggle Expand\tAlt+W"), wxT("Toggle wxEXPAND flag of sizeritem properties"));
-	menuEdit->Append(ID_STRETCH, wxT("&Toggle Stretch\tAlt+S"), wxT("Toggle option property of sizeritem properties"));
-	menuEdit->Append(ID_MOVE_UP, wxT("&Move Up\tAlt+Up"), wxT("Move Up selected object"));
-	menuEdit->Append(ID_MOVE_DOWN, wxT("&Move Down\tAlt+Down"), wxT("Move Down selected object"));
-	menuEdit->Append(ID_MOVE_LEFT, wxT("&Move Left\tAlt+Left"), wxT("Move Left selected object"));
-	menuEdit->Append(ID_MOVE_RIGHT, wxT("&Move Right\tAlt+Right"), wxT("Move Right selected object"));
-	menuEdit->AppendSeparator();
-	menuEdit->Append(ID_ALIGN_LEFT,     wxT("&Align Left"),           wxT("Align item to the left"));
-	menuEdit->Append(ID_ALIGN_CENTER_H, wxT("&Align Center Horizontal"), wxT("Align item to the center horizontally"));
-	menuEdit->Append(ID_ALIGN_RIGHT,    wxT("&Align Right"),         wxT("Align item to the right"));
-	menuEdit->Append(ID_ALIGN_TOP,      wxT("&Align Top"),              wxT("Align item to the top"));
-	menuEdit->Append(ID_ALIGN_CENTER_H, wxT("&Align Center Vertical"),   wxT("Align item to the center vertically"));
-	menuEdit->Append(ID_ALIGN_BOTTOM,   wxT("&Align Bottom"),         wxT("Align item to the bottom"));
-
-	wxMenu *menuView = new wxMenu;
-	menuView->Append(ID_PREVIEW_XRC, wxT("XRC window"), wxT("Show a preview of the XRC window"));
-
-	wxMenu *menuHelp = new wxMenu;
-	menuHelp->Append(ID_ABOUT, wxT("&About...\tF1"), wxT("Show about dialog"));
-
-
-	// now append the freshly created menu to the menu bar...
-	wxMenuBar *menuBar = new wxMenuBar();
-	menuBar->Append(menuFile, wxT("&File"));
-	menuBar->Append(menuEdit, wxT("&Edit"));
-	menuBar->Append(menuView, wxT("&View"));
-	menuBar->Append(menuHelp, wxT("&Help"));
-
-	// ... and attach this menu bar to the frame
-	SetMenuBar(menuBar);
-	wxBoxSizer *top_sizer = new wxBoxSizer(wxVERTICAL);
-
-	///////////////
-
-	wxSplitterWindow *v_splitter = new wxSplitterWindow(this,-1,wxDefaultPosition,wxDefaultSize, wxSP_3DSASH | wxSP_LIVE_UPDATE);
-	wxPanel *left = new wxPanel(v_splitter,-1);//,wxDefaultPosition, wxDefaultSize,wxSIMPLE_BORDER);
-	wxBoxSizer *left_sizer = new wxBoxSizer(wxVERTICAL);
-
-	wxPanel *right = new wxPanel(v_splitter,-1);
-	v_splitter->SplitVertically(left,right,300);
-
-	wxSplitterWindow *h_splitter = new wxSplitterWindow(left,-1,wxDefaultPosition,wxDefaultSize, wxSP_3D | wxSP_LIVE_UPDATE);//wxSP_BORDER);
-
-	wxPanel *tree_panel = new wxPanel(h_splitter,-1);
-	Title *tree_title = new Title(tree_panel,wxT("Object Tree"));
-
-	m_objTree = new ObjectTree(tree_panel,-1);
-	m_objTree->Create();
-
-	wxBoxSizer *tree_sizer = new wxBoxSizer(wxVERTICAL);
-	tree_sizer->Add(tree_title,0,wxEXPAND,0);
-	tree_sizer->Add(m_objTree,1,wxEXPAND,0);
-
-	tree_panel->SetSizer(tree_sizer);
-	tree_panel->SetAutoLayout(true);
-	tree_panel->Update();
-
-	wxPanel *obj_inspPanel = new wxPanel(h_splitter,-1);
-	wxBoxSizer *obj_insp_sizer = new wxBoxSizer(wxVERTICAL);
-
-	Title *obj_insp_title = new Title(obj_inspPanel,wxT("Object Properties"));
-
-	m_objInsp = new ObjectInspector(obj_inspPanel,-1);
-
-	obj_insp_sizer->Add(obj_insp_title,0,wxEXPAND,0);
-
-	obj_insp_sizer->Add(m_objInsp,1,wxEXPAND,0);
-
-	h_splitter->SplitHorizontally(tree_panel,obj_inspPanel,400);
-	obj_inspPanel->SetSizer(obj_insp_sizer);
-	obj_inspPanel->SetAutoLayout(true);
-
-	left_sizer->Add(h_splitter,1,wxEXPAND,0);
-
-	left->SetSizer(left_sizer);
-	left->SetAutoLayout(true);
-	//////////////
-	wxBoxSizer *right_sizer = new wxBoxSizer(wxVERTICAL);
-
-	// la paleta de componentes, no es un observador propiamente dicho, ya
-	// que no responde ante los eventos de la aplicación
-	m_palette = new wxFbPalette(right,-1);
-	m_palette->Create();
-	m_palette->SetBackgroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE) );
-
-	m_notebook = new ChooseNotebook( right, ID_EDITOR_FNB );
-
-	// Set notebook icons
-	m_icons.Add( AppBitmaps::GetBitmap( wxT("designer"), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT("c++"), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT("xrc"), 16 ) );
-	m_notebook->SetImageList( &m_icons );
-
-	m_visualEdit = new VisualEditor(m_notebook);
-	AppData()->GetManager()->SetVisualEditor( m_visualEdit );
-
-	m_notebook->AddPage( m_visualEdit, wxT("Designer"), false, 0 );
-
-	m_cpp = new CppPanel(m_notebook,-1);
-	m_notebook->AddPage( m_cpp, wxT("C++"), false, 1 );
-
-	m_xrc = new XrcPanel(m_notebook,-1);
-	m_notebook->AddPage(m_xrc, wxT("XRC"), false, 2 );
-
-	Title *ed_title = new Title(right,wxT("Editor"));
-
-	right_sizer->Add(m_palette,0,wxEXPAND,0);
-	right_sizer->Add(ed_title,0,wxEXPAND,0);
-	//  right_sizer->Add(new wxFlatNotebookSizer( m_notebook ),1,wxEXPAND|wxTOP,5);
-	right_sizer->Add(m_notebook,1,wxEXPAND|wxTOP);//,5);
-	right->SetSizer(right_sizer);
-
-	top_sizer->Add(v_splitter,1,wxEXPAND,0);
-
+	SetMenuBar(CreateFBMenuBar());
 	CreateStatusBar();
-	wxToolBar* toolbar = CreateToolBar();
-	toolbar->SetToolBitmapSize(wxSize(TOOL_SIZE, TOOL_SIZE));
-	toolbar->AddTool(ID_NEW_PRJ,wxT("New Project"),AppBitmaps::GetBitmap(wxT("new"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("New"), wxT("Start a new project.") );
-	toolbar->AddTool(ID_OPEN_PRJ,wxT("Open Project"),AppBitmaps::GetBitmap(wxT("open"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Open"), wxT("Open an existing project.") );
-	toolbar->AddTool(ID_SAVE_PRJ,wxT("Save Project"),AppBitmaps::GetBitmap(wxT("save"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Save"), wxT("Save the current project.") );
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_UNDO, wxT("Undo"), AppBitmaps::GetBitmap(wxT("undo"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Undo"), wxT("Undo the last action.") );
-	toolbar->AddTool(ID_REDO, wxT("Redo"), AppBitmaps::GetBitmap(wxT("redo"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Redo"), wxT("Redo the last action that was undone.") );
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_CUT, wxT("Cut"), AppBitmaps::GetBitmap(wxT("cut"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Cut"), wxT("Remove the selected object and place it on the clipboard.") );
-	toolbar->AddTool(ID_COPY, wxT("Copy"), AppBitmaps::GetBitmap(wxT("copy"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Copy"), wxT("Copy the selected object to the clipboard.") );
-	toolbar->AddTool(ID_PASTE, wxT("Paste"), AppBitmaps::GetBitmap(wxT("paste"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Paste"), wxT("Insert an object from the clipboard.") );
-	toolbar->AddTool(ID_DELETE, wxT("Delete"), AppBitmaps::GetBitmap(wxT("delete"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Delete"), wxT("Remove the selected object.") );
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_GENERATE_CODE,wxT("Generate Code"),AppBitmaps::GetBitmap(wxT("generate"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Generate Code"), wxT("Create code from the current project.") );
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_ALIGN_LEFT,wxT(""),AppBitmaps::GetBitmap(wxT("lalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Left"), wxT("The item will be aligned to the left of the space alotted to it by the sizer."));
-	toolbar->AddTool(ID_ALIGN_CENTER_H,wxT(""),AppBitmaps::GetBitmap(wxT("chalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Center Horizontally"), wxT("The item will be centered horizontally in the space alotted to it by the sizer."));
-	toolbar->AddTool(ID_ALIGN_RIGHT,wxT(""),AppBitmaps::GetBitmap(wxT("ralign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Right"), wxT("The item will be aligned to the right of the space alotted to it by the sizer."));
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_ALIGN_TOP,wxT(""),AppBitmaps::GetBitmap(wxT("talign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Top"), wxT("The item will be aligned to the top of the space alotted to it by the sizer."));
-	toolbar->AddTool(ID_ALIGN_CENTER_V,wxT(""),AppBitmaps::GetBitmap(wxT("cvalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Center Vertically"), wxT("The item will be centered vertically within space alotted to it by the sizer."));
-	toolbar->AddTool(ID_ALIGN_BOTTOM,wxT(""),AppBitmaps::GetBitmap(wxT("balign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Bottom"), wxT("The item will be aligned to the bottom of the space alotted to it by the sizer."));
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_EXPAND,wxT(""),AppBitmaps::GetBitmap(wxT("expand"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Expand"), wxT("The item will be expanded to fill the space assigned to the item.") );
-	toolbar->AddTool(ID_STRETCH,wxT(""),AppBitmaps::GetBitmap(wxT("stretch"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Stretch"), wxT("The item will grow and shrink with the sizer.") );
-	toolbar->AddSeparator();
-	toolbar->AddTool(ID_BORDER_LEFT,wxT(""),AppBitmaps::GetBitmap(wxT("left"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Left Border"), wxT("A border will be added on the left side of the item.") );
-	toolbar->AddTool(ID_BORDER_RIGHT,wxT(""),AppBitmaps::GetBitmap(wxT("right"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Right Border"), wxT("A border will be  added on the right side of the item."));
-	toolbar->AddTool(ID_BORDER_TOP,wxT(""),AppBitmaps::GetBitmap(wxT("top"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Top Border"), wxT("A border will be  added on the top of the item."));
-	toolbar->AddTool(ID_BORDER_BOTTOM,wxT(""),AppBitmaps::GetBitmap(wxT("bottom"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Bottom Border"), wxT("A border will be  added on the bottom of the item."));
+	CreateFBToolBar();
 
-	toolbar->Realize();
+	/////////////////////////////////////////////////////////////////////////////
+  // Create the gui
+  /////////////////////////////////////////////////////////////////////////////
 
-	SetSizer(top_sizer);
-//	top_sizer->SetSizeHints(this);
-	SetAutoLayout(true);
-	Layout();
-	Fit();
+  /*
+  //  --- wxAUI version --
+	wxWindow *objectTree      = CreateObjectTree(this);
+	wxWindow *objectInspector = CreateObjectInspector(this);
+	wxWindow *palette         = CreateComponentPalette(this);
+	wxWindow *designer        = CreateDesignerWindow(this);
 
-	//SetSize(wxSize(1000,800));
+
+  m_mgr.SetFrame(this);
+	m_mgr.AddPane(objectTree,
+	              wxPaneInfo().Name(wxT("tree")).
+	                           Caption(wxT("Object Tree")).
+                             Left().Layer(1).
+                             BestSize(wxSize(300,400)).
+                             CloseButton(false));
+	m_mgr.AddPane(objectInspector,
+	              wxPaneInfo().Name(wxT("inspector")).
+	                           Caption(wxT("Object Properties")).
+                             Right().BestSize(wxSize(300,400)).
+                             CloseButton(false));
+
+	m_mgr.AddPane(designer,
+	              wxPaneInfo().Name(wxT("editor")).
+	                           Caption(wxT("Editor")).
+                             Center().
+                             CloseButton(false));
+
+	m_mgr.AddPane(palette,
+	              wxPaneInfo().Name(wxT("palette")).
+	              Caption(wxT("Component Palette")).
+	              Top().
+	              RightDockable(false).
+	              LeftDockable(false).
+	              CloseButton(false));
+
+	m_mgr.Update();*/
+
+	switch (style)
+	{
+	  case wxFB_DOCKABLE_GUI:
+	    // TO-DO
+	    CreateWideGui();
+	    break;
+
+	  case wxFB_CLASSIC_GUI:
+
+	    /*  //  --- Classic style Gui --
+          //
+          //  +------++-----------------------+
+          //  | Obj. ||  Palette              |
+          //  | Tree ++-----------------------+
+          //  |      ||  Editor               |
+          //  |______||                       |
+          //  |------||                       |
+          //  | Obj. ||                       |
+          //  | Insp.||                       |
+          //  |      ||                       |
+          //  |      ||                       |
+          //  +------++-----------------------+ 	*/
+
+      CreateClassicGui();
+	    break;
+
+	  case wxFB_DEFAULT_GUI:
+	  case wxFB_WIDE_GUI:
+	  default:
+
+	  	/*  //  --- Wide style Gui --
+          //
+          //  +------++-----------------------+
+          //  | Obj. ||  Palette              |
+          //  | Tree ++-------------++--------+
+          //  |      ||  Editor     || Obj.   |
+          //  |      ||             || Insp.  |
+          //  |      ||             ||        |
+          //  |      ||             ||        |
+          //  |      ||             ||        |
+          //  |      ||             ||        |
+          //  |      ||             ||        |
+          //  +------++-------------++--------+ 	*/
+
+	    CreateWideGui();
+	}
+
+
+
 	RestorePosition(wxT("mainframe"));
-	//Centre();
-	Refresh();
 
-	// añadimos el manejador de las teclas rápidas de la aplicación
-	// realmente este es el sitio donde hacerlo ?????
-	//m_objTree->AddCustomKeysHandler(new CustomKeysEvtHandler(data));
 	AppData()->AddHandler( this->GetEventHandler() );
 
 	wxTheApp->SetTopWindow( this );
@@ -349,24 +264,15 @@ MainFrame::MainFrame(wxWindow *parent, int id)
 
 
 MainFrame::~MainFrame()
-{/*
- #ifdef __WXFB_DEBUG__
- wxLog::SetActiveTarget(m_old_log);
- m_log->GetFrame()->Destroy();
- #endif //__WXFB_DEBUG__
- */
-
-	// Eliminamos los observadores, ya que si quedara algún evento por procesar
-	// se produciría un error de acceso no válido debido a que los observadores
-	// ya estarían destruidos
-
+{
+  /*m_mgr.UnInit();*/
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
 void MainFrame::RestorePosition(const wxString &name)
 {
 	bool maximized;
-	int x, y, w, h;
+	int x, y, w, h, leftSash, rightSash;
 
 	m_currentDir = wxT("./projects");
 
@@ -386,6 +292,19 @@ void MainFrame::RestorePosition(const wxString &name)
 		if (iconized) Iconize(iconized);
 	}
 	config->Read(wxT("CurrentDirectory"), &m_currentDir);
+
+	if (m_leftSplitter)
+	{
+	  config->Read(wxT("LeftSashPos"), &leftSash,300);
+	  m_leftSplitter->SetSashPosition(leftSash);
+	}
+
+	if (m_rightSplitter)
+	{
+	  config->Read(wxT("RightSashPos"), &rightSash,800);
+	  m_rightSplitter->SetSashPosition(rightSash);
+	}
+
 
 	config->Read(wxT("RecentFile0"),&m_recentProjects[0]);
 	config->Read(wxT("RecentFile1"),&m_recentProjects[1]);
@@ -418,6 +337,12 @@ void MainFrame::SavePosition(const wxString &name)
 	config->Write(wxT("RecentFile1"),m_recentProjects[1]);
 	config->Write(wxT("RecentFile2"),m_recentProjects[2]);
 	config->Write(wxT("RecentFile3"),m_recentProjects[3]);
+
+	if (m_leftSplitter)
+    config->Write(wxT("LeftSashPos"),m_leftSplitter->GetSashPosition());
+
+	if (m_rightSplitter)
+    config->Write(wxT("RightSashPos"),m_rightSplitter->GetSashPosition());
 
 	config->SetPath(wxT(".."));
 }
@@ -723,10 +648,6 @@ void MainFrame::UpdateFrame()
 	GetToolBar()->EnableTool(ID_PASTE,AppData()->CanPasteObject());
 
 	UpdateLayoutTools();
-
-
-	// Actualizamos la barra de estado
-	// TO-DO: definir un campo...
 }
 
 void MainFrame::UpdateRecentProjects()
@@ -896,6 +817,18 @@ void MainFrame::OnChangeBorder(wxCommandEvent& e)
 void MainFrame::OnXrcPreview(wxCommandEvent& WXUNUSED(e))
 {
     AppData()->ShowXrcPreview();
+
+    wxPaneInfoArray& all_panes = m_mgr.GetAllPanes();
+    for (int i = 0, count = all_panes.GetCount(); i < count; ++i)
+    {
+      wxPaneInfo info = all_panes.Item(i);
+      std::cout << "\n\nName: " << info.name.mb_str();
+      std::cout << "\nDirection: " << info.dock_direction;
+      std::cout << "\nLayer: " << info.dock_layer;
+      std::cout << "\nRow: " << info.dock_row;
+      std::cout << "\nPos: " << info.dock_pos;
+    }
+
 }
 
 bool MainFrame::SaveWarning()
@@ -925,3 +858,198 @@ void MainFrame::OnFlatNotebookPageChanged( wxNotebookChooserEvent& event )
 	AppData()->GenerateCode( true );
 }
 
+/////////////////////////////////////////////////////////////////////////////
+
+wxMenuBar * MainFrame::CreateFBMenuBar()
+{
+	wxMenu *menuFile = new wxMenu;
+	menuFile->Append(ID_NEW_PRJ, wxT("&New"), wxT("create an empty project"));
+	menuFile->Append(ID_OPEN_PRJ, wxT("&Open...\tF2"), wxT("Open a project"));
+
+	menuFile->Append(ID_SAVE_PRJ,          wxT("&Save\tCtrl+S"), wxT("Save current project"));
+	menuFile->Append(ID_SAVE_AS_PRJ, wxT("Save &As...\tF3"), wxT("Save current project as..."));
+	menuFile->AppendSeparator();
+	menuFile->Append(ID_IMPORT_XRC, wxT("&Import XRC..."), wxT("Import XRC file"));
+	menuFile->AppendSeparator();
+	menuFile->Append(ID_GENERATE_CODE, wxT("&Generate Code\tF8"), wxT("Generate Code"));
+	menuFile->AppendSeparator();
+	menuFile->Append(ID_QUIT, wxT("E&xit\tAlt-F4"), wxT("Quit wxFormBuilder"));
+	menuFile->AppendSeparator();
+
+	wxMenu *menuEdit = new wxMenu;
+	menuEdit->Append(ID_UNDO, wxT("&Undo \tCtrl+Z"), wxT("Undo changes"));
+	menuEdit->Append(ID_REDO, wxT("&Redo \tCtrl+Y"), wxT("Redo changes"));
+	menuEdit->AppendSeparator();
+	menuEdit->Append(ID_COPY, wxT("&Copy \tCtrl+C"), wxT("Copy selected object"));
+	menuEdit->Append(ID_CUT, wxT("&Cut \tCtrl+X"), wxT("Cut selected object"));
+	menuEdit->Append(ID_PASTE, wxT("&Paste \tCtrl+V"), wxT("Paste on selected object"));
+	menuEdit->Append(ID_DELETE, wxT("&Delete \tCtrl+D"), wxT("Delete selected object"));
+	menuEdit->AppendSeparator();
+	menuEdit->Append(ID_EXPAND, wxT("&Toggle Expand\tAlt+W"), wxT("Toggle wxEXPAND flag of sizeritem properties"));
+	menuEdit->Append(ID_STRETCH, wxT("&Toggle Stretch\tAlt+S"), wxT("Toggle option property of sizeritem properties"));
+	menuEdit->Append(ID_MOVE_UP, wxT("&Move Up\tAlt+Up"), wxT("Move Up selected object"));
+	menuEdit->Append(ID_MOVE_DOWN, wxT("&Move Down\tAlt+Down"), wxT("Move Down selected object"));
+	menuEdit->Append(ID_MOVE_LEFT, wxT("&Move Left\tAlt+Left"), wxT("Move Left selected object"));
+	menuEdit->Append(ID_MOVE_RIGHT, wxT("&Move Right\tAlt+Right"), wxT("Move Right selected object"));
+	menuEdit->AppendSeparator();
+	menuEdit->Append(ID_ALIGN_LEFT,     wxT("&Align Left"),           wxT("Align item to the left"));
+	menuEdit->Append(ID_ALIGN_CENTER_H, wxT("&Align Center Horizontal"), wxT("Align item to the center horizontally"));
+	menuEdit->Append(ID_ALIGN_RIGHT,    wxT("&Align Right"),         wxT("Align item to the right"));
+	menuEdit->Append(ID_ALIGN_TOP,      wxT("&Align Top"),              wxT("Align item to the top"));
+	menuEdit->Append(ID_ALIGN_CENTER_H, wxT("&Align Center Vertical"),   wxT("Align item to the center vertically"));
+	menuEdit->Append(ID_ALIGN_BOTTOM,   wxT("&Align Bottom"),         wxT("Align item to the bottom"));
+
+	wxMenu *menuView = new wxMenu;
+	menuView->Append(ID_PREVIEW_XRC, wxT("XRC window"), wxT("Show a preview of the XRC window"));
+
+	wxMenu *menuHelp = new wxMenu;
+	menuHelp->Append(ID_ABOUT, wxT("&About...\tF1"), wxT("Show about dialog"));
+
+
+	// now append the freshly created menu to the menu bar...
+	wxMenuBar *menuBar = new wxMenuBar();
+	menuBar->Append(menuFile, wxT("&File"));
+	menuBar->Append(menuEdit, wxT("&Edit"));
+	menuBar->Append(menuView, wxT("&View"));
+	menuBar->Append(menuHelp, wxT("&Help"));
+
+	return menuBar;
+}
+
+wxToolBar * MainFrame::CreateFBToolBar()
+{
+	wxToolBar* toolbar = CreateToolBar();
+	toolbar->SetToolBitmapSize(wxSize(TOOL_SIZE, TOOL_SIZE));
+	toolbar->AddTool(ID_NEW_PRJ,wxT("New Project"),AppBitmaps::GetBitmap(wxT("new"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("New"), wxT("Start a new project.") );
+	toolbar->AddTool(ID_OPEN_PRJ,wxT("Open Project"),AppBitmaps::GetBitmap(wxT("open"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Open"), wxT("Open an existing project.") );
+	toolbar->AddTool(ID_SAVE_PRJ,wxT("Save Project"),AppBitmaps::GetBitmap(wxT("save"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Save"), wxT("Save the current project.") );
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_UNDO, wxT("Undo"), AppBitmaps::GetBitmap(wxT("undo"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Undo"), wxT("Undo the last action.") );
+	toolbar->AddTool(ID_REDO, wxT("Redo"), AppBitmaps::GetBitmap(wxT("redo"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Redo"), wxT("Redo the last action that was undone.") );
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_CUT, wxT("Cut"), AppBitmaps::GetBitmap(wxT("cut"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Cut"), wxT("Remove the selected object and place it on the clipboard.") );
+	toolbar->AddTool(ID_COPY, wxT("Copy"), AppBitmaps::GetBitmap(wxT("copy"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Copy"), wxT("Copy the selected object to the clipboard.") );
+	toolbar->AddTool(ID_PASTE, wxT("Paste"), AppBitmaps::GetBitmap(wxT("paste"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Paste"), wxT("Insert an object from the clipboard.") );
+	toolbar->AddTool(ID_DELETE, wxT("Delete"), AppBitmaps::GetBitmap(wxT("delete"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Delete"), wxT("Remove the selected object.") );
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_GENERATE_CODE,wxT("Generate Code"),AppBitmaps::GetBitmap(wxT("generate"), TOOL_SIZE), wxNullBitmap, wxITEM_NORMAL, wxT("Generate Code"), wxT("Create code from the current project.") );
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_ALIGN_LEFT,wxT(""),AppBitmaps::GetBitmap(wxT("lalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Left"), wxT("The item will be aligned to the left of the space alotted to it by the sizer."));
+	toolbar->AddTool(ID_ALIGN_CENTER_H,wxT(""),AppBitmaps::GetBitmap(wxT("chalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Center Horizontally"), wxT("The item will be centered horizontally in the space alotted to it by the sizer."));
+	toolbar->AddTool(ID_ALIGN_RIGHT,wxT(""),AppBitmaps::GetBitmap(wxT("ralign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Right"), wxT("The item will be aligned to the right of the space alotted to it by the sizer."));
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_ALIGN_TOP,wxT(""),AppBitmaps::GetBitmap(wxT("talign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Top"), wxT("The item will be aligned to the top of the space alotted to it by the sizer."));
+	toolbar->AddTool(ID_ALIGN_CENTER_V,wxT(""),AppBitmaps::GetBitmap(wxT("cvalign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Center Vertically"), wxT("The item will be centered vertically within space alotted to it by the sizer."));
+	toolbar->AddTool(ID_ALIGN_BOTTOM,wxT(""),AppBitmaps::GetBitmap(wxT("balign"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Align Bottom"), wxT("The item will be aligned to the bottom of the space alotted to it by the sizer."));
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_EXPAND,wxT(""),AppBitmaps::GetBitmap(wxT("expand"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Expand"), wxT("The item will be expanded to fill the space assigned to the item.") );
+	toolbar->AddTool(ID_STRETCH,wxT(""),AppBitmaps::GetBitmap(wxT("stretch"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Stretch"), wxT("The item will grow and shrink with the sizer.") );
+	toolbar->AddSeparator();
+	toolbar->AddTool(ID_BORDER_LEFT,wxT(""),AppBitmaps::GetBitmap(wxT("left"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Left Border"), wxT("A border will be added on the left side of the item.") );
+	toolbar->AddTool(ID_BORDER_RIGHT,wxT(""),AppBitmaps::GetBitmap(wxT("right"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Right Border"), wxT("A border will be  added on the right side of the item."));
+	toolbar->AddTool(ID_BORDER_TOP,wxT(""),AppBitmaps::GetBitmap(wxT("top"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Top Border"), wxT("A border will be  added on the top of the item."));
+	toolbar->AddTool(ID_BORDER_BOTTOM,wxT(""),AppBitmaps::GetBitmap(wxT("bottom"), TOOL_SIZE),wxNullBitmap,wxITEM_CHECK, wxT("Bottom Border"), wxT("A border will be  added on the bottom of the item."));
+
+	toolbar->Realize();
+
+	return toolbar;
+}
+
+wxWindow * MainFrame::CreateDesignerWindow(wxWindow *parent)
+{
+  m_notebook = new ChooseNotebook( parent,  ID_EDITOR_FNB );
+
+	// Set notebook icons
+	m_icons.Add( AppBitmaps::GetBitmap( wxT("designer"), 16 ) );
+	m_icons.Add( AppBitmaps::GetBitmap( wxT("c++"), 16 ) );
+	m_icons.Add( AppBitmaps::GetBitmap( wxT("xrc"), 16 ) );
+	m_notebook->SetImageList( &m_icons );
+
+	m_visualEdit = new VisualEditor(m_notebook);
+	AppData()->GetManager()->SetVisualEditor( m_visualEdit );
+
+	m_notebook->AddPage( m_visualEdit, wxT("Designer"), false, 0 );
+
+	m_cpp = new CppPanel(m_notebook,-1);
+	m_notebook->AddPage( m_cpp, wxT("C++"), false, 1 );
+
+	m_xrc = new XrcPanel(m_notebook,-1);
+	m_notebook->AddPage(m_xrc, wxT("XRC"), false, 2 );
+
+	return m_notebook;
+}
+
+wxWindow * MainFrame::CreateComponentPalette (wxWindow *parent)
+{
+	// la paleta de componentes, no es un observador propiamente dicho, ya
+	// que no responde ante los eventos de la aplicación
+	m_palette = new wxFbPalette(parent,-1);
+	m_palette->Create();
+	m_palette->SetBackgroundColour( wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE) );
+
+	return m_palette;
+}
+
+wxWindow * MainFrame::CreateObjectTree(wxWindow *parent)
+{
+  m_objTree = new ObjectTree(parent,-1);
+	m_objTree->Create();
+
+	return m_objTree;
+}
+
+wxWindow * MainFrame::CreateObjectInspector(wxWindow *parent)
+{
+  //TO-DO: make object inspector style selectable.
+  int style = ( m_style == wxFB_CLASSIC_GUI ? wxFB_OI_MULTIPAGE_STYLE : wxFB_OI_SINGLE_PAGE_STYLE);
+  m_objInsp = new ObjectInspector(parent,-1, style);
+  return m_objInsp;
+}
+
+void MainFrame::CreateWideGui()
+{
+  m_leftSplitter = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+
+	wxWindow *objectTree = Title::CreateTitle(CreateObjectTree(m_leftSplitter),wxT("Object Tree"));
+
+	// panel1 contains Palette and splitter2
+	wxPanel *panel1 = new wxPanel(m_leftSplitter,-1);
+
+	wxWindow *palette = Title::CreateTitle(CreateComponentPalette(panel1),wxT("Component Palette"));
+	m_rightSplitter   =  new wxSplitterWindow(panel1, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+
+  wxBoxSizer *panel1_sizer = new wxBoxSizer(wxVERTICAL);
+  panel1_sizer->Add(palette,0,wxEXPAND);
+  panel1_sizer->Add(m_rightSplitter,1,wxEXPAND);
+  panel1->SetSizer(panel1_sizer);
+
+	// splitter2 contains the editor and the object inspector
+	wxWindow *designer        = Title::CreateTitle(CreateDesignerWindow(m_rightSplitter),wxT("Editor"));
+	wxWindow *objectInspector = Title::CreateTitle(CreateObjectInspector(m_rightSplitter),wxT("Object Properties"));
+
+	m_leftSplitter->SplitVertically(objectTree,panel1,300);
+	m_rightSplitter->SplitVertically(designer,objectInspector,800);
+}
+
+void MainFrame::CreateClassicGui()
+{
+  m_leftSplitter = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+
+  m_rightSplitter =  new wxSplitterWindow(m_leftSplitter, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+	wxWindow *objectTree      = Title::CreateTitle(CreateObjectTree(m_rightSplitter),wxT("Object Tree"));
+  wxWindow *objectInspector = Title::CreateTitle(CreateObjectInspector(m_rightSplitter),wxT("Object Properties"));
+
+  // panel1 contains palette and designer
+	wxPanel *panel1 = new wxPanel(m_leftSplitter,-1);
+
+	wxWindow *palette = Title::CreateTitle(CreateComponentPalette(panel1),wxT("Component Palette"));
+	wxWindow *designer = Title::CreateTitle(CreateDesignerWindow(panel1),wxT("Editor"));
+
+  wxBoxSizer *panel1_sizer = new wxBoxSizer(wxVERTICAL);
+  panel1_sizer->Add(palette,0,wxEXPAND);
+  panel1_sizer->Add(designer,1,wxEXPAND);
+  panel1->SetSizer(panel1_sizer);
+
+	m_leftSplitter->SplitVertically(m_rightSplitter,panel1,300);
+	m_rightSplitter->SplitHorizontally(objectTree,objectInspector,800);
+}

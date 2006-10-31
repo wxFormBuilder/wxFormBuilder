@@ -28,6 +28,8 @@
 
 #include "wx/wx.h"
 #include "utils/notebookchooser.h"
+#include "wx/wxaui/manager.h"
+#include "wx/splitter.h"
 
 class wxFBEvent;
 class wxFBObjectEvent;
@@ -40,6 +42,16 @@ class ObjectInspector;
 class wxFbPalette;
 class VisualEditor;
 
+/**
+ * wxFormBuilder GUI styles.
+ */
+enum {
+  wxFB_DEFAULT_GUI,
+  wxFB_DOCKABLE_GUI,
+	wxFB_CLASSIC_GUI,
+	wxFB_WIDE_GUI
+};
+
 class MainFrame : public wxFrame
 {
  private:
@@ -48,6 +60,10 @@ class MainFrame : public wxFrame
   wxLogWindow * m_log;
   #endif //__WXFB_DEBUG__
 
+  wxSplitterWindow *m_leftSplitter;
+  wxSplitterWindow *m_rightSplitter;
+
+  wxFrameManager m_mgr;
   wxNotebookChooser *m_notebook;
   wxNotebookChooserImageList m_icons;
   wxFbPalette *m_palette;
@@ -56,6 +72,7 @@ class MainFrame : public wxFrame
   VisualEditor *m_visualEdit;
   CppPanel *m_cpp;
   XrcPanel *m_xrc;
+  int m_style;
 
   wxString m_currentDir;
 
@@ -72,7 +89,7 @@ class MainFrame : public wxFrame
 
   DECLARE_EVENT_TABLE()
  public:
-  MainFrame(wxWindow *parent, int id = -1);
+  MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI);
   ~MainFrame();
   void RestorePosition(const wxString &name);
   void SavePosition(const wxString &name);
@@ -112,6 +129,16 @@ class MainFrame : public wxFrame
   void OnProjectRefresh( wxFBEvent& event );
 
   void InsertRecentProject(const wxString &file);
+
+  wxWindow  *CreateComponentPalette (wxWindow *parent);
+  wxWindow  *CreateDesignerWindow   (wxWindow *parent);
+  wxWindow  *CreateObjectTree       (wxWindow *parent);
+  wxWindow  *CreateObjectInspector  (wxWindow *parent);
+  wxMenuBar *CreateFBMenuBar();
+  wxToolBar *CreateFBToolBar();
+
+  void CreateWideGui();
+  void CreateClassicGui();
 };
 
 

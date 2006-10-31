@@ -383,24 +383,13 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 
 END_EVENT_TABLE()
 
-ObjectInspector::ObjectInspector(wxWindow *parent, int id)
-: wxPanel(parent,id)
+ObjectInspector::ObjectInspector(wxWindow *parent, int id, int style)
+: wxPanel(parent,id), m_style(style)
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 	m_currentSel = shared_ptr<ObjectBase>();
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
-	m_pg = new wxPropertyGridManager(this, -1, wxDefaultPosition, wxDefaultSize,
-		// These and other similar styles are automatically
-		// passed to the embedded wxPropertyGrid.
-		wxPG_BOLD_MODIFIED|wxPG_SPLITTER_AUTO_CENTER|
-		// Include toolbar.
-		wxPG_TOOLBAR |
-		// Include description box.
-		wxPG_DESCRIPTION |
-		// Plus defaults.
-		wxPGMAN_DEFAULT_STYLE);
-	m_pg->SetDescBoxHeight( 50 );
-	//m_pg->SetExtraStyle( wxPG_EX_MODE_BUTTONS );
+  CreatePropertyGridManager();
 	topSizer->Add(m_pg, 1, wxALL | wxEXPAND, 0);
 	SetSizer(topSizer);
 }
@@ -433,18 +422,10 @@ void ObjectInspector::Create(bool force)
 
 		sizer->Detach( m_pg );
 		delete m_pg;
-		m_pg = new wxPropertyGridManager(this, -1, wxDefaultPosition, wxDefaultSize,
-											// These and other similar styles are automatically
-											// passed to the embedded wxPropertyGrid.
-											wxPG_BOLD_MODIFIED|wxPG_SPLITTER_AUTO_CENTER|
-											// Include toolbar.
-											wxPG_TOOLBAR |
-											// Include description box.
-											wxPG_DESCRIPTION |
-											// Plus defaults.
-											wxPGMAN_DEFAULT_STYLE);
-		m_pg->SetDescBoxHeight( 50 );
-		//m_pg->SetExtraStyle( wxPG_EX_MODE_BUTTONS );
+		CreatePropertyGridManager();
+
+		///m_pg->SetCaptionBackgroundColour(wxColour(0,0,150));
+		///m_pg->SetCaptionForegroundColour(wxColour(255,255,255));
 
 		m_propmap.clear();
 
@@ -667,12 +648,20 @@ void ObjectInspector::CreateCategory(const wxString& name, shared_ptr<ObjectBase
 		return;
 	}
 
-	int pageIndex = m_pg->GetPageByName( name );
+  wxString pageName;
+
+  if (m_style == wxFB_OI_MULTIPAGE_STYLE)
+    pageName = name;
+  else
+    pageName = wxT("default");
+
+
+	int pageIndex = m_pg->GetPageByName( pageName );
 	if ( wxNOT_FOUND == pageIndex )
 	{
-		m_pg->AddPage( name, obj_info->GetSmallIconFile() );
+		m_pg->AddPage( pageName, obj_info->GetSmallIconFile() );
 	}
-	m_pg->SelectPage( name );
+	m_pg->SelectPage( pageName );
 
 	m_pg->AppendCategory( category->GetName() );
 	AddProperties( name, obj, obj_info, category, properties );
@@ -699,6 +688,16 @@ void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBas
 		{
 			wxPGId id = m_pg->Append( GetProperty( prop ) );
 			m_pg->SetPropertyHelpString( id, propInfo->GetDescription() );
+
+      if (m_style != wxFB_OI_MULTIPAGE_STYLE)
+      {
+        // Most common classes will be showed with a slightly different
+        // colour.
+			  if (name == wxT("wxWindow"))
+  			  m_pg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
+        else if (name == wxT("sizeritem"))
+			    m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
+      }
 
 			properties.insert( map< wxString, shared_ptr< Property > >::value_type( propName, prop ) );
 			m_propmap.insert( ObjInspectorMap::value_type( id.GetPropertyPtr(), prop ) );
@@ -908,4 +907,32 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
 	}
 	m_pg->Refresh();
+}
+
+void ObjectInspector::CreatePropertyGridManager()
+{
+  int pgStyle;
+
+  switch (m_style)
+  {
+    case wxFB_OI_MULTIPAGE_STYLE:
+
+		  pgStyle = wxPG_BOLD_MODIFIED| wxPG_SPLITTER_AUTO_CENTER | wxPG_TOOLBAR |
+                wxPG_DESCRIPTION  | wxPGMAN_DEFAULT_STYLE;
+		  break;
+
+    case wxFB_OI_DEFAULT_STYLE:
+    case wxFB_OI_SINGLE_PAGE_STYLE:
+    default:
+
+		  pgStyle = wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_DESCRIPTION |
+                wxPGMAN_DEFAULT_STYLE;
+		  break;
+  }
+
+  m_pg = new wxPropertyGridManager(this, -1, wxDefaultPosition, wxDefaultSize,
+         pgStyle);
+
+	m_pg->SetDescBoxHeight( 50 );
+	//m_pg->SetExtraStyle( wxPG_EX_MODE_BUTTONS );
 }
