@@ -132,9 +132,8 @@ void wxFbPalette::Create()
     m_notebook->AddPage(panel, pkg_name, false, i);
 
   }
-  Title *title = new Title( this, wxT("Component Palette") );
-  top_sizer->Add(title,0,wxEXPAND,0);
-  //top_sizer->Add(new wxFlatNotebookSizer(m_notebook),1,wxEXPAND,0);
+  //Title *title = new Title( this, wxT("Component Palette") );
+  //top_sizer->Add(title,0,wxEXPAND,0);
   top_sizer->Add(m_notebook,1,wxEXPAND,0);
   SetAutoLayout(true);
   SetSizer(top_sizer);

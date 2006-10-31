@@ -31,9 +31,13 @@
 class Title : public wxPanel
 {
  private:
-//  DECLARE_EVENT_TABLE() 
+//  DECLARE_EVENT_TABLE()
  public:
   Title(wxWindow *parent,const wxString &title=wxT("No title"));
+
+  static wxWindow* CreateTitle (wxWindow *inner, const wxString &title);
 };
+
+
 
 #endif //__TITLE__

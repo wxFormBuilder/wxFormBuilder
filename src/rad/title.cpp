@@ -33,10 +33,25 @@ Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent,-1)
   SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT ) );
-  //text->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxBOLD, 0, wxT("")));
+  text->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxBOLD, 0, wxT("")));
 
   sizer->Add(text,0,wxALL | wxEXPAND,2);
   SetSizer(sizer);
   Fit();
 }
 
+wxWindow * Title::CreateTitle (wxWindow *inner, const wxString &title)
+{
+  wxWindow *parent = inner->GetParent();
+
+  wxPanel *container = new wxPanel(parent, -1);
+  Title *titleWin = new Title(container,title);
+  inner->Reparent(container);
+
+  wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+  sizer->Add(titleWin,0,wxEXPAND);
+  sizer->Add(inner,1,wxEXPAND);
+  container->SetSizer(sizer);
+
+  return container;
+}

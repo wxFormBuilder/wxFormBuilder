@@ -108,7 +108,9 @@ bool MyApp::OnInit()
 	m_old_log = wxLog::SetActiveTarget( m_log );
 #endif //__WXFB_DEBUG__
 
-	MainFrame *frame = new MainFrame( NULL );
+  //TO-DO: Make wxFB gui style selectable
+	//MainFrame *frame = new MainFrame( NULL ,-1, wxFB_CLASSIC_GUI);
+	MainFrame *frame = new MainFrame( NULL ,-1, wxFB_WIDE_GUI);
 	frame->Show( TRUE );
 	SetTopWindow( frame );
 
