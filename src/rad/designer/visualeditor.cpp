@@ -49,8 +49,8 @@
 BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
 	//EVT_SASH_DRAGGED(-1, VisualEditor::OnResizeBackPanel)
 	//EVT_COMMAND(-1, wxEVT_PANEL_RESIZED, VisualEditor::OnResizeBackPanel)
-	EVT_PANEL_RESIZED(-1, VisualEditor::OnResizeBackPanel)
-	EVT_PAINT(VisualEditor::OnPaintPanel)
+	EVT_INNER_FRAME_RESIZED(-1, VisualEditor::OnResizeBackPanel)
+	//EVT_PAINT(VisualEditor::OnPaintPanel)
 
 	EVT_FB_PROJECT_LOADED( VisualEditor::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( VisualEditor::OnProjectSaved )
@@ -77,8 +77,7 @@ m_stopModifiedEvent( false )
 	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 	SetScrollRate(5, 5);
 
-	m_back = new GridPanel(this,-1,wxPoint(10,10),wxSize(350,200),VISUAL_EDITOR_BORDER);
-	m_back->SetAutoLayout(true);
+	m_back = new DesignerWindow(this,-1,wxPoint(10,10),wxSize(350,200),VISUAL_EDITOR_BORDER);
 }
 
 void VisualEditor::DeleteAbstractObjects()
@@ -209,8 +208,8 @@ void VisualEditor::Create()
 	m_back->SetSelectedItem(NULL);
 	m_back->SetSelectedSizer(NULL);
 	m_back->SetSelectedObject(shared_ptr<ObjectBase>());
-	m_back->DestroyChildren();
-	m_back->SetSizer( NULL ); // *!*
+	m_back->GetFrameContentPanel()->DestroyChildren();
+	m_back->GetFrameContentPanel()->SetSizer( NULL ); // *!*
 
 	// Clear all associations between ObjectBase and wxObjects
 	m_wxobjects.clear();
@@ -260,21 +259,31 @@ void VisualEditor::Create()
 		shared_ptr<Property> background( m_form->GetProperty( wxT("bg") ) );
 		if ( background && !background->GetValue().empty() )
 		{
-			m_back->SetBackgroundColour( TypeConv::StringToColour( background->GetValue() ) );
+			m_back->GetFrameContentPanel()->SetBackgroundColour( TypeConv::StringToColour( background->GetValue() ) );
 		}
 		else
 		{
 			if ( m_form->GetClassName() == wxT("Frame") )
 			{
-				m_back->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
+				m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
 			}
 			else
 			{
-				m_back->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+				m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 			}
 		}
 
-		// --- [3] Create the components of the form -------------------------
+
+		// --- [3] Title bar Setup
+		if (  m_form->GetClassName() == wxT("Frame") || m_form->GetClassName() == wxT("Dialog") )
+		{
+			m_back->SetTitle(m_form->GetPropertyAsString(wxT("title")));
+      m_back->ShowTitleBar(true);
+		}
+		else
+		  m_back->ShowTitleBar(false);
+
+		// --- [4] Create the components of the form -------------------------
 
 		// Used to save frame objects for later display
 		shared_ptr<ObjectBase> menubar;
@@ -295,7 +304,7 @@ void VisualEditor::Create()
 				// Recursively generate the ObjectTree
 				try
 				{
-					Generate( child, m_back, NULL );
+					Generate( child, m_back->GetFrameContentPanel(), NULL );
 				}
 				catch ( wxFBException& ex )
 				{
@@ -320,9 +329,9 @@ void VisualEditor::Create()
 
 		m_back->Layout();
 
-		if ( need_fit && m_back->GetSizer() )
+		if ( need_fit && m_back->GetFrameContentPanel()->GetSizer() )
 		{
-			m_back->GetSizer()->Fit( m_back );
+			m_back->GetFrameContentPanel()->GetSizer()->Fit( m_back->GetFrameContentPanel() );
 		}
 
 		if ( menubar || statusbar || toolbar )
@@ -346,7 +355,7 @@ void VisualEditor::Create()
 	{
 		// There is no form to display
 		m_back->SetSize(10,10);
-		m_back->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+		m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 	}
 
 	if ( IsShown() )
@@ -646,7 +655,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		it = m_baseobjects.find( nextParent.get() );
 		if ( m_baseobjects.end() == it )
 		{
-			selPanel = m_back;
+			selPanel = m_back->GetFrameContentPanel();
 		}
 		else
 		{
@@ -655,7 +664,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	}
 	else
 	{
-		selPanel = m_back;
+		selPanel = m_back->GetFrameContentPanel();
 	}
 
 	// Find the first COMPONENT_TYPE_WINDOW or COMPONENT_TYPE_SIZER
@@ -687,7 +696,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		nextObj = nextObj->GetParent();
 	}
 
-	m_back->SetSelectedSizer( sizer );
+  m_back->SetSelectedSizer( sizer );
 	m_back->SetSelectedItem( item );
 	m_back->SetSelectedObject( obj );
 	m_back->SetSelectedPanel( selPanel );
@@ -721,30 +730,29 @@ void VisualEditor::OnProjectRefresh( wxFBEvent &event )
 	Create();
 }
 
-BEGIN_EVENT_TABLE( GridPanel, ResizablePanel )
-	EVT_PAINT( GridPanel::OnPaint )
-END_EVENT_TABLE()
+IMPLEMENT_CLASS( DesignerWindow, wxInnerFrame)
 
-IMPLEMENT_CLASS( GridPanel, ResizablePanel )
-
-GridPanel::GridPanel( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString &name )
+DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString &name )
 :
-ResizablePanel(parent, pos, size, style)
+wxInnerFrame(parent, id, pos, size, style)
 {
+  ShowTitleBar(false);
 	SetGrid( 10, 10 );
 	m_selSizer = NULL;
 	m_selItem = NULL;
 	m_actPanel = NULL;
 	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+
+	GetFrameContentPanel()->PushEventHandler(new HighlightPaintHandler(GetFrameContentPanel()));
 }
 
-void GridPanel::SetGrid( int x, int y )
+void DesignerWindow::SetGrid( int x, int y )
 {
 	m_x = x;
 	m_y = y;
 }
 
-void GridPanel::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, shared_ptr<ObjectBase> object )
+void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, shared_ptr<ObjectBase> object )
 {
 	int border = object->GetParent()->GetPropertyAsInteger( wxT("border") );
 	if ( border == 0 )
@@ -769,7 +777,7 @@ void GridPanel::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& siz
 						size.y + topBorder + bottomBorder );
 }
 
-void GridPanel::HighlightSelection( wxDC& dc )
+void DesignerWindow::HighlightSelection( wxDC& dc )
 {
 	wxSize size;
 	shared_ptr<ObjectBase> object = m_selObj.lock();
@@ -821,7 +829,7 @@ void GridPanel::HighlightSelection( wxDC& dc )
 	}
 }
 
-wxMenu* GridPanel::GetMenuFromObject(shared_ptr<ObjectBase> menu)
+wxMenu* DesignerWindow::GetMenuFromObject(shared_ptr<ObjectBase> menu)
 {
 	int lastMenuId = wxID_HIGHEST + 1;
 	wxMenu* menuWidget = new wxMenu();
@@ -889,13 +897,15 @@ wxMenu* GridPanel::GetMenuFromObject(shared_ptr<ObjectBase> menu)
 	return menuWidget;
 }
 
-void GridPanel::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolbar, wxWindow *statusbar)
+void DesignerWindow::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolbar, wxWindow *statusbar)
 {
+  wxWindow *contentPanel = GetFrameContentPanel();
 	Menubar *mbWidget = NULL;
+
 
 	if ( menubar )
 	{
-		mbWidget = new Menubar(this, -1);
+		mbWidget = new Menubar(contentPanel, -1);
 		for ( unsigned int i = 0; i < menubar->GetChildCount(); i++ )
 		{
 			shared_ptr< ObjectBase > menu = menubar->GetChild( i );
@@ -904,15 +914,15 @@ void GridPanel::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolba
 		}
 	}
 
-	wxSizer *mainSizer = GetSizer();
+	wxSizer *mainSizer = contentPanel->GetSizer();
 
-	SetSizer( NULL, false );
+	contentPanel->SetSizer( NULL, false );
 
 	wxSizer *dummySizer = new wxBoxSizer( wxVERTICAL );
 	if ( mbWidget )
 	{
 		dummySizer->Add(mbWidget, 0, wxEXPAND | wxTOP | wxBOTTOM, 0);
-		dummySizer->Add(new wxStaticLine(this, -1), 0, wxEXPAND | wxALL, 0);
+		dummySizer->Add(new wxStaticLine(contentPanel, -1), 0, wxEXPAND | wxALL, 0);
 	}
 
 	if (toolbar)
@@ -927,14 +937,25 @@ void GridPanel::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolba
 		dummySizer->Add(statusbar, 0, wxEXPAND | wxALL, 0);
 
 
-	SetSizer(dummySizer, false);
-	Layout();
+	contentPanel->SetSizer(dummySizer, false);
+	contentPanel->Layout();
 }
 
-void GridPanel::OnPaint(wxPaintEvent &event)
+
+BEGIN_EVENT_TABLE(DesignerWindow::HighlightPaintHandler,wxEvtHandler)
+  EVT_PAINT(DesignerWindow::HighlightPaintHandler::OnPaint)
+END_EVENT_TABLE()
+
+
+DesignerWindow::HighlightPaintHandler::HighlightPaintHandler(wxWindow *win)
 {
-	wxPaintDC dc(this);
-	wxSize size = GetSize();
+  m_window = win;
+}
+
+void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
+{
+//	wxPaintDC dc(this);
+/*	wxSize size = GetSize();
 	dc.SetPen(*wxBLACK_PEN);
 	for ( int i = 0; i < size.GetWidth(); i += m_x )
 	{
@@ -942,10 +963,22 @@ void GridPanel::OnPaint(wxPaintEvent &event)
 		{
 			dc.DrawPoint( i - 1, j - 1 );
 		}
-	}
+	}*/
 
-	if ( m_actPanel == this )
+	/*if ( m_actPanel == this)
 	{
 		HighlightSelection( dc );
-	}
+	}*/
+
+		wxWindow *aux = m_window;
+		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
+		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
+		if (dsgnWin->GetActivePanel() == m_window)
+		{
+			wxPaintDC dc(m_window);
+			dsgnWin->HighlightSelection(dc);
+		}
+
+	event.Skip();
 }
+
