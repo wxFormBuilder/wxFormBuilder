@@ -390,6 +390,22 @@
 			<Option target="Release (Unicode)" />
 			<Option target="Debug (Unicode)" />
 		</Unit>
+		<Unit filename="rad\designer\innerframe.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="rad\designer\innerframe.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
 		<Unit filename="rad\designer\menubar.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
@@ -399,22 +415,6 @@
 		</Unit>
 		<Unit filename="rad\designer\menubar.h">
 			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Release (Unicode)" />
-			<Option target="Debug (Unicode)" />
-		</Unit>
-		<Unit filename="rad\designer\resizablepanel.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Release (Unicode)" />
-			<Option target="Debug (Unicode)" />
-		</Unit>
-		<Unit filename="rad\designer\resizablepanel.h">
-			<Option compilerVar="" />
 			<Option compile="0" />
 			<Option link="0" />
 			<Option target="Debug" />
