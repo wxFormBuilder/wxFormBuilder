@@ -74,12 +74,12 @@ void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 	if (wo->IsContainer())
 	{
 		wxWindow *aux = m_window;
-		while (!aux->IsKindOf(CLASSINFO(GridPanel))) aux = aux->GetParent();
-		GridPanel *gp = (GridPanel*) aux;
-		if (gp->GetActivePanel() == m_window)
+		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
+		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
+		if (dsgnWin->GetActivePanel() == m_window)
 		{
 			wxPaintDC dc(m_window);
-			gp->HighlightSelection(dc);
+			dsgnWin->HighlightSelection(dc);
 		}
 	}
 	event.Skip();

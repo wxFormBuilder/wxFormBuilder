@@ -491,7 +491,11 @@ void ObjectBase::Serialize( ticpp::Document* serializedDocument )
 {
 	ticpp::Document document( "document" );
 
+  #if wxUSE_UNICODE
 	ticpp::Declaration dec( "1.0", "UTF-8", "yes" );
+	#else
+	ticpp::Declaration dec( "1.0", "ISO-8859-13", "yes" );
+	#endif
 	document.LinkEndChild( &dec );
 
 	ticpp::Element root( "wxFormBuilder_Project" );

@@ -30,13 +30,15 @@
 #include "wx/wx.h"
 #include "model/objectbase.h"
 #include "rad/designer/visualobj.h"
-#include "rad/designer/resizablepanel.h"
+//#include "rad/designer/resizablepanel.h"
 #include <wx/sashwin.h>
 
+#include "innerframe.h"
+
 /**
- * Draws a grid in the Paint event handler
+ * Extends the wxInnerFrame to show the object highlight
  */
-class GridPanel : public ResizablePanel
+class DesignerWindow : public wxInnerFrame
 {
  private:
    int m_x;
@@ -48,14 +50,29 @@ class GridPanel : public ResizablePanel
 
    void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, shared_ptr<ObjectBase> object);
 
-   DECLARE_CLASS(GridPanel)
+   DECLARE_CLASS(DesignerWindow)
+
+   // Augh!, this class is needed to paint the highlight in the
+   // frame content panel.
+   class HighlightPaintHandler : public wxEvtHandler
+   {
+      DECLARE_EVENT_TABLE()
+
+      wxWindow *m_window;
+
+     public:
+
+       HighlightPaintHandler(wxWindow *win);
+       void OnPaint(wxPaintEvent &event);
+   };
 
  protected:
-   DECLARE_EVENT_TABLE()
+
+   //DECLARE_EVENT_TABLE()
 
  public:
-   GridPanel(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
-     long style, const wxString &name = wxT("gridpanel"));
+   DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
+     long style, const wxString &name = wxT("designer_win"));
 
    void SetGrid(int x, int y);
    void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
@@ -69,7 +86,6 @@ class GridPanel : public ResizablePanel
    wxMenu* GetMenuFromObject(shared_ptr<ObjectBase> menu);
    void SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolbar, wxWindow* statusbar);
    void HighlightSelection(wxDC& dc);
-   void OnPaint(wxPaintEvent &event);
 };
 
 class wxFBEvent;
@@ -85,7 +101,7 @@ class VisualEditor : public wxScrolledWindow
   typedef map< ObjectBase*, wxObject* > ObjectBaseMap;
   ObjectBaseMap m_baseobjects;
 
-  GridPanel *m_back;
+  DesignerWindow *m_back;
 
   shared_ptr<ObjectBase> m_form;  // Pointer to last form created
 

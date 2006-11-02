@@ -104,10 +104,14 @@ AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Abo
 
   wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
   wxHtmlWindow *htmlWin = new HtmlWindow(this);
+
   mainSizer->Add(htmlWin, 1, wxEXPAND | wxALL, 5);
   mainSizer->Add(new wxButton(this, wxID_OK, wxT("OK")), 0, wxALIGN_CENTER | wxBOTTOM, 5);
 
   htmlWin->LoadFile(wxFileName(AppData()->GetApplicationPath() + wxFILE_SEP_PATH + wxT("resources/about.html")));
+
+  htmlWin->SetSize(htmlWin->GetInternalRepresentation()->GetWidth(),
+                   htmlWin->GetInternalRepresentation()->GetHeight());
 
   SetSizer(mainSizer);
   Layout();
