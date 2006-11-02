@@ -28,7 +28,7 @@
 
 #include "wx/wx.h"
 #include "utils/notebookchooser.h"
-#include "wx/wxaui/manager.h"
+#include "wx/aui/aui.h"
 #include "wx/splitter.h"
 
 class wxFBEvent;
