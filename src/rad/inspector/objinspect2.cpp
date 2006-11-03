@@ -851,6 +851,10 @@ void ObjectInspector::OnProjectRefresh( wxFBEvent& event )
 void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 {
 	shared_ptr<Property> prop = event.GetFBProperty();
+
+	if (prop->GetObject() != AppData()->GetSelectedObject())
+	  return;
+
 	wxPGId pgid = m_pg->GetPropertyByLabel(prop->GetName());
 	if (!pgid.IsOk()) return; // Puede que no se esté mostrando ahora esa página
 	wxPGProperty *pgProp = pgid.GetPropertyPtr();
