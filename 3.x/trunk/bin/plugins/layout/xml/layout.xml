@@ -66,12 +66,12 @@
     <property name="hgap" type="text" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
     <property name="growablerows" type="intlist" help="Comma separated list of row indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
     <property name="growablecols" type="intlist" help="Comma separated list of column indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
-	<property name="flexible_direction" type="bitlist" help="Since wxWidgets 2.5.0, wxFlexGridSizer can size items equally in one direction but unequally ('flexibly') in the other" >
+	<property name="flexible_direction" type="option" help="Since wxWidgets 2.5.0, wxFlexGridSizer can size items equally in one direction but unequally ('flexibly') in the other" >
 	  <option name="wxVERTICAL"  	help="Rows are flexibly sized." />
 	  <option name="wxHORIZONTAL"  	help="Columns are flexibly sized." />
 	  <option name="wxBOTH"  		help="Both rows and columns are flexibly sized (this is the default value)." />
 	</property>
-	<property name="non_flexible_grow_mode" type="bitlist" help="If the sizer is only flexible in one direction (this can be changed using 'flexible_direction'), it needs to be decided how the sizer should grow in the other ('non flexible') direction in order to fill the available space." >
+	<property name="non_flexible_grow_mode" type="option" help="If the sizer is only flexible in one direction (this can be changed using 'flexible_direction'), it needs to be decided how the sizer should grow in the other ('non flexible') direction in order to fill the available space." >
 	  <option name="wxFLEX_GROWMODE_NONE"  		help="Sizer doesn't grow in the non flexible direction." />
 	  <option name="wxFLEX_GROWMODE_SPECIFIED"  help="Sizer honors growable columns/rows set with AddGrowableCol and AddGrowableRow. In this case equal sizing applies to minimum sizes of columns or rows (this is the default value)." />
 	  <option name="wxFLEX_GROWMODE_ALL"  		help="Sizer equally stretches all columns or rows in the non flexible direction, whether they are growable or not in the flexible direction." />
