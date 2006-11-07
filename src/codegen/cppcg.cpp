@@ -416,8 +416,6 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxT("") );
 
-	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\""));
-
 	// User Headers
 	set< wxString > user_headers;
 	shared_ptr<Property> user_headers_prop = project->GetProperty( wxT("user_headers") );
@@ -432,6 +430,9 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 			}
 		}
 	}
+
+	// Generated header
+	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\""));
 
 	m_source->WriteLn( wxT("") );
 	GenXpmIncludes( project );
