@@ -11,6 +11,8 @@ date Version 3.00.05
 * Fixed problems with paths including non-English characters.
   wxFB can now be installed to such paths, as well as open/save projects,
   generate code, and import xrc files. This resolves FS#49.
+* Now only allowing one choice for non_flexible_grow_mode and for 
+  flexible_direction on wxFlexGridSizer. This resolves FS#56.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
