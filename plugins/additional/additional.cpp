@@ -67,8 +67,15 @@ protected:
 	void OnListbookPageChanged( wxListbookEvent& event );
 	void OnChoicebookPageChanged( wxChoicebookEvent& event );
 	template < class T >
-		void OnBookPageChanged( int selPage )
+		void OnBookPageChanged( int selPage, wxEvent* event )
 	{
+		// Only handle events from this book - prevents problems with nested books, because OnSelected is fired on an
+		// object and all of its parents
+		if ( m_window != event->GetEventObject() )
+		{
+			return;
+		}
+
 		if ( selPage < 0 )
 		{
 			return;
@@ -108,7 +115,6 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
 END_EVENT_TABLE()
-
 
 class wxCustomSplitterWindow : public wxSplitterWindow
 {
@@ -670,7 +676,7 @@ public:
 
 void ComponentEvtHandler::OnNotebookPageChanged( wxNotebookEvent& event )
 {
-	OnBookPageChanged< wxNotebook >( event.GetSelection() );
+	OnBookPageChanged< wxNotebook >( event.GetSelection(), &event );
 	event.Skip();
 }
 
@@ -761,7 +767,7 @@ public:
 
 void ComponentEvtHandler::OnListbookPageChanged( wxListbookEvent& event )
 {
-	OnBookPageChanged< wxListbook >( event.GetSelection() );
+	OnBookPageChanged< wxListbook >( event.GetSelection(), &event );
 	event.Skip();
 }
 
@@ -830,7 +836,7 @@ public:
 
 void ComponentEvtHandler::OnChoicebookPageChanged( wxChoicebookEvent& event )
 {
-	OnBookPageChanged< wxChoicebook >( event.GetSelection() );
+	OnBookPageChanged< wxChoicebook >( event.GetSelection(), &event );
 	event.Skip();
 }
 

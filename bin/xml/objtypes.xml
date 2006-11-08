@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<definitions>
 <!--
   Definiciones de los tipos de clases
   -----------------------------------
@@ -20,8 +21,6 @@
 
 
   -->
-<definitions>
-
   <objtype name="project">
     <childtype name="form" />
   </objtype>
