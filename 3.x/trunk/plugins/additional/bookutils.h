@@ -8,6 +8,7 @@
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
 
+
 namespace BookUtils
 {
 	template < class T >
@@ -31,7 +32,6 @@ namespace BookUtils
 
 		T* book = wxDynamicCast( wxparent, T );
 
-
 		//This wouldn't compile in MinGW - strange
 		///wxWindow* page = wxDynamicCast( manager->GetChild( wxobject, 0 ), wxWindow );
 
@@ -50,8 +50,7 @@ namespace BookUtils
 			return;
 		}
 
-		// Prevent events during construction - two event handlers have been pushed onto the stack
-		// VObjEvtHandler and Component Event handler
+		// Prevent event handling by wxFB - these aren't user generated events
 		wxEvtHandler* vobjEvtHandler = book->PopEventHandler();
 		wxEvtHandler* bookEvtHandler = book->PopEventHandler();
 
@@ -118,16 +117,16 @@ namespace BookUtils
 			{
 				if ( book->GetPage( i ) == page )
 				{
-					// Prevent infinite event loop
-					wxEvtHandler* bookEvtHandler = book->PopEventHandler();
+					// Prevent infinite event loop					
 					wxEvtHandler* vobjEvtHandler = book->PopEventHandler();
+					wxEvtHandler* bookEvtHandler = book->PopEventHandler();
 
 					// Select Page
 					book->SetSelection( i );
 
 					// Restore event handling
-					book->PushEventHandler( vobjEvtHandler );
 					book->PushEventHandler( bookEvtHandler );
+					book->PushEventHandler( vobjEvtHandler );
 				}
 			}
 		}

@@ -15,7 +15,7 @@ date Version 3.00.05
   flexible_direction on wxFlexGridSizer. This resolves FS#56.
 * Now generating user_headers include statements above the generated
   header include. This resolves FS#55.
-
+* Fixed FS#51 — "notebook-like objects errors while they are included into each other"
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
 * Fixed circular subclassing. This resolves FS#32.
