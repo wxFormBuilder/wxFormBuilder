@@ -590,7 +590,7 @@ public:
 
 	TiXmlElement* ExportToXrc(IObject *obj)
 	{
-		ObjectToXrcFilter xrc(obj, _("wxCheckList"), obj->GetPropertyAsString(_("name")));
+		ObjectToXrcFilter xrc(obj, _("wxCheckListBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		//xrc.AddProperty(_("style"),_("style"), XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("choices"), _("choices"), XRC_TYPE_STRINGLIST);
@@ -599,7 +599,7 @@ public:
 
 	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
 	{
-		XrcToXfbFilter filter(xrcObj, _("wxCheckList"));
+		XrcToXfbFilter filter(xrcObj, _("wxCheckListBox"));
 		filter.AddWindowProperties();
 		//filter.AddProperty(_("style"),_("style"), XRC_TYPE_BITLIST);
 		filter.AddProperty(_("choices"), _("choices"), XRC_TYPE_STRINGLIST);
