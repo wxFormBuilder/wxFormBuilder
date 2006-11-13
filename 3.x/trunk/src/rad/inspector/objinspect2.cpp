@@ -383,15 +383,15 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 
 END_EVENT_TABLE()
 
-ObjectInspector::ObjectInspector(wxWindow *parent, int id, int style)
+ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 : wxPanel(parent,id), m_style(style)
 {
 	AppData()->AddHandler( this->GetEventHandler() );
-	m_currentSel = shared_ptr<ObjectBase>();
-	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
-  CreatePropertyGridManager();
-	topSizer->Add(m_pg, 1, wxALL | wxEXPAND, 0);
-	SetSizer(topSizer);
+	m_currentSel = shared_ptr< ObjectBase >();
+	wxBoxSizer* topSizer = new wxBoxSizer( wxVERTICAL );
+	CreatePropertyGridManager();
+	topSizer->Add( m_pg, 1, wxALL | wxEXPAND, 0 );
+	SetSizer( topSizer );
 }
 
 ObjectInspector::~ObjectInspector()
@@ -399,20 +399,15 @@ ObjectInspector::~ObjectInspector()
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
-void ObjectInspector::Create(bool force)
+void ObjectInspector::Create( bool force )
 {
-	shared_ptr<ObjectBase> sel_obj = AppData()->GetSelectedObject();
-	if (sel_obj && (sel_obj != m_currentSel || force))
+	shared_ptr< ObjectBase > sel_obj = AppData()->GetSelectedObject();
+	if ( sel_obj && ( sel_obj != m_currentSel || force ) )
 	{
 		Freeze();
 
 		m_currentSel = sel_obj;
 
-		wxSizer* sizer = GetSizer();
-		if ( NULL == sizer )
-		{
-			return;
-		}
 		int pageNumber = m_pg->GetSelectedPage();
 		wxString pageName;
 		if ( pageNumber != wxNOT_FOUND )
@@ -420,12 +415,15 @@ void ObjectInspector::Create(bool force)
 			pageName = m_pg->GetPageName( pageNumber );
 		}
 
-		sizer->Detach( m_pg );
-		delete m_pg;
-		CreatePropertyGridManager();
-
-		///m_pg->SetCaptionBackgroundColour(wxColour(0,0,150));
-		///m_pg->SetCaptionForegroundColour(wxColour(255,255,255));
+		// Clear Property Grid Manager
+		int pageCount = (int)m_pg->GetPageCount();
+		if ( pageCount > 0 )
+		{
+			for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex )
+			{
+				m_pg->RemovePage( pageIndex );
+			}
+		}
 
 		m_propmap.clear();
 
@@ -461,9 +459,6 @@ void ObjectInspector::Create(bool force)
 				m_pg->SelectPage( 0 );
 			}
 		}
-
-		sizer->Add(m_pg, 1, wxALL | wxEXPAND, 0);
-		sizer->Layout();
 
 		Thaw();
 	}
@@ -915,28 +910,30 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 
 void ObjectInspector::CreatePropertyGridManager()
 {
-  int pgStyle;
+	int pgStyle;
+	int descBoxHeight;
 
-  switch (m_style)
-  {
-    case wxFB_OI_MULTIPAGE_STYLE:
+	switch (m_style)
+	{
+		case wxFB_OI_MULTIPAGE_STYLE:
 
-		  pgStyle = wxPG_BOLD_MODIFIED| wxPG_SPLITTER_AUTO_CENTER | wxPG_TOOLBAR |
-                wxPG_DESCRIPTION  | wxPGMAN_DEFAULT_STYLE;
-		  break;
+			pgStyle = 	wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_TOOLBAR |
+						wxPG_DESCRIPTION | wxPGMAN_DEFAULT_STYLE;
+			descBoxHeight = 50;
+			break;
 
-    case wxFB_OI_DEFAULT_STYLE:
-    case wxFB_OI_SINGLE_PAGE_STYLE:
-    default:
+		case wxFB_OI_DEFAULT_STYLE:
+		case wxFB_OI_SINGLE_PAGE_STYLE:
+		default:
 
-		  pgStyle = wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_DESCRIPTION |
-                wxPGMAN_DEFAULT_STYLE;
-		  break;
-  }
+			pgStyle = 	wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_DESCRIPTION |
+						wxPGMAN_DEFAULT_STYLE;
+			descBoxHeight = 150;
+			break;
+	}
 
-  m_pg = new wxPropertyGridManager(this, -1, wxDefaultPosition, wxDefaultSize,
-         pgStyle);
+	m_pg = new wxPropertyGridManager( this, -1, wxDefaultPosition, wxDefaultSize, pgStyle );
 
-	m_pg->SetDescBoxHeight( 50 );
+	m_pg->SetDescBoxHeight( descBoxHeight );
 	//m_pg->SetExtraStyle( wxPG_EX_MODE_BUTTONS );
 }
