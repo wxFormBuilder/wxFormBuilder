@@ -56,12 +56,14 @@ public:
 
 protected:
 	void OnText( wxCommandEvent& event );
+	void OnChecked( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( -1, ComponentEvtHandler::OnText )
+	EVT_CHECKBOX( -1, ComponentEvtHandler::OnChecked )
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -418,6 +420,9 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")) | obj->GetPropertyAsInteger(_T("style")));
         res->SetValue(obj->GetPropertyAsInteger(_T("checked")) != 0);
+
+        res->PushEventHandler( new ComponentEvtHandler( res, GetManager() ) );
+
         return res;
 	}
 
@@ -439,6 +444,18 @@ public:
 		return filter.GetXfbObject();
 	}
 };
+
+void ComponentEvtHandler::OnChecked( wxCommandEvent& event )
+{
+	wxCheckBox* cb = wxDynamicCast( m_window, wxCheckBox );
+	if ( cb != NULL )
+	{
+		wxString cbValue;
+		cbValue.Printf( wxT("%i"), cb->GetValue() );
+		m_manager->ModifyProperty( m_window, _("checked"), cbValue );
+		cb->SetFocus();
+	}
+}
 
 class StaticBitmapComponent : public ComponentBase
 {
