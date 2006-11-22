@@ -6,6 +6,7 @@ end
 --project.path = "../"
 
 -- Add packages here.
+dopackage( "src" )
 dopackage( "sdk/plugin_interface" )
 dopackage( "sdk/tinyxml" )
 dopackage( "src/controls/build/propgrid" )
