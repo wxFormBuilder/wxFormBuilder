@@ -1,8 +1,12 @@
 package.name = "wxFormBuilder"
 
-package.kind = "dll"
+package.kind = "winexe"
 package.language = "c++"
-package.files = { matchfiles( "../../src/propgrid/*.cpp" ) }
+package.files = { matchrecursive( "*.cpp", "*.h" ) }
+package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
+
+-- Local variables
+local cbSpecific = ""
 
 -- Set object output directory.
 package.config["Debug"].objdir = ".objsd"
@@ -28,30 +32,60 @@ package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 package.config["Release (Unicode)"].buildflags = { "unicode", "no-symbols", "optimize-speed" }
 
 -- Set include paths
-package.includepaths = { "../../include", "$(WXWIN)/include" }
+if ( target == "cb-gcc" ) then
+	cbSpecific = "$(#WX)/include"
+else
+	cbSpecific = "$(WXWIN)/include"
+end
+package.includepaths =
+{
+	cbSpecific,
+	"controls/include",
+	"boost",
+	"../src", 
+	"../sdk/tinyxml",
+	"../sdk/plugin_interface"
+}
 
 -- Setup the linker options.
 if ( target == "cb-gcc" or target == "gnu" ) then
-	package.libpaths = { "$(WXWIN)/lib/gcc_dll" }
+	if ( target == "cb-gcc" ) then
+		cbSpecific = "$(#WX)/lib/gcc_dll"
+	else
+		cbSpecific = "$(WXWIN)/lib/gcc_dll"
+	end
+	package.libpaths =
+	{
+		cbSpecific,
+		"controls/lib/gcc_dll",
+		"../sdk/lib"
+	}
 else
-	package.libpaths = { "$(WXWIN)/lib/vc_dll" }
+	if ( target == "cb-gcc" ) then
+		cbSpecific = "$(#WX)/lib/vc_dll"
+	else
+		cbSpecific = "$(WXWIN)/lib/vc_dll"
+	end
+	package.libpaths =
+	{
+		cbSpecific,
+		"controls/lib/vc_dll",
+		"../sdk/lib"
+	}
 end
 
 -- Setup the output directory options.
-if ( target == "cb-gcc" or target == "gnu" or OS ~= "windows" ) then
-	package.bindir = ".../../lib/gcc_dll"
-	package.libdir = "../../lib/gcc_lib"
-else
-	package.bindir = "../../lib/vc_dll"
-	package.libdir = "../../lib/vc_lib"
-end
+package.bindir = "../bin"
+--package.libpath = "controls/lib/gcc_dll"
 
 -- Set libraries to link.
 if ( OS == "windows") then
+	
 	package.config["Debug"].links = { "wxmsw27d" }
 	package.config["Debug (Unicode)"].links = { "wxmsw27ud" }
-	package.config["Release"].links = { "wxmsw27" }
+	package.config["Release"].links = {	"wxmsw27" }
 	package.config["Release (Unicode)"].links = { "wxmsw27u" }
+	package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP" }
 else
 	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`"}
 	package.config["Release"].linkoptions = { "`wx-config --libs`" }
@@ -59,16 +93,38 @@ end
 
 -- Set defines.
 if ( OS == "windows") then
-	package.config["Debug"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "DEBUG", "WIN32", "_WINDOWS", "HAVE_W32API_H", "__WX__", "__WXMSW__", "__WXDEBUG__", "WXUSINGDLL" }
-	package.config["Debug (Unicode)"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "DEBUG", "WIN32", "_WINDOWS", "HAVE_W32API_H", "__WX__", "__WXMSW__", "__WXDEBUG__", "UNICODE", "_UNICODE", "WXUSINGDLL" }
-	package.config["Release"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "NDEBUG", "WIN32", "_WINDOWS", "HAVE_W32API_H", "__WX__", "__WXMSW__", "TIXML_USE_TICPP", "WXUSINGDLL" }
-	package.config["Release (Unicode)"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "NDEBUG", "WIN32", "_WINDOWS", "HAVE_W32API_H", "__WX__", "__WXMSW__", "UNICODE", "_UNICODE", "WXUSINGDLL" }
+	package.defines =
+	{
+		"HAVE_W32API_H",
+		"WIN32",
+		"_WINDOWS",
+		"TIXML_USE_STL",
+		"__WX__",
+		"__WXMSW__",
+		"WXUSINGDLL",
+		"WXUSINGDLL_FNB",
+		"TIXML_USE_TICPP"
+	}
+	package.config["Debug"].defines = { "DEBUG", "__WXDEBUG__" }
+	package.config["Debug (Unicode)"].defines = { "DEBUG", "__WXDEBUG__", "UNICODE", "_UNICODE" }
+	package.config["Release"].defines = { "NDEBUG" }
+	package.config["Release (Unicode)"].defines = { "NDEBUG", "UNICODE", "_UNICODE" }
 else
-	package.config["Debug"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "DEBUG", "__WX__", "__WXDEBUG__", "WXUSINGDLL" }
-	package.config["Release"].defines = { "WXMAKINGDLL_PROPGRID", "MONOLITHIC", "NDEBUG", "__WX__", "WXUSINGDLL" }
+	package.defines =
+	{
+		"TIXML_USE_STL",
+		"__WX__",
+		"__WXGTK__",
+		"NO_GCC_PRAGMA",
+		"NOPCH",
+		"WXUSINGDLL",
+		"TIXML_USE_TICPP"
+	}
+	package.config["Debug"].defines = { "DEBUG", "__WXDEBUG__", "WXUSINGDLL" }
+	package.config["Release"].defines = { "NDEBUG", "WXUSINGDLL" }
 end
 
--- Set build optionsfor Linux.
+-- Set build options for Linux.
 if ( OS == "linux" ) then
 	package.config["Debug"].buildoptions = { "`wx-config --debug=yes --cflags`" }
 	package.config["Release"].buildoptions = { "`wx-config --debug=no --cflags`" }
