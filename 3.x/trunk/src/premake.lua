@@ -2,11 +2,12 @@ package.name = "wxFormBuilder"
 
 package.kind = "winexe"
 package.language = "c++"
-package.files = { matchrecursive( "*.cpp", "*.h" ) }
+package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 
 -- Local variables
 local cbSpecific = ""
+local wx_ver = "27"
 
 -- Set object output directory.
 package.config["Debug"].objdir = ".objsd"
@@ -81,11 +82,11 @@ package.bindir = "../bin"
 -- Set libraries to link.
 if ( OS == "windows") then
 	
-	package.config["Debug"].links = { "wxmsw27d" }
-	package.config["Debug (Unicode)"].links = { "wxmsw27ud" }
-	package.config["Release"].links = {	"wxmsw27" }
-	package.config["Release (Unicode)"].links = { "wxmsw27u" }
-	package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP" }
+	package.config["Debug"].links = { "wxmsw"..wx_ver.."d" }
+	package.config["Debug (Unicode)"].links = { "wxmsw"..wx_ver.."ud" }
+	package.config["Release"].links = {	"wxmsw"..wx_ver }
+	package.config["Release (Unicode)"].links = { "wxmsw"..wx_ver.."u" }
+	package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "Plugin Interface" }
 else
 	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`"}
 	package.config["Release"].linkoptions = { "`wx-config --libs`" }
