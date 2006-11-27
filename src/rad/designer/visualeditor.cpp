@@ -218,6 +218,7 @@ void VisualEditor::Create()
 	m_form = AppData()->GetSelectedForm();
 	if ( m_form )
 	{
+	  m_back->Show(true);
 
 		// --- [1] Configure the size of the form ---------------------------
 		bool need_fit = false;
@@ -304,7 +305,9 @@ void VisualEditor::Create()
 				// Recursively generate the ObjectTree
 				try
 				{
-					Generate( child, m_back->GetFrameContentPanel(), NULL );
+				  // we have to put the content frame panel as parentObject in order
+				  // to SetSizeHints be called.
+					Generate( child, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
 				}
 				catch ( wxFBException& ex )
 				{
@@ -331,7 +334,7 @@ void VisualEditor::Create()
 
 		if ( need_fit && m_back->GetFrameContentPanel()->GetSizer() )
 		{
-			m_back->GetFrameContentPanel()->GetSizer()->Fit( m_back->GetFrameContentPanel() );
+		  m_back->Fit();
 		}
 
 		if ( menubar || statusbar || toolbar )
@@ -354,8 +357,9 @@ void VisualEditor::Create()
 	else
 	{
 		// There is no form to display
-		m_back->SetSize(10,10);
-		m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+		//m_back->SetSize(10,10);
+		//m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+		m_back->Show(false);
 	}
 
 	if ( IsShown() )
@@ -440,9 +444,8 @@ void VisualEditor::Generate( shared_ptr< ObjectBase > obj, wxWindow* wxparent, w
 	{
 		wxparent->SetSizer( createdSizer );
 		if ( parentObject )
-		{
 			createdSizer->SetSizeHints( wxparent );
-		}
+
 		wxparent->SetAutoLayout(true);
 		wxparent->Layout();
 	}
