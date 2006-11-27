@@ -74,8 +74,10 @@ class MainFrame : public wxFrame
   XrcPanel *m_xrc;
   int m_style;
 
-  wxString m_currentDir;
+  int m_leftSplitterWidth;
+  int m_rightSplitterWidth;
 
+  wxString m_currentDir;
   wxString m_recentProjects[4];
 
   void UpdateFrame();
@@ -84,8 +86,9 @@ class MainFrame : public wxFrame
   void UpdateRecentProjects();
   void OnOpenRecent(wxCommandEvent &event);
   void UpdateLayoutTools();
-
   bool SaveWarning();
+
+  void UpdateSash();
 
   DECLARE_EVENT_TABLE()
  public:
@@ -118,6 +121,9 @@ class MainFrame : public wxFrame
   void OnChangeBorder(wxCommandEvent& e);
   void OnXrcPreview(wxCommandEvent& e);
   void OnFlatNotebookPageChanged( wxNotebookChooserEvent& event );
+  void OnSize(wxSizeEvent &event);
+  void OnSashPosChanged(wxSplitterEvent &event);
+  void OnPaint(wxPaintEvent &event);
 
   void OnProjectLoaded( wxFBEvent& event );
   void OnProjectSaved( wxFBEvent& event );

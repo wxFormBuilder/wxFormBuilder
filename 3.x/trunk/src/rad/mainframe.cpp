@@ -86,6 +86,9 @@
 
 #define ID_PREVIEW_XRC    136
 
+#define ID_LEFT_SPLITTER  137
+#define ID_RIGHT_SPLITTER 138
+
 BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 	EVT_MENU(ID_NEW_PRJ,MainFrame::OnNewProject)
 	EVT_MENU(ID_SAVE_PRJ,MainFrame::OnSaveProject)
@@ -121,6 +124,11 @@ BEGIN_EVENT_TABLE(MainFrame,wxFrame)
 	EVT_MENU(ID_PREVIEW_XRC, MainFrame::OnXrcPreview)
 	EVT_CLOSE(MainFrame::OnClose)
 	EVT_NOTEBOOKCHOOSER_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
+	EVT_SIZE(MainFrame::OnSize)
+
+  EVT_SPLITTER_SASH_POS_CHANGED(-1, MainFrame::OnSashPosChanged)
+
+  EVT_PAINT(MainFrame::OnPaint)
 
 	EVT_FB_CODE_GENERATION( MainFrame::OnCodeGeneration )
 	EVT_FB_OBJECT_CREATED( MainFrame::OnObjectCreated )
@@ -139,6 +147,7 @@ MainFrame::MainFrame(wxWindow *parent, int id, int style)
 {
   // initialize the splitters, wxAUI doesn't use them
   m_leftSplitter = m_rightSplitter = NULL;
+  m_leftSplitterWidth = m_rightSplitterWidth = 300;
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -255,6 +264,7 @@ MainFrame::MainFrame(wxWindow *parent, int id, int style)
 
 
 
+  Layout();
 	RestorePosition(wxT("mainframe"));
 
 	AppData()->AddHandler( this->GetEventHandler() );
@@ -272,12 +282,21 @@ MainFrame::~MainFrame()
 void MainFrame::RestorePosition(const wxString &name)
 {
 	bool maximized;
-	int x, y, w, h, leftSash, rightSash;
+	int x, y, w, h;
 
 	m_currentDir = wxT("./projects");
 
 	wxConfigBase *config = wxConfigBase::Get();
 	config->SetPath(name);
+
+  if (m_leftSplitter)
+   config->Read(wxT("LeftSplitterWidth"), &m_leftSplitterWidth,300);
+
+	if (m_rightSplitter)
+	    config->Read(wxT("RightSplitterWidth"), &m_rightSplitterWidth,300);
+
+  UpdateSash();
+
 	if (config->Read(wxT("IsMaximized"), &maximized))
 	{
 		Maximize(maximized);
@@ -293,17 +312,6 @@ void MainFrame::RestorePosition(const wxString &name)
 	}
 	config->Read(wxT("CurrentDirectory"), &m_currentDir);
 
-	if (m_leftSplitter)
-	{
-	  config->Read(wxT("LeftSashPos"), &leftSash,300);
-	  m_leftSplitter->SetSashPosition(leftSash);
-	}
-
-	if (m_rightSplitter)
-	{
-	  config->Read(wxT("RightSashPos"), &rightSash,800);
-	  m_rightSplitter->SetSashPosition(rightSash);
-	}
 
 
 	config->Read(wxT("RecentFile0"),&m_recentProjects[0]);
@@ -338,11 +346,18 @@ void MainFrame::SavePosition(const wxString &name)
 	config->Write(wxT("RecentFile2"),m_recentProjects[2]);
 	config->Write(wxT("RecentFile3"),m_recentProjects[3]);
 
+
 	if (m_leftSplitter)
-    config->Write(wxT("LeftSashPos"),m_leftSplitter->GetSashPosition());
+	{
+	  int leftSashWidth = wxMax(300, m_leftSplitterWidth);
+    config->Write(wxT("LeftSplitterWidth"),leftSashWidth);
+	}
 
 	if (m_rightSplitter)
-    config->Write(wxT("RightSashPos"),m_rightSplitter->GetSashPosition());
+	{
+	  int rightSashWidth = wxMax(300, m_rightSplitterWidth);
+    config->Write(wxT("RightSplitterWidth"),rightSashWidth);
+	}
 
 	config->SetPath(wxT(".."));
 }
@@ -822,11 +837,6 @@ void MainFrame::OnXrcPreview(wxCommandEvent& WXUNUSED(e))
     for (int i = 0, count = all_panes.GetCount(); i < count; ++i)
     {
       wxPaneInfo info = all_panes.Item(i);
-      std::cout << "\n\nName: " << info.name.mb_str();
-      std::cout << "\nDirection: " << info.dock_direction;
-      std::cout << "\nLayer: " << info.dock_layer;
-      std::cout << "\nRow: " << info.dock_row;
-      std::cout << "\nPos: " << info.dock_pos;
     }
 
 }
@@ -1008,7 +1018,7 @@ wxWindow * MainFrame::CreateObjectInspector(wxWindow *parent)
 
 void MainFrame::CreateWideGui()
 {
-  m_leftSplitter = new wxSplitterWindow(this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+  m_leftSplitter = new wxSplitterWindow(this, ID_LEFT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0);
 
 	wxWindow *objectTree = Title::CreateTitle(CreateObjectTree(m_leftSplitter),wxT("Object Tree"));
 
@@ -1016,7 +1026,7 @@ void MainFrame::CreateWideGui()
 	wxPanel *panel1 = new wxPanel(m_leftSplitter,-1);
 
 	wxWindow *palette = Title::CreateTitle(CreateComponentPalette(panel1),wxT("Component Palette"));
-	m_rightSplitter   =  new wxSplitterWindow(panel1, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE);
+	m_rightSplitter   =  new wxSplitterWindow(panel1, ID_RIGHT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0);
 
   wxBoxSizer *panel1_sizer = new wxBoxSizer(wxVERTICAL);
   panel1_sizer->Add(palette,0,wxEXPAND);
@@ -1029,6 +1039,8 @@ void MainFrame::CreateWideGui()
 
 	m_leftSplitter->SplitVertically(objectTree,panel1,300);
 	m_rightSplitter->SplitVertically(designer,objectInspector,800);
+
+	m_style = wxFB_WIDE_GUI;
 }
 
 void MainFrame::CreateClassicGui()
@@ -1051,5 +1063,52 @@ void MainFrame::CreateClassicGui()
   panel1->SetSizer(panel1_sizer);
 
 	m_leftSplitter->SplitVertically(m_rightSplitter,panel1,300);
-	m_rightSplitter->SplitHorizontally(objectTree,objectInspector,800);
+	m_rightSplitter->SplitHorizontally(objectTree,objectInspector,300);
+}
+
+void MainFrame::OnSize(wxSizeEvent &event)
+{
+  UpdateSash();
+  event.Skip();
+}
+
+void MainFrame::OnSashPosChanged(wxSplitterEvent &event)
+{
+  if (this->IsShown() && m_style == wxFB_WIDE_GUI)
+  {
+    if (event.GetId() == ID_RIGHT_SPLITTER)
+    {
+      int w = GetSize().GetWidth() - m_rightSplitter->GetSashPosition() -
+                                     m_leftSplitter->GetSashPosition();
+
+      m_rightSplitterWidth = wxMax(300,w);;
+    }
+    else if (event.GetId() == ID_LEFT_SPLITTER)
+    {
+      m_leftSplitterWidth = m_leftSplitter->GetSashPosition();
+      UpdateSash();
+    }
+  }
+
+
+  event.Skip();
+}
+
+void MainFrame::UpdateSash()
+{
+  if (this->IsShown() && m_style == wxFB_WIDE_GUI)
+  {
+    int w = GetSize().GetWidth();
+    int sashPos = GetSize().GetWidth() - m_rightSplitterWidth - m_leftSplitterWidth;
+
+    if (sashPos > 0)
+      m_rightSplitter->SetSashPosition(sashPos);
+  }
+}
+
+
+void MainFrame::OnPaint(wxPaintEvent &event)
+{
+  UpdateSash();
+  event.Skip();
 }
