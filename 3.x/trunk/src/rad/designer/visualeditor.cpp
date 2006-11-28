@@ -334,7 +334,7 @@ void VisualEditor::Create()
 
 		if ( need_fit && m_back->GetFrameContentPanel()->GetSizer() )
 		{
-		  m_back->Fit();
+		  m_back->GetSizer()->Fit( m_back );
 		}
 
 		if ( menubar || statusbar || toolbar )
