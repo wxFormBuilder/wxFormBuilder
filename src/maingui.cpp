@@ -41,6 +41,7 @@
 #include <wx/image.h>
 #include <wx/sysopt.h>
 #include <wx/xrc/xmlres.h>
+#include "wx/config.h"
 
 #include <memory>
 #include "maingui.h"
@@ -108,9 +109,21 @@ bool MyApp::OnInit()
 	m_old_log = wxLog::SetActiveTarget( m_log );
 #endif //__WXFB_DEBUG__
 
+	// Read size and position from config file
+	wxConfigBase *config = wxConfigBase::Get();
+	config->SetPath( wxT("/mainframe") );
+	int x, y, w, h;
+	x = y = w = h = -1;
+	config->Read( wxT( "PosX" ), &x );
+	config->Read( wxT( "PosY" ), &y );
+	config->Read( wxT( "SizeW" ), &w );
+	config->Read( wxT( "SizeH" ), &h );
+	config->SetPath( wxT("/") );
+
+
   //TO-DO: Make wxFB gui style selectable
 	//MainFrame *frame = new MainFrame( NULL ,-1, wxFB_CLASSIC_GUI);
-	MainFrame *frame = new MainFrame( NULL ,-1, wxFB_WIDE_GUI);
+	MainFrame *frame = new MainFrame( NULL ,-1, wxFB_WIDE_GUI, wxPoint( x, y ), wxSize( w, h ) );
 	frame->Show( TRUE );
 	SetTopWindow( frame );
 
