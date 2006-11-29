@@ -9,9 +9,13 @@ typedef wxFlatNotebookImageList wxNotebookChooserImageList;
 typedef wxFlatNotebookEvent wxNotebookChooserEvent;
 
 #ifdef __WXGTK__
-#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG
+	#if wxCHECK_VERSION( 2, 8, 0 )
+		#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST
+	#else
+		#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_DROPDOWN_TABS_LIST
+	#endif
 #else
-#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS
+	#define NOTEBOOK_STYLE wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_DROPDOWN_TABS_LIST
 #endif
 
 #define ChooseNotebook( parent, id ) wxFlatNotebook( parent, id, wxDefaultPosition, wxDefaultSize, NOTEBOOK_STYLE );
