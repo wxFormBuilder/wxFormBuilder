@@ -25,7 +25,7 @@ cd ..
 echo Building wxFlatNotebook with MinGW Gcc
 echo.
 cd wxFlatNotebook
-call wxBuild_default MINGW ALL
+call wxBuild_wxFlatNotebook MINGW ALL
 cd ..
 
 :: -- wxScintilla --
