@@ -154,7 +154,7 @@
 			<Add library="winspool" />
 			<Add library="wsock32" />
 			<Add directory="$(#WX.lib)\gcc_dll" />
-			<Add directory="controls\lib\gcc_dll" />
+			<Add directory="..\bin" />
 			<Add directory="$(sdk)\lib" />
 		</Linker>
 		<Unit filename="codegen\codegen.cpp">
