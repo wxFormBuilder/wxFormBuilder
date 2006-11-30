@@ -208,6 +208,9 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 
 	m_mgr.Update();*/
 
+	RestorePosition( wxT("mainframe") );
+	Layout();
+
 	switch ( style )
 	{
 		case wxFB_DOCKABLE_GUI:
@@ -255,8 +258,6 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 			CreateWideGui();
 	}
 
-	RestorePosition( wxT( "mainframe" ) );
-
 	AppData()->AddHandler( this->GetEventHandler() );
 
 	wxTheApp->SetTopWindow( this );
@@ -281,12 +282,6 @@ void MainFrame::RestorePosition( const wxString &name )
 	if ( maximized )
 	{
 		Maximize( maximized );
-
-		// This must be done so that the splitter windows restore correctly.
-		// Strange
-		// RJM 11/29/06, wxMSW 2.7.0
-		wxSizeEvent update( GetSize(), GetId() );
-		ProcessEvent( update );
 	}
 	else
 	{
@@ -295,23 +290,8 @@ void MainFrame::RestorePosition( const wxString &name )
 		Iconize( iconized );
 	}
 
-	Layout();
-
-	int leftSplitterWidth = 0;
-	if ( m_leftSplitter )
-	{
-		config->Read( wxT( "LeftSplitterWidth" ), &leftSplitterWidth, 300 );
-		m_leftSplitter->SetSashPosition( leftSplitterWidth );
-		m_leftSplitter->UpdateSize();
-	}
-
-	if ( m_rightSplitter )
-	{
-		int rightSplitterWidth = 0;
-		config->Read( wxT( "RightSplitterWidth" ), &rightSplitterWidth, GetSize().GetWidth() - leftSplitterWidth - 300 );
-		m_rightSplitter->SetSashPosition( rightSplitterWidth );
-		m_rightSplitter->UpdateSize();
-	}
+	config->Read( wxT( "LeftSplitterWidth" ), &m_leftSplitterWidth, 300 );
+	config->Read( wxT( "RightSplitterWidth" ), &m_rightSplitterWidth, -300 );
 
 	config->Read( wxT( "CurrentDirectory" ), &m_currentDir );
 
@@ -355,13 +335,7 @@ void MainFrame::SavePosition( const wxString &name )
 
 	if ( m_rightSplitter )
 	{
-		int rightSash = m_rightSplitter->GetSashPosition();
-		if ( isMaximized )
-		{
-			int w = GetSize().GetWidth();
-			int clientW = GetClientSize().GetWidth();
-			rightSash -= ( w - clientW );
-		}
+		int rightSash = -1 * ( m_rightSplitter->GetSize().GetWidth() - m_rightSplitter->GetSashPosition() );
 		config->Write( wxT( "RightSplitterWidth" ), rightSash );
 	}
 
@@ -838,11 +812,11 @@ void MainFrame::OnXrcPreview( wxCommandEvent& WXUNUSED( e ) )
 {
 	AppData()->ShowXrcPreview();
 
-	wxPaneInfoArray& all_panes = m_mgr.GetAllPanes();
+	/*wxPaneInfoArray& all_panes = m_mgr.GetAllPanes();
 	for ( int i = 0, count = all_panes.GetCount(); i < count; ++i )
 	{
 		wxPaneInfo info = all_panes.Item( i );
-	}
+	}*/
 
 }
 
@@ -1042,8 +1016,14 @@ void MainFrame::CreateWideGui()
 	wxWindow *designer        = Title::CreateTitle( CreateDesignerWindow( m_rightSplitter ), wxT( "Editor" ) );
 	wxWindow *objectInspector = Title::CreateTitle( CreateObjectInspector( m_rightSplitter ), wxT( "Object Properties" ) );
 
-	m_leftSplitter->SplitVertically( objectTree, panel1, 300 );
-	m_rightSplitter->SplitVertically( designer, objectInspector, 800 );
+	m_leftSplitter->SplitVertically( objectTree, panel1, m_leftSplitterWidth );
+
+	// Need to update the left splitter so the right one is drawn correctly
+	wxSizeEvent update( GetSize(), GetId() );
+	ProcessEvent( update );
+	m_leftSplitter->UpdateSize();
+
+	m_rightSplitter->SplitVertically( designer, objectInspector, m_rightSplitterWidth );
 	m_rightSplitter->SetSashGravity( 1 );
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
@@ -1071,8 +1051,14 @@ void MainFrame::CreateClassicGui()
 	panel1_sizer->Add( designer, 1, wxEXPAND );
 	panel1->SetSizer( panel1_sizer );
 
-	m_leftSplitter->SplitVertically( m_rightSplitter, panel1, 300 );
-	m_rightSplitter->SplitHorizontally( objectTree, objectInspector, 300 );
+	m_leftSplitter->SplitVertically( m_rightSplitter, panel1, m_leftSplitterWidth );
+
+	// Need to update the left splitter so the right one is drawn correctly
+	wxSizeEvent update( GetSize(), GetId() );
+	ProcessEvent( update );
+	m_leftSplitter->UpdateSize();
+
+	m_rightSplitter->SplitHorizontally( objectTree, objectInspector, m_rightSplitterWidth );
 
 	SetMinSize( wxSize( 700, 465 ) );
 }
