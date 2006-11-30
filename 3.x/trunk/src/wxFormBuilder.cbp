@@ -102,10 +102,10 @@
 				</Environment>
 			</Target>
 			<Environment>
+				<Variable name="WX_VER" value="270" />
 				<Variable name="boost" value="boost" />
 				<Variable name="sdk" value="..\sdk" />
 				<Variable name="WX_SUFFIX" value="" />
-				<Variable name="WX_VER" value="270" />
 			</Environment>
 		</Build>
 		<Compiler>
@@ -630,15 +630,6 @@
 			<Option target="Release (Unicode)" />
 			<Option target="Debug (Unicode)" />
 		</Unit>
-		<Unit filename="utils\notebookchooser.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Release (Unicode)" />
-			<Option target="Debug (Unicode)" />
-		</Unit>
 		<Unit filename="utils\stringutils.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
@@ -688,6 +679,8 @@
 			<Option target="Release" />
 			<Option target="Release (Unicode)" />
 		</Unit>
-		<Extensions />
+		<Extensions>
+			<code_completion />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
