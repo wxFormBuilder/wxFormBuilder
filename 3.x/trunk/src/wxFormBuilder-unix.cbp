@@ -425,13 +425,6 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="utils/notebookchooser.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="utils/stringutils.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
