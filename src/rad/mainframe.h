@@ -62,8 +62,10 @@ class MainFrame : public wxFrame
 
   wxSplitterWindow *m_leftSplitter;
   wxSplitterWindow *m_rightSplitter;
+  int m_leftSplitterWidth;
+  int m_rightSplitterWidth;
 
-  wxFrameManager m_mgr;
+  //wxFrameManager m_mgr;
   wxNotebookChooser *m_notebook;
   wxNotebookChooserImageList m_icons;
   wxFbPalette *m_palette;
