@@ -43,7 +43,7 @@ CppPanel::CppPanel(wxWindow *parent, int id)
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer(wxVERTICAL);
 
-	wxNotebookChooser* notebook = new ChooseNotebook( this, -1 );
+	wxFlatNotebook* notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG );
 
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT("cpp"), 16 ) );

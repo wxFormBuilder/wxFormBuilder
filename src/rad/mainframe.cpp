@@ -123,7 +123,7 @@ BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_MENU_RANGE( ID_BORDER_LEFT, ID_BORDER_BOTTOM, MainFrame::OnChangeBorder )
 	EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
 	EVT_CLOSE( MainFrame::OnClose )
-	EVT_NOTEBOOKCHOOSER_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
+	EVT_FLATNOTEBOOK_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
 	EVT_FB_CODE_GENERATION( MainFrame::OnCodeGeneration )
 	EVT_FB_OBJECT_CREATED( MainFrame::OnObjectCreated )
@@ -140,6 +140,7 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 		: wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
 		m_style( style )
 {
+
 	// initialize the splitters, wxAUI doesn't use them
 	m_leftSplitter = m_rightSplitter = NULL;
 
@@ -287,7 +288,10 @@ void MainFrame::RestorePosition( const wxString &name )
 	{
 		bool iconized;
 		config->Read( wxT( "IsIconized" ), &iconized, false );
-		Iconize( iconized );
+		if ( iconized )
+		{
+			Iconize( iconized );
+		}
 	}
 
 	config->Read( wxT( "LeftSplitterWidth" ), &m_leftSplitterWidth, 300 );
@@ -842,7 +846,7 @@ bool MainFrame::SaveWarning()
 	return ( result != wxCANCEL );
 }
 
-void MainFrame::OnFlatNotebookPageChanged( wxNotebookChooserEvent& event )
+void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 {
 	AppData()->GenerateCode( true );
 }
@@ -946,7 +950,7 @@ wxToolBar * MainFrame::CreateFBToolBar()
 
 wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 {
-	m_notebook = new ChooseNotebook( parent,  ID_EDITOR_FNB );
+	m_notebook = new wxFlatNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG );
 
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );

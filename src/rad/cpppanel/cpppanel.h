@@ -32,7 +32,7 @@
 #include "codegen/codegen.h"
 #include "codegen/cppcg.h"
 #include "wx/file.h"
-#include "utils/notebookchooser.h"
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 #include <vector>
 #include <boost/smart_ptr.hpp>
@@ -92,7 +92,7 @@ class CppPanel : public wxPanel
   CodeEditor *m_hPanel;
   PTCCodeWriter m_hCW;
   PTCCodeWriter m_cppCW;
-  wxNotebookChooserImageList m_icons;
+  wxFlatNotebookImageList m_icons;
 
   void InitStyledTextCtrl(wxScintilla *stc);
 

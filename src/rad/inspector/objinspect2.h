@@ -27,7 +27,7 @@
 #define __OBJ_INSPECT__
 
 #include "wx/wx.h"
-#include "utils/notebookchooser.h"
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/propdev.h>
 #include <wx/propgrid/advprops.h>

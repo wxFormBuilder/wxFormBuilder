@@ -36,6 +36,16 @@
 #define ID_ABOUT 100
 #define ID_QUIT  101
 
+#ifdef __WXGTK__
+	#if wxCHECK_VERSION( 2, 8, 0 )
+		#define DRAG_OPTION 0
+	#else
+		#define DRAG_OPTION wxFNB_NODRAG
+	#endif
+#else
+	#define DRAG_OPTION 0
+#endif
+
 wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 1000;
 
 BEGIN_EVENT_TABLE(wxFbPalette, wxPanel)
@@ -73,7 +83,7 @@ void wxFbPalette::Create()
 {
   wxBoxSizer *top_sizer = new wxBoxSizer(wxVERTICAL);
 
-  m_notebook = new ChooseNotebook( this, -1 );
+  m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | DRAG_OPTION | wxFNB_DROPDOWN_TABS_LIST );
 
   unsigned int pkg_count = AppData()->GetPackageCount();
 
