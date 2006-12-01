@@ -101,7 +101,7 @@ class fbColourPropertyClass : public wxSystemColourPropertyClass
     WX_PG_DECLARE_DERIVED_PROPERTY_CLASS()
 public:
     fbColourPropertyClass( const wxString& label, const wxString& name,
-        const wxColourPropertyValue& value );
+	const wxColourPropertyValue& value );
     virtual ~fbColourPropertyClass ();
     virtual long GetColour ( int index );
 };
@@ -110,14 +110,14 @@ static wxPGChoices gs_fbColourProperty_choicesCache;
 
 WX_PG_IMPLEMENT_DERIVED_PROPERTY_CLASS(fbColourProperty, wxSystemColourProperty, const wxColourPropertyValue&)
 
-fbColourPropertyClass::fbColourPropertyClass( const wxString& label, const wxString& name,
-    const wxColourPropertyValue& value )
-    : wxPG_PROPCLASS(wxSystemColourProperty)( label, name, fbcolprop_labels,
-    fbcolprop_colours, &gs_fbColourProperty_choicesCache, value )
+fbColourPropertyClass::fbColourPropertyClass( const wxString& label, const wxString& name, const wxColourPropertyValue& value )
+:
+wxPG_PROPCLASS(wxSystemColourProperty)( label, name, fbcolprop_labels, fbcolprop_colours, &gs_fbColourProperty_choicesCache, value )
 {
     wxPG_INIT_REQUIRED_TYPE(wxColourPropertyValue)
     m_flags |= wxPG_PROP_TRANSLATE_CUSTOM;
-    DoSetValue ( &m_value );
+    m_value.m_colour = GetColour( m_value.m_type );
+	wxEnumPropertyClass::DoSetValue( (long)m_value.m_type );
 }
 
 fbColourPropertyClass::~fbColourPropertyClass () { }
