@@ -27,10 +27,12 @@
 #include "model/objectbase.h"
 #include "utils/debug.h"
 #include "utils/typeconv.h"
-#include "wx/tokenzr.h"
 #include "rad/bitmaps.h"
 #include "rad/wxfbevent.h"
-#include <rad/appdata.h>
+#include "rad/appdata.h"
+
+#include <wx/tokenzr.h>
+#include <wx/config.h>
 
 // -----------------------------------------------------------------------
 // fbColourProperty
@@ -116,8 +118,7 @@ wxPG_PROPCLASS(wxSystemColourProperty)( label, name, fbcolprop_labels, fbcolprop
 {
     wxPG_INIT_REQUIRED_TYPE(wxColourPropertyValue)
     m_flags |= wxPG_PROP_TRANSLATE_CUSTOM;
-    m_value.m_colour = GetColour( m_value.m_type );
-	wxEnumPropertyClass::DoSetValue( (long)m_value.m_type );
+    DoSetValue ( &m_value );
 }
 
 fbColourPropertyClass::~fbColourPropertyClass () { }
@@ -397,6 +398,13 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 ObjectInspector::~ObjectInspector()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
+}
+
+void ObjectInspector::SavePosition()
+{
+	// Save Layout
+	wxConfigBase* config = wxConfigBase::Get();
+	config->Write( wxT("/mainframe/objectInspector/DescBoxHeight" ), m_pg->GetDescBoxHeight() );
 }
 
 void ObjectInspector::Create( bool force )
@@ -911,7 +919,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 void ObjectInspector::CreatePropertyGridManager()
 {
 	int pgStyle;
-	int descBoxHeight;
+	int defaultDescBoxHeight;
 
 	switch (m_style)
 	{
@@ -919,7 +927,7 @@ void ObjectInspector::CreatePropertyGridManager()
 
 			pgStyle = 	wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_TOOLBAR |
 						wxPG_DESCRIPTION | wxPGMAN_DEFAULT_STYLE;
-			descBoxHeight = 50;
+			defaultDescBoxHeight = 50;
 			break;
 
 		case wxFB_OI_DEFAULT_STYLE:
@@ -928,12 +936,19 @@ void ObjectInspector::CreatePropertyGridManager()
 
 			pgStyle = 	wxPG_BOLD_MODIFIED | wxPG_SPLITTER_AUTO_CENTER | wxPG_DESCRIPTION |
 						wxPGMAN_DEFAULT_STYLE;
-			descBoxHeight = 150;
+			defaultDescBoxHeight = 150;
 			break;
 	}
 
-	m_pg = new wxPropertyGridManager( this, -1, wxDefaultPosition, wxDefaultSize, pgStyle );
+	int descBoxHeight;
+	wxConfigBase* config = wxConfigBase::Get();
+	config->Read( wxT( "/mainframe/objectInspector/DescBoxHeight" ), &descBoxHeight, defaultDescBoxHeight );
+	if ( -1 == descBoxHeight )
+	{
+		descBoxHeight = defaultDescBoxHeight;
+	}
 
+	m_pg = new wxPropertyGridManager( this, -1, wxDefaultPosition, wxDefaultSize, pgStyle );
 	m_pg->SetDescBoxHeight( descBoxHeight );
-	//m_pg->SetExtraStyle( wxPG_EX_MODE_BUTTONS );
+	m_pg->SetExtraStyle( wxPG_EX_NATIVE_DOUBLE_BUFFERING );
 }
