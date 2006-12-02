@@ -377,24 +377,11 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	code = GetCode( project, wxT("header_preamble") );
 	m_header->WriteLn( code );
 
-	// generamos en el h los includes de las dependencias de los componentes.
-	set<wxString> includes;
-	GenIncludes(project, &includes);
-
-	// Write the include lines
-	set<wxString>::iterator include_it;
-	for ( include_it = includes.begin(); include_it != includes.end(); ++include_it )
-	{
-		m_header->WriteLn( *include_it );
-	}
-	if ( !includes.empty() )
-	{
-		m_header->WriteLn( wxT("") );
-	}
-
-	// Generate the subclass set
+	// Generate the subclass sets
 	set< wxString > subclasses;
-	GenSubclassForwardDeclarations( project, &subclasses );
+	set< wxString > subclassSourceIncludes;
+	set< wxString > headerIncludes;
+	GenSubclassSets( project, &subclasses, &subclassSourceIncludes, &headerIncludes );
 
 	// Write the forward declaration lines
 	set< wxString >::iterator subclass_it;
@@ -407,34 +394,55 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 		m_header->WriteLn( wxT("") );
 	}
 
+	// generamos en el h los includes de las dependencias de los componentes.
+	GenIncludes(project, &headerIncludes);
+
+	// Write the include lines
+	set<wxString>::iterator include_it;
+	for ( include_it = headerIncludes.begin(); include_it != headerIncludes.end(); ++include_it )
+	{
+		m_header->WriteLn( *include_it );
+	}
+	if ( !headerIncludes.empty() )
+	{
+		m_header->WriteLn( wxT("") );
+	}
+
 	code = GetCode( project, wxT("header_epilogue") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("") );
 
+	// Precompiled Headers
+	shared_ptr<Property> pch_prop = project->GetProperty( wxT("precompiled_header") );
+	if ( pch_prop )
+	{
+		wxString pch = pch_prop->GetValueAsString();
+		if ( !pch.empty() )
+		{
+			m_source->WriteLn( wxT("#include \"") + pch + wxT("\"") );
+			m_source->WriteLn( wxEmptyString );
+		}
+	}
+
 	// en el cpp generamos el include del .h generado y los xpm
 	code = GetCode( project, wxT("cpp_preamble") );
 	m_source->WriteLn( code );
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn( wxEmptyString );
 
-	// User Headers
-	set< wxString > user_headers;
-	shared_ptr<Property> user_headers_prop = project->GetProperty( wxT("user_headers") );
-	if ( user_headers_prop )
+	// Write include lines for subclasses
+	for ( subclass_it = subclassSourceIncludes.begin(); subclass_it != subclassSourceIncludes.end(); ++subclass_it )
 	{
-		wxArrayString array = user_headers_prop->GetValueAsArrayString();
-		for ( unsigned int i = 0; i < array.Count(); i++ )
-		{
-			if ( user_headers.insert( array[i] ).second )
-			{
-				m_source->WriteLn( wxT("#include \"") + array[i] + wxT("\"") );
-			}
-		}
+		m_source->WriteLn( *subclass_it );
+	}
+	if ( !subclassSourceIncludes.empty() )
+	{
+		m_source->WriteLn( wxEmptyString );
 	}
 
 	// Generated header
 	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\""));
 
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn( wxEmptyString );
 	GenXpmIncludes( project );
 
 	code = GetCode( project, wxT("cpp_epilogue") );
@@ -602,22 +610,78 @@ void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
 	}
 }
 
-void CppCodeGenerator::GenSubclassForwardDeclarations( shared_ptr< ObjectBase > obj, set< wxString >* subclasses )
+void CppCodeGenerator::GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxString >* subclasses, set< wxString >* sourceIncludes, set< wxString >* headerIncludes )
 {
 	// Call GenSubclassForwardDeclarations on all children as well
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 	{
-		GenSubclassForwardDeclarations( obj->GetChild( i ), subclasses );
+		GenSubclassSets( obj->GetChild( i ), subclasses, sourceIncludes, headerIncludes );
 	}
 
 	// Fill the set
 	shared_ptr< Property > subclass = obj->GetProperty( wxT("subclass") );
 	if ( subclass )
 	{
-		wxString val = subclass->GetValueAsString();
-		if ( !val.empty() )
+		std::map< wxString, wxString > children;
+		subclass->SplitParentProperty( &children );
+
+		std::map< wxString, wxString >::iterator name;
+		name = children.find( wxT("name") );
+
+		if ( children.end() == name )
 		{
-			subclasses->insert( wxT("class ") + val + wxT(";") );
+			// No name, so do nothing
+			return;
+		}
+
+		wxString nameVal = name->second;
+		if ( nameVal.empty() )
+		{
+			// No name, so do nothing
+			return;
+		}
+
+		// Got a subclass
+		subclasses->insert( wxT("class ") + nameVal + wxT(";") );
+
+		// Now get the header
+		std::map< wxString, wxString >::iterator header;
+		header = children.find( wxT("header") );
+
+		if ( children.end() == header )
+		{
+			// No header, so do nothing
+			return;
+		}
+
+		wxString headerVal = header->second;
+		if ( headerVal.empty() )
+		{
+			// No header, so do nothing
+			return;
+		}
+
+		// Got a header
+		shared_ptr< ObjectInfo > info = obj->GetObjectInfo();
+		if ( !info )
+		{
+			return;
+		}
+
+		shared_ptr< ObjectPackage > pkg = info->GetPackage();
+		if ( !pkg )
+		{
+			return;
+		}
+
+		wxString include = wxT("#include \"") + headerVal + wxT("\"");
+		if ( pkg->GetPackageName() == wxT("Forms") )
+		{
+			headerIncludes->insert( include );
+		}
+		else
+		{
+			sourceIncludes->insert( include );
 		}
 	}
 }

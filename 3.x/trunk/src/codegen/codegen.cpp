@@ -203,9 +203,13 @@ TemplateParser::Ident TemplateParser::ParseIdent()
 	return ident;
 }
 
-wxString TemplateParser::ParsePropertyName()
+wxString TemplateParser::ParsePropertyName( wxString* child )
 {
 	wxString propname;
+
+	// children of parent properties can be referred to with a '/' like "$parent/child"
+	bool foundSlash = false;
+	bool saveChild = ( NULL != child );
 
 	if (!m_in.Eof())
 	{
@@ -216,9 +220,27 @@ wxString TemplateParser::ParsePropertyName()
 			&& ( (peek >= wxT('a') && peek <= wxT('z') ) ||
 			(peek >= wxT('A') && peek <= wxT('Z') ) ||
 			(peek >= wxT('0') && peek <= wxT('9') ) ||
-			peek == wxT('_') ) )
+			peek == wxT('_') || peek == wxT('/') ) )
 		{
-			propname << wxChar( m_in.GetC() );
+			if ( foundSlash )
+			{
+				if ( saveChild )
+				{
+					(*child) << wxChar( m_in.GetC() );
+				}
+			}
+			else
+			{
+				wxChar next = wxChar( m_in.GetC() );
+				if ( wxT('/') == next )
+				{
+					foundSlash = true;
+				}
+				else
+				{
+					propname << next;
+				}
+			}
 			peek = wxChar( m_in.Peek() );
 		}
 	}
@@ -227,17 +249,24 @@ wxString TemplateParser::ParsePropertyName()
 
 bool TemplateParser::ParseProperty()
 {
-	wxString propname = ParsePropertyName();
+	wxString childName;
+	wxString propname = ParsePropertyName( &childName );
 
 	shared_ptr<Property> property = m_obj->GetProperty(propname);
-	if ( property.get() != NULL )
+	if ( NULL == property.get() )
+	{
+		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname.c_str(), m_obj->GetClassName().c_str() );
+		return true;
+	}
+
+	if ( childName.empty() )
 	{
 		wxString code = PropertyToCode(property);
 		m_out << code;
 	}
 	else
 	{
-		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname.c_str(), m_obj->GetClassName().c_str() );
+		m_out << property->GetChildFromParent( childName );
 	}
 
 	//  Debug::Print("parsing property %s",propname.c_str());
@@ -424,7 +453,7 @@ bool TemplateParser::ParseForEach()
 	return true;
 }
 
-shared_ptr< Property > TemplateParser::GetProperty()
+shared_ptr< Property > TemplateParser::GetProperty( wxString* childName )
 {
 	shared_ptr< Property > property( (Property*)NULL );
 
@@ -470,7 +499,7 @@ shared_ptr< Property > TemplateParser::GetProperty()
 	{
 		if ( GetNextToken() == TOK_PROPERTY )
 		{
-			wxString propname = ParsePropertyName();
+			wxString propname = ParsePropertyName( childName );
 			property = m_obj->GetProperty( propname );
 		}
 	}
@@ -494,7 +523,8 @@ bool TemplateParser::ParseIfNotNull()
 	ignore_whitespaces();
 
 	// Get the property
-	shared_ptr< Property > property( GetProperty() );
+	wxString childName;
+	shared_ptr< Property > property( GetProperty( &childName ) );
 	if ( !property )
 	{
 		return false;
@@ -504,6 +534,14 @@ bool TemplateParser::ParseIfNotNull()
 
 	if ( !property->IsNull() )
 	{
+		if ( !childName.empty() )
+		{
+			if ( property->GetChildFromParent( childName ).empty() )
+			{
+				return true;
+			}
+		}
+
 		// Generate the code from the block
 		shared_ptr< TemplateParser > parser = CreateParser( m_obj, inner_template );
 		m_out << parser->ParseTemplate();
@@ -517,7 +555,8 @@ bool TemplateParser::ParseIfNull()
 	ignore_whitespaces();
 
 	// Get the property
-	shared_ptr< Property > property( GetProperty() );
+	wxString childName;
+	shared_ptr< Property > property( GetProperty( &childName ) );
 	if ( !property )
 	{
 		return false;
@@ -530,6 +569,18 @@ bool TemplateParser::ParseIfNull()
 		// Generate the code from the block
 		shared_ptr< TemplateParser > parser = CreateParser( m_obj, inner_template );
 		m_out << parser->ParseTemplate();
+	}
+	else
+	{
+		if ( !childName.empty() )
+		{
+			if ( property->GetChildFromParent( childName ).empty() )
+			{
+				// Generate the code from the block
+				shared_ptr< TemplateParser > parser = CreateParser( m_obj, inner_template );
+				m_out << parser->ParseTemplate();
+			}
+		}
 	}
 
 	return true;
@@ -590,7 +641,8 @@ bool TemplateParser::ParseIfEqual()
 	ignore_whitespaces();
 
 	// Get the property
-	shared_ptr< Property > property( GetProperty() );
+	wxString childName;
+	shared_ptr< Property > property( GetProperty( &childName ) );
 	if ( property )
 	{
 		// Get the value to compare to
@@ -599,7 +651,19 @@ bool TemplateParser::ParseIfEqual()
 		// Get the template to generate if comparison is true
 		wxString inner_template = ExtractInnerTemplate();
 
-		if ( property->GetValue() == value )
+		// Get the value of the property
+		wxString propValue;
+		if ( childName.empty() )
+		{
+			propValue = property->GetValue();
+		}
+		else
+		{
+			propValue = property->GetChildFromParent( childName );
+		}
+
+		// Compare
+		if ( propValue == value )
 		{
 			// Generate the code
 			shared_ptr<TemplateParser> parser = CreateParser(m_obj,inner_template);
@@ -616,7 +680,8 @@ bool TemplateParser::ParseIfNotEqual()
 	ignore_whitespaces();
 
 	// Get the property
-	shared_ptr< Property > property( GetProperty() );
+	wxString childName;
+	shared_ptr< Property > property( GetProperty( &childName ) );
 	if ( property )
 	{
 		// Get the value to compare to
@@ -625,7 +690,19 @@ bool TemplateParser::ParseIfNotEqual()
 		// Get the template to generate if comparison is false
 		wxString inner_template = ExtractInnerTemplate();
 
-		if ( property->GetValue() != value )
+		// Get the value of the property
+		wxString propValue;
+		if ( childName.empty() )
+		{
+			propValue = property->GetValue();
+		}
+		else
+		{
+			propValue = property->GetChildFromParent( childName );
+		}
+
+		// Compare
+		if ( propValue != value )
 		{
 			// Generate the code
 			shared_ptr<TemplateParser> parser = CreateParser( m_obj, inner_template );
@@ -779,14 +856,18 @@ void TemplateParser::ParseAppend()
 
 void TemplateParser::ParseClass()
 {
-	if ( m_obj->IsNull( wxT("subclass") ) )
+	shared_ptr<Property> subclass_prop = m_obj->GetProperty( wxT("subclass") );
+	if ( subclass_prop )
 	{
-		m_out << m_obj->GetClassName();
+		wxString subclass = subclass_prop->GetChildFromParent( wxT("name") );
+		if ( !subclass.empty() );
+		{
+			m_out << subclass;
+			return;
+		}
 	}
-	else
-	{
-		m_out << m_obj->GetPropertyAsString( wxT("subclass") );
-	}
+
+	m_out << m_obj->GetClassName();
 }
 
 wxString TemplateParser::PropertyToCode(shared_ptr<Property> property)

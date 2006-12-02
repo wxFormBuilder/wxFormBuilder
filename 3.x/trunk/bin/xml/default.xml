@@ -12,12 +12,14 @@
 	</property>
     <property name="code_generation" type="bitlist">
       <option name="C++" help="Generate C++ Code" />
-      <option name="XRC" help="Generate XRC Code"/>C++</property>
+      <option name="XRC" help="Generate XRC Code"/>
+      C++
+	</property>
 	<category name="C++ Properties">
 		<property name="use_enum" type="bool" help="For C++ Only. Generate an enumeration for control IDs instead of a list of #defines">0</property>
 		<property name="internationalize" type="bool" help="For C++ Only. Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
 		<property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only. Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
-		<property name="user_headers" type="stringlist" help="For C++ Only. Extra headers to include in the generated header file."/>
+		<property name="precompiled_header" type="text" help="For C++ Only. Precompiled header to include at the top of the generated source file.">wx/wxprec.h</property>
 	</category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
@@ -61,6 +63,9 @@
     <property name="tooltip" type="wxString"        help="Attach a tooltip to the window."/>
     <property name="enabled" type="bool"            help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>
     <property name="hidden" type="bool"             help="Shows or hides the window.">0</property>
-    <property name="subclass" type="text" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. Use the 'user_headers' project property to include a custom header. For XRC, this sets the subclass value on the object tag." />
+    <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
+		<child name="name" help="The name of the subclass.">yo</child>
+		<child name="header" help="For C++ Only. The header to be included for the subclass."/>
+	</property>
   </objectinfo>
 </package>

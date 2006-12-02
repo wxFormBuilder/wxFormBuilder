@@ -135,9 +135,10 @@ private:
 	void GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_ptr< ObjectBase > obj, set< wxString >* includes );
 
 	/**
-	* Generate a set of all subclass to forward declare in the generated header file.
+	* Generate a set of all subclasses to forward declare in the generated header file.
+	* Also generate sets of header files to be include in either the source or header file.
 	*/
-	void GenSubclassForwardDeclarations( shared_ptr< ObjectBase > obj, set< wxString >* subclasses );
+	void GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxString >* subclasses, set< wxString >* sourceIncludes, set< wxString >* headerIncludes );
 
 	/**
 	* Genera la sección de '#include' para las propiedades XPM.

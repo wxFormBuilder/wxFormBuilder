@@ -30,6 +30,7 @@
 #include "utils/stringutils.h"
 #include "rad/appdata.h"
 #include <ticpp.h>
+#include <wx/tokenzr.h>
 
 int ObjectBase::s_instances = 0;
 
@@ -41,7 +42,7 @@ return m_options[idx];
 }*/
 
 PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
-						   bool hidden, shared_ptr<OptionList> opt_list)
+						   bool hidden, shared_ptr<OptionList> opt_list, const std::list< PropertyChild >& children )
 {
 	m_name = name;
 	m_type = type;
@@ -49,6 +50,7 @@ PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value,
 	m_hidden = hidden;    //Juan
 	m_opt_list = opt_list;
 	m_description = description;
+	m_children = children;
 }
 
 PropertyInfo::~PropertyInfo()
@@ -190,6 +192,50 @@ wxArrayString Property::GetValueAsArrayString()
 double Property::GetValueAsFloat()
 {
 	return TypeConv::StringToFloat(m_value);
+}
+
+void Property::SplitParentProperty( std::map< wxString, wxString >* children )
+{
+	children->clear();
+	if ( m_info->GetType() != PT_PARENT )
+	{
+		return;
+	}
+
+	std::list< PropertyChild >* myChildren = m_info->GetChildren();
+	std::list< PropertyChild >::iterator it = myChildren->begin();
+
+	wxStringTokenizer tkz( m_value, wxT(";"), wxTOKEN_RET_EMPTY_ALL );
+	while ( tkz.HasMoreTokens() )
+	{
+		if ( myChildren->end() == it )
+		{
+			return;
+		}
+		wxString child = tkz.GetNextToken();
+		child.Trim( false );
+		child.Trim( true );
+		children->insert( std::map< wxString, wxString >::value_type( it->m_name, child ) );
+		it++;
+	}
+}
+
+wxString Property::GetChildFromParent( const wxString& childName )
+{
+	std::map< wxString, wxString > children;
+	SplitParentProperty( &children );
+
+	std::map< wxString, wxString >::iterator child;
+	child = children.find( childName );
+
+	if ( children.end() == child )
+	{
+		return wxEmptyString;
+	}
+	else
+	{
+		return child->second;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -643,6 +689,15 @@ wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
 		return property->GetValueAsArrayString();
 	else
 		return wxArrayString();
+}
+
+wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, const wxString& childName )
+{
+	shared_ptr<Property> property = GetProperty( parentName );
+	if (property)
+		return property->GetChildFromParent( childName );
+	else
+		return wxEmptyString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
