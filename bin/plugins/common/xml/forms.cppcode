@@ -3,22 +3,22 @@
 
 	<templates class="Frame">
 		<template name="base">
-			#ifnotnull $subclass
-			@{ public $subclass @}
-			
-			#ifnull $subclass
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ public wxFrame @}
 		</template>
 		<template name="cons_decl">
 			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :	
-			
-			#ifnotnull $subclass
-			@{ $subclass @}
-			
-			#ifnull $subclass
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ wxFrame@}( parent, id, title, pos, size, style )
 		</template>
 		<template name="settings">
@@ -48,7 +48,7 @@
 
 			#ifnotnull $minimum_size
 			@{ this->SetMinSize( $minimum_size ); #nl @}
-			
+
 			#ifnotnull $center
 			@{ this->Centre( $center ); #nl @}
 		</template>
@@ -56,22 +56,22 @@
 
 	<templates class="Panel">
 		<template name="base">
-			#ifnotnull $subclass
-			@{ public $subclass @}
-			
-			#ifnull $subclass
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ public wxPanel @}
 		</template>
 		<template name="cons_decl">
 			$name( wxWindow* parent, int id = -1, wxPoint pos = $pos, wxSize size = $size, int style = $window_style );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) :			
-			
-			#ifnotnull $subclass
-			@{ $subclass @}
-			
-			#ifnull $subclass
+			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ wxPanel@}( parent, id, pos, size, style )
 		</template>
 		<template name="settings">
@@ -103,22 +103,22 @@
 
 	<templates class="Dialog">
 		<template name="base">
-			#ifnotnull $subclass
-			@{ public $subclass @}
-			
-			#ifnull $subclass
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ public wxDialog @}
 		</template>
 		<template name="cons_decl">
 			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :			
-			
-			#ifnotnull $subclass
-			@{ $subclass @}
-			
-			#ifnull $subclass
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
 			@{ wxDialog@}( parent, id, title, pos, size, style )
 		</template>
 		<template name="settings">
@@ -148,7 +148,7 @@
 
 			#ifnotnull $minimum_size
 			@{ this->SetMinSize( $minimum_size ); #nl @}
-			
+
 			#ifnotnull $center
 			@{ this->Centre( $center ); #nl @}
 		</template>

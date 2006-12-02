@@ -46,6 +46,7 @@
 #define NAME_TAG "name"
 #define DESCRIPTION_TAG "help"
 #define PROPERTY_TAG "property"
+#define CHILD_TAG "child"
 #define CATEGORY_TAG "category"
 #define OBJECT_TAG "object"
 #define CLASS_TAG "class"
@@ -850,6 +851,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 
 		// if the property is a "bitlist" then parse all of the options
 		shared_ptr<OptionList> opt_list;
+		std::list< PropertyChild > children;
 		if ( ptype == PT_BITLIST || ptype == PT_OPTION )
 		{
 			opt_list = shared_ptr< OptionList >( new OptionList() );
@@ -869,6 +871,36 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 				elem_opt = elem_opt->NextSiblingElement( "option", false );
 			}
 		}
+		else if ( ptype == PT_PARENT )
+		{
+			// If the property is a parent, then get the children
+			ticpp::Element* elem_child = elem_prop->FirstChildElement( "child", false );
+			while ( elem_child )
+			{
+				PropertyChild child;
+
+				std::string child_name;
+				elem_child->GetAttribute( NAME_TAG, &child_name );
+				child.m_name = _WXSTR( child_name );
+
+				std::string child_description;
+				elem_child->GetAttributeOrDefault( DESCRIPTION_TAG, &child_description, "" );
+				child.m_description = _WXSTR( child_description );
+
+				// Get default value
+				try
+				{
+					ticpp::Node* lastChild = elem_child->LastChild();
+					ticpp::Text* text = lastChild->ToText();
+					child.m_defaultValue = _WXSTR( text->Value() );
+				}
+				catch( ticpp::Exception& ){}
+
+				children.push_back( child );
+
+				elem_child = elem_child->NextSiblingElement( "child", false );
+			}
+		}
 
 		// Get default value
 		std::string def_value;
@@ -881,7 +913,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 		catch( ticpp::Exception& ){}
 
 		// create an instance of PropertyInfo
-		shared_ptr<PropertyInfo> prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list ) );
+		shared_ptr<PropertyInfo> prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list, children ) );
 
 		// add the PropertyInfo to the property
 		obj_info->AddPropertyInfo(prop_info);
@@ -1019,6 +1051,7 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("wxString_i18n"),PT_WXSTRING_I18N);
 	PT( wxT("stringlist"),	PT_STRINGLIST	);
 	PT( wxT("float"),		PT_FLOAT		);
+	PT( wxT("parent"),		PT_PARENT		);
 }
 
 bool ObjectDatabase::LoadObjectTypes()

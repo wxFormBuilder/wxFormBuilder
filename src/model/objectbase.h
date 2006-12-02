@@ -38,6 +38,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <list>
 #include <boost/smart_ptr.hpp>
 #include "types.h"
 #include "tinyxml.h"
@@ -97,20 +98,37 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+@internal
+Data Container for children of a Parent property
+*/
+class PropertyChild
+{
+public:
+	wxString m_name;
+	wxString m_defaultValue;
+	wxString m_description;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
 class PropertyInfo
 {
+	friend class Property;
+
 private:
 	wxString       m_name;
 	PropertyType m_type;
 	wxString       m_def_value;
 	shared_ptr<OptionList>  m_opt_list;
+	std::list< PropertyChild > m_children; // Only used for parent properties
 	bool m_hidden; // Juan. Determina si la propiedad aparece o no en XRC
 	wxString		m_description;
 
 public:
 
-	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description = wxString(),
-		bool hidden = false, shared_ptr<OptionList> opt_list = shared_ptr<OptionList>()); //Juan
+	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
+		bool hidden, shared_ptr<OptionList> opt_list, const std::list< PropertyChild >& children ); //Juan
 
 	~PropertyInfo();
 
@@ -118,6 +136,7 @@ public:
 	PropertyType GetType()                { return m_type;       }
 	wxString       GetName()                { return m_name;       }
 	shared_ptr<OptionList>  GetOptionList ()         { return m_opt_list;   }
+	std::list< PropertyChild >* GetChildren(){ return &m_children; }
 	wxString		 GetDescription	()		  { return m_description;}
 	bool         IsHidden()               { return m_hidden; } // Juan
 	void         SetHidden(bool hidden)   { m_hidden = hidden; } // Juan
@@ -159,6 +178,10 @@ public:
 	bool IsDefaultValue();
 	bool IsNull();
 	void SetDefaultValue();
+	void ChangeDefaultValue( const wxString& value )
+	{
+		m_info->m_def_value = value;
+	}
 
 	////////////////////
 	void SetValue(const wxFont &font);
@@ -180,6 +203,8 @@ public:
 
 	wxArrayString GetValueAsArrayString();
 	double GetValueAsFloat();
+	void SplitParentProperty( std::map< wxString, wxString >* children );
+	wxString GetChildFromParent( const wxString& childName );
 
 };
 
@@ -502,6 +527,7 @@ public:
 
 	wxArrayInt    GetPropertyAsArrayInt (const wxString& pname);
 	wxArrayString GetPropertyAsArrayString  (const wxString& pname);
+	wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName );
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -17,6 +17,16 @@ date Version 3.00.05
   header include. This resolves FS#55.
 * Fixed FS#51 — "notebook-like objects errors while they are included into each other"
 * Fixed FS#59 — "wxCheckListBox: incorrect class name in XRC"
+* Fixed  FS#62 — "Sub-Classing top level items doesn't work."
+  This was a big change. The subclass property is now a parent property with two 
+  children: name and header. The name is the subclass name, and header is the
+  header to include so that the subclass is defined while building. The header
+  is placed into the correct generated file depending on whether a form or control
+  is being subclassed. This removes most of the purposed of the "user_headers"
+  property, so it has been removed. A "precompiled_header" property was added,
+  with default value of "wx/wxprec.h". This fix necessitated the creation of a "parent"
+  property type, of which "subclass" is the only example. More information on parent
+  properties will soon be added to the wiki.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.

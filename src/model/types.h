@@ -137,7 +137,8 @@ typedef enum
   PT_BITMAP,
   PT_STRINGLIST,
   PT_FLOAT,
-  PT_WXSTRING_I18N
+  PT_WXSTRING_I18N,
+  PT_PARENT
 } PropertyType;
 /*
 typedef enum

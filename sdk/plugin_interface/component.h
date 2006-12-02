@@ -75,6 +75,7 @@ class IObject
   virtual wxArrayInt GetPropertyAsArrayInt(const wxString& pname) = 0;
   virtual wxArrayString GetPropertyAsArrayString(const wxString& pname) = 0;
   virtual double GetPropertyAsFloat(const wxString& pname) = 0;
+  virtual wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName ) = 0;
   virtual wxString GetClassName() = 0;
   virtual ~IObject(){}
 };

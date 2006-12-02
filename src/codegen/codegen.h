@@ -127,7 +127,7 @@ protected:
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
 
-	wxString ParsePropertyName();
+	wxString ParsePropertyName( wxString* child = NULL );
 	/**
 	* Esta rutina extrae el codigo de una plantilla encerrada entre
 	* las macros #begin y #end, teniendo en cuenta que puede estar anidados
@@ -162,7 +162,7 @@ protected:
 	void ParseAppend();
 	void ParseClass();
 
-	shared_ptr< Property > GetProperty();
+	shared_ptr< Property > GetProperty( wxString* childName = NULL );
 	shared_ptr< ObjectBase > GetWxParent();
 	shared_ptr<Property> GetRelatedProperty( shared_ptr<ObjectBase> relative );
 

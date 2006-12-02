@@ -624,6 +624,26 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 	{
 		result = wxFloatProperty(name, wxPG_LABEL,prop->GetValueAsFloat());
 	}
+	else if ( type == PT_PARENT )
+	{
+		wxParentPropertyClass* parent = new wxParentPropertyClass ( name, wxPG_LABEL );
+
+		shared_ptr<PropertyInfo> prop_desc = prop->GetPropertyInfo();
+		std::list< PropertyChild >* children = prop_desc->GetChildren();
+		std::list< PropertyChild >::iterator it;
+		for( it = children->begin(); it != children->end(); ++it )
+		{
+			wxPGProperty* child = wxStringProperty( it->m_name, wxPG_LABEL, it->m_defaultValue );
+			parent->AddChild( child );
+			m_pg->SetPropertyHelpString( child, it->m_description );
+		}
+
+		wxString value = parent->GetValueAsString( wxPG_FULL_VALUE );
+		prop->SetValue( value );
+		prop->ChangeDefaultValue( value );
+
+		result = parent;
+	}
 	else // propiedad desconocida
 	{
 		result = wxStringProperty(name, wxPG_LABEL, prop->GetValueAsString());
@@ -718,7 +738,15 @@ void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBas
 
 void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 {
-	ObjInspectorMap::iterator it = m_propmap.find( event.GetPropertyPtr() );
+	wxPGProperty* propPtr = event.GetPropertyPtr();
+	ObjInspectorMap::iterator it = m_propmap.find( propPtr );
+
+	if ( m_propmap.end() == it )
+	{
+		// Could be a child property
+		propPtr = propPtr->GetParent();
+		it = m_propmap.find( propPtr );
+	}
 
 	if ( it != m_propmap.end() )
 	{
@@ -731,6 +759,11 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			case PT_FLOAT:
 			{
 				AppData()->ModifyProperty( prop, event.GetPropertyValueAsString() );
+				break;
+			}
+			case PT_PARENT:
+			{
+				AppData()->ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
 				break;
 			}
 			case PT_WXSTRING:
@@ -864,7 +897,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 
 	switch (prop->GetType())
 	{
-	case PT_TEXT: case PT_MACRO: case PT_OPTION: case PT_FLOAT:
+	case PT_TEXT: case PT_MACRO: case PT_OPTION: case PT_FLOAT: case PT_PARENT:
 		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
 		break;
 	case PT_WXSTRING:
