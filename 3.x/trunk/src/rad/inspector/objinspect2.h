@@ -99,6 +99,7 @@ class ObjectInspector : public wxPanel
   void OnPropertyModified( wxFBPropertyEvent& event );
 
   void CreatePropertyGridManager();
+  void SavePosition();
 
   DECLARE_EVENT_TABLE()
 };

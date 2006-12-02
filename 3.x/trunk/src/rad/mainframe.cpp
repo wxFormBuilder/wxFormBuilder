@@ -310,6 +310,8 @@ void MainFrame::RestorePosition( const wxString &name )
 
 void MainFrame::SavePosition( const wxString &name )
 {
+	m_objInsp->SavePosition();
+
 	wxConfigBase *config = wxConfigBase::Get();
 	bool isIconized = IsIconized();
 	bool isMaximized = IsMaximized();
