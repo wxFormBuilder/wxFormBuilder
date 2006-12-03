@@ -54,6 +54,9 @@
 
 			#ifnotnull $minimum_size
 			@{ $name->SetMinSize( $minimum_size ); #nl @}
+			
+			#ifnotnull $maximum_size
+			@{ $name->SetMaxSize( $maximum_size ); #nl @}
 		</template>
 	<template name="toolbar_add">#parent $name->AddControl( $name );</template>
   </templates>

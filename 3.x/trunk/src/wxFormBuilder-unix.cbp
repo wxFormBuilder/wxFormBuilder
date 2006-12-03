@@ -166,13 +166,6 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="plugins/component.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
 		<Unit filename="rad/about.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
@@ -457,6 +450,8 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Extensions />
+		<Extensions>
+			<code_completion />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

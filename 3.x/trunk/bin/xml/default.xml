@@ -34,6 +34,7 @@
     <property name="pos" type="wxPoint"         help="Window position. The default is (-1, -1) which indicates that wxWidgets should generate a default position for the window."/>
     <property name="size" type="wxSize"         help="Window size. The default is (-1, -1) which indicates that wxWidgets should generate a default size for the window."/>
     <property name="minimum_size" type="wxSize" help="Sets the minimum size of the window, to indicate to the sizer layout mechanism that this is the minimum required size."/>
+    <property name="maximum_size" type="wxSize" help="Sets the maximum size of the window, to indicate to the sizer layout mechanism that this is the maximum allowable size."/>
     <property name="font" type="wxFont"         help="Sets the font for this window. This should not be use for a parent window if you don't want its font to be inherited by its children"/>
     <property name="fg" type="wxColour"         help="Sets the foreground colour of the window."/>
     <property name="bg" type="wxColour"         help="Sets the background colour of the window."/>

@@ -218,11 +218,9 @@ void VisualEditor::Create()
 	m_form = AppData()->GetSelectedForm();
 	if ( m_form )
 	{
-	  m_back->Show(true);
+		m_back->Show(true);
 
 		// --- [1] Configure the size of the form ---------------------------
-		bool need_fit = false;
-
 		shared_ptr<Property> pminsize( m_form->GetProperty( wxT("minimum_size") ) );
 		if( pminsize)
 		{
@@ -230,25 +228,20 @@ void VisualEditor::Create()
 			m_back->SetMinSize( minsize );
 		}
 
+		shared_ptr<Property> pmaxsize( m_form->GetProperty( wxT("maximum_size") ) );
+		if( pmaxsize)
+		{
+			wxSize maxsize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
+			m_back->SetMaxSize( maxsize );
+		}
+
+		bool need_fit = false;
 		shared_ptr<Property> psize( m_form->GetProperty( wxT("size") ) );
 		if ( psize )
 		{
 			wxSize wsize( TypeConv::StringToSize( psize->GetValue() ) );
-
-			wxSize minsize = m_back->GetMinSize();
-			int height = wsize.GetHeight();
-			height = ( height >= minsize.GetHeight() ) ? height : minsize.GetHeight();
-
-			int width = wsize.GetWidth();
-			width = ( width >= minsize.GetWidth() ) ? width : minsize.GetWidth();
-
-			m_back->SetSize( width, height );
-
-			if ( -1 == height || -1 == width )
-			{
-				// If the size is the default, call Fit() to fit to the components
-				need_fit = true;
-			}
+			m_back->SetSize( wsize );
+			need_fit = ( wxDefaultSize == wsize );
 		}
 		else
 		{
@@ -279,7 +272,7 @@ void VisualEditor::Create()
 		if (  m_form->GetClassName() == wxT("Frame") || m_form->GetClassName() == wxT("Dialog") )
 		{
 			m_back->SetTitle(m_form->GetPropertyAsString(wxT("title")));
-      m_back->ShowTitleBar(true);
+			m_back->ShowTitleBar(true);
 		}
 		else
 		  m_back->ShowTitleBar(false);
@@ -489,6 +482,13 @@ void VisualEditor::SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window )
 	if ( pminsize && !pminsize->GetValue().empty() )
 	{
 		window->SetMinSize( TypeConv::StringToSize( pminsize->GetValue() ) );
+	}
+
+	// Maximum size
+	shared_ptr< Property > pmaxsize = obj->GetProperty( wxT("maximum_size") );
+	if ( pmaxsize && !pmaxsize->GetValue().empty() )
+	{
+		window->SetMaxSize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
 	}
 
 	// Font

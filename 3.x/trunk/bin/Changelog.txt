@@ -27,6 +27,8 @@ date Version 3.00.05
   with default value of "wx/wxprec.h". This fix necessitated the creation of a "parent"
   property type, of which "subclass" is the only example. More information on parent
   properties will soon be added to the wiki.
+* Fixed FS#63 — "Size/minimum-size is not working."
++Added maximum size property to wxWindow properties.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
