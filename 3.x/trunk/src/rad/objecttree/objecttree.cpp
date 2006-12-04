@@ -36,6 +36,8 @@
 BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_TREE_SEL_CHANGED( -1, ObjectTree::OnSelChanged )
 	EVT_TREE_ITEM_RIGHT_CLICK( -1, ObjectTree::OnRightClick )
+	//EVT_TREE_ITEM_EXPANDED( -1, ObjectTree::OnExpansionChange )
+	//EVT_TREE_ITEM_COLLAPSED( -1, ObjectTree::OnExpansionChange )
 
 	EVT_FB_PROJECT_LOADED( ObjectTree::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( ObjectTree::OnProjectSaved )
@@ -59,6 +61,9 @@ ObjectTree::ObjectTree( wxWindow *parent, int id )
     SetSizer(sizer_1);
     sizer_1->Fit(this);
     sizer_1->SetSizeHints(this);
+    Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+    Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+    Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 }
 
 ObjectTree::~ObjectTree()
@@ -69,19 +74,12 @@ ObjectTree::~ObjectTree()
 void ObjectTree::RebuildTree()
 {
 	m_tcObjects->Freeze();
+	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 
 	shared_ptr<ObjectBase> project = AppData()->GetProjectData();
 
-	// guardamos el valor del atributo "IsExpanded"
-	// para regenerar correctamente el árbol
-	// (ojo! hacerlo antes de m_map.clear())
-	if (project)
-	{
-		assert(m_expandedMap.empty());
-		SaveItemStatus(project);
-	}
-
-	// borramos toda la información previa
+	// Clear the old tree and map
 	m_tcObjects->DeleteAllItems();
 	m_map.clear();
 
@@ -90,12 +88,12 @@ void ObjectTree::RebuildTree()
 		wxTreeItemId dummy;
 		AddChildren(project, dummy, true );
 
-		// restauramos el valor del atributo "IsExpanded"
+		// Expand items that were previously expanded
 		RestoreItemStatus(project);
 	}
 
-	m_expandedMap.clear();
-
+	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	m_tcObjects->Thaw();
 }
 
@@ -128,12 +126,22 @@ void ObjectTree::OnRightClick(wxTreeEvent &event)
 	}
 }
 
+void ObjectTree::OnExpansionChange(wxTreeEvent &event)
+{
+	wxTreeItemId id = event.GetItem();
+	wxTreeItemData *item_data = m_tcObjects->GetItemData(id);
+	if (item_data)
+	{
+		shared_ptr<ObjectBase> obj(((ObjectTreeItemData *)item_data)->GetObject());
+		assert(obj);
+		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+		AppData()->ExpandObject( obj, m_tcObjects->IsExpanded( id ) );
+		Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+	}
+}
+
 void ObjectTree::AddChildren(shared_ptr<ObjectBase> obj, wxTreeItemId &parent, bool is_root)
 {
-	// los sizeritems son objetos "ficticios", y no se deben mostrar en el árbol
-	//if (obj->GetObjectTypeName() == "sizeritem" ||
-	//    obj->GetObjectTypeName() == "notebookpage")
-
 	if (obj->GetObjectInfo()->GetObjectType()->IsItem())
 	{
 		if (obj->GetChildCount() > 0)
@@ -164,25 +172,19 @@ void ObjectTree::AddChildren(shared_ptr<ObjectBase> obj, wxTreeItemId &parent, b
 		else
 			new_parent = m_tcObjects->AppendItem(parent,wxT(""),-1,-1,item_data);
 
+		// Add the item to the map
+		m_map.insert( ObjectItemMap::value_type( obj, new_parent ) );
 
-		m_tcObjects->Expand(new_parent); // por defecto expandido
-
-
-		// registramos el objeto
-		m_map.insert(ObjectItemMap::value_type(obj,new_parent));
-
-		// configuramos su imagen
-		//int image_idx = GetImageIndex(obj->GetObjectTypeName());
-		int image_idx = GetImageIndex(obj->GetObjectInfo()->GetClassName());
+		// Set the image
+		int image_idx = GetImageIndex( obj->GetObjectInfo()->GetClassName() );
 
 		m_tcObjects->SetItemImage(new_parent,image_idx);
-		//m_tcObjects->SetItemSelectedImage(new_parent,image_idx);
 
-		// y su contenido
-		UpdateItem(new_parent,obj);
+		// Set the name
+		UpdateItem( new_parent, obj );
 
 
-		// y de forma recursiva generamos el resto de hijos
+		// Add the rest of the children
 		unsigned int count = obj->GetChildCount();
 		unsigned int i;
 		for (i = 0; i < count ; i++)
@@ -251,33 +253,28 @@ void ObjectTree::Create()
 	m_tcObjects->AssignImageList(m_iconList);
 }
 
-void ObjectTree::SaveItemStatus(shared_ptr<ObjectBase> obj)
+/*void ObjectTree::SaveItemStatus(shared_ptr<ObjectBase> obj)
 {
 	ObjectItemMap::iterator it = m_map.find(obj);
 	if (it != m_map.end())
 	{
-		wxTreeItemId id = it->second; // obtenemos el item
-		m_expandedMap.insert(ItemExpandedMap::value_type(obj,m_tcObjects->IsExpanded(id)));
+		wxTreeItemId id = it->second; // get the item
+		obj->SetExpanded( m_tcObjects->IsExpanded( id ) );
 
 		unsigned int i,count = obj->GetChildCount();
 		for (i = 0; i<count ; i++)
 			SaveItemStatus(obj->GetChild(i));
 	}
 }
-
+*/
 void ObjectTree::RestoreItemStatus(shared_ptr<ObjectBase> obj)
 {
-	bool isExpanded;
-
 	ObjectItemMap::iterator item_it = m_map.find(obj);
 	if (item_it != m_map.end())
 	{
 		wxTreeItemId id = item_it->second;
 
-		ItemExpandedMap::iterator expand_it = m_expandedMap.find(obj);
-		isExpanded = (expand_it != m_expandedMap.end()? expand_it->second : true );
-
-		if (isExpanded)
+		if ( obj->GetExpanded() )
 			m_tcObjects->Expand(id);
 		else
 			m_tcObjects->Collapse(id);
@@ -298,6 +295,26 @@ void ObjectTree::OnProjectLoaded ( wxFBEvent &event )
 
 void ObjectTree::OnProjectSaved  ( wxFBEvent &event )
 {
+}
+
+void ObjectTree::OnObjectExpanded( wxFBObjectEvent& event )
+{
+	PObjectBase obj = event.GetFBObject();
+	ObjectItemMap::iterator it = m_map.find( obj );
+	if ( it != m_map.end() )
+	{
+		if ( m_tcObjects->IsExpanded( it->second ) != obj->GetExpanded() )
+		{
+			if ( obj->GetExpanded() )
+			{
+				m_tcObjects->Expand( it->second );
+			}
+			else
+			{
+				m_tcObjects->Collapse( it->second );
+			}
+		}
+	}
 }
 
 void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )

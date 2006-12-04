@@ -50,6 +50,21 @@ using namespace TypeConv;
 // Comandos
 ///////////////////////////////////////////////////////////////////////////////
 
+/** Command for expanding an object in the object tree */
+class ExpandObjectCmd : public Command
+{
+private:
+	shared_ptr<ObjectBase> m_object;
+	bool m_expand;
+
+protected:
+	void DoExecute();
+	void DoRestore();
+
+public:
+	ExpandObjectCmd( shared_ptr<ObjectBase> object, bool expand );
+};
+
 /**
 * Comando para insertar un objeto en el árbol.
 */
@@ -169,6 +184,20 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 // Implementación de los Comandos
 ///////////////////////////////////////////////////////////////////////////////
+ExpandObjectCmd::ExpandObjectCmd( shared_ptr<ObjectBase> object, bool expand )
+: m_object(object), m_expand(expand)
+{
+}
+
+void ExpandObjectCmd::DoExecute()
+{
+	m_object->SetExpanded( m_expand );
+}
+
+void ExpandObjectCmd::DoRestore()
+{
+	m_object->SetExpanded( !m_expand );
+}
 
 InsertObjectCmd::InsertObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> object,
 								 shared_ptr<ObjectBase> parent, int pos)
@@ -549,6 +578,12 @@ shared_ptr< ObjectBase >  ApplicationData::SearchSizerInto(shared_ptr<ObjectBase
 
 ///////////////////////////////////////////////////////////////////////////////
 
+void ApplicationData::ExpandObject( shared_ptr<ObjectBase> obj, bool expand )
+{
+	PCommand command( new ExpandObjectCmd( obj, expand ) );
+	Execute( command );
+	NotifyObjectExpanded( obj );
+}
 
 void ApplicationData::SelectObject(shared_ptr<ObjectBase> obj)
 {
@@ -1800,6 +1835,12 @@ void ApplicationData::NotifyProjectLoaded()
 void ApplicationData::NotifyProjectSaved()
 {
   wxFBEvent event( wxEVT_FB_PROJECT_SAVED );
+  NotifyEvent( event );
+}
+
+void ApplicationData::NotifyObjectExpanded(shared_ptr<ObjectBase> obj)
+{
+  wxFBObjectEvent event( wxEVT_FB_OBJECT_EXPANDED, obj);
   NotifyEvent( event );
 }
 

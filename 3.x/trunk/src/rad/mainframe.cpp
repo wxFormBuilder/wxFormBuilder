@@ -128,6 +128,7 @@ BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_FB_CODE_GENERATION( MainFrame::OnCodeGeneration )
 	EVT_FB_OBJECT_CREATED( MainFrame::OnObjectCreated )
 	EVT_FB_OBJECT_REMOVED( MainFrame::OnObjectRemoved )
+	EVT_FB_OBJECT_EXPANDED( MainFrame::OnObjectExpanded)
 	EVT_FB_OBJECT_SELECTED( MainFrame::OnObjectSelected )
 	EVT_FB_PROJECT_LOADED( MainFrame::OnProjectLoaded )
 	EVT_FB_PROJECT_REFRESH( MainFrame::OnProjectRefresh )
@@ -501,6 +502,12 @@ void MainFrame::OnProjectSaved( wxFBEvent& event )
 	GetStatusBar()->SetStatusText( wxT( "Project Saved!" ) );
 	UpdateFrame();
 }
+
+void MainFrame::OnObjectExpanded( wxFBObjectEvent& event )
+{
+	UpdateFrame();
+}
+
 void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 {
 	shared_ptr<ObjectBase> obj = event.GetFBObject();

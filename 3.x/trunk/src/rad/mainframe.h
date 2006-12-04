@@ -121,6 +121,7 @@ class MainFrame : public wxFrame
 
   void OnProjectLoaded( wxFBEvent& event );
   void OnProjectSaved( wxFBEvent& event );
+  void OnObjectExpanded( wxFBObjectEvent& event );
   void OnObjectSelected( wxFBObjectEvent& event );
   void OnObjectCreated( wxFBObjectEvent& event );
   void OnObjectRemoved( wxFBObjectEvent& event );

@@ -87,6 +87,7 @@ class ApplicationData
    // Notifican a cada observador el evento correspondiente
   void NotifyProjectLoaded();
   void NotifyProjectSaved();
+  void NotifyObjectExpanded(shared_ptr<ObjectBase> obj);
   void NotifyObjectSelected(shared_ptr<ObjectBase> obj);
   void NotifyObjectCreated(shared_ptr<ObjectBase> obj);
   void NotifyObjectRemoved(shared_ptr<ObjectBase> obj);
@@ -215,6 +216,7 @@ public:
   bool LoadProject(const wxString &filename);
   void SaveProject(const wxString &filename);
   void NewProject();
+  void ExpandObject( shared_ptr<ObjectBase> obj, bool expand );
   void SelectObject(shared_ptr<ObjectBase> obj);
   void CreateObject(wxString name);
   void RemoveObject(shared_ptr<ObjectBase> obj);

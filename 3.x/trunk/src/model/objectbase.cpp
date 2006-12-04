@@ -242,6 +242,8 @@ wxString Property::GetChildFromParent( const wxString& childName )
 const int ObjectBase::INDENT = 2;
 
 ObjectBase::ObjectBase (wxString class_name)
+:
+m_expanded( true )
 {
 	s_instances++;
 
@@ -512,6 +514,7 @@ void ObjectBase::SerializeObject( ticpp::Element* serializedElement )
 {
 	ticpp::Element element( "object" );
 	element.SetAttribute( "class", _STDSTR( GetClassName() ) );
+	element.SetAttribute( "expanded", GetExpanded() );
 
 	for ( unsigned int i = 0; i < GetPropertyCount(); i++ )
 	{
