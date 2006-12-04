@@ -860,7 +860,7 @@ void TemplateParser::ParseClass()
 	if ( subclass_prop )
 	{
 		wxString subclass = subclass_prop->GetChildFromParent( wxT("name") );
-		if ( !subclass.empty() );
+		if ( !subclass.empty() )
 		{
 			m_out << subclass;
 			return;
