@@ -56,6 +56,7 @@
 #define HIDDEN_TAG "hidden"     //Juan
 #define ICON_TAG "icon"
 #define SMALL_ICON_TAG "smallIcon"
+#define EXPANDED_TAG "expanded"
 
 
 ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
@@ -397,6 +398,17 @@ shared_ptr<ObjectBase>  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, shar
 
 	if (object)
 	{
+		// Get the state of expansion in the object tree
+		int expanded = 1;
+		if ( TIXML_SUCCESS != xml_obj->QueryIntAttribute( EXPANDED_TAG, &expanded ) )
+		{
+			object->SetExpanded( true );
+		}
+		else
+		{
+			object->SetExpanded( (expanded != 0) );
+		}
+
 		// modificamos cada propiedad
 		TiXmlElement *xml_prop = xml_obj->FirstChildElement(PROPERTY_TAG);
 		while (xml_prop)

@@ -270,7 +270,7 @@ private:
 	vector< shared_ptr<ObjectBase> > m_children;   // children
 	map< wxString,shared_ptr<Property> >  m_properties; // Properties of the object
 	shared_ptr<ObjectInfo> m_info;
-
+	bool m_expanded; // is expanded in the object tree, allows for saving to file
 
 protected:
 	// utilites for implementing the tree
@@ -327,6 +327,16 @@ public:
 	* Destructor.
 	*/
 	virtual ~ObjectBase();
+
+	/**
+	Sets whether the object is expanded in the object tree or not.
+	*/
+	void SetExpanded( bool expanded ){ m_expanded = expanded; }
+
+	/**
+	Gets whether the object is expanded in the object tree or not.
+	*/
+	bool GetExpanded(){ return m_expanded; }
 
 	/**
 	* Obtiene el nombre del objeto.

@@ -41,10 +41,8 @@ class ObjectTree : public wxPanel
 private:
    typedef map<shared_ptr<ObjectBase>, wxTreeItemId> ObjectItemMap;
    typedef map<wxString, int> IconIndexMap;
-   typedef map<shared_ptr<ObjectBase>, bool> ItemExpandedMap;
 
    ObjectItemMap m_map;
-   ItemExpandedMap m_expandedMap;
 
    wxImageList *m_iconList;
    IconIndexMap m_iconIdx;
@@ -59,8 +57,6 @@ private:
    void AddChildren(shared_ptr<ObjectBase> child, wxTreeItemId &parent, bool is_root = false);
    int GetImageIndex (wxString type);
    void UpdateItem(wxTreeItemId id, shared_ptr<ObjectBase> obj);
-
-   void SaveItemStatus(shared_ptr<ObjectBase> obj);
    void RestoreItemStatus(shared_ptr<ObjectBase> obj);
 
    DECLARE_EVENT_TABLE()
@@ -72,9 +68,11 @@ public:
 
   void OnSelChanged(wxTreeEvent &event);
   void OnRightClick(wxTreeEvent &event);
+  void OnExpansionChange(wxTreeEvent &event);
 
   void OnProjectLoaded ( wxFBEvent &event );
   void OnProjectSaved  ( wxFBEvent &event );
+  void OnObjectExpanded( wxFBObjectEvent& event );
   void OnObjectSelected( wxFBObjectEvent &event );
   void OnObjectCreated ( wxFBObjectEvent &event );
   void OnObjectRemoved ( wxFBObjectEvent &event );
