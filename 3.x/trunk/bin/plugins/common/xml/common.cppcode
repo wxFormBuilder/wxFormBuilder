@@ -23,8 +23,8 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
 	<template name="settings">
-		#ifnotnull $maxlength
-		@{ $name->SetMaxLength( $maxlength ); @}
+		#ifnotequal $maxlength "0"
+		@{ $name->SetMaxLength( $maxlength );  @}
 	</template>
   </templates>
 

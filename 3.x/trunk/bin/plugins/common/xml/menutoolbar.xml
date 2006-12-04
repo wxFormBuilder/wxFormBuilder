@@ -3,7 +3,7 @@
   <objectinfo class="wxStatusBar" icon="statusbar.xpm" type="statusbar">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_statusBar</property>
-    <property name="fields" type="text"  help="Number of fields in the statusbar.">1</property>
+    <property name="fields" type="uint"  help="Number of fields in the statusbar.">1</property>
     <property name="style" type="bitlist">
       <option name="wxST_SIZEGRIP"       help="On Windows, displays a gripper at right-hand side of the status bar." />wxST_SIZEGRIP</property>
   </objectinfo>
@@ -53,8 +53,8 @@
     <property name="name" type="text">m_toolBar</property>
     <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels." />
     <property name="margins" type="wxSize"    help="Values to be used as margins for the toolbar." />
-    <property name="packing" type="text"      help="Value used for spacing tools. Remarks: The packing is used for spacing in the vertical direction if the toolbar is horizontal, and for spacing in the horizontal direction if the toolbar is vertical." />
-    <property name="separation" type="text"   help="The default separator size. Remarks: This is the size between each toolbar tool." />
+    <property name="packing" type="uint"      help="Value used for spacing tools. Remarks: The packing is used for spacing in the vertical direction if the toolbar is horizontal, and for spacing in the horizontal direction if the toolbar is vertical.">1</property>
+    <property name="separation" type="uint"   help="The default separator size. Remarks: This is the size between each toolbar tool.">5</property>
     <property name="style" type="bitlist">
       <option name="wxTB_FLAT"                help="Gives the toolbar a flat look (Windows and GTK only)." />
       <option name="wxTB_DOCKABLE"            help="Makes the toolbar floatable and dockable (GTK only)." />

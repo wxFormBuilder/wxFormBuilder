@@ -74,10 +74,10 @@
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_scrollBar</property>
-    <property name="value" help="The position of the scrollbar in scroll units." type="text">0</property>
-    <property name="range" help="The maximum position of the scrollbar." type="text">100</property>
-    <property name="thumbsize" help="The size of the thumb, or visible portion of the scrollbar, in scroll units." type="text">1</property>
-    <property name="pagesize" help="This is the number of scroll units that will be scrolled when the user pages up or down." type="text">1</property>
+    <property name="value" help="The position of the scrollbar in scroll units." type="uint">0</property>
+    <property name="range" help="The maximum position of the scrollbar." type="uint">100</property>
+    <property name="thumbsize" help="The size of the thumb, or visible portion of the scrollbar, in scroll units." type="uint">1</property>
+    <property name="pagesize" help="This is the number of scroll units that will be scrolled when the user pages up or down." type="uint">1</property>
     <property name="style" type="option">
       <option name="wxSB_HORIZONTAL" help="Specifies a horizontal scrollbar." />
       <option name="wxSB_VERTICAL"   help="Specifies a vertical scrollbar." />wxSB_HORIZONTAL</property>
@@ -87,9 +87,9 @@
     <inherits class="wxWindow" />
     <property name="name" type="text">m_spinCtrl</property>
     <property name="value" type="wxString"></property>
-    <property name="min" type="text"     help="Minimal value.">0</property>
-    <property name="max" type="text"     help="Maximal value.">10</property>
-    <property name="initial" type="text" help="Initial value.">0</property>
+    <property name="min" type="uint"     help="Minimal value.">0</property>
+    <property name="max" type="uint"     help="Maximal value.">10</property>
+    <property name="initial" type="uint" help="Initial value.">0</property>
     <property name="style" type="bitlist">
       <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
       <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />wxSP_ARROW_KEYS</property>
@@ -120,7 +120,7 @@
     <property name="splitmode" type="option">
       <option name="wxSPLIT_VERTICAL"         help="Specifies a vertical split window." />
       <option name="wxSPLIT_HORIZONTAL"       help="Specifies a horizontal split window." />wxSPLIT_VERTICAL</property>
-    <property name="sashpos" type="text"      help="The initial sash position.">0</property>
+    <property name="sashpos" type="uint"      help="The initial sash position.">0</property>
 	<property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
   </objectinfo>
 
@@ -201,8 +201,8 @@
 		<property name="window_style">wxHSCROLL|wxVSCROLL</property>
 	</inherits>
     <property name="name" type="text">m_scrolledWindow</property>
-    <property name="scroll_rate_x" type="text" help="Set the horizontal scrolling increment.">5</property>
-    <property name="scroll_rate_y" type="text" help="Set the vertical scrolling increment.">5</property>
+    <property name="scroll_rate_x" type="uint" help="Set the horizontal scrolling increment.">5</property>
+    <property name="scroll_rate_y" type="uint" help="Set the vertical scrolling increment.">5</property>
   </objectinfo>
 
 </package>

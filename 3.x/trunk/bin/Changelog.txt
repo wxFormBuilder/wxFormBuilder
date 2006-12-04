@@ -28,6 +28,12 @@ date Version 3.00.05
   property type, of which "subclass" is the only example. More information on parent
   properties will soon be added to the wiki.
 * Fixed FS#63 — "Size/minimum-size is not working."
+* Fixed FS#60 — "wxFlexGridSizer vgap/hgap if empty they get generated empty."
+  This was actually a bug with most numerical properties. Added a "uint" property
+  type to solve this. Most numerical properties are now unsigned integers, so the
+  property grid will not let it remain blank, and negative numbers are not accepted.
+  This approach is good because it is clear to the user what will happen when the
+  code is generated.
 +Added maximum size property to wxWindow properties.
 
 10-13-2006 Version 3.00.04

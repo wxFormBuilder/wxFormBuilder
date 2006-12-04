@@ -63,7 +63,7 @@
       <option name="wxTE_CAPITALIZE"    help="On PocketPC and Smartphone, causes the first letter to be capitalized."/>
     </property>
     <property name="value" type="wxString_i18n" />
-    <property name="maxlength" type="text" help="The maximum length of user-entered text."/>
+    <property name="maxlength" type="uint" help="The maximum length of user-entered text.">0</property>
   </objectinfo>
 
   <objectinfo class="wxStaticBitmap" icon="static_bitmap.xpm" type="widget">
@@ -89,7 +89,6 @@
     <inherits class="wxWindow" />
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
-    <property name="selection" type="text"     help="Initial selected choice.">0</property>
   </objectinfo>
 
   <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
@@ -146,7 +145,7 @@
     <property name="name" type="text">m_radioBox</property>
     <property name="choices" type="stringlist"  help="Contents of the Radio Box.">'Radio Button'</property>
     <property name="label" type="wxString_i18n">wxRadioBox</property>
-    <property name="majorDimension" type="text" help="Specifies the maximum number of rows (if style contains wxRA_SPECIFY_ROWS) or columns (if style contains wxRA_SPECIFY_COLS) for a two-dimensional radiobox.">1</property>
+    <property name="majorDimension" type="uint" help="Specifies the maximum number of rows (if style contains wxRA_SPECIFY_ROWS) or columns (if style contains wxRA_SPECIFY_COLS) for a two-dimensional radiobox.">1</property>
     <property name="style" type="bitlist">
       <option name="wxRA_SPECIFY_ROWS"          help="The major dimension parameter refers to the maximum number of rows."/>
       <option name="wxRA_SPECIFY_COLS"          help="The major dimension parameter refers to the maximum number of columns."/>
@@ -164,9 +163,9 @@
   <objectinfo class="wxSlider" icon="slider.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_slider</property>
-    <property name="value" type="text"    help="Initial position for the slider.">50</property>
-    <property name="minValue" type="text" help="Minimum slider position.">0</property>
-    <property name="maxValue" type="text" help="Maximum slider position.">100</property>
+    <property name="value" type="uint"    help="Initial position for the slider.">50</property>
+    <property name="minValue" type="uint" help="Minimum slider position.">0</property>
+    <property name="maxValue" type="uint" help="Maximum slider position.">100</property>
     <property name="style" type="bitlist">
       <option name="wxSL_HORIZONTAL"      help="Displays the slider horizontally." />
       <option name="wxSL_VERTICAL"        help="Displays the slider vertically." />
@@ -183,8 +182,8 @@
   <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_gauge</property>
-    <property name="range" type="text" help="Integer range (maximum value) of the gauge.">100</property>
-    <property name="value" type="text" help="Initial position for the gauge."></property>
+    <property name="range" type="uint" help="Integer range (maximum value) of the gauge.">100</property>
+    <property name="value" type="uint" help="Initial position for the gauge."></property>
     <property name="style" type="bitlist">
       <option name="wxGA_HORIZONTAL"   help="Creates a horizontal gauge. "/>
       <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
@@ -194,8 +193,8 @@
   <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_grid</property>
-    <property name="rows" type="text" help="Number of Rows.">5</property>
-    <property name="cols" type="text" help="Number of Columns.">5</property>
+    <property name="rows" type="uint" help="Number of Rows.">5</property>
+    <property name="cols" type="uint" help="Number of Columns.">5</property>
   </objectinfo>
   
   <objectinfo class="wxPanel" icon="panel.xpm" type="container">
