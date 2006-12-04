@@ -106,6 +106,8 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 	case PT_TEXT:
 	case PT_OPTION:
 	case PT_FLOAT:
+	case PT_INT:
+	case PT_UINT:
 		{
 			result = value;
 			break;

@@ -506,6 +506,14 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 		result = wxStringProperty(name, wxPG_LABEL, prop->GetValueAsString());
 		result->SetAttribute(wxPG_BOOL_USE_DOUBLE_CLICK_CYCLING, vTrue);
 	}
+	else if (type == PT_INT)
+	{
+		result = wxIntProperty(name, wxPG_LABEL, prop->GetValueAsInteger());
+	}
+	else if (type == PT_UINT)
+	{
+		result = wxUIntProperty(name, wxPG_LABEL, (unsigned)prop->GetValueAsInteger());
+	}
   	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
 	{
 		result = wxStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
@@ -757,6 +765,8 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			case PT_MACRO:
 			case PT_OPTION:
 			case PT_FLOAT:
+			case PT_INT:
+			case PT_UINT:
 			{
 				AppData()->ModifyProperty( prop, event.GetPropertyValueAsString() );
 				break;
@@ -897,7 +907,13 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 
 	switch (prop->GetType())
 	{
-	case PT_TEXT: case PT_MACRO: case PT_OPTION: case PT_FLOAT: case PT_PARENT:
+	case PT_TEXT:
+	case PT_MACRO:
+	case PT_OPTION:
+	case PT_FLOAT:
+	case PT_PARENT:
+	case PT_INT:
+	case PT_UINT:
 		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
 		break;
 	case PT_WXSTRING:

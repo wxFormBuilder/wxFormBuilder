@@ -83,9 +83,14 @@
     <template name="construction">
       $name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id );
       #ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
-      #ifnotnull $separation @{ #nl $name->SetToolSeparation( $separation ); @}
+      
+      #ifnotequal $separation "5"
+      @{ #nl $name->SetToolSeparation( $separation ); @}
+      
       #ifnotnull $margins    @{ #nl $name->SetMargins( $margins ); @}
-      #ifnotnull $packing    @{ #nl $name->SetToolPacking( $packing ); @}
+      
+      #ifnotequal $packing "1"
+      @{ #nl $name->SetToolPacking( $packing ); @}
     </template>
     <template name="after_addchild">$name->Realize();</template>
   </templates>

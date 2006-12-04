@@ -6,7 +6,7 @@
   </objectinfo>
 
   <objectinfo class="sizeritem" smallIcon="sizer.xpm" type="sizeritem">
-    <property name="border" type="text" 		help="Determines the border width, if the flag parameter is set to include any border flag." >5</property>
+    <property name="border" type="uint" 		help="Determines the border width, if the flag parameter is set to include any border flag." >5</property>
     <property name="flag" type="bitlist">
       <option name="wxALL" 						help="Enable all borders"		/>
       <option name="wxLEFT" 					help="Enable the left border"	/>
@@ -25,7 +25,7 @@
       <option name="wxFIXED_MINSIZE" 			help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE. "/>
 	  wxALL | wxEXPAND
 	</property>
-    <property name="proportion" type="text"
+    <property name="proportion" type="uint"
 			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
 			  0
 	</property>
@@ -51,19 +51,19 @@
   <objectinfo class="wxGridSizer" icon="grid_sizer.xpm" type="sizer">
  	<inherits class="sizer" />
     <property name="name" type="text" hidden="1">gSizer</property>
-    <property name="rows" type="text" help="Number of Rows">2</property>
-    <property name="cols" type="text" help="Number of Columns">2</property>
-    <property name="vgap" type="text" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
-    <property name="hgap" type="text" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
+    <property name="rows" type="uint" help="Number of Rows">2</property>
+    <property name="cols" type="uint" help="Number of Columns">2</property>
+    <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
+    <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
   </objectinfo>
 
   <objectinfo class="wxFlexGridSizer" icon="flex_grid_sizer.xpm" type="sizer">
  	<inherits class="sizer" />
     <property name="name" type="text" hidden="1">fgSizer</property>
-    <property name="rows" type="text" help="Number of Rows">2</property>
-    <property name="cols" type="text" help="Number of Columns">2</property>
-    <property name="vgap" type="text" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
-    <property name="hgap" type="text" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
+    <property name="rows" type="uint" help="Number of Rows">2</property>
+    <property name="cols" type="uint" help="Number of Columns">2</property>
+    <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
+    <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
     <property name="growablerows" type="intlist" help="Comma separated list of row indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
     <property name="growablecols" type="intlist" help="Comma separated list of column indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
 	<property name="flexible_direction" type="option" help="Since wxWidgets 2.5.0, wxFlexGridSizer can size items equally in one direction but unequally ('flexibly') in the other" >
@@ -93,7 +93,7 @@
 
 
   <objectinfo class="spacer" icon="spacer.xpm" type="spacer">
-    <property name="border" type="text">5</property>
+    <property name="border" type="uint">5</property>
     <property name="flag" type="bitlist">
       <option name="wxALL" 						help="Enable all borders"		/>
       <option name="wxLEFT" 					help="Enable the left border"	/>
@@ -112,12 +112,12 @@
       <option name="wxFIXED_MINSIZE" 			help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE. "/>
 		wxALL
 	</property>
-    <property name="proportion" type="text"
+    <property name="proportion" type="uint"
 			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
 			  1
 	</property>
-    <property name="width" type="text"	help="The width of the spacer">0</property>
-    <property name="height" type="text" help="The height of the spacer">0</property>
+    <property name="width" type="uint"	help="The width of the spacer">0</property>
+    <property name="height" type="uint" help="The height of the spacer">0</property>
   </objectinfo>
 
 </package>

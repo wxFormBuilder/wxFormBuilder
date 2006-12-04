@@ -847,7 +847,17 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 
 		std::string prop_type;
 		elem_prop->GetAttribute( "type", &prop_type );
-		PropertyType ptype = ParsePropertyType( _WXSTR( prop_type ) );
+		PropertyType ptype;
+		try
+		{
+			ptype = ParsePropertyType( _WXSTR( prop_type ) );
+		}
+		catch( wxFBException& ex )
+		{
+			wxLogError( wxT("Error: %s\nWhile parsing property \"%s\" of class \"%s\""), ex.what(), _WXSTR(pname).c_str(), obj_info->GetClassName().c_str() );
+			elem_prop = elem_prop->NextSiblingElement( PROPERTY_TAG, false );
+			continue;
+		}
 
 		// if the property is a "bitlist" then parse all of the options
 		shared_ptr<OptionList> opt_list;
@@ -1020,7 +1030,7 @@ PropertyType ObjectDatabase::ParsePropertyType( wxString str )
 	else
 	{
 		result = PT_ERROR;
-		assert(false);
+		THROW_WXFBEX( wxString::Format( wxT("Unknown property type \"%s\""), str.c_str() ) );
 	}
 
 	return result;
@@ -1035,8 +1045,10 @@ wxString  ObjectDatabase::ParseObjectType( wxString str )
 #define PT(x,y) m_propTypes.insert(PTMap::value_type(x,y))
 void ObjectDatabase::InitPropertyTypes()
 {
-	PT( wxT("bool"),			PT_BOOL			);
-	PT( wxT("text"),			PT_TEXT			);
+	PT( wxT("bool"),			PT_BOOL		);
+	PT( wxT("text"),			PT_TEXT		);
+	PT( wxT("int"),				PT_INT		);
+	PT( wxT("uint"),			PT_UINT		);
 	PT( wxT("bitlist"),		PT_BITLIST		);
 	PT( wxT("intlist"),		PT_INTLIST		);
 	PT( wxT("option"),		PT_OPTION		);
