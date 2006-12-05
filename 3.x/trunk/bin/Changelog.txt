@@ -36,6 +36,8 @@ date Version 3.00.05
   code is generated.
 * Fixed FS#66 — "Adding common controls to toolbar."
 * Fixed FS#65 — "Unfriendly object tree."
+^ Object tree now saves its state.
+^ Object tree now also scrolls horizontally when selecting an object.
 + Added maximum size property to wxWindow properties.
 
 10-13-2006 Version 3.00.04
