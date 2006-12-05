@@ -585,9 +585,9 @@ void ApplicationData::ExpandObject( shared_ptr<ObjectBase> obj, bool expand )
 	NotifyObjectExpanded( obj );
 }
 
-void ApplicationData::SelectObject(shared_ptr<ObjectBase> obj)
+void ApplicationData::SelectObject( shared_ptr<ObjectBase> obj, bool force )
 {
-	if ( obj == m_selObj )
+	if ( ( obj == m_selObj ) && !force )
 	{
 		return;
 	}
@@ -1370,7 +1370,7 @@ void ApplicationData::MovePosition(shared_ptr<ObjectBase> obj, bool right, unsig
 			PCommand command(new ShiftChildCmd(obj,pos));
 			Execute(command); //m_cmdProc.Execute(command);
 			NotifyProjectRefresh();
-			SelectObject(noItemObj);
+			SelectObject( noItemObj, true );
 
 		}
 	}
@@ -1399,7 +1399,7 @@ void ApplicationData::MoveHierarchy(shared_ptr<ObjectBase> obj, bool up)
 					PCommand cmdReparent(new ReparentObjectCmd(sizeritem,nextSizer));
 					Execute(cmdReparent);
 					NotifyProjectRefresh();
-					SelectObject(obj);
+					SelectObject( obj, true );
 				}
 			}
 			else
@@ -1416,7 +1416,7 @@ void ApplicationData::MoveHierarchy(shared_ptr<ObjectBase> obj, bool up)
 						PCommand cmdReparent(new ReparentObjectCmd(sizeritem,nextSizer));
 						Execute(cmdReparent);
 						NotifyProjectRefresh();
-						SelectObject(obj);
+						SelectObject( obj, true );
 					}
 				}
 			}
