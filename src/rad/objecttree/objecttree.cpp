@@ -253,20 +253,6 @@ void ObjectTree::Create()
 	m_tcObjects->AssignImageList(m_iconList);
 }
 
-/*void ObjectTree::SaveItemStatus(shared_ptr<ObjectBase> obj)
-{
-	ObjectItemMap::iterator it = m_map.find(obj);
-	if (it != m_map.end())
-	{
-		wxTreeItemId id = it->second; // get the item
-		obj->SetExpanded( m_tcObjects->IsExpanded( id ) );
-
-		unsigned int i,count = obj->GetChildCount();
-		for (i = 0; i<count ; i++)
-			SaveItemStatus(obj->GetChild(i));
-	}
-}
-*/
 void ObjectTree::RestoreItemStatus(shared_ptr<ObjectBase> obj)
 {
 	ObjectItemMap::iterator item_it = m_map.find(obj);
@@ -320,19 +306,26 @@ void ObjectTree::OnObjectExpanded( wxFBObjectEvent& event )
 void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 {
   PObjectBase obj = event.GetFBObject();
-	// buscamos el item asociado al objeto lo marcamos
-	// como seleccionado
+
+	// Find the tree item associated with the object and select it
 	ObjectItemMap::iterator it = m_map.find(obj);
-	if (it != m_map.end()) //&& m_tcObjects->GetSelection() != it->second)
+	if ( it != m_map.end() )
 	{
-		m_tcObjects->SelectItem(it->second);
-		m_tcObjects->SetFocus();
+		// Ignore expand/collapse events
+		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+
+		m_tcObjects->ScrollTo( it->second );
+		m_tcObjects->SelectItem( it->second );
+
+		// Restore event handling
+		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+
 	}
 	else
 	{
-#ifdef __WXFB_DEBUG__
-		wxLogError(wxT("Algo pasa porque no se encuentra el item asociado al objeto"));
-#endif
+		wxLogError( wxT("There is no tree item associated with this object.\n\tClass: %s\n\tName: %s"), obj->GetClassName().c_str(), obj->GetPropertyAsString(wxT("name")).c_str() );
 	}
 }
 
