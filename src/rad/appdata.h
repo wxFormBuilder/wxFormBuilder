@@ -217,7 +217,9 @@ public:
   void SaveProject(const wxString &filename);
   void NewProject();
   void ExpandObject( shared_ptr<ObjectBase> obj, bool expand );
-  void SelectObject(shared_ptr<ObjectBase> obj);
+
+  // Object will not be selected if it already is selected, unless force = true
+  void SelectObject( shared_ptr<ObjectBase> obj, bool force = false );
   void CreateObject(wxString name);
   void RemoveObject(shared_ptr<ObjectBase> obj);
   void CutObject(shared_ptr<ObjectBase> obj);

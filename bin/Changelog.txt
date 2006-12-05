@@ -35,6 +35,7 @@ date Version 3.00.05
   This approach is good because it is clear to the user what will happen when the
   code is generated.
 * Fixed FS#66 — "Adding common controls to toolbar."
+* Fixed FS#65 — "Unfriendly object tree."
 + Added maximum size property to wxWindow properties.
 
 10-13-2006 Version 3.00.04
