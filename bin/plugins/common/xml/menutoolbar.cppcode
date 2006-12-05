@@ -81,16 +81,22 @@
   <templates class="wxToolBar">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
-      $name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id );
-      #ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
-      
-      #ifnotequal $separation "5"
-      @{ #nl $name->SetToolSeparation( $separation ); @}
-      
-      #ifnotnull $margins    @{ #nl $name->SetMargins( $margins ); @}
-      
-      #ifnotequal $packing "1"
-      @{ #nl $name->SetToolPacking( $packing ); @}
+		$name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id );
+		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
+
+		#ifnotnull $separation
+		@{
+		  #ifnotequal $separation "5"
+		  @{ #nl $name->SetToolSeparation( $separation ); @}
+		@}
+
+		#ifnotnull $margins    @{ #nl $name->SetMargins( $margins ); @}
+
+		#ifnotnull $packing
+		@{
+			#ifnotequal $packing "1"
+			@{ #nl $name->SetToolPacking( $packing ); @}
+		@}
     </template>
     <template name="after_addchild">$name->Realize();</template>
   </templates>
