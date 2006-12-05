@@ -34,7 +34,8 @@ date Version 3.00.05
   property grid will not let it remain blank, and negative numbers are not accepted.
   This approach is good because it is clear to the user what will happen when the
   code is generated.
-+Added maximum size property to wxWindow properties.
+* Fixed FS#66 — "Adding common controls to toolbar."
++ Added maximum size property to wxWindow properties.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
