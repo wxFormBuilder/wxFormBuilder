@@ -41,7 +41,7 @@ BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 
 	EVT_FB_PROJECT_LOADED( ObjectTree::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( ObjectTree::OnProjectSaved )
-	EVT_FB_OBJECT_SELECTED( ObjectTree::OnObjectSelected )
+	//EVT_FB_OBJECT_SELECTED( ObjectTree::OnObjectSelected )
 	EVT_FB_OBJECT_CREATED( ObjectTree::OnObjectCreated )
 	EVT_FB_OBJECT_REMOVED( ObjectTree::OnObjectRemoved )
 	EVT_FB_PROPERTY_MODIFIED( ObjectTree::OnPropertyModified )
@@ -62,6 +62,7 @@ ObjectTree::ObjectTree( wxWindow *parent, int id )
     sizer_1->Fit(this);
     sizer_1->SetSizeHints(this);
     Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+    Connect( wxID_ANY, wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler( ObjectTree::OnObjectSelected ) );
     Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
     Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 }
@@ -101,13 +102,23 @@ void ObjectTree::OnSelChanged(wxTreeEvent &event)
 {
 	wxTreeItemId id = event.GetItem();
 	if (!id.IsOk()) return;
+
+	// Make selected items bold
+	wxTreeItemId oldId = event.GetOldItem();
+	if ( oldId.IsOk() )
+	{
+		m_tcObjects->SetItemBold( oldId, false );
+	}
+
 	wxTreeItemData *item_data = m_tcObjects->GetItemData(id);
 
 	if (item_data)
 	{
 		shared_ptr<ObjectBase> obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
+		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler( ObjectTree::OnObjectSelected ) );
 		AppData()->SelectObject(obj);
+		Connect( wxID_ANY, wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler( ObjectTree::OnObjectSelected ) );
 	}
 }
 
@@ -315,8 +326,15 @@ void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 
+		wxTreeItemId oldId = m_tcObjects->GetSelection();
+		if ( oldId.IsOk() )
+		{
+			m_tcObjects->SetItemBold( oldId, false );
+		}
+
 		m_tcObjects->ScrollTo( it->second );
 		m_tcObjects->SelectItem( it->second );
+		m_tcObjects->SetItemBold( it->second );
 
 		// Restore event handling
 		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
