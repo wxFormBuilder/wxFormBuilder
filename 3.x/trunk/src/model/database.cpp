@@ -211,8 +211,9 @@ shared_ptr<ObjectBase> ObjectDatabase::CreateObject( std::string classname, shar
 
 	if (!objInfo)
 	{
-		wxLogError(wxT("Object not found (") + _WXSTR(classname) + wxT(")"));
-		return shared_ptr<ObjectBase>();
+		THROW_WXFBEX( 	wxT("Unknown Object Type: ") << _WXSTR(classname) << wxT("\n")
+						wxT("The most likely causes are that this copy of wxFormBuilder is out of date, or that there is a plugin missing.\n")
+						wxT("Please check at http://www.wxFormBuilder.org") << wxT("\n") )
 	}
 
 	PObjectType objType = objInfo->GetObjectType();

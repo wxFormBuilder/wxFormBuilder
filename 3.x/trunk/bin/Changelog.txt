@@ -38,7 +38,10 @@ date Version 3.00.05
 * Fixed FS#65 — "Unfriendly object tree."
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
+^ Added class name and line to error message for unknown classes when importing xrc.
 + Added maximum size property to wxWindow properties.
++ Implemented FS#48 — "Improve error notification when a plugin is missing."
+  If widgets are missing, the project will not load at all.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.

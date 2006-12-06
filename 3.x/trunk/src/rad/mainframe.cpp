@@ -439,13 +439,22 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 		{
 			XrcLoader xrc;
 			xrc.SetObjectDatabase( AppData()->GetObjectDatabase() );
-			shared_ptr<ObjectBase> project = xrc.GetProject( &doc );
-			if ( project )
+			try
 			{
-				AppData()->MergeProject( project );
+				shared_ptr<ObjectBase> project = xrc.GetProject( &doc );
+				if ( project )
+				{
+					AppData()->MergeProject( project );
+				}
+				else
+				{
+					wxLogError( wxT( "Error while loading XRC" ) );
+				}
 			}
-			else
-				wxLogError( wxT( "Error while importing XRC" ) );
+			catch ( wxFBException& ex )
+			{
+				wxLogError( ex.what() );
+			}
 		}
 		else
 			wxLogError( wxT( "Error while loading XRC" ) );

@@ -545,7 +545,6 @@ shared_ptr<ObjectBase> XrcFilter::GetProject(TiXmlDocument *xrcDoc)
   return project;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 
 shared_ptr<ObjectBase> XrcLoader::GetProject(TiXmlDocument *xrcDoc)
@@ -640,12 +639,13 @@ shared_ptr<ObjectBase> XrcLoader::GetObject(TiXmlElement *xrcObj, shared_ptr<Obj
     {
       parent->AddChild(object);
       object->SetParent(parent);
+      wxLogError( wxT("Unknown class \"%s\" found on line %i, replaced with a wxPanel"), _WXSTR(className).c_str(), xrcObj->Row() );
     }
     else
     {
       wxString msg(wxString::Format(
-        wxT("Can't create unknown object (wxPanel) as child of \"%s:%s\""),
-        parent->GetPropertyAsString(wxT("name")).c_str(), parent->GetClassName().c_str()));
+        wxT("Unknown class \"%s\" found on line %i, and could not replace with a wxPanel as child of \"%s:%s\""),
+        _WXSTR(className).c_str(), xrcObj->Row(), parent->GetPropertyAsString(wxT("name")).c_str(), parent->GetClassName().c_str()));
 
       wxLogError(msg);
     }
