@@ -109,6 +109,7 @@ void ObjectTree::OnSelChanged(wxTreeEvent &event)
 	{
 		m_tcObjects->SetItemBold( oldId, false );
 	}
+	m_tcObjects->SetItemBold( id );
 
 	wxTreeItemData *item_data = m_tcObjects->GetItemData(id);
 
@@ -326,20 +327,12 @@ void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 
-		wxTreeItemId oldId = m_tcObjects->GetSelection();
-		if ( oldId.IsOk() )
-		{
-			m_tcObjects->SetItemBold( oldId, false );
-		}
-
-		m_tcObjects->ScrollTo( it->second );
+		m_tcObjects->EnsureVisible( it->second );
 		m_tcObjects->SelectItem( it->second );
-		m_tcObjects->SetItemBold( it->second );
 
 		// Restore event handling
 		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
-
 	}
 	else
 	{
