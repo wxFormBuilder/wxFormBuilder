@@ -89,8 +89,7 @@
 #define ID_LEFT_SPLITTER  137
 #define ID_RIGHT_SPLITTER 138
 
-#define STATUS_FIELD_OBJECT_CLASS 2
-#define STATUS_FIELD_OBJECT_NAME 1
+#define STATUS_FIELD_OBJECT 1
 
 BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_MENU( ID_NEW_PRJ, MainFrame::OnNewProject )
@@ -171,7 +170,7 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 	SetMenuBar( CreateFBMenuBar() );
 	CreateStatusBar( 3 );
 	SetStatusBarPane( 0 );
-	int widths[3] = { -1, 300, 150 };
+	int widths[3] = { -1, 300 };
 	SetStatusWidths( sizeof( widths ) / sizeof( int ), widths );
 	CreateFBToolBar();
 
@@ -537,8 +536,8 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 		name = wxT( "\"Unknown\"" );
 
 	GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
-	GetStatusBar()->SetStatusText( obj->GetClassName(), STATUS_FIELD_OBJECT_CLASS );
-	GetStatusBar()->SetStatusText( name, STATUS_FIELD_OBJECT_NAME );
+	wxString objDetails = wxString::Format( wxT("Name: %s | Class: %s"), name.c_str(), obj->GetClassName().c_str() );
+	GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
 	UpdateFrame();
 }
 
@@ -556,6 +555,22 @@ void MainFrame::OnObjectRemoved( wxFBObjectEvent& event )
 
 void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 {
+	shared_ptr< Property > prop = event.GetFBProperty();
+	if ( prop )
+	{
+		if ( 0 == prop->GetName().CmpNoCase( wxT("name") ) )
+		{
+			wxString oldDetails = GetStatusBar()->GetStatusText( STATUS_FIELD_OBJECT );
+			wxString newDetails;
+			size_t pipeIdx = oldDetails.find( wxT("|") );
+			if ( pipeIdx != oldDetails.npos )
+			{
+				newDetails.Printf( wxT("Name: %s %s"), prop->GetValueAsString().c_str(), oldDetails.substr( pipeIdx ).c_str() );
+				GetStatusBar()->SetStatusText( newDetails, STATUS_FIELD_OBJECT );
+			}
+		}
+	}
+
 	GetStatusBar()->SetStatusText( wxT( "Property Modified!" ) );
 	UpdateFrame();
 }
