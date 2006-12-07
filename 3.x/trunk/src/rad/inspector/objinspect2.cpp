@@ -159,9 +159,13 @@ wxSizePropertyClass::wxSizePropertyClass ( const wxString& label, const wxString
 										  const wxSize& value) : wxPGPropertyWithChildren(label,name)
 {
 	wxPG_INIT_REQUIRED_TYPE(wxSize)
-		DoSetValue((void*)&value);
-	AddChild( wxIntProperty(wxT("Width"),wxPG_LABEL,value.x) );
-	AddChild( wxIntProperty(wxT("Height"),wxPG_LABEL,value.y) );
+	AddChild( wxIntProperty(wxT("Width"),wxPG_LABEL,value.GetWidth()) );
+	AddChild( wxIntProperty(wxT("Height"),wxPG_LABEL,value.GetHeight()) );
+
+	DoSetValue((void*)&value);
+
+	// Only allow editing from the children
+	m_flags |= wxPG_PROP_NOEDITOR;
 }
 
 wxSizePropertyClass::~wxSizePropertyClass () { }
@@ -180,17 +184,16 @@ wxPGVariant wxSizePropertyClass::DoGetValue () const
 
 void wxSizePropertyClass::RefreshChildren()
 {
-	if ( !GetCount() ) return;
-	Item(0)->DoSetValue( (long)m_value.x );
-	Item(1)->DoSetValue( (long)m_value.y );
+	Item(0)->DoSetValue( (long)m_value.GetWidth() );
+	Item(1)->DoSetValue( (long)m_value.GetHeight() );
 }
 
 void wxSizePropertyClass::ChildChanged ( wxPGProperty* p )
 {
 	switch ( p->GetIndexInParent() )
 	{
-	case 0: m_value.x = p->DoGetValue().GetLong(); break;
-	case 1: m_value.y = p->DoGetValue().GetLong(); break;
+	case 0: m_value.SetWidth( p->DoGetValue().GetLong() ); break;
+	case 1: m_value.SetHeight( p->DoGetValue().GetLong() ); break;
 	}
 }
 
@@ -225,6 +228,8 @@ wxPointPropertyClass::wxPointPropertyClass ( const wxString& label, const wxStri
 		DoSetValue((void*)&value);
 	AddChild( wxIntProperty(wxT("X"),wxPG_LABEL,value.x) );
 	AddChild( wxIntProperty(wxT("Y"),wxPG_LABEL,value.y) );
+	// Only allow editing from the children
+	m_flags |= wxPG_PROP_NOEDITOR;
 }
 
 wxPointPropertyClass::~wxPointPropertyClass () { }
@@ -720,15 +725,15 @@ void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBas
 			wxPGId id = m_pg->Append( GetProperty( prop ) );
 			m_pg->SetPropertyHelpString( id, propInfo->GetDescription() );
 
-      if (m_style != wxFB_OI_MULTIPAGE_STYLE)
-      {
-        // Most common classes will be showed with a slightly different
-        // colour.
-			  if (name == wxT("wxWindow"))
-  			  m_pg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
-        else if (name == wxT("sizeritem"))
-			    m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
-      }
+			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
+			{
+				// Most common classes will be showed with a slightly different
+				// colour.
+				if (name == wxT("wxWindow"))
+					m_pg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
+				else if (name == wxT("sizeritem"))
+					m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
+			}
 
 			properties.insert( map< wxString, shared_ptr< Property > >::value_type( propName, prop ) );
 			m_propmap.insert( ObjInspectorMap::value_type( id.GetPropertyPtr(), prop ) );
@@ -797,12 +802,16 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 				AppData()->ModifyProperty( prop, aux );
 				break;
 			}
-			case PT_WXPOINT: case PT_WXSIZE:
+			case PT_WXPOINT:
 			{
-				wxString aux = event.GetPropertyValueAsString();
-				aux.Replace( wxT(" "), wxT("") );
-				aux.Replace( wxT(";"), wxT(",") );
-				AppData()->ModifyProperty( prop, aux );
+				wxPoint point = event.GetPropertyValueAsPoint ();
+				AppData()->ModifyProperty( prop, wxString::Format( wxT("%i,%i"), point.x, point.y ) );
+				break;
+			}
+			case PT_WXSIZE:
+			{
+				wxSize size = event.GetPropertyValueAsSize();
+				AppData()->ModifyProperty( prop, wxString::Format( wxT("%i,%i"), size.GetWidth(), size.GetHeight() ) );
 				break;
 			}
 			case PT_WXFONT:
