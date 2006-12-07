@@ -509,6 +509,12 @@ void MainFrame::OnClose( wxCloseEvent &event )
 void MainFrame::OnProjectLoaded( wxFBEvent& event )
 {
 	GetStatusBar()->SetStatusText( wxT( "Project Loaded!" ) );
+	shared_ptr< ObjectBase > project = AppData()->GetProjectData();
+	if ( project )
+	{
+		wxString objDetails = wxString::Format( wxT("Name: %s | Class: %s"), project->GetPropertyAsString( wxT("name") ).c_str(), project->GetClassName().c_str() );
+		GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
+	}
 	UpdateFrame();
 }
 void MainFrame::OnProjectSaved( wxFBEvent& event )
@@ -588,6 +594,12 @@ void MainFrame::OnCodeGeneration( wxFBEvent& event )
 
 void MainFrame::OnProjectRefresh( wxFBEvent& event )
 {
+	shared_ptr< ObjectBase > project = AppData()->GetProjectData();
+	if ( project )
+	{
+		wxString objDetails = wxString::Format( wxT("Name: %s | Class: %s"), project->GetPropertyAsString( wxT("name") ).c_str(), project->GetClassName().c_str() );
+		GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
+	}
 	UpdateFrame();
 }
 
