@@ -89,6 +89,9 @@
 #define ID_LEFT_SPLITTER  137
 #define ID_RIGHT_SPLITTER 138
 
+#define STATUS_FIELD_OBJECT_CLASS 2
+#define STATUS_FIELD_OBJECT_NAME 1
+
 BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_MENU( ID_NEW_PRJ, MainFrame::OnNewProject )
 	EVT_MENU( ID_SAVE_PRJ, MainFrame::OnSaveProject )
@@ -166,7 +169,10 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 
 	SetMenuBar( CreateFBMenuBar() );
-	CreateStatusBar();
+	CreateStatusBar( 3 );
+	SetStatusBarPane( 0 );
+	int widths[3] = { -1, 300, 150 };
+	SetStatusWidths( sizeof( widths ) / sizeof( int ), widths );
 	CreateFBToolBar();
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -531,6 +537,8 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 		name = wxT( "\"Unknown\"" );
 
 	GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
+	GetStatusBar()->SetStatusText( obj->GetClassName(), STATUS_FIELD_OBJECT_CLASS );
+	GetStatusBar()->SetStatusText( name, STATUS_FIELD_OBJECT_NAME );
 	UpdateFrame();
 }
 
