@@ -59,6 +59,7 @@ if ( target == "cb-gcc" or target == "gnu" ) then
 	{
 		cbSpecific,
 		"controls/lib/gcc_dll",
+		"../bin",
 		"../sdk/lib"
 	}
 else
