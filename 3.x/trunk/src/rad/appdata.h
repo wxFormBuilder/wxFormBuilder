@@ -246,7 +246,7 @@ public:
   shared_ptr<ObjectBase> GetSelectedForm();
   bool CanUndo() { return m_cmdProc.CanUndo(); }
   bool CanRedo() { return m_cmdProc.CanRedo(); }
-  bool GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border);
+  bool GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border, int* orient);
   bool CanPasteObject();
   bool CanCopyObject();
   bool IsModified();
