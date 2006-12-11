@@ -23,7 +23,6 @@
       <option name="wxALIGN_CENTER_VERTICAL" 	help="Align the item to the vertical center of the space allotted to it by the sizer, adjusted for the border if any."/>
       <option name="wxSHAPED" 					help="The item will be expanded as much as possible while also maintaining its aspect ratio."/>
       <option name="wxFIXED_MINSIZE" 			help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE. "/>
-	  wxALL | wxEXPAND
 	</property>
     <property name="proportion" type="uint"
 			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
@@ -91,33 +90,14 @@
     <property name="ContextHelp" type="bool" help="Include the 'ContextHelp' button">0</property>
   </objectinfo>
 
-
   <objectinfo class="spacer" icon="spacer.xpm" type="spacer">
-    <property name="border" type="uint">5</property>
-    <property name="flag" type="bitlist">
-      <option name="wxALL" 						help="Enable all borders"		/>
-      <option name="wxLEFT" 					help="Enable the left border"	/>
-      <option name="wxRIGHT" 					help="Enable the right border"/>
-      <option name="wxTOP" 						help="Enable the top border"/>
-      <option name="wxBOTTOM" 					help="Enable the bottom border"/>
-      <option name="wxEXPAND" 					help="The item will be expanded to fill the space assigned to the item."/>
-	  <option name="wxALIGN_LEFT" 				help="Align the item to the left of the space allotted to it by the sizer, adjusted for the border if any."/>
-	  <option name="wxALIGN_TOP" 				help="Align the item to the top of the space allotted to it by the sizer, adjusted for the border if any."/>
-	  <option name="wxALIGN_RIGHT" 				help="Align the item to the right of the space allotted to it by the sizer, adjusted for the border if any."/>
-      <option name="wxALIGN_BOTTOM" 			help="Align the item to the bottom of the space allotted to it by the sizer, adjusted for the border if any."/>
-	  <option name="wxALIGN_CENTER" 			help="Align the item to the center of the space allotted to it by the sizer, adjusted for the border if any."/>
-	  <option name="wxALIGN_CENTER_HORIZONTAL" 	help="Align the item to the horizontal center of the space allotted to it by the sizer, adjusted for the border if any."/>
-      <option name="wxALIGN_CENTER_VERTICAL" 	help="Align the item to the vertical center of the space allotted to it by the sizer, adjusted for the border if any."/>
-      <option name="wxSHAPED" 					help="The item will be expanded as much as possible while also maintaining its aspect ratio."/>
-      <option name="wxFIXED_MINSIZE" 			help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE. "/>
-		wxALL
-	</property>
-    <property name="proportion" type="uint"
-			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
-			  1
-	</property>
+    <inherits class="sizeritem">
+		<property name="border">0</property>
+		<property name="flag">wxEXPAND</property>
+		<property name="proportion">1</property>
+	</inherits>
     <property name="width" type="uint"	help="The width of the spacer">0</property>
     <property name="height" type="uint" help="The height of the spacer">0</property>
   </objectinfo>
-
+  
 </package>

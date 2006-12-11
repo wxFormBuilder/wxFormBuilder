@@ -1403,46 +1403,56 @@ void ApplicationData::MovePosition(shared_ptr<ObjectBase> obj, bool right, unsig
 
 void ApplicationData::MoveHierarchy(shared_ptr<ObjectBase> obj, bool up)
 {
-	shared_ptr<ObjectBase> sizeritem = obj->GetParent();
+	shared_ptr<ObjectBase> sizeritem;
 
 	// object must be inside a sizer
-	if (sizeritem && sizeritem->GetObjectTypeName() == wxT("sizeritem") )
+	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
-		shared_ptr<ObjectBase> nextSizer = sizeritem->GetParent(); // points to the object's sizer
-		if (nextSizer)
+		sizeritem = obj;
+	}
+	else
+	{
+		sizeritem = obj->GetParent();
+		if ( !(sizeritem && sizeritem->GetObjectTypeName() == wxT("sizeritem")) )
 		{
-			if (up)
-			{
-				do
-				{
-					nextSizer = nextSizer->GetParent();
-				}
-				while (nextSizer && nextSizer->GetObjectTypeName() != wxT("sizer") );
+			return;
+		}
+	}
 
-				if (nextSizer && nextSizer->GetObjectTypeName() == wxT("sizer") )
+	shared_ptr<ObjectBase> nextSizer = sizeritem->GetParent(); // points to the object's sizer
+	if ( nextSizer )
+	{
+		if ( up )
+		{
+			do
+			{
+				nextSizer = nextSizer->GetParent();
+			}
+			while (nextSizer && nextSizer->GetObjectTypeName() != wxT("sizer") );
+
+			if (nextSizer && nextSizer->GetObjectTypeName() == wxT("sizer") )
+			{
+				PCommand cmdReparent(new ReparentObjectCmd(sizeritem,nextSizer));
+				Execute(cmdReparent);
+				NotifyProjectRefresh();
+				SelectObject( obj, true );
+			}
+		}
+		else
+		{
+			// object will be move to the top sizer of the next sibling object
+			// subtree.
+			unsigned int pos = nextSizer->GetChildPosition(sizeritem) + 1;
+
+			if (pos < nextSizer->GetChildCount())
+			{
+				nextSizer = SearchSizerInto(nextSizer->GetChild(pos));
+				if (nextSizer)
 				{
 					PCommand cmdReparent(new ReparentObjectCmd(sizeritem,nextSizer));
 					Execute(cmdReparent);
 					NotifyProjectRefresh();
 					SelectObject( obj, true );
-				}
-			}
-			else
-			{
-				// object will be move to the top sizer of the next sibling object
-				// subtree.
-				unsigned int pos = nextSizer->GetChildPosition(sizeritem) + 1;
-
-				if (pos < nextSizer->GetChildCount())
-				{
-					nextSizer = SearchSizerInto(nextSizer->GetChild(pos));
-					if (nextSizer)
-					{
-						PCommand cmdReparent(new ReparentObjectCmd(sizeritem,nextSizer));
-						Execute(cmdReparent);
-						NotifyProjectRefresh();
-						SelectObject( obj, true );
-					}
 				}
 			}
 		}
@@ -1725,26 +1735,35 @@ void ApplicationData::CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj)
 {
 	shared_ptr<ObjectBase> sizer, sizeritem;
 
-	sizeritem = obj->GetParent();
-	if (sizeritem && sizeritem->GetObjectTypeName() == wxT("sizeritem") )
+	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
-		sizer = sizeritem->GetParent();
-		unsigned int childPos = sizer->GetChildPosition(sizeritem);
-
-		// creamos un wxBoxSizer
-		shared_ptr<ObjectBase> newSizer = m_objDb->CreateObject("wxBoxSizer",sizer);
-		if (newSizer)
+		sizeritem = obj;
+	}
+	else
+	{
+		sizeritem = obj->GetParent();
+		if ( !(sizeritem && sizeritem->GetObjectTypeName() == wxT("sizeritem")) )
 		{
-			PCommand cmd(new InsertObjectCmd(this,newSizer,sizer,childPos));
-			Execute(cmd);
-
-			if (newSizer->GetObjectTypeName() == wxT("sizeritem") )
-				newSizer = newSizer->GetChild(0);
-
-			PCommand cmdReparent(new ReparentObjectCmd(sizeritem,newSizer));
-			Execute(cmdReparent);
-			NotifyProjectRefresh();
+			return;
 		}
+	}
+
+	sizer = sizeritem->GetParent();
+	unsigned int childPos = sizer->GetChildPosition(sizeritem);
+
+	// creamos un wxBoxSizer
+	shared_ptr<ObjectBase> newSizer = m_objDb->CreateObject("wxBoxSizer",sizer);
+	if (newSizer)
+	{
+		PCommand cmd(new InsertObjectCmd(this,newSizer,sizer,childPos));
+		Execute(cmd);
+
+		if (newSizer->GetObjectTypeName() == wxT("sizeritem") )
+			newSizer = newSizer->GetChild(0);
+
+		PCommand cmdReparent(new ReparentObjectCmd(sizeritem,newSizer));
+		Execute(cmdReparent);
+		NotifyProjectRefresh();
 	}
 }
 
