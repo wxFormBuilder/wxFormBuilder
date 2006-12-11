@@ -614,56 +614,47 @@ void MainFrame::OnRedo( wxCommandEvent &event )
 
 void MainFrame::UpdateLayoutTools()
 {
-	int option, border, flag;
-	if ( AppData()->GetLayoutSettings( AppData()->GetSelectedObject(), &flag, &option, &border ) )
-	{
-		// Activamos todas las herramientas de layout
-		GetToolBar()->EnableTool( ID_EXPAND, true );
-		GetToolBar()->EnableTool( ID_STRETCH, true );
-		GetToolBar()->EnableTool( ID_ALIGN_LEFT, true );
-		GetToolBar()->EnableTool( ID_ALIGN_CENTER_H, true );
-		GetToolBar()->EnableTool( ID_ALIGN_RIGHT, true );
-		GetToolBar()->EnableTool( ID_ALIGN_TOP, true );
-		GetToolBar()->EnableTool( ID_ALIGN_CENTER_V, true );
-		GetToolBar()->EnableTool( ID_ALIGN_BOTTOM, true );
+	int option = 0;
+	int border = 0;
+	int flag = 0;
+	int orient = 0;
 
-		GetToolBar()->EnableTool( ID_BORDER_TOP, true );
-		GetToolBar()->EnableTool( ID_BORDER_RIGHT, true );
-		GetToolBar()->EnableTool( ID_BORDER_LEFT, true );
-		GetToolBar()->EnableTool( ID_BORDER_BOTTOM, true );
+	bool gotLayoutSettings = AppData()->GetLayoutSettings( AppData()->GetSelectedObject(), &flag, &option, &border, &orient );
+	wxToolBar* toolbar = GetToolBar();
 
-		// Colocamos la posición de los botones
-		GetToolBar()->ToggleTool( ID_EXPAND,         ( ( flag & wxEXPAND ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_STRETCH,        option > 0 );
-		GetToolBar()->ToggleTool( ID_ALIGN_LEFT,     !( ( flag & ( wxALIGN_RIGHT | wxALIGN_CENTER_HORIZONTAL ) ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_ALIGN_CENTER_H, ( ( flag & wxALIGN_CENTER_HORIZONTAL ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_ALIGN_RIGHT,    ( ( flag & wxALIGN_RIGHT ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_ALIGN_TOP,      !( ( flag & ( wxALIGN_BOTTOM | wxALIGN_CENTER_VERTICAL ) ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_ALIGN_CENTER_V, ( ( flag & wxALIGN_CENTER_VERTICAL ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_ALIGN_BOTTOM,   ( ( flag & wxALIGN_BOTTOM ) != 0 ) );
+	// Enable the layout tools if there are layout settings, else disable the tools
+	toolbar->EnableTool( ID_EXPAND, gotLayoutSettings );
+	toolbar->EnableTool( ID_STRETCH, gotLayoutSettings );
 
-		GetToolBar()->ToggleTool( ID_BORDER_TOP,      ( ( flag & wxTOP ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_BORDER_RIGHT,    ( ( flag & wxRIGHT ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_BORDER_LEFT,     ( ( flag & wxLEFT ) != 0 ) );
-		GetToolBar()->ToggleTool( ID_BORDER_BOTTOM,   ( ( flag & wxBOTTOM ) != 0 ) );
-	}
-	else
-	{
-		// Desactivamos todas las herramientas de layout
-		GetToolBar()->EnableTool( ID_EXPAND, false );
-		GetToolBar()->EnableTool( ID_STRETCH, false );
-		GetToolBar()->EnableTool( ID_ALIGN_LEFT, false );
-		GetToolBar()->EnableTool( ID_ALIGN_CENTER_H, false );
-		GetToolBar()->EnableTool( ID_ALIGN_RIGHT, false );
-		GetToolBar()->EnableTool( ID_ALIGN_TOP, false );
-		GetToolBar()->EnableTool( ID_ALIGN_CENTER_V, false );
-		GetToolBar()->EnableTool( ID_ALIGN_BOTTOM, false );
+	bool enableHorizontalTools = ( orient != wxHORIZONTAL ) && gotLayoutSettings;
+	toolbar->EnableTool( ID_ALIGN_LEFT, enableHorizontalTools );
+	toolbar->EnableTool( ID_ALIGN_CENTER_H, enableHorizontalTools );
+	toolbar->EnableTool( ID_ALIGN_RIGHT, enableHorizontalTools );
 
-		GetToolBar()->EnableTool( ID_BORDER_TOP, false );
-		GetToolBar()->EnableTool( ID_BORDER_RIGHT, false );
-		GetToolBar()->EnableTool( ID_BORDER_LEFT, false );
-		GetToolBar()->EnableTool( ID_BORDER_BOTTOM, false );
-	}
+	bool enableVerticalTools = ( orient != wxVERTICAL ) && gotLayoutSettings;
+	toolbar->EnableTool( ID_ALIGN_TOP, enableVerticalTools );
+	toolbar->EnableTool( ID_ALIGN_CENTER_V, enableVerticalTools );
+	toolbar->EnableTool( ID_ALIGN_BOTTOM, enableVerticalTools );
+
+	toolbar->EnableTool( ID_BORDER_TOP, gotLayoutSettings );
+	toolbar->EnableTool( ID_BORDER_RIGHT, gotLayoutSettings );
+	toolbar->EnableTool( ID_BORDER_LEFT, gotLayoutSettings );
+	toolbar->EnableTool( ID_BORDER_BOTTOM, gotLayoutSettings );
+
+	// Toggle the toolbar buttons according to the properties, if there are layout settings
+	toolbar->ToggleTool( ID_EXPAND,         ( ( flag & wxEXPAND ) != 0 ) && gotLayoutSettings );
+	toolbar->ToggleTool( ID_STRETCH,        (option > 0) && gotLayoutSettings );
+	toolbar->ToggleTool( ID_ALIGN_LEFT,     !( ( flag & ( wxALIGN_RIGHT | wxALIGN_CENTER_HORIZONTAL ) ) != 0 ) && enableHorizontalTools );
+	toolbar->ToggleTool( ID_ALIGN_CENTER_H, ( ( flag & wxALIGN_CENTER_HORIZONTAL ) != 0 ) && enableHorizontalTools );
+	toolbar->ToggleTool( ID_ALIGN_RIGHT,    ( ( flag & wxALIGN_RIGHT ) != 0 ) && enableHorizontalTools );
+	toolbar->ToggleTool( ID_ALIGN_TOP,      !( ( flag & ( wxALIGN_BOTTOM | wxALIGN_CENTER_VERTICAL ) ) != 0 ) && enableVerticalTools );
+	toolbar->ToggleTool( ID_ALIGN_CENTER_V, ( ( flag & wxALIGN_CENTER_VERTICAL ) != 0 ) && enableVerticalTools );
+	toolbar->ToggleTool( ID_ALIGN_BOTTOM,   ( ( flag & wxALIGN_BOTTOM ) != 0 ) && enableVerticalTools );
+
+	toolbar->ToggleTool( ID_BORDER_TOP,      ( ( flag & wxTOP ) != 0 ) && gotLayoutSettings);
+	toolbar->ToggleTool( ID_BORDER_RIGHT,    ( ( flag & wxRIGHT ) != 0 ) && gotLayoutSettings );
+	toolbar->ToggleTool( ID_BORDER_LEFT,     ( ( flag & wxLEFT ) != 0 ) && gotLayoutSettings );
+	toolbar->ToggleTool( ID_BORDER_BOTTOM,   ( ( flag & wxBOTTOM ) != 0 ) && gotLayoutSettings );
 }
 
 void MainFrame::UpdateFrame()

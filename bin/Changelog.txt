@@ -36,6 +36,9 @@ date Version 3.00.05
   code is generated.
 * Fixed FS#66 — "Adding common controls to toolbar."
 * Fixed FS#65 — "Unfriendly object tree."
+* Implemented FS#68 — "Smart enable/disable of toolbar items."
+  This was already mostly done. Just needed to enable/disable the appropriate alignment
+  buttons for wxBoxSizer and wxStaticBoxSizer.
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
 ^ Added class name and line to error message for unknown classes when importing xrc.

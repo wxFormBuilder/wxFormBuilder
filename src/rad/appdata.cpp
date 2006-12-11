@@ -1546,25 +1546,12 @@ void ApplicationData::CheckProjectTree(shared_ptr<ObjectBase> obj)
 	}
 }
 
-bool ApplicationData::GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border)
+bool ApplicationData::GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border, int* orient)
 {
 	if (obj)
 	{
 		shared_ptr<ObjectBase> parent = obj->GetParent();
-		if ( parent && parent->GetObjectTypeName() == wxT("sizeritem") )
-		{
-			shared_ptr<Property> propOption = parent->GetProperty( wxT("proportion") );
-			shared_ptr<Property> propFlag   = parent->GetProperty( wxT("flag") );
-			shared_ptr<Property> propBorder = parent->GetProperty( wxT("border") );
-			assert(propOption && propFlag && propBorder);
-
-			*option = propOption->GetValueAsInteger();
-			*flag   = propFlag->GetValueAsInteger();
-			*border = propBorder->GetValueAsInteger();
-
-			return true;
-		}
-		else if ( obj->GetObjectTypeName() == wxT("spacer") )
+		if ( obj->GetObjectTypeName() == wxT("spacer") )
 		{
 			shared_ptr<Property> propOption = obj->GetProperty( wxT("proportion") );
 			shared_ptr<Property> propFlag   = obj->GetProperty( wxT("flag") );
@@ -1575,6 +1562,47 @@ bool ApplicationData::GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, i
 			*flag   = propFlag->GetValueAsInteger();
 			*border = propBorder->GetValueAsInteger();
 
+			if ( parent )
+			{
+				wxString parentName = parent->GetClassName();
+				if ( wxT("wxBoxSizer") == parentName || wxT("wxStaticBoxSizer") == parentName )
+				{
+					shared_ptr<Property> propOrient = parent->GetProperty( wxT("orient") );
+					if ( propOrient )
+					{
+						*orient = propOrient->GetValueAsInteger();
+					}
+				}
+			}
+			return true;
+		}
+		else if ( parent && parent->GetObjectTypeName() == wxT("sizeritem") )
+		{
+			shared_ptr<Property> propOption = parent->GetProperty( wxT("proportion") );
+			shared_ptr<Property> propFlag   = parent->GetProperty( wxT("flag") );
+			shared_ptr<Property> propBorder = parent->GetProperty( wxT("border") );
+			assert(propOption && propFlag && propBorder);
+
+			*option = propOption->GetValueAsInteger();
+			*flag   = propFlag->GetValueAsInteger();
+			*border = propBorder->GetValueAsInteger();
+
+			if ( parent )
+			{
+				shared_ptr<ObjectBase> sizer = parent->GetParent();
+				if ( sizer )
+				{
+					wxString parentName = sizer->GetClassName();
+					if ( wxT("wxBoxSizer") == parentName || wxT("wxStaticBoxSizer") == parentName )
+					{
+						shared_ptr<Property> propOrient = sizer->GetProperty( wxT("orient") );
+						if ( propOrient )
+						{
+							*orient = propOrient->GetValueAsInteger();
+						}
+					}
+				}
+			}
 			return true;
 		}
 	}
