@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.0.06"
+#define MyAppVer "3.0.10"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
@@ -55,7 +55,7 @@ MinVersion=0,4.0.1381sp6
 
 
 [Messages]
-BeveledLabel={#MyAppName} v{#MyAppVer} Beta 1
+BeveledLabel={#MyAppName} v{#MyAppVer} Beta 2
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
