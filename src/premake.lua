@@ -81,13 +81,13 @@ package.bindir = "../bin"
 --package.libpath = "controls/lib/gcc_dll"
 
 -- Set libraries to link.
+package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "Plugin Interface" }
 if ( OS == "windows") then
 	
 	package.config["Debug"].links = { "wxmsw"..wx_ver.."d" }
 	package.config["Debug (Unicode)"].links = { "wxmsw"..wx_ver.."ud" }
 	package.config["Release"].links = {	"wxmsw"..wx_ver }
 	package.config["Release (Unicode)"].links = { "wxmsw"..wx_ver.."u" }
-	package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "Plugin Interface" }
 else
 	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`"}
 	package.config["Release"].linkoptions = { "`wx-config --libs`" }
