@@ -422,6 +422,38 @@
 			<Option target="Release (Unicode)" />
 			<Option target="Debug (Unicode)" />
 		</Unit>
+		<Unit filename="rad\designer\nativeinnerframe.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="rad\designer\nativeinnerframe.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="rad\designer\resizablepanel.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
+		<Unit filename="rad\designer\resizablepanel.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="Debug" />
+			<Option target="Debug (Unicode)" />
+			<Option target="Release" />
+			<Option target="Release (Unicode)" />
+		</Unit>
 		<Unit filename="rad\designer\visualeditor.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
