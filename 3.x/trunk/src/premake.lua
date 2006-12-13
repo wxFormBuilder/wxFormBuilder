@@ -2,7 +2,12 @@ package.name = "wxFormBuilder"
 
 package.kind = "winexe"
 package.language = "c++"
-package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
+if ( OS == "windows" ) then
+	package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
+else
+	package.files = { matchrecursive( "*.cpp", "*.h" ) }
+end
+
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 
 -- Local variables
@@ -33,14 +38,20 @@ package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 package.config["Release (Unicode)"].buildflags = { "unicode", "no-symbols", "optimize-speed" }
 
 -- Set include paths
-if ( target == "cb-gcc" ) then
-	cbSpecific = "$(#WX)/include"
+if ( OS == "windows") then
+	if ( target == "cb-gcc" ) then
+		cbSpecific = "$(#WX.include)"
+	else
+		cbSpecific = "$(WXWIN)/include"
+	end
 else
-	cbSpecific = "$(WXWIN)/include"
+	cbSpecific = ""
 end
+
 package.includepaths =
 {
 	cbSpecific,
+	"../../include",
 	"controls/include",
 	"boost",
 	"../src", 
@@ -49,47 +60,36 @@ package.includepaths =
 }
 
 -- Setup the linker options.
-if ( target == "cb-gcc" or target == "gnu" ) then
+if ( OS == "windows" ) then
 	if ( target == "cb-gcc" ) then
 		cbSpecific = "$(#WX)/lib/gcc_dll"
-	else
+	elseif ( target == "gnu" ) then
 		cbSpecific = "$(WXWIN)/lib/gcc_dll"
-	end
-	package.libpaths =
-	{
-		cbSpecific,
-		"controls/lib/gcc_dll",
-		"../bin",
-		"../sdk/lib"
-	}
-else
-	if ( target == "cb-gcc" ) then
-		cbSpecific = "$(#WX)/lib/vc_dll"
 	else
 		cbSpecific = "$(WXWIN)/lib/vc_dll"
 	end
-	package.libpaths =
-	{
-		cbSpecific,
-		"controls/lib/vc_dll",
-		"../sdk/lib"
-	}
+else
+	cbSpecific = ""
 end
+
+package.libpaths =
+{
+	cbSpecific
+}
 
 -- Setup the output directory options.
 package.bindir = "../bin"
---package.libpath = "controls/lib/gcc_dll"
 
 -- Set libraries to link.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "Plugin Interface" }
 if ( OS == "windows") then
-	
 	package.config["Debug"].links = { "wxmsw"..wx_ver.."d" }
 	package.config["Debug (Unicode)"].links = { "wxmsw"..wx_ver.."ud" }
 	package.config["Release"].links = {	"wxmsw"..wx_ver }
 	package.config["Release (Unicode)"].links = { "wxmsw"..wx_ver.."u" }
 else
-	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`"}
+	package.config.linkoptions = { "-Wl,-rpath,$``ORIGIN/lib" }
+	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`" }
 	package.config["Release"].linkoptions = { "`wx-config --libs`" }
 end
 
