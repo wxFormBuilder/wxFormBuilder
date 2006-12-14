@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+﻿///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
 // Copyright (C) 2005 José Antonio Hurtado
@@ -28,7 +28,7 @@
 
 #include "wx/wx.h"
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#include "wx/aui/aui.h"
+//#include "wx/aui/aui.h"
 #include "wx/splitter.h"
 
 class wxFBEvent;
