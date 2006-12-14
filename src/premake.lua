@@ -51,7 +51,6 @@ end
 package.includepaths =
 {
 	cbSpecific,
-	"../../include",
 	"controls/include",
 	"boost",
 	"../src", 
@@ -88,7 +87,7 @@ if ( OS == "windows") then
 	package.config["Release"].links = {	"wxmsw"..wx_ver }
 	package.config["Release (Unicode)"].links = { "wxmsw"..wx_ver.."u" }
 else
-	package.config.linkoptions = { "-Wl,-rpath,$``ORIGIN/lib" }
+	package.linkoptions = { "-Wl,-rpath,$``ORIGIN/lib" }
 	package.config["Debug"].linkoptions = { "`wx-config --debug --libs`" }
 	package.config["Release"].linkoptions = { "`wx-config --libs`" }
 end
