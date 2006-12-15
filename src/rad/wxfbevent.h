@@ -53,6 +53,8 @@ class wxFBPropertyEvent : public wxFBEvent
 {
 public:
   wxFBPropertyEvent(wxEventType commandType, PProperty property);
+  wxFBPropertyEvent( const wxFBPropertyEvent& event );
+  wxEvent* Clone() const;
   PProperty GetFBProperty() { return m_property; }
 private:
   PProperty m_property;
@@ -62,6 +64,8 @@ class wxFBObjectEvent : public wxFBEvent
 {
 public:
   wxFBObjectEvent(wxEventType commandType, PObjectBase object);
+  wxFBObjectEvent( const wxFBObjectEvent& event );
+  wxEvent* Clone() const;
   PObjectBase GetFBObject() { return m_object; }
 
 private:

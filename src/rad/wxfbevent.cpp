@@ -85,7 +85,31 @@ wxFBPropertyEvent::wxFBPropertyEvent(wxEventType commandType, PProperty property
 {
 }
 
+wxFBPropertyEvent::wxFBPropertyEvent( const wxFBPropertyEvent& event )
+:
+wxFBEvent( event ),
+m_property( event.m_property )
+{
+}
+
+wxEvent* wxFBPropertyEvent::Clone() const
+{
+	return new wxFBPropertyEvent( *this );
+}
+
 wxFBObjectEvent::wxFBObjectEvent(wxEventType commandType, PObjectBase object)
  : wxFBEvent(commandType), m_object(object)
 {
+}
+
+wxFBObjectEvent::wxFBObjectEvent( const wxFBObjectEvent& event )
+:
+wxFBEvent( event ),
+m_object( event.m_object )
+{
+}
+
+wxEvent* wxFBObjectEvent::Clone() const
+{
+	return new wxFBObjectEvent( *this );
 }

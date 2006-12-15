@@ -1868,11 +1868,11 @@ void ApplicationData::RemoveHandler( wxEvtHandler* handler )
 void ApplicationData::NotifyEvent( wxFBEvent& event )
 {
   static int count = 0;
-  static std::set< wxFBEvent* > eventQueue;
 
   if (count == 0)
   {
 	  count++;
+	  wxLogDebug( wxT("event: %s"), event.GetEventName().c_str() );
 	  std::vector< wxEvtHandler* >::iterator handler;
 	  for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )
 	    (*handler)->ProcessEvent( event );
@@ -1881,21 +1881,11 @@ void ApplicationData::NotifyEvent( wxFBEvent& event )
   }
   else
   {
-  	eventQueue.insert( &event );
-    wxLogMessage( wxT("Queued event: %s"), event.GetEventName().c_str() );
+    wxLogDebug( wxT("Pending event: %s"), event.GetEventName().c_str() );
+    std::vector< wxEvtHandler* >::iterator handler;
+	for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )
+	    (*handler)->AddPendingEvent( event );
   }
-
-  // Copy queue
- /* std::set< wxFBEvent* > queueInProcess = eventQueue;
-  eventQueue.clear();
-
-  // Process queue
-  std::set< wxFBEvent* >::iterator queuedEvent;
-  for ( queuedEvent = queueInProcess.begin(); queuedEvent != queueInProcess.end(); ++queuedEvent )
-  {
-  	wxFBEvent* temp = *queuedEvent;
-	  NotifyEvent( *temp );
-  }*/
 }
 
 void ApplicationData::NotifyProjectLoaded()

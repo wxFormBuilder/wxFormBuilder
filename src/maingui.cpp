@@ -91,7 +91,7 @@ bool MyApp::OnInit()
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
 	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );
 
-#ifndef _DEBUG
+#if !( defined( _DEBUG ) || defined( DEBUG ) || defined ( __WXDEBUG__ ) )
 	wxBitmap bitmap;
 	std::auto_ptr< wxSplashScreen > splash;
 	if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
