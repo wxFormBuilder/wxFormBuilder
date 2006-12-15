@@ -57,13 +57,15 @@ public:
 protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
+	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
-	EVT_TEXT( -1, ComponentEvtHandler::OnText )
-	EVT_CHECKBOX( -1, ComponentEvtHandler::OnChecked )
+	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
+	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
+	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -874,6 +876,8 @@ public:
 		if (!obj->IsNull(_("separation")))
 			tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
 
+		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
+
 		return tb;
 	}
 
@@ -893,10 +897,15 @@ public:
 			IObject* childObj = GetManager()->GetIObject( child );
 			if ( wxT("tool") == childObj->GetClassName() )
 			{
-				tb->AddTool( 	wxID_HIGHEST + 200,
+				static int id = wxID_HIGHEST + 200;
+				tb->AddTool( 	id++,
 								childObj->GetPropertyAsString( _("label") ),
 								childObj->GetPropertyAsBitmap( _("bitmap") ),
-								childObj->GetPropertyAsString( _("help") )
+								wxNullBitmap,
+								wxITEM_NORMAL,
+								childObj->GetPropertyAsString( _("help") ),
+								wxEmptyString,
+								child
 							);
 			}
 			else if ( wxT("toolSeparator") == childObj->GetClassName() )
@@ -940,6 +949,22 @@ public:
 		return filter.GetXfbObject();
 	}
 };
+
+void ComponentEvtHandler::OnTool( wxCommandEvent& event )
+{
+	wxToolBar* tb = wxDynamicCast( event.GetEventObject(), wxToolBar );
+	if ( NULL == tb )
+	{
+		// very very strange
+		return;
+	}
+
+	wxObject* wxobject = tb->GetToolClientData( event.GetId() );
+	if ( NULL != wxobject )
+	{
+		m_manager->SelectObject( wxobject );
+	}
+}
 
 class ToolComponent : public ComponentBase
 {
