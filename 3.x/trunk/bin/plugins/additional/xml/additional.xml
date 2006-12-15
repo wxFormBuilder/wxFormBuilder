@@ -120,7 +120,7 @@
     <property name="splitmode" type="option">
       <option name="wxSPLIT_VERTICAL"         help="Specifies a vertical split window." />
       <option name="wxSPLIT_HORIZONTAL"       help="Specifies a horizontal split window." />wxSPLIT_VERTICAL</property>
-    <property name="sashpos" type="uint"      help="The initial sash position.">0</property>
+    <property name="sashpos" type="int"      help="The initial sash position.">0</property>
 	<property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
   </objectinfo>
 

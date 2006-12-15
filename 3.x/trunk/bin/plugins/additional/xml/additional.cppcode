@@ -61,9 +61,6 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/splitter.h&gt;</template>
 	<template name="settings">
-	  #ifnotnull $sashpos"
-	  $name->SetSashPosition( $sashpos ); #nl
-
 	  #ifnotnull $sashgravity"
 	  $name->SetSashGravity( $sashgravity ); #nl
     </template>

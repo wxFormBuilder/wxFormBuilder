@@ -107,6 +107,8 @@ protected:
 		}
 	}
 
+	void OnSplitterSashChanged( wxSplitterEvent& event );
+
 	DECLARE_EVENT_TABLE()
 };
 
@@ -114,68 +116,29 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_NOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnNotebookPageChanged )
 	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
+	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
 END_EVENT_TABLE()
 
 class wxCustomSplitterWindow : public wxSplitterWindow
 {
-	DECLARE_CLASS( wxCustomSplitterWindow )
+public:
+	wxCustomSplitterWindow(wxWindow* parent, wxWindowID id, const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style=wxSP_3D)
+	:
+	wxSplitterWindow( parent, id, point, size, style ),
+	m_customSashPos( 0 )
+	{
+	}
+
+	int m_customSashPos;
 
 private:
-	int m_swCount;
-	int m_splitMode;
-	int m_sashPos;
-	wxWindow * m_subWindows[2];
 
-	void Rebuild();
-
-public:
-	wxCustomSplitterWindow( wxWindow* parent, wxWindowID id, const wxPoint& point, const wxSize& size, long style );
-	void CreateSplit(int splitMode, int sashPos);
-	void AddSubwindow(wxWindow *subw);
-};
-
-IMPLEMENT_CLASS( wxCustomSplitterWindow, wxSplitterWindow )
-
-wxCustomSplitterWindow::wxCustomSplitterWindow (wxWindow* parent, wxWindowID id,
-												const wxPoint& point,  const wxSize& size, long style)
-												: wxSplitterWindow(parent,id,point,size,style)
-{
-	m_swCount = 0;
-	m_sashPos = 0;
-	m_subWindows[0] = new wxPanel(this,-1);
-	m_subWindows[1] = new wxPanel(this,-1);
-	SetAutoLayout(true);
-}
-
-void wxCustomSplitterWindow::CreateSplit(int splitMode, int sashPos)
-{
-	m_splitMode = splitMode;
-	m_sashPos = sashPos;
-	Rebuild();
-}
-
-void wxCustomSplitterWindow::AddSubwindow(wxWindow *subw)
-{
-	if (m_swCount < 2)
+	bool OnSashPositionChange( int newSashPosition )
 	{
-		Unsplit();
-		m_subWindows[m_swCount]->Destroy();
-		m_subWindows[m_swCount] = subw;
-		Rebuild();
-		m_swCount++;
+		m_customSashPos = newSashPosition;
+		return wxSplitterWindow::OnSashPositionChange( newSashPosition );
 	}
-}
-
-void wxCustomSplitterWindow::Rebuild()
-{
-	if (IsSplit())
-		Unsplit();
-
-	if (m_splitMode == wxSPLIT_VERTICAL)
-		SplitVertically(m_subWindows[0],m_subWindows[1],m_sashPos);
-	else
-		SplitHorizontally(m_subWindows[0],m_subWindows[1],m_sashPos);
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -496,10 +459,8 @@ class SplitterWindowComponent : public ComponentBase
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		splitter->CreateSplit(obj->GetPropertyAsInteger(_("splitmode")),
-			obj->GetPropertyAsInteger(_("sashpos")));
-
 		splitter->SetSashGravity( obj->GetPropertyAsFloat(_("sashgravity")) );
+		splitter->SetMinimumPaneSize(1);
 
 		return splitter;
 	}
@@ -510,7 +471,6 @@ class SplitterWindowComponent : public ComponentBase
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("sashpos"),_("sashpos"),XRC_TYPE_INTEGER);
-		//xrc.AddProperty(_("minsize"),_("minsize"),...
 		if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
 			xrc.AddPropertyValue(_("orientation"),wxT("vertical"));
 		else
@@ -542,33 +502,113 @@ class SplitterWindowComponent : public ComponentBase
 
 		return filter.GetXfbObject();
 	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		wxCustomSplitterWindow* splitter = wxDynamicCast( wxobject, wxCustomSplitterWindow );
+		if ( NULL == splitter )
+		{
+			wxLogError( _("This should be a wxSplitterWindow") );
+			return;
+		}
+
+		size_t childCount = GetManager()->GetChildCount( wxobject );
+		switch ( childCount )
+		{
+			case 1:
+			{
+				// The child should be a splitteritem
+				wxObject* splitterItem = GetManager()->GetChild( wxobject, 0 );
+
+				// This one should be the actual wxWindow
+				wxWindow* subwindow = wxDynamicCast( GetManager()->GetChild( splitterItem, 0 ), wxWindow );
+				if ( NULL == subwindow )
+				{
+					wxLogError( _("A SplitterItem is abstract and must have a child!") );
+					return;
+				}
+
+				splitter->Initialize( subwindow );
+				splitter->PushEventHandler( new ComponentEvtHandler( splitter, GetManager() ) );
+				break;
+			}
+			case 2:
+			{
+				// The child should be a splitteritem
+				wxObject* splitterItem0 = GetManager()->GetChild( wxobject, 0 );
+				wxObject* splitterItem1 = GetManager()->GetChild( wxobject, 1 );
+
+				// This one should be the actual wxWindow
+				wxWindow* subwindow0 = wxDynamicCast( GetManager()->GetChild( splitterItem0, 0 ), wxWindow );
+				wxWindow* subwindow1 = wxDynamicCast( GetManager()->GetChild( splitterItem1, 0 ), wxWindow );
+
+				if ( NULL == subwindow0 || NULL == subwindow1 )
+				{
+					wxLogError( _("A SplitterItem is abstract and must have a child!") );
+					return;
+				}
+
+				// Get the split mode and sash position
+				IObject* obj = GetManager()->GetIObject( wxobject );
+				if ( obj == NULL )
+				{
+					return;
+				}
+
+				int sashPos = obj->GetPropertyAsInteger(_("sashpos"));
+				int splitmode = obj->GetPropertyAsInteger(_("splitmode"));
+
+				if ( splitmode == wxSPLIT_VERTICAL )
+				{
+					splitter->SplitVertically( subwindow0, subwindow1, sashPos );
+				}
+				else
+				{
+					splitter->SplitHorizontally( subwindow0, subwindow1, sashPos );
+				}
+
+				splitter->PushEventHandler( new ComponentEvtHandler( splitter, GetManager() ) );
+				break;
+			}
+			default:
+				return;
+		}
+	}
+
+	void OnSelected( wxObject* wxobject )
+	{
+		wxCustomSplitterWindow* splitter = wxDynamicCast( wxobject, wxCustomSplitterWindow );
+		if ( NULL == splitter )
+		{
+			wxLogError( _("This should be a wxSplitterWindow") );
+			return;
+		}
+
+		IObject* obj = GetManager()->GetIObject( wxobject );
+		if ( obj == NULL )
+		{
+			return;
+		}
+		int sashPos = obj->GetPropertyAsInteger(_("sashpos"));
+		wxLogDebug( wxT("selected %i"), sashPos );
+		splitter->SetSashPosition( sashPos );
+	}
 };
+
+void ComponentEvtHandler::OnSplitterSashChanged( wxSplitterEvent& event )
+{
+	wxCustomSplitterWindow* window = wxDynamicCast( m_window, wxCustomSplitterWindow );
+	if ( window != NULL )
+	{
+		if ( window->m_customSashPos != 0 )
+		{
+			m_manager->ModifyProperty( window, _("sashpos"), wxString::Format( wxT("%i"), window->GetSashPosition() ) );
+		}
+	}
+}
 
 class SplitterItemComponent : public ComponentBase
 {
-public:
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
-	{
-		wxCustomSplitterWindow* splitter = wxDynamicCast( wxparent, wxCustomSplitterWindow );
-		if ( NULL == splitter )
-		{
-			wxLogError( _("The parent of a SplitterItem should be a wxCustomSplitterWindow") );
-		}
-
-		wxWindow* subwindow = wxDynamicCast( GetManager()->GetChild( wxobject, 0 ), wxWindow );
-		if ( NULL == subwindow )
-		{
-			wxLogError( _("A SplitterItem is abstract and must have a child!") );
-		}
-		splitter->AddSubwindow(subwindow);
-	}
-
-	TiXmlElement* ExportToXrc(IObject *obj)
-	{
-		// A __dummyitem__ will be ignored...
-		ObjectToXrcFilter xrc(obj, _("__dummyitem__"),wxT(""));
-		return xrc.GetXrcObject();
-	}
 };
 
 class CheckListBoxComponent : public ComponentBase
