@@ -564,21 +564,23 @@ void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 	shared_ptr< Property > prop = event.GetFBProperty();
 	if ( prop )
 	{
-		if ( 0 == prop->GetName().CmpNoCase( wxT("name") ) )
+		if ( prop->GetObject() == AppData()->GetSelectedObject() )
 		{
-			wxString oldDetails = GetStatusBar()->GetStatusText( STATUS_FIELD_OBJECT );
-			wxString newDetails;
-			size_t pipeIdx = oldDetails.find( wxT("|") );
-			if ( pipeIdx != oldDetails.npos )
+			if ( 0 == prop->GetName().CmpNoCase( wxT("name") ) )
 			{
-				newDetails.Printf( wxT("Name: %s %s"), prop->GetValueAsString().c_str(), oldDetails.substr( pipeIdx ).c_str() );
-				GetStatusBar()->SetStatusText( newDetails, STATUS_FIELD_OBJECT );
+				wxString oldDetails = GetStatusBar()->GetStatusText( STATUS_FIELD_OBJECT );
+				wxString newDetails;
+				size_t pipeIdx = oldDetails.find( wxT("|") );
+				if ( pipeIdx != oldDetails.npos )
+				{
+					newDetails.Printf( wxT("Name: %s %s"), prop->GetValueAsString().c_str(), oldDetails.substr( pipeIdx ).c_str() );
+					GetStatusBar()->SetStatusText( newDetails, STATUS_FIELD_OBJECT );
+				}
 			}
+			GetStatusBar()->SetStatusText( wxT( "Property Modified!" ) );
+			UpdateFrame();
 		}
 	}
-
-	GetStatusBar()->SetStatusText( wxT( "Property Modified!" ) );
-	UpdateFrame();
 }
 
 void MainFrame::OnCodeGeneration( wxFBEvent& event )

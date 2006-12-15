@@ -977,7 +977,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, shared_ptr< wxFBM
 
 	// This will prevent loading debug libraries in release and vice versa
 	// That used to cause crashes when trying to debug
-	#ifdef _DEBUG
+	#if ( defined( _DEBUG ) || defined( DEBUG ) || defined ( __WXDEBUG__ ) )
 		path += wxT("d");
 	#endif
 
