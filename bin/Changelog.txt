@@ -41,6 +41,7 @@ date Version 3.00.05
   buttons for wxBoxSizer and wxStaticBoxSizer.
 * Fixed moving left, right, and into a new wxBoxSizer for spacers.
 * Fixed FS#72 — "When editing a property in the property grid, it is lost when you click away."
+* Fixed FS#73 — "Toolbar tools not selecting the object in the object tree."
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
 ^ Added class name and line to error message for unknown classes when importing xrc.
