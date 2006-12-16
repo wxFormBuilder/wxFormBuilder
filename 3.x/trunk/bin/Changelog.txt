@@ -42,9 +42,13 @@ date Version 3.00.05
 * Fixed moving left, right, and into a new wxBoxSizer for spacers.
 * Fixed FS#72 — "When editing a property in the property grid, it is lost when you click away."
 * Fixed FS#73 — "Toolbar tools not selecting the object in the object tree."
+* Fixed FS#71 — "wxSplitter window sashpos not being set."
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
 ^ Added class name and line to error message for unknown classes when importing xrc.
+^ Improved both C++ and XRC code generation for wxSplitterWindow.
++ Added support for using wxSplitterWindow with only one child.
++ Added min_pane_size and sashsize properties to wxSplitterWindow.
 + Added maximum size property to wxWindow properties.
 + Implemented FS#48 — "Improve error notification when a plugin is missing."
   If widgets are missing, the project will not load at all.

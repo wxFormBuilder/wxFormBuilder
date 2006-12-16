@@ -823,32 +823,49 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 		if ( type == wxT("splitter") )
 		{
 			// generamos el split
-			if (obj->GetChildCount() == 2)
+			switch ( obj->GetChildCount() )
 			{
-				shared_ptr<ObjectBase> sub1,sub2;
-				sub1 = obj->GetChild(0)->GetChild(0);
-				sub2 = obj->GetChild(1)->GetChild(0);
-
-				wxString _template;
-				if ( obj->GetProperty( wxT("splitmode") )->GetValue() == wxT("wxSPLIT_VERTICAL") )
+				case 1:
 				{
-					_template = wxT("$name->SplitVertically(");
+					shared_ptr<ObjectBase> sub1 = obj->GetChild(0)->GetChild(0);
+					wxString _template = wxT("$name->Initialize( ");
+					_template = _template + sub1->GetProperty( wxT("name") )->GetValue() + wxT(" )");
+
+					CppTemplateParser parser(obj,_template);
+					parser.UseRelativePath(m_useRelativePath, m_basePath);
+					parser.UseI18n(m_i18n);
+					m_source->WriteLn(parser.ParseTemplate());
+					break;
 				}
-				else
+				case 2:
 				{
-					_template = wxT("$name->SplitHorizontally(");
+					shared_ptr<ObjectBase> sub1,sub2;
+					sub1 = obj->GetChild(0)->GetChild(0);
+					sub2 = obj->GetChild(1)->GetChild(0);
+
+					wxString _template;
+					if ( obj->GetProperty( wxT("splitmode") )->GetValue() == wxT("wxSPLIT_VERTICAL") )
+					{
+						_template = wxT("$name->SplitVertically( ");
+					}
+					else
+					{
+						_template = wxT("$name->SplitHorizontally( ");
+					}
+
+					_template = _template + sub1->GetProperty( wxT("name") )->GetValue() +
+						wxT(", ") + sub2->GetProperty( wxT("name") )->GetValue() + wxT(", $sashpos );");
+
+					CppTemplateParser parser(obj,_template);
+					parser.UseRelativePath(m_useRelativePath, m_basePath);
+					parser.UseI18n(m_i18n);
+					m_source->WriteLn(parser.ParseTemplate());
+					break;
 				}
-
-				_template = _template + sub1->GetProperty( wxT("name") )->GetValue() +
-					wxT(",") + sub2->GetProperty( wxT("name") )->GetValue() + wxT(",$sashpos);");
-
-				CppTemplateParser parser(obj,_template);
-				parser.UseRelativePath(m_useRelativePath, m_basePath);
-				parser.UseI18n(m_i18n);
-				m_source->WriteLn(parser.ParseTemplate());
+				default:
+					wxLogError( wxT("Missing subwindows for wxSplitterWindow widget.") );
+					break;
 			}
-			else
-				wxLogError( wxT("Missing subwindows for wxSplitterWindow widget.") );
 		}
 
 
