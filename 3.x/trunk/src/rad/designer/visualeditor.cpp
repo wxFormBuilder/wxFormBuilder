@@ -559,7 +559,7 @@ void VisualEditor::OnProjectLoaded ( wxFBEvent &event )
 
 void VisualEditor::OnProjectSaved  ( wxFBEvent &event )
 {
-  Create();
+  //Create();
 }
 
 void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
