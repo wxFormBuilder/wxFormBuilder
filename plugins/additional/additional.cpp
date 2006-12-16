@@ -125,11 +125,13 @@ public:
 	wxCustomSplitterWindow(wxWindow* parent, wxWindowID id, const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style=wxSP_3D)
 	:
 	wxSplitterWindow( parent, id, point, size, style ),
-	m_customSashPos( 0 )
+	m_customSashPos( 0 ),
+	m_customMinPaneSize( 0 )
 	{
 	}
 
 	int m_customSashPos;
+	int m_customMinPaneSize;
 
 private:
 
@@ -137,6 +139,15 @@ private:
 	{
 		m_customSashPos = newSashPosition;
 		return wxSplitterWindow::OnSashPositionChange( newSashPosition );
+	}
+
+	void OnDoubleClickSash( int, int )
+	{
+		if ( 0 == m_customMinPaneSize )
+		{
+			wxMessageBox( wxT("Double-clicking a wxSplitterWindow sash with the minimum pane size set to 0 would normally unsplit it.\nHowever, it is difficult to design a pane that has been closed, so this action has been vetoed."),
+					wxT("Unsplit Vetoed!"), wxICON_INFORMATION, NULL );
+		}
 	}
 };
 
@@ -457,10 +468,28 @@ class SplitterWindowComponent : public ComponentBase
 			new wxCustomSplitterWindow((wxWindow *)parent,-1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
-			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+			(obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))) & ~wxSP_PERMIT_UNSPLIT );
 
-		splitter->SetSashGravity( obj->GetPropertyAsFloat(_("sashgravity")) );
-		splitter->SetMinimumPaneSize(1);
+		if ( !obj->IsNull( _("sashgravity") ) )
+		{
+			float gravity = obj->GetPropertyAsFloat( _("sashgravity") );
+			gravity = ( gravity < 0.0 ? 0.0 : gravity );
+			gravity = ( gravity > 1.0 ? 1.0 : gravity );
+			splitter->SetSashGravity( gravity );
+		}
+
+		if ( !obj->IsNull( _("sashsize") ) )
+		{
+			splitter->SetSashSize( obj->GetPropertyAsInteger( _("sashsize") ) );
+		}
+
+		if ( !obj->IsNull( _("min_pane_size") ) )
+		{
+			int minPaneSize = obj->GetPropertyAsInteger( _("min_pane_size") );
+			splitter->m_customMinPaneSize = minPaneSize;
+			minPaneSize = ( minPaneSize < 1 ? 1 : minPaneSize );
+			splitter->SetMinimumPaneSize( minPaneSize );
+		}
 
 		return splitter;
 	}
@@ -469,8 +498,8 @@ class SplitterWindowComponent : public ComponentBase
 	{
 		ObjectToXrcFilter xrc(obj, _("wxSplitterWindow"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("sashpos"),_("sashpos"),XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("min_pane_size"),_("minsize"),XRC_TYPE_INTEGER);
 		if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
 			xrc.AddPropertyValue(_("orientation"),wxT("vertical"));
 		else
@@ -483,9 +512,8 @@ class SplitterWindowComponent : public ComponentBase
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxSplitterWindow"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		filter.AddProperty(_("sashpos"),_("sashpos"),XRC_TYPE_INTEGER);
-
+		filter.AddProperty(_("minsize"),_("min_pane_size"),XRC_TYPE_INTEGER);
 		TiXmlElement *splitmode = xrcObj->FirstChildElement("orientation");
 		if (splitmode)
 		{
@@ -590,7 +618,6 @@ class SplitterWindowComponent : public ComponentBase
 			return;
 		}
 		int sashPos = obj->GetPropertyAsInteger(_("sashpos"));
-		wxLogDebug( wxT("selected %i"), sashPos );
 		splitter->SetSashPosition( sashPos );
 	}
 };
@@ -609,6 +636,12 @@ void ComponentEvtHandler::OnSplitterSashChanged( wxSplitterEvent& event )
 
 class SplitterItemComponent : public ComponentBase
 {
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		// A __dummyitem__ will be ignored...
+		ObjectToXrcFilter xrc(obj, _("__dummyitem__"),wxT(""));
+		return xrc.GetXrcObject();
+	}
 };
 
 class CheckListBoxComponent : public ComponentBase
