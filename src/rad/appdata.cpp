@@ -1770,11 +1770,16 @@ void ApplicationData::CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj)
 void ApplicationData::ShowXrcPreview()
 {
     shared_ptr<ObjectBase> form = GetSelectedForm();
-    if (form == NULL) return;
+    if ( form == NULL )
+    {
+    	wxMessageBox( wxT("Please select a form and try again."), wxT("No Form Selected"), wxICON_ERROR );
+    	return;
+    }
+
     wxString className = form->GetClassName();
 
     XrcCodeGenerator codegen;
-    wxString filePath = wxFileName::CreateTempFileName(_T("wxFB"));
+    wxString filePath = wxFileName::CreateTempFileName( wxT("wxFB") );
     shared_ptr<CodeWriter> cw(new FileCodeWriter(filePath));
 
     codegen.SetWriter(cw);
@@ -1786,30 +1791,30 @@ void ApplicationData::ShowXrcPreview()
     wxXmlResource *res = wxXmlResource::Get();
     res->Load(filePath);
 
-    if (className == _T("Frame"))
+    if (className == wxT("Frame"))
     {
         wxFrame *frame = new wxFrame();
-        res->LoadFrame(frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString(_T("name")));
-        frame->SetSize(form->GetPropertyAsSize(_T("size")));
+        res->LoadFrame(frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString(wxT("name")));
+        frame->SetSize(form->GetPropertyAsSize(wxT("size")));
         frame->CenterOnScreen();
         frame->Show();
     }
-    else if (className == _T("Dialog"))
+    else if (className == wxT("Dialog"))
     {
         wxDialog dialog;
-        res->LoadDialog(&dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString(_T("name")));
-        dialog.SetSize(form->GetPropertyAsSize(_T("size")));
+        res->LoadDialog(&dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString(wxT("name")));
+        dialog.SetSize(form->GetPropertyAsSize(wxT("size")));
         dialog.CenterOnScreen();
         dialog.ShowModal();
     }
-    else if (className == _T("Panel"))
+    else if (className == wxT("Panel"))
     {
-        wxDialog dialog(wxTheApp->GetTopWindow(), -1, _T("Dialog"), wxDefaultPosition,
+        wxDialog dialog(wxTheApp->GetTopWindow(), -1, wxT("Dialog"), wxDefaultPosition,
             wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
         wxPanel *panel = new wxPanel();
-        res->LoadPanel(panel, &dialog, form->GetPropertyAsString(_T("name")));
+        res->LoadPanel(panel, &dialog, form->GetPropertyAsString(wxT("name")));
         dialog.SetClientSize(panel->GetSize());
-        dialog.SetSize(form->GetPropertyAsSize(_T("size")));
+        dialog.SetSize(form->GetPropertyAsSize(wxT("size")));
         dialog.CenterOnScreen();
         dialog.ShowModal();
     }
