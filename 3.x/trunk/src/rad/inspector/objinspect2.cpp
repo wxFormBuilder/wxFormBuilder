@@ -646,14 +646,12 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 		std::list< PropertyChild >::iterator it;
 		for( it = children->begin(); it != children->end(); ++it )
 		{
-			wxPGProperty* child = wxStringProperty( it->m_name, wxPG_LABEL, it->m_defaultValue );
+			wxPGProperty* child = wxStringProperty( it->m_name, wxPG_LABEL, wxEmptyString );
 			parent->AddChild( child );
 			m_pg->SetPropertyHelpString( child, it->m_description );
 		}
 
-		wxString value = parent->GetValueAsString( wxPG_FULL_VALUE );
-		prop->SetValue( value );
-		prop->ChangeDefaultValue( value );
+		parent->SetValueFromString( prop->GetValueAsString(), wxPG_FULL_VALUE );
 
 		result = parent;
 	}

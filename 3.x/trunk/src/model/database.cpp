@@ -872,6 +872,16 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 			continue;
 		}
 
+		// Get default value
+		std::string def_value;
+		try
+		{
+			ticpp::Node* lastChild = elem_prop->LastChild();
+			ticpp::Text* text = lastChild->ToText();
+			def_value = text->Value();
+		}
+		catch( ticpp::Exception& ){}
+
 		// if the property is a "bitlist" then parse all of the options
 		shared_ptr<OptionList> opt_list;
 		std::list< PropertyChild > children;
@@ -897,6 +907,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 		else if ( ptype == PT_PARENT )
 		{
 			// If the property is a parent, then get the children
+			def_value.clear();
 			ticpp::Element* elem_child = elem_prop->FirstChildElement( "child", false );
 			while ( elem_child )
 			{
@@ -916,6 +927,13 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 					ticpp::Node* lastChild = elem_child->LastChild();
 					ticpp::Text* text = lastChild->ToText();
 					child.m_defaultValue = _WXSTR( text->Value() );
+
+					// build parent default value
+					if ( children.size() > 0 )
+					{
+						def_value += "; ";
+					}
+					def_value += text->Value();
 				}
 				catch( ticpp::Exception& ){}
 
@@ -924,16 +942,6 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 				elem_child = elem_child->NextSiblingElement( "child", false );
 			}
 		}
-
-		// Get default value
-		std::string def_value;
-		try
-		{
-			ticpp::Node* lastChild = elem_prop->LastChild();
-			ticpp::Text* text = lastChild->ToText();
-			def_value = text->Value();
-		}
-		catch( ticpp::Exception& ){}
 
 		// create an instance of PropertyInfo
 		shared_ptr<PropertyInfo> prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list, children ) );
