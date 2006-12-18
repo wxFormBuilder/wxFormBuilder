@@ -114,7 +114,7 @@ private:
 	* Guarda todos las propiedades de objetos de tipo "macro" para generar
 	* su posterior '#define'.
 	*/
-	void FindMacros( shared_ptr<ObjectBase> obj, set<wxString> &macro_set);
+	void FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>* macros );
 
 	/**
 	* Genera la declaración de clases en el fichero de cabecera.
