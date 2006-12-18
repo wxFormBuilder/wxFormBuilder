@@ -27,6 +27,8 @@
 #include "utils/typeconv.h"
 #include "rad/appdata.h"
 
+#include <algorithm>
+
 #include <wx/filename.h>
 
 CppTemplateParser::CppTemplateParser(shared_ptr<ObjectBase> obj, wxString _template)
@@ -587,11 +589,11 @@ void CppCodeGenerator::GenClassDeclaration(shared_ptr<ObjectBase> class_obj, boo
 
 void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
 {
-	set<wxString> macro_set;
-	FindMacros(class_obj,macro_set);
+	vector< wxString > macros;
+	FindMacros( class_obj, &macros );
 
-	set<wxString>::iterator it = macro_set.begin();
-	if ( it != macro_set.end())
+	vector< wxString >::iterator it = macros.begin();
+	if ( it != macros.end())
 	{
 		m_header->WriteLn( wxT("enum") );
 		m_header->WriteLn( wxT("{") );
@@ -599,7 +601,7 @@ void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
 
 		m_header->WriteLn( wxString::Format( wxT("%s = %i,"), it->c_str(), m_firstID ) );
 		it++;
-		while ( it != macro_set.end() )
+		while ( it != macros.end() )
 		{
 			m_header->WriteLn( *it + wxT(",") );
 			it++;
@@ -993,10 +995,10 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 	}
 }
 
-void CppCodeGenerator::FindMacros( shared_ptr< ObjectBase > obj, set< wxString >& macro_set )
+void CppCodeGenerator::FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>* macros )
 {
-	// recorre cada propiedad de cada objeto identificando aquellas
-	// que sean macros, en cuyo caso la añade al conjunto.
+	// iterate through all of the properties of all objects, add the macros
+	// to the vector
 	unsigned int i;
 
 	for ( i = 0; i < obj->GetPropertyCount(); i++ )
@@ -1005,34 +1007,32 @@ void CppCodeGenerator::FindMacros( shared_ptr< ObjectBase > obj, set< wxString >
 		if ( prop->GetType() == PT_MACRO )
 		{
 			wxString value = prop->GetValue();
-			set< wxString >::iterator it = m_predMacros.find( value );
-			if ( it == m_predMacros.end() )
+			if ( macros->end() == find( macros->begin(), macros->end(), value ) )
 			{
-				macro_set.insert( prop->GetValue() );
+				macros->push_back( value );
 			}
 		}
-		}
+	}
 
 	for ( i = 0; i < obj->GetChildCount(); i++ )
 	{
-		FindMacros( obj->GetChild( i ), macro_set );
+		FindMacros( obj->GetChild( i ), macros );
 	}
 }
 
 void CppCodeGenerator::GenDefines( shared_ptr< ObjectBase > project)
 {
-	set< wxString > macro_set;
-	FindMacros( project, macro_set );
+	vector< wxString > macros;
+	FindMacros( project, &macros );
 
-	// la macro por defecto tiene valor -1
-	m_header->WriteLn( wxT("#define ID_DEFAULT wxID_ANY // Default") );
-
-	// debemos quitar la macro por defecto del conjunto
-	set<wxString>::iterator it;
-	it = macro_set.find( wxT("ID_DEFAULT") );
-	if ( it != macro_set.end() )
+	// Remove the default macro from the set
+	vector< wxString >::iterator it;
+	it = find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
+	if ( it != macros.end() )
 	{
-		macro_set.erase(it);
+		// The default macro is defined to wxID_ANY
+		m_header->WriteLn( wxT("#define ID_DEFAULT wxID_ANY // Default") );
+		macros.erase(it);
 	}
 
 	unsigned int id = m_firstID;
@@ -1040,7 +1040,7 @@ void CppCodeGenerator::GenDefines( shared_ptr< ObjectBase > project)
 	{
 		wxLogWarning(wxT("First ID is Less than 1000"));
 	}
-	for (it = macro_set.begin() ; it != macro_set.end(); it++)
+	for (it = macros.begin() ; it != macros.end(); it++)
 	{
 		m_header->WriteLn( wxString::Format( wxT("#define %s %i"), it->c_str(), id ) );
 		id++;
