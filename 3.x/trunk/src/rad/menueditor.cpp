@@ -24,6 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "menueditor.h"
+#include "model/objectbase.h"
 
 #define ID_DEFAULT -1 // Default
 #define ID_ADDMENUITEM 1000
@@ -166,11 +167,11 @@ MenuEditor::MenuEditor(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Menu 
   CenterOnScreen();
 }
 
-void MenuEditor::AddChild(long& n, int ident, shared_ptr<ObjectBase> obj)
+void MenuEditor::AddChild(long& n, int ident, PObjectBase obj)
 {
     for (unsigned int i = 0; i < obj->GetChildCount(); i++)
     {
-        shared_ptr<ObjectBase> childObj = obj->GetChild(i);
+        PObjectBase childObj = obj->GetChild(i);
         if (childObj->GetClassName() == wxT("wxMenuItem") )
         {
             InsertItem(n++, wxString(wxChar(' '), ident * IDENTATION) + childObj->GetPropertyAsString(wxT("label")),
@@ -197,7 +198,7 @@ void MenuEditor::AddChild(long& n, int ident, shared_ptr<ObjectBase> obj)
     }
 }
 
-void MenuEditor::Populate(shared_ptr<ObjectBase> obj)
+void MenuEditor::Populate(PObjectBase obj)
 {
     assert(obj && obj->GetClassName() == wxT("wxMenuBar") );
     long n = 0;
@@ -212,10 +213,10 @@ bool MenuEditor::HasChildren(long n)
         return GetItemIdentation(n + 1) > GetItemIdentation(n);
 }
 
-shared_ptr<ObjectBase> MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
+PObjectBase MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
 {
-    shared_ptr<ObjectInfo> info = base->GetObjectInfo(isSubMenu ? wxT("submenu") : wxT("wxMenu") );
-    shared_ptr<ObjectBase> menu = base->NewObject(info);
+    PObjectInfo info = base->GetObjectInfo(isSubMenu ? wxT("submenu") : wxT("wxMenu") );
+    PObjectBase menu = base->NewObject(info);
     wxString label, shortcut, id, name, help, kind;
 
     GetItem(n, label, shortcut, id, name, help, kind);
@@ -232,21 +233,21 @@ shared_ptr<ObjectBase> MenuEditor::GetMenu(long& n, PObjectDatabase base, bool i
         if (label == wxT("---"))
         {
             info = base->GetObjectInfo( wxT("separator") );
-            shared_ptr<ObjectBase> menuitem = base->NewObject(info);
+            PObjectBase menuitem = base->NewObject(info);
             menu->AddChild(menuitem);
             menuitem->SetParent(menu);
             n++;
         }
         else if (HasChildren(n))
         {
-            shared_ptr<ObjectBase> child = GetMenu(n, base);
+            PObjectBase child = GetMenu(n, base);
             menu->AddChild(child);
             child->SetParent(menu);
         }
         else
         {
             info = base->GetObjectInfo( wxT("wxMenuItem") );
-            shared_ptr<ObjectBase> menuitem = base->NewObject(info);
+            PObjectBase menuitem = base->NewObject(info);
             menuitem->GetProperty( wxT("label") )->SetValue(label);
             menuitem->GetProperty( wxT("shortcut") )->SetValue(shortcut);
             menuitem->GetProperty( wxT("name") )->SetValue(name);
@@ -262,14 +263,14 @@ shared_ptr<ObjectBase> MenuEditor::GetMenu(long& n, PObjectDatabase base, bool i
     return menu;
 }
 
-shared_ptr<ObjectBase> MenuEditor::GetMenubar(PObjectDatabase base)
+PObjectBase MenuEditor::GetMenubar(PObjectDatabase base)
 {
-    shared_ptr<ObjectInfo> info = base->GetObjectInfo( wxT("wxMenuBar" ));
-    shared_ptr<ObjectBase> menubar = base->NewObject(info);
+    PObjectInfo info = base->GetObjectInfo( wxT("wxMenuBar" ));
+    PObjectBase menubar = base->NewObject(info);
     long n = 0;
     while (n < m_menuList->GetItemCount())
     {
-        shared_ptr<ObjectBase> child = GetMenu(n, base, false);
+        PObjectBase child = GetMenu(n, base, false);
         menubar->AddChild(child);
         child->SetParent(menubar);
     }

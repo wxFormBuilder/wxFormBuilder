@@ -29,7 +29,6 @@
 
 #include <string>
 #include <set>
-using namespace std;
 
 static wxString StringToXrcText(const wxString &str)
 {
@@ -737,17 +736,17 @@ void XrcToXfbFilter::ImportColourProperty(const wxString &xrcPropName,
   TiXmlNode *xmlValue = xrcProperty->FirstChild();
   if (xmlValue && xmlValue->ToText())
   {
-    string value = xmlValue->ToText()->Value();
+    std::string value = xmlValue->ToText()->Value();
 
     // convertimos el formato "#rrggbb" a "rrr,ggg,bbb"
-    string hexColour = "0x" + value.substr(1,2) + " 0x" + value.substr(3,2) +
+    std::string hexColour = "0x" + value.substr(1,2) + " 0x" + value.substr(3,2) +
                        " 0x" + value.substr(5,2);
-    istringstream strIn;
-    ostringstream strOut;
+    std::istringstream strIn;
+    std::ostringstream strOut;
     unsigned int red,green,blue;
 
     strIn.str(hexColour);
-    strIn >> hex;
+    strIn >> std::hex;
 
     strIn >> red;
     strIn >> green;

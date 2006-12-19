@@ -33,7 +33,7 @@
 #include <wx/tokenzr.h>
 
 PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
-						   bool hidden, shared_ptr<OptionList> opt_list, const std::list< PropertyChild >& children )
+						   bool hidden, POptionList opt_list, const std::list< PropertyChild >& children )
 {
 	m_name = name;
 	m_type = type;
@@ -251,11 +251,11 @@ m_expanded( true )
 ObjectBase::~ObjectBase()
 {
 	// remove the reference in the parent
-	shared_ptr<ObjectBase> parent = m_parent.lock();
+	PObjectBase parent = m_parent.lock();
 
 	if (parent)
 	{
-		shared_ptr<ObjectBase> pobj(GetThis());
+		PObjectBase pobj(GetThis());
 		parent->RemoveChild(pobj);
 	}
 
@@ -342,10 +342,10 @@ void ObjectBase::AddEvent(PEvent event)
 	m_events.insert( EventMap::value_type( event->GetName(), event ) );
 }
 
-shared_ptr<ObjectBase> ObjectBase::FindNearAncestor(wxString type)
+PObjectBase ObjectBase::FindNearAncestor(wxString type)
 {
-	shared_ptr<ObjectBase> result;
-	shared_ptr<ObjectBase> parent = GetParent();
+	PObjectBase result;
+	PObjectBase parent = GetParent();
 	if (parent)
 	{
 		if (parent->GetObjectTypeName() == type)
@@ -357,7 +357,7 @@ shared_ptr<ObjectBase> ObjectBase::FindNearAncestor(wxString type)
 	return result;
 }
 
-bool ObjectBase::AddChild (shared_ptr<ObjectBase> obj)
+bool ObjectBase::AddChild (PObjectBase obj)
 {
 	bool result = false;
 	if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()))
@@ -370,7 +370,7 @@ bool ObjectBase::AddChild (shared_ptr<ObjectBase> obj)
 	return result;
 }
 
-bool ObjectBase::AddChild (unsigned int idx, shared_ptr<ObjectBase> obj)
+bool ObjectBase::AddChild (unsigned int idx, PObjectBase obj)
 {
 	bool result = false;
 	if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()) && idx <= m_children.size())
@@ -454,9 +454,9 @@ bool ObjectBase::ChildTypeOk (PObjectType type)
 
 }
 
-shared_ptr<ObjectBase> ObjectBase::GetLayout()
+PObjectBase ObjectBase::GetLayout()
 {
-	shared_ptr<ObjectBase> result;
+	PObjectBase result;
 
 	if (GetParent() && GetParent()->GetObjectTypeName()==wxT("sizeritem"))
 		result = GetParent();
@@ -464,9 +464,9 @@ shared_ptr<ObjectBase> ObjectBase::GetLayout()
 	return result;
 }
 
-void ObjectBase::RemoveChild (shared_ptr<ObjectBase> obj)
+void ObjectBase::RemoveChild (PObjectBase obj)
 {
-	vector< shared_ptr< ObjectBase > >::iterator it = m_children.begin();
+	std::vector< PObjectBase >::iterator it = m_children.begin();
 	while (it != m_children.end() && *it != obj)
 		it++;
 
@@ -478,11 +478,11 @@ void ObjectBase::RemoveChild (unsigned int idx)
 {
 	assert (idx < m_children.size());
 
-	vector< shared_ptr< ObjectBase > >::iterator it =  m_children.begin() + idx;
+	std::vector< PObjectBase >::iterator it =  m_children.begin() + idx;
 	m_children.erase(it);
 }
 
-shared_ptr<ObjectBase> ObjectBase::GetChild (unsigned int idx)
+PObjectBase ObjectBase::GetChild (unsigned int idx)
 {
 	assert (idx < m_children.size());
 
@@ -492,7 +492,7 @@ shared_ptr<ObjectBase> ObjectBase::GetChild (unsigned int idx)
 int ObjectBase::Deep()
 {
 	int deep = 0;
-	shared_ptr<ObjectBase> obj(GetParent());
+	PObjectBase obj(GetParent());
 	while (obj)
 	{
 		obj = obj->GetParent();
@@ -516,14 +516,14 @@ int ObjectBase::Deep()
 //      it_prop->second->GetValue() << "'" << endl;
 //  }
 //
-//  vector< shared_ptr< ObjectBase > >::const_iterator it_ch;
+//  vector< PObjectBase >::const_iterator it_ch;
 //  for (it_ch = m_children.begin() ; it_ch != m_children.end(); it_ch++)
 //  {
 //    (*it_ch)->PrintOut(s,INDENT + indent);
 //  }
 //}
 //
-//ostream& operator << (ostream &s, shared_ptr<ObjectBase> obj)
+//ostream& operator << (ostream &s, PObjectBase obj)
 //{
 //  obj->PrintOut(s,0);
 //  return s;
@@ -592,7 +592,7 @@ void ObjectBase::Serialize( ticpp::Document* serializedDocument )
 	*serializedDocument = document;
 }
 
-unsigned int ObjectBase::GetChildPosition(shared_ptr<ObjectBase> obj)
+unsigned int ObjectBase::GetChildPosition(PObjectBase obj)
 {
 	unsigned int pos = 0;
 	while (pos < GetChildCount() && m_children[pos] != obj)
@@ -601,7 +601,7 @@ unsigned int ObjectBase::GetChildPosition(shared_ptr<ObjectBase> obj)
 	return pos;
 }
 
-bool ObjectBase::ChangeChildPosition(shared_ptr<ObjectBase> obj, unsigned int pos)
+bool ObjectBase::ChangeChildPosition( PObjectBase obj, unsigned int pos)
 {
 	unsigned int obj_pos = GetChildPosition(obj);
 
@@ -724,7 +724,7 @@ wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
 
 wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, const wxString& childName )
 {
-	shared_ptr<Property> property = GetProperty( parentName );
+	PProperty property = GetProperty( parentName );
 	if (property)
 		return property->GetChildFromParent( childName );
 	else
@@ -733,40 +733,40 @@ wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, con
 
 ///////////////////////////////////////////////////////////////////////////////
 
-ObjectInfo::ObjectInfo(wxString class_name, PObjectType type, weak_ptr<ObjectPackage> package, bool startGroup )
+ObjectInfo::ObjectInfo(wxString class_name, PObjectType type, WPObjectPackage package, bool startGroup )
 {
 	m_class = class_name;
 	m_type = type;
 	m_numIns = 0;
 	m_component = NULL;
 	m_package = package;
-	m_category = shared_ptr< PropertyCategory >( new PropertyCategory( m_class ) );
+	m_category = PPropertyCategory( new PropertyCategory( m_class ) );
 	m_startGroup = startGroup;
 }
 
-shared_ptr<ObjectPackage> ObjectInfo::GetPackage()
+PObjectPackage ObjectInfo::GetPackage()
 {
 	return m_package.lock();
 }
 
-shared_ptr<PropertyInfo> ObjectInfo::GetPropertyInfo(wxString name)
+PPropertyInfo ObjectInfo::GetPropertyInfo(wxString name)
 {
-	shared_ptr<PropertyInfo> result;
+	PPropertyInfo result;
 
-	map< wxString, shared_ptr< PropertyInfo > >::iterator it = m_properties.find(name);
+	std::map< wxString, PPropertyInfo >::iterator it = m_properties.find(name);
 	if (it != m_properties.end())
 		result = it->second;
 
 	return result;
 }
 
-shared_ptr<PropertyInfo> ObjectInfo::GetPropertyInfo(unsigned int idx)
+PPropertyInfo ObjectInfo::GetPropertyInfo(unsigned int idx)
 {
-	shared_ptr<PropertyInfo> result;
+	PPropertyInfo result;
 
 	assert (idx < m_properties.size());
 
-	map< wxString, shared_ptr< PropertyInfo > >::iterator it = m_properties.begin();
+	std::map< wxString, PPropertyInfo >::iterator it = m_properties.begin();
 	unsigned int i = 0;
 	while (i < idx && it != m_properties.end())
 	{
@@ -811,7 +811,7 @@ PEventInfo ObjectInfo::GetEventInfo(unsigned int idx)
 	return result;
 }
 
-void ObjectInfo::AddPropertyInfo(shared_ptr<PropertyInfo> prop)
+void ObjectInfo::AddPropertyInfo( PPropertyInfo prop )
 {
 	m_properties.insert( PropertyInfoMap::value_type(prop->GetName(), prop) );
 }
@@ -823,14 +823,14 @@ void ObjectInfo::AddEventInfo(PEventInfo evtInfo)
 
 void ObjectInfo::AddBaseClassDefaultPropertyValue( size_t baseIndex, const wxString& propertyName, const wxString& defaultValue )
 {
-	map< size_t, map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
+	std::map< size_t, std::map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
 	if ( baseClassMap != m_baseClassDefaultPropertyValues.end() )
 	{
-		baseClassMap->second.insert( map< wxString, wxString >::value_type( propertyName, defaultValue ) );
+		baseClassMap->second.insert( std::map< wxString, wxString >::value_type( propertyName, defaultValue ) );
 	}
 	else
 	{
-		map< wxString, wxString > propertyDefaultValues;
+		std::map< wxString, wxString > propertyDefaultValues;
 		propertyDefaultValues[ propertyName ] = defaultValue;
 		m_baseClassDefaultPropertyValues[ baseIndex ] = propertyDefaultValues;
 	}
@@ -838,10 +838,10 @@ void ObjectInfo::AddBaseClassDefaultPropertyValue( size_t baseIndex, const wxStr
 
 wxString ObjectInfo::GetBaseClassDefaultPropertyValue( size_t baseIndex, const wxString& propertyName )
 {
-	map< size_t, map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
+	std::map< size_t, std::map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
 	if ( baseClassMap != m_baseClassDefaultPropertyValues.end() )
 	{
-		map< wxString, wxString >::iterator defaultValue = baseClassMap->second.find( propertyName );
+		std::map< wxString, wxString >::iterator defaultValue = baseClassMap->second.find( propertyName );
 		if ( defaultValue != baseClassMap->second.end() )
 		{
 			return defaultValue->second;
@@ -850,7 +850,7 @@ wxString ObjectInfo::GetBaseClassDefaultPropertyValue( size_t baseIndex, const w
 	return wxString();
 }
 
-shared_ptr<ObjectInfo> ObjectInfo::GetBaseClass(unsigned int idx)
+PObjectInfo ObjectInfo::GetBaseClass(unsigned int idx)
 {
 	assert (idx < m_base.size());
 	return m_base[idx];
@@ -871,7 +871,7 @@ bool ObjectInfo::IsSubclassOf(wxString classname)
 
 		for (unsigned int i=0; !found && i < GetBaseClassCount() ; i++)
 		{
-			shared_ptr<ObjectInfo> base = GetBaseClass(i);
+			PObjectInfo base = GetBaseClass(i);
 			found = base->IsSubclassOf(classname);
 		}
 
@@ -886,7 +886,7 @@ bool ObjectInfo::IsSubclassOf(wxString classname)
 //    ind_str = ind_str + " ";
 //
 //  s << ind_str << "[ " << GetClassName() << " ] " << GetObjectType() << endl;
-//  map< wxString, shared_ptr< PropertyInfo > >::const_iterator it_prop;
+//  map< wxString, PPropertyInfo >::const_iterator it_prop;
 //  for (it_prop = m_properties.begin(); it_prop!= m_properties.end(); it_prop++)
 //  {
 //    s << ind_str << "property '" << it_prop->first << "' type = '" <<
@@ -895,22 +895,22 @@ bool ObjectInfo::IsSubclassOf(wxString classname)
 //  }
 //}
 
-void ObjectInfo::AddCodeInfo(wxString lang, shared_ptr<CodeInfo> codeinfo)
+void ObjectInfo::AddCodeInfo(wxString lang, PCodeInfo codeinfo)
 {
-	m_codeTemp.insert(map< wxString, shared_ptr< CodeInfo > >::value_type(lang, codeinfo));
+	m_codeTemp.insert( std::map< wxString, PCodeInfo >::value_type(lang, codeinfo));
 }
 
-shared_ptr<CodeInfo> ObjectInfo::GetCodeInfo(wxString lang)
+PCodeInfo ObjectInfo::GetCodeInfo(wxString lang)
 {
-	shared_ptr<CodeInfo> result;
-	map< wxString, shared_ptr< CodeInfo > >::iterator it = m_codeTemp.find(lang);
+	PCodeInfo result;
+	std::map< wxString, PCodeInfo >::iterator it = m_codeTemp.find(lang);
 	if (it != m_codeTemp.end())
 		result = it->second;
 
 	return result;
 }
 
-//ostream& operator << (ostream &s, shared_ptr<ObjectInfo> obj)
+//ostream& operator << (ostream &s, PObjectInfo obj)
 //{
 //  obj->PrintOut(s,0);
 //  return s;

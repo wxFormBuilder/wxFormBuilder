@@ -37,8 +37,6 @@
 #define COMPONENT_TYPE_WINDOW   1
 #define COMPONENT_TYPE_SIZER    2
 
-using namespace std;
-
 class IComponent;
 
 // Secciones de la generacción de código

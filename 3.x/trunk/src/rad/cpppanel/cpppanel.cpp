@@ -26,7 +26,7 @@
 #include "cpppanel.h"
 #include "rad/bitmaps.h"
 #include "utils/typeconv.h"
-
+#include "model/objectbase.h"
 #include <wx/filename.h>
 
 #include "rad/bitmaps.h"
@@ -122,14 +122,14 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
 
-	shared_ptr<ObjectBase> project = AppData()->GetProjectData();
+	PObjectBase project = AppData()->GetProjectData();
 
 	wxString file, pathEntry;
 	wxFileName path;
 	bool useRelativePath = false;
 	unsigned int firstID = 1000;
 
-	shared_ptr<Property> pCodeGen = project->GetProperty(wxT("code_generation"));
+	PProperty pCodeGen = project->GetProperty(wxT("code_generation"));
 	if (pCodeGen)
 	{
 		if (!TypeConv::FlagSet  (wxT("C++"),pCodeGen->GetValue()))
@@ -137,12 +137,12 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	}
 
 	// Get First ID from Project File
-	shared_ptr<Property> pFirstID = project->GetProperty(wxT("first_id"));
+	PProperty pFirstID = project->GetProperty(wxT("first_id"));
 	if (pFirstID)
 		firstID = pFirstID->GetValueAsInteger();
 
 	// Get the file name
-	shared_ptr<Property> pfile = project->GetProperty(wxT("file"));
+	PProperty pfile = project->GetProperty(wxT("file"));
 	if (pfile)
 		file = pfile->GetValue();
 
@@ -150,13 +150,13 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		file = wxT("noname");
 
 	// Determine if the path is absolute or relative
-	shared_ptr<Property> pRelPath = project->GetProperty(wxT("relative_path"));
+	PProperty pRelPath = project->GetProperty(wxT("relative_path"));
 	if (pRelPath)
 		useRelativePath = (pRelPath->GetValueAsInteger() ? true : false);
 
 
 	// Get the output path
-	shared_ptr<Property> ppath = project->GetProperty(wxT("path"));
+	PProperty ppath = project->GetProperty(wxT("path"));
 	if (ppath)
 	{
 		pathEntry = ppath->GetValue();
@@ -222,14 +222,14 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		{
 				// Determin if Microsoft BOM should be used
 			bool useMicrosoftBOM = false;
-			shared_ptr< Property > pUseMicrosoftBOM = project->GetProperty( wxT( "use_microsoft_bom" ) );
+			PProperty pUseMicrosoftBOM = project->GetProperty( wxT( "use_microsoft_bom" ) );
 			if ( pUseMicrosoftBOM )
 			{
 				useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
 			}
 
-			shared_ptr<CodeWriter> h_cw( new FileCodeWriter( path.GetPath() + wxFILE_SEP_PATH + file + wxT(".h"), useMicrosoftBOM) );
-			shared_ptr<CodeWriter> cpp_cw( new FileCodeWriter( path.GetPath() + wxFILE_SEP_PATH + file + wxT(".cpp"), useMicrosoftBOM) );
+			PCodeWriter h_cw( new FileCodeWriter( path.GetPath() + wxFILE_SEP_PATH + file + wxT(".h"), useMicrosoftBOM) );
+			PCodeWriter cpp_cw( new FileCodeWriter( path.GetPath() + wxFILE_SEP_PATH + file + wxT(".cpp"), useMicrosoftBOM) );
 
 			codegen.SetHeaderWriter(h_cw);
 			codegen.SetSourceWriter(cpp_cw);

@@ -59,7 +59,7 @@ IObject* wxFBManager::GetIObject( wxObject* wxobject )
 
 	CHECK_WX_OBJECT( NULL )
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE( NULL )
 
@@ -72,7 +72,7 @@ size_t wxFBManager::GetChildCount( wxObject* wxobject )
 
 	CHECK_WX_OBJECT( 0 )
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE( 0 )
 
@@ -85,7 +85,7 @@ wxObject* wxFBManager::GetChild( wxObject* wxobject, size_t childIndex )
 
 	CHECK_WX_OBJECT( NULL )
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE( NULL )
 
@@ -103,14 +103,14 @@ wxObject* wxFBManager::GetParent( wxObject* wxobject )
 
 	CHECK_WX_OBJECT( NULL )
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE( NULL )
 
 	return m_visualEdit->GetWxObject( obj->GetParent() );
 }
 
-wxObject* wxFBManager::GetWxObject( shared_ptr< ObjectBase > obj )
+wxObject* wxFBManager::GetWxObject( PObjectBase obj )
 {
 	CHECK_OBJECT_BASE( NULL )
 
@@ -126,11 +126,11 @@ void wxFBManager::ModifyProperty( wxObject* wxobject, wxString property, wxStrin
 
 	CHECK_WX_OBJECT()
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE()
 
-	shared_ptr< Property > prop = obj->GetProperty( property );
+	PProperty prop = obj->GetProperty( property );
 
 	if ( !prop )
 	{
@@ -157,7 +157,7 @@ void wxFBManager::SelectObject( wxObject* wxobject )
 
 	CHECK_WX_OBJECT()
 
-	shared_ptr< ObjectBase > obj = m_visualEdit->GetObjectBase( wxobject );
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
 	CHECK_OBJECT_BASE()
 

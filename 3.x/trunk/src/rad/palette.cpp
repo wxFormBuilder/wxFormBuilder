@@ -64,7 +64,7 @@ void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxToolBar *toolbar)
   unsigned int j = 0;
   while (j < pkg->GetObjectCount())
   {
-  	shared_ptr< ObjectInfo > info = pkg->GetObjectInfo(j);
+  	PObjectInfo info = pkg->GetObjectInfo(j);
     if ( info->IsStartOfGroup() )
     {
     	toolbar->AddSeparator();

@@ -35,6 +35,7 @@
 #include "rad/wxfbevent.h"
 #include <rad/appdata.h>
 #include "utils/wxfbexception.h"
+#include "model/objectbase.h"
 
 #ifdef __WX24__
 #define wxFULL_REPAINT_ON_RESIZE 0
@@ -126,11 +127,11 @@ void VisualEditor::OnResizeBackPanel (wxCommandEvent &event) //(wxSashEvent &eve
 	m_back->SetSize(rect.width,rect.height);
 	m_back->Layout();*/
 
-	shared_ptr<ObjectBase> form (AppData()->GetSelectedForm());
+	PObjectBase form (AppData()->GetSelectedForm());
 
 	if (form)
 	{
-		shared_ptr<Property> prop(form->GetProperty( wxT("size") ));
+		PProperty prop(form->GetProperty( wxT("size") ));
 		if (prop)
 		{
 			wxString value(TypeConv::PointToString(wxPoint(m_back->GetSize().x, m_back->GetSize().y)));
@@ -141,12 +142,12 @@ void VisualEditor::OnResizeBackPanel (wxCommandEvent &event) //(wxSashEvent &eve
 	//event.Skip();
 }
 
-shared_ptr< ObjectBase > VisualEditor::GetObjectBase( wxObject* wxobject )
+PObjectBase VisualEditor::GetObjectBase( wxObject* wxobject )
 {
 	if ( NULL == wxobject )
 	{
 		wxLogError( _("wxObject was NULL!") );
-		return shared_ptr< ObjectBase >();
+		return PObjectBase();
 	}
 
 	wxObjectMap::iterator obj = m_wxobjects.find( wxobject );
@@ -157,11 +158,11 @@ shared_ptr< ObjectBase > VisualEditor::GetObjectBase( wxObject* wxobject )
 	else
 	{
 		wxLogError( _("No corresponding ObjectBase for wxObject. Name: %s"), wxobject->GetClassInfo()->GetClassName() );
-		return shared_ptr< ObjectBase >();
+		return PObjectBase();
 	}
 }
 
-wxObject* VisualEditor::GetWxObject( shared_ptr< ObjectBase > baseobject )
+wxObject* VisualEditor::GetWxObject( PObjectBase baseobject )
 {
 	if ( !baseobject )
 	{
@@ -197,7 +198,7 @@ void VisualEditor::Create()
 	// Clear selections, delete objects
 	m_back->SetSelectedItem(NULL);
 	m_back->SetSelectedSizer(NULL);
-	m_back->SetSelectedObject(shared_ptr<ObjectBase>());
+	m_back->SetSelectedObject(PObjectBase());
 	m_back->GetFrameContentPanel()->DestroyChildren();
 	m_back->GetFrameContentPanel()->SetSizer( NULL ); // *!*
 
@@ -211,14 +212,14 @@ void VisualEditor::Create()
 		m_back->Show(true);
 
 		// --- [1] Configure the size of the form ---------------------------
-		shared_ptr<Property> pminsize( m_form->GetProperty( wxT("minimum_size") ) );
+		PProperty pminsize( m_form->GetProperty( wxT("minimum_size") ) );
 		if( pminsize)
 		{
 			wxSize minsize( TypeConv::StringToSize( pminsize->GetValue() ) );
 			m_back->SetMinSize( minsize );
 		}
 
-		shared_ptr<Property> pmaxsize( m_form->GetProperty( wxT("maximum_size") ) );
+		PProperty pmaxsize( m_form->GetProperty( wxT("maximum_size") ) );
 		if( pmaxsize)
 		{
 			wxSize maxsize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
@@ -226,7 +227,7 @@ void VisualEditor::Create()
 		}
 
 		bool need_fit = false;
-		shared_ptr<Property> psize( m_form->GetProperty( wxT("size") ) );
+		PProperty psize( m_form->GetProperty( wxT("size") ) );
 		if ( psize )
 		{
 			wxSize wsize( TypeConv::StringToSize( psize->GetValue() ) );
@@ -240,7 +241,7 @@ void VisualEditor::Create()
 		}
 
 		// --- [2] Set the color of the form -------------------------------
-		shared_ptr<Property> background( m_form->GetProperty( wxT("bg") ) );
+		PProperty background( m_form->GetProperty( wxT("bg") ) );
 		if ( background && !background->GetValue().empty() )
 		{
 			m_back->GetFrameContentPanel()->SetBackgroundColour( TypeConv::StringToColour( background->GetValue() ) );
@@ -270,13 +271,13 @@ void VisualEditor::Create()
 		// --- [4] Create the components of the form -------------------------
 
 		// Used to save frame objects for later display
-		shared_ptr<ObjectBase> menubar;
+		PObjectBase menubar;
 		wxWindow* statusbar = NULL;
 		wxWindow* toolbar = NULL;
 
 		for ( unsigned int i = 0; i < m_form->GetChildCount(); i++ )
 		{
-			shared_ptr<ObjectBase> child = m_form->GetChild( i );
+			PObjectBase child = m_form->GetChild( i );
 
 			if (child->GetObjectTypeName() == wxT("menubar") )
 			{
@@ -325,13 +326,13 @@ void VisualEditor::Create()
 			m_back->SetFrameWidgets( menubar, toolbar, statusbar );
 		}
 
-		shared_ptr<Property> enabled( m_form->GetProperty( wxT("enabled") ) );
+		PProperty enabled( m_form->GetProperty( wxT("enabled") ) );
 		if ( enabled )
 		{
 			m_back->Enable( TypeConv::StringToInt( enabled->GetValue() ) != 0 );
 		}
 
-		shared_ptr<Property> hidden( m_form->GetProperty( wxT("hidden") ) );
+		PProperty hidden( m_form->GetProperty( wxT("hidden") ) );
 		if ( hidden )
 		{
 			m_back->Show( TypeConv::StringToInt( hidden->GetValue() ) == 0 );
@@ -361,10 +362,10 @@ void VisualEditor::Create()
 * @param parent wxWindow parent, necessary to instantiate a widget.
 * @param parentObject ObjectBase parent - not always the same as the wxparent (e.g. an abstract component).
 */
-void VisualEditor::Generate( shared_ptr< ObjectBase > obj, wxWindow* wxparent, wxObject* parentObject )
+void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* parentObject )
 {
 	// Get Component
-	shared_ptr< ObjectInfo > obj_info = obj->GetObjectInfo();
+	PObjectInfo obj_info = obj->GetObjectInfo();
 	IComponent* comp = obj_info->GetComponent();
 
 	if ( NULL == comp )
@@ -403,7 +404,7 @@ void VisualEditor::Generate( shared_ptr< ObjectBase > obj, wxWindow* wxparent, w
 			break;
 	}
 
-	// Associate the wxObject* with the shared_ptr< ObjectBase >
+	// Associate the wxObject* with the PObjectBase
 	m_wxobjects.insert( wxObjectMap::value_type( createdObject, obj ) );
 	m_baseobjects.insert( ObjectBaseMap::value_type( obj.get(), createdObject ) );
 
@@ -434,9 +435,9 @@ void VisualEditor::Generate( shared_ptr< ObjectBase > obj, wxWindow* wxparent, w
 	}
 }
 
-void VisualEditor::SetupSizer( shared_ptr< ObjectBase > obj, wxSizer* sizer )
+void VisualEditor::SetupSizer( PObjectBase obj, wxSizer* sizer )
 {
-	shared_ptr<Property> pminsize  = obj->GetProperty( wxT("minimum_size") );
+	PProperty pminsize  = obj->GetProperty( wxT("minimum_size") );
 	if (pminsize)
 	{
 		wxSize minsize = TypeConv::StringToSize( pminsize->GetValue() );
@@ -445,13 +446,13 @@ void VisualEditor::SetupSizer( shared_ptr< ObjectBase > obj, wxSizer* sizer )
 	}
 }
 
-void VisualEditor::SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window )
+void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 {
 	// All of the properties of the wxWindow object are applied in this function
 
 	// Position
 	wxPoint pos;
-	shared_ptr< Property > ppos = obj->GetProperty( wxT("pos") );
+	PProperty ppos = obj->GetProperty( wxT("pos") );
 	if ( ppos )
 	{
 		pos = TypeConv::StringToPoint( ppos->GetValue() );
@@ -459,7 +460,7 @@ void VisualEditor::SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window )
 
 	// Size
 	wxSize size;
-	shared_ptr< Property > psize = obj->GetProperty( wxT("size") );
+	PProperty psize = obj->GetProperty( wxT("size") );
 	if ( psize )
 	{
 		size = TypeConv::StringToSize(psize->GetValue());
@@ -468,63 +469,63 @@ void VisualEditor::SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window )
 	window->SetSize( pos.x, pos.y, size.GetWidth(), size.GetHeight() );
 
 	// Minimum size
-	shared_ptr< Property > pminsize = obj->GetProperty( wxT("minimum_size") );
+	PProperty pminsize = obj->GetProperty( wxT("minimum_size") );
 	if ( pminsize && !pminsize->GetValue().empty() )
 	{
 		window->SetMinSize( TypeConv::StringToSize( pminsize->GetValue() ) );
 	}
 
 	// Maximum size
-	shared_ptr< Property > pmaxsize = obj->GetProperty( wxT("maximum_size") );
+	PProperty pmaxsize = obj->GetProperty( wxT("maximum_size") );
 	if ( pmaxsize && !pmaxsize->GetValue().empty() )
 	{
 		window->SetMaxSize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
 	}
 
 	// Font
-	shared_ptr< Property > pfont = obj->GetProperty( wxT("font") );
+	PProperty pfont = obj->GetProperty( wxT("font") );
 	if ( pfont && !pfont->GetValue().empty() )
 	{
 		window->SetFont( TypeConv::StringToFont( pfont->GetValue() ) );
 	}
 
 	// Foreground
-	shared_ptr< Property > pfg_colour = obj->GetProperty( wxT("fg") );
+	PProperty pfg_colour = obj->GetProperty( wxT("fg") );
 	if ( pfg_colour && !pfg_colour->GetValue().empty() )
 	{
 		window->SetForegroundColour( TypeConv::StringToColour( pfg_colour->GetValue() ) );
 	}
 
 	// Background
-	shared_ptr< Property > pbg_colour = obj->GetProperty( wxT("bg") );
+	PProperty pbg_colour = obj->GetProperty( wxT("bg") );
 	if ( pbg_colour && !pbg_colour->GetValue().empty() )
 	{
 		window->SetBackgroundColour( TypeConv::StringToColour( pbg_colour->GetValue() ) );
 	}
 
 	// Extra Style
-	shared_ptr< Property > pextra_style = obj->GetProperty( wxT("window_extra_style") );
+	PProperty pextra_style = obj->GetProperty( wxT("window_extra_style") );
 	if ( pextra_style )
 	{
 		window->SetExtraStyle( TypeConv::StringToInt( pextra_style->GetValue() ) );
 	}
 
 	// Enabled
-	shared_ptr< Property > penabled = obj->GetProperty( wxT("enabled") );
+	PProperty penabled = obj->GetProperty( wxT("enabled") );
 	if ( penabled )
 	{
 		window->Enable( ( penabled->GetValueAsInteger() !=0 ) );
 	}
 
 	// Hidden
-	shared_ptr< Property > phidden = obj->GetProperty( wxT("hidden") );
+	PProperty phidden = obj->GetProperty( wxT("hidden") );
 	if ( phidden )
 	{
 		window->Show( !phidden->GetValueAsInteger() );
 	}
 
 	// Tooltip
-	shared_ptr< Property > ptooltip = obj->GetProperty( wxT("tooltip") );
+	PProperty ptooltip = obj->GetProperty( wxT("tooltip") );
 	if ( ptooltip )
 	{
 		window->SetToolTip( ptooltip->GetValueAsString() );
@@ -561,7 +562,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	}
 
 	// Get the ObjectBase from the event
-	shared_ptr< ObjectBase > obj = event.GetFBObject();
+	PObjectBase obj = event.GetFBObject();
 	if ( !obj )
 	{
 		// Strange...
@@ -575,7 +576,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	{
 		m_back->SetSelectedSizer( NULL );
 		m_back->SetSelectedItem( NULL );
-		m_back->SetSelectedObject( shared_ptr<ObjectBase>() );
+		m_back->SetSelectedObject( PObjectBase() );
 		m_back->SetSelectedPanel( NULL );
 		m_back->Refresh();
 		return;
@@ -605,7 +606,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	// Fire selection event in plugin for all parents
 	if ( !m_stopSelectedEvent )
 	{
-		shared_ptr< ObjectBase > parent = obj->GetParent();
+		PObjectBase parent = obj->GetParent();
 		while ( parent )
 		{
 			IComponent* parentComp = parent->GetObjectInfo()->GetComponent();
@@ -623,7 +624,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 
 	// Look for the active panel - this is where the boxes will be drawn during OnPaint
 	// This is the closest parent of type COMPONENT_TYPE_WINDOW
-	shared_ptr< ObjectBase > nextParent = obj->GetParent();
+	PObjectBase nextParent = obj->GetParent();
 	while ( nextParent )
 	{
 		IComponent* parentComp = nextParent->GetObjectInfo()->GetComponent();
@@ -663,7 +664,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	// Find the first COMPONENT_TYPE_WINDOW or COMPONENT_TYPE_SIZER
 	// If it is a sizer, save it
 	wxSizer* sizer = NULL;
-	shared_ptr< ObjectBase > nextObj = obj->GetParent();
+	PObjectBase nextObj = obj->GetParent();
 	while ( nextObj )
 	{
 		IComponent* nextComp = nextObj->GetObjectInfo()->GetComponent();
@@ -745,7 +746,7 @@ void DesignerWindow::SetGrid( int x, int y )
 	m_y = y;
 }
 
-void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, shared_ptr<ObjectBase> object )
+void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
 {
 	int border = object->GetParent()->GetPropertyAsInteger( wxT("border") );
 	if ( border == 0 )
@@ -773,7 +774,7 @@ void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize
 void DesignerWindow::HighlightSelection( wxDC& dc )
 {
 	wxSize size;
-	shared_ptr<ObjectBase> object = m_selObj.lock();
+	PObjectBase object = m_selObj.lock();
 	if ( m_selSizer )
 	{
 		wxPoint point = m_selSizer->GetPosition();
@@ -781,7 +782,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		wxPen bluePen( *wxBLUE, 1, wxSOLID );
 		dc.SetPen( bluePen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
-		shared_ptr<ObjectBase> sizerParent = object->FindNearAncestor( wxT("sizer") );
+		PObjectBase sizerParent = object->FindNearAncestor( wxT("sizer") );
 		if ( sizerParent && sizerParent->GetParent() )
 		{
 			DrawRectangle( dc, point, size, sizerParent );
@@ -822,13 +823,13 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 	}
 }
 
-wxMenu* DesignerWindow::GetMenuFromObject(shared_ptr<ObjectBase> menu)
+wxMenu* DesignerWindow::GetMenuFromObject(PObjectBase menu)
 {
 	int lastMenuId = wxID_HIGHEST + 1;
 	wxMenu* menuWidget = new wxMenu();
 	for ( unsigned int j = 0; j < menu->GetChildCount(); j++ )
 	{
-		shared_ptr< ObjectBase > menuItem = menu->GetChild( j );
+		PObjectBase menuItem = menu->GetChild( j );
 		if ( menuItem->GetObjectTypeName() == wxT("submenu") )
 		{
 			menuWidget->Append( lastMenuId++, menuItem->GetPropertyAsString( wxT("label") ), GetMenuFromObject( menuItem ) );
@@ -890,7 +891,7 @@ wxMenu* DesignerWindow::GetMenuFromObject(shared_ptr<ObjectBase> menu)
 	return menuWidget;
 }
 
-void DesignerWindow::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolbar, wxWindow *statusbar)
+void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow *statusbar)
 {
   wxWindow *contentPanel = GetFrameContentPanel();
 	Menubar *mbWidget = NULL;
@@ -901,7 +902,7 @@ void DesignerWindow::SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *t
 		mbWidget = new Menubar(contentPanel, -1);
 		for ( unsigned int i = 0; i < menubar->GetChildCount(); i++ )
 		{
-			shared_ptr< ObjectBase > menu = menubar->GetChild( i );
+			PObjectBase menu = menubar->GetChild( i );
 			wxMenu *menuWidget = GetMenuFromObject( menu );
 			mbWidget->AppendMenu( menu->GetPropertyAsString( wxT("label") ), menuWidget );
 		}

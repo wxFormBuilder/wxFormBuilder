@@ -26,6 +26,7 @@
 #include "customkeys.h"
 #include "utils/debug.h"
 #include "codegen/cppcg.h"
+#include "model/objectbase.h"
 
 #include <rad/appdata.h>
 
@@ -47,8 +48,8 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
 
     Debug::Print( wxT("#### Prueba del parser ####") );
 
-    shared_ptr<ObjectBase> obj = AppData()->GetSelectedObject();
-    shared_ptr<CodeInfo> code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+    PObjectBase obj = AppData()->GetSelectedObject();
+    PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 
     Debug::Print( wxT("#### Plantillas ####") );
     Debug::Print((wxChar *)(code_info->GetTemplate( wxT("construction") ).c_str()));

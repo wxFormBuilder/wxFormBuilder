@@ -30,7 +30,7 @@
 #include <wx/filename.h>
 #include "rad/wxfbevent.h"
 #include <rad/appdata.h>
-
+#include "model/objectbase.h"
 
 BEGIN_EVENT_TABLE( XrcPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( XrcPanel::OnCodeGeneration )
@@ -95,9 +95,9 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
   // Using the previously unused Id field in the event to carry a boolean
   bool panelOnly = ( event.GetId() != 0 );
 
-  shared_ptr<ObjectBase> project = AppData()->GetProjectData();
+  PObjectBase project = AppData()->GetProjectData();
 
-  shared_ptr<Property> pCodeGen = project->GetProperty( wxT("code_generation") );
+  PProperty pCodeGen = project->GetProperty( wxT("code_generation") );
   if (pCodeGen)
   {
     if (!TypeConv::FlagSet (wxT("XRC"),pCodeGen->GetValue()))
@@ -130,13 +130,13 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
     bool useRelativePath = false;
 
    	// Determine if the path is absolute or relative
-	shared_ptr<Property> pRelPath = project->GetProperty( wxT("relative_path") );
+	PProperty pRelPath = project->GetProperty( wxT("relative_path") );
 	if (pRelPath)
 		useRelativePath = (pRelPath->GetValueAsInteger() ? true : false);
 
 
 	// Get the output path
-	shared_ptr<Property> ppath = project->GetProperty( wxT("path") );
+	PProperty ppath = project->GetProperty( wxT("path") );
 	if (ppath)
 	{
 		pathEntry = ppath->GetValue();
@@ -163,7 +163,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		}
 	}
 
-    shared_ptr<Property> pfile = project->GetProperty( wxT("file") );
+    PProperty pfile = project->GetProperty( wxT("file") );
     if (pfile)
       file = pfile->GetValue();
 
@@ -174,7 +174,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 	{
 		wxString filePath;
 		filePath << path.GetPath() << wxFILE_SEP_PATH << file << wxT(".xrc");
-		shared_ptr<CodeWriter> cw(new FileCodeWriter( filePath ));
+		PCodeWriter cw(new FileCodeWriter( filePath ));
 
 		codegen.SetWriter(cw);
 		codegen.GenerateCode(project);

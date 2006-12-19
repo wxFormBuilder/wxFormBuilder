@@ -29,15 +29,13 @@
 #include "wx/wx.h"
 #include <vector>
 
-using namespace std;
-
-typedef vector<wxMenu*> MenuVector;
+typedef std::vector<wxMenu*> MenuVector;
 
 class Menubar : public wxPanel
 {
     public:
         Menubar();
-        Menubar(wxWindow *parent, int id, const wxPoint& pos = wxDefaultPosition, 
+        Menubar(wxWindow *parent, int id, const wxPoint& pos = wxDefaultPosition,
             const wxSize &size = wxDefaultSize,
             long style = 0, const wxString &name = wxT("fbmenubar"));
         ~Menubar();
@@ -45,10 +43,10 @@ class Menubar : public wxPanel
         wxMenu* GetMenu(int i);
         int GetMenuCount();
         wxMenu* Remove(int i);
-        
+
     private:
-        MenuVector m_menus;  
-        wxBoxSizer *m_sizer;  
+        MenuVector m_menus;
+        wxBoxSizer *m_sizer;
 };
 
 class MenuEvtHandler : public wxEvtHandler
@@ -56,7 +54,7 @@ class MenuEvtHandler : public wxEvtHandler
     public:
         MenuEvtHandler(wxStaticText *st, wxMenu *menu);
         void OnMouseEvent(wxMouseEvent& event);
-        
+
         DECLARE_EVENT_TABLE()
     private:
         wxStaticText *m_label;

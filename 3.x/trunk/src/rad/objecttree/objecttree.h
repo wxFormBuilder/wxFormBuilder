@@ -26,7 +26,7 @@
 #ifndef __OBJECT_TREE__
 #define __OBJECT_TREE__
 
-#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 #include <map>
 #include "rad/customkeys.h"
 
@@ -39,8 +39,8 @@ class wxFBObjectEvent;
 class ObjectTree : public wxPanel
 {
 private:
-   typedef map<shared_ptr<ObjectBase>, wxTreeItemId> ObjectItemMap;
-   typedef map<wxString, int> IconIndexMap;
+   typedef std::map< PObjectBase, wxTreeItemId> ObjectItemMap;
+   typedef std::map<wxString, int> IconIndexMap;
 
    ObjectItemMap m_map;
 
@@ -54,10 +54,10 @@ private:
     * Crea el arbol completamente.
     */
    void RebuildTree();
-   void AddChildren(shared_ptr<ObjectBase> child, wxTreeItemId &parent, bool is_root = false);
+   void AddChildren(PObjectBase child, wxTreeItemId &parent, bool is_root = false);
    int GetImageIndex (wxString type);
-   void UpdateItem(wxTreeItemId id, shared_ptr<ObjectBase> obj);
-   void RestoreItemStatus(shared_ptr<ObjectBase> obj);
+   void UpdateItem(wxTreeItemId id, PObjectBase obj);
+   void RestoreItemStatus(PObjectBase obj);
 
    DECLARE_EVENT_TABLE()
 
@@ -90,10 +90,10 @@ public:
 class ObjectTreeItemData : public wxTreeItemData
 {
  private:
-  shared_ptr<ObjectBase> m_object;
+  PObjectBase m_object;
  public:
-  ObjectTreeItemData(shared_ptr<ObjectBase> obj);
-  shared_ptr<ObjectBase> GetObject() { return m_object; }
+  ObjectTreeItemData(PObjectBase obj);
+  PObjectBase GetObject() { return m_object; }
 };
 
 /**
@@ -105,13 +105,13 @@ class ObjectTreeItemData : public wxTreeItemData
 class ItemPopupMenu : public wxMenu
 {
  private:
-  shared_ptr<ObjectBase> m_object;
+  PObjectBase m_object;
 
   DECLARE_EVENT_TABLE()
 
  public:
   void OnUpdateEvent(wxUpdateUIEvent& e);
-  ItemPopupMenu(shared_ptr<ObjectBase> obj);
+  ItemPopupMenu(PObjectBase obj);
   void OnMenuEvent (wxCommandEvent & event);
 };
 

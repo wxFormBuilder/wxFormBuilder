@@ -39,8 +39,6 @@ The value of all properties that are file or a directory paths must be absolute,
 #include "codegen.h"
 #include <wx/string.h>
 
-using namespace std;
-
 /**
 * Parse the C++ templates.
 */
@@ -55,9 +53,9 @@ public:
 	CppTemplateParser( PObjectBase obj, wxString _template);
 
 	// redefinidas para C++
-	shared_ptr<TemplateParser> CreateParser( PObjectBase obj, wxString _template);
+	PTemplateParser CreateParser( PObjectBase obj, wxString _template);
 	wxString RootWxParentToCode();
-	//wxString PropertyToCode( shared_ptr<Property> property);
+	//wxString PropertyToCode( PProperty property);
 	wxString ValueToCode( PropertyType type, wxString value);
 
 	// genera rutas relativas en los nombres de archivo
@@ -78,8 +76,8 @@ private:
 		P_PUBLIC
 	} Permission;
 
-	shared_ptr<CodeWriter> m_header;
-	shared_ptr<CodeWriter> m_source;
+	PCodeWriter m_header;
+	PCodeWriter m_source;
 
 	bool m_useRelativePath;
 	bool m_i18n;
@@ -89,7 +87,7 @@ private:
 	/**
 	* Las macros predefinidas no generarán defines.
 	*/
-	set<wxString> m_predMacros;
+	std::set<wxString> m_predMacros;
 
 	void SetupPredefinedMacros();
 
@@ -102,19 +100,19 @@ private:
 	* Guarda el conjunto de clases de objetos del proyecto para generar
 	* los includes.
 	*/
-	void FindDependencies( PObjectBase obj, set< shared_ptr< ObjectInfo > >& info_set );
+	void FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set );
 
 	/**
 	* Guarda el conjunto de "includes" que hay que generar para las propiedades
 	* PT_XPM_BITMAP.
 	*/
-	void FindXpmProperties( PObjectBase obj, set<wxString> &set);
+	void FindXpmProperties( PObjectBase obj, std::set< wxString >& xpmset);
 
 	/**
 	* Guarda todos las propiedades de objetos de tipo "macro" para generar
 	* su posterior '#define'.
 	*/
-	void FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>* macros );
+	void FindMacros( PObjectBase obj, std::vector< wxString >* macros );
 
 	/**
 	 * Looks for "non-null" event handlers (PEvent) and collects it into a vector.
@@ -140,15 +138,15 @@ private:
 	/**
 	* Genera la sección de '#include' fichero.
 	*/
-	void GenIncludes( PObjectBase project, set<wxString>* includes);
-	void GenObjectIncludes( PObjectBase project, set<wxString>* includes);
-	void GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_ptr< ObjectBase > obj, set< wxString >* includes );
+	void GenIncludes( PObjectBase project, std::set< wxString >* includes );
+	void GenObjectIncludes( PObjectBase project, std::set< wxString >* includes );
+	void GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::set< wxString >* includes );
 
 	/**
 	* Generate a set of all subclasses to forward declare in the generated header file.
 	* Also generate sets of header files to be include in either the source or header file.
 	*/
-	void GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxString >* subclasses, set< wxString >* sourceIncludes, set< wxString >* headerIncludes );
+	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::set< wxString >* headerIncludes );
 
 	/**
 	* Genera la sección de '#include' para las propiedades XPM.
@@ -182,13 +180,13 @@ private:
 	* Se le pasa la información de la clase porque recursivamente, realizará
 	* la configuración en las super-clases.
 	*/
-	void GenSettings( shared_ptr<ObjectInfo> info, PObjectBase obj);
+	void GenSettings( PObjectInfo info, PObjectBase obj);
 
 	/**
 	* Añade un control a una toolbar. Hay que pasarle el objectinfo de tipo
 	* wxWindow, donde se encuentra la plantilla, y el objectbase del control
 	*/
-	void GenAddToolbar( shared_ptr<ObjectInfo> info, PObjectBase obj );
+	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
 
 	void GenPrivateEventHandlers(const EventVector &events);
   void GenVirtualEventHandlers(const EventVector &events);
@@ -214,7 +212,7 @@ public:
 	/**
 	* Set the codewriter for the header file
 	*/
-	void SetHeaderWriter( shared_ptr<CodeWriter> cw )
+	void SetHeaderWriter( PCodeWriter cw )
 	{
 		m_header = cw;
 	}
@@ -222,7 +220,7 @@ public:
 	/**
 	* Set the codewriter for the source file
 	*/
-	void SetSourceWriter( shared_ptr<CodeWriter> cw )
+	void SetSourceWriter( PCodeWriter cw )
 	{
 		m_source = cw;
 	}

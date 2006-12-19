@@ -30,13 +30,13 @@
 #include <wx/filename.h>
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
-
+#include "model/objectbase.h"
 #include "model/xrcfilter.h"
 /*
 class XrcDocument : public TiXmlDocument {
 public:
     XrcDocument() : TiXmlDocument() {};
-    void Dump(shared_ptr<CodeWriter> cw)
+    void Dump(PCodeWriter cw)
     {
         stringbuf sb;
         ostream os(&sb);
@@ -48,7 +48,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 /*
-bool XrcCodeGenerator::GenerateCode(shared_ptr<ObjectBase> project)
+bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 {
   m_cw->Clear();
 
@@ -81,7 +81,7 @@ bool XrcCodeGenerator::GenerateCode(shared_ptr<ObjectBase> project)
 }
 */
 
-bool XrcCodeGenerator::GenerateCode(shared_ptr<ObjectBase> project)
+bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 {
   m_cw->Clear();
 
@@ -111,7 +111,7 @@ bool XrcCodeGenerator::GenerateCode(shared_ptr<ObjectBase> project)
 }
 
 
-TiXmlElement* XrcCodeGenerator::GetElement(shared_ptr<ObjectBase> obj)
+TiXmlElement* XrcCodeGenerator::GetElement(PObjectBase obj)
 {
   TiXmlElement *element = NULL;
 

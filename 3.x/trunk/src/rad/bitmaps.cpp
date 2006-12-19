@@ -29,11 +29,11 @@
 #include <wx/image.h>
 #include "utils/typeconv.h"
 
-static map< wxString, wxBitmap > m_bitmaps;
+static std::map< wxString, wxBitmap > m_bitmaps;
 
 wxBitmap AppBitmaps::GetBitmap( wxString iconname, unsigned int size )
 {
-	map< wxString, wxBitmap >::iterator bitmap;
+	std::map< wxString, wxBitmap >::iterator bitmap;
 	bitmap = m_bitmaps.find( iconname );
 	wxBitmap bmp;
 	if ( bitmap != m_bitmaps.end() )

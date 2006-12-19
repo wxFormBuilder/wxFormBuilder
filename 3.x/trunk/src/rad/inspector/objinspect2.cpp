@@ -30,6 +30,7 @@
 #include "rad/bitmaps.h"
 #include "rad/wxfbevent.h"
 #include "rad/appdata.h"
+#include "model/objectbase.h"
 
 #include <wx/tokenzr.h>
 #include <wx/config.h>
@@ -398,7 +399,7 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 : wxPanel(parent,id), m_style(style)
 {
 	AppData()->AddHandler( this->GetEventHandler() );
-	m_currentSel = shared_ptr< ObjectBase >();
+	m_currentSel = PObjectBase();
 
 	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST );
 
@@ -431,7 +432,7 @@ void ObjectInspector::SavePosition()
 
 void ObjectInspector::Create( bool force )
 {
-	shared_ptr< ObjectBase > sel_obj = AppData()->GetSelectedObject();
+	PObjectBase sel_obj = AppData()->GetSelectedObject();
 	if ( sel_obj && ( sel_obj != m_currentSel || force ) )
 	{
 		Freeze();
@@ -469,22 +470,22 @@ void ObjectInspector::Create( bool force )
 		m_propMap.clear();
 		m_eventMap.clear();
 
-		shared_ptr<ObjectInfo> obj_desc = sel_obj->GetObjectInfo();
+		PObjectInfo obj_desc = sel_obj->GetObjectInfo();
 		if (obj_desc)
 		{
 
-			map<wxString,shared_ptr< Property > > map, dummy;
+			std::map<wxString,PProperty > map, dummy;
 
 			// We create the categories with the properties of the object organized by "classes"
 			CreateCategory( obj_desc->GetClassName(), sel_obj,obj_desc,map);
 
 			for (unsigned int i=0; i<obj_desc->GetBaseClassCount() ; i++)
 			{
-				shared_ptr<ObjectInfo> info_base = obj_desc->GetBaseClass(i);
+				PObjectInfo info_base = obj_desc->GetBaseClass(i);
 				CreateCategory( info_base->GetClassName(), sel_obj,info_base,map);
 			}
 
-			shared_ptr<ObjectBase> parent = sel_obj->GetParent();
+			PObjectBase parent = sel_obj->GetParent();
 			if (parent && parent->GetObjectInfo()->GetObjectType()->IsItem())
 			{
 				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummy);
@@ -532,7 +533,7 @@ int ObjectInspector::StringToBits(const wxString& strVal, wxPGChoices& constants
 	return val;
 }
 
-wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
+wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 {
 	wxPGProperty *result;
 	PropertyType type = prop->GetType();
@@ -563,14 +564,14 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 	}
 	else if (type == PT_BITLIST)
 	{
-		shared_ptr<PropertyInfo> prop_desc = prop->GetPropertyInfo();
-		shared_ptr<OptionList> opt_list = prop_desc->GetOptionList();
+		PPropertyInfo prop_desc = prop->GetPropertyInfo();
+		POptionList opt_list = prop_desc->GetOptionList();
 
 		assert(opt_list && opt_list->GetOptionCount() > 0);
 
 		wxPGChoices constants;
-		const map< wxString, wxString > options = opt_list->GetOptions();
-		map< wxString, wxString >::const_iterator it;
+		const std::map< wxString, wxString > options = opt_list->GetOptions();
+		std::map< wxString, wxString >::const_iterator it;
 		unsigned int i = 0;
 		for( it = options.begin(); it != options.end(); ++it )
 		{
@@ -587,7 +588,7 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 			for ( size_t i = 0; i < flagsProp->GetCount(); i++ )
 			{
 				wxPGProperty* prop = flagsProp->Item( i );
-				map< wxString, wxString >::const_iterator option = options.find( prop->GetLabel() );
+				std::map< wxString, wxString >::const_iterator option = options.find( prop->GetLabel() );
 				if ( option != options.end() )
 				{
 					m_pg->SetPropertyHelpString( prop, option->second );
@@ -601,14 +602,14 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 	}
 	else if (type == PT_OPTION)
 	{
-		shared_ptr<PropertyInfo> prop_desc = prop->GetPropertyInfo();
-		shared_ptr<OptionList> opt_list = prop_desc->GetOptionList();
+		PPropertyInfo prop_desc = prop->GetPropertyInfo();
+		POptionList opt_list = prop_desc->GetOptionList();
 
 		assert(opt_list && opt_list->GetOptionCount() > 0);
 
 		wxPGChoices constants;
-		const map< wxString, wxString > options = opt_list->GetOptions();
-		map< wxString, wxString >::const_iterator it;
+		const std::map< wxString, wxString > options = opt_list->GetOptions();
+		std::map< wxString, wxString >::const_iterator it;
 		unsigned int i = 0;
 		for( it = options.begin(); it != options.end(); ++it )
 		{
@@ -674,7 +675,7 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 	{
 		wxParentPropertyClass* parent = new wxParentPropertyClass ( name, wxPG_LABEL );
 
-		shared_ptr<PropertyInfo> prop_desc = prop->GetPropertyInfo();
+		PPropertyInfo prop_desc = prop->GetPropertyInfo();
 		std::list< PropertyChild >* children = prop_desc->GetChildren();
 		std::list< PropertyChild >::iterator it;
 		for( it = children->begin(); it != children->end(); ++it )
@@ -698,12 +699,12 @@ wxPGProperty* ObjectInspector::GetProperty(shared_ptr<Property> prop)
 	return result;
 }
 
-void ObjectInspector::CreateCategory(const wxString& name, shared_ptr<ObjectBase> obj, shared_ptr<ObjectInfo> obj_info, map< wxString, shared_ptr< Property > >& properties )
+void ObjectInspector::CreateCategory(const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, PProperty >& properties )
 {
 	Debug::Print( wxT("[ObjectInspector::CreatePropertyPanel] Creating Property Editor") );
 
 	// Get Category
-	shared_ptr< PropertyCategory > category = obj_info->GetCategory();
+	PPropertyCategory category = obj_info->GetCategory();
 	if ( !category )
 	{
 		return;
@@ -773,7 +774,7 @@ void ObjectInspector::AddProperties( const wxString& name, PObjectBase obj,
 	size_t catCount = category->GetCategoryCount();
 	for ( size_t i = 0; i < catCount; i++ )
 	{
-		shared_ptr< PropertyCategory > nextCat = category->GetCategory( i );
+		PPropertyCategory nextCat = category->GetCategory( i );
 		m_pg->AppendIn( category->GetName(), wxPropertyCategory( nextCat->GetName() ) );
 		AddProperties( name, obj, obj_info, nextCat, properties );
 	}
@@ -946,7 +947,7 @@ void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
 void ObjectInspector::OnNewBitmapProperty( wxCommandEvent& event )
 {
 	// Update property grid - change bitmap property
-	auto_ptr< NewBitmapEventDataHolder > data ( (NewBitmapEventDataHolder*)event.GetClientData() );
+	std::auto_ptr< NewBitmapEventDataHolder > data ( (NewBitmapEventDataHolder*)event.GetClientData() );
 	data->m_grid->Freeze();
 	wxPGId newId = data->m_grid->ReplaceProperty( event.GetString(), wxBitmapWithResourceProperty( event.GetString(), wxPG_LABEL, data->m_string ) );
 	m_propMap[ newId.GetPropertyPtr() ] = data->m_prop;
@@ -966,7 +967,7 @@ void ObjectInspector::OnProjectRefresh( wxFBEvent& event )
 
 void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 {
-	shared_ptr<Property> prop = event.GetFBProperty();
+	PProperty prop = event.GetFBProperty();
 
 	if (prop->GetObject() != AppData()->GetSelectedObject())
 	  return;

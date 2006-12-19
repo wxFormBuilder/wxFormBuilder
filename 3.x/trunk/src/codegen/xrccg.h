@@ -27,8 +27,7 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
-
-using namespace std;
+class TiXmlElement;
 
 /**
  * Generador de código XRC.
@@ -36,21 +35,21 @@ using namespace std;
 class XrcCodeGenerator : public CodeGenerator
 {
  private:
-  shared_ptr<CodeWriter> m_cw;
-  
-  TiXmlElement* GetElement(shared_ptr<ObjectBase> obj);
- 
+  PCodeWriter m_cw;
+
+  TiXmlElement* GetElement(PObjectBase obj);
+
  public:
 
   /**
    * Configura el escritor de código para el fichero XML.
    */
-  void SetWriter(shared_ptr<CodeWriter> cw) { m_cw = cw; }
+  void SetWriter(PCodeWriter cw) { m_cw = cw; }
 
   /**
    * Genera el código XRC del proyecto.
-   */  
-  bool GenerateCode(shared_ptr<ObjectBase> project); 
+   */
+  bool GenerateCode(PObjectBase project);
 };
 
 

@@ -501,7 +501,7 @@ bool IncludeInPalette(wxString type)
 	return true;
 }
 
-void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
+void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 {
 	// Load some default templates
 	LoadPackage( m_xmlPath + wxT("default.xml"), m_iconPath );
@@ -509,7 +509,7 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
 
 	// Map to temporarily hold plugins.
 	// Used to both set page order and to prevent two plugins with the same name.
-	typedef map< wxString, PObjectPackage > PackageMap;
+	typedef std::map< wxString, PObjectPackage > PackageMap;
 	PackageMap packages;
 
 	// Open plugins directory for iteration
@@ -610,7 +610,7 @@ void ObjectDatabase::LoadPlugins( shared_ptr< wxFBManager > manager )
     }
 }
 
-void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath, shared_ptr< wxFBManager > manager )
+void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath, PwxFBManager manager )
 {
 	try
 	{
@@ -730,7 +730,7 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 			std::string class_name;
 			elem_templates->GetAttribute( "class", &class_name );
 
-			shared_ptr<CodeInfo> code_info( new CodeInfo() );
+			PCodeInfo code_info( new CodeInfo() );
 
 			ticpp::Element* elem_template = elem_templates->FirstChildElement( "template", false );
 			while ( elem_template )
@@ -869,7 +869,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 	return package;
 }
 
-void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, shared_ptr< PropertyCategory > category )
+void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category )
 {
 	ticpp::Element* elem_category = elem_obj->FirstChildElement( CATEGORY_TAG, false );
 	while ( elem_category )
@@ -877,7 +877,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		// Category name attribute
 		std::string cname;
 		elem_category->GetAttribute( NAME_TAG, &cname );
-		shared_ptr< PropertyCategory > new_cat( new PropertyCategory( _WXSTR( cname ) ) );
+		PPropertyCategory new_cat( new PropertyCategory( _WXSTR( cname ) ) );
 
 		// Add category
 		category->AddCategory( new_cat );
@@ -928,11 +928,11 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		catch( ticpp::Exception& ){}
 
 		// if the property is a "bitlist" then parse all of the options
-		shared_ptr<OptionList> opt_list;
+		POptionList opt_list;
 		std::list< PropertyChild > children;
 		if ( ptype == PT_BITLIST || ptype == PT_OPTION )
 		{
-			opt_list = shared_ptr< OptionList >( new OptionList() );
+			opt_list = POptionList( new OptionList() );
 			ticpp::Element* elem_opt = elem_prop->FirstChildElement( "option", false );
 			while( elem_opt )
 			{
@@ -989,7 +989,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		}
 
 		// create an instance of PropertyInfo
-		shared_ptr<PropertyInfo> prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list, children ) );
+		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list, children ) );
 
 		// add the PropertyInfo to the property
 		obj_info->AddPropertyInfo(prop_info);
@@ -1063,7 +1063,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 }
 
 
-void ObjectDatabase::ImportComponentLibrary( wxString libfile, shared_ptr< wxFBManager > manager )
+void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager manager )
 {
 	wxString path = libfile;
 

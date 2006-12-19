@@ -31,6 +31,7 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 #include <sstream>
+#include "model/objectbase.h"
 
 TiXmlElement* XrcFilter::GetXrcClassInfo(const std::string &classname)
 {
@@ -46,7 +47,7 @@ TiXmlElement* XrcFilter::GetXrcClassInfo(const std::string &classname)
   return result;
 }
 
-TiXmlElement* XrcFilter::GetElement(const shared_ptr<ObjectBase> obj)
+TiXmlElement* XrcFilter::GetElement(const PObjectBase obj)
 {
   TiXmlElement *element = new TiXmlElement("object");
   TiXmlElement *xrcInfo = GetXrcClassInfo(GetXrcClassName(obj));
@@ -88,14 +89,14 @@ TiXmlElement* XrcFilter::GetElement(const shared_ptr<ObjectBase> obj)
 }
 
 void XrcFilter::LinkValues(TiXmlElement *element, TiXmlElement *xrcInfo,
-  const shared_ptr<ObjectBase> obj)
+  const PObjectBase obj)
 {
   TiXmlElement *attr = xrcInfo->FirstChildElement("element");
   while (attr)
   {
     // los subelementos se corresponden con la propiedad cuyo nombre
     // viene dado en el atributo "property" o en su defecto por "name"
-    shared_ptr<Property> prop = (attr->Attribute("property")  ?
+    PProperty prop = (attr->Attribute("property")  ?
       obj->GetProperty(_WXSTR(attr->Attribute("property"))) :
       obj->GetProperty(_WXSTR(attr->Attribute("name"))) );
 
@@ -135,7 +136,7 @@ bool XrcFilter::IsSupported(const std::string& className)
   return (GetXrcClassInfo(className) != NULL);
 }*/
 
-std::string XrcFilter::GetXrcClassName(const shared_ptr<ObjectBase> obj)
+std::string XrcFilter::GetXrcClassName(const PObjectBase obj)
 {
   std::string className = _STDSTR(obj->GetObjectInfo()->GetClassName());
 
@@ -146,7 +147,7 @@ std::string XrcFilter::GetXrcClassName(const shared_ptr<ObjectBase> obj)
 }
 
 
-void XrcFilter::LinkValue(const shared_ptr<Property> prop, TiXmlElement *propElement)
+void XrcFilter::LinkValue(const PProperty prop, TiXmlElement *propElement)
 {
     wxColour colour;
     std::string value = _STDSTR(prop->GetValue());
@@ -232,7 +233,7 @@ void XrcFilter::LinkFont(const wxFont &font, TiXmlElement *propElement)
 
 
 
-void XrcFilter::ImportXrcProperty(TiXmlElement *xrcProperty, shared_ptr<Property> property)
+void XrcFilter::ImportXrcProperty(TiXmlElement *xrcProperty, PProperty property)
 {
   if (!xrcProperty)
     return;
@@ -256,7 +257,7 @@ void XrcFilter::ImportXrcProperty(TiXmlElement *xrcProperty, shared_ptr<Property
   }
 }
 
-void XrcFilter::ImportColour(TiXmlElement *xrcProperty, shared_ptr<Property> property)
+void XrcFilter::ImportColour(TiXmlElement *xrcProperty, PProperty property)
 {
   TiXmlNode *xmlValue = xrcProperty->FirstChild();
   if (xmlValue && xmlValue->ToText())
@@ -266,12 +267,12 @@ void XrcFilter::ImportColour(TiXmlElement *xrcProperty, shared_ptr<Property> pro
     // convertimos el formato "#rrggbb" a "rrr,ggg,bbb"
     std::string hexColour = "0x" + value.substr(1,2) + " 0x" + value.substr(3,2) +
                        " 0x" + value.substr(5,2);
-    istringstream strIn;
-    ostringstream strOut;
+    std::istringstream strIn;
+    std::ostringstream strOut;
     unsigned int red,green,blue;
 
     strIn.str(hexColour);
-    strIn >> hex;
+    strIn >> std::hex;
 
     strIn >> red;
     strIn >> green;
@@ -282,7 +283,7 @@ void XrcFilter::ImportColour(TiXmlElement *xrcProperty, shared_ptr<Property> pro
   }
 }
 
-void XrcFilter::ImportFont(TiXmlElement *xrcProperty, shared_ptr<Property> property)
+void XrcFilter::ImportFont(TiXmlElement *xrcProperty, PProperty property)
 {
   TiXmlElement *element;
   TiXmlNode *xmlValue;
@@ -390,7 +391,7 @@ void XrcFilter::ImportFont(TiXmlElement *xrcProperty, shared_ptr<Property> prope
 }
 
 void XrcFilter::ImportXrcElements(TiXmlElement *xrcObj, TiXmlElement *xrcInfo,
-                                  shared_ptr<ObjectBase> obj)
+                                  PObjectBase obj)
 {
   TiXmlElement *element = xrcInfo->FirstChildElement("element");
   while (element)
@@ -398,7 +399,7 @@ void XrcFilter::ImportXrcElements(TiXmlElement *xrcObj, TiXmlElement *xrcInfo,
     std::string propName = ( element->Attribute("property") ?
                         element->Attribute("property") : element->Attribute("name"));
 
-    shared_ptr<Property> property = obj->GetProperty(_WXSTR(propName));
+    PProperty property = obj->GetProperty(_WXSTR(propName));
 
     if (property)
       ImportXrcProperty(xrcObj->FirstChildElement(element->Attribute("name")),property);
@@ -418,8 +419,8 @@ void XrcFilter::ImportXrcElements(TiXmlElement *xrcObj, TiXmlElement *xrcInfo,
       {
         str_size = xmlValue->ToText()->Value();
 
-        shared_ptr<Property> propWidth = obj->GetProperty(wxT("width"));
-        shared_ptr<Property> propHeight = obj->GetProperty(wxT("height"));
+        PProperty propWidth = obj->GetProperty(wxT("width"));
+        PProperty propHeight = obj->GetProperty(wxT("height"));
         assert (propWidth && propHeight);
 
         wxSize size = TypeConv::StringToSize(_WXSTR(str_size));
@@ -433,7 +434,7 @@ void XrcFilter::ImportXrcElements(TiXmlElement *xrcObj, TiXmlElement *xrcInfo,
   }
 }
 
-void XrcFilter::ImportXrcProperties(TiXmlElement *xrcObj, shared_ptr<ObjectBase> obj)
+void XrcFilter::ImportXrcProperties(TiXmlElement *xrcObj, PObjectBase obj)
 {
   assert(xrcObj->Attribute("class"));
   TiXmlElement *xrcInfo = GetXrcClassInfo(xrcObj->Attribute("class"));
@@ -447,7 +448,7 @@ void XrcFilter::ImportXrcProperties(TiXmlElement *xrcObj, shared_ptr<ObjectBase>
     std::string propName = ( attr->Attribute("property") ?
                         attr->Attribute("property") : attr->Attribute("name"));
 
-    shared_ptr<Property> property = obj->GetProperty(_WXSTR(propName));
+    PProperty property = obj->GetProperty(_WXSTR(propName));
 
     // los atributos siempre son texto
     if (property && xrcObj->Attribute(attr->Attribute("name")))
@@ -467,7 +468,7 @@ void XrcFilter::ImportXrcProperties(TiXmlElement *xrcObj, shared_ptr<ObjectBase>
   }
 }
 
-shared_ptr<ObjectBase> XrcFilter::GetObject(TiXmlElement *xrcObj, shared_ptr<ObjectBase> parent,
+PObjectBase XrcFilter::GetObject(TiXmlElement *xrcObj, PObjectBase parent,
                                  bool is_form)
 {
   // La estrategia será construir el objeto a partir del nombre
@@ -485,7 +486,7 @@ shared_ptr<ObjectBase> XrcFilter::GetObject(TiXmlElement *xrcObj, shared_ptr<Obj
 
   Debug::Print(wxT("[XrcFilter::GetObject] importing %s"),className.c_str());
 
-  shared_ptr<ObjectBase> obj = m_objDb->CreateObject(className,parent);
+  PObjectBase obj = m_objDb->CreateObject(className,parent);
 
   if (obj)
   {
@@ -495,7 +496,7 @@ shared_ptr<ObjectBase> XrcFilter::GetObject(TiXmlElement *xrcObj, shared_ptr<Obj
     TiXmlElement *element = xrcObj->FirstChildElement("object");
     while (element)
     {
-      shared_ptr<ObjectBase> child = GetObject(element,obj);
+      PObjectBase child = GetObject(element,obj);
       element = element->NextSiblingElement("object");
     }
   }
@@ -510,7 +511,7 @@ XrcFilter::XrcFilter()
   assert (m_xrcDb.LoadFile("./xml/xrc.xml"));
 }
 
-TiXmlDocument *XrcFilter::GetXrcDocument (shared_ptr<ObjectBase> project)
+TiXmlDocument *XrcFilter::GetXrcDocument (PObjectBase project)
 {
   TiXmlDocument *doc = new TiXmlDocument();
 
@@ -526,19 +527,19 @@ TiXmlDocument *XrcFilter::GetXrcDocument (shared_ptr<ObjectBase> project)
   return doc;
 }
 
-shared_ptr<ObjectBase> XrcFilter::GetProject(TiXmlDocument *xrcDoc)
+PObjectBase XrcFilter::GetProject(TiXmlDocument *xrcDoc)
 {
   assert(m_objDb);
   Debug::Print(wxT("[XrcFilter::GetProject]"));
 
-  shared_ptr<ObjectBase> project(m_objDb->CreateObject("Project"));
+  PObjectBase project(m_objDb->CreateObject("Project"));
 
 
   TiXmlElement *root = xrcDoc->FirstChildElement("resource");
   TiXmlElement *element = root->FirstChildElement("object");
   while (element)
   {
-    shared_ptr<ObjectBase> obj = GetObject(element,project,true);
+    PObjectBase obj = GetObject(element,project,true);
     element = element->NextSiblingElement("object");
   }
 
@@ -547,26 +548,26 @@ shared_ptr<ObjectBase> XrcFilter::GetProject(TiXmlDocument *xrcDoc)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-shared_ptr<ObjectBase> XrcLoader::GetProject(TiXmlDocument *xrcDoc)
+PObjectBase XrcLoader::GetProject(TiXmlDocument *xrcDoc)
 {
   assert(m_objDb);
   Debug::Print(wxT("[XrcFilter::GetProject]"));
 
-  shared_ptr<ObjectBase> project(m_objDb->CreateObject("Project"));
+  PObjectBase project(m_objDb->CreateObject("Project"));
 
 
   TiXmlElement *root = xrcDoc->FirstChildElement("resource");
   TiXmlElement *element = root->FirstChildElement("object");
   while (element)
   {
-    shared_ptr<ObjectBase> obj = GetObject(element,project);
+    PObjectBase obj = GetObject(element,project);
     element = element->NextSiblingElement("object");
   }
 
   return project;
 }
 
-shared_ptr<ObjectBase> XrcLoader::GetObject(TiXmlElement *xrcObj, shared_ptr<ObjectBase> parent)
+PObjectBase XrcLoader::GetObject(TiXmlElement *xrcObj, PObjectBase parent)
 {
   // La estrategia será construir el objeto a partir del nombre
   // para posteriormente modificar las propiedades.
@@ -597,8 +598,8 @@ shared_ptr<ObjectBase> XrcLoader::GetObject(TiXmlElement *xrcObj, shared_ptr<Obj
 	}
   }
 
-  shared_ptr<ObjectBase> object;
-  shared_ptr<ObjectInfo> objInfo = m_objDb->GetObjectInfo(_WXSTR(className));
+  PObjectBase object;
+  PObjectInfo objInfo = m_objDb->GetObjectInfo(_WXSTR(className));
   if (objInfo)
   {
     IComponent *comp = objInfo->GetComponent();

@@ -34,11 +34,8 @@
 
 #include <wx/sstream.h>
 #include <map>
-#include "model/objectbase.h"
-#include <boost/smart_ptr.hpp>
-
-using namespace boost;
-using namespace std;
+#include "utils/wxfbdefs.h"
+#include "model/types.h"
 
 /**
 * Template notes
@@ -93,7 +90,7 @@ using namespace std;
 class TemplateParser
 {
 private:
-	shared_ptr<ObjectBase> m_obj;
+	PObjectBase m_obj;
 	wxStringInputStream m_in;
 	wxString m_out;
 	wxString m_pred;
@@ -122,7 +119,6 @@ protected:
 		ID_APPEND,
 		ID_CLASS
 	} Ident;
-
 
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
@@ -162,9 +158,9 @@ protected:
 	void ParseAppend();
 	void ParseClass();
 
-	shared_ptr< Property > GetProperty( wxString* childName = NULL );
-	shared_ptr< ObjectBase > GetWxParent();
-	shared_ptr<Property> GetRelatedProperty( shared_ptr<ObjectBase> relative );
+	PProperty GetProperty( wxString* childName = NULL );
+	PObjectBase GetWxParent();
+	PProperty GetRelatedProperty( PObjectBase relative );
 
 	/**
 	* Parse a macro.
@@ -185,19 +181,19 @@ protected:
 	bool ParsePred();
 
 public:
-	TemplateParser(shared_ptr<ObjectBase> obj, wxString _template);
+	TemplateParser( PObjectBase obj, wxString _template);
 
 	/**
 	* Devuelve el código del valor de una propiedad en el formato del lenguaje.
 	* @note use ValueToCode
 	*/
-	wxString PropertyToCode( shared_ptr<Property> property );
+	wxString PropertyToCode( PProperty property );
 
 	/**
 	* Este método crea un nuevo parser del mismo tipo que el objeto que llama
 	* a dicho método.
 	*/
-	virtual shared_ptr<TemplateParser> CreateParser( shared_ptr<ObjectBase> obj, wxString _template ) = 0;
+	virtual PTemplateParser CreateParser( PObjectBase obj, wxString _template ) = 0;
 
 	virtual ~TemplateParser() {};
 
@@ -344,7 +340,7 @@ public:
 	/**
 	* Generate the code of the project
 	*/
-	virtual bool GenerateCode( shared_ptr<ObjectBase> project ) = 0;
+	virtual bool GenerateCode( PObjectBase project ) = 0;
 };
 
 

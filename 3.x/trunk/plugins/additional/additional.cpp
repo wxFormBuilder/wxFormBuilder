@@ -520,7 +520,7 @@ class SplitterWindowComponent : public ComponentBase
 			TiXmlText *xmlValue = splitmode->FirstChild()->ToText();
 			if (xmlValue)
 			{
-				string value = xmlValue->Value();
+				std::string value = xmlValue->Value();
 				if (value == "vertical")
 					filter.AddPropertyValue(wxT("splitmode"),wxT("wxSPLIT_VERTICAL"));
 				else

@@ -32,6 +32,7 @@
 #include "utils/typeconv.h"
 #include "rad/wxfbevent.h"
 #include <rad/appdata.h>
+#include "model/objectbase.h"
 
 BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_TREE_SEL_CHANGED( -1, ObjectTree::OnSelChanged )
@@ -78,7 +79,7 @@ void ObjectTree::RebuildTree()
 	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 
-	shared_ptr<ObjectBase> project = AppData()->GetProjectData();
+	PObjectBase project = AppData()->GetProjectData();
 
 	// Clear the old tree and map
 	m_tcObjects->DeleteAllItems();
@@ -115,7 +116,7 @@ void ObjectTree::OnSelChanged(wxTreeEvent &event)
 
 	if (item_data)
 	{
-		shared_ptr<ObjectBase> obj(((ObjectTreeItemData *)item_data)->GetObject());
+		PObjectBase obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
 		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler( ObjectTree::OnObjectSelected ) );
 		AppData()->SelectObject(obj);
@@ -129,7 +130,7 @@ void ObjectTree::OnRightClick(wxTreeEvent &event)
 	wxTreeItemData *item_data = m_tcObjects->GetItemData(id);
 	if (item_data)
 	{
-		shared_ptr<ObjectBase> obj(((ObjectTreeItemData *)item_data)->GetObject());
+		PObjectBase obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
 		wxMenu * menu = new ItemPopupMenu(obj);
 		wxPoint pos = event.GetPoint();
@@ -144,7 +145,7 @@ void ObjectTree::OnExpansionChange(wxTreeEvent &event)
 	wxTreeItemData *item_data = m_tcObjects->GetItemData(id);
 	if (item_data)
 	{
-		shared_ptr<ObjectBase> obj(((ObjectTreeItemData *)item_data)->GetObject());
+		PObjectBase obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
 		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
 		AppData()->ExpandObject( obj, m_tcObjects->IsExpanded( id ) );
@@ -152,7 +153,7 @@ void ObjectTree::OnExpansionChange(wxTreeEvent &event)
 	}
 }
 
-void ObjectTree::AddChildren(shared_ptr<ObjectBase> obj, wxTreeItemId &parent, bool is_root)
+void ObjectTree::AddChildren(PObjectBase obj, wxTreeItemId &parent, bool is_root)
 {
 	if (obj->GetObjectInfo()->GetObjectType()->IsItem())
 	{
@@ -163,7 +164,7 @@ void ObjectTree::AddChildren(shared_ptr<ObjectBase> obj, wxTreeItemId &parent, b
 			// Si hemos llegado aquí ha sido porque el arbol no está bien formado
 			// y habrá que revisar cómo se ha creado.
 			wxString msg;
-			shared_ptr<ObjectBase> itemParent = obj->GetParent();
+			PObjectBase itemParent = obj->GetParent();
 			assert(parent);
 
 			msg = wxString::Format(wxT("Item without object as child of \'%s:%s\'"),
@@ -201,7 +202,7 @@ void ObjectTree::AddChildren(shared_ptr<ObjectBase> obj, wxTreeItemId &parent, b
 		unsigned int i;
 		for (i = 0; i < count ; i++)
 		{
-			shared_ptr<ObjectBase> child = obj->GetChild(i);
+			PObjectBase child = obj->GetChild(i);
 			AddChildren(child, new_parent);
 		}
 	}
@@ -219,11 +220,11 @@ int ObjectTree::GetImageIndex (wxString name)
 	return index;
 }
 
-void ObjectTree::UpdateItem(wxTreeItemId id, shared_ptr<ObjectBase> obj)
+void ObjectTree::UpdateItem(wxTreeItemId id, PObjectBase obj)
 {
 	// mostramos el nombre
 	wxString class_name( obj->GetClassName() );
-	shared_ptr<Property> prop = obj->GetProperty( wxT("name") );
+	PProperty prop = obj->GetProperty( wxT("name") );
 	wxString obj_name;
 	if (prop)
 	{
@@ -265,7 +266,7 @@ void ObjectTree::Create()
 	m_tcObjects->AssignImageList(m_iconList);
 }
 
-void ObjectTree::RestoreItemStatus(shared_ptr<ObjectBase> obj)
+void ObjectTree::RestoreItemStatus(PObjectBase obj)
 {
 	ObjectItemMap::iterator item_it = m_map.find(obj);
 	if (item_it != m_map.end())
@@ -371,7 +372,7 @@ void ObjectTree::OnProjectRefresh ( wxFBEvent &event)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-ObjectTreeItemData::ObjectTreeItemData(shared_ptr<ObjectBase> obj) : m_object(obj)
+ObjectTreeItemData::ObjectTreeItemData(PObjectBase obj) : m_object(obj)
 {}
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -393,7 +394,7 @@ EVT_MENU(-1, ItemPopupMenu::OnMenuEvent)
 EVT_UPDATE_UI(-1, ItemPopupMenu::OnUpdateEvent)
 END_EVENT_TABLE()
 
-ItemPopupMenu::ItemPopupMenu(shared_ptr<ObjectBase> obj)
+ItemPopupMenu::ItemPopupMenu(PObjectBase obj)
 : wxMenu(), m_object(obj)
 {
 	Append(MENU_CUT,        wxT("Cut\tCtrl+X"));
@@ -444,14 +445,14 @@ void ItemPopupMenu::OnMenuEvent (wxCommandEvent & event)
 		break;
 	case MENU_EDIT_MENUS:
 		{
-			shared_ptr<ObjectBase> obj = AppData()->GetSelectedObject();
+			PObjectBase obj = AppData()->GetSelectedObject();
 			if (obj && (obj->GetClassName() == wxT("wxMenuBar") || obj->GetClassName() == wxT("Frame") ) )
 			{
 				MenuEditor me(NULL);
 				if (obj->GetClassName() == wxT("Frame") )
 				{
 					bool found = false;
-					shared_ptr<ObjectBase> menubar;
+					PObjectBase menubar;
 					for (unsigned int i = 0; i < obj->GetChildCount() && !found; i++)
 					{
 						menubar = obj->GetChild(i);
@@ -465,16 +466,16 @@ void ItemPopupMenu::OnMenuEvent (wxCommandEvent & event)
 				{
 					if (obj->GetClassName() == wxT("wxMenuBar"))
 					{
-						shared_ptr<ObjectBase> menubar = me.GetMenubar(AppData()->GetObjectDatabase());
+						PObjectBase menubar = me.GetMenubar(AppData()->GetObjectDatabase());
 						while (obj->GetChildCount() > 0)
 						{
-							shared_ptr<ObjectBase> child = obj->GetChild(0);
+							PObjectBase child = obj->GetChild(0);
 							obj->RemoveChild(0);
-							child->SetParent(shared_ptr<ObjectBase>());
+							child->SetParent(PObjectBase());
 						}
 						for (unsigned int i = 0; i < menubar->GetChildCount(); i++)
 						{
-							shared_ptr<ObjectBase> child = menubar->GetChild(i);
+							PObjectBase child = menubar->GetChild(i);
 							AppData()->InsertObject(child,obj);
 						}
 					}

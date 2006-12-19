@@ -26,12 +26,12 @@
 #include "cppcg.h"
 #include "utils/typeconv.h"
 #include "rad/appdata.h"
-
+#include "model/objectbase.h"
 #include <algorithm>
 
 #include <wx/filename.h>
 
-CppTemplateParser::CppTemplateParser(shared_ptr<ObjectBase> obj, wxString _template)
+CppTemplateParser::CppTemplateParser(PObjectBase obj, wxString _template)
 : TemplateParser(obj,_template)
 {
 	m_useRelativePath = false;
@@ -42,9 +42,9 @@ wxString CppTemplateParser::RootWxParentToCode()
 	return wxT("this");
 }
 
-shared_ptr<TemplateParser> CppTemplateParser::CreateParser(shared_ptr<ObjectBase> obj, wxString _template)
+PTemplateParser CppTemplateParser::CreateParser(PObjectBase obj, wxString _template)
 {
-	shared_ptr<TemplateParser> newparser(new CppTemplateParser(obj,_template));
+	PTemplateParser newparser(new CppTemplateParser(obj,_template));
 	return newparser;
 }
 
@@ -329,7 +329,7 @@ wxString CppCodeGenerator::ConvertXpmName( const wxString& text )
 	return name;
 }
 
-bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
+bool CppCodeGenerator::GenerateCode( PObjectBase project )
 {
 	if (!project)
 	{
@@ -339,12 +339,12 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 
 	bool useEnum = false;
 
-	shared_ptr< Property > useEnumProperty = project->GetProperty( wxT("use_enum") );
+	PProperty useEnumProperty = project->GetProperty( wxT("use_enum") );
 	if (useEnumProperty && useEnumProperty->GetValueAsInteger())
 		useEnum = true;
 
 	m_i18n = false;
-	shared_ptr< Property > i18nProperty = project->GetProperty( wxT("internationalize") );
+	PProperty i18nProperty = project->GetProperty( wxT("internationalize") );
 	if (i18nProperty && i18nProperty->GetValueAsInteger())
 		m_i18n = true;
 
@@ -361,7 +361,7 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	m_header->WriteLn( code );
 	m_source->WriteLn( code );
 
-	shared_ptr<Property> propFile = project->GetProperty( wxT("file") );
+	PProperty propFile = project->GetProperty( wxT("file") );
 	if (!propFile)
 	{
 		wxLogError( wxT("Missing \"file\" property on Project Object") );
@@ -382,13 +382,13 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	m_header->WriteLn( code );
 
 	// Generate the subclass sets
-	set< wxString > subclasses;
-	set< wxString > subclassSourceIncludes;
-	set< wxString > headerIncludes;
+	std::set< wxString > subclasses;
+	std::set< wxString > subclassSourceIncludes;
+	std::set< wxString > headerIncludes;
 	GenSubclassSets( project, &subclasses, &subclassSourceIncludes, &headerIncludes );
 
 	// Write the forward declaration lines
-	set< wxString >::iterator subclass_it;
+	std::set< wxString >::iterator subclass_it;
 	for ( subclass_it = subclasses.begin(); subclass_it != subclasses.end(); ++subclass_it )
 	{
 		m_header->WriteLn( *subclass_it );
@@ -402,7 +402,7 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	GenIncludes(project, &headerIncludes);
 
 	// Write the include lines
-	set<wxString>::iterator include_it;
+	std::set<wxString>::iterator include_it;
 	for ( include_it = headerIncludes.begin(); include_it != headerIncludes.end(); ++include_it )
 	{
 		m_header->WriteLn( *include_it );
@@ -417,7 +417,7 @@ bool CppCodeGenerator::GenerateCode( shared_ptr<ObjectBase> project )
 	m_header->WriteLn( wxT("") );
 
 	// Precompiled Headers
-	shared_ptr<Property> pch_prop = project->GetProperty( wxT("precompiled_header") );
+	PProperty pch_prop = project->GetProperty( wxT("precompiled_header") );
 	if ( pch_prop )
 	{
 		wxString pch = pch_prop->GetValueAsString();
@@ -515,7 +515,7 @@ void CppCodeGenerator::GenEventTable( PObjectBase class_obj, const EventVector &
 			wxString templateName = wxT("evt_entry_") + event->GetName();
 
 			wxString _template;
-			shared_ptr<CodeInfo> code_info = event->GetObject()->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+			PCodeInfo code_info = event->GetObject()->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 			if ( !code_info )
 			{
 				wxString msg( wxString::Format( wxT("Missing \"%s\" template for \"%s\" class. Review your XML object description"),
@@ -584,7 +584,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
 	}
 }
 
-void CppCodeGenerator::GenAttributeDeclaration(shared_ptr<ObjectBase> obj, Permission perm)
+void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 {
 	wxString typeName = obj->GetObjectTypeName();
 	if (typeName == wxT("notebook")			||
@@ -616,16 +616,16 @@ void CppCodeGenerator::GenAttributeDeclaration(shared_ptr<ObjectBase> obj, Permi
 	// recursivamente generamos los demás atributos
 	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
 	{
-		shared_ptr<ObjectBase> child = obj->GetChild(i);
+		PObjectBase child = obj->GetChild(i);
 
 		GenAttributeDeclaration(child,perm);
 	}
 }
 
-wxString CppCodeGenerator::GetCode(shared_ptr<ObjectBase> obj, wxString name)
+wxString CppCodeGenerator::GetCode(PObjectBase obj, wxString name)
 {
 	wxString _template;
-	shared_ptr<CodeInfo> code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 
 	if (!code_info)
 	{
@@ -647,7 +647,7 @@ wxString CppCodeGenerator::GetCode(shared_ptr<ObjectBase> obj, wxString name)
 
 void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const EventVector &events)
 {
-	shared_ptr<Property> propName = class_obj->GetProperty( wxT("name") );
+	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{
 		wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
@@ -712,12 +712,12 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	m_header->WriteLn( wxT("") );
 }
 
-void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
+void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
 {
-	vector< wxString > macros;
+	std::vector< wxString > macros;
 	FindMacros( class_obj, &macros );
 
-	vector< wxString >::iterator it = macros.begin();
+	std::vector< wxString >::iterator it = macros.begin();
 	if ( it != macros.end())
 	{
 		m_header->WriteLn( wxT("enum") );
@@ -739,7 +739,7 @@ void CppCodeGenerator::GenEnumIds(shared_ptr< ObjectBase > class_obj)
 	}
 }
 
-void CppCodeGenerator::GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxString >* subclasses, set< wxString >* sourceIncludes, set< wxString >* headerIncludes )
+void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::set< wxString >* headerIncludes )
 {
 	// Call GenSubclassForwardDeclarations on all children as well
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
@@ -748,7 +748,7 @@ void CppCodeGenerator::GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxStr
 	}
 
 	// Fill the set
-	shared_ptr< Property > subclass = obj->GetProperty( wxT("subclass") );
+	PProperty subclass = obj->GetProperty( wxT("subclass") );
 	if ( subclass )
 	{
 		std::map< wxString, wxString > children;
@@ -791,13 +791,13 @@ void CppCodeGenerator::GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxStr
 		}
 
 		// Got a header
-		shared_ptr< ObjectInfo > info = obj->GetObjectInfo();
+		PObjectInfo info = obj->GetObjectInfo();
 		if ( !info )
 		{
 			return;
 		}
 
-		shared_ptr< ObjectPackage > pkg = info->GetPackage();
+		PObjectPackage pkg = info->GetPackage();
 		if ( !pkg )
 		{
 			return;
@@ -815,12 +815,12 @@ void CppCodeGenerator::GenSubclassSets( shared_ptr< ObjectBase > obj, set< wxStr
 	}
 }
 
-void CppCodeGenerator::GenIncludes( shared_ptr<ObjectBase> project, set<wxString>* includes)
+void CppCodeGenerator::GenIncludes( PObjectBase project, std::set<wxString>* includes)
 {
 	GenObjectIncludes( project, includes );
 }
 
-void CppCodeGenerator::GenObjectIncludes( shared_ptr< ObjectBase > project, set< wxString >* includes )
+void CppCodeGenerator::GenObjectIncludes( PObjectBase project, std::set< wxString >* includes )
 {
 	// Call GenIncludes on all children as well
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
@@ -829,7 +829,7 @@ void CppCodeGenerator::GenObjectIncludes( shared_ptr< ObjectBase > project, set<
 	}
 
 	// Fill the set
-	shared_ptr< CodeInfo > code_info = project->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+	PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 	if (code_info)
 	{
 		CppTemplateParser parser(project,code_info->GetTemplate( wxT("include") ) );
@@ -844,7 +844,7 @@ void CppCodeGenerator::GenObjectIncludes( shared_ptr< ObjectBase > project, set<
 	GenBaseIncludes( project->GetObjectInfo(), project, includes );
 }
 
-void CppCodeGenerator::GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_ptr< ObjectBase > obj, set< wxString >* includes )
+void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::set< wxString >* includes )
 {
 	if ( !info )
 	{
@@ -854,11 +854,11 @@ void CppCodeGenerator::GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_pt
 	// Process all the base classes recursively
 	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
 	{
-		shared_ptr< ObjectInfo > base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i );
 		GenBaseIncludes( base_info, obj, includes );
 	}
 
-	shared_ptr< CodeInfo > code_info = info->GetCodeInfo( wxT("C++") );
+	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
 	if ( code_info )
 	{
 		CppTemplateParser parser( obj, code_info->GetTemplate( wxT("include") ) );
@@ -870,7 +870,7 @@ void CppCodeGenerator::GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_pt
 	}
 }
 
-void CppCodeGenerator::FindDependencies( shared_ptr< ObjectBase > obj, set< shared_ptr< ObjectInfo > >& info_set )
+void CppCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set )
 {
 	unsigned int ch_count = obj->GetChildCount();
 	if (ch_count > 0)
@@ -878,14 +878,14 @@ void CppCodeGenerator::FindDependencies( shared_ptr< ObjectBase > obj, set< shar
 		unsigned int i;
 		for (i = 0; i<ch_count; i++)
 		{
-			shared_ptr<ObjectBase> child = obj->GetChild(i);
+			PObjectBase child = obj->GetChild(i);
 			info_set.insert(child->GetObjectInfo());
 			FindDependencies(child, info_set);
 		}
 	}
 }
 
-void CppCodeGenerator::GenConstructor(shared_ptr<ObjectBase> class_obj)
+void CppCodeGenerator::GenConstructor(PObjectBase class_obj)
 {
 	m_source->WriteLn( wxT("") );
 	m_source->WriteLn( GetCode( class_obj, wxT("cons_def") ) );
@@ -907,7 +907,7 @@ void CppCodeGenerator::GenConstructor(shared_ptr<ObjectBase> class_obj)
 	m_source->WriteLn( wxT("}") );
 }
 
-void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widget)
+void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 {
 	wxString type = obj->GetObjectTypeName();
 
@@ -938,7 +938,7 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			shared_ptr< ObjectBase > child = obj->GetChild( i );
+			PObjectBase child = obj->GetChild( i );
 			GenConstruction( child, true );
 
 			if ( type == wxT("toolbar") )
@@ -954,7 +954,7 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 			{
 				case 1:
 				{
-					shared_ptr<ObjectBase> sub1 = obj->GetChild(0)->GetChild(0);
+					PObjectBase sub1 = obj->GetChild(0)->GetChild(0);
 					wxString _template = wxT("$name->Initialize( ");
 					_template = _template + sub1->GetProperty( wxT("name") )->GetValue() + wxT(" )");
 
@@ -966,7 +966,7 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 				}
 				case 2:
 				{
-					shared_ptr<ObjectBase> sub1,sub2;
+					PObjectBase sub1,sub2;
 					sub1 = obj->GetChild(0)->GetChild(0);
 					sub2 = obj->GetChild(1)->GetChild(0);
 
@@ -1120,7 +1120,7 @@ void CppCodeGenerator::GenConstruction(shared_ptr<ObjectBase> obj, bool is_widge
 	}
 }
 
-void CppCodeGenerator::FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>* macros )
+void CppCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macros )
 {
 	// iterate through all of the properties of all objects, add the macros
 	// to the vector
@@ -1128,11 +1128,11 @@ void CppCodeGenerator::FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>*
 
 	for ( i = 0; i < obj->GetPropertyCount(); i++ )
 	{
-		shared_ptr<Property> prop = obj->GetProperty( i );
+		PProperty prop = obj->GetProperty( i );
 		if ( prop->GetType() == PT_MACRO )
 		{
 			wxString value = prop->GetValue();
-			if ( macros->end() == find( macros->begin(), macros->end(), value ) )
+			if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
 			{
 				macros->push_back( value );
 			}
@@ -1162,14 +1162,14 @@ void CppCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector &events)
   }
 }
 
-void CppCodeGenerator::GenDefines( shared_ptr< ObjectBase > project)
+void CppCodeGenerator::GenDefines( PObjectBase project)
 {
-	vector< wxString > macros;
+	std::vector< wxString > macros;
 	FindMacros( project, &macros );
 
 	// Remove the default macro from the set
-	vector< wxString >::iterator it;
-	it = find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
+	std::vector< wxString >::iterator it;
+	it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
 	if ( it != macros.end() )
 	{
 		// The default macro is defined to wxID_ANY
@@ -1191,10 +1191,10 @@ void CppCodeGenerator::GenDefines( shared_ptr< ObjectBase > project)
 	m_header->WriteLn( wxT("") );
 }
 
-void CppCodeGenerator::GenSettings(shared_ptr<ObjectInfo> info, shared_ptr<ObjectBase> obj)
+void CppCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 {
 	wxString _template;
-	shared_ptr<CodeInfo> code_info = info->GetCodeInfo( wxT("C++") );
+	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
 
 	if ( !code_info )
 	{
@@ -1218,15 +1218,15 @@ void CppCodeGenerator::GenSettings(shared_ptr<ObjectInfo> info, shared_ptr<Objec
 	// procedemos recursivamente con las clases base
 	for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
 	{
-		shared_ptr<ObjectInfo> base_info = info->GetBaseClass(i);
+		PObjectInfo base_info = info->GetBaseClass(i);
 		GenSettings(base_info,obj);
 	}
 }
 
-void CppCodeGenerator::GenAddToolbar(shared_ptr<ObjectInfo> info, shared_ptr<ObjectBase> obj)
+void CppCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 {
 	wxString _template;
-	shared_ptr<CodeInfo> code_info = info->GetCodeInfo( wxT("C++") );
+	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
 
 	if (!code_info)
 		return;
@@ -1248,7 +1248,7 @@ void CppCodeGenerator::GenAddToolbar(shared_ptr<ObjectInfo> info, shared_ptr<Obj
 	// procedemos recursivamente con las clases base
 	for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
 	{
-		shared_ptr<ObjectInfo> base_info = info->GetBaseClass(i);
+		PObjectInfo base_info = info->GetBaseClass(i);
 		GenAddToolbar(base_info,obj);
 	}
 
@@ -1257,9 +1257,9 @@ void CppCodeGenerator::GenAddToolbar(shared_ptr<ObjectInfo> info, shared_ptr<Obj
 ///////////////////////////////////////////////////////////////////////
 
 
-void CppCodeGenerator::GenXpmIncludes( shared_ptr< ObjectBase > project)
+void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 {
-	set< wxString > include_set;
+	std::set< wxString > include_set;
 
 	// lo primero es obtener la lista de includes
 	FindXpmProperties( project, include_set );
@@ -1270,7 +1270,7 @@ void CppCodeGenerator::GenXpmIncludes( shared_ptr< ObjectBase > project)
 	}
 
 	// y los generamos
-	set<wxString>::iterator it;
+	std::set<wxString>::iterator it;
 	for ( it = include_set.begin() ; it != include_set.end(); it++ )
 	{
 		if ( !it->empty() )
@@ -1282,7 +1282,7 @@ void CppCodeGenerator::GenXpmIncludes( shared_ptr< ObjectBase > project)
 	m_source->WriteLn( wxT("") );
 }
 
-void CppCodeGenerator::FindXpmProperties( shared_ptr<ObjectBase> obj, set<wxString>& set )
+void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& xpmset )
 {
 	// recorremos cada una de las propiedades del objeto obj, si damos con
 	// alguna que sea de tipo PT_XPM_BITMAP añadimos la cadena del "include"
@@ -1293,7 +1293,7 @@ void CppCodeGenerator::FindXpmProperties( shared_ptr<ObjectBase> obj, set<wxStri
 
 	for (i = 0; i < count; i++)
 	{
-		shared_ptr<Property> property = obj->GetProperty(i);
+		PProperty property = obj->GetProperty(i);
 		if ( property->GetType() == PT_BITMAP )
 		{
 			wxString path = property->GetValue();
@@ -1314,7 +1314,7 @@ void CppCodeGenerator::FindXpmProperties( shared_ptr<ObjectBase> obj, set<wxStri
 
 				wxString inc;
 				inc << wxT("#include \"") << ConvertCppString( relPath ) << wxT("\"");
-				set.insert(inc);
+				xpmset.insert(inc);
 			}
 		}
 	}
@@ -1322,8 +1322,8 @@ void CppCodeGenerator::FindXpmProperties( shared_ptr<ObjectBase> obj, set<wxStri
 	count = obj->GetChildCount();
 	for (i = 0; i< count; i++)
 	{
-		shared_ptr<ObjectBase> child = obj->GetChild(i);
-		FindXpmProperties( child, set );
+		PObjectBase child = obj->GetChild(i);
+		FindXpmProperties( child, xpmset );
 	}
 }
 

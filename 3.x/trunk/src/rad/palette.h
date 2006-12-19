@@ -30,7 +30,7 @@
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include <wx/spinbutt.h>
 #include <vector>
-#include <model/objectbase.h>
+#include <utils/wxfbdefs.h>
 #include <model/database.h>
 
 typedef std::vector<wxToolBar*> ToolbarVector;

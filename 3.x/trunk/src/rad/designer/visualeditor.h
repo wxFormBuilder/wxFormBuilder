@@ -28,7 +28,7 @@
 
 
 #include "wx/wx.h"
-#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 #include "rad/designer/visualobj.h"
 //#include "rad/designer/resizablepanel.h"
 #include <wx/sashwin.h>
@@ -45,10 +45,10 @@ class DesignerWindow : public wxInnerFrame
    int m_y;
    wxSizer *m_selSizer;
    wxObject *m_selItem;
-   weak_ptr<ObjectBase> m_selObj;
+   WPObjectBase m_selObj;
    wxWindow *m_actPanel;
 
-   void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, shared_ptr<ObjectBase> object);
+   void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object);
 
    DECLARE_CLASS(DesignerWindow)
 
@@ -77,14 +77,14 @@ class DesignerWindow : public wxInnerFrame
    void SetGrid(int x, int y);
    void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
    void SetSelectedItem(wxObject *item) { m_selItem = item; }
-   void SetSelectedObject(shared_ptr<ObjectBase> object) { m_selObj = object; }
+   void SetSelectedObject(PObjectBase object) { m_selObj = object; }
    void SetSelectedPanel(wxWindow *actPanel) { m_actPanel = actPanel; }
    wxSizer *GetSelectedSizer() { return m_selSizer; }
    wxObject* GetSelectedItem() { return m_selItem; }
-   shared_ptr<ObjectBase> GetSelectedObject() { return m_selObj.lock(); }
+   PObjectBase GetSelectedObject() { return m_selObj.lock(); }
    wxWindow* GetActivePanel() { return m_actPanel; }
-   wxMenu* GetMenuFromObject(shared_ptr<ObjectBase> menu);
-   void SetFrameWidgets(shared_ptr<ObjectBase> menubar, wxWindow *toolbar, wxWindow* statusbar);
+   wxMenu* GetMenuFromObject(PObjectBase menu);
+   void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar);
    void HighlightSelection(wxDC& dc);
 };
 
@@ -95,15 +95,15 @@ class wxFBObjectEvent;
 class VisualEditor : public wxScrolledWindow
 {
  private:
-  typedef map< wxObject*, shared_ptr< ObjectBase > > wxObjectMap;
+  typedef std::map< wxObject*, PObjectBase > wxObjectMap;
   wxObjectMap m_wxobjects;
 
-  typedef map< ObjectBase*, wxObject* > ObjectBaseMap;
+  typedef std::map< ObjectBase*, wxObject* > ObjectBaseMap;
   ObjectBaseMap m_baseobjects;
 
   DesignerWindow *m_back;
 
-  shared_ptr<ObjectBase> m_form;  // Pointer to last form created
+  PObjectBase m_form;  // Pointer to last form created
 
   // Prevent OnSelected in components
   bool m_stopSelectedEvent;
@@ -114,9 +114,9 @@ class VisualEditor : public wxScrolledWindow
   DECLARE_EVENT_TABLE()
 
  protected:
-  void Generate( shared_ptr< ObjectBase > obj, wxWindow* parent, wxObject* parentObject );
-  void SetupWindow( shared_ptr< ObjectBase > obj, wxWindow* window );
-  void SetupSizer( shared_ptr< ObjectBase > obj, wxSizer* sizer );
+  void Generate( PObjectBase obj, wxWindow* parent, wxObject* parentObject );
+  void SetupWindow( PObjectBase obj, wxWindow* window );
+  void SetupSizer( PObjectBase obj, wxSizer* sizer );
   void Create();
   void DeleteAbstractObjects();
 
@@ -130,8 +130,8 @@ class VisualEditor : public wxScrolledWindow
 
   void UpdateVirtualSize();
 
-  shared_ptr< ObjectBase > GetObjectBase( wxObject* wxobject );
-  wxObject* GetWxObject( shared_ptr< ObjectBase > baseobject );
+  PObjectBase GetObjectBase( wxObject* wxobject );
+  wxObject* GetWxObject( PObjectBase baseobject );
 
   // Events
   void OnProjectLoaded ( wxFBEvent &event );

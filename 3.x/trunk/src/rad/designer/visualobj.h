@@ -27,7 +27,7 @@
 #define __VISUAL_OBJS__
 
 #include "wx/wx.h"
-#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 
 /**
  * Processes events from visual objects.
@@ -35,7 +35,7 @@
 class VObjEvtHandler : public wxEvtHandler
 {
  private:
-   weak_ptr<ObjectBase> m_object;
+   WPObjectBase m_object;
    wxWindow *m_window;
 
    VObjEvtHandler() {};
@@ -44,7 +44,7 @@ class VObjEvtHandler : public wxEvtHandler
   DECLARE_EVENT_TABLE()
 
  public:
-   VObjEvtHandler(wxWindow *win, shared_ptr<ObjectBase> obj);
+   VObjEvtHandler(wxWindow *win, PObjectBase obj);
    void OnLeftClick(wxMouseEvent &event);
    void OnPaint(wxPaintEvent &event);
    void OnSetCursor(wxSetCursorEvent &event);

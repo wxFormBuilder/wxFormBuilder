@@ -26,7 +26,7 @@
 #ifndef __APP_DATA__
 #define __APP_DATA__
 
-#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 #include "model/database.h"
 #include "rad/cmdproc.h"
 #include <set>
@@ -72,10 +72,10 @@ class ApplicationData
   wxString m_projectFile;
   wxString m_projectPath;
 
-  shared_ptr< wxFBManager > m_manager;
+  PwxFBManager m_manager;
 
 
-  typedef vector< wxEvtHandler* > HandlerVector;
+  typedef std::vector< wxEvtHandler* > HandlerVector;
   HandlerVector m_handlers;
 
   // Only allow one instance of a project to be loaded at a time
@@ -87,11 +87,11 @@ class ApplicationData
    // Notifican a cada observador el evento correspondiente
   void NotifyProjectLoaded();
   void NotifyProjectSaved();
-  void NotifyObjectExpanded(shared_ptr<ObjectBase> obj);
-  void NotifyObjectSelected(shared_ptr<ObjectBase> obj);
-  void NotifyObjectCreated(shared_ptr<ObjectBase> obj);
-  void NotifyObjectRemoved(shared_ptr<ObjectBase> obj);
-  void NotifyPropertyModified(shared_ptr<Property> prop);
+  void NotifyObjectExpanded(PObjectBase obj);
+  void NotifyObjectSelected(PObjectBase obj);
+  void NotifyObjectCreated(PObjectBase obj);
+  void NotifyObjectRemoved(PObjectBase obj);
+  void NotifyPropertyModified(PProperty prop);
   void NotifyEventHandlerModified(PEvent evtHandler);
   void NotifyProjectRefresh();
   void NotifyCodeGeneration( bool panelOnly = false );
@@ -116,7 +116,7 @@ class ApplicationData
   /**
    * Rutina auxiliar de ResolveNameConflict
    */
-  void BuildNameSet(PObjectBase obj, PObjectBase top, set<wxString> &name_set);
+  void BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wxString> &name_set);
 
   /**
    * Calcula la posición donde deberá ser insertado el objeto.
@@ -207,7 +207,7 @@ public:
   void LoadApp();
 
   // Hold a pointer to the wxFBManager
-  shared_ptr< wxFBManager > GetManager();
+  PwxFBManager GetManager();
 
   // Procedures for register/unregister wxEvtHandlers to be notified of wxFBEvents
   void AddHandler( wxEvtHandler* handler );
@@ -217,10 +217,10 @@ public:
   bool LoadProject(const wxString &filename);
   void SaveProject(const wxString &filename);
   void NewProject();
-  void ExpandObject( shared_ptr<ObjectBase> obj, bool expand );
+  void ExpandObject( PObjectBase obj, bool expand );
 
   // Object will not be selected if it already is selected, unless force = true
-  void SelectObject( shared_ptr<ObjectBase> obj, bool force = false );
+  void SelectObject( PObjectBase obj, bool force = false );
   void CreateObject(wxString name);
   void RemoveObject(PObjectBase obj);
   void CutObject(PObjectBase obj);
@@ -248,7 +248,7 @@ public:
   PObjectBase GetSelectedForm();
   bool CanUndo() { return m_cmdProc.CanUndo(); }
   bool CanRedo() { return m_cmdProc.CanRedo(); }
-  bool GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border, int* orient);
+  bool GetLayoutSettings(PObjectBase obj, int *flag, int *option,int *border, int* orient);
   bool CanPasteObject();
   bool CanCopyObject();
   bool IsModified();

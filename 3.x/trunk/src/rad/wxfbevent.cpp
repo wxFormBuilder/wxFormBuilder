@@ -24,6 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "wxfbevent.h"
+#include "model/objectbase.h"
 
 DEFINE_EVENT_TYPE( wxEVT_FB_PROJECT_LOADED )
 DEFINE_EVENT_TYPE( wxEVT_FB_PROJECT_SAVED )

@@ -27,7 +27,7 @@
 #define __WXFBEVENT__
 
 #include <wx/event.h>
-#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 
 class wxFBEvent : public wxEvent
 {

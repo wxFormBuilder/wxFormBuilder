@@ -37,7 +37,7 @@
 
 using namespace TypeConv;
 
-wxString TypeConv::_StringToWxString(const string &str)
+wxString TypeConv::_StringToWxString(const std::string &str)
 {
     return _StringToWxString(str.c_str());
 }
@@ -48,9 +48,9 @@ wxString TypeConv::_StringToWxString(const char *str)
     return newstr;
 }
 
-string TypeConv::_WxStringToString(const wxString &str)
+std::string TypeConv::_WxStringToString(const wxString &str)
 {
-    string newstr( str.mb_str(wxConvUTF8) );
+    std::string newstr( str.mb_str(wxConvUTF8) );
     return newstr;
 }
 
