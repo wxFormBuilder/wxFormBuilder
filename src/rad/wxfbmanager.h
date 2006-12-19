@@ -2,7 +2,7 @@
 #define WXFBMANAGER
 
 #include <component.h>
-#include <boost/smart_ptr.hpp>
+#include "utils/wxfbdefs.h"
 
 class VisualEditor;
 class ObjectBase;
@@ -19,7 +19,7 @@ public:
 	wxObject* GetChild( wxObject* wxobject, size_t childIndex );
 	wxObject* GetParent( wxObject* wxobject );
 	IObject* GetIObject( wxObject* wxobject );
-	wxObject* GetWxObject( boost::shared_ptr< ObjectBase > obj );
+	wxObject* GetWxObject( PObjectBase obj );
 
 	void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true );
 

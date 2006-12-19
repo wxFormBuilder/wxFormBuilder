@@ -29,24 +29,14 @@
 #include "tinyxml.h"
 #include <wx/dynlib.h>
 #include <set>
-#include <boost/smart_ptr.hpp>
-#include <vector>
-#include <map>
 #include "model/types.h"
+#include "utils/wxfbdefs.h"
 
-using namespace std;
-using namespace boost;
-
-class ObjectInfo;
-class ObjectBase;
-
-class ObjectPackage;
 class ObjectDatabase;
 class ObjectTypeDictionary;
 class PropertyCategory;
 
-typedef shared_ptr<ObjectPackage> PObjectPackage;
-typedef shared_ptr<ObjectDatabase> PObjectDatabase;
+typedef boost::shared_ptr<ObjectDatabase> PObjectDatabase;
 
 namespace ticpp
 {
@@ -65,7 +55,7 @@ class ObjectPackage
   wxBitmap m_icon;	// The icon for the notebook page
 
   // Vector con los objetos que están contenidos en el paquete
-  vector< shared_ptr< ObjectInfo > > m_objs;
+  std::vector< PObjectInfo > m_objs;
 
  public:
   /**
@@ -76,7 +66,7 @@ class ObjectPackage
   /**
    * Incluye en el paquete la información de un objeto.
    */
-  void Add(shared_ptr<ObjectInfo> obj) { m_objs.push_back(obj); };
+  void Add(PObjectInfo obj) { m_objs.push_back(obj); };
 
   /**
    * Obtiene el nombre del paquete.
@@ -101,12 +91,8 @@ class ObjectPackage
   /**
    * Obtiene la información de un objeto incluido en el paquete.
    */
-  shared_ptr<ObjectInfo> GetObjectInfo(unsigned int idx);
+  PObjectInfo GetObjectInfo(unsigned int idx);
 };
-
-
-
-class wxFBManager;
 
 /**
  * Base de datos de objetos.
@@ -116,18 +102,18 @@ class wxFBManager;
 class ObjectDatabase
 {
  private:
-  typedef vector<PObjectPackage> PackageVector;
+  typedef std::vector<PObjectPackage> PackageVector;
 
   // Map the property type string to the property type number
-  typedef map<wxString,PropertyType> PTMap;
-  typedef map<wxString,PObjectType> ObjectTypeMap;
-  typedef vector<wxDynamicLibrary *> CLibraryVector;
-  typedef set<wxString> MacroSet;
+  typedef std::map<wxString,PropertyType> PTMap;
+  typedef std::map<wxString,PObjectType> ObjectTypeMap;
+  typedef std::vector<wxDynamicLibrary *> CLibraryVector;
+  typedef std::set<wxString> MacroSet;
 
   wxString m_xmlPath;
   wxString m_iconPath;
   wxString m_pluginPath;
-  map< wxString, shared_ptr< ObjectInfo > > m_objs;
+  std::map< wxString, PObjectInfo > m_objs;
   PackageVector m_pkgs;
   PTMap m_propTypes;
   CLibraryVector m_libs;
@@ -157,20 +143,20 @@ class ObjectDatabase
    */
   PObjectPackage LoadPackage( const wxString& file, const wxString& iconPath = wxEmptyString );
 
-  void ParseProperties( ticpp::Element* elem_obj, shared_ptr<ObjectInfo> obj_info, shared_ptr< PropertyCategory > category );
-  void ParseEvents    ( ticpp::Element* elem_obj, shared_ptr<ObjectInfo> obj_info);
+  void ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category );
+  void ParseEvents    ( ticpp::Element* elem_obj, PObjectInfo obj_info);
 
   /**
    * Importa una librería de componentes y lo asocia a cada clase.
    * @throw wxFBException If the library could not be imported.
    */
-  void ImportComponentLibrary( wxString libfile, shared_ptr< wxFBManager > manager );
+  void ImportComponentLibrary( wxString libfile, PwxFBManager manager );
 
   /**
    * Incluye la información heredada de los objetos de un paquete.
    * En la segunda pasada configura cada paquete con sus objetos base.
    */
-  void SetupPackage( const wxString& file, const wxString& libPath, shared_ptr< wxFBManager > manager );
+  void SetupPackage( const wxString& file, const wxString& libPath, PwxFBManager manager );
 
   /**
    * Determina si el tipo de objeto hay que incluirlo en la paleta de
@@ -186,20 +172,20 @@ class ObjectDatabase
 
   PObjectType GetObjectType(wxString name);
 
-  int CountChildrenWithSameType(shared_ptr<ObjectBase> parent,PObjectType type);
+  int CountChildrenWithSameType(PObjectBase parent,PObjectType type);
 
-  void SetDefaultLayoutProperties(shared_ptr<ObjectBase> obj);
+  void SetDefaultLayoutProperties(PObjectBase obj);
 
  public:
   ObjectDatabase();
   ~ObjectDatabase();
 
-  shared_ptr<ObjectBase> NewObject(shared_ptr<ObjectInfo> obj_info);
+  PObjectBase NewObject(PObjectInfo obj_info);
 
   /**
    * Obtiene la información de un objeto a partir del nombre de la clase.
    */
-  shared_ptr<ObjectInfo> GetObjectInfo(wxString class_name);
+  PObjectInfo GetObjectInfo(wxString class_name);
 
   /**
    * Configura la ruta donde se encuentran los ficheros con la descripción.
@@ -228,25 +214,25 @@ class ObjectDatabase
   /**
    * Find and load plugins from the plugins directory
    */
-  void LoadPlugins( shared_ptr< wxFBManager > manager );
+  void LoadPlugins( PwxFBManager manager );
 
   /**
    * Fabrica de objetos.
    * A partir del nombre de la clase se crea una nueva instancia de un objeto.
    */
-  shared_ptr<ObjectBase> CreateObject( std::string class_name, shared_ptr<ObjectBase> parent = shared_ptr<ObjectBase>());
+  PObjectBase CreateObject( std::string class_name, PObjectBase parent = PObjectBase());
 
   /**
    * Fábrica de objetos a partir de un objeto XML.
    * Este método se usará para cargar un proyecto almacenado.
    */
-  shared_ptr<ObjectBase> CreateObject(TiXmlElement *obj, shared_ptr<ObjectBase> parent = shared_ptr<ObjectBase>());
+  PObjectBase CreateObject(TiXmlElement *obj, PObjectBase parent = PObjectBase());
 
   /**
    * Crea un objeto como copia de otro.
    */
 
-  shared_ptr<ObjectBase> CopyObject(shared_ptr<ObjectBase> obj);
+  PObjectBase CopyObject(PObjectBase obj);
 
   /**
    * Obtiene un paquete de objetos.

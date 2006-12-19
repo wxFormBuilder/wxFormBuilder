@@ -35,54 +35,15 @@
 
 #include <iostream>
 #include <wx/string.h>
-#include <map>
-#include <vector>
-#include <set>
 #include <list>
-#include <boost/smart_ptr.hpp>
+
 #include "types.h"
 #include "ticpp.h"
 
 #include "wx/wx.h"
 #include <component.h>
 
-using namespace std;
-using namespace boost;
-
-class ObjectBase;
-class ObjectInfo;
-class Property;
-class PropertyInfo;
-class OptionList;
-class CodeInfo;
-class EventInfo;
-class Event;
-class PropertyCategory;
-
-// Let's go with a few typedefs for frequently used types,
-// please use it, code will be cleaner and easier to read.
-
-typedef shared_ptr<OptionList> POptionList;
-typedef shared_ptr<ObjectBase> PObjectBase;
-typedef weak_ptr<ObjectBase>   WPObjectBase;
-
-typedef shared_ptr<CodeInfo>     PCodeInfo;
-typedef shared_ptr<ObjectInfo>   PObjectInfo;
-typedef shared_ptr<Property>     PProperty;
-typedef shared_ptr<PropertyInfo> PPropertyInfo;
-typedef shared_ptr<EventInfo>    PEventInfo;
-typedef shared_ptr<Event>        PEvent;
-typedef shared_ptr<PropertyCategory> PPropertyCategory;
-
-typedef map<wxString, PPropertyInfo> PropertyInfoMap;
-typedef map<wxString, PObjectInfo>   ObjectInfoMap;
-typedef map<wxString, PEventInfo>    EventInfoMap;
-typedef map<wxString, PProperty>     PropertyMap;
-typedef map<wxString, PEvent>        EventMap;
-
-
-typedef vector<PObjectBase> ObjectBaseVector;
-typedef vector<PEvent>      EventVector;
+#include "utils/wxfbdefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +51,7 @@ class OptionList
 {
 private:
 
-	map< wxString, wxString > m_options;
+	std::map< wxString, wxString > m_options;
 
 public:
 
@@ -102,7 +63,7 @@ public:
 	{
 		return (unsigned int)m_options.size();
 	}
-	const map< wxString, wxString >& GetOptions()
+	const std::map< wxString, wxString >& GetOptions()
 	{
 		return m_options;
 	}
@@ -132,7 +93,7 @@ private:
 	wxString       m_name;
 	PropertyType m_type;
 	wxString       m_def_value;
-	shared_ptr<OptionList>  m_opt_list;
+	POptionList  m_opt_list;
 	std::list< PropertyChild > m_children; // Only used for parent properties
 	bool m_hidden; // Juan. Determina si la propiedad aparece o no en XRC
 	wxString		m_description;
@@ -140,14 +101,14 @@ private:
 public:
 
 	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
-		bool hidden, shared_ptr<OptionList> opt_list, const std::list< PropertyChild >& children ); //Juan
+		bool hidden, POptionList opt_list, const std::list< PropertyChild >& children ); //Juan
 
 	~PropertyInfo();
 
 	wxString       GetDefaultValue()        { return m_def_value;  }
 	PropertyType GetType()                { return m_type;       }
 	wxString       GetName()                { return m_name;       }
-	shared_ptr<OptionList>  GetOptionList ()         { return m_opt_list;   }
+	POptionList  GetOptionList ()         { return m_opt_list;   }
 	std::list< PropertyChild >* GetChildren(){ return &m_children; }
 	wxString		 GetDescription	()		  { return m_description;}
 	bool         IsHidden()               { return m_hidden; } // Juan
@@ -255,14 +216,14 @@ class PropertyCategory
 {
 private:
 	wxString m_name;
-	vector< wxString > m_properties;
-	vector< shared_ptr< PropertyCategory > > m_categories;
+	std::vector< wxString > m_properties;
+	std::vector< PPropertyCategory > m_categories;
 
 public:
 
 	PropertyCategory( wxString name ) : m_name( name ){}
 	void AddProperty( wxString name ){ m_properties.push_back( name ); }
-	void AddCategory( shared_ptr< PropertyCategory > category ){ m_categories.push_back( category ); }
+	void AddCategory( PPropertyCategory category ){ m_categories.push_back( category ); }
 	wxString GetName(){ return m_name; }
 	wxString GetPropertyName( size_t index )
 	{
@@ -276,7 +237,7 @@ public:
 		}
 	}
 
-	shared_ptr< PropertyCategory > GetCategory( size_t index )
+	PPropertyCategory GetCategory( size_t index )
 	{
 		if ( index < m_categories.size() )
 		{
@@ -284,7 +245,7 @@ public:
 		}
 		else
 		{
-			return shared_ptr< PropertyCategory >(  );
+			return PPropertyCategory();
 		}
 	}
 	size_t GetPropertyCount() { return m_properties.size(); }
@@ -298,7 +259,7 @@ namespace ticpp
 	class Element;
 }
 
-class ObjectBase : public IObject, public enable_shared_from_this<ObjectBase>
+class ObjectBase : public IObject, public boost::enable_shared_from_this<ObjectBase>
 {
 private:
 	wxString     m_class;  // class name
@@ -513,8 +474,8 @@ public:
 	/**
 	* Devuelve el descriptor del objeto.
 	*/
-	shared_ptr<ObjectInfo> GetObjectInfo() { return m_info; };
-	void SetObjectInfo(shared_ptr<ObjectInfo> info) { m_info = info; };
+	PObjectInfo GetObjectInfo() { return m_info; };
+	void SetObjectInfo(PObjectInfo info) { m_info = info; };
 
 	/**
 	* Devuelve la profundidad  del objeto en el arbol.
@@ -529,7 +490,7 @@ public:
 	/**
 	* Sobrecarga del operador inserción.
 	*/
-	friend ostream& operator << (ostream &s, PObjectBase obj);
+	friend std::ostream& operator << (std::ostream &s, PObjectBase obj);
 
 	/////////////////////////
 	// Implementación de la interfaz IObject para su uso dentro de los
@@ -557,7 +518,7 @@ public:
 class CodeInfo
 {
 private:
-	typedef map<wxString,wxString> TemplateMap;
+	typedef std::map<wxString,wxString> TemplateMap;
 	TemplateMap m_templates;
 public:
 	wxString GetTemplate(wxString name);
@@ -565,8 +526,6 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
-class ObjectPackage;
 
 /**
 * Información de objeto o MetaObjeto.
@@ -577,11 +536,11 @@ public:
 	/**
 	* Constructor.
 	*/
-	ObjectInfo(wxString class_name, PObjectType type, weak_ptr<ObjectPackage> package, bool startGroup = false );
+	ObjectInfo(wxString class_name, PObjectType type, WPObjectPackage package, bool startGroup = false );
 
 	virtual ~ObjectInfo() {};
 
-	shared_ptr< PropertyCategory > GetCategory(){ return m_category; }
+	PPropertyCategory GetCategory(){ return m_category; }
 
 	unsigned int GetPropertyCount() { return (unsigned int)m_properties.size(); }
 	unsigned int GetEventCount()    { return (unsigned int)m_events.size();     }
@@ -641,7 +600,7 @@ public:
 	/**
 	* Sobrecarga del operador inserción.
 	*/
-	friend ostream& operator << (ostream &s, shared_ptr<ObjectInfo> obj);
+	friend std::ostream& operator << (std::ostream &s, PObjectInfo obj);
 
 	// nos serán utiles para generar el nombre del objeto
 	unsigned int GetInstanceCount() { return m_numIns; }
@@ -651,7 +610,7 @@ public:
 	/**
 	* Añade la información de un objeto al conjunto de clases base.
 	*/
-	size_t AddBaseClass(shared_ptr<ObjectInfo> base)
+	size_t AddBaseClass(PObjectInfo base)
 	{
 		m_base.push_back(base);
 		return m_base.size() - 1;
@@ -662,7 +621,7 @@ public:
 	*/
 	bool IsSubclassOf(wxString classname);
 
-	shared_ptr<ObjectInfo> GetBaseClass(unsigned int idx);
+	PObjectInfo GetBaseClass(unsigned int idx);
 	unsigned int GetBaseClassCount();
 
 
@@ -673,10 +632,10 @@ public:
 	void SetSmallIconFile(wxBitmap icon) { m_smallIcon = icon; };
 	wxBitmap GetSmallIconFile() { return m_smallIcon; }
 
-	void AddCodeInfo(wxString lang, shared_ptr<CodeInfo> codeinfo);
-	shared_ptr<CodeInfo> GetCodeInfo(wxString lang);
+	void AddCodeInfo(wxString lang, PCodeInfo codeinfo);
+	PCodeInfo GetCodeInfo(wxString lang);
 
-	shared_ptr<ObjectPackage> GetPackage();
+	PObjectPackage GetPackage();
 
 	bool IsStartOfGroup() { return m_startGroup; }
 
@@ -690,23 +649,23 @@ private:
 	wxString m_class;         // nombre de la clase (tipo de objeto)
 
 	PObjectType m_type;     // tipo del objeto
-	weak_ptr<ObjectPackage> m_package; 	// Package that the object comes from
+	WPObjectPackage m_package; 	// Package that the object comes from
 
-	shared_ptr< PropertyCategory > m_category;
+	PPropertyCategory m_category;
 
 	wxBitmap m_icon;
 	wxBitmap m_smallIcon; // The icon for the property grid toolbar
 	bool m_startGroup; // Place a separator in the palette toolbar just before this widget
 
-	map< wxString, shared_ptr< CodeInfo > > m_codeTemp;  // plantillas de codigo K=language_name T=shared_ptr<CodeInfo>
+	std::map< wxString, PCodeInfo > m_codeTemp;  // plantillas de codigo K=language_name T=PCodeInfo
 
 	unsigned int m_numIns;  // número de instancias del objeto
 
-	map< wxString, PPropertyInfo > m_properties;
-	map< wxString, PEventInfo >    m_events;
+	std::map< wxString, PPropertyInfo > m_properties;
+	std::map< wxString, PEventInfo >    m_events;
 
-	vector< shared_ptr< ObjectInfo > > m_base; // base classes
-	map< size_t, map< wxString, wxString > > m_baseClassDefaultPropertyValues;
+	std::vector< PObjectInfo > m_base; // base classes
+	std::map< size_t, std::map< wxString, wxString > > m_baseClassDefaultPropertyValues;
 	IComponent* m_component;  // componente asociado a la clase los objetos del
 	// designer
 };

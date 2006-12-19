@@ -37,8 +37,6 @@
 #include <vector>
 #include <boost/smart_ptr.hpp>
 
-using namespace boost;
-
 class TCCodeWriter : public CodeWriter
 {
  private:
@@ -68,9 +66,6 @@ class FileCodeWriter : public CodeWriter
   FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false );
   void Clear();
 };
-
-
-typedef shared_ptr<TCCodeWriter> PTCCodeWriter;
 
 class CodeEditor : public wxPanel
 {

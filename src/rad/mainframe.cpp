@@ -44,6 +44,7 @@
 #include <wx/filename.h>
 
 #include <rad/appdata.h>
+#include "model/objectbase.h"
 
 #define ID_ABOUT         100
 #define ID_QUIT          101
@@ -447,7 +448,7 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 			xrc.SetObjectDatabase( AppData()->GetObjectDatabase() );
 			try
 			{
-				shared_ptr<ObjectBase> project = xrc.GetProject( &doc );
+				PObjectBase project = xrc.GetProject( &doc );
 				if ( project )
 				{
 					AppData()->MergeProject( project );
@@ -510,7 +511,7 @@ void MainFrame::OnClose( wxCloseEvent &event )
 void MainFrame::OnProjectLoaded( wxFBEvent& event )
 {
 	GetStatusBar()->SetStatusText( wxT( "Project Loaded!" ) );
-	shared_ptr< ObjectBase > project = AppData()->GetProjectData();
+	PObjectBase project = AppData()->GetProjectData();
 	if ( project )
 	{
 		wxString objDetails = wxString::Format( wxT("Name: %s | Class: %s"), project->GetPropertyAsString( wxT("name") ).c_str(), project->GetClassName().c_str() );
@@ -531,10 +532,10 @@ void MainFrame::OnObjectExpanded( wxFBObjectEvent& event )
 
 void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 {
-	shared_ptr<ObjectBase> obj = event.GetFBObject();
+	PObjectBase obj = event.GetFBObject();
 
 	wxString name;
-	shared_ptr<Property> prop( obj->GetProperty( wxT( "name" ) ) );
+	PProperty prop( obj->GetProperty( wxT( "name" ) ) );
 
 	if ( prop )
 		name = prop->GetValueAsString();
@@ -560,7 +561,7 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 	}
 	else
 		message = wxT("Impossible to create the object. Did you forget to add a sizer?");
-  
+
 	GetStatusBar()->SetStatusText(message);
 	UpdateFrame();
 }
@@ -576,7 +577,7 @@ void MainFrame::OnObjectRemoved( wxFBObjectEvent& event )
 
 void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 {
-	shared_ptr< Property > prop = event.GetFBProperty();
+	PProperty prop = event.GetFBProperty();
 	if ( prop )
 	{
 		if ( prop->GetObject() == AppData()->GetSelectedObject() )
@@ -604,7 +605,7 @@ void MainFrame::OnEventHandlerModified( wxFBEventHandlerEvent& event )
 	message.Printf(wxT("Event handler '%s' of object '%s' modified."),
 	event.GetFBEventHandler()->GetName().c_str(),
 	event.GetFBEventHandler()->GetObject()->GetPropertyAsString(wxT("name")).c_str());
-	
+
 	GetStatusBar()->SetStatusText(message);
 	UpdateFrame();
 }
@@ -622,7 +623,7 @@ void MainFrame::OnCodeGeneration( wxFBEvent& event )
 
 void MainFrame::OnProjectRefresh( wxFBEvent& event )
 {
-	shared_ptr< ObjectBase > project = AppData()->GetProjectData();
+	PObjectBase project = AppData()->GetProjectData();
 	if ( project )
 	{
 		wxString objDetails = wxString::Format( wxT("Name: %s | Class: %s"), project->GetPropertyAsString( wxT("name") ).c_str(), project->GetClassName().c_str() );

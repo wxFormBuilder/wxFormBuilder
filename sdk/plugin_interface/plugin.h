@@ -57,15 +57,15 @@ class ComponentLibrary : public IComponentLibrary
     wxString name, syn;
   } ASynonymous;
 
-  vector<AComponent>  m_components;
-  vector<AMacro>      m_macros;
-  typedef map<wxString,wxString> SynMap;
+  std::vector<AComponent>  m_components;
+  std::vector<AMacro>      m_macros;
+  typedef std::map<wxString,wxString> SynMap;
   SynMap m_synMap;
 
  public:
   virtual ~ComponentLibrary()
   {
-	vector< AComponent >::reverse_iterator component;
+	std::vector< AComponent >::reverse_iterator component;
 	for ( component = m_components.rbegin(); component != m_components.rend(); ++component )
 	{
 		delete component->component;

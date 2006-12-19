@@ -25,8 +25,6 @@
 
 #include <wx/string.h>
 
-using namespace std;
-
 namespace StringUtils
 {
   wxString IntToStr(int num);

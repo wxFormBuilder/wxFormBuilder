@@ -32,18 +32,15 @@
 #include <map>
 #include "model/types.h"
 
-
-using namespace std;
-
 // macros para la conversión entre wxString <-> wxString
 #define _WXSTR(x)  TypeConv::_StringToWxString(x)
 #define _STDSTR(x) TypeConv::_WxStringToString(x)
 
 namespace TypeConv
 {
-  wxString _StringToWxString(const string &str);
+  wxString _StringToWxString(const std::string &str);
   wxString _StringToWxString(const char *str);
-  string _WxStringToString(const wxString &str);
+  std::string _WxStringToString(const wxString &str);
 
   wxPoint StringToPoint (const wxString &str);
   bool    StringToPoint(const wxString &str, wxPoint *point);
@@ -103,10 +100,10 @@ typedef MacroDictionary* PMacroDictionary;
 class MacroDictionary
 {
  private:
-  typedef map<wxString,int> MacroMap;
+  typedef std::map<wxString,int> MacroMap;
   static PMacroDictionary s_instance;
 
-  typedef map<wxString,wxString> SynMap;
+  typedef std::map<wxString,wxString> SynMap;
 
   MacroMap m_map;
   SynMap m_synMap;

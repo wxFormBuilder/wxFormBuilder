@@ -32,7 +32,7 @@
 #include <wx/propgrid/propdev.h>
 #include <wx/propgrid/advprops.h>
 #include <wx/propgrid/manager.h>
-#include <model/objectbase.h>
+#include "utils/wxfbdefs.h"
 
 // -----------------------------------------------------------------------
 
@@ -84,10 +84,10 @@ class ObjectInspector : public wxPanel
   int m_style;
 
   int StringToBits(const wxString& strVal, wxPGChoices& constants);
-  void CreateCategory( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, map< wxString, shared_ptr< Property > >& map );
-  void AddProperties( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, shared_ptr< PropertyCategory > category, map< wxString, shared_ptr< Property > >& map );
+  void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, PProperty >& map );
+  void AddProperties( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, std::map< wxString, PProperty >& map );
   void AddEvents(PObjectBase obj, PObjectInfo obj_info );
-  wxPGProperty* GetProperty(shared_ptr<Property> prop);
+  wxPGProperty* GetProperty(PProperty prop);
 
   void Create(bool force = false);
 
@@ -114,7 +114,7 @@ class ObjectInspector : public wxPanel
 class NewBitmapEventDataHolder
 {
 public:
-	shared_ptr<Property> m_prop;
+	PProperty m_prop;
 	wxPropertyGrid* m_grid;
 	wxString m_string;
 

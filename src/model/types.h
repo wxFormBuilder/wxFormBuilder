@@ -33,13 +33,10 @@
 
 #include "wx/wx.h"
 
-using namespace std;
-using namespace boost;
-
 class ObjectType;
 
-typedef shared_ptr<ObjectType> PObjectType;
-typedef weak_ptr<ObjectType> WPObjectType;
+typedef boost::shared_ptr<ObjectType> PObjectType;
+typedef boost::weak_ptr<ObjectType> WPObjectType;
 
 /**
  * Representa el tipo de objeto.
@@ -102,7 +99,7 @@ class ObjectType
    * @note vamos a usar smart-pointers de tipo "weak" ya que puede haber muchas
    *       referencias cruzadas.
    */
-  typedef map<WPObjectType, int> ChildTypeMap;
+  typedef std::map<WPObjectType, int> ChildTypeMap;
 
   int m_id;        /**< identificador numérico del tipo de objeto */
   wxString m_name;   /**< cadena de texto asociado al tipo */
@@ -168,7 +165,7 @@ typedef enum
 class IntList
 {
   private:
-    typedef vector<int> IntVector;
+    typedef std::vector<int> IntVector;
     IntVector m_ints;
 
   public:
