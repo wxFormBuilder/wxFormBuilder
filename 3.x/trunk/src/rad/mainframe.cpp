@@ -136,6 +136,7 @@ BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_FB_PROJECT_REFRESH( MainFrame::OnProjectRefresh )
 	EVT_FB_PROJECT_SAVED( MainFrame::OnProjectSaved )
 	EVT_FB_PROPERTY_MODIFIED( MainFrame::OnPropertyModified )
+	EVT_FB_EVENT_HANDLER_MODIFIED( MainFrame::OnEventHandlerModified )
 
 END_EVENT_TABLE()
 
@@ -549,13 +550,27 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
 void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 {
-	GetStatusBar()->SetStatusText( wxT( "Object Created!" ) );
+	wxString message;
+
+	if (event.GetFBObject())
+	{
+		message.Printf(wxT("Object '%s' of class '%s' created."),
+		event.GetFBObject()->GetPropertyAsString(wxT("name")).c_str(),
+		event.GetFBObject()->GetClassName().c_str());
+	}
+	else
+		message = wxT("Impossible to create the object. Did you forget to add a sizer?");
+  
+	GetStatusBar()->SetStatusText(message);
 	UpdateFrame();
 }
 
 void MainFrame::OnObjectRemoved( wxFBObjectEvent& event )
 {
-	GetStatusBar()->SetStatusText( wxT( "Object Removed!" ) );
+	wxString message;
+	message.Printf(wxT("Object '%s' removed."),
+	event.GetFBObject()->GetPropertyAsString(wxT("name")).c_str());
+	GetStatusBar()->SetStatusText(message);
 	UpdateFrame();
 }
 
@@ -581,6 +596,17 @@ void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 			UpdateFrame();
 		}
 	}
+}
+
+void MainFrame::OnEventHandlerModified( wxFBEventHandlerEvent& event )
+{
+	wxString message;
+	message.Printf(wxT("Event handler '%s' of object '%s' modified."),
+	event.GetFBEventHandler()->GetName().c_str(),
+	event.GetFBEventHandler()->GetObject()->GetPropertyAsString(wxT("name")).c_str());
+	
+	GetStatusBar()->SetStatusText(message);
+	UpdateFrame();
 }
 
 void MainFrame::OnCodeGeneration( wxFBEvent& event )

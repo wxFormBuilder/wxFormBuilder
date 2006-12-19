@@ -34,6 +34,7 @@
 class wxFBEvent;
 class wxFBObjectEvent;
 class wxFBPropertyEvent;
+class wxFBEventHandlerEvent;
 
 class CppPanel;
 class XrcPanel;
@@ -126,6 +127,7 @@ class MainFrame : public wxFrame
   void OnObjectCreated( wxFBObjectEvent& event );
   void OnObjectRemoved( wxFBObjectEvent& event );
   void OnPropertyModified( wxFBPropertyEvent& event );
+  void OnEventHandlerModified( wxFBEventHandlerEvent& event );
   void OnCodeGeneration( wxFBEvent& event );
   void OnProjectRefresh( wxFBEvent& event );
 

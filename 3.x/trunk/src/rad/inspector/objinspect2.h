@@ -71,21 +71,28 @@ enum {
 class ObjectInspector : public wxPanel
 {
  private:
-  typedef std::map< wxPGProperty*, shared_ptr< Property > > ObjInspectorMap;
-  ObjInspectorMap m_propmap;
+  typedef std::map< wxPGProperty*, PProperty> ObjInspectorPropertyMap;
+  typedef std::map< wxPGProperty*, PEvent> ObjInspectorEventMap;
 
-  shared_ptr<ObjectBase> m_currentSel;
-  wxPropertyGridManager *m_pg;
+  ObjInspectorPropertyMap m_propMap;
+  ObjInspectorEventMap m_eventMap;
+
+  PObjectBase m_currentSel;
+  wxFlatNotebook* m_nb;
+  wxPropertyGridManager* m_pg;
+  wxPropertyGridManager* m_eg;
   int m_style;
 
   int StringToBits(const wxString& strVal, wxPGChoices& constants);
   void CreateCategory( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, map< wxString, shared_ptr< Property > >& map );
   void AddProperties( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, shared_ptr< PropertyCategory > category, map< wxString, shared_ptr< Property > >& map );
+  void AddEvents(PObjectBase obj, PObjectInfo obj_info );
   wxPGProperty* GetProperty(shared_ptr<Property> prop);
 
   void Create(bool force = false);
 
   void OnPropertyGridChange(wxPropertyGridEvent& event);
+  void OnEventGridChange(wxPropertyGridEvent& event);
   void OnNewBitmapProperty( wxCommandEvent& event );
 
  protected:
@@ -98,7 +105,7 @@ class ObjectInspector : public wxPanel
   void OnProjectRefresh( wxFBEvent& event );
   void OnPropertyModified( wxFBPropertyEvent& event );
 
-  void CreatePropertyGridManager();
+  wxPropertyGridManager* CreatePropertyGridManager(wxWindow *parent, wxWindowID id);
   void SavePosition();
 
   DECLARE_EVENT_TABLE()

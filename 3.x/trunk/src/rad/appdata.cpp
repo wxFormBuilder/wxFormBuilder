@@ -72,10 +72,10 @@ class InsertObjectCmd : public Command
 {
 private:
 	ApplicationData *m_data;
-	shared_ptr<ObjectBase> m_parent;
-	shared_ptr<ObjectBase> m_object;
+	PObjectBase m_parent;
+	PObjectBase m_object;
 	int m_pos;
-	shared_ptr<ObjectBase> m_oldSelected;
+	PObjectBase m_oldSelected;
 
 
 protected:
@@ -83,7 +83,7 @@ protected:
 	void DoRestore();
 
 public:
-	InsertObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> object, shared_ptr<ObjectBase> parent, int pos = -1);
+	InsertObjectCmd(ApplicationData *data, PObjectBase object, PObjectBase parent, int pos = -1);
 };
 
 /**
@@ -93,17 +93,17 @@ class RemoveObjectCmd : public Command
 {
 private:
 	ApplicationData *m_data;
-	shared_ptr<ObjectBase> m_parent;
-	shared_ptr<ObjectBase> m_object;
+	PObjectBase m_parent;
+	PObjectBase m_object;
 	int m_oldPos;
-	shared_ptr<ObjectBase> m_oldSelected;
+	PObjectBase m_oldSelected;
 
 protected:
 	void DoExecute();
 	void DoRestore();
 
 public:
-	RemoveObjectCmd(ApplicationData *data,shared_ptr<ObjectBase> object);
+	RemoveObjectCmd(ApplicationData *data,PObjectBase object);
 };
 
 /**
@@ -120,7 +120,24 @@ protected:
 	void DoRestore();
 
 public:
-	ModifyPropertyCmd(shared_ptr<Property> prop, wxString value);
+	ModifyPropertyCmd(PProperty prop, wxString value);
+};
+
+/**
+* Command for modifying an event
+*/
+class ModifyEventHandlerCmd : public Command
+{
+private:
+	PEvent m_event;
+	wxString m_oldValue, m_newValue;
+
+protected:
+	void DoExecute();
+	void DoRestore();
+
+public:
+	ModifyEventHandlerCmd(PEvent event, wxString value);
 };
 
 /**
@@ -129,7 +146,7 @@ public:
 class ShiftChildCmd : public Command
 {
 private:
-	shared_ptr<ObjectBase> m_object;
+	PObjectBase m_object;
 	int m_oldPos, m_newPos;
 
 protected:
@@ -137,7 +154,7 @@ protected:
 	void DoRestore();
 
 public:
-	ShiftChildCmd(shared_ptr<ObjectBase> object, int pos);
+	ShiftChildCmd(PObjectBase object, int pos);
 
 };
 
@@ -150,18 +167,18 @@ class CutObjectCmd : public Command
 private:
 	// necesario para consultar/modificar el objeto "clipboard"
 	ApplicationData *m_data;
-	//shared_ptr<ObjectBase> m_clipboard;
-	shared_ptr<ObjectBase> m_parent;
-	shared_ptr<ObjectBase> m_object;
+	//PObjectBase m_clipboard;
+	PObjectBase m_parent;
+	PObjectBase m_object;
 	int m_oldPos;
-	shared_ptr<ObjectBase> m_oldSelected;
+	PObjectBase m_oldSelected;
 
 protected:
 	void DoExecute();
 	void DoRestore();
 
 public:
-	CutObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> object);
+	CutObjectCmd(ApplicationData *data, PObjectBase object);
 };
 
 /**
@@ -170,15 +187,15 @@ public:
 class ReparentObjectCmd : public Command
 {
 private:
-	shared_ptr<ObjectBase> m_sizeritem;
-	shared_ptr<ObjectBase> m_sizer;
-	shared_ptr<ObjectBase> m_oldSizer;
+	PObjectBase m_sizeritem;
+	PObjectBase m_sizer;
+	PObjectBase m_oldSizer;
 protected:
 	void DoExecute();
 	void DoRestore();
 
 public:
-	ReparentObjectCmd (shared_ptr<ObjectBase> sizeritem, shared_ptr<ObjectBase> sizer);
+	ReparentObjectCmd (PObjectBase sizeritem, PObjectBase sizer);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -218,13 +235,13 @@ void InsertObjectCmd::DoExecute()
 void InsertObjectCmd::DoRestore()
 {
 	m_parent->RemoveChild(m_object);
-	m_object->SetParent(shared_ptr<ObjectBase>());
+	m_object->SetParent(PObjectBase());
 	m_data->SelectObject(m_oldSelected);
 }
 
 //-----------------------------------------------------------------------------
 
-RemoveObjectCmd::RemoveObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> object)
+RemoveObjectCmd::RemoveObjectCmd(ApplicationData *data, PObjectBase object)
 {
 	m_data = data;
 	m_object = object;
@@ -236,7 +253,7 @@ RemoveObjectCmd::RemoveObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> o
 void RemoveObjectCmd::DoExecute()
 {
 	m_parent->RemoveChild(m_object);
-	m_object->SetParent(shared_ptr<ObjectBase>());
+	m_object->SetParent(PObjectBase());
 }
 
 void RemoveObjectCmd::DoRestore()
@@ -269,10 +286,28 @@ void ModifyPropertyCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-ShiftChildCmd::ShiftChildCmd(shared_ptr<ObjectBase> object, int pos)
+ModifyEventHandlerCmd::ModifyEventHandlerCmd(PEvent event, wxString value)
+: m_event(event), m_newValue(value)
+{
+	m_oldValue = event->GetValue();
+}
+
+void ModifyEventHandlerCmd::DoExecute()
+{
+	m_event->SetValue(m_newValue);
+}
+
+void ModifyEventHandlerCmd::DoRestore()
+{
+	m_event->SetValue(m_oldValue);
+}
+
+//-----------------------------------------------------------------------------
+
+ShiftChildCmd::ShiftChildCmd(PObjectBase object, int pos)
 {
 	m_object = object;
-	shared_ptr<ObjectBase> parent = object->GetParent();
+	PObjectBase parent = object->GetParent();
 
 	assert(parent);
 
@@ -284,7 +319,7 @@ void ShiftChildCmd::DoExecute()
 {
 	if (m_oldPos != m_newPos)
 	{
-		shared_ptr<ObjectBase> parent (m_object->GetParent());
+		PObjectBase parent (m_object->GetParent());
 		parent->ChangeChildPosition(m_object,m_newPos);
 	}
 }
@@ -293,14 +328,14 @@ void ShiftChildCmd::DoRestore()
 {
 	if (m_oldPos != m_newPos)
 	{
-		shared_ptr<ObjectBase> parent (m_object->GetParent());
+		PObjectBase parent (m_object->GetParent());
 		parent->ChangeChildPosition(m_object,m_oldPos);
 	}
 }
 
 //-----------------------------------------------------------------------------
 
-CutObjectCmd::CutObjectCmd(ApplicationData *data, shared_ptr<ObjectBase> object)
+CutObjectCmd::CutObjectCmd(ApplicationData *data, PObjectBase object)
 {
 	m_data = data;
 	m_object = object;
@@ -316,7 +351,7 @@ void CutObjectCmd::DoExecute()
 
 	m_data->SetClipboardObject(m_object);
 	m_parent->RemoveChild(m_object);
-	m_object->SetParent(shared_ptr<ObjectBase>());
+	m_object->SetParent(PObjectBase());
 }
 
 void CutObjectCmd::DoRestore()
@@ -328,13 +363,13 @@ void CutObjectCmd::DoRestore()
 
 	// restauramos el clipboard
 	//m_data->SetClipboardObject(m_clipboard);
-	m_data->SetClipboardObject(shared_ptr<ObjectBase>());
+	m_data->SetClipboardObject(PObjectBase());
 	m_data->SelectObject(m_oldSelected);
 }
 
 //-----------------------------------------------------------------------------
 
-ReparentObjectCmd ::ReparentObjectCmd (shared_ptr<ObjectBase> sizeritem, shared_ptr<ObjectBase> sizer)
+ReparentObjectCmd ::ReparentObjectCmd (PObjectBase sizeritem, PObjectBase sizer)
 {
 	m_sizeritem = sizeritem;
 	m_sizer = sizer;
@@ -409,12 +444,12 @@ shared_ptr< wxFBManager > ApplicationData::GetManager()
 	return m_manager;
 }
 
-shared_ptr<ObjectBase> ApplicationData::GetSelectedObject()
+PObjectBase ApplicationData::GetSelectedObject()
 {
 	return m_selObj;
 }
 
-shared_ptr<ObjectBase> ApplicationData::GetSelectedForm()
+PObjectBase ApplicationData::GetSelectedForm()
 {
 	if (m_selObj->GetObjectTypeName() == wxT("form") )
 		return m_selObj;
@@ -423,12 +458,12 @@ shared_ptr<ObjectBase> ApplicationData::GetSelectedForm()
 }
 
 
-shared_ptr<ObjectBase> ApplicationData::GetProjectData()
+PObjectBase ApplicationData::GetProjectData()
 {
 	return m_project;
 }
 
-void ApplicationData::BuildNameSet(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> top, set<wxString> &name_set)
+void ApplicationData::BuildNameSet(PObjectBase obj, PObjectBase top, set<wxString> &name_set)
 {
 	if (obj != top)
 	{
@@ -441,7 +476,7 @@ void ApplicationData::BuildNameSet(shared_ptr<ObjectBase> obj, shared_ptr<Object
 		BuildNameSet(obj, top->GetChild(i), name_set);
 }
 
-void ApplicationData::ResolveNameConflict(shared_ptr<ObjectBase> obj)
+void ApplicationData::ResolveNameConflict(PObjectBase obj)
 {
 	while (obj && obj->GetObjectInfo()->GetObjectType()->IsItem())
 	{
@@ -459,7 +494,7 @@ void ApplicationData::ResolveNameConflict(shared_ptr<ObjectBase> obj)
 	wxString originalName = nameProp->GetValue();
 
 	// el nombre no puede estar repetido dentro del mismo form
-	shared_ptr<ObjectBase> top = obj->FindNearAncestor( wxT("form") );
+	PObjectBase top = obj->FindNearAncestor( wxT("form") );
 	if (!top)
 		top = m_project; // el objeto es un form.
 
@@ -483,7 +518,7 @@ void ApplicationData::ResolveNameConflict(shared_ptr<ObjectBase> obj)
 	nameProp->SetValue( name );
 }
 
-void ApplicationData::ResolveSubtreeNameConflicts(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> topObj)
+void ApplicationData::ResolveSubtreeNameConflicts(PObjectBase obj, PObjectBase topObj)
 {
 	if (!topObj)
 	{
@@ -509,13 +544,13 @@ void ApplicationData::ResolveSubtreeNameConflicts(shared_ptr<ObjectBase> obj, sh
 		ResolveSubtreeNameConflicts(obj->GetChild(i), topObj);
 }
 
-int ApplicationData::CalcPositionOfInsertion(shared_ptr<ObjectBase> selected,shared_ptr<ObjectBase> parent)
+int ApplicationData::CalcPositionOfInsertion(PObjectBase selected,PObjectBase parent)
 {
 	int pos = -1;
 
 	if (parent && selected)
 	{
-		shared_ptr<ObjectBase> parentSelected = selected->GetParent();
+		PObjectBase parentSelected = selected->GetParent();
 		while (parentSelected && parentSelected != parent)
 		{
 			selected = parentSelected;
@@ -529,7 +564,7 @@ int ApplicationData::CalcPositionOfInsertion(shared_ptr<ObjectBase> selected,sha
 	return pos;
 }
 
-void ApplicationData::RemoveEmptyItems(shared_ptr<ObjectBase> obj)
+void ApplicationData::RemoveEmptyItems(PObjectBase obj)
 {
 	if (!obj->GetObjectInfo()->GetObjectType()->IsItem())
 	{
@@ -541,12 +576,12 @@ void ApplicationData::RemoveEmptyItems(shared_ptr<ObjectBase> obj)
 			emptyItem = false;
 			for (unsigned int i=0; !emptyItem && i<obj->GetChildCount(); i++)
 			{
-				shared_ptr<ObjectBase> child = obj->GetChild(i);
+				PObjectBase child = obj->GetChild(i);
 				if (child->GetObjectInfo()->GetObjectType()->IsItem() &&
 					child->GetChildCount() == 0)
 				{
 					obj->RemoveChild(child); // borramos el item
-					child->SetParent(shared_ptr<ObjectBase>());
+					child->SetParent(PObjectBase());
 
 					emptyItem = true;        // volvemos a recorrer
 					wxString msg;
@@ -561,9 +596,9 @@ void ApplicationData::RemoveEmptyItems(shared_ptr<ObjectBase> obj)
 		RemoveEmptyItems(obj->GetChild(i));
 }
 
-shared_ptr< ObjectBase >  ApplicationData::SearchSizerInto(shared_ptr<ObjectBase> obj)
+shared_ptr< ObjectBase >  ApplicationData::SearchSizerInto(PObjectBase obj)
 {
-	shared_ptr<ObjectBase> theSizer;
+	PObjectBase theSizer;
 
 	if (obj->GetObjectTypeName() == wxT("sizer") )
 		theSizer = obj;
@@ -585,7 +620,7 @@ void ApplicationData::ExpandObject( shared_ptr<ObjectBase> obj, bool expand )
 	NotifyObjectExpanded( obj );
 }
 
-void ApplicationData::SelectObject( shared_ptr<ObjectBase> obj, bool force )
+void ApplicationData::SelectObject(shared_ptr<ObjectBase> obj, bool force /*= false*/)
 {
 	if ( ( obj == m_selObj ) && !force )
 	{
@@ -661,22 +696,22 @@ void ApplicationData::CreateObject(wxString name)
 	}
 }
 
-void ApplicationData::RemoveObject(shared_ptr<ObjectBase> obj)
+void ApplicationData::RemoveObject(PObjectBase obj)
 {
 	DoRemoveObject(obj,false);
 }
 
-void ApplicationData::CutObject(shared_ptr<ObjectBase> obj)
+void ApplicationData::CutObject(PObjectBase obj)
 {
 	DoRemoveObject(obj,true);
 }
 
-void ApplicationData::DoRemoveObject(shared_ptr<ObjectBase> obj, bool cutObject)
+void ApplicationData::DoRemoveObject(PObjectBase obj, bool cutObject)
 {
 	// Nota:
 	//  cuando se va a eliminar un objeto es importante que no se dejen
 	//  nodos ficticios ("items") en las hojas del árbol.
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase parent = obj->GetParent();
 	if (parent)
 	{
 		while (parent && parent->GetObjectInfo()->GetObjectType()->IsItem())
@@ -711,7 +746,7 @@ void ApplicationData::DoRemoveObject(shared_ptr<ObjectBase> obj, bool cutObject)
 	CheckProjectTree(m_project);
 }
 
-void ApplicationData::CopyObject(shared_ptr<ObjectBase> obj)
+void ApplicationData::CopyObject(PObjectBase obj)
 {
 	m_copyOnPaste = true;
 
@@ -723,7 +758,7 @@ void ApplicationData::CopyObject(shared_ptr<ObjectBase> obj)
 	CheckProjectTree(m_project);
 }
 
-void ApplicationData::PasteObject(shared_ptr<ObjectBase> parent)
+void ApplicationData::PasteObject(PObjectBase parent)
 {
 	try
 	{
@@ -831,7 +866,7 @@ void ApplicationData::PasteObject(shared_ptr<ObjectBase> parent)
 	}
 }
 
-void ApplicationData::InsertObject(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> parent)
+void ApplicationData::InsertObject(PObjectBase obj, PObjectBase parent)
 {
 	// FIXME! comprobar obj se puede colgar de parent
 	//  if (parent->GetObjectInfo()->GetObjectType()->FindChildType(
@@ -843,7 +878,7 @@ void ApplicationData::InsertObject(shared_ptr<ObjectBase> obj, shared_ptr<Object
 	//  }
 }
 
-void ApplicationData::MergeProject(shared_ptr<ObjectBase> project)
+void ApplicationData::MergeProject(PObjectBase project)
 {
 	// FIXME! comprobar obj se puede colgar de parent
 	for (unsigned int i=0; i<project->GetChildCount(); i++)
@@ -851,7 +886,7 @@ void ApplicationData::MergeProject(shared_ptr<ObjectBase> project)
 		//m_project->AddChild(project->GetChild(i));
 		//project->GetChild(i)->SetParent(m_project);
 
-		shared_ptr<ObjectBase> child = project->GetChild(i);
+		PObjectBase child = project->GetChild(i);
 		RemoveEmptyItems(child);
 
 		InsertObject(child,m_project);
@@ -861,7 +896,7 @@ void ApplicationData::MergeProject(shared_ptr<ObjectBase> project)
 
 void ApplicationData::ModifyProperty(shared_ptr<Property> prop, wxString str)
 {
-	shared_ptr<ObjectBase> object = prop->GetObject();
+	PObjectBase object = prop->GetObject();
 
 	if ( str != prop->GetValue())
 	{
@@ -869,6 +904,19 @@ void ApplicationData::ModifyProperty(shared_ptr<Property> prop, wxString str)
 		Execute(command); //m_cmdProc.Execute(command);
 
 		NotifyPropertyModified(prop);
+	}
+}
+
+void ApplicationData::ModifyEventHandler(PEvent evt, wxString value)
+{
+  PObjectBase object = evt->GetObject();
+
+	if ( value != evt->GetValue())
+	{
+		PCommand command( new ModifyEventHandlerCmd( evt, value ) );
+		Execute(command); //m_cmdProc.Execute(command);
+
+		NotifyEventHandlerModified(evt);
 	}
 }
 
@@ -1033,7 +1081,7 @@ bool ApplicationData::LoadProject(const wxString &file)
 
 		if (proj && proj->GetObjectTypeName() == wxT("project") )
 		{
-			shared_ptr<ObjectBase> old_proj = m_project;
+			PObjectBase old_proj = m_project;
 			//m_project = shared_dynamic_cast<ProjectObject>(proj);
 			m_project = proj;
 			m_selObj = m_project;
@@ -1366,11 +1414,11 @@ void ApplicationData::GenerateCode( bool panelOnly )
 	NotifyCodeGeneration( panelOnly );
 }
 
-void ApplicationData::MovePosition(shared_ptr<ObjectBase> obj, bool right, unsigned int num)
+void ApplicationData::MovePosition(PObjectBase obj, bool right, unsigned int num)
 {
-	shared_ptr<ObjectBase> noItemObj = obj;
+	PObjectBase noItemObj = obj;
 
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase parent = obj->GetParent();
 	if (parent)
 	{
 		// Si el objeto está incluido dentro de un item hay que desplazar
@@ -1401,7 +1449,7 @@ void ApplicationData::MovePosition(shared_ptr<ObjectBase> obj, bool right, unsig
 	}
 }
 
-void ApplicationData::MoveHierarchy(shared_ptr<ObjectBase> obj, bool up)
+void ApplicationData::MoveHierarchy(PObjectBase obj, bool up)
 {
 	shared_ptr<ObjectBase> sizeritem;
 
@@ -1477,15 +1525,15 @@ void ApplicationData::Redo()
 }
 
 
-void ApplicationData::ToggleExpandLayout(shared_ptr<ObjectBase> obj)
+void ApplicationData::ToggleExpandLayout(PObjectBase obj)
 {
 	if (!obj)
 	{
 		return;
 	}
 
-	shared_ptr<ObjectBase> object;
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase object;
+	PObjectBase parent = obj->GetParent();
 	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
 		object = obj;
@@ -1513,15 +1561,15 @@ void ApplicationData::ToggleExpandLayout(shared_ptr<ObjectBase> obj)
 	ModifyProperty(propFlag,value);
 }
 
-void ApplicationData::ToggleStretchLayout(shared_ptr<ObjectBase> obj)
+void ApplicationData::ToggleStretchLayout(PObjectBase obj)
 {
 	if (!obj)
 	{
 		return;
 	}
 
-	shared_ptr<ObjectBase> object;
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase object;
+	PObjectBase parent = obj->GetParent();
 	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
 		object = obj;
@@ -1543,12 +1591,12 @@ void ApplicationData::ToggleStretchLayout(shared_ptr<ObjectBase> obj)
 	ModifyProperty(propOption, value);
 }
 
-void ApplicationData::CheckProjectTree(shared_ptr<ObjectBase> obj)
+void ApplicationData::CheckProjectTree(PObjectBase obj)
 {
 	assert(obj);
 	for (unsigned int i=0; i< obj->GetChildCount(); i++)
 	{
-		shared_ptr<ObjectBase> child = obj->GetChild(i);
+		PObjectBase child = obj->GetChild(i);
 		if (child->GetParent() != obj)
 			wxLogError(wxString::Format(wxT("Parent of object \'%s\' is wrong!"),child->GetPropertyAsString(wxT("name")).c_str()));
 
@@ -1560,7 +1608,7 @@ bool ApplicationData::GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, i
 {
 	if (obj)
 	{
-		shared_ptr<ObjectBase> parent = obj->GetParent();
+		PObjectBase parent = obj->GetParent();
 		if ( obj->GetObjectTypeName() == wxT("spacer") )
 		{
 			shared_ptr<Property> propOption = obj->GetProperty( wxT("proportion") );
@@ -1619,15 +1667,15 @@ bool ApplicationData::GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, i
 	return false;
 }
 
-void ApplicationData::ChangeAlignment (shared_ptr<ObjectBase> obj, int align, bool vertical)
+void ApplicationData::ChangeAlignment (PObjectBase obj, int align, bool vertical)
 {
 	if (!obj)
 	{
 		return;
 	}
 
-	shared_ptr<ObjectBase> object;
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase object;
+	PObjectBase parent = obj->GetParent();
 	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
 		object = obj;
@@ -1682,15 +1730,15 @@ void ApplicationData::ChangeAlignment (shared_ptr<ObjectBase> obj, int align, bo
 	ModifyProperty(propFlag,value);
 }
 
-void ApplicationData::ToggleBorderFlag(shared_ptr<ObjectBase> obj, int border)
+void ApplicationData::ToggleBorderFlag(PObjectBase obj, int border)
 {
 	if (!obj)
 	{
 		return;
 	}
 
-	shared_ptr<ObjectBase> borderObject;
-	shared_ptr<ObjectBase> parent = obj->GetParent();
+	PObjectBase borderObject;
+	PObjectBase parent = obj->GetParent();
 	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
 		borderObject = obj;
@@ -1731,9 +1779,9 @@ void ApplicationData::ToggleBorderFlag(shared_ptr<ObjectBase> obj, int border)
 	ModifyProperty(propFlag, value);
 }
 
-void ApplicationData::CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj)
+void ApplicationData::CreateBoxSizerWithObject(PObjectBase obj)
 {
-	shared_ptr<ObjectBase> sizer, sizeritem;
+	PObjectBase sizer, sizeritem;
 
 	if ( obj->GetObjectTypeName() == wxT("spacer") )
 	{
@@ -1769,7 +1817,7 @@ void ApplicationData::CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj)
 
 void ApplicationData::ShowXrcPreview()
 {
-    shared_ptr<ObjectBase> form = GetSelectedForm();
+    PObjectBase form = GetSelectedForm();
     if ( form == NULL )
     {
     	wxMessageBox( wxT("Please select a form and try again."), wxT("No Form Selected"), wxICON_ERROR );
@@ -1825,7 +1873,7 @@ void ApplicationData::ShowXrcPreview()
 
 bool ApplicationData::CanPasteObject()
 {
-	shared_ptr<ObjectBase> obj = GetSelectedObject();
+	PObjectBase obj = GetSelectedObject();
 	if (obj && obj->GetObjectTypeName() != wxT("project") )
 		return (m_clipboard != NULL);
 
@@ -1834,7 +1882,7 @@ bool ApplicationData::CanPasteObject()
 
 bool ApplicationData::CanCopyObject()
 {
-	shared_ptr<ObjectBase> obj = GetSelectedObject();
+	PObjectBase obj = GetSelectedObject();
 	if (obj && obj->GetObjectTypeName() != wxT("project") )
 		return true;
 
@@ -1917,21 +1965,27 @@ void ApplicationData::NotifyObjectSelected(shared_ptr<ObjectBase> obj)
   NotifyEvent( event );
 }
 
-void ApplicationData::NotifyObjectCreated(shared_ptr<ObjectBase> obj)
+void ApplicationData::NotifyObjectCreated(PObjectBase obj)
 {
   wxFBObjectEvent event( wxEVT_FB_OBJECT_CREATED, obj);
   NotifyEvent( event );
 }
 
-void ApplicationData::NotifyObjectRemoved(shared_ptr<ObjectBase> obj)
+void ApplicationData::NotifyObjectRemoved(PObjectBase obj)
 {
   wxFBObjectEvent event( wxEVT_FB_OBJECT_REMOVED, obj);
   NotifyEvent( event );
 }
 
-void ApplicationData::NotifyPropertyModified(shared_ptr<Property> prop)
+void ApplicationData::NotifyPropertyModified(PProperty prop)
 {
   wxFBPropertyEvent event( wxEVT_FB_PROPERTY_MODIFIED, prop);
+  NotifyEvent( event );
+}
+
+void ApplicationData::NotifyEventHandlerModified(PEvent evtHandler)
+{
+  wxFBEventHandlerEvent event( wxEVT_FB_EVENT_HANDLER_MODIFIED, evtHandler);
   NotifyEvent( event );
 }
 
@@ -1947,7 +2001,7 @@ void ApplicationData::NotifyCodeGeneration( bool panelOnly )
 
 void ApplicationData::NotifyProjectRefresh()
 {
-  wxFBEvent event( wxEVT_FB_PROJECT_REFRESH, -1 );
+  wxFBEvent event( wxEVT_FB_PROJECT_REFRESH );
   NotifyEvent( event );
 }
 
@@ -2135,4 +2189,5 @@ bool ApplicationData::CreateServer( const wxString& name )
 	wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
 	return false;
 }
+
 

@@ -34,6 +34,9 @@
 #include <wx/tokenzr.h>
 #include <wx/config.h>
 
+#define WXFB_PROPERTY_GRID 1000
+#define WXFB_EVENT_GRID    1001
+
 // -----------------------------------------------------------------------
 // fbColourProperty
 // -----------------------------------------------------------------------
@@ -380,7 +383,9 @@ void wxBitmapWithResourcePropertyClass::ChildChanged( wxPGProperty* p )
 DEFINE_EVENT_TYPE( wxEVT_NEW_BITMAP_PROPERTY )
 
 BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
-	EVT_PG_CHANGED(-1, ObjectInspector::OnPropertyGridChange)
+	EVT_PG_CHANGED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridChange)
+	EVT_PG_CHANGED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridChange)
+
 	EVT_COMMAND( -1, wxEVT_NEW_BITMAP_PROPERTY, ObjectInspector::OnNewBitmapProperty )
 
 	EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
@@ -394,9 +399,21 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 	m_currentSel = shared_ptr< ObjectBase >();
+
+	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST );
+
+	// the colour of property grid description looks ugly if we don't set this
+	// colour
+	m_nb->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
+
+	m_pg = CreatePropertyGridManager(m_nb, WXFB_PROPERTY_GRID);
+	m_eg = CreatePropertyGridManager(m_nb, WXFB_EVENT_GRID);
+
+	m_nb->AddPage(m_pg,wxT("Properties"),false);
+	m_nb->AddPage(m_eg,wxT("Events"),false);
+
 	wxBoxSizer* topSizer = new wxBoxSizer( wxVERTICAL );
-	CreatePropertyGridManager();
-	topSizer->Add( m_pg, 1, wxALL | wxEXPAND, 0 );
+	topSizer->Add( m_nb, 1, wxALL | wxEXPAND, 0 );
 	SetSizer( topSizer );
 }
 
@@ -433,12 +450,24 @@ void ObjectInspector::Create( bool force )
 		if ( pageCount > 0 )
 		{
 			for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex )
-			{
 				m_pg->RemovePage( pageIndex );
 			}
+
+		// now we do the same thing for event grid...
+		pageCount = (int)m_eg->GetPageCount();
+		if ( pageCount > 0)
+		{
+		  for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex)
+		    m_eg->RemovePage( pageIndex );
 		}
 
-		m_propmap.clear();
+		// ... and we create a default page
+		m_eg->AddPage( wxT("default"));
+		m_eg->SelectPage(wxT("default"));
+		m_eg->AppendCategory(sel_obj->GetClassName() + wxT(" Events"));
+
+		m_propMap.clear();
+		m_eventMap.clear();
 
 		shared_ptr<ObjectInfo> obj_desc = sel_obj->GetObjectInfo();
 		if (obj_desc)
@@ -460,6 +489,10 @@ void ObjectInspector::Create( bool force )
 			{
 				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummy);
 			}
+
+			// we create the events for the object
+			AddEvents( sel_obj, obj_desc);
+
 
 			// Select previously selected page, or first page
 			int pageIndex = m_pg->GetPageByName( pageName );
@@ -702,20 +735,19 @@ void ObjectInspector::CreateCategory(const wxString& name, shared_ptr<ObjectBase
 	m_pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
 }
 
-void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBase > obj, shared_ptr< ObjectInfo > obj_info, shared_ptr< PropertyCategory > category, map< wxString, shared_ptr< Property > >& properties )
+void ObjectInspector::AddProperties( const wxString& name, PObjectBase obj,
+  PObjectInfo obj_info, PPropertyCategory category, PropertyMap &properties )
 {
 	size_t propCount = category->GetPropertyCount();
 	for ( size_t i = 0; i < propCount; i++ )
 	{
 		wxString propName = category->GetPropertyName( i );
-		shared_ptr< Property > prop = obj->GetProperty( propName );
+		PProperty prop = obj->GetProperty( propName );
 
 		if ( !prop )
-		{
 			continue;
-		}
 
-		shared_ptr< PropertyInfo > propInfo = prop->GetPropertyInfo();
+		PPropertyInfo propInfo = prop->GetPropertyInfo();
 
 		// we do not want to duplicate inherited properties
 		if ( properties.find( propName ) == properties.end() )
@@ -733,8 +765,8 @@ void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBas
 					m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
 			}
 
-			properties.insert( map< wxString, shared_ptr< Property > >::value_type( propName, prop ) );
-			m_propmap.insert( ObjInspectorMap::value_type( id.GetPropertyPtr(), prop ) );
+			properties.insert( PropertyMap::value_type( propName, prop ) );
+			m_propMap.insert( ObjInspectorPropertyMap::value_type( id.GetPropertyPtr(), prop ) );
 		}
 	}
 
@@ -747,21 +779,42 @@ void ObjectInspector::AddProperties( const wxString& name, shared_ptr< ObjectBas
 	}
 }
 
+void ObjectInspector::AddEvents(PObjectBase obj, PObjectInfo obj_info )
+{
+  size_t eventCount = obj_info->GetEventCount();
+	for ( size_t i = 0; i < eventCount; i++ )
+	{
+		PEventInfo eventInfo = obj_info->GetEventInfo(i);
+		PEvent     event     = obj->GetEvent(eventInfo->GetName());
+
+		if (!event)
+		  continue;
+
+		wxPGProperty *pgProp = wxStringProperty(eventInfo->GetName(), wxPG_LABEL,
+		   event->GetValue());
+
+		wxPGId id = m_eg->Append( pgProp);
+			m_eg->SetPropertyHelpString( id, eventInfo->GetDescription() );
+
+    m_eventMap.insert( ObjInspectorEventMap::value_type( id.GetPropertyPtr(), event) );
+	}
+}
+
 void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 {
 	wxPGProperty* propPtr = event.GetPropertyPtr();
-	ObjInspectorMap::iterator it = m_propmap.find( propPtr );
+	ObjInspectorPropertyMap::iterator it = m_propMap.find( propPtr );
 
-	if ( m_propmap.end() == it )
+	if ( m_propMap.end() == it )
 	{
 		// Could be a child property
 		propPtr = propPtr->GetParent();
-		it = m_propmap.find( propPtr );
+		it = m_propMap.find( propPtr );
 	}
 
-	if ( it != m_propmap.end() )
+	if ( it != m_propMap.end() )
 	{
-		shared_ptr<Property> prop = it->second;
+		PProperty prop = it->second;
 		switch ( prop->GetType() )
 		{
 			case PT_TEXT:
@@ -873,10 +926,20 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 				break;
 			}
 
-
 			default:
 				AppData()->ModifyProperty( prop, event.GetPropertyValueAsString() );
 		}
+	}
+}
+
+void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
+{
+	ObjInspectorEventMap::iterator it = m_eventMap.find( event.GetPropertyPtr() );
+
+	if ( it != m_eventMap.end() )
+	{
+		PEvent evt = it->second;
+		AppData()->ModifyEventHandler( evt, event.GetPropertyValueAsString() );
 	}
 }
 
@@ -886,7 +949,7 @@ void ObjectInspector::OnNewBitmapProperty( wxCommandEvent& event )
 	auto_ptr< NewBitmapEventDataHolder > data ( (NewBitmapEventDataHolder*)event.GetClientData() );
 	data->m_grid->Freeze();
 	wxPGId newId = data->m_grid->ReplaceProperty( event.GetString(), wxBitmapWithResourceProperty( event.GetString(), wxPG_LABEL, data->m_string ) );
-	m_propmap[ newId.GetPropertyPtr() ] = data->m_prop;
+	m_propMap[ newId.GetPropertyPtr() ] = data->m_prop;
 	data->m_grid->Expand( newId );
 	data->m_grid->Thaw();
 }
@@ -972,7 +1035,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 	m_pg->Refresh();
 }
 
-void ObjectInspector::CreatePropertyGridManager()
+wxPropertyGridManager* ObjectInspector::CreatePropertyGridManager(wxWindow *parent, wxWindowID id)
 {
 	int pgStyle;
 	int defaultDescBoxHeight;
@@ -1004,7 +1067,10 @@ void ObjectInspector::CreatePropertyGridManager()
 		descBoxHeight = defaultDescBoxHeight;
 	}
 
-	m_pg = new wxPropertyGridManager( this, -1, wxDefaultPosition, wxDefaultSize, pgStyle );
-	m_pg->SetDescBoxHeight( descBoxHeight );
-	m_pg->SetExtraStyle( wxPG_EX_NATIVE_DOUBLE_BUFFERING );
+	wxPropertyGridManager* pg;
+	pg = new wxPropertyGridManager( parent, id, wxDefaultPosition, wxDefaultSize, pgStyle );
+	pg->SetDescBoxHeight( descBoxHeight );
+	pg->SetExtraStyle( wxPG_EX_NATIVE_DOUBLE_BUFFERING );
+
+	return pg;
 }

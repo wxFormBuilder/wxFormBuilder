@@ -52,10 +52,10 @@ private:
 	wxString m_basePath;
 
 public:
-	CppTemplateParser( shared_ptr<ObjectBase> obj, wxString _template);
+	CppTemplateParser( PObjectBase obj, wxString _template);
 
 	// redefinidas para C++
-	shared_ptr<TemplateParser> CreateParser( shared_ptr<ObjectBase> obj, wxString _template);
+	shared_ptr<TemplateParser> CreateParser( PObjectBase obj, wxString _template);
 	wxString RootWxParentToCode();
 	//wxString PropertyToCode( shared_ptr<Property> property);
 	wxString ValueToCode( PropertyType type, wxString value);
@@ -96,19 +96,19 @@ private:
 	/**
 	* Dado un objeto y el nombre de una plantilla, obtiene el código.
 	*/
-	wxString GetCode( shared_ptr<ObjectBase> obj, wxString name);
+	wxString GetCode( PObjectBase obj, wxString name);
 
 	/**
 	* Guarda el conjunto de clases de objetos del proyecto para generar
 	* los includes.
 	*/
-	void FindDependencies( shared_ptr< ObjectBase > obj, set< shared_ptr< ObjectInfo > >& info_set );
+	void FindDependencies( PObjectBase obj, set< shared_ptr< ObjectInfo > >& info_set );
 
 	/**
 	* Guarda el conjunto de "includes" que hay que generar para las propiedades
 	* PT_XPM_BITMAP.
 	*/
-	void FindXpmProperties( shared_ptr<ObjectBase> obj, set<wxString> &set);
+	void FindXpmProperties( PObjectBase obj, set<wxString> &set);
 
 	/**
 	* Guarda todos las propiedades de objetos de tipo "macro" para generar
@@ -117,21 +117,31 @@ private:
 	void FindMacros( shared_ptr<ObjectBase> obj, vector<wxString>* macros );
 
 	/**
+	 * Looks for "non-null" event handlers (PEvent) and collects it into a vector.
+	 */
+	void FindEventHandlers(PObjectBase obj, EventVector &events);
+
+	/**
 	* Genera la declaración de clases en el fichero de cabecera.
 	*/
-  void GenClassDeclaration( shared_ptr<ObjectBase> class_obj, bool use_enum);
+  void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const EventVector &events);
+
+	/**
+   * Generates the event table.
+   */
+  void GenEventTable( PObjectBase class_obj, const EventVector &events);
 
 	/**
 	* Función recursiva para la declaración de atributos, usada dentro
 	* de GenClassDeclaration.
 	*/
-	void GenAttributeDeclaration( shared_ptr<ObjectBase> obj, Permission perm);
+	void GenAttributeDeclaration( PObjectBase obj, Permission perm);
 
 	/**
 	* Genera la sección de '#include' fichero.
 	*/
-	void GenIncludes( shared_ptr<ObjectBase> project, set<wxString>* includes);
-	void GenObjectIncludes( shared_ptr<ObjectBase> project, set<wxString>* includes);
+	void GenIncludes( PObjectBase project, set<wxString>* includes);
+	void GenObjectIncludes( PObjectBase project, set<wxString>* includes);
 	void GenBaseIncludes( shared_ptr< ObjectInfo > info, shared_ptr< ObjectBase > obj, set< wxString >* includes );
 
 	/**
@@ -143,42 +153,45 @@ private:
 	/**
 	* Genera la sección de '#include' para las propiedades XPM.
 	*/
-	void GenXpmIncludes( shared_ptr<ObjectBase> project);
+	void GenXpmIncludes( PObjectBase project);
 
 	/**
 	* Genera la sección de '#define' macro.
 	*/
-	void GenDefines( shared_ptr<ObjectBase> project);
+	void GenDefines( PObjectBase project);
 
 	/**
 	* Generate a enum with wxWindow identifiers.
 	*/
-	void GenEnumIds( shared_ptr<ObjectBase> class_obj);
+	void GenEnumIds( PObjectBase class_obj);
 
 	/**
 	* Generate the constructor of a classs
 	*/
-	void GenConstructor( shared_ptr<ObjectBase> class_obj );
+	void GenConstructor( PObjectBase class_obj );
 
 	/**
 	* Realiza la construcción de los objetos, configurando las propiedades del
 	* objeto y las de layout.
 	* El algoritmo es similar al de generación de la vista previa en el designer.
 	*/
-	void GenConstruction( shared_ptr<ObjectBase> obj, bool is_widget);
+	void GenConstruction( PObjectBase obj, bool is_widget);
 
 	/**
 	* Configura las propiedades del objeto, tanto las propias como las heredadas.
 	* Se le pasa la información de la clase porque recursivamente, realizará
 	* la configuración en las super-clases.
 	*/
-	void GenSettings( shared_ptr<ObjectInfo> info, shared_ptr<ObjectBase> obj);
+	void GenSettings( shared_ptr<ObjectInfo> info, PObjectBase obj);
 
 	/**
 	* Añade un control a una toolbar. Hay que pasarle el objectinfo de tipo
 	* wxWindow, donde se encuentra la plantilla, y el objectbase del control
 	*/
-	void GenAddToolbar( shared_ptr<ObjectInfo> info, shared_ptr<ObjectBase> obj );
+	void GenAddToolbar( shared_ptr<ObjectInfo> info, PObjectBase obj );
+
+	void GenPrivateEventHandlers(const EventVector &events);
+  void GenVirtualEventHandlers(const EventVector &events);
 
 public:
 	/**
@@ -232,7 +245,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( shared_ptr<ObjectBase> project );
+	bool GenerateCode( PObjectBase project );
 };
 
 

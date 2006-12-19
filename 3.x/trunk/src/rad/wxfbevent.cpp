@@ -34,11 +34,11 @@ DEFINE_EVENT_TYPE( wxEVT_FB_OBJECT_REMOVED )
 DEFINE_EVENT_TYPE( wxEVT_FB_PROPERTY_MODIFIED )
 DEFINE_EVENT_TYPE( wxEVT_FB_PROJECT_REFRESH )
 DEFINE_EVENT_TYPE( wxEVT_FB_CODE_GENERATION )
+DEFINE_EVENT_TYPE( wxEVT_FB_EVENT_HANDLER_MODIFIED )
 
-wxFBEvent::wxFBEvent( wxEventType commandType, int priority )
+wxFBEvent::wxFBEvent( wxEventType commandType )
 :
-wxEvent( 0, commandType ),
-m_priority( priority )
+wxEvent( 0, commandType )
 {
 	//ctor
 }
@@ -68,11 +68,6 @@ wxString wxFBEvent::GetEventName()
 	CASE( wxEVT_FB_CODE_GENERATION )
 
 	return wxT( "Unknown Type" );
-}
-
-bool wxFBEvent::operator < ( const wxFBEvent& right ) const
-{
-	return this->m_priority < right.m_priority;
 }
 
 wxFBEvent::~wxFBEvent()
@@ -112,4 +107,21 @@ m_object( event.m_object )
 wxEvent* wxFBObjectEvent::Clone() const
 {
 	return new wxFBObjectEvent( *this );
+}
+
+wxFBEventHandlerEvent::wxFBEventHandlerEvent(wxEventType commandType, PEvent event)
+ : wxFBEvent(commandType), m_event(event)
+{
+}
+
+wxFBEventHandlerEvent::wxFBEventHandlerEvent( const wxFBEventHandlerEvent& event )
+:
+wxFBEvent( event ),
+m_event( event.m_event )
+{
+}
+
+wxEvent* wxFBEventHandlerEvent::Clone() const
+{
+	return new wxFBEventHandlerEvent( *this );
 }

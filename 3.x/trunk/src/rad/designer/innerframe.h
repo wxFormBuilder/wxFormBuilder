@@ -28,14 +28,11 @@ private:
   TitleBar *m_titleBar;
   wxPanel *m_frameContent;
 
-protected:
-  //void AddChild(wxWindow *child);
 public:
   wxInnerFrame(wxWindow *parent, wxWindowID id,
                  const wxPoint &pos = wxDefaultPosition,
                  const wxSize &size = wxDefaultSize,
                  long style = 0);
-
 
   wxPanel *GetFrameContentPanel() { return m_frameContent; }
   void OnMouseMotion(wxMouseEvent& e);
@@ -63,4 +60,5 @@ END_DECLARE_EVENT_TYPES()
 
 
 #endif //__INNER_FRAME__
+
 

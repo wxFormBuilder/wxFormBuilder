@@ -26,6 +26,7 @@
 #ifndef __APP_DATA__
 #define __APP_DATA__
 
+#include "model/objectbase.h"
 #include "model/database.h"
 #include "rad/cmdproc.h"
 #include <set>
@@ -48,7 +49,7 @@ class AppServer;
 
 #define AppData()         	(ApplicationData::Get())
 #define AppDataCreate(path) (ApplicationData::Get(path))
-#define AppDataInit()		(ApplicationData::Initialize())
+#define AppDataInit()	      (ApplicationData::Initialize())
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
 // This class is a singleton class.
@@ -57,14 +58,13 @@ class ApplicationData
  private:
   static ApplicationData *s_instance;
 
-
   wxString m_rootDir;       // directorio raíz (mismo que el ejecutable)
   bool m_modFlag;           // flag de proyecto modificado
   PObjectDatabase m_objDb;  // Base de datos de objetos
-  shared_ptr<ObjectBase> m_project;    // Proyecto
-  shared_ptr<ObjectBase> m_selObj;     // Objeto seleccionado
+  PObjectBase m_project;    // Proyecto
+  PObjectBase m_selObj;     // Objeto seleccionado
 
-  shared_ptr<ObjectBase> m_clipboard;
+  PObjectBase m_clipboard;
   bool m_copyOnPaste; // flag que indica si hay que copiar el objeto al pegar
 
   // Procesador de comandos Undo/Redo
@@ -92,30 +92,31 @@ class ApplicationData
   void NotifyObjectCreated(shared_ptr<ObjectBase> obj);
   void NotifyObjectRemoved(shared_ptr<ObjectBase> obj);
   void NotifyPropertyModified(shared_ptr<Property> prop);
+  void NotifyEventHandlerModified(PEvent evtHandler);
   void NotifyProjectRefresh();
   void NotifyCodeGeneration( bool panelOnly = false );
 
   /**
    * Comprueba las referencias cruzadas de todos los nodos del árbol
    */
-  void CheckProjectTree(shared_ptr<ObjectBase> obj);
+  void CheckProjectTree(PObjectBase obj);
 
   /**
    * Resuelve un posible conflicto de nombres.
    * @note el objeto a comprobar debe estar insertado en proyecto, por tanto
    *       no es válida para arboles "flotantes".
    */
-  void ResolveNameConflict(shared_ptr<ObjectBase> obj);
+  void ResolveNameConflict(PObjectBase obj);
 
   /**
    * Rename all objects that have the same name than any object of a subtree.
    */
-  void ResolveSubtreeNameConflicts(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> topObj = shared_ptr<ObjectBase>());
+  void ResolveSubtreeNameConflicts(PObjectBase obj, PObjectBase topObj = PObjectBase());
 
   /**
    * Rutina auxiliar de ResolveNameConflict
    */
-  void BuildNameSet(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> top, set<wxString> &name_set);
+  void BuildNameSet(PObjectBase obj, PObjectBase top, set<wxString> &name_set);
 
   /**
    * Calcula la posición donde deberá ser insertado el objeto.
@@ -132,7 +133,7 @@ class ApplicationData
    * @param selected objeto "seleccionado".
    * @return posición de insercción (-1 si no se puede insertar).
    */
-  int CalcPositionOfInsertion(shared_ptr<ObjectBase> selected,shared_ptr<ObjectBase> parent);
+  int CalcPositionOfInsertion(PObjectBase selected,PObjectBase parent);
 
 
   /**
@@ -141,19 +142,19 @@ class ApplicationData
    * Esta rutina se utiliza cuando el árbol que se carga de un fichero
    * no está bien formado, o la importación no ha sido correcta.
    */
-   void RemoveEmptyItems(shared_ptr<ObjectBase> obj);
+   void RemoveEmptyItems(PObjectBase obj);
 
    /**
     * Eliminar un objeto.
     */
-   void DoRemoveObject(shared_ptr<ObjectBase> object, bool cutObject);
+   void DoRemoveObject(PObjectBase object, bool cutObject);
 
    void Execute(PCommand cmd);
 
    /**
     * Search a size in the hierarchy of an object
     */
-   shared_ptr<ObjectBase> SearchSizerInto(shared_ptr<ObjectBase> obj);
+   PObjectBase SearchSizerInto(PObjectBase obj);
 
 
 	/**
@@ -221,29 +222,30 @@ public:
   // Object will not be selected if it already is selected, unless force = true
   void SelectObject( shared_ptr<ObjectBase> obj, bool force = false );
   void CreateObject(wxString name);
-  void RemoveObject(shared_ptr<ObjectBase> obj);
-  void CutObject(shared_ptr<ObjectBase> obj);
-  void CopyObject(shared_ptr<ObjectBase> obj);
-  void PasteObject(shared_ptr<ObjectBase> parent);
-  void InsertObject(shared_ptr<ObjectBase> obj, shared_ptr<ObjectBase> parent);
-  void MergeProject(shared_ptr<ObjectBase> project);
-  void ModifyProperty(shared_ptr<Property> prop, wxString value);
+  void RemoveObject(PObjectBase obj);
+  void CutObject(PObjectBase obj);
+  void CopyObject(PObjectBase obj);
+  void PasteObject(PObjectBase parent);
+  void InsertObject(PObjectBase obj, PObjectBase parent);
+  void MergeProject(PObjectBase project);
+  void ModifyProperty(PProperty prop, wxString value);
+  void ModifyEventHandler(PEvent evt, wxString value);
   void GenerateCode( bool projectOnly = false );
-  void MovePosition(shared_ptr<ObjectBase>, bool right, unsigned int num = 1);
-  void MoveHierarchy( shared_ptr<ObjectBase> obj, bool up);
+  void MovePosition(PObjectBase, bool right, unsigned int num = 1);
+  void MoveHierarchy( PObjectBase obj, bool up);
   void Undo();
   void Redo();
-  void ToggleExpandLayout(shared_ptr<ObjectBase> obj);
-  void ToggleStretchLayout(shared_ptr<ObjectBase> obj);
-  void ChangeAlignment (shared_ptr<ObjectBase> obj, int align, bool vertical);
-  void ToggleBorderFlag(shared_ptr<ObjectBase> obj, int border);
-  void CreateBoxSizerWithObject(shared_ptr<ObjectBase> obj);
+  void ToggleExpandLayout(PObjectBase obj);
+  void ToggleStretchLayout(PObjectBase obj);
+  void ChangeAlignment (PObjectBase obj, int align, bool vertical);
+  void ToggleBorderFlag(PObjectBase obj, int border);
+  void CreateBoxSizerWithObject(PObjectBase obj);
   void ShowXrcPreview();
 
   // Servicios para los observadores
-  shared_ptr<ObjectBase> GetSelectedObject();
-  shared_ptr<ObjectBase> GetProjectData();
-  shared_ptr<ObjectBase> GetSelectedForm();
+  PObjectBase GetSelectedObject();
+  PObjectBase GetProjectData();
+  PObjectBase GetSelectedForm();
   bool CanUndo() { return m_cmdProc.CanUndo(); }
   bool CanRedo() { return m_cmdProc.CanRedo(); }
   bool GetLayoutSettings(shared_ptr<ObjectBase> obj, int *flag, int *option,int *border, int* orient);
@@ -262,8 +264,8 @@ public:
 
 
   // Servicios específicos, no definidos en DataObservable
-  void        SetClipboardObject(shared_ptr<ObjectBase> obj) { m_clipboard = obj; }
-  shared_ptr<ObjectBase> GetClipboardObject()                { return m_clipboard; }
+  void        SetClipboardObject(PObjectBase obj) { m_clipboard = obj; }
+  PObjectBase GetClipboardObject()                { return m_clipboard; }
 
   wxString GetProjectFileName() { return m_projectFile; }
 
