@@ -128,7 +128,6 @@ class VisualEditor : public wxScrolledWindow
   void PreventOnSelected( bool prevent = true );
   void PreventOnModified( bool prevent = true );
 
-  void Setup();
   void UpdateVirtualSize();
 
   shared_ptr< ObjectBase > GetObjectBase( wxObject* wxobject );

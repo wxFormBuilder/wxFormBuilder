@@ -47,6 +47,8 @@
 #define DESCRIPTION_TAG "help"
 #define PROPERTY_TAG "property"
 #define CHILD_TAG "child"
+#define EVENT_TAG "event"
+#define EVENT_CLASS_TAG "class"
 #define CATEGORY_TAG "category"
 #define OBJECT_TAG "object"
 #define CLASS_TAG "class"
@@ -66,7 +68,7 @@ ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
 	m_icon = icon;
 }
 
-shared_ptr<ObjectInfo> ObjectPackage::GetObjectInfo(unsigned int idx)
+PObjectInfo ObjectPackage::GetObjectInfo(unsigned int idx)
 {
 	assert (idx < m_objs.size());
 	return m_objs[idx];
@@ -87,10 +89,10 @@ ObjectDatabase::~ObjectDatabase()
 	// destruir todos los objetos
 }
 
-shared_ptr< ObjectInfo > ObjectDatabase::GetObjectInfo(wxString class_name)
+PObjectInfo ObjectDatabase::GetObjectInfo(wxString class_name)
 {
-	shared_ptr< ObjectInfo > info;
-	map< wxString, shared_ptr< ObjectInfo > >::iterator it = m_objs.find( class_name );
+	PObjectInfo info;
+	ObjectInfoMap::iterator it = m_objs.find( class_name );
 
 	if ( it != m_objs.end() )
 	{
@@ -112,20 +114,22 @@ PObjectPackage ObjectDatabase::GetPackage(unsigned int idx)
 * @todo La herencia de propiedades ha de ser de forma recursiva.
 */
 
-shared_ptr<ObjectBase> ObjectDatabase::NewObject(shared_ptr<ObjectInfo> obj_info)
+PObjectBase ObjectDatabase::NewObject(PObjectInfo obj_info)
 {
-	shared_ptr<ObjectBase> object;
+	PObjectBase object;
 
 	// Llagados aquí el objeto se crea seguro...
-	object = shared_ptr<ObjectBase>(new ObjectBase(obj_info->GetClassName()));
+	object = PObjectBase(new ObjectBase(obj_info->GetClassName()));
 	object->SetObjectTypeName(obj_info->GetObjectTypeName()); // *FIXME*
 
 	object->SetObjectInfo(obj_info);
 
-	shared_ptr<PropertyInfo> prop_info;
-	shared_ptr<ObjectInfo> class_info = obj_info;
+	PPropertyInfo prop_info;
+	PEventInfo    event_info;
+	PObjectInfo   class_info = obj_info;
 
 	unsigned int base = 0;
+
 	while (class_info)
 	{
 		unsigned int i;
@@ -133,7 +137,7 @@ shared_ptr<ObjectBase> ObjectDatabase::NewObject(shared_ptr<ObjectInfo> obj_info
 		{
 			prop_info = class_info->GetPropertyInfo(i);
 
-			shared_ptr<Property> property(new Property(prop_info, object));
+			PProperty property(new Property(prop_info, object));
 
 			// Set the default value, either from the property info, or an override from this class
 			wxString defaultValue = prop_info->GetDefaultValue();
@@ -154,11 +158,20 @@ shared_ptr<ObjectBase> ObjectDatabase::NewObject(shared_ptr<ObjectInfo> obj_info
 			// Otra cosa importante, es que el orden en que se insertan
 			// las propiedades, de abajo-arriba, esto permite que se pueda redefir
 			// alguna propiedad.
-			object->AddProperty (prop_info->GetName(), property);
+			object->AddProperty (property);
+		}
+
+		for (i=0; i < class_info->GetEventCount(); i++)
+		{
+		  event_info = class_info->GetEventInfo(i);
+		  PEvent event(new Event(event_info,object));
+		  // notice that for event there isn't a default value on its creation
+		  // because there is not handler at the moment
+		  object->AddEvent(event);
 		}
 
 		class_info = ( base < obj_info->GetBaseClassCount() ?
-			obj_info->GetBaseClass(base++) : shared_ptr<ObjectInfo>());
+			obj_info->GetBaseClass(base++) : PObjectInfo());
 	}
 
 	// si el objeto tiene la propiedad name (reservada para el nombre del
@@ -167,7 +180,7 @@ shared_ptr<ObjectBase> ObjectDatabase::NewObject(shared_ptr<ObjectInfo> obj_info
 	obj_info->IncrementInstanceCount();
 
 	unsigned int ins = obj_info->GetInstanceCount();
-	shared_ptr<Property> pname = object->GetProperty( wxT(NAME_TAG) );
+	PProperty pname = object->GetProperty( wxT(NAME_TAG) );
 	if (pname)
 		pname->SetValue(pname->GetValue() + StringUtils::IntToStr(ins));
 
@@ -175,7 +188,7 @@ shared_ptr<ObjectBase> ObjectDatabase::NewObject(shared_ptr<ObjectInfo> obj_info
 }
 
 
-int ObjectDatabase::CountChildrenWithSameType(shared_ptr<ObjectBase> parent,PObjectType type)
+int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent,PObjectType type)
 {
 	unsigned int count = 0;
 	unsigned int numChildren = parent->GetChildCount();
@@ -204,10 +217,10 @@ el máximo definido. El objeto no se crea si supera el máximo permitido.
 * Nota: quizá sea conveniente que el método cree el objeto sin enlazarlo
 *       en el árbol, para facilitar el undo-redo.
 */
-shared_ptr<ObjectBase> ObjectDatabase::CreateObject( std::string classname, shared_ptr<ObjectBase> parent)
+PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase parent)
 {
-	shared_ptr<ObjectBase> object;
-	shared_ptr<ObjectInfo> objInfo = GetObjectInfo( _WXSTR(classname) );
+	PObjectBase object;
+	PObjectInfo objInfo = GetObjectInfo( _WXSTR(classname) );
 
 	if (!objInfo)
 	{
@@ -234,7 +247,7 @@ shared_ptr<ObjectBase> ObjectDatabase::CreateObject( std::string classname, shar
 			(objType->GetName() == wxT("statusbar") ||
 			objType->GetName() == wxT("menubar") ||
 			objType->GetName() == wxT("toolbar") ))
-			return shared_ptr<ObjectBase>(); // tipo no válido
+			return PObjectBase(); // tipo no válido
 
 		if (max != 0) // tipo válido
 		{
@@ -267,10 +280,10 @@ shared_ptr<ObjectBase> ObjectDatabase::CreateObject( std::string classname, shar
 					if (max < 0 || CountChildrenWithSameType(parent, childType) < max)
 					{
 						// No hay problemas para crear el item debajo de parent
-						shared_ptr<ObjectBase> item = NewObject(GetObjectInfo(childType->GetName()));
+						PObjectBase item = NewObject(GetObjectInfo(childType->GetName()));
 
-						//shared_ptr<ObjectBase> obj = CreateObject(classname,item);
-						shared_ptr<ObjectBase> obj = NewObject(objInfo);
+						//PObjectBase obj = CreateObject(classname,item);
+						PObjectBase obj = NewObject(objInfo);
 
 						// la siguiente condición debe cumplirse siempre
 						// ya que un item debe siempre contener a otro objeto
@@ -313,13 +326,13 @@ shared_ptr<ObjectBase> ObjectDatabase::CreateObject( std::string classname, shar
 	return object;
 }
 
-shared_ptr<ObjectBase> ObjectDatabase::CopyObject(shared_ptr<ObjectBase> obj)
+PObjectBase ObjectDatabase::CopyObject(PObjectBase obj)
 {
 	assert(obj);
 
-	shared_ptr<ObjectInfo> objInfo = obj->GetObjectInfo();
+	PObjectInfo objInfo = obj->GetObjectInfo();
 
-	shared_ptr<ObjectBase> copyObj = NewObject(objInfo); // creamos la copia
+	PObjectBase copyObj = NewObject(objInfo); // creamos la copia
 	assert(copyObj);
 
 	// copiamos las propiedades
@@ -327,21 +340,30 @@ shared_ptr<ObjectBase> ObjectDatabase::CopyObject(shared_ptr<ObjectBase> obj)
 	unsigned int count = obj->GetPropertyCount();
 	for (i = 0; i < count; i++)
 	{
-		shared_ptr<Property> objProp = obj->GetProperty(i);
+		PProperty objProp = obj->GetProperty(i);
 		assert(objProp);
 
-		shared_ptr<Property> copyProp = copyObj->GetProperty(objProp->GetName());
+		PProperty copyProp = copyObj->GetProperty(objProp->GetName());
 		assert(copyProp);
 
 		wxString propValue = objProp->GetValue();
 		copyProp->SetValue(propValue);
 	}
 
+	// ...and the event handlers
+	count = obj->GetEventCount();
+	for (i = 0; i < count; i++)
+	{
+	  PEvent event = obj->GetEvent(i);
+	  PEvent copyEvent = copyObj->GetEvent(event->GetName());
+	  copyEvent->SetValue(event->GetValue());
+	}
+
 	// creamos recursivamente los hijos
 	count = obj->GetChildCount();
 	for (i = 0; i<count; i++)
 	{
-		shared_ptr<ObjectBase> childCopy = CopyObject(obj->GetChild(i));
+		PObjectBase childCopy = CopyObject(obj->GetChild(i));
 		copyObj->AddChild(childCopy);
 		childCopy->SetParent(copyObj);
 	}
@@ -349,7 +371,7 @@ shared_ptr<ObjectBase> ObjectDatabase::CopyObject(shared_ptr<ObjectBase> obj)
 	return copyObj;
 }
 
-void ObjectDatabase::SetDefaultLayoutProperties(shared_ptr<ObjectBase> sizeritem)
+void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 {
 	assert(sizeritem->GetObjectTypeName() == wxT("sizeritem"));
 
@@ -380,7 +402,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(shared_ptr<ObjectBase> sizeritem
 
 void ObjectDatabase::ResetObjectCounters()
 {
-	map< wxString, shared_ptr< ObjectInfo > >::iterator it;
+	ObjectInfoMap::iterator it;
 	for (it = m_objs.begin() ; it != m_objs.end() ; it++)
 	{
 		it->second->ResetInstanceCount();
@@ -389,13 +411,13 @@ void ObjectDatabase::ResetObjectCounters()
 
 ///////////////////////////////////////////////////////////////////////
 
-shared_ptr<ObjectBase>  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, shared_ptr<ObjectBase> parent)
+PObjectBase  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, PObjectBase parent)
 {
 	if (!xml_obj->Attribute(CLASS_TAG))
-		return shared_ptr<ObjectBase>();
+		return PObjectBase();
 
 	std::string class_name = xml_obj->Attribute(CLASS_TAG);
-	shared_ptr<ObjectBase> object = CreateObject(class_name,parent);
+	PObjectBase object = CreateObject(class_name,parent);
 
 	if (object)
 	{
@@ -416,7 +438,7 @@ shared_ptr<ObjectBase>  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, shar
 		{
 			std::string prop_value;
 			std::string prop_name = xml_prop->Attribute(NAME_TAG);
-			shared_ptr<Property> prop = object->GetProperty( _WXSTR(prop_name) );
+			PProperty prop = object->GetProperty( _WXSTR(prop_name) );
 			if (prop) // ¿ existe la propiedad ?
 			{
 				// modificamos el valor
@@ -432,6 +454,28 @@ shared_ptr<ObjectBase>  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, shar
 			xml_prop = xml_prop->NextSiblingElement(PROPERTY_TAG);
 		}
 
+		// now, we modify every event handler
+		TiXmlElement *xml_event = xml_obj->FirstChildElement(EVENT_TAG);
+		while (xml_event)
+		{
+		  std::string event_value;
+			std::string event_name = xml_event->Attribute(NAME_TAG);
+			PEvent event = object->GetEvent( _WXSTR(event_name) );
+			if (event)
+			{
+				TiXmlNode *xml_value = xml_event->FirstChild();
+				if (xml_value && xml_value->ToText())
+					event_value = xml_value->ToText()->Value();
+				else
+					event_value = "";
+
+				event->SetValue( _WXSTR(event_value) );
+			}
+
+			xml_event = xml_event->NextSiblingElement(EVENT_TAG);
+		}
+
+
 		if (parent)
 		{
 			// enlazamos
@@ -443,7 +487,7 @@ shared_ptr<ObjectBase>  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, shar
 		TiXmlElement *child = xml_obj->FirstChildElement(OBJECT_TAG);
 		while (child)
 		{
-			shared_ptr<ObjectBase> childObj = CreateObject(child,object);
+			PObjectBase childObj = CreateObject(child,object);
 			child = child->NextSiblingElement(OBJECT_TAG);
 		}
 	}
@@ -604,7 +648,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 			std::string class_name;
 			elem_obj->GetAttribute( CLASS_TAG, &class_name );
 
-			shared_ptr<ObjectInfo> class_info = GetObjectInfo( _WXSTR(class_name) );
+			PObjectInfo class_info = GetObjectInfo( _WXSTR(class_name) );
 
 			ticpp::Element* elem_base = elem_obj->FirstChildElement( "inherits", false );
 			while ( elem_base )
@@ -613,7 +657,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 				elem_base->GetAttribute( CLASS_TAG, &base_name );
 
 				// Add a reference to its base class
-				shared_ptr<ObjectInfo> base_info  = GetObjectInfo( _WXSTR(base_name) );
+				PObjectInfo base_info  = GetObjectInfo( _WXSTR(base_name) );
 				if ( class_info && base_info )
 				{
 					size_t baseIndex = class_info->AddBaseClass( base_info );
@@ -634,7 +678,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 			// Add the "C++" base class, predefined for the components and widgets
 			if ( HasCppProperties( class_info->GetObjectTypeName() ) )
 			{
-				shared_ptr<ObjectInfo> cpp_interface = GetObjectInfo( wxT("C++") );
+				PObjectInfo cpp_interface = GetObjectInfo( wxT("C++") );
 				if ( cpp_interface )
 				{
 					class_info->AddBaseClass( cpp_interface );
@@ -701,7 +745,7 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 				elem_template = elem_template->NextSiblingElement( "template", false );
 			}
 
-			shared_ptr<ObjectInfo> obj_info = GetObjectInfo( _WXSTR(class_name) );
+			PObjectInfo obj_info = GetObjectInfo( _WXSTR(class_name) );
 			if ( obj_info )
 			{
 				obj_info->AddCodeInfo( _WXSTR(language), code_info );
@@ -778,7 +822,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			bool startGroup;
 			elem_obj->GetAttributeOrDefault( "startgroup", &startGroup, false );
 
-			shared_ptr<ObjectInfo> obj_info( new ObjectInfo( _WXSTR(class_name), GetObjectType( _WXSTR(type) ), package, startGroup ) );
+			PObjectInfo obj_info( new ObjectInfo( _WXSTR(class_name), GetObjectType( _WXSTR(type) ), package, startGroup ) );
 
 			if ( !icon.empty() && wxFileName::FileExists( iconFullPath ) )
 			{
@@ -803,9 +847,10 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 
 			// Parse the Properties
 			ParseProperties( elem_obj, obj_info, obj_info->GetCategory() );
+			ParseEvents    ( elem_obj, obj_info);
 
 			// Add the ObjectInfo to the map
-			m_objs.insert( map< wxString, shared_ptr< ObjectInfo > >::value_type( _WXSTR(class_name), obj_info ) );
+			m_objs.insert(ObjectInfoMap::value_type( _WXSTR(class_name), obj_info ) );
 
 			// Add the object to the palette
 			if ( ShowInPalette( obj_info->GetObjectTypeName() ) )
@@ -824,7 +869,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 	return package;
 }
 
-void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<ObjectInfo> obj_info, shared_ptr< PropertyCategory > category )
+void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, shared_ptr< PropertyCategory > category )
 {
 	ticpp::Element* elem_category = elem_obj->FirstChildElement( CATEGORY_TAG, false );
 	while ( elem_category )
@@ -954,6 +999,45 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, shared_ptr<Objec
 	}
 }
 
+void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info)
+{
+  ticpp::Element* elem_evt = elem_obj->FirstChildElement( EVENT_TAG, false );
+	while ( elem_evt )
+	{
+		// Property Name Attribute
+		std::string evt_name;
+		elem_evt->GetAttribute( NAME_TAG, &evt_name );
+
+    // Event class
+		std::string evt_class;
+		elem_evt->GetAttributeOrDefault( EVENT_CLASS_TAG, &evt_class, "wxEvent" );
+
+
+    // Help string
+		std::string description;
+		elem_evt->GetAttributeOrDefault( DESCRIPTION_TAG, &description, "" );
+
+		// Get default value
+		std::string def_value;
+		try
+		{
+			ticpp::Node* lastChild = elem_evt->LastChild();
+			ticpp::Text* text = lastChild->ToText();
+			def_value = text->Value();
+		}
+		catch( ticpp::Exception& ){}
+
+		// create an instance of PropertyInfo
+		PEventInfo evt_info(
+		  new EventInfo( _WXSTR(evt_name),  _WXSTR(evt_class), _WXSTR(def_value), _WXSTR(description)));
+
+		// add the PropertyInfo to the property
+		obj_info->AddEventInfo(evt_info);
+
+		elem_evt = elem_evt->NextSiblingElement( EVENT_TAG, false );
+	}
+}
+
 bool ObjectDatabase::ShowInPalette(wxString type)
 {
 	return (type == wxT("form")				||
@@ -1020,7 +1104,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, shared_ptr< wxFBM
 		IComponent* comp = comp_lib->GetComponent( i );
 
 		// Look for the class in the data read from the .xml files
-		shared_ptr< ObjectInfo > class_info = GetObjectInfo( class_name );
+		PObjectInfo class_info = GetObjectInfo( class_name );
 		if ( class_info )
 		{
 			class_info->SetComponent(comp);
@@ -1164,4 +1248,5 @@ PObjectType ObjectDatabase::GetObjectType(wxString name)
 
 	return type;
 }
+
 

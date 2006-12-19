@@ -32,4 +32,14 @@ namespace Debug
   void Print(wxChar *,...);
 };
 
-#endif
+
+#ifdef WXFB_DEBUG
+#include <iostream>
+
+#define WXFB_DEBUG_PRINT(x) (std::cout << x << std::endl)
+
+#elseif
+#define WXFB_DEBUG_PRINT(x)
+#endif //WXFB_DEBUG
+
+#endif //__DEBUG_H__

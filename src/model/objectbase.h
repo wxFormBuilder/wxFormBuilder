@@ -41,7 +41,7 @@
 #include <list>
 #include <boost/smart_ptr.hpp>
 #include "types.h"
-#include "tinyxml.h"
+#include "ticpp.h"
 
 #include "wx/wx.h"
 #include <component.h>
@@ -55,22 +55,34 @@ class Property;
 class PropertyInfo;
 class OptionList;
 class CodeInfo;
+class EventInfo;
+class Event;
+class PropertyCategory;
 
+// Let's go with a few typedefs for frequently used types,
+// please use it, code will be cleaner and easier to read.
 
 typedef shared_ptr<OptionList> POptionList;
 typedef shared_ptr<ObjectBase> PObjectBase;
-typedef weak_ptr<ObjectBase> WPObjectBase;
+typedef weak_ptr<ObjectBase>   WPObjectBase;
 
-typedef shared_ptr<CodeInfo> PCodeInfo;
-typedef shared_ptr<ObjectInfo> PObjectInfo;
-typedef shared_ptr<Property> PProperty;
+typedef shared_ptr<CodeInfo>     PCodeInfo;
+typedef shared_ptr<ObjectInfo>   PObjectInfo;
+typedef shared_ptr<Property>     PProperty;
 typedef shared_ptr<PropertyInfo> PPropertyInfo;
+typedef shared_ptr<EventInfo>    PEventInfo;
+typedef shared_ptr<Event>        PEvent;
+typedef shared_ptr<PropertyCategory> PPropertyCategory;
 
-typedef vector< PObjectBase > ObjectVector;
-typedef map<string,PProperty> PropertyMap;
-typedef map<string, PPropertyInfo> PropertyInfoMap;
-typedef vector<PObjectInfo> ObjectInfoVector;
-typedef map<string, PObjectInfo> ObjectInfoMap;
+typedef map<wxString, PPropertyInfo> PropertyInfoMap;
+typedef map<wxString, PObjectInfo>   ObjectInfoMap;
+typedef map<wxString, PEventInfo>    EventInfoMap;
+typedef map<wxString, PProperty>     PropertyMap;
+typedef map<wxString, PEvent>        EventMap;
+
+
+typedef vector<PObjectBase> ObjectBaseVector;
+typedef vector<PEvent>      EventVector;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -142,38 +154,51 @@ public:
 	void         SetHidden(bool hidden)   { m_hidden = hidden; } // Juan
 };
 
+class EventInfo
+{
+private:
+	wxString m_name;
+	wxString m_eventClass;
+  wxString m_defaultValue;
+  wxString m_description;
+
+public:
+  EventInfo(const wxString &name,
+            const wxString &eventClass,
+            const wxString &defValue,
+            const wxString &description);
+
+  wxString GetName()           { return m_name; }
+  wxString GetEventClassName() { return m_eventClass; }
+  wxString GetDefaultValue()   { return m_defaultValue; }
+  wxString GetDescription()    { return m_description; }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 class Property
 {
 private:
-	shared_ptr<PropertyInfo> m_info; // puntero a su descriptor
-	weak_ptr<ObjectBase> m_object; // una propiedad siempre pertenece a un objeto
+	PPropertyInfo m_info;   // pointer to its descriptor
+	WPObjectBase  m_object; // pointer to the owner object
 
-	wxString m_name;
 	wxString m_value;
 
 public:
-	Property(shared_ptr<PropertyInfo> info, shared_ptr<ObjectBase> obj = shared_ptr<ObjectBase>())
+	Property(PPropertyInfo info, PObjectBase obj = PObjectBase())
 	{
-		m_name = info->GetName();
 		m_object = obj;
 		m_info = info;
-	};
+	}
 
-	shared_ptr<ObjectBase> GetObject() { return m_object.lock(); }
-	wxString GetName() { return m_name; };
-	wxString GetValue() { return m_value; };
-	void SetValue( wxString& val )
-	{
-		m_value = val;
-	};
-	void SetValue( wxChar* val )
-	{
-		m_value = val;
-	};
-	shared_ptr<PropertyInfo> GetPropertyInfo() { return m_info; }
-	PropertyType GetType()          { return m_info->GetType();  }
+	PObjectBase GetObject() { return m_object.lock(); }
+	wxString GetName()                 { return m_info->GetName(); }
+	wxString GetValue()                { return m_value; }
+	void SetValue( wxString& val )     { m_value = val; }
+	void SetValue( wxChar* val )       { m_value = val;	}
+
+	PPropertyInfo GetPropertyInfo() { return m_info; }
+	PropertyType  GetType()         { return m_info->GetType();  }
 
 	bool IsDefaultValue();
 	bool IsNull();
@@ -205,7 +230,25 @@ public:
 	double GetValueAsFloat();
 	void SplitParentProperty( std::map< wxString, wxString >* children );
 	wxString GetChildFromParent( const wxString& childName );
+};
 
+class Event
+{
+private:
+  PEventInfo  m_info;   // pointer to its descriptor
+  WPObjectBase m_object; // pointer to the owner object
+  wxString    m_value;  // handler function name
+
+public:
+  Event (PEventInfo info, PObjectBase obj)
+    : m_info(info), m_object(obj)
+  {}
+
+  void SetValue(const wxString &value) { m_value = value; }
+  wxString GetValue()                  { return m_value; }
+  wxString GetName()                   { return m_info->GetName(); }
+  PObjectBase GetObject()              { return m_object.lock(); }
+  PEventInfo GetEventInfo()            { return m_info; }
 };
 
 class PropertyCategory
@@ -249,7 +292,6 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
 namespace ticpp
 {
 	class Document;
@@ -259,17 +301,14 @@ namespace ticpp
 class ObjectBase : public IObject, public enable_shared_from_this<ObjectBase>
 {
 private:
-	// number of instances of the class, será util para comprobar si
-	// efectivamente no se están produciendo leaks de memoria
-	static int s_instances;
+	wxString     m_class;  // class name
+	wxString     m_type;   // type of object
+	WPObjectBase m_parent; // weak pointer, no reference loops please!
 
-	wxString m_class;            // clase que repesenta el objeto
-	wxString m_type; //ObjectType m_type;         // RTTI
-	weak_ptr<ObjectBase> m_parent;     // no parent
-
-	vector< shared_ptr<ObjectBase> > m_children;   // children
-	map< wxString,shared_ptr<Property> >  m_properties; // Properties of the object
-	shared_ptr<ObjectInfo> m_info;
+	ObjectBaseVector m_children;
+	PropertyMap      m_properties;
+	EventMap         m_events;
+	PObjectInfo      m_info;
 	bool m_expanded; // is expanded in the object tree, allows for saving to file
 
 protected:
@@ -277,55 +316,21 @@ protected:
 	static const int INDENT;  // size of indent
 	wxString GetIndentString(int indent); // obtiene la cadena con el indentado
 
-	vector< shared_ptr<ObjectBase> >& GetChildren()   { return m_children; };
-	map< wxString,shared_ptr<Property> >&  GetProperties() { return m_properties; };
+	ObjectBaseVector& GetChildren()     { return m_children; };
+	PropertyMap&      GetProperties()   { return m_properties; };
 
 	// Crea un elemento del objeto
 	void SerializeObject( ticpp::Element* serializedElement );
 
 	// devuelve el puntero "this"
-	shared_ptr<ObjectBase> GetThis()
-	{
-		return shared_from_this();
-	}
-
-
-	//bool DoChildTypeOk (wxString type_child ,wxString type_parent);
-	/*
-	* Configura la instancia en su creación.
-	*
-	* Este método realiza todas las operaciones necesarias para configurar
-	* el objeto en su creación.
-	* Las clases derivadas (y esta misma) deberán llamar a esta función en
-	* el método NewInstance. De esta forma, emulamos el comportamiento de un
-	* constructor.
-	*/
-	//  void SetupInstance(shared_ptr<ObjectBase> parent = shared_ptr<ObjectBase>());
-
+	PObjectBase GetThis() { return shared_from_this(); }
 
 public:
-	/**
-	* Constructor. (debe ser "protegido" -> NewInstance)
-	*/
+
+	/// Constructor.
 	ObjectBase (wxString class_name);
 
-	// Mejor es que sea el propio objeto quien construya todas sus propiedades...
-	//ObjectBase(shared_ptr<ObjectInfo> obj_info);
-
-	/*
-	* Pseudo-Constructor.
-	* Crea una instancia de un objeto de forma dinámica.
-	* De esta forma evitamos los problemas de C++ para usar métodos virtuales
-	* en un contructor, o el problema de devolver un shared_ptr en lugar
-	* de un puntero normal.
-	*/
-	/*  static shared_ptr<ObjectBase> NewInstance
-	(wxString class_name, shared_ptr<ObjectBase> parent = shared_ptr<ObjectBase>());*/
-
-
-	/**
-	* Destructor.
-	*/
+	/// Destructor.
 	virtual ~ObjectBase();
 
 	/**
@@ -345,17 +350,13 @@ public:
 	*       Cada objeto tiene un nombre, el cual será el mismo que el usado
 	*       como clave en el registro de descriptores.
 	*/
-	wxString     GetClassName ()            { return m_class;  }
+	wxString GetClassName () { return m_class;  }
 
-	/**
-	* Obtiene el nodo padre.
-	*/
-	shared_ptr<ObjectBase> GetParent ()                   { return m_parent.lock();   }
+	/// Gets the parent object
+	PObjectBase GetParent () { return m_parent.lock(); }
 
-	/**
-	* Establece la conexión con el padre.
-	*/
-	void SetParent(shared_ptr<ObjectBase> parent)  { m_parent = parent; }
+	/// Links the object to a parent
+	void SetParent(PObjectBase parent)  { m_parent = parent; }
 
 	/**
 	* Obtiene la propiedad identificada por el nombre.
@@ -363,7 +364,9 @@ public:
 	* @note Notar que no existe el método SetProperty, ya que la modificación
 	*       se hace a través de la referencia.
 	*/
-	shared_ptr<Property> GetProperty (wxString name);
+	PProperty GetProperty (wxString name);
+
+	PEvent GetEvent(wxString name);
 
 	/**
 	* Añade una propiedad al objeto.
@@ -372,12 +375,16 @@ public:
 	* instancia del objeto.
 	* Los objetos siempre se crearán a través del registro de descriptores.
 	*/
-	void AddProperty (wxString propname, shared_ptr<Property> value);
+	void AddProperty (PProperty value);
+
+	void AddEvent(PEvent event);
 
 	/**
 	* Obtiene el número de propiedades del objeto.
 	*/
 	unsigned int GetPropertyCount() { return (unsigned int)m_properties.size(); }
+
+	unsigned int GetEventCount()    { return m_events.size(); }
 
 	/**
 	* Obtiene una propiedad del objeto.
@@ -388,10 +395,10 @@ public:
 	*
 	* @code
 	*
-	* shared_ptr<Property> plabel = obj->GetProperty("label");
-	* shared_ptr<Property> ppos = obj->GetProperty("pos");
-	* shared_ptr<Property> psize = obj->GetProperty("size");
-	* shared_ptr<Property> pstyle = obj->GetProperty("style");
+	* PProperty plabel = obj->GetProperty("label");
+	* PProperty ppos = obj->GetProperty("pos");
+	* PProperty psize = obj->GetProperty("size");
+	* PProperty pstyle = obj->GetProperty("style");
 	*
 	* if (plabel && ppos && psize && pstyle)
 	* {
@@ -428,7 +435,9 @@ public:
 	* @endcode
 	*
 	*/
-	shared_ptr<Property>    GetProperty (unsigned int idx); // throws ...;
+	PProperty GetProperty (unsigned int idx); // throws ...;
+
+	PEvent GetEvent (unsigned int idx); // throws ...;
 
 	/**
 	* Devuelve el primer antecesor cuyo tipo coincida con el que se pasa
@@ -436,7 +445,7 @@ public:
 	*
 	* Será útil para encontrar el widget padre.
 	*/
-	shared_ptr<ObjectBase> FindNearAncestor(wxString type);
+	PObjectBase FindNearAncestor(wxString type);
 
 	/**
 	* Obtiene el documento xml del arbol tomando como raíz el nodo actual.
@@ -450,14 +459,14 @@ public:
 	*
 	* @return true si se añadió el hijo con éxito y false en caso contrario.
 	*/
-	virtual bool AddChild    (shared_ptr<ObjectBase>);
-	virtual bool AddChild    (unsigned int idx, shared_ptr<ObjectBase> obj);
+	virtual bool AddChild    (PObjectBase);
+	virtual bool AddChild    (unsigned int idx, PObjectBase obj);
 
 	/**
 	* Devuelve la posicion del hijo o GetChildCount() en caso de no encontrarlo
 	*/
-	unsigned int GetChildPosition(shared_ptr<ObjectBase> obj);
-	bool ChangeChildPosition(shared_ptr<ObjectBase> obj, unsigned int pos);
+	unsigned int GetChildPosition(PObjectBase obj);
+	bool ChangeChildPosition(PObjectBase obj, unsigned int pos);
 
 	/**
 	* devuelve la posición entre sus hermanos
@@ -469,13 +478,13 @@ public:
 	/**
 	* Elimina un hijo del objeto.
 	*/
-	void RemoveChild (shared_ptr<ObjectBase> obj);
+	void RemoveChild (PObjectBase obj);
 	void RemoveChild (unsigned int idx);
 
 	/**
 	* Obtiene un hijo del objeto.
 	*/
-	shared_ptr<ObjectBase> GetChild (unsigned int idx);
+	PObjectBase GetChild (unsigned int idx);
 
 	/**
 	* Obtiene el número de hijos del objeto.
@@ -491,7 +500,7 @@ public:
 
 	bool IsContainer() { return (GetObjectTypeName() == wxT("container") ); }
 
-	shared_ptr<ObjectBase> GetLayout();
+	PObjectBase GetLayout();
 
 	/**
 	* Devuelve el tipo de objeto.
@@ -520,7 +529,7 @@ public:
 	/**
 	* Sobrecarga del operador inserción.
 	*/
-	friend ostream& operator << (ostream &s, shared_ptr<ObjectBase> obj);
+	friend ostream& operator << (ostream &s, PObjectBase obj);
 
 	/////////////////////////
 	// Implementación de la interfaz IObject para su uso dentro de los
@@ -575,17 +584,26 @@ public:
 	shared_ptr< PropertyCategory > GetCategory(){ return m_category; }
 
 	unsigned int GetPropertyCount() { return (unsigned int)m_properties.size(); }
+	unsigned int GetEventCount()    { return (unsigned int)m_events.size();     }
 
 	/**
 	* Obtiene el descriptor de la propiedad.
 	*/
-	shared_ptr<PropertyInfo> GetPropertyInfo(wxString name);
-	shared_ptr<PropertyInfo> GetPropertyInfo(unsigned int idx);
+	PPropertyInfo GetPropertyInfo(wxString name);
+	PPropertyInfo GetPropertyInfo(unsigned int idx);
+
+	PEventInfo GetEventInfo(wxString name);
+	PEventInfo GetEventInfo(unsigned int idx);
 
 	/**
 	* Añade un descriptor de propiedad al descriptor de objeto.
 	*/
-	void AddPropertyInfo(shared_ptr<PropertyInfo> pinfo);
+	void AddPropertyInfo(PPropertyInfo pinfo);
+
+	/**
+	 * Adds a event descriptor.
+	 */
+	void AddEventInfo(PEventInfo evtInfo);
 
 	/**
 	* Add a default value for an inherited property.
@@ -684,7 +702,9 @@ private:
 
 	unsigned int m_numIns;  // número de instancias del objeto
 
-	map< wxString, shared_ptr< PropertyInfo > > m_properties;
+	map< wxString, PPropertyInfo > m_properties;
+	map< wxString, PEventInfo >    m_events;
+
 	vector< shared_ptr< ObjectInfo > > m_base; // base classes
 	map< size_t, map< wxString, wxString > > m_baseClassDefaultPropertyValues;
 	IComponent* m_component;  // componente asociado a la clase los objetos del

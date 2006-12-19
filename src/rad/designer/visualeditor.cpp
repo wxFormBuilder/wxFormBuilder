@@ -100,16 +100,6 @@ VisualEditor::~VisualEditor()
 	DeleteAbstractObjects();
 }
 
-void VisualEditor::Setup()
-{
-#ifdef __WXFB_EXPERIMENTAL__
-	EditorHandler *handler = new EditorHandler(AppData());
-	handler->SetWindow(m_back);
-	m_back->PushEventHandler(handler);
-#endif //__WXFB_EXPERIMENTAL__
-
-}
-
 void VisualEditor::UpdateVirtualSize()
 {
 	int w, h, panelW, panelH;
