@@ -4,6 +4,7 @@
 #include <boost/smart_ptr.hpp>
 #include <map>
 #include <vector>
+#include <wx/string.h>
 
 class ObjectBase;
 class ObjectInfo;
