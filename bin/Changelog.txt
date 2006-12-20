@@ -44,6 +44,10 @@ date Version 3.00.05
 * Fixed FS#73 — "Toolbar tools not selecting the object in the object tree."
 * Fixed FS#71 — "wxSplitter window sashpos not being set."
 * ID_DEFAULT is no longer defined when not used.
+* Ids beginning with "wxID_" are no longer defined, this is to avoid redefining
+  wxWidgets special identifiers.
+* Ids for forms now use the "id" property instead of being hardcoded to -1.
+^ wxID_ANY is now the default id.
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
 ^ Added class name and line to error message for unknown classes when importing xrc.

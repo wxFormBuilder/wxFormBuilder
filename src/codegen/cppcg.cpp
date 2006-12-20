@@ -724,18 +724,31 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
 		m_header->WriteLn( wxT("{") );
 		m_header->Indent();
 
-		m_header->WriteLn( wxString::Format( wxT("%s = %i,"), it->c_str(), m_firstID ) );
-		it++;
-		while ( it != macros.end() )
-		{
-			m_header->WriteLn( *it + wxT(",") );
-			it++;
-		}
+        // Remove the default macro from the set, for backward compatiblity
+        it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
+        if ( it != macros.end() )
+        {
+            // The default macro is defined to wxID_ANY
+            m_header->WriteLn( wxT("ID_DEFAULT = wxID_ANY, // Default") );
+            macros.erase(it);
+            it = macros.begin();
+        }
+
+        if ( it != macros.end())
+        {
+            m_header->WriteLn( wxString::Format( wxT("%s = %i,"), it->c_str(), m_firstID ) );
+            it++;
+            while ( it != macros.end() )
+            {
+                m_header->WriteLn( *it + wxT(",") );
+                it++;
+            }
+        }
 
 		//m_header->WriteLn(id);
 		m_header->Unindent();
 		m_header->WriteLn( wxT("};") );
-		m_header->WriteLn( wxT("") );
+		m_header->WriteLn( wxEmptyString );
 	}
 }
 
@@ -1132,10 +1145,14 @@ void CppCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 		if ( prop->GetType() == PT_MACRO )
 		{
 			wxString value = prop->GetValue();
-			if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
-			{
-				macros->push_back( value );
-			}
+			// Skip wx IDs
+            if ( !value.StartsWith( wxT("wxID_") ) )
+            {
+                if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
+                {
+                    macros->push_back( value );
+                }
+            }
 		}
 	}
 
@@ -1167,7 +1184,7 @@ void CppCodeGenerator::GenDefines( PObjectBase project)
 	std::vector< wxString > macros;
 	FindMacros( project, &macros );
 
-	// Remove the default macro from the set
+	// Remove the default macro from the set, for backward compatiblity
 	std::vector< wxString >::iterator it;
 	it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
 	if ( it != macros.end() )
@@ -1184,8 +1201,9 @@ void CppCodeGenerator::GenDefines( PObjectBase project)
 	}
 	for (it = macros.begin() ; it != macros.end(); it++)
 	{
-		m_header->WriteLn( wxString::Format( wxT("#define %s %i"), it->c_str(), id ) );
-		id++;
+	    // Don't redefine wx IDs
+        m_header->WriteLn( wxString::Format( wxT("#define %s %i"), it->c_str(), id ) );
+        id++;
 	}
 
 	m_header->WriteLn( wxT("") );

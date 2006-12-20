@@ -10,7 +10,7 @@
 			@{ public wxFrame @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+			$name( wxWindow* parent, int id = $id, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
 		</template>
 		<template name="cons_def">
 			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :
@@ -66,7 +66,7 @@
 			@{ public wxPanel @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = -1, wxPoint pos = $pos, wxSize size = $size, int style = $window_style );
+			$name( wxWindow* parent, int id = $id, wxPoint pos = $pos, wxSize size = $size, int style = $window_style );
 		</template>
 		<template name="cons_def">
 			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) :
@@ -116,7 +116,7 @@
 			@{ public wxDialog @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = -1, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+			$name( wxWindow* parent, int id = $id, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
 		</template>
 		<template name="cons_def">
 			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :

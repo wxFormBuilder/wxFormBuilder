@@ -30,6 +30,7 @@
 #include <wx/tokenzr.h>
 #include "rad/appdata.h"
 #include "model/objectbase.h"
+#include "utils/wxfbexception.h"
 
 void CodeWriter::WriteLn(wxString code)
 {
@@ -170,8 +171,7 @@ bool TemplateParser::ParseMacro()
 		ParseClass();
 		break;
 	default:
-		assert(false);
-		return false;
+		THROW_WXFBEX( wxT("Invalid Macro Type") );
 		break;
 	}
 
@@ -462,39 +462,46 @@ PProperty TemplateParser::GetProperty( wxString* childName )
 	// Check for #wxparent, #parent, or #child
 	if ( GetNextToken() == TOK_MACRO )
 	{
-		Ident ident = ParseIdent();
-		switch (ident)
-		{
-			case ID_WXPARENT:
-			{
-				PObjectBase wxparent( GetWxParent() );
-				if ( wxparent )
-				{
-					property = GetRelatedProperty( wxparent );
-				}
-				break;
-			}
-			case ID_PARENT:
-			{
-				PObjectBase parent( m_obj->GetParent() );
-				if ( parent )
-				{
-					property = GetRelatedProperty( parent );
-				}
-				break;
-			}
-			case ID_CHILD:
-			{
-				PObjectBase child( m_obj->GetChild( 0 ) );
-				if ( child )
-				{
-					property = GetRelatedProperty( child );
-				}
-				break;
-			}
-			default:
-				break;
-		}
+	    try
+	    {
+            Ident ident = ParseIdent();
+            switch (ident)
+            {
+                case ID_WXPARENT:
+                {
+                    PObjectBase wxparent( GetWxParent() );
+                    if ( wxparent )
+                    {
+                        property = GetRelatedProperty( wxparent );
+                    }
+                    break;
+                }
+                case ID_PARENT:
+                {
+                    PObjectBase parent( m_obj->GetParent() );
+                    if ( parent )
+                    {
+                        property = GetRelatedProperty( parent );
+                    }
+                    break;
+                }
+                case ID_CHILD:
+                {
+                    PObjectBase child( m_obj->GetChild( 0 ) );
+                    if ( child )
+                    {
+                        property = GetRelatedProperty( child );
+                    }
+                    break;
+                }
+                default:
+                    break;
+            }
+	    }
+	    catch( wxFBException& ex )
+	    {
+	        wxLogError( ex.what() );
+	    }
 	}
 
 	if ( !property )
@@ -745,29 +752,36 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 	else if (ident == wxT("class") )
 		return ID_CLASS;
 	else
-		return ID_ERROR;
+		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
 }
 
 wxString TemplateParser::ParseTemplate()
 {
-	while (!m_in.Eof())
-	{
-		Token token = GetNextToken();
-		switch (token)
-		{
-		case TOK_MACRO:
-			ParseMacro();
-			break;
-		case TOK_PROPERTY:
-			ParseProperty();
-			break;
-		case TOK_TEXT:
-			ParseText();
-			break;
-		default:
-			return wxT("");
-		}
-	}
+    try
+    {
+        while (!m_in.Eof())
+        {
+            Token token = GetNextToken();
+            switch (token)
+            {
+            case TOK_MACRO:
+                ParseMacro();
+                break;
+            case TOK_PROPERTY:
+                ParseProperty();
+                break;
+            case TOK_TEXT:
+                ParseText();
+                break;
+            default:
+                return wxT("");
+            }
+        }
+    }
+    catch ( wxFBException& ex )
+    {
+        wxLogError( ex.what() );
+    }
 
 	return m_out;
 }

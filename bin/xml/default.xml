@@ -30,7 +30,7 @@
       <option name="public" />protected</property>
   </objectinfo>
   <objectinfo class="wxWindow" smallIcon="wxwindow.png" type="interface">
-    <property name="id" type="macro">ID_DEFAULT</property>
+    <property name="id" type="macro">wxID_ANY</property>
     <property name="pos" type="wxPoint"         help="Window position. The default is (-1, -1) which indicates that wxWidgets should generate a default position for the window."/>
     <property name="size" type="wxSize"         help="Window size. The default is (-1, -1) which indicates that wxWidgets should generate a default size for the window."/>
     <property name="minimum_size" type="wxSize" help="Sets the minimum size of the window, to indicate to the sizer layout mechanism that this is the minimum required size."/>
