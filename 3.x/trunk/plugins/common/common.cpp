@@ -897,8 +897,7 @@ public:
 			IObject* childObj = GetManager()->GetIObject( child );
 			if ( wxT("tool") == childObj->GetClassName() )
 			{
-				static int id = wxID_HIGHEST + 200;
-				tb->AddTool( 	id++,
+				tb->AddTool( 	wxID_ANY,
 								childObj->GetPropertyAsString( _("label") ),
 								childObj->GetPropertyAsBitmap( _("bitmap") ),
 								wxNullBitmap,
