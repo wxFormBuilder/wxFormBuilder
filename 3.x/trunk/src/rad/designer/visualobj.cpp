@@ -37,6 +37,7 @@ using namespace TypeConv;
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE( VObjEvtHandler, wxEvtHandler )
+	EVT_SET_FOCUS( VObjEvtHandler::OnFocus )
 	EVT_LEFT_DOWN( VObjEvtHandler::OnLeftClick )
 	EVT_PAINT( VObjEvtHandler::OnPaint )
 	EVT_SET_CURSOR( VObjEvtHandler::OnSetCursor )
@@ -72,6 +73,25 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 	::wxPostEvent(m_window->GetParent(), event);
 }
 
+void VObjEvtHandler::OnFocus(wxFocusEvent& event)
+{
+	PObjectBase obj = m_object.lock();
+
+	if (obj)
+	{
+		if (AppData()->GetSelectedObject() != obj)
+		{
+			AppData()->SelectObject(obj);
+		}
+		else
+		{
+		  	// *!* Event should be skipped only in the case of the object selected
+      		// is the same that the object clicked. You will experiment rare things
+      		// in other case.
+			event.Skip();
+		}
+	}
+}
 
 void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 {
