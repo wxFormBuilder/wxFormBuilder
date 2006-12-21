@@ -13,12 +13,12 @@ Introduction:
 	wxFormBuilder directory structure and type:
 	
 		1. Code::Blocks Projects and workspace:
-			Windows:	premake-win32 --target cb-gcc
-			Linux:		premake-linux --target cb-gcc
+			Windows:	..\premake\premake-win32 --target cb-gcc --with-wx-shared [--unicode]
+			Linux:		../premake/premake-linux --target cb-gcc --with-wx-shared [--unicode]
 			
 		2. GNU makefile:
-			Windows:	premake-win32 --target gnu
-			Windows:	premake-linux --target gnu
+			Windows:	..\premake\premake-win32 --target gnu --with-wx-shared [--unicode]
+			Windows:	../premake/premake-linux --target gnu --with-wx-shared [--unicode]
 
 Build Steps:
 	- For Code::Blocks, use the generated .workspace to build the SDK.
