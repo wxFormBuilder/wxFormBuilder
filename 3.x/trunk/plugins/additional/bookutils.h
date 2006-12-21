@@ -4,6 +4,7 @@
 #include <component.h>
 #include "default.xpm"
 #include <wx/image.h>
+#include <wx/imaglist.h>
 #include <wx/notebook.h>
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
@@ -117,7 +118,7 @@ namespace BookUtils
 			{
 				if ( book->GetPage( i ) == page )
 				{
-					// Prevent infinite event loop					
+					// Prevent infinite event loop
 					wxEvtHandler* vobjEvtHandler = book->PopEventHandler();
 					wxEvtHandler* bookEvtHandler = book->PopEventHandler();
 
