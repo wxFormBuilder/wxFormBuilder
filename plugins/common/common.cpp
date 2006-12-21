@@ -58,6 +58,7 @@ protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
+	void OnGridClick( wxGridEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
@@ -65,7 +66,13 @@ protected:
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
+
+	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
+
+	// Grid also seems to ignore clicks
+	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
+	EVT_GRID_LABEL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -364,9 +371,17 @@ public:
 			obj->GetPropertyAsInteger(_("rows")),
 			obj->GetPropertyAsInteger(_("cols")));
 
+		grid->PushEventHandler( new ComponentEvtHandler( grid, GetManager() ) );
+
 		return grid;
 	}
 };
+
+void ComponentEvtHandler::OnGridClick( wxGridEvent& event )
+{
+	m_manager->SelectObject( m_window );
+	event.Skip();
+}
 
 
 class ComboBoxComponent : public ComponentBase
