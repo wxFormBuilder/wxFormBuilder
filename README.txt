@@ -23,12 +23,12 @@ Build Steps:
 	- To create the needed build files type:
 	
 		* Code::Blocks Projects and workspace:
-			Windows:	premake\premake-win32.exe --target cb-gcc
-			Linux:		premake/premake-linux --target cb-gcc
+			Windows:	premake\premake-win32.exe --target cb-gcc --with-wx-shared [--unicode]
+			Linux:		premake/premake-linux --target cb-gcc --with-wx-shared [--unicode]
 			
 		* GNU makefiles:
-			Windows:	premake\premake-win32.exe --target gnu
-			Linux:		premake/premake-linux --target gnu
+			Windows:	premake\premake-win32.exe --target gnu --with-wx-shared [--unicode]
+			Linux:		premake/premake-linux --target gnu --with-wx-shared [--unicode]
 
 	- For Code::Blocks, use the generated wxFormBuilder.workspace to build wxFormBuilder.
 	
