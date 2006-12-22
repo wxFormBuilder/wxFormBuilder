@@ -18,6 +18,7 @@ public:
 	size_t GetChildCount( wxObject* wxobject );
 	wxObject* GetChild( wxObject* wxobject, size_t childIndex );
 	wxObject* GetParent( wxObject* wxobject );
+	IObject* GetIParent( wxObject* wxobject );
 	IObject* GetIObject( wxObject* wxobject );
 	wxObject* GetWxObject( PObjectBase obj );
 

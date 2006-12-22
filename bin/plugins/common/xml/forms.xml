@@ -45,6 +45,7 @@
       <option name="wxVERTICAL"/>
       <option name="wxBOTH"/>
 	</property>
+	<property name="xrc_skip_sizer" type="bool" help="For XRC Only. Do not generate the first sizer if there is only one child.">1</property>
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">

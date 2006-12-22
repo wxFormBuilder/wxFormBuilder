@@ -424,7 +424,7 @@ m_rootDir( rootdir ),
 m_objDb( new ObjectDatabase() ),
 m_manager( new wxFBManager ),
 m_fbpVerMajor( 1 ),
-m_fbpVerMinor( 4 ),
+m_fbpVerMinor( 5 ),
 m_port( 4242 )
 {
 	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ;

@@ -97,6 +97,19 @@ wxObject* wxFBManager::GetChild( wxObject* wxobject, size_t childIndex )
 	return m_visualEdit->GetWxObject( obj->GetChild( childIndex ) );
 }
 
+IObject* wxFBManager::GetIParent( wxObject* wxobject )
+{
+	CHECK_VISUAL_EDITOR( NULL )
+
+	CHECK_WX_OBJECT( NULL )
+
+	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
+
+	CHECK_OBJECT_BASE( NULL )
+
+	return obj->GetParent().get();
+}
+
 wxObject* wxFBManager::GetParent( wxObject* wxobject )
 {
 	CHECK_VISUAL_EDITOR( NULL )
