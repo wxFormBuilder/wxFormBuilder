@@ -8,8 +8,8 @@
 --*****************************************************************************
 
 -- wxWidgets version
-local wx_ver = "27"
-local wx_ver_minor = "0"
+local wx_ver = "28"
+local wx_ver_minor = ""
 
 --******* Initial Setup ************
 --*	Most of the setting are set here.
