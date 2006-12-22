@@ -1,7 +1,4 @@
 project.name = "wxFormBuilder 3rd-Party Controls"
-if ( OS == "windows") then
-	project.configs = { "Debug", "Debug (Unicode)", "Release", "Release (Unicode)" }
-end
 
 --dofile( "../../../premake/wrap_wxconfig.lua" )
 
