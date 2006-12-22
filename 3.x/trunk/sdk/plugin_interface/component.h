@@ -171,6 +171,11 @@ public:
 	virtual wxObject* GetParent( wxObject* wxobject ) = 0;
 
 	/**
+	Get the IObject interface to the parent of the object.
+	*/
+	virtual IObject* GetIParent( wxObject* wxobject ) = 0;
+
+	/**
 	Get the corresponding object interface pointer for the object.
 	This allows easy read only access to properties.
 	*/

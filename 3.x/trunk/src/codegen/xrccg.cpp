@@ -81,72 +81,111 @@ bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 }
 */
 
-bool XrcCodeGenerator::GenerateCode(PObjectBase project)
+bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 {
-  m_cw->Clear();
+	m_cw->Clear();
 
-  TiXmlDocument doc;
-  TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","yes");
-  doc.LinkEndChild(decl);
+	TiXmlDocument doc;
+	TiXmlDeclaration *decl = new TiXmlDeclaration( "1.0", "UTF-8", "yes" );
+	doc.LinkEndChild( decl );
 
-  TiXmlElement *element = new TiXmlElement("resource");
-  element->SetAttribute("xmlns", "http://www.wxwindows.org/wxxrc");
-  element->SetAttribute("version", "2.3.0.1");
+	TiXmlElement *element = new TiXmlElement( "resource" );
+	element->SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
+	element->SetAttribute( "version", "2.3.0.1" );
 
-  for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
-  {
-    TiXmlElement *child = GetElement(project->GetChild(i));
-    if (child)
-      element->LinkEndChild(child);
-  }
+	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+	{
+		TiXmlElement *child = GetElement( project->GetChild( i ) );
+		if ( child )
+			element->LinkEndChild( child );
+	}
 
-  doc.LinkEndChild(element);
+	doc.LinkEndChild( element );
 
 	std::string xrcFile = doc.GetAsString();
 
 	m_cw->Write( _WXSTR( xrcFile ) );
 
-  return true;
+	return true;
 
 }
 
 
-TiXmlElement* XrcCodeGenerator::GetElement(PObjectBase obj)
+TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
 {
-  TiXmlElement *element = NULL;
+	TiXmlElement *element = NULL;
 
-  IComponent *comp = obj->GetObjectInfo()->GetComponent();
+	IComponent *comp = obj->GetObjectInfo()->GetComponent();
 
-  if (comp)
-    element = comp->ExportToXrc(obj.get());
+	if ( comp )
+		element = comp->ExportToXrc( obj.get() );
 
-  if (element)
-  {
-  	if (element->Attribute("class") == std::string("__dummyitem__"))
-    {
-    	delete element;
-    	element = NULL;
+	if ( element )
+	{
+		std::string class_name = element->Attribute( "class" );
+		if ( class_name == std::string( "__dummyitem__" ) )
+		{
+			delete element;
+			element = NULL;
 
-    	if (obj->GetChildCount() > 0)
-    	  element = GetElement(obj->GetChild(0));
-    }
-    else
-    {
-      for (unsigned int i=0; i<obj->GetChildCount(); i++)
-      {
-        TiXmlElement *aux = GetElement(obj->GetChild(i));
-        if (aux) element->LinkEndChild(aux);
-      }
-    }
-  }
-  else
-  {
-    // El componente no soporta XRC
-    element = new TiXmlElement("object");
-    element->SetAttribute("class","unknown");
-    element->SetAttribute("name",_STDSTR(obj->GetPropertyAsString(_("name"))));
-  }
+			if ( obj->GetChildCount() > 0 )
+				element = GetElement( obj->GetChild( 0 ) );
 
-  return element;
+			return element;
+		}
+		else if ( class_name == std::string( "wxFrame" ) )
+		{
+			// Dirty hack to prevent sizer generation directly under a wxFrame
+			// If there is a sizer, the size property of the wxFrame is ignored
+			// when loading the xrc file at runtime
+			if ( obj->GetPropertyAsInteger( _("xrc_skip_sizer") ) )
+			{
+				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
+				{
+					TiXmlElement* aux = NULL;
+
+					PObjectBase child = obj->GetChild( i );
+					if ( child->GetObjectTypeName() == wxT("sizer") )
+					{
+						if ( child->GetChildCount() == 1 )
+						{
+							PObjectBase sizeritem = child->GetChild( 0 );
+							if ( sizeritem )
+							{
+								aux = GetElement( sizeritem->GetChild( 0 ) );
+							}
+						}
+					}
+
+					if ( !aux )
+					{
+						aux = GetElement( child );
+					}
+
+					if ( aux )
+					{
+						element->LinkEndChild( aux );
+					}
+				}
+				return element;
+			}
+		}
+
+		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
+		{
+			TiXmlElement *aux = GetElement( obj->GetChild( i ) );
+			if ( aux ) element->LinkEndChild( aux );
+		}
+	}
+	else
+	{
+		// El componente no soporta XRC
+		element = new TiXmlElement( "object" );
+		element->SetAttribute( "class", "unknown" );
+		element->SetAttribute( "name", _STDSTR( obj->GetPropertyAsString( _( "name" ) ) ) );
+	}
+
+	return element;
 }
+
 
