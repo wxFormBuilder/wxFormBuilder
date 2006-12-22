@@ -217,12 +217,14 @@ class PropertyCategory
 private:
 	wxString m_name;
 	std::vector< wxString > m_properties;
+	std::vector< wxString > m_events;
 	std::vector< PPropertyCategory > m_categories;
 
 public:
 
 	PropertyCategory( wxString name ) : m_name( name ){}
 	void AddProperty( wxString name ){ m_properties.push_back( name ); }
+	void AddEvent( wxString name ){ m_events.push_back( name ); }
 	void AddCategory( PPropertyCategory category ){ m_categories.push_back( category ); }
 	wxString GetName(){ return m_name; }
 	wxString GetPropertyName( size_t index )
@@ -230,6 +232,18 @@ public:
 		if ( index < m_properties.size() )
 		{
 			return m_properties[ index ];
+		}
+		else
+		{
+			return wxEmptyString;
+		}
+	}
+
+	wxString GetEventName( size_t index )
+	{
+		if ( index < m_events.size() )
+		{
+			return m_events[ index ];
 		}
 		else
 		{
@@ -248,7 +262,9 @@ public:
 			return PPropertyCategory();
 		}
 	}
+
 	size_t GetPropertyCount() { return m_properties.size(); }
+	size_t GetEventCount() { return m_events.size(); }
 	size_t GetCategoryCount() { return m_categories.size(); }
 };
 

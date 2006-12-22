@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <package name="Forms" lib="libcommon" icon="frame16x16.png" desc="wxWidgets windows">
+  <objectinfo class="wxTopLevelWindow" smallIcon="wxwindow.png"  type="interface">
+    <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
+  </objectinfo>
+  
+  <objectinfo class="Common Events" type="interface">
+    <event name="OnSize" class="wxSizeEvent" help="Process a size event." />
+  </objectinfo>
+  
   <objectinfo class="Frame" icon="frame.xpm" type="form">
     <inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
 	</inherits>
+	<inherits class="wxTopLevelWindow" />
+	<inherits class="Common Events" />
 	<property name="name" type="text" hidden="1">MyFrame</property>
     <property name="title" type="wxString" />
     <property name="style" type="bitlist">
@@ -42,11 +52,14 @@
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
 	</inherits>
+	<inherits class="Common Events" />
     <property name="name" type="text" hidden="1">MyPanel</property>
   </objectinfo>
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
     <inherits class="wxWindow" />
+	<inherits class="wxTopLevelWindow" />
+	<inherits class="Common Events" />
     <property name="name" type="text" hidden="1">MyDialog</property>
     <property name="title" type="wxString" />
     <property name="style" type="bitlist">

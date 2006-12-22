@@ -144,7 +144,7 @@ class ObjectDatabase
   PObjectPackage LoadPackage( const wxString& file, const wxString& iconPath = wxEmptyString );
 
   void ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category );
-  void ParseEvents    ( ticpp::Element* elem_obj, PObjectInfo obj_info);
+  void ParseEvents    ( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category );
 
   /**
    * Importa una librería de componentes y lo asocia a cada clase.

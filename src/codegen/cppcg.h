@@ -122,12 +122,17 @@ private:
 	/**
 	* Genera la declaración de clases en el fichero de cabecera.
 	*/
-  void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const EventVector &events);
+	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const EventVector &events);
 
 	/**
-   * Generates the event table.
-   */
-  void GenEventTable( PObjectBase class_obj, const EventVector &events);
+	* Generates the event table.
+	*/
+	void GenEventTable( PObjectBase class_obj, const EventVector &events);
+
+	/**
+	* helper function to find the event table entry template in the class or its base classes
+	*/
+	bool GenEventTableEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName );
 
 	/**
 	* Función recursiva para la declaración de atributos, usada dentro

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="C++">
 
+	<templates class="wxTopLevelWindow">
+		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
+	</templates>
+  
+	<templates class="Common Events">
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler ) </template>
+	</templates>
+  
 	<templates class="Frame">
 		<template name="base">
 			#ifnotnull $subclass/name

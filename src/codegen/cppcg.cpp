@@ -514,27 +514,46 @@ void CppCodeGenerator::GenEventTable( PObjectBase class_obj, const EventVector &
 			wxString handlerName = class_name + wxT("::_wxFB_") + event->GetValue();
 			wxString templateName = wxT("evt_entry_") + event->GetName();
 
-			wxString _template;
-			PCodeInfo code_info = event->GetObject()->GetObjectInfo()->GetCodeInfo( wxT("C++") );
-			if ( !code_info )
+			PObjectBase obj = event->GetObject();
+			if ( !GenEventTableEntry( obj, obj->GetObjectInfo(), templateName, handlerName ) )
 			{
-				wxString msg( wxString::Format( wxT("Missing \"%s\" template for \"%s\" class. Review your XML object description"),
-					templateName.c_str(), class_name.c_str() ) );
-				wxLogError(msg);
-			}
-			else
-			{
-				_template = code_info->GetTemplate( templateName );
-				_template.Replace( wxT("#handler"), handlerName.c_str() ); // Ugly patch!
-				CppTemplateParser parser( event->GetObject(), _template );
-				parser.UseRelativePath( m_useRelativePath, m_basePath );
-				parser.UseI18n( m_i18n );
-				m_source->WriteLn( parser.ParseTemplate() );
+				wxLogError( wxT("Missing \"%s\" template for \"%s\" class. Review your XML object description"),
+					templateName.c_str(), class_name.c_str() );
 			}
 		}
 		m_source->Unindent();
 		m_source->WriteLn( wxT("END_EVENT_TABLE()") );
 	}
+}
+
+bool CppCodeGenerator::GenEventTableEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName )
+{
+	wxString _template;
+	PCodeInfo code_info = obj_info->GetCodeInfo( wxT("C++") );
+	if ( code_info )
+	{
+		_template = code_info->GetTemplate( templateName );
+		if ( !_template.empty() )
+		{
+			_template.Replace( wxT("#handler"), handlerName.c_str() ); // Ugly patch!
+			CppTemplateParser parser( obj, _template );
+			parser.UseRelativePath( m_useRelativePath, m_basePath );
+			parser.UseI18n( m_i18n );
+			m_source->WriteLn( parser.ParseTemplate() );
+			return true;
+		}
+	}
+
+	for ( unsigned int i = 0; i < obj_info->GetBaseClassCount(); i++ )
+	{
+		PObjectInfo base_info = obj_info->GetBaseClass( i );
+		if ( GenEventTableEntry( obj, base_info, templateName, handlerName ) )
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 void CppCodeGenerator::GenPrivateEventHandlers( const EventVector& events )

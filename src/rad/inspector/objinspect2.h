@@ -33,6 +33,7 @@
 #include <wx/propgrid/advprops.h>
 #include <wx/propgrid/manager.h>
 #include "utils/wxfbdefs.h"
+#include "model/objectbase.h"
 
 // -----------------------------------------------------------------------
 
@@ -84,9 +85,48 @@ class ObjectInspector : public wxPanel
   int m_style;
 
   int StringToBits(const wxString& strVal, wxPGChoices& constants);
-  void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, PProperty >& map );
-  void AddProperties( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, std::map< wxString, PProperty >& map );
-  void AddEvents(PObjectBase obj, PObjectInfo obj_info );
+
+	template < class ValueT >
+		void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, ValueT >& itemMap, bool addingEvents )
+	{
+		// Get Category
+		PPropertyCategory category = obj_info->GetCategory();
+		if ( !category )
+		{
+			return;
+		}
+
+		// Prevent page creation if there are no properties
+		if ( 0 == category->GetCategoryCount() && 0 == ( addingEvents ? category->GetEventCount() : category->GetPropertyCount() ) )
+		{
+			return;
+		}
+
+		wxString pageName;
+
+		if (m_style == wxFB_OI_MULTIPAGE_STYLE)
+			pageName = name;
+		else
+			pageName = wxT("default");
+
+
+		wxPropertyGridManager* pg = ( addingEvents ? m_eg : m_pg );
+		int pageIndex = pg->GetPageByName( pageName );
+		if ( wxNOT_FOUND == pageIndex )
+		{
+			pg->AddPage( pageName, obj_info->GetSmallIconFile() );
+		}
+		pg->SelectPage( pageName );
+
+		pg->AppendCategory( category->GetName() );
+
+		AddItems( name, obj, obj_info, category, itemMap );
+
+		pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
+	}
+
+  void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, PropertyMap& map );
+  void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, EventMap& map );
   wxPGProperty* GetProperty(PProperty prop);
 
   void Create(bool force = false);
