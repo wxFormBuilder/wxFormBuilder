@@ -847,7 +847,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 
 			// Parse the Properties
 			ParseProperties( elem_obj, obj_info, obj_info->GetCategory() );
-			ParseEvents    ( elem_obj, obj_info);
+			ParseEvents    ( elem_obj, obj_info, obj_info->GetCategory() );
 
 			// Add the ObjectInfo to the map
 			m_objs.insert(ObjectInfoMap::value_type( _WXSTR(class_name), obj_info ) );
@@ -999,21 +999,39 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 	}
 }
 
-void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info)
+void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category )
 {
-  ticpp::Element* elem_evt = elem_obj->FirstChildElement( EVENT_TAG, false );
+	ticpp::Element* elem_category = elem_obj->FirstChildElement( CATEGORY_TAG, false );
+	while ( elem_category )
+	{
+		// Category name attribute
+		std::string cname;
+		elem_category->GetAttribute( NAME_TAG, &cname );
+		PPropertyCategory new_cat( new PropertyCategory( _WXSTR( cname ) ) );
+
+		// Add category
+		category->AddCategory( new_cat );
+
+		// Recurse
+		ParseEvents( elem_category, obj_info, new_cat );
+
+		elem_category = elem_category->NextSiblingElement( CATEGORY_TAG, false );
+	}
+
+	ticpp::Element* elem_evt = elem_obj->FirstChildElement( EVENT_TAG, false );
 	while ( elem_evt )
 	{
-		// Property Name Attribute
+		// Event Name Attribute
 		std::string evt_name;
 		elem_evt->GetAttribute( NAME_TAG, &evt_name );
+		category->AddEvent( _WXSTR(evt_name) );
 
-    // Event class
+		// Event class
 		std::string evt_class;
 		elem_evt->GetAttributeOrDefault( EVENT_CLASS_TAG, &evt_class, "wxEvent" );
 
 
-    // Help string
+		// Help string
 		std::string description;
 		elem_evt->GetAttributeOrDefault( DESCRIPTION_TAG, &description, "" );
 
@@ -1027,11 +1045,11 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 		}
 		catch( ticpp::Exception& ){}
 
-		// create an instance of PropertyInfo
+		// create an instance of EventInfo
 		PEventInfo evt_info(
 		  new EventInfo( _WXSTR(evt_name),  _WXSTR(evt_class), _WXSTR(def_value), _WXSTR(description)));
 
-		// add the PropertyInfo to the property
+		// add the EventInfo to the event
 		obj_info->AddEventInfo(evt_info);
 
 		elem_evt = elem_evt->NextSiblingElement( EVENT_TAG, false );

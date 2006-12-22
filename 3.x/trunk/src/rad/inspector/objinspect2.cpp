@@ -463,9 +463,9 @@ void ObjectInspector::Create( bool force )
 		}
 
 		// ... and we create a default page
-		m_eg->AddPage( wxT("default"));
+		/*m_eg->AddPage( wxT("default"));
 		m_eg->SelectPage(wxT("default"));
-		m_eg->AppendCategory(sel_obj->GetClassName() + wxT(" Events"));
+		m_eg->AppendCategory(sel_obj->GetClassName() + wxT(" Events"));*/
 
 		m_propMap.clear();
 		m_eventMap.clear();
@@ -474,26 +474,26 @@ void ObjectInspector::Create( bool force )
 		if (obj_desc)
 		{
 
-			std::map<wxString,PProperty > map, dummy;
+			PropertyMap propMap, dummyPropMap;
+			EventMap eventMap, dummyEventMap;
 
 			// We create the categories with the properties of the object organized by "classes"
-			CreateCategory( obj_desc->GetClassName(), sel_obj,obj_desc,map);
+			CreateCategory( obj_desc->GetClassName(), sel_obj, obj_desc, propMap, false );
+			CreateCategory( obj_desc->GetClassName(), sel_obj, obj_desc, eventMap, true );
 
 			for (unsigned int i=0; i<obj_desc->GetBaseClassCount() ; i++)
 			{
 				PObjectInfo info_base = obj_desc->GetBaseClass(i);
-				CreateCategory( info_base->GetClassName(), sel_obj,info_base,map);
+				CreateCategory( info_base->GetClassName(), sel_obj,info_base,propMap, false);
+				CreateCategory( info_base->GetClassName(), sel_obj,info_base,eventMap, true);
 			}
 
 			PObjectBase parent = sel_obj->GetParent();
 			if (parent && parent->GetObjectInfo()->GetObjectType()->IsItem())
 			{
-				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummy);
+				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummyPropMap,false);
+				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummyEventMap,true);
 			}
-
-			// we create the events for the object
-			AddEvents( sel_obj, obj_desc);
-
 
 			// Select previously selected page, or first page
 			int pageIndex = m_pg->GetPageByName( pageName );
@@ -699,44 +699,7 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	return result;
 }
 
-void ObjectInspector::CreateCategory(const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, PProperty >& properties )
-{
-	Debug::Print( wxT("[ObjectInspector::CreatePropertyPanel] Creating Property Editor") );
-
-	// Get Category
-	PPropertyCategory category = obj_info->GetCategory();
-	if ( !category )
-	{
-		return;
-	}
-
-	// Prevent page creation if there are no properties
-	if ( 0 == category->GetCategoryCount() && 0 == category->GetPropertyCount() )
-	{
-		return;
-	}
-
-  wxString pageName;
-
-  if (m_style == wxFB_OI_MULTIPAGE_STYLE)
-    pageName = name;
-  else
-    pageName = wxT("default");
-
-
-	int pageIndex = m_pg->GetPageByName( pageName );
-	if ( wxNOT_FOUND == pageIndex )
-	{
-		m_pg->AddPage( pageName, obj_info->GetSmallIconFile() );
-	}
-	m_pg->SelectPage( pageName );
-
-	m_pg->AppendCategory( category->GetName() );
-	AddProperties( name, obj, obj_info, category, properties );
-	m_pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
-}
-
-void ObjectInspector::AddProperties( const wxString& name, PObjectBase obj,
+void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
   PObjectInfo obj_info, PPropertyCategory category, PropertyMap &properties )
 {
 	size_t propCount = category->GetPropertyCount();
@@ -775,29 +738,61 @@ void ObjectInspector::AddProperties( const wxString& name, PObjectBase obj,
 	for ( size_t i = 0; i < catCount; i++ )
 	{
 		PPropertyCategory nextCat = category->GetCategory( i );
+		if ( 0 == nextCat->GetCategoryCount() && 0 == nextCat->GetPropertyCount() )
+		{
+			continue;
+		}
 		m_pg->AppendIn( category->GetName(), wxPropertyCategory( nextCat->GetName() ) );
-		AddProperties( name, obj, obj_info, nextCat, properties );
+		AddItems( name, obj, obj_info, nextCat, properties );
 	}
 }
 
-void ObjectInspector::AddEvents(PObjectBase obj, PObjectInfo obj_info )
+void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
+  PObjectInfo obj_info, PPropertyCategory category, EventMap &events )
 {
-  size_t eventCount = obj_info->GetEventCount();
+	size_t eventCount = category->GetEventCount();
 	for ( size_t i = 0; i < eventCount; i++ )
 	{
-		PEventInfo eventInfo = obj_info->GetEventInfo(i);
-		PEvent     event     = obj->GetEvent(eventInfo->GetName());
+		wxString eventName = category->GetEventName( i );
+		PEvent event = obj->GetEvent( eventName );
 
-		if (!event)
-		  continue;
+		if ( !event )
+			continue;
 
-		wxPGProperty *pgProp = wxStringProperty(eventInfo->GetName(), wxPG_LABEL,
-		   event->GetValue());
+		PEventInfo eventInfo = event->GetEventInfo();
 
-		wxPGId id = m_eg->Append( pgProp);
+		// we do not want to duplicate inherited events
+		if ( events.find( eventName ) == events.end() )
+		{
+			wxPGProperty *pgProp = wxStringProperty( eventInfo->GetName(), wxPG_LABEL, event->GetValue() );
+			wxPGId id = m_eg->Append( pgProp );
 			m_eg->SetPropertyHelpString( id, eventInfo->GetDescription() );
 
-    m_eventMap.insert( ObjInspectorEventMap::value_type( id.GetPropertyPtr(), event) );
+			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
+			{
+				// Most common classes will be showed with a slightly different
+				// colour.
+				if (name == wxT("wxWindow"))
+					m_eg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
+				else if (name == wxT("sizeritem"))
+					m_eg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
+			}
+
+			events.insert( EventMap::value_type( eventName, event ) );
+			m_eventMap.insert( ObjInspectorEventMap::value_type( id.GetPropertyPtr(), event) );
+		}
+	}
+
+	size_t catCount = category->GetCategoryCount();
+	for ( size_t i = 0; i < catCount; i++ )
+	{
+		PPropertyCategory nextCat = category->GetCategory( i );
+		if ( 0 == nextCat->GetCategoryCount() && 0 == nextCat->GetEventCount() )
+		{
+			continue;
+		}
+		m_eg->AppendIn( category->GetName(), wxPropertyCategory( nextCat->GetName() ) );
+		AddItems( name, obj, obj_info, nextCat, events );
 	}
 }
 
