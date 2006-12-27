@@ -1843,16 +1843,12 @@ void ApplicationData::ShowXrcPreview()
     {
         wxFrame *frame = new wxFrame();
         res->LoadFrame(frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString(wxT("name")));
-        frame->SetSize(form->GetPropertyAsSize(wxT("size")));
-        frame->CenterOnScreen();
         frame->Show();
     }
     else if (className == wxT("Dialog"))
     {
         wxDialog dialog;
         res->LoadDialog(&dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString(wxT("name")));
-        dialog.SetSize(form->GetPropertyAsSize(wxT("size")));
-        dialog.CenterOnScreen();
         dialog.ShowModal();
     }
     else if (className == wxT("Panel"))
