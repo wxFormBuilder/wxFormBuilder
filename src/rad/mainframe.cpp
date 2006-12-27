@@ -384,6 +384,15 @@ void MainFrame::OnSaveAsProject( wxCommandEvent &event )
 	{
 		m_currentDir = dialog->GetDirectory();
 		wxString filename = dialog->GetPath();
+
+		// Add the default extension if none was chosen
+		wxFileName file( filename );
+		if ( !file.HasExt() )
+		{
+			file.SetExt( wxT("fbp") );
+			filename = file.GetFullPath();
+		}
+
 		try
 		{
 			AppData()->SaveProject( filename );
