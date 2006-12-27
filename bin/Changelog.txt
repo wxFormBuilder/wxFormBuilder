@@ -58,6 +58,10 @@ date Version 3.00.05
 + Added maximum size property to wxWindow properties.
 + Implemented FS#48 — "Improve error notification when a plugin is missing."
   If widgets are missing, the project will not load at all.
++ Added a boolean "xrc_skip_sizer" property to Frame. The default is value is true.
+  When true, the main sizer of the frame will not be generated in XRC, if the sizer
+  only has one child. This is a workaround for a wx bug that ignores the "size"
+  property of the frame if it has a sizer. This resolves FS#74.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
