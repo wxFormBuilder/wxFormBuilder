@@ -32,7 +32,7 @@ package.links = { "Plugin Interface", "TiCPP" }
 package.bindir = "../../bin/plugins/common"
 --package.libdir = "../../lib"
 -- Set the defines.
-package.defines = { "BUILD_DLL" }
+package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }
 
 
 -- Hack the dll output to prefix 'lib' to the begining.
