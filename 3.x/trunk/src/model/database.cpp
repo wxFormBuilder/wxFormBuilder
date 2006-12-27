@@ -614,8 +614,8 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 {
 	try
 	{
-		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
-		doc.LoadFile();
+		ticpp::Document doc;
+		XMLUtils::LoadXMLFile( doc, file );
 
 		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
 
@@ -715,8 +715,8 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 {
 	try
 	{
-		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
-		doc.LoadFile();
+		ticpp::Document doc;
+		XMLUtils::LoadXMLFile( doc, file );
 
 		// read the codegen element
 		ticpp::Element* elem_codegen = doc.FirstChildElement("codegen");
@@ -758,6 +758,10 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 	{
 		wxLogError( _WXSTR(ex.m_details) );
 	}
+	catch( wxFBException& ex )
+	{
+		wxLogError( ex.what() );
+	}
 }
 
 PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString& iconPath )
@@ -766,8 +770,8 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 
 	try
 	{
-		ticpp::Document doc( std::string( file.mb_str( wxConvFile ) ) );
-		doc.LoadFile();
+		ticpp::Document doc;
+		XMLUtils::LoadXMLFile( doc, file );
 
 		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
 
@@ -1191,69 +1195,66 @@ void ObjectDatabase::InitPropertyTypes()
 
 bool ObjectDatabase::LoadObjectTypes()
 {
+	TiXmlDocument doc;
 	wxString xmlPath = m_xmlPath + wxT("objtypes.xml");
-	TiXmlDocument doc( xmlPath.mb_str( wxConvFile ) );
+	XMLUtils::LoadXMLFile( doc, xmlPath );
 
-	if ( doc.LoadFile() )
+	// se realizará en dos pasos, primero importamos cada uno de los ObjectTypes
+	// definidos y a continuación se añadirán los posibles ObjectTypes hijos
+	// de cada uno.
+	TiXmlElement* root = doc.FirstChildElement("definitions");
+	if (root)
 	{
-		// se realizará en dos pasos, primero importamos cada uno de los ObjectTypes
-		// definidos y a continuación se añadirán los posibles ObjectTypes hijos
-		// de cada uno.
-		TiXmlElement* root = doc.FirstChildElement("definitions");
-		if (root)
+		TiXmlElement* elem = root->FirstChildElement("objtype");
+		while (elem)
 		{
-			TiXmlElement* elem = root->FirstChildElement("objtype");
-			while (elem)
+			bool hidden = false, item = false;
+			std::string name = elem->Attribute("name");
+			if (elem->Attribute("hidden") && std::string(elem->Attribute("hidden"))=="1")
+				hidden = true;
+			if (elem->Attribute("item") && std::string(elem->Attribute("item"))=="1")
+				item = true;
+
+			int id = (int)m_types.size();
+			PObjectType objType( new ObjectType( _WXSTR(name), id, hidden, item ) );
+			m_types.insert(ObjectTypeMap::value_type( _WXSTR(name), objType ) );
+
+			elem = elem->NextSiblingElement("objtype");
+		}
+
+		// ahora continuamos registrando añadiendo las referencias de cada
+		// posible hijo
+		elem = root->FirstChildElement("objtype");
+		while (elem)
+		{
+			std::string name = elem->Attribute("name");
+
+			// obtenemos el objType
+			PObjectType objType = GetObjectType(_WXSTR(name));
+			//wxLogMessage(wxString::Format(wxT("ObjectType %s can be parent of..."),name.c_str()));
+			TiXmlElement *child = elem->FirstChildElement("childtype");
+			while (child)
 			{
-				bool hidden = false, item = false;
-				std::string name = elem->Attribute("name");
-				if (elem->Attribute("hidden") && std::string(elem->Attribute("hidden"))=="1")
-					hidden = true;
-				if (elem->Attribute("item") && std::string(elem->Attribute("item"))=="1")
-					item = true;
+				int nmax = -1; // sin límite
+				std::string childname = child->Attribute("name");
+				//wxLogMessage(wxString::Format(wxT("%s"),childname.c_str()));
 
-				int id = (int)m_types.size();
-				PObjectType objType( new ObjectType( _WXSTR(name), id, hidden, item ) );
-				m_types.insert(ObjectTypeMap::value_type( _WXSTR(name), objType ) );
 
-				elem = elem->NextSiblingElement("objtype");
+				if (child->Attribute("nmax"))
+					nmax = TypeConv::StringToInt(_WXSTR(child->Attribute("nmax")));
+				//nmax = 1;
+
+				PObjectType childType = GetObjectType(_WXSTR(childname));
+				assert(childType);
+
+				objType->AddChildType(childType, nmax);
+
+				child = child->NextSiblingElement("childtype");
 			}
-
-			// ahora continuamos registrando añadiendo las referencias de cada
-			// posible hijo
-			elem = root->FirstChildElement("objtype");
-			while (elem)
-			{
-				std::string name = elem->Attribute("name");
-
-				// obtenemos el objType
-				PObjectType objType = GetObjectType(_WXSTR(name));
-				//wxLogMessage(wxString::Format(wxT("ObjectType %s can be parent of..."),name.c_str()));
-				TiXmlElement *child = elem->FirstChildElement("childtype");
-				while (child)
-				{
-					int nmax = -1; // sin límite
-					std::string childname = child->Attribute("name");
-					//wxLogMessage(wxString::Format(wxT("%s"),childname.c_str()));
-
-
-					if (child->Attribute("nmax"))
-						nmax = TypeConv::StringToInt(_WXSTR(child->Attribute("nmax")));
-					//nmax = 1;
-
-					PObjectType childType = GetObjectType(_WXSTR(childname));
-					assert(childType);
-
-					objType->AddChildType(childType, nmax);
-
-					child = child->NextSiblingElement("childtype");
-				}
-				elem = elem->NextSiblingElement("objtype");
-			}
+			elem = elem->NextSiblingElement("objtype");
 		}
 	}
-	else
-		wxLogError(wxT("Error loading object types"));
+
 	return true;
 }
 

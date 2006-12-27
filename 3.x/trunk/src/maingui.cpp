@@ -42,6 +42,7 @@
 #include <wx/sysopt.h>
 #include <wx/xrc/xmlres.h>
 #include "wx/config.h"
+#include "utils/wxfbexception.h"
 
 #include <memory>
 #include "maingui.h"
@@ -56,6 +57,7 @@ bool MyApp::OnInit()
 	// Get the path of the executable
 	wxString exeFile( argv[0] );
 	wxFileName appFileName( exeFile );
+	appFileName.Normalize();
 	wxString path = appFileName.GetPath();
 
 	// Create singleton AppData - wait to initialize until sure that this is not the second
@@ -86,7 +88,16 @@ bool MyApp::OnInit()
 	wxXmlResource::Get()->InitAllHandlers();
 
 	// Init AppData
-	AppDataInit();
+	try
+	{
+		AppDataInit();
+	}
+	catch( wxFBException& ex )
+	{
+		wxLog::FlushActive();
+		wxMessageBox( wxString::Format( _("Error loading application: %s\nwxFormBuilder cannot continue."), ex.what() ), _("Error loading application"), wxICON_ERROR, NULL );
+		return false;
+	}
 
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
 	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );

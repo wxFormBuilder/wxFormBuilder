@@ -28,6 +28,8 @@
 #include "unknown.h"
 #include <wx/image.h>
 #include "utils/typeconv.h"
+#include "utils/stringutils.h"
+#include "utils/wxfbexception.h"
 
 static std::map< wxString, wxBitmap > m_bitmaps;
 
@@ -58,14 +60,13 @@ wxBitmap AppBitmaps::GetBitmap( wxString iconname, unsigned int size )
 
 void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 {
-	m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
-
-	bool result = false;
-	TiXmlDocument doc( filepath.mb_str( wxConvFile ) );
-	result = doc.LoadFile();
-
-	if (result)
+	try
 	{
+		m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
+
+		TiXmlDocument doc;
+		XMLUtils::LoadXMLFile( doc, filepath );
+
 		TiXmlElement* root = doc.FirstChildElement("icons");
 		if (root)
 		{
@@ -78,11 +79,10 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 
 				elem = elem->NextSiblingElement("icon");
 			}
-
 		}
 	}
-	else
+	catch ( wxFBException& ex )
 	{
-		wxLogError(wxT("Error loading icons"));
+		wxLogError( _("Error loading images: %s"), ex.what() );
 	}
 }
