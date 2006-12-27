@@ -34,6 +34,7 @@
 #include "codegen/xrccg.h"
 #include "wxfbmanager.h"
 #include "utils/wxfbexception.h"
+#include "utils/stringutils.h"
 
 #include <ticpp.h>
 #include <set>
@@ -434,7 +435,8 @@ m_port( 4242 )
 
 void ApplicationData::LoadApp()
 {
-	AppBitmaps::LoadBitmaps( m_objDb->GetXmlPath() + wxT("icons.xml"), m_objDb->GetIconPath() );
+	wxString bitmapPath = m_objDb->GetXmlPath() + wxT("icons.xml");
+	AppBitmaps::LoadBitmaps( bitmapPath, m_objDb->GetIconPath() );
 	m_objDb->LoadObjectTypes();
 	m_objDb->LoadPlugins( m_manager );
 }
@@ -1051,7 +1053,7 @@ bool ApplicationData::LoadProject(const wxString &file)
 					return false;
 				}
 
-				if ( doc.LoadFile( file.mb_str( wxConvUTF8 ) ) )
+				if ( doc.LoadFile( file.mb_str( wxConvFile ) ) )
 					root = doc.RootElement();
 				else
 					return false;
@@ -1105,45 +1107,14 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 		// Version prior to 1 were not UTF-8
 		if ( fileMajor < 1 )
 		{
-			wxFFile oldEncoding( path.c_str(), wxT("r") );
-			wxString contents;
-			wxCSConv encodingConv( wxFONTENCODING_ISO8859_1 );
-			if ( !oldEncoding.ReadAll( &contents, encodingConv ) )
+			try
 			{
-				wxLogError( wxT("Unable to read file in its original encoding.") );
-				return false;
+				XMLUtils::ConvertAndAddDeclaration( path, wxFONTENCODING_ISO8859_1, false );
 			}
-
-			if ( contents.empty() )
+			catch ( wxFBException& ex )
 			{
-				wxLogError( wxT("Misinterpreted file's original encoding") );
+				wxLogError( ex.what() );
 				return false;
-			}
-
-			// Prepend the declaration, so TinyXML correctly determines the new encoding
-			contents.Prepend( wxT("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>") );
-			if ( !oldEncoding.Close() )
-			{
-				wxLogError( wxT("Unable to close original file.") );
-				return false;
-			}
-
-			if ( !::wxRemoveFile( path ) )
-			{
-				wxLogError( wxT("Unable to delete original file.") );
-				return false;
-			}
-
-			wxFFile newEncoding( path.c_str(), wxT("w") );
-			if ( !newEncoding.Write( contents, wxConvUTF8 ) )
-			{
-				wxLogError( wxT("Unable to write file in its new encoding.") );
-				return false;
-			}
-
-			if ( !newEncoding.Close() )
-			{
-				wxLogError( wxT("Unable to close file after converting the encoding.") );
 			}
 		}
 

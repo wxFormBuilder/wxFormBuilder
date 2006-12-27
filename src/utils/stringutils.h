@@ -25,7 +25,30 @@
 
 #include <wx/string.h>
 
+namespace ticpp
+{
+	class Document;
+};
+
+class TiXmlDocument;
+
 namespace StringUtils
 {
   wxString IntToStr(int num);
+
+  wxString GetSupportedEncodings( bool columnateWithTab = true, wxArrayString* array = NULL );
+  wxFontEncoding GetEncodingFromUser( const wxString& message );
 };
+
+namespace XMLUtils
+{
+	// These are only vaguely string related, perhaps they deserve their own files.
+	// These load xml files and verify the encoding is correct, optionally converting
+	// the files using wxWidgets.
+	void LoadXMLFile( ticpp::Document& doc, const wxString& path = wxEmptyString );
+	void LoadXMLFile( TiXmlDocument& doc, const wxString& path = wxEmptyString );
+
+	// Converts to UTF-8 and prepends declaration
+	void ConvertAndAddDeclaration( const wxString& path, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
+	void ConvertAndChangeDeclaration( const wxString& path, const wxString& version, const wxString& standalone, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
+}

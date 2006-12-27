@@ -508,6 +508,8 @@ PObjectBase XrcFilter::GetObject(TiXmlElement *xrcObj, PObjectBase parent,
 
 XrcFilter::XrcFilter()
 {
+	// We aren't using this now, what does it do, and why are you trying to use it?
+  assert(false);
   assert (m_xrcDb.LoadFile("./xml/xrc.xml"));
 }
 
@@ -557,6 +559,11 @@ PObjectBase XrcLoader::GetProject(TiXmlDocument *xrcDoc)
 
 
   TiXmlElement *root = xrcDoc->FirstChildElement("resource");
+  if ( !root )
+  {
+  	wxLogError( _("Missing root element \"resource\"") );
+  	return project;
+  }
   TiXmlElement *element = root->FirstChildElement("object");
   while (element)
   {

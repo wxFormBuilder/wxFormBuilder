@@ -41,6 +41,7 @@
 #include "rad/wxfbevent.h"
 #include "wxfbmanager.h"
 #include "utils/wxfbexception.h"
+#include "utils/stringutils.h"
 #include <wx/filename.h>
 
 #include <rad/appdata.h>
@@ -450,30 +451,28 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 	if ( dialog->ShowModal() == wxID_OK )
 	{
 		m_currentDir = dialog->GetDirectory();
-		TiXmlDocument doc( dialog->GetPath().mb_str( wxConvFile ) );
-		if ( doc.LoadFile() )
+		try
 		{
+			TiXmlDocument doc;
+			XMLUtils::LoadXMLFile( doc, dialog->GetPath() );
+
 			XrcLoader xrc;
 			xrc.SetObjectDatabase( AppData()->GetObjectDatabase() );
-			try
+
+			PObjectBase project = xrc.GetProject( &doc );
+			if ( project )
 			{
-				PObjectBase project = xrc.GetProject( &doc );
-				if ( project )
-				{
-					AppData()->MergeProject( project );
-				}
-				else
-				{
-					wxLogError( wxT( "Error while loading XRC" ) );
-				}
+				AppData()->MergeProject( project );
 			}
-			catch ( wxFBException& ex )
+			else
 			{
-				wxLogError( ex.what() );
+				wxLogError( wxT( "Error while loading XRC" ) );
 			}
 		}
-		else
-			wxLogError( wxT( "Error while loading XRC" ) );
+		catch ( wxFBException& ex )
+		{
+			wxLogError( _("Error Loading XRC: %s"), ex.what() );
+		}
 	}
 
 	dialog->Destroy();

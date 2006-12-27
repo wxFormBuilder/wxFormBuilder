@@ -62,6 +62,7 @@ date Version 3.00.05
   When true, the main sizer of the frame will not be generated in XRC, if the sizer
   only has one child. This is a workaround for a wx bug that ignores the "size"
   property of the frame if it has a sizer. This resolves FS#74.
++ Added encoding check for all loaded xml files.
 
 10-13-2006 Version 3.00.04
 * Fixed visual editor for subpanels.
