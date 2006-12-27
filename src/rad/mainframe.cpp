@@ -966,7 +966,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_ALIGN_BOTTOM,   wxT( "&Align Bottom" ),         wxT( "Align item to the bottom" ) );
 
 	wxMenu *menuView = new wxMenu;
-	menuView->Append( ID_PREVIEW_XRC, wxT( "XRC window" ), wxT( "Show a preview of the XRC window" ) );
+	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );
 
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append( ID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
