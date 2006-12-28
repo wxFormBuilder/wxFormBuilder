@@ -73,9 +73,9 @@ m_stopModifiedEvent( false )
 
 	// Parece ser que han modificado el comportamiento en wxMSW 2.5.x ya que al
 	// poner un color de background, este es aplicado a los hijos también.
-	// SetBackgroundColour(wxColour(150,150,150));
+	SetOwnBackgroundColour(wxColour(150,150,150));
 
-	SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
+	//SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 	SetScrollRate(5, 5);
 
 	m_back = new DesignerWindow(this,-1,wxPoint(10,10),wxSize(350,200),VISUAL_EDITOR_BORDER);
@@ -748,22 +748,20 @@ void DesignerWindow::SetGrid( int x, int y )
 
 void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
 {
+	bool isSizer = ( object->GetObjectTypeName() == wxT("sizer") );
+	int min = ( isSizer ? 0 : 1 );
+
 	int border = object->GetParent()->GetPropertyAsInteger( wxT("border") );
 	if ( border == 0 )
 	{
-		border = 1;
+		border = min;
 	}
 
 	int flag = object->GetParent()->GetPropertyAsInteger( wxT("flag") );
-	int topBorder = 	( flag & wxTOP ) 	== 0 ? 1 : border;
-	int bottomBorder = 	( flag & wxBOTTOM ) == 0 ? 1 : border;
-	int rightBorder = 	( flag & wxRIGHT ) 	== 0 ? 1 : border;
-	int leftBorder = 	( flag & wxLEFT ) 	== 0 ? 1 : border;
-
-	dc.DrawRectangle( 	point.x - leftBorder + 1,
-						point.y - topBorder + 1,
-						size.x + leftBorder + rightBorder - 2,
-						size.y + topBorder + bottomBorder - 2 );
+	int topBorder = 	( flag & wxTOP ) 	== 0 ? min : border;
+	int bottomBorder = 	( flag & wxBOTTOM ) == 0 ? min : border;
+	int rightBorder = 	( flag & wxRIGHT ) 	== 0 ? min : border;
+	int leftBorder = 	( flag & wxLEFT ) 	== 0 ? min : border;
 
 	dc.DrawRectangle( 	point.x - leftBorder,
 						point.y - topBorder,
