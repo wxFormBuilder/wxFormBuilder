@@ -30,6 +30,7 @@ public:
 
   void OnPaint(wxPaintEvent &event);
   void OnSize(wxSizeEvent &event);
+  void OnLeftClick (wxMouseEvent &event);
   void SetTitle(const wxString &title) { m_titleText = title; }
   wxString GetTitle() { return m_titleText; }
 
@@ -37,6 +38,7 @@ public:
 
 
 BEGIN_EVENT_TABLE(wxInnerFrame::TitleBar,wxPanel)
+  EVT_LEFT_DOWN( wxInnerFrame::TitleBar::OnLeftClick )
   EVT_PAINT(wxInnerFrame::TitleBar::OnPaint)
   EVT_SIZE(wxInnerFrame::TitleBar::OnSize)
 END_EVENT_TABLE()
@@ -49,6 +51,11 @@ wxInnerFrame::TitleBar::TitleBar (wxWindow *parent, wxWindowID id,
   m_colour1 = wxColour(10,36,106);
   m_colour2 = wxColour(166,202,240);
   m_titleText = wxT("wxFormBuilder rocks!");
+}
+
+void wxInnerFrame::TitleBar::OnLeftClick (wxMouseEvent &event)
+{
+	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
 
 void wxInnerFrame::TitleBar::OnSize (wxSizeEvent &event)
@@ -167,7 +174,7 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
 
 
   m_titleBar = new TitleBar(this,-1);
-  m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize);
+  m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize,wxTAB_TRAVERSAL);
 
   wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
   sizer->Add(m_titleBar,0,wxGROW|wxRIGHT,2);

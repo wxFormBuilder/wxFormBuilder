@@ -79,6 +79,7 @@ m_stopModifiedEvent( false )
 	SetScrollRate(5, 5);
 
 	m_back = new DesignerWindow(this,-1,wxPoint(10,10),wxSize(350,200),VISUAL_EDITOR_BORDER);
+	m_back->GetEventHandler()->Connect( wxID_ANY, wxEVT_LEFT_DOWN, wxMouseEventHandler( VisualEditor::OnClickBackPanel ), NULL, this );
 }
 
 void VisualEditor::DeleteAbstractObjects()
@@ -118,6 +119,14 @@ void VisualEditor::OnPaintPanel (wxPaintEvent &event)
 	//dc.SetBackground(wxBrush(wxColour(150,150,150),wxSOLID));
 	dc.SetBackground(wxBrush(wxColour(192,192,192),wxSOLID));
 	dc.Clear();
+}
+
+void VisualEditor::OnClickBackPanel( wxMouseEvent& event )
+{
+	if ( m_form )
+	{
+		AppData()->SelectObject(m_form);
+	}
 }
 
 void VisualEditor::OnResizeBackPanel (wxCommandEvent &event) //(wxSashEvent &event)
