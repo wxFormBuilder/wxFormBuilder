@@ -124,6 +124,7 @@ class VisualEditor : public wxScrolledWindow
   VisualEditor(wxWindow *parent);
   ~VisualEditor();
   void OnResizeBackPanel (wxCommandEvent &event);
+  void OnClickBackPanel( wxMouseEvent& event );
   void OnPaintPanel (wxPaintEvent &event);
   void PreventOnSelected( bool prevent = true );
   void PreventOnModified( bool prevent = true );
