@@ -735,6 +735,10 @@ void VisualEditor::OnProjectRefresh( wxFBEvent &event )
 
 IMPLEMENT_CLASS( DesignerWindow, wxInnerFrame)
 
+BEGIN_EVENT_TABLE(DesignerWindow,wxEvtHandler)
+  EVT_PAINT(DesignerWindow::OnPaint)
+END_EVENT_TABLE()
+
 DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString &name )
 :
 wxInnerFrame(parent, id, pos, size, style)
@@ -753,6 +757,22 @@ void DesignerWindow::SetGrid( int x, int y )
 {
 	m_x = x;
 	m_y = y;
+}
+
+void DesignerWindow::OnPaint(wxPaintEvent &event)
+{
+	// This paint event helps draw the selection boxes
+	// when they extend beyond the edges of the content panel
+	wxPaintDC dc(this);
+
+	if ( m_actPanel == GetFrameContentPanel() )
+	{
+		wxPoint origin = GetFrameContentPanel()->GetPosition();
+		dc.SetDeviceOrigin( origin.x, origin.y );
+		HighlightSelection( dc );
+	}
+
+	event.Skip();
 }
 
 void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
