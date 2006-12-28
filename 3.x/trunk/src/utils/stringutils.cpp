@@ -32,6 +32,7 @@
 #include <wx/ffile.h>
 #include <wx/fontmap.h>
 #include <wx/choicdlg.h>
+#include <wx/arrstr.h>
 
 wxString StringUtils::IntToStr(int num)
 {

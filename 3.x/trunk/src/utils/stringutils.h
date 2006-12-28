@@ -31,6 +31,7 @@ namespace ticpp
 };
 
 class TiXmlDocument;
+class wxArrayString;
 
 namespace StringUtils
 {
