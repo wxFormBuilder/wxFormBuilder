@@ -176,9 +176,16 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
   m_titleBar = new TitleBar(this,-1);
   m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize,wxTAB_TRAVERSAL);
 
+  // Use spacers to create a 1 pixel border on left and top of content panel - this is for drawing the selection box
+  // Use borders to create a 2 pixel border on right and bottom - this is so the back panel can catch mouse events for resizing
   wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
   sizer->Add(m_titleBar,0,wxGROW|wxRIGHT,2);
-  sizer->Add(m_frameContent, 1, wxGROW|wxBOTTOM|wxRIGHT,2);
+  sizer->AddSpacer( 1 );
+  wxBoxSizer *horiSizer = new wxBoxSizer(wxHORIZONTAL);
+  horiSizer->AddSpacer( 1 );
+  horiSizer->Add(m_frameContent, 1,wxGROW);
+  sizer->Add(horiSizer,1, wxGROW|wxBOTTOM|wxRIGHT,2);
+
   SetSizer(sizer);
   SetAutoLayout(true);
   Layout();

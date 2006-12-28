@@ -68,7 +68,7 @@ class DesignerWindow : public wxInnerFrame
 
  protected:
 
-   //DECLARE_EVENT_TABLE()
+   DECLARE_EVENT_TABLE()
 
  public:
    DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
@@ -86,6 +86,7 @@ class DesignerWindow : public wxInnerFrame
    wxMenu* GetMenuFromObject(PObjectBase menu);
    void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar);
    void HighlightSelection(wxDC& dc);
+   void OnPaint(wxPaintEvent &event);
 };
 
 class wxFBEvent;
