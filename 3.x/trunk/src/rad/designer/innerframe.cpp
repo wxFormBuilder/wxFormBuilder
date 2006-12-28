@@ -170,8 +170,8 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
   m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize);
 
   wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-  sizer->Add(m_titleBar,0,wxGROW|wxTOP|wxLEFT|wxRIGHT,3);
-  sizer->Add(m_frameContent, 1, wxGROW|wxBOTTOM|wxLEFT|wxRIGHT,3);
+  sizer->Add(m_titleBar,0,wxGROW|wxRIGHT,2);
+  sizer->Add(m_frameContent, 1, wxGROW|wxBOTTOM|wxRIGHT,2);
   SetSizer(sizer);
   SetAutoLayout(true);
   Layout();
