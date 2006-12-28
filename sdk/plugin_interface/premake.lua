@@ -74,6 +74,9 @@ package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
+if ( target == "cb-gcc" or target == "gnu" ) then
+	table.insert( package.config["Debug"].buildoptions, "-O0" )
+end
 
 -- Set the defines.
 if ( options["with-wx-shared"] ) then
@@ -95,6 +98,57 @@ if ( OS == "windows" ) then
 		table.insert( package.includepaths, "$(#WX.include)" )
 	else
 		table.insert( package.includepaths, "$(WXWIN)/include" )
+	end
+	
+	-- Set the correct 'setup.h' include path.
+	if ( options["with-wx-shared"] ) then
+		if ( options["unicode"] ) then
+			if ( target == "cb-gcc" ) then
+				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_dll/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_dll/mswu" )
+			elseif ( target == "gnu" ) then
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_dll/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_dll/mswu" )
+			else
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/vc_dll/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/vc_dll/mswu" )
+			end
+		else
+			if ( target == "cb-gcc" ) then
+				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_dll/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_dll/msw" )
+			elseif ( target == "gnu" ) then
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_dll/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_dll/msw" )
+			else
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/vc_dll/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/vc_dll/msw" )
+			end
+		end
+	else
+		if ( options["unicode"] ) then
+			if ( target == "cb-gcc" ) then
+				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_lib/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_lib/mswu" )
+			elseif ( target == "gnu" ) then
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_lib/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_lib/mswu" )
+			else
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/vc_lib/mswud" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/vc_lib/mswu" )
+			end
+		else
+			if ( target == "cb-gcc" ) then
+				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_lib/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_lib/msw" )
+			elseif ( target == "gnu" ) then
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_lib/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_lib/msw" )
+			else
+				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/vc_lib/mswd" )
+				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/vc_lib/msw" )
+			end
+		end
 	end
 	
 	-- Set the linker options.
