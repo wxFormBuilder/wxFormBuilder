@@ -923,7 +923,14 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 		dummySizer->Add(toolbar, 0, wxEXPAND | wxALL, 0);
 
 	if (mainSizer)
+	{
 		dummySizer->Add(mainSizer, 1, wxEXPAND | wxALL, 0);
+		if ( mainSizer->GetChildren().IsEmpty() )
+		{
+			// Sizers do not expand if they are empty
+			mainSizer->AddStretchSpacer(1);
+		}
+	}
 	else
 		dummySizer->AddStretchSpacer(1);
 
