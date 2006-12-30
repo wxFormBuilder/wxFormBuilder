@@ -51,8 +51,15 @@ IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
-	wxApp::SetVendorName( wxT( " wxFormBuilder" ) );
+
+	wxApp::SetVendorName( wxT( "wxFormBuilder" ) );
+
+	// Using a space so the initial 'w' will not be capitalized in GUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
+
+	// Creating the wxConfig manually so there will be no space
+	// The old config (if any) is returned, delete it
+	delete wxConfigBase::Set( new wxConfig( wxT("wxFormBuilder") ) );
 
 	// Get the path of the executable
 	wxString exeFile( argv[0] );
