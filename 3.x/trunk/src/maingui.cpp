@@ -136,12 +136,16 @@ bool MyApp::OnInit()
 	config->Read( wxT( "PosY" ), &y );
 	config->Read( wxT( "SizeW" ), &w );
 	config->Read( wxT( "SizeH" ), &h );
+
+	long style = config->Read( wxT("style"), wxFB_WIDE_GUI );
+	if ( style != wxFB_CLASSIC_GUI )
+	{
+		style = wxFB_WIDE_GUI;
+	}
+
 	config->SetPath( wxT("/") );
 
-
-  //TO-DO: Make wxFB gui style selectable
-	//MainFrame *frame = new MainFrame( NULL ,-1, wxFB_CLASSIC_GUI);
-	MainFrame *frame = new MainFrame( NULL ,-1, wxFB_WIDE_GUI, wxPoint( x, y ), wxSize( w, h ) );
+	MainFrame *frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
 	frame->Show( TRUE );
 	SetTopWindow( frame );
 
