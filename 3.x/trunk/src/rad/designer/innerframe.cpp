@@ -164,9 +164,8 @@ END_EVENT_TABLE()
 
 wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
   const wxPoint &pos, const wxSize &size, long style )
-  : wxPanel(parent,id,pos,size,wxRAISED_BORDER|wxFULL_REPAINT_ON_RESIZE)//wxSIMPLE_BORDER)
+  : wxPanel(parent,id,pos,size,wxRAISED_BORDER|wxFULL_REPAINT_ON_RESIZE)
 {
-  SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
   m_sizing = NONE;
   m_curX = m_curY = -1;
   m_minSize = wxSize(100, 100);
@@ -174,7 +173,7 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
 
 
   m_titleBar = new TitleBar(this,-1);
-  m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize,wxTAB_TRAVERSAL);
+  m_frameContent = new wxPanel(this,-1,wxDefaultPosition,wxDefaultSize);
 
   // Use spacers to create a 1 pixel border on left and top of content panel - this is for drawing the selection box
   // Use borders to create a 2 pixel border on right and bottom - this is so the back panel can catch mouse events for resizing
