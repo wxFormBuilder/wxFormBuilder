@@ -41,17 +41,10 @@
 #define wxFULL_REPAINT_ON_RESIZE 0
 #endif
 
-#ifdef __WXGTK__
-#define VISUAL_EDITOR_BORDER wxRAISED_BORDER
-#else
-#define VISUAL_EDITOR_BORDER (wxFULL_REPAINT_ON_RESIZE | wxDOUBLE_BORDER)
-#endif
-
 BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
 	//EVT_SASH_DRAGGED(-1, VisualEditor::OnResizeBackPanel)
 	//EVT_COMMAND(-1, wxEVT_PANEL_RESIZED, VisualEditor::OnResizeBackPanel)
 	EVT_INNER_FRAME_RESIZED(-1, VisualEditor::OnResizeBackPanel)
-	//EVT_PAINT(VisualEditor::OnPaintPanel)
 
 	EVT_FB_PROJECT_LOADED( VisualEditor::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( VisualEditor::OnProjectSaved )
@@ -71,14 +64,15 @@ m_stopModifiedEvent( false )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 
-	// Parece ser que han modificado el comportamiento en wxMSW 2.5.x ya que al
-	// poner un color de background, este es aplicado a los hijos también.
-	SetOwnBackgroundColour(wxColour(150,150,150));
+	#ifdef __WXMSW__
+		SetOwnBackgroundColour(wxColour(150,150,150));
+	#else
+		SetOwnBackgroundColour(wxColour(192,192,192));
+	#endif
 
-	//SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
 	SetScrollRate(5, 5);
 
-	m_back = new DesignerWindow(this,-1,wxPoint(10,10),wxSize(350,200),VISUAL_EDITOR_BORDER);
+	m_back = new DesignerWindow( this, wxID_ANY, wxPoint(10,10) );
 	m_back->GetEventHandler()->Connect( wxID_ANY, wxEVT_LEFT_DOWN, wxMouseEventHandler( VisualEditor::OnClickBackPanel ), NULL, this );
 }
 
@@ -111,22 +105,13 @@ void VisualEditor::UpdateVirtualSize()
 	if (panelW != w || panelH != h) SetVirtualSize(panelW, panelH);
 }
 
-void VisualEditor::OnPaintPanel (wxPaintEvent &event)
-{
-	// es necesario esto para que se pinte el panel de oscuro
-	// con wxGTK.
-	wxPaintDC dc(this);
-	//dc.SetBackground(wxBrush(wxColour(150,150,150),wxSOLID));
-	dc.SetBackground(wxBrush(wxColour(192,192,192),wxSOLID));
-	dc.Clear();
-}
-
 void VisualEditor::OnClickBackPanel( wxMouseEvent& event )
 {
 	if ( m_form )
 	{
 		AppData()->SelectObject(m_form);
 	}
+	event.Skip();
 }
 
 void VisualEditor::OnResizeBackPanel (wxCommandEvent &event) //(wxSashEvent &event)
@@ -735,7 +720,7 @@ void VisualEditor::OnProjectRefresh( wxFBEvent &event )
 
 IMPLEMENT_CLASS( DesignerWindow, wxInnerFrame)
 
-BEGIN_EVENT_TABLE(DesignerWindow,wxEvtHandler)
+BEGIN_EVENT_TABLE(DesignerWindow,wxInnerFrame)
   EVT_PAINT(DesignerWindow::OnPaint)
 END_EVENT_TABLE()
 

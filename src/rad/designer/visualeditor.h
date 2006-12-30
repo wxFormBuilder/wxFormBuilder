@@ -71,8 +71,8 @@ class DesignerWindow : public wxInnerFrame
    DECLARE_EVENT_TABLE()
 
  public:
-   DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
-     long style, const wxString &name = wxT("designer_win"));
+   DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size = wxDefaultSize,
+     long style = 0, const wxString &name = wxT("designer_win"));
 
    void SetGrid(int x, int y);
    void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
@@ -126,7 +126,6 @@ class VisualEditor : public wxScrolledWindow
   ~VisualEditor();
   void OnResizeBackPanel (wxCommandEvent &event);
   void OnClickBackPanel( wxMouseEvent& event );
-  void OnPaintPanel (wxPaintEvent &event);
   void PreventOnSelected( bool prevent = true );
   void PreventOnModified( bool prevent = true );
 
