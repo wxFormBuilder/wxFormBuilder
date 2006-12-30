@@ -47,6 +47,7 @@ date Version 3.00.05
 * Ids beginning with "wxID_" are no longer defined, this is to avoid redefining
   wxWidgets special identifiers.
 * Ids for forms now use the "id" property instead of being hardcoded to -1.
+* Fixed wxSlider XRC generation for the minValue and maxValue properties.
 ^ wxID_ANY is now the default id.
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.

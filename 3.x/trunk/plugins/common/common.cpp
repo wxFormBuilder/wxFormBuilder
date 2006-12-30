@@ -1085,8 +1085,8 @@ public:
 		xrc.AddWindowProperties();
 		//xrc.AddProperty(_("style"),_("style"), XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
-		xrc.AddProperty(_("min"), _("minValue"), XRC_TYPE_INTEGER);
-		xrc.AddProperty(_("max"), _("maxValue"), XRC_TYPE_INTEGER);
+		xrc.AddProperty( _("minValue"), _("min"), XRC_TYPE_INTEGER);
+		xrc.AddProperty( _("maxValue"), _("max"), XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
 
