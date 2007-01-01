@@ -33,6 +33,7 @@
 #include <wx/fontmap.h>
 #include <wx/choicdlg.h>
 #include <wx/arrstr.h>
+#include <wx/filefn.h>
 
 wxString StringUtils::IntToStr(int num)
 {
@@ -214,11 +215,14 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, const wxString& path )
 		{
 			THROW_WXFBEX( _("LoadXMLFile needs a path") )
 		}
-		else
+
+		if ( !::wxFileExists( path ) )
 		{
-			doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
-			doc.LoadFile();
+			THROW_WXFBEX( _("The file does not exist.\nFile: ") << path )
 		}
+
+		doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
+		doc.LoadFile();
 	}
 	catch ( ticpp::Exception& ex )
 	{
@@ -266,34 +270,37 @@ void XMLUtils::LoadXMLFile( TiXmlDocument& doc, const wxString& path )
 	{
 		THROW_WXFBEX( _("LoadXMLFile needs a path") )
 	}
-	else
+
+	if ( !::wxFileExists( path ) )
 	{
-		doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
-		if ( !doc.LoadFile() )
+		THROW_WXFBEX( _("The file does not exist.\nFile: ") << path )
+	}
+
+	doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
+	if ( !doc.LoadFile() )
+	{
+		// Ask user to all wxFB to convert the file to UTF-8 and add the XML declaration
+		wxString msg = _("This xml file could not be loaded. This could be the result of an unsupported encoding.\n");
+		msg 		+= _("Would you like wxFormBuilder to backup the file and convert it to UTF-8\?\n");
+		msg			+= _("You will be prompted for the original encoding.\n\n");
+		msg			+= _("Path: ");
+		msg			+= path;
+		if ( wxNO == wxMessageBox( msg, _("Unable to load file"), wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT, wxTheApp->GetTopWindow() ) )
 		{
-			// Ask user to all wxFB to convert the file to UTF-8 and add the XML declaration
-			wxString msg = _("This xml file could not be loaded. This could be the result of an unsupported encoding.\n");
-			msg 		+= _("Would you like wxFormBuilder to backup the file and convert it to UTF-8\?\n");
-			msg			+= _("You will be prompted for the original encoding.\n\n");
-			msg			+= _("Path: ");
-			msg			+= path;
-			if ( wxNO == wxMessageBox( msg, _("Unable to load file"), wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT, wxTheApp->GetTopWindow() ) )
-			{
-				// User declined, give up
-				THROW_WXFBEX( _("Unable to load file: ") << path );
-			}
-
-			// User accepted, convert the file
-			wxFontEncoding chosenEncoding = StringUtils::GetEncodingFromUser( _("Please choose the original encoding.") );
-			if ( wxFONTENCODING_MAX == chosenEncoding )
-			{
-				THROW_WXFBEX( _("Unable to load file: ") << path );
-			}
-
-			ConvertAndAddDeclaration( path, chosenEncoding );
-
-			LoadXMLFile( doc, path );
+			// User declined, give up
+			THROW_WXFBEX( _("Unable to load file: ") << path );
 		}
+
+		// User accepted, convert the file
+		wxFontEncoding chosenEncoding = StringUtils::GetEncodingFromUser( _("Please choose the original encoding.") );
+		if ( wxFONTENCODING_MAX == chosenEncoding )
+		{
+			THROW_WXFBEX( _("Unable to load file: ") << path );
+		}
+
+		ConvertAndAddDeclaration( path, chosenEncoding );
+
+		LoadXMLFile( doc, path );
 	}
 
 	TiXmlDeclaration* declaration = NULL;
