@@ -30,8 +30,6 @@
 #include "model/database.h"
 #include "rad/cmdproc.h"
 #include <set>
-#include <wx/ipc.h>
-#include <memory>
 
 namespace ticpp
 {
@@ -43,9 +41,7 @@ class Property;
 
 class wxFBEvent;
 class wxFBManager;
-
-class wxSingleInstanceChecker;
-class AppServer;
+class wxFBIPC;
 
 #define AppData()         	(ApplicationData::Get())
 #define AppDataCreate(path) (ApplicationData::Get(path))
@@ -74,13 +70,12 @@ class ApplicationData
 
   PwxFBManager m_manager;
 
+  // Prevent more than one instance of a project
+  boost::shared_ptr< wxFBIPC > m_ipc;
+
 
   typedef std::vector< wxEvtHandler* > HandlerVector;
   HandlerVector m_handlers;
-
-  // Only allow one instance of a project to be loaded at a time
-  std::auto_ptr< wxSingleInstanceChecker > m_checker;
-  std::auto_ptr< AppServer > m_server;
 
   void NotifyEvent( wxFBEvent& event );
 
@@ -271,7 +266,6 @@ public:
 
   const int m_fbpVerMajor;
   const int m_fbpVerMinor;
-  const int m_port;
 
   const wxString &GetProjectPath() { return m_projectPath; };
   void SetProjectPath(const wxString &path) { m_projectPath = path; };
@@ -279,39 +273,8 @@ public:
   const wxString &GetApplicationPath() { return m_rootDir; };
   void SetApplicationPath(const wxString &path) { m_rootDir = path; };
 
-  // Only allow one instance of a project
+  // Allow a single instance check from outsid the AppData class
   bool VerifySingleInstance( const wxString& file, bool switchTo = true );
-  bool CreateServer( const wxString& name );
-};
-
-/* Only allow one instance of a project */
-
-// Connection class, for use by both communicationg instances
-class AppConnection: public wxConnection
-{
-public:
-	AppConnection(){wxLogMessage(wxT("yo"));}
-	~AppConnection(){}
-
-	bool OnExecute( const wxString& topic, wxChar* data, int size, wxIPCFormat format );
-};
-
-// Server class, for listening to connection requests
-class AppServer: public wxServer
-{
-public:
-	const wxString m_name;
-
-	AppServer( const wxString& name ) : m_name( name ){}
-	wxConnectionBase* OnAcceptConnection( const wxString& topic );
-};
-
-// Client class, to be used by subsequent instances in OnInit
-class AppClient: public wxClient
-{
-public:
-	AppClient(){}
-	wxConnectionBase* OnMakeConnection();
 };
 
 #endif //__APP_DATA__
