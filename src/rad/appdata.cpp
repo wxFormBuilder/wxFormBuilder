@@ -35,6 +35,7 @@
 #include "wxfbmanager.h"
 #include "utils/wxfbexception.h"
 #include "utils/stringutils.h"
+#include "utils/wxfbipc.h"
 
 #include <ticpp.h>
 #include <set>
@@ -42,7 +43,7 @@
 #include <wx/ffile.h>
 #include <wx/filename.h>
 #include <wx/xrc/xmlres.h>
-#include <wx/snglinst.h>
+
 
 using namespace TypeConv;
 
@@ -424,9 +425,9 @@ ApplicationData::ApplicationData(const wxString &rootdir)
 m_rootDir( rootdir ),
 m_objDb( new ObjectDatabase() ),
 m_manager( new wxFBManager ),
+m_ipc( new wxFBIPC ),
 m_fbpVerMajor( 1 ),
-m_fbpVerMinor( 5 ),
-m_port( 4242 )
+m_fbpVerMinor( 5 )
 {
 	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH ) ;
 	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("icons") + wxFILE_SEP_PATH );
@@ -925,12 +926,12 @@ void ApplicationData::ModifyEventHandler(PEvent evt, wxString value)
 void ApplicationData::SaveProject( const wxString& filename )
 {
 	// Make sure this file is not already open
-	if ( !VerifySingleInstance( filename, false ) )
+	if ( !m_ipc->VerifySingleInstance( filename, false ) )
 	{
 		if ( wxYES == wxMessageBox( wxT("You cannot save over a file that is currently open in another instance.\nWould you like to switch to that instance?"),
 										wxT("Open in Another Instance"), wxICON_QUESTION | wxYES_NO, wxTheApp->GetTopWindow() ) )
 		{
-			VerifySingleInstance( filename, true );
+			m_ipc->VerifySingleInstance( filename, true );
 		}
 		return;
 	}
@@ -967,7 +968,7 @@ bool ApplicationData::LoadProject(const wxString &file)
 		return false;
 	}
 
-	if ( !VerifySingleInstance( file ) )
+	if ( !m_ipc->VerifySingleInstance( file ) )
 	{
 		return false;
 	}
@@ -1375,8 +1376,7 @@ void ApplicationData::NewProject()
 	m_cmdProc.Reset();
 	m_projectFile = wxT("");
 	SetProjectPath(wxT(""));
-	m_server.reset();
-	m_checker.reset();
+	m_ipc->Reset();
 	NotifyProjectRefresh();
 }
 
@@ -1974,187 +1974,5 @@ void ApplicationData::NotifyProjectRefresh()
 
 bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo )
 {
-	// Possible send a message to the running instance through this string later, for now it is left empty
-	wxString expression = wxEmptyString;
-
-	// Make path absolute
-	wxFileName path( file );
-	if ( !path.IsOk() )
-	{
-		wxLogError( wxT("This path is invalid: %s"), file.c_str() );
-		return false;
-	}
-
-	if ( !path.IsAbsolute() )
-	{
-		if ( !path.MakeAbsolute() )
-		{
-			wxLogError( wxT("Could not make path absolute: %s"), file.c_str() );
-			return false;
-		}
-	}
-
-	// Check for single instance
-
-	// Create lockfile/mutex name
-	wxString name = wxString::Format( wxT("wxFormBuilder-%s-%s"), wxGetUserId().c_str(), path.GetFullPath().c_str() );
-
-	// Get forbidden characters
-	wxString forbidden = wxFileName::GetForbiddenChars();
-
-	// Repace forbidded characters
-	for ( size_t c = 0; c < forbidden.Length(); ++c )
-	{
-		wxString bad( forbidden.GetChar( c ) );
-		name.Replace( bad.c_str(), wxT("_") );
-	}
-
-	// Paths are not case sensitive in windows
-	#ifdef __WXMSW__
-	name = name.MakeLower();
-	#endif
-
-	// GetForbiddenChars is missing "/" in unix
-	#ifndef __WXMSW__
-	name.Replace( wxT("/"), wxT("_") );
-	#endif
-
-	// Check to see if I already have a server with this name - if so, no need to make another!
-	if ( m_server.get() )
-	{
-		if ( m_server->m_name == name )
-		{
-			return true;
-		}
-	}
-
-    std::auto_ptr< wxSingleInstanceChecker > checker;
-    {
-        // Suspend logging, because error messages here are not useful
-        wxLogNull stopLogging;
-        checker.reset( new wxSingleInstanceChecker( name ) );
-    }
-
-    if ( !checker->IsAnotherRunning() )
-	{
-		// This is the first instance of this project, so setup a server and save the single instance checker
-		if ( CreateServer( name ) )
-		{
-			m_checker = checker;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else if ( switchTo )
-    {
-		// Suspend logging, because error messages here are not useful
-		wxLogNull stopLogging;
-
-		// There is another app, so connect and send the expression
-
-		// Cannot have a client and a server at the same time, due to the implementation of wxTCPServer and wxTCPClient,
-		// so temporarily drop the server if there is one
-		bool hadServer = false;
-		wxString oldName;
-		if ( m_server.get() != NULL )
-		{
-			oldName = m_server->m_name;
-			m_server.reset();
-			hadServer = true;
-		}
-
-		// Create the client
-		std::auto_ptr< AppClient > client( new AppClient );
-
-		// Create the connection
-		std::auto_ptr< wxConnectionBase > connection;
-		#ifdef __WXMSW__
-			connection.reset( client->MakeConnection( wxT("localhost"), name, wxT("wxFormBuilder") ) );
-		#else
-			for ( int i = m_port; i < m_port + 20; ++i )
-			{
-				wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
-				connection.reset( client->MakeConnection( wxT("localhost"), nameWithPort, wxT("wxFormBuilder") ) );
-			}
-		#endif
-
-		// Drop the connection and client
-		connection.reset();
-		client.reset();
-
-		// Create the server again, if necessary
-		if ( hadServer )
-		{
-			CreateServer( oldName );
-		}
-    }
-    return false;
+	return m_ipc->VerifySingleInstance( file, switchTo );
 }
-
-wxConnectionBase* AppServer::OnAcceptConnection( const wxString& topic )
-{
-	if ( topic == wxT("wxFormBuilder") )
-	{
-		wxFrame* frame = wxDynamicCast( wxTheApp->GetTopWindow(), wxFrame );
-		if ( !frame )
-		{
-			return NULL;
-		}
-		frame->Enable();
-
-		if ( frame->IsIconized() )
-		{
-			frame->Iconize( false );
-		}
-
-		frame->Raise();
-	}
-
-	return NULL;
-}
-
-wxConnectionBase* AppClient::OnMakeConnection()
-{
-	return NULL;
-}
-
-bool AppConnection::OnExecute( const wxString &topic, wxChar *data, int size, wxIPCFormat format )
-{
-	return true;
-}
-
-bool ApplicationData::CreateServer( const wxString& name )
-{
-	// Suspend logging, because error messages here are not useful
-	//wxLogNull stopLogging;
-
-	std::auto_ptr< AppServer > server( new AppServer( name ) );
-
-	#ifdef __WXMSW__
-		if ( server->Create( name ) )
-		{
-			m_server = server;
-			return true;
-		}
-	#else
-	{
-		for ( int i = m_port; i < m_port + 20; ++i )
-		{
-			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
-			if( server->Create( nameWithPort ) )
-			{
-				m_server = server;
-				return true;
-			}
-		}
-	}
-	#endif
-
-	wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
-	return false;
-}
-
-
