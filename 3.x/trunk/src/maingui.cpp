@@ -51,9 +51,6 @@ IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
-
-	wxApp::SetVendorName( wxT( "wxFormBuilder" ) );
-
 	// Using a space so the initial 'w' will not be capitalized in GUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
