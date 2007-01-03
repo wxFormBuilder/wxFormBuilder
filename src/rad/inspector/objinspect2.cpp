@@ -451,21 +451,20 @@ void ObjectInspector::Create( bool force )
 		if ( pageCount > 0 )
 		{
 			for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex )
+			{
 				m_pg->RemovePage( pageIndex );
 			}
+		}
 
 		// now we do the same thing for event grid...
 		pageCount = (int)m_eg->GetPageCount();
 		if ( pageCount > 0)
 		{
 		  for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex)
+		  {
 		    m_eg->RemovePage( pageIndex );
+		  }
 		}
-
-		// ... and we create a default page
-		/*m_eg->AddPage( wxT("default"));
-		m_eg->SelectPage(wxT("default"));
-		m_eg->AppendCategory(sel_obj->GetClassName() + wxT(" Events"));*/
 
 		m_propMap.clear();
 		m_eventMap.clear();
@@ -507,6 +506,10 @@ void ObjectInspector::Create( bool force )
 			}
 		}
 
+		m_pg->Refresh();
+		m_pg->Update();
+		m_eg->Refresh();
+		m_eg->Update();
 		Thaw();
 	}
 }

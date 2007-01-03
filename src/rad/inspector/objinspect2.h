@@ -116,7 +116,6 @@ class ObjectInspector : public wxPanel
 		{
 			pg->AddPage( pageName, obj_info->GetSmallIconFile() );
 		}
-		pg->SelectPage( pageName );
 
 		pg->AppendCategory( category->GetName() );
 
