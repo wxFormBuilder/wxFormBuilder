@@ -168,9 +168,9 @@
   <objectinfo class="wxSlider" icon="slider.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_slider</property>
-    <property name="value" type="uint"    help="Initial position for the slider.">50</property>
-    <property name="minValue" type="uint" help="Minimum slider position.">0</property>
-    <property name="maxValue" type="uint" help="Maximum slider position.">100</property>
+    <property name="value" type="int"    help="Initial position for the slider.">50</property>
+    <property name="minValue" type="int" help="Minimum slider position.">0</property>
+    <property name="maxValue" type="int" help="Maximum slider position.">100</property>
     <property name="style" type="bitlist">
       <option name="wxSL_HORIZONTAL"      help="Displays the slider horizontally." />
       <option name="wxSL_VERTICAL"        help="Displays the slider vertically." />
