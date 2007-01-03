@@ -350,8 +350,23 @@ void MainFrame::SavePosition( const wxString &name )
 
 	if ( m_rightSplitter )
 	{
-		int rightSash = -1 * ( m_rightSplitter->GetSize().GetWidth() - m_rightSplitter->GetSashPosition() );
-		config->Write( wxT( "RightSplitterWidth" ), rightSash );
+		switch ( m_style )
+		{
+			case wxFB_WIDE_GUI:
+			{
+				int rightSash = -1 * ( m_rightSplitter->GetSize().GetWidth() - m_rightSplitter->GetSashPosition() );
+				config->Write( wxT( "RightSplitterWidth" ), rightSash );
+				break;
+			}
+			case wxFB_CLASSIC_GUI:
+			{
+				int rightSash = -1 * ( m_rightSplitter->GetSize().GetHeight() - m_rightSplitter->GetSashPosition() );
+				config->Write( wxT( "RightSplitterWidth" ), rightSash );
+				break;
+			}
+			default:
+				break;
+		}
 	}
 
 	config->SetPath( wxT( ".." ) );
@@ -1144,6 +1159,7 @@ void MainFrame::CreateClassicGui()
 	m_leftSplitter->UpdateSize();
 
 	m_rightSplitter->SplitHorizontally( objectTree, objectInspector, m_rightSplitterWidth );
+	m_rightSplitter->SetMinimumPaneSize( 2 );
 
 	SetMinSize( wxSize( 700, 465 ) );
 }
