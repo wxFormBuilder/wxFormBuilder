@@ -162,6 +162,15 @@ class ApplicationData
 	bool ConvertProject( const wxString& path, int fileMajor, int fileMinor );
 
 	/**
+	Convert the properties of the project element. Handle this separately because it does not repeat.
+	@param project The project element.
+	@param path The path to the project file.
+	@param fileMajor The major revision of the file.
+	@param fileMinor The minor revision of the file.
+	*/
+	void ConvertProjectProperties( ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor );
+
+	/**
 	Recursive function used to convert the object tree in the project file to the latest version.
 	@param object A pointer to the object element
 	@param fileMajor The major revision of the file
