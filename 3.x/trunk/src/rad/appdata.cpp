@@ -1124,6 +1124,7 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 		ticpp::Element* root = doc.FirstChildElement();
 		if ( root->Value() == std::string("object") )
 		{
+			ConvertProjectProperties( root, path, fileMajor, fileMinor );
 			ConvertObject( root, fileMajor, fileMinor );
 
 			// Create a clone of now-converted object tree, so it can be linked
@@ -1152,7 +1153,10 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 		}
 		else
 		{
-			ConvertObject( root->FirstChildElement( "object" ), fileMajor, fileMinor );
+			// Handle project separately because it only occurs once
+			ticpp::Element* project = root->FirstChildElement( "object" );
+			ConvertProjectProperties( project, path, fileMajor, fileMinor );
+			ConvertObject( project, fileMajor, fileMinor );
 			ticpp::Element* fileVersion = root->FirstChildElement( "FileVersion" );
 			fileVersion->SetAttribute( "major", m_fbpVerMajor );
 			fileVersion->SetAttribute( "minor", m_fbpVerMinor );
@@ -1165,6 +1169,74 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 		return false;
 	}
 	return true;
+}
+
+void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor )
+{
+	// Ensure that this is the "project" element
+	std::string objClass;
+	project->GetAttribute( "class", &objClass );
+
+	if ( objClass != "Project" )
+	{
+		return;
+	}
+
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 5 ) )
+	{
+		// Find the user_headers property
+		std::set< std::string > oldProps;
+		std::set< ticpp::Element* > newProps;
+
+		oldProps.insert( "user_headers" );
+		GetPropertiesToConvert( project, oldProps, &newProps );
+
+		std::string user_headers;
+		if ( !newProps.empty() )
+		{
+			user_headers = (*newProps.begin())->GetText( false );
+		}
+
+		if ( !user_headers.empty() )
+		{
+			wxString 	msg  = _("The \"user_headers\" property has been removed.\n");
+						msg += _("Its purpose was to provide a place to include precompiled headers or\n");
+						msg += _("headers for subclasses.\n");
+						msg += _("There is now a \"precompiled_header\" property and a \"header\" subitem\n");
+						msg += _("on the subclass property.\n\n");
+						msg += _("Would you like the current value of the \"user_headers\" property to be saved\n");
+						msg += _("to a file so that you can distribute the headers among the \"precompiled_header\"\n");
+						msg += _("and \"subclass\" properties\?");
+			if ( wxYES == wxMessageBox( msg, _("The \"user_headers\" property has been removed"), wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT, wxTheApp->GetTopWindow() ) )
+			{
+				wxString name;
+				wxFileName::SplitPath( path, NULL, NULL, &name, NULL );
+				wxFileDialog dialog( wxTheApp->GetTopWindow(), _("Save \"user_headers\""), ::wxPathOnly(path),
+						   name + wxT("_user_headers.txt"), wxT("All files (*.*)|*.*"), wxSAVE );
+
+				if ( dialog.ShowModal() == wxID_OK )
+				{
+					wxString wxuser_headers = _WXSTR(user_headers);
+					wxString filename = dialog.GetPath();
+					bool success = false;
+					wxFFile output( filename, wxT("w") );
+					if ( output.IsOpened() )
+					{
+						if ( output.Write( wxuser_headers ) )
+						{
+							output.Close();
+							success = true;
+						}
+					}
+
+					if ( !success )
+					{
+						wxLogError( _("Unable to open %s for writing.\nUser Headers:\n%s"), filename.c_str(), wxuser_headers.c_str() );
+					}
+				}
+			}
+		}
+	}
 }
 
 void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int fileMinor )
