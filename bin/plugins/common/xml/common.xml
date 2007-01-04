@@ -26,6 +26,7 @@
       <option name="wxBU_BOTTOM"    help="Aligns the bitmap label to the bottom of the button. WIN32 only."/>
       <option name="wxBU_AUTODRAW"  help="If this is specified, the button will be drawn automatically using the label bitmap only, providing a 3D-look border. If this style is not specified, the button will be drawn without borders and using all provided bitmaps. (Windows Only)"/>wxBU_AUTODRAW</property>
     <property name="bitmap" type="bitmap" />
+	<event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
   </objectinfo>
 
   <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">
@@ -68,7 +69,7 @@
     <event name="OnText" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_UPDATED event, generated when the text changes. Notice that this event will always be sent when the text controls contents changes - whether this is due to user input or comes from the program itself (for example, if SetValue() is called)" />
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
     <event name="OnTextURL" class="wxCommandEvent" help="A mouse event occurred over an URL in the text control (wxMSW and wxGTK2 only)" />
-    <event name="OnTextMaxLen" class="wxCommandEvent" help="User tried to enter more text into the control than the limit set by SetMaxLength." />    
+    <event name="OnTextMaxLen" class="wxCommandEvent" help="User tried to enter more text into the control than the limit set by SetMaxLength." />
   </objectinfo>
 
   <objectinfo class="wxStaticBitmap" icon="static_bitmap.xpm" type="widget">
@@ -88,12 +89,16 @@
       <option name="wxCB_READONLY"  help="Same as wxCB_DROPDOWN but only the strings specified as the combobox choices can be selected, it is impossible to select (even from a program) a string which is not in the choices list."/>
       <option name="wxCB_SORT"      help="Sorts the entries in the list alphabetically."/>
     </property>
+	<event name="OnCombobox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_COMBOBOX_SELECTED event, when an item on the list is selected. Note that calling GetValue returns the new value of selection." />
+	<event name="OnText" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_UPDATED event, when the combobox text changes." />
+	<event name="OnTextEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_ENTER event, when <RETURN> is pressed in the combobox." />
   </objectinfo>
   
   <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
+	<event name="OnChoice" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHOICE_SELECTED event, when an item on the list is selected." />
   </objectinfo>
 
   <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
@@ -109,6 +114,8 @@
       <option name="wxLB_NEEDED_SB"            help="Only create a vertical scrollbar if needed."/>
       <option name="wxLB_SORT"                 help="The listbox contents are sorted in alphabetical order."/>
     </property>
+	<event name="OnListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
+	<event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
   </objectinfo>
   
   <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
@@ -130,6 +137,26 @@
       <option name="wxLC_SORT_DESCENDING" help="Sort in descending order (must still supply a comparison callback in SortItems." />
       <option name="wxLC_HRULES"          help="Draws light horizontal rules between rows in report mode." />
       <option name="wxLC_VRULES"          help="Draws light vertical rules between columns in report mode." />wxLC_ICON</property>
+	<event name="OnListBeginDrag" class="wxListEvent" help="Begin dragging with the left mouse button." />
+	<event name="OnListBeginRDrag" class="wxListEvent" help="Begin dragging with the right mouse button." />
+	<event name="OnListBeginLabelEdit" class="wxListEvent" help="Begin editing a label. This can be prevented by calling Veto()." />
+	<event name="OnListEndLabelEdit" class="wxListEvent" help="Finish editing a label. This can be prevented by calling Veto()." />
+	<event name="OnListDeleteItem" class="wxListEvent" help="Delete an item." />
+	<event name="OnListDeleteAllItems" class="wxListEvent" help="Delete all items." />
+	<event name="OnListItemSelected" class="wxListEvent" help="The item has been selected." />
+	<event name="OnListItemDeselected" class="wxListEvent" help="The item has been deselected." />
+	<event name="OnListItemActivated" class="wxListEvent" help="The item has been activated (ENTER or double click)." />
+	<event name="OnListItemFocused" class="wxListEvent" help="The currently focused item has changed." />
+	<event name="OnListItemMiddleClick" class="wxListEvent" help="The middle mouse button has been clicked on an item." />
+	<event name="OnListItemRightClick" class="wxListEvent" help="The right mouse button has been clicked on an item." />
+	<event name="OnListKeyDown" class="wxListEvent" help="A key has been pressed." />
+	<event name="OnListIsertItem" class="wxListEvent" help="An item has been inserted." />
+	<event name="OnListColClick" class="wxListEvent" help="A column (m_col) has been left-clicked." />
+	<event name="OnListColRightClick" class="wxListEvent" help="A column (m_col) has been right-clicked." />
+	<event name="OnListColBeginDrag" class="wxListEvent" help="The user started resizing a column - can be vetoed." />
+	<event name="OnListColDragging" class="wxListEvent" help="The divider between columns is being dragged." />
+	<event name="OnListColEndDrag" class="wxListEvent" help="A column has been resized by the user." />
+	<event name="OnListCasheHint" class="wxListEvent" help="Prepare cache for a virtual list control." />
   </objectinfo>
   
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
@@ -143,6 +170,7 @@
       <option name="wxALIGN_RIGHT" help="Makes the text appear on the left of the checkbox."/>
     </property>
     <property name="checked" type="bool">0</property>
+	<event name="OnCheckBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKBOX_CLICKED event, when the checkbox is clicked." />
   </objectinfo>
 
   <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
@@ -155,6 +183,7 @@
       <option name="wxRA_SPECIFY_ROWS"          help="The major dimension parameter refers to the maximum number of rows."/>
       <option name="wxRA_SPECIFY_COLS"          help="The major dimension parameter refers to the maximum number of columns."/>
       <option name="wxRA_USE_CHECKBOX"          help="Use of the checkbox controls instead of radio buttons. (currently supported only on PalmOS)"/>wxRA_SPECIFY_COLS</property>
+	<event name="OnRadioBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBOX_SELECTED event, when a radiobutton is clicked." />
   </objectinfo>
 
   <objectinfo class="wxStaticLine" icon="static_line.xpm" type="widget">
@@ -183,6 +212,26 @@
       <option name="wxSL_BOTH"            help="Displays ticks on both sides." />
       <option name="wxSL_SELRANGE"        help="Allows the user to select a range on the slider. Windows only." />
       <option name="wxSL_INVERSE"         help="Inverses the mininum and maximum endpoints on the slider. Not compatible with wxSL_SELRANGE." />wxSL_HORIZONTAL</property>
+	<event name="OnScroll" class="wxScrollEvent" help="Process all scroll events." />
+	<event name="OnScrollTop" class="wxScrollEvent" help="Process wxEVT_SCROLL_TOP scroll-to-top events (minimum position)." />
+	<event name="OnScrollBottom" class="wxScrollEvent" help="Process wxEVT_SCROLL_BOTTOM scroll-to-bottom events (maximum position)." />
+	<event name="OnScrollLineUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEUP line up events." />
+	<event name="OnScrollLineDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEDOWN line down events." />
+	<event name="OnScrollPageUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEUP page up events." />
+	<event name="OnScrollPageDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEDOWN page down events." />
+	<event name="OnScrollThumbTrack" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBTRACK thumbtrack events (frequent events sent as the user drags the thumbtrack)." />
+	<event name="OnScrollThumbRelease" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBRELEASE thumb release events." />
+	<event name="OnScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only)." />
+	<event name="OnCommandScroll" class="wxScrollEvent" help="Process all scroll events. Variant taking a window identifier." />
+	<event name="OnCommandScrollTop" class="wxScrollEvent" help="Process wxEVT_SCROLL_TOP scroll-to-top events (minimum position). Variant taking a window identifier." />
+	<event name="OnCommandScrollBottom" class="wxScrollEvent" help="Process wxEVT_SCROLL_BOTTOM scroll-to-bottom events (maximum position). Variant taking a window identifier." />
+	<event name="OnCommandScrollLineUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEUP line up events. Variant taking a window identifier." />
+	<event name="OnCommandScrollLineDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEDOWN line down events. Variant taking a window identifier." />
+	<event name="OnCommandScrollPageUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEUP page up events. Variant taking a window identifier." />
+	<event name="OnCommandScrollPageDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEDOWN page down events. Variant taking a window identifier." />
+	<event name="OnCommandScrollThumbTrack" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBTRACK thumbtrack events (frequent events sent as the user drags the thumbtrack). Variant taking a window identifier." />
+	<event name="OnCommandScrollThumbRelease" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBRELEASE thumb release events. Variant taking a window identifier." />
+	<event name="OnCommandScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only). Variant taking a window identifier." />
   </objectinfo>
 
   <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
@@ -201,6 +250,38 @@
     <property name="name" type="text">m_grid</property>
     <property name="rows" type="uint" help="Number of Rows.">5</property>
     <property name="cols" type="uint" help="Number of Columns.">5</property>
+	<event name="OnGridCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
+	<event name="OnGridCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
+	<event name="OnGridCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
+	<event name="OnGridCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
+	<event name="OnGridLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_CLICK." />
+	<event name="OnGridLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
+	<event name="OnGridLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
+	<event name="OnGridLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
+	<event name="OnGridCellChange" class="wxGridEvent" help="The user changed the data in a cell. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell. Processes a wxEVT_GRID_SELECT_CELL." />
+	<event name="OnGridEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
+	<event name="OnGridEditorShown" class="wxGridEvent" help="The editor for a cell was shown. Processes a wxEVT_GRID_EDITOR_SHOWN." />
+	<event name="OnGridCmdCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
+	<event name="OnGridCmdCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
+	<event name="OnGridCmdCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
+	<event name="OnGridCmdCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
+	<event name="OnGridCmdLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_CLICK" />
+	<event name="OnGridCmdLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
+	<event name="OnGridCmdLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
+	<event name="OnGridCmdLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
+	<event name="OnGridCmdCellChange" class="wxGridEvent" help="The user changed the data in a cell; variant taking a window identifier. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridCmdSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell; variant taking a window identifier. Processes a wxEVT_GRID_SELECT_CELL." />
+	<event name="OnGridCmdEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
+	<event name="OnGridCmdEditorShown" class="wxGridEvent" help="The editor for a cell was shown; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_SHOWN." />
+	<event name="OnGridColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it. Processes a wxEVT_GRID_COL_SIZE." />
+	<event name="OnGridRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it. Processes a wxEVT_GRID_ROW_SIZE." />
+	<event name="OnGridCmdColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_COL_SIZE." />
+	<event name="OnGridCmdRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_ROW_SIZE." />
+	<event name="OnGridRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells. Processes a wxEVT_GRID_RANGE_SELECT." />
+	<event name="OnGridCmdRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells; variant taking a window identifier. Processes a wxEVT_GRID_RANGE_SELECT." />
+	<event name="OnGridEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created. Processes a wxEVT_GRID_EDITOR_CREATED." />
+	<event name="OnGridCmdEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_CREATED." />
   </objectinfo>
   
   <objectinfo class="wxPanel" icon="panel.xpm" type="container">
