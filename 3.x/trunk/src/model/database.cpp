@@ -45,6 +45,7 @@
 #define TEMPLATE_TAG "template"
 #define NAME_TAG "name"
 #define DESCRIPTION_TAG "help"
+#define CUSTOM_EDITOR_TAG "editor"
 #define PROPERTY_TAG "property"
 #define CHILD_TAG "child"
 #define EVENT_TAG "event"
@@ -907,6 +908,9 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		std::string description;
 		elem_prop->GetAttributeOrDefault( DESCRIPTION_TAG, &description, "" );
 
+		std::string customEditor;
+		elem_prop->GetAttributeOrDefault( CUSTOM_EDITOR_TAG, &customEditor, "" );
+
 		std::string prop_type;
 		elem_prop->GetAttribute( "type", &prop_type );
 		PropertyType ptype;
@@ -993,7 +997,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		}
 
 		// create an instance of PropertyInfo
-		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), hidden, opt_list, children ) );
+		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), _WXSTR(customEditor), hidden, opt_list, children ) );
 
 		// add the PropertyInfo to the property
 		obj_info->AddPropertyInfo(prop_info);

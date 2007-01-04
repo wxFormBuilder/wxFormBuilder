@@ -97,10 +97,11 @@ private:
 	std::list< PropertyChild > m_children; // Only used for parent properties
 	bool m_hidden; // Juan. Determina si la propiedad aparece o no en XRC
 	wxString		m_description;
+	wxString		m_customEditor; // an optional custom editor for the property grid
 
 public:
 
-	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
+	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
 		bool hidden, POptionList opt_list, const std::list< PropertyChild >& children ); //Juan
 
 	~PropertyInfo();
@@ -111,6 +112,7 @@ public:
 	POptionList  GetOptionList ()         { return m_opt_list;   }
 	std::list< PropertyChild >* GetChildren(){ return &m_children; }
 	wxString		 GetDescription	()		  { return m_description;}
+	wxString	GetCustomEditor()			{ return m_customEditor; }
 	bool         IsHidden()               { return m_hidden; } // Juan
 	void         SetHidden(bool hidden)   { m_hidden = hidden; } // Juan
 };
