@@ -731,6 +731,15 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 		{
 			wxPGId id = m_pg->Append( GetProperty( prop ) );
 			m_pg->SetPropertyHelpString( id, propInfo->GetDescription() );
+			wxString customEditor = propInfo->GetCustomEditor();
+			if ( !customEditor.empty() )
+			{
+				wxPGEditor* editor = m_pg->GetEditorByName( customEditor );
+				if ( editor )
+				{
+					m_pg->SetPropertyEditor( id, editor );
+				}
+			}
 
 			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
 			{

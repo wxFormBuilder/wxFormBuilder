@@ -32,7 +32,7 @@
 #include <ticpp.h>
 #include <wx/tokenzr.h>
 
-PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description,
+PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
 						   bool hidden, POptionList opt_list, const std::list< PropertyChild >& children )
 {
 	m_name = name;
@@ -42,6 +42,7 @@ PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value,
 	m_opt_list = opt_list;
 	m_description = description;
 	m_children = children;
+	m_customEditor = customEditor;
 }
 
 PropertyInfo::~PropertyInfo()
