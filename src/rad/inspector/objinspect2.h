@@ -35,6 +35,10 @@
 #include "utils/wxfbdefs.h"
 #include "model/objectbase.h"
 
+#if wxUSE_SLIDER
+WX_PG_DECLARE_EDITOR_WITH_DECL(Slider,WXDLLIMPEXP_PG)
+#endif
+
 // -----------------------------------------------------------------------
 
 WX_PG_DECLARE_CUSTOM_COLOUR_PROPERTY(fbColourProperty)
