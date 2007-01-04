@@ -399,8 +399,6 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_PG_CHANGED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridChange)
 	EVT_PG_CHANGED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridChange)
 
-	EVT_COMMAND( -1, wxEVT_NEW_BITMAP_PROPERTY, ObjectInspector::OnNewBitmapProperty )
-
 	EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
 	EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
 	EVT_FB_PROPERTY_MODIFIED( ObjectInspector::OnPropertyModified )
@@ -917,23 +915,29 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 					path = TypeConv::MakeRelativePath( path.substr( 0, semicolon_index ), AppData()->GetProjectPath() ) + path.substr( semicolon_index  );
 				}
 
-				// Create event to spawn update of the bitmap property
-				wxCommandEvent bitmapEvent( wxEVT_NEW_BITMAP_PROPERTY, -1 );
-				bitmapEvent.SetEventObject( this );
-				bitmapEvent.SetString( event.GetPropertyName() );
-
-				// Fill event data with property grid pointer, Property pointer, and property value
-				NewBitmapEventDataHolder* dataHolder = new NewBitmapEventDataHolder();
-				dataHolder->m_grid = event.GetPropertyPtr()->GetGrid();
-				dataHolder->m_prop = prop;
-				dataHolder->m_string = path;
-				bitmapEvent.SetClientData( dataHolder );
-
-				// Post Event
-				GetEventHandler()->AddPendingEvent( bitmapEvent );
+				// Save state from old property to use after grid is recreated
+				wxPGPropertyWithChildren* pwc = dynamic_cast< wxPGPropertyWithChildren* >( event.GetPropertyPtr() );
+				bool expanded = false;
+				if ( pwc )
+				{
+					expanded = pwc->IsExpanded();
+				}
+				wxString name = event.GetPropertyName();
 
 				// Respond to property modification
 				AppData()->ModifyProperty( prop, path );
+
+				// Recreate grid, the bitmap property may need to change
+				Create(true);
+
+				// Re-expand the bitmap property, if it was expanded
+				wxPGId bitmapProp = m_pg->GetPropertyByName( name );
+				if ( expanded )
+				{
+					m_pg->Expand( bitmapProp );
+				}
+				m_pg->SelectProperty( bitmapProp );
+
 				break;
 			}
 
@@ -954,16 +958,6 @@ void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
 	}
 }
 
-void ObjectInspector::OnNewBitmapProperty( wxCommandEvent& event )
-{
-	// Update property grid - change bitmap property
-	std::auto_ptr< NewBitmapEventDataHolder > data ( (NewBitmapEventDataHolder*)event.GetClientData() );
-	data->m_grid->Freeze();
-	wxPGId newId = data->m_grid->ReplaceProperty( event.GetString(), wxBitmapWithResourceProperty( event.GetString(), wxPG_LABEL, data->m_string ) );
-	m_propMap[ newId.GetPropertyPtr() ] = data->m_prop;
-	data->m_grid->Expand( newId );
-	data->m_grid->Thaw();
-}
 ///////////////////////////////////////////////////////////////////////////////
 void ObjectInspector::OnObjectSelected( wxFBObjectEvent& event )
 {

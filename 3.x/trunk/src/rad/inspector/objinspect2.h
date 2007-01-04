@@ -57,8 +57,6 @@ WX_PG_DECLARE_PROPERTY( wxBitmapWithResourceProperty, const wxString&, wxEmptySt
 
 // -----------------------------------------------------------------------
 
-DECLARE_LOCAL_EVENT_TYPE( wxEVT_NEW_BITMAP_PROPERTY, -1 )
-
 class wxFBPropertyEvent;
 class wxFBObjectEvent;
 class wxFBEvent;
@@ -148,15 +146,6 @@ class ObjectInspector : public wxPanel
   void SavePosition();
 
   DECLARE_EVENT_TABLE()
-};
-
-class NewBitmapEventDataHolder
-{
-public:
-	PProperty m_prop;
-	wxPropertyGrid* m_grid;
-	wxString m_string;
-
 };
 
 #endif //__OBJ_INSPECT__
