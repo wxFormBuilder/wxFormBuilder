@@ -12,6 +12,7 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
+	<template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
   </templates>
 
   <templates class="wxPanel">
@@ -30,10 +31,10 @@
 			@{ $name->SetMaxLength( $maxlength );  @}
 		@}
 	</template>
-    <template name="evt_entry_OnText">EVT_TEXT($id,#handler)</template>
-    <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER($id,#handler)</template>
-    <template name="evt_entry_OnTextURL">EVT_TEXT_URL($id,#handler)</template>
-    <template name="evt_entry_OnTextMaxLen">EVT_TEXT_MAXLEN($id,#handler)</template>
+    <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
+    <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+    <template name="evt_entry_OnTextURL">EVT_TEXT_URL( $id, #handler )</template>
+    <template name="evt_entry_OnTextMaxLen">EVT_TEXT_MAXLEN( $id, #handler )</template>
   </templates>
 
   <templates class="wxStaticText">
@@ -48,6 +49,7 @@
 	  #ifnotequal $checked "0"
 		@{ $name->SetValue(true); #nl @}
 	</template>
+	<template name="evt_entry_OnCheckBox">EVT_CHECKBOX( $id, #handler )</template>
   </templates>
 
   <templates class="wxComboBox">
@@ -57,6 +59,9 @@
       #foreach $choices
       @{ $name->Append( #pred ); @}
     </template>
+	<template name="evt_entry_OnCombobox">EVT_COMBOBOX( $id, #handler )</template>
+    <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
+    <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
   </templates>
 
   <templates class="wxListBox">
@@ -66,6 +71,8 @@
       #foreach $choices
       @{ $name->Append( #pred ); @}
     </template>
+	<template name="evt_entry_OnListBox">EVT_LISTBOX( $id, #handler )</template>
+	<template name="evt_entry_OnListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
   </templates>
 
   <templates class="wxRadioBox">
@@ -75,6 +82,7 @@
         int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
         $name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} );
     </template>
+	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
   </templates>
 
   <templates class="wxGrid">
@@ -82,6 +90,38 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
     <template name="settings">$name->CreateGrid( $rows, $cols );</template>
     <template name="include">@#include &lt;wx/grid.h&gt;</template>
+	<template name="evt_entry_OnGridCellLeftClick">EVT_GRID_CELL_LEFT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellRightClick">EVT_GRID_CELL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellLeftDClick">EVT_GRID_CELL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellRightDClick">EVT_GRID_CELL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelLeftClick">EVT_GRID_LABEL_LEFT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelRightClick">EVT_GRID_LABEL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelLeftDClick">EVT_GRID_LABEL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
+	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
+	<template name="evt_entry_OnGridEditorHidden">EVT_GRID_EDITOR_HIDDEN( #handler )</template>
+	<template name="evt_entry_OnGridEditorShown">EVT_GRID_EDITOR_SHOWN( #handler )</template>
+	<template name="evt_entry_OnGridCmdCellLeftClick">EVT_GRID_CMD_CELL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellRightClick">EVT_GRID_CMD_CELL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellLeftDClick">EVT_GRID_CMD_CELL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellRightDClick">EVT_GRID_CMD_CELL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelLeftClick">EVT_GRID_CMD_LABEL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelRightClick">EVT_GRID_CMD_LABEL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelLeftDClick">EVT_GRID_CMD_LABEL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelRightDClick">EVT_GRID_CMD_LABEL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellChange">EVT_GRID_CMD_CELL_CHANGE( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdSelectCell">EVT_GRID_CMD_SELECT_CELL( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorHidden">EVT_GRID_CMD_EDITOR_HIDDEN( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorShown">EVT_GRID_CMD_EDITOR_SHOWN( $id, #handler )</template>
+	<template name="evt_entry_OnGridColSize">EVT_GRID_COL_SIZE( #handler )</template>
+	<template name="evt_entry_OnGridRowSize">EVT_GRID_ROW_SIZE( #handler )</template>
+	<template name="evt_entry_OnGridCmdColSize">EVT_GRID_CMD_COL_SIZE( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdRowSize">EVT_GRID_CMD_ROW_SIZE( $id, #handler )</template>
+	<template name="evt_entry_OnGridRangeSelect">EVT_GRID_RANGE_SELECT( #handler )</template>
+	<template name="evt_entry_OnGridCmdRangeSelect">EVT_GRID_CMD_RANGE_SELECT( $id, #handler )</template>
+	<template name="evt_entry_OnGridEditorCreated">EVT_GRID_EDITOR_CREATED( #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
   </templates>
 
   <templates class="wxStaticBitmap">
@@ -100,6 +140,26 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/listctrl.h&gt;</template>
+	<template name="evt_entry_OnListBeginDrag">EVT_LIST_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnListBeginRDrag">EVT_LIST_BEGIN_RDRAG( $id, #handler )</template>
+	<template name="evt_entry_OnListBeginLabelEdit">EVT_LIST_BEGIN_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnListEndLabelEdit">EVT_LIST_END_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnListDeleteItem">EVT_LIST_DELETE_ITEM( $id, #handler )</template>
+	<template name="evt_entry_OnListDeleteAllItems">EVT_LIST_DELETE_ALL_ITEMS( $id, #handler )</template>
+	<template name="evt_entry_OnListItemSelected">EVT_LIST_ITEM_SELECTED( $id, #handler )</template>
+	<template name="evt_entry_OnListItemDeselected">EVT_LIST_ITEM_DESELECTED( $id, #handler )</template>
+	<template name="evt_entry_OnListItemActivated">EVT_LIST_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_entry_OnListItemFocused">EVT_LIST_ITEM_FOCUSED( $id, #handler )</template>
+	<template name="evt_entry_OnListItemMiddleClick">EVT_LIST_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnListItemRightClick">EVT_LIST_ITEM_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnListKeyDown">EVT_LIST_KEY_DOWN( $id, #handler )</template>
+	<template name="evt_entry_OnListIsertItem">EVT_LIST_INSERT_ITEM( $id, #handler )</template>
+	<template name="evt_entry_OnListColClick">EVT_LIST_COL_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnListColRightClick">EVT_LIST_COL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnListColBeginDrag">EVT_LIST_COL_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnListColDragging">EVT_LIST_COL_DRAGGING( $id, #handler )</template>
+	<template name="evt_entry_OnListColEndDrag">EVT_LIST_COL_END_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnListCasheHint">EVT_LIST_CACHE_HINT( $id, #handler )</template>
   </templates>
 
   <templates class="wxChoice">
@@ -110,6 +170,7 @@
         $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $window_style );
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>
+	<template name="evt_entry_OnChoice">EVT_CHOICE( $id, #handler )</template>
   </templates>
 
   <templates class="wxGauge">
@@ -126,6 +187,26 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/slider.h&gt;</template>
+	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
+	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
+	<template name="evt_entry_OnScrollBottom">EVT_SCROLL_BOTTOM( #handler )</template>
+	<template name="evt_entry_OnScrollLineUp">EVT_SCROLL_LINEUP( #handler )</template>
+	<template name="evt_entry_OnScrollLineDown">EVT_SCROLL_LINEDOWN( #handler )</template>
+	<template name="evt_entry_OnScrollPageUp">EVT_SCROLL_PAGEUP( #handler )</template>
+	<template name="evt_entry_OnScrollPageDown">EVT_SCROLL_PAGEDOWN( #handler )</template>
+	<template name="evt_entry_OnScrollThumbTrack">EVT_SCROLL_THUMBTRACK( #handler )</template>
+	<template name="evt_entry_OnScrollThumbRelease">EVT_SCROLL_THUMBRELEASE( #handler )</template>
+	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
+	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_BOTTOM( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollLineDown">EVT_COMMAND_SCROLL_LINEDOWN( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( #handler )</template>
+	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( #handler )</template>
   </templates>
 
 </codegen>
