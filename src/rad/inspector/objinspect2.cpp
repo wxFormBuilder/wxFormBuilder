@@ -315,11 +315,15 @@ wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxS
 	// Add the appropriate child
 	if ( m_source == wxT("Load From File") )
 	{
-		AddChild( wxImageFileProperty( wxT("file_path"), wxPG_LABEL, m_image ) );
+		wxPGProperty* child = wxImageFileProperty( wxT("file_path"), wxPG_LABEL, m_image );
+		AddChild( child );
+		child->SetHelpString( wxT("Path to the image file.") );
 	}
 	else
 	{
-		AddChild( wxStringProperty( wxT("resource_name"), wxPG_LABEL, m_image ) );
+		wxPGProperty* child = wxStringProperty( wxT("resource_name"), wxPG_LABEL, m_image );
+		AddChild( child );
+		child->SetHelpString( wxT("Windows Only. Name of the resource in the .rc file.") );
 	}
 
 	// Add the options
@@ -327,7 +331,15 @@ wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxS
     m_strings.Add(wxT("Load From Resource"));
     m_strings.Add(wxT("Load From Icon Resource"));
 
-    AddChild( wxEnumProperty(wxT("source"), wxPG_LABEL, m_strings, m_strings.Index( m_source ) ) );
+	wxPGProperty* child2 = wxEnumProperty(wxT("source"), wxPG_LABEL, m_strings, m_strings.Index( m_source ) );
+    AddChild( child2 );
+    child2->SetHelpString( 	wxT("Load From File:\n")
+							wxT("Load the image from a file on disk.\n\n")
+							wxT("Load From Resource:\n")
+							wxT("Windows Only. Load the image from a BITMAP resource in a .rc file\n\n")
+							wxT("Load From Icon Resource:\n")
+							wxT("Windows Only. Load the image from a ICON resource in a .rc file\n\n")
+						);
 
 	RefreshChildren();
 }
