@@ -1,6 +1,39 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.05
+01-04-2006 Version 3.00.14 (Beta 2)
++ Added all known events to the common tab.
++ Added descriptions of the subproperties for bitmap properties
++ Added support for using the non-default editors in the property grid.
+  Just add 'editor="Name"' to your xml element for the property.
++ Added a warning about the removal of the "user_headers" property during
+  the project import process.
++ The selection border can be drawn even when it extends beyond the edge of
+  the inner content panel.
++ Catching left clicks on the title bar of innerframe in order to select it.
++ Added wxSL_BOTH style flag to wxSlider.
++ Added encoding check for all loaded xml files. The means that the xml files
+  must have a declaration, and the encoding must be UTF-8. If it is not, wxFB
+  will offer to convert the file, from a user chosen original encoding. This
+  resolves FS#69.
++ Add the .fbp extension when saving if none is chosen. (this is really only
+  an linux issue)
++ Added a shortcut to the "XRC Window" menu item.
++ Added property to skip frame's main sizer generation in certain cases for xrc code
+* Now using ints instead of uints for min, max, and val on wxSlider.
+* Now remembering right splitter size in classic gui.
+* Fixed wxSlider XRC generation for the minValue and maxValue properties.
+* Status bar now stays on the bottom of the frame even when the sizer is empty.
+- Removed SetVendorName, it just added a level to the hierarchy in the windows
+  registry.
+^ Single Instance Stuff:
+    Prefixed lockfiles with '.' so they are hidden.
+    Switched using "localhost" to "127.0.0.1", "localhost" was not working for me.
+    Added a status bar message in the second instance when the first instance
+    is brought to the front.
+    Moved single instance stuff to wxfbipc.cpp/h.
+^ General innerframe rendering updates.
+
+12-22-2006 Version 3.00.13 (Beta 2)
 * Now generating all empty strings as wxEmptyString. This resolves FS#52.
 * wxRadioBox can now use internationalization on its label, too.
   This resolves FS#50.
@@ -8,11 +41,15 @@ date Version 3.00.05
   platforms other than WXMSW. This resolves FS#46.
 * Fixed crash when editing the value of a wxTextCtrl in the designer,
   under certain conditions. This resolves FS#45.
+
+12-8-2006 Version 3.00.12 (Beta 2)
 * Fixed problems with paths including non-English characters.
   wxFB can now be installed to such paths, as well as open/save projects,
   generate code, and import xrc files. This resolves FS#49.
 * Now only allowing one choice for non_flexible_grow_mode and for 
   flexible_direction on wxFlexGridSizer. This resolves FS#56.
+
+12-4-2006 Version 3.00.11 (Beta 2)
 * Now generating user_headers include statements above the generated
   header include. This resolves FS#55.
 * Fixed FS#51 — "notebook-like objects errors while they are included into each other"
@@ -27,6 +64,8 @@ date Version 3.00.05
   with default value of "wx/wxprec.h". This fix necessitated the creation of a "parent"
   property type, of which "subclass" is the only example. More information on parent
   properties will soon be added to the wiki.
+
+11-15-2006 Version 3.00.10 (Beta 2)
 * Fixed FS#63 — "Size/minimum-size is not working."
 * Fixed FS#60 — "wxFlexGridSizer vgap/hgap if empty they get generated empty."
   This was actually a bug with most numerical properties. Added a "uint" property
@@ -39,24 +78,34 @@ date Version 3.00.05
 * Implemented FS#68 — "Smart enable/disable of toolbar items."
   This was already mostly done. Just needed to enable/disable the appropriate alignment
   buttons for wxBoxSizer and wxStaticBoxSizer.
+
+10-30-2006 Version 3.00.09 (Beta 2)
 * Fixed moving left, right, and into a new wxBoxSizer for spacers.
 * Fixed FS#72 — "When editing a property in the property grid, it is lost when you click away."
 * Fixed FS#73 — "Toolbar tools not selecting the object in the object tree."
 * Fixed FS#71 — "wxSplitter window sashpos not being set."
+
+10-27-2006 Version 3.00.08 (Beta 2)
 * ID_DEFAULT is no longer defined when not used.
 * Ids beginning with "wxID_" are no longer defined, this is to avoid redefining
   wxWidgets special identifiers.
 * Ids for forms now use the "id" property instead of being hardcoded to -1.
 * Fixed wxSlider XRC generation for the minValue and maxValue properties.
+
+10-26-2006 Version 3.00.07 (Beta 2)
 ^ wxID_ANY is now the default id.
 ^ Object tree now saves its state.
 ^ Object tree now also scrolls horizontally when selecting an object.
 ^ Added class name and line to error message for unknown classes when importing xrc.
 ^ Improved both C++ and XRC code generation for wxSplitterWindow.
+
+10-25-2006 Version 3.00.06 (Beta 2)
 ^ Implemented FS#26 — "Chronological id creation."
 + Added support for using wxSplitterWindow with only one child.
 + Added min_pane_size and sashsize properties to wxSplitterWindow.
 + Added maximum size property to wxWindow properties.
+
+10-20-2006 Version 3.00.05 (Beta 2)
 + Implemented FS#48 — "Improve error notification when a plugin is missing."
   If widgets are missing, the project will not load at all.
 + Added a boolean "xrc_skip_sizer" property to Frame. The default is value is true.
@@ -65,7 +114,7 @@ date Version 3.00.05
   property of the frame if it has a sizer. This resolves FS#74.
 + Added encoding check for all loaded xml files.
 
-10-13-2006 Version 3.00.04
+10-13-2006 Version 3.00.04 (Beta 1)
 * Fixed visual editor for subpanels.
 * Fixed circular subclassing. This resolves FS#32.
 * Fixed Alt-Tab icon. This resolves FS#34.
