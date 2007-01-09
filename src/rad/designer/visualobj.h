@@ -45,7 +45,6 @@ class VObjEvtHandler : public wxEvtHandler
 
  public:
    VObjEvtHandler(wxWindow *win, PObjectBase obj);
-   void OnFocus(wxFocusEvent& event );
    void OnLeftClick(wxMouseEvent &event);
    void OnPaint(wxPaintEvent &event);
    void OnSetCursor(wxSetCursorEvent &event);
