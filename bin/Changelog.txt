@@ -1,6 +1,11 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-01-04-2006 Version 3.00.14 (Beta 2)
+01-09-2007 Version 3.00.15 (Beta 2)
++ Added new splash screen.
+* Fixed a focus bug that crashed when adding a sizer in certain container
+  widgets.
+
+01-04-2007 Version 3.00.14 (Beta 2)
 + Added all known events to the common tab.
 + Added descriptions of the subproperties for bitmap properties
 + Added support for using the non-default editors in the property grid.
