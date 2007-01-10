@@ -1,5 +1,9 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.16 (Beta 2)
+* Improved tolerance of wxBitmap properties to old project files.
+  This resolves FS#78.
+
 01-09-2007 Version 3.00.15 (Beta 2)
 + Added new splash screen.
 * Fixed a focus bug that crashed when adding a sizer in certain container

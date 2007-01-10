@@ -514,11 +514,16 @@ void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 	if ( splitIndex != newValue.npos )
 	{
 		m_image = newValue.substr( 0, splitIndex );
-		m_source = newValue.substr( splitIndex + 2 );
+		m_source = newValue.substr( splitIndex );
+		m_source.Trim( false );
+		if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() )	)
+		{
+			m_source = wxT("Load From File");
+		}
 	}
 	else
 	{
-		m_image = wxEmptyString;
+		m_image = newValue;
 		m_source = wxT("Load From File");
 	}
 
