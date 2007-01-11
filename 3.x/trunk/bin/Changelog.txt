@@ -1,11 +1,12 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.16 (Beta 2)
+01-11-2007 Version 3.00.16 (Beta 2)
 * Improved tolerance of wxBitmap properties to old project files.
   This resolves FS#78.
 + Added "kind" property to tools and added "tooltip" and "statusbar"
   properties to the generated XRC. 
   This resovles FS#79 — "Toggle buttons on toolbar."
+^ Updated the splash screen again.
 
 01-09-2007 Version 3.00.15 (Beta 2)
 + Added new splash screen.
