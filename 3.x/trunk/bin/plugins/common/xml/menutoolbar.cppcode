@@ -102,7 +102,7 @@
   </templates>
 
   <templates class="tool">
-    <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, wxITEM_NORMAL, $tooltip, $statusbar );</template>
+    <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );</template>
   </templates>
   
   <templates class="toolSeparator">

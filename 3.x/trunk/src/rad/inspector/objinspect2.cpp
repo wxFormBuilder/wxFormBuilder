@@ -674,14 +674,17 @@ void ObjectInspector::Create( bool force )
 			}
 
 			// Select previously selected page, or first page
-			int pageIndex = m_pg->GetPageByName( pageName );
-			if ( wxNOT_FOUND != pageIndex )
+			if ( m_pg->GetPageCount() > 0 )
 			{
-				m_pg->SelectPage( pageIndex );
-			}
-			else
-			{
-				m_pg->SelectPage( 0 );
+				int pageIndex = m_pg->GetPageByName( pageName );
+				if ( wxNOT_FOUND != pageIndex )
+				{
+					m_pg->SelectPage( pageIndex );
+				}
+				else
+				{
+					m_pg->SelectPage( 0 );
+				}
 			}
 		}
 
