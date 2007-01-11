@@ -72,9 +72,15 @@
     <property name="name" type="text">m_tool</property>
     <property name="label" type="wxString_i18n">tool</property>
     <property name="bitmap" type="bitmap"      		help="The primary tool bitmap." />
-    <property name="tooltip" type="wxString_i18n"   help="Help string used in the tooltip." />
+    <property name="kind" type="option">
+		<option name="wxITEM_NORMAL" help="A normal toolbar button."/>
+		<option name="wxITEM_CHECK"  help="A checkable tool (stays pressed after it has been toggled)."/>
+		<option name="wxITEM_RADIO"  help="A checkable tool which makes part of a radio group of tools each of which is automatically unchecked whenever another button in the group is checked."/>
+		wxITEM_NORMAL
+	</property>
+	<property name="tooltip" type="wxString_i18n"   help="Help string used in the tooltip." />
     <property name="statusbar" type="wxString_i18n" help="This string is shown in the statusbar (if any) of the parent frame when the mouse pointer is inside the tool." />
-    <property name="id" type="macro">ID_DEFAULT</property>
+    <property name="id" type="macro">wxID_ANY</property>
   </objectinfo>
   
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">

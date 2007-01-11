@@ -916,7 +916,7 @@ public:
 								childObj->GetPropertyAsString( _("label") ),
 								childObj->GetPropertyAsBitmap( _("bitmap") ),
 								wxNullBitmap,
-								wxITEM_NORMAL,
+								(wxItemKind)childObj->GetPropertyAsInteger( _("kind") ),
 								childObj->GetPropertyAsString( _("help") ),
 								wxEmptyString,
 								child
@@ -989,7 +989,19 @@ public:
 		ObjectToXrcFilter xrc(obj, _("tool"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("statusbar"), _("longhelp"), XRC_TYPE_TEXT);
 		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+
+		wxItemKind kind = (wxItemKind)obj->GetPropertyAsInteger(_("kind"));
+		if ( wxITEM_CHECK == kind )
+		{
+			xrc.AddPropertyValue( wxT("toggle"), wxT("1") );
+		}
+		else if ( wxITEM_RADIO == kind )
+		{
+			xrc.AddPropertyValue( wxT("radio"), wxT("1") );
+		}
 		return xrc.GetXrcObject();
 	}
 
@@ -997,8 +1009,37 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("tool"));
 		filter.AddWindowProperties();
+		filter.AddProperty(_("longhelp"), _("statusbar"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		bool gotToggle = false;
+		bool gotRadio = false;
+		TiXmlElement* toggle = xrcObj->FirstChildElement( "toggle" );
+		if ( toggle )
+		{
+			if ( strcmp( toggle->GetText(), "1" ) == 0 )
+			{
+				filter.AddPropertyValue( _("kind"), wxT("wxITEM_CHECK") );
+				gotToggle = true;
+			}
+		}
+		if ( !gotToggle )
+		{
+			TiXmlElement* radio = xrcObj->FirstChildElement( "radio" );
+			if ( radio )
+			{
+				if ( strcmp( radio->GetText(), "1" ) == 0 )
+				{
+					filter.AddPropertyValue( _("kind"), wxT("wxITEM_RADIO") );
+				}
+			}
+		}
+		if ( !(gotToggle || gotRadio) )
+		{
+			filter.AddPropertyValue( _("kind"), wxT("wxITEM_NORMAL") );
+		}
+
 		return filter.GetXfbObject();
 	}
 };
@@ -1317,6 +1358,11 @@ MACRO(wxTB_NODIVIDER)
 MACRO(wxTB_NOALIGN)
 MACRO(wxTB_HORZ_LAYOUT)
 MACRO(wxTB_HORZ_TEXT)
+
+// wxTool
+MACRO(wxITEM_NORMAL)
+MACRO(wxITEM_CHECK)
+MACRO(wxITEM_RADIO)
 
 // wxSlider
 MACRO(wxSL_AUTOTICKS)
