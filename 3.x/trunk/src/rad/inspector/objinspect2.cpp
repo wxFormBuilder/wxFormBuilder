@@ -789,6 +789,9 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 
 		assert(opt_list && opt_list->GetOptionCount() > 0);
 
+		wxString value = prop->GetValueAsString();
+		wxString help;
+
 		wxPGChoices constants;
 		const std::map< wxString, wxString > options = opt_list->GetOptions();
 		std::map< wxString, wxString >::const_iterator it;
@@ -796,10 +799,26 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 		for( it = options.begin(); it != options.end(); ++it )
 		{
 			constants.Add( it->first, i++ );
+			if ( it->first == value )
+			{
+				// Save help
+				help = it->second;
+			}
 		}
 
 		result = wxEnumProperty(name, wxPG_LABEL, constants);
-		result->SetValueFromString(prop->GetValueAsString(), 0);
+		result->SetValueFromString(value, 0);
+		wxString desc = prop_desc->GetDescription();
+		if ( desc.empty() )
+		{
+			desc = value + wxT(":\n") + help;
+		}
+		else
+		{
+			desc += wxT("\n\n") + value + wxT(":\n") + help;
+		}
+		result->SetHelpString( desc );
+
 	}
 	else if (type == PT_WXPOINT)
 	{
@@ -899,7 +918,10 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 		if ( properties.find( propName ) == properties.end() )
 		{
 			wxPGId id = m_pg->Append( GetProperty( prop ) );
-			m_pg->SetPropertyHelpString( id, propInfo->GetDescription() );
+			if ( prop->GetType() != PT_OPTION )
+			{
+				m_pg->SetPropertyHelpString( id, propInfo->GetDescription() );
+			}
 			wxString customEditor = propInfo->GetCustomEditor();
 			if ( !customEditor.empty() )
 			{
@@ -1006,12 +1028,41 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 		{
 			case PT_TEXT:
 			case PT_MACRO:
-			case PT_OPTION:
 			case PT_FLOAT:
 			case PT_INT:
 			case PT_UINT:
 			{
 				AppData()->ModifyProperty( prop, event.GetPropertyValueAsString() );
+				break;
+			}
+			case PT_OPTION:
+			{
+				wxString value = event.GetPropertyValueAsString();
+				AppData()->ModifyProperty( prop, value );
+
+				// Update displayed description for the new selection
+				PPropertyInfo prop_desc = prop->GetPropertyInfo();
+				POptionList opt_list = prop_desc->GetOptionList();
+
+				wxString helpString = prop_desc->GetDescription();
+				if ( opt_list && opt_list->GetOptionCount() > 0 )
+				{
+					const std::map< wxString, wxString > options = opt_list->GetOptions();
+					std::map< wxString, wxString >::const_iterator option = options.find( value );
+					if ( option != options.end() )
+					{
+						if ( helpString.empty() )
+						{
+							helpString = value + wxT(":\n") + option->second;
+						}
+						else
+						{
+							helpString += wxT("\n\n") + value + wxT(":\n") + option->second;
+						}
+					}
+				}
+				m_pg->SetPropertyHelpString( propPtr, helpString );
+				m_pg->SetDescription( propPtr->GetLabel(), helpString );
 				break;
 			}
 			case PT_PARENT:
