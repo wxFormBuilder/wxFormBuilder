@@ -59,16 +59,6 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, int id, wx
 	m_fileNameTextCtrl = new wxTextCtrl( this, ID_FILE_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	classDescriptionSbSizer->Add( m_fileNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
-	m_cppFileNameStaticText = new wxStaticText( this, wxID_ANY, wxT(".cpp:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cppFileNameStaticText->Hide();
-	
-	classDescriptionSbSizer->Add( m_cppFileNameStaticText, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT|wxLEFT, 5 );
-	
-	m_cppFileNameTextCtrl = new wxTextCtrl( this, ID_CPP_FILE_NAME_TEXT_CTRL, wxT("%wxFB_ProjectName%%wxFB_TopLevelName%.cpp"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cppFileNameTextCtrl->Hide();
-	
-	classDescriptionSbSizer->Add( m_cppFileNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-	
 	mainSizer->Add( classDescriptionSbSizer, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
 	
 	m_sdbSizer = new wxStdDialogButtonSizer();

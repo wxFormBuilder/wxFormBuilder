@@ -41,7 +41,6 @@ class GenInheritedClassDlgBase : public wxDialog
 			ID_FORMS_CHECK_LIST = 1000,
 			ID_CLASS_NAME_TEXT_CTRL,
 			ID_FILE_NAME_TEXT_CTRL,
-			ID_CPP_FILE_NAME_TEXT_CTRL,
 		};
 		
 		wxStaticText* m_staticText7;
@@ -50,8 +49,6 @@ class GenInheritedClassDlgBase : public wxDialog
 		wxTextCtrl* m_classNameTextCtrl;
 		wxStaticText* m_fileNameStaticText;
 		wxTextCtrl* m_fileNameTextCtrl;
-		wxStaticText* m_cppFileNameStaticText;
-		wxTextCtrl* m_cppFileNameTextCtrl;
 		wxStdDialogButtonSizer* m_sdbSizer;
 		
 		// Virtual event handlers, overide them in your derived class
