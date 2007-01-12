@@ -61,7 +61,7 @@
                                 <property name="label">1. Check the forms you would like to create the inherited class for.&#x0A;2. You can edit individual class details by clicking on their names in the list&#x0A;and then:&#x0A;&#x09;2a. Edit the &apos;Class Name:&apos; as required.&#x0A;&#x09;2b. Edit the &apos;File Names: (.h/.cpp)&apos; as required.&#x0A;3. Click &apos;OK&apos;.</property>
                                 <property name="maximum_size"></property>
                                 <property name="minimum_size"></property>
-                                <property name="name">m_staticText7</property>
+                                <property name="name">m_instructionsStaticText</property>
                                 <property name="permission">protected</property>
                                 <property name="pos"></property>
                                 <property name="size"></property>
@@ -97,6 +97,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
+                        <event name="OnCheckListBoxToggled">OnFormsToggle</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -157,7 +158,7 @@
                                 <property name="value"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style"></property>
-                                <event name="OnText">OnT</event>
+                                <event name="OnText">OnClassNameChange</event>
                                 <event name="OnTextEnter"></event>
                                 <event name="OnTextMaxLen"></event>
                                 <event name="OnTextURL"></event>
@@ -212,7 +213,7 @@
                                 <property name="value"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style"></property>
-                                <event name="OnText"></event>
+                                <event name="OnText">OnFileNameChange</event>
                                 <event name="OnTextEnter"></event>
                                 <event name="OnTextMaxLen"></event>
                                 <event name="OnTextURL"></event>

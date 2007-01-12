@@ -19,7 +19,9 @@
 
 ///////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE( GenInheritedClassDlgBase, wxDialog )
-	EVT_TEXT( ID_CLASS_NAME_TEXT_CTRL, GenInheritedClassDlgBase::_wxFB_OnT )
+	EVT_CHECKLISTBOX( ID_FORMS_CHECK_LIST, GenInheritedClassDlgBase::_wxFB_OnFormsToggle )
+	EVT_TEXT( ID_CLASS_NAME_TEXT_CTRL, GenInheritedClassDlgBase::_wxFB_OnClassNameChange )
+	EVT_TEXT( ID_FILE_NAME_TEXT_CTRL, GenInheritedClassDlgBase::_wxFB_OnFileNameChange )
 END_EVENT_TABLE()
 
 GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) : wxDialog( parent, id, title, pos, size, style )
@@ -32,8 +34,8 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, int id, wx
 	wxStaticBoxSizer* instructionsSbSizer;
 	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, -1, wxT("Instructions") ), wxVERTICAL );
 	
-	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-	instructionsSbSizer->Add( m_staticText7, 0, wxALL|wxEXPAND, 5 );
+	m_instructionsStaticText = new wxStaticText( this, wxID_ANY, wxT("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+	instructionsSbSizer->Add( m_instructionsStaticText, 0, wxALL|wxEXPAND, 5 );
 	
 	mainSizer->Add( instructionsSbSizer, 0, wxTOP|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	

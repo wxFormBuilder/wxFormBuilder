@@ -249,6 +249,11 @@ public:
 	* Generate the project's code
 	*/
 	bool GenerateCode( PObjectBase project );
+
+	/**
+	* Generate an inherited class
+	*/
+	void GenerateInheritedClass( PObjectBase userClasses );
 };
 
 

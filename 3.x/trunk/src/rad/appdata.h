@@ -235,6 +235,7 @@ public:
   void ModifyProperty(PProperty prop, wxString value);
   void ModifyEventHandler(PEvent evt, wxString value);
   void GenerateCode( bool projectOnly = false );
+  void GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file );
   void MovePosition(PObjectBase, bool right, unsigned int num = 1);
   void MoveHierarchy( PObjectBase obj, bool up);
   void Undo();

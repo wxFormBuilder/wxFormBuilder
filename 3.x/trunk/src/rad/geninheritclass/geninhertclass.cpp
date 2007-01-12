@@ -22,73 +22,59 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#include <wx/wx.h>
-
 #include "geninhertclass.h"
 
-///////////////////////////////////////////////////////////////////////////
-
-BEGIN_EVENT_TABLE( GenInheritedClassDlg, wxDialog )
-	//EVT_TEXT( ID_CLASS_NAME_TEXT_CTRL, GenInheritedClassDlg::OnText )
-END_EVENT_TABLE()
-
-GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) : wxDialog( parent, id, title, pos, size, style )
+GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, wxArrayString availableForms )
+	: GenInheritedClassDlgBase( parent )
 {
-	this->Centre( wxBOTH );
+	m_forms = availableForms;
+	// Set the initial selection.
+	m_formsCheckList->SetSelection( 0 );
 
-	wxBoxSizer* mainSizer;
-	mainSizer = new wxBoxSizer( wxVERTICAL );
+	// Setup the initial values for the maps of class names and file names.
+	for ( size_t i = 0; i < availableForms.size(); ++i )
+	{
+		GenClassDetails classDetails( wxT("ClassName"), wxT("FileName") );
+		m_classDetails[availableForms[i]] = classDetails;
+	}
 
-	wxStaticBoxSizer* instructionsSbSizer;
-	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, -1, wxT("Instructions") ), wxVERTICAL );
+}
 
-	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("1. Check the top level windows you would like to create the inherited class for.\n2. Change the .h/.cpp file names by selecting each of the items and editing in\nthe 'File Names' section.\n3. Press 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
-	instructionsSbSizer->Add( m_staticText7, 0, wxALL|wxEXPAND, 5 );
+wxString GenInheritedClassDlg::GetClassName( const wxString& form )
+{
+	std::map< wxString, GenClassDetails >::iterator it = m_classDetails.find( form );
+	if ( it != m_classDetails.end() )
+	{
+		return it->second.m_className;
+	}
 
-	mainSizer->Add( instructionsSbSizer, 0, wxTOP|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+	return wxEmptyString;
+}
 
-	wxString m_topLevelWindowsCheckListChoices[] = {  };
-	int m_topLevelWindowsCheckListNChoices = sizeof( m_topLevelWindowsCheckListChoices ) / sizeof( wxString );
-	m_topLevelWindowsCheckList = new wxCheckListBox( this, ID_TOP_LEVEL_WINDOWS_CHECK_LIST, wxDefaultPosition, wxDefaultSize, m_topLevelWindowsCheckListNChoices, m_topLevelWindowsCheckListChoices, 0 );
-	m_topLevelWindowsCheckList->SetMinSize( wxSize( 350,150 ) );
+wxString GenInheritedClassDlg::GetFileName( const wxString& form )
+{
+	std::map< wxString, GenClassDetails >::iterator it = m_classDetails.find( form );
+	if ( it != m_classDetails.end() )
+	{
+		return it->second.m_fileName;
+	}
 
-	mainSizer->Add( m_topLevelWindowsCheckList, 0, wxALL|wxEXPAND, 5 );
+	return wxEmptyString;
+}
 
-	wxStaticBoxSizer* fileNamesSbSizer;
-	fileNamesSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, -1, wxT("File Names") ), wxVERTICAL );
+wxArrayString GenInheritedClassDlg::GetFormsSelected()
+{
+	return m_forms;
+}
 
-	m_classNameStaticText = new wxStaticText( this, wxID_ANY, wxT("Class Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-	fileNamesSbSizer->Add( m_classNameStaticText, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT|wxLEFT, 5 );
+void GenInheritedClassDlg::OnFormsToggle( wxCommandEvent& event )
+{
+}
 
-	m_classNameTextCtrl = new wxTextCtrl( this, ID_CLASS_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fileNamesSbSizer->Add( m_classNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
+void GenInheritedClassDlg::OnClassNameChange( wxCommandEvent& event )
+{
+}
 
-	m_fileNameStaticText = new wxStaticText( this, wxID_ANY, wxT(".cpp/.h:"), wxDefaultPosition, wxDefaultSize, 0 );
-	fileNamesSbSizer->Add( m_fileNameStaticText, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT|wxLEFT, 5 );
-
-	m_fileNameTextCtrl = new wxTextCtrl( this, ID_FILE_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-	fileNamesSbSizer->Add( m_fileNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-
-	m_cppFileNameStaticText = new wxStaticText( this, wxID_ANY, wxT(".cpp:"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cppFileNameStaticText->Hide();
-
-	fileNamesSbSizer->Add( m_cppFileNameStaticText, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT|wxLEFT, 5 );
-
-	m_cppFileNameTextCtrl = new wxTextCtrl( this, ID_CPP_FILE_NAME_TEXT_CTRL, wxT("%wxFB_ProjectName%%wxFB_TopLevelName%.cpp"), wxDefaultPosition, wxDefaultSize, 0 );
-	m_cppFileNameTextCtrl->Hide();
-
-	fileNamesSbSizer->Add( m_cppFileNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
-
-	mainSizer->Add( fileNamesSbSizer, 0, wxEXPAND|wxRIGHT|wxLEFT, 5 );
-
-	m_sdbSizer = new wxStdDialogButtonSizer();
-	m_sdbSizer->AddButton( new wxButton( this, wxID_OK ) );
-	m_sdbSizer->AddButton( new wxButton( this, wxID_CANCEL ) );
-	m_sdbSizer->Realize();
-	mainSizer->Add( m_sdbSizer, 0, wxALL|wxALIGN_RIGHT, 5 );
-
-	this->SetSizer( mainSizer );
-	this->Layout();
-	mainSizer->Fit( this );
+void GenInheritedClassDlg::OnFileNameChange( wxCommandEvent& event )
+{
 }

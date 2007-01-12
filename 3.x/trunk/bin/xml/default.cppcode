@@ -60,5 +60,26 @@
 		</template>
 	<template name="toolbar_add">#parent $name->AddControl( $name );</template>
   </templates>
+  <templates class="UserClasses">
+		<template name="class_decl">class $name : public $basename</template>
+		<template name="Frame_cons_decl">
+			$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style );
+		</template>
+		<template name="Frame_cons_def">
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :	$basename( parent, id, title, pos, size, style )
+		</template>
+		<template name="Panel_cons_decl">
+			$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style );
+		</template>
+		<template name="Panel_cons_def">
+			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) : $basename( parent, id, pos, size, style )
+		</template>
+		<template name="Dialog_cons_decl">
+			$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style );
+		</template>
+		<template name="Dialog_cons_def">
+			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) : $basename( parent, id, title, pos, size, style )
+		</template>
+  </templates>
 </codegen>
 
