@@ -750,9 +750,9 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
             // The default macro is defined to wxID_ANY
             m_header->WriteLn( wxT("ID_DEFAULT = wxID_ANY, // Default") );
             macros.erase(it);
-            it = macros.begin();
         }
 
+		it = macros.begin();
         if ( it != macros.end())
         {
             m_header->WriteLn( wxString::Format( wxT("%s = %i,"), it->c_str(), m_firstID ) );
