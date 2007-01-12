@@ -1457,6 +1457,53 @@ void ApplicationData::GenerateCode( bool panelOnly )
 	NotifyCodeGeneration( panelOnly );
 }
 
+void ApplicationData::GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file )
+{
+	if ( !::wxDirExists( path ) )
+	{
+		wxLogWarning(wxT("Invalid Path: %s"), path.c_str() );
+		return;
+	}
+
+	PObjectBase obj = m_objDb->CreateObject( "UserClasses", PObjectBase() );
+
+	PProperty baseNameProp = obj->GetProperty( wxT("basename") );
+	PProperty nameProp = obj->GetProperty( wxT("name") );
+	PProperty fileProp = obj->GetProperty( wxT("file") );
+	PProperty typeProp = obj->GetProperty( wxT("type") );
+
+	if ( !(baseNameProp && nameProp && fileProp && typeProp) )
+	{
+		wxLogWarning( wxT("Missing Property") );
+		return;
+	}
+
+	baseNameProp->SetValue( baseName );
+	nameProp->SetValue( className );
+	fileProp->SetValue( file );
+	typeProp->SetValue( type );
+
+	CppCodeGenerator codegen;
+
+	// Determine if Microsoft BOM should be used
+	bool useMicrosoftBOM = false;
+	PProperty pUseMicrosoftBOM = GetProjectData()->GetProperty( wxT("use_microsoft_bom") );
+	if ( pUseMicrosoftBOM )
+	{
+		useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
+	}
+
+	PCodeWriter h_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".h"), useMicrosoftBOM ) );
+	PCodeWriter cpp_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".cpp"), useMicrosoftBOM ) );
+
+	codegen.SetHeaderWriter(h_cw);
+	codegen.SetSourceWriter(cpp_cw);
+
+	codegen.GenerateInheritedClass(obj);
+
+	wxLogStatus( wxT("Class generated at \'%s\'."), path.c_str() );
+}
+
 void ApplicationData::MovePosition(PObjectBase obj, bool right, unsigned int num)
 {
 	PObjectBase noItemObj = obj;

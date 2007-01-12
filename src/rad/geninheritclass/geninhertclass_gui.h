@@ -32,7 +32,9 @@ class GenInheritedClassDlgBase : public wxDialog
 	private:
 		
 		// Private event handlers
-		void _wxFB_OnT( wxCommandEvent& event ){ OnT( event ); }
+		void _wxFB_OnFormsToggle( wxCommandEvent& event ){ OnFormsToggle( event ); }
+		void _wxFB_OnClassNameChange( wxCommandEvent& event ){ OnClassNameChange( event ); }
+		void _wxFB_OnFileNameChange( wxCommandEvent& event ){ OnFileNameChange( event ); }
 		
 	
 	protected:
@@ -43,7 +45,7 @@ class GenInheritedClassDlgBase : public wxDialog
 			ID_FILE_NAME_TEXT_CTRL,
 		};
 		
-		wxStaticText* m_staticText7;
+		wxStaticText* m_instructionsStaticText;
 		wxCheckListBox* m_formsCheckList;
 		wxStaticText* m_classNameStaticText;
 		wxTextCtrl* m_classNameTextCtrl;
@@ -52,7 +54,9 @@ class GenInheritedClassDlgBase : public wxDialog
 		wxStdDialogButtonSizer* m_sdbSizer;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnT( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnFormsToggle( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnClassNameChange( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnFileNameChange( wxCommandEvent& event ){ event.Skip(); }
 		
 	
 	public:

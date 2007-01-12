@@ -22,47 +22,44 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef __geninhertclass_imp__
+#define __geninhertclass_imp__
 
-#ifndef __GENINHERTCLASS__
-#define __GENINHERTCLASS__
+#include "geninhertclass_gui.h"
+#include <map>
 
-#include <wx/wx.h>
-#include <wx/checklst.h>
-
-#include "utils/typeconv.h"
-#include "rad/wxfbevent.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-
-///////////////////////////////////////////////////////////////////////////
-
-#define ID_TOP_LEVEL_WINDOWS_CHECK_LIST 1000
-#define ID_CLASS_NAME_TEXT_CTRL 1001
-#define ID_FILE_NAME_TEXT_CTRL 1002
-#define ID_CPP_FILE_NAME_TEXT_CTRL 1003
-
-///////////////////////////////////////////////////////////////////////////////
-/// Class GenInheritedClassDlg
-///////////////////////////////////////////////////////////////////////////////
-class GenInheritedClassDlg : public wxDialog
+class GenClassDetails
 {
-	DECLARE_EVENT_TABLE()
-	private:
+public:
+	GenClassDetails() {}
 
-	protected:
-		wxStaticText* m_staticText7;
-		wxCheckListBox* m_topLevelWindowsCheckList;
-		wxStaticText* m_classNameStaticText;
-		wxTextCtrl* m_classNameTextCtrl;
-		wxStaticText* m_fileNameStaticText;
-		wxTextCtrl* m_fileNameTextCtrl;
-		wxStaticText* m_cppFileNameStaticText;
-		wxTextCtrl* m_cppFileNameTextCtrl;
-		wxStdDialogButtonSizer* m_sdbSizer;
+	GenClassDetails( wxString className, wxString fileName, bool isSelected = false )
+	{
+		m_className = className;
+		m_fileName = fileName;
+		m_isSelected = isSelected;
+	}
 
-	public:
-		GenInheritedClassDlg( wxWindow* parent, int id = wxID_ANY, wxString title = wxT("Generate Inherited Class"), wxPoint pos = wxDefaultPosition, wxSize size = wxSize( -1,-1 ), int style = wxDEFAULT_DIALOG_STYLE );
-
+	wxString m_className;
+	wxString m_fileName;
+	bool     m_isSelected;
 };
 
-#endif //__GENINHERTCLASS__
+class GenInheritedClassDlg : public GenInheritedClassDlgBase
+{
+public:
+	GenInheritedClassDlg( wxWindow* parent, wxArrayString availableForms );
+	wxString GetClassName( const wxString& form );
+	wxString GetFileName( const wxString& form );
+	wxArrayString GetFormsSelected();
+
+private:
+	wxArrayString m_forms;
+	std::map< wxString, GenClassDetails > m_classDetails;
+
+	void OnFormsToggle( wxCommandEvent& event );
+	void OnClassNameChange( wxCommandEvent& event );
+	void OnFileNameChange( wxCommandEvent& event );
+};
+
+#endif //__geninhertclass_imp__

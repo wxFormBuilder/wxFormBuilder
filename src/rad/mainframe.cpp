@@ -928,9 +928,29 @@ void MainFrame::OnXrcPreview( wxCommandEvent& WXUNUSED( e ) )
 
 void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 {
-	GenInheritedClassDlg *dlg = new GenInheritedClassDlg( this );
-	dlg->ShowModal();
-	dlg->Destroy();
+	wxArrayString forms;
+	std::map< wxString, wxString > types; // base class name : type of class
+
+	PObjectBase project = AppData()->GetProjectData();
+	for ( unsigned int i = 0; i < project->GetChildCount(); ++i )
+	{
+		// Children of project are all Forms
+		PObjectBase child = project->GetChild( i );
+		wxString form = child->GetPropertyAsString(_("name"));
+		forms.Add( form );
+		types[form] = child->GetClassName();;
+	}
+
+
+	// Show the dialog
+	GenInheritedClassDlg dlg( this, forms );
+	if ( wxID_OK != dlg.ShowModal() )
+	{
+		return;
+	}
+
+
+	AppData()->GenerateInheritedClass( wxT("GenInheritedClassDlg_Base"), wxT("GenInheritedClassDlg"), wxT("Dialog"), wxT("C:\\"), wxT("geninhertclass_imp") );
 }
 
 bool MainFrame::SaveWarning()

@@ -329,6 +329,52 @@ wxString CppCodeGenerator::ConvertXpmName( const wxString& text )
 	return name;
 }
 
+void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
+{
+	if (!userClasses)
+	{
+		wxLogError(wxT("There is no object to generate inherited class"));
+		return;
+	}
+
+	if ( wxT("UserClasses") != userClasses->GetClassName() )
+	{
+		wxLogError(wxT("This not a UserClasses object"));
+		return;
+	}
+
+	wxString file = userClasses->GetPropertyAsString( wxT("file") );
+	wxString type = userClasses->GetPropertyAsString( wxT("type") );
+
+	m_header->WriteLn( wxT("#ifndef __") + file + wxT("__") );
+	m_header->WriteLn( wxT("#define __") + file + wxT("__") );
+	m_header->WriteLn( wxEmptyString );
+
+	wxString code = GetCode( userClasses, wxT("class_decl") );
+	m_header->WriteLn( code );
+	m_header->WriteLn( wxT("{") );
+	m_header->WriteLn( wxT("public:") );
+
+	m_header->Indent();
+	code = GetCode( userClasses, type + wxT("_cons_decl") );
+	m_header->WriteLn( code );
+	m_header->Unindent();
+
+	m_header->WriteLn( wxT("};") );
+	m_header->WriteLn( wxEmptyString );
+	m_header->WriteLn( wxT("#endif //__") + file + wxT("__") );
+
+	m_source->WriteLn( wxEmptyString );
+	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\"") );
+	m_source->WriteLn( wxEmptyString );
+
+	code = GetCode( userClasses, type + wxT("_cons_def") );
+	m_source->WriteLn( code );
+	m_source->WriteLn( wxT("{") );
+	m_source->WriteLn( wxEmptyString );
+	m_source->WriteLn( wxT("}") );
+}
+
 bool CppCodeGenerator::GenerateCode( PObjectBase project )
 {
 	if (!project)
