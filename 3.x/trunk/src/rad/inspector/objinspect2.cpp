@@ -740,8 +740,7 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	}
   	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
 	{
-		result = wxStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
-		result->SetAttribute(wxPG_BOOL_USE_DOUBLE_CLICK_CYCLING, vTrue);
+		result = wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
 	}
 	else if (type == PT_BOOL)
 	{
