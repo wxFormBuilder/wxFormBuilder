@@ -140,6 +140,7 @@
       <option name="wxLB_NEEDED_SB" help="Only create a vertical scrollbar if needed." />
       <option name="wxLB_SORT"      help="The listbox contents are sorted in alphabetical order." /></property>
     <property name="choices" type="stringlist" help="List of default values." />
+	<event name="OnCheckListBoxToggled" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKLISTBOX_TOGGLED event, when an item in the check list box is checked or unchecked." />
   </objectinfo>
 
   <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook">

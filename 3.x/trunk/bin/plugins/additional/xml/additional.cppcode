@@ -89,6 +89,7 @@
         $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
     </template>
     <template name="include">@#include &lt;wx/checklst.h&gt;</template>
+	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
   </templates>
 
 
