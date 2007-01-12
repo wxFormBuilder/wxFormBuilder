@@ -67,7 +67,7 @@ class MainFrame : public wxFrame
   int m_rightSplitterWidth;
 
   //wxFrameManager m_mgr;
- wxFlatNotebook *m_notebook;
+  wxFlatNotebook *m_notebook;
   wxFlatNotebookImageList m_icons;
   wxFbPalette *m_palette;
   ObjectTree *m_objTree;
@@ -118,6 +118,7 @@ class MainFrame : public wxFrame
   void OnChangeAlignment (wxCommandEvent &event);
   void OnChangeBorder(wxCommandEvent& e);
   void OnXrcPreview(wxCommandEvent& e);
+  void OnGenInhertedClass(wxCommandEvent& e);
   void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event );
 
   void OnProjectLoaded( wxFBEvent& event );

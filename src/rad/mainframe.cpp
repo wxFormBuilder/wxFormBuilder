@@ -31,6 +31,7 @@
 #include "rad/bitmaps.h"
 #include "rad/cpppanel/cpppanel.h"
 #include "rad/xrcpanel/xrcpanel.h"
+#include "rad/geninheritclass/geninhertclass.h"
 #include "inspector/objinspect2.h"
 #include "objecttree/objecttree.h"
 #include "palette.h"
@@ -86,10 +87,14 @@
 #define ID_MOVE_LEFT	  134
 #define ID_MOVE_RIGHT     135
 
-#define ID_PREVIEW_XRC    136
+#define ID_PREVIEW_XRC     136
+#define ID_GEN_INHERIT_CLS 137
 
-#define ID_LEFT_SPLITTER  137
-#define ID_RIGHT_SPLITTER 138
+#define ID_SETTINGS_GLOBAL 138	// For the future preference dialogs
+#define ID_SETTINGS_PROJ   139	// For the future preference dialogs
+
+#define ID_LEFT_SPLITTER   140
+#define ID_RIGHT_SPLITTER  141
 
 #define STATUS_FIELD_OBJECT 1
 
@@ -126,6 +131,7 @@ BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 	EVT_MENU( ID_ALIGN_CENTER_V, MainFrame::OnChangeAlignment )
 	EVT_MENU_RANGE( ID_BORDER_LEFT, ID_BORDER_BOTTOM, MainFrame::OnChangeBorder )
 	EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
+	EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
 	EVT_CLOSE( MainFrame::OnClose )
 	EVT_FLATNOTEBOOK_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
@@ -920,6 +926,13 @@ void MainFrame::OnXrcPreview( wxCommandEvent& WXUNUSED( e ) )
 
 }
 
+void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
+{
+	GenInheritedClassDlg *dlg = new GenInheritedClassDlg( this );
+	dlg->ShowModal();
+	dlg->Destroy();
+}
+
 bool MainFrame::SaveWarning()
 {
 	int result = wxYES;
@@ -991,6 +1004,9 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	wxMenu *menuView = new wxMenu;
 	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );
 
+	wxMenu *menuTools = new wxMenu;
+	menuTools->Append( ID_GEN_INHERIT_CLS, wxT( "&Generate Inherited Class\tF6" ), wxT( "Creates the needed files and class for proper inheritance of your designed GUI" ) );
+
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append( ID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
 
@@ -1000,6 +1016,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuBar->Append( menuFile, wxT( "&File" ) );
 	menuBar->Append( menuEdit, wxT( "&Edit" ) );
 	menuBar->Append( menuView, wxT( "&View" ) );
+	menuBar->Append( menuTools, wxT( "&Tools" ) );
 	menuBar->Append( menuHelp, wxT( "&Help" ) );
 
 	return menuBar;
