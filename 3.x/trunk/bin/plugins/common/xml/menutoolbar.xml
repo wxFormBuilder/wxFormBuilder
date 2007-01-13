@@ -43,6 +43,8 @@
       <option name="wxITEM_RADIO"             help="radio item to the end of the menu. All consequent radio items form a group and when an item in the group is checked, all the others are automatically unchecked. (Only on Windows and GTK)" />
 	  wxITEM_NORMAL
 	</property>
+	
+    <event name="OnMenuSelection" class="wxCommandEvent" help="Process a menu selection event." />
   </objectinfo>
 
   <objectinfo class="separator" icon="separator.xpm" type="menuitem">
