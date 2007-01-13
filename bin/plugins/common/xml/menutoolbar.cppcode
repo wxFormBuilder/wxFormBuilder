@@ -69,6 +69,7 @@
 		#parent $name->Append( $name );
 	</template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
+    <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
   </templates>
 
   <templates class="separator">
