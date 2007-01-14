@@ -2,6 +2,8 @@
 ************************************************************************
 date  Version 3.00.17 (Beta 2)
 + Added new 'Generate Inherited Class' dialog.
++ Added menu events.
++ Added Toolbar tool events.
 
 01-11-2007 Version 3.00.16 (Beta 2)
 * Improved tolerance of wxBitmap properties to old project files.

@@ -35,6 +35,150 @@
             <property name="xrc_skip_sizer">1</property>
             <event name="OnClose">OnClose</event>
             <event name="OnSize">OnSize</event>
+            <object class="wxMenuBar" expanded="1">
+                <property name="bg"></property>
+                <property name="enabled">1</property>
+                <property name="fg"></property>
+                <property name="font"></property>
+                <property name="hidden">0</property>
+                <property name="id">wxID_ANY</property>
+                <property name="label">MyMenuBar</property>
+                <property name="maximum_size"></property>
+                <property name="minimum_size"></property>
+                <property name="name">m_menubar1</property>
+                <property name="permission">protected</property>
+                <property name="pos"></property>
+                <property name="size"></property>
+                <property name="style"></property>
+                <property name="subclass"></property>
+                <property name="tooltip"></property>
+                <property name="window_extra_style"></property>
+                <property name="window_style"></property>
+                <object class="wxMenu" expanded="1">
+                    <property name="label">&amp;File</property>
+                    <property name="name">m_fileMenu</property>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_FILE_OPEN</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">&amp;Open</property>
+                        <property name="name">fileOpenMenuItem</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">OnFileOpen</event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_FILE_SAVE</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">&amp;Save</property>
+                        <property name="name">fileSaveMenuItem</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">OnFileSave</event>
+                    </object>
+                    <object class="separator" expanded="1" />
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_FILE_EXIT</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">E&amp;xit</property>
+                        <property name="name">fileExitMenuItem</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection">OnFileExit</event>
+                    </object>
+                </object>
+                <object class="wxMenu" expanded="1">
+                    <property name="label">Help</property>
+                    <property name="name">m_helpMenu</property>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">ID_HELP_ABOUT_MENU_ITEM</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">&amp;About</property>
+                        <property name="name">helpAboutMenuItem</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
+                        <event name="OnMenuSelection"></event>
+                    </object>
+                </object>
+            </object>
+            <object class="wxToolBar" expanded="1">
+                <property name="bg"></property>
+                <property name="bitmapsize"></property>
+                <property name="enabled">1</property>
+                <property name="fg"></property>
+                <property name="font"></property>
+                <property name="hidden">0</property>
+                <property name="id">ID_TOOLBAR</property>
+                <property name="margins"></property>
+                <property name="maximum_size"></property>
+                <property name="minimum_size"></property>
+                <property name="name">m_toolBar1</property>
+                <property name="packing">1</property>
+                <property name="permission">protected</property>
+                <property name="pos"></property>
+                <property name="separation">5</property>
+                <property name="size"></property>
+                <property name="style">wxTB_FLAT|wxTB_HORIZONTAL|wxTB_TEXT</property>
+                <property name="subclass"></property>
+                <property name="tooltip"></property>
+                <property name="window_extra_style"></property>
+                <property name="window_style"></property>
+                <object class="tool" expanded="1">
+                    <property name="bitmap"></property>
+                    <property name="id">ID_OPEN_TOOL</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Open</property>
+                    <property name="name">m_openTool</property>
+                    <property name="statusbar"></property>
+                    <property name="tooltip"></property>
+                    <event name="OnMenuSelection">OnOpenSelected</event>
+                    <event name="OnToolClicked"></event>
+                    <event name="OnToolEnter">OnOpenEntered</event>
+                    <event name="OnToolRClicked"></event>
+                </object>
+                <object class="tool" expanded="1">
+                    <property name="bitmap"></property>
+                    <property name="id">ID_SAVE_TOOL</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">Save</property>
+                    <property name="name">m_saveTool</property>
+                    <property name="statusbar"></property>
+                    <property name="tooltip"></property>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked">OnFileSave</event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked"></event>
+                </object>
+                <object class="toolSeparator" expanded="1" />
+                <object class="tool" expanded="1">
+                    <property name="bitmap"></property>
+                    <property name="id">ID_ABOUT_TOOL</property>
+                    <property name="kind">wxITEM_NORMAL</property>
+                    <property name="label">About</property>
+                    <property name="name">m_aboutTool</property>
+                    <property name="statusbar"></property>
+                    <property name="tooltip"></property>
+                    <event name="OnMenuSelection"></event>
+                    <event name="OnToolClicked">OnAboutClicked</event>
+                    <event name="OnToolEnter"></event>
+                    <event name="OnToolRClicked">OnAboutRClick</event>
+                </object>
+            </object>
         </object>
         <object class="Panel" expanded="1">
             <property name="bg"></property>

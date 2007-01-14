@@ -32,7 +32,7 @@
     <property name="label" type="wxString_i18n"    help="Text for the menu item, as shown on the menu. An accelerator key can be specified using the ampersand &quot;&amp;&quot; character.">MyMenuItem</property>
     <property name="shortcut" type="wxString" help="Optional shortcut keyboard shortcut. Remarks: The general syntax is any combination of &quot;CTRL&quot;, &quot;ALT&quot; and &quot;SHIFT&quot; strings (case doesn't matter) separated by either '-' or '+' characters and followed by the accelerator itself. The accelerator may be any alphanumeric character, any function key (from F1 to F12)"/>
     <property name="help" type="wxString_i18n"     help="Optional help string that will be shown on the status bar."/>
-    <property name="id" type="macro">ID_DEFAULT</property>
+    <property name="id" type="macro">wxID_ANY</property>
     <property name="bitmap" type="bitmap" help="Bitmap for the menu item. (Windows and GTK+ only) This doubles as the checked bitmap is the menu item is wxITEM_CHECK." />
 	<property name="unchecked_bitmap" type="bitmap"     help="Unchecked bitmap for the menu item. This will be shown if the menu item is wxITEM_CHECK and it is currently unchecked. (Windows only)" />
     <property name="checked" type="bool">0</property>
@@ -43,7 +43,6 @@
       <option name="wxITEM_RADIO"             help="radio item to the end of the menu. All consequent radio items form a group and when an item in the group is checked, all the others are automatically unchecked. (Only on Windows and GTK)" />
 	  wxITEM_NORMAL
 	</property>
-	
     <event name="OnMenuSelection" class="wxCommandEvent" help="Process a menu selection event." />
   </objectinfo>
 
@@ -83,6 +82,10 @@
 	<property name="tooltip" type="wxString_i18n"   help="Help string used in the tooltip." />
     <property name="statusbar" type="wxString_i18n" help="This string is shown in the statusbar (if any) of the parent frame when the mouse pointer is inside the tool." />
     <property name="id" type="macro">wxID_ANY</property>
+	<event name="OnToolClicked" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_CLICKED event (a synonym for wxEVT_COMMAND_MENU_SELECTED). Pass the id of the tool." />
+	<event name="OnMenuSelection" class="wxCommandEvent" help="The same as OnToolClicked. (EVT_TOOL)" />
+	<event name="OnToolRClicked" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_RCLICKED event." />
+	<event name="OnToolEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_ENTER event. This uses the tools parent ID, the ToolBar, so be sure you set it to something that is not the default. The value of wxCommandEvent::GetSelection is the tool id, or -1 if the mouse cursor has moved off a tool." />
   </objectinfo>
   
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
