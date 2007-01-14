@@ -104,6 +104,10 @@
 
   <templates class="tool">
     <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );</template>
+	<template name="evt_entry_OnToolClicked">EVT_TOOL( $id, #handler )</template>
+	<template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
+	<template name="evt_entry_OnToolRClicked">EVT_TOOL_RCLICKED( $id, #handler )</template>
+	<template name="evt_entry_OnToolEnter">EVT_TOOL_ENTER(#parent $id, #handler )</template>
   </templates>
   
   <templates class="toolSeparator">
