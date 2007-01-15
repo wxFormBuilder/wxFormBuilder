@@ -943,14 +943,36 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 
 
 	// Show the dialog
-	GenInheritedClassDlg dlg( this, forms );
+	GenInheritedClassDlg dlg( this, forms, project->GetPropertyAsString( _("name") ) );
 	if ( wxID_OK != dlg.ShowModal() )
 	{
 		return;
 	}
 
+	wxArrayString selectedForms = dlg.GetFormsSelected();
+	wxString filePath = project->GetPropertyAsString( _("path") );
 
-	AppData()->GenerateInheritedClass( wxT("GenInheritedClassDlg_Base"), wxT("GenInheritedClassDlg"), wxT("Dialog"), wxT("C:\\"), wxT("geninhertclass_imp") );
+	for ( size_t i = 0; i < selectedForms.size(); ++i )
+	{
+		wxString type;
+
+		// Get the class name for the selected form.
+		wxString className = dlg.GetClassName( selectedForms[i] );
+
+		// Find the type of the form that is selected.
+		std::map< wxString, wxString >::iterator it = types.find( selectedForms[i] );
+		if ( it != types.end() )
+		{
+			type = it->second;
+		}
+
+		// Get the file name for the selected form.
+		wxString fileName = dlg.GetFileName( selectedForms[i] );
+
+		// Create the class and files.
+		AppData()->GenerateInheritedClass( selectedForms[i], className, type, filePath, fileName );
+	}
+
 }
 
 bool MainFrame::SaveWarning()

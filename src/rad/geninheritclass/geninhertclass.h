@@ -67,13 +67,15 @@ public:
 class GenInheritedClassDlg : public GenInheritedClassDlgBase
 {
 public:
-	GenInheritedClassDlg( wxWindow* parent, wxArrayString availableForms );
+	GenInheritedClassDlg( wxWindow* parent, const wxArrayString& availableForms, const wxString& projectName );
 	wxString GetClassName( const wxString& form );
 	wxString GetFileName( const wxString& form );
 	wxArrayString GetFormsSelected();
 
 private:
-	wxArrayString m_forms;
+	wxArrayString	m_forms;
+	wxArrayString	m_selectedForms;
+	wxString		m_projectName;
 	std::map< wxString, GenClassDetails > m_classDetails;
 
 	void OnFormsSelected( wxCommandEvent& event );
