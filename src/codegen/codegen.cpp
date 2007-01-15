@@ -192,7 +192,7 @@ TemplateParser::Ident TemplateParser::ParseIdent()
 		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$')
 			&& ( (peek >= wxT('a') && peek <= wxT('z') ) ||
 			(peek >= wxT('A') && peek <= wxT('Z') ) ||
-			(peek >= wxT('0') && peek <= wxT('9') )))
+			(peek >= wxT('0') && peek <= wxT('9') ) ))
 		{
 			macro += wxChar( m_in.GetC() );
 			peek = wxChar( m_in.Peek() );
