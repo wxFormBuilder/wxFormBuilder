@@ -90,6 +90,8 @@
     </template>
     <template name="include">@#include &lt;wx/checklst.h&gt;</template>
 	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
+	<template name="evt_entry_OnCheckListBox">EVT_LISTBOX( $id, #handler )</template>
+	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
   </templates>
 
 

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan 12 2007)
+// C++ code generated with wxFormBuilder (version Jan 14 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -19,6 +19,7 @@
 
 ///////////////////////////////////////////////////////////////////////////
 BEGIN_EVENT_TABLE( GenInheritedClassDlgBase, wxDialog )
+	EVT_LISTBOX( ID_FORMS_CHECK_LIST, GenInheritedClassDlgBase::_wxFB_OnFormsSelected )
 	EVT_CHECKLISTBOX( ID_FORMS_CHECK_LIST, GenInheritedClassDlgBase::_wxFB_OnFormsToggle )
 	EVT_TEXT( ID_CLASS_NAME_TEXT_CTRL, GenInheritedClassDlgBase::_wxFB_OnClassNameChange )
 	EVT_TEXT( ID_FILE_NAME_TEXT_CTRL, GenInheritedClassDlgBase::_wxFB_OnFileNameChange )
