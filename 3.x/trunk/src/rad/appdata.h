@@ -33,14 +33,18 @@
 
 namespace ticpp
 {
-	class Node;
-	class Element;
+
+class Node;
+
+class Element;
 }
 
 class Property;
 
 class wxFBEvent;
+
 class wxFBManager;
+
 class wxFBIPC;
 
 #define AppData()         	(ApplicationData::Get())
@@ -49,242 +53,302 @@ class wxFBIPC;
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
 // This class is a singleton class.
+
 class ApplicationData
 {
- private:
-  static ApplicationData *s_instance;
 
-  wxString m_rootDir;       // directorio raíz (mismo que el ejecutable)
-  bool m_modFlag;           // flag de proyecto modificado
-  PObjectDatabase m_objDb;  // Base de datos de objetos
-  PObjectBase m_project;    // Proyecto
-  PObjectBase m_selObj;     // Objeto seleccionado
+	private:
 
-  PObjectBase m_clipboard;
-  bool m_copyOnPaste; // flag que indica si hay que copiar el objeto al pegar
+		static ApplicationData *s_instance;
 
-  // Procesador de comandos Undo/Redo
-  CommandProcessor m_cmdProc;
-  wxString m_projectFile;
-  wxString m_projectPath;
+		wxString m_rootDir;       // directorio raíz (mismo que el ejecutable)
 
-  PwxFBManager m_manager;
+		bool m_modFlag;           // flag de proyecto modificado
 
-  // Prevent more than one instance of a project
-  boost::shared_ptr< wxFBIPC > m_ipc;
+		PObjectDatabase m_objDb;  // Base de datos de objetos
 
+		PObjectBase m_project;    // Proyecto
 
-  typedef std::vector< wxEvtHandler* > HandlerVector;
-  HandlerVector m_handlers;
+		PObjectBase m_selObj;     // Objeto seleccionado
 
-  void NotifyEvent( wxFBEvent& event );
+		PObjectBase m_clipboard;
 
-   // Notifican a cada observador el evento correspondiente
-  void NotifyProjectLoaded();
-  void NotifyProjectSaved();
-  void NotifyObjectExpanded(PObjectBase obj);
-  void NotifyObjectSelected(PObjectBase obj);
-  void NotifyObjectCreated(PObjectBase obj);
-  void NotifyObjectRemoved(PObjectBase obj);
-  void NotifyPropertyModified(PProperty prop);
-  void NotifyEventHandlerModified(PEvent evtHandler);
-  void NotifyProjectRefresh();
-  void NotifyCodeGeneration( bool panelOnly = false );
+		bool m_copyOnPaste; // flag que indica si hay que copiar el objeto al pegar
 
-  /**
-   * Comprueba las referencias cruzadas de todos los nodos del árbol
-   */
-  void CheckProjectTree(PObjectBase obj);
+		// Procesador de comandos Undo/Redo
+		CommandProcessor m_cmdProc;
 
-  /**
-   * Resuelve un posible conflicto de nombres.
-   * @note el objeto a comprobar debe estar insertado en proyecto, por tanto
-   *       no es válida para arboles "flotantes".
-   */
-  void ResolveNameConflict(PObjectBase obj);
+		wxString m_projectFile;
 
-  /**
-   * Rename all objects that have the same name than any object of a subtree.
-   */
-  void ResolveSubtreeNameConflicts(PObjectBase obj, PObjectBase topObj = PObjectBase());
+		wxString m_projectPath;
 
-  /**
-   * Rutina auxiliar de ResolveNameConflict
-   */
-  void BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wxString> &name_set);
+		PwxFBManager m_manager;
 
-  /**
-   * Calcula la posición donde deberá ser insertado el objeto.
-   *
-   * Dado un objeto "padre" y un objeto "seleccionado", esta rutina calcula la
-   * posición de inserción de un objeto debajo de "parent" de forma que el objeto
-   * quede a continuación del objeto "seleccionado".
-   *
-   * El algoritmo consiste ir subiendo en el arbol desde el objeto "selected"
-   * hasta encontrar un objeto cuyo padre sea el mismo que "parent" en cuyo
-   * caso se toma la posición siguiente a ese objeto.
-   *
-   * @param parent objeto "padre"
-   * @param selected objeto "seleccionado".
-   * @return posición de insercción (-1 si no se puede insertar).
-   */
-  int CalcPositionOfInsertion(PObjectBase selected,PObjectBase parent);
+		// Prevent more than one instance of a project
+		boost::shared_ptr< wxFBIPC > m_ipc;
 
 
-  /**
-   * Elimina aquellos items que no contengan hijos.
-   *
-   * Esta rutina se utiliza cuando el árbol que se carga de un fichero
-   * no está bien formado, o la importación no ha sido correcta.
-   */
-   void RemoveEmptyItems(PObjectBase obj);
+		typedef std::vector< wxEvtHandler* > HandlerVector;
 
-   /**
-    * Eliminar un objeto.
-    */
-   void DoRemoveObject(PObjectBase object, bool cutObject);
+		HandlerVector m_handlers;
 
-   void Execute(PCommand cmd);
+		void NotifyEvent( wxFBEvent& event );
 
-   /**
-    * Search a size in the hierarchy of an object
-    */
-   PObjectBase SearchSizerInto(PObjectBase obj);
+		// Notifican a cada observador el evento correspondiente
+		void NotifyProjectLoaded();
 
+		void NotifyProjectSaved();
 
-	/**
-	Convert a project from an older version.
-	@param path The path to the project file
-	@param fileMajor The major revision of the file
-	@param fileMinor The minor revision of the file
-	@return true if successful, false otherwise
-	*/
-	bool ConvertProject( const wxString& path, int fileMajor, int fileMinor );
+		void NotifyObjectExpanded( PObjectBase obj );
 
-	/**
-	Convert the properties of the project element. Handle this separately because it does not repeat.
-	@param project The project element.
-	@param path The path to the project file.
-	@param fileMajor The major revision of the file.
-	@param fileMinor The minor revision of the file.
-	*/
-	void ConvertProjectProperties( ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor );
+		void NotifyObjectSelected( PObjectBase obj );
 
-	/**
-	Recursive function used to convert the object tree in the project file to the latest version.
-	@param object A pointer to the object element
-	@param fileMajor The major revision of the file
-	@param fileMinor The minor revision of the file
-	*/
-	void ConvertObject( ticpp::Element* object, int fileMajor, int fileMinor );
+		void NotifyObjectCreated( PObjectBase obj );
 
-	/**
-	Iterates through 'property' element children of @a parent.
-	Saves all properties with a 'name' attribute matching one of @a names into @a properties
-	@param parent Object element with child properties.
-	@param names Set of property names to search for.
-	@param properties Pointer to a set in which to store the result of the search.
-	*/
-	void GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties );
+		void NotifyObjectRemoved( PObjectBase obj );
 
-	/**
-	Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't exist.
-	@param prop Property containing the options to transfer.
-	@param options Set of options to search for and transfer.
-	@param newPropName Name of property to transfer to, will be created if non-existant.
-	*/
-	void TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName );
+		void NotifyPropertyModified( PProperty prop );
 
+		void NotifyEventHandlerModified( PEvent evtHandler );
 
-  // hiden constructor
-  ApplicationData(const wxString &rootdir = wxT(".") );
+		void NotifyProjectRefresh();
 
-public:
+		void NotifyCodeGeneration( bool panelOnly = false );
 
-  static ApplicationData* Get(const wxString &rootdir = wxT(".") );
+		/**
+		 * Comprueba las referencias cruzadas de todos los nodos del árbol
+		 */
+		void CheckProjectTree( PObjectBase obj );
 
-  // Force the static AppData instance to Init()
-  static void Initialize();
-  static void Destroy();
+		/**
+		 * Resuelve un posible conflicto de nombres.
+		 * @note el objeto a comprobar debe estar insertado en proyecto, por tanto
+		 *       no es válida para arboles "flotantes".
+		 */
+		void ResolveNameConflict( PObjectBase obj );
 
-  // Initialize application
-  void LoadApp();
+		/**
+		 * Rename all objects that have the same name than any object of a subtree.
+		 */
+		void ResolveSubtreeNameConflicts( PObjectBase obj, PObjectBase topObj = PObjectBase() );
 
-  // Hold a pointer to the wxFBManager
-  PwxFBManager GetManager();
+		/**
+		 * Rutina auxiliar de ResolveNameConflict
+		 */
+		void BuildNameSet( PObjectBase obj, PObjectBase top, std::set<wxString> &name_set );
 
-  // Procedures for register/unregister wxEvtHandlers to be notified of wxFBEvents
-  void AddHandler( wxEvtHandler* handler );
-  void RemoveHandler( wxEvtHandler* handler );
-
-  // Operaciones sobre los datos
-  bool LoadProject(const wxString &filename);
-  void SaveProject(const wxString &filename);
-  void NewProject();
-  void ExpandObject( PObjectBase obj, bool expand );
-
-  // Object will not be selected if it already is selected, unless force = true
-  void SelectObject( PObjectBase obj, bool force = false );
-  void CreateObject(wxString name);
-  void RemoveObject(PObjectBase obj);
-  void CutObject(PObjectBase obj);
-  void CopyObject(PObjectBase obj);
-  void PasteObject(PObjectBase parent);
-  void InsertObject(PObjectBase obj, PObjectBase parent);
-  void MergeProject(PObjectBase project);
-  void ModifyProperty(PProperty prop, wxString value);
-  void ModifyEventHandler(PEvent evt, wxString value);
-  void GenerateCode( bool projectOnly = false );
-  void GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file );
-  void MovePosition(PObjectBase, bool right, unsigned int num = 1);
-  void MoveHierarchy( PObjectBase obj, bool up);
-  void Undo();
-  void Redo();
-  void ToggleExpandLayout(PObjectBase obj);
-  void ToggleStretchLayout(PObjectBase obj);
-  void ChangeAlignment (PObjectBase obj, int align, bool vertical);
-  void ToggleBorderFlag(PObjectBase obj, int border);
-  void CreateBoxSizerWithObject(PObjectBase obj);
-  void ShowXrcPreview();
-
-  // Servicios para los observadores
-  PObjectBase GetSelectedObject();
-  PObjectBase GetProjectData();
-  PObjectBase GetSelectedForm();
-  bool CanUndo() { return m_cmdProc.CanUndo(); }
-  bool CanRedo() { return m_cmdProc.CanRedo(); }
-  bool GetLayoutSettings(PObjectBase obj, int *flag, int *option,int *border, int* orient);
-  bool CanPasteObject();
-  bool CanCopyObject();
-  bool IsModified();
-
-  PObjectPackage GetPackage(unsigned int idx)
-    { return m_objDb->GetPackage(idx);}
-
-  unsigned int GetPackageCount()
-    { return m_objDb->GetPackageCount(); }
-
-  PObjectDatabase GetObjectDatabase()
-    { return m_objDb; }
+		/**
+		 * Calcula la posición donde deberá ser insertado el objeto.
+		 *
+		 * Dado un objeto "padre" y un objeto "seleccionado", esta rutina calcula la
+		 * posición de inserción de un objeto debajo de "parent" de forma que el objeto
+		 * quede a continuación del objeto "seleccionado".
+		 *
+		 * El algoritmo consiste ir subiendo en el arbol desde el objeto "selected"
+		 * hasta encontrar un objeto cuyo padre sea el mismo que "parent" en cuyo
+		 * caso se toma la posición siguiente a ese objeto.
+		 *
+		 * @param parent objeto "padre"
+		 * @param selected objeto "seleccionado".
+		 * @return posición de insercción (-1 si no se puede insertar).
+		 */
+		int CalcPositionOfInsertion( PObjectBase selected, PObjectBase parent );
 
 
-  // Servicios específicos, no definidos en DataObservable
-  void        SetClipboardObject(PObjectBase obj) { m_clipboard = obj; }
-  PObjectBase GetClipboardObject()                { return m_clipboard; }
+		/**
+		 * Elimina aquellos items que no contengan hijos.
+		 *
+		 * Esta rutina se utiliza cuando el árbol que se carga de un fichero
+		 * no está bien formado, o la importación no ha sido correcta.
+		 */
+		void RemoveEmptyItems( PObjectBase obj );
 
-  wxString GetProjectFileName() { return m_projectFile; }
+		/**
+		 * Eliminar un objeto.
+		 */
+		void DoRemoveObject( PObjectBase object, bool cutObject );
 
-  const int m_fbpVerMajor;
-  const int m_fbpVerMinor;
+		void Execute( PCommand cmd );
 
-  const wxString &GetProjectPath() { return m_projectPath; };
-  void SetProjectPath(const wxString &path) { m_projectPath = path; };
+		/**
+		 * Search a size in the hierarchy of an object
+		 */
+		PObjectBase SearchSizerInto( PObjectBase obj );
 
-  const wxString &GetApplicationPath() { return m_rootDir; };
-  void SetApplicationPath(const wxString &path) { m_rootDir = path; };
 
-  // Allow a single instance check from outsid the AppData class
-  bool VerifySingleInstance( const wxString& file, bool switchTo = true );
+		/**
+		Convert a project from an older version.
+		@param path The path to the project file
+		@param fileMajor The major revision of the file
+		@param fileMinor The minor revision of the file
+		@return true if successful, false otherwise
+		*/
+		bool ConvertProject( const wxString& path, int fileMajor, int fileMinor );
+
+		/**
+		Convert the properties of the project element. Handle this separately because it does not repeat.
+		@param project The project element.
+		@param path The path to the project file.
+		@param fileMajor The major revision of the file.
+		@param fileMinor The minor revision of the file.
+		*/
+		void ConvertProjectProperties( ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor );
+
+		/**
+		Recursive function used to convert the object tree in the project file to the latest version.
+		@param object A pointer to the object element
+		@param fileMajor The major revision of the file
+		@param fileMinor The minor revision of the file
+		*/
+		void ConvertObject( ticpp::Element* object, int fileMajor, int fileMinor );
+
+		/**
+		Iterates through 'property' element children of @a parent.
+		Saves all properties with a 'name' attribute matching one of @a names into @a properties
+		@param parent Object element with child properties.
+		@param names Set of property names to search for.
+		@param properties Pointer to a set in which to store the result of the search.
+		*/
+		void GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties );
+
+		/**
+		Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't exist.
+		@param prop Property containing the options to transfer.
+		@param options Set of options to search for and transfer.
+		@param newPropName Name of property to transfer to, will be created if non-existant.
+		*/
+		void TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName );
+
+
+		// hiden constructor
+		ApplicationData( const wxString &rootdir = wxT( "." ) );
+
+	public:
+
+		static ApplicationData* Get( const wxString &rootdir = wxT( "." ) );
+
+		// Force the static AppData instance to Init()
+		static void Initialize();
+
+		static void Destroy();
+
+		// Initialize application
+		void LoadApp();
+
+		// Hold a pointer to the wxFBManager
+		PwxFBManager GetManager();
+
+		// Procedures for register/unregister wxEvtHandlers to be notified of wxFBEvents
+		void AddHandler( wxEvtHandler* handler );
+
+		void RemoveHandler( wxEvtHandler* handler );
+
+		// Operaciones sobre los datos
+		bool LoadProject( const wxString &filename );
+
+		void SaveProject( const wxString &filename );
+
+		void NewProject();
+
+		void ExpandObject( PObjectBase obj, bool expand );
+
+		// Object will not be selected if it already is selected, unless force = true
+		void SelectObject( PObjectBase obj, bool force = false );
+
+		void CreateObject( wxString name );
+
+		void RemoveObject( PObjectBase obj );
+
+		void CutObject( PObjectBase obj );
+
+		void CopyObject( PObjectBase obj );
+
+		void PasteObject( PObjectBase parent );
+
+		void InsertObject( PObjectBase obj, PObjectBase parent );
+
+		void MergeProject( PObjectBase project );
+
+		void ModifyProperty( PProperty prop, wxString value );
+
+		void ModifyEventHandler( PEvent evt, wxString value );
+
+		void GenerateCode( bool projectOnly = false );
+
+		void GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file );
+
+		void MovePosition( PObjectBase, bool right, unsigned int num = 1 );
+
+		void MoveHierarchy( PObjectBase obj, bool up );
+
+		void Undo();
+
+		void Redo();
+
+		void ToggleExpandLayout( PObjectBase obj );
+
+		void ToggleStretchLayout( PObjectBase obj );
+
+		void ChangeAlignment ( PObjectBase obj, int align, bool vertical );
+
+		void ToggleBorderFlag( PObjectBase obj, int border );
+
+		void CreateBoxSizerWithObject( PObjectBase obj );
+
+		void ShowXrcPreview();
+
+		// Servicios para los observadores
+		PObjectBase GetSelectedObject();
+
+		PObjectBase GetProjectData();
+
+		PObjectBase GetSelectedForm();
+
+		bool CanUndo() { return m_cmdProc.CanUndo(); }
+
+		bool CanRedo() { return m_cmdProc.CanRedo(); }
+
+		bool GetLayoutSettings( PObjectBase obj, int *flag, int *option, int *border, int* orient );
+		bool CanPasteObject();
+		bool CanCopyObject();
+		bool IsModified();
+
+		PObjectPackage GetPackage( unsigned int idx )
+		{ return m_objDb->GetPackage( idx );}
+
+		unsigned int GetPackageCount()
+		{ return m_objDb->GetPackageCount(); }
+
+		PObjectDatabase GetObjectDatabase()
+		{ return m_objDb; }
+
+
+		// Servicios específicos, no definidos en DataObservable
+		void        SetClipboardObject( PObjectBase obj ) { m_clipboard = obj; }
+
+		PObjectBase GetClipboardObject()                { return m_clipboard; }
+
+		wxString GetProjectFileName() { return m_projectFile; }
+
+		const int m_fbpVerMajor;
+
+		const int m_fbpVerMinor;
+
+		/** Path to the fbp file that is opened. */
+		const wxString &GetProjectPath() { return m_projectPath; };
+
+		/**
+		Path where the files will be generated. */
+		wxString GetOutputPath();
+
+		void SetProjectPath( const wxString &path ) { m_projectPath = path; };
+
+		const wxString &GetApplicationPath() { return m_rootDir; };
+
+		void SetApplicationPath( const wxString &path ) { m_rootDir = path; };
+
+		// Allow a single instance check from outsid the AppData class
+		bool VerifySingleInstance( const wxString& file, bool switchTo = true );
 };
 
 #endif //__APP_DATA__

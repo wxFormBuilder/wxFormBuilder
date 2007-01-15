@@ -343,14 +343,17 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 		return;
 	}
 
-	wxString file = userClasses->GetPropertyAsString( wxT("file") );
 	wxString type = userClasses->GetPropertyAsString( wxT("type") );
 
-	m_header->WriteLn( wxT("#ifndef __") + file + wxT("__") );
-	m_header->WriteLn( wxT("#define __") + file + wxT("__") );
+	wxString code = GetCode( userClasses, wxT("guard_macro_open") );
+	m_header->WriteLn( code );
 	m_header->WriteLn( wxEmptyString );
 
-	wxString code = GetCode( userClasses, wxT("class_decl") );
+	code = GetCode( userClasses, wxT("header_comment") );
+	m_header->WriteLn( code );
+	m_header->WriteLn( wxEmptyString );
+
+	code = GetCode( userClasses, wxT("class_decl") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("{") );
 	m_header->WriteLn( wxT("public:") );
@@ -362,10 +365,11 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 
 	m_header->WriteLn( wxT("};") );
 	m_header->WriteLn( wxEmptyString );
-	m_header->WriteLn( wxT("#endif //__") + file + wxT("__") );
+	code = GetCode( userClasses, wxT("guard_macro_close") );
+	m_header->WriteLn( code );
 
-	m_source->WriteLn( wxEmptyString );
-	m_source->WriteLn( wxT("#include \"") + file + wxT(".h\"") );
+	code = GetCode( userClasses, wxT("header_include") );
+	m_source->WriteLn( code );
 	m_source->WriteLn( wxEmptyString );
 
 	code = GetCode( userClasses, type + wxT("_cons_def") );
