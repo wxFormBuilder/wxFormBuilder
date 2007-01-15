@@ -22,17 +22,35 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __geninhertclass_imp__
-#define __geninhertclass_imp__
+#ifndef __GENINHERTCLASS_IMP__
+#define __GENINHERTCLASS_IMP__
+
+/**
+@file
+Helper dialog that helps users to generate the needed class that inherits from
+the wxFormBuilder GUI code.
+@author	Ryan Pusztai <rpusztai@gmail.com>
+@date	01/14/2007
+*/
+
 
 #include "geninhertclass_gui.h"
 #include <map>
 
+/** Holds the details of the class to generate. */
 class GenClassDetails
 {
 public:
+
+	/** Default Constructor. */
 	GenClassDetails() {}
 
+	/**
+		Constructor.
+		@param className Name of the class to generate.
+		@param fileName File name of the output files the at generated class will be in.
+		@param isSelected If true then the class is selected, else it is not.
+	*/
 	GenClassDetails( wxString className, wxString fileName, bool isSelected = false )
 	{
 		m_className = className;
@@ -40,11 +58,12 @@ public:
 		m_isSelected = isSelected;
 	}
 
-	wxString m_className;
-	wxString m_fileName;
-	bool     m_isSelected;
+	wxString m_className;		/**< Name of the class to generate. */
+	wxString m_fileName;		/**< File name to generate the class in.  */
+	bool     m_isSelected;		/**< Holds if the checkbox is selected for the form. */
 };
 
+/**  */
 class GenInheritedClassDlg : public GenInheritedClassDlgBase
 {
 public:
@@ -57,9 +76,10 @@ private:
 	wxArrayString m_forms;
 	std::map< wxString, GenClassDetails > m_classDetails;
 
+	void OnFormsSelected( wxCommandEvent& event );
 	void OnFormsToggle( wxCommandEvent& event );
 	void OnClassNameChange( wxCommandEvent& event );
 	void OnFileNameChange( wxCommandEvent& event );
 };
 
-#endif //__geninhertclass_imp__
+#endif //__GENINHERTCLASS_IMP__

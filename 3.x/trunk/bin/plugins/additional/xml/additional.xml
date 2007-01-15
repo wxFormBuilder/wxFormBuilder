@@ -141,6 +141,8 @@
       <option name="wxLB_SORT"      help="The listbox contents are sorted in alphabetical order." /></property>
     <property name="choices" type="stringlist" help="List of default values." />
 	<event name="OnCheckListBoxToggled" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKLISTBOX_TOGGLED event, when an item in the check list box is checked or unchecked." />
+	<event name="OnCheckListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
+	<event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
   </objectinfo>
 
   <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook">

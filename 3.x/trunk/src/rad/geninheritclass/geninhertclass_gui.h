@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Jan 12 2007)
+// C++ code generated with wxFormBuilder (version Jan 14 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -32,6 +32,7 @@ class GenInheritedClassDlgBase : public wxDialog
 	private:
 		
 		// Private event handlers
+		void _wxFB_OnFormsSelected( wxCommandEvent& event ){ OnFormsSelected( event ); }
 		void _wxFB_OnFormsToggle( wxCommandEvent& event ){ OnFormsToggle( event ); }
 		void _wxFB_OnClassNameChange( wxCommandEvent& event ){ OnClassNameChange( event ); }
 		void _wxFB_OnFileNameChange( wxCommandEvent& event ){ OnFileNameChange( event ); }
@@ -54,6 +55,7 @@ class GenInheritedClassDlgBase : public wxDialog
 		wxStdDialogButtonSizer* m_sdbSizer;
 		
 		// Virtual event handlers, overide them in your derived class
+		virtual void OnFormsSelected( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnFormsToggle( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnClassNameChange( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnFileNameChange( wxCommandEvent& event ){ event.Skip(); }

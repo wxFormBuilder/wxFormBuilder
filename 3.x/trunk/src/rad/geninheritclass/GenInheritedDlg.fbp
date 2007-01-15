@@ -97,6 +97,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
+                        <event name="OnCheckListBox">OnFormsSelected</event>
+                        <event name="OnCheckListBoxDClick"></event>
                         <event name="OnCheckListBoxToggled">OnFormsToggle</event>
                     </object>
                 </object>
