@@ -951,7 +951,10 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 
 	wxArrayString selectedForms = dlg.GetFormsSelected();
 	wxString filePath = project->GetPropertyAsString( _("path") );
+	wxFileName dirName = wxFileName::DirName( filePath );
+	dirName.MakeAbsolute();
 
+	::wxMessageBox( dirName.GetPath(), wxT("OnGenInheritedCode") );
 	for ( size_t i = 0; i < selectedForms.size(); ++i )
 	{
 		wxString type;

@@ -61,7 +61,7 @@
 	<template name="toolbar_add">#parent $name->AddControl( $name );</template>
   </templates>
   <templates class="UserClasses">
-		<template name="class_decl">class $name : public $basename</template>
+		<template name="class_decl">class $name #nl	: public $basename</template>
 		<template name="Frame_cons_decl">
 			$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style );
 		</template>
