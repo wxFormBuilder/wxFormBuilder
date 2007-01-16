@@ -1,6 +1,9 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date  Version 3.00.17 (Beta 2)
+* Fixed the "relative_path" and "internationalize" properties for code
+  generated from the inner template of a macro. This resolves FS#83 and
+  FS#84. 
 + Added new 'Generate Inherited Class' dialog.
 + Added menu events.
 + Added Toolbar tool events.

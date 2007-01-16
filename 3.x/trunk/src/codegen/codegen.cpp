@@ -98,7 +98,16 @@ void CodeWriter::Write(wxString code)
 }
 
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
-: m_obj(obj), m_in(_template)
+:
+m_obj( obj ),
+m_in( _template )
+{
+}
+
+TemplateParser::TemplateParser( const TemplateParser & that, wxString _template )
+:
+m_obj( that.m_obj ),
+m_in( _template )
 {
 }
 
@@ -429,7 +438,7 @@ bool TemplateParser::ParseForEach()
 				// parseamos la plantilla interna
 				{
 					wxString code;
-					PTemplateParser parser = CreateParser(m_obj,inner_template);
+					PTemplateParser parser = CreateParser( this, inner_template );
 					parser->SetPredefined( token );
 					code = parser->ParseTemplate();
 					m_out << wxT("\n") << code;
@@ -442,7 +451,7 @@ bool TemplateParser::ParseForEach()
 			for ( unsigned int i = 0 ; i < array.Count(); i++ )
 			{
 				wxString code;
-				PTemplateParser parser = CreateParser(m_obj,inner_template);
+				PTemplateParser parser = CreateParser(this,inner_template);
 				parser->SetPredefined( ValueToCode( PT_WXSTRING_I18N, array[i] ) );
 				code = parser->ParseTemplate();
 				m_out << wxT("\n") << code;
@@ -552,7 +561,7 @@ bool TemplateParser::ParseIfNotNull()
 		}
 
 		// Generate the code from the block
-		PTemplateParser parser = CreateParser( m_obj, inner_template );
+		PTemplateParser parser = CreateParser( this, inner_template );
 		m_out << parser->ParseTemplate();
 	}
 
@@ -576,7 +585,7 @@ bool TemplateParser::ParseIfNull()
 	if ( property->IsNull() )
 	{
 		// Generate the code from the block
-		PTemplateParser parser = CreateParser( m_obj, inner_template );
+		PTemplateParser parser = CreateParser( this, inner_template );
 		m_out << parser->ParseTemplate();
 	}
 	else
@@ -586,7 +595,7 @@ bool TemplateParser::ParseIfNull()
 			if ( property->GetChildFromParent( childName ).empty() )
 			{
 				// Generate the code from the block
-				PTemplateParser parser = CreateParser( m_obj, inner_template );
+				PTemplateParser parser = CreateParser( this, inner_template );
 				m_out << parser->ParseTemplate();
 			}
 		}
@@ -675,7 +684,7 @@ bool TemplateParser::ParseIfEqual()
 		if ( propValue == value )
 		{
 			// Generate the code
-			PTemplateParser parser = CreateParser(m_obj,inner_template);
+			PTemplateParser parser = CreateParser(this,inner_template);
 			m_out << parser->ParseTemplate();
 			return true;
 		}
@@ -714,7 +723,7 @@ bool TemplateParser::ParseIfNotEqual()
 		if ( propValue != value )
 		{
 			// Generate the code
-			PTemplateParser parser = CreateParser( m_obj, inner_template );
+			PTemplateParser parser = CreateParser( this, inner_template );
 			m_out << parser->ParseTemplate();;
 			return true;
 		}
