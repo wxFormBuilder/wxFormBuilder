@@ -182,7 +182,7 @@ protected:
 
 public:
 	TemplateParser( PObjectBase obj, wxString _template);
-
+	TemplateParser( const TemplateParser & that, wxString _template );
 	/**
 	* Devuelve el código del valor de una propiedad en el formato del lenguaje.
 	* @note use ValueToCode
@@ -193,7 +193,7 @@ public:
 	* Este método crea un nuevo parser del mismo tipo que el objeto que llama
 	* a dicho método.
 	*/
-	virtual PTemplateParser CreateParser( PObjectBase obj, wxString _template ) = 0;
+	virtual PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template ) = 0;
 
 	virtual ~TemplateParser() {};
 

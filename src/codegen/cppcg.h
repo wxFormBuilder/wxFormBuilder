@@ -45,22 +45,19 @@ The value of all properties that are file or a directory paths must be absolute,
 class CppTemplateParser : public TemplateParser
 {
 private:
-	bool m_useRelativePath;
 	bool m_i18n;
+	bool m_useRelativePath;
 	wxString m_basePath;
 
 public:
-	CppTemplateParser( PObjectBase obj, wxString _template);
+	CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath );
+	CppTemplateParser( const CppTemplateParser & that, wxString _template );
 
-	// redefinidas para C++
-	PTemplateParser CreateParser( PObjectBase obj, wxString _template);
+	// overrides for C++
+	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
 	wxString RootWxParentToCode();
-	//wxString PropertyToCode( PProperty property);
 	wxString ValueToCode( PropertyType type, wxString value);
 
-	// genera rutas relativas en los nombres de archivo
-	void UseRelativePath( bool relative = false, wxString basePath = wxString());
-	void UseI18n( bool i18n);
 };
 
 /**

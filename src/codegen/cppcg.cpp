@@ -31,37 +31,42 @@
 
 #include <wx/filename.h>
 
-CppTemplateParser::CppTemplateParser(PObjectBase obj, wxString _template)
-: TemplateParser(obj,_template)
+CppTemplateParser::CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
+:
+TemplateParser(obj,_template),
+m_i18n( useI18N ),
+m_useRelativePath( useRelativePath ),
+m_basePath( basePath )
 {
-	m_useRelativePath = false;
-	m_i18n = false;
+	if ( !wxFileName::DirExists( m_basePath ) )
+	{
+		m_basePath.clear();
+	}
 }
+
+CppTemplateParser::CppTemplateParser( const CppTemplateParser & that, wxString _template )
+:
+TemplateParser( that, _template ),
+m_i18n( that.m_i18n ),
+m_useRelativePath( that.m_useRelativePath ),
+m_basePath( that.m_basePath )
+{
+}
+
 wxString CppTemplateParser::RootWxParentToCode()
 {
 	return wxT("this");
 }
 
-PTemplateParser CppTemplateParser::CreateParser(PObjectBase obj, wxString _template)
+PTemplateParser CppTemplateParser::CreateParser( const TemplateParser* oldparser, wxString _template )
 {
-	PTemplateParser newparser(new CppTemplateParser(obj,_template));
-	return newparser;
-}
-
-void CppTemplateParser::UseRelativePath(bool relative, wxString basePath)
-{
-	m_useRelativePath = relative;
-
-	if (m_useRelativePath)
+	const CppTemplateParser* cppOldParser = dynamic_cast< const CppTemplateParser* >( oldparser );
+	if ( cppOldParser != NULL )
 	{
-		bool result = wxFileName::DirExists( basePath );
-		m_basePath = ( result ? basePath : wxT("") );
+		PTemplateParser newparser( new CppTemplateParser( *cppOldParser, _template ) );
+		return newparser;
 	}
-}
-
-void CppTemplateParser::UseI18n(bool i18n)
-{
-	m_i18n = i18n;
+	return PTemplateParser();
 }
 
 /**
@@ -586,9 +591,7 @@ bool CppCodeGenerator::GenEventTableEntry( PObjectBase obj, PObjectInfo obj_info
 		if ( !_template.empty() )
 		{
 			_template.Replace( wxT("#handler"), handlerName.c_str() ); // Ugly patch!
-			CppTemplateParser parser( obj, _template );
-			parser.UseRelativePath( m_useRelativePath, m_basePath );
-			parser.UseI18n( m_i18n );
+			CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 			m_source->WriteLn( parser.ParseTemplate() );
 			return true;
 		}
@@ -706,9 +709,7 @@ wxString CppCodeGenerator::GetCode(PObjectBase obj, wxString name)
 
 	_template = code_info->GetTemplate(name);
 
-	CppTemplateParser parser(obj,_template);
-	parser.UseRelativePath(m_useRelativePath, m_basePath);
-	parser.UseI18n(m_i18n);
+	CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 	wxString code = parser.ParseTemplate();
 
 	return code;
@@ -914,7 +915,7 @@ void CppCodeGenerator::GenObjectIncludes( PObjectBase project, std::set< wxStrin
 	PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 	if (code_info)
 	{
-		CppTemplateParser parser(project,code_info->GetTemplate( wxT("include") ) );
+		CppTemplateParser parser( project, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath );
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
@@ -943,7 +944,7 @@ void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::
 	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
 	if ( code_info )
 	{
-		CppTemplateParser parser( obj, code_info->GetTemplate( wxT("include") ) );
+		CppTemplateParser parser( obj, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath );
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
@@ -1040,9 +1041,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 					wxString _template = wxT("$name->Initialize( ");
 					_template = _template + sub1->GetProperty( wxT("name") )->GetValue() + wxT(" )");
 
-					CppTemplateParser parser(obj,_template);
-					parser.UseRelativePath(m_useRelativePath, m_basePath);
-					parser.UseI18n(m_i18n);
+					CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 					m_source->WriteLn(parser.ParseTemplate());
 					break;
 				}
@@ -1065,9 +1064,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 					_template = _template + sub1->GetProperty( wxT("name") )->GetValue() +
 						wxT(", ") + sub2->GetProperty( wxT("name") )->GetValue() + wxT(", $sashpos );");
 
-					CppTemplateParser parser(obj,_template);
-					parser.UseRelativePath(m_useRelativePath, m_basePath);
-					parser.UseI18n(m_i18n);
+					CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 					m_source->WriteLn(parser.ParseTemplate());
 					break;
 				}
@@ -1113,9 +1110,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 									wxT("#ifnull #parent $size")
 									wxT("@{ #nl $name->Fit( #wxparent $name ); @}");
 
-			CppTemplateParser parser(obj,_template);
-			parser.UseRelativePath(m_useRelativePath, m_basePath);
-			parser.UseI18n(m_i18n);
+			CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 			m_source->WriteLn(parser.ParseTemplate());
 		}
 	}
@@ -1292,9 +1287,7 @@ void CppCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 
 	if ( !_template.empty() )
 	{
-		CppTemplateParser parser(obj,_template);
-		parser.UseRelativePath(m_useRelativePath, m_basePath);
-		parser.UseI18n(m_i18n);
+		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 		wxString code = parser.ParseTemplate();
 		if ( !code.empty() )
 		{
@@ -1322,9 +1315,7 @@ void CppCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 
 	if ( !_template.empty() )
 	{
-		CppTemplateParser parser(obj,_template);
-		parser.UseRelativePath(m_useRelativePath, m_basePath);
-		parser.UseI18n(m_i18n);
+		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 		wxString code = parser.ParseTemplate();
 		if ( !code.empty() )
 		{

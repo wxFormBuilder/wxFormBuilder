@@ -57,11 +57,11 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
 
     Debug::Print( wxT("#### Código ####") );
     {
-      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ) );
+      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ), false, false, wxEmptyString );
       Debug::Print((wxChar *)parser.ParseTemplate().c_str());
     }
     {
-      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ) );
+      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ), false, false, wxEmptyString );
       Debug::Print((wxChar *)parser.ParseTemplate().c_str());
     }
   }
