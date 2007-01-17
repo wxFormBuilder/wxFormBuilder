@@ -358,6 +358,10 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxEmptyString );
 
+	code = GetCode( userClasses, wxT("header_include") );
+	m_header->WriteLn( code );
+	m_header->WriteLn( wxEmptyString );
+
 	code = GetCode( userClasses, wxT("class_decl") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("{") );
@@ -373,7 +377,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 	code = GetCode( userClasses, wxT("guard_macro_close") );
 	m_header->WriteLn( code );
 
-	code = GetCode( userClasses, wxT("header_include") );
+	code = GetCode( userClasses, wxT("source_include") );
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxEmptyString );
 

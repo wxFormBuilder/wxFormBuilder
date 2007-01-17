@@ -1578,9 +1578,16 @@ void ApplicationData::GenerateCode( bool panelOnly )
 
 void ApplicationData::GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file )
 {
+	PObjectBase project = GetProjectData();
+	if ( !project )
+	{
+		wxLogWarning( wxT("No Project?!") );
+		return;
+	}
+
 	if ( !::wxDirExists( path ) )
 	{
-		wxLogWarning( wxT( "Invalid Path: %s" ), path.c_str() );
+		wxLogWarning( wxT("Invalid Path: %s"), path.c_str() );
 		return;
 	}
 
@@ -1589,34 +1596,35 @@ void ApplicationData::GenerateInheritedClass( wxString baseName, wxString classN
 	PProperty baseNameProp = obj->GetProperty( wxT( "basename" ) );
 	PProperty nameProp = obj->GetProperty( wxT( "name" ) );
 	PProperty fileProp = obj->GetProperty( wxT( "file" ) );
+	PProperty genfileProp = obj->GetProperty( wxT( "gen_file" ) );
 	PProperty typeProp = obj->GetProperty( wxT( "type" ) );
 
-	if ( !( baseNameProp && nameProp && fileProp && typeProp ) )
+	if ( !( baseNameProp && nameProp && fileProp && typeProp && genfileProp ) )
 	{
-		wxLogWarning( wxT( "Missing Property" ) );
+		wxLogWarning( wxT("Missing Property") );
 		return;
 	}
 
 	baseNameProp->SetValue( baseName );
-
 	nameProp->SetValue( className );
 	fileProp->SetValue( file );
+	genfileProp->SetValue( project->GetPropertyAsString( wxT("file") ) );
 	typeProp->SetValue( type );
 
 	CppCodeGenerator codegen;
 
 	// Determine if Microsoft BOM should be used
 	bool useMicrosoftBOM = false;
-	PProperty pUseMicrosoftBOM = GetProjectData()->GetProperty( wxT( "use_microsoft_bom" ) );
+	PProperty pUseMicrosoftBOM = project->GetProperty( wxT("use_microsoft_bom") );
 
 	if ( pUseMicrosoftBOM )
 	{
 		useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
 	}
 
-	PCodeWriter h_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT( ".h" ), useMicrosoftBOM ) );
+	PCodeWriter h_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".h"), useMicrosoftBOM ) );
 
-	PCodeWriter cpp_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT( ".cpp" ), useMicrosoftBOM ) );
+	PCodeWriter cpp_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".cpp"), useMicrosoftBOM ) );
 
 	codegen.SetHeaderWriter( h_cw );
 	codegen.SetSourceWriter( cpp_cw );
