@@ -69,10 +69,11 @@
 		<child name="header" help="For C++ Only. The header to be included for the subclass."/>
 	</property>
   </objectinfo>
-  <objectinfo class="UserClasses" type="interface">
-	<property name="name" type="text"/>
-	<property name="basename" type="text"/>
-	<property name="file" type="text"/>
-	<property name="type" type="text"/>
+  <objectinfo class="UserClasses" 	type="interface">
+	<property name="name" 			type="text"		/>
+	<property name="basename" 		type="text"		/>
+	<property name="file" 			type="text"		/>
+	<property name="gen_file" 		type="text"		/>
+	<property name="type" 			type="text"		/>
   </objectinfo>
 </package>

@@ -68,7 +68,8 @@
 			@@todo Add your event handlers directly to this file. #nl
 			*/
 		</template>
-		<template name="header_include">@#include &quot;$file.h&quot;</template>
+		<template name="header_include">@#include &quot;$gen_file.h&quot;</template>
+		<template name="source_include">@#include &quot;$file.h&quot;</template>
 		<template name="class_decl">
 			/** Implementing $basename */ #nl
 			class $name : public $basename
