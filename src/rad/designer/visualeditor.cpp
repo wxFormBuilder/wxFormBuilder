@@ -206,32 +206,45 @@ void VisualEditor::Create()
 		m_back->Show(true);
 
 		// --- [1] Configure the size of the form ---------------------------
-		PProperty pminsize( m_form->GetProperty( wxT("minimum_size") ) );
-		if( pminsize)
-		{
-			wxSize minsize( TypeConv::StringToSize( pminsize->GetValue() ) );
-			m_back->SetMinSize( minsize );
-		}
 
-		PProperty pmaxsize( m_form->GetProperty( wxT("maximum_size") ) );
-		if( pmaxsize)
-		{
-			wxSize maxsize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
-			m_back->SetMaxSize( maxsize );
-		}
+		// Get size properties
+		wxSize minSize( m_form->GetPropertyAsSize( wxT("minimum_size") ) );
+		m_back->SetMinSize( minSize );
 
-		bool need_fit = false;
-		PProperty psize( m_form->GetProperty( wxT("size") ) );
-		if ( psize )
+		wxSize maxSize( m_form->GetPropertyAsSize( wxT("maximum_size") ) );
+		m_back->SetMaxSize( maxSize );
+
+		wxSize size( m_form->GetPropertyAsSize( wxT("size") ) );
+		bool need_fit = ( wxDefaultSize == size );
+
+		// Determine necessary size for back panel
+		wxSize backSize = size;
+		if ( backSize.GetWidth() < minSize.GetWidth() )
 		{
-			wxSize wsize( TypeConv::StringToSize( psize->GetValue() ) );
-			m_back->SetSize( wsize );
-			need_fit = ( wxDefaultSize == wsize );
+			backSize.SetWidth( minSize.GetWidth() );
 		}
-		else
+		if ( backSize.GetHeight() < minSize.GetHeight() )
 		{
-			m_back->SetSize( wxDefaultSize );
-			need_fit = true;
+			backSize.SetHeight( minSize.GetHeight() );
+		}
+		if ( backSize.GetWidth() > maxSize.GetWidth() && maxSize.GetWidth() != wxDefaultCoord )
+		{
+			backSize.SetWidth( maxSize.GetWidth() );
+		}
+		if ( backSize.GetHeight() > maxSize.GetHeight() && maxSize.GetHeight() != wxDefaultCoord )
+		{
+			backSize.SetHeight( maxSize.GetHeight() );
+		}
+		m_back->SetSize( backSize );
+
+		// Modify size property to match
+		if ( size != backSize )
+		{
+			PProperty psize = m_form->GetProperty( wxT("size") );
+			if ( psize )
+			{
+				AppData()->ModifyProperty( psize, TypeConv::SizeToString( backSize ) );
+			}
 		}
 
 		// --- [2] Set the color of the form -------------------------------
@@ -310,9 +323,16 @@ void VisualEditor::Create()
 
 		m_back->Layout();
 
-		if ( need_fit && m_back->GetFrameContentPanel()->GetSizer() )
+		if ( need_fit )
 		{
-		  m_back->GetSizer()->Fit( m_back );
+			if ( m_back->GetFrameContentPanel()->GetSizer() )
+			{
+				m_back->GetSizer()->Fit( m_back );
+			}
+			else
+			{
+				m_back->SetToBaseSize();
+			}
 		}
 
 		if ( menubar || statusbar || toolbar )

@@ -20,8 +20,7 @@ private:
     int m_curX, m_curY, m_difX, m_difY;
     int m_resizeBorder;
     wxSize m_minSize;
-    wxSize m_size;
-
+    wxSize m_baseMinSize;
 
   class TitleBar;
 
@@ -43,6 +42,7 @@ public:
   wxString GetTitle();
 
   void ShowTitleBar(bool show = true);
+  void SetToBaseSize();
   bool IsTitleBarShown();
 };
 

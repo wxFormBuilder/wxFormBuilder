@@ -51,6 +51,7 @@ wxInnerFrame::TitleBar::TitleBar (wxWindow *parent, wxWindowID id,
   m_colour1 = wxColour(10,36,106);
   m_colour2 = wxColour(166,202,240);
   m_titleText = wxT("wxFormBuilder rocks!");
+  SetMinSize( wxSize(100,19) );
 }
 
 void wxInnerFrame::TitleBar::OnLeftClick (wxMouseEvent &event)
@@ -168,7 +169,6 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
 {
   m_sizing = NONE;
   m_curX = m_curY = -1;
-  m_minSize = wxSize(100, 100);
   m_resizeBorder = 10;
 
 
@@ -187,6 +187,17 @@ wxInnerFrame::wxInnerFrame(wxWindow *parent, wxWindowID id,
 
   SetSizer(sizer);
   SetAutoLayout(true);
+
+  m_minSize = m_titleBar->GetMinSize();
+  m_minSize.x += 8;
+  m_minSize.y += 10;
+  m_baseMinSize = m_minSize;
+
+  if ( wxDefaultSize == size )
+  {
+  	SetSize( m_baseMinSize );
+  }
+
   Layout();
 }
 
@@ -217,8 +228,18 @@ void wxInnerFrame::OnMouseMotion(wxMouseEvent& e)
     else
       m_curY = GetSize().y;
 
-    if (m_curX < m_minSize.x) m_curX = m_minSize.x;
+	// User min size
+	wxSize minSize = GetMinSize();
+    if (m_curX < minSize.x) m_curX = minSize.x;
+    if (m_curY < minSize.y) m_curY = minSize.y;
+
+	// Internal min size
+	if (m_curX < m_minSize.x) m_curX = m_minSize.x;
     if (m_curY < m_minSize.y) m_curY = m_minSize.y;
+
+    wxSize maxSize = GetMaxSize();
+    if (m_curX > maxSize.x && maxSize.x != wxDefaultCoord) m_curX = maxSize.x;
+    if (m_curY > maxSize.y && maxSize.y != wxDefaultCoord) m_curY = maxSize.y;
 
     dc.DrawRectangle(pos.x, pos.y, m_curX, m_curY);
 
@@ -318,7 +339,20 @@ void wxInnerFrame::OnLeftUp(wxMouseEvent& e)
 void wxInnerFrame::ShowTitleBar(bool show)
 {
   m_titleBar->Show(show);
+  m_minSize = ( show ? m_baseMinSize : wxSize( 10, 10 ) );
   Layout();
+}
+
+void wxInnerFrame::SetToBaseSize()
+{
+	if ( m_titleBar->IsShown() )
+	{
+		SetSize( m_baseMinSize );
+	}
+	else
+	{
+		SetSize( wxSize( 10, 10 ) );
+	}
 }
 
 bool wxInnerFrame::IsTitleBarShown()
