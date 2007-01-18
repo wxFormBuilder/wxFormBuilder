@@ -680,7 +680,7 @@ wxSize   ObjectBase::GetPropertyAsSize    (const wxString& pname)
 	if (property)
 		return property->GetValueAsSize();
 	else
-		return wxSize();
+		return wxDefaultSize;
 }
 
 wxBitmap ObjectBase::GetPropertyAsBitmap  (const wxString& pname)
