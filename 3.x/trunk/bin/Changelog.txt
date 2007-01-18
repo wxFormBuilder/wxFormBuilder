@@ -1,11 +1,13 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date  Version 3.00.17 (Beta 2)
-* Fixed generation of "minimum_size" and "maximum_size" for wxFrame and
-  wxDialog.
+* Fixed FS#85 — "required wx/imagelist.h for wxListbook using image files."
+  with help from akira.
 * Fixed the "relative_path" and "internationalize" properties for code
   generated from the inner template of a macro. This resolves FS#83 and
-  FS#84. 
+  FS#84.
+^ Changed generation of "minimum_size" and "maximum_size" for wxFrame and
+  wxDialog to using SetSizeHints.
 + Added new 'Generate Inherited Class' dialog.
 + Added menu events.
 + Added Toolbar tool events.
