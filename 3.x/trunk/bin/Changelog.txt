@@ -1,6 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date  Version 3.00.17 (Beta 2)
+* Fixed generation of "minimum_size" and "maximum_size" for wxFrame and
+  wxDialog.
 * Fixed the "relative_path" and "internationalize" properties for code
   generated from the inner template of a macro. This resolves FS#83 and
   FS#84. 
