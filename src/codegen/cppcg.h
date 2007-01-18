@@ -140,15 +140,16 @@ private:
 	/**
 	* Genera la sección de '#include' fichero.
 	*/
-	void GenIncludes( PObjectBase project, std::set< wxString >* includes );
-	void GenObjectIncludes( PObjectBase project, std::set< wxString >* includes );
-	void GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::set< wxString >* includes );
+	void GenIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
+	void GenObjectIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
+	void GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::vector< wxString >* includes, std::set< wxString >* templates );
+	void AddUniqueIncludes( const wxString& include, std::vector< wxString >* includes );
 
 	/**
 	* Generate a set of all subclasses to forward declare in the generated header file.
 	* Also generate sets of header files to be include in either the source or header file.
 	*/
-	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::set< wxString >* headerIncludes );
+	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes );
 
 	/**
 	* Genera la sección de '#include' para las propiedades XPM.

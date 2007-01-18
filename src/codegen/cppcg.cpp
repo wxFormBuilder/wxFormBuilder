@@ -30,6 +30,7 @@
 #include <algorithm>
 
 #include <wx/filename.h>
+#include <wx/tokenzr.h>
 
 CppTemplateParser::CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :
@@ -443,7 +444,8 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	// Generate the subclass sets
 	std::set< wxString > subclasses;
 	std::set< wxString > subclassSourceIncludes;
-	std::set< wxString > headerIncludes;
+	std::vector< wxString > headerIncludes;
+
 	GenSubclassSets( project, &subclasses, &subclassSourceIncludes, &headerIncludes );
 
 	// Write the forward declaration lines
@@ -458,10 +460,11 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	// generamos en el h los includes de las dependencias de los componentes.
-	GenIncludes(project, &headerIncludes);
+	std::set< wxString > templates;
+	GenIncludes(project, &headerIncludes, &templates );
 
 	// Write the include lines
-	std::set<wxString>::iterator include_it;
+	std::vector<wxString>::iterator include_it;
 	for ( include_it = headerIncludes.begin(); include_it != headerIncludes.end(); ++include_it )
 	{
 		m_header->WriteLn( *include_it );
@@ -826,7 +829,7 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
 	}
 }
 
-void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::set< wxString >* headerIncludes )
+void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes )
 {
 	// Call GenSubclassForwardDeclarations on all children as well
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
@@ -893,7 +896,11 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		wxString include = wxT("#include \"") + headerVal + wxT("\"");
 		if ( pkg->GetPackageName() == wxT("Forms") )
 		{
-			headerIncludes->insert( include );
+			std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
+			if ( headerIncludes->end() == it )
+			{
+				headerIncludes->push_back( include );
+			}
 		}
 		else
 		{
@@ -902,17 +909,17 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 	}
 }
 
-void CppCodeGenerator::GenIncludes( PObjectBase project, std::set<wxString>* includes)
+void CppCodeGenerator::GenIncludes( PObjectBase project, std::vector<wxString>* includes, std::set< wxString >* templates )
 {
-	GenObjectIncludes( project, includes );
+	GenObjectIncludes( project, includes, templates );
 }
 
-void CppCodeGenerator::GenObjectIncludes( PObjectBase project, std::set< wxString >* includes )
+void CppCodeGenerator::GenObjectIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates )
 {
 	// Call GenIncludes on all children as well
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
-		GenObjectIncludes( project->GetChild(i), includes );
+		GenObjectIncludes( project->GetChild(i), includes, templates );
 	}
 
 	// Fill the set
@@ -923,15 +930,18 @@ void CppCodeGenerator::GenObjectIncludes( PObjectBase project, std::set< wxStrin
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
-			includes->insert( include );
+			if ( templates->insert( include ).second )
+			{
+				AddUniqueIncludes( include, includes );
+			}
 		}
 	}
 
 	// Generate includes for base classes
-	GenBaseIncludes( project->GetObjectInfo(), project, includes );
+	GenBaseIncludes( project->GetObjectInfo(), project, includes, templates );
 }
 
-void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::set< wxString >* includes )
+void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::vector< wxString >* includes, std::set< wxString >* templates )
 {
 	if ( !info )
 	{
@@ -942,7 +952,7 @@ void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::
 	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
 	{
 		PObjectInfo base_info = info->GetBaseClass( i );
-		GenBaseIncludes( base_info, obj, includes );
+		GenBaseIncludes( base_info, obj, includes, templates );
 	}
 
 	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
@@ -952,7 +962,56 @@ void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
-			includes->insert( include );
+			if ( templates->insert( include ).second )
+			{
+				AddUniqueIncludes( include, includes );
+			}
+		}
+	}
+}
+
+void CppCodeGenerator::AddUniqueIncludes( const wxString& include, std::vector< wxString >* includes )
+{
+	// Split on newlines to only generate unique include lines
+	// This strips blank lines and trims
+	wxStringTokenizer tkz( include, wxT("\n"), wxTOKEN_STRTOK );
+
+	bool inPreproc = false;
+
+	while ( tkz.HasMoreTokens() )
+	{
+		wxString line = tkz.GetNextToken();
+		line.Trim( false );
+		line.Trim( true );
+
+		// Anything within a #if preprocessor block will be written
+		if ( line.StartsWith( wxT("#if") ) )
+		{
+			inPreproc = true;
+		}
+		else if ( line.StartsWith( wxT("#endif") ) )
+		{
+			inPreproc = false;
+		}
+
+		if ( inPreproc )
+		{
+			includes->push_back( line );
+			continue;
+		}
+
+		// If it is not an include line, it will be written
+		if ( !line.StartsWith( wxT("#include") ) )
+		{
+			includes->push_back( line );
+			continue;
+		}
+
+		// If it is an include, it must be unique to be written
+		std::vector< wxString >::iterator it = std::find( includes->begin(), includes->end(), line );
+		if ( includes->end() == it )
+		{
+			includes->push_back( line );
 		}
 	}
 }

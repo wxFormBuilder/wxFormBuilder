@@ -102,6 +102,7 @@
 		@#include &lt;wx/notebook.h&gt;
 		#ifnotnull $bitmapsize
         @{
+			#nl @#include &lt;wx/imagelist.h&gt;
             #nl @#include &lt;wx/image.h&gt;
         @}
 	</template>
@@ -146,6 +147,7 @@
         @#include &lt;wx/listctrl.h&gt;
         #ifnotnull $bitmapsize
         @{
+			#nl @#include &lt;wx/imagelist.h&gt;
             #nl @#include &lt;wx/image.h&gt;
         @}
     </template>
