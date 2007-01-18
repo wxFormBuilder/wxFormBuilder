@@ -30,6 +30,8 @@
 			@{ wxFrame@}( parent, id, title, pos, size, style )
 		</template>
 		<template name="settings">
+			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
+			
 			#ifnotnull $window_extra_style
 			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
 
@@ -53,12 +55,6 @@
 
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
-
-			#ifnotnull $minimum_size
-			@{ this->SetMinSize( $minimum_size ); #nl @}
-			
-			#ifnotnull $maximum_size
-			@{ this->SetMaxSize( $maximum_size ); #nl @}
 
 			#ifnotnull $center
 			@{ this->Centre( $center ); #nl @}
@@ -136,6 +132,8 @@
 			@{ wxDialog@}( parent, id, title, pos, size, style )
 		</template>
 		<template name="settings">
+			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
+			
 			#ifnotnull $window_extra_style
 			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
 
@@ -159,12 +157,6 @@
 
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
-
-			#ifnotnull $minimum_size
-			@{ this->SetMinSize( $minimum_size ); #nl @}
-			
-			#ifnotnull $maximum_size
-			@{ this->SetMaxSize( $maximum_size ); #nl @}
 
 			#ifnotnull $center
 			@{ this->Centre( $center ); #nl @}
