@@ -1,6 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date  Version 3.00.17 (Beta 2)
+01-19-2007  Version 3.00.17 (Beta 2)
+* Fixed bug where dragging on created dialog statusbar was resizing the main
+  application window.
 * Fixed FS#85 — "required wx/imagelist.h for wxListbook using image files."
   with help from akira.
 * Fixed the "relative_path" and "internationalize" properties for code
