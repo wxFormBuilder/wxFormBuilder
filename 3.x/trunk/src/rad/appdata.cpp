@@ -208,6 +208,7 @@ class ReparentObjectCmd : public Command
 		PObjectBase m_sizeritem;
 		PObjectBase m_sizer;
 		PObjectBase m_oldSizer;
+		int m_oldPosition;
 
 	protected:
 		void DoExecute();
@@ -393,6 +394,7 @@ ReparentObjectCmd ::ReparentObjectCmd ( PObjectBase sizeritem, PObjectBase sizer
 	m_sizeritem = sizeritem;
 	m_sizer = sizer;
 	m_oldSizer = m_sizeritem->GetParent();
+	m_oldPosition = m_oldSizer->GetChildPosition(sizeritem);
 }
 
 void ReparentObjectCmd::DoExecute()
@@ -407,6 +409,7 @@ void ReparentObjectCmd::DoRestore()
 	m_sizer->RemoveChild( m_sizeritem );
 	m_sizeritem->SetParent( m_oldSizer );
 	m_oldSizer->AddChild( m_sizeritem );
+	m_oldSizer->ChangeChildPosition( m_sizeritem, m_oldPosition);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
