@@ -68,6 +68,12 @@ Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createall
 #endif
 Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main\srccode
 
+[InstallDelete]
+; Cleanup debug dlls.
+Name: {app}\plugins\additional\libadditionald.dll; Type: files
+Name: {app}\plugins\common\libcommond.dll; Type: files
+Name: {app}\plugins\layout\liblayoutd.dll; Type: files
+
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 ;Name: {group}\{#MyAppName} Help; Filename: {app}\{#MyAppName}.hlp
