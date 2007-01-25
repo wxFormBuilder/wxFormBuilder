@@ -30,13 +30,20 @@
 
 #if defined(__MSL__) && (__MSL__ >= 0x5000)
 #  define BOOST_HAS_STDINT_H
-#  define BOOST_HAS_UNISTD_H
+#  if !defined(__PALMOS_TRAPS__)
+#    define BOOST_HAS_UNISTD_H
+#  endif
    // boilerplate code:
 #  include <boost/config/posix_features.hpp>
 #endif
 
 #if defined(_MWMT) || _MSL_THREADSAFE
 #  define BOOST_HAS_THREADS
+#endif
+
+#ifdef _MSL_NO_EXPLICIT_FUNC_TEMPLATE_ARG
+#  define BOOST_NO_STD_USE_FACET
+#  define BOOST_HAS_TWO_ARG_USE_FACET
 #endif
 
 

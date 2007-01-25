@@ -7,10 +7,9 @@
 //  (C) Copyright Greg Colvin and Beman Dawes 1998, 1999.
 //  Copyright (c) 2001, 2002, 2003 Peter Dimov
 //
-//  Permission to copy, use, modify, sell and distribute this software
-//  is granted provided this copyright notice appears in all copies.
-//  This software is provided "as is" without express or implied
-//  warranty, and with no claim as to its suitability for any purpose.
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
 //
 //  See http://www.boost.org/libs/smart_ptr/shared_ptr.htm for documentation.
 //
@@ -83,12 +82,12 @@ template<> struct shared_ptr_traits<void const volatile>
 
 // enable_shared_from_this support
 
-template<class T, class Y> void sp_enable_shared_from_this(boost::enable_shared_from_this<T> * pe, Y * px, shared_count const & pn)
+template<class T, class Y> void sp_enable_shared_from_this( shared_count const & pn, boost::enable_shared_from_this<T> const * pe, Y const * px )
 {
-    if(pe != 0) pe->_internal_weak_this._internal_assign(px, pn);
+    if(pe != 0) pe->_internal_weak_this._internal_assign(const_cast<Y*>(px), pn);
 }
 
-inline void sp_enable_shared_from_this(void const volatile *, void const volatile *, shared_count const &)
+inline void sp_enable_shared_from_this( shared_count const & /*pn*/, ... )
 {
 }
 
@@ -122,9 +121,9 @@ public:
     }
 
     template<class Y>
-    explicit shared_ptr(Y * p): px(p), pn(p, checked_deleter<Y>()) // Y must be complete
+    explicit shared_ptr( Y * p ): px( p ), pn( p ) // Y must be complete
     {
-        detail::sp_enable_shared_from_this(p, p, pn);
+        detail::sp_enable_shared_from_this( pn, p, p );
     }
 
     //
@@ -135,7 +134,7 @@ public:
 
     template<class Y, class D> shared_ptr(Y * p, D d): px(p), pn(p, d)
     {
-        detail::sp_enable_shared_from_this(p, p, pn);
+        detail::sp_enable_shared_from_this( pn, p, p );
     }
 
 //  generated copy constructor, assignment, destructor are fine...
@@ -199,7 +198,7 @@ public:
     {
         Y * tmp = r.get();
         pn = detail::shared_count(r);
-        detail::sp_enable_shared_from_this(tmp, tmp, pn);
+        detail::sp_enable_shared_from_this( pn, tmp, tmp );
     }
 
 #endif
@@ -269,7 +268,10 @@ public:
         return px != 0;
     }
 
-#elif defined(__MWERKS__) && BOOST_WORKAROUND(__MWERKS__, BOOST_TESTED_AT(0x3003))
+#elif \
+    ( defined(__MWERKS__) && BOOST_WORKAROUND(__MWERKS__, < 0x3200) ) || \
+    ( defined(__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__ < 304) )
+
     typedef T * (this_type::*unspecified_bool_type)() const;
     
     operator unspecified_bool_type() const // never throws
@@ -443,10 +445,12 @@ template<class E, class T, class Y> std::basic_ostream<E, T> & operator<< (std::
 
 // get_deleter (experimental)
 
-#if (defined(__GNUC__) &&  (__GNUC__ < 3)) || (defined(__EDG_VERSION__) && (__EDG_VERSION__ <= 238))
+#if ( defined(__GNUC__) && BOOST_WORKAROUND(__GNUC__, < 3) ) || \
+    ( defined(__EDG_VERSION__) && BOOST_WORKAROUND(__EDG_VERSION__, <= 238) ) || \
+    ( defined(__HP_aCC) && BOOST_WORKAROUND(__HP_aCC, <= 33500) )
 
 // g++ 2.9x doesn't allow static_cast<X const *>(void *)
-// apparently EDG 2.38 also doesn't accept it
+// apparently EDG 2.38 and HP aCC A.03.35 also don't accept it
 
 template<class D, class T> D * get_deleter(shared_ptr<T> const & p)
 {

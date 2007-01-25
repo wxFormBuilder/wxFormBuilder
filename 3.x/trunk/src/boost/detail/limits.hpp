@@ -42,19 +42,10 @@
 #include <climits>
 #include <cfloat>
 #include <boost/config.hpp>
+#include <boost/detail/endian.hpp>
 
 #ifndef BOOST_NO_CWCHAR
 #include <cwchar> // for WCHAR_MIN and WCHAR_MAX
-#endif
-
-// The macros are not named appropriately.  We don't care about integer
-// bit layout, but about floating-point NaN (etc.) bit patterns.
-#if defined(__sparc) || defined(__sparc__) || defined(__powerpc__) || defined(__ppc__) || defined(__hppa) || defined(_MIPSEB) || defined(_POWER)
-#define BOOST_BIG_ENDIAN
-#elif defined(__i386__) || defined(__alpha__) || defined(__ia64) || defined(__ia64__)
-#define BOOST_LITTLE_ENDIAN
-#else
-#error The file boost/detail/limits.hpp needs to be set up for your CPU type.
 #endif
 
 namespace std {
@@ -94,23 +85,14 @@ enum float_denorm_style {
   static const __mem_type __mem_name = __mem_value
 #endif /* BOOST_NO_INCLASS_MEMBER_INITIALIZATION */
 
-// Deal with min/max for MinGW
-#ifdef min
-# undef min
-#endif
-
-#ifdef max
-# undef max
-#endif
-
 // Base class for all specializations of numeric_limits.
 template <class __number>
 class _Numeric_limits_base {
 public:
   BOOST_STL_DECLARE_LIMITS_MEMBER(bool, is_specialized, false);
 
-  static __number min() throw() { return __number(); }
-  static __number max() throw() { return __number(); }
+  static __number min BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return __number(); }
+  static __number max BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return __number(); }
 
   BOOST_STL_DECLARE_LIMITS_MEMBER(int, digits,   0);
   BOOST_STL_DECLARE_LIMITS_MEMBER(int, digits10, 0);
@@ -164,8 +146,8 @@ class _Integer_limits : public _Numeric_limits_base<_Int>
 public:
   BOOST_STL_DECLARE_LIMITS_MEMBER(bool, is_specialized, true);
 
-  static _Int min() throw() { return __imin; }
-  static _Int max() throw() { return __imax; }
+  static _Int min BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return __imin; }
+  static _Int max BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return __imax; }
 
   BOOST_STL_DECLARE_LIMITS_MEMBER(int,
                               digits,
@@ -388,9 +370,9 @@ template<> class numeric_limits<float>
                             round_to_nearest>
 {
 public:
-  static float min() throw() { return FLT_MIN; }
+  static float min BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return FLT_MIN; }
   static float denorm_min() throw() { return FLT_MIN; }
-  static float max() throw() { return FLT_MAX; }
+  static float max BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return FLT_MAX; }
   static float epsilon() throw() { return FLT_EPSILON; }
   static float round_error() throw() { return 0.5f; } // Units: ulps.
 };
@@ -416,9 +398,9 @@ template<> class numeric_limits<double>
                             round_to_nearest>
 {
 public:
-  static double min() throw() { return DBL_MIN; }
+  static double min BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return DBL_MIN; }
   static double denorm_min() throw() { return DBL_MIN; }
-  static double max() throw() { return DBL_MAX; }
+  static double max BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return DBL_MAX; }
   static double epsilon() throw() { return DBL_EPSILON; }
   static double round_error() throw() { return 0.5; } // Units: ulps.
 };
@@ -444,9 +426,9 @@ template<> class numeric_limits<long double>
                             round_to_nearest>
 {
 public:
-  static long double min() throw() { return LDBL_MIN; }
+  static long double min BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return LDBL_MIN; }
   static long double denorm_min() throw() { return LDBL_MIN; }
-  static long double max() throw() { return LDBL_MAX; }
+  static long double max BOOST_PREVENT_MACRO_SUBSTITUTION () throw() { return LDBL_MAX; }
   static long double epsilon() throw() { return LDBL_EPSILON; }
   static long double round_error() throw() { return 4; } // Units: ulps.
 };
