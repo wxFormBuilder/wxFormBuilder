@@ -1,15 +1,15 @@
 //  Boost config.hpp configuration header file  ------------------------------//
 
-//  (C) Copyright John Maddock 2001 - 2003. 
-//  (C) Copyright Darin Adler 2001. 
-//  (C) Copyright Peter Dimov 2001. 
-//  (C) Copyright Bill Kempf 2002. 
-//  (C) Copyright Jens Maurer 2002. 
-//  (C) Copyright David Abrahams 2002 - 2003. 
-//  (C) Copyright Gennaro Prota 2003. 
-//  (C) Copyright Eric Friedman 2003. 
-//  Use, modification and distribution are subject to the 
-//  Boost Software License, Version 1.0. (See accompanying file 
+//  (C) Copyright John Maddock 2001 - 2003.
+//  (C) Copyright Darin Adler 2001.
+//  (C) Copyright Peter Dimov 2001.
+//  (C) Copyright Bill Kempf 2002.
+//  (C) Copyright Jens Maurer 2002.
+//  (C) Copyright David Abrahams 2002 - 2003.
+//  (C) Copyright Gennaro Prota 2003.
+//  (C) Copyright Eric Friedman 2003.
+//  Use, modification and distribution are subject to the
+//  Boost Software License, Version 1.0. (See accompanying file
 //  LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 //  See http://www.boost.org for most recent version.
@@ -32,11 +32,15 @@
 //
 #include <limits.h>
 # if !defined(BOOST_HAS_LONG_LONG)                                              \
-   && !(defined(BOOST_MSVC) && BOOST_MSVC <=1300) && !defined(__BORLANDC__)     \
+   && !defined(BOOST_MSVC) && !defined(__BORLANDC__)     \
    && (defined(ULLONG_MAX) || defined(ULONG_LONG_MAX) || defined(ULONGLONG_MAX))
 #  define BOOST_HAS_LONG_LONG
 #endif
-#if !defined(BOOST_HAS_LONG_LONG) && !defined(BOOST_NO_INTEGRAL_INT64_T)
+
+// TODO: Remove the following lines after the 1.33 release because the presence
+// of an integral 64 bit type has nothing to do with support for long long.
+
+#if !defined(BOOST_HAS_LONG_LONG) && !defined(BOOST_NO_INTEGRAL_INT64_T) && !defined(__DECCXX_VER)
 #  define BOOST_NO_INTEGRAL_INT64_T
 #endif
 
@@ -275,7 +279,7 @@
 //  Because std::size_t usage is so common, even in boost headers which do not
 //  otherwise use the C library, the <cstddef> workaround is included here so
 //  that ugly workaround code need not appear in many other boost headers.
-//  NOTE WELL: This is a workaround for non-conforming compilers; <cstddef> 
+//  NOTE WELL: This is a workaround for non-conforming compilers; <cstddef>
 //  must still be #included in the usual places so that <cstddef> inclusion
 //  works as expected with standard conforming compilers.  The resulting
 //  double inclusion of <cstddef> is harmless.
@@ -285,17 +289,29 @@
     namespace std { using ::ptrdiff_t; using ::size_t; }
 # endif
 
+//  Workaround for the unfortunate min/max macros defined by some platform headers
+
+#define BOOST_PREVENT_MACRO_SUBSTITUTION
+
+#ifndef BOOST_USING_STD_MIN
+#  define BOOST_USING_STD_MIN() using std::min
+#endif
+
+#ifndef BOOST_USING_STD_MAX
+#  define BOOST_USING_STD_MAX() using std::max
+#endif
+
 //  BOOST_NO_STD_MIN_MAX workaround  -----------------------------------------//
 
 #  ifdef BOOST_NO_STD_MIN_MAX
 
 namespace std {
   template <class _Tp>
-  inline const _Tp& min(const _Tp& __a, const _Tp& __b) {
+  inline const _Tp& min BOOST_PREVENT_MACRO_SUBSTITUTION (const _Tp& __a, const _Tp& __b) {
     return __b < __a ? __b : __a;
   }
   template <class _Tp>
-  inline const _Tp& max(const _Tp& __a, const _Tp& __b) {
+  inline const _Tp& max BOOST_PREVENT_MACRO_SUBSTITUTION (const _Tp& __a, const _Tp& __b) {
     return  __a < __b ? __b : __a;
   }
 }
@@ -314,27 +330,33 @@ namespace std {
 #     define BOOST_STATIC_CONSTANT(type, assignment) static const type assignment
 #  endif
 
-// BOOST_USE_FACET workaround ----------------------------------------------//
+// BOOST_USE_FACET / HAS_FACET workaround ----------------------------------//
 // When the standard library does not have a conforming std::use_facet there
 // are various workarounds available, but they differ from library to library.
-// This macro provides a consistent way to access a locale's facets.
+// The same problem occurs with has_facet.
+// These macros provide a consistent way to access a locale's facets.
 // Usage:
 //    replace
 //       std::use_facet<Type>(loc);
 //    with
 //       BOOST_USE_FACET(Type, loc);
 //    Note do not add a std:: prefix to the front of BOOST_USE_FACET!
+//  Use for BOOST_HAS_FACET is analagous.
 
 #if defined(BOOST_NO_STD_USE_FACET)
 #  ifdef BOOST_HAS_TWO_ARG_USE_FACET
 #     define BOOST_USE_FACET(Type, loc) std::use_facet(loc, static_cast<Type*>(0))
+#     define BOOST_HAS_FACET(Type, loc) std::has_facet(loc, static_cast<Type*>(0))
 #  elif defined(BOOST_HAS_MACRO_USE_FACET)
 #     define BOOST_USE_FACET(Type, loc) std::_USE(loc, Type)
+#     define BOOST_HAS_FACET(Type, loc) std::_HAS(loc, Type)
 #  elif defined(BOOST_HAS_STLP_USE_FACET)
 #     define BOOST_USE_FACET(Type, loc) (*std::_Use_facet<Type >(loc))
+#     define BOOST_HAS_FACET(Type, loc) std::has_facet< Type >(loc)
 #  endif
 #else
 #  define BOOST_USE_FACET(Type, loc) std::use_facet< Type >(loc)
+#  define BOOST_HAS_FACET(Type, loc) std::has_facet< Type >(loc)
 #endif
 
 // BOOST_NESTED_TEMPLATE workaround ------------------------------------------//
@@ -377,8 +399,25 @@ namespace std {
 
 #ifndef BOOST_NO_DEDUCED_TYPENAME
 #  define BOOST_DEDUCED_TYPENAME typename
-#else 
+#else
 #  define BOOST_DEDUCED_TYPENAME
+#endif
+
+// long long workaround ------------------------------------------//
+// On gcc (and maybe other compilers?) long long is alway supported
+// but it's use may generate either warnings (with -ansi), or errors
+// (with -pedantic -ansi) unless it's use is prefixed by __extension__
+//
+#if defined(BOOST_HAS_LONG_LONG)
+namespace boost{
+#  ifdef __GNUC__
+   __extension__ typedef long long long_long_type;
+   __extension__ typedef unsigned long long ulong_long_type;
+#  else
+   typedef long long long_long_type;
+   typedef unsigned long long ulong_long_type;
+#  endif
+}
 #endif
 
 // BOOST_[APPEND_]EXPLICIT_TEMPLATE_[NON_]TYPE macros --------------------------//
@@ -473,7 +512,7 @@ namespace std {
 
 //
 // Helper macro BOOST_JOIN:
-// The following piece of macro magic joins the two 
+// The following piece of macro magic joins the two
 // arguments together, even when one of the arguments is
 // itself a macro (see 16.3.1 in C++ standard).  The key
 // is that macro expansion of macro arguments does not

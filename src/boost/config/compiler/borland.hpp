@@ -25,14 +25,20 @@
 #  define BOOST_NO_CV_VOID_SPECIALIZATIONS
 #  define BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
 #  define BOOST_NO_DEDUCED_TYPENAME
+// workaround for missing WCHAR_MAX/WCHAR_MIN:
+#include <climits>
+#include <cwchar>
+#ifndef WCHAR_MAX
+#  define WCHAR_MAX 0xffff
 #endif
-
-#if (__BORLANDC__ <= 0x564)
-#  define BOOST_NO_SFINAE
+#ifndef WCHAR_MIN
+#  define WCHAR_MIN 0
+#endif
 #endif
 
 // Version 7.0 (Kylix) and below:
 #if (__BORLANDC__ <= 0x570)
+#  define BOOST_NO_SFINAE
 #  define BOOST_NO_INTEGRAL_INT64_T
 #  define BOOST_NO_DEPENDENT_NESTED_DERIVATIONS
 #  define BOOST_NO_PRIVATE_IN_AGGREGATE
@@ -40,10 +46,12 @@
 #  define BOOST_BCB_PARTIAL_SPECIALIZATION_BUG
 #  define BOOST_NO_TEMPLATE_TEMPLATES
 #  define BOOST_NO_USING_DECLARATION_OVERLOADS_FROM_TYPENAME_BASE
+#  define BOOST_NO_MEMBER_TEMPLATE_FRIENDS
    // we shouldn't really need this - but too many things choke
    // without it, this needs more investigation:
 #  define BOOST_NO_LIMITS_COMPILE_TIME_CONSTANTS
 #  define BOOST_FUNCTION_SCOPE_USING_DECLARATION_BREAKS_ADL
+#  define BOOST_NO_IS_ABSTRACT
 #  ifdef NDEBUG
       // fix broken <cstring> so that Boost.test works:
 #     include <cstring>
