@@ -72,7 +72,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
     std::auto_ptr< wxSingleInstanceChecker > checker;
     {
         // Suspend logging, because error messages here are not useful
-        #if !( defined( _DEBUG ) || defined( DEBUG ) || defined ( __WXDEBUG__ ) )
+        #ifndef __WXFB_DEBUG__
         wxLogNull stopLogging;
         #endif
         checker.reset( new wxSingleInstanceChecker( name ) );
@@ -94,7 +94,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	else if ( switchTo )
     {
 		// Suspend logging, because error messages here are not useful
-		#if !( defined( _DEBUG ) || defined( DEBUG ) || defined ( __WXDEBUG__ ) )
+		#ifndef __WXFB_DEBUG__
 		wxLogNull stopLogging;
 		#endif
 
@@ -157,7 +157,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 bool wxFBIPC::CreateServer( const wxString& name )
 {
 	// Suspend logging, because error messages here are not useful
-	#if !( defined( _DEBUG ) || defined( DEBUG ) || defined ( __WXDEBUG__ ) )
+	#ifndef __WXFB_DEBUG__
 	wxLogNull stopLogging;
 	#endif
 
