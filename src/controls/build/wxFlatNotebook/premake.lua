@@ -62,10 +62,10 @@ end
 -- Set debug flags
 if ( options["disable-wx-debug"] ) then
 	debug_option = "--debug=no"
-	debug_macro = "NDEBUG"
+	debug_macro = { "NDEBUG", "__WXFB_DEBUG__" }
 else
 	debug_option = "--debug=yes"
-	debug_macro = "__WXDEBUG__"
+	debug_macro = { "DEBUG", "_DEBUG", "__WXDEBUG__"}
 end
 
 -- Set the default targetName if none is specified.
@@ -91,8 +91,8 @@ if ( options["unicode"] ) then
 	table.insert( package.defines, { "UNICODE", "_UNICODE" } )
 end
 table.insert( package.defines, "__WX__" )
-table.insert( package.config["Debug"].defines, { "DEBUG", "_DEBUG", debug_macro } )
-table.insert( package.config["Release"].defines, "NDEBUG" )
+table.insert( package.config["Debug"].defines, debug_macro )
+table.insert( package.config["Release"].defines, debug_macro )
 
 if ( OS == "windows" ) then
 --******* WINDOWS SETUP ***********
