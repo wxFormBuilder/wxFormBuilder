@@ -31,9 +31,9 @@ package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
 package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml", "../sdk/plugin_interface" }
 -- Set the libraries it links to.
-package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "Plugin Interface" }
+package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 -- Set the packages dependancies.
-package.depends = { "Additional Components Plugin", "Common Components Plugin", "Layout Components Plugin" }
+package.depends = { "additional-components-plugin", "common-components-plugin", "layout-components-plugin" }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
 package.bindir = "../bin"
@@ -58,6 +58,7 @@ end
 -- Package options
 addoption( "unicode", "Use the Unicode character set" )
 addoption( "with-wx-shared", "Link against wxWidgets as a shared library" )
+addoption( "disable-wx-debug", "Compile against a wxWidgets library without debugging" )
 
 -- Common setup
 package.language = "c++"
@@ -69,6 +70,15 @@ if ( options["unicode"] ) then
 else
 	package.config["Debug"].objdir = ".objsd"
 	package.config["Release"].objdir = ".objs"
+end
+
+-- Set debug flags
+if ( options["disable-wx-debug"] ) then
+	debug_option = "--debug=no"
+	debug_macro = "NDEBUG"
+else
+	debug_option = "--debug=yes"
+	debug_macro = "__WXDEBUG__"
 end
 
 -- Set the default targetName if none is specified.
@@ -98,7 +108,7 @@ if ( options["unicode"] ) then
 	table.insert( package.defines, { "UNICODE", "_UNICODE" } )
 end
 table.insert( package.defines, "__WX__" )
-table.insert( package.config["Debug"].defines, { "DEBUG", "_DEBUG", "__WXDEBUG__" } )
+table.insert( package.config["Debug"].defines, { "DEBUG", "_DEBUG", debug_macro } )
 table.insert( package.config["Release"].defines, "NDEBUG" )
 
 if ( OS == "windows" ) then
@@ -201,11 +211,11 @@ else
 	table.insert( package.excludes, matchrecursive( "*.rc" ) )
 	
 	-- Set wxWidgets build options.
-	table.insert( package.config["Debug"].buildoptions, "`wx-config --debug=yes --cflags`" )
+	table.insert( package.config["Debug"].buildoptions, "`wx-config "..debug_option.." --cflags`" )
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )
 	
 	-- Set the wxWidgets link options.
-	table.insert( package.config["Debug"].linkoptions, "`wx-config --debug --libs`" )
+	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
 	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
 	
 	-- Set the Linux defines.
