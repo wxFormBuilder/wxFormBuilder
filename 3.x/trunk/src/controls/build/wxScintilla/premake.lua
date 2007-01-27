@@ -53,7 +53,9 @@ package.defines = { "WXMAKINGDLL_SCI", "MONOLITHIC", "LINK_LEXERS", "SCI_LEXER" 
 -- Package options
 addoption( "unicode", "Use the Unicode character set" )
 addoption( "with-wx-shared", "Link against wxWidgets as a shared library" )
-addoption( "disable-wx-debug", "Compile against a wxWidgets library without debugging" )
+if ( OS == "linux" ) then
+	addoption( "disable-wx-debug", "Compile against a wxWidgets library without debugging" )
+end
 
 -- Common setup
 package.language = "c++"
@@ -68,12 +70,12 @@ else
 end
 
 -- Set debug flags
-if ( options["disable-wx-debug"] ) then
+if ( options["disable-wx-debug"] and ( OS == "linux" ) ) then
 	debug_option = "--debug=no"
 	debug_macro = { "NDEBUG", "__WXFB_DEBUG__" }
 else
 	debug_option = "--debug=yes"
-	debug_macro = { "DEBUG", "_DEBUG", "__WXDEBUG__"}
+	debug_macro = { "DEBUG", "_DEBUG", "__WXDEBUG__" }
 end
 
 -- Set the default targetName if none is specified.
