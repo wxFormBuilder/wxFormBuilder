@@ -78,7 +78,7 @@ if ( options["disable-wx-debug"] ) then
 	debug_macro = { "NDEBUG", "__WXFB_DEBUG__" }
 else
 	debug_option = "--debug=yes"
-	debug_macro = { "DEBUG", "_DEBUG", "__WXDEBUG__"}
+	debug_macro = { "DEBUG", "_DEBUG", "__WXDEBUG__", "__WXFB_DEBUG__"}
 end
 
 -- Set the default targetName if none is specified.
