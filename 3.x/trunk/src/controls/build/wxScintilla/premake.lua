@@ -102,7 +102,7 @@ if ( options["unicode"] ) then
 end
 
 table.insert( package.config["Debug"].defines, debug_macro )
-table.insert( package.config["Release"].defines, debug_macro )
+table.insert( package.config["Release"].defines, "NDEBUG" )
 
 if ( OS == "windows" ) then
 --******* WINDOWS SETUP ***********
