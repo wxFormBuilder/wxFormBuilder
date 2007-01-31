@@ -390,8 +390,8 @@ ObjectTreeItemData::ObjectTreeItemData(PObjectBase obj) : m_object(obj)
 
 
 BEGIN_EVENT_TABLE(ItemPopupMenu,wxMenu)
-EVT_MENU(-1, ItemPopupMenu::OnMenuEvent)
-EVT_UPDATE_UI(-1, ItemPopupMenu::OnUpdateEvent)
+	EVT_MENU(-1, ItemPopupMenu::OnMenuEvent)
+	EVT_UPDATE_UI(-1, ItemPopupMenu::OnUpdateEvent)
 END_EVENT_TABLE()
 
 ItemPopupMenu::ItemPopupMenu(PObjectBase obj)
@@ -421,6 +421,9 @@ void ItemPopupMenu::OnMenuEvent (wxCommandEvent & event)
 	{
 	case MENU_CUT:
 		AppData()->CutObject(m_object);
+		break;
+	case MENU_COPY:
+		AppData()->CopyObject(m_object);
 		break;
 	case MENU_PASTE:
 		AppData()->PasteObject(m_object);
