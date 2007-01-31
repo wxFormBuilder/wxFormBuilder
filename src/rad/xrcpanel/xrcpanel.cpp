@@ -103,7 +103,10 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 	if ( pCodeGen )
 	{
 		if ( !TypeConv::FlagSet ( wxT( "XRC" ), pCodeGen->GetValue() ) )
+		{
+			m_xrcPanel->GetTextCtrl()->ClearAll();
 			return;
+		}
 	}
 
 	// Vamos a generar el código en el panel
