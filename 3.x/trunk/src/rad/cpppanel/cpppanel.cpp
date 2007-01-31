@@ -134,7 +134,11 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	if ( pCodeGen )
 	{
 		if ( !TypeConv::FlagSet  ( wxT( "C++" ), pCodeGen->GetValue() ) )
+		{
+			m_cppPanel->GetTextCtrl()->ClearAll();
+			m_hPanel->GetTextCtrl()->ClearAll();
 			return;
+		}
 	}
 
 	// Get First ID from Project File

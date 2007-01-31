@@ -4,6 +4,7 @@ date  Version 3.00.18 (Beta 3)
 * Undo command of MoveHierarchy (move left) now restores the position of
   the object.
 * Fixed FS#86 — "Object-tree context-menu "Copy" command has no effect"
++ Implemented FS#6 — "icons and bitmaps support"
 
 01-19-2007  Version 3.00.17 (Beta 2)
 * Fixed bug where dragging on created dialog statusbar was resizing the main

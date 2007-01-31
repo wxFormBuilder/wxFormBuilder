@@ -939,6 +939,25 @@ void ApplicationData::MergeProject( PObjectBase project )
 		InsertObject( child, m_project );
 	}
 
+	// Merge bitmaps and icons properties
+	PObjectBase thisProject = GetProjectData();
+	PProperty prop = thisProject->GetProperty( _("bitmaps") );
+	if ( prop )
+	{
+		wxString value = prop->GetValue();
+		value.Trim();
+		value << wxT(" ") << project->GetPropertyAsString( _("bitmaps") );
+		prop->SetValue( value );
+	}
+	prop = thisProject->GetProperty( _("icons") );
+	if ( prop )
+	{
+		wxString value = prop->GetValue();
+		value.Trim();
+		value << wxT(" ") << project->GetPropertyAsString( _("icons") );
+		prop->SetValue( value );
+	}
+
 	NotifyProjectRefresh();
 }
 

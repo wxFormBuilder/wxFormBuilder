@@ -93,6 +93,27 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	element->SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
 	element->SetAttribute( "version", "2.3.0.1" );
 
+	// wxBitmaps
+	wxArrayString bitmaps = project->GetPropertyAsArrayString( _("bitmaps") );
+	for ( size_t bitmap = 0; bitmap < bitmaps.size(); ++bitmap )
+	{
+		TiXmlElement* bmp = new TiXmlElement( "object" );
+		bmp->SetAttribute( "class", "wxBitmap" );
+		bmp->LinkEndChild( new TiXmlText( _STDSTR( bitmaps[ bitmap ] ) ) );
+		element->LinkEndChild( bmp );
+	}
+
+	// wxIcons
+	wxArrayString icons = project->GetPropertyAsArrayString( _("icons") );
+	for ( size_t icon = 0; icon < icons.size(); ++icon )
+	{
+		TiXmlElement* iconElement = new TiXmlElement( "object" );
+		iconElement->SetAttribute( "class", "wxIcon" );
+		iconElement->LinkEndChild( new TiXmlText( _STDSTR( icons[ icon ] ) ) );
+		element->LinkEndChild( iconElement );
+	}
+
+
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
 		TiXmlElement *child = GetElement( project->GetChild( i ) );

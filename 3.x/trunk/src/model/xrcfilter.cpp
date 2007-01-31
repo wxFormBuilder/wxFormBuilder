@@ -582,6 +582,32 @@ PObjectBase XrcLoader::GetObject(TiXmlElement *xrcObj, PObjectBase parent)
   std::string className = xrcObj->Attribute("class");
   if (parent->GetObjectTypeName() == wxT("project"))
   {
+  	if ( className == "wxBitmap" )
+    {
+    	PProperty bitmapsProp = parent->GetProperty( _("bitmaps") );
+    	if ( bitmapsProp )
+    	{
+    		wxString value = bitmapsProp->GetValue();
+    		wxString text = _WXSTR(xrcObj->GetText());
+    		text.Replace( wxT("\'"), wxT("\'\'"), true );
+    		value << wxT("\'") << text << wxT("\' ");
+    		bitmapsProp->SetValue( value );
+    		return PObjectBase();
+    	}
+    }
+    if ( className == "wxIcon" )
+    {
+    	PProperty iconsProp = parent->GetProperty( _("icons") );
+    	if ( iconsProp )
+    	{
+    		wxString value = iconsProp->GetValue();
+    		wxString text = _WXSTR(xrcObj->GetText());
+    		text.Replace( wxT("\'"), wxT("\'\'"), true );
+    		value << wxT("\'") << text << wxT("\' ");
+    		iconsProp->SetValue( value );
+    		return PObjectBase();
+    	}
+    }
     // hay que quitarle el "wx" del principio
     // esto es un apaño que aún no se como arreglarlo porque "wxPanel" es llamada
     // como "Panel" para distinguirlo de un "form" y un "container"
