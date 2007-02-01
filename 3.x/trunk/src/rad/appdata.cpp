@@ -1026,7 +1026,7 @@ void ApplicationData::SaveProject( const wxString& filename )
 	}
 }
 
-bool ApplicationData::LoadProject( const wxString &file )
+bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstance )
 
 {
 	Debug::Print( wxT( "LOADING" ) );
@@ -1037,9 +1037,12 @@ bool ApplicationData::LoadProject( const wxString &file )
 		return false;
 	}
 
-	if ( !m_ipc->VerifySingleInstance( file ) )
+	if ( checkSingleInstance )
 	{
-		return false;
+		if ( !m_ipc->VerifySingleInstance( file ) )
+		{
+			return false;
+		}
 	}
 
 	bool result = false;

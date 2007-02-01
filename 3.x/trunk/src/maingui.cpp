@@ -41,11 +41,20 @@
 #include <wx/image.h>
 #include <wx/sysopt.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/cmdline.h>
 #include "wx/config.h"
 #include "utils/wxfbexception.h"
 
 #include <memory>
 #include "maingui.h"
+
+static const wxCmdLineEntryDesc s_cmdLineDesc[] =
+{
+	{ wxCMD_LINE_SWITCH, wxT("g"), wxT("generate"),	wxT("Generate code from passed file.") },
+	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),		wxT("Show this help message."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP  },
+	{ wxCMD_LINE_PARAM, NULL, NULL,	wxT("File to open."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_NONE }
+};
 
 IMPLEMENT_APP( MyApp )
 
@@ -68,21 +77,69 @@ bool MyApp::OnInit()
 	// instance of a project file.
 	AppDataCreate( path );
 
-	// Get project to load
-	// If the project is already loaded in another instance, switch to that instance and quit
-	wxString projectToLoad = wxEmptyString;
-	if ( argc > 1 )
+	// Parse command line
+	wxCmdLineParser parser( s_cmdLineDesc, argc, argv );
+	if ( 0 != parser.Parse() )
 	{
-		wxString arg( argv[1] );
-		if ( ::wxFileExists( arg ) )
+		return false;
+	}
+
+	// Get project to load
+	wxString projectToLoad = wxEmptyString;
+	if ( parser.GetParamCount() > 0 )
+	{
+		projectToLoad = parser.GetParam();
+	}
+
+	bool justGenerate = false;
+	if ( parser.Found( wxT("g") ) )
+	{
+		delete wxLog::SetActiveTarget( new wxLogStderr );
+
+		if ( projectToLoad.empty() )
 		{
-			if ( !AppData()->VerifySingleInstance( arg ) )
+			wxLogError( _("You must pass a path to a project file. Nothing to generate.") );
+			return false;
+		}
+
+		// generate code
+		justGenerate = true;
+	}
+
+	// Make passed project name absolute
+	try
+	{
+		if ( !projectToLoad.empty() )
+		{
+			wxFileName path( projectToLoad );
+			if ( !path.IsOk() )
+			{
+				THROW_WXFBEX( wxT("This path is invalid: ") << projectToLoad );
+			}
+
+			if ( !path.IsAbsolute() )
+			{
+				if ( !path.MakeAbsolute() )
+				{
+					THROW_WXFBEX( wxT("Could not make path absolute: ") << projectToLoad );
+				}
+			}
+			projectToLoad = path.GetFullPath();
+		}
+	}
+	catch ( wxFBException& ex )
+	{
+		wxLogError( ex.what() );
+	}
+
+	// If the project is already loaded in another instance, switch to that instance and quit
+	if ( !projectToLoad.empty() && !justGenerate )
+	{
+		if ( ::wxFileExists( projectToLoad ) )
+		{
+			if ( !AppData()->VerifySingleInstance( projectToLoad ) )
 			{
 				return false;
-			}
-			else
-			{
-				projectToLoad = arg;
 			}
 		}
 	}
@@ -106,23 +163,29 @@ bool MyApp::OnInit()
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
 	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );
 
-#ifndef __WXFB_DEBUG__
-	wxBitmap bitmap;
-	std::auto_ptr< wxSplashScreen > splash;
-	if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
+	MainFrame *frame = NULL;
+	if ( !justGenerate )
 	{
-		splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
-				 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-				 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
+		#ifndef __WXFB_DEBUG__
+			wxBitmap bitmap;
+			std::auto_ptr< wxSplashScreen > splash;
+			if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
+			{
+				splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
+						 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
+						 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
+			}
+		#endif
 	}
-#endif
 
 	wxYield();
 
-#ifdef __WXFB_DEBUG__
-	m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
-	m_old_log = wxLog::SetActiveTarget( m_log );
-#endif //__WXFB_DEBUG__
+	#ifdef __WXFB_DEBUG__
+	if ( !justGenerate )
+	{
+		m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
+	}
+	#endif
 
 	// Read size and position from config file
 	wxConfigBase *config = wxConfigBase::Get();
@@ -142,41 +205,41 @@ bool MyApp::OnInit()
 
 	config->SetPath( wxT("/") );
 
-	MainFrame *frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
-	frame->Show( TRUE );
-	SetTopWindow( frame );
+	frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
+	if ( !justGenerate )
+	{
+		frame->Show( TRUE );
+		SetTopWindow( frame );
 
-#ifdef __WXFB_DEBUG__
-	frame->AddChild( m_log->GetFrame() );
-#endif //__WXFB_DEBUG__
+		#ifdef __WXFB_DEBUG__
+			frame->AddChild( m_log->GetFrame() );
+		#endif //__WXFB_DEBUG__
+	}
 
-
-	// No va bien (en mainframe aparece untitled)
 	if ( !projectToLoad.empty() )
 	{
-		wxFileName path( projectToLoad );
-		if ( !path.IsOk() )
+		if ( AppData()->LoadProject( projectToLoad, !justGenerate ) )
 		{
-			wxLogError( wxT("This path is invalid: %s"), projectToLoad.c_str() );
-		}
-
-		if ( !path.IsAbsolute() )
-		{
-			if ( !path.MakeAbsolute() )
+			if ( justGenerate )
 			{
-				wxLogError( wxT("Could not make path absolute: %s"), projectToLoad.c_str() );
+				AppData()->GenerateCode( false );
+				return false;
 			}
-		}
-
-		if ( AppData()->LoadProject( path.GetFullPath() ) )
-		{
-			frame->InsertRecentProject( path.GetFullPath() );
-			return true;
+			else
+			{
+				frame->InsertRecentProject( projectToLoad );
+				return true;
+			}
 		}
 		else
 		{
-			wxLogError( wxT( "Unable to load project: %s" ), projectToLoad.c_str() );
+			wxLogError( wxT("Unable to load project: %s"), projectToLoad.c_str() );
 		}
+	}
+
+	if ( justGenerate )
+	{
+		return false;
 	}
 
 	AppData()->NewProject();
