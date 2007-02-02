@@ -164,19 +164,20 @@ bool MyApp::OnInit()
 	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );
 
 	MainFrame *frame = NULL;
+
+	#ifndef __WXFB_DEBUG__
+	wxBitmap bitmap;
+	std::auto_ptr< wxSplashScreen > splash;
 	if ( !justGenerate )
 	{
-		#ifndef __WXFB_DEBUG__
-			wxBitmap bitmap;
-			std::auto_ptr< wxSplashScreen > splash;
-			if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
-			{
-				splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
-						 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-						 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
-			}
-		#endif
+		if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
+		{
+			splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
+					 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
+					 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
+		}
 	}
+	#endif
 
 	wxYield();
 
