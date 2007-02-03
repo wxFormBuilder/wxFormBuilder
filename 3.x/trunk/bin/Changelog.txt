@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date  Version 3.00.18 (Beta 3)
+02-01-2007  Version 3.00.18 (Beta 3)
 * Undo command of MoveHierarchy (move left) now restores the position of
   the object.
 * Fixed FS#86 — "Object-tree context-menu "Copy" command has no effect"
