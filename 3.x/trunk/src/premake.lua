@@ -21,9 +21,6 @@ local targetName = ""
 -- Set the kind of package you want to create.
 --		Options: exe | winexe | lib | dll
 package.kind = "winexe"
-if ( OS == "linux" ) then
-	package.config["Debug"].kind = "exe"
-end
 -- Set the files to include.
 package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
 -- Set the files to exclude.
