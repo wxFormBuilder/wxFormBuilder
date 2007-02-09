@@ -1,5 +1,10 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.19 (Beta 3)
+* Fixed FS#89 — "wxSpinCtrl cannot have negative min/max value."
+* Fixed FS#90 — "Can't change the source of a bitmap."
+* Fixed FS#91 — "ID's that start with 'wx' are not properly generated."
+ 
 02-01-2007  Version 3.00.18 (Beta 3)
 * Undo command of MoveHierarchy (move left) now restores the position of
   the object.

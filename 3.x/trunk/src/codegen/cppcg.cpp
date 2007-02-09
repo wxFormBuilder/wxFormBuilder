@@ -1273,7 +1273,7 @@ void CppCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 		{
 			wxString value = prop->GetValue();
 			// Skip wx IDs
-            if ( !value.StartsWith( wxT("wxID_") ) )
+            if ( m_predMacros.end() == m_predMacros.find( value ) )
             {
                 if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
                 {
@@ -1495,6 +1495,8 @@ return auxPath;
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert( wxT(#x) )
 void CppCodeGenerator::SetupPredefinedMacros()
 {
+	ADD_PREDEFINED_MACRO(wxID_ANY);
+
 	ADD_PREDEFINED_MACRO(wxID_LOWEST);
 
 	ADD_PREDEFINED_MACRO(wxID_OPEN);

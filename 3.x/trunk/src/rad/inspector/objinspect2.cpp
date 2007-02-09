@@ -468,6 +468,12 @@ WX_PG_IMPLEMENT_PROPERTY_CLASS(wxBitmapWithResourceProperty,wxBaseParentProperty
 wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxString& label, const wxString& name, const wxString& value)
 	: wxPGPropertyWithChildren(label,name)
 {
+
+	// Add the options
+    m_strings.Add(wxT("Load From File"));
+    m_strings.Add(wxT("Load From Resource"));
+    m_strings.Add(wxT("Load From Icon Resource"));
+
 	// Parse default value, ( sets m_image and m_source based on 'value' )
 	DoSetValue( (void*)&value );
 
@@ -484,11 +490,6 @@ wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxS
 		AddChild( child );
 		child->SetHelpString( wxT("Windows Only. Name of the resource in the .rc file.") );
 	}
-
-	// Add the options
-    m_strings.Add(wxT("Load From File"));
-    m_strings.Add(wxT("Load From Resource"));
-    m_strings.Add(wxT("Load From Icon Resource"));
 
 	wxPGProperty* child2 = wxEnumProperty(wxT("source"), wxPG_LABEL, m_strings, m_strings.Index( m_source ) );
     AddChild( child2 );
@@ -514,7 +515,7 @@ void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 	if ( splitIndex != newValue.npos )
 	{
 		m_image = newValue.substr( 0, splitIndex );
-		m_source = newValue.substr( splitIndex );
+		m_source = newValue.substr( splitIndex + 1 );
 		m_source.Trim( false );
 		if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() )	)
 		{

@@ -87,8 +87,8 @@
     <inherits class="wxWindow" />
     <property name="name" type="text">m_spinCtrl</property>
     <property name="value" type="wxString"></property>
-    <property name="min" type="uint"     help="Minimal value.">0</property>
-    <property name="max" type="uint"     help="Maximal value.">10</property>
+    <property name="min" type="int"     help="Minimal value.">0</property>
+    <property name="max" type="int"     help="Maximal value.">10</property>
     <property name="initial" type="uint" help="Initial value.">0</property>
     <property name="style" type="bitlist">
       <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
