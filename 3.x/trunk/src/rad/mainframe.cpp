@@ -657,9 +657,12 @@ void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 			}
 
 			GetStatusBar()->SetStatusText( wxT( "Property Modified!" ) );
-
-			UpdateFrame();
 		}
+
+		// When you change the sizeritem properties, the object modified is not
+		// the same that the selected object because is a sizeritem object.
+		// It's necessary to update the frame for the toolbar buttons.
+		UpdateFrame();
 	}
 }
 

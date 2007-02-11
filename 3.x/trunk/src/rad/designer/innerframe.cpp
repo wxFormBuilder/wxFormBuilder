@@ -1,6 +1,7 @@
 #include "innerframe.h"
 #include "window_buttons.xpm"
 #include <wx/dcbuffer.h>
+#include <wx/settings.h>
 
 DEFINE_EVENT_TYPE(wxEVT_INNER_FRAME_RESIZED)
 
@@ -48,8 +49,18 @@ wxInnerFrame::TitleBar::TitleBar (wxWindow *parent, wxWindowID id,
   const wxPoint &pos, const wxSize &size, long style )
   : wxPanel(parent,id,pos,size,0/*wxFULL_REPAINT_ON_RESIZE*/ ), m_winButtonsBmp(window_buttons_xpm)
 {
-  m_colour1 = wxColour(10,36,106);
-  m_colour2 = wxColour(166,202,240);
+  //m_colour1 = wxColour(10,36,106);
+  //m_colour2 = wxColour(166,202,240);
+
+  m_colour1 = wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION);
+
+  int r,g,b;
+
+  r = wxMin(255,m_colour1.Red() + 30);
+  g = wxMin(255,m_colour1.Green() + 30);
+  b = wxMin(255,m_colour1.Blue() + 30);
+
+  m_colour2 = wxColour(r,g,b);
   m_titleText = wxT("wxFormBuilder rocks!");
   SetMinSize( wxSize(100,19) );
 }
@@ -129,6 +140,29 @@ void wxInnerFrame::TitleBar::DrawTitleBar(wxDC &dc)
 		colourG += incG;
 		colourB += incB;
   }
+
+  // Draw title background with horizontal gradient.
+  /*float incR = (float)(m_colour2.Red() - m_colour1.Red()) / tbHeight;
+  float incG = (float)(m_colour2.Green() - m_colour1.Green()) / tbHeight;
+  float incB = (float)(m_colour2.Blue() - m_colour1.Blue()) / tbHeight;
+
+  float colourR = m_colour1.Red();
+  float colourG = m_colour1.Green();
+  float colourB = m_colour1.Blue();
+
+  wxColour colour;
+  wxPen pen;
+  for (int i=0; i<tbHeight; i++)
+  {
+    colour.Set((unsigned char)colourR, (unsigned char)colourG, (unsigned char)colourB);
+		pen.SetColour(colour);
+		dc.SetPen(pen);
+		dc.DrawLine(tbPosX, tbPosY + i, tbPosX + tbWidth, tbPosY + i);
+
+		colourR += incR;
+		colourG += incG;
+		colourB += incB;
+  }*/
 
   // Draw title text
   wxFont font = dc.GetFont();
