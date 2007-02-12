@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.0.18"
+#define MyAppVer "3.0.19"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
@@ -28,7 +28,7 @@ DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
 #if UNICODE
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}-beta2
+OutputBaseFilename={#MyAppName}_v{#MyAppVer}-beta3
 #else
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
 #endif
@@ -55,7 +55,7 @@ MinVersion=0,4.0.1381sp6
 
 
 [Messages]
-BeveledLabel={#MyAppName} v{#MyAppVer} Beta 2
+BeveledLabel={#MyAppName} v{#MyAppVer} Beta 3
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
