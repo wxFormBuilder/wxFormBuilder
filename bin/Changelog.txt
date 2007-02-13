@@ -1,7 +1,7 @@
 ﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.20 (Beta 3)
-* Fixed FS#92 — "wxGrid -> Object type unknown in XRC."
+* Fixed FS#93 — "wxGrid -> Object type unknown in XRC."
 
 02-12-2007 Version 3.00.19 (Beta 3)
 * Fixed FS#89 — "wxSpinCtrl cannot have negative min/max value."
