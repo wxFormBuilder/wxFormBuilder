@@ -422,6 +422,20 @@ public:
 
 		return grid;
 	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxGrid"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxGrid"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
 };
 
 void ComponentEvtHandler::OnGridClick( wxGridEvent& event )

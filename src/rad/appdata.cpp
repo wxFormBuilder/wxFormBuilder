@@ -2131,6 +2131,7 @@ void ApplicationData::ShowXrcPreview()
 	// We change the current directory so that the relative paths work properly
 	::wxSetWorkingDirectory( GetProjectPath() );
 	wxXmlResource *res = wxXmlResource::Get();
+	res->InitAllHandlers();
 	res->Load( filePath );
 
 	if ( className == wxT( "Frame" ) )
