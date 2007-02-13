@@ -1,5 +1,8 @@
-﻿                     wxFormBuilder ChangeLog
+﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.20 (Beta 3)
+* Fixed FS#92 — "wxGrid -> Object type unknown in XRC."
+
 02-12-2007 Version 3.00.19 (Beta 3)
 * Fixed FS#89 — "wxSpinCtrl cannot have negative min/max value."
 * Fixed FS#90 — "Can't change the source of a bitmap."
@@ -7,7 +10,7 @@
 * MainFrame is updated when a property is changed, even if the object
   doesn't match with the selected object (i.e. sizeritem obj).
 ^ wxFrame title bar color now using ActiveCaption.
- 
+
 02-01-2007  Version 3.00.18 (Beta 3)
 * Undo command of MoveHierarchy (move left) now restores the position of
   the object.
@@ -33,7 +36,7 @@
 * Improved tolerance of wxBitmap properties to old project files.
   This resolves FS#78.
 + Added "kind" property to tools and added "tooltip" and "statusbar"
-  properties to the generated XRC. 
+  properties to the generated XRC.
   This resovles FS#79 — "Toggle buttons on toolbar."
 ^ Updated the splash screen again.
 
@@ -88,7 +91,7 @@
 * Fixed problems with paths including non-English characters.
   wxFB can now be installed to such paths, as well as open/save projects,
   generate code, and import xrc files. This resolves FS#49.
-* Now only allowing one choice for non_flexible_grow_mode and for 
+* Now only allowing one choice for non_flexible_grow_mode and for
   flexible_direction on wxFlexGridSizer. This resolves FS#56.
 
 12-4-2006 Version 3.00.11 (Beta 2)
@@ -97,7 +100,7 @@
 * Fixed FS#51 — "notebook-like objects errors while they are included into each other"
 * Fixed FS#59 — "wxCheckListBox: incorrect class name in XRC"
 * Fixed  FS#62 — "Sub-Classing top level items doesn't work."
-  This was a big change. The subclass property is now a parent property with two 
+  This was a big change. The subclass property is now a parent property with two
   children: name and header. The name is the subclass name, and header is the
   header to include so that the subclass is defined while building. The header
   is placed into the correct generated file depending on whether a form or control
@@ -200,13 +203,13 @@
 + Replaced wxPlot with wxPlotCtrl
 ^ Made checkbox the default for boolean properties.
 * Fixed xrc generation for bitmap properties (bug FS#4)
-^ Automatic linking to wxAdditions is now done through a 
-  header distributed with wxAddtions, this is now independent 
+^ Automatic linking to wxAdditions is now done through a
+  header distributed with wxAddtions, this is now independent
   of the version of wxWidgets.
 - Removed project option for wxWidgets Version.
 
 08-18-2006  Version 2.00.71
-+ Added a new project option for wxWidgets Version. 
++ Added a new project option for wxWidgets Version.
   Currently it can be 2.7+ and 2.6+.
 + Added support for wxWidgets v2.7.0 for code generation.
 
@@ -214,7 +217,7 @@
 * Fixed the background colour of wxPanel.
 * Fixed bitmap behavior on menu items.
 + Added wxScintilla shortcuts (Ctrl-C, Ctrl-V, Ctrl-X).
-+ Added "Default" in the wxPropertyGrid colour selector 
++ Added "Default" in the wxPropertyGrid colour selector
   (some controls don't have the BtnFace colour by default).
 + Added the properties checked and style to wxCheckBox.
 ^ Set the default background color of wxFlatNotebook to ButtonFace.
