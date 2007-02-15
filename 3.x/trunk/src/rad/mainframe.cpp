@@ -1243,27 +1243,26 @@ wxWindow * MainFrame::CreateObjectInspector( wxWindow *parent )
 
 void MainFrame::CreateWideGui()
 {
-	// Left splitter contains object tree and right splitter
 	m_leftSplitter = new wxSplitterWindow( this, ID_LEFT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0 );
 
 	wxWindow *objectTree = Title::CreateTitle( CreateObjectTree( m_leftSplitter ), wxT( "Object Tree" ) );
-	m_rightSplitter   =  new wxSplitterWindow( m_leftSplitter, ID_RIGHT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0 );
 
-	// panel1 contains Palette and editor
-	wxPanel *panel1 = new wxPanel( m_rightSplitter, -1 );
+	// panel1 contains Palette and splitter2
+	wxPanel *panel1 = new wxPanel( m_leftSplitter, -1 );
 
 	wxWindow *palette = Title::CreateTitle( CreateComponentPalette( panel1 ), wxT( "Component Palette" ) );
-	wxWindow *designer = Title::CreateTitle( CreateDesignerWindow( panel1 ), wxT( "Editor" ) );
+	m_rightSplitter   =  new wxSplitterWindow( panel1, ID_RIGHT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0 );
 
 	wxBoxSizer *panel1_sizer = new wxBoxSizer( wxVERTICAL );
 	panel1_sizer->Add( palette, 0, wxEXPAND );
-	panel1_sizer->Add( designer, 1, wxEXPAND );
+	panel1_sizer->Add( m_rightSplitter, 1, wxEXPAND );
 	panel1->SetSizer( panel1_sizer );
 
-	// right splitter contains panel1 and object inspector
+	// splitter2 contains the editor and the object inspector
+	wxWindow *designer        = Title::CreateTitle( CreateDesignerWindow( m_rightSplitter ), wxT( "Editor" ) );
 	wxWindow *objectInspector = Title::CreateTitle( CreateObjectInspector( m_rightSplitter ), wxT( "Object Properties" ) );
 
-	m_leftSplitter->SplitVertically( objectTree, m_rightSplitter, m_leftSplitterWidth );
+	m_leftSplitter->SplitVertically( objectTree, panel1, m_leftSplitterWidth );
 
 	// Need to update the left splitter so the right one is drawn correctly
 	wxSizeEvent update( GetSize(), GetId() );
@@ -1271,7 +1270,7 @@ void MainFrame::CreateWideGui()
 	m_leftSplitter->UpdateSize();
 	m_leftSplitter->SetMinimumPaneSize( 2 );
 
-	m_rightSplitter->SplitVertically( panel1, objectInspector, m_rightSplitterWidth );
+	m_rightSplitter->SplitVertically( designer, objectInspector, m_rightSplitterWidth );
 	m_rightSplitter->SetSashGravity( 1 );
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
