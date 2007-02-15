@@ -28,6 +28,7 @@
 #include <xrcconv.h>
 #include <tinyxml.h>
 #include <wx/tokenzr.h>
+#include <map>
 
 #ifdef __WX24__
 	#define wxFIXED_MINSIZE wxADJUST_MINSIZE
@@ -330,6 +331,33 @@ public:
 
 class StdDialogButtonSizerComponent : public ComponentBase
 {
+private:
+	void AddXRCButton( TiXmlElement* sizer, const std::string& id, const std::string& label )
+	{
+		TiXmlElement* button = new TiXmlElement( "object" );
+		button->SetAttribute( "class", "button" );
+
+		TiXmlElement* flag = new TiXmlElement( "flag" );
+		flag->LinkEndChild( new TiXmlText( "wxALIGN_CENTER_HORIZONTAL|wxALL" ) );
+		button->LinkEndChild( flag );
+
+		TiXmlElement* border = new TiXmlElement( "border" );
+		border->LinkEndChild( new TiXmlText( "5" ) );
+		button->LinkEndChild( border );
+
+		TiXmlElement* wxbutton = new TiXmlElement( "object" );
+		wxbutton->SetAttribute( "class", "wxButton" );
+		wxbutton->SetAttribute( "name", id );
+
+		TiXmlElement* labelEl = new TiXmlElement( "label" );
+		labelEl->LinkEndChild( new TiXmlText( label ) );
+		wxbutton->LinkEndChild( labelEl );
+
+		button->LinkEndChild( wxbutton );
+
+		sizer->LinkEndChild( button );
+	}
+
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
@@ -370,6 +398,119 @@ public:
 		return sizer;
 	}
 
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxStdDialogButtonSizer"));
+		TiXmlElement* sizer = xrc.GetXrcObject();
+
+		if ( obj->GetPropertyAsInteger( _("OK") ) )
+		{
+			AddXRCButton( sizer, "wxID_OK", "&OK" );
+		}
+		if ( obj->GetPropertyAsInteger( _("Yes") ) )
+		{
+			AddXRCButton( sizer, "wxID_YES", "&Yes" );
+		}
+		if ( obj->GetPropertyAsInteger( _("Save") ) )
+		{
+			AddXRCButton( sizer, "wxID_SAVE", "&Save" );
+		}
+		if ( obj->GetPropertyAsInteger( _("Apply") ) )
+		{
+			AddXRCButton( sizer, "wxID_APPLY", "&Apply" );
+		}
+		if ( obj->GetPropertyAsInteger( _("No") ) )
+		{
+			AddXRCButton( sizer, "wxID_NO", "&No" );
+		}
+		if ( obj->GetPropertyAsInteger( _("Cancel") ) )
+		{
+			AddXRCButton( sizer, "wxID_CANCEL", "&Cancel" );
+		}
+		if ( obj->GetPropertyAsInteger( _("Help") ) )
+		{
+			AddXRCButton( sizer, "wxID_HELP", "&Help" );
+		}
+		if ( obj->GetPropertyAsInteger( _("ContextHelp") ) )
+		{
+			AddXRCButton( sizer, "wxID_CONTEXT_HELP", "" );
+		}
+
+		return sizer;
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		std::map< wxString, wxString > buttons;
+		buttons[ _("OK") ] 			= wxT("0");
+		buttons[ _("Yes") ] 		= wxT("0");
+		buttons[ _("Save") ] 		= wxT("0");
+		buttons[ _("Apply") ] 		= wxT("0");
+		buttons[ _("No") ] 			= wxT("0");
+		buttons[ _("Cancel") ] 		= wxT("0");
+		buttons[ _("Help") ] 		= wxT("0");
+		buttons[ _("ContextHelp") ] = wxT("0");
+
+		XrcToXfbFilter filter(xrcObj, _("wxStdDialogButtonSizer"));
+
+		TiXmlElement* button = xrcObj->FirstChildElement( "object" );
+		for (  ; button != 0; button = button->NextSiblingElement( "object" ) )
+		{
+			if ( std::string("button") != button->Attribute( "class" ) )
+			{
+				continue;
+			}
+
+			TiXmlElement* wxbutton = button->FirstChildElement( "object" );
+			if ( std::string("wxButton") != wxbutton->Attribute( "class" ) )
+			{
+				continue;
+			}
+
+			std::string name = wxbutton->Attribute( "name" );
+
+			if ( name == "wxID_OK" )
+			{
+				buttons[ _("OK") ] = wxT("1");
+			}
+			else if ( name == "wxID_YES" )
+			{
+				buttons[ _("Yes") ] = wxT("1");
+			}
+			else if ( name == "wxID_SAVE" )
+			{
+				buttons[ _("Save") ] = wxT("1");
+			}
+			else if ( name == "wxID_APPLY" )
+			{
+				buttons[ _("Apply") ] = wxT("1");
+			}
+			else if ( name == "wxID_NO" )
+			{
+				buttons[ _("No") ] = wxT("1");
+			}
+			else if ( name == "wxID_CANCEL" )
+			{
+				buttons[ _("Cancel") ] = wxT("1");
+			}
+			else if ( name == "wxID_HELP" )
+			{
+				buttons[ _("Help") ] = wxT("1");
+			}
+			else if ( name == "wxID_CONTEXT_HELP" )
+			{
+				buttons[ _("ContextHelp") ] = wxT("1");
+			}
+		}
+
+		std::map< wxString, wxString >::iterator prop;
+		for ( prop = buttons.begin(); prop != buttons.end(); ++prop )
+		{
+			filter.AddPropertyValue( prop->first, prop->second );
+		}
+
+		return filter.GetXfbObject();
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
