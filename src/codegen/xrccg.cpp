@@ -113,12 +113,20 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 		element->LinkEndChild( iconElement );
 	}
 
-
-	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+	// If project is not actually a "Project", generate it
+	if ( project->GetClassName() == wxT("Project") )
 	{
-		TiXmlElement *child = GetElement( project->GetChild( i ) );
-		if ( child )
-			element->LinkEndChild( child );
+		for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+		{
+			TiXmlElement *child = GetElement( project->GetChild( i ) );
+			if ( child )
+				element->LinkEndChild( child );
+		}
+	}
+	else
+	{
+		TiXmlElement* child = GetElement( project );
+		element->LinkEndChild( child );
 	}
 
 	doc.LinkEndChild( element );

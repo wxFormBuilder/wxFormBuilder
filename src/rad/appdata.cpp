@@ -2125,7 +2125,7 @@ void ApplicationData::ShowXrcPreview()
 	PCodeWriter cw( new FileCodeWriter( filePath ) );
 
 	codegen.SetWriter( cw );
-	codegen.GenerateCode( m_project );
+	codegen.GenerateCode( form );
 
 	wxString workingDir = ::wxGetCwd();
 	// We change the current directory so that the relative paths work properly
