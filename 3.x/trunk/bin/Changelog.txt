@@ -5,6 +5,7 @@ date Version 3.00.20 (Beta 3)
 * Fixed FS#94 — "Typo in code generation which includes <wx/imaglist.h>."
 * Fixed FS#96 — "No XRC for wxStdDialogButtonSizer."
 * Added wxRadioBox label to XRC output.
+^ "View:XRC Window" now only generates the form that it will display.
 
 02-12-2007 Version 3.00.19 (Beta 3)
 * Fixed FS#89 — "wxSpinCtrl cannot have negative min/max value."
