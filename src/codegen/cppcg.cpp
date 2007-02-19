@@ -623,16 +623,22 @@ void CppCodeGenerator::GenPrivateEventHandlers( const EventVector& events )
 		m_header->WriteLn( wxEmptyString );
 		m_header->WriteLn( wxT("// Private event handlers") );
 
+		std::set<wxString> generatedHandlers;
+
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
 			wxString aux;
 
-			aux = wxT("void _wxFB_") + event->GetValue() + wxT("( ") +
-			event->GetEventInfo()->GetEventClassName() + wxT("& event ){ ") +
-			event->GetValue() + wxT("( event ); }");
+			if (generatedHandlers.find(event->GetValue()) == generatedHandlers.end())
+			{
+			  aux = wxT("void _wxFB_") + event->GetValue() + wxT("( ") +
+			  event->GetEventInfo()->GetEventClassName() + wxT("& event ){ ") +
+			  event->GetValue() + wxT("( event ); }");
 
-			m_header->WriteLn( aux );
+			  m_header->WriteLn( aux );
+			  generatedHandlers.insert(event->GetValue());
+			}
 		}
 		m_header->WriteLn( wxEmptyString );
 	}
@@ -649,15 +655,20 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
 		m_header->WriteLn( wxEmptyString );
 		m_header->WriteLn( wxT("// Virtual event handlers, overide them in your derived class") );
 
+    std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
 			wxString aux;
 
-			aux = wxT("virtual void ") + event->GetValue() + wxT("( ") +
-			event->GetEventInfo()->GetEventClassName() + wxT("& event ){ event.Skip(); }");
+      if (generatedHandlers.find(event->GetValue()) == generatedHandlers.end())
+			{
+		  	aux = wxT("virtual void ") + event->GetValue() + wxT("( ") +
+			  event->GetEventInfo()->GetEventClassName() + wxT("& event ){ event.Skip(); }");
 
-			m_header->WriteLn(aux);
+			  m_header->WriteLn(aux);
+			  generatedHandlers.insert(event->GetValue());
+			}
 		}
 		m_header->WriteLn( wxEmptyString );
 	}
