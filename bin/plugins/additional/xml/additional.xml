@@ -72,7 +72,7 @@
       <option name="wxRB_SINGLE"       help="In some circumstances, radio buttons that are not consecutive siblings trigger a hang bug in Windows (only). If this happens, add this style to mark the button as not belonging to a group, and implement the mutually-exclusive group behaviour yourself." />
       <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
     <property name="value" type="bool">0</property>
-	
+	<event name="OnRadioButton" class="wxCommandEvent" help="Handles a toggle button click event." />
   </objectinfo>
 
   <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
@@ -80,7 +80,7 @@
     <property name="name" type="text">m_toggleBtn</property>
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
-	<event name="OnToggleButton" class="wxCommandEvent" help="Handles a toggle button click event." />
+	<event name="OnToggleButton" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBUTTON_SELECTED event, when the radiobutton is clicked." />
   </objectinfo>
 
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
