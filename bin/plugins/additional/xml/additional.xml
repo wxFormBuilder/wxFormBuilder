@@ -11,6 +11,12 @@
       <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
       <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
       <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
+	  <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
+	  <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
+	  <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
+	  <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
+	  <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
+	  <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
   </objectinfo>
 
   <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
@@ -22,6 +28,7 @@
       <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
       <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
       <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+	  <event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
@@ -31,6 +38,9 @@
       <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
       <option name="wxHW_SCROLLBAR_AUTO"  help="Display scrollbars only if page's size exceeds window's size." />
       <option name="wxHW_NO_SELECTION"    help="Don't allow the user to select text." />wxHW_SCROLLBAR_AUTO</property>
+	  <event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
+	  <event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
+	  <event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
   </objectinfo>
 
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
@@ -62,6 +72,7 @@
       <option name="wxRB_SINGLE"       help="In some circumstances, radio buttons that are not consecutive siblings trigger a hang bug in Windows (only). If this happens, add this style to mark the button as not belonging to a group, and implement the mutually-exclusive group behaviour yourself." />
       <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
     <property name="value" type="bool">0</property>
+	
   </objectinfo>
 
   <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
@@ -69,6 +80,7 @@
     <property name="name" type="text">m_toggleBtn</property>
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
+	<event name="OnToggleButton" class="wxCommandEvent" help="Handles a toggle button click event." />
   </objectinfo>
 
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
@@ -93,6 +105,8 @@
     <property name="style" type="bitlist">
       <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
       <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />wxSP_ARROW_KEYS</property>
+	<event name="OnSpinCtrl" class="wxSpinEvent" help="Generated whenever the numeric value of the spinctrl is updated." />
+	<event name="OnSpinCtrlText" class="wxCommandEvent" help="Generated whenever the user modifies the text in the edit part of the spin control directly." />
   </objectinfo>
 
   <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
@@ -103,6 +117,9 @@
       <option name="wxSP_VERTICAL"   help="Specifies a vertical spin button." />
       <option name="wxSP_ARROW_KEYS" help="The user can use arrow keys to change the value." />
       <option name="wxSP_WRAP"       help="The value wraps at the minimum and maximum." /></property>
+	<event name="OnSpin" class="wxSpinEvent" help="Generated whenever an arrow is pressed." />
+	<event name="OnSpinUp" class="wxSpinEvent" help="Generated when left/up arrow is pressed." />
+	<event name="OnSpinDown" class="wxSpinEvent" help="Generated when right/down arrow is pressed." />
   </objectinfo>
 
   <objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter">
@@ -124,6 +141,10 @@
     <property name="sashsize" type="int"      help="Overrides platform metrics if greater than -1">-1</property>
     <property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
     <property name="min_pane_size" type="uint" help="Minimum size for the panes. A minimum less than 1 is not allowed in the designer, because the designer prevents un-splitting.">0</property>  
+	<event name="OnSplitterSashPosChanging" class="wxSplitterEvent" help="The sash position is in the process of being changed. May be used to modify the position of the tracking bar to properly reflect the position that would be set if the drag were to be completed at this point. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING event." />
+	<event name="OnSplitterSashPosChanged" class="wxSplitterEvent" help="The sash position was changed. May be used to modify the sash position before it is set, or to prevent the change from taking place. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED event." />
+	<event name="OnSplitterUnsplit" class="wxSplitterEvent" help="The splitter has been just unsplit. Processes a wxEVT_COMMAND_SPLITTER_UNSPLIT event." />
+	<event name="OnSplitterDClick" class="wxSplitterEvent" help="The sash was double clicked. The default behaviour is to unsplit the window when this happens (unless the minimum pane size has been set to a value greater than zero). Processes a wxEVT_COMMAND_SPLITTER_DOUBLECLICKED event." />
   </objectinfo>
 
   <objectinfo class="splitteritem" type="splitteritem" />
@@ -159,6 +180,8 @@
       <option name="wxNB_NOPAGETHEME" help="Display a solid colour on notebook pages, and not a gradient, which can reduce performance. (Windows only)" />
       <option name="wxNB_FLAT"        help="Show tabs in a flat style. (Windows only)" />
     </property>
+	<event name="OnNotebookPageChanged" class="wxNotebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED event." />
+	<event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed." />
   </objectinfo>
 
   <objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
@@ -177,6 +200,8 @@
       <option name="wxLB_LEFT"    help="Place labels on the left side." />
       <option name="wxLB_RIGHT"   help="Place labels on the right side." />
       <option name="wxLB_BOTTOM"  help="Place labels below the page area." />wxLB_DEFAULT</property>
+	<event name="OnListbookPageChanged" class="wxListbookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED event." />
+	<event name="OnListbookPageChanging" class="wxListbookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING event. This event can be vetoed." />
   </objectinfo>
 
   <objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
@@ -194,6 +219,8 @@
       <option name="wxCHB_LEFT"    help="Place labels on the left side." />
       <option name="wxCHB_RIGHT"   help="Place labels on the right side." />
       <option name="wxCHB_BOTTOM"  help="Place labels below the page area." />wxCHB_DEFAULT</property>
+	<event name="OnChoicebookPageChanged" class="wxChoicebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED event." />
+	<event name="OnChoicebookPageChanging" class="wxChoicebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING event. This event can be vetoed." />
   </objectinfo>
 
   <objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">

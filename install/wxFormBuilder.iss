@@ -2,14 +2,14 @@
 ; File:        wxFormBuilder.iss
 ; Author:      Ryan Pusztai & Ryan Mulder
 ; Date:        02/07/2006
-; Copyright:   (c) 2006 Ryan Pusztai <rpusztai@gmail.com>
-;              (c) 2006 Ryan Mulder <rjmyst3@gmail.com>
+; Copyright:   (c) 2007 Ryan Pusztai <rpusztai@gmail.com>
+;              (c) 2007 Ryan Mulder <rjmyst3@gmail.com>
 ; License:     wxWindows license
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #define UNICODE 1
 
-#define MyAppVer "3.0.19"
+#define MyAppVer "3.0.20"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"

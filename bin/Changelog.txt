@@ -1,6 +1,9 @@
-﻿﻿﻿                     wxFormBuilder ChangeLog
+﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.20 (Beta 3)
+date Version 3.00.21 (Beta 3)
++ Added the 'Additional' controls events.
+
+02-18-2007 Version 3.00.20 (Beta 3)
 * Fixed FS#93 — "wxGrid -> Object type unknown in XRC."
 * Fixed FS#94 — "Typo in code generation which includes <wx/imaglist.h>."
 * Fixed FS#96 — "No XRC for wxStdDialogButtonSizer."
