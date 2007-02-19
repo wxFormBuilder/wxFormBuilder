@@ -5,37 +5,48 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/calctrl.h&gt;</template>
+	<template name="evt_entry_OnCalendar">EVT_CALENDAR( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarYear">EVT_CALENDAR_YEAR( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
   </templates>
 
   <templates class="wxDatePickerCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/datectrl.h&gt;</template>
+	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/html/htmlwin.h&gt;</template>
-  </templates>
-
-
-  <templates class="wxRadioButton">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
-  </templates>
-
-  <templates class="wxToggleButton">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
-    <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
+	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
+	<template name="evt_entry_OnHtmlCellHover">EVT_HTML_CELL_HOVER( $id, #handler )</template>
+	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
   </templates>
 
   <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
+  </templates>
+  
+  <templates class="wxRadioButton">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
+	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
+  </templates>
+
+  <templates class="wxToggleButton">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
+    <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
+	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -48,12 +59,17 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial);</template>
     <template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
+	<template name="evt_entry_OnSpinCtrl">EVT_SPINCTRL( $id, #handler )</template>
+	<template name="evt_entry_OnSpinCtrlText">EVT_TEXT( $id, #handler )</template>
   </templates>
 
   <templates class="wxSpinButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/spinbutt.h&gt;</template>
+	<template name="evt_entry_OnSpin">EVT_SPIN( $id, #handler )</template>
+	<template name="evt_entry_OnSpinUp">EVT_SPIN_UP( $id, #handler )</template>
+	<template name="evt_entry_OnSpinDown">EVT_SPIN_DOWN( $id, #handler )</template>
   </templates>
 
   <templates class="wxSplitterWindow">
@@ -79,6 +95,10 @@
 		@{	$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
 	  @}
     </template>
+	<template name="evt_entry_OnSplitterSashPosChanging">EVT_SPLITTER_SASH_POS_CHANGING( $id, #handler )</template>
+	<template name="evt_entry_OnSplitterSashPosChanged">EVT_SPLITTER_SASH_POS_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnSplitterUnsplit">EVT_SPLITTER_UNSPLIT( $id, #handler )</template>
+	<template name="evt_entry_OnSplitterDClick">EVT_SPLITTER_DCLICK( $id, #handler )</template>
   </templates>
 
   <templates class="wxCheckListBox">
@@ -117,6 +137,8 @@
     		wxImage $name #append Image;
 		@}
 	</template>
+	<template name="evt_entry_OnNotebookPageChanged">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnNotebookPageChanging">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="notebookpage">
@@ -173,6 +195,8 @@
 			@#endif
   		@}
     </template>
+	<template name="evt_entry_OnListbookPageChanged">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnListbookPageChanging">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="listbookpage">
@@ -199,6 +223,8 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/choicebk.h&gt;</template>
+	<template name="evt_entry_OnChoicebookPageChanged">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnChoicebookPageChanging">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="choicebookpage">
