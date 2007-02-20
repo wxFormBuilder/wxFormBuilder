@@ -2,6 +2,9 @@
 ************************************************************************
 date Version 3.00.21 (Beta 3)
 + Added the 'Additional' controls events.
+* Prevent event handler duplication when there are different event handlers
+  with the same function (but it doesn't check that the event class is the
+  same).
 
 02-18-2007 Version 3.00.20 (Beta 3)
 * Fixed FS#93 — "wxGrid -> Object type unknown in XRC."
