@@ -84,16 +84,16 @@
 	<template name="evt_entry_OnScrollThumbTrack">EVT_SCROLL_THUMBTRACK( #handler )</template>
 	<template name="evt_entry_OnScrollThumbRelease">EVT_SCROLL_THUMBRELEASE( #handler )</template>
 	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
-	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( #handler )</template>
-	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( #handler )</template>
-	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_DOWN( #handler )</template>
-	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( #handler )</template>
-	<template name="evt_entry_OnCommandScrollLinDown">EVT_COMMAND_SCROLL_LINEDOWN( #handler )</template>
-	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( #handler )</template>
-	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( #handler )</template>
-	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( #handler )</template>
-	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( #handler )</template>
-	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( #handler )</template>
+	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_DOWN( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollLinDown">EVT_COMMAND_SCROLL_LINEDOWN( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="wxSpinCtrl">
