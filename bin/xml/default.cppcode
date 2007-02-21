@@ -2,16 +2,7 @@
 <codegen language="C++">
   <templates class="Project">
     <template name="header_preamble">
-      // Define WX_GCH in order to support precompiled headers with GCC compiler. #nl
-      // You have to create the header &quot;wx_pch.h&quot; and include all files needed    #nl
-      // to compile your gui inside it. #nl
-      // Then, compile it and place the file &quot;wx_pch.h.gch&quot; into the same #nl
-      // directory as &quot;wx_pch.h&quot;. #nl
-      @#ifdef WX_GCH               #nl
-	@#include &lt;wx_pch.h&gt; #nl
-      @#else                       #nl
         @#include &lt;wx/wx.h&gt;  #nl
-      @#endif                      #nl
     </template>
     <template name="header_epilogue">
       ///////////////////////////////////////////////////////////////////////////
