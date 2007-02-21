@@ -11,12 +11,12 @@
       <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
       <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
       <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
-	  <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
-	  <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
-	  <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
-	  <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
-	  <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
-	  <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
+    <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
+    <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
+    <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
+    <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
+    <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
+    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
   </objectinfo>
 
   <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
@@ -28,7 +28,7 @@
       <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
       <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
       <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
-	  <event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
+	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
@@ -38,9 +38,9 @@
       <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
       <option name="wxHW_SCROLLBAR_AUTO"  help="Display scrollbars only if page's size exceeds window's size." />
       <option name="wxHW_NO_SELECTION"    help="Don't allow the user to select text." />wxHW_SCROLLBAR_AUTO</property>
-	  <event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
-	  <event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
-	  <event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
+	<event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
+	<event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
+	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
   </objectinfo>
 
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
@@ -61,6 +61,27 @@
       <option name="wxTR_MULTIPLE"                help="Use this style to allow a range of items to be selected. If a second range is selected, the current range, if any, is deselected." />
       <option name="wxTR_EXTENDED"                help="Use this style to allow disjoint items to be selected. (Only partially implemented; may not work in all cases.)" />
       <option name="wxTR_DEFAULT_STYLE"           help="The set of flags that are closest to the defaults for the native control for a particular toolkit." />wxTR_DEFAULT_STYLE</property>
+	<event name="OnTreeBeginDrag" class="wxTreeEvent" help="Begin dragging with the left mouse button." />
+	<event name="OnTreeBeginRDrag" class="wxTreeEvent" help="Begin dragging with the right mouse button." />
+	<event name="OnTreeEndDrag" class="wxTreeEvent" help="End dragging with the left or right mouse button." />
+	<event name="OnTreeBeginLabelEdit" class="wxTreeEvent" help="Begin editing a label. This can be prevented by calling Veto()." />
+	<event name="OnTreeEndLabelEdit" class="wxTreeEvent" help="Finish editing a label. This can be prevented by calling Veto()." />
+	<event name="OnTreeTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
+	<event name="OnTreeTreeGetInfo" class="wxTreeEvent" help="Request information from the application." />
+	<event name="OnTreeTreeSetInfo" class="wxTreeEvent" help="Information is being supplied." />
+	<event name="OnTreeTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
+	<event name="OnTreeTreeItemCollapsed" class="wxTreeEvent" help="The item has been collapsed." />
+	<event name="OnTreeTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
+	<event name="OnTreeTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
+	<event name="OnTreeTreeItemExpanding" class="wxTreeEvent" help="The item is being expanded. This can be prevented by calling Veto()." />
+	<event name="OnTreeTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
+	<event name="OnTreeTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
+	<event name="OnTreeTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
+	<event name="OnTreeTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
+	<event name="OnTreeTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
+	<event name="OnTreeTreeItemGettooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
+	<event name="OnTreeTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
+	<event name="OnTreeTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
   </objectinfo>
 
   <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
@@ -93,6 +114,26 @@
     <property name="style" type="option">
       <option name="wxSB_HORIZONTAL" help="Specifies a horizontal scrollbar." />
       <option name="wxSB_VERTICAL"   help="Specifies a vertical scrollbar." />wxSB_HORIZONTAL</property>
+	<event name="OnScroll" class="wxScrollEvent" help="Process all scroll events." />
+	<event name="OnScrollTop" class="wxScrollEvent" help="Process wxEVT_SCROLL_TOP scroll-to-top events (minimum position)." />
+	<event name="OnScrollBottom" class="wxScrollEvent" help="Process wxEVT_SCROLL_BOTTOM scroll-to-bottom events (maximum position)." />
+	<event name="OnScrollLineUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEUP line up events." />
+	<event name="OnScrollLineDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEDOWN line down events." />
+	<event name="OnScrollPageUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEUP page up events." />
+	<event name="OnScrollPageDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEDOWN page down events." />
+	<event name="OnScrollThumbTrack" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBTRACK thumbtrack events (frequent events sent as the user drags the thumbtrack)." />
+	<event name="OnScrollThumbRelease" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBRELEASE thumb release events." />
+	<event name="OnScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only)." />
+	<event name="OnCommandScroll" class="wxScrollEvent" help="Process all scroll events. Variant taking a window identifier." />
+	<event name="OnCommandScrollTop" class="wxScrollEvent" help="Process wxEVT_SCROLL_TOP scroll-to-top events (minimum position). Variant taking a window identifier." />
+	<event name="OnCommandScrollBottom" class="wxScrollEvent" help="Process wxEVT_SCROLL_BOTTOM scroll-to-bottom events (maximum position). Variant taking a window identifier." />
+	<event name="OnCommandScrollLineUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEUP line up events. Variant taking a window identifier." />
+	<event name="OnCommandScrollLineDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_LINEDOWN line down events. Variant taking a window identifier." />
+	<event name="OnCommandScrollPageUp" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEUP page up events. Variant taking a window identifier." />
+	<event name="OnCommandScrollPageDown" class="wxScrollEvent" help="Process wxEVT_SCROLL_PAGEDOWN page down events. Variant taking a window identifier." />
+	<event name="OnCommandScrollThumbTrack" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBTRACK thumbtrack events (frequent events sent as the user drags the thumbtrack). Variant taking a window identifier." />
+	<event name="OnCommandScrollThumbRelease" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBRELEASE thumb release events. Variant taking a window identifier." />
+	<event name="OnCommandScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only). Variant taking a window identifier." />
   </objectinfo>
 
   <objectinfo class="wxSpinCtrl" icon="spin_ctrl.xpm" type="widget">

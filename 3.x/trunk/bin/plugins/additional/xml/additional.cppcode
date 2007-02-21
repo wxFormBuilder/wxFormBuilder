@@ -33,6 +33,27 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
+	<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeGetInfo">EVT_TREE_GET_INFO( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeSetInfo">EVT_TREE_SET_INFO( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemGettooltip">EVT_TREE_ITEM_GETTOOLTIP( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+	<template name="evt_entry_OnTreeTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
   </templates>
   
   <templates class="wxRadioButton">
@@ -53,6 +74,26 @@
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/scrolbar.h&gt;</template>
+	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
+	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
+	<template name="evt_entry_OnScrollBottom">EVT_SCROLL_DOWN( #handler )</template>
+	<template name="evt_entry_OnScrollLineUp">EVT_SCROLL_LINEUP( #handler )</template>
+	<template name="evt_entry_OnScrollLinDown">EVT_SCROLL_LINEDOWN( #handler )</template>
+	<template name="evt_entry_OnScrollPageUp">EVT_SCROLL_PAGEUP( #handler )</template>
+	<template name="evt_entry_OnScrollPageDown">EVT_SCROLL_PAGEDOWN( #handler )</template>
+	<template name="evt_entry_OnScrollThumbTrack">EVT_SCROLL_THUMBTRACK( #handler )</template>
+	<template name="evt_entry_OnScrollThumbRelease">EVT_SCROLL_THUMBRELEASE( #handler )</template>
+	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
+	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( #handler )</template>
+	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( #handler )</template>
+	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_DOWN( #handler )</template>
+	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( #handler )</template>
+	<template name="evt_entry_OnCommandScrollLinDown">EVT_COMMAND_SCROLL_LINEDOWN( #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( #handler )</template>
+	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( #handler )</template>
+	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( #handler )</template>
   </templates>
 
   <templates class="wxSpinCtrl">
