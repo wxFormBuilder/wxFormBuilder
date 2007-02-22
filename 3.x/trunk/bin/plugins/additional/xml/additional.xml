@@ -69,22 +69,22 @@
 	<event name="OnTreeEndDrag" class="wxTreeEvent" help="End dragging with the left or right mouse button." />
 	<event name="OnTreeBeginLabelEdit" class="wxTreeEvent" help="Begin editing a label. This can be prevented by calling Veto()." />
 	<event name="OnTreeEndLabelEdit" class="wxTreeEvent" help="Finish editing a label. This can be prevented by calling Veto()." />
-	<event name="OnTreeTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
-	<event name="OnTreeTreeGetInfo" class="wxTreeEvent" help="Request information from the application." />
-	<event name="OnTreeTreeSetInfo" class="wxTreeEvent" help="Information is being supplied." />
-	<event name="OnTreeTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
-	<event name="OnTreeTreeItemCollapsed" class="wxTreeEvent" help="The item has been collapsed." />
-	<event name="OnTreeTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
-	<event name="OnTreeTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
-	<event name="OnTreeTreeItemExpanding" class="wxTreeEvent" help="The item is being expanded. This can be prevented by calling Veto()." />
-	<event name="OnTreeTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
-	<event name="OnTreeTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
-	<event name="OnTreeTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
-	<event name="OnTreeTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
-	<event name="OnTreeTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
-	<event name="OnTreeTreeItemGettooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
-	<event name="OnTreeTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
-	<event name="OnTreeTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
+	<event name="OnTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
+	<event name="OnTreeGetInfo" class="wxTreeEvent" help="Request information from the application." />
+	<event name="OnTreeSetInfo" class="wxTreeEvent" help="Information is being supplied." />
+	<event name="OnTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
+	<event name="OnTreeItemCollapsed" class="wxTreeEvent" help="The item has been collapsed." />
+	<event name="OnTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
+	<event name="OnTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
+	<event name="OnTreeItemExpanding" class="wxTreeEvent" help="The item is being expanded. This can be prevented by calling Veto()." />
+	<event name="OnTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
+	<event name="OnTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
+	<event name="OnTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
+	<event name="OnTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
+	<event name="OnTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
+	<event name="OnTreeItemGetTooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
+	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
+	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
 	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 

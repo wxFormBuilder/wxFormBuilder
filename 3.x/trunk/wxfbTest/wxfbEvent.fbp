@@ -9,13 +9,13 @@
         <property name="first_id">1000</property>
         <property name="icons"></property>
         <property name="internationalize">0</property>
-        <property name="name">MyProject1</property>
+        <property name="name">wxFBEvent</property>
         <property name="path">.</property>
         <property name="precompiled_header">wx/wxprec.h</property>
         <property name="relative_path">1</property>
         <property name="use_enum">1</property>
         <property name="use_microsoft_bom">0</property>
-        <object class="Frame" expanded="1">
+        <object class="Frame" expanded="0">
             <property name="bg"></property>
             <property name="center"></property>
             <property name="enabled">1</property>
@@ -26,7 +26,7 @@
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
             <property name="minimum_size"></property>
-            <property name="name">CommonFrame</property>
+            <property name="name">MainFrame</property>
             <property name="pos"></property>
             <property name="size">500,300</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
@@ -72,6 +72,7 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">OnFileOpen</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
@@ -85,6 +86,7 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">OnFileSave</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                     <object class="separator" expanded="1" />
                     <object class="wxMenuItem" expanded="1">
@@ -99,6 +101,7 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection">OnFileExit</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="wxMenu" expanded="1">
@@ -116,6 +119,7 @@
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
                         <event name="OnMenuSelection"></event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
             </object>
@@ -153,6 +157,7 @@
                     <event name="OnToolClicked"></event>
                     <event name="OnToolEnter">OnOpenEntered</event>
                     <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
                 </object>
                 <object class="tool" expanded="1">
                     <property name="bitmap"></property>
@@ -166,6 +171,7 @@
                     <event name="OnToolClicked">OnFileSave</event>
                     <event name="OnToolEnter"></event>
                     <event name="OnToolRClicked"></event>
+                    <event name="OnUpdateUI"></event>
                 </object>
                 <object class="toolSeparator" expanded="1" />
                 <object class="tool" expanded="1">
@@ -180,10 +186,11 @@
                     <event name="OnToolClicked">OnAboutClicked</event>
                     <event name="OnToolEnter"></event>
                     <event name="OnToolRClicked">OnAboutRClick</event>
+                    <event name="OnUpdateUI"></event>
                 </object>
             </object>
         </object>
-        <object class="Panel" expanded="1">
+        <object class="Panel" expanded="0">
             <property name="bg"></property>
             <property name="enabled">1</property>
             <property name="fg"></property>
@@ -235,6 +242,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnButtonClick">OnClick</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -261,6 +269,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnButtonClick">OnClickBitmap</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -273,7 +282,7 @@
                         <property name="fg"></property>
                         <property name="font"></property>
                         <property name="hidden">0</property>
-                        <property name="id">ID_DEFAULT</property>
+                        <property name="id">ID_TEXTCTRL</property>
                         <property name="maximum_size"></property>
                         <property name="maxlength">0</property>
                         <property name="minimum_size"></property>
@@ -291,6 +300,7 @@
                         <event name="OnTextEnter">OnTextEnter</event>
                         <event name="OnTextMaxLen">OnTextMaxLen</event>
                         <event name="OnTextURL">OnTextURL</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -320,6 +330,7 @@
                         <event name="OnCombobox">OnCombobox</event>
                         <event name="OnText">OnText</event>
                         <event name="OnTextEnter">OnTextEnter</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -345,6 +356,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnChoice">OnChoice</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -372,6 +384,7 @@
                         <property name="window_style"></property>
                         <event name="OnListBox">OnListBox</event>
                         <event name="OnListBoxDClick">OnListBoxDClick</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -416,6 +429,7 @@
                         <event name="OnListItemRightClick"></event>
                         <event name="OnListItemSelected"></event>
                         <event name="OnListKeyDown"></event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -443,6 +457,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnCheckBox">OnCheckBox</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -471,6 +486,7 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnRadioBox">OnRadioBox</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -518,6 +534,7 @@
                         <event name="OnScrollThumbRelease"></event>
                         <event name="OnScrollThumbTrack"></event>
                         <event name="OnScrollTop"></event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -531,7 +548,7 @@
                         <property name="fg"></property>
                         <property name="font"></property>
                         <property name="hidden">0</property>
-                        <property name="id">ID_DEFAULT</property>
+                        <property name="id">ID_GRID</property>
                         <property name="maximum_size"></property>
                         <property name="minimum_size"></property>
                         <property name="name">m_grid1</property>
@@ -575,32 +592,10 @@
                         <event name="OnGridRangeSelect">OnGridRangeSelect</event>
                         <event name="OnGridRowSize"></event>
                         <event name="OnGridSelectCell">OnGridCellSelected</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
             </object>
-        </object>
-        <object class="Dialog" expanded="1">
-            <property name="bg"></property>
-            <property name="center"></property>
-            <property name="enabled">1</property>
-            <property name="extra_style"></property>
-            <property name="fg"></property>
-            <property name="font"></property>
-            <property name="hidden">0</property>
-            <property name="id">wxID_ANY</property>
-            <property name="maximum_size"></property>
-            <property name="minimum_size"></property>
-            <property name="name">CommonDialog</property>
-            <property name="pos"></property>
-            <property name="size"></property>
-            <property name="style">wxDEFAULT_DIALOG_STYLE</property>
-            <property name="subclass"></property>
-            <property name="title"></property>
-            <property name="tooltip"></property>
-            <property name="window_extra_style"></property>
-            <property name="window_style"></property>
-            <event name="OnClose">OnClose</event>
-            <event name="OnSize">OnSize</event>
         </object>
         <object class="Panel" expanded="1">
             <property name="bg"></property>
@@ -652,12 +647,13 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnCalendar"></event>
-                        <event name="OnCalendarDay"></event>
-                        <event name="OnCalendarMonth"></event>
-                        <event name="OnCalendarSelChanged"></event>
-                        <event name="OnCalendarWeekDayClicked"></event>
-                        <event name="OnCalendarYear"></event>
+                        <event name="OnCalendar">OnCalendar</event>
+                        <event name="OnCalendarDay">OnCalendarDay</event>
+                        <event name="OnCalendarMonth">OnCalendarMonth</event>
+                        <event name="OnCalendarSelChanged">OnCalendarSelChanged</event>
+                        <event name="OnCalendarWeekDayClicked">OnCalendarWeekDayClicked</event>
+                        <event name="OnCalendarYear">OnCalendarYear</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -682,7 +678,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnDateChanged"></event>
+                        <event name="OnDateChanged">OnDateChanged</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -707,9 +704,10 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnHtmlCellClicked"></event>
-                        <event name="OnHtmlCellHover"></event>
-                        <event name="OnHtmlLinkClicked"></event>
+                        <event name="OnHtmlCellClicked">OnHtmlCellClicked</event>
+                        <event name="OnHtmlCellHover">OnHtmlCellHover</event>
+                        <event name="OnHtmlLinkClicked">OnHtmlLinkClicked</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -734,27 +732,28 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnTreeBeginDrag"></event>
+                        <event name="OnTreeBeginDrag">OnTreeBeginDrag</event>
                         <event name="OnTreeBeginLabelEdit"></event>
                         <event name="OnTreeBeginRDrag"></event>
-                        <event name="OnTreeEndDrag"></event>
-                        <event name="OnTreeEndLabelEdit"></event>
-                        <event name="OnTreeTreeDeleteItem"></event>
-                        <event name="OnTreeTreeGetInfo"></event>
-                        <event name="OnTreeTreeItemActivated"></event>
-                        <event name="OnTreeTreeItemCollapsed"></event>
-                        <event name="OnTreeTreeItemCollapsing"></event>
-                        <event name="OnTreeTreeItemExpanded"></event>
-                        <event name="OnTreeTreeItemExpanding"></event>
-                        <event name="OnTreeTreeItemGettooltip"></event>
-                        <event name="OnTreeTreeItemMenu"></event>
-                        <event name="OnTreeTreeItemMiddleClick"></event>
-                        <event name="OnTreeTreeItemRightClick"></event>
-                        <event name="OnTreeTreeKeyDown"></event>
-                        <event name="OnTreeTreeSelChanged"></event>
-                        <event name="OnTreeTreeSelChanging"></event>
-                        <event name="OnTreeTreeSetInfo"></event>
-                        <event name="OnTreeTreeStateImageClick"></event>
+                        <event name="OnTreeDeleteItem"></event>
+                        <event name="OnTreeEndDrag">OnTreeEndDrag</event>
+                        <event name="OnTreeEndLabelEdit">OnTreeEndLabelEdit</event>
+                        <event name="OnTreeGetInfo">OnTreeGetInfo</event>
+                        <event name="OnTreeItemActivated">OnTreeItemActivate</event>
+                        <event name="OnTreeItemCollapsed"></event>
+                        <event name="OnTreeItemCollapsing">OnTreeItemCollapsing</event>
+                        <event name="OnTreeItemExpanded"></event>
+                        <event name="OnTreeItemExpanding">OnTreeItemExpanding</event>
+                        <event name="OnTreeItemGetTooltip">OnTreeItemGetTooltip</event>
+                        <event name="OnTreeItemMenu"></event>
+                        <event name="OnTreeItemMiddleClick">OnTreeItemMiddle</event>
+                        <event name="OnTreeItemRightClick"></event>
+                        <event name="OnTreeKeyDown"></event>
+                        <event name="OnTreeSelChanged"></event>
+                        <event name="OnTreeSelChanging">SelChanging</event>
+                        <event name="OnTreeSetInfo"></event>
+                        <event name="OnTreeStateImageClick">OnTreeStateImageClick</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -781,7 +780,8 @@
                         <property name="value">0</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnRadioButton"></event>
+                        <event name="OnRadioButton">OnRadioButton</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -807,7 +807,8 @@
                         <property name="value">0</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnToggleButton"></event>
+                        <event name="OnToggleButton">OnToggleButton</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -838,24 +839,24 @@
                         <property name="window_style"></property>
                         <event name="OnCommandScroll"></event>
                         <event name="OnCommandScrollBottom">OnCmdScrollBottom</event>
-                        <event name="OnCommandScrollChanged"></event>
+                        <event name="OnCommandScrollChanged">OnCmdScrollChanged</event>
                         <event name="OnCommandScrollLineDown"></event>
-                        <event name="OnCommandScrollLineUp"></event>
+                        <event name="OnCommandScrollLineUp">OnCmdScrollUp</event>
                         <event name="OnCommandScrollPageDown"></event>
-                        <event name="OnCommandScrollPageUp"></event>
-                        <event name="OnCommandScrollThumbRelease"></event>
-                        <event name="OnCommandScrollThumbTrack"></event>
+                        <event name="OnCommandScrollPageUp">OnCmdScrollPageUp</event>
+                        <event name="OnCommandScrollThumbRelease">OnCmdScrollThumbRelease</event>
+                        <event name="OnCommandScrollThumbTrack">OnCmdScrollThumbTrack</event>
                         <event name="OnCommandScrollTop"></event>
-                        <event name="OnScroll"></event>
+                        <event name="OnScroll">OnScroll</event>
                         <event name="OnScrollBottom"></event>
                         <event name="OnScrollChanged"></event>
-                        <event name="OnScrollLineDown"></event>
+                        <event name="OnScrollLineDown">OnScrollDown</event>
                         <event name="OnScrollLineUp"></event>
-                        <event name="OnScrollPageDown"></event>
+                        <event name="OnScrollPageDown">OnScrollPageDown</event>
                         <event name="OnScrollPageUp"></event>
-                        <event name="OnScrollThumbRelease"></event>
+                        <event name="OnScrollThumbRelease">OnScrollThumbRelease</event>
                         <event name="OnScrollThumbTrack"></event>
-                        <event name="OnScrollTop"></event>
+                        <event name="OnScrollTop">OnScrollTop</event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -884,8 +885,9 @@
                         <property name="value"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnSpinCtrl"></event>
-                        <event name="OnSpinCtrlText"></event>
+                        <event name="OnSpinCtrl">OnSpinCtrl</event>
+                        <event name="OnSpinCtrlText">OnSpinCtrlText</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -910,9 +912,10 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnSpin"></event>
-                        <event name="OnSpinDown"></event>
-                        <event name="OnSpinUp"></event>
+                        <event name="OnSpin">OnSpin</event>
+                        <event name="OnSpinDown">OnSpinDown</event>
+                        <event name="OnSpinUp">OnSpinUp</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -942,10 +945,10 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnSplitterDClick"></event>
-                        <event name="OnSplitterSashPosChanged"></event>
-                        <event name="OnSplitterSashPosChanging"></event>
-                        <event name="OnSplitterUnsplit"></event>
+                        <event name="OnSplitterDClick">OnSplitterDClick</event>
+                        <event name="OnSplitterSashPosChanged">OnSplitterSashPosChanged</event>
+                        <event name="OnSplitterSashPosChanging">OnSpliterSashPosChanging</event>
+                        <event name="OnSplitterUnsplit">OnSplitterUnsplit</event>
                         <object class="splitteritem" expanded="1">
                             <object class="wxPanel" expanded="1">
                                 <property name="bg"></property>
@@ -992,6 +995,7 @@
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
                                             <event name="OnButtonClick"></event>
+                                            <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
                                 </object>
@@ -1043,6 +1047,7 @@
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
                                             <event name="OnButtonClick"></event>
+                                            <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
                                 </object>
@@ -1073,9 +1078,10 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnCheckListBox"></event>
-                        <event name="OnCheckListBoxDClick"></event>
-                        <event name="OnCheckListBoxToggled"></event>
+                        <event name="OnCheckListBox">OnCheckListBox</event>
+                        <event name="OnCheckListBoxDClick">OnCheckListBoxDClick</event>
+                        <event name="OnCheckListBoxToggled">OnCheckListBoxToggle</event>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
@@ -1101,8 +1107,9 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnNotebookPageChanged"></event>
-                        <event name="OnNotebookPageChanging"></event>
+                        <event name="OnNotebookPageChanged">OnNotebookPageChanged</event>
+                        <event name="OnNotebookPageChanging">OnNotebookPageChanging</event>
+                        <event name="OnUpdateUI"></event>
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">a page</property>
@@ -1197,8 +1204,9 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnListbookPageChanged"></event>
-                        <event name="OnListbookPageChanging"></event>
+                        <event name="OnListbookPageChanged">OnListbookPageChanged</event>
+                        <event name="OnListbookPageChanging">OnListbookPageChanging</event>
+                        <event name="OnUpdateUI"></event>
                         <object class="listbookpage" expanded="1">
                             <property name="bitmap"></property>
                             <property name="label">a page</property>
@@ -1252,6 +1260,7 @@
                                             <event name="OnTextEnter"></event>
                                             <event name="OnTextMaxLen"></event>
                                             <event name="OnTextURL"></event>
+                                            <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
                                 </object>
@@ -1281,8 +1290,9 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChoicebookPageChanged"></event>
-                        <event name="OnChoicebookPageChanging"></event>
+                        <event name="OnChoicebookPageChanged">OnChoicebookPageChanged</event>
+                        <event name="OnChoicebookPageChanging">OnChoicebookPageChanging</event>
+                        <event name="OnUpdateUI"></event>
                         <object class="choicebookpage" expanded="1">
                             <property name="label">a page</property>
                             <property name="select">0</property>
@@ -1332,6 +1342,7 @@
                                             <property name="window_style"></property>
                                             <event name="OnListBox"></event>
                                             <event name="OnListBoxDClick"></event>
+                                            <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
                                 </object>
@@ -1362,6 +1373,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
+                        <event name="OnUpdateUI"></event>
                     </object>
                 </object>
                 <object class="sizeritem" expanded="1">
