@@ -14,6 +14,7 @@
     </property>
     <property name="label" type="wxString_i18n">MyButton</property>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxBitmapButton" icon="bitmap_button.xpm" type="widget">
@@ -27,6 +28,7 @@
       <option name="wxBU_AUTODRAW"  help="If this is specified, the button will be drawn automatically using the label bitmap only, providing a 3D-look border. If this style is not specified, the button will be drawn without borders and using all provided bitmaps. (Windows Only)"/>wxBU_AUTODRAW</property>
     <property name="bitmap" type="bitmap" />
 	<event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">
@@ -39,6 +41,7 @@
       <option name="wxST_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the text when SetLabel is called. If this style flag is given, the control will not change its size (this style is especially useful with controls which also have wxALIGN_RIGHT or CENTER style because otherwise they won't make sense any longer after a call to SetLabel)."/>
     </property>
     <property name="label" type="wxString_i18n">MyLabel</property>
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxTextCtrl" icon="text_ctrl.xpm" type="widget">
@@ -70,6 +73,7 @@
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
     <event name="OnTextURL" class="wxCommandEvent" help="A mouse event occurred over an URL in the text control (wxMSW and wxGTK2 only)" />
     <event name="OnTextMaxLen" class="wxCommandEvent" help="User tried to enter more text into the control than the limit set by SetMaxLength." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxStaticBitmap" icon="static_bitmap.xpm" type="widget">
@@ -92,6 +96,7 @@
 	<event name="OnCombobox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_COMBOBOX_SELECTED event, when an item on the list is selected. Note that calling GetValue returns the new value of selection." />
 	<event name="OnText" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_UPDATED event, when the combobox text changes." />
 	<event name="OnTextEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_ENTER event, when <RETURN> is pressed in the combobox." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
@@ -99,6 +104,7 @@
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
 	<event name="OnChoice" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHOICE_SELECTED event, when an item on the list is selected." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
@@ -116,6 +122,7 @@
     </property>
 	<event name="OnListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
 	<event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
@@ -157,6 +164,7 @@
 	<event name="OnListColDragging" class="wxListEvent" help="The divider between columns is being dragged." />
 	<event name="OnListColEndDrag" class="wxListEvent" help="A column has been resized by the user." />
 	<event name="OnListCasheHint" class="wxListEvent" help="Prepare cache for a virtual list control." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
@@ -171,6 +179,7 @@
     </property>
     <property name="checked" type="bool">0</property>
 	<event name="OnCheckBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKBOX_CLICKED event, when the checkbox is clicked." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
@@ -184,6 +193,7 @@
       <option name="wxRA_SPECIFY_COLS"          help="The major dimension parameter refers to the maximum number of columns."/>
       <option name="wxRA_USE_CHECKBOX"          help="Use of the checkbox controls instead of radio buttons. (currently supported only on PalmOS)"/>wxRA_SPECIFY_COLS</property>
 	<event name="OnRadioBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBOX_SELECTED event, when a radiobutton is clicked." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxStaticLine" icon="static_line.xpm" type="widget">
@@ -232,6 +242,7 @@
 	<event name="OnCommandScrollThumbTrack" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBTRACK thumbtrack events (frequent events sent as the user drags the thumbtrack). Variant taking a window identifier." />
 	<event name="OnCommandScrollThumbRelease" class="wxScrollEvent" help="Process wxEVT_SCROLL_THUMBRELEASE thumb release events. Variant taking a window identifier." />
 	<event name="OnCommandScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only). Variant taking a window identifier." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
@@ -243,6 +254,7 @@
       <option name="wxGA_HORIZONTAL"   help="Creates a horizontal gauge. "/>
       <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
       <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
@@ -282,6 +294,7 @@
 	<event name="OnGridCmdRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells; variant taking a window identifier. Processes a wxEVT_GRID_RANGE_SELECT." />
 	<event name="OnGridEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created. Processes a wxEVT_GRID_EDITOR_CREATED." />
 	<event name="OnGridCmdEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_CREATED." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="wxPanel" icon="panel.xpm" type="container">

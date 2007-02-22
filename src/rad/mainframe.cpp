@@ -469,7 +469,7 @@ void MainFrame::OnOpenProject( wxCommandEvent &event )
 
 void MainFrame::OnOpenRecent( wxCommandEvent &event )
 {
-	if ( !SaveWarning() )
+    if ( !SaveWarning() )
 		return;
 
 	int i = event.GetId() - ID_RECENT_0;
@@ -478,11 +478,22 @@ void MainFrame::OnOpenRecent( wxCommandEvent &event )
 
 	wxFileName filename( m_recentProjects[i] );
 
-	if ( AppData()->LoadProject( filename.GetFullPath() ) )
-	{
-		m_currentDir = filename.GetPath();
-		InsertRecentProject( filename.GetFullPath() );
-	}
+    if(filename.FileExists())
+    {
+        if ( AppData()->LoadProject( filename.GetFullPath() ) )
+        {
+            m_currentDir = filename.GetPath();
+            InsertRecentProject( filename.GetFullPath() );
+        }
+    }
+    else
+    {
+        if(wxMessageBox(wxString::Format(wxT("The project file '%s' doesn't exist. Would you like to remove it from the recent files list?"), filename.GetName().GetData()), wxT("Open recent project"), wxICON_WARNING | wxYES_NO) == wxYES)
+        {
+            m_recentProjects[i] = wxT("");
+            UpdateRecentProjects();
+        }
+    }
 }
 
 void MainFrame::OnImportXrc( wxCommandEvent &event )
@@ -799,7 +810,7 @@ void MainFrame::UpdateFrame()
 
 void MainFrame::UpdateRecentProjects()
 {
-	int i;
+	int i, fi;
 	wxMenu *menuFile = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "File" ) ) );
 
 	// borramos los items del menu de los projectos recientes
@@ -809,6 +820,16 @@ void MainFrame::UpdateRecentProjects()
 		if ( menuFile->FindItem( ID_RECENT_0 + i ) )
 			menuFile->Destroy( ID_RECENT_0 + i );
 	}
+
+	// remove empty filenames and 'compress' the rest
+    fi = 0;
+	for ( i = 0 ; i < 4 ; i++ )
+	{
+	    if(!m_recentProjects[i].IsEmpty())
+	        m_recentProjects[fi++] = m_recentProjects[i];
+	}
+	for ( i = fi ; i < 4 ; i++ )
+        m_recentProjects[i] = wxT("");
 
 	// creamos los nuevos ficheros recientes
 	for ( unsigned int i = 0 ; i < 4 && !m_recentProjects[i].IsEmpty() ; i++ )

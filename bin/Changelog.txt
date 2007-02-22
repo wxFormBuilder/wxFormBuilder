@@ -5,6 +5,8 @@ date Version 3.00.21 (Beta 3)
 * Prevent event handler duplication when there are different event handlers
   with the same function (but it doesn't check that the event class is the
   same).
+* Fixed FS#98 - Non-existing files are removed from the recent files list.
++ Added wxEVT_UPDATE_UI event to all controls (if it has a sense). 
 
 02-18-2007 Version 3.00.20 (Beta 3)
 * Fixed FS#93 — "wxGrid -> Object type unknown in XRC."
