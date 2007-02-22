@@ -70,6 +70,7 @@
 	</template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="separator">
@@ -108,6 +109,7 @@
 	<template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
 	<template name="evt_entry_OnToolRClicked">EVT_TOOL_RCLICKED( $id, #handler )</template>
 	<template name="evt_entry_OnToolEnter">EVT_TOOL_ENTER(#parent $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
   
   <templates class="toolSeparator">

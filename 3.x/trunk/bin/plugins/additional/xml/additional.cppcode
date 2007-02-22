@@ -11,6 +11,7 @@
 	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
 	<template name="evt_entry_OnCalendarYear">EVT_CALENDAR_YEAR( $id, #handler )</template>
 	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxDatePickerCtrl">
@@ -18,6 +19,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/datectrl.h&gt;</template>
 	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxHtmlWindow">
@@ -27,6 +29,7 @@
 	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
 	<template name="evt_entry_OnHtmlCellHover">EVT_HTML_CELL_HOVER( $id, #handler )</template>
 	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxTreeCtrl">
@@ -54,6 +57,7 @@
 	<template name="evt_entry_OnTreeTreeItemGettooltip">EVT_TREE_ITEM_GETTOOLTIP( $id, #handler )</template>
 	<template name="evt_entry_OnTreeTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
 	<template name="evt_entry_OnTreeTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
   
   <templates class="wxRadioButton">
@@ -61,6 +65,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
 	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxToggleButton">
@@ -68,6 +73,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
     <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
 	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -102,6 +108,7 @@
     <template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
 	<template name="evt_entry_OnSpinCtrl">EVT_SPINCTRL( $id, #handler )</template>
 	<template name="evt_entry_OnSpinCtrlText">EVT_TEXT( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxSpinButton">
@@ -111,6 +118,7 @@
 	<template name="evt_entry_OnSpin">EVT_SPIN( $id, #handler )</template>
 	<template name="evt_entry_OnSpinUp">EVT_SPIN_UP( $id, #handler )</template>
 	<template name="evt_entry_OnSpinDown">EVT_SPIN_DOWN( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxSplitterWindow">
@@ -153,6 +161,7 @@
 	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
 	<template name="evt_entry_OnCheckListBox">EVT_LISTBOX( $id, #handler )</template>
 	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
 
@@ -180,6 +189,7 @@
 	</template>
 	<template name="evt_entry_OnNotebookPageChanged">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
 	<template name="evt_entry_OnNotebookPageChanging">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="notebookpage">
@@ -238,6 +248,7 @@
     </template>
 	<template name="evt_entry_OnListbookPageChanged">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
 	<template name="evt_entry_OnListbookPageChanging">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="listbookpage">
@@ -266,6 +277,7 @@
     <template name="include">@#include &lt;wx/choicebk.h&gt;</template>
 	<template name="evt_entry_OnChoicebookPageChanged">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
 	<template name="evt_entry_OnChoicebookPageChanging">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
+         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="choicebookpage">

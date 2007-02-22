@@ -44,6 +44,7 @@
 	  wxITEM_NORMAL
 	</property>
     <event name="OnMenuSelection" class="wxCommandEvent" help="Process a menu selection event." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="separator" icon="separator.xpm" type="menuitem">
@@ -86,6 +87,7 @@
 	<event name="OnMenuSelection" class="wxCommandEvent" help="The same as OnToolClicked. (EVT_TOOL)" />
 	<event name="OnToolRClicked" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_RCLICKED event." />
 	<event name="OnToolEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_ENTER event. This uses the tools parent ID, the ToolBar, so be sure you set it to something that is not the default. The value of wxCommandEvent::GetSelection is the tool id, or -1 if the mouse cursor has moved off a tool." />
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
