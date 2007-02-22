@@ -14,7 +14,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
 	<template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxPanel">
@@ -54,7 +54,7 @@
 		@{ $name->SetValue(true); #nl @}
 	</template>
 	<template name="evt_entry_OnCheckBox">EVT_CHECKBOX( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxComboBox">
@@ -79,7 +79,7 @@
     </template>
 	<template name="evt_entry_OnListBox">EVT_LISTBOX( $id, #handler )</template>
 	<template name="evt_entry_OnListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxRadioBox">
@@ -90,7 +90,7 @@
         $name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} );
     </template>
 	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxGrid">
@@ -130,7 +130,7 @@
 	<template name="evt_entry_OnGridCmdRangeSelect">EVT_GRID_CMD_RANGE_SELECT( $id, #handler )</template>
 	<template name="evt_entry_OnGridEditorCreated">EVT_GRID_EDITOR_CREATED( #handler )</template>
 	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxStaticBitmap">
@@ -169,7 +169,7 @@
 	<template name="evt_entry_OnListColDragging">EVT_LIST_COL_DRAGGING( $id, #handler )</template>
 	<template name="evt_entry_OnListColEndDrag">EVT_LIST_COL_END_DRAG( $id, #handler )</template>
 	<template name="evt_entry_OnListCasheHint">EVT_LIST_CACHE_HINT( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxChoice">
@@ -181,7 +181,7 @@
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>
 	<template name="evt_entry_OnChoice">EVT_CHOICE( $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxGauge">
@@ -192,7 +192,7 @@
 		@{ $name->SetValue( $value ); @}
 	</template>
 	<template name="include">@#include &lt;wx/gauge.h&gt;</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
   <templates class="wxSlider">
@@ -217,9 +217,9 @@
 	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( $id, #handler )</template>
 	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( $id, #handler )</template>
 	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( $id, #handler )</template>
-	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( #handler )</template>
-	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( $id, #handler )</template>
+	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
   </templates>
 
 </codegen>

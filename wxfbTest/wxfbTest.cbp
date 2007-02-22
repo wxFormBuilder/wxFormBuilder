@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_project_file>
-	<FileVersion major="1" minor="4" />
+	<FileVersion major="1" minor="6" />
 	<Project>
 		<Option title="wxfbTest" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\wxfbTest.exe" />
+				<Option output="bin\Debug\wxfbTest.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -29,7 +29,7 @@
 				</Environment>
 			</Target>
 			<Target title="Debug (Unicode)">
-				<Option output="bin\DebugUnicode\wxfbTest.exe" />
+				<Option output="bin\DebugUnicode\wxfbTest.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj\DebugUnicode\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -54,7 +54,7 @@
 				</Environment>
 			</Target>
 			<Target title="Release">
-				<Option output="bin\Release\wxfbTest.exe" />
+				<Option output="bin\Release\wxfbTest.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -73,7 +73,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release (Unicode)">
-				<Option output="bin\ReleaseUnicode\wxfbTest.exe" />
+				<Option output="bin\ReleaseUnicode\wxfbTest.exe" prefix_auto="0" extension_auto="0" />
 				<Option object_output="obj\ReleaseUnicode\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -97,8 +97,8 @@
 				</Environment>
 			</Target>
 			<Environment>
+				<Variable name="WX_VER" value="28" />
 				<Variable name="WX_SUFFIX" value="" />
-				<Variable name="WX_VER" value="26" />
 			</Environment>
 		</Build>
 		<Compiler>
@@ -141,89 +141,23 @@
 			<Add directory="$(#WX.lib)\gcc_lib" />
 			<Add directory="$(#wxadditions.lib)\gcc_lib" />
 		</Linker>
-		<Unit filename="app.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Unit filename="app.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Unit filename="main.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Unit filename="main.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
+		<Unit filename="app.cpp" />
+		<Unit filename="app.h" />
+		<Unit filename="main.cpp" />
+		<Unit filename="main.h" />
 		<Unit filename="wx_pch.h">
-			<Option compilerVar="CPP" />
-			<Option link="0" />
+			<Option compile="1" />
 			<Option weight="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
 		</Unit>
-		<Unit filename="wxfbTest.fbp">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Unit filename="wxfbTest.ico">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
+		<Unit filename="wxfbTest.fbp" />
+		<Unit filename="wxfbTest.ico" />
 		<Unit filename="wxfbTest.rc">
 			<Option compilerVar="WINDRES" />
-			<Option objectName="wxfbTest.res" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
 		</Unit>
-		<Unit filename="wxfbTest_GUI.cpp">
-			<Option compilerVar="CPP" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Unit filename="wxfbTest_GUI.h">
-			<Option compilerVar="CPP" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="Debug" />
-			<Option target="Release" />
-			<Option target="Debug (Unicode)" />
-			<Option target="Release (Unicode)" />
-		</Unit>
-		<Extensions />
+		<Unit filename="wxfbTest_GUI.cpp" />
+		<Unit filename="wxfbTest_GUI.h" />
+		<Extensions>
+			<code_completion />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
