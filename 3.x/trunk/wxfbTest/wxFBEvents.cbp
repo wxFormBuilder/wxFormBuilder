@@ -78,9 +78,6 @@
 		</Linker>
 		<Unit filename="event_GUI.cpp" />
 		<Unit filename="event_GUI.h" />
-		<Unit filename="resource.rc">
-			<Option compilerVar="WINDRES" />
-		</Unit>
 		<Unit filename="wxFBEventAdditionalPanel.cpp" />
 		<Unit filename="wxFBEventAdditionalPanel.h" />
 		<Unit filename="wxFBEventCommonPanel.cpp" />

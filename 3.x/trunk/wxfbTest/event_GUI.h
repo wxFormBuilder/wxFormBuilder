@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 21 2007)
+// C++ code generated with wxFormBuilder (version Feb 20 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -102,8 +102,10 @@ class CommonPanel : public wxPanel
 		void _wxFB_OnText( wxCommandEvent& event ){ OnText( event ); }
 		void _wxFB_OnTextEnter( wxCommandEvent& event ){ OnTextEnter( event ); }
 		void _wxFB_OnTextMaxLen( wxCommandEvent& event ){ OnTextMaxLen( event ); }
-		void _wxFB_OnTextURL( wxCommandEvent& event ){ OnTextURL( event ); }
+		void _wxFB_OnTextURL( wxTextUrlEvent& event ){ OnTextURL( event ); }
 		void _wxFB_OnCombobox( wxCommandEvent& event ){ OnCombobox( event ); }
+		void _wxFB_OnComboText( wxCommandEvent& event ){ OnComboText( event ); }
+		void _wxFB_OnComboTextEnter( wxCommandEvent& event ){ OnComboTextEnter( event ); }
 		void _wxFB_OnChoice( wxCommandEvent& event ){ OnChoice( event ); }
 		void _wxFB_OnListBox( wxCommandEvent& event ){ OnListBox( event ); }
 		void _wxFB_OnListBoxDClick( wxCommandEvent& event ){ OnListBoxDClick( event ); }
@@ -169,8 +171,10 @@ class CommonPanel : public wxPanel
 		virtual void OnText( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnTextEnter( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnTextMaxLen( wxCommandEvent& event ){ event.Skip(); }
-		virtual void OnTextURL( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnTextURL( wxTextUrlEvent& event ){ event.Skip(); }
 		virtual void OnCombobox( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnComboText( wxCommandEvent& event ){ event.Skip(); }
+		virtual void OnComboTextEnter( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnChoice( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnListBox( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnListBoxDClick( wxCommandEvent& event ){ event.Skip(); }
@@ -215,58 +219,9 @@ class AdditionalPanel : public wxPanel
 	private:
 		
 		// Private event handlers
-		void _wxFB_OnCalendar( wxCalendarEvent& event ){ OnCalendar( event ); }
-		void _wxFB_OnCalendarDay( wxCalendarEvent& event ){ OnCalendarDay( event ); }
-		void _wxFB_OnCalendarMonth( wxCalendarEvent& event ){ OnCalendarMonth( event ); }
-		void _wxFB_OnCalendarSelChanged( wxCalendarEvent& event ){ OnCalendarSelChanged( event ); }
-		void _wxFB_OnCalendarWeekDayClicked( wxCalendarEvent& event ){ OnCalendarWeekDayClicked( event ); }
-		void _wxFB_OnCalendarYear( wxCalendarEvent& event ){ OnCalendarYear( event ); }
-		void _wxFB_OnDateChanged( wxDateEvent& event ){ OnDateChanged( event ); }
-		void _wxFB_OnHtmlCellClicked( wxHtmlCellEvent& event ){ OnHtmlCellClicked( event ); }
-		void _wxFB_OnHtmlCellHover( wxHtmlCellEvent& event ){ OnHtmlCellHover( event ); }
-		void _wxFB_OnHtmlLinkClicked( wxHtmlLinkEvent& event ){ OnHtmlLinkClicked( event ); }
-		void _wxFB_OnTreeBeginDrag( wxTreeEvent& event ){ OnTreeBeginDrag( event ); }
-		void _wxFB_OnTreeEndDrag( wxTreeEvent& event ){ OnTreeEndDrag( event ); }
-		void _wxFB_OnTreeEndLabelEdit( wxTreeEvent& event ){ OnTreeEndLabelEdit( event ); }
-		void _wxFB_OnTreeGetInfo( wxTreeEvent& event ){ OnTreeGetInfo( event ); }
-		void _wxFB_OnTreeItemActivate( wxTreeEvent& event ){ OnTreeItemActivate( event ); }
-		void _wxFB_OnTreeItemCollapsing( wxTreeEvent& event ){ OnTreeItemCollapsing( event ); }
-		void _wxFB_OnTreeItemExpanding( wxTreeEvent& event ){ OnTreeItemExpanding( event ); }
-		void _wxFB_OnTreeItemGetTooltip( wxTreeEvent& event ){ OnTreeItemGetTooltip( event ); }
-		void _wxFB_OnTreeItemMiddle( wxTreeEvent& event ){ OnTreeItemMiddle( event ); }
-		void _wxFB_SelChanging( wxTreeEvent& event ){ SelChanging( event ); }
-		void _wxFB_OnTreeStateImageClick( wxTreeEvent& event ){ OnTreeStateImageClick( event ); }
-		void _wxFB_OnRadioButton( wxCommandEvent& event ){ OnRadioButton( event ); }
-		void _wxFB_OnToggleButton( wxCommandEvent& event ){ OnToggleButton( event ); }
-		void _wxFB_OnCmdScrollBottom( wxScrollEvent& event ){ OnCmdScrollBottom( event ); }
-		void _wxFB_OnCmdScrollChanged( wxScrollEvent& event ){ OnCmdScrollChanged( event ); }
-		void _wxFB_OnCmdScrollUp( wxScrollEvent& event ){ OnCmdScrollUp( event ); }
-		void _wxFB_OnCmdScrollPageUp( wxScrollEvent& event ){ OnCmdScrollPageUp( event ); }
-		void _wxFB_OnCmdScrollThumbRelease( wxScrollEvent& event ){ OnCmdScrollThumbRelease( event ); }
-		void _wxFB_OnCmdScrollThumbTrack( wxScrollEvent& event ){ OnCmdScrollThumbTrack( event ); }
-		void _wxFB_OnScroll( wxScrollEvent& event ){ OnScroll( event ); }
-		void _wxFB_OnScrollDown( wxScrollEvent& event ){ OnScrollDown( event ); }
-		void _wxFB_OnScrollPageDown( wxScrollEvent& event ){ OnScrollPageDown( event ); }
-		void _wxFB_OnScrollThumbRelease( wxScrollEvent& event ){ OnScrollThumbRelease( event ); }
-		void _wxFB_OnScrollTop( wxScrollEvent& event ){ OnScrollTop( event ); }
-		void _wxFB_OnSpinCtrl( wxSpinEvent& event ){ OnSpinCtrl( event ); }
-		void _wxFB_OnSpinCtrlText( wxCommandEvent& event ){ OnSpinCtrlText( event ); }
-		void _wxFB_OnSpin( wxSpinEvent& event ){ OnSpin( event ); }
-		void _wxFB_OnSpinDown( wxSpinEvent& event ){ OnSpinDown( event ); }
-		void _wxFB_OnSpinUp( wxSpinEvent& event ){ OnSpinUp( event ); }
-		void _wxFB_OnSplitterDClick( wxSplitterEvent& event ){ OnSplitterDClick( event ); }
-		void _wxFB_OnSplitterSashPosChanged( wxSplitterEvent& event ){ OnSplitterSashPosChanged( event ); }
-		void _wxFB_OnSpliterSashPosChanging( wxSplitterEvent& event ){ OnSpliterSashPosChanging( event ); }
-		void _wxFB_OnSplitterUnsplit( wxSplitterEvent& event ){ OnSplitterUnsplit( event ); }
 		void _wxFB_OnCheckListBox( wxCommandEvent& event ){ OnCheckListBox( event ); }
 		void _wxFB_OnCheckListBoxDClick( wxCommandEvent& event ){ OnCheckListBoxDClick( event ); }
 		void _wxFB_OnCheckListBoxToggle( wxCommandEvent& event ){ OnCheckListBoxToggle( event ); }
-		void _wxFB_OnNotebookPageChanged( wxNotebookEvent& event ){ OnNotebookPageChanged( event ); }
-		void _wxFB_OnNotebookPageChanging( wxNotebookEvent& event ){ OnNotebookPageChanging( event ); }
-		void _wxFB_OnListbookPageChanged( wxListbookEvent& event ){ OnListbookPageChanged( event ); }
-		void _wxFB_OnListbookPageChanging( wxListbookEvent& event ){ OnListbookPageChanging( event ); }
-		void _wxFB_OnChoicebookPageChanged( wxChoicebookEvent& event ){ OnChoicebookPageChanged( event ); }
-		void _wxFB_OnChoicebookPageChanging( wxChoicebookEvent& event ){ OnChoicebookPageChanging( event ); }
 		
 	
 	protected:
@@ -299,58 +254,9 @@ class AdditionalPanel : public wxPanel
 		wxScrolledWindow* m_scrolledWindow2;
 		
 		// Virtual event handlers, overide them in your derived class
-		virtual void OnCalendar( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnCalendarDay( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnCalendarMonth( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnCalendarSelChanged( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnCalendarWeekDayClicked( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnCalendarYear( wxCalendarEvent& event ){ event.Skip(); }
-		virtual void OnDateChanged( wxDateEvent& event ){ event.Skip(); }
-		virtual void OnHtmlCellClicked( wxHtmlCellEvent& event ){ event.Skip(); }
-		virtual void OnHtmlCellHover( wxHtmlCellEvent& event ){ event.Skip(); }
-		virtual void OnHtmlLinkClicked( wxHtmlLinkEvent& event ){ event.Skip(); }
-		virtual void OnTreeBeginDrag( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeEndDrag( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeEndLabelEdit( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeGetInfo( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeItemActivate( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeItemCollapsing( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeItemExpanding( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeItemGetTooltip( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeItemMiddle( wxTreeEvent& event ){ event.Skip(); }
-		virtual void SelChanging( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnTreeStateImageClick( wxTreeEvent& event ){ event.Skip(); }
-		virtual void OnRadioButton( wxCommandEvent& event ){ event.Skip(); }
-		virtual void OnToggleButton( wxCommandEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollBottom( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollChanged( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollUp( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollPageUp( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollThumbRelease( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnCmdScrollThumbTrack( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnScroll( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnScrollDown( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnScrollPageDown( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnScrollThumbRelease( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnScrollTop( wxScrollEvent& event ){ event.Skip(); }
-		virtual void OnSpinCtrl( wxSpinEvent& event ){ event.Skip(); }
-		virtual void OnSpinCtrlText( wxCommandEvent& event ){ event.Skip(); }
-		virtual void OnSpin( wxSpinEvent& event ){ event.Skip(); }
-		virtual void OnSpinDown( wxSpinEvent& event ){ event.Skip(); }
-		virtual void OnSpinUp( wxSpinEvent& event ){ event.Skip(); }
-		virtual void OnSplitterDClick( wxSplitterEvent& event ){ event.Skip(); }
-		virtual void OnSplitterSashPosChanged( wxSplitterEvent& event ){ event.Skip(); }
-		virtual void OnSpliterSashPosChanging( wxSplitterEvent& event ){ event.Skip(); }
-		virtual void OnSplitterUnsplit( wxSplitterEvent& event ){ event.Skip(); }
 		virtual void OnCheckListBox( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnCheckListBoxDClick( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnCheckListBoxToggle( wxCommandEvent& event ){ event.Skip(); }
-		virtual void OnNotebookPageChanged( wxNotebookEvent& event ){ event.Skip(); }
-		virtual void OnNotebookPageChanging( wxNotebookEvent& event ){ event.Skip(); }
-		virtual void OnListbookPageChanged( wxListbookEvent& event ){ event.Skip(); }
-		virtual void OnListbookPageChanging( wxListbookEvent& event ){ event.Skip(); }
-		virtual void OnChoicebookPageChanged( wxChoicebookEvent& event ){ event.Skip(); }
-		virtual void OnChoicebookPageChanging( wxChoicebookEvent& event ){ event.Skip(); }
 		
 	
 	public:

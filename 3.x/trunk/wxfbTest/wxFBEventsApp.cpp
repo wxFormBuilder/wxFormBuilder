@@ -22,7 +22,7 @@ IMPLEMENT_APP( wxFBEventsApp );
 
 bool wxFBEventsApp::OnInit()
 {
-	::wxInitAllImageHandlers();
+	//::wxInitAllImageHandlers();
 
 	wxFBEventMainFrame* frame = new wxFBEventMainFrame( 0L );
 	frame->SetIcon( wxICON( aaaa ) ); // To Set App Icon

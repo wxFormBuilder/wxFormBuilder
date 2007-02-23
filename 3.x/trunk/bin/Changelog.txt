@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.21 (Beta 3)
+02-22-2007 Version 3.00.21 (Beta 3)
 + Added the 'Additional' controls events.
 * Prevent event handler duplication when there are different event handlers
   with the same function (but it doesn't check that the event class is the
