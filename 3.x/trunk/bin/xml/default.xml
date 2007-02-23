@@ -76,12 +76,13 @@
 		<child name="name" help="The name of the subclass."/>
 		<child name="header" help="For C++ Only. The header to be included for the subclass."/>
 	</property>
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
   <objectinfo class="UserClasses" 	type="interface">
-	<property name="name" 			type="text"		/>
-	<property name="basename" 		type="text"		/>
-	<property name="file" 			type="text"		/>
-	<property name="gen_file" 		type="text"		/>
-	<property name="type" 			type="text"		/>
+	<property name="name" type="text" />
+	<property name="basename" type="text" />
+	<property name="file" type="text"	/>
+	<property name="gen_file" 		type="text"	/>
+	<property name="type" 			type="text"	/>
   </objectinfo>
 </package>

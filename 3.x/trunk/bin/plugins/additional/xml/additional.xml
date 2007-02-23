@@ -17,7 +17,6 @@
     <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
     <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
     <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
@@ -30,7 +29,6 @@
       <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
       <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
 	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
@@ -43,7 +41,6 @@
 	<event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
 	<event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
 	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
@@ -85,7 +82,6 @@
 	<event name="OnTreeItemGetTooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
 	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
 	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
@@ -98,7 +94,6 @@
       <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
     <property name="value" type="bool">0</property>
 	<event name="OnRadioButton" class="wxCommandEvent" help="Handles a toggle button click event." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
@@ -107,7 +102,6 @@
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
 	<event name="OnToggleButton" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBUTTON_SELECTED event, when the radiobutton is clicked." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
@@ -154,7 +148,6 @@
       <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />wxSP_ARROW_KEYS</property>
 	<event name="OnSpinCtrl" class="wxSpinEvent" help="Generated whenever the numeric value of the spinctrl is updated." />
 	<event name="OnSpinCtrlText" class="wxCommandEvent" help="Generated whenever the user modifies the text in the edit part of the spin control directly." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
@@ -168,7 +161,6 @@
 	<event name="OnSpin" class="wxSpinEvent" help="Generated whenever an arrow is pressed." />
 	<event name="OnSpinUp" class="wxSpinEvent" help="Generated when left/up arrow is pressed." />
 	<event name="OnSpinDown" class="wxSpinEvent" help="Generated when right/down arrow is pressed." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter">
@@ -213,7 +205,6 @@
 	<event name="OnCheckListBoxToggled" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKLISTBOX_TOGGLED event, when an item in the check list box is checked or unchecked." />
 	<event name="OnCheckListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
 	<event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook">
@@ -232,7 +223,6 @@
     </property>
 	<event name="OnNotebookPageChanged" class="wxNotebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED event." />
 	<event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
@@ -253,7 +243,6 @@
       <option name="wxLB_BOTTOM"  help="Place labels below the page area." />wxLB_DEFAULT</property>
 	<event name="OnListbookPageChanged" class="wxListbookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED event." />
 	<event name="OnListbookPageChanging" class="wxListbookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING event. This event can be vetoed." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
@@ -273,7 +262,6 @@
       <option name="wxCHB_BOTTOM"  help="Place labels below the page area." />wxCHB_DEFAULT</property>
 	<event name="OnChoicebookPageChanged" class="wxChoicebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED event." />
 	<event name="OnChoicebookPageChanging" class="wxChoicebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING event. This event can be vetoed." />
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">

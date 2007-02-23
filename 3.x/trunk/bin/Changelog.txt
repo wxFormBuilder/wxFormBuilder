@@ -1,5 +1,10 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.22 (Beta 3)
++ Added most of the higher level events for wxTopLevelWindows and wxWindow.
+^ Updated the event layout and used event inhertitance to get common events
+  throughout the controls.
+
 02-22-2007 Version 3.00.21 (Beta 3)
 + Added the 'Additional' controls events.
 * Prevent event handler duplication when there are different event handlers

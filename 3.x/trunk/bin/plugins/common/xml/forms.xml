@@ -2,19 +2,29 @@
 <package name="Forms" lib="libcommon" icon="frame16x16.png" desc="wxWidgets windows">
   <objectinfo class="wxTopLevelWindow" smallIcon="wxwindow.png"  type="interface">
     <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
+    <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
+    <event name="OnActivate" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE event." />
+    <event name="OnActivateApp" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE_APP event." />
+    <event name="OnHibernate" class="wxActivateEvent" help="Process a hibernate event, supplying the member function. This event applies to wxApp only, and only on Windows SmartPhone and PocketPC. It is generated when the system is low on memory; the application should free up as much memory as possible, and restore full working state when it receives a wxEVT_ACTIVATE or wxEVT_ACTIVATE_APP event." />
+    <event name="OnIdle" class="wxIdleEvent" help="Process a wxEVT_IDLE event." />
   </objectinfo>
   
   <objectinfo class="Common Events" type="interface">
-    <event name="OnSize" class="wxSizeEvent" help="Process a size event." />
+	<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
+	<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
+	<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
+	<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
+	<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
+	<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
   </objectinfo>
   
   <objectinfo class="Frame" icon="frame.xpm" type="form">
-    <inherits class="wxWindow">
+	<inherits class="wxTopLevelWindow" />
+	<inherits class="Common Events" />
+	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
 	</inherits>
-	<inherits class="wxTopLevelWindow" />
-	<inherits class="Common Events" />
 	<property name="name" type="text" hidden="1">MyFrame</property>
     <property name="title" type="wxString" />
     <property name="style" type="bitlist">
@@ -49,18 +59,19 @@
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">
-    <inherits class="wxWindow">
+	<inherits class="Common Events" />
+	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
 	</inherits>
-	<inherits class="Common Events" />
     <property name="name" type="text" hidden="1">MyPanel</property>
+	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialised." />
   </objectinfo>
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
-    <inherits class="wxWindow" />
-	<inherits class="wxTopLevelWindow" />
+    <inherits class="wxTopLevelWindow" />
 	<inherits class="Common Events" />
+    <inherits class="wxWindow" />
     <property name="name" type="text" hidden="1">MyDialog</property>
     <property name="title" type="wxString" />
     <property name="style" type="bitlist">
@@ -87,6 +98,7 @@
       <option name="wxVERTICAL"/>
       <option name="wxBOTH"/>
 	</property>
+	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialised." />
   </objectinfo>
 
 </package>

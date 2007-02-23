@@ -3,10 +3,20 @@
 
 	<templates class="wxTopLevelWindow">
 		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_entry_OnActivate">EVT_ACTIVATE( #handler )</template>
+		<template name="evt_entry_OnActivateApp">EVT_ACTIVATE_APP( #handler )</template>
+		<template name="evt_entry_OnHibernate">EVT_HIBERNATE( #handler )</template>
+		<template name="evt_entry_OnIdle">EVT_IDLE( #handler )</template>
 	</templates>
   
 	<templates class="Common Events">
-		<template name="evt_entry_OnSize">EVT_SIZE( #handler ) </template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
+		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
 	</templates>
   
 	<templates class="Frame">
@@ -109,6 +119,7 @@
 			#ifnotnull $maximum_size
 			@{ this->SetMaxSize( $maximum_size ); #nl @}
 		</template>
+		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
 	</templates>
 
 	<templates class="Dialog">
@@ -161,6 +172,7 @@
 			#ifnotnull $center
 			@{ this->Centre( $center ); #nl @}
 		</template>
+		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
 	</templates>
 
 </codegen>
