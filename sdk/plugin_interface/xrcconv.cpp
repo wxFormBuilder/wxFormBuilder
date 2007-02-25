@@ -218,6 +218,16 @@ void ObjectToXrcFilter::AddPropertyValue (const wxString &xrcPropName,
   m_xrcObj->LinkEndChild(propElement);
 }
 
+void ObjectToXrcFilter::AddPropertyPair ( const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName )
+{
+	AddPropertyValue( 	xrcPropName,
+						wxString::Format( _("%d,%d"),
+							m_obj->GetPropertyAsInteger( objPropName1 ),
+							m_obj->GetPropertyAsInteger( objPropName2 )
+						)
+					);
+}
+
 TiXmlElement* ObjectToXrcFilter::GetXrcObject()
 {
   return (m_xrcObj->Clone())->ToElement();
@@ -528,6 +538,31 @@ void XrcToXfbFilter::AddStyleProperty()
       AddPropertyValue(_T("window_style"), windowStyle);
     }
   }
+}
+
+void XrcToXfbFilter::AddPropertyPair( const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2 )
+{
+	TiXmlElement* pairProp = m_xrcObj->FirstChildElement( xrcPropName );
+	if ( pairProp )
+	{
+		TiXmlText* xmlValue = pairProp->FirstChild()->ToText();
+		if ( xmlValue )
+		{
+			wxString width = wxEmptyString;
+			wxString height = wxEmptyString;
+			wxStringTokenizer tkz( wxString( xmlValue->Value(), wxConvUTF8 ), wxT(",") );
+			if ( tkz.HasMoreTokens() )
+			{
+				width = tkz.GetNextToken();
+				if ( tkz.HasMoreTokens() )
+				{
+					height = tkz.GetNextToken();
+				}
+			}
+			AddPropertyValue( xfbPropName1, width );
+			AddPropertyValue( xfbPropName2, height );
+		}
+	}
 }
 
 TiXmlElement* XrcToXfbFilter::GetXfbObject()

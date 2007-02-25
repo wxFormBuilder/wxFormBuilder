@@ -297,7 +297,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 							// sizeritem es un tipo de objeto reservado, para que el uso sea
 							// más práctico se asignan unos valores por defecto en función
 							// del tipo de objeto creado
-							if (item->GetObjectTypeName() == wxT("sizeritem"))
+							if ( item->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ) )
 								SetDefaultLayoutProperties(item);
 
 							object = item;
@@ -374,30 +374,47 @@ PObjectBase ObjectDatabase::CopyObject(PObjectBase obj)
 
 void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 {
-	assert(sizeritem->GetObjectTypeName() == wxT("sizeritem"));
-
-	wxString obj_type = sizeritem->GetChild(0)->GetObjectTypeName();
-
-	if (obj_type == wxT("notebook")			||
-		obj_type == wxT("flatnotebook")		||
-		obj_type == wxT("listbook")			||
-		obj_type == wxT("choicebook")		||
-		obj_type == wxT("expanded_widget")	||
-		obj_type == wxT("container")
-		)
+	if ( !sizeritem->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ) )
 	{
-		sizeritem->GetProperty( wxT("proportion") )->SetValue( wxT("1") );
-		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND | wxALL") );
+		Debug::Print( wxT("SetDefaultLayoutProperties expects a subclass of sizeritembase") );
+		return;
+	}
+
+	PObjectBase child = sizeritem->GetChild(0);
+	PObjectInfo childInfo = child->GetObjectInfo();
+	wxString obj_type = child->GetObjectTypeName();
+
+	PProperty proportion = sizeritem->GetProperty( wxT("proportion") );
+
+	if ( childInfo->IsSubclassOf( wxT("sizer") ) || obj_type == wxT("splitter") || childInfo->GetClassName() == wxT("spacer") )
+	{
+		if ( proportion )
+		{
+			proportion->SetValue( wxT("1") );
+		}
+		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND") );
 	}
 	else if ( obj_type == wxT("widget") || obj_type == wxT("statusbar") )
 	{
-		sizeritem->GetProperty( wxT("proportion") )->SetValue( wxT("0") );
+		if ( proportion )
+		{
+			proportion->SetValue( wxT("0") );
+		}
 		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxALL") );
 	}
-	else if ( obj_type == wxT("sizer") || obj_type == wxT("splitter") )
+	else if (	obj_type == wxT("notebook")			||
+				obj_type == wxT("flatnotebook")		||
+				obj_type == wxT("listbook")			||
+				obj_type == wxT("choicebook")		||
+				obj_type == wxT("expanded_widget")	||
+				obj_type == wxT("container")
+				)
 	{
-		sizeritem->GetProperty( wxT("proportion") )->SetValue( wxT("1") );
-		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND") );
+		if ( proportion )
+		{
+			proportion->SetValue( wxT("1") );
+		}
+		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND | wxALL") );
 	}
 }
 
@@ -1067,8 +1084,8 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 bool ObjectDatabase::ShowInPalette(wxString type)
 {
 	return (type == wxT("form")				||
-			type == wxT("sizer")				||
-			type == wxT("spacer")			||
+			type == wxT("sizer")			||
+			type == wxT("gbsizer")			||
 			type == wxT("menu")				||
 			type == wxT("menuitem")			||
 			type == wxT("submenu")			||

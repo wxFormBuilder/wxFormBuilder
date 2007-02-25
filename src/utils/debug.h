@@ -25,21 +25,12 @@
 
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
+
 #include <wx/string.h>
 
 namespace Debug
 {
-  void Print(wxChar *,...);
+	void Print( wxChar*, ... );
 };
-
-
-#ifdef WXFB_DEBUG
-#include <iostream>
-
-#define WXFB_DEBUG_PRINT(x) (std::cout << x << std::endl)
-
-#elseif
-#define WXFB_DEBUG_PRINT(x)
-#endif //WXFB_DEBUG
 
 #endif //__DEBUG_H__

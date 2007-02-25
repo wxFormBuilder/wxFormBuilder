@@ -311,7 +311,7 @@ PEvent ObjectBase::GetEvent (wxString name)
 	if ( it != m_events.end() )
 		return it->second;
 
-  Debug::Print(wxT("[ObjectBase::GetProperty] Property %s not found!"),name.c_str());
+	Debug::Print(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
 	return PEvent();
 }
 
@@ -358,6 +358,21 @@ PObjectBase ObjectBase::FindNearAncestor(wxString type)
 	return result;
 }
 
+PObjectBase ObjectBase::FindNearAncestorByBaseClass(wxString type)
+{
+	PObjectBase result;
+	PObjectBase parent = GetParent();
+	if (parent)
+	{
+		if ( parent->GetObjectInfo()->IsSubclassOf( type ) )
+			result = parent;
+		else
+			result = parent->FindNearAncestorByBaseClass( type );
+	}
+
+	return result;
+}
+
 bool ObjectBase::AddChild (PObjectBase obj)
 {
 	bool result = false;
@@ -383,50 +398,6 @@ bool ObjectBase::AddChild (unsigned int idx, PObjectBase obj)
 
 	return result;
 }
-/*
-bool ObjectBase::DoChildTypeOk(wxString type_child, wxString type_parent)
-{
-bool result;
-
-if (type_parent == "project")
-result = ( type_child == "form");
-
-else if (type_parent == "container" || type_parent == "form")
-result = (type_child == "sizer" || type_child == "menubar" || type_child == "statusbar" || type_child == "toolbar"); // sólo puede haber uno
-
-else if (type_parent == "notebook")
-result = (type_child == "notebookpage");
-
-else if (type_parent == "notebookpage")
-result = (type_child == "container"); // sólo puede haber uno
-
-else if (type_parent == "sizer")
-result = (type_child == "sizeritem" || type_child == "spacer");
-
-else if (type_parent == "sizeritem")
-result = (type_child == "widget" || type_child == "container" ||
-type_child == "sizer" || type_child == "notebook" ||
-type_child == "statusbar");
-
-else if (type_parent == "menubar")
-result = (type_child == "menu");
-
-else if (type_parent == "menu" || type_parent == "submenu")
-result = (type_child == "menuitem" || type_child == "submenu");
-
-else if (type_parent == "toolbar")
-result = (type_child == "tool" || type_child == "widget");
-
-else
-result = false;
-
-return result;
-}
-
-bool ObjectBase::ChildTypeOk (wxString type)
-{
-return DoChildTypeOk(type, GetObjectTypeName());
-}*/
 
 bool ObjectBase::ChildTypeOk (PObjectType type)
 {
@@ -459,7 +430,7 @@ PObjectBase ObjectBase::GetLayout()
 {
 	PObjectBase result;
 
-	if (GetParent() && GetParent()->GetObjectTypeName()==wxT("sizeritem"))
+	if (GetParent() && GetParent()->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ))
 		result = GetParent();
 
 	return result;

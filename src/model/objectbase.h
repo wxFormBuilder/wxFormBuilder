@@ -425,6 +425,7 @@ public:
 	* Será útil para encontrar el widget padre.
 	*/
 	PObjectBase FindNearAncestor(wxString type);
+	PObjectBase FindNearAncestorByBaseClass(wxString type);
 
 	/**
 	* Obtiene el documento xml del arbol tomando como raíz el nodo actual.

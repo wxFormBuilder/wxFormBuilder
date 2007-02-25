@@ -140,7 +140,7 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 }
 
 
-TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
+TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* parent )
 {
 	TiXmlElement *element = NULL;
 
@@ -152,7 +152,7 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
 	if ( element )
 	{
 		std::string class_name = element->Attribute( "class" );
-		if ( class_name == std::string( "__dummyitem__" ) )
+		if ( class_name == "__dummyitem__" )
 		{
 			delete element;
 			element = NULL;
@@ -162,7 +162,22 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
 
 			return element;
 		}
-		else if ( class_name == std::string( "wxFrame" ) )
+		else if ( class_name == "spacer" )
+		{
+			// Dirty hack to replace the containing sizeritem with the spacer
+			if ( parent )
+			{
+				parent->SetAttribute( "class", "spacer" );
+				for ( TiXmlNode* child = element->FirstChild(); child; child = child->NextSibling() )
+				{
+					parent->LinkEndChild( child->Clone() );
+				}
+				delete element;
+				return NULL;
+			}
+
+		}
+		else if ( class_name == "wxFrame" )
 		{
 			// Dirty hack to prevent sizer generation directly under a wxFrame
 			// If there is a sizer, the size property of the wxFrame is ignored
@@ -174,21 +189,21 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
 					TiXmlElement* aux = NULL;
 
 					PObjectBase child = obj->GetChild( i );
-					if ( child->GetObjectTypeName() == wxT("sizer") )
+					if ( child->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) )
 					{
 						if ( child->GetChildCount() == 1 )
 						{
 							PObjectBase sizeritem = child->GetChild( 0 );
 							if ( sizeritem )
 							{
-								aux = GetElement( sizeritem->GetChild( 0 ) );
+								aux = GetElement( sizeritem->GetChild( 0 ), element );
 							}
 						}
 					}
 
 					if ( !aux )
 					{
-						aux = GetElement( child );
+						aux = GetElement( child, element );
 					}
 
 					if ( aux )
@@ -202,7 +217,7 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj )
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			TiXmlElement *aux = GetElement( obj->GetChild( i ) );
+			TiXmlElement *aux = GetElement( obj->GetChild( i ), element );
 			if ( aux ) element->LinkEndChild( aux );
 		}
 	}

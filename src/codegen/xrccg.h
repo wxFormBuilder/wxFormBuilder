@@ -37,7 +37,7 @@ class XrcCodeGenerator : public CodeGenerator
  private:
   PCodeWriter m_cw;
 
-  TiXmlElement* GetElement(PObjectBase obj);
+  TiXmlElement* GetElement( PObjectBase obj, TiXmlElement* parent = NULL );
 
  public:
 

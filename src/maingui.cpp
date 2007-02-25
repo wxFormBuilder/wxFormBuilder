@@ -48,6 +48,8 @@
 #include <memory>
 #include "maingui.h"
 
+#include "utils/wxlogstring.h"
+
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
 	{ wxCMD_LINE_SWITCH, wxT("g"), wxT("generate"),	wxT("Generate code from passed file.") },
@@ -60,6 +62,10 @@ IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
+	// Redirect log to string until gui log comes up
+	wxLogString* stringLog = new wxLogString();
+    delete wxLog::SetActiveTarget( stringLog );
+
 	// Using a space so the initial 'w' will not be capitalized in GUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
@@ -94,6 +100,7 @@ bool MyApp::OnInit()
 	bool justGenerate = false;
 	if ( parser.Found( wxT("g") ) )
 	{
+		stringLog = NULL;
 		delete wxLog::SetActiveTarget( new wxLogStderr );
 
 		if ( projectToLoad.empty() )
@@ -156,7 +163,14 @@ bool MyApp::OnInit()
 	catch( wxFBException& ex )
 	{
 		wxLog::FlushActive();
-		wxMessageBox( wxString::Format( _("Error loading application: %s\nwxFormBuilder cannot continue."), ex.what() ), _("Error loading application"), wxICON_ERROR, NULL );
+		wxMessageBox( 	wxString::Format( 	_("Error loading application: %s\nwxFormBuilder cannot continue.\nLog:\n%s"),
+											ex.what(),
+											(stringLog != NULL ? stringLog->GetStr().c_str() : wxT(""))
+										),
+						_("Error loading application"),
+						wxICON_ERROR,
+						NULL
+					);
 		return false;
 	}
 
@@ -181,12 +195,16 @@ bool MyApp::OnInit()
 
 	wxYield();
 
-	#ifdef __WXFB_DEBUG__
 	if ( !justGenerate )
 	{
-		m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
+		#ifdef __WXFB_DEBUG__
+			m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
+			wxLog::SetActiveTarget( m_log );
+			wxLogMessage( stringLog->GetStr() );
+		#else
+			delete wxLog::SetActiveTarget( new wxLogGui() );
+		#endif
 	}
-	#endif
 
 	// Read size and position from config file
 	wxConfigBase *config = wxConfigBase::Get();

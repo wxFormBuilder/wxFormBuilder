@@ -35,11 +35,14 @@
   </objtype>
 
   <objtype name="widget" />
-	<objtype name="expanded_widget" />
+  <objtype name="expanded_widget" />
 
   <objtype name="sizer">
     <childtype name="sizeritem" />
-    <childtype name="spacer" />
+  </objtype>
+
+  <objtype name="gbsizer">
+    <childtype name="gbsizeritem"/>
   </objtype>
 
   <objtype name="container">
@@ -51,6 +54,7 @@
 	<childtype name="expanded_widget" nmax="1" />
     <childtype name="container" nmax="1" />
     <childtype name="sizer" nmax="1" />
+    <childtype name="gbsizer" nmax="1" />
     <childtype name="notebook" nmax="1" />
     <childtype name="flatnotebook" nmax="1" />
     <childtype name="listbook" nmax="1" />
@@ -58,7 +62,18 @@
     <childtype name="splitter" nmax="1" />
   </objtype>
 
-  <objtype name="spacer" />
+  <objtype name="gbsizeritem" item="1">
+    <childtype name="widget" nmax="1" />
+	<childtype name="expanded_widget" nmax="1" />
+    <childtype name="container" nmax="1" />
+    <childtype name="sizer" nmax="1" />
+    <childtype name="gbsizer" nmax="1" />
+    <childtype name="notebook" nmax="1" />
+    <childtype name="flatnotebook" nmax="1" />
+    <childtype name="listbook" nmax="1" />
+    <childtype name="choicebook" nmax="1" />
+    <childtype name="splitter" nmax="1" />
+  </objtype>
 
   <objtype name="splitter" >
     <childtype name="splitteritem" nmax="2" />
@@ -122,7 +137,7 @@
   <objtype name="toolbar">
     <childtype name="tool" />
     <childtype name="widget" />
-		<childtype name="expanded_widget" />
+	<childtype name="expanded_widget" />
   </objtype>
 
   <objtype name="tool" />

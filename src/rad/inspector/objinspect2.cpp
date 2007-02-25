@@ -663,15 +663,26 @@ void ObjectInspector::Create( bool force )
 			for (unsigned int i=0; i<obj_desc->GetBaseClassCount() ; i++)
 			{
 				PObjectInfo info_base = obj_desc->GetBaseClass(i);
-				CreateCategory( info_base->GetClassName(), sel_obj,info_base,propMap, false);
-				CreateCategory( info_base->GetClassName(), sel_obj,info_base,eventMap, true);
+				CreateCategory( info_base->GetClassName(), sel_obj, info_base, propMap, false );
+				CreateCategory( info_base->GetClassName(), sel_obj, info_base, eventMap, true );
 			}
 
 			PObjectBase parent = sel_obj->GetParent();
-			if (parent && parent->GetObjectInfo()->GetObjectType()->IsItem())
+			if ( parent )
 			{
-				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummyPropMap,false);
-				CreateCategory(parent->GetObjectInfo()->GetClassName(), parent, parent->GetObjectInfo(),dummyEventMap,true);
+				PObjectInfo parent_desc = parent->GetObjectInfo();
+				if ( parent_desc->GetObjectType()->IsItem())
+				{
+					CreateCategory( parent_desc->GetClassName(), parent, parent_desc, dummyPropMap, false );
+					CreateCategory( parent_desc->GetClassName(), parent, parent_desc, dummyEventMap, true );
+
+					for (unsigned int i=0; i<parent_desc->GetBaseClassCount() ; i++)
+					{
+						PObjectInfo info_base = parent_desc->GetBaseClass(i);
+						CreateCategory( info_base->GetClassName(), parent, info_base, dummyPropMap, false );
+						CreateCategory( info_base->GetClassName(), parent, info_base, dummyEventMap, true );
+					}
+				}
 			}
 
 			// Select previously selected page, or first page
@@ -941,7 +952,7 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 				// colour.
 				if (name == wxT("wxWindow"))
 					m_pg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
-				else if (name == wxT("sizeritem"))
+				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
 					m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
 			}
 
@@ -990,7 +1001,7 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 				// colour.
 				if (name == wxT("wxWindow"))
 					m_eg->SetPropertyColour(id,wxColour(255,255,205)); // yellow
-				else if (name == wxT("sizeritem"))
+				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
 					m_eg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
 			}
 

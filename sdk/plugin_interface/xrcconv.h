@@ -73,6 +73,8 @@ class ObjectToXrcFilter
   void AddPropertyValue (const wxString &xrcPropName,
                          const wxString &xrcPropValue);
 
+  void AddPropertyPair ( const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName );
+
   void AddWindowProperties();
 
   TiXmlElement* GetXrcObject();
@@ -114,6 +116,8 @@ class XrcToXfbFilter
                          const wxString &xfbPropValue);
 
   void AddWindowProperties();
+
+  void AddPropertyPair( const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2 );
 
   TiXmlElement* GetXfbObject();
 

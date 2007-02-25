@@ -4,13 +4,20 @@
   <templates class="sizer">
     <template name="settings">
 	  #ifnotnull $minimum_size
-	  @{ $name->SetMinSize($minimum_size); @}
+	  @{ $name->SetMinSize( $minimum_size ); @}
     </template>
   </templates>
 
   <templates class="sizeritem">
     <template name="window_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
     <template name="sizer_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
+    <template name="spacer_add">#parent $name->Add( #child $width, #child $height, $proportion, $flag, $border ); #nl</template>
+  </templates>
+
+  <templates class="gbsizeritem">
+    <template name="window_add">#parent $name->Add( #child $name, wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+    <template name="sizer_add">#parent $name->Add( #child $name, wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+    <template name="spacer_add">#parent $name->Add( #child $width, #child $height, wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
   </templates>
 
   <templates class="wxBoxSizer">
@@ -50,6 +57,34 @@
        #nl
     </template>
   </templates>
+
+  <templates class="wxGridBagSizer">
+    <template name="declaration">wxGridBagSizer* $name;</template>
+    <template name="construction">$name = new wxGridBagSizer( $vgap, $hgap );
+      #ifnotnull $growablecols
+      @{
+        #foreach $growablecols
+        @{ $name->AddGrowableCol( #pred ); @}
+      @}
+
+      #ifnotnull $growablerows
+      @{
+        #foreach $growablerows
+        @{ $name->AddGrowableRow( #pred ); @}
+      @}
+      #ifnotnull $flexible_direction
+      @{ #nl $name->SetFlexibleDirection( $flexible_direction ); @}
+
+      #ifnotnull $non_flexible_grow_mode
+      @{ #nl  $name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
+
+      #ifnotnull $empty_cell_size
+      @{ #nl  $name->SetEmptyCellSize( $empty_cell_size ); @}
+       #nl
+	</template>
+	<template name="include">@#include &lt;wx/gbsizer.h&gt;</template>
+  </templates>
+
   <templates class="wxStdDialogButtonSizer">
     <template name="declaration">wxStdDialogButtonSizer* $name;</template>
     <template name="construction">$name = new wxStdDialogButtonSizer();
@@ -79,10 +114,6 @@
 
 		 #nl $name->Realize();
 	</template>
-  </templates>
-
-  <templates class="spacer">
-    <template name="spacer_add">#parent $name->Add( $width, $height, $proportion, $flag, $border ); #nl</template>
   </templates>
 
 </codegen>
