@@ -28,18 +28,17 @@
 
 #include "wx/wx.h"
 
-void Debug::Print(wxChar *format,...)
+void Debug::Print( wxChar *format, ... )
 {
-#ifdef DEBUG_WRAPPER
-  va_list argptr;
-  va_start(argptr, format);
+	#ifdef __WXFB_DEBUG__
+		va_list argptr;
+		va_start(argptr, format);
 
-  wxString s;
-  s.PrintfV(format, argptr);
+		wxString s;
+		s.PrintfV(format, argptr);
 
-  wxLogMessage(s);
+		wxLogMessage(s);
 
-  va_end(argptr);
-#endif // DEBUG_WRAPPER
-
+		va_end(argptr);
+	#endif //__WXFB_DEBUG__
 }

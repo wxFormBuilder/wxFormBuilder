@@ -31,6 +31,7 @@
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
+#include "utils/debug.h"
 
 CppTemplateParser::CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :
@@ -1067,6 +1068,7 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj)
 void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 {
 	wxString type = obj->GetObjectTypeName();
+	PObjectInfo info = obj->GetObjectInfo();
 
 	if (type == wxT("notebook")			||
 		type == wxT("flatnotebook")		||
@@ -1161,7 +1163,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 		}
 
 	}
-	else if ( type == wxT("sizer") )
+	else if ( info->IsSubclassOf( wxT("sizer") ) )
 	{
 		m_source->WriteLn( GetCode( obj, wxT("declaration") ) );
 		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
@@ -1201,42 +1203,30 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 		m_source->WriteLn( GetCode( obj, wxT("menu_add") ) );
 
 	}
-	else if ( type == wxT("spacer") )
-	{
-		// En lugar de modelar un "spacer" como un objeto que se incluye en
-		// un sizer item, los vamos a considerar un como un tipo de
-		// de "sizeritem" capaz de existir por sí solo. De esta forma será
-		// más facil la exportación XRC.
-		m_source->WriteLn( GetCode( obj, wxT("spacer_add") ) );
-	}
-	else if ( type == wxT("sizeritem") )
+	else if ( info->IsSubclassOf( wxT("sizeritembase") ) )
 	{
 		// El hijo, hay que añadirlo al sizer teniendo en cuenta el tipo
 		// del objeto hijo (hay 3 rutinas diferentes)
 		GenConstruction(obj->GetChild(0),false);
 
-		wxString child_type = obj->GetChild(0)->GetObjectTypeName();
+		PObjectInfo childInfo = obj->GetChild(0)->GetObjectInfo();
 		wxString temp_name;
-		if (child_type == wxT("notebook")		||
-			child_type == wxT("flatnotebook")	||
-			child_type == wxT("listbook")		||
-			child_type == wxT("choicebook")		||
-			child_type == wxT("widget")			||
-			child_type == wxT("expanded_widget")	||
-			child_type == wxT("statusbar")		||
-			child_type == wxT("container")		||
-			child_type == wxT("splitter")
-			)
+		if ( childInfo->IsSubclassOf( wxT("wxWindow") ) )
 		{
 			temp_name = wxT("window_add");
 		}
-		else if ( child_type == wxT("sizer") )
+		else if ( childInfo->IsSubclassOf( wxT("sizer") ) )
 		{
 			temp_name = wxT("sizer_add");
 		}
+		else if ( childInfo->GetClassName() == wxT("spacer") )
+		{
+			temp_name = wxT("spacer_add");
+		}
 		else
 		{
-			assert( false );
+			Debug::Print( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
+			return;
 		}
 
 		m_source->WriteLn( GetCode( obj, temp_name ) );

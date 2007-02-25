@@ -631,6 +631,20 @@ PObjectBase XrcLoader::GetObject(TiXmlElement *xrcObj, PObjectBase parent)
 	}
   }
 
+  // replace "spacer" with "sizeritem" so it will be imported as a "sizeritem"
+  // "sizeritem" is ambiguous - could also be a grid bag sizeritem
+  else if (className == "spacer" || className == "sizeritem")
+  {
+  	if ( parent->GetClassName() == wxT("wxGridBagSizer") )
+  	{
+		className = "gbsizeritem";
+  	}
+  	else
+  	{
+  		className = "sizeritem";
+  	}
+  }
+
   PObjectBase object;
   PObjectInfo objInfo = m_objDb->GetObjectInfo(_WXSTR(className));
   if (objInfo)

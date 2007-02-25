@@ -62,9 +62,6 @@ bool TypeConv::StringToPoint(const wxString &val, wxPoint *point)
     wxString str_x,str_y;
     long val_x = -1, val_y = -1;
 
-
-    Debug::Print(wxT("[wxPointEditor::ParseValue] Parsing value %s"),val.c_str());
-
     if (val != wxT(""))
     {
         wxStringTokenizer tkz(val, wxT(","));
@@ -73,13 +70,11 @@ bool TypeConv::StringToPoint(const wxString &val, wxPoint *point)
             str_x = tkz.GetNextToken();
             str_x.Trim(true);
             str_x.Trim(false);
-            Debug::Print(wxT("[wxPointEditor::ParseValue] Parse %s"), str_x.c_str());
             if (tkz.HasMoreTokens())
             {
                 str_y = tkz.GetNextToken();
                 str_y.Trim(true);
                 str_y.Trim(false);
-                Debug::Print(wxT("[wxPointEditor::ParseValue] Parse %s"), str_y.c_str());
             }
             else
                 error = true;

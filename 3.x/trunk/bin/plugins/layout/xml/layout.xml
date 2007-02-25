@@ -5,8 +5,10 @@
 	<property name="minimum_size" type="wxSize" help="Give the sizer a minimal size. Normally, the sizer will calculate its minimal size based purely on how much space its children need. After setting the minimal size, 'GetMinSize' will return either the minimal size as requested by its children or the minimal size set here, depending on which is bigger." />
   </objectinfo>
 
-  <objectinfo class="sizeritem" smallIcon="sizer.xpm" type="sizeritem">
-    <property name="border" type="uint" 		help="Determines the border width, if the flag parameter is set to include any border flag." >5</property>
+  <objectinfo class="sizeritembase" smallIcon="sizer.xpm" type="interface">
+    <property name="border" type="uint" 		help="Determines the border width, if the flag parameter is set to include any border flag.">
+		5
+    </property>
     <property name="flag" type="bitlist">
       <option name="wxALL" 						help="Enable all borders"		/>
       <option name="wxLEFT" 					help="Enable the left border"	/>
@@ -23,11 +25,24 @@
       <option name="wxALIGN_CENTER_VERTICAL" 	help="Align the item to the vertical center of the space allotted to it by the sizer, adjusted for the border if any."/>
       <option name="wxSHAPED" 					help="The item will be expanded as much as possible while also maintaining its aspect ratio."/>
       <option name="wxFIXED_MINSIZE" 			help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE. "/>
+	  wxALL
 	</property>
+  </objectinfo>
+
+  <objectinfo class="sizeritem" smallIcon="sizer.xpm" type="sizeritem">
+    <inherits class="sizeritembase"/>
     <property name="proportion" type="uint"
 			  help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">
 			  0
 	</property>
+  </objectinfo>
+
+  <objectinfo class="gbsizeritem" smallIcon="sizer.xpm" type="gbsizeritem">
+    <inherits class="sizeritembase"/>
+    <property name="row" type="uint" help="Row for the item.">0</property>
+    <property name="column" type="int" help="Column for the item.">-1</property>
+    <property name="rowspan" type="uint" help="The number of rows that the item spans.">1</property>
+    <property name="colspan" type="uint" help="The number of columns that the item spans.">1</property>
   </objectinfo>
 
   <objectinfo class="wxBoxSizer" icon="sizer.xpm" type="sizer">
@@ -56,11 +71,7 @@
     <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
   </objectinfo>
 
-  <objectinfo class="wxFlexGridSizer" icon="flex_grid_sizer.xpm" type="sizer">
- 	<inherits class="sizer" />
-    <property name="name" type="text" hidden="1">fgSizer</property>
-    <property name="rows" type="uint" help="Number of Rows">2</property>
-    <property name="cols" type="uint" help="Number of Columns">2</property>
+  <objectinfo class="flexgridsizerbase" icon="flex_grid_sizer.xpm" type="interface">
     <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
     <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
     <property name="growablerows" type="intlist" help="Comma separated list of row indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
@@ -69,12 +80,29 @@
 	  <option name="wxVERTICAL"  	help="Rows are flexibly sized." />
 	  <option name="wxHORIZONTAL"  	help="Columns are flexibly sized." />
 	  <option name="wxBOTH"  		help="Both rows and columns are flexibly sized (this is the default value)." />
+	  wxBOTH
 	</property>
 	<property name="non_flexible_grow_mode" type="option" help="If the sizer is only flexible in one direction (this can be changed using 'flexible_direction'), it needs to be decided how the sizer should grow in the other ('non flexible') direction in order to fill the available space." >
 	  <option name="wxFLEX_GROWMODE_NONE"  		help="Sizer doesn't grow in the non flexible direction." />
 	  <option name="wxFLEX_GROWMODE_SPECIFIED"  help="Sizer honors growable columns/rows set with AddGrowableCol and AddGrowableRow. In this case equal sizing applies to minimum sizes of columns or rows (this is the default value)." />
 	  <option name="wxFLEX_GROWMODE_ALL"  		help="Sizer equally stretches all columns or rows in the non flexible direction, whether they are growable or not in the flexible direction." />
+	  wxFLEX_GROWMODE_SPECIFIED
 	</property>
+  </objectinfo>
+
+  <objectinfo class="wxFlexGridSizer" icon="flex_grid_sizer.xpm" type="sizer">
+ 	<inherits class="sizer" />
+ 	<inherits class="flexgridsizerbase" />
+    <property name="name" type="text" hidden="1">fgSizer</property>
+    <property name="rows" type="uint" help="Number of Rows">2</property>
+    <property name="cols" type="uint" help="Number of Columns">2</property>
+  </objectinfo>
+
+  <objectinfo class="wxGridBagSizer" icon="grid_bag_sizer.xpm" type="gbsizer">
+ 	<inherits class="sizer" />
+ 	<inherits class="flexgridsizerbase" />
+    <property name="name" type="text" hidden="1">gbSizer</property>
+    <property name="empty_cell_size" type="wxSize" help="The size used for cells in the grid with no item."/>
   </objectinfo>
 
   <objectinfo class="wxStdDialogButtonSizer" icon="stddialogbuttonsizer.xpm" type="widget">
@@ -90,14 +118,9 @@
     <property name="ContextHelp" type="bool" help="Include the 'ContextHelp' button">0</property>
   </objectinfo>
 
-  <objectinfo class="spacer" icon="spacer.xpm" type="spacer">
-    <inherits class="sizeritem">
-		<property name="border">0</property>
-		<property name="flag">wxEXPAND</property>
-		<property name="proportion">1</property>
-	</inherits>
+  <objectinfo class="spacer" icon="spacer.xpm" type="widget">
     <property name="width" type="uint"	help="The width of the spacer">0</property>
     <property name="height" type="uint" help="The height of the spacer">0</property>
   </objectinfo>
-  
+
 </package>

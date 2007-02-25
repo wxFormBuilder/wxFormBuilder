@@ -28,6 +28,7 @@
 #include <xrcconv.h>
 #include <tinyxml.h>
 #include <wx/tokenzr.h>
+#include <wx/gbsizer.h>
 #include <map>
 
 #ifdef __WX24__
@@ -36,64 +37,26 @@
 
 class SpacerComponent : public ComponentBase
 {
-private:
-	void AddSizeProperty(XrcToXfbFilter &filter, TiXmlElement *xrcObj)
-	{
-		TiXmlElement *sizeProp = xrcObj->FirstChildElement("size");
-		if (sizeProp)
-		{
-			TiXmlText *xmlValue = sizeProp->FirstChild()->ToText();
-			if (xmlValue)
-			{
-				wxString width = wxT("");
-				wxString height = wxT("");
-				wxStringTokenizer tkz(wxString(xmlValue->Value(),wxConvUTF8),wxT(","));
-				if (tkz.HasMoreTokens())
-				{
-					width = tkz.GetNextToken();
-					if (tkz.HasMoreTokens())
-						height = tkz.GetNextToken();
-				}
-				filter.AddPropertyValue(_("width"),width);
-				filter.AddPropertyValue(_("height"),height);
-			}
-		}
-	}
-
 public:
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
-	{
-		// Get parent sizer
-		wxObject* parent = GetManager()->GetParent( wxobject );
-		wxSizer* sizer = wxDynamicCast( parent, wxSizer );
-
-		if ( NULL == sizer )
-		{
-			wxLogError( wxT("The parent of a SizerItem is either missing or not a wxSizer - this should not be possible!") );
-			return;
-		}
-
-		// Get IObject to read property values
-		IObject* obj = GetManager()->GetIObject( wxobject );
-
-		sizer->Add(
-			obj->GetPropertyAsInteger(_("width")),
-			obj->GetPropertyAsInteger(_("height")),
-			obj->GetPropertyAsInteger(_("proportion")),
-			obj->GetPropertyAsInteger(_("flag")),
-			obj->GetPropertyAsInteger(_("border")));
-	}
+	// ImportFromXRC is handled in sizeritem components
 
 	TiXmlElement* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("spacer"));
+		xrc.AddPropertyPair( _("width"), _("height"), _("size") );
+		return xrc.GetXrcObject();
+	}
+};
 
-		// las propiedades width y height se mapean como size
-		xrc.AddPropertyValue(_("size"),
-			wxString::Format(_("%d,%d"),obj->GetPropertyAsInteger(_("width")),
-			obj->GetPropertyAsInteger(_("height"))));
+class GBSizerItemComponent : public ComponentBase
+{
+public:
 
-		xrc.AddProperty(_("proportion"), _("option"), XRC_TYPE_INTEGER);
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("sizeritem"));
+		xrc.AddPropertyPair( _("row"), _("column"), _("cellpos") );
+		xrc.AddPropertyPair( _("rowspan"), _("colspan"), _("cellspan") );
 		xrc.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		xrc.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
@@ -101,15 +64,24 @@ public:
 
 	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
 	{
-		XrcToXfbFilter filter(xrcObj, _("spacer"));
-
-		// la propiedad "size" hay que descomponerla en weight y height
-		AddSizeProperty(filter, xrcObj);
-
-		filter.AddProperty(_("option"), _("proportion"), XRC_TYPE_INTEGER);
+		// XrcLoader::GetObject imports spacers as sizeritems
+		XrcToXfbFilter filter(xrcObj, _("gbsizeritem"));
+		filter.AddPropertyPair( "cellpos", _("row"), _("column") );
+		filter.AddPropertyPair( "cellspan", _("rowspan"), _("colspan") );
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
-		return filter.GetXfbObject();
+		TiXmlElement* sizeritem = filter.GetXfbObject();
+
+		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
+		if ( xrcObj->FirstChildElement("size") && !xrcObj->FirstChildElement("object") )
+		{
+			// it is a spacer
+			XrcToXfbFilter spacer( xrcObj, _("spacer") );
+			spacer.AddPropertyPair( "size", _("width"), _("height") );
+			sizeritem->LinkEndChild( spacer.GetXfbObject() );
+		}
+
+		return sizeritem;
 	}
 };
 
@@ -138,6 +110,18 @@ public:
 
 		// Get IObject for property access
 		IObject* obj = GetManager()->GetIObject( wxobject );
+		IObject* childObj = GetManager()->GetIObject( child );
+
+		// Add the spacer
+		if ( _("spacer") == childObj->GetClassName() )
+		{
+			sizer->Add(	childObj->GetPropertyAsInteger( _("width") ),
+						childObj->GetPropertyAsInteger( _("height") ),
+						obj->GetPropertyAsInteger(_("flag")),
+						obj->GetPropertyAsInteger(_("border"))
+						);
+			return;
+		}
 
 		// Add the child ( window or sizer ) to the sizer
 		wxWindow* windowChild = wxDynamicCast( child, wxWindow );
@@ -159,7 +143,7 @@ public:
 		}
 		else
 		{
-			wxLogError( wxT("The SizerItem component's child is not a wxWindow or a wxSizer - this should not be possible!") );
+			wxLogError( wxT("The SizerItem component's child is not a wxWindow or a wxSizer or a spacer - this should not be possible!") );
 		}
 	}
 
@@ -178,7 +162,17 @@ public:
 		filter.AddProperty(_("option"), _("proportion"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
-		return filter.GetXfbObject();
+		TiXmlElement* sizeritem = filter.GetXfbObject();
+
+		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
+		if ( xrcObj->FirstChildElement("size") && !xrcObj->FirstChildElement("object") )
+		{
+			// it is a spacer
+			XrcToXfbFilter spacer( xrcObj, _("spacer") );
+			spacer.AddPropertyPair( "size", _("width"), _("height") );
+			sizeritem->LinkEndChild( spacer.GetXfbObject() );
+		}
+		return sizeritem;
 	}
 };
 
@@ -275,17 +269,11 @@ public:
 	}
 };
 
-class FlexGridSizerComponent : public ComponentBase
+class FlexGridSizerBase : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	void AddProperties( IObject* obj, wxFlexGridSizer* sizer )
 	{
-		wxFlexGridSizer *sizer = new wxFlexGridSizer(
-			obj->GetPropertyAsInteger(_("rows")),
-			obj->GetPropertyAsInteger(_("cols")),
-			obj->GetPropertyAsInteger(_("vgap")),
-			obj->GetPropertyAsInteger(_("hgap")));
-
 		wxArrayInt gcols, grows;
 		gcols = obj->GetPropertyAsArrayInt(_("growablecols"));
 		grows = obj->GetPropertyAsArrayInt(_("growablerows"));
@@ -299,6 +287,37 @@ public:
 
 		sizer->SetFlexibleDirection( obj->GetPropertyAsInteger(_("flexible_direction")) );
 		sizer->SetNonFlexibleGrowMode( (wxFlexSizerGrowMode )obj->GetPropertyAsInteger(_("non_flexible_grow_mode")) );
+	}
+
+	void ExportXRCProperties( ObjectToXrcFilter* xrc, IObject* obj )
+	{
+		xrc->AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
+		xrc->AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
+		xrc->AddPropertyValue(_("growablecols"), obj->GetPropertyAsString(_("growablecols")));
+		xrc->AddPropertyValue(_("growablerows"), obj->GetPropertyAsString(_("growablerows")));
+	}
+
+	void ImportXRCProperties( XrcToXfbFilter* filter )
+	{
+		filter->AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
+		filter->AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
+		filter->AddProperty(_("growablecols"),_("growablecols"),XRC_TYPE_TEXT);
+		filter->AddProperty(_("growablerows"),_("growablerows"),XRC_TYPE_TEXT);
+	}
+};
+
+class FlexGridSizerComponent : public FlexGridSizerBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxFlexGridSizer *sizer = new wxFlexGridSizer(
+			obj->GetPropertyAsInteger(_("rows")),
+			obj->GetPropertyAsInteger(_("cols")),
+			obj->GetPropertyAsInteger(_("vgap")),
+			obj->GetPropertyAsInteger(_("hgap")));
+
+		AddProperties( obj, sizer );
 
 		return sizer;
 	}
@@ -308,11 +327,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxFlexGridSizer"));
 		xrc.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("cols"), _("cols"), XRC_TYPE_INTEGER);
-		xrc.AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
-		xrc.AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
-
-		xrc.AddPropertyValue(_("growablecols"), obj->GetPropertyAsString(_("growablecols")));
-		xrc.AddPropertyValue(_("growablerows"), obj->GetPropertyAsString(_("growablerows")));
+		ExportXRCProperties( &xrc, obj );
 		return xrc.GetXrcObject();
 	}
 
@@ -321,10 +336,163 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxFlexGridSizer"));
 		filter.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("cols"), _("cols"), XRC_TYPE_INTEGER);
-		filter.AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
-		filter.AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
-		filter.AddProperty(_("growablecols"),_("growablecols"),XRC_TYPE_TEXT);
-		filter.AddProperty(_("growablerows"),_("growablerows"),XRC_TYPE_TEXT);
+		ImportXRCProperties( &filter );
+		return filter.GetXfbObject();
+	}
+};
+
+class GridBagSizerComponent : public FlexGridSizerBase
+{
+private:
+	wxGBSizerItem* GetGBSizerItem( IObject* sizeritem, const wxGBPosition& position, const wxGBSpan& span, wxObject* child )
+	{
+		IObject* childObj = GetManager()->GetIObject( child );
+
+		if ( _("spacer") == childObj->GetClassName() )
+		{
+			return new wxGBSizerItem(	childObj->GetPropertyAsInteger( _("width") ),
+										childObj->GetPropertyAsInteger( _("height") ),
+										position,
+										span,
+										sizeritem->GetPropertyAsInteger(_("flag")),
+										sizeritem->GetPropertyAsInteger(_("border")),
+										NULL
+										);
+		}
+
+		// Add the child ( window or sizer ) to the sizer
+		wxWindow* windowChild = wxDynamicCast( child, wxWindow );
+		wxSizer* sizerChild = wxDynamicCast( child, wxSizer );
+
+		if ( windowChild != NULL )
+		{
+			return new wxGBSizerItem( 	windowChild,
+										position,
+										span,
+										sizeritem->GetPropertyAsInteger(_("flag")),
+										sizeritem->GetPropertyAsInteger(_("border")),
+										NULL
+										);
+		}
+		else if ( sizerChild != NULL )
+		{
+			return new wxGBSizerItem( 	sizerChild,
+										position,
+										span,
+										sizeritem->GetPropertyAsInteger(_("flag")),
+										sizeritem->GetPropertyAsInteger(_("border")),
+										NULL
+										);
+		}
+		else
+		{
+			wxLogError( wxT("The GBSizerItem component's child is not a wxWindow or a wxSizer or a Spacer - this should not be possible!") );
+			return NULL;
+		}
+	}
+
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxGridBagSizer* sizer = new wxGridBagSizer(
+			obj->GetPropertyAsInteger(_("vgap")),
+			obj->GetPropertyAsInteger(_("hgap")));
+
+		AddProperties( obj, sizer );
+
+		if ( !obj->IsNull( _("empty_cell_size") ) )
+		{
+			sizer->SetEmptyCellSize( obj->GetPropertyAsSize( _("empty_cell_size") ) );
+		}
+
+		return sizer;
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		// For storing objects whose postion needs to be determined
+		std::vector< std::pair< wxObject*, wxGBSizerItem* > > newObjects;
+		wxGBPosition lastPosition( 0, 0 );
+
+		// Get sizer
+		wxGridBagSizer* sizer = wxDynamicCast( wxobject, wxGridBagSizer );
+		if ( NULL == sizer )
+		{
+			wxLogError( wxT("This should be a wxGridBagSizer!") );
+			return;
+		}
+
+		// Add the children
+		IManager* manager = GetManager();
+		size_t count = manager->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			// Should be a GBSizerItem
+			wxObject* wxsizerItem = manager->GetChild( wxobject, i );
+			IObject* isizerItem = manager->GetIObject( wxsizerItem );
+
+			// Get the location of the item
+			wxGBSpan span( isizerItem->GetPropertyAsInteger( _("rowspan") ), isizerItem->GetPropertyAsInteger( _("colspan") ) );
+
+			int column = isizerItem->GetPropertyAsInteger( _("column") );
+			if ( column < 0 )
+			{
+				// Needs to be auto positioned after the other children are added
+				wxGBSizerItem* item = GetGBSizerItem( isizerItem, lastPosition, span, manager->GetChild( wxsizerItem, 0 ) );
+				if ( item != NULL )
+				{
+					newObjects.push_back( std::pair< wxObject*, wxGBSizerItem* >( wxsizerItem, item ) );
+				}
+				continue;
+			}
+
+			wxGBPosition position( isizerItem->GetPropertyAsInteger( _("row") ), column );
+
+			// Check for intersection
+			if ( sizer->CheckForIntersection( position, span ) )
+			{
+				continue;
+			}
+
+			lastPosition = position;
+
+			// Add the child to the sizer
+			wxGBSizerItem* item = GetGBSizerItem( isizerItem, position, span, manager->GetChild( wxsizerItem, 0 ) );
+			if ( item != NULL )
+			{
+				sizer->Add( item );
+			}
+		}
+
+		std::vector< std::pair< wxObject*, wxGBSizerItem* > >::iterator it;
+		for ( it = newObjects.begin(); it != newObjects.end(); ++it )
+		{
+			wxGBPosition position = it->second->GetPos();
+			wxGBSpan span = it->second->GetSpan();
+			int column = position.GetCol();
+			while ( sizer->CheckForIntersection( position, span ) )
+			{
+				column++;
+				position.SetCol( column );
+			}
+			it->second->SetPos( position );
+			sizer->Add( it->second );
+			GetManager()->ModifyProperty( it->first, _("row"), wxString::Format( wxT("%i"), position.GetRow() ), false );
+			GetManager()->ModifyProperty( it->first, _("column"), wxString::Format( wxT("%i"), column ), false );
+		}
+	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxGridBagSizer"));
+		ExportXRCProperties( &xrc, obj );
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxGridBagSizer"));
+		ImportXRCProperties( &filter );
 		return filter.GetXfbObject();
 	}
 };
@@ -518,11 +686,13 @@ public:
 BEGIN_LIBRARY()
 ABSTRACT_COMPONENT("spacer",SpacerComponent)
 ABSTRACT_COMPONENT("sizeritem",SizerItemComponent)
+ABSTRACT_COMPONENT("gbsizeritem",GBSizerItemComponent)
 
 SIZER_COMPONENT("wxBoxSizer",BoxSizerComponent)
 SIZER_COMPONENT("wxStaticBoxSizer",StaticBoxSizerComponent)
 SIZER_COMPONENT("wxGridSizer",GridSizerComponent)
 SIZER_COMPONENT("wxFlexGridSizer",FlexGridSizerComponent)
+SIZER_COMPONENT("wxGridBagSizer",GridBagSizerComponent)
 SIZER_COMPONENT("wxStdDialogButtonSizer",StdDialogButtonSizerComponent)
 
 // wxBoxSizer

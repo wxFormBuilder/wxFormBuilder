@@ -580,7 +580,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	if ( !obj )
 	{
 		// Strange...
-		wxLogDebug( _("The event object is NULL - why?") );
+		Debug::Print( wxT("The event object is NULL - why?") );
 		return;
 	}
 
@@ -782,7 +782,7 @@ void DesignerWindow::OnPaint(wxPaintEvent &event)
 
 void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
 {
-	bool isSizer = ( object->GetObjectTypeName() == wxT("sizer") );
+	bool isSizer = ( object->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) );
 	int min = ( isSizer ? 0 : 1 );
 
 	int border = object->GetParent()->GetPropertyAsInteger( wxT("border") );
@@ -814,7 +814,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		wxPen bluePen( *wxBLUE, 1, wxSOLID );
 		dc.SetPen( bluePen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
-		PObjectBase sizerParent = object->FindNearAncestor( wxT("sizer") );
+		PObjectBase sizerParent = object->FindNearAncestorByBaseClass( wxT("sizer") );
 		if ( sizerParent && sizerParent->GetParent() )
 		{
 			DrawRectangle( dc, point, size, sizerParent );

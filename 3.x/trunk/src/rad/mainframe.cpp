@@ -610,7 +610,7 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
 		name = wxT( "\"Unknown\"" );
 
-	GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
+	//GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
 
 	wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), name.c_str(), obj->GetClassName().c_str() );
 
@@ -724,7 +724,7 @@ void MainFrame::OnRedo( wxCommandEvent &event )
 
 void MainFrame::UpdateLayoutTools()
 {
-	int option = 0;
+	int option = -1;
 	int border = 0;
 	int flag = 0;
 	int orient = 0;
@@ -734,7 +734,7 @@ void MainFrame::UpdateLayoutTools()
 
 	// Enable the layout tools if there are layout settings, else disable the tools
 	toolbar->EnableTool( ID_EXPAND, gotLayoutSettings );
-	toolbar->EnableTool( ID_STRETCH, gotLayoutSettings );
+	toolbar->EnableTool( ID_STRETCH, option >= 0 );
 
 	bool enableHorizontalTools = ( orient != wxHORIZONTAL ) && gotLayoutSettings;
 	toolbar->EnableTool( ID_ALIGN_LEFT, enableHorizontalTools );

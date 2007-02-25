@@ -10,7 +10,7 @@
 
 #include "wxfbipc.h"
 #include <wx/filename.h>
-
+#include "utils/debug.h"
 
 bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 {
@@ -181,7 +181,7 @@ bool wxFBIPC::CreateServer( const wxString& name )
 			}
 			else
 			{
-				wxLogDebug( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
+				Debug::Print( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
 			}
 		}
 	}
