@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.23 (Beta 3)
+02-26-2007 Version 3.00.23 (Beta 3)
 + Added wxGridBagSizer. This closes FS#58.
    Cannot use wxGBS as the first sizer in a form until the object model improves.
 ^ Spacer now uses sizeritem, instead of being standalone. 

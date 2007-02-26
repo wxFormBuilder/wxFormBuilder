@@ -9,16 +9,15 @@ Introduction:
 	types that the wxFormBuilder team tests and uses, so your mileage may vary
 	with the other build types. 
 	
-	To create the needed build types navigate to the 'sdk' directory under the
-	wxFormBuilder directory structure and type:
+	To create the needed build types navigate to the 'sdk' directory and type:
 	
 		1. Code::Blocks Projects and workspace:
-			Windows:	..\premake\premake-win32 --target cb-gcc --with-wx-shared [--unicode]
-			Linux:		../premake/premake-linux --target cb-gcc --with-wx-shared [--unicode]
+			Windows:	premake-win32 --target cb-gcc --with-wx-shared [--unicode]
+			Linux:		premake-linux --target cb-gcc --with-wx-shared [--unicode]
 			
 		2. GNU makefile:
-			Windows:	..\premake\premake-win32 --target gnu --with-wx-shared [--unicode]
-			Windows:	../premake/premake-linux --target gnu --with-wx-shared [--unicode]
+			Windows:	premake-win32 --target gnu --with-wx-shared [--unicode]
+			Windows:	premake-linux --target gnu --with-wx-shared [--unicode]
 
 Build Steps:
 	- For Code::Blocks, use the generated .workspace to build the SDK.
