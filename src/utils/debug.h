@@ -30,7 +30,7 @@
 
 namespace Debug
 {
-	void Print( wxChar*, ... );
+	void Print( const wxChar*, ... );
 };
 
 #endif //__DEBUG_H__
