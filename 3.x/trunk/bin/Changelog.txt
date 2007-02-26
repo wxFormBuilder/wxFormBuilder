@@ -1,5 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.24 (Beta 3)
+* Fixed FS#131 — "Folder not getting released after saving a project into it."
+
 02-26-2007 Version 3.00.23 (Beta 3)
 + Added wxGridBagSizer. This closes FS#58.
    Cannot use wxGBS as the first sizer in a form until the object model improves.

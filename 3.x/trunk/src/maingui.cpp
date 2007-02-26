@@ -49,6 +49,7 @@
 #include "maingui.h"
 
 #include "utils/wxlogstring.h"
+#include "utils\debug.h"
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
@@ -78,6 +79,14 @@ bool MyApp::OnInit()
 	wxFileName appFileName( exeFile );
 	appFileName.Normalize();
 	wxString path = appFileName.GetPath();
+
+	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
+	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
+	// This puts an unneccessary lock on the directory.
+	// This changes the CWD to the already locked app directory as a workaround
+	#ifdef __WXMSW__
+	::wxSetWorkingDirectory( path );
+	#endif
 
 	// Create singleton AppData - wait to initialize until sure that this is not the second
 	// instance of a project file.
