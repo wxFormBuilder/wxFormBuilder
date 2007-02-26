@@ -7,6 +7,8 @@ date Version 3.00.23 (Beta 3)
    This forced a project version uprev to 1.6
 ^ Converted all wxLogDebug to Debug::Print so __WXFB_DEBUG__ is used to 
    determine whether or not to log.
+^ Improved precompiled header support. 
+  NOTE: You must now define WX_PRECOMP when compiling to use a precompiled header.
 
 02-23-2007 Version 3.00.22 (Beta 3)
 + Added most of the higher level events for wxTopLevelWindows and wxWindow.
