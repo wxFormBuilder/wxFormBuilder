@@ -19,7 +19,7 @@
 		<property name="use_enum" type="bool" help="For C++ Only. Generate an enumeration for control IDs instead of a list of #defines">0</property>
 		<property name="internationalize" type="bool" help="For C++ Only. Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
 		<property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only. Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
-		<property name="precompiled_header" type="text" help="For C++ Only. Precompiled header to include at the top of the generated source file.">wx/wxprec.h</property>
+		<property name="precompiled_header" type="text" help="For C++ Only. Precompiled header to include at the top of the generated source file. Define WX_PRECOMP when compiling to use a precompiled header.">wx/wxprec.h</property>
 		<property name="encoding" type="option" help="">
 		  <option name="UTF-8" />
 		  <option name="ANSI" />UTF-8

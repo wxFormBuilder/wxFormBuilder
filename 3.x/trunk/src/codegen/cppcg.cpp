@@ -479,18 +479,6 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("") );
 
-	// Precompiled Headers
-	PProperty pch_prop = project->GetProperty( wxT("precompiled_header") );
-	if ( pch_prop )
-	{
-		wxString pch = pch_prop->GetValueAsString();
-		if ( !pch.empty() )
-		{
-			m_source->WriteLn( wxT("#include \"") + pch + wxT("\"") );
-			m_source->WriteLn( wxEmptyString );
-		}
-	}
-
 	// en el cpp generamos el include del .h generado y los xpm
 	code = GetCode( project, wxT("cpp_preamble") );
 	m_source->WriteLn( code );
