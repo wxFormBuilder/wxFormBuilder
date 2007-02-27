@@ -749,13 +749,14 @@ void ApplicationData::CutObject( PObjectBase obj )
 
 void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 {
-	// Nota:
-	//  cuando se va a eliminar un objeto es importante que no se dejen
-	//  nodos ficticios ("items") en las hojas del árbol.
+	// Note:
+	//  When removing an object it is important that the "item" objects
+	// are not left behind
 	PObjectBase parent = obj->GetParent();
 
 	if ( parent )
 	{
+		// Get the top item
 		while ( parent && parent->GetObjectInfo()->GetObjectType()->IsItem() )
 		{
 			obj = parent;
@@ -766,17 +767,17 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 		{
 			m_copyOnPaste = false;
 			PCommand command( new CutObjectCmd( this, obj ) );
-			Execute( command ); //m_cmdProc.Execute(command);
+			Execute( command );
 		}
 		else
 		{
 			PCommand command( new RemoveObjectCmd( this, obj ) );
-			Execute( command ); //m_cmdProc.Execute(command);
+			Execute( command );
 		}
 
 		NotifyObjectRemoved( obj );
 
-		// "parent" será el nuevo objeto seleccionado tras eliminar obj.
+		// "parent" will be the selected object after removal
 		SelectObject( parent );
 	}
 	else
@@ -792,9 +793,9 @@ void ApplicationData::CopyObject( PObjectBase obj )
 {
 	m_copyOnPaste = true;
 
-	// Hacemos una primera copia del objeto, ya que si despues de copiar
-	// el objeto se modificasen las propiedades, dichas modificaciones se verian
-	// reflejadas en la copia.
+	// Make a copy of the object on the clipboard, otherwise
+	// modifications to the object after the copy will also
+	// be made on the clipboard.
 	m_clipboard = m_objDb->CopyObject( obj );
 
 	CheckProjectTree( m_project );
@@ -806,6 +807,20 @@ void ApplicationData::PasteObject( PObjectBase parent )
 	{
 		if ( m_clipboard )
 		{
+			PObjectBase clipboard( m_clipboard );
+			if ( m_copyOnPaste )
+			{
+				clipboard = m_objDb->CopyObject( m_clipboard );
+			}
+
+			// Remove parent/child relationship from clipboard object
+			PObjectBase clipParent = clipboard->GetParent();
+			if ( clipParent )
+			{
+				clipParent->RemoveChild( clipboard );
+				clipboard->SetParent( PObjectBase() );
+			}
+
 			// Vamos a hacer un pequeño truco, intentaremos crear un objeto nuevo
 			// del mismo tipo que el guardado en m_clipboard debajo de parent.
 			// El objeto devuelto quizá no sea de la misma clase que m_clipboard debido
@@ -827,7 +842,30 @@ void ApplicationData::PasteObject( PObjectBase parent )
 			PObjectBase old_parent = parent;
 
 			PObjectBase obj =
-			    m_objDb->CreateObject( _STDSTR( m_clipboard->GetObjectInfo()->GetClassName() ), parent );
+			    m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
+
+			// If the object is already contained in an item, we may need to get the object out of the first
+			// item before pasting
+			if ( !obj )
+			{
+
+				PObjectBase tempItem = clipboard;
+				while ( tempItem->GetObjectInfo()->GetObjectType()->IsItem() )
+				{
+					tempItem = tempItem->GetChild( 0 );
+					if ( !tempItem )
+					{
+						break;
+					}
+
+					obj = m_objDb->CreateObject( _STDSTR( tempItem->GetObjectInfo()->GetClassName() ), parent );
+					if ( obj )
+					{
+						clipboard = tempItem;
+						break;
+					}
+				}
+			}
 
 			int pos = -1;
 
@@ -847,20 +885,16 @@ void ApplicationData::PasteObject( PObjectBase parent )
 
 				if ( parent )
 				{
-					obj = m_objDb->CreateObject( _STDSTR( m_clipboard->GetObjectInfo()->GetClassName() ), parent );
-
+					obj = m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
 					if ( obj )
+					{
 						pos = CalcPositionOfInsertion( selected, parent );
+					}
 				}
 			}
 
 			if ( obj )
 			{
-				PObjectBase clipboard( m_clipboard );
-
-				if ( m_copyOnPaste )
-					clipboard = m_objDb->CopyObject( m_clipboard );
-
 				PObjectBase aux = obj;
 
 				while ( aux && aux->GetObjectInfo() != clipboard->GetObjectInfo() )
@@ -882,7 +916,7 @@ void ApplicationData::PasteObject( PObjectBase parent )
 				// y finalmente insertamos en el arbol
 				PCommand command( new InsertObjectCmd( this, obj, parent, pos ) );
 
-				Execute( command ); //m_cmdProc.Execute(command);
+				Execute( command );
 
 				if ( !m_copyOnPaste )
 					m_clipboard.reset();
