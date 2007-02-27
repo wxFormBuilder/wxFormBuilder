@@ -2088,34 +2088,49 @@ void ApplicationData::ToggleBorderFlag( PObjectBase obj, int border )
 
 void ApplicationData::CreateBoxSizerWithObject( PObjectBase obj )
 {
-	PObjectBase sizer;
-	PObjectBase sizeritem = obj->GetParent();
-
-	if ( !( sizeritem && sizeritem->GetObjectInfo()->IsSubclassOf( wxT( "sizeritembase" ) ) ) )
+	PObjectBase parent = obj->GetParent();
+	if ( !parent )
 	{
 		return;
 	}
 
-	sizer = sizeritem->GetParent();
+	PObjectBase grandParent = parent->GetParent();
+	if ( !grandParent )
+	{
+		return;
+	}
 
-	unsigned int childPos = sizer->GetChildPosition( sizeritem );
+	int childPos = -1;
+	if ( parent->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ) )
+	{
+		childPos = (int)grandParent->GetChildPosition( parent );
+		parent = grandParent;
+	}
 
-	// creamos un wxBoxSizer
-	PObjectBase newSizer = m_objDb->CreateObject( "wxBoxSizer", sizer );
+	// Must first cut the old object in case it is the only allowable object
+	PObjectBase clipboard = m_clipboard;
+	CutObject( obj );
+
+	// Create the wxBoxSizer
+	PObjectBase newSizer = m_objDb->CreateObject( "wxBoxSizer", parent );
 
 	if ( newSizer )
 	{
-		PCommand cmd( new InsertObjectCmd( this, newSizer, sizer, childPos ) );
+		PCommand cmd( new InsertObjectCmd( this, newSizer, parent, childPos ) );
 		Execute( cmd );
 
-		if ( newSizer->GetObjectTypeName() == wxT( "sizeritem" ) )
+		if ( newSizer->GetObjectTypeName() == wxT("sizeritem") )
 			newSizer = newSizer->GetChild( 0 );
 
-		PCommand cmdReparent( new ReparentObjectCmd( sizeritem, newSizer ) );
-
-		Execute( cmdReparent );
+		PasteObject( newSizer );
+		m_clipboard = clipboard;
 
 		NotifyProjectRefresh();
+	}
+	else
+	{
+		Undo();
+		m_clipboard = clipboard;
 	}
 }
 
