@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.24 (Beta 3)
+02-27-2007 Version 3.00.24 (Beta 3)
 * Fixed FS#131 — "Folder not getting released after saving a project into it."
 * Fixed FS#114 — "Not being able to cut non-top-level sizers and paste them as top-level sizers."
 * Fixed FS#124 — "Option to create a sizer around a control does not work on top-level sizers."
