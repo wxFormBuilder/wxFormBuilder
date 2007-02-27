@@ -117,10 +117,20 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
 
 	stc->SetCaretWidth( 2 );
+	stc->SetReadOnly( true );
 }
 
 void CppPanel::OnCodeGeneration( wxFBEvent& event )
 {
+	wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
+	cppEditor->Freeze();
+	cppEditor->SetReadOnly( false );
+
+	wxScintilla* hEditor = m_hPanel->GetTextCtrl();
+	hEditor->Freeze();
+	hEditor->SetReadOnly( false );
+
+
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
 
@@ -138,6 +148,12 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		{
 			m_cppPanel->GetTextCtrl()->ClearAll();
 			m_hPanel->GetTextCtrl()->ClearAll();
+
+			cppEditor->SetReadOnly( true );
+			cppEditor->Thaw();
+
+			hEditor->SetReadOnly( true );
+			hEditor->Thaw();
 			return;
 		}
 	}
@@ -191,19 +207,17 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		if ( pFirstID )
 			codegen.SetFirstID( firstID );
 
-		m_cppPanel->GetTextCtrl()->Freeze();
-
-		m_hPanel->GetTextCtrl()->Freeze();
-
 		codegen.SetHeaderWriter( m_hCW );
 
 		codegen.SetSourceWriter( m_cppCW );
 
 		codegen.GenerateCode( project );
 
-		m_cppPanel->GetTextCtrl()->Thaw();
+		cppEditor->SetReadOnly( true );
+		cppEditor->Thaw();
 
-		m_hPanel->GetTextCtrl()->Thaw();
+		hEditor->SetReadOnly( true );
+		hEditor->Thaw();
 	}
 
 	// If panelOnly, skip file code generation
