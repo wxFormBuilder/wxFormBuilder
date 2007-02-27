@@ -88,10 +88,15 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
 
 	stc->SetCaretWidth( 2 );
+	stc->SetReadOnly( true );
 }
 
 void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 {
+
+	wxScintilla* editor = m_xrcPanel->GetTextCtrl();
+	editor->Freeze();
+	editor->SetReadOnly( false );
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
@@ -104,7 +109,9 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 	{
 		if ( !TypeConv::FlagSet ( wxT( "XRC" ), pCodeGen->GetValue() ) )
 		{
-			m_xrcPanel->GetTextCtrl()->ClearAll();
+			editor->ClearAll();
+			editor->SetReadOnly( true );
+			editor->Thaw();
 			return;
 		}
 	}
@@ -112,13 +119,10 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 	// Vamos a generar el código en el panel
 	{
 		XrcCodeGenerator codegen;
-
-		m_xrcPanel->GetTextCtrl()->Freeze();
-
 		codegen.SetWriter( m_cw );
 		codegen.GenerateCode( project );
-
-		m_xrcPanel->GetTextCtrl()->Thaw();
+		editor->SetReadOnly( true );
+		editor->Thaw();
 	}
 
 	if ( panelOnly )
