@@ -49,7 +49,6 @@
 #include "maingui.h"
 
 #include "utils/wxlogstring.h"
-#include "utils\debug.h"
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
