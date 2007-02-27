@@ -1115,7 +1115,7 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 wxMenuBar * MainFrame::CreateFBMenuBar()
 {
 	wxMenu *menuFile = new wxMenu;
-	menuFile->Append( ID_NEW_PRJ, wxT( "&New" ), wxT( "create an empty project" ) );
+	menuFile->Append( ID_NEW_PRJ, wxT( "&New Project" ), wxT( "Create an empty project" ) );
 	menuFile->Append( ID_OPEN_PRJ, wxT( "&Open...\tF2" ), wxT( "Open a project" ) );
 
 	menuFile->Append( ID_SAVE_PRJ,          wxT( "&Save\tCtrl+S" ), wxT( "Save current project" ) );
