@@ -6,6 +6,8 @@ date Version 3.00.25 (Beta 3)
 * Fixed FS#132 — "Splitter window control moves its sash unexpectedly at design time."
 * Fixed spacer not displaying properly in most sizers.
   This was a regression in build 3.00.23.
+* Fixed FS#133 — "Error when moving between designer/C++/XRC tabs."
+  This was a regression in build 3.00.24.
 ^ Now connecting an event handler to idle events for splitter windows to reliably
   set the initial sash position.
 
@@ -16,7 +18,6 @@ date Version 3.00.25 (Beta 3)
 * Fixed FS#104 — "Editing XRC/C++ files should be disallowed completely or allowed to affect GUI properties."
 * Fixed FS#127 — "Change 'new' label to 'new project'."
 * Fixed FS#125 — "Buggy cut/paste of panels from splitter window controls."
-* Fixed FS#113 — "Error when undoing cutting controls."
 
 02-26-2007 Version 3.00.23 (Beta 3)
 + Added wxGridBagSizer. This closes FS#58.

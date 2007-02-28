@@ -703,10 +703,17 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 
 void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 {
-	wxString code = GetCode( obj, wxT("generated_event_handlers") );
-	if ( !code.empty() )
+	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+	if ( code_info )
 	{
-		m_header->WriteLn(code);
+		wxString _template = _template = code_info->GetTemplate( wxT("generated_event_handlers") );
+		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		wxString code = parser.ParseTemplate();
+
+		if ( !code.empty() )
+		{
+			m_header->WriteLn(code);
+		}
 	}
 
 	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
