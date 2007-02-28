@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.25 (Beta 3)
+02-28-2007 Version 3.00.25 (Beta 3)
 * Fixed FS#100 — "Problem with the relative path of XPM"
 * Fixed FS#126 — "Splitter window control without a panel does not get redrawn correctly."
 * Fixed FS#132 — "Splitter window control moves its sash unexpectedly at design time."
