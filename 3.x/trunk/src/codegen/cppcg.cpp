@@ -1409,7 +1409,7 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 		}
 	}
 
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn( wxEmptyString );
 }
 
 void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& xpmset )
@@ -1440,7 +1440,7 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 
 				// Se supone el path contiene la ruta completa del archivo y no
 				// una relativa.
-				wxString relPath = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, AppData()->GetProjectPath() ) : absPath );
+				wxString relPath = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
 				wxString inc;
 				inc << wxT("#include \"") << ConvertCppString( relPath ) << wxT("\"");
