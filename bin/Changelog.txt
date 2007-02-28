@@ -1,5 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.25 (Beta 3)
+* Fixed FS#100 — "Problem with the relative path of XPM"
+
 02-27-2007 Version 3.00.24 (Beta 3)
 * Fixed FS#131 — "Folder not getting released after saving a project into it."
 * Fixed FS#114 — "Not being able to cut non-top-level sizers and paste them as top-level sizers."
