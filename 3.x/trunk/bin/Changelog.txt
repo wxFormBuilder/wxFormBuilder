@@ -4,6 +4,8 @@ date Version 3.00.25 (Beta 3)
 * Fixed FS#100 — "Problem with the relative path of XPM"
 * Fixed FS#126 — "Splitter window control without a panel does not get redrawn correctly."
 * Fixed FS#132 — "Splitter window control moves its sash unexpectedly at design time."
+^ Now connecting an event handler to idle events for splitter windows to reliably
+  set the initial sash position.
 
 02-27-2007 Version 3.00.24 (Beta 3)
 * Fixed FS#131 — "Folder not getting released after saving a project into it."

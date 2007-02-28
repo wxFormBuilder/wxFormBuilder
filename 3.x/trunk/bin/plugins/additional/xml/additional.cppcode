@@ -135,7 +135,15 @@
 		#ifnotequal $min_pane_size "0"
 		@{	$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
 	  @}
+	  $name->Connect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, #wxparent $name );
     </template>
+	<template name="generated_event_handlers">
+		void $name #append OnIdle( wxIdleEvent&amp; ) #nl
+		{ #nl
+			$name->SetSashPosition( $sashpos ); #nl
+			$name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, #wxparent $name ); #nl
+		} #nl
+	</template>
 	<template name="evt_entry_OnSplitterSashPosChanging">EVT_SPLITTER_SASH_POS_CHANGING( $id, #handler )</template>
 	<template name="evt_entry_OnSplitterSashPosChanged">EVT_SPLITTER_SASH_POS_CHANGED( $id, #handler )</template>
 	<template name="evt_entry_OnSplitterUnsplit">EVT_SPLITTER_UNSPLIT( $id, #handler )</template>
