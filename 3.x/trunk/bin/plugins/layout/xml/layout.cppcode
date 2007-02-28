@@ -7,7 +7,9 @@
 	  @{ $name->SetMinSize( $minimum_size ); @}
     </template>
   </templates>
-
+	
+  <templates class="spacer"/>
+  
   <templates class="sizeritem">
     <template name="window_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
     <template name="sizer_add">#parent $name->Add( #child $name, $proportion, $flag, $border ); #nl</template>
