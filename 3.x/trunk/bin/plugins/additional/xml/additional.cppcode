@@ -55,7 +55,7 @@
 	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
 	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
   </templates>
-  
+
   <templates class="wxRadioButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -123,25 +123,25 @@
 		#ifnotequal $sashgravity "0.0"
 		@{ $name->SetSashGravity( $sashgravity ); #nl @}
 	  @}
-	  
+
 	  #ifnotnull $sashsize
 	  @{
 		#ifnotequal $sashsize "-1"
 		@{	$name->SetSashSize( $sashsize ); #nl @}
 	  @}
-	  
+
 	  #ifnotnull $min_pane_size
 	  @{
 		#ifnotequal $min_pane_size "0"
 		@{	$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
 	  @}
-	  $name->Connect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, #wxparent $name );
+	  $name->Connect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this );
     </template>
 	<template name="generated_event_handlers">
 		void $name #append OnIdle( wxIdleEvent&amp; ) #nl
 		{ #nl
 			$name->SetSashPosition( $sashpos ); #nl
-			$name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, #wxparent $name ); #nl
+			$name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this ); #nl
 		} #nl
 	</template>
 	<template name="evt_entry_OnSplitterSashPosChanging">EVT_SPLITTER_SASH_POS_CHANGING( $id, #handler )</template>

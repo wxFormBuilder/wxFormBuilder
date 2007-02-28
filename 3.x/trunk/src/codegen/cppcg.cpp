@@ -706,13 +706,16 @@ void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 	if ( code_info )
 	{
-		wxString _template = _template = code_info->GetTemplate( wxT("generated_event_handlers") );
-		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
-		wxString code = parser.ParseTemplate();
-
-		if ( !code.empty() )
+		wxString _template = code_info->GetTemplate( wxT("generated_event_handlers") );
+		if ( !_template.empty() )
 		{
-			m_header->WriteLn(code);
+			CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+			wxString code = parser.ParseTemplate();
+
+			if ( !code.empty() )
+			{
+				m_header->WriteLn(code);
+			}
 		}
 	}
 
