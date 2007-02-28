@@ -132,6 +132,14 @@ public:
 
 	int m_customSashPos;
 	int m_customMinPaneSize;
+	int m_initialSashPos;
+
+	// Used to ensure sash position is correct
+	void OnIdle( wxIdleEvent& event )
+	{
+		SetSashPosition( m_initialSashPos );
+		Disconnect( wxEVT_IDLE, wxIdleEventHandler( wxCustomSplitterWindow::OnIdle ) );
+	}
 
 private:
 
@@ -149,6 +157,7 @@ private:
 					wxT("Unsplit Vetoed!"), wxICON_INFORMATION, NULL );
 		}
 	}
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -491,6 +500,13 @@ class SplitterWindowComponent : public ComponentBase
 			splitter->SetMinimumPaneSize( minPaneSize );
 		}
 
+		// Always have a child so it is drawn consistently
+		splitter->Initialize( new wxPanel( splitter ) );
+
+		// Used to ensure sash position is correct
+		splitter->m_initialSashPos = obj->GetPropertyAsInteger( _("sashpos") );
+		splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( wxCustomSplitterWindow::OnIdle ) );
+
 		return splitter;
 	}
 
@@ -540,6 +556,9 @@ class SplitterWindowComponent : public ComponentBase
 			return;
 		}
 
+		// Remove default panel
+		wxWindow* firstChild = splitter->GetWindow1();
+
 		size_t childCount = GetManager()->GetChildCount( wxobject );
 		switch ( childCount )
 		{
@@ -556,7 +575,15 @@ class SplitterWindowComponent : public ComponentBase
 					return;
 				}
 
-				splitter->Initialize( subwindow );
+				if ( firstChild )
+				{
+					splitter->ReplaceWindow( firstChild, subwindow );
+					firstChild->Destroy();
+				}
+				else
+				{
+					splitter->Initialize( subwindow );
+				}
 				splitter->PushEventHandler( new ComponentEvtHandler( splitter, GetManager() ) );
 				break;
 			}
@@ -586,6 +613,12 @@ class SplitterWindowComponent : public ComponentBase
 				int sashPos = obj->GetPropertyAsInteger(_("sashpos"));
 				int splitmode = obj->GetPropertyAsInteger(_("splitmode"));
 
+				if ( firstChild )
+				{
+					splitter->ReplaceWindow( firstChild, subwindow0 );
+					firstChild->Destroy();
+				}
+
 				if ( splitmode == wxSPLIT_VERTICAL )
 				{
 					splitter->SplitVertically( subwindow0, subwindow1, sashPos );
@@ -601,24 +634,6 @@ class SplitterWindowComponent : public ComponentBase
 			default:
 				return;
 		}
-	}
-
-	void OnSelected( wxObject* wxobject )
-	{
-		wxCustomSplitterWindow* splitter = wxDynamicCast( wxobject, wxCustomSplitterWindow );
-		if ( NULL == splitter )
-		{
-			wxLogError( _("This should be a wxSplitterWindow") );
-			return;
-		}
-
-		IObject* obj = GetManager()->GetIObject( wxobject );
-		if ( obj == NULL )
-		{
-			return;
-		}
-		int sashPos = obj->GetPropertyAsInteger(_("sashpos"));
-		splitter->SetSashPosition( sashPos );
 	}
 };
 
