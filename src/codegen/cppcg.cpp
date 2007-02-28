@@ -701,6 +701,22 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 	}
 }
 
+void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
+{
+	wxString code = GetCode( obj, wxT("generated_event_handlers") );
+	if ( !code.empty() )
+	{
+		m_header->WriteLn(code);
+	}
+
+	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
+	{
+		PObjectBase child = obj->GetChild(i);
+		GetGenEventHandlers(child);
+	}
+}
+
+
 wxString CppCodeGenerator::GetCode(PObjectBase obj, wxString name)
 {
 	wxString _template;
@@ -781,6 +797,8 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	// The constructor is also included within public
 	m_header->WriteLn( GetCode( class_obj, wxT("cons_decl") ) );
+
+	GetGenEventHandlers( class_obj );
 	m_header->Unindent();
 	m_header->WriteLn( wxT("") );
 

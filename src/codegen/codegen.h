@@ -108,6 +108,7 @@ protected:
 		ID_ERROR,
 		ID_WXPARENT,
 		ID_PARENT,
+		ID_FORM,
 		ID_CHILD,
 		ID_IFNOTNULL,
 		ID_IFNULL,
@@ -148,6 +149,7 @@ protected:
 	bool ParseInnerTemplate();
 	bool ParseWxParent();
 	bool ParseParent();
+	bool ParseForm();
 	bool ParseChild();
 	bool ParseForEach();
 	bool ParseIfNotNull();

@@ -138,6 +138,11 @@ private:
 	void GenAttributeDeclaration( PObjectBase obj, Permission perm);
 
 	/**
+	Generates the generated_event_handlers template
+	*/
+	void GetGenEventHandlers( PObjectBase obj );
+
+	/**
 	* Genera la sección de '#include' fichero.
 	*/
 	void GenIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );

@@ -149,6 +149,9 @@ bool TemplateParser::ParseMacro()
 	case ID_PARENT:
 		return ParseParent();
 		break;
+	case ID_FORM:
+		return ParseForm();
+		break;
 	case ID_IFNOTNULL:
 		return ParseIfNotNull();
 		break;
@@ -363,6 +366,31 @@ bool TemplateParser::ParseWxParent()
 		ParsePropertyName();
 		m_out << RootWxParentToCode();
 	}
+
+	return true;
+}
+
+bool TemplateParser::ParseForm()
+{
+	PObjectBase form (m_obj);
+	PObjectBase parent(form->GetParent());
+
+	if ( !parent )
+	{
+		return false;
+	}
+
+	// form is a form when grandparent is null
+	PObjectBase	grandparent = parent->GetParent();
+	while ( grandparent )
+	{
+		form = parent;
+		parent = grandparent;
+		grandparent = grandparent->GetParent();
+	}
+
+	PProperty property = GetRelatedProperty( form );
+	m_out << PropertyToCode( property );
 
 	return true;
 }
@@ -760,6 +788,8 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_APPEND;
 	else if (ident == wxT("class") )
 		return ID_CLASS;
+	else if (ident == wxT("form") )
+		return ID_FORM;
 	else
 		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
 }
@@ -897,7 +927,14 @@ void TemplateParser::ParseClass()
 
 wxString TemplateParser::PropertyToCode(PProperty property)
 {
-	return ValueToCode(property->GetType(), property->GetValue());
+	if ( property )
+	{
+		return ValueToCode(property->GetType(), property->GetValue());
+	}
+	else
+	{
+		return wxEmptyString;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////
