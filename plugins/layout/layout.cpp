@@ -117,6 +117,7 @@ public:
 		{
 			sizer->Add(	childObj->GetPropertyAsInteger( _("width") ),
 						childObj->GetPropertyAsInteger( _("height") ),
+						obj->GetPropertyAsInteger(_("proportion")),
 						obj->GetPropertyAsInteger(_("flag")),
 						obj->GetPropertyAsInteger(_("border"))
 						);
