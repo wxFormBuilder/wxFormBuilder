@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.0.25"
+#define MyAppVer "3.0.26"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
@@ -95,6 +95,7 @@ Root: HKCR; SubKey: {#MyAppName}.Project; ValueType: string; ValueData: {#MyAppN
 Root: HKCR; SubKey: {#MyAppName}.Project\Shell\Open\Command; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue
 
 [_ISToolPreCompile]
+Name: create_install_files_pkg.bat; Parameters: ; Flags: runminimized
 Name: create_source_package.bat; Parameters: ; Flags: runminimized
 
 [Code]
