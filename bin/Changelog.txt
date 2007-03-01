@@ -1,5 +1,9 @@
-﻿                     wxFormBuilder ChangeLog
+﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.26 (Beta 3)
+* Fixed FS#136 — "Panel size doen't change properly when 'size' is set to -1"
+* Fixed FS#137 — "Allow -1 for the 'size' property if the minimum/maximum size is set."
+
 02-28-2007 Version 3.00.25 (Beta 3)
 * Fixed FS#100 — "Problem with the relative path of XPM"
 * Fixed FS#126 — "Splitter window control without a panel does not get redrawn correctly."
@@ -22,11 +26,11 @@
 02-26-2007 Version 3.00.23 (Beta 3)
 + Added wxGridBagSizer. This closes FS#58.
    Cannot use wxGBS as the first sizer in a form until the object model improves.
-^ Spacer now uses sizeritem, instead of being standalone. 
+^ Spacer now uses sizeritem, instead of being standalone.
    This forced a project version uprev to 1.6
-^ Converted all wxLogDebug to Debug::Print so __WXFB_DEBUG__ is used to 
+^ Converted all wxLogDebug to Debug::Print so __WXFB_DEBUG__ is used to
    determine whether or not to log.
-^ Improved precompiled header support. 
+^ Improved precompiled header support.
   NOTE: You must now define WX_PRECOMP when compiling to use a precompiled header.
 
 02-23-2007 Version 3.00.22 (Beta 3)
@@ -40,7 +44,7 @@
   with the same function (but it doesn't check that the event class is the
   same).
 * Fixed FS#98 - Non-existing files are removed from the recent files list.
-+ Added wxEVT_UPDATE_UI event to all controls (if it has a sense). 
++ Added wxEVT_UPDATE_UI event to all controls (if it has a sense).
 
 02-18-2007 Version 3.00.20 (Beta 3)
 * Fixed FS#93 — "wxGrid -> Object type unknown in XRC."
