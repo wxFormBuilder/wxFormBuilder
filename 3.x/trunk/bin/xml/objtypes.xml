@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <definitions>
 <!--
-  Definiciones de los tipos de clases
-  -----------------------------------
-
-  En este fichero se especifican las definiciones de los tipos
-  de objetos de wxFormBuilder. A cada componente (ObjectInfo) se
-  le especifica un tipo definido aqu.
-
-  Los tipos determinan las reglas de ubicacin dentro del rbol de
-  objetos, y mediante ciertos atributos se indica a wxFormBuilder
-  cmo debe tratar el objeto.
-
-  name [text]    : identificador del tipo
-  item ["0"/"1"] : flag que indica si el tipo de objeto es un item o un objeto normal.
-                        Los items son objetos ficticios que encapsulan otro objeto (p.e. "sizeritem").
-                        Los items no se muestran en el arbol de objetos, ni en la paleta de componentes
-                        son creados automticamente.
-			Nota: el nombre del tipo item ha de coincidir con el nombre de la clase.
-
-
+  Object type definitions
+  -----------------------
+  
+  All wxFormBuilder objects have a type which is used for building
+  a well-formed tree. You will be able to create an object if its
+  type is defined as a child-type of the parent object type.
+  For example, you can create a wxFrame (type form) below the project
+  object, but not in any other place.
+  
+  If a type has the "item" flag set to one, it means that the object
+  with that type is not a regular (as controls and sizers) object,
+  it's a "item" object.
+  
+  Items are used to extend the set of properties of the object inside it.
+  For example, every object created below a sizer will have the sizeritem properties,
+  needed to add the object into the sizer.
+  
+  Item objects are created implicitly by wxFormBuilder. If the object
+  creation fails by checking the types, wxFB tries to find a item object
+  that match the placement rules.
+  
+  For example, if you try to create a wxButton (type "widget") below
+  a wxBoxSizer (type "sizer"), the creation fails at the first instance
+  because a sizer can't contain a widget. Then, wxFB checks if the
+  "widget" can be created with a item between them and it finds that
+  a widget can be created below a sizer if there is a sizeritem between
+  them.
+  
+  Note: the name of item type has to the same that the class associated to
+        that item. wxFB needs to know the class name in order to create
+	the object automatically.
+  
+  Items objects are not showed in the object tree, but the properties
+  are showed attached with the inner object properties.
+  
+  "nmax" flag of a childtype object indicates the maximum number
+  of objects that can be created. Items should contains just one
+  object, so nmax is set to '1'.
   -->
   <objtype name="project">
     <childtype name="form" />
