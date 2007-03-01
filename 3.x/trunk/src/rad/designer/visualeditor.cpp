@@ -215,15 +215,14 @@ void VisualEditor::Create()
 		m_back->SetMaxSize( maxSize );
 
 		wxSize size( m_form->GetPropertyAsSize( wxT("size") ) );
-		bool need_fit = ( wxDefaultSize == size );
 
 		// Determine necessary size for back panel
 		wxSize backSize = size;
-		if ( backSize.GetWidth() < minSize.GetWidth() )
+		if ( backSize.GetWidth() < minSize.GetWidth() && backSize.GetWidth() != wxDefaultCoord )
 		{
 			backSize.SetWidth( minSize.GetWidth() );
 		}
-		if ( backSize.GetHeight() < minSize.GetHeight() )
+		if ( backSize.GetHeight() < minSize.GetHeight() && backSize.GetHeight() != wxDefaultCoord )
 		{
 			backSize.SetHeight( minSize.GetHeight() );
 		}
@@ -235,7 +234,6 @@ void VisualEditor::Create()
 		{
 			backSize.SetHeight( maxSize.GetHeight() );
 		}
-		m_back->SetSize( backSize );
 
 		// Modify size property to match
 		if ( size != backSize )
@@ -323,7 +321,7 @@ void VisualEditor::Create()
 
 		m_back->Layout();
 
-		if ( need_fit )
+		if ( backSize.GetHeight() == wxDefaultCoord || backSize.GetWidth() == wxDefaultCoord )
 		{
 			if ( m_back->GetFrameContentPanel()->GetSizer() )
 			{
@@ -334,6 +332,9 @@ void VisualEditor::Create()
 				m_back->SetToBaseSize();
 			}
 		}
+
+		// Set size after fitting so if only one dimesion is -1, it still fits that dimension
+		m_back->SetSize( backSize );
 
 		if ( menubar || statusbar || toolbar )
 		{
