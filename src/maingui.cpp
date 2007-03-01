@@ -49,6 +49,7 @@
 #include "maingui.h"
 
 #include "utils/wxlogstring.h"
+#include "utils/debug.h"
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
@@ -62,10 +63,6 @@ IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
-	// Redirect log to string until gui log comes up
-	wxLogString* stringLog = new wxLogString();
-    delete wxLog::SetActiveTarget( stringLog );
-
 	// Using a space so the initial 'w' will not be capitalized in GUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
@@ -87,10 +84,6 @@ bool MyApp::OnInit()
 	::wxSetWorkingDirectory( path );
 	#endif
 
-	// Create singleton AppData - wait to initialize until sure that this is not the second
-	// instance of a project file.
-	AppDataCreate( path );
-
 	// Parse command line
 	wxCmdLineParser parser( s_cmdLineDesc, argc, argv );
 	if ( 0 != parser.Parse() )
@@ -108,7 +101,6 @@ bool MyApp::OnInit()
 	bool justGenerate = false;
 	if ( parser.Found( wxT("g") ) )
 	{
-		stringLog = NULL;
 		delete wxLog::SetActiveTarget( new wxLogStderr );
 
 		if ( projectToLoad.empty() )
@@ -120,6 +112,14 @@ bool MyApp::OnInit()
 		// generate code
 		justGenerate = true;
 	}
+	else
+	{
+		delete wxLog::SetActiveTarget( new wxLogGui );
+	}
+
+	// Create singleton AppData - wait to initialize until sure that this is not the second
+	// instance of a project file.
+	AppDataCreate( path );
 
 	// Make passed project name absolute
 	try
@@ -171,9 +171,8 @@ bool MyApp::OnInit()
 	catch( wxFBException& ex )
 	{
 		wxLog::FlushActive();
-		wxMessageBox( 	wxString::Format( 	_("Error loading application: %s\nwxFormBuilder cannot continue.\nLog:\n%s"),
-											ex.what(),
-											(stringLog != NULL ? stringLog->GetStr().c_str() : wxT(""))
+		wxMessageBox( 	wxString::Format( 	_("Error loading application: %s\nwxFormBuilder cannot continue."),
+											ex.what()
 										),
 						_("Error loading application"),
 						wxICON_ERROR,
@@ -203,17 +202,6 @@ bool MyApp::OnInit()
 
 	wxYield();
 
-	if ( !justGenerate )
-	{
-		#ifdef __WXFB_DEBUG__
-			m_log = new wxLogWindow( NULL, wxT( "Logging" ) );
-			wxLog::SetActiveTarget( m_log );
-			wxLogMessage( stringLog->GetStr() );
-		#else
-			delete wxLog::SetActiveTarget( new wxLogGui() );
-		#endif
-	}
-
 	// Read size and position from config file
 	wxConfigBase *config = wxConfigBase::Get();
 	config->SetPath( wxT("/mainframe") );
@@ -239,7 +227,11 @@ bool MyApp::OnInit()
 		SetTopWindow( frame );
 
 		#ifdef __WXFB_DEBUG__
-			frame->AddChild( m_log->GetFrame() );
+			wxLogWindow* log = dynamic_cast< wxLogWindow* >( AppData()->GetDebugLogTarget() );
+			if ( log )
+			{
+				frame->AddChild( log->GetFrame() );
+			}
 		#endif //__WXFB_DEBUG__
 	}
 
