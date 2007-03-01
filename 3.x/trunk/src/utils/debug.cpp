@@ -24,6 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "debug.h"
+#include "rad/appdata.h"
 #include <stdarg.h>
 
 #include "wx/wx.h"
@@ -31,6 +32,7 @@
 void Debug::Print( const wxChar* format, ... )
 {
 	#ifdef __WXFB_DEBUG__
+		wxLog* oldTarget = wxLog::SetActiveTarget( AppData()->GetDebugLogTarget() );
 		va_list argptr;
 		va_start(argptr, format);
 
@@ -40,5 +42,6 @@ void Debug::Print( const wxChar* format, ... )
 		wxLogMessage(s);
 
 		va_end(argptr);
+		wxLog::SetActiveTarget( oldTarget );
 	#endif //__WXFB_DEBUG__
 }

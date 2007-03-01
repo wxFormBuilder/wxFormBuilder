@@ -452,9 +452,23 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_fbpVerMajor( 1 ),
 		m_fbpVerMinor( 6 )
 {
+	#ifdef __WXFB_DEBUG__
+	wxLog* log = wxLog::SetActiveTarget( NULL );
+	m_debugLogTarget = new wxLogWindow( NULL, wxT( "Logging" ) );
+	wxLog::SetActiveTarget( log );
+	#endif
 	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT( "xml" ) + wxFILE_SEP_PATH ) ;
 	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "icons" ) + wxFILE_SEP_PATH );
 	m_objDb->SetPluginPath( m_rootDir + wxFILE_SEP_PATH + wxT( "plugins" ) + wxFILE_SEP_PATH ) ;
+}
+
+ApplicationData::~ApplicationData()
+{
+	#ifdef __WXFB_DEBUG__
+	//No need to delete wxLogWindow because it is a child of MainFrame
+	//May possible log to a text control at a later date.
+	//delete m_debugLogTarget;
+	#endif
 }
 
 void ApplicationData::LoadApp()

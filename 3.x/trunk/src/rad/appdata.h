@@ -223,7 +223,17 @@ class ApplicationData
 		// hiden constructor
 		ApplicationData( const wxString &rootdir = wxT( "." ) );
 
+		#ifdef __WXFB_DEBUG__
+		wxLog* m_debugLogTarget;
+		#endif
+
 	public:
+
+		~ApplicationData();
+
+		#ifdef __WXFB_DEBUG__
+		wxLog* GetDebugLogTarget(){ return m_debugLogTarget; }
+		#endif
 
 		static ApplicationData* Get( const wxString &rootdir = wxT( "." ) );
 
