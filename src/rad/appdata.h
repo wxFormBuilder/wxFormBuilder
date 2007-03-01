@@ -253,7 +253,7 @@ class ApplicationData
 		void ExpandObject( PObjectBase obj, bool expand );
 
 		// Object will not be selected if it already is selected, unless force = true
-		void SelectObject( PObjectBase obj, bool force = false );
+		void SelectObject( PObjectBase obj, bool force = false, bool notify = true );
 
 		void CreateObject( wxString name );
 

@@ -283,7 +283,7 @@ void RemoveObjectCmd::DoRestore()
 
 	// restauramos la posición
 	m_parent->ChangeChildPosition( m_object, m_oldPos );
-	m_data->SelectObject( m_oldSelected );
+	m_data->SelectObject( m_oldSelected, true, false );
 }
 
 //-----------------------------------------------------------------------------
@@ -381,10 +381,12 @@ void CutObjectCmd::DoRestore()
 	m_object->SetParent( m_parent );
 	m_parent->ChangeChildPosition( m_object, m_oldPos );
 
+
+
 	// restauramos el clipboard
 	//m_data->SetClipboardObject(m_clipboard);
 	m_data->SetClipboardObject( PObjectBase() );
-	m_data->SelectObject( m_oldSelected );
+	m_data->SelectObject( m_oldSelected, true, false );
 }
 
 //-----------------------------------------------------------------------------
@@ -656,25 +658,19 @@ void ApplicationData::ExpandObject( PObjectBase obj, bool expand )
 	NotifyObjectExpanded( obj );
 }
 
-void ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/ )
+void ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, bool notify /*= true */ )
 {
 	if ( ( obj == m_selObj ) && !force )
 	{
 		return;
 	}
 
-	Debug::Print( wxT( "Object Selected!" ) );
-
 	m_selObj = obj;
-	/*
-	if (obj->GetObjectType() != T_FORM)
-	{
-	m_selForm = shared_dynamic_cast<FormObject>(obj->FindNearAncestor(T_FORM));
-	}
-	else
-	m_selForm = shared_dynamic_cast<FormObject>(obj);*/
 
-	NotifyObjectSelected( obj );
+	if ( notify )
+	{
+		NotifyObjectSelected( obj );
+	}
 }
 
 void ApplicationData::CreateObject( wxString name )
