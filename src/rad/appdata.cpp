@@ -36,13 +36,13 @@
 #include "utils/wxfbexception.h"
 #include "utils/stringutils.h"
 #include "utils/wxfbipc.h"
+#include "rad/xrcpreview/xrcpreview.h"
 
 #include <ticpp.h>
 #include <set>
 #include <wx/tokenzr.h>
 #include <wx/ffile.h>
 #include <wx/filename.h>
-#include <wx/xrc/xmlres.h>
 
 
 using namespace TypeConv;
@@ -2140,56 +2140,7 @@ void ApplicationData::ShowXrcPreview()
 		return;
 	}
 
-	wxString className = form->GetClassName();
-
-	XrcCodeGenerator codegen;
-	wxString filePath = wxFileName::CreateTempFileName( wxT( "wxFB" ) );
-	PCodeWriter cw( new FileCodeWriter( filePath ) );
-
-	codegen.SetWriter( cw );
-	codegen.GenerateCode( form );
-
-	wxString workingDir = ::wxGetCwd();
-	// We change the current directory so that the relative paths work properly
-	::wxSetWorkingDirectory( GetProjectPath() );
-	wxXmlResource *res = wxXmlResource::Get();
-	res->InitAllHandlers();
-	res->Load( filePath );
-
-	if ( className == wxT( "Frame" ) )
-	{
-		wxFrame *frame = new wxFrame();
-		res->LoadFrame( frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ) );
-		// Prevent events from propagating up to wxFB's frame
-		frame->SetExtraStyle( frame->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-		frame->Show();
-	}
-	else if ( className == wxT( "Dialog" ) )
-	{
-		wxDialog dialog;
-		res->LoadDialog( &dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ) );
-		// Prevent events from propagating up to wxFB's frame
-		dialog.SetExtraStyle( dialog.GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-		dialog.ShowModal();
-	}
-	else if ( className == wxT( "Panel" ) )
-	{
-		wxDialog dialog( wxTheApp->GetTopWindow(), -1, wxT( "Dialog" ), wxDefaultPosition,
-		                 wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
-		// Prevent events from propagating up to wxFB's frame
-		dialog.SetExtraStyle( wxWS_EX_BLOCK_EVENTS );
-		wxPanel *panel = new wxPanel();
-		res->LoadPanel( panel, &dialog, form->GetPropertyAsString( wxT( "name" ) ) );
-		dialog.SetClientSize( panel->GetSize() );
-		dialog.SetSize( form->GetPropertyAsSize( wxT( "size" ) ) );
-		dialog.CenterOnScreen();
-		dialog.ShowModal();
-	}
-
-	::wxSetWorkingDirectory( workingDir );
-
-	res->Unload( filePath );
-	::wxRemoveFile( filePath );
+	XRCPreview::Show( form, GetProjectPath() );
 }
 
 bool ApplicationData::CanPasteObject()
