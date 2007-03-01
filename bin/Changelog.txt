@@ -4,6 +4,7 @@ date Version 3.00.26 (Beta 3)
 * Fixed FS#136 — "Panel size doen't change properly when 'size' is set to -1"
 * Fixed FS#137 — "Allow -1 for the 'size' property if the minimum/maximum size is set."
 * Fixed FS#113 — "Error when undoing cutting controls."
+* Fixed FS#97 — "Menu items in XRC preview window involve wxFB functionality"
 
 02-28-2007 Version 3.00.25 (Beta 3)
 * Fixed FS#100 — "Problem with the relative path of XPM"

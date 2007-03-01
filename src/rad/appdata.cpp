@@ -2160,18 +2160,24 @@ void ApplicationData::ShowXrcPreview()
 	{
 		wxFrame *frame = new wxFrame();
 		res->LoadFrame( frame, wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ) );
+		// Prevent events from propagating up to wxFB's frame
+		frame->SetExtraStyle( frame->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
 		frame->Show();
 	}
 	else if ( className == wxT( "Dialog" ) )
 	{
 		wxDialog dialog;
 		res->LoadDialog( &dialog, wxTheApp->GetTopWindow(), form->GetPropertyAsString( wxT( "name" ) ) );
+		// Prevent events from propagating up to wxFB's frame
+		dialog.SetExtraStyle( dialog.GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
 		dialog.ShowModal();
 	}
 	else if ( className == wxT( "Panel" ) )
 	{
 		wxDialog dialog( wxTheApp->GetTopWindow(), -1, wxT( "Dialog" ), wxDefaultPosition,
 		                 wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
+		// Prevent events from propagating up to wxFB's frame
+		dialog.SetExtraStyle( wxWS_EX_BLOCK_EVENTS );
 		wxPanel *panel = new wxPanel();
 		res->LoadPanel( panel, &dialog, form->GetPropertyAsString( wxT( "name" ) ) );
 		dialog.SetClientSize( panel->GetSize() );
