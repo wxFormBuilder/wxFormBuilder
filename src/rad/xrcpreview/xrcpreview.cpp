@@ -28,11 +28,17 @@ protected:
 		}
 	}
 
+	void OnClose( wxCloseEvent& )
+	{
+		m_window->Destroy();
+	}
+
 	DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE( XRCPreviewEvtHandler, wxEvtHandler )
 	EVT_KEY_UP( XRCPreviewEvtHandler::OnKeyUp )
+	EVT_CLOSE ( XRCPreviewEvtHandler::OnClose )
 END_EVENT_TABLE()
 
 void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
