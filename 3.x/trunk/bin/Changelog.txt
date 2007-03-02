@@ -1,4 +1,4 @@
-﻿﻿﻿﻿                     wxFormBuilder ChangeLog
+﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 03-02-2007 Version 3.00.27 (Beta 3)
 ^ Implemented FS#142 — "set wxStaticline’s default value to wxEXPAND"
