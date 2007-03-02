@@ -394,6 +394,10 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 		}
 		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND") );
 	}
+	else if ( childInfo->GetClassName() == wxT("wxStaticLine") )
+	{
+		sizeritem->GetProperty( wxT("flag") )->SetValue( wxT("wxEXPAND | wxALL") );
+	}
 	else if ( obj_type == wxT("widget") || obj_type == wxT("statusbar") )
 	{
 		if ( proportion )

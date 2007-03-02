@@ -1,5 +1,8 @@
-﻿﻿﻿                     wxFormBuilder ChangeLog
+﻿﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.27 (Beta 3)
+^ Implemented FS#142 — "set wxStaticline’s default value to wxEXPAND"
+
 03-01-2007 Version 3.00.26 (Beta 3)
 * Fixed FS#136 — "Panel size doesn't change properly when 'size' is set to -1"
 * Fixed FS#137 — "Allow -1 for the 'size' property if the minimum/maximum size is set."
