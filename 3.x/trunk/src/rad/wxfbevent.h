@@ -31,11 +31,18 @@
 
 class wxFBEvent : public wxEvent
 {
+	private:
+		wxString m_string;
+
 	public:
 		wxFBEvent( wxEventType commandType = wxEVT_NULL );
+		wxFBEvent( const wxFBEvent& event );
 		virtual ~wxFBEvent();
 
 		wxString GetEventName();
+
+		void SetString( const wxString& newString );
+		wxString GetString();
 
 		// required for sending with wxPostEvent()
 		wxEvent* Clone() const;
