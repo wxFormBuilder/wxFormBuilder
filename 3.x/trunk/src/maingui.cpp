@@ -48,12 +48,13 @@
 #include <memory>
 #include "maingui.h"
 
-#include "utils/wxlogstring.h"
 #include "utils/debug.h"
+#include "model/objectbase.h"
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
-	{ wxCMD_LINE_SWITCH, wxT("g"), wxT("generate"),	wxT("Generate code from passed file.") },
+	{ wxCMD_LINE_SWITCH, wxT("g"), wxT("generate"),	wxT("Generate code from passed file. Use the 'language' option to override the project settings.") },
+	{ wxCMD_LINE_OPTION, wxT("l"), wxT("language"),	wxT("Generate the languages passed. Separate multiple languages with commas.") },
 	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),		wxT("Show this help message."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP  },
 	{ wxCMD_LINE_PARAM, NULL, NULL,	wxT("File to open."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
 	{ wxCMD_LINE_NONE }
@@ -99,14 +100,31 @@ bool MyApp::OnInit()
 	}
 
 	bool justGenerate = false;
+	wxString language;
+	bool hasLanguage = parser.Found( wxT("l"), &language );
 	if ( parser.Found( wxT("g") ) )
 	{
+		#ifdef __WXMSW__
+		// Windows has no stderr in gui programs
+		delete wxLog::SetActiveTarget( new wxLogGui );
+		#else
 		delete wxLog::SetActiveTarget( new wxLogStderr );
+		#endif
 
 		if ( projectToLoad.empty() )
 		{
 			wxLogError( _("You must pass a path to a project file. Nothing to generate.") );
 			return false;
+		}
+
+		if ( hasLanguage )
+		{
+			if ( language.empty() )
+			{
+				wxLogError( _("Empty language option. Nothing generated.") );
+				return false;
+			}
+			language.Replace( wxT(","), wxT("|"), true );
 		}
 
 		// generate code
@@ -241,6 +259,15 @@ bool MyApp::OnInit()
 		{
 			if ( justGenerate )
 			{
+				if ( hasLanguage )
+				{
+					PObjectBase project = AppData()->GetProjectData();
+					PProperty codeGen = project->GetProperty( _("code_generation") );
+					if ( codeGen )
+					{
+						codeGen->SetValue( language );
+					}
+				}
 				AppData()->GenerateCode( false );
 				return false;
 			}

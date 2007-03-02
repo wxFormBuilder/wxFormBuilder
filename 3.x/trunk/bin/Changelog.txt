@@ -2,6 +2,10 @@
 ************************************************************************
 date Version 3.00.27 (Beta 3)
 ^ Implemented FS#142 — "set wxStaticline’s default value to wxEXPAND"
+^ Implemented FS#140 — "Better code generation selection implementation."
+   Always generate code to the visible panel.
+   Added -l (language) command line option to specify languages to generate
+    when generating from command line. Separate multiple languages with commas.
 
 03-01-2007 Version 3.00.26 (Beta 3)
 * Fixed FS#136 — "Panel size doesn't change properly when 'size' is set to -1"
