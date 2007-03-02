@@ -544,7 +544,7 @@ void MainFrame::OnNewProject( wxCommandEvent &event )
 
 void MainFrame::OnGenerateCode( wxCommandEvent &event )
 {
-	AppData()->GenerateCode();
+	AppData()->GenerateCode( false, m_notebook->GetPageText( m_notebook->GetSelection() ) );
 }
 
 void MainFrame::OnAbout( wxCommandEvent &event )
@@ -1107,7 +1107,7 @@ bool MainFrame::SaveWarning()
 
 void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 {
-	AppData()->GenerateCode( true );
+	AppData()->GenerateCode( true, m_notebook->GetPageText( m_notebook->GetSelection() ) );
 }
 
 /////////////////////////////////////////////////////////////////////////////

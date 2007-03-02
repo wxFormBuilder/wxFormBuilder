@@ -50,6 +50,18 @@ wxEvent* wxFBEvent::Clone() const
 	return new wxFBEvent( *this );
 }
 
+wxFBEvent::wxFBEvent( const wxFBEvent& event )
+:
+wxEvent( event ),
+m_string( event.m_string )
+{
+}
+
+wxFBEvent::~wxFBEvent()
+{
+	//dtor
+}
+
 #define CASE( EVENT )									\
 	if ( EVENT == m_eventType )							\
 	{													\
@@ -71,9 +83,14 @@ wxString wxFBEvent::GetEventName()
 	return wxT( "Unknown Type" );
 }
 
-wxFBEvent::~wxFBEvent()
+void wxFBEvent::SetString( const wxString& newString )
 {
-	//dtor
+	m_string = newString;
+}
+
+wxString wxFBEvent::GetString()
+{
+	return m_string;
 }
 
 wxFBPropertyEvent::wxFBPropertyEvent(wxEventType commandType, PProperty property)

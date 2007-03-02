@@ -113,7 +113,7 @@ class ApplicationData
 
 		void NotifyProjectRefresh();
 
-		void NotifyCodeGeneration( bool panelOnly = false );
+		void NotifyCodeGeneration( bool panelOnly = false, const wxString& language = wxEmptyString );
 
 		/**
 		 * Comprueba las referencias cruzadas de todos los nodos del árbol
@@ -283,7 +283,7 @@ class ApplicationData
 
 		void ModifyEventHandler( PEvent evt, wxString value );
 
-		void GenerateCode( bool projectOnly = false );
+		void GenerateCode( bool projectOnly = false, const wxString& language = wxEmptyString );
 
 		void GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file );
 

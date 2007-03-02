@@ -122,94 +122,95 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 
 void CppPanel::OnCodeGeneration( wxFBEvent& event )
 {
-	wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
-	cppEditor->Freeze();
-	cppEditor->SetReadOnly( false );
-
-	wxScintilla* hEditor = m_hPanel->GetTextCtrl();
-	hEditor->Freeze();
-	hEditor->SetReadOnly( false );
-
+	// Generate code in the panel if the panel is active
+	wxString language = event.GetString();
+	bool doPanel = ( language == wxT("C++") );
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
 
+	// Get C++ properties from the project
 	PObjectBase project = AppData()->GetProjectData();
 
-	wxString file, pathEntry;
-	bool useRelativePath = false;
-	unsigned int firstID = 1000;
-
+	// If C++ generation is not enabled, do not generate the file
+	bool doFile = false;
 	PProperty pCodeGen = project->GetProperty( wxT( "code_generation" ) );
-
 	if ( pCodeGen )
 	{
-		if ( !TypeConv::FlagSet  ( wxT( "C++" ), pCodeGen->GetValue() ) )
-		{
-			m_cppPanel->GetTextCtrl()->ClearAll();
-			m_hPanel->GetTextCtrl()->ClearAll();
+		doFile = TypeConv::FlagSet( wxT("C++"), pCodeGen->GetValue() ) && !panelOnly;
+	}
 
-			cppEditor->SetReadOnly( true );
-			cppEditor->Thaw();
-
-			hEditor->SetReadOnly( true );
-			hEditor->Thaw();
-			return;
-		}
+	if ( !(doPanel || doFile ) )
+	{
+		return;
 	}
 
 	// Get First ID from Project File
-	PProperty pFirstID = project->GetProperty( wxT( "first_id" ) );
-
+	unsigned int firstID = 1000;
+	PProperty pFirstID = project->GetProperty( wxT("first_id") );
 	if ( pFirstID )
+	{
 		firstID = pFirstID->GetValueAsInteger();
+	}
 
 	// Get the file name
+	wxString file;
 	PProperty pfile = project->GetProperty( wxT( "file" ) );
-
 	if ( pfile )
+	{
 		file = pfile->GetValue();
-
-	if ( file == wxT( "" ) )
-		file = wxT( "noname" );
+	}
+	if ( file.empty() )
+	{
+		file = wxT("noname");
+	}
 
 	// Determine if the path is absolute or relative
+	bool useRelativePath = false;
 	PProperty pRelPath = project->GetProperty( wxT( "relative_path" ) );
-
 	if ( pRelPath )
+	{
 		useRelativePath = ( pRelPath->GetValueAsInteger() ? true : false );
+	}
 
+	// Get the output path
 	wxString path;
-
 	try
 	{
-		// Get the output path
 		path = AppData()->GetOutputPath();
 	}
 	catch ( wxFBException& ex )
 	{
-		path = wxEmptyString;
-
-		if ( !panelOnly )
+		if ( !doPanel )
 		{
+			path = wxEmptyString;
 			wxLogWarning( ex.what() );
 			return;
 		}
 	}
 
 	// Generate code in the panel
+	if ( doPanel )
 	{
 		CppCodeGenerator codegen;
-		//codegen.SetBasePath(ppath->GetValue());
-		//codegen.SetRelativePath(useRelativePath);
 		codegen.UseRelativePath( useRelativePath, path );
 
 		if ( pFirstID )
+		{
 			codegen.SetFirstID( firstID );
+		}
 
 		codegen.SetHeaderWriter( m_hCW );
 
 		codegen.SetSourceWriter( m_cppCW );
+
+		wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
+		cppEditor->Freeze();
+		cppEditor->SetReadOnly( false );
+
+		wxScintilla* hEditor = m_hPanel->GetTextCtrl();
+		hEditor->Freeze();
+		hEditor->SetReadOnly( false );
 
 		codegen.GenerateCode( project );
 
@@ -220,13 +221,8 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		hEditor->Thaw();
 	}
 
-	// If panelOnly, skip file code generation
-	if ( panelOnly )
-	{
-		return;
-	}
-
 	// Generate code in the file
+	if ( doFile )
 	{
 		CppCodeGenerator codegen;
 		codegen.UseRelativePath( useRelativePath, path );
@@ -256,11 +252,11 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
 
 		// check if we have to convert to ANSI encoding
-	  if (project->GetPropertyAsString(wxT("encoding")) == wxT("ANSI"))
-	  {
-	    UTF8ToAnsi(path + file + wxT( ".h" ));
-	    UTF8ToAnsi(path + file + wxT( ".cpp" ));
-	  }
+		if (project->GetPropertyAsString(wxT("encoding")) == wxT("ANSI"))
+		{
+			UTF8ToAnsi(path + file + wxT( ".h" ));
+			UTF8ToAnsi(path + file + wxT( ".cpp" ));
+		}
 	}
 }
 

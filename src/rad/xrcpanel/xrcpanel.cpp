@@ -93,31 +93,16 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 
 void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 {
-
-	wxScintilla* editor = m_xrcPanel->GetTextCtrl();
-	editor->Freeze();
-	editor->SetReadOnly( false );
-
-	// Using the previously unused Id field in the event to carry a boolean
-	bool panelOnly = ( event.GetId() != 0 );
-
 	PObjectBase project = AppData()->GetProjectData();
 
-	PProperty pCodeGen = project->GetProperty( wxT( "code_generation" ) );
-
-	if ( pCodeGen )
+	// Generate code in the panel if the panel is active
+	wxString language = event.GetString();
+	if ( language == wxT("XRC") )
 	{
-		if ( !TypeConv::FlagSet ( wxT( "XRC" ), pCodeGen->GetValue() ) )
-		{
-			editor->ClearAll();
-			editor->SetReadOnly( true );
-			editor->Thaw();
-			return;
-		}
-	}
+		wxScintilla* editor = m_xrcPanel->GetTextCtrl();
+		editor->Freeze();
+		editor->SetReadOnly( false );
 
-	// Vamos a generar el código en el panel
-	{
 		XrcCodeGenerator codegen;
 		codegen.SetWriter( m_cw );
 		codegen.GenerateCode( project );
@@ -125,9 +110,20 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		editor->Thaw();
 	}
 
+	// Using the previously unused Id field in the event to carry a boolean
+	bool panelOnly = ( event.GetId() != 0 );
 	if ( panelOnly )
 	{
 		return;
+	}
+
+	PProperty pCodeGen = project->GetProperty( wxT("code_generation") );
+	if ( pCodeGen )
+	{
+		if ( !TypeConv::FlagSet ( wxT("XRC"), pCodeGen->GetValue() ) )
+		{
+			return;
+		}
 	}
 
 	// And now in the file.
