@@ -36,7 +36,12 @@
 #include <rad/appdata.h>
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
-EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
+	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
+	EVT_FB_PROJECT_REFRESH( CppPanel::OnProjectRefresh )
+	EVT_FB_PROPERTY_MODIFIED( CppPanel::OnPropertyModified )
+	EVT_FB_OBJECT_CREATED( CppPanel::OnObjectChange )
+	EVT_FB_OBJECT_REMOVED( CppPanel::OnObjectChange )
+	EVT_FB_EVENT_HANDLER_MODIFIED( CppPanel::OnEventHandlerModified )
 END_EVENT_TABLE()
 
 CppPanel::CppPanel( wxWindow *parent, int id )
@@ -120,11 +125,38 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->SetReadOnly( true );
 }
 
+void CppPanel::OnPropertyModified( wxFBPropertyEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
+void CppPanel::OnProjectRefresh( wxFBEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
+void CppPanel::OnObjectChange( wxFBObjectEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
+void CppPanel::OnEventHandlerModified( wxFBEventHandlerEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
 void CppPanel::OnCodeGeneration( wxFBEvent& event )
 {
 	// Generate code in the panel if the panel is active
-	wxString language = event.GetString();
-	bool doPanel = ( language == wxT("C++") );
+	bool doPanel = IsShownOnScreen();
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
@@ -201,24 +233,27 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		}
 
 		codegen.SetHeaderWriter( m_hCW );
-
 		codegen.SetSourceWriter( m_cppCW );
 
+		Freeze();
+
 		wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
-		cppEditor->Freeze();
 		cppEditor->SetReadOnly( false );
+		int cppLine = cppEditor->GetFirstVisibleLine() + cppEditor->LinesOnScreen() - 1;
 
 		wxScintilla* hEditor = m_hPanel->GetTextCtrl();
-		hEditor->Freeze();
 		hEditor->SetReadOnly( false );
+		int hLine = hEditor->GetFirstVisibleLine() + hEditor->LinesOnScreen() - 1;
 
 		codegen.GenerateCode( project );
 
 		cppEditor->SetReadOnly( true );
-		cppEditor->Thaw();
+		cppEditor->GotoLine( cppLine );
 
 		hEditor->SetReadOnly( true );
-		hEditor->Thaw();
+		hEditor->GotoLine( hLine );
+
+		Thaw();
 	}
 
 	// Generate code in the file

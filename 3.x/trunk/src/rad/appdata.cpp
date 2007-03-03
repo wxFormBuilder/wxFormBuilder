@@ -1681,9 +1681,9 @@ void ApplicationData::NewProject()
 	NotifyProjectRefresh();
 }
 
-void ApplicationData::GenerateCode( bool panelOnly, const wxString& language )
+void ApplicationData::GenerateCode( bool panelOnly )
 {
-	NotifyCodeGeneration( panelOnly, language );
+	NotifyCodeGeneration( panelOnly );
 }
 
 void ApplicationData::GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file )
@@ -2279,13 +2279,12 @@ void ApplicationData::NotifyEventHandlerModified( PEvent evtHandler )
 	NotifyEvent( event );
 }
 
-void ApplicationData::NotifyCodeGeneration( bool panelOnly, const wxString& language )
+void ApplicationData::NotifyCodeGeneration( bool panelOnly )
 {
 	wxFBEvent event( wxEVT_FB_CODE_GENERATION );
 
 	// Using the previously unused Id field in the event to carry a boolean
 	event.SetId( ( panelOnly ? 1 : 0 ) );
-	event.SetString( language );
 
 	NotifyEvent( event );
 }

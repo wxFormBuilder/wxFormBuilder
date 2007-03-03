@@ -32,6 +32,8 @@
 #include "wx/file.h"
 
 class wxFBEvent;
+class wxFBPropertyEvent;
+class wxFBObjectEvent;
 
 class XrcPanel : public wxPanel
 {
@@ -45,7 +47,10 @@ class XrcPanel : public wxPanel
   XrcPanel(wxWindow *parent, int id);
   ~XrcPanel();
 
+  void OnPropertyModified( wxFBPropertyEvent& event );
+  void OnProjectRefresh( wxFBEvent& event );
   void OnCodeGeneration( wxFBEvent& event );
+  void OnObjectChange( wxFBObjectEvent& event );
 
   DECLARE_EVENT_TABLE()
 };
