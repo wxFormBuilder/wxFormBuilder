@@ -34,7 +34,11 @@
 #include "utils/wxfbexception.h"
 
 BEGIN_EVENT_TABLE( XrcPanel,  wxPanel )
-EVT_FB_CODE_GENERATION( XrcPanel::OnCodeGeneration )
+	EVT_FB_CODE_GENERATION( XrcPanel::OnCodeGeneration )
+	EVT_FB_PROJECT_REFRESH( XrcPanel::OnProjectRefresh )
+	EVT_FB_PROPERTY_MODIFIED( XrcPanel::OnPropertyModified )
+	EVT_FB_OBJECT_CREATED( XrcPanel::OnObjectChange )
+	EVT_FB_OBJECT_REMOVED( XrcPanel::OnObjectChange )
 END_EVENT_TABLE()
 
 XrcPanel::XrcPanel( wxWindow *parent, int id )
@@ -91,23 +95,45 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->SetReadOnly( true );
 }
 
+void XrcPanel::OnPropertyModified( wxFBPropertyEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
+void XrcPanel::OnProjectRefresh( wxFBEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
+void XrcPanel::OnObjectChange( wxFBObjectEvent& event )
+{
+	// Generate code to the panel only
+	event.SetId( 1 );
+	OnCodeGeneration( event );
+}
+
 void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 {
 	PObjectBase project = AppData()->GetProjectData();
 
 	// Generate code in the panel if the panel is active
-	wxString language = event.GetString();
-	if ( language == wxT("XRC") )
+	if ( IsShownOnScreen() )
 	{
+		Freeze();
 		wxScintilla* editor = m_xrcPanel->GetTextCtrl();
-		editor->Freeze();
 		editor->SetReadOnly( false );
+		int line = editor->GetFirstVisibleLine() + editor->LinesOnScreen() - 1;
 
 		XrcCodeGenerator codegen;
 		codegen.SetWriter( m_cw );
 		codegen.GenerateCode( project );
 		editor->SetReadOnly( true );
-		editor->Thaw();
+		editor->GotoLine( line );
+		Thaw();
 	}
 
 	// Using the previously unused Id field in the event to carry a boolean

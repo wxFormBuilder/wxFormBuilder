@@ -79,6 +79,9 @@ class CodeEditor : public wxPanel
 };
 
 class wxFBEvent;
+class wxFBPropertyEvent;
+class wxFBObjectEvent;
+class wxFBEventHandlerEvent;
 
 class CppPanel : public wxPanel
 {
@@ -95,7 +98,11 @@ class CppPanel : public wxPanel
   CppPanel(wxWindow *parent, int id);
   ~CppPanel();
 
+  void OnPropertyModified( wxFBPropertyEvent& event );
+  void OnProjectRefresh( wxFBEvent& event );
   void OnCodeGeneration( wxFBEvent& event );
+  void OnObjectChange( wxFBObjectEvent& event );
+  void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
   DECLARE_EVENT_TABLE()
 };

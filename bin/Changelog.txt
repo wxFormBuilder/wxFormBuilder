@@ -1,8 +1,12 @@
-﻿﻿                     wxFormBuilder ChangeLog
+﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.28 (Beta 3)
 * Fixed FS#143 — "Silent code generation failure in case of an invalid project path."
    This was a regression in Version 3.00.27.
+* Fixed FS#118 — "Code not regenerated on property changes."
+* Fixed FS#119 — "Generating files should not force the code display control to scroll back to the top."
+* Code in the visible panel is now regenerated on object removal and creation, project load, new project
+   and event handler modification.
 
 03-02-2007 Version 3.00.27 (Beta 3)
 ^ Implemented FS#142 — "set wxStaticline’s default value to wxEXPAND"
