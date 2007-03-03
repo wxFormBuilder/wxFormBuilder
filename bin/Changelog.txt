@@ -1,5 +1,9 @@
-﻿                     wxFormBuilder ChangeLog
+﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.28 (Beta 3)
+* Fixed FS#143 — "Silent code generation failure in case of an invalid project path."
+   This was a regression in Version 3.00.27.
+
 03-02-2007 Version 3.00.27 (Beta 3)
 ^ Implemented FS#142 — "set wxStaticline’s default value to wxEXPAND"
 ^ Implemented FS#140 — "Better code generation selection implementation."

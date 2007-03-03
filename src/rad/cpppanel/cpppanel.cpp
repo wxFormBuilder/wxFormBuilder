@@ -181,7 +181,7 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	}
 	catch ( wxFBException& ex )
 	{
-		if ( !doPanel )
+		if ( doFile )
 		{
 			path = wxEmptyString;
 			wxLogWarning( ex.what() );
