@@ -1,5 +1,11 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.29 (Beta 3)
++ FS#146 — "Displaying keyboard shortcuts in toolbar tooltip windows."
++ New keyboard shortcut for 'New Project' Ctrl+N.
+^ Updated the keyboard shortcut for 'Save As' from "F3" to "Ctrl-Shift+S".
+^ Updated the keyboard shortcut for 'Open' from "F2" to "Ctrl+O".
+
 03-03-2007 Version 3.00.28 (Beta 3)
 * Fixed FS#143 — "Silent code generation failure in case of an invalid project path."
    This was a regression in Version 3.00.27.
