@@ -1,6 +1,6 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.29 (Beta 3)
+03-04-2007 Version 3.00.29 (Beta 3)
 + FS#146 — "Displaying keyboard shortcuts in toolbar tooltip windows."
 + New keyboard shortcut for 'New Project' Ctrl+N.
 ^ Updated the keyboard shortcut for 'Save As' from "F3" to "Ctrl-Shift+S".
