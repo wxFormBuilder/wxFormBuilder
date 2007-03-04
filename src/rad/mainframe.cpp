@@ -1115,11 +1115,11 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 wxMenuBar * MainFrame::CreateFBMenuBar()
 {
 	wxMenu *menuFile = new wxMenu;
-	menuFile->Append( ID_NEW_PRJ, wxT( "&New Project" ), wxT( "Create an empty project" ) );
-	menuFile->Append( ID_OPEN_PRJ, wxT( "&Open...\tF2" ), wxT( "Open a project" ) );
+	menuFile->Append( ID_NEW_PRJ, wxT( "&New Project\tCtrl+N" ), wxT( "Create an empty project" ) );
+	menuFile->Append( ID_OPEN_PRJ, wxT( "&Open...\tCtrl+O" ), wxT( "Open a project" ) );
 
 	menuFile->Append( ID_SAVE_PRJ,          wxT( "&Save\tCtrl+S" ), wxT( "Save current project" ) );
-	menuFile->Append( ID_SAVE_AS_PRJ, wxT( "Save &As...\tF3" ), wxT( "Save current project as..." ) );
+	menuFile->Append( ID_SAVE_AS_PRJ, wxT( "Save &As...\tCtrl-Shift+S" ), wxT( "Save current project as..." ) );
 	menuFile->AppendSeparator();
 	menuFile->Append( ID_IMPORT_XRC, wxT( "&Import XRC..." ), wxT( "Import XRC file" ) );
 	menuFile->AppendSeparator();
@@ -1176,19 +1176,19 @@ wxToolBar * MainFrame::CreateFBToolBar()
 {
 	wxToolBar* toolbar = CreateToolBar();
 	toolbar->SetToolBitmapSize( wxSize( TOOL_SIZE, TOOL_SIZE ) );
-	toolbar->AddTool( ID_NEW_PRJ, wxT( "New Project" ), AppBitmaps::GetBitmap( wxT( "new" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "New Project" ), wxT( "Start a new project." ) );
-	toolbar->AddTool( ID_OPEN_PRJ, wxT( "Open Project" ), AppBitmaps::GetBitmap( wxT( "open" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Open Project" ), wxT( "Open an existing project." ) );
-	toolbar->AddTool( ID_SAVE_PRJ, wxT( "Save Project" ), AppBitmaps::GetBitmap( wxT( "save" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Save Project" ), wxT( "Save the current project." ) );
+	toolbar->AddTool( ID_NEW_PRJ, wxT( "New Project" ), AppBitmaps::GetBitmap( wxT( "new" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "New Project (Ctrl+N)" ), wxT( "Start a new project." ) );
+	toolbar->AddTool( ID_OPEN_PRJ, wxT( "Open Project" ), AppBitmaps::GetBitmap( wxT( "open" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Open Project (Ctrl+O)" ), wxT( "Open an existing project." ) );
+	toolbar->AddTool( ID_SAVE_PRJ, wxT( "Save Project" ), AppBitmaps::GetBitmap( wxT( "save" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Save Project (Ctrl+S)" ), wxT( "Save the current project." ) );
 	toolbar->AddSeparator();
-	toolbar->AddTool( ID_UNDO, wxT( "Undo" ), AppBitmaps::GetBitmap( wxT( "undo" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Undo" ), wxT( "Undo the last action." ) );
-	toolbar->AddTool( ID_REDO, wxT( "Redo" ), AppBitmaps::GetBitmap( wxT( "redo" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Redo" ), wxT( "Redo the last action that was undone." ) );
+	toolbar->AddTool( ID_UNDO, wxT( "Undo" ), AppBitmaps::GetBitmap( wxT( "undo" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Undo (Ctrl+Z)" ), wxT( "Undo the last action." ) );
+	toolbar->AddTool( ID_REDO, wxT( "Redo" ), AppBitmaps::GetBitmap( wxT( "redo" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Redo (Ctrl+Y)" ), wxT( "Redo the last action that was undone." ) );
 	toolbar->AddSeparator();
-	toolbar->AddTool( ID_CUT, wxT( "Cut" ), AppBitmaps::GetBitmap( wxT( "cut" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Cut" ), wxT( "Remove the selected object and place it on the clipboard." ) );
-	toolbar->AddTool( ID_COPY, wxT( "Copy" ), AppBitmaps::GetBitmap( wxT( "copy" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Copy" ), wxT( "Copy the selected object to the clipboard." ) );
-	toolbar->AddTool( ID_PASTE, wxT( "Paste" ), AppBitmaps::GetBitmap( wxT( "paste" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Paste" ), wxT( "Insert an object from the clipboard." ) );
-	toolbar->AddTool( ID_DELETE, wxT( "Delete" ), AppBitmaps::GetBitmap( wxT( "delete" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Delete" ), wxT( "Remove the selected object." ) );
+	toolbar->AddTool( ID_CUT, wxT( "Cut" ), AppBitmaps::GetBitmap( wxT( "cut" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Cut (Ctrl+X)" ), wxT( "Remove the selected object and place it on the clipboard." ) );
+	toolbar->AddTool( ID_COPY, wxT( "Copy" ), AppBitmaps::GetBitmap( wxT( "copy" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Copy (Ctrl+C)" ), wxT( "Copy the selected object to the clipboard." ) );
+	toolbar->AddTool( ID_PASTE, wxT( "Paste" ), AppBitmaps::GetBitmap( wxT( "paste" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Paste (Ctrl+V)" ), wxT( "Insert an object from the clipboard." ) );
+	toolbar->AddTool( ID_DELETE, wxT( "Delete" ), AppBitmaps::GetBitmap( wxT( "delete" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Delete (Ctrl+D)" ), wxT( "Remove the selected object." ) );
 	toolbar->AddSeparator();
-	toolbar->AddTool( ID_GENERATE_CODE, wxT( "Generate Code" ), AppBitmaps::GetBitmap( wxT( "generate" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Generate Code" ), wxT( "Create code from the current project." ) );
+	toolbar->AddTool( ID_GENERATE_CODE, wxT( "Generate Code" ), AppBitmaps::GetBitmap( wxT( "generate" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Generate Code (F8)" ), wxT( "Create code from the current project." ) );
 	toolbar->AddSeparator();
 	toolbar->AddTool( ID_ALIGN_LEFT, wxT( "" ), AppBitmaps::GetBitmap( wxT( "lalign" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Align Left" ), wxT( "The item will be aligned to the left of the space alotted to it by the sizer." ) );
 	toolbar->AddTool( ID_ALIGN_CENTER_H, wxT( "" ), AppBitmaps::GetBitmap( wxT( "chalign" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Align Center Horizontally" ), wxT( "The item will be centered horizontally in the space alotted to it by the sizer." ) );
@@ -1198,8 +1198,8 @@ wxToolBar * MainFrame::CreateFBToolBar()
 	toolbar->AddTool( ID_ALIGN_CENTER_V, wxT( "" ), AppBitmaps::GetBitmap( wxT( "cvalign" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Align Center Vertically" ), wxT( "The item will be centered vertically within space alotted to it by the sizer." ) );
 	toolbar->AddTool( ID_ALIGN_BOTTOM, wxT( "" ), AppBitmaps::GetBitmap( wxT( "balign" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Align Bottom" ), wxT( "The item will be aligned to the bottom of the space alotted to it by the sizer." ) );
 	toolbar->AddSeparator();
-	toolbar->AddTool( ID_EXPAND, wxT( "" ), AppBitmaps::GetBitmap( wxT( "expand" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Expand" ), wxT( "The item will be expanded to fill the space assigned to the item." ) );
-	toolbar->AddTool( ID_STRETCH, wxT( "" ), AppBitmaps::GetBitmap( wxT( "stretch" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Stretch" ), wxT( "The item will grow and shrink with the sizer." ) );
+	toolbar->AddTool( ID_EXPAND, wxT( "" ), AppBitmaps::GetBitmap( wxT( "expand" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Expand (Alt+W)" ), wxT( "The item will be expanded to fill the space assigned to the item." ) );
+	toolbar->AddTool( ID_STRETCH, wxT( "" ), AppBitmaps::GetBitmap( wxT( "stretch" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Stretch (Alt+S)" ), wxT( "The item will grow and shrink with the sizer." ) );
 	toolbar->AddSeparator();
 	toolbar->AddTool( ID_BORDER_LEFT, wxT( "" ), AppBitmaps::GetBitmap( wxT( "left" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Left Border" ), wxT( "A border will be added on the left side of the item." ) );
 	toolbar->AddTool( ID_BORDER_RIGHT, wxT( "" ), AppBitmaps::GetBitmap( wxT( "right" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Right Border" ), wxT( "A border will be  added on the right side of the item." ) );
