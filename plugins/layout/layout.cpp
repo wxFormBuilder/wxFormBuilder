@@ -426,6 +426,12 @@ public:
 		// Add the children
 		IManager* manager = GetManager();
 		size_t count = manager->GetChildCount( wxobject );
+		if ( 0 == count )
+		{
+			// wxGridBagSizer gets upset sometimes without children
+			sizer->Add( 0, 0, wxGBPosition( 0, 0 ) );
+			return;
+		}
 		for ( size_t i = 0; i < count; ++i )
 		{
 			// Should be a GBSizerItem
