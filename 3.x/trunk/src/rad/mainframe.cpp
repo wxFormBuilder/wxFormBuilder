@@ -96,6 +96,8 @@
 #define ID_LEFT_SPLITTER   140
 #define ID_RIGHT_SPLITTER  141
 
+#define ID_FIND 142
+
 #define STATUS_FIELD_OBJECT 1
 
 BEGIN_EVENT_TABLE( MainFrame, wxFrame )
@@ -146,11 +148,19 @@ EVT_FB_PROJECT_SAVED( MainFrame::OnProjectSaved )
 EVT_FB_PROPERTY_MODIFIED( MainFrame::OnPropertyModified )
 EVT_FB_EVENT_HANDLER_MODIFIED( MainFrame::OnEventHandlerModified )
 
+EVT_MENU( ID_FIND, MainFrame::OnFindDialog )
+EVT_FIND( wxID_ANY, MainFrame::OnFind )
+EVT_FIND_NEXT( wxID_ANY, MainFrame::OnFind )
+EVT_FIND_CLOSE( wxID_ANY, MainFrame::OnFindClose )
+
 END_EVENT_TABLE()
 
 MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize size )
-		: wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
-		m_style( style )
+:
+wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
+m_style( style ),
+m_findData( wxFR_DOWN ),
+m_findDialog( NULL )
 {
 
 	// initialize the splitters, wxAUI doesn't use them
@@ -1107,7 +1117,35 @@ bool MainFrame::SaveWarning()
 
 void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 {
+	bool enableFind = !( _("Designer") == m_notebook->GetPageText( event.GetSelection() ) );
+	int item = GetMenuBar()->FindMenuItem( _("Edit"), _("Find") );
+	if ( item != -1 )
+	{
+		GetMenuBar()->Enable( item, enableFind );
+	}
 	AppData()->GenerateCode( true );
+}
+
+void MainFrame::OnFindDialog( wxCommandEvent& event )
+{
+	m_findDialog = new wxFindReplaceDialog( this, &m_findData, wxT("Find") );
+	m_findDialog->Centre();
+	m_findDialog->Show();
+}
+
+void MainFrame::OnFindClose( wxFindDialogEvent& event )
+{
+	delete m_findDialog;
+}
+
+void MainFrame::OnFind( wxFindDialogEvent& event )
+{
+	for ( int page = 0; page < m_notebook->GetPageCount(); ++page )
+	{
+		event.StopPropagation();
+		event.SetClientData( m_findDialog );
+		m_notebook->GetPage( page )->GetEventHandler()->ProcessEvent( event );
+	}
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1143,6 +1181,8 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_MOVE_DOWN, wxT( "&Move Down\tAlt+Down" ), wxT( "Move Down selected object" ) );
 	menuEdit->Append( ID_MOVE_LEFT, wxT( "&Move Left\tAlt+Left" ), wxT( "Move Left selected object" ) );
 	menuEdit->Append( ID_MOVE_RIGHT, wxT( "&Move Right\tAlt+Right" ), wxT( "Move Right selected object" ) );
+	menuEdit->AppendSeparator();
+	menuEdit->Append( ID_FIND, wxT( "&Find\tCtrl+F" ), wxT( "Find text in the active code viewer" ) );
 	menuEdit->AppendSeparator();
 	menuEdit->Append( ID_ALIGN_LEFT,     wxT( "&Align Left" ),           wxT( "Align item to the left" ) );
 	menuEdit->Append( ID_ALIGN_CENTER_H, wxT( "&Align Center Horizontal" ), wxT( "Align item to the center horizontally" ) );

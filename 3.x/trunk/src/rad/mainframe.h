@@ -30,6 +30,7 @@
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 //#include "wx/aui/aui.h"
 #include "wx/splitter.h"
+#include <wx/fdrepdlg.h>
 
 class wxFBEvent;
 class wxFBObjectEvent;
@@ -88,6 +89,9 @@ class MainFrame : public wxFrame
   void UpdateLayoutTools();
   bool SaveWarning();
 
+  wxFindReplaceData m_findData;
+  wxFindReplaceDialog* m_findDialog;
+
   DECLARE_EVENT_TABLE()
  public:
   MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
@@ -143,6 +147,10 @@ class MainFrame : public wxFrame
 
   void CreateWideGui();
   void CreateClassicGui();
+
+  void OnFindDialog( wxCommandEvent& event );
+  void OnFind( wxFindDialogEvent& event );
+  void OnFindClose( wxFindDialogEvent& event );
 };
 
 

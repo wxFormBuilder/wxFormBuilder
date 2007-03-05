@@ -35,6 +35,8 @@
 #include "utils/encodingutils.h"
 #include <rad/appdata.h>
 
+#include <wx/fdrepdlg.h>
+
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
@@ -43,6 +45,9 @@ BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_OBJECT_CREATED( CppPanel::OnObjectChange )
 	EVT_FB_OBJECT_REMOVED( CppPanel::OnObjectChange )
 	EVT_FB_EVENT_HANDLER_MODIFIED( CppPanel::OnEventHandlerModified )
+
+	EVT_FIND( wxID_ANY, CppPanel::OnFind )
+	EVT_FIND_NEXT( wxID_ANY, CppPanel::OnFind )
 END_EVENT_TABLE()
 
 CppPanel::CppPanel( wxWindow *parent, int id )
@@ -126,6 +131,18 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 
 	stc->SetCaretWidth( 2 );
 	stc->SetReadOnly( true );
+}
+
+void CppPanel::OnFind( wxFindDialogEvent& event )
+{
+	if ( m_cppPanel->IsShownOnScreen() )
+	{
+		m_cppPanel->ProcessEvent( event );
+	}
+	if ( m_hPanel->IsShownOnScreen() )
+	{
+		m_hPanel->ProcessEvent( event );
+	}
 }
 
 void CppPanel::OnPropertyModified( wxFBPropertyEvent& event )
@@ -252,9 +269,13 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 
 		cppEditor->SetReadOnly( true );
 		cppEditor->GotoLine( cppLine );
+		cppEditor->SetAnchor( 0 );
+		cppEditor->SetCurrentPos( 0 );
 
 		hEditor->SetReadOnly( true );
 		hEditor->GotoLine( hLine );
+		hEditor->SetAnchor( 0 );
+		hEditor->SetCurrentPos( 0 );
 
 		Thaw();
 	}
@@ -299,7 +320,9 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 }
 
 BEGIN_EVENT_TABLE ( CodeEditor,  wxPanel )
-EVT_SCI_MARGINCLICK( -1, CodeEditor::OnMarginClick )
+	EVT_SCI_MARGINCLICK( -1, CodeEditor::OnMarginClick )
+	EVT_FIND( wxID_ANY, CodeEditor::OnFind )
+	EVT_FIND_NEXT( wxID_ANY, CodeEditor::OnFind )
 END_EVENT_TABLE()
 
 CodeEditor::CodeEditor( wxWindow *parent, int id )
@@ -366,6 +389,41 @@ void CodeEditor::OnMarginClick ( wxScintillaEvent &event )
 	}
 }
 
+void CodeEditor::OnFind( wxFindDialogEvent& event )
+{
+	int wxflags = event.GetFlags();
+	int sciflags = 0;
+	if ( (wxflags & wxFR_WHOLEWORD) != 0 )
+	{
+		sciflags |= wxSCI_FIND_WHOLEWORD;
+	}
+	if ( (wxflags & wxFR_MATCHCASE) != 0 )
+	{
+		sciflags |= wxSCI_FIND_MATCHCASE;
+	}
+	int result;
+	if ( (wxflags & wxFR_DOWN) != 0 )
+	{
+		m_code->SetSelectionStart( m_code->GetSelectionEnd() );
+		m_code->SearchAnchor();
+		result = m_code->SearchNext( sciflags, event.GetFindString() );
+	}
+	else
+	{
+		m_code->SetSelectionEnd( m_code->GetSelectionStart() );
+		m_code->SearchAnchor();
+		result = m_code->SearchPrev( sciflags, event.GetFindString() );
+	}
+	if ( wxSCI_INVALID_POSITION == result )
+	{
+		wxMessageBox( wxString::Format( _("\"%s\" not found!"), event.GetFindString().c_str() ), _("Not Found!"), wxICON_ERROR, (wxWindow*)event.GetClientData() );
+	}
+	else
+	{
+		m_code->EnsureCaretVisible();
+	}
+}
+
 CppToolBar::CppToolBar( wxWindow *parent, int id )
 		: wxPanel( parent, id )
 {
@@ -383,81 +441,6 @@ CppToolBar::CppToolBar( wxWindow *parent, int id )
 	sizer->SetSizeHints( this );
 }
 
-class FindEventHandler : public wxEvtHandler
-{
-private:
-  wxFindReplaceData m_findData;
-  wxFindReplaceDialog m_findDialog;
-  wxScintilla* m_editor;
-
-public:
-	FindEventHandler( wxWindow* parent, wxScintilla* editor )
-	:
-	m_findData( wxFR_DOWN ),
-	m_findDialog( parent, &m_findData, wxT("Find") ),
-	m_editor( editor )
-	{
-		m_findDialog.Centre();
-	}
-
-	void OnKeyDown( wxKeyEvent& event )
-	{
-		int mods = event.GetModifiers();
-		if ( event.GetKeyCode() == 'F' && ( mods == wxMOD_CMD || mods == (wxMOD_CMD | wxMOD_META) ) )
-		{
-			m_findDialog.Show();
-		}
-		else
-		{
-			event.Skip();
-		}
-	}
-
-	void OnFind( wxFindDialogEvent& event )
-	{
-		int wxflags = m_findData.GetFlags();
-		int sciflags = 0;
-		if ( (wxflags & wxFR_WHOLEWORD) != 0 )
-		{
-			sciflags |= wxSCI_FIND_WHOLEWORD;
-		}
-		if ( (wxflags & wxFR_MATCHCASE) != 0 )
-		{
-			sciflags |= wxSCI_FIND_MATCHCASE;
-		}
-		int result;
-		if ( (wxflags & wxFR_DOWN) != 0 )
-		{
-			m_editor->SetSelectionStart( m_editor->GetSelectionEnd() );
-			m_editor->SearchAnchor();
-			result = m_editor->SearchNext( sciflags, m_findData.GetFindString() );
-		}
-		else
-		{
-			m_editor->SetSelectionEnd( m_editor->GetSelectionStart() );
-			m_editor->SearchAnchor();
-			result = m_editor->SearchPrev( sciflags, m_findData.GetFindString() );
-		}
-		if ( wxSCI_INVALID_POSITION == result )
-		{
-			wxMessageBox( wxString::Format( _("\"%s\" not found!"), m_findData.GetFindString().c_str() ), _("Not Found!"), wxICON_ERROR );
-		}
-		else
-		{
-			m_editor->EnsureCaretVisible();
-		}
-	}
-
-	DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE ( FindEventHandler,  wxEvtHandler )
-	EVT_KEY_DOWN( FindEventHandler::OnKeyDown )
-	EVT_FIND( wxID_ANY, FindEventHandler::OnFind )
-	EVT_FIND_NEXT( wxID_ANY, FindEventHandler::OnFind )
-	//EVT_CLOSE( wxID_ANY, FindEventHandler::OnFindClose )
-END_EVENT_TABLE()
-
 TCCodeWriter::TCCodeWriter()
 {
 	m_tc = NULL;
@@ -466,7 +449,6 @@ TCCodeWriter::TCCodeWriter()
 TCCodeWriter::TCCodeWriter( wxScintilla *tc )
 {
 	SetTextCtrl( tc );
-	tc->PushEventHandler( new FindEventHandler( tc, tc ) );
 }
 
 void TCCodeWriter::DoWrite( wxString code )

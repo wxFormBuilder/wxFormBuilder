@@ -39,6 +39,9 @@ BEGIN_EVENT_TABLE( XrcPanel,  wxPanel )
 	EVT_FB_PROPERTY_MODIFIED( XrcPanel::OnPropertyModified )
 	EVT_FB_OBJECT_CREATED( XrcPanel::OnObjectChange )
 	EVT_FB_OBJECT_REMOVED( XrcPanel::OnObjectChange )
+
+	EVT_FIND( wxID_ANY, XrcPanel::OnFind )
+	EVT_FIND_NEXT( wxID_ANY, XrcPanel::OnFind )
 END_EVENT_TABLE()
 
 XrcPanel::XrcPanel( wxWindow *parent, int id )
@@ -95,6 +98,14 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->SetReadOnly( true );
 }
 
+void XrcPanel::OnFind( wxFindDialogEvent& event )
+{
+	if ( m_xrcPanel->IsShownOnScreen() )
+	{
+		m_xrcPanel->ProcessEvent( event );
+	}
+}
+
 void XrcPanel::OnPropertyModified( wxFBPropertyEvent& event )
 {
 	// Generate code to the panel only
@@ -133,6 +144,8 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		codegen.GenerateCode( project );
 		editor->SetReadOnly( true );
 		editor->GotoLine( line );
+		editor->SetAnchor( 0 );
+		editor->SetCurrentPos( 0 );
 		Thaw();
 	}
 
