@@ -198,7 +198,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 		if ( file.empty() )
 		{
-			file = wxT( "wxfb_code" );
+			file = wxT( "noname" );
 		}
 
 		wxString filePath;
