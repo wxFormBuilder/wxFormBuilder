@@ -32,6 +32,7 @@
 #include "codegen/codegen.h"
 #include "codegen/cppcg.h"
 #include "wx/file.h"
+#include <wx/fdrepdlg.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 #include <vector>
