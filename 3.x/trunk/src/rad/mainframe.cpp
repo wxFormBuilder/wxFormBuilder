@@ -566,9 +566,6 @@ void MainFrame::OnAbout( wxCommandEvent &event )
 
 void MainFrame::OnExit( wxCommandEvent &event )
 {
-	if ( !SaveWarning() )
-		return;
-
 	Close();
 }
 
