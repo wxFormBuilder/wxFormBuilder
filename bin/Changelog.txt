@@ -1,5 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.30 (Beta 3)
+^ Implemented FS#130 — "Support for searching through XRC or C++ code."
+
 03-04-2007 Version 3.00.29 (Beta 3)
 + FS#146 — "Displaying keyboard shortcuts in toolbar tooltip windows."
 + New keyboard shortcut for 'New Project' Ctrl+N.

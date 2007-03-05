@@ -30,6 +30,7 @@
 #include "codegen/codegen.h"
 #include "rad/cpppanel/cpppanel.h"
 #include "wx/file.h"
+#include <wx/fdrepdlg.h>
 
 class wxFBEvent;
 class wxFBPropertyEvent;
@@ -51,6 +52,8 @@ class XrcPanel : public wxPanel
   void OnProjectRefresh( wxFBEvent& event );
   void OnCodeGeneration( wxFBEvent& event );
   void OnObjectChange( wxFBObjectEvent& event );
+
+  void OnFind( wxFindDialogEvent& event );
 
   DECLARE_EVENT_TABLE()
 };

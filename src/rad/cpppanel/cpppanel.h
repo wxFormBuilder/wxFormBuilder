@@ -28,11 +28,11 @@
 
 #include <wx/wx.h>
 #include <wx/wxScintilla/wxscintilla.h>
+#include <wx/fdrepdlg.h>
 
 #include "codegen/codegen.h"
 #include "codegen/cppcg.h"
 #include "wx/file.h"
-#include <wx/fdrepdlg.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 #include <vector>
@@ -77,6 +77,7 @@ class CodeEditor : public wxPanel
  public:
   CodeEditor(wxWindow *parent, int id);
   wxScintilla *GetTextCtrl() { return m_code; }
+  void OnFind( wxFindDialogEvent& event );
 };
 
 class wxFBEvent;
@@ -104,6 +105,8 @@ class CppPanel : public wxPanel
   void OnCodeGeneration( wxFBEvent& event );
   void OnObjectChange( wxFBObjectEvent& event );
   void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+
+  void OnFind( wxFindDialogEvent& event );
 
   DECLARE_EVENT_TABLE()
 };
