@@ -155,6 +155,48 @@ EVT_FIND_CLOSE( wxID_ANY, MainFrame::OnFindClose )
 
 END_EVENT_TABLE()
 
+// Used to kill focus from propgrid when toolbar or menu items are clicked
+// This forces the propgrid to save the cell being edited
+// Really, this just sets focus to the object tree if the propgrid has focus
+class FocusKillerEvtHandler : public wxEvtHandler
+{
+private:
+	wxWindow* m_windowWithFocus;
+	wxWindow* m_windowToSetFocusTo;
+
+public:
+	FocusKillerEvtHandler( wxWindow* windowWithFocus, wxWindow* windowToSetFocusTo )
+	:
+	m_windowWithFocus( windowWithFocus ),
+	m_windowToSetFocusTo( windowToSetFocusTo )
+	{
+	}
+
+	void OnMenuEvent( wxCommandEvent& event )
+	{
+		wxWindow* windowWithFocus = wxWindow::FindFocus();
+		while ( windowWithFocus != NULL )
+		{
+			if ( m_windowWithFocus == windowWithFocus )
+			{
+				m_windowToSetFocusTo->SetFocus();
+
+				// yield here so propgrid sends its event
+				wxYield();
+				break;
+			}
+			windowWithFocus = windowWithFocus->GetParent();
+		}
+		event.Skip();
+	}
+
+	DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE( FocusKillerEvtHandler, wxEvtHandler )
+	EVT_MENU( wxID_ANY, FocusKillerEvtHandler::OnMenuEvent )
+END_EVENT_TABLE()
+
 MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize size )
 :
 wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
@@ -292,6 +334,8 @@ m_findDialog( NULL )
 	AppData()->AddHandler( this->GetEventHandler() );
 
 	wxTheApp->SetTopWindow( this );
+
+	PushEventHandler( new FocusKillerEvtHandler( m_objInsp, m_objTree ) );
 };
 
 
