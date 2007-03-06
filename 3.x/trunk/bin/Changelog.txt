@@ -4,6 +4,7 @@ date Version 3.00.31 (Beta 3)
 * Fixed FS#149 — "Double question whether you want to save a project on exit."
 * Fixed FS#148 — "Different generated C++ and XRC file names for unnamed projects."
 * Fixed FS#154 — "Crash when adding a sizer."
+* Fixed FS#147 — "Accepting new property values when clicking on a menu/toolbar item."
 
 03-05-2007 Version 3.00.30 (Beta 3)
 ^ Implemented FS#130 — "Support for searching through XRC or C++ code."
