@@ -48,7 +48,6 @@ BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_FB_PROPERTY_MODIFIED( ObjectTree::OnPropertyModified )
 	EVT_FB_PROJECT_REFRESH( ObjectTree::OnProjectRefresh )
 
-	EVT_KEY_UP( ObjectTree::OnKeyUp )
 END_EVENT_TABLE()
 
 ObjectTree::ObjectTree( wxWindow *parent, int id )
@@ -371,18 +370,6 @@ void ObjectTree::OnProjectRefresh ( wxFBEvent &event)
   RebuildTree();
 }
 
-void ObjectTree::OnKeyUp( wxKeyEvent& event )
-{
-	if ( event.GetKeyCode() == WXK_DELETE )
-	{
-		AppData()->RemoveObject( AppData()->GetSelectedObject() );
-	}
-	else
-	{
-		event.Skip();
-	}
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 ObjectTreeItemData::ObjectTreeItemData(PObjectBase obj) : m_object(obj)
@@ -414,7 +401,7 @@ ItemPopupMenu::ItemPopupMenu(PObjectBase obj)
 	Append(MENU_COPY,       wxT("Copy\tCtrl+C"));
 	Append(MENU_PASTE,      wxT("Paste\tCtrl+V"));
 	AppendSeparator();
-	Append(MENU_DELETE,     wxT("Delete"));
+	Append(MENU_DELETE,     wxT("Delete\tCtrl+D"));
 	AppendSeparator();
 	Append(MENU_MOVE_UP,    wxT("Move Up\tAlt+Up"));
 	Append(MENU_MOVE_DOWN,  wxT("Move Down\tAlt+Down"));

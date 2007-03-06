@@ -79,8 +79,6 @@ public:
   void OnPropertyModified ( wxFBPropertyEvent &event );
   void OnProjectRefresh ( wxFBEvent &event);
 
-  void OnKeyUp( wxKeyEvent& event );
-
   void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); };
 };
 

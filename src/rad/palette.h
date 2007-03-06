@@ -61,8 +61,6 @@ class wxFbPalette : public wxPanel
   void OnSpinUp(wxSpinEvent& e);
   void OnSpinDown(wxSpinEvent& e);
   void OnButtonClick(wxCommandEvent &event);
-
-  void OnKeyUp( wxKeyEvent& event );
 };
 /*
 class PaletteButton : public wxBitmapButton

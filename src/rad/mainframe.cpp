@@ -1214,7 +1214,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_COPY, wxT( "&Copy \tCtrl+C" ), wxT( "Copy selected object" ) );
 	menuEdit->Append( ID_CUT, wxT( "&Cut \tCtrl+X" ), wxT( "Cut selected object" ) );
 	menuEdit->Append( ID_PASTE, wxT( "&Paste \tCtrl+V" ), wxT( "Paste on selected object" ) );
-	menuEdit->Append( ID_DELETE, wxT( "&Delete" ), wxT( "Delete selected object" ) );
+	menuEdit->Append( ID_DELETE, wxT( "&Delete \tCtrl+D" ), wxT( "Delete selected object" ) );
 	menuEdit->AppendSeparator();
 	menuEdit->Append( ID_EXPAND, wxT( "&Toggle Expand\tAlt+W" ), wxT( "Toggle wxEXPAND flag of sizeritem properties" ) );
 	menuEdit->Append( ID_STRETCH, wxT( "&Toggle Stretch\tAlt+S" ), wxT( "Toggle option property of sizeritem properties" ) );

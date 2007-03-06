@@ -52,8 +52,6 @@ BEGIN_EVENT_TABLE(wxFbPalette, wxPanel)
     EVT_TOOL(-1, wxFbPalette::OnButtonClick)
     EVT_SPIN_UP(-1, wxFbPalette::OnSpinUp)
     EVT_SPIN_DOWN(-1, wxFbPalette::OnSpinDown)
-
-	EVT_KEY_UP( wxFbPalette::OnKeyUp )
 END_EVENT_TABLE()
 
 wxFbPalette::wxFbPalette(wxWindow *parent,int id)
@@ -191,18 +189,6 @@ void wxFbPalette::OnButtonClick(wxCommandEvent &event)
       return;
     }
   }
-}
-
-void wxFbPalette::OnKeyUp( wxKeyEvent& event )
-{
-	if ( event.GetKeyCode() == WXK_DELETE )
-	{
-		AppData()->RemoveObject( AppData()->GetSelectedObject() );
-	}
-	else
-	{
-		event.Skip();
-	}
 }
 
 wxFbPalette::~wxFbPalette()
