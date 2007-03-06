@@ -1,6 +1,6 @@
 ﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.31 (Beta 3)
+03-06-2007 Version 3.00.31 (Beta 3)
 * Fixed FS#149 — "Double question whether you want to save a project on exit."
 * Fixed FS#148 — "Different generated C++ and XRC file names for unnamed projects."
 * Fixed FS#154 — "Crash when adding a sizer."
