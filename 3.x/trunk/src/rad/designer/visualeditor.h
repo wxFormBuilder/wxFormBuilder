@@ -142,6 +142,9 @@ class VisualEditor : public wxScrolledWindow
   void OnObjectRemoved ( wxFBObjectEvent &event );
   void OnPropertyModified ( wxFBPropertyEvent &event );
   void OnProjectRefresh ( wxFBEvent &event);
+
+
+  void OnKeyUp( wxKeyEvent& event );
 };
 
 
