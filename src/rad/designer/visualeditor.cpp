@@ -54,6 +54,8 @@ BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
 	EVT_FB_PROPERTY_MODIFIED( VisualEditor::OnPropertyModified )
 	EVT_FB_PROJECT_REFRESH( VisualEditor::OnProjectRefresh )
 
+	EVT_KEY_UP( VisualEditor::OnKeyUp )
+
 END_EVENT_TABLE()
 
 VisualEditor::VisualEditor(wxWindow *parent)
@@ -94,6 +96,18 @@ VisualEditor::~VisualEditor()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	DeleteAbstractObjects();
+}
+
+void VisualEditor::OnKeyUp( wxKeyEvent& event )
+{
+	if ( event.GetKeyCode() == WXK_DELETE )
+	{
+		AppData()->RemoveObject( AppData()->GetSelectedObject() );
+	}
+	else
+	{
+		event.Skip();
+	}
 }
 
 void VisualEditor::UpdateVirtualSize()
