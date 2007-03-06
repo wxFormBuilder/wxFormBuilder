@@ -773,6 +773,9 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 			parent = obj->GetParent();
 		}
 
+		// get position so next control can be selected
+		unsigned int pos = parent->GetChildPosition( obj );
+
 		if ( cutObject )
 		{
 			m_copyOnPaste = false;
@@ -787,8 +790,25 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 
 		NotifyObjectRemoved( obj );
 
-		// "parent" will be the selected object after removal
-		SelectObject( parent );
+		// get position of next control or last control
+		PObjectBase objToSelect;
+		unsigned int count = parent->GetChildCount();
+		if ( 0 == count )
+		{
+			objToSelect = parent;
+		}
+		else
+		{
+			pos = ( pos < count ? pos : count - 1 );
+			objToSelect = parent->GetChild( pos );
+		}
+
+		while ( objToSelect && objToSelect->GetObjectInfo()->GetObjectType()->IsItem() )
+		{
+			objToSelect = objToSelect->GetChild( 0 );
+		}
+
+		SelectObject( objToSelect );
 	}
 	else
 	{
