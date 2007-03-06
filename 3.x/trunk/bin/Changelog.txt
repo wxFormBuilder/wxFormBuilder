@@ -1,4 +1,4 @@
-﻿﻿﻿                     wxFormBuilder ChangeLog
+﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 03-06-2007 Version 3.00.31 (Beta 3)
 * Fixed FS#149 — "Double question whether you want to save a project on exit."
