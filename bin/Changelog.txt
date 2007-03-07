@@ -1,5 +1,9 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.32 (Beta 3)
+^ New way to save propgrid values when using menu or toolbar items.
+   Cleaner and cross-platform.
+
 03-06-2007 Version 3.00.31 (Beta 3)
 * Fixed FS#149 — "Double question whether you want to save a project on exit."
 * Fixed FS#148 — "Different generated C++ and XRC file names for unnamed projects."
