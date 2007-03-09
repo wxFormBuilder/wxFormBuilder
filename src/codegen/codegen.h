@@ -297,7 +297,7 @@ public:
 	/**
 	* Write a line of code
 	*/
-	void WriteLn(wxString code);
+	void WriteLn( wxString code = wxEmptyString );
 
 	/**
 	* Escribe una cadena de texto en el código.
