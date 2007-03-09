@@ -24,6 +24,7 @@
 		  <option name="UTF-8" />
 		  <option name="ANSI" />UTF-8
 		</property>
+		<property name="namespace" type="stringlist" help="For C++ Only. Namespaces to wrap class declarations in."></property>
 	</category>
 	<category name="XRC Properties">
 		<property name="bitmaps"	type="stringlist"	help="For XRC Only. A list of files to generate as wxBitmaps."/>
