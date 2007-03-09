@@ -1,6 +1,6 @@
 ﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.33 (Beta 3)
+03-09-2007 Version 3.00.33 (Beta 3)
 + Implemented FS#156 — "Ability to wrap generated code in namespace(s)"
    using patch supplied by kramar.
 + Implemented FS#157 — "Ability to decorate the generated class with dll export"
