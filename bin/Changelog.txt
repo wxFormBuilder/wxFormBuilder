@@ -1,5 +1,9 @@
-﻿                     wxFormBuilder ChangeLog
+﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.33 (Beta 3)
++ Implemented FS#156 — "Ability to wrap generated code in namespace(s)"
+   using patch supplied by kramar.
+
 03-07-2007 Version 3.00.32 (Beta 3)
 ^ New way to save propgrid values when using menu or toolbar items.
    Cleaner and cross-platform.

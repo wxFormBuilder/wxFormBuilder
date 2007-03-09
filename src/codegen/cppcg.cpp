@@ -503,6 +503,37 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	code = GetCode( project, wxT("cpp_epilogue") );
 	m_source->WriteLn( code );
 
+    // namespace
+	PProperty propNamespace = project->GetProperty( wxT("namespace") );
+	wxArrayString namespaceArray;
+	if ( propNamespace )
+	{
+        namespaceArray = propNamespace->GetValueAsArrayString();
+        wxString usingNamespaceStr;
+        for ( unsigned int i = 0; i < namespaceArray.Count(); ++i )
+        {
+            m_header->WriteLn( wxT("namespace ") + namespaceArray[i] );
+            m_header->WriteLn( wxT("{") );
+            m_header->Indent();
+
+            if ( usingNamespaceStr.empty() )
+            {
+                usingNamespaceStr = wxT("using namespace ");
+            }
+            else
+            {
+                usingNamespaceStr += wxT("::");
+            }
+            usingNamespaceStr += namespaceArray[i];
+        }
+
+        if ( namespaceArray.Count() && !usingNamespaceStr.empty() )
+        {
+            usingNamespaceStr += wxT(";");
+            m_source->WriteLn( usingNamespaceStr );
+        }
+	}
+
 	// generamos los defines de las macros
 	if ( !useEnum )
 	{
@@ -517,6 +548,17 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		GenClassDeclaration( project->GetChild( i ), useEnum, events);
 		GenEventTable( project->GetChild(i), events );
 		GenConstructor( project->GetChild( i ) );
+	}
+
+    // namespace
+    if ( namespaceArray.Count() > 0 )
+    {
+        for ( size_t i = namespaceArray.Count(); i > 0; --i )
+        {
+            m_header->Unindent();
+            m_header->WriteLn( wxT("} // namespace ") + namespaceArray[ i - 1 ] );
+        }
+        m_header->WriteLn( wxEmptyString );
 	}
 
 	m_header->WriteLn( wxT("#endif //__") + file + wxT("__") );
