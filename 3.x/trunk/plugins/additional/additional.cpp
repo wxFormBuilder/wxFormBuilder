@@ -681,7 +681,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxCheckListBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		//xrc.AddProperty(_("style"),_("style"), XRC_TYPE_BITLIST);
-		xrc.AddProperty(_("choices"), _("choices"), XRC_TYPE_STRINGLIST);
+		xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
 		return xrc.GetXrcObject();
 	}
 
@@ -690,7 +690,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxCheckListBox"));
 		filter.AddWindowProperties();
 		//filter.AddProperty(_("style"),_("style"), XRC_TYPE_BITLIST);
-		filter.AddProperty(_("choices"), _("choices"), XRC_TYPE_STRINGLIST);
+		filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
 		return filter.GetXfbObject();
 	}
 };
