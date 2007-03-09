@@ -475,9 +475,50 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		m_header->WriteLn( wxT("") );
 	}
 
+    // class decoration
+	PProperty propClassDecoration = project->GetProperty( wxT("class_decoration") );
+	wxString classDecoration;
+	if ( propClassDecoration )
+	{
+		// get the decoration to be used by GenClassDeclaration
+		std::map< wxString, wxString > children;
+		propClassDecoration->SplitParentProperty( &children );
+
+		std::map< wxString, wxString >::iterator decoration;
+		decoration = children.find( wxT("decoration") );
+
+		if ( decoration != children.end() )
+		{
+            classDecoration = decoration->second;
+            if ( !classDecoration.empty() )
+            {
+                classDecoration += wxT( " " );
+            }
+		}
+
+		// Now get the header
+		std::map< wxString, wxString >::iterator header;
+		header = children.find( wxT("header") );
+
+		if ( header != children.end() )
+		{
+            wxString headerVal = header->second;
+            if ( !headerVal.empty() )
+            {
+                wxString include = wxT("#include \"") + headerVal + wxT("\"");
+                std::vector< wxString >::iterator findInclude = std::find( headerIncludes.begin(), headerIncludes.end(), include );
+                if ( findInclude == headerIncludes.end() )
+                {
+                    m_header->WriteLn( include );
+                    m_header->WriteLn( wxEmptyString );
+                }
+            }
+		}
+	}
+
 	code = GetCode( project, wxT("header_epilogue") );
 	m_header->WriteLn( code );
-	m_header->WriteLn( wxT("") );
+	m_header->WriteLn( wxEmptyString );
 
 	// en el cpp generamos el include del .h generado y los xpm
 	code = GetCode( project, wxT("cpp_preamble") );
@@ -545,7 +586,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	  EventVector events;
 	  FindEventHandlers(project->GetChild(i), events);
 
-		GenClassDeclaration( project->GetChild( i ), useEnum, events);
+		GenClassDeclaration( project->GetChild( i ), useEnum, classDecoration, events);
 		GenEventTable( project->GetChild(i), events );
 		GenConstructor( project->GetChild( i ) );
 	}
@@ -790,7 +831,7 @@ wxString CppCodeGenerator::GetCode(PObjectBase obj, wxString name)
 	return code;
 }
 
-void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const EventVector &events)
+void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events)
 {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
@@ -811,7 +852,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	m_header->WriteLn( wxT("/// Class ") + class_name);
 	m_header->WriteLn( wxT("///////////////////////////////////////////////////////////////////////////////") );
 
-	m_header->WriteLn( wxT("class ") + class_name + wxT(" : ") + GetCode( class_obj, wxT("base") ) );
+	m_header->WriteLn( wxT("class ") + classDecoration + class_name + wxT(" : ") + GetCode( class_obj, wxT("base") ) );
 	m_header->WriteLn( wxT("{") );
 	m_header->Indent();
 
