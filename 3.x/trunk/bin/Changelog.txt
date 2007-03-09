@@ -5,6 +5,8 @@ date Version 3.00.33 (Beta 3)
    using patch supplied by kramar.
 + Implemented FS#157 — "Ability to decorate the generated class with dll export"
    using patch supplied by kramar.
++ Implemented FS#160 — "Support for namespaces for subclass forward declarations"
+   using patch supplied by kramar.
 * Fixed FS#161 — "Tag of items in wxCheckListBox."
 
 03-07-2007 Version 3.00.32 (Beta 3)

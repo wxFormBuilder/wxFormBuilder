@@ -971,8 +971,49 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 			return;
 		}
 
-		// Got a subclass
-		subclasses->insert( wxT("class ") + nameVal + wxT(";") );
+        //get namespaces
+        wxString originalValue = nameVal;
+        int delimiter = nameVal.Find( wxT("::") ) ;
+        if ( wxNOT_FOUND == delimiter )
+        {
+            // Got a subclass
+            subclasses->insert( wxT("class ") + nameVal + wxT(";") );
+        }
+        else
+        {
+            wxString subClassPrefix, subClassSuffix;
+            do
+            {
+                wxString namespaceStr;
+                namespaceStr = nameVal.Mid( 0, delimiter );
+                if ( namespaceStr.empty() )
+                {
+                	break;
+                }
+                subClassPrefix += wxT("namespace ") + namespaceStr + wxT("{ ");
+                subClassSuffix += wxT(" }");
+
+                nameVal = nameVal.Mid( delimiter + 2 );
+                delimiter = nameVal.Find( wxT("::") );
+
+            } while ( delimiter != wxNOT_FOUND );
+
+			if ( delimiter != wxNOT_FOUND || nameVal.empty() )
+			{
+				wxLogError	( 	_("Invalid Value for Property\n\tObject: %s\n\tProperty: %s\n\tValue: %s"),
+								obj->GetPropertyAsString( _("name") ).c_str(),
+								_("subclass"),
+								originalValue.c_str()
+							);
+				return;
+			}
+
+            wxString subClassDeclar;
+            subClassDeclar += subClassPrefix + wxT("class ") + nameVal + wxT(";") + subClassSuffix;
+
+            // Got a subclass
+            subclasses->insert( subClassDeclar );
+        }
 
 		// Now get the header
 		std::map< wxString, wxString >::iterator header;
