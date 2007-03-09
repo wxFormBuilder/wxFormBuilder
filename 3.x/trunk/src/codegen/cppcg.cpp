@@ -755,9 +755,11 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 		typeName == wxT("choicebook")		||
 		typeName == wxT("widget")			||
 		typeName == wxT("expanded_widget")	||
-		typeName == wxT("statusbar")			||
-		typeName == wxT("component")			||
-		typeName == wxT("container")			||
+		typeName == wxT("statusbar")		||
+		typeName == wxT("component")		||
+		typeName == wxT("container")		||
+		typeName == wxT("menu")				||
+		typeName == wxT("submenu")			||
 		typeName == wxT("menubar")			||
 		typeName == wxT("toolbar")			||
 		typeName == wxT("splitter")
@@ -1216,9 +1218,11 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 		type == wxT("choicebook")		||
 		type == wxT("widget")			||
 		type == wxT("expanded_widget")	||
-		type == wxT("statusbar")			||
-		type == wxT("container")			||
+		type == wxT("statusbar")		||
+		type == wxT("container")		||
 		type == wxT("menubar")			||
+		type == wxT("menu")				||
+		type == wxT("submenu")			||
 		type == wxT("toolbar")			||
 		type == wxT("splitter")
 		)
@@ -1290,16 +1294,21 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 			}
 		}
 
-
-		if (type == wxT("menubar") || type == wxT("toolbar") || type == wxT("listbook") ||
-			type == wxT("notebook") || type == wxT("flatnotebook") )
+		if ( 	type == wxT("menubar")	||
+				type == wxT("menu")		||
+				type == wxT("submenu")	||
+				type == wxT("toolbar")	||
+				type == wxT("listbook")	||
+				type == wxT("notebook")	||
+				type == wxT("flatnotebook")
+			)
 		{
 			wxString afterAddChild = GetCode( obj, wxT("after_addchild") );
 			if ( !afterAddChild.empty() )
 			{
 				m_source->WriteLn( afterAddChild );
 			}
-			m_source->WriteLn( wxT("") );
+			m_source->WriteLn();
 		}
 
 	}
@@ -1329,19 +1338,6 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 			CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 			m_source->WriteLn(parser.ParseTemplate());
 		}
-	}
-	else if ( type == wxT("menu") || type == wxT("submenu") )
-	{
-		m_source->WriteLn( GetCode( obj, wxT("declaration") ) );
-		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
-
-		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-		{
-			GenConstruction( obj->GetChild(i), false );
-		}
-
-		m_source->WriteLn( GetCode( obj, wxT("menu_add") ) );
-
 	}
 	else if ( info->IsSubclassOf( wxT("sizeritembase") ) )
 	{

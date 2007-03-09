@@ -724,10 +724,12 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("choicebook")		||
 			type == wxT("widget")			||
 			type == wxT("expanded_widget")	||
-			type == wxT("statusbar")			||
-			type == wxT("component")			||
-			type == wxT("container")			||
+			type == wxT("statusbar")		||
+			type == wxT("component")		||
+			type == wxT("container")		||
 			type == wxT("menubar")			||
+			type == wxT("menu")				||
+			type == wxT("submenu")			||
 			type == wxT("toolbar")			||
 			type == wxT("splitter")
 			);
