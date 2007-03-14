@@ -126,6 +126,9 @@ class ObjectDatabase
   // por registrar en la librería.
   MacroSet m_macroSet;
 
+  // used so libraries are only imported once, even if multiple libraries use them
+  std::set< wxString > m_importedLibraries;
+
   /**
    * Initialize the property type map.
    */
