@@ -562,6 +562,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 				wxDir pluginXmlDir( nextPluginXmlPath );
 				if ( pluginXmlDir.IsOpened() )
 				{
+					std::map< wxString, PObjectPackage > packagesToSetup;
 					wxString packageXmlFile;
 					bool moreXmlFiles = pluginXmlDir.GetFirst( &packageXmlFile, wxT("*.xml"), wxDIR_FILES | wxDIR_HIDDEN );
 					while ( moreXmlFiles )
@@ -573,24 +574,13 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							{
 								nextXmlFile.MakeAbsolute();
 							}
+
 							PObjectPackage package = LoadPackage( nextXmlFile.GetFullPath(), nextPluginIconPath );
 							if ( package )
 							{
-								// Setup the inheritance for base classes
-								wxFileName fullNextPluginPath( nextPluginPath );
-								if ( !fullNextPluginPath.IsAbsolute() )
-								{
-									fullNextPluginPath.MakeAbsolute();
-								}
-								SetupPackage( nextXmlFile.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
-
-								// Load the C++ code tempates
-								nextXmlFile.SetExt( wxT("cppcode") );
-								LoadCodeGen( nextXmlFile.GetFullPath() );
-								if ( !packages.insert( PackageMap::value_type( package->GetPackageName(), package ) ).second )
-								{
-									wxLogError( _("There are two plugins named \"%s\""), package->GetPackageName().c_str() );
-								}
+								// Load all packages, then setup all packages
+								// this allows multiple packages sharing one library
+								packagesToSetup[ nextXmlFile.GetFullPath() ] = package;
 							}
 						}
 						catch ( wxFBException& ex )
@@ -598,6 +588,27 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							wxLogError( ex.what() );
 						}
 						moreXmlFiles = pluginXmlDir.GetNext( &packageXmlFile );
+					}
+
+					std::map< wxString, PObjectPackage >::iterator packageIt;
+					for ( packageIt = packagesToSetup.begin(); packageIt != packagesToSetup.end(); ++packageIt )
+					{
+						// Setup the inheritance for base classes
+						wxFileName fullNextPluginPath( nextPluginPath );
+						if ( !fullNextPluginPath.IsAbsolute() )
+						{
+							fullNextPluginPath.MakeAbsolute();
+						}
+						wxFileName xmlFileName( packageIt->first );
+						SetupPackage( xmlFileName.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
+
+						// Load the C++ code tempates
+						xmlFileName.SetExt( wxT("cppcode") );
+						LoadCodeGen( xmlFileName.GetFullPath() );
+						if ( !packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) ).second )
+						{
+							wxLogError( _("There are two plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
+						}
 					}
 				}
     		}
@@ -651,7 +662,11 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 			wxFileName::SetCwd( libPath );
 			try
 			{
-				ImportComponentLibrary( libPath + wxFILE_SEP_PATH + _WXSTR(lib), manager );
+				wxString fullLibPath = libPath + wxFILE_SEP_PATH + _WXSTR(lib);
+				if ( m_importedLibraries.insert( fullLibPath ).second )
+				{
+					ImportComponentLibrary( fullLibPath, manager );
+				}
 			}
 			catch ( ... )
 			{
