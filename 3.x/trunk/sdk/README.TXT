@@ -9,15 +9,25 @@ Introduction:
 	types that the wxFormBuilder team tests and uses, so your mileage may vary
 	with the other build types. 
 	
-	To create the needed build types navigate to the 'sdk' directory and type:
+Build File Creation:
+	To create the needed build files navigate to the 'sdk' directory and type
+	one of the following commands:
+
+		- Both Code::Blocks and GNU Makefiles:
+			There are included batch/sh script that you can run to just simplify
+			running	and creating the build files. Just run it to create the
+			necessary build files. You can jump to "Build Steps:" if you use these.
+
+			Windows:	create_build_files.bat
+			Linux:		create_build_files.sh
 	
-		1. Code::Blocks Projects and workspace:
-			Windows:	premake-win32 --target cb-gcc --with-wx-shared [--unicode]
-			Linux:		premake-linux --target cb-gcc --with-wx-shared [--unicode]
+		- Code::Blocks Projects and workspace:
+			Windows:	premake\premake-win32 --target cb-gcc --with-wx-shared [--unicode]
+			Linux:		premake/premake-linux --target cb-gcc --with-wx-shared [--unicode]
 			
-		2. GNU makefile:
-			Windows:	premake-win32 --target gnu --with-wx-shared [--unicode]
-			Windows:	premake-linux --target gnu --with-wx-shared [--unicode]
+		- GNU makefile:
+			Windows:	premake\premake-win32 --target gnu --with-wx-shared [--unicode]
+			Linux:		premake/premake-linux --target gnu --with-wx-shared [--unicode]
 
 Build Steps:
 	- For Code::Blocks, use the generated .workspace to build the SDK.
@@ -42,6 +52,9 @@ Includes:
 		wxFormBuilder uses TinyXML++ for writing and reading xml.
 		
 		You can find TinyXML++ on http://code.google.com/p/ticpp/
+	
+	3. Premake
+		The build file generator. It is precompiled for Windows, Linux, and Mac.
 
 Notes:
 	- Code::Blocks is a free cross-platform IDE and it can be found here:

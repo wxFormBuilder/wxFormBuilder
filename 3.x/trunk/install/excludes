@@ -2,7 +2,6 @@
 \.svn\
 \Release\
 \Debug\
-\wxAdditions\
 wxFormBuilderd.exe
 wxmsw28ud_gcc.dll
 wxmsw28umd_flatnotebook_gcc.dll
@@ -11,4 +10,5 @@ wxmsw28umd_scintilla_gcc.dll
 libadditionald.dll
 libcommond.dll
 liblayoutd.dll
+libwxadditions-minid.dll
 Thumbs.db
