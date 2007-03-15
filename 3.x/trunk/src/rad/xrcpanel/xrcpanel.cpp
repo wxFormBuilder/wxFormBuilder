@@ -77,7 +77,7 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
 #elif defined(__WXGTK__)
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
-	wxFont font( 12, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
 	font.SetFaceName( wxT( "Monospace" ) );
 #endif
 
