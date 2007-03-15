@@ -5,6 +5,7 @@ date Version 3.00.34 (Beta 3)
 * Updated propgrid, which fixed FS#162 — "Changing font point 
    size in properties panel causes font size to become huge."
 ^ Changed font size for xrc editor in gtk to match cpp editors.
+^ Editors no longer move horizontal scrollbar when generating.
 
 03-09-2007 Version 3.00.33 (Beta 3)
 + Implemented FS#156 — "Ability to wrap generated code in namespace(s)"

@@ -260,20 +260,24 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
 		cppEditor->SetReadOnly( false );
 		int cppLine = cppEditor->GetFirstVisibleLine() + cppEditor->LinesOnScreen() - 1;
+		int cppXOffset = cppEditor->GetXOffset();
 
 		wxScintilla* hEditor = m_hPanel->GetTextCtrl();
 		hEditor->SetReadOnly( false );
 		int hLine = hEditor->GetFirstVisibleLine() + hEditor->LinesOnScreen() - 1;
+		int hXOffset = hEditor->GetXOffset();
 
 		codegen.GenerateCode( project );
 
 		cppEditor->SetReadOnly( true );
 		cppEditor->GotoLine( cppLine );
+		cppEditor->SetXOffset( cppXOffset );
 		cppEditor->SetAnchor( 0 );
 		cppEditor->SetCurrentPos( 0 );
 
 		hEditor->SetReadOnly( true );
 		hEditor->GotoLine( hLine );
+		hEditor->SetXOffset( hXOffset );
 		hEditor->SetAnchor( 0 );
 		hEditor->SetCurrentPos( 0 );
 

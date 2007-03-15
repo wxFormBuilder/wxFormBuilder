@@ -138,12 +138,14 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		wxScintilla* editor = m_xrcPanel->GetTextCtrl();
 		editor->SetReadOnly( false );
 		int line = editor->GetFirstVisibleLine() + editor->LinesOnScreen() - 1;
+		int xOffset = editor->GetXOffset();
 
 		XrcCodeGenerator codegen;
 		codegen.SetWriter( m_cw );
 		codegen.GenerateCode( project );
 		editor->SetReadOnly( true );
 		editor->GotoLine( line );
+		editor->SetXOffset( xOffset );
 		editor->SetAnchor( 0 );
 		editor->SetCurrentPos( 0 );
 		Thaw();
