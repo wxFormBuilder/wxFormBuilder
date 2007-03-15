@@ -347,6 +347,15 @@ void ObjectToXrcFilter::AddWindowProperties()
   }
   if (!style.IsEmpty()) AddPropertyValue(_T("style"), style);
 
+  wxString extraStyle;
+  if (!m_obj->IsNull(_("extra_style")))
+    extraStyle = m_obj->GetPropertyAsString(_T("extra_style"));
+  if (!m_obj->IsNull(_("window_extra_style"))){
+    if (!extraStyle.IsEmpty()) extraStyle += _T('|');
+    extraStyle += m_obj->GetPropertyAsString(_T("window_extra_style"));
+  }
+  if (!extraStyle.IsEmpty()) AddPropertyValue(_T("exstyle"), extraStyle);
+
   if (!m_obj->IsNull(_("pos")))
     AddProperty(_("pos"), _("pos"), XRC_TYPE_SIZE);
 
@@ -536,6 +545,53 @@ void XrcToXfbFilter::AddStyleProperty()
 
       AddPropertyValue(_T("style"), style);
       AddPropertyValue(_T("window_style"), windowStyle);
+    }
+  }
+}
+
+void XrcToXfbFilter::AddExtraStyleProperty()
+{
+  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement("exstyle");
+  if (xrcProperty)
+  {
+    TiXmlNode *textElement = xrcProperty->FirstChild();
+    if (textElement && textElement->ToText())
+    {
+      wxString bitlist = wxString(textElement->ToText()->Value(),wxConvUTF8);
+      bitlist = ReplaceSynonymous(bitlist);
+
+      // FIXME: We should avoid hardcoding these things
+      std::set< wxString > windowStyles;
+      windowStyles.insert( wxT("wxWS_EX_VALIDATE_RECURSIVELY") );
+      windowStyles.insert( wxT("wxWS_EX_BLOCK_EVENTS") );
+      windowStyles.insert( wxT("wxWS_EX_TRANSIENT") );
+      windowStyles.insert( wxT("wxWS_EX_PROCESS_IDLE") );
+      windowStyles.insert( wxT("wxWS_EX_PROCESS_UI_UPDATES") );
+
+      wxString style, windowStyle;
+      wxStringTokenizer tkz(bitlist, wxT(" |"));
+      while (tkz.HasMoreTokens())
+      {
+        wxString token;
+        token = tkz.GetNextToken();
+        token.Trim(true);
+        token.Trim(false);
+
+        if (windowStyles.find(token) == windowStyles.end())
+        {
+          if (!style.IsEmpty()) style += _T("|");
+          style += token;
+        }
+        else
+        {
+          if (!windowStyle.IsEmpty()) windowStyle += _T("|");
+          windowStyle += token;
+        }
+
+      }
+
+      AddPropertyValue(_T("extra_style"), style);
+      AddPropertyValue(_T("window_extra_style"), windowStyle);
     }
   }
 }
@@ -834,4 +890,5 @@ void XrcToXfbFilter::AddWindowProperties()
   AddProperty(_("font"), _("font"), XRC_TYPE_FONT);
   //AddProperty(_("style"), _("style"), XRC_TYPE_BITLIST);
   AddStyleProperty();
+  AddExtraStyleProperty();
 };
