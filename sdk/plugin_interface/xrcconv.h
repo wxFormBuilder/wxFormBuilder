@@ -134,6 +134,7 @@ class XrcToXfbFilter
   void ImportStringListProperty(const wxString &xrcPropName, TiXmlElement *property, bool parseXrcText = false);
 
   void AddStyleProperty();
+  void AddExtraStyleProperty();
 
   TiXmlElement *GetXrcProperty(const wxString &name);
 };
