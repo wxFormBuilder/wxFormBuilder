@@ -3,11 +3,11 @@
 :: File:           create_source_package.bat
 :: Version:        1.03
 :: Name:           RJP Computing 
-:: Date:           02/28/2007
+:: Date:           03/15/2007
 :: Description:    Creates a source directory so that the installer can
 ::                 include only the needed files.
 ::**************************************************************************
-set APP_VERSION=1.03
+set APP_VERSION=1.04
 set APP_TITLE=Create Source Package
 
 echo ----------------------------------------
@@ -54,8 +54,8 @@ echo [svn] Exporting 'bin' directory to 'source\bin'
 echo [svn] Exporting 'plugins' directory to 'source\plugins'
 %SVN_EXPORT% %SVN_REPOS%/plugins source\plugins
 
-echo [svn] Exporting 'premake' directory to 'source\premake'
-%SVN_EXPORT% %SVN_REPOS%/premake source\premake
+::echo [svn] Exporting 'premake' directory to 'source\premake'
+::%SVN_EXPORT% %SVN_REPOS%/premake source\premake
 
 echo [svn] Exporting 'sdk' directory to 'source\sdk'
 %SVN_EXPORT% %SVN_REPOS%/sdk source\sdk
