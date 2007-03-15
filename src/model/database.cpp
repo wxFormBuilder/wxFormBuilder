@@ -75,6 +75,10 @@ PObjectInfo ObjectPackage::GetObjectInfo(unsigned int idx)
 	return m_objs[idx];
 }
 
+void ObjectPackage::AppendPackage( PObjectPackage package )
+{
+	m_objs.insert( m_objs.end(), package->m_objs.begin(), package->m_objs.end() );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -605,9 +609,11 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 						// Load the C++ code tempates
 						xmlFileName.SetExt( wxT("cppcode") );
 						LoadCodeGen( xmlFileName.GetFullPath() );
-						if ( !packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) ).second )
+						std::pair< PackageMap::iterator, bool > addedPackage = packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) );
+						if ( !addedPackage.second )
 						{
-							wxLogError( _("There are two plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
+							addedPackage.first->second->AppendPackage( packageIt->second );
+							Debug::Print( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
 						}
 					}
 				}
