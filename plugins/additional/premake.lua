@@ -1,7 +1,7 @@
 --*****************************************************************************
 --*	Author:		RJP Computing <rjpcomputing@gmail.com>
 --*	Date:		12/15/2006
---*	Version:	1.00-beta
+--*	Version:	1.00
 --*	
 --*	NOTES:
 --*		- use the '/' slash for all paths.

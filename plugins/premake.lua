@@ -4,6 +4,7 @@ project.name = "wxFormBuilder Plugins"
 dopackage( "additional" )
 dopackage( "common" )
 dopackage( "layout" )
+dopackage( "wxAdditions" )
 
 -- Add dependency packages here.
 dopackage( "../sdk/plugin_interface" )
