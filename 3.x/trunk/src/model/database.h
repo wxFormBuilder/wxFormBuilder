@@ -92,6 +92,12 @@ class ObjectPackage
    * Obtiene la información de un objeto incluido en el paquete.
    */
   PObjectInfo GetObjectInfo(unsigned int idx);
+
+  /**
+  If two xml files specify the same package name, then they merged to one package with this.
+  This allows one package to be split across multiple xml files.
+  */
+  void AppendPackage( PObjectPackage package );
 };
 
 /**
