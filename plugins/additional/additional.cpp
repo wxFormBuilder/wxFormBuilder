@@ -38,6 +38,7 @@
 #include <wx/checklst.h>
 #include <wx/datectrl.h>
 #include <wx/listctrl.h>
+#include <wx/clrpicker.h>
 
 // Includes notebook, listbook, choicebook
 #include "bookutils.h"
@@ -108,6 +109,7 @@ protected:
 	}
 
 	void OnSplitterSashChanged( wxSplitterEvent& event );
+	void OnColourPickerColourChanged( wxColourPickerEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
@@ -117,6 +119,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
 	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
+	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
 END_EVENT_TABLE()
 
 class wxCustomSplitterWindow : public wxSplitterWindow
@@ -958,6 +961,37 @@ public:
 		return filter.GetXfbObject();
 	}
 };
+
+
+class ColourPickerComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxColourPickerCtrl* colourpicker = new wxColourPickerCtrl(
+			(wxWindow*)parent,
+			obj->GetPropertyAsInteger(_("id")),
+			obj->GetPropertyAsColour(_("colour")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
+			);
+
+		colourpicker->PushEventHandler( new ComponentEvtHandler( colourpicker, GetManager() ) );
+		return colourpicker;
+	}
+};
+
+void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& event )
+{
+	wxColourPickerCtrl* window = wxDynamicCast( m_window, wxColourPickerCtrl );
+	if ( window != NULL )
+	{
+		wxColour colour = window->GetColour();
+		m_manager->ModifyProperty( window, _("colour"), wxString::Format(wxT("%d,%d,%d"),colour.Red(),colour.Green(),colour.Blue())  );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -984,6 +1018,12 @@ ABSTRACT_COMPONENT("choicebookpage", ChoicebookPageComponent)
 
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
+
+// wxColourPickerCtrl
+WINDOW_COMPONENT("wxColourPickerCtrl", ColourPickerComponent)
+MACRO(wxCLRP_DEFAULT_STYLE)
+MACRO(wxCLRP_USE_TEXTCTRL)
+MACRO(wxCLRP_SHOW_LABEL)
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)
