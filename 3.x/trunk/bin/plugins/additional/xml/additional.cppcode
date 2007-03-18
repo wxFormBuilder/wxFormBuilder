@@ -20,6 +20,14 @@
 	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
   </templates>
 
+  <templates class="wxColourPickerCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+	   $name = new #class(#wxparent $name, $id, $colour, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});
+    </template>
+    <template name="include">@#include &lt;wx/clrpicker.h&gt;</template>
+  </templates>
+
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
