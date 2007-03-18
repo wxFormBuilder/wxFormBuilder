@@ -1163,7 +1163,7 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 void MainFrame::OnFindDialog( wxCommandEvent& event )
 {
 	m_findDialog = new wxFindReplaceDialog( this, &m_findData, wxT("Find") );
-	m_findDialog->Centre();
+	m_findDialog->Centre( wxCENTRE_ON_SCREEN | wxBOTH );
 	m_findDialog->Show();
 }
 
