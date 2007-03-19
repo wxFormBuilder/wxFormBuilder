@@ -980,6 +980,22 @@ public:
 		colourpicker->PushEventHandler( new ComponentEvtHandler( colourpicker, GetManager() ) );
 		return colourpicker;
 	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxColourPickerCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("colour"),_("value"),XRC_TYPE_COLOUR);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxColourPickerCtrl"));
+		filter.AddProperty(_("value"),_("colour"),XRC_TYPE_COLOUR);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
 };
 
 void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& event )

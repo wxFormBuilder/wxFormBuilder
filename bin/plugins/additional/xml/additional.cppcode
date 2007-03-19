@@ -23,9 +23,15 @@
   <templates class="wxColourPickerCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
-	   $name = new #class(#wxparent $name, $id, $colour, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});
+	   $name = new #class( #wxparent $name, $id,
+	   #ifnull $colour
+	   @{ *wxBLACK, @}
+	   #ifnotnull $colour
+	   @{ $colour, @}
+	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
     </template>
     <template name="include">@#include &lt;wx/clrpicker.h&gt;</template>
+    <template name="evt_entry_OnColourChanged">EVT_COLOURPICKER_CHANGED( $id, #handler )</template>
   </templates>
 
   <templates class="wxHtmlWindow">

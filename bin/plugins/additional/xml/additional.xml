@@ -41,6 +41,7 @@
           wxCLRP_DEFAULT_STYLE
         </property>
         <property name="colour" type="wxColour"/>
+        <event name="OnColourChanged" class="wxColourPickerEvent" help="The user changed the colour selected in the control either using the button or using text control (see wxCLRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
