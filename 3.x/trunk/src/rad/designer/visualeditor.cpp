@@ -728,8 +728,11 @@ void VisualEditor::OnPropertyModified( wxFBPropertyEvent &event )
 	{
 		PObjectBase aux = m_back->GetSelectedObject();
 		Create();
-		wxFBObjectEvent objEvent( wxEVT_FB_OBJECT_SELECTED, aux );
-		this->ProcessEvent( objEvent );
+		if ( aux )
+		{
+			wxFBObjectEvent objEvent( wxEVT_FB_OBJECT_SELECTED, aux );
+			this->ProcessEvent( objEvent );
+		}
 		UpdateVirtualSize();
 	}
 }

@@ -1,5 +1,8 @@
 ﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.35 (Beta 3)
++ Added wxColourPickerCtrl using source provided by vaius.
+
 03-15-2007 Version 3.00.34 (Beta 3)
 + Added extra_style property to xrc. This resolves FS#163.
 * Updated propgrid, which fixed FS#162 — "Changing font point 

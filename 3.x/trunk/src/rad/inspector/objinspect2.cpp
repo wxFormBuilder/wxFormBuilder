@@ -1264,12 +1264,30 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		}
 		break;
 	case PT_WXCOLOUR:
-//		if (prop->GetValueAsString() == wxT(""))
-//			pgProp->SetValueFromString(wxT("Default"), 0);
-//		else{
-//			wxColour val = prop->GetValueAsColour();
-//			pgProp->DoSetValue((void*)&val);
-//		}
+		{
+			wxString value = prop->GetValueAsString();
+			if ( value.empty() )  // Default Colour
+			{
+				wxColourPropertyValue def( wxSYS_COLOUR_MAX, wxColour( 255, 255, 255 ) );
+				m_pg->SetPropertyValue( pgid, def );
+			}
+			else
+			{
+				if ( value.find_first_of( wxT("wx") ) == 0 )
+				{
+					// System Colour
+					wxColourPropertyValue def;
+					def.m_type = TypeConv::StringToSystemColour( value );
+					def.m_colour = prop->GetValueAsColour();
+					m_pg->SetPropertyValue( pgid, def );
+				}
+				else
+				{
+					wxColourPropertyValue def( wxPG_COLOUR_CUSTOM, prop->GetValueAsColour() );
+					m_pg->SetPropertyValue( pgid, def );
+				}
+			}
+		}
 		break;
 	case PT_STRINGLIST:
 		{
