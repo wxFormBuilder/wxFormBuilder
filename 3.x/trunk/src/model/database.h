@@ -98,6 +98,11 @@ class ObjectPackage
   This allows one package to be split across multiple xml files.
   */
   void AppendPackage( PObjectPackage package );
+
+  /**
+  If the object is loaded from xml but not found in a plugin, this purges the object
+  */
+  void PurgeIncompleteObjects();
 };
 
 /**

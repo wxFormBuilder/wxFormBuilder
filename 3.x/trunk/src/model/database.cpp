@@ -80,6 +80,27 @@ void ObjectPackage::AppendPackage( PObjectPackage package )
 	m_objs.insert( m_objs.end(), package->m_objs.begin(), package->m_objs.end() );
 }
 
+void ObjectPackage::PurgeIncompleteObjects()
+{
+	std::vector< std::vector< PObjectInfo >::iterator > objsToPurge;
+
+	std::vector< PObjectInfo >::iterator obj;
+	for ( obj = m_objs.begin(); obj != m_objs.end(); ++obj )
+	{
+		if ( NULL == (*obj)->GetComponent() )
+		{
+			Debug::Print( _("Missing Component for Class \"%s\" of Package \"%s\"."), (*obj)->GetClassName().c_str(), m_name.c_str() );
+			objsToPurge.push_back( obj );
+		}
+	}
+
+	std::vector< std::vector< PObjectInfo >::iterator >::iterator purgeMe;
+	for ( purgeMe = objsToPurge.begin(); purgeMe != objsToPurge.end(); ++purgeMe )
+	{
+		m_objs.erase( *purgeMe );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 ObjectDatabase::ObjectDatabase()
@@ -612,6 +633,9 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 						}
 						wxFileName xmlFileName( packageIt->first );
 						SetupPackage( xmlFileName.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
+
+						// Purge incomplete objects
+						packageIt->second->PurgeIncompleteObjects();
 
 						// Load the C++ code tempates
 						xmlFileName.SetExt( wxT("cppcode") );
