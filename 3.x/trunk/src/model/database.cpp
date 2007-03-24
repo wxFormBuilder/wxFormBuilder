@@ -476,6 +476,13 @@ PObjectBase  ObjectDatabase::CreateObject(TiXmlElement *xml_obj, PObjectBase par
 
 				prop->SetValue( _WXSTR(prop_value) );
 			}
+			else
+			{
+				wxLogError( wxT("The property named \"%s\" of class \"%s\" is not supported by this version of wxFormBuilder.\n")
+							wxT("If your project file was just converted from an older version, then the conversion was not complete.\n")
+							wxT("Otherwise, this project is from a newer version of wxFormBuilder.\n\n")
+							wxT("If you save this project, YOU WILL LOSE DATA"), _WXSTR(prop_name).c_str(), _WXSTR(class_name).c_str() );
+			}
 
 			xml_prop = xml_prop->NextSiblingElement(PROPERTY_TAG);
 		}
