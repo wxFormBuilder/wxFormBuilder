@@ -460,6 +460,7 @@ public:
 	*/
 	void RemoveChild (PObjectBase obj);
 	void RemoveChild (unsigned int idx);
+	void RemoveAllChildren(){ m_children.clear(); }
 
 	/**
 	* Obtiene un hijo del objeto.

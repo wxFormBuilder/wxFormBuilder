@@ -28,6 +28,7 @@
 #include <wx/wx.h>
 #include <wx/button.h>
 #include <wx/listctrl.h>
+#include <vector>
 #include "utils/wxfbdefs.h"
 #include "model/database.h"
 
@@ -44,10 +45,14 @@ class MenuEditor : public wxDialog
     int GetItemIdentation(long n);
 
     /** Inserta en la posición "n" un elemento en el wxListCtrl. No añade
-    sangría en el campo label. */
+    sangría en el campo label.
+    @param obj Pointer to the original object to be saved with SetItemData
+				If the item is still an item when the dialog is closed, this
+				is used to preserve data like bitmaps and events.
+    */
     long InsertItem(long n, const wxString& label, const wxString& shortcut,
         const wxString& id, const wxString& name, const wxString& helpString,
-        const wxString& kind);
+        const wxString& kind, PObjectBase obj = PObjectBase() );
 
     /** Inserta debajo del elemento seleccionado (o en la última posición en
     caso de no haber selección) un nuevo elemento en el wxListCtrl. El campo
@@ -61,9 +66,13 @@ class MenuEditor : public wxDialog
     long GetEndIndex(long n);
 
     /** Devuelve los campos del wxListCtrl del elemento "n". El campo label
-    lo devuelve con sangría */
+    lo devuelve con sangría
+    @param obj Pointer to the original object to be retrieved with GetItemData
+				If the item is still an item when the dialog is closed, this
+				is used to preserve data like bitmaps and events.
+    */
     void GetItem(long n, wxString& label, wxString& shortcut, wxString& id,
-        wxString& name, wxString& help, wxString& kind);
+        wxString& name, wxString& help, wxString& kind, PObjectBase* obj = NULL );
 
     /** Inserta en la posición "n" del wxListCtrl, los hijos de "obj". El primer
     hijo de "obj" estará sangrado con el valor de "ident". En "n" se devuelve
@@ -94,6 +103,8 @@ class MenuEditor : public wxDialog
     wxTextCtrl *m_tcHelpString;
     wxTextCtrl *m_tcShortcut;
     wxRadioBox *m_rbItemKind;
+
+    std::vector< WPObjectBase > m_originalItems;
 
     DECLARE_EVENT_TABLE()
 
