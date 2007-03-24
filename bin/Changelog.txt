@@ -1,7 +1,8 @@
-﻿﻿                     wxFormBuilder ChangeLog
+﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.36 (Beta 3)
 * Fixed FS#99 — "changes from menu editor remove all handlers."
+^ Added a warning for unsupported properties.
 
 03-19-2007 Version 3.00.35 (Beta 3)
 + Added wxColourPickerCtrl using source provided by vaius.
