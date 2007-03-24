@@ -179,11 +179,12 @@ void MenuEditor::AddChild(long& n, int ident, PObjectBase obj)
                 childObj->GetPropertyAsString(wxT("id")),
                 childObj->GetPropertyAsString(wxT("name")),
                 childObj->GetPropertyAsString(wxT("help")),
-                childObj->GetPropertyAsString(wxT("kind")));
+                childObj->GetPropertyAsString(wxT("kind")),
+                childObj);
         }
         else if (childObj->GetClassName() == wxT("separator") )
         {
-            InsertItem(n++, wxString(wxChar(' '), ident * IDENTATION) + wxT("---"), wxT(""), wxT(""), wxT(""), wxT(""), wxT(""));
+            InsertItem(n++, wxString(wxChar(' '), ident * IDENTATION) + wxT("---"), wxT(""), wxT(""), wxT(""), wxT(""), wxT(""), childObj);
         }
         else
         {
@@ -192,7 +193,8 @@ void MenuEditor::AddChild(long& n, int ident, PObjectBase obj)
                 childObj->GetPropertyAsString(wxT("id")),
                 childObj->GetPropertyAsString(wxT("name")),
                 childObj->GetPropertyAsString(wxT("help")),
-                wxT(""));
+                wxT(""),
+                childObj);
             AddChild(n, ident + 1, childObj);
         }
     }
@@ -215,11 +217,26 @@ bool MenuEditor::HasChildren(long n)
 
 PObjectBase MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
 {
-    PObjectInfo info = base->GetObjectInfo(isSubMenu ? wxT("submenu") : wxT("wxMenu") );
-    PObjectBase menu = base->NewObject(info);
+	// Get item from list control
     wxString label, shortcut, id, name, help, kind;
+	PObjectBase menu;
+    GetItem(n, label, shortcut, id, name, help, kind, &menu);
 
-    GetItem(n, label, shortcut, id, name, help, kind);
+	bool createNew = true;
+	if ( menu )
+	{
+		createNew = ( menu->GetClassName() != (isSubMenu ? wxT("submenu") : wxT("wxMenu")) );
+	}
+
+    // preserve original menu if the object types match
+    // this preserves properties that are not exposed in the menu editor - like C++ scope
+    if ( createNew  )
+    {
+		PObjectInfo info = base->GetObjectInfo(isSubMenu ? wxT("submenu") : wxT("wxMenu") );
+		menu = base->NewObject(info);
+    }
+
+
     label.Trim(true); label.Trim(false);
     menu->GetProperty( wxT("label") )->SetValue(label);
     menu->GetProperty( wxT("name") )->SetValue(name);
@@ -228,12 +245,24 @@ PObjectBase MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
     n++;
     while (n < m_menuList->GetItemCount() && GetItemIdentation(n) > ident)
     {
-        GetItem(n, label, shortcut, id, name, help, kind);
+    	PObjectBase menuitem;
+        GetItem(n, label, shortcut, id, name, help, kind, &menuitem);
+
+		createNew = true;
+
         label.Trim(true); label.Trim(false);
         if (label == wxT("---"))
         {
-            info = base->GetObjectInfo( wxT("separator") );
-            PObjectBase menuitem = base->NewObject(info);
+        	if ( menuitem )
+        	{
+        		createNew = ( menuitem->GetClassName() != wxT("separator") );
+        	}
+
+        	if ( createNew )
+        	{
+				PObjectInfo info = base->GetObjectInfo( wxT("separator") );
+				menuitem = base->NewObject(info);
+        	}
             menu->AddChild(menuitem);
             menuitem->SetParent(menu);
             n++;
@@ -246,8 +275,16 @@ PObjectBase MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
         }
         else
         {
-            info = base->GetObjectInfo( wxT("wxMenuItem") );
-            PObjectBase menuitem = base->NewObject(info);
+        	if ( menuitem )
+        	{
+        		createNew = ( menuitem->GetClassName() != wxT("wxMenuItem") );
+        	}
+
+        	if ( createNew )
+        	{
+				PObjectInfo info = base->GetObjectInfo( wxT("wxMenuItem") );
+				menuitem = base->NewObject(info);
+        	}
             menuitem->GetProperty( wxT("label") )->SetValue(label);
             menuitem->GetProperty( wxT("shortcut") )->SetValue(shortcut);
             menuitem->GetProperty( wxT("name") )->SetValue(name);
@@ -265,6 +302,17 @@ PObjectBase MenuEditor::GetMenu(long& n, PObjectDatabase base, bool isSubMenu)
 
 PObjectBase MenuEditor::GetMenubar(PObjectDatabase base)
 {
+	// Disconnect all parent/child relationships in original objects
+	for ( std::vector< WPObjectBase >::iterator it = m_originalItems.begin(); it != m_originalItems.end(); ++it )
+	{
+		PObjectBase obj = it->lock();
+		if ( obj )
+		{
+			obj->RemoveAllChildren();
+			obj->SetParent( PObjectBase() );
+		}
+	}
+
     PObjectInfo info = base->GetObjectInfo( wxT("wxMenuBar" ));
     PObjectBase menubar = base->NewObject(info);
     long n = 0;
@@ -294,7 +342,7 @@ int MenuEditor::GetItemIdentation(long n)
 
 long MenuEditor::InsertItem(long n, const wxString& label, const wxString& shortcut,
     const wxString& id, const wxString& name, const wxString& helpString,
-    const wxString& kind)
+    const wxString& kind, PObjectBase obj)
 {
     long index = m_menuList->InsertItem(n, label);
     m_menuList->SetItem(index, 1, shortcut);
@@ -302,6 +350,17 @@ long MenuEditor::InsertItem(long n, const wxString& label, const wxString& short
     m_menuList->SetItem(index, 3, name);
     m_menuList->SetItem(index, 4, helpString);
     m_menuList->SetItem(index, 5, kind);
+
+    // Prevent loss of data not exposed by menu editor. For Example: bitmaps, events, etc.
+    if ( obj )
+    {
+    	m_originalItems.push_back( obj );
+		m_menuList->SetItemData( index, m_originalItems.size() - 1 );
+    }
+    else
+    {
+    	m_menuList->SetItemData( index, -1 );
+    }
     return index;
 }
 
@@ -323,7 +382,7 @@ void MenuEditor::AddItem(const wxString& label, const wxString& shortcut,
 }
 
 void MenuEditor::GetItem(long n, wxString& label, wxString& shortcut,
-  wxString& id, wxString& name, wxString& help, wxString& kind)
+  wxString& id, wxString& name, wxString& help, wxString& kind, PObjectBase* obj )
 {
     label = m_menuList->GetItemText(n);
     wxListItem item;
@@ -344,6 +403,14 @@ void MenuEditor::GetItem(long n, wxString& label, wxString& shortcut,
     item.m_col++;
     m_menuList->GetItem(item);
     kind = item.GetText();
+    if ( NULL != obj )
+    {
+    	int origIndex = m_menuList->GetItemData( item );
+    	if ( origIndex >= 0 && origIndex < (int)m_originalItems.size() )
+    	{
+			*obj = m_originalItems[ origIndex ].lock();
+    	}
+    }
 }
 
 void MenuEditor::AddNewItem()
@@ -463,20 +530,22 @@ void MenuEditor::OnMenuUp(wxCommandEvent& e)
     while (prevIdent > curIdent)
         prevIdent = GetItemIdentation(--prev);
 
+	PObjectBase obj;
     wxString label, shortcut, id, name, help, kind;
-    GetItem(sel, label, shortcut, id, name, help, kind);
+    GetItem(sel, label, shortcut, id, name, help, kind, &obj);
 
     m_menuList->DeleteItem(sel);
-    long newSel = InsertItem(prev, label, shortcut, id, name, help, kind);
+    long newSel = InsertItem(prev, label, shortcut, id, name, help, kind, obj);
     sel++; prev++;
     if (sel < m_menuList->GetItemCount())
     {
         long childIdent = GetItemIdentation(sel);
         while (sel < m_menuList->GetItemCount() && childIdent > curIdent)
         {
-            GetItem(sel, label, shortcut, id, name, help, kind);
+        	PObjectBase childObj;
+            GetItem(sel, label, shortcut, id, name, help, kind, &childObj);
             m_menuList->DeleteItem(sel);
-            InsertItem(prev, label, shortcut, id, name, help, kind);
+            InsertItem(prev, label, shortcut, id, name, help, kind, childObj);
             sel++; prev++;
             if (sel < m_menuList->GetItemCount()) childIdent = GetItemIdentation(sel);
         }
@@ -504,16 +573,18 @@ void MenuEditor::OnMenuDown(wxCommandEvent& e)
     long endIndex = GetEndIndex(selAux) + 1;
 
     wxString label, shortcut, id, name, help, kind;
-    GetItem(sel, label, shortcut, id, name, help, kind);
+    PObjectBase obj;
+    GetItem(sel, label, shortcut, id, name, help, kind, &obj);
 
     m_menuList->DeleteItem(sel);
     endIndex--;
-    long first = InsertItem(endIndex, label, shortcut, id, name, help, kind);
+    long first = InsertItem(endIndex, label, shortcut, id, name, help, kind, obj);
     while (GetItemIdentation(sel) > selIdent)
     {
-        GetItem(sel, label, shortcut, id, name, help, kind);
+    	PObjectBase childObj;
+        GetItem(sel, label, shortcut, id, name, help, kind, &childObj);
         m_menuList->DeleteItem(sel);
-        InsertItem(endIndex, label, shortcut, id, name, help, kind);
+        InsertItem(endIndex, label, shortcut, id, name, help, kind, childObj);
         first--;
     }
     m_menuList->SetItemState(first, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);

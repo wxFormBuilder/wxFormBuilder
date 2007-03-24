@@ -1,11 +1,14 @@
-﻿                     wxFormBuilder ChangeLog
+﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.36 (Beta 3)
+* Fixed FS#99 — "changes from menu editor remove all handlers."
+
 03-19-2007 Version 3.00.35 (Beta 3)
 + Added wxColourPickerCtrl using source provided by vaius.
 
 03-15-2007 Version 3.00.34 (Beta 3)
 + Added extra_style property to xrc. This resolves FS#163.
-* Updated propgrid, which fixed FS#162 — "Changing font point 
+* Updated propgrid, which fixed FS#162 — "Changing font point
    size in properties panel causes font size to become huge."
 ^ Changed font size for xrc editor in gtk to match cpp editors.
 ^ Editors no longer move horizontal scrollbar when generating.
