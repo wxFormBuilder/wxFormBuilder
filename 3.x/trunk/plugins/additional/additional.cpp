@@ -39,6 +39,7 @@
 #include <wx/datectrl.h>
 #include <wx/listctrl.h>
 #include <wx/clrpicker.h>
+#include <wx/fontpicker.h>
 
 // Includes notebook, listbook, choicebook
 #include "bookutils.h"
@@ -110,6 +111,7 @@ protected:
 
 	void OnSplitterSashChanged( wxSplitterEvent& event );
 	void OnColourPickerColourChanged( wxColourPickerEvent& event );
+	void OnFontPickerFontChanged( wxFontPickerEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
@@ -120,6 +122,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
 	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
 	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
+	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
 END_EVENT_TABLE()
 
 class wxCustomSplitterWindow : public wxSplitterWindow
@@ -962,7 +965,6 @@ public:
 	}
 };
 
-
 class ColourPickerComponent : public ComponentBase
 {
 public:
@@ -1008,6 +1010,56 @@ void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& even
 	}
 }
 
+class FontPickerComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxFontPickerCtrl* picker = new wxFontPickerCtrl(
+			(wxWindow*)parent,
+			obj->GetPropertyAsInteger(_("id")),
+			obj->GetPropertyAsFont(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
+			);
+
+		if ( !obj->IsNull( _("max_point_size") ) )
+		{
+			picker->SetMaxPointSize( obj->GetPropertyAsInteger( _("max_point_size") ) );
+		}
+
+		picker->PushEventHandler( new ComponentEvtHandler( picker, GetManager() ) );
+		return picker;
+	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxFontPickerCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxFontPickerCtrl"));
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& event )
+{
+	wxFontPickerCtrl* window = wxDynamicCast( m_window, wxFontPickerCtrl );
+	if ( window != NULL )
+	{
+		wxFont font = window->GetSelectedFont();
+		m_manager->ModifyProperty( window, _("value"), wxString::Format( wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize() ) );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1040,6 +1092,13 @@ WINDOW_COMPONENT("wxColourPickerCtrl", ColourPickerComponent)
 MACRO(wxCLRP_DEFAULT_STYLE)
 MACRO(wxCLRP_USE_TEXTCTRL)
 MACRO(wxCLRP_SHOW_LABEL)
+
+// wxFontPickerCtrl
+WINDOW_COMPONENT("wxFontPickerCtrl", FontPickerComponent)
+MACRO(wxFNTP_DEFAULT_STYLE)
+MACRO(wxFNTP_USE_TEXTCTRL)
+MACRO(wxFNTP_FONTDESC_AS_LABEL)
+MACRO(wxFNTP_USEFONT_FOR_LABEL)
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)
