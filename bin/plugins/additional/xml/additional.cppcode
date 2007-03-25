@@ -34,6 +34,24 @@
     <template name="evt_entry_OnColourChanged">EVT_COLOURPICKER_CHANGED( $id, #handler )</template>
   </templates>
 
+  <templates class="wxFontPickerCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+	   $name = new #class( #wxparent $name, $id,
+	   #ifnull $value
+	   @{ wxNullFont, @}
+	   #ifnotnull $value
+	   @{ $value, @}
+	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
+    </template>
+    <template name="settings">
+		#ifnotnull $max_point_size
+		@{ $name->SetMaxPointSize( $max_point_size ); @}
+	</template>
+    <template name="include">@#include &lt;wx/fontpicker.h&gt;</template>
+    <template name="evt_entry_OnFontChanged">EVT_FONTPICKER_CHANGED( $id, #handler )</template>
+  </templates>
+
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
