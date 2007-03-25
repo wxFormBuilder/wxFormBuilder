@@ -40,7 +40,7 @@
     </property>
     <property name="label" type="wxString_i18n">MyLabel</property>
   </objectinfo>
-  
+
   <objectinfo class="wxTextCtrl" icon="text_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_textCtrl</property>
@@ -77,7 +77,7 @@
     <property name="name" type="text">m_bitmap</property>
     <property name="bitmap" type="bitmap" />
   </objectinfo>
-  
+
   <objectinfo class="wxComboBox" icon="combo_box.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_comboBox</property>
@@ -93,7 +93,7 @@
 	<event name="OnText" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_UPDATED event, when the combobox text changes." />
 	<event name="OnTextEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_ENTER event, when <RETURN> is pressed in the combobox." />
   </objectinfo>
-  
+
   <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_choice</property>
@@ -117,7 +117,7 @@
 	<event name="OnListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
 	<event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
   </objectinfo>
-  
+
   <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_listCtrl</property>
@@ -131,6 +131,7 @@
       <option name="wxLC_ALIGN_LEFT"      help="Icons align to the left." />
       <option name="wxLC_AUTOARRANGE"     help="Icons arrange themselves. (Windows only)" />
       <option name="wxLC_EDIT_LABELS"     help="Labels are editable: the application will be notified when editing starts." />
+      <option name="wxLC_NO_SORT_HEADER"  help="Prevent headers from behaving like buttons in report mode. (Windows only)" />
       <option name="wxLC_NO_HEADER"       help="No header in report mode." />
       <option name="wxLC_SINGLE_SEL"      help="Single selection (default is multiple)." />
       <option name="wxLC_SORT_ASCENDING"  help="Sort in ascending order (must still supply a comparison callback in SortItems." />
@@ -158,7 +159,7 @@
 	<event name="OnListColEndDrag" class="wxListEvent" help="A column has been resized by the user." />
 	<event name="OnListCasheHint" class="wxListEvent" help="Prepare cache for a virtual list control." />
   </objectinfo>
-  
+
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_checkBox</property>
@@ -244,7 +245,7 @@
       <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
       <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
   </objectinfo>
-  
+
   <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_grid</property>
@@ -283,12 +284,12 @@
 	<event name="OnGridEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created. Processes a wxEVT_GRID_EDITOR_CREATED." />
 	<event name="OnGridCmdEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_CREATED." />
   </objectinfo>
-  
+
   <objectinfo class="wxPanel" icon="panel.xpm" type="container">
     <inherits class="wxWindow">
         <property name="window_style">wxTAB_TRAVERSAL</property>
 	</inherits>
     <property name="name" type="text">m_panel</property>
   </objectinfo>
-  
+
 </package>

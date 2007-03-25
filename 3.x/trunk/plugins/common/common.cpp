@@ -617,13 +617,13 @@ public:
 		// Rellenamos
 		int i,j;
 		wxString buf;
-		for (i=0;i<4;i++)
+		if ( (lc->GetWindowStyle() & wxLC_REPORT) != 0 )
 		{
-			buf.Printf(wxT("Label %d"),i);
-			wxListItem itemCol;
-			itemCol.SetText(buf);
-			itemCol.SetAlign(wxLIST_FORMAT_LEFT);
-			lc->InsertColumn(i, itemCol);
+			for (i=0;i<4;i++)
+			{
+				buf.Printf(wxT("Label %d"),i);
+				lc->InsertColumn(i, buf, wxLIST_FORMAT_LEFT, 80);
+			}
 		}
 
 		for (j=0;j<10;j++)
@@ -631,10 +631,13 @@ public:
 			long temp;
 			buf.Printf(wxT("Cell (0,%d)"),j);
 			temp = lc->InsertItem(j,buf);
-			for (i=1;i<4;i++)
+			if ( (lc->GetWindowStyle() & wxLC_REPORT) != 0 )
 			{
-				buf.Printf(wxT("Cell (%d,%d)"),i,j);
-				lc->SetItem(temp,i,buf);
+				for (i=1;i<4;i++)
+				{
+					buf.Printf(wxT("Cell (%d,%d)"),i,j);
+					lc->SetItem(temp,i,buf);
+				}
 			}
 		}
 
@@ -1380,6 +1383,7 @@ MACRO(wxLC_ALIGN_TOP)
 MACRO(wxLC_ALIGN_LEFT)
 MACRO(wxLC_AUTOARRANGE)
 MACRO(wxLC_EDIT_LABELS)
+MACRO(wxLC_NO_SORT_HEADER)
 MACRO(wxLC_NO_HEADER)
 MACRO(wxLC_SINGLE_SEL)
 MACRO(wxLC_SORT_ASCENDING)
