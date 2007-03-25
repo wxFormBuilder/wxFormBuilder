@@ -632,19 +632,26 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							fullNextPluginPath.MakeAbsolute();
 						}
 						wxFileName xmlFileName( packageIt->first );
-						SetupPackage( xmlFileName.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
-
-						// Purge incomplete objects
-						packageIt->second->PurgeIncompleteObjects();
-
-						// Load the C++ code tempates
-						xmlFileName.SetExt( wxT("cppcode") );
-						LoadCodeGen( xmlFileName.GetFullPath() );
-						std::pair< PackageMap::iterator, bool > addedPackage = packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) );
-						if ( !addedPackage.second )
+						try
 						{
-							addedPackage.first->second->AppendPackage( packageIt->second );
-							Debug::Print( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
+							SetupPackage( xmlFileName.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
+
+							// Purge incomplete objects
+							packageIt->second->PurgeIncompleteObjects();
+
+							// Load the C++ code tempates
+							xmlFileName.SetExt( wxT("cppcode") );
+							LoadCodeGen( xmlFileName.GetFullPath() );
+							std::pair< PackageMap::iterator, bool > addedPackage = packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) );
+							if ( !addedPackage.second )
+							{
+								addedPackage.first->second->AppendPackage( packageIt->second );
+								Debug::Print( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
+							}
+						}
+						catch ( wxFBException& ex )
+						{
+							wxLogError( ex.what() );
 						}
 					}
 				}
