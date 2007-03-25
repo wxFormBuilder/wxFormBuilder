@@ -7,6 +7,8 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/filename.h>
 
+#include "wx/wxFlatNotebook/xh_fnb.h"
+
 class XRCPreviewEvtHandler : public wxEvtHandler
 {
 private:
@@ -57,6 +59,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	::wxSetWorkingDirectory( projectPath );
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
+	res->AddHandler( new wxFlatNotebookXmlHandler );
 	res->Load( filePath );
 
 	wxWindow* window = NULL;

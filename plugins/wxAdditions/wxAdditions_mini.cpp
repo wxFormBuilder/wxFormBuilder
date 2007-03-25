@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
-// Copyright (C) 2005 José Antonio Hurtado
+// Copyright (C) 2005 JosÃ© Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // Written by
-//   José Antonio Hurtado - joseantonio.hurtado@gmail.com
+//   JosÃ© Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -332,21 +332,19 @@ public:
 		return book;
 	}
 
-	/*TiXmlElement* ExportToXrc(IObject *obj)
+	TiXmlElement* ExportToXrc(IObject *obj)
 	{
-	ObjectToXrcFilter xrc(obj, _("wxNotebook"), obj->GetPropertyAsString(_("name")));
-	xrc.AddWindowProperties();
-	//xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
-	return xrc.GetXrcObject();
+		ObjectToXrcFilter xrc(obj, _("wxFlatNotebook"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
 	}
 
 	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
 	{
-	XrcToXfbFilter filter(xrcObj, _("wxNotebook"));
-	filter.AddWindowProperties();
-	//filter.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
-	return filter.GetXfbObject();
-	}*/
+		XrcToXfbFilter filter(xrcObj, _("wxFlatNotebook"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
 };
 
 class FlatNotebookPageComponent : public ComponentBase
@@ -446,22 +444,27 @@ public:
 		}
 	}
 
-	/*TiXmlElement* ExportToXrc(IObject *obj)
+	TiXmlElement* ExportToXrc(IObject *obj)
 	{
-	ObjectToXrcFilter xrc(obj, _("bookpage"));
+	ObjectToXrcFilter xrc(obj, _("notebookpage"));
 	xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 	xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+	if ( !obj->IsNull( _("bitmap") ) )
+	{
+		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+	}
 	return xrc.GetXrcObject();
 	}
 
 	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
 	{
-	XrcToXfbFilter filter(xrcObj, _("bookpage"));
+	XrcToXfbFilter filter(xrcObj, _("notebookpage"));
 	filter.AddWindowProperties();
 	filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
 	filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+	filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 	return filter.GetXfbObject();
-	}*/
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
