@@ -186,6 +186,18 @@
       <option name="wxRA_USE_CHECKBOX"          help="Use of the checkbox controls instead of radio buttons. (currently supported only on PalmOS)"/>wxRA_SPECIFY_COLS</property>
 	<event name="OnRadioBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBOX_SELECTED event, when a radiobutton is clicked." />
   </objectinfo>
+  
+  <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_radioBtn</property>
+    <property name="label" type="wxString_i18n">RadioBtn</property>
+    <property name="style" type="bitlist">
+      <option name="wxRB_GROUP"        help="Marks the beginning of a new group of radio buttons." />
+      <option name="wxRB_SINGLE"       help="In some circumstances, radio buttons that are not consecutive siblings trigger a hang bug in Windows (only). If this happens, add this style to mark the button as not belonging to a group, and implement the mutually-exclusive group behaviour yourself." />
+      <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
+    <property name="value" type="bool">0</property>
+	<event name="OnRadioButton" class="wxCommandEvent" help="Handles a toggle button click event." />
+  </objectinfo>
 
   <objectinfo class="wxStaticLine" icon="static_line.xpm" type="widget">
     <inherits class="wxWindow" />
@@ -244,52 +256,6 @@
       <option name="wxGA_HORIZONTAL"   help="Creates a horizontal gauge. "/>
       <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
       <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
-  </objectinfo>
-
-  <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_grid</property>
-    <property name="rows" type="uint" help="Number of Rows.">5</property>
-    <property name="cols" type="uint" help="Number of Columns.">5</property>
-	<event name="OnGridCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
-	<event name="OnGridCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
-	<event name="OnGridCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
-	<event name="OnGridCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
-	<event name="OnGridLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_CLICK." />
-	<event name="OnGridLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
-	<event name="OnGridLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
-	<event name="OnGridLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
-	<event name="OnGridCellChange" class="wxGridEvent" help="The user changed the data in a cell. Processes a wxEVT_GRID_CELL_CHANGE." />
-	<event name="OnGridSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell. Processes a wxEVT_GRID_SELECT_CELL." />
-	<event name="OnGridEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
-	<event name="OnGridEditorShown" class="wxGridEvent" help="The editor for a cell was shown. Processes a wxEVT_GRID_EDITOR_SHOWN." />
-	<event name="OnGridCmdCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
-	<event name="OnGridCmdCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
-	<event name="OnGridCmdCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
-	<event name="OnGridCmdCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
-	<event name="OnGridCmdLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_CLICK" />
-	<event name="OnGridCmdLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
-	<event name="OnGridCmdLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
-	<event name="OnGridCmdLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
-	<event name="OnGridCmdCellChange" class="wxGridEvent" help="The user changed the data in a cell; variant taking a window identifier. Processes a wxEVT_GRID_CELL_CHANGE." />
-	<event name="OnGridCmdSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell; variant taking a window identifier. Processes a wxEVT_GRID_SELECT_CELL." />
-	<event name="OnGridCmdEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
-	<event name="OnGridCmdEditorShown" class="wxGridEvent" help="The editor for a cell was shown; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_SHOWN." />
-	<event name="OnGridColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it. Processes a wxEVT_GRID_COL_SIZE." />
-	<event name="OnGridRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it. Processes a wxEVT_GRID_ROW_SIZE." />
-	<event name="OnGridCmdColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_COL_SIZE." />
-	<event name="OnGridCmdRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_ROW_SIZE." />
-	<event name="OnGridRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells. Processes a wxEVT_GRID_RANGE_SELECT." />
-	<event name="OnGridCmdRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells; variant taking a window identifier. Processes a wxEVT_GRID_RANGE_SELECT." />
-	<event name="OnGridEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created. Processes a wxEVT_GRID_EDITOR_CREATED." />
-	<event name="OnGridCmdEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_CREATED." />
-  </objectinfo>
-
-  <objectinfo class="wxPanel" icon="panel.xpm" type="container">
-    <inherits class="wxWindow">
-        <property name="window_style">wxTAB_TRAVERSAL</property>
-	</inherits>
-    <property name="name" type="text">m_panel</property>
   </objectinfo>
 
 </package>

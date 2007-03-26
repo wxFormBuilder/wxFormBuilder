@@ -1,23 +1,99 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="C++">
 
-  <templates class="wxCalendarCtrl">
+  <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/calctrl.h&gt;</template>
-	<template name="evt_entry_OnCalendar">EVT_CALENDAR( $id, #handler )</template>
-	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
-	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
-	<template name="evt_entry_OnCalendarYear">EVT_CALENDAR_YEAR( $id, #handler )</template>
-	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
+	<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+	<template name="evt_entry_OnTreeGetInfo">EVT_TREE_GET_INFO( $id, #handler )</template>
+	<template name="evt_entry_OnTreeSetInfo">EVT_TREE_SET_INFO( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+	<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemGetTooltip">EVT_TREE_ITEM_GETTOOLTIP( $id, #handler )</template>
+	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
+  </templates>
+  
+  <templates class="wxHtmlWindow">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/html/htmlwin.h&gt;</template>
+	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
+	<template name="evt_entry_OnHtmlCellHover">EVT_HTML_CELL_HOVER( $id, #handler )</template>
+	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
+  </templates>
+  
+  <templates class="wxCheckListBox">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+        wxString $name #append Choices[] = { $choices }; #nl
+        int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
+        $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+    </template>
+    <template name="include">@#include &lt;wx/checklst.h&gt;</template>
+	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
+	<template name="evt_entry_OnCheckListBox">EVT_LISTBOX( $id, #handler )</template>
+	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
+  </templates>
+  
+  <templates class="wxGrid">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
+    <template name="settings">$name->CreateGrid( $rows, $cols );</template>
+    <template name="include">@#include &lt;wx/grid.h&gt;</template>
+	<template name="evt_entry_OnGridCellLeftClick">EVT_GRID_CELL_LEFT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellRightClick">EVT_GRID_CELL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellLeftDClick">EVT_GRID_CELL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellRightDClick">EVT_GRID_CELL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelLeftClick">EVT_GRID_LABEL_LEFT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelRightClick">EVT_GRID_LABEL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelLeftDClick">EVT_GRID_LABEL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
+	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
+	<template name="evt_entry_OnGridEditorHidden">EVT_GRID_EDITOR_HIDDEN( #handler )</template>
+	<template name="evt_entry_OnGridEditorShown">EVT_GRID_EDITOR_SHOWN( #handler )</template>
+	<template name="evt_entry_OnGridCmdCellLeftClick">EVT_GRID_CMD_CELL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellRightClick">EVT_GRID_CMD_CELL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellLeftDClick">EVT_GRID_CMD_CELL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellRightDClick">EVT_GRID_CMD_CELL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelLeftClick">EVT_GRID_CMD_LABEL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelRightClick">EVT_GRID_CMD_LABEL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelLeftDClick">EVT_GRID_CMD_LABEL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdLabelRightDClick">EVT_GRID_CMD_LABEL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdCellChange">EVT_GRID_CMD_CELL_CHANGE( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdSelectCell">EVT_GRID_CMD_SELECT_CELL( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorHidden">EVT_GRID_CMD_EDITOR_HIDDEN( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorShown">EVT_GRID_CMD_EDITOR_SHOWN( $id, #handler )</template>
+	<template name="evt_entry_OnGridColSize">EVT_GRID_COL_SIZE( #handler )</template>
+	<template name="evt_entry_OnGridRowSize">EVT_GRID_ROW_SIZE( #handler )</template>
+	<template name="evt_entry_OnGridCmdColSize">EVT_GRID_CMD_COL_SIZE( $id, #handler )</template>
+	<template name="evt_entry_OnGridCmdRowSize">EVT_GRID_CMD_ROW_SIZE( $id, #handler )</template>
+	<template name="evt_entry_OnGridRangeSelect">EVT_GRID_RANGE_SELECT( #handler )</template>
+	<template name="evt_entry_OnGridCmdRangeSelect">EVT_GRID_CMD_RANGE_SELECT( $id, #handler )</template>
+	<template name="evt_entry_OnGridEditorCreated">EVT_GRID_EDITOR_CREATED( #handler )</template>
+	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
   </templates>
 
-  <templates class="wxDatePickerCtrl">
+  <templates class="wxToggleButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/datectrl.h&gt;</template>
-	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
+    <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
+	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
   </templates>
 
   <templates class="wxColourPickerCtrl">
@@ -69,57 +145,26 @@
     <template name="include">@#include &lt;wx/filepicker.h&gt;</template>
     <template name="evt_entry_OnDirChanged">EVT_DIRPICKER_CHANGED( $id, #handler )</template>
   </templates>
-
-  <templates class="wxHtmlWindow">
+  
+  <templates class="wxDatePickerCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/html/htmlwin.h&gt;</template>
-	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
-	<template name="evt_entry_OnHtmlCellHover">EVT_HTML_CELL_HOVER( $id, #handler )</template>
-	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/datectrl.h&gt;</template>
+	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
   </templates>
-
-  <templates class="wxTreeCtrl">
+  
+  <templates class="wxCalendarCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
-	<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
-	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
-	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
-	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
-	<template name="evt_entry_OnTreeGetInfo">EVT_TREE_GET_INFO( $id, #handler )</template>
-	<template name="evt_entry_OnTreeSetInfo">EVT_TREE_SET_INFO( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
-	<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemGetTooltip">EVT_TREE_ITEM_GETTOOLTIP( $id, #handler )</template>
-	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
-	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/calctrl.h&gt;</template>
+	<template name="evt_entry_OnCalendar">EVT_CALENDAR( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarYear">EVT_CALENDAR_YEAR( $id, #handler )</template>
+	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
   </templates>
-
-  <templates class="wxRadioButton">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
-	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
-  </templates>
-
-  <templates class="wxToggleButton">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
-    <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
-	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
-  </templates>
-
+  
   <templates class="wxScrollBar">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -161,181 +206,6 @@
 	<template name="evt_entry_OnSpin">EVT_SPIN( $id, #handler )</template>
 	<template name="evt_entry_OnSpinUp">EVT_SPIN_UP( $id, #handler )</template>
 	<template name="evt_entry_OnSpinDown">EVT_SPIN_DOWN( $id, #handler )</template>
-  </templates>
-
-  <templates class="wxSplitterWindow">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/splitter.h&gt;</template>
-	<template name="settings">
-	  #ifnotnull $sashgravity
-	  @{
-		#ifnotequal $sashgravity "0.0"
-		@{ $name->SetSashGravity( $sashgravity ); #nl @}
-	  @}
-
-	  #ifnotnull $sashsize
-	  @{
-		#ifnotequal $sashsize "-1"
-		@{	$name->SetSashSize( $sashsize ); #nl @}
-	  @}
-
-	  #ifnotnull $min_pane_size
-	  @{
-		#ifnotequal $min_pane_size "0"
-		@{	$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
-	  @}
-	  $name->Connect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this );
-    </template>
-	<template name="generated_event_handlers">
-		void $name #append OnIdle( wxIdleEvent&amp; ) #nl
-		{ #nl
-			$name->SetSashPosition( $sashpos ); #nl
-			$name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this ); #nl
-		} #nl
-	</template>
-	<template name="evt_entry_OnSplitterSashPosChanging">EVT_SPLITTER_SASH_POS_CHANGING( $id, #handler )</template>
-	<template name="evt_entry_OnSplitterSashPosChanged">EVT_SPLITTER_SASH_POS_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnSplitterUnsplit">EVT_SPLITTER_UNSPLIT( $id, #handler )</template>
-	<template name="evt_entry_OnSplitterDClick">EVT_SPLITTER_DCLICK( $id, #handler )</template>
-  </templates>
-
-  <templates class="wxCheckListBox">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">
-        wxString $name #append Choices[] = { $choices }; #nl
-        int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-        $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
-    </template>
-    <template name="include">@#include &lt;wx/checklst.h&gt;</template>
-	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
-	<template name="evt_entry_OnCheckListBox">EVT_LISTBOX( $id, #handler )</template>
-	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
-  </templates>
-
-
-  <templates class="wxNotebook">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
-    <template name="include">
-		@#include &lt;wx/notebook.h&gt;
-		#ifnotnull $bitmapsize
-        @{
-			#nl @#include &lt;wx/imaglist.h&gt;
-            #nl @#include &lt;wx/image.h&gt;
-        @}
-	</template>
-	<template name="settings">
-        #ifnotnull $bitmapsize
-		@{
-    		wxSize $name #append ImageSize = $bitmapsize; #nl
-    		int $name #append Index = 0; #nl
-    		wxImageList* $name #append Images = new wxImageList( $name #append ImageSize.GetWidth(), $name #append ImageSize.GetHeight() ); #nl
-    		$name->AssignImageList( $name #append Images ); #nl
-            wxBitmap $name #append Bitmap; #nl
-    		wxImage $name #append Image;
-		@}
-	</template>
-	<template name="evt_entry_OnNotebookPageChanged">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnNotebookPageChanging">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
-  </templates>
-
-  <templates class="notebookpage">
-    <template name="page_add">#parent $name->AddPage( #child $name, $label, $select );</template>
-    <template name="settings">
-        #ifnotnull #parent $bitmapsize
-        @{
-            #ifnotnull $bitmap
-            @{
-                #parent $name #append Bitmap = $bitmap; #nl
-                if ( #parent $name #append Bitmap.Ok() ) #nl
-                @{ #nl
-	                #parent $name #append Image = #parent $name #append Bitmap.ConvertToImage(); #nl
-	                #parent $name #append Images->Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ); #nl
-	                #parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
-	                #parent $name #append Index++; #nl
-                @}
-            @}
-        @}
-    </template>
-  </templates>
-
-  <templates class="wxListbook">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
-    <template name="include">
-        @#include &lt;wx/listbook.h&gt; #nl
-        @#include &lt;wx/listctrl.h&gt;
-        #ifnotnull $bitmapsize
-        @{
-			#nl @#include &lt;wx/imaglist.h&gt;
-            #nl @#include &lt;wx/image.h&gt;
-        @}
-    </template>
-    <template name="settings">
-        #ifnotnull $bitmapsize
-		@{
-    		wxSize $name #append ImageSize = $bitmapsize; #nl
-    		int $name #append Index = 0; #nl
-    		wxImageList* $name #append Images = new wxImageList( $name #append ImageSize.GetWidth(), $name #append ImageSize.GetHeight() ); #nl
-    		$name->AssignImageList( $name #append Images ); #nl
-            wxBitmap $name #append Bitmap; #nl
-    		wxImage $name #append Image;
-		@}
-	</template>
-	<template name="after_addchild">
-		#ifnull $bitmapsize
-		@{
-			@#ifndef  __WXGTK__ // Small icon style not supported in GTK #nl
-	        wxListView* $name #append ListView = $name->GetListView(); #nl
-			long $name #append Flags = $name #append ListView->GetWindowStyleFlag(); #nl
-			$name #append Flags = ( $name #append Flags &amp; ~wxLC_ICON ) | wxLC_SMALL_ICON; #nl
-			$name #append ListView->SetWindowStyleFlag( $name #append Flags ); #nl
-			@#endif
-  		@}
-    </template>
-	<template name="evt_entry_OnListbookPageChanged">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnListbookPageChanging">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
-  </templates>
-
-  <templates class="listbookpage">
-    <template name="page_add">#parent $name->AddPage( #child $name, $label, $select );</template>
-    <template name="settings">
-        #ifnotnull #parent $bitmapsize
-        @{
-            #ifnotnull $bitmap
-            @{
-                #parent $name #append Bitmap = $bitmap; #nl
-                if ( #parent $name #append Bitmap.Ok() ) #nl
-                @{ #nl
-	                #parent $name #append Image = #parent $name #append Bitmap.ConvertToImage(); #nl
-	                #parent $name #append Images->Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ); #nl
-	                #parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
-	                #parent $name #append Index++; #nl
-                @}
-            @}
-        @}
-    </template>
-  </templates>
-
-  <templates class="wxChoicebook">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
-    <template name="include">@#include &lt;wx/choicebk.h&gt;</template>
-	<template name="evt_entry_OnChoicebookPageChanged">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
-	<template name="evt_entry_OnChoicebookPageChanging">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
-  </templates>
-
-  <templates class="choicebookpage">
-    <template name="page_add">#parent $name->AddPage( #child $name, $label, $select );</template>
-  </templates>
-
-  <templates class="wxScrolledWindow">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">
-      $name = new #class( #wxparent $name, $id, $pos, $size, $window_style ); #nl
-      $name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );
-    </template>
   </templates>
 
 </codegen>

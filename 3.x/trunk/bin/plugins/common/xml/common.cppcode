@@ -14,13 +14,7 @@
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
 	<template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
   </templates>
-
-  <templates class="wxPanel">
-    <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
-    <template name="include">@#include &lt;wx/panel.h&gt;</template>
-  </templates>
-
+  
   <templates class="wxTextCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
@@ -84,44 +78,12 @@
     </template>
 	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
   </templates>
-
-  <templates class="wxGrid">
+  
+  <templates class="wxRadioButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
-    <template name="settings">$name->CreateGrid( $rows, $cols );</template>
-    <template name="include">@#include &lt;wx/grid.h&gt;</template>
-	<template name="evt_entry_OnGridCellLeftClick">EVT_GRID_CELL_LEFT_CLICK( #handler )</template>
-	<template name="evt_entry_OnGridCellRightClick">EVT_GRID_CELL_RIGHT_CLICK( #handler )</template>
-	<template name="evt_entry_OnGridCellLeftDClick">EVT_GRID_CELL_LEFT_DCLICK( #handler )</template>
-	<template name="evt_entry_OnGridCellRightDClick">EVT_GRID_CELL_RIGHT_DCLICK( #handler )</template>
-	<template name="evt_entry_OnGridLabelLeftClick">EVT_GRID_LABEL_LEFT_CLICK( #handler )</template>
-	<template name="evt_entry_OnGridLabelRightClick">EVT_GRID_LABEL_RIGHT_CLICK( #handler )</template>
-	<template name="evt_entry_OnGridLabelLeftDClick">EVT_GRID_LABEL_LEFT_DCLICK( #handler )</template>
-	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
-	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
-	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
-	<template name="evt_entry_OnGridEditorHidden">EVT_GRID_EDITOR_HIDDEN( #handler )</template>
-	<template name="evt_entry_OnGridEditorShown">EVT_GRID_EDITOR_SHOWN( #handler )</template>
-	<template name="evt_entry_OnGridCmdCellLeftClick">EVT_GRID_CMD_CELL_LEFT_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdCellRightClick">EVT_GRID_CMD_CELL_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdCellLeftDClick">EVT_GRID_CMD_CELL_LEFT_DCLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdCellRightDClick">EVT_GRID_CMD_CELL_RIGHT_DCLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdLabelLeftClick">EVT_GRID_CMD_LABEL_LEFT_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdLabelRightClick">EVT_GRID_CMD_LABEL_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdLabelLeftDClick">EVT_GRID_CMD_LABEL_LEFT_DCLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdLabelRightDClick">EVT_GRID_CMD_LABEL_RIGHT_DCLICK( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdCellChange">EVT_GRID_CMD_CELL_CHANGE( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdSelectCell">EVT_GRID_CMD_SELECT_CELL( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdEditorHidden">EVT_GRID_CMD_EDITOR_HIDDEN( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdEditorShown">EVT_GRID_CMD_EDITOR_SHOWN( $id, #handler )</template>
-	<template name="evt_entry_OnGridColSize">EVT_GRID_COL_SIZE( #handler )</template>
-	<template name="evt_entry_OnGridRowSize">EVT_GRID_ROW_SIZE( #handler )</template>
-	<template name="evt_entry_OnGridCmdColSize">EVT_GRID_CMD_COL_SIZE( $id, #handler )</template>
-	<template name="evt_entry_OnGridCmdRowSize">EVT_GRID_CMD_ROW_SIZE( $id, #handler )</template>
-	<template name="evt_entry_OnGridRangeSelect">EVT_GRID_RANGE_SELECT( #handler )</template>
-	<template name="evt_entry_OnGridCmdRangeSelect">EVT_GRID_CMD_RANGE_SELECT( $id, #handler )</template>
-	<template name="evt_entry_OnGridEditorCreated">EVT_GRID_EDITOR_CREATED( #handler )</template>
-	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
+	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
   </templates>
 
   <templates class="wxStaticBitmap">
