@@ -1350,6 +1350,7 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 		if ( !newProps.empty() )
 		{
 			user_headers = ( *newProps.begin() )->GetText( false );
+			project->RemoveChild( *newProps.begin() );
 		}
 
 		if ( !user_headers.empty() )

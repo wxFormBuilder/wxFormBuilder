@@ -1041,7 +1041,10 @@ public:
 	TiXmlElement* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxFontPickerCtrl"), obj->GetPropertyAsString(_("name")));
-		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		if ( !obj->IsNull( _("value") ) )
+		{
+			xrc.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		}
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
