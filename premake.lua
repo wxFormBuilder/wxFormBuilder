@@ -4,6 +4,7 @@ project.name = "wxFormBuilder"
 dopackage( "src" )
 dopackage( "plugins/additional" )
 dopackage( "plugins/common" )
+dopackage( "plugins/containers" )
 dopackage( "plugins/layout" )
 dopackage( "plugins/wxAdditions" )
 dopackage( "sdk/plugin_interface" )

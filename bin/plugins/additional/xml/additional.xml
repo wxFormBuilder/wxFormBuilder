@@ -1,112 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
-<package name="Additional" lib="libadditional" icon="calendar16x16.xpm" desc="wxWidgets additional controls">
-  <objectinfo class="wxColourPickerCtrl" icon="colourPickerIcon.xpm" type="widget">
-        <inherits class="wxWindow"/>
-        <property name="name" type="text">m_colourPicker</property>
-        <property name="style" type="bitlist">
-          <option name="wxCLRP_DEFAULT_STYLE" help="The default style: 0."/>
-          <option name="wxCLRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxColourPickerCtrl and which can be used by the user to specify a colour. The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
-          <option name="wxCLRP_SHOW_LABEL" help="Shows the colour in HTML form (AABBCC) as colour button label (instead of no label at all)."/>
-          wxCLRP_DEFAULT_STYLE
-        </property>
-        <property name="colour" type="wxColour"/>
-        <event name="OnColourChanged" class="wxColourPickerEvent" help="The user changed the colour selected in the control either using the button or using text control (see wxCLRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
-  </objectinfo>
-
-  <objectinfo class="wxFontPickerCtrl" icon="fontPickerIcon.xpm" type="widget">
-        <inherits class="wxWindow"/>
-        <property name="name" type="text">m_fontPicker</property>
-        <property name="style" type="bitlist">
-          <option name="wxFNTP_DEFAULT_STYLE" help="The default style: wxFNTP_FONTDESC_AS_LABEL | wxFNTP_USEFONT_FOR_LABEL."/>
-          <option name="wxFNTP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxFontPickerCtrl and which can be used by the user to specify a font (see SetSelectedFont). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
-          <option name="wxFNTP_FONTDESC_AS_LABEL" help="Keeps the label of the button updated with the fontface name and the font size. E.g. choosing &quot;Times New Roman bold, italic with size 10&quot; from the fontdialog, will update the label (overwriting any previous label) with the &quot;Times New Roman, 10&quot; text."/>
-          <option name="wxFNTP_USEFONT_FOR_LABEL" help="Uses the currently selected font to draw the label of the button."/>
-          wxFNTP_DEFAULT_STYLE
-        </property>
-        <property name="value" type="wxFont"/>
-        <property name="max_point_size" type="uint" help="Sets the maximum point size value allowed for the user-chosen font. The default value is 100. Note that big fonts can require a lot of memory and CPU time both for creation and for rendering; thus, specially because the user has the option to specify the fontsize through a text control (see wxFNTP_USE_TEXTCTRL), it's a good idea to put a limit to the maximum font size when huge fonts do not make much sense.">
-			100
-		</property>
-        <event name="OnFontChanged" class="wxFontPickerEvent" help="The user changed the font selected in the control either using the button or using text control (see wxFNTP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
-  </objectinfo>
-
-  <objectinfo class="wxFilePickerCtrl" icon="filePickerIcon.xpm" type="widget">
-        <inherits class="wxWindow"/>
-        <property name="name" type="text">m_filePicker</property>
-        <property name="style" type="bitlist">
-			<option name="wxFLP_DEFAULT_STYLE" help="The default style: includes wxFLP_OPEN | wxFLP_FILE_MUST_EXIST and, under wxMSW only, wxFLP_USE_TEXTCTRL."/>
-			<option name="wxFLP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxFilePickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
-			<option name="wxFLP_OPEN" help="Creates a picker which allows the user to select a file to open."/>
-			<option name="wxFLP_SAVE" help="Creates a picker which allows the user to select a file to save."/>
-			<option name="wxFLP_OVERWRITE_PROMPT" help="Can be combined with wxFLP_SAVE only: ask confirmation to the user before selecting a file."/>
-			<option name="wxFLP_FILE_MUST_EXIST" help="Can be combined with wxFLP_OPEN only: the selected file must be an existing file."/>
-			<option name="wxFLP_CHANGE_DIR" help="Change current working directory on each user file selection change."/>
-			wxFLP_DEFAULT_STYLE
-        </property>
-        <property name="value" type="wxString"/>
-        <property name="message" type="wxString_i18n">Select a file</property>
-        <property name="wildcard" type="wxString">*.*</property>
-        <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
-  </objectinfo>
-
-  <objectinfo class="wxDirPickerCtrl" icon="dirPickerIcon.xpm" type="widget">
-        <inherits class="wxWindow"/>
-        <property name="name" type="text">m_dirPicker</property>
-        <property name="style" type="bitlist">
-			<option name="wxDIRP_DEFAULT_STYLE" help="The default style: includes wxDIRP_DIR_MUST_EXIST and, under wxMSW only, wxDIRP_USE_TEXTCTRL."/>
-			<option name="wxDIRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxDirPickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
-			<option name="wxDIRP_DIR_MUST_EXIST" help="Creates a picker which allows to select only existing directories. wxGTK control always adds this flag internally as it does not support its absence."/>
-			<option name="wxDIRP_CHANGE_DIR" help="Change current working directory on each user directory selection change."/>
-			wxDIRP_DEFAULT_STYLE
-        </property>
-        <property name="value" type="wxString"/>
-        <property name="message" type="wxString_i18n">Select a file</property>
-        <event name="OnDirChanged" class="wxFileDirPickerEvent" help="The user changed the directory selected in the control either using the button or using text control (see wxDIRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing directory path)."/>
-  </objectinfo>
-
-  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_datePicker</property>
-    <property name="style" type="bitlist">
-      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
-      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
-      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
-      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
-      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
-	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
-  </objectinfo>
-
-  <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_calendar</property>
-    <property name="style" type="bitlist">
-      <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
-      <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
-      <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
-      <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
-      <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
-      <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
-      <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
-    <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
-    <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
-    <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
-    <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
-    <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
-    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
-  </objectinfo>
-
-  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_htmlWin</property>
-    <property name="style" type="bitlist">
-      <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
-      <option name="wxHW_SCROLLBAR_AUTO"  help="Display scrollbars only if page's size exceeds window's size." />
-      <option name="wxHW_NO_SELECTION"    help="Don't allow the user to select text." />wxHW_SCROLLBAR_AUTO</property>
-	<event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
-	<event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
-	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
-  </objectinfo>
-
+<package name="Additional" lib="libadditional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
+  
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_treeCtrl</property>
@@ -148,24 +42,175 @@
 	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
   </objectinfo>
 
-  <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
+  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
     <inherits class="wxWindow" />
-    <property name="name" type="text">m_radioBtn</property>
-    <property name="label" type="wxString_i18n">RadioBtn</property>
+    <property name="name" type="text">m_htmlWin</property>
     <property name="style" type="bitlist">
-      <option name="wxRB_GROUP"        help="Marks the beginning of a new group of radio buttons." />
-      <option name="wxRB_SINGLE"       help="In some circumstances, radio buttons that are not consecutive siblings trigger a hang bug in Windows (only). If this happens, add this style to mark the button as not belonging to a group, and implement the mutually-exclusive group behaviour yourself." />
-      <option name="wxRB_USE_CHECKBOX" help="Use a checkbox button instead of radio button (currently supported only on PalmOS)." /></property>
-    <property name="value" type="bool">0</property>
-	<event name="OnRadioButton" class="wxCommandEvent" help="Handles a toggle button click event." />
+      <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
+      <option name="wxHW_SCROLLBAR_AUTO"  help="Display scrollbars only if page's size exceeds window's size." />
+      <option name="wxHW_NO_SELECTION"    help="Don't allow the user to select text." />wxHW_SCROLLBAR_AUTO</property>
+	<event name="OnHtmlCellClicked" class="wxHtmlCellEvent" help="A wxHtmlCell was clicked." />
+	<event name="OnHtmlCellHover" class="wxHtmlCellEvent" help="The mouse passed over a wxHtmlCell." />
+	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
+  </objectinfo>
+  
+  <objectinfo class="wxCheckListBox" icon="checklistbox.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_checkList</property>
+    <property name="style" type="bitlist">
+      <option name="wxLB_SINGLE"    help="Single-selection list." />
+      <option name="wxLB_MULTIPLE"  help="Multiple-selection list: the user can toggle multiple items on and off." />
+      <option name="wxLB_EXTENDED"  help="Extended-selection list: the user can select multiple items using the SHIFT key and the mouse or special key combinations." />
+      <option name="wxLB_HSCROLL"   help="Create horizontal scrollbar if contents are too wide (Windows only)." />
+      <option name="wxLB_ALWAYS_SB" help="Always show a vertical scrollbar." />
+      <option name="wxLB_NEEDED_SB" help="Only create a vertical scrollbar if needed." />
+      <option name="wxLB_SORT"      help="The listbox contents are sorted in alphabetical order." /></property>
+    <property name="choices" type="stringlist" help="List of default values." />
+	<event name="OnCheckListBoxToggled" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKLISTBOX_TOGGLED event, when an item in the check list box is checked or unchecked." />
+	<event name="OnCheckListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
+	<event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
   </objectinfo>
 
+  <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_grid</property>
+    <property name="rows" type="uint" help="Number of Rows.">5</property>
+    <property name="cols" type="uint" help="Number of Columns.">5</property>
+	<event name="OnGridCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
+	<event name="OnGridCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
+	<event name="OnGridCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
+	<event name="OnGridCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
+	<event name="OnGridLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_CLICK." />
+	<event name="OnGridLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
+	<event name="OnGridLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
+	<event name="OnGridLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
+	<event name="OnGridCellChange" class="wxGridEvent" help="The user changed the data in a cell. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell. Processes a wxEVT_GRID_SELECT_CELL." />
+	<event name="OnGridEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
+	<event name="OnGridEditorShown" class="wxGridEvent" help="The editor for a cell was shown. Processes a wxEVT_GRID_EDITOR_SHOWN." />
+	<event name="OnGridCmdCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
+	<event name="OnGridCmdCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
+	<event name="OnGridCmdCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />
+	<event name="OnGridCmdCellRightDClick" class="wxGridEvent" help="The user double-clicked a cell with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_CELL_RIGHT_DCLICK." />
+	<event name="OnGridCmdLabelLeftClick" class="wxGridEvent" help="The user clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_CLICK" />
+	<event name="OnGridCmdLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
+	<event name="OnGridCmdLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
+	<event name="OnGridCmdLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
+	<event name="OnGridCmdCellChange" class="wxGridEvent" help="The user changed the data in a cell; variant taking a window identifier. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridCmdSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell; variant taking a window identifier. Processes a wxEVT_GRID_SELECT_CELL." />
+	<event name="OnGridCmdEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
+	<event name="OnGridCmdEditorShown" class="wxGridEvent" help="The editor for a cell was shown; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_SHOWN." />
+	<event name="OnGridColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it. Processes a wxEVT_GRID_COL_SIZE." />
+	<event name="OnGridRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it. Processes a wxEVT_GRID_ROW_SIZE." />
+	<event name="OnGridCmdColSize" class="wxGridSizeEvent" help="The user resized a column by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_COL_SIZE." />
+	<event name="OnGridCmdRowSize" class="wxGridSizeEvent" help="The user resized a row by dragging it; variant taking a window identifier. Processes a wxEVT_GRID_ROW_SIZE." />
+	<event name="OnGridRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells. Processes a wxEVT_GRID_RANGE_SELECT." />
+	<event name="OnGridCmdRangeSelect" class="wxGridRangeSelectEvent" help="The user selected a group of contiguous cells; variant taking a window identifier. Processes a wxEVT_GRID_RANGE_SELECT." />
+	<event name="OnGridEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created. Processes a wxEVT_GRID_EDITOR_CREATED." />
+	<event name="OnGridCmdEditorCreated" class="wxGridEditorCreatedEvent" help="The editor for a cell was created; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_CREATED." />
+  </objectinfo>
+  
   <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_toggleBtn</property>
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
 	<event name="OnToggleButton" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBUTTON_SELECTED event, when the radiobutton is clicked." />
+  </objectinfo>
+  
+  <objectinfo class="wxColourPickerCtrl"  startgroup="1" icon="colourPickerIcon.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_colourPicker</property>
+        <property name="style" type="bitlist">
+          <option name="wxCLRP_DEFAULT_STYLE" help="The default style: 0."/>
+          <option name="wxCLRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxColourPickerCtrl and which can be used by the user to specify a colour. The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+          <option name="wxCLRP_SHOW_LABEL" help="Shows the colour in HTML form (AABBCC) as colour button label (instead of no label at all)."/>
+          wxCLRP_DEFAULT_STYLE
+        </property>
+        <property name="colour" type="wxColour"/>
+        <event name="OnColourChanged" class="wxColourPickerEvent" help="The user changed the colour selected in the control either using the button or using text control (see wxCLRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
+  </objectinfo>
+
+  <objectinfo class="wxFontPickerCtrl" icon="fontPicker.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_fontPicker</property>
+        <property name="style" type="bitlist">
+          <option name="wxFNTP_DEFAULT_STYLE" help="The default style: wxFNTP_FONTDESC_AS_LABEL | wxFNTP_USEFONT_FOR_LABEL."/>
+          <option name="wxFNTP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxFontPickerCtrl and which can be used by the user to specify a font (see SetSelectedFont). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+          <option name="wxFNTP_FONTDESC_AS_LABEL" help="Keeps the label of the button updated with the fontface name and the font size. E.g. choosing &quot;Times New Roman bold, italic with size 10&quot; from the fontdialog, will update the label (overwriting any previous label) with the &quot;Times New Roman, 10&quot; text."/>
+          <option name="wxFNTP_USEFONT_FOR_LABEL" help="Uses the currently selected font to draw the label of the button."/>
+          wxFNTP_DEFAULT_STYLE
+        </property>
+        <property name="value" type="wxFont"/>
+        <property name="max_point_size" type="uint" help="Sets the maximum point size value allowed for the user-chosen font. The default value is 100. Note that big fonts can require a lot of memory and CPU time both for creation and for rendering; thus, specially because the user has the option to specify the fontsize through a text control (see wxFNTP_USE_TEXTCTRL), it's a good idea to put a limit to the maximum font size when huge fonts do not make much sense.">
+			100
+		</property>
+        <event name="OnFontChanged" class="wxFontPickerEvent" help="The user changed the font selected in the control either using the button or using text control (see wxFNTP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
+  </objectinfo>
+
+  <objectinfo class="wxFilePickerCtrl" icon="filePicker.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_filePicker</property>
+        <property name="style" type="bitlist">
+			<option name="wxFLP_DEFAULT_STYLE" help="The default style: includes wxFLP_OPEN | wxFLP_FILE_MUST_EXIST and, under wxMSW only, wxFLP_USE_TEXTCTRL."/>
+			<option name="wxFLP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxFilePickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+			<option name="wxFLP_OPEN" help="Creates a picker which allows the user to select a file to open."/>
+			<option name="wxFLP_SAVE" help="Creates a picker which allows the user to select a file to save."/>
+			<option name="wxFLP_OVERWRITE_PROMPT" help="Can be combined with wxFLP_SAVE only: ask confirmation to the user before selecting a file."/>
+			<option name="wxFLP_FILE_MUST_EXIST" help="Can be combined with wxFLP_OPEN only: the selected file must be an existing file."/>
+			<option name="wxFLP_CHANGE_DIR" help="Change current working directory on each user file selection change."/>
+			wxFLP_DEFAULT_STYLE
+        </property>
+        <property name="value" type="wxString"/>
+        <property name="message" type="wxString_i18n">Select a file</property>
+        <property name="wildcard" type="wxString">*.*</property>
+        <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
+  </objectinfo>
+
+  <objectinfo class="wxDirPickerCtrl" icon="dirPicker.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_dirPicker</property>
+        <property name="style" type="bitlist">
+			<option name="wxDIRP_DEFAULT_STYLE" help="The default style: includes wxDIRP_DIR_MUST_EXIST and, under wxMSW only, wxDIRP_USE_TEXTCTRL."/>
+			<option name="wxDIRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxDirPickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+			<option name="wxDIRP_DIR_MUST_EXIST" help="Creates a picker which allows to select only existing directories. wxGTK control always adds this flag internally as it does not support its absence."/>
+			<option name="wxDIRP_CHANGE_DIR" help="Change current working directory on each user directory selection change."/>
+			wxDIRP_DEFAULT_STYLE
+        </property>
+        <property name="value" type="wxString"/>
+        <property name="message" type="wxString_i18n">Select a folder</property>
+        <event name="OnDirChanged" class="wxFileDirPickerEvent" help="The user changed the directory selected in the control either using the button or using text control (see wxDIRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing directory path)."/>
+  </objectinfo>
+
+  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_datePicker</property>
+    <property name="style" type="bitlist">
+      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
+      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
+      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
+      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
+      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
+  </objectinfo>
+
+  <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_calendar</property>
+    <property name="style" type="bitlist">
+      <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
+      <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
+      <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
+      <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
+      <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
+      <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
+      <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
+    <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
+    <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
+    <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
+    <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
+    <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
+    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
   </objectinfo>
 
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
@@ -225,121 +270,6 @@
 	<event name="OnSpin" class="wxSpinEvent" help="Generated whenever an arrow is pressed." />
 	<event name="OnSpinUp" class="wxSpinEvent" help="Generated when left/up arrow is pressed." />
 	<event name="OnSpinDown" class="wxSpinEvent" help="Generated when right/down arrow is pressed." />
-  </objectinfo>
-
-  <objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_splitter</property>
-    <property name="style" type="bitlist">
-      <option name="wxSP_3D"                  help="Draws a 3D effect border and sash." />
-      <option name="wxSP_3DSASH"              help="Draws a 3D effect sash. (To see the 3D sash under Windows XP theming, use wxSP_NO_XP_THEME)" />
-      <option name="wxSP_3DBORDER"            help="Synonym for wxSP_BORDER." />
-      <option name="wxSP_BORDER"              help="Draws a standard border." />
-      <option name="wxSP_NOBORDER"            help="No border (default)." />
-      <option name="wxSP_NO_XP_THEME"         help="Under Windows XP, switches off the attempt to draw the splitter using Windows XP theming, so the borders and sash will take on the pre-XP look." />
-      <option name="wxSP_PERMIT_UNSPLIT"      help="Always allow to unsplit, even with the minimum pane size other than zero. Note: The designer prevents un-splitting." />
-      <option name="wxSP_LIVE_UPDATE"         help="Don't draw XOR line but resize the child windows immediately." />wxSP_3D</property>
-    <property name="splitmode" type="option">
-      <option name="wxSPLIT_VERTICAL"         help="Specifies a vertical split window." />
-      <option name="wxSPLIT_HORIZONTAL"       help="Specifies a horizontal split window." />wxSPLIT_VERTICAL</property>
-    <property name="sashpos" type="int"      help="The initial sash position.">0</property>
-    <property name="sashsize" type="int"      help="Overrides platform metrics if greater than -1">-1</property>
-    <property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
-    <property name="min_pane_size" type="uint" help="Minimum size for the panes. A minimum less than 1 is not allowed in the designer, because the designer prevents un-splitting.">0</property>
-	<event name="OnSplitterSashPosChanging" class="wxSplitterEvent" help="The sash position is in the process of being changed. May be used to modify the position of the tracking bar to properly reflect the position that would be set if the drag were to be completed at this point. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING event." />
-	<event name="OnSplitterSashPosChanged" class="wxSplitterEvent" help="The sash position was changed. May be used to modify the sash position before it is set, or to prevent the change from taking place. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED event." />
-	<event name="OnSplitterUnsplit" class="wxSplitterEvent" help="The splitter has been just unsplit. Processes a wxEVT_COMMAND_SPLITTER_UNSPLIT event." />
-	<event name="OnSplitterDClick" class="wxSplitterEvent" help="The sash was double clicked. The default behaviour is to unsplit the window when this happens (unless the minimum pane size has been set to a value greater than zero). Processes a wxEVT_COMMAND_SPLITTER_DOUBLECLICKED event." />
-  </objectinfo>
-
-  <objectinfo class="splitteritem" type="splitteritem" />
-
-  <objectinfo class="wxCheckListBox" icon="checkbox.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_checkList</property>
-    <property name="style" type="bitlist">
-      <option name="wxLB_SINGLE"    help="Single-selection list." />
-      <option name="wxLB_MULTIPLE"  help="Multiple-selection list: the user can toggle multiple items on and off." />
-      <option name="wxLB_EXTENDED"  help="Extended-selection list: the user can select multiple items using the SHIFT key and the mouse or special key combinations." />
-      <option name="wxLB_HSCROLL"   help="Create horizontal scrollbar if contents are too wide (Windows only)." />
-      <option name="wxLB_ALWAYS_SB" help="Always show a vertical scrollbar." />
-      <option name="wxLB_NEEDED_SB" help="Only create a vertical scrollbar if needed." />
-      <option name="wxLB_SORT"      help="The listbox contents are sorted in alphabetical order." /></property>
-    <property name="choices" type="stringlist" help="List of default values." />
-	<event name="OnCheckListBoxToggled" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKLISTBOX_TOGGLED event, when an item in the check list box is checked or unchecked." />
-	<event name="OnCheckListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected." />
-	<event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
-  </objectinfo>
-
-  <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_notebook</property>
-    <property name="bitmapsize" type="wxSize" help="Size of page images"/>
-    <property name="style" type="bitlist">
-      <option name="wxNB_TOP"         help="Place tabs on the top side." />
-      <option name="wxNB_LEFT"        help="Place tabs on the left side." />
-      <option name="wxNB_RIGHT"       help="Place tabs on the right side." />
-      <option name="wxNB_BOTTOM"      help="Place tabs under instead of above the notebook pages." />
-      <option name="wxNB_FIXEDWIDTH"  help="All tabs will have same width. (Windows only)" />
-      <option name="wxNB_MULTILINE"   help="There can be several rows of tabs. (Windows only)" />
-      <option name="wxNB_NOPAGETHEME" help="Display a solid colour on notebook pages, and not a gradient, which can reduce performance. (Windows only)" />
-      <option name="wxNB_FLAT"        help="Show tabs in a flat style. (Windows only)" />
-    </property>
-	<event name="OnNotebookPageChanged" class="wxNotebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED event." />
-	<event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed." />
-  </objectinfo>
-
-  <objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
-    <property name="label" type="wxString_i18n">a page</property>
-    <property name="bitmap" type="bitmap" help="Page Image"/>
-    <property name="select" type="bool" help="Select Page when Adding">0</property>
-  </objectinfo>
-
-  <objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_listbook</property>
-    <property name="bitmapsize" type="wxSize" help="Size of page images"/>
-    <property name="style" type="bitlist">
-      <option name="wxLB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
-      <option name="wxLB_TOP"     help="Place labels above the page area." />
-      <option name="wxLB_LEFT"    help="Place labels on the left side." />
-      <option name="wxLB_RIGHT"   help="Place labels on the right side." />
-      <option name="wxLB_BOTTOM"  help="Place labels below the page area." />wxLB_DEFAULT</property>
-	<event name="OnListbookPageChanged" class="wxListbookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED event." />
-	<event name="OnListbookPageChanging" class="wxListbookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING event. This event can be vetoed." />
-  </objectinfo>
-
-  <objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
-    <property name="label" type="wxString_i18n">a page</property>
-    <property name="bitmap" type="bitmap" help="Page Image"/>
-    <property name="select" type="bool" help="Select Page when Adding">0</property>
-  </objectinfo>
-
-  <objectinfo class="wxChoicebook" icon="choicebook.xpm" type="choicebook">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_choicebook</property>
-    <property name="style" type="bitlist">
-      <option name="wxCHB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
-      <option name="wxCHB_TOP"     help="Place labels above the page area." />
-      <option name="wxCHB_LEFT"    help="Place labels on the left side." />
-      <option name="wxCHB_RIGHT"   help="Place labels on the right side." />
-      <option name="wxCHB_BOTTOM"  help="Place labels below the page area." />wxCHB_DEFAULT</property>
-	<event name="OnChoicebookPageChanged" class="wxChoicebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED event." />
-	<event name="OnChoicebookPageChanging" class="wxChoicebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING event. This event can be vetoed." />
-  </objectinfo>
-
-  <objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">
-    <property name="label" type="wxString_i18n">a page</property>
-    <property name="select" type="bool" help="Select Page when Adding">0</property>
-  </objectinfo>
-
-  <objectinfo class="wxScrolledWindow" icon="scrollwin.xpm" type="container">
-    <inherits class="wxWindow">
-		<property name="window_style">wxHSCROLL|wxVSCROLL</property>
-	</inherits>
-    <property name="name" type="text">m_scrolledWindow</property>
-    <property name="scroll_rate_x" type="uint" help="Set the horizontal scrolling increment.">5</property>
-    <property name="scroll_rate_y" type="uint" help="Set the vertical scrolling increment.">5</property>
   </objectinfo>
 
 </package>

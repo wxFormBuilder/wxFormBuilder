@@ -3,6 +3,7 @@ project.name = "wxFormBuilder Plugins"
 -- Add packages here.
 dopackage( "additional" )
 dopackage( "common" )
+dopackage( "containers" )
 dopackage( "layout" )
 dopackage( "wxAdditions" )
 

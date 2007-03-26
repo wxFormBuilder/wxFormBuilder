@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<package name="Containers" lib="libcontainers" icon="splitter_window.xpm" desc="wxWidgets container controls">
+
+	<objectinfo class="wxPanel" icon="panel.xpm" type="container">
+		<inherits class="wxWindow">
+			<property name="window_style">wxTAB_TRAVERSAL</property>
+		</inherits>
+		<property name="name" type="text">m_panel</property>
+	</objectinfo>
+	
+	<objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter"  startgroup="1">
+		<inherits class="wxWindow" />
+		<property name="name" type="text">m_splitter</property>
+		<property name="style" type="bitlist">
+			<option name="wxSP_3D"                  help="Draws a 3D effect border and sash." />
+			<option name="wxSP_3DSASH"              help="Draws a 3D effect sash. (To see the 3D sash under Windows XP theming, use wxSP_NO_XP_THEME)" />
+			<option name="wxSP_3DBORDER"            help="Synonym for wxSP_BORDER." />
+			<option name="wxSP_BORDER"              help="Draws a standard border." />
+			<option name="wxSP_NOBORDER"            help="No border (default)." />
+			<option name="wxSP_NO_XP_THEME"         help="Under Windows XP, switches off the attempt to draw the splitter using Windows XP theming, so the borders and sash will take on the pre-XP look." />
+			<option name="wxSP_PERMIT_UNSPLIT"      help="Always allow to unsplit, even with the minimum pane size other than zero. Note: The designer prevents un-splitting." />
+			<option name="wxSP_LIVE_UPDATE"         help="Don't draw XOR line but resize the child windows immediately." />wxSP_3D</property>
+		<property name="splitmode" type="option">
+			<option name="wxSPLIT_VERTICAL"         help="Specifies a vertical split window." />
+			<option name="wxSPLIT_HORIZONTAL"       help="Specifies a horizontal split window." />wxSPLIT_VERTICAL</property>
+		<property name="sashpos" type="int"      help="The initial sash position.">0</property>
+		<property name="sashsize" type="int"      help="Overrides platform metrics if greater than -1">-1</property>
+		<property name="sashgravity" type="float" help= "Sets the sash gravity. Remarks: Gravity is real factor which controls position of sash while resizing wxSplitterWindow. Gravity tells wxSplitterWindow how much will left/top window grow while resizing.">0.0</property>
+		<property name="min_pane_size" type="uint" help="Minimum size for the panes. A minimum less than 1 is not allowed in the designer, because the designer prevents un-splitting.">0</property>
+		<event name="OnSplitterSashPosChanging" class="wxSplitterEvent" help="The sash position is in the process of being changed. May be used to modify the position of the tracking bar to properly reflect the position that would be set if the drag were to be completed at this point. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING event." />
+		<event name="OnSplitterSashPosChanged" class="wxSplitterEvent" help="The sash position was changed. May be used to modify the sash position before it is set, or to prevent the change from taking place. Processes a wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED event." />
+		<event name="OnSplitterUnsplit" class="wxSplitterEvent" help="The splitter has been just unsplit. Processes a wxEVT_COMMAND_SPLITTER_UNSPLIT event." />
+		<event name="OnSplitterDClick" class="wxSplitterEvent" help="The sash was double clicked. The default behaviour is to unsplit the window when this happens (unless the minimum pane size has been set to a value greater than zero). Processes a wxEVT_COMMAND_SPLITTER_DOUBLECLICKED event." />
+	</objectinfo>
+
+	<objectinfo class="splitteritem" type="splitteritem" />
+
+	<objectinfo class="wxScrolledWindow" icon="scrollwin.xpm" type="container">
+		<inherits class="wxWindow">
+			<property name="window_style">wxHSCROLL|wxVSCROLL</property>
+		</inherits>
+		<property name="name" type="text">m_scrolledWindow</property>
+		<property name="scroll_rate_x" type="uint" help="Set the horizontal scrolling increment.">5</property>
+		<property name="scroll_rate_y" type="uint" help="Set the vertical scrolling increment.">5</property>
+	</objectinfo>
+
+	<objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook"  startgroup="1">
+		<inherits class="wxWindow" />
+		<property name="name" type="text">m_notebook</property>
+		<property name="bitmapsize" type="wxSize" help="Size of page images"/>
+		<property name="style" type="bitlist">
+			<option name="wxNB_TOP"         help="Place tabs on the top side." />
+			<option name="wxNB_LEFT"        help="Place tabs on the left side." />
+			<option name="wxNB_RIGHT"       help="Place tabs on the right side." />
+			<option name="wxNB_BOTTOM"      help="Place tabs under instead of above the notebook pages." />
+			<option name="wxNB_FIXEDWIDTH"  help="All tabs will have same width. (Windows only)" />
+			<option name="wxNB_MULTILINE"   help="There can be several rows of tabs. (Windows only)" />
+			<option name="wxNB_NOPAGETHEME" help="Display a solid colour on notebook pages, and not a gradient, which can reduce performance. (Windows only)" />
+			<option name="wxNB_FLAT"        help="Show tabs in a flat style. (Windows only)" />
+		</property>
+		<event name="OnNotebookPageChanged" class="wxNotebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED event." />
+		<event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed." />
+	</objectinfo>
+
+	<objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
+		<property name="label" type="wxString_i18n">a page</property>
+		<property name="bitmap" type="bitmap" help="Page Image"/>
+		<property name="select" type="bool" help="Select Page when Adding">0</property>
+	</objectinfo>
+
+	<objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
+		<inherits class="wxWindow" />
+		<property name="name" type="text">m_listbook</property>
+		<property name="bitmapsize" type="wxSize" help="Size of page images"/>
+		<property name="style" type="bitlist">
+			<option name="wxLB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
+			<option name="wxLB_TOP"     help="Place labels above the page area." />
+			<option name="wxLB_LEFT"    help="Place labels on the left side." />
+			<option name="wxLB_RIGHT"   help="Place labels on the right side." />
+			<option name="wxLB_BOTTOM"  help="Place labels below the page area." />wxLB_DEFAULT</property>
+		<event name="OnListbookPageChanged" class="wxListbookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED event." />
+		<event name="OnListbookPageChanging" class="wxListbookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING event. This event can be vetoed." />
+	</objectinfo>
+
+	<objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
+		<property name="label" type="wxString_i18n">a page</property>
+		<property name="bitmap" type="bitmap" help="Page Image"/>
+		<property name="select" type="bool" help="Select Page when Adding">0</property>
+	</objectinfo>
+
+	<objectinfo class="wxChoicebook" icon="choicebook.xpm" type="choicebook">
+		<inherits class="wxWindow" />
+		<property name="name" type="text">m_choicebook</property>
+		<property name="style" type="bitlist">
+			<option name="wxCHB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />
+			<option name="wxCHB_TOP"     help="Place labels above the page area." />
+			<option name="wxCHB_LEFT"    help="Place labels on the left side." />
+			<option name="wxCHB_RIGHT"   help="Place labels on the right side." />
+			<option name="wxCHB_BOTTOM"  help="Place labels below the page area." />wxCHB_DEFAULT</property>
+		<event name="OnChoicebookPageChanged" class="wxChoicebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED event." />
+		<event name="OnChoicebookPageChanging" class="wxChoicebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING event. This event can be vetoed." />
+	</objectinfo>
+
+	<objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">
+		<property name="label" type="wxString_i18n">a page</property>
+		<property name="select" type="bool" help="Select Page when Adding">0</property>
+	</objectinfo>
+
+</package>
