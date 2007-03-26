@@ -1,36 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <package name="Additional" lib="libadditional" icon="calendar16x16.xpm" desc="wxWidgets additional controls">
-  <objectinfo class="wxCalendarCtrl" icon="calendar.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_calendar</property>
-    <property name="style" type="bitlist">
-      <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
-      <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
-      <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
-      <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
-      <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
-      <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
-      <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
-    <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
-    <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
-    <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
-    <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
-    <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
-    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
-  </objectinfo>
-
-  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <property name="name" type="text">m_datePicker</property>
-    <property name="style" type="bitlist">
-      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
-      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
-      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
-      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
-      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
-	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
-  </objectinfo>
-
   <objectinfo class="wxColourPickerCtrl" icon="colourPickerIcon.xpm" type="widget">
         <inherits class="wxWindow"/>
         <property name="name" type="text">m_colourPicker</property>
@@ -78,6 +47,52 @@
         <property name="message" type="wxString_i18n">Select a file</property>
         <property name="wildcard" type="wxString">*.*</property>
         <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
+  </objectinfo>
+
+  <objectinfo class="wxDirPickerCtrl" icon="dirPickerIcon.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_dirPicker</property>
+        <property name="style" type="bitlist">
+			<option name="wxDIRP_DEFAULT_STYLE" help="The default style: includes wxDIRP_DIR_MUST_EXIST and, under wxMSW only, wxDIRP_USE_TEXTCTRL."/>
+			<option name="wxDIRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxDirPickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+			<option name="wxDIRP_DIR_MUST_EXIST" help="Creates a picker which allows to select only existing directories. wxGTK control always adds this flag internally as it does not support its absence."/>
+			<option name="wxDIRP_CHANGE_DIR" help="Change current working directory on each user directory selection change."/>
+			wxDIRP_DEFAULT_STYLE
+        </property>
+        <property name="value" type="wxString"/>
+        <property name="message" type="wxString_i18n">Select a file</property>
+        <event name="OnDirChanged" class="wxFileDirPickerEvent" help="The user changed the directory selected in the control either using the button or using text control (see wxDIRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing directory path)."/>
+  </objectinfo>
+
+  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_datePicker</property>
+    <property name="style" type="bitlist">
+      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
+      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
+      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
+      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
+      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+	<event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
+  </objectinfo>
+
+  <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_calendar</property>
+    <property name="style" type="bitlist">
+      <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
+      <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
+      <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
+      <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
+      <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
+      <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
+      <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
+    <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
+    <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
+    <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
+    <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
+    <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
+    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
