@@ -40,6 +40,7 @@
 #include <wx/listctrl.h>
 #include <wx/clrpicker.h>
 #include <wx/fontpicker.h>
+#include <wx/filepicker.h>
 
 // Includes notebook, listbook, choicebook
 #include "bookutils.h"
@@ -112,6 +113,7 @@ protected:
 	void OnSplitterSashChanged( wxSplitterEvent& event );
 	void OnColourPickerColourChanged( wxColourPickerEvent& event );
 	void OnFontPickerFontChanged( wxFontPickerEvent& event );
+	void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
@@ -123,6 +125,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
 	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
 	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
+	EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
 END_EVENT_TABLE()
 
 class wxCustomSplitterWindow : public wxSplitterWindow
@@ -1060,6 +1063,56 @@ void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& event )
 	}
 }
 
+class FilePickerComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxFilePickerCtrl* picker = new wxFilePickerCtrl(
+			(wxWindow*)parent,
+			obj->GetPropertyAsInteger(_("id")),
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsString(_("message")),
+			obj->GetPropertyAsString(_("wildcard")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
+			);
+
+		picker->PushEventHandler( new ComponentEvtHandler( picker, GetManager() ) );
+		return picker;
+	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxFilePickerCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("wildcard"),_("wildcard"),XRC_TYPE_TEXT);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxFilePickerCtrl"));
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("wildcard"),_("wildcard"),XRC_TYPE_TEXT);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& event )
+{
+	wxFilePickerCtrl* window = wxDynamicCast( m_window, wxFilePickerCtrl );
+	if ( window != NULL )
+	{
+		m_manager->ModifyProperty( window, _("value"), window->GetPath() );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1099,6 +1152,16 @@ MACRO(wxFNTP_DEFAULT_STYLE)
 MACRO(wxFNTP_USE_TEXTCTRL)
 MACRO(wxFNTP_FONTDESC_AS_LABEL)
 MACRO(wxFNTP_USEFONT_FOR_LABEL)
+
+// wxFilePickerCtrl
+WINDOW_COMPONENT("wxFilePickerCtrl", FilePickerComponent)
+MACRO(wxFLP_DEFAULT_STYLE)
+MACRO(wxFLP_USE_TEXTCTRL)
+MACRO(wxFLP_OPEN)
+MACRO(wxFLP_SAVE)
+MACRO(wxFLP_OVERWRITE_PROMPT)
+MACRO(wxFLP_FILE_MUST_EXIST)
+MACRO(wxFLP_CHANGE_DIR)
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)

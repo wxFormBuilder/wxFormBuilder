@@ -61,6 +61,25 @@
         <event name="OnFontChanged" class="wxFontPickerEvent" help="The user changed the font selected in the control either using the button or using text control (see wxFNTP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
   </objectinfo>
 
+  <objectinfo class="wxFilePickerCtrl" icon="filePickerIcon.xpm" type="widget">
+        <inherits class="wxWindow"/>
+        <property name="name" type="text">m_filePicker</property>
+        <property name="style" type="bitlist">
+			<option name="wxFLP_DEFAULT_STYLE" help="The default style: includes wxFLP_OPEN | wxFLP_FILE_MUST_EXIST and, under wxMSW only, wxFLP_USE_TEXTCTRL."/>
+			<option name="wxFLP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxFilePickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
+			<option name="wxFLP_OPEN" help="Creates a picker which allows the user to select a file to open."/>
+			<option name="wxFLP_SAVE" help="Creates a picker which allows the user to select a file to save."/>
+			<option name="wxFLP_OVERWRITE_PROMPT" help="Can be combined with wxFLP_SAVE only: ask confirmation to the user before selecting a file."/>
+			<option name="wxFLP_FILE_MUST_EXIST" help="Can be combined with wxFLP_OPEN only: the selected file must be an existing file."/>
+			<option name="wxFLP_CHANGE_DIR" help="Change current working directory on each user file selection change."/>
+			wxFLP_DEFAULT_STYLE
+        </property>
+        <property name="value" type="wxString"/>
+        <property name="message" type="wxString_i18n">Select a file</property>
+        <property name="wildcard" type="wxString">*.*</property>
+        <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
+  </objectinfo>
+
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_htmlWin</property>
