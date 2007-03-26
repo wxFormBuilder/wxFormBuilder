@@ -1,4 +1,4 @@
-﻿﻿﻿﻿                     wxFormBuilder ChangeLog
+﻿﻿﻿﻿﻿                     wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.36 (Beta 3)
 * Fixed FS#99 — "changes from menu editor remove all handlers."
@@ -6,6 +6,7 @@ date Version 3.00.36 (Beta 3)
 + Added style wxLC_NO_SORT_HEADER to wxListCtrl.
 + Added XRC support to wxFlatNotebook.
 + Added wxFontPickerCtrl.
++ Added wxFilePickerCtrl.
 
 03-19-2007 Version 3.00.35 (Beta 3)
 + Added wxColourPickerCtrl using source provided by vaius.
