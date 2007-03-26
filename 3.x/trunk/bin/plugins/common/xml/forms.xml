@@ -2,6 +2,7 @@
 <package name="Forms" lib="libcommon" icon="frame16x16.png" desc="wxWidgets windows">
   <objectinfo class="wxTopLevelWindow" smallIcon="wxwindow.png"  type="interface">
     <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
+	<event name="OnIconize" class="wxIconizeEvent" help="Process a wxEVT_ICONIZE event."/>
     <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
     <event name="OnActivate" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE event." />
     <event name="OnActivateApp" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE_APP event." />
