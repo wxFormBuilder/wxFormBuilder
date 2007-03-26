@@ -114,6 +114,7 @@ protected:
 	void OnColourPickerColourChanged( wxColourPickerEvent& event );
 	void OnFontPickerFontChanged( wxFontPickerEvent& event );
 	void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
+	void OnDirPickerDirChanged( wxFileDirPickerEvent& event );
 
 	DECLARE_EVENT_TABLE()
 };
@@ -126,6 +127,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
 	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
 	EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
+	EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
 END_EVENT_TABLE()
 
 class wxCustomSplitterWindow : public wxSplitterWindow
@@ -1113,6 +1115,53 @@ void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& event )
 	}
 }
 
+class DirPickerComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxDirPickerCtrl* picker = new wxDirPickerCtrl(
+			(wxWindow*)parent,
+			obj->GetPropertyAsInteger(_("id")),
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsString(_("message")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
+			);
+
+		picker->PushEventHandler( new ComponentEvtHandler( picker, GetManager() ) );
+		return picker;
+	}
+
+	TiXmlElement* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxDirPickerCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxDirPickerCtrl"));
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& event )
+{
+	wxDirPickerCtrl* window = wxDynamicCast( m_window, wxDirPickerCtrl );
+	if ( window != NULL )
+	{
+		m_manager->ModifyProperty( window, _("value"), window->GetPath() );
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1162,6 +1211,13 @@ MACRO(wxFLP_SAVE)
 MACRO(wxFLP_OVERWRITE_PROMPT)
 MACRO(wxFLP_FILE_MUST_EXIST)
 MACRO(wxFLP_CHANGE_DIR)
+
+// wxDirPickerCtrl
+WINDOW_COMPONENT("wxDirPickerCtrl", DirPickerComponent)
+MACRO(wxDIRP_DEFAULT_STYLE)
+MACRO(wxDIRP_USE_TEXTCTRL)
+MACRO(wxDIRP_DIR_MUST_EXIST)
+MACRO(wxDIRP_CHANGE_DIR)
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)
