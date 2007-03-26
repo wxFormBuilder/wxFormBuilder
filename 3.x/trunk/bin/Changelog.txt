@@ -1,6 +1,6 @@
 ﻿					wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.36 (Beta 3)
+03-26-2007 Version 3.00.36 (Beta 3)
 * Fixed FS#99 — "changes from menu editor remove all handlers."
 ^ Added a warning for unsupported properties.
 ^ Moved all container controls to a new containers plug-in.
