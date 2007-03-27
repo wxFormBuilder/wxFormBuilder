@@ -17,6 +17,20 @@
 	<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
 	<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
 	<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
+	<event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+	<event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
+	<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
+	<event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
+	<event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
+	<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
+	<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+	<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
+	<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
+	<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
+	<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
+	<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
+	<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
+	<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
   </objectinfo>
   
   <objectinfo class="Frame" icon="frame.xpm" type="form">

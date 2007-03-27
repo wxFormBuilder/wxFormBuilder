@@ -15,6 +15,7 @@
 + Added wxFilePickerCtrl.
 + Added wxDirPickerCtrl.
 + Added OnIconize to wxTopLevelWindow events.
++ Added mouse events to common events.
 
 03-19-2007 Version 3.00.35 (Beta 3)
 + Added wxColourPickerCtrl using source provided by vaius.
