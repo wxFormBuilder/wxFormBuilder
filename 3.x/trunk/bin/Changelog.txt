@@ -2,6 +2,7 @@
 ************************************************************************
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
++ Added wxEVT_ERASE_BACKGROUND to wxTopLevelWindow events.
 
 03-26-2007 Version 3.00.36 (Beta 3)
 * Fixed FS#99 — "changes from menu editor remove all handlers."
