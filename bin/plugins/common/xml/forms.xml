@@ -4,6 +4,7 @@
     <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
 	<event name="OnIconize" class="wxIconizeEvent" help="Process a wxEVT_ICONIZE event."/>
     <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
+	<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
     <event name="OnActivate" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE event." />
     <event name="OnActivateApp" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE_APP event." />
     <event name="OnHibernate" class="wxActivateEvent" help="Process a hibernate event, supplying the member function. This event applies to wxApp only, and only on Windows SmartPhone and PocketPC. It is generated when the system is low on memory; the application should free up as much memory as possible, and restore full working state when it receives a wxEVT_ACTIVATE or wxEVT_ACTIVATE_APP event." />

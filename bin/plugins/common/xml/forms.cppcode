@@ -5,6 +5,7 @@
 		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
 		<template name="evt_entry_OnIconize">EVT_ICONIZE( #handler )</template>
 		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+                 <template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template> 
 		<template name="evt_entry_OnActivate">EVT_ACTIVATE( #handler )</template>
 		<template name="evt_entry_OnActivateApp">EVT_ACTIVATE_APP( #handler )</template>
 		<template name="evt_entry_OnHibernate">EVT_HIBERNATE( #handler )</template>
