@@ -1,4 +1,4 @@
-﻿					wxFormBuilder ChangeLog
+﻿			wxFormBuilder ChangeLog
 ************************************************************************
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
