@@ -10,6 +10,7 @@
 -- wxWidgets version
 local wx_ver = "28"
 local wx_ver_minor = ""
+local wx_custom = "_wxfb"
 
 --******* Initial Setup ************
 --*	Most of the setting are set here.
@@ -192,19 +193,19 @@ if ( OS == "windows" ) then
 	-- Set the targets.
 	if ( target == "cb-gcc" or target == "gnu" ) then
 		if ( options["unicode"] ) then
-			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."umd_"..targetName.."_gcc"
-			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."um_"..targetName.."_gcc"
+			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."umd_"..targetName.."_gcc"..wx_custom
+			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."um_"..targetName.."_gcc"..wx_custom
 		else
-			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."md_"..targetName.."_gcc"
-			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."m_"..targetName.."_gcc"
+			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."md_"..targetName.."_gcc"..wx_custom
+			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."m_"..targetName.."_gcc"..wx_custom
 		end
 	else
 		if ( options["unicode"] ) then
-			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."umd_"..targetName.."_vc"
-			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."um_"..targetName.."_vc"
+			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."umd_"..targetName.."_vc"..wx_custom
+			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."um_"..targetName.."_vc"..wx_custom
 		else
-			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."md_"..targetName.."_vc"
-			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."m_"..targetName.."_vc"
+			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."md_"..targetName.."_vc"..wx_custom
+			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."m_"..targetName.."_vc"..wx_custom
 		end
 	end
 else
@@ -226,6 +227,6 @@ else
 	table.insert( package.defines, "__WXGTK__" )
 	
 	-- Set the targets.
-	package.config["Debug"].target = "`wx-config "..debug_option.." --basename`_"..targetName.."-`wx-config --release`"
-	package.config["Release"].target = "`wx-config --basename`_"..targetName.."-`wx-config --release`"
+	package.config["Debug"].target = "`wx-config "..debug_option.." --basename`_"..targetName.."-`wx-config --release`"..wx_custom
+	package.config["Release"].target = "`wx-config --basename`_"..targetName.."-`wx-config --release`"..wx_custom
 end

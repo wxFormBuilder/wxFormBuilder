@@ -62,56 +62,56 @@ if ( OS == "windows" ) then
 	if ( options["unicode"] ) then
 		package.config["Debug"].links =
 		{
-			"wxmsw"..wx_ver..wx_ver_minor.."umd_propgrid_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."umd_scintilla_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."umd_flatnotebook_gcc"
+			"wxmsw"..wx_ver..wx_ver_minor.."umd_propgrid_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."umd_scintilla_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."umd_flatnotebook_gcc_wxfb"
 		}
 		package.config["Release"].links =
 		{
-			"wxmsw"..wx_ver..wx_ver_minor.."um_propgrid_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."um_scintilla_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."um_flatnotebook_gcc"
+			"wxmsw"..wx_ver..wx_ver_minor.."um_propgrid_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."um_scintilla_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."um_flatnotebook_gcc_wxfb"
 		}
 	else
 		package.config["Debug"].links =
 		{
-			"wxmsw"..wx_ver..wx_ver_minor.."md_propgrid_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."md_scintilla_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."md_flatnotebook_gcc"
+			"wxmsw"..wx_ver..wx_ver_minor.."md_propgrid_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."md_scintilla_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."md_flatnotebook_gcc_wxfb"
 		}
 		package.config["Release"].links =
 		{
-			"wxmsw"..wx_ver..wx_ver_minor.."m_propgrid_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."m_scintilla_gcc",
-			"wxmsw"..wx_ver..wx_ver_minor.."m_flatnotebook_gcc"
+			"wxmsw"..wx_ver..wx_ver_minor.."m_propgrid_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."m_scintilla_gcc_wxfb",
+			"wxmsw"..wx_ver..wx_ver_minor.."m_flatnotebook_gcc_wxfb"
 		}
 	end
 else
 	if ( options["unicode"] ) then
 		package.config["Debug"].links =
 		{
-			"`wx-config --debug=yes --unicode=yes --basename`_propgrid-`wx-config --release`",
-			"`wx-config --debug=yes --unicode=yes --basename`_scintilla-`wx-config --release`",
-			"`wx-config --debug=yes --unicode=yes --basename`_flatnotebook-`wx-config --release`"
+			"`wx-config --debug=yes --unicode=yes --basename`_propgrid-`wx-config --release`_wxfb",
+			"`wx-config --debug=yes --unicode=yes --basename`_scintilla-`wx-config --release`_wxfb",
+			"`wx-config --debug=yes --unicode=yes --basename`_flatnotebook-`wx-config --release`_wxfb"
 		}
 		package.config["Release"].links =
 		{
-			"`wx-config --debug=no --unicode=yes --basename`_propgrid-`wx-config --release`",
-			"`wx-config --debug=no --unicode=yes --basename`_scintilla-`wx-config --release`",
-			"`wx-config --debug=no --unicode=yes --basename`_flatnotebook-`wx-config --release`"
+			"`wx-config --debug=no --unicode=yes --basename`_propgrid-`wx-config --release`_wxfb",
+			"`wx-config --debug=no --unicode=yes --basename`_scintilla-`wx-config --release`_wxfb",
+			"`wx-config --debug=no --unicode=yes --basename`_flatnotebook-`wx-config --release`_wxfb"
 		}
 	else
 		package.config["Debug"].links =
 		{
-			"`wx-config --debug=yes --unicode=no --basename`_propgrid-`wx-config --release`",
-			"`wx-config --debug=yes --unicode=no --basename`_scintilla-`wx-config --release`",
-			"`wx-config --debug=yes --unicode=no --basename`_flatnotebook-`wx-config --release`"
+			"`wx-config --debug=yes --unicode=no --basename`_propgrid-`wx-config --release`_wxfb",
+			"`wx-config --debug=yes --unicode=no --basename`_scintilla-`wx-config --release`_wxfb",
+			"`wx-config --debug=yes --unicode=no --basename`_flatnotebook-`wx-config --release`_wxfb"
 		}
 		package.config["Release"].links =
 		{
-			"`wx-config --debug=no --unicode=no --basename`_propgrid-`wx-config --release`",
-			"`wx-config --debug=no --unicode=no --basename`_scintilla-`wx-config --release`",
-			"`wx-config --debug=no --unicode=no --basename`_flatnotebook-`wx-config --release`"
+			"`wx-config --debug=no --unicode=no --basename`_propgrid-`wx-config --release`_wxfb",
+			"`wx-config --debug=no --unicode=no --basename`_scintilla-`wx-config --release`_wxfb",
+			"`wx-config --debug=no --unicode=no --basename`_flatnotebook-`wx-config --release`_wxfb"
 		}
 	end
 end
