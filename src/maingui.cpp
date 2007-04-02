@@ -42,7 +42,8 @@
 #include <wx/sysopt.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/cmdline.h>
-#include "wx/config.h"
+#include <wx/config.h>
+#include <wx/stdpaths.h>
 #include "utils/wxfbexception.h"
 
 #include <memory>
@@ -64,25 +65,24 @@ IMPLEMENT_APP( MyApp )
 
 bool MyApp::OnInit()
 {
-	// Using a space so the initial 'w' will not be capitalized in GUI dialogs
+	// Using a space so the initial 'w' will not be capitalized in wxLogGUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
 	// Creating the wxConfig manually so there will be no space
 	// The old config (if any) is returned, delete it
 	delete wxConfigBase::Set( new wxConfig( wxT("wxFormBuilder") ) );
 
-	// Get the path of the executable
-	wxString exeFile( argv[0] );
-	wxFileName appFileName( exeFile );
-	appFileName.Normalize();
-	wxString path = appFileName.GetPath();
+	// Get the data directory
+	wxStandardPathsBase& stdPaths = wxStandardPaths::Get();
+	wxString dataDir = stdPaths.GetDataDir();
+	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
 
 	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
 	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
 	// This puts an unneccessary lock on the directory.
 	// This changes the CWD to the already locked app directory as a workaround
 	#ifdef __WXMSW__
-	::wxSetWorkingDirectory( path );
+	::wxSetWorkingDirectory( dataDir );
 	#endif
 
 	// Parse command line
@@ -137,27 +137,27 @@ bool MyApp::OnInit()
 
 	// Create singleton AppData - wait to initialize until sure that this is not the second
 	// instance of a project file.
-	AppDataCreate( path );
+	AppDataCreate( dataDir );
 
 	// Make passed project name absolute
 	try
 	{
 		if ( !projectToLoad.empty() )
 		{
-			wxFileName path( projectToLoad );
-			if ( !path.IsOk() )
+			wxFileName projectPath( projectToLoad );
+			if ( !projectPath.IsOk() )
 			{
 				THROW_WXFBEX( wxT("This path is invalid: ") << projectToLoad );
 			}
 
-			if ( !path.IsAbsolute() )
+			if ( !projectPath.IsAbsolute() )
 			{
-				if ( !path.MakeAbsolute() )
+				if ( !projectPath.MakeAbsolute() )
 				{
 					THROW_WXFBEX( wxT("Could not make path absolute: ") << projectToLoad );
 				}
 			}
-			projectToLoad = path.GetFullPath();
+			projectToLoad = projectPath.GetFullPath();
 		}
 	}
 	catch ( wxFBException& ex )
