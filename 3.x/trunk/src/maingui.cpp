@@ -209,7 +209,7 @@ bool MyApp::OnInit()
 	std::auto_ptr< wxSplashScreen > splash;
 	if ( !justGenerate )
 	{
-		if ( bitmap.LoadFile( path + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
+		if ( bitmap.LoadFile( dataDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
 		{
 			splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
 					 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
