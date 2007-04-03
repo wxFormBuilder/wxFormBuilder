@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.38 (Beta 3)
+^ Updated the program icon.
+
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
 + Added wxEVT_ERASE_BACKGROUND to wxTopLevelWindow events.
