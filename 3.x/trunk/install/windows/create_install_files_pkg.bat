@@ -6,8 +6,12 @@
 :: Date:           03/01/2007
 :: Description:    Creates the install files package. This doesn't get the
 ::                 files from Subversion it just uses the export function.
+::
+:: Notes:          1.00 - Initial release.
+::                 1.01 - Changed where to copy files from to match new
+::                        layout.
 ::**************************************************************************
-set APP_VERSION=1.00
+set APP_VERSION=1.01
 set APP_TITLE=Create Install Files Package
 
 echo ----------------------------------------
@@ -31,8 +35,8 @@ mkdir files
 
 :BEGIN_COPY
 
-echo Coping 'bin' directory to 'files'
-xcopy ..\bin files /E /I /H /Y /EXCLUDE:excludes
+echo Coping 'output' directory to 'files'
+xcopy ..\..\output files /E /I /H /Y /EXCLUDE:excludes
 
 goto END
 
