@@ -7,7 +7,7 @@
 :: Description:    Creates a source directory so that the installer can
 ::                 include only the needed files.
 ::**************************************************************************
-set APP_VERSION=1.04
+set APP_VERSION=1.05
 set APP_TITLE=Create Source Package
 
 echo ----------------------------------------
@@ -48,8 +48,8 @@ echo.
 echo [svn] Exporting workspace and premake scripts.
 %SVN_EXPORT% --non-recursive %SVN_REPOS% source\
 
-echo [svn] Exporting 'bin' directory to 'source\bin'
-%SVN_EXPORT% %SVN_REPOS%/bin source\bin
+echo [svn] Exporting 'output' directory to 'source\output'
+%SVN_EXPORT% %SVN_REPOS%/output source\output
 
 echo [svn] Exporting 'plugins' directory to 'source\plugins'
 %SVN_EXPORT% %SVN_REPOS%/plugins source\plugins
