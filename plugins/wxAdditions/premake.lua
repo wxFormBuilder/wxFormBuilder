@@ -33,7 +33,7 @@ package.includepaths =
 }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-package.bindir = "../../bin/plugins/wxAdditions"
+package.bindir = "../../output/plugins/wxAdditions"
 -- Set the defines.
 package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }
 
@@ -51,9 +51,9 @@ package.targetprefix = "lib"
 
 -- Set the linker include paths
 if ( OS == "windows" ) then
-	package.libpaths = { "../../bin" }
+	package.libpaths = { "../../output" }
 else
-	package.libpaths = { "../../bin/lib" }
+	package.libpaths = { "../../output/lib" }
 end
 
 -- Set the libraries it links to.

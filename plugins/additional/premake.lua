@@ -29,7 +29,7 @@ package.includepaths = { "../../sdk/tinyxml", "../../sdk/plugin_interface" }
 package.links = { "plugin-interface", "TiCPP" }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-package.bindir = "../../bin/plugins/additional"
+package.bindir = "../../output/plugins/additional"
 --package.libdir = "../../lib"
 -- Set the defines.
 package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }

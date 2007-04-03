@@ -38,9 +38,9 @@ end
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
 if ( OS == "windows") then
-	package.bindir = "../../../../bin"
+	package.bindir = "../../../../output"
 else
-	package.bindir = "../../../../bin/lib"
+	package.bindir = "../../../../output/lib"
 end
 -- Set the defines.
 package.defines = { "WXMAKINGDLL_SCI", "MONOLITHIC", "LINK_LEXERS", "SCI_LEXER" }

@@ -31,10 +31,14 @@ package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml"
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 -- Set the packages dependancies.
 package.depends = { "additional-components-plugin", "common-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
-package.libpaths = { "../bin", "../sdk/lib" }
+package.libpaths = { "../output", "../sdk/lib" }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-package.bindir = "../bin"
+if ( OS == "windows") then
+	package.bindir = "../output"
+else
+	package.bindir = "../output/bin"
+end
 --package.libdir = "../../lib"
 -- Set the defines.
 package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA" }
