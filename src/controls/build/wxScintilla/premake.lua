@@ -92,6 +92,7 @@ if ( options["unicode"] ) then
 end
 if ( target == "cb-gcc" or target == "gnu" ) then
 	table.insert( package.config["Debug"].buildoptions, "-O0" )
+	table.insert( package.config["Release"].buildoptions, "-fno-strict-aliasing" )
 end
 
 -- Set the defines.
