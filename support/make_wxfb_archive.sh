@@ -4,21 +4,23 @@
 # the version is passed to it as the first argument, below
 function archive
 {
-  version=$1
   outputDir=../wxfb
-  name="wxFormBuilder_v"$version"-beta3.tar.bz2"
+
+  # export to directory
+  if [ -d $outputDir ]
+  then
+   rm -r $outputDir
+  fi
+  support/wxfb_export.sh $outputDir
   
-  rm -r $outputDir
-  svn export bin $outputDir
-  cp bin/wxFormBuilder $outputDir
-  cp -R bin/lib $outputDir
-  rm $outputDir/lib/*d.so
-  cp bin/plugins/additional/libadditional.so $outputDir/plugins/additional
-  cp bin/plugins/common/libcommon.so $outputDir/plugins/common
-  cp bin/plugins/layout/liblayout.so $outputDir/plugins/layout
-  cp bin/plugins/containers/libcontainers.so $outputDir/plugins/containers
-  cp bin/plugins/wxAdditions/libwxadditions\-mini.so $outputDir/plugins/wxAdditions
+  name="wxFormBuilder_v"$1"-beta3.tar.bz2"
+  
   cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 $outputDir/lib/libwx_gtk2u-2.8.so.0 
+  ln -s ../lib $outputDir/bin/lib
+  if [ -f $name ]
+  then
+    rm ../$name
+  fi
   tar cjf ../$name $outputDir
 }
 
