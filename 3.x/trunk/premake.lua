@@ -29,7 +29,7 @@ function CreateShareReadme( filename )
 	end
 end
 
-function CreateSymlink( symLink, pathToLink )
+function CreateSymlink( pathToLink, symLink )
 	os.execute( "ln -s " .. pathToLink .. " "..symLink  )
 end
 
@@ -38,5 +38,5 @@ if ( not windows ) then
 	-- Create a 'share' directory.
 	os.execute( "mkdir output/share" )
 	CreateShareReadme( "output/share/README.txt" )
-	CreateSymlink( "../output", "output/share/wxformbuilder" )
+	CreateSymlink( "../../output", "output/share/wxformbuilder" )
 end
