@@ -32,9 +32,9 @@ then
   mkdir $outputDir/share/wxformbuilder
 fi
   
-cp -R --interactive --verbose output/bin/* $outputDir/share/wxformbuilder/
-mv $outputDir/share/wxformbuilder/wxFormBuilder $outputDir/bin/
-cp -R --interactive --verbose output/lib $outputDir
+cp -R --interactive --verbose ../../output/* $outputDir/share/wxformbuilder/
+mv $outputDir/share/wxformbuilder/bin $outputDir/
+mv $outputDir/share/wxformbuilder/lib $outputDir/
 
 exit
 
