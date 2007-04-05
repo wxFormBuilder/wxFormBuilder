@@ -45,9 +45,9 @@ package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA" }
 -- Load the dlls from the 'lib' subdirectory.
 if ( OS == "linux" ) then
 	if ( target == "cb-gcc" ) then
-		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/lib" )
+		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib" )
 	else
-		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/lib" )
+		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/../lib" )
 	end
 end
 
