@@ -56,7 +56,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/wxformbuilder.
-	install/linux/debian/wxfb_export.sh $(CURDIR)/install/linux/debian/wxformbuilder/usr
+	./wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
 
 
 # Build architecture-independent files here.
@@ -67,10 +67,10 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs bin/Changelog.txt 
+	dh_installchangelogs ../../output/Changelog.txt 
 #	dh_installdocs
 #	dh_installexamples
-	dh_install --sourcedir=install/linux/debian/gnome --autodest \*
+	dh_install --sourcedir=debian/gnome --autodest \*
 	dh_installmenu
 #	dh_installdebconf	
 #	dh_installlogrotate
@@ -89,7 +89,7 @@ binary-arch: build install
 	dh_fixperms
 #	dh_perl
 #	dh_makeshlibs
-#	dh_installdeb
+	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
