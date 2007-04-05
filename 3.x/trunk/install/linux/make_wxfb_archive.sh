@@ -4,34 +4,38 @@
 # the version is passed to it as the first argument, below
 function archive
 {
-  outputDir=../wxfb
+  # copy monolithic wx lib to lib dir
+  cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0 
 
-  # export to directory
-  if [ -d $outputDir ]
-  then
-   rm -r $outputDir
-  fi
-  support/wxfb_export.sh $outputDir
+  # remove the share/wxformbuilder symlink
+  rm output/share/wxformbuilder
   
-  name="wxFormBuilder_v"$1"-beta3.tar.bz2"
+  # copy the bin directory to the share directory
+  mv output/bin output/share/wxformbuilder
   
-  cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 $outputDir/lib/libwx_gtk2u-2.8.so.0 
-  ln -s ../lib $outputDir/bin/lib
+  # rescue the wxFormBuilder binary
+  mkdir output/bin
+  mv output/share/wxformbuilder/wxFormBuilder output/bin/
+  
+  # rename the output folder for tar
+  mv output wxformbuilder
+
+  # create archive
+  name="wxFormBuilder_v"$1"-beta3.tar.bz2" 
   if [ -f $name ]
   then
-    rm ../$name
+    rm $name
   fi
-  tar cjf ../$name $outputDir
+  tar cjf $name wxformbuilder
 }
 
-changelog="bin/Changelog.txt"
+changelog="output/Changelog.txt"
 
 if [ ! -f $changelog ];
 then
   echo "Sorry, could not find "$changelog". Need it to parse the version."
   exit 1
 fi
-
 
 versionRegEx="[0-9]\.[0-9]{1,2}\.[0-9]+"
 

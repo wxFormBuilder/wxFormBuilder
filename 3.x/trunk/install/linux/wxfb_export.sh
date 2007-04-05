@@ -2,42 +2,39 @@
 
 if [ ! -n "$1" ]
 then
- outputDir=../wxfb
+ echo "Please specify output directory."
+ exit
 else
  outputDir=$1
 fi  
   
-dataDir=$outputDir/share/wxformbuilder
+if [ ! -d $outputDir ]
+then
+  mkdir $outputDir
+  mkdir $outputDir/bin
+  mkdir $outputDir/share
+  mkdir $outputDir/share/wxformbuilder
+fi
+
+if [ ! -d $outputDir/bin ]
+then
+  mkdir $outputDir/bin
+fi
   
-  if [ ! -d $outputDir ]
-  then
-    mkdir $outputDir
-  fi
+if [ ! -d $outputDir/share ]
+then
+  mkdir $outputDir/share
+  mkdir $outputDir/share/wxformbuilder
+fi
   
-  if [ ! -d $outputDir/share ]
-  then
-    mkdir $outputDir/share
-  fi
+if [ ! -d $outputDir/share/wxformbuilder ]
+then
+  mkdir $outputDir/share/wxformbuilder
+fi
   
-  if [ ! -d $dataDir ]
-  then
-    mkdir $dataDir
-  fi
-  
-  if [ ! -d $outputDir/bin ]
-  then
-    mkdir $outputDir/bin
-  fi
- 
-  svn export --force bin $dataDir
-  cp bin/wxFormBuilder $outputDir/bin
-  cp -R bin/lib $outputDir
-  rm $outputDir/lib/*d.so
-  cp bin/plugins/additional/libadditional.so $dataDir/plugins/additional
-  cp bin/plugins/common/libcommon.so $dataDir/plugins/common
-  cp bin/plugins/layout/liblayout.so $dataDir/plugins/layout
-  cp bin/plugins/containers/libcontainers.so $dataDir/plugins/containers
-  cp bin/plugins/wxAdditions/libwxadditions\-mini.so $dataDir/plugins/wxAdditions
+cp -R --interactive --verbose output/bin/* $outputDir/share/wxformbuilder/
+mv $outputDir/share/wxformbuilder/wxFormBuilder $outputDir/bin/
+cp -R --interactive --verbose output/lib $outputDir
 
 exit
 

@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=wxFormBuilder
+Comment=wxWidgets GUI Designer
+Exec=wxFormBuilder %F
+Icon=wxformbuilder.png
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Categories=Application;Development;GUIDesigner
+StartupNotify=true
+MimeType=application/x-wxformbuilder;
+GenericName[en_GR]=

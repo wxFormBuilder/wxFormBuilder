@@ -1,0 +1,17 @@
+Source: wxformbuilder
+Section: devel
+Priority: optional
+Maintainer: Ryan Mulder <rjmyst3@gmail.com>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+Package: wxformbuilder
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: WYSIWYG GUI Designer and Code Generator for wxWidgets
+ wxFormBuilder is a GUI designer for programs which
+ use wxWidgets. It is a very WYSIWYG designer, because it uses
+ the actual controls to show the result, not some fake representation.
+ .
+ Features include generation of C++ or XRC code, custom plugin support,
+ and import of XRC code.
