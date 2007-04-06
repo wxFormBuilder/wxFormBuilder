@@ -100,7 +100,20 @@ void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
 
 void XrcPanel::OnFind( wxFindDialogEvent& event )
 {
-	if ( m_xrcPanel->IsShownOnScreen() )
+	wxFlatNotebook* notebook = wxDynamicCast( this->GetParent(), wxFlatNotebook );
+	if ( NULL == notebook )
+	{
+		return;
+	}
+
+	int selection = notebook->GetSelection();
+	if ( selection < 0 )
+	{
+		return;
+	}
+
+	wxString text = notebook->GetPageText( selection );
+	if ( wxT("XRC") == text )
 	{
 		m_xrcPanel->ProcessEvent( event );
 	}
@@ -132,7 +145,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 	PObjectBase project = AppData()->GetProjectData();
 
 	// Generate code in the panel if the panel is active
-	if ( IsShownOnScreen() )
+	if ( IsShown() )
 	{
 		Freeze();
 		wxScintilla* editor = m_xrcPanel->GetTextCtrl();

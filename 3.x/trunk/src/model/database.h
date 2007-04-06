@@ -99,10 +99,6 @@ class ObjectPackage
   */
   void AppendPackage( PObjectPackage package );
 
-  /**
-  If the object is loaded from xml but not found in a plugin, this purges the object
-  */
-  void PurgeIncompleteObjects();
 };
 
 /**
