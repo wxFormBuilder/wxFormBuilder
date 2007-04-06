@@ -36,10 +36,13 @@
 #include <wx/scrolbar.h>
 #include <wx/checklst.h>
 #include <wx/datectrl.h>
+#include <wx/grid.h>
+
+#if wxCHECK_VERSION( 2, 8, 0 )
 #include <wx/clrpicker.h>
 #include <wx/fontpicker.h>
 #include <wx/filepicker.h>
-#include <wx/grid.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -62,20 +65,22 @@ public:
 
 protected:
 	void OnGridClick( wxGridEvent& event );
+#if wxCHECK_VERSION( 2, 8, 0 )
 	void OnColourPickerColourChanged( wxColourPickerEvent& event );
 	void OnFontPickerFontChanged( wxFontPickerEvent& event );
 	void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
 	void OnDirPickerDirChanged( wxFileDirPickerEvent& event );
-
+#endif
 	DECLARE_EVENT_TABLE()
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
+#if wxCHECK_VERSION( 2, 8, 0 )
 	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
 	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
 	EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
 	EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
-
+#endif
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 	EVT_GRID_LABEL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
@@ -433,6 +438,8 @@ void ComponentEvtHandler::OnGridClick( wxGridEvent& event )
 	event.Skip();
 }
 
+#if wxCHECK_VERSION( 2, 8, 0 )
+
 class ColourPickerComponent : public ComponentBase
 {
 public:
@@ -628,6 +635,8 @@ void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& event )
 	}
 }
 
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -644,6 +653,8 @@ WINDOW_COMPONENT("wxSpinButton",SpinButtonComponent)
 
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
+
+#if wxCHECK_VERSION( 2, 8, 0 )
 
 // wxColourPickerCtrl
 WINDOW_COMPONENT("wxColourPickerCtrl", ColourPickerComponent)
@@ -674,6 +685,8 @@ MACRO(wxDIRP_DEFAULT_STYLE)
 MACRO(wxDIRP_USE_TEXTCTRL)
 MACRO(wxDIRP_DIR_MUST_EXIST)
 MACRO(wxDIRP_CHANGE_DIR)
+
+#endif
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)

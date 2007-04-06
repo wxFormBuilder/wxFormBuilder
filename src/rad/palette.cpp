@@ -69,12 +69,19 @@ void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxToolBar *toolbar)
     {
     	toolbar->AddSeparator();
     }
-    wxString widget( info->GetClassName() );
+    if ( NULL == info->GetComponent() )
+    {
+    	Debug::Print( _("Missing Component for Class \"%s\" of Package \"%s\"."), info->GetClassName().c_str(), pkg->GetPackageName().c_str() );
+    }
+    else
+    {
+		wxString widget( info->GetClassName() );
 
-    wxBitmap icon = info->GetIconFile();
-    toolbar->AddTool(nextId++, widget, icon, widget);
+		wxBitmap icon = info->GetIconFile();
+		toolbar->AddTool(nextId++, widget, icon, widget);
 
-    toolbar->Realize();
+		toolbar->Realize();
+    }
     j++;
   }
 }

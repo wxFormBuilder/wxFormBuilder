@@ -135,11 +135,42 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 
 void CppPanel::OnFind( wxFindDialogEvent& event )
 {
-	if ( m_cppPanel->IsShownOnScreen() )
+	wxFlatNotebook* languageBook = wxDynamicCast( this->GetParent(), wxFlatNotebook );
+	if ( NULL == languageBook )
+	{
+		return;
+	}
+
+	int languageSelection = languageBook->GetSelection();
+	if ( languageSelection < 0 )
+	{
+		return;
+	}
+
+	wxString languageText = languageBook->GetPageText( languageSelection );
+	if ( wxT("C++") != languageText )
+	{
+		return;
+	}
+
+	wxFlatNotebook* notebook = wxDynamicCast( m_cppPanel->GetParent(), wxFlatNotebook );
+	if ( NULL == notebook )
+	{
+		return;
+	}
+
+	int selection = notebook->GetSelection();
+	if ( selection < 0 )
+	{
+		return;
+	}
+
+	wxString text = notebook->GetPageText( selection );
+	if ( wxT("cpp") == text )
 	{
 		m_cppPanel->ProcessEvent( event );
 	}
-	if ( m_hPanel->IsShownOnScreen() )
+	else if ( wxT("h") == text )
 	{
 		m_hPanel->ProcessEvent( event );
 	}
@@ -176,7 +207,7 @@ void CppPanel::OnEventHandlerModified( wxFBEventHandlerEvent& event )
 void CppPanel::OnCodeGeneration( wxFBEvent& event )
 {
 	// Generate code in the panel if the panel is active
-	bool doPanel = IsShownOnScreen();
+	bool doPanel = IsShown();
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
