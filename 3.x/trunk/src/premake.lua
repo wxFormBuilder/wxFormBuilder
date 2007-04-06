@@ -2,7 +2,7 @@
 --*	Author:		RJP Computing <rjpcomputing@gmail.com>
 --*	Date:		12/15/2006
 --*	Version:	1.00-beta
---*	
+--*
 --*	NOTES:
 --*		- use the '/' slash for all paths.
 --*****************************************************************************
@@ -18,6 +18,11 @@ local wx_ver = "28"
 package.name = "wxFormBuilder"
 -- Set this if you want a different name for your target than the package's name.
 local targetName = ""
+if ( OS == "linux" ) then
+	-- All lowercase binary names are normal in linux
+	targetName = "wxformbuilder"
+end
+
 -- Set the kind of package you want to create.
 --		Options: exe | winexe | lib | dll
 package.kind = "winexe"
@@ -120,13 +125,13 @@ if ( OS == "windows" ) then
 --******* WINDOWS SETUP ***********
 --*	Settings that are Windows specific.
 --*********************************
-	-- Set wxWidgets include paths 
+	-- Set wxWidgets include paths
 	if ( target == "cb-gcc" ) then
 		table.insert( package.includepaths, "$(#WX.include)" )
 	else
 		table.insert( package.includepaths, "$(WXWIN)/include" )
 	end
-	
+
 	-- Set the correct 'setup.h' include path.
 	if ( options["with-wx-shared"] ) then
 		if ( options["unicode"] ) then
@@ -177,7 +182,7 @@ if ( OS == "windows" ) then
 			end
 		end
 	end
-	
+
 	-- Set the linker options.
 	if ( options["with-wx-shared"] ) then
 		if ( target == "cb-gcc" ) then
@@ -196,7 +201,7 @@ if ( OS == "windows" ) then
 			table.insert( package.libpaths, "$(WXWIN)/lib/vc_lib" )
 		end
 	end
-	
+
 	-- Set wxWidgets libraries to link.
 	if ( options["unicode"] ) then
 		table.insert( package.config["Release"].links, "wxmsw"..wx_ver.."u" )
@@ -205,7 +210,7 @@ if ( OS == "windows" ) then
 		table.insert( package.config["Release"].links, "wxmsw"..wx_ver )
 		table.insert( package.config["Debug"].links, "wxmsw"..wx_ver.."d" )
 	end
-	
+
 	-- Set the Windows defines.
 	table.insert( package.defines, { "__WXMSW__", "WIN32", "_WINDOWS" } )
 else
@@ -214,15 +219,15 @@ else
 --*********************************
 	-- Ignore resource files in Linux.
 	table.insert( package.excludes, matchrecursive( "*.rc" ) )
-	
+
 	-- Set wxWidgets build options.
 	table.insert( package.config["Debug"].buildoptions, "`wx-config "..debug_option.." --cflags`" )
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )
-	
+
 	-- Set the wxWidgets link options.
 	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
 	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
-	
+
 	-- Set the Linux defines.
 	table.insert( package.defines, "__WXGTK__" )
 end
