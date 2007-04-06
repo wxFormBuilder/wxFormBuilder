@@ -33,8 +33,27 @@ then
 fi
   
 cp -R --interactive --verbose ../../output/* $outputDir/share/wxformbuilder/
-mv $outputDir/share/wxformbuilder/bin $outputDir/
-mv $outputDir/share/wxformbuilder/lib $outputDir/
+
+if [ -d $outputDir/bin ]
+then
+  mv -f -v $outputDir/share/wxformbuilder/bin/* $outputDir/bin
+  rm -r $outputDir/share/wxformbuilder/bin
+else
+  mv -f -v $outputDir/share/wxformbuilder/bin $outputDir/
+fi
+
+if [ -d $outputDir/lib ]
+then
+  mv -f -v $outputDir/share/wxformbuilder/lib/* $outputDir/lib
+  rm - r $outputDir/share/wxformbuilder/lib
+else
+ mv -f -v $outputDir/share/wxformbuilder/lib $outputDir/
+fi
+
+if [ -d $outputDir/share/wxformbuilder/share ]
+then
+ rm -r $outputDir/share/wxformbuilder/share
+fi
 
 exit
 
