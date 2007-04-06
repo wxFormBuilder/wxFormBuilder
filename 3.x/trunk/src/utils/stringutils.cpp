@@ -168,7 +168,7 @@ namespace XMLUtils
 		}
 
 		// The file will have an encoding at this point
-		wxFontEncoding encoding = wxFontMapperBase::GetEncodingFromName( encodingName );
+		wxFontEncoding encoding = wxFontMapperBase::GetEncodingFromName( encodingName.MakeLower() );
 		if ( wxFONTENCODING_UTF8 == encoding )
 		{
 			// This is what we want

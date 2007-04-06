@@ -103,6 +103,9 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	::wxSetWorkingDirectory( workingDir );
 
+	#if wxCHECK_VERSION( 2, 6, 3 )
 	res->Unload( filePath );
+	#endif
+
 	::wxRemoveFile( filePath );
 }
