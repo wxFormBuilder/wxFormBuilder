@@ -5,23 +5,23 @@
 function archive
 {
   # copy monolithic wx lib to lib dir
-  cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0 
+  cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0
 
   # remove the share/wxformbuilder symlink
   rm output/share/wxformbuilder
-  
+
   # copy the bin directory to the share directory
   mv output/bin output/share/wxformbuilder
-  
+
   # rescue the wxFormBuilder binary
   mkdir output/bin
-  mv output/share/wxformbuilder/wxFormBuilder output/bin/
-  
+  mv output/share/wxformbuilder/wxformbuilder output/bin/
+
   # rename the output folder for tar
   mv output wxformbuilder
 
   # create archive
-  name="wxFormBuilder_v"$1"-beta3.tar.bz2" 
+  name="wxFormBuilder_v"$1"-beta3.tar.bz2"
   if [ -f $name ]
   then
     rm $name
@@ -39,7 +39,7 @@ fi
 
 versionRegEx="[0-9]\.[0-9]{1,2}\.[0-9]+"
 
-cat "$changelog" | 
+cat "$changelog" |
 while read line;
 do
  if [[ "$line" =~ ".*Version "$versionRegEx".*" ]]
