@@ -17,12 +17,12 @@ dopackage( "src/controls/build/wxScintilla" )
 function CreateShareReadme( filename )
 	local text = 
 	"This directory and the symlink it contains were created automatically by premake to\n" ..
-	"facilitate execution of wxFormBuilder prior to installation on Unix platforms. On Unix,\n" ..
-	"wxFormBuilder expects to be executed from a directory named \"output\", which is next to\n" ..
-	" a directory named \"share\". The \"share\" directory should have a subdirectory named\n" ..
-	"\"wxformbuilder\", which contains the configuration files. "
+	"facilitate execution of wxFormBuilder prior to installation on Unix platforms.\n" ..
+	"On Unix, wxFormBuilder expects to be executed from a directory named \"output\",\n" ..
+	"which is next to a directory named \"share\". The \"share\" directory should have a\n" ..
+	"subdirectory named \"wxformbuilder\", which contains the configuration files."
 	
-	if ( not os.fileexists( filename ) ) then
+	if ( not os.fileexists( filename )  ) then
 		local fo = io.open( filename, "w" )
 		fo:write( text )
 		fo:close()
@@ -30,13 +30,13 @@ function CreateShareReadme( filename )
 end
 
 function CreateSymlink( pathToLink, symLink )
-	os.execute( "ln -s " .. pathToLink .. " "..symLink  )
+	os.execute( "ln -s -f " .. pathToLink .. " "..symLink  )
 end
 
 if ( not windows ) then
 	print( "Running pre-build file creation steps..." )
 	-- Create a 'share' directory.
-	os.execute( "mkdir output/share" )
+	os.execute( "mkdir -p output/share" )
 	CreateShareReadme( "output/share/README.txt" )
 	CreateSymlink( "../../output", "output/share/wxformbuilder" )
 end
