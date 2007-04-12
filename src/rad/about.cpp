@@ -28,6 +28,7 @@
 #include <wx/mimetype.h>
 #include <wx/filename.h>
 #include "rad/appdata.h"
+#include <wx/utils.h>
 
 #define ID_DEFAULT -1 // Default
 #define ID_OK 1000
@@ -62,7 +63,11 @@ class HtmlWindow : public wxHtmlWindow
 
     void OnLinkClicked(const wxHtmlLinkInfo& link)
     {
-      LaunchBrowser(link.GetHref());
+    	#if wxCHECK_VERSION( 2, 8, 0 )
+    	   	::wxLaunchDefaultBrowser( link.GetHref() );
+		#else
+			LaunchBrowser(link.GetHref());
+		#endif
     }
 };
 
