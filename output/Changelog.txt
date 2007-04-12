@@ -3,6 +3,7 @@
 date Version 3.00.38 (Beta 3)
 ^ Updated the program icon.
 * Fixed FS#169 — "About dialog box fails to open web browser for home page URL"
+* Fixed FS#171 — "Wrong string literal macro in generated headers for internationalized code generation"
 
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
