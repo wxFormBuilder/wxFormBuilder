@@ -42,7 +42,7 @@
 		<property name="size" type="wxSize">500,300</property>
 	</inherits>
 	<property name="name" type="text" hidden="1">MyFrame</property>
-    <property name="title" type="wxString" />
+    <property name="title" type="wxString_i18n" />
     <property name="style" type="bitlist">
       <option name="wxDEFAULT_FRAME_STYLE" help="Defined as wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN" />
       <option name="wxICONIZE" help="Display the frame iconized (minimized). Windows only."/>
@@ -89,7 +89,7 @@
 	<inherits class="Common Events" />
     <inherits class="wxWindow" />
     <property name="name" type="text" hidden="1">MyDialog</property>
-    <property name="title" type="wxString" />
+    <property name="title" type="wxString_i18n" />
     <property name="style" type="bitlist">
       <option name="wxCAPTION" 					help="Puts a caption on the dialog box." />
       <option name="wxDEFAULT_DIALOG_STYLE" 	help="Equivalent to a combination of wxCAPTION, wxCLOSE_BOX and wxSYSTEM_MENU (the last one is not used under Unix)" />
