@@ -89,6 +89,9 @@ class MainFrame : public wxFrame
   void UpdateLayoutTools();
   bool SaveWarning();
 
+  // Used to correctly restore splitter position
+  void OnIdle( wxIdleEvent& );
+
   wxFindReplaceData m_findData;
   wxFindReplaceDialog* m_findDialog;
 
