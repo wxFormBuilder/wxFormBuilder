@@ -9,6 +9,32 @@
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
 
+class SuppressEventHandlers
+{
+private:
+	std::vector< wxEvtHandler* > m_handlers;
+	wxWindow* m_window;
+
+public:
+	SuppressEventHandlers( wxWindow* window )
+	:
+	m_window( window  )
+	{
+		while ( window->GetEventHandler() != window )
+		{
+			m_handlers.push_back( window->PopEventHandler() );
+		}
+	}
+
+	~SuppressEventHandlers()
+	{
+		std::vector< wxEvtHandler* >::reverse_iterator handler;
+		for ( handler = m_handlers.rbegin(); handler != m_handlers.rend(); ++handler )
+		{
+			m_window->PushEventHandler( *handler );
+		}
+	}
+};
 
 namespace BookUtils
 {
@@ -52,8 +78,7 @@ namespace BookUtils
 		}
 
 		// Prevent event handling by wxFB - these aren't user generated events
-		wxEvtHandler* vobjEvtHandler = book->PopEventHandler();
-		wxEvtHandler* bookEvtHandler = book->PopEventHandler();
+		SuppressEventHandlers suppress( book );
 
 		// Save selection
 		int selection = book->GetSelection();
@@ -95,10 +120,6 @@ namespace BookUtils
 		{
 			book->SetSelection( book->GetPageCount() - 1 );
 		}
-
-		// Restore event handling
-		book->PushEventHandler( bookEvtHandler );
-		book->PushEventHandler( vobjEvtHandler );
 	}
 
 	template < class T >
@@ -119,15 +140,10 @@ namespace BookUtils
 				if ( book->GetPage( i ) == page )
 				{
 					// Prevent infinite event loop
-					wxEvtHandler* vobjEvtHandler = book->PopEventHandler();
-					wxEvtHandler* bookEvtHandler = book->PopEventHandler();
+					SuppressEventHandlers suppress( book );
 
 					// Select Page
 					book->SetSelection( i );
-
-					// Restore event handling
-					book->PushEventHandler( bookEvtHandler );
-					book->PushEventHandler( vobjEvtHandler );
 				}
 			}
 		}
