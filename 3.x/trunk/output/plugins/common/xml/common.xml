@@ -157,7 +157,7 @@
 	<event name="OnListColBeginDrag" class="wxListEvent" help="The user started resizing a column - can be vetoed." />
 	<event name="OnListColDragging" class="wxListEvent" help="The divider between columns is being dragged." />
 	<event name="OnListColEndDrag" class="wxListEvent" help="A column has been resized by the user." />
-	<event name="OnListCasheHint" class="wxListEvent" help="Prepare cache for a virtual list control." />
+	<event name="OnListCacheHint" class="wxListEvent" help="Prepare cache for a virtual list control." />
   </objectinfo>
 
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
