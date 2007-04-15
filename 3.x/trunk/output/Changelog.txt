@@ -9,6 +9,7 @@ date Version 3.00.38 (Beta 3)
   adding a widget/layout to another panel"
 * Fixed FS#166 — "Adding three tabs to tab control throws an error."
 * Fixed FS#172 — "Event list for wxListCtrl shows "OnListCasheHint" instead of "OnListCacheHint""
+* Fixed crash when closing the Find dialog with the Cancel button.
 
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
