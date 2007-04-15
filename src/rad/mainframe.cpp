@@ -336,6 +336,7 @@ MainFrame::~MainFrame()
 {
 	/*m_mgr.UnInit();*/
 	AppData()->RemoveHandler( this->GetEventHandler() );
+	delete m_findDialog;
 }
 
 void MainFrame::RestorePosition( const wxString &name )
@@ -1162,14 +1163,17 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 
 void MainFrame::OnFindDialog( wxCommandEvent& event )
 {
-	m_findDialog = new wxFindReplaceDialog( this, &m_findData, wxT("Find") );
-	m_findDialog->Centre( wxCENTRE_ON_SCREEN | wxBOTH );
+	if ( NULL == m_findDialog )
+	{
+		m_findDialog = new wxFindReplaceDialog( this, &m_findData, wxT("Find") );
+		m_findDialog->Centre( wxCENTRE_ON_SCREEN | wxBOTH );
+	}
 	m_findDialog->Show();
 }
 
 void MainFrame::OnFindClose( wxFindDialogEvent& event )
 {
-	delete m_findDialog;
+	m_findDialog->Show( false );
 }
 
 void MainFrame::OnFind( wxFindDialogEvent& event )
