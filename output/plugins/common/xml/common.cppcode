@@ -121,7 +121,7 @@
 	<template name="evt_entry_OnListColBeginDrag">EVT_LIST_COL_BEGIN_DRAG( $id, #handler )</template>
 	<template name="evt_entry_OnListColDragging">EVT_LIST_COL_DRAGGING( $id, #handler )</template>
 	<template name="evt_entry_OnListColEndDrag">EVT_LIST_COL_END_DRAG( $id, #handler )</template>
-	<template name="evt_entry_OnListCasheHint">EVT_LIST_CACHE_HINT( $id, #handler )</template>
+	<template name="evt_entry_OnListCacheHint">EVT_LIST_CACHE_HINT( $id, #handler )</template>
   </templates>
 
   <templates class="wxChoice">
