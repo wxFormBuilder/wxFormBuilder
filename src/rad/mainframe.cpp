@@ -329,6 +329,9 @@ m_findDialog( NULL )
 	wxTheApp->SetTopWindow( this );
 
 	PushEventHandler( new FocusKillerEvtHandler );
+
+	// So splitter windows can be restored correctly
+	Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
 };
 
 
@@ -1408,4 +1411,19 @@ void MainFrame::CreateClassicGui()
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
 	SetMinSize( wxSize( 700, 465 ) );
+}
+
+void MainFrame::OnIdle( wxIdleEvent& )
+{
+	if ( m_leftSplitter )
+	{
+		m_leftSplitter->SetSashPosition( m_leftSplitterWidth );
+	}
+
+	if ( m_rightSplitter )
+	{
+		m_rightSplitter->SetSashPosition( m_rightSplitterWidth );
+	}
+
+	Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
 }
