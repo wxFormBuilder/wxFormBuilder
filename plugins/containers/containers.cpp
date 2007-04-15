@@ -152,6 +152,30 @@ private:
 
 };
 
+// Since wxGTK 2.8, wxNotebook has been sending page changed events in its destructor - this causes strange behavior
+#if defined( __WXGTK__ ) && wxCHECK_VERSION( 2, 8, 0 )
+	class wxCustomNotebook : public wxNotebook
+	{
+	public:
+		wxCustomNotebook( wxWindow* parent, wxWindowID id, const wxPoint& point = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0 )
+		:
+		wxNotebook( parent, id, point, size, style )
+		{
+		}
+
+		~wxCustomNotebook()
+		{
+			while ( GetEventHandler() != this )
+			{
+				// Remove and delete extra event handlers
+				PopEventHandler( true );
+			}
+		}
+	};
+#else
+	typedef wxNotebook wxCustomNotebook;
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 class PanelComponent : public ComponentBase
@@ -413,7 +437,7 @@ class NotebookComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxNotebook* book = new wxNotebook((wxWindow *)parent,-1,
+		wxNotebook* book = new wxCustomNotebook((wxWindow *)parent,-1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -429,7 +453,6 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxNotebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		//xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return xrc.GetXrcObject();
 	}
 
@@ -437,7 +460,6 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxNotebook"));
 		filter.AddWindowProperties();
-		//filter.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return filter.GetXfbObject();
 	}
 };
@@ -520,7 +542,6 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxListbook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		//xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return xrc.GetXrcObject();
 	}
 
@@ -528,7 +549,6 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxListbook"));
 		filter.AddWindowProperties();
-		//filter.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return filter.GetXfbObject();
 	}
 };
@@ -589,7 +609,6 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxChoicebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		//xrc.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return xrc.GetXrcObject();
 	}
 
@@ -597,7 +616,6 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxChoicebook"));
 		filter.AddWindowProperties();
-		//filter.AddProperty(_("style"),_("style"),XRC_TYPE_BITLIST);
 		return filter.GetXfbObject();
 	}
 };
