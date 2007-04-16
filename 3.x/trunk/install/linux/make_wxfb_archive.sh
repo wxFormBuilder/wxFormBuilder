@@ -9,13 +9,14 @@ function archive
 
   # remove the share/wxformbuilder symlink
   rm output/share/wxformbuilder
+  rm output/share/README.txt
 
-  # copy the bin directory to the share directory
-  mv output/bin output/share/wxformbuilder
-
-  # rescue the wxFormBuilder binary
-  mkdir output/bin
-  mv output/share/wxformbuilder/wxformbuilder output/bin/
+  # copy the output directory to the share directory
+  mkdir output/share/wxformbuilder
+  mv -t output/share/wxformbuilder/ output/xml
+  mv -t output/share/wxformbuilder/ output/resources
+  mv -t output/share/wxformbuilder/ output/plugins
+  mv -t output/share/wxformbuilder/ output/*.*
 
   # rename the output folder for tar
   mv output wxformbuilder
