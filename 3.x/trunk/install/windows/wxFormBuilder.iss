@@ -14,7 +14,7 @@
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
-#define wxFormBuilderMinVer "3.0.35"
+#define wxFormBuilderMinVer "3.0.37"
 
 [Setup]
 AppName={#MyAppName}
