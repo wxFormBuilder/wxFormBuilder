@@ -151,7 +151,7 @@
 	<event name="OnListItemMiddleClick" class="wxListEvent" help="The middle mouse button has been clicked on an item." />
 	<event name="OnListItemRightClick" class="wxListEvent" help="The right mouse button has been clicked on an item." />
 	<event name="OnListKeyDown" class="wxListEvent" help="A key has been pressed." />
-	<event name="OnListIsertItem" class="wxListEvent" help="An item has been inserted." />
+	<event name="OnListInsertItem" class="wxListEvent" help="An item has been inserted." />
 	<event name="OnListColClick" class="wxListEvent" help="A column (m_col) has been left-clicked." />
 	<event name="OnListColRightClick" class="wxListEvent" help="A column (m_col) has been right-clicked." />
 	<event name="OnListColBeginDrag" class="wxListEvent" help="The user started resizing a column - can be vetoed." />
