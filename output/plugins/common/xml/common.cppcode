@@ -115,7 +115,7 @@
 	<template name="evt_entry_OnListItemMiddleClick">EVT_LIST_ITEM_MIDDLE_CLICK( $id, #handler )</template>
 	<template name="evt_entry_OnListItemRightClick">EVT_LIST_ITEM_RIGHT_CLICK( $id, #handler )</template>
 	<template name="evt_entry_OnListKeyDown">EVT_LIST_KEY_DOWN( $id, #handler )</template>
-	<template name="evt_entry_OnListIsertItem">EVT_LIST_INSERT_ITEM( $id, #handler )</template>
+	<template name="evt_entry_OnListInsertItem">EVT_LIST_INSERT_ITEM( $id, #handler )</template>
 	<template name="evt_entry_OnListColClick">EVT_LIST_COL_CLICK( $id, #handler )</template>
 	<template name="evt_entry_OnListColRightClick">EVT_LIST_COL_RIGHT_CLICK( $id, #handler )</template>
 	<template name="evt_entry_OnListColBeginDrag">EVT_LIST_COL_BEGIN_DRAG( $id, #handler )</template>
