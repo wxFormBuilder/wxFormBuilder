@@ -33,16 +33,16 @@
 #include "rad/wxfbevent.h"
 #include <rad/appdata.h>
 #include "model/objectbase.h"
+#include <wx/utils.h>
 
 BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_TREE_SEL_CHANGED( -1, ObjectTree::OnSelChanged )
 	EVT_TREE_ITEM_RIGHT_CLICK( -1, ObjectTree::OnRightClick )
-	//EVT_TREE_ITEM_EXPANDED( -1, ObjectTree::OnExpansionChange )
-	//EVT_TREE_ITEM_COLLAPSED( -1, ObjectTree::OnExpansionChange )
+	EVT_TREE_BEGIN_DRAG( -1, ObjectTree::OnBeginDrag )
+	EVT_TREE_END_DRAG( -1, ObjectTree::OnEndDrag )
 
 	EVT_FB_PROJECT_LOADED( ObjectTree::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( ObjectTree::OnProjectSaved )
-	//EVT_FB_OBJECT_SELECTED( ObjectTree::OnObjectSelected )
 	EVT_FB_OBJECT_CREATED( ObjectTree::OnObjectCreated )
 	EVT_FB_OBJECT_REMOVED( ObjectTree::OnObjectRemoved )
 	EVT_FB_PROPERTY_MODIFIED( ObjectTree::OnPropertyModified )
@@ -51,7 +51,8 @@ BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 END_EVENT_TABLE()
 
 ObjectTree::ObjectTree( wxWindow *parent, int id )
-: wxPanel( parent, id )
+:
+wxPanel( parent, id )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 	m_tcObjects = new wxTreeCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxTR_LINES_AT_ROOT|wxTR_DEFAULT_STYLE|wxSIMPLE_BORDER);
@@ -71,6 +72,20 @@ ObjectTree::ObjectTree( wxWindow *parent, int id )
 ObjectTree::~ObjectTree()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
+}
+
+PObjectBase ObjectTree::GetObjectFromTreeItem( wxTreeItemId item )
+{
+	if ( item.IsOk() )
+	{
+		wxTreeItemData* item_data = m_tcObjects->GetItemData( item );
+		if ( item_data )
+		{
+			PObjectBase obj( ((ObjectTreeItemData* )item_data)->GetObject() );
+			return obj;
+		}
+	}
+	return PObjectBase( (ObjectBase*)NULL );
 }
 
 void ObjectTree::RebuildTree()
@@ -137,6 +152,70 @@ void ObjectTree::OnRightClick(wxTreeEvent &event)
 		menu->UpdateUI(menu);
 		PopupMenu(menu,pos.x, pos.y);
 	}
+}
+
+void ObjectTree::OnBeginDrag(wxTreeEvent &event)
+{
+	// need to explicitly allow drag
+    if ( event.GetItem() == m_tcObjects->GetRootItem() )
+    {
+    	return;
+    }
+
+	m_draggedItem = event.GetItem();
+	event.Allow();
+}
+
+void ObjectTree::OnEndDrag(wxTreeEvent& event)
+{
+	bool copy = ::wxGetKeyState( WXK_CONTROL );
+
+    wxTreeItemId itemSrc = m_draggedItem,
+                 itemDst = event.GetItem();
+    m_draggedItem = (wxTreeItemId)0l;
+
+	// ensure that itemDst is not itemSrc or a child of itemSrc
+	wxTreeItemId item = itemDst;
+	while ( item.IsOk() )
+	{
+		if ( item == itemSrc )
+		{
+			return;
+		}
+		item = m_tcObjects->GetItemParent( item );
+	}
+
+	PObjectBase objSrc = GetObjectFromTreeItem( itemSrc );
+	if ( !objSrc )
+	{
+		return;
+	}
+
+	PObjectBase objDst = GetObjectFromTreeItem( itemDst );
+	if ( !objDst )
+	{
+		return;
+	}
+
+	// backup clipboard
+	PObjectBase clipboard = AppData()->GetClipboardObject();
+
+	// set object to clipboard
+	if ( copy )
+	{
+		AppData()->CopyObject( objSrc );
+	}
+	else
+	{
+		AppData()->CutObject( objSrc );
+	}
+
+	if ( !AppData()->PasteObject( objDst ) && !copy )
+	{
+		AppData()->Undo();
+	}
+
+	AppData()->SetClipboardObject( clipboard );
 }
 
 void ObjectTree::OnExpansionChange(wxTreeEvent &event)

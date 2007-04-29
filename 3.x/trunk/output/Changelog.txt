@@ -1,5 +1,9 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.39 (Beta 3)
++ Implemented FS#110 - Drag & dropping objects in the Object Tree window.
+  Holding CTRL down will copy the object instead of moving it.
+
 04-18-2007 Version 3.00.38 (Beta 3)
 ^ Updated the program icon.
 * Fixed FS#169 — "About dialog box fails to open web browser for home page URL"

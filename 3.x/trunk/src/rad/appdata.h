@@ -273,7 +273,7 @@ class ApplicationData
 
 		void CopyObject( PObjectBase obj );
 
-		void PasteObject( PObjectBase parent );
+		bool PasteObject( PObjectBase parent );
 
 		void InsertObject( PObjectBase obj, PObjectBase parent );
 

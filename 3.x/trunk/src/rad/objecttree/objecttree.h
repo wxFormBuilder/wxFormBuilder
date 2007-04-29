@@ -50,6 +50,8 @@ private:
    wxTextCtrl* m_txtSelected;
    wxTreeCtrl* m_tcObjects;
 
+   wxTreeItemId m_draggedItem;
+
    /**
     * Crea el arbol completamente.
     */
@@ -58,6 +60,8 @@ private:
    int GetImageIndex (wxString type);
    void UpdateItem(wxTreeItemId id, PObjectBase obj);
    void RestoreItemStatus(PObjectBase obj);
+
+   PObjectBase GetObjectFromTreeItem( wxTreeItemId item );
 
    DECLARE_EVENT_TABLE()
 
@@ -68,6 +72,8 @@ public:
 
   void OnSelChanged(wxTreeEvent &event);
   void OnRightClick(wxTreeEvent &event);
+  void OnBeginDrag(wxTreeEvent &event);
+  void OnEndDrag(wxTreeEvent &event);
   void OnExpansionChange(wxTreeEvent &event);
 
   void OnProjectLoaded ( wxFBEvent &event );
