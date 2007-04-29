@@ -831,149 +831,155 @@ void ApplicationData::CopyObject( PObjectBase obj )
 	CheckProjectTree( m_project );
 }
 
-void ApplicationData::PasteObject( PObjectBase parent )
+bool ApplicationData::PasteObject( PObjectBase parent )
 {
 	try
 	{
-		if ( m_clipboard )
+		if ( !m_clipboard )
 		{
-			PObjectBase clipboard( m_clipboard );
-			if ( m_copyOnPaste )
+			return false;
+		}
+
+		PObjectBase clipboard( m_clipboard );
+		if ( m_copyOnPaste )
+		{
+			clipboard = m_objDb->CopyObject( m_clipboard );
+		}
+
+		// Remove parent/child relationship from clipboard object
+		PObjectBase clipParent = clipboard->GetParent();
+		if ( clipParent )
+		{
+			clipParent->RemoveChild( clipboard );
+			clipboard->SetParent( PObjectBase() );
+		}
+
+		// Vamos a hacer un pequeño truco, intentaremos crear un objeto nuevo
+		// del mismo tipo que el guardado en m_clipboard debajo de parent.
+		// El objeto devuelto quizá no sea de la misma clase que m_clipboard debido
+		// a que esté incluido dentro de un "item".
+		// Por tanto, si el objeto devuelto es no-nulo, entonces vamos a descender
+		// en el arbol hasta que el objeto sea de la misma clase que m_clipboard,
+		// momento en que cambiaremos dicho objeto por m_clipboard.
+		//
+		// Ejemplo:
+		//
+		//  m_clipboard :: wxButton
+		//  parent      :: wxBoxSizer
+		//
+		//  obj = CreateObject(m_clipboard->GetObjectInfo()->GetClassName(), parent)
+		//
+		//  obj :: sizeritem
+		//              /
+		//           wxButton   <- Cambiamos este por m_clipboard
+		PObjectBase old_parent = parent;
+
+		PObjectBase obj = m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
+
+		// If the object is already contained in an item, we may need to get the object out of the first
+		// item before pasting
+		if ( !obj )
+		{
+
+			PObjectBase tempItem = clipboard;
+			while ( tempItem->GetObjectInfo()->GetObjectType()->IsItem() )
 			{
-				clipboard = m_objDb->CopyObject( m_clipboard );
-			}
-
-			// Remove parent/child relationship from clipboard object
-			PObjectBase clipParent = clipboard->GetParent();
-			if ( clipParent )
-			{
-				clipParent->RemoveChild( clipboard );
-				clipboard->SetParent( PObjectBase() );
-			}
-
-			// Vamos a hacer un pequeño truco, intentaremos crear un objeto nuevo
-			// del mismo tipo que el guardado en m_clipboard debajo de parent.
-			// El objeto devuelto quizá no sea de la misma clase que m_clipboard debido
-			// a que esté incluido dentro de un "item".
-			// Por tanto, si el objeto devuelto es no-nulo, entonces vamos a descender
-			// en el arbol hasta que el objeto sea de la misma clase que m_clipboard,
-			// momento en que cambiaremos dicho objeto por m_clipboard.
-			//
-			// Ejemplo:
-			//
-			//  m_clipboard :: wxButton
-			//  parent      :: wxBoxSizer
-			//
-			//  obj = CreateObject(m_clipboard->GetObjectInfo()->GetClassName(), parent)
-			//
-			//  obj :: sizeritem
-			//              /
-			//           wxButton   <- Cambiamos este por m_clipboard
-			PObjectBase old_parent = parent;
-
-			PObjectBase obj =
-			    m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
-
-			// If the object is already contained in an item, we may need to get the object out of the first
-			// item before pasting
-			if ( !obj )
-			{
-
-				PObjectBase tempItem = clipboard;
-				while ( tempItem->GetObjectInfo()->GetObjectType()->IsItem() )
+				tempItem = tempItem->GetChild( 0 );
+				if ( !tempItem )
 				{
-					tempItem = tempItem->GetChild( 0 );
-					if ( !tempItem )
-					{
-						break;
-					}
-
-					obj = m_objDb->CreateObject( _STDSTR( tempItem->GetObjectInfo()->GetClassName() ), parent );
-					if ( obj )
-					{
-						clipboard = tempItem;
-						break;
-					}
-				}
-			}
-
-			int pos = -1;
-
-			if ( !obj )
-			{
-				// si no se ha podido crear el objeto vamos a intentar crearlo colgado
-				// del padre de "parent" y además vamos a insertarlo en la posición
-				// siguiente a "parent"
-				PObjectBase selected = parent;
-				parent = selected->GetParent();
-
-				while ( parent && parent->GetObjectInfo()->GetObjectType()->IsItem() )
-				{
-					selected = parent;
-					parent = selected->GetParent();
+					break;
 				}
 
-				if ( parent )
+				obj = m_objDb->CreateObject( _STDSTR( tempItem->GetObjectInfo()->GetClassName() ), parent );
+				if ( obj )
 				{
-					obj = m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
-					if ( obj )
-					{
-						pos = CalcPositionOfInsertion( selected, parent );
-					}
+					clipboard = tempItem;
+					break;
 				}
-			}
-
-			if ( obj )
-			{
-				PObjectBase aux = obj;
-
-				while ( aux && aux->GetObjectInfo() != clipboard->GetObjectInfo() )
-					aux = ( aux->GetChildCount() > 0 ? aux->GetChild( 0 ) : PObjectBase() );
-
-				if ( aux && aux != obj )
-				{
-					// sustituimos aux por clipboard
-					PObjectBase auxParent = aux->GetParent();
-					auxParent->RemoveChild( aux );
-					aux->SetParent( PObjectBase() );
-
-					auxParent->AddChild( clipboard );
-					clipboard->SetParent( auxParent );
-				}
-				else
-					obj = clipboard;
-
-				// y finalmente insertamos en el arbol
-				PCommand command( new InsertObjectCmd( this, obj, parent, pos ) );
-
-				Execute( command );
-
-				if ( !m_copyOnPaste )
-					m_clipboard.reset();
-
-				ResolveSubtreeNameConflicts( obj );
-
-				NotifyProjectRefresh();
-
-				// vamos a mantener seleccionado el nuevo objeto creado
-				// pero hay que tener en cuenta que es muy probable que el objeto creado
-				// sea un "item"
-				while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
-				{
-					assert( obj->GetChildCount() > 0 );
-					obj = obj->GetChild( 0 );
-				}
-
-				SelectObject( obj );
 			}
 		}
+
+		int pos = -1;
+
+		if ( !obj )
+		{
+			// si no se ha podido crear el objeto vamos a intentar crearlo colgado
+			// del padre de "parent" y además vamos a insertarlo en la posición
+			// siguiente a "parent"
+			PObjectBase selected = parent;
+			parent = selected->GetParent();
+
+			while ( parent && parent->GetObjectInfo()->GetObjectType()->IsItem() )
+			{
+				selected = parent;
+				parent = selected->GetParent();
+			}
+
+			if ( parent )
+			{
+				obj = m_objDb->CreateObject( _STDSTR( clipboard->GetObjectInfo()->GetClassName() ), parent );
+				if ( obj )
+				{
+					pos = CalcPositionOfInsertion( selected, parent );
+				}
+			}
+		}
+
+		if ( !obj )
+		{
+			return false;
+		}
+
+		PObjectBase aux = obj;
+
+		while ( aux && aux->GetObjectInfo() != clipboard->GetObjectInfo() )
+			aux = ( aux->GetChildCount() > 0 ? aux->GetChild( 0 ) : PObjectBase() );
+
+		if ( aux && aux != obj )
+		{
+			// sustituimos aux por clipboard
+			PObjectBase auxParent = aux->GetParent();
+			auxParent->RemoveChild( aux );
+			aux->SetParent( PObjectBase() );
+
+			auxParent->AddChild( clipboard );
+			clipboard->SetParent( auxParent );
+		}
+		else
+			obj = clipboard;
+
+		// y finalmente insertamos en el arbol
+		PCommand command( new InsertObjectCmd( this, obj, parent, pos ) );
+
+		Execute( command );
+
+		if ( !m_copyOnPaste )
+			m_clipboard.reset();
+
+		ResolveSubtreeNameConflicts( obj );
+
+		NotifyProjectRefresh();
+
+		// vamos a mantener seleccionado el nuevo objeto creado
+		// pero hay que tener en cuenta que es muy probable que el objeto creado
+		// sea un "item"
+		while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
+		{
+			assert( obj->GetChildCount() > 0 );
+			obj = obj->GetChild( 0 );
+		}
+
+		SelectObject( obj );
 
 		CheckProjectTree( m_project );
 	}
 	catch ( wxFBException& ex )
 	{
 		wxLogError( ex.what() );
+		return false;
 	}
+
+	return true;
 }
 
 void ApplicationData::InsertObject( PObjectBase obj, PObjectBase parent )
