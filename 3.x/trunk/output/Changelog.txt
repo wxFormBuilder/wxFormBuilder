@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.39 (Beta 3)
+04-30-2007 Version 3.00.39 (Beta 3)
 + Implemented FS#110 - "Drag & dropping objects in the Object Tree window."
   Holding CTRL down will copy the object instead of moving it.
 + Implemented FS#10 - "add support for sizers as member variables"
