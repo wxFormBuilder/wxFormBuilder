@@ -108,6 +108,8 @@ class ObjectPackage
  */
 class ObjectDatabase
 {
+ public:
+  static bool HasCppProperties(wxString type);
  private:
   typedef std::vector<PObjectPackage> PackageVector;
 
@@ -173,7 +175,6 @@ class ObjectDatabase
    * componentes.
    */
   bool ShowInPalette(wxString type);
-  bool HasCppProperties(wxString type);
 
   // rutinas de conversión
   PropertyType ParsePropertyType (wxString str);

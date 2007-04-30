@@ -27,6 +27,7 @@
 #include "utils/typeconv.h"
 #include "rad/appdata.h"
 #include "model/objectbase.h"
+#include "model/database.h"
 #include <algorithm>
 
 #include <wx/filename.h>
@@ -749,21 +750,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
 void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 {
 	wxString typeName = obj->GetObjectTypeName();
-	if (typeName == wxT("notebook")			||
-		typeName == wxT("flatnotebook")		||
-		typeName == wxT("listbook")			||
-		typeName == wxT("choicebook")		||
-		typeName == wxT("widget")			||
-		typeName == wxT("expanded_widget")	||
-		typeName == wxT("statusbar")		||
-		typeName == wxT("component")		||
-		typeName == wxT("container")		||
-		typeName == wxT("menu")				||
-		typeName == wxT("submenu")			||
-		typeName == wxT("menubar")			||
-		typeName == wxT("toolbar")			||
-		typeName == wxT("splitter")
-		)
+	if ( ObjectDatabase::HasCppProperties( typeName ) )
 	{
 		wxString perm_str = obj->GetProperty( wxT("permission") )->GetValue();
 
@@ -1212,20 +1199,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 	wxString type = obj->GetObjectTypeName();
 	PObjectInfo info = obj->GetObjectInfo();
 
-	if (type == wxT("notebook")			||
-		type == wxT("flatnotebook")		||
-		type == wxT("listbook")			||
-		type == wxT("choicebook")		||
-		type == wxT("widget")			||
-		type == wxT("expanded_widget")	||
-		type == wxT("statusbar")		||
-		type == wxT("container")		||
-		type == wxT("menubar")			||
-		type == wxT("menu")				||
-		type == wxT("submenu")			||
-		type == wxT("toolbar")			||
-		type == wxT("splitter")
-		)
+	if ( ObjectDatabase::HasCppProperties( type ) )
 	{
 		// comprobamos si no se ha declarado como atributo de clase
 		// en cuyo caso lo declaramos en el constructor
@@ -1239,10 +1213,12 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 
+		bool isWidget = !info->IsSubclassOf( wxT("sizer") );
+
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
 			PObjectBase child = obj->GetChild( i );
-			GenConstruction( child, true );
+			GenConstruction( child, isWidget );
 
 			if ( type == wxT("toolbar") )
 			{
@@ -1250,7 +1226,25 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 			}
 		}
 
-		if ( type == wxT("splitter") )
+		if ( !isWidget ) // sizers
+		{
+			if (is_widget)
+			{
+				// the parent object is not a sizer. There is no template for
+				// this so we'll make it manually.
+				// It's not a good practice to embed templates into the source code,
+				// because you will need to recompile...
+
+				wxString _template =	wxT("#wxparent $name->SetSizer( $name ); #nl")
+										wxT("#wxparent $name->Layout();")
+										wxT("#ifnull #parent $size")
+										wxT("@{ #nl $name->Fit( #wxparent $name ); @}");
+
+				CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+				m_source->WriteLn(parser.ParseTemplate());
+			}
+		}
+		else if ( type == wxT("splitter") )
 		{
 			// generamos el split
 			switch ( obj->GetChildCount() )
@@ -1293,8 +1287,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 					break;
 			}
 		}
-
-		if ( 	type == wxT("menubar")	||
+		else if ( 	type == wxT("menubar")	||
 				type == wxT("menu")		||
 				type == wxT("submenu")	||
 				type == wxT("toolbar")	||
@@ -1309,34 +1302,6 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget)
 				m_source->WriteLn( afterAddChild );
 			}
 			m_source->WriteLn();
-		}
-
-	}
-	else if ( info->IsSubclassOf( wxT("sizer") ) )
-	{
-		m_source->WriteLn( GetCode( obj, wxT("declaration") ) );
-		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
-		GenSettings( obj->GetObjectInfo(), obj );
-
-		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-		{
-			GenConstruction(obj->GetChild(i),false);
-		}
-
-		if (is_widget)
-		{
-			// the parent object is not a sizer. There is no template for
-			// this so we'll make it manually.
-			// It's not a good practice to embed templates into the source code,
-			// because you will need to recompile...
-
-			wxString _template =	wxT("#wxparent $name->SetSizer( $name ); #nl")
-									wxT("#wxparent $name->Layout();")
-									wxT("#ifnull #parent $size")
-									wxT("@{ #nl $name->Fit( #wxparent $name ); @}");
-
-			CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
-			m_source->WriteLn(parser.ParseTemplate());
 		}
 	}
 	else if ( info->IsSubclassOf( wxT("sizeritembase") ) )

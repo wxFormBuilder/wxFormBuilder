@@ -733,12 +733,17 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath
 			}
 
 			// Add the "C++" base class, predefined for the components and widgets
-			if ( HasCppProperties( class_info->GetObjectTypeName() ) )
+			wxString typeName = class_info->GetObjectTypeName();
+			if ( HasCppProperties( typeName ) )
 			{
 				PObjectInfo cpp_interface = GetObjectInfo( wxT("C++") );
 				if ( cpp_interface )
 				{
-					class_info->AddBaseClass( cpp_interface );
+					size_t baseIndex = class_info->AddBaseClass( cpp_interface );
+					if ( typeName == wxT("sizer") || typeName == wxT("gbsizer") )
+					{
+						class_info->AddBaseClassDefaultPropertyValue( baseIndex, _("permission"), _("none") );
+					}
 				}
 			}
 
@@ -766,7 +771,9 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("menu")				||
 			type == wxT("submenu")			||
 			type == wxT("toolbar")			||
-			type == wxT("splitter")
+			type == wxT("splitter")			||
+			type == wxT("sizer")			||
+			type == wxT("gbsizer")
 			);
 }
 
