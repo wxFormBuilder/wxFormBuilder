@@ -40,9 +40,17 @@
   <templates class="wxCheckListBox">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
-        wxString $name #append Choices[] = { $choices }; #nl
-        int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-        $name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+		#ifnotnull $choices
+		@{
+			wxString $name #append Choices[] = { $choices }; #nl
+			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+		@}
+		#ifnull $choices
+		@{
+			wxArrayString $name #append Choices; #nl
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+		@}
     </template>
     <template name="include">@#include &lt;wx/checklst.h&gt;</template>
 	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
