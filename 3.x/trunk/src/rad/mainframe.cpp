@@ -1028,25 +1028,24 @@ void MainFrame::OnChangeBorder( wxCommandEvent& e )
 
 	switch ( e.GetId() )
 	{
-
 		case ID_BORDER_LEFT:
 			border = wxLEFT;
-
 			break;
 
 		case ID_BORDER_RIGHT:
 			border = wxRIGHT;
-
 			break;
 
 		case ID_BORDER_TOP:
 			border = wxTOP;
-
 			break;
 
 		case ID_BORDER_BOTTOM:
 			border = wxBOTTOM;
+			break;
 
+		default:
+			border = 0;
 			break;
 	}
 
