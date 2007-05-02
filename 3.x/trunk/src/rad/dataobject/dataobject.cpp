@@ -97,18 +97,9 @@ PObjectBase wxFBDataObject::GetObj()
 		return PObjectBase();
 	}
 
-	// Copy string to temporary FILE buffer
-	FILE* fileBuf = tmpfile();
-	int written = fwrite( m_data.c_str(), sizeof( char ), m_data.length(), fileBuf );
-	if ( (size_t)written < m_data.length() )
-	{
-		return PObjectBase();
-	}
-	rewind( fileBuf );
-
 	// Load FILE into TiXmlDocument
 	TiXmlDocument doc;
-	if ( !doc.LoadFile( fileBuf, TIXML_ENCODING_UTF8 ) )
+	if ( !doc.LoadFromString( m_data, TIXML_ENCODING_UTF8 ) )
 	{
 		return PObjectBase();
 	}
