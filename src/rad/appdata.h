@@ -273,7 +273,11 @@ class ApplicationData
 
 		void CopyObject( PObjectBase obj );
 
-		bool PasteObject( PObjectBase parent );
+		bool PasteObject( PObjectBase parent, PObjectBase objToPaste = PObjectBase() );
+
+		void CopyObjectToClipboard( PObjectBase obj );
+
+		bool PasteObjectFromClipboard( PObjectBase parent );
 
 		void InsertObject( PObjectBase obj, PObjectBase parent );
 
@@ -320,6 +324,7 @@ class ApplicationData
 
 		bool GetLayoutSettings( PObjectBase obj, int *flag, int *option, int *border, int* orient );
 		bool CanPasteObject();
+		bool CanPasteObjectFromClipboard();
 		bool CanCopyObject();
 		bool IsModified();
 

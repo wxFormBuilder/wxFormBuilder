@@ -37,13 +37,14 @@
 #include "utils/stringutils.h"
 #include "utils/wxfbipc.h"
 #include "rad/xrcpreview/xrcpreview.h"
+#include "rad/dataobject/dataobject.h"
 
 #include <ticpp.h>
 #include <set>
 #include <wx/tokenzr.h>
 #include <wx/ffile.h>
 #include <wx/filename.h>
-
+#include <wx/clipbrd.h>
 
 using namespace TypeConv;
 
@@ -819,6 +820,54 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 	CheckProjectTree( m_project );
 }
 
+void ApplicationData::CopyObjectToClipboard( PObjectBase obj )
+{
+	// Write some text to the clipboard
+	if ( wxTheClipboard->Open() )
+	{
+		// This data objects are held by the clipboard,
+		// so do not delete them in the app.
+		wxTheClipboard->SetData( new wxFBDataObject( obj ) );
+		wxTheClipboard->Close();
+	}
+}
+
+bool ApplicationData::PasteObjectFromClipboard( PObjectBase parent )
+{
+	if ( wxTheClipboard->Open() )
+	{
+		if ( wxTheClipboard->IsSupported( wxFBDataObjectFormat ) )
+		{
+			wxFBDataObject data;
+			if ( wxTheClipboard->GetData( data ) )
+			{
+				PObjectBase obj = data.GetObj();
+				if ( obj )
+				{
+					wxTheClipboard->Close();
+					return PasteObject( parent, obj );
+				}
+			}
+		}
+		wxTheClipboard->Close();
+	}
+	return false;
+}
+
+bool ApplicationData::CanPasteObjectFromClipboard()
+{
+	if ( !wxTheClipboard->Open() )
+	{
+		return false;
+	}
+
+	bool canPaste = wxTheClipboard->IsSupported( wxFBDataObjectFormat );
+
+	wxTheClipboard->Close();
+
+	return canPaste;
+}
+
 void ApplicationData::CopyObject( PObjectBase obj )
 {
 	m_copyOnPaste = true;
@@ -831,19 +880,30 @@ void ApplicationData::CopyObject( PObjectBase obj )
 	CheckProjectTree( m_project );
 }
 
-bool ApplicationData::PasteObject( PObjectBase parent )
+bool ApplicationData::PasteObject( PObjectBase parent, PObjectBase objToPaste )
 {
 	try
 	{
-		if ( !m_clipboard )
+		PObjectBase clipboard;
+		if ( objToPaste )
 		{
-			return false;
+			clipboard = objToPaste;
+		}
+		else if ( m_clipboard )
+		{
+			if ( m_copyOnPaste )
+			{
+				clipboard = m_objDb->CopyObject( m_clipboard );
+			}
+			else
+			{
+				clipboard = m_clipboard;
+			}
 		}
 
-		PObjectBase clipboard( m_clipboard );
-		if ( m_copyOnPaste )
+		if ( !clipboard )
 		{
-			clipboard = m_objDb->CopyObject( m_clipboard );
+			return false;
 		}
 
 		// Remove parent/child relationship from clipboard object
