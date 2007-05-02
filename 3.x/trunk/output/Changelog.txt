@@ -1,5 +1,12 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.40 (Beta 3)
++ Implemented FS#53 - "Copy/Paste between instances of wxFB"
+  See "Copy Object To Clipboard" and "Paste Object from Clipboard" in the "Edit" menu.
+  Note: You can copy an object from wxFB and paste it as xml wherever you can paste text.
++ Implemented FS#129 - "Controling control alignment from the keyboard."
++ Implemented FS#135 - "Disabling the delete (Ctrl+D) option in the project's popup menu."
+
 04-30-2007 Version 3.00.39 (Beta 3)
 + Implemented FS#110 - "Drag & dropping objects in the Object Tree window."
   Holding CTRL down will copy the object instead of moving it.

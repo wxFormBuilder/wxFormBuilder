@@ -98,6 +98,9 @@
 
 #define ID_FIND 142
 
+#define ID_CLIPBOARD_COPY 143
+#define ID_CLIPBOARD_PASTE 144
+
 #define STATUS_FIELD_OBJECT 1
 
 BEGIN_EVENT_TABLE( MainFrame, wxFrame )
@@ -134,6 +137,8 @@ EVT_MENU( ID_ALIGN_CENTER_V, MainFrame::OnChangeAlignment )
 EVT_MENU_RANGE( ID_BORDER_LEFT, ID_BORDER_BOTTOM, MainFrame::OnChangeBorder )
 EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
 EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
+EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
+EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
 EVT_CLOSE( MainFrame::OnClose )
 EVT_FLATNOTEBOOK_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
@@ -779,19 +784,28 @@ void MainFrame::UpdateLayoutTools()
 
 	bool gotLayoutSettings = AppData()->GetLayoutSettings( AppData()->GetSelectedObject(), &flag, &option, &border, &orient );
 	wxToolBar* toolbar = GetToolBar();
+	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
 
 	// Enable the layout tools if there are layout settings, else disable the tools
+	menuEdit->Enable( ID_EXPAND, gotLayoutSettings );
 	toolbar->EnableTool( ID_EXPAND, gotLayoutSettings );
+	menuEdit->Enable( ID_STRETCH, option >= 0 );
 	toolbar->EnableTool( ID_STRETCH, option >= 0 );
 
 	bool enableHorizontalTools = ( orient != wxHORIZONTAL ) && gotLayoutSettings;
+	menuEdit->Enable( ID_ALIGN_LEFT, enableHorizontalTools );
 	toolbar->EnableTool( ID_ALIGN_LEFT, enableHorizontalTools );
+	menuEdit->Enable( ID_ALIGN_CENTER_H, enableHorizontalTools );
 	toolbar->EnableTool( ID_ALIGN_CENTER_H, enableHorizontalTools );
+	menuEdit->Enable( ID_ALIGN_RIGHT, enableHorizontalTools );
 	toolbar->EnableTool( ID_ALIGN_RIGHT, enableHorizontalTools );
 
 	bool enableVerticalTools = ( orient != wxVERTICAL ) && gotLayoutSettings;
+	menuEdit->Enable( ID_ALIGN_TOP, enableVerticalTools );
 	toolbar->EnableTool( ID_ALIGN_TOP, enableVerticalTools );
+	menuEdit->Enable( ID_ALIGN_CENTER_V, enableVerticalTools );
 	toolbar->EnableTool( ID_ALIGN_CENTER_V, enableVerticalTools );
+	menuEdit->Enable( ID_ALIGN_BOTTOM, enableVerticalTools );
 	toolbar->EnableTool( ID_ALIGN_BOTTOM, enableVerticalTools );
 
 	toolbar->EnableTool( ID_BORDER_TOP, gotLayoutSettings );
@@ -833,25 +847,40 @@ void MainFrame::UpdateFrame()
 
 	SetTitle( title );
 
-	// Actualizamos los menus
-	wxMenu *menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
+	// Enable/Disable toolbar and menu entries
+	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
+	wxToolBar* toolbar = GetToolBar();
 
-	menuEdit->Enable( ID_REDO, AppData()->CanRedo() );
+	bool redo = AppData()->CanRedo();
+	menuEdit->Enable( ID_REDO, redo );
+	toolbar->EnableTool( ID_REDO, redo );
 
-	menuEdit->Enable( ID_UNDO, AppData()->CanUndo() );
+	bool undo = AppData()->CanUndo();
+	menuEdit->Enable( ID_UNDO, undo );
+	toolbar->EnableTool( ID_UNDO, undo );
 
-	// Actualizamos la barra de herramientas
-	GetToolBar()->EnableTool( ID_REDO, AppData()->CanRedo() );
+	bool copy = AppData()->CanCopyObject();
+	menuEdit->Enable( ID_CLIPBOARD_COPY, copy );
 
-	GetToolBar()->EnableTool( ID_UNDO, AppData()->CanUndo() );
+	menuEdit->Enable( ID_COPY, copy );
+	toolbar->EnableTool( ID_COPY, copy );
 
-	GetToolBar()->EnableTool( ID_COPY, AppData()->CanCopyObject() );
+	menuEdit->Enable( ID_CUT, copy );
+	toolbar->EnableTool( ID_CUT, copy );
 
-	GetToolBar()->EnableTool( ID_CUT, AppData()->CanCopyObject() );
+	menuEdit->Enable( ID_DELETE, copy );
+	toolbar->EnableTool( ID_DELETE, copy );
 
-	GetToolBar()->EnableTool( ID_DELETE, AppData()->CanCopyObject() );
+	menuEdit->Enable( ID_MOVE_UP, copy );
+	menuEdit->Enable( ID_MOVE_DOWN, copy );
+	menuEdit->Enable( ID_MOVE_LEFT, copy );
+	menuEdit->Enable( ID_MOVE_RIGHT, copy );
 
-	GetToolBar()->EnableTool( ID_PASTE, AppData()->CanPasteObject() );
+	bool paste = AppData()->CanPasteObject();
+	menuEdit->Enable( ID_PASTE, paste );
+	toolbar->EnableTool( ID_PASTE, paste );
+
+	menuEdit->Enable( ID_CLIPBOARD_PASTE, AppData()->CanPasteObjectFromClipboard() );
 
 	UpdateLayoutTools();
 }
@@ -954,6 +983,18 @@ void MainFrame::OnPaste ( wxCommandEvent &event )
 		AppData()->PasteObject( AppData()->GetSelectedObject() );
 		UpdateFrame();
 	}
+}
+
+void MainFrame::OnClipboardCopy(wxCommandEvent& e)
+{
+	AppData()->CopyObjectToClipboard( AppData()->GetSelectedObject() );
+	UpdateFrame();
+}
+
+void MainFrame::OnClipboardPaste(wxCommandEvent& e)
+{
+	AppData()->PasteObjectFromClipboard( AppData()->GetSelectedObject() );
+	UpdateFrame();
 }
 
 void MainFrame::OnToggleExpand ( wxCommandEvent &event )
@@ -1211,25 +1252,28 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_REDO, wxT( "&Redo \tCtrl+Y" ), wxT( "Redo changes" ) );
 	menuEdit->AppendSeparator();
 	menuEdit->Append( ID_COPY, wxT( "&Copy \tCtrl+C" ), wxT( "Copy selected object" ) );
-	menuEdit->Append( ID_CUT, wxT( "&Cut \tCtrl+X" ), wxT( "Cut selected object" ) );
+	menuEdit->Append( ID_CUT, wxT( "Cut \tCtrl+X" ), wxT( "Cut selected object" ) );
 	menuEdit->Append( ID_PASTE, wxT( "&Paste \tCtrl+V" ), wxT( "Paste on selected object" ) );
 	menuEdit->Append( ID_DELETE, wxT( "&Delete \tCtrl+D" ), wxT( "Delete selected object" ) );
 	menuEdit->AppendSeparator();
-	menuEdit->Append( ID_EXPAND, wxT( "&Toggle Expand\tAlt+W" ), wxT( "Toggle wxEXPAND flag of sizeritem properties" ) );
-	menuEdit->Append( ID_STRETCH, wxT( "&Toggle Stretch\tAlt+S" ), wxT( "Toggle option property of sizeritem properties" ) );
-	menuEdit->Append( ID_MOVE_UP, wxT( "&Move Up\tAlt+Up" ), wxT( "Move Up selected object" ) );
-	menuEdit->Append( ID_MOVE_DOWN, wxT( "&Move Down\tAlt+Down" ), wxT( "Move Down selected object" ) );
-	menuEdit->Append( ID_MOVE_LEFT, wxT( "&Move Left\tAlt+Left" ), wxT( "Move Left selected object" ) );
-	menuEdit->Append( ID_MOVE_RIGHT, wxT( "&Move Right\tAlt+Right" ), wxT( "Move Right selected object" ) );
+	menuEdit->Append( ID_CLIPBOARD_COPY, wxT("Copy Object To Clipboard\tCtrl+Shift+C"), wxT("Copy Object to Clipboard") );
+	menuEdit->Append( ID_CLIPBOARD_PASTE, wxT("Paste Object From Clipboard\tCtrl+Shift+V"), wxT("Paste Object from Clipboard") );
+	menuEdit->AppendSeparator();
+	menuEdit->Append( ID_EXPAND, wxT( "Toggle &Expand\tAlt+W" ), wxT( "Toggle wxEXPAND flag of sizeritem properties" ) );
+	menuEdit->Append( ID_STRETCH, wxT( "Toggle &Stretch\tAlt+S" ), wxT( "Toggle option property of sizeritem properties" ) );
+	menuEdit->Append( ID_MOVE_UP, wxT( "Move Up\tAlt+Up" ), wxT( "Move Up selected object" ) );
+	menuEdit->Append( ID_MOVE_DOWN, wxT( "Move Down\tAlt+Down" ), wxT( "Move Down selected object" ) );
+	menuEdit->Append( ID_MOVE_LEFT, wxT( "Move Left\tAlt+Left" ), wxT( "Move Left selected object" ) );
+	menuEdit->Append( ID_MOVE_RIGHT, wxT( "Move Right\tAlt+Right" ), wxT( "Move Right selected object" ) );
 	menuEdit->AppendSeparator();
 	menuEdit->Append( ID_FIND, wxT( "&Find\tCtrl+F" ), wxT( "Find text in the active code viewer" ) );
 	menuEdit->AppendSeparator();
-	menuEdit->Append( ID_ALIGN_LEFT,     wxT( "&Align Left" ),           wxT( "Align item to the left" ) );
-	menuEdit->Append( ID_ALIGN_CENTER_H, wxT( "&Align Center Horizontal" ), wxT( "Align item to the center horizontally" ) );
-	menuEdit->Append( ID_ALIGN_RIGHT,    wxT( "&Align Right" ),         wxT( "Align item to the right" ) );
-	menuEdit->Append( ID_ALIGN_TOP,      wxT( "&Align Top" ),              wxT( "Align item to the top" ) );
-	menuEdit->Append( ID_ALIGN_CENTER_H, wxT( "&Align Center Vertical" ),   wxT( "Align item to the center vertically" ) );
-	menuEdit->Append( ID_ALIGN_BOTTOM,   wxT( "&Align Bottom" ),         wxT( "Align item to the bottom" ) );
+	menuEdit->Append( ID_ALIGN_LEFT,     wxT( "&Align &Left\tAlt+Shift+Left" ),           wxT( "Align item to the left" ) );
+	menuEdit->Append( ID_ALIGN_CENTER_H, wxT( "&Align Center &Horizontal\tAlt+Shift+H" ), wxT( "Align item to the center horizontally" ) );
+	menuEdit->Append( ID_ALIGN_RIGHT,    wxT( "&Align &Right\tAlt+Shift+Right" ),         wxT( "Align item to the right" ) );
+	menuEdit->Append( ID_ALIGN_TOP,      wxT( "&Align &Top\tAlt+Shift+Up" ),              wxT( "Align item to the top" ) );
+	menuEdit->Append( ID_ALIGN_CENTER_V, wxT( "&Align Center &Vertical\tAlt+Shift+V" ),   wxT( "Align item to the center vertically" ) );
+	menuEdit->Append( ID_ALIGN_BOTTOM,   wxT( "&Align &Bottom\tAlt+Shift+Down" ),         wxT( "Align item to the bottom" ) );
 
 	wxMenu *menuView = new wxMenu;
 	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );

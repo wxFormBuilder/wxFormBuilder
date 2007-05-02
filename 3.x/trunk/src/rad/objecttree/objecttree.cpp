@@ -582,15 +582,16 @@ void ItemPopupMenu::OnUpdateEvent(wxUpdateUIEvent& e)
 		break;
 	case MENU_CUT:
 	case MENU_COPY:
+	case MENU_DELETE:
+	case MENU_MOVE_UP:
+	case MENU_MOVE_DOWN:
+	case MENU_MOVE_LEFT:
+	case MENU_MOVE_RIGHT:
+	case MENU_MOVE_NEW_BOXSIZER:
 		e.Enable(AppData()->CanCopyObject());
 		break;
 	case MENU_PASTE:
 		e.Enable(AppData()->CanPasteObject());
-		break;
-
-	case MENU_MOVE_UP:
-	case MENU_MOVE_DOWN:
-		e.Enable(m_object && m_object->GetObjectTypeName() != wxT("project"));
 		break;
 	}
 }
