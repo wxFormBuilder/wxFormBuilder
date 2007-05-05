@@ -1175,18 +1175,11 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 		}
 	}
 
-	bool result = false;
-
-	TiXmlDocument doc = TiXmlDocument();
-
-	if ( doc.LoadFile( file.mb_str( wxConvFile ) ) )
+	try
 	{
-		TiXmlNode* root = doc.RootElement();
-
-		if ( NULL == root )
-		{
-			return false;
-		}
+		ticpp::Document doc;
+		doc.LoadFile( file.mb_str( wxConvFile ) );
+		ticpp::Element* root = doc.FirstChildElement();
 
 		m_objDb->ResetObjectCounters();
 
@@ -1195,48 +1188,29 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 
 		if ( root->Value() != std::string( "object" ) )
 		{
-			TiXmlElement* fileVersion = root->FirstChildElement( "FileVersion" );
-
-			if ( NULL != fileVersion )
+			try
 			{
-				int rc = fileVersion->QueryIntAttribute( "major", &fbpVerMajor );
-
-				if ( rc != TIXML_SUCCESS )
-				{
-					fbpVerMajor = 0;
-				}
-
-				rc = fileVersion->QueryIntAttribute( "minor", &fbpVerMinor );
-
-				if ( rc != TIXML_SUCCESS )
-				{
-					fbpVerMinor = 0;
-				}
+				ticpp::Element* fileVersion = root->FirstChildElement( "FileVersion" );
+				fileVersion->GetAttributeOrDefault( "major", &fbpVerMajor, 0 );
+				fileVersion->GetAttributeOrDefault( "minor", &fbpVerMinor, 0 );
+			}
+			catch( ticpp::Exception& )
+			{
 			}
 		}
 
 		bool older = false;
-
 		bool newer = false;
 
-		if ( fbpVerMajor < m_fbpVerMajor )
+		if ( m_fbpVerMajor == fbpVerMajor )
 		{
-			older = true;
-		}
-		else if ( fbpVerMajor > m_fbpVerMajor )
-		{
-			newer = true;
+			older = ( fbpVerMinor < m_fbpVerMinor );
+			newer = ( fbpVerMinor > m_fbpVerMinor );
 		}
 		else
 		{
-			if ( fbpVerMinor < m_fbpVerMinor )
-			{
-				older = true;
-			}
-			else if ( fbpVerMinor > m_fbpVerMinor )
-			{
-				newer = true;
-			}
+			older = ( fbpVerMajor < m_fbpVerMajor );
+			newer = ( fbpVerMajor > m_fbpVerMajor );
 		}
 
 		if ( newer )
@@ -1262,10 +1236,8 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 					return false;
 				}
 
-				if ( doc.LoadFile( file.mb_str( wxConvFile ) ) )
-					root = doc.RootElement();
-				else
-					return false;
+				doc.LoadFile( file.mb_str( wxConvFile ) );
+				root = doc.FirstChildElement();
 			}
 			else
 			{
@@ -1273,13 +1245,7 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 			}
 		}
 
-		TiXmlElement* object = root->FirstChildElement( "object" );
-
-		if ( NULL == object )
-		{
-			return false;
-		}
-
+		ticpp::Element* object = root->FirstChildElement( "object" );
 		PObjectBase proj;
 
 		try
@@ -1295,10 +1261,8 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 		if ( proj && proj->GetObjectTypeName() == wxT( "project" ) )
 		{
 			PObjectBase old_proj = m_project;
-			//m_project = shared_dynamic_cast<ProjectObject>(proj);
 			m_project = proj;
 			m_selObj = m_project;
-			result = true;
 			m_modFlag = false;
 			m_cmdProc.Reset();
 			m_projectFile = file;
@@ -1307,8 +1271,13 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 			NotifyProjectRefresh();
 		}
 	}
+	catch( ticpp::Exception& ex )
+	{
+		wxLogError( _WXSTR( ex.m_details ) );
+		return false;
+	}
 
-	return result;
+	return true;
 }
 
 bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int fileMinor )
@@ -1464,7 +1433,6 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 }
 
 void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int fileMinor )
-
 {
 	ticpp::Iterator< ticpp::Element > object( "object" );
 
@@ -1510,33 +1478,19 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		// And they were named 'WindowStyle' and one point, too...
 
 		std::set< wxString > windowStyles;
-
 		windowStyles.insert( wxT( "wxSIMPLE_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxDOUBLE_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxSUNKEN_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxRAISED_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxSTATIC_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxNO_BORDER" ) );
-
 		windowStyles.insert( wxT( "wxTRANSPARENT_WINDOW" ) );
-
 		windowStyles.insert( wxT( "wxTAB_TRAVERSAL" ) );
-
 		windowStyles.insert( wxT( "wxWANTS_CHARS" ) );
-
 		windowStyles.insert( wxT( "wxVSCROLL" ) );
-
 		windowStyles.insert( wxT( "wxHSCROLL" ) );
-
 		windowStyles.insert( wxT( "wxALWAYS_SHOW_SB" ) );
-
 		windowStyles.insert( wxT( "wxCLIP_CHILDREN" ) );
-
 		windowStyles.insert( wxT( "wxFULL_REPAINT_ON_RESIZE" ) );
 
 		// Transfer the window styles
@@ -1555,15 +1509,10 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 
 
 		std::set< wxString > extraWindowStyles;
-
 		extraWindowStyles.insert( wxT( "wxWS_EX_VALIDATE_RECURSIVELY" ) );
-
 		extraWindowStyles.insert( wxT( "wxWS_EX_BLOCK_EVENTS" ) );
-
 		extraWindowStyles.insert( wxT( "wxWS_EX_TRANSIENT" ) );
-
 		extraWindowStyles.insert( wxT( "wxWS_EX_PROCESS_IDLE" ) );
-
 		extraWindowStyles.insert( wxT( "wxWS_EX_PROCESS_UI_UPDATES" ) );
 
 		// Transfer the window extra styles

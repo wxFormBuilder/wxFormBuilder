@@ -29,13 +29,16 @@
 
 #include "wx/wx.h"
 #include <wx/dynarray.h>
-#include "tinyxml.h"
 #include <wx/string.h>
-
 
 #define COMPONENT_TYPE_ABSTRACT 0
 #define COMPONENT_TYPE_WINDOW   1
 #define COMPONENT_TYPE_SIZER    2
+
+namespace ticpp
+{
+	class Element;
+}
 
 class IComponent;
 
@@ -134,12 +137,12 @@ class IComponent
   /**
    * Export the object to an XRC node
    */
-  virtual TiXmlElement* ExportToXrc( IObject* obj ) = 0;
+  virtual ticpp::Element* ExportToXrc( IObject* obj ) = 0;
 
   /**
    * Converts from an XRC element to a wxFormBuilder project file XML element
    */
-  virtual TiXmlElement* ImportFromXrc( TiXmlElement* xrcObj ) = 0;
+  virtual ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj ) = 0;
 
 
   virtual int GetComponentType() = 0;

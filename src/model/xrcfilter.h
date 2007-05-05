@@ -28,86 +28,7 @@
 
 #include "utils/wxfbdefs.h"
 #include "model/database.h"
-
-/**
- * Filtro de conversión de/a formato XRC.
- */
-class XrcFilter
-{
- private:
-  /**
-   * Documento XML que contiene la información de todos los componentes
-   * contemplados en el formato XRC (xrc.xml)
-   */
-  TiXmlDocument m_xrcDb;
-
-  /**
-   * ObjectDatabase
-   */
-  PObjectDatabase m_objDb;
-
-  /**
-   * Dado el nombre de una clase obtiene la información XRC para dicha clase,
-   * o NULL si no está definida en el formato XRC.
-   */
-  TiXmlElement* GetXrcClassInfo(const std::string &classname);
-
-  /**
-   * Enlaza todas las propiedades de un objeto en un nodo XML.
-   */
-  void LinkValues(TiXmlElement *element, TiXmlElement *xrcInfo,
-                  const PObjectBase obj);
-  /**
-   * "Cuelga" de propElement el valor de la propiedad prop.
-   */
-  void LinkValue(const PProperty prop, TiXmlElement *propElement);
-
-  /**
-   * "Cuelga" de propElement la descripción de la fuente font en el formato
-   * XRC
-   */
-  void LinkFont(const wxFont &font, TiXmlElement *propElement);
-
-  /**
-   * Devuelve el nombre de la clase. Será el resultado de GetClassName()
-   * salvo para Dialog, Frame y Panel, que devolverá wxDialog, wxFrame y
-   * wxPanel respectivamente.
-   */
-  std::string GetXrcClassName(const PObjectBase obj);
-
-  /**
-   * Dado un objeto, crea un árbol XML en formato XRC
-   */
-  TiXmlElement* GetElement(PObjectBase project);
-  void ImportXrcProperties(TiXmlElement *xrcObj, PObjectBase obj);
-  void ImportXrcProperty(TiXmlElement *xrcProperty, PProperty property);
-  void ImportColour(TiXmlElement *xrcProperty, PProperty property);
-  void ImportFont(TiXmlElement *xrcProperty, PProperty property);
-  void ImportXrcElements(TiXmlElement *xrcObj, TiXmlElement *xrcInfo, PObjectBase obj);
-
-  PObjectBase GetObject(TiXmlElement *xrcObj, PObjectBase parent,
-                        bool is_form = false);
- public:
-
-   XrcFilter();
-
-  /**
-   * Para importar un XRC hay que configurar la base de datos de wxFB
-   */
-  void SetObjectDatabase(PObjectDatabase db) { m_objDb = db; }
-
-  /**
-   * Obtiene el documento XML en formato XRC de un proyecto wxFB.
-   */
-  TiXmlDocument *GetXrcDocument (PObjectBase project);
-
-
-  /**
-   * Dado un árbol XML en formato XRC, crea el arbol de objetos asociado.
-   */
-  PObjectBase GetProject(TiXmlDocument *xrcDoc);
-
-};
+#include <ticpp.h>
 
 /**
  * Filtro de importación de un fichero XRC.
@@ -117,7 +38,7 @@ class XrcLoader
  private:
   PObjectDatabase m_objDb;
 
-  PObjectBase GetObject(TiXmlElement *xrcObj, PObjectBase parent);
+  PObjectBase GetObject(ticpp::Element *xrcObj, PObjectBase parent);
 
  public:
 
@@ -126,7 +47,7 @@ class XrcLoader
   /**
    * Dado un árbol XML en formato XRC, crea el arbol de objetos asociado.
    */
-  PObjectBase GetProject(TiXmlDocument *xrcDoc);
+  PObjectBase GetProject(ticpp::Document* xrcDoc);
 };
 
 #endif //__XRC_FILTER__

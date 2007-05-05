@@ -6,6 +6,8 @@ date Version 3.00.40 (Beta 3)
   Note: You can copy an object from wxFB and paste it as xml wherever you can paste text.
 + Implemented FS#129 - "Controling control alignment from the keyboard."
 + Implemented FS#135 - "Disabling the delete (Ctrl+D) option in the project's popup menu."
+^ Replaced all code using TiXml classes with ticpp classes.
+  WARNING: Although this has been tested, it could cause unforseen bugs. Please report all strangeness.
 
 04-30-2007 Version 3.00.39 (Beta 3)
 + Implemented FS#110 - "Drag & dropping objects in the Object Tree window."

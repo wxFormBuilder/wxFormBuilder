@@ -1,9 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Sep 30 2006)
+// C++ code generated with wxFormBuilder (version May  4 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
+
+#ifdef WX_PRECOMP
 
 #include "wx/wxprec.h"
 
@@ -11,7 +13,7 @@
 #pragma hdrstop
 #endif //__BORLANDC__
 
-#ifndef WX_PRECOMP
+#else
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
@@ -25,23 +27,25 @@
 
 MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) : wxFrame( parent, id, title, pos, size, style )
 {
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	
 	m_menubar1 = new wxMenuBar( wxMB_DOCKABLE );
-	wxMenu* file;
 	file = new wxMenu();
 	wxMenuItem* exit = new wxMenuItem( file, ID_EXIT, wxString( wxT("E&xit") ) + wxT('\t') + wxT("Alt+F4"), wxT("Exit the Application"), wxITEM_NORMAL );
 	file->Append( exit );
 	m_menubar1->Append( file, wxT("&File") );
-	wxMenu* help;
+	
 	help = new wxMenu();
 	wxMenuItem* about = new wxMenuItem( help, ID_ABOUT, wxString( wxT("&About") ) + wxT('\t') + wxT("F1"), wxT("About This Application . . ."), wxITEM_NORMAL );
 	help->Append( about );
 	m_menubar1->Append( help, wxT("&Help") );
+	
 	this->SetMenuBar( m_menubar1 );
 	
 	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, ID_DEFAULT );
 	m_toolBar1 = this->CreateToolBar( wxTB_HORIZONTAL, ID_DEFAULT ); 
-	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, wxT(""), wxT("") );
-	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, wxT(""), wxT("") );
+	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
+	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
 	m_toolBar1->Realize();
 	
 }
@@ -60,7 +64,7 @@ MainPanel::MainPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, int st
 	m_bpButton1 = new wxBitmapButton( this, ID_DEFAULT, wxBitmap( balign_xpm ), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
 	bSizer2->Add( m_bpButton1, 0, wxALL, 5 );
 	
-	m_textCtrl1 = new wxTextCtrl( this, ID_DEFAULT, wxT(""), wxDefaultPosition, wxDefaultSize, 0 );
+	m_textCtrl1 = new wxTextCtrl( this, ID_DEFAULT, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer2->Add( m_textCtrl1, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 	
 	m_staticText1 = new wxStaticText( this, ID_DEFAULT, wxT("Unicode Test: Максим Емельянов"), wxDefaultPosition, wxDefaultSize, 0 );

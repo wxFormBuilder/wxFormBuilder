@@ -32,85 +32,37 @@
 #include <wx/txtstrm.h>
 #include "model/objectbase.h"
 #include "model/xrcfilter.h"
-/*
-class XrcDocument : public TiXmlDocument {
-public:
-    XrcDocument() : TiXmlDocument() {};
-    void Dump(PCodeWriter cw)
-    {
-        stringbuf sb;
-        ostream os(&sb);
-        StreamOut(&os);
-        cw->Write(sb.str());
-    }
-};*/
-
-
-///////////////////////////////////////////////////////////////////////////////
-/*
-bool XrcCodeGenerator::GenerateCode(PObjectBase project)
-{
-  m_cw->Clear();
-
-  // CodeWriter no permite la insercción de texto con formato (\n y \t),
-  // por este motivo no funciona esto
-  //
-  // doc->Dump(m_cw); No inserta ni \t ni \n
-  //
-  // La solución que se ha dado es volcarlo a un fichero temporal y luego
-  // escribirlo línea a línea.
-
-  XrcFilter xrc;
-  TiXmlDocument *doc = xrc.GetXrcDocument(project);
-
-  string tmpFileName = _STDSTR(wxFileName::CreateTempFileName(wxT("wxfb")));
-  doc->SaveFile(tmpFileName);
-  delete doc;
-
-  {
-      wxString line;
-      wxFileInputStream input(_WXSTR(tmpFileName));
-      wxTextInputStream text(input);
-
-      while (!input.Eof())
-          m_cw->WriteLn(_STDSTR(text.ReadLine()));
-  }
-  ::wxRemoveFile(_WXSTR(tmpFileName));
-
-  return true;
-}
-*/
 
 bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 {
 	m_cw->Clear();
 
-	TiXmlDocument doc;
-	TiXmlDeclaration *decl = new TiXmlDeclaration( "1.0", "UTF-8", "yes" );
-	doc.LinkEndChild( decl );
+	ticpp::Document doc;
+	ticpp::Declaration decl( "1.0", "UTF-8", "yes" );
+	doc.LinkEndChild( &decl );
 
-	TiXmlElement *element = new TiXmlElement( "resource" );
-	element->SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
-	element->SetAttribute( "version", "2.3.0.1" );
+	ticpp::Element element( "resource" );
+	element.SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
+	element.SetAttribute( "version", "2.3.0.1" );
 
 	// wxBitmaps
 	wxArrayString bitmaps = project->GetPropertyAsArrayString( _("bitmaps") );
 	for ( size_t bitmap = 0; bitmap < bitmaps.size(); ++bitmap )
 	{
-		TiXmlElement* bmp = new TiXmlElement( "object" );
-		bmp->SetAttribute( "class", "wxBitmap" );
-		bmp->LinkEndChild( new TiXmlText( _STDSTR( bitmaps[ bitmap ] ) ) );
-		element->LinkEndChild( bmp );
+		ticpp::Element bmp( "object" );
+		bmp.SetAttribute( "class", "wxBitmap" );
+		bmp.SetText( _STDSTR( bitmaps[ bitmap ] ) );
+		element.LinkEndChild( &bmp );
 	}
 
 	// wxIcons
 	wxArrayString icons = project->GetPropertyAsArrayString( _("icons") );
 	for ( size_t icon = 0; icon < icons.size(); ++icon )
 	{
-		TiXmlElement* iconElement = new TiXmlElement( "object" );
-		iconElement->SetAttribute( "class", "wxIcon" );
-		iconElement->LinkEndChild( new TiXmlText( _STDSTR( icons[ icon ] ) ) );
-		element->LinkEndChild( iconElement );
+		ticpp::Element iconElement( "object" );
+		iconElement.SetAttribute( "class", "wxIcon" );
+		iconElement.SetText( _STDSTR( icons[ icon ] ) );
+		element.LinkEndChild( &iconElement );
 	}
 
 	// If project is not actually a "Project", generate it
@@ -118,20 +70,20 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 		{
-			TiXmlElement *child = GetElement( project->GetChild( i ) );
+			ticpp::Element* child = GetElement( project->GetChild( i ) );
 			if ( child )
-				element->LinkEndChild( child );
+				element.LinkEndChild( child );
 		}
 	}
 	else
 	{
-		TiXmlElement* child = GetElement( project );
-		element->LinkEndChild( child );
+		ticpp::Element* child = GetElement( project );
+		element.LinkEndChild( child );
 	}
 
-	doc.LinkEndChild( element );
+	doc.LinkEndChild( &element );
 
-	std::string xrcFile = doc.GetAsString();
+	const std::string& xrcFile = doc.GetAsString();
 
 	m_cw->Write( _WXSTR( xrcFile ) );
 
@@ -140,9 +92,9 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 }
 
 
-TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* parent )
+ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* parent )
 {
-	TiXmlElement *element = NULL;
+	ticpp::Element *element = NULL;
 
 	IComponent *comp = obj->GetObjectInfo()->GetComponent();
 
@@ -151,7 +103,7 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* paren
 
 	if ( element )
 	{
-		std::string class_name = element->Attribute( "class" );
+		std::string class_name = element->GetAttribute( "class" );
 		if ( class_name == "__dummyitem__" )
 		{
 			delete element;
@@ -168,9 +120,9 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* paren
 			if ( parent )
 			{
 				parent->SetAttribute( "class", "spacer" );
-				for ( TiXmlNode* child = element->FirstChild(); child; child = child->NextSibling() )
+				for ( ticpp::Node* child = element->FirstChild( false ); child; child = child->NextSibling( false ) )
 				{
-					parent->LinkEndChild( child->Clone() );
+					parent->LinkEndChild( child->Clone().release() );
 				}
 				delete element;
 				return NULL;
@@ -186,7 +138,7 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* paren
 			{
 				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 				{
-					TiXmlElement* aux = NULL;
+					ticpp::Element* aux = NULL;
 
 					PObjectBase child = obj->GetChild( i );
 					if ( child->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) )
@@ -217,14 +169,14 @@ TiXmlElement* XrcCodeGenerator::GetElement( PObjectBase obj, TiXmlElement* paren
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			TiXmlElement *aux = GetElement( obj->GetChild( i ), element );
+			ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
 			if ( aux ) element->LinkEndChild( aux );
 		}
 	}
 	else
 	{
-		// El componente no soporta XRC
-		element = new TiXmlElement( "object" );
+		// The componenet does not XRC
+		element = new ticpp::Element( "object" );
 		element->SetAttribute( "class", "unknown" );
 		element->SetAttribute( "name", _STDSTR( obj->GetPropertyAsString( _( "name" ) ) ) );
 	}

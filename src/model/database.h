@@ -26,7 +26,6 @@
 #ifndef __OBJ_DATABASE__
 #define __OBJ_DATABASE__
 
-#include "tinyxml.h"
 #include <wx/dynlib.h>
 #include <set>
 #include "model/types.h"
@@ -237,7 +236,7 @@ class ObjectDatabase
    * Fábrica de objetos a partir de un objeto XML.
    * Este método se usará para cargar un proyecto almacenado.
    */
-  PObjectBase CreateObject(TiXmlElement *obj, PObjectBase parent = PObjectBase());
+  PObjectBase CreateObject( ticpp::Element* obj, PObjectBase parent = PObjectBase());
 
   /**
    * Crea un objeto como copia de otro.

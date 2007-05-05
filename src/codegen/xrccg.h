@@ -27,7 +27,10 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
-class TiXmlElement;
+namespace ticpp
+{
+	class Element;
+}
 
 /**
  * Generador de código XRC.
@@ -37,7 +40,7 @@ class XrcCodeGenerator : public CodeGenerator
  private:
   PCodeWriter m_cw;
 
-  TiXmlElement* GetElement( PObjectBase obj, TiXmlElement* parent = NULL );
+  ticpp::Element* GetElement( PObjectBase obj, ticpp::Element* parent = NULL );
 
  public:
 

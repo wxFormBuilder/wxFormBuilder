@@ -25,7 +25,6 @@
 
 #include "wx/wx.h"
 #include "component.h"
-#include "tinyxml.h"
 
 #define XRC_TYPE_TEXT    0
 #define XRC_TYPE_INTEGER 1
@@ -37,6 +36,11 @@
 #define XRC_TYPE_POINT   7
 #define XRC_TYPE_STRINGLIST 8
 #define XRC_TYPE_BITMAP  9
+
+namespace ticpp
+{
+	class Element;
+}
 
 /**
  * Filtro para exportar un objeto a formato XRC.
@@ -53,7 +57,7 @@
  *  xrc.AddProperty("label", "label", XRC_TYPE_STRING);
  *  xrc.AddProperty("style", "style", XRC_TYPE_BITLIST);
  *  xrc.AddProperty("default", "default", XRC_TYPE_BOOL);
- *  TiXmlElement *xrcObj = xrc.GetXrcObject();
+ *  ticpp::Element *xrcObj = xrc.GetXrcObject();
  * @endcode
  */
 class ObjectToXrcFilter
@@ -77,17 +81,17 @@ class ObjectToXrcFilter
 
   void AddWindowProperties();
 
-  TiXmlElement* GetXrcObject();
+  ticpp::Element* GetXrcObject();
 
  private:
-  TiXmlElement *m_xrcObj;
+  ticpp::Element* m_xrcObj;
   IObject *m_obj;
 
-  void LinkText(const wxString &text, TiXmlElement *propElement, bool xrcFormat = false);
-  void LinkColour(const wxColour &colour, TiXmlElement *propElement);
-  void LinkFont(const wxFont &font, TiXmlElement *propElement);
-  void LinkInteger(const int &integer, TiXmlElement *propElement);
-  void LinkStringList(const wxArrayString &array, TiXmlElement *propElement,  bool xrcFormat = false);
+  void LinkText(const wxString &text, ticpp::Element *propElement, bool xrcFormat = false);
+  void LinkColour(const wxColour &colour, ticpp::Element *propElement);
+  void LinkFont(const wxFont &font, ticpp::Element *propElement);
+  void LinkInteger(const int &integer, ticpp::Element *propElement);
+  void LinkStringList(const wxArrayString &array, ticpp::Element *propElement,  bool xrcFormat = false);
 };
 
 /**
@@ -101,10 +105,10 @@ class XrcToXfbFilter
 {
  public:
 
-  XrcToXfbFilter(TiXmlElement *obj,
+  XrcToXfbFilter(ticpp::Element *obj,
                  const wxString &classname);
 
-  XrcToXfbFilter(TiXmlElement *obj,
+  XrcToXfbFilter(ticpp::Element *obj,
                  const wxString &classname,
                  const wxString &objname);
   ~XrcToXfbFilter();
@@ -119,23 +123,23 @@ class XrcToXfbFilter
 
   void AddPropertyPair( const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2 );
 
-  TiXmlElement* GetXfbObject();
+  ticpp::Element* GetXfbObject();
 
  private:
-  TiXmlElement *m_xfbObj;
-  TiXmlElement *m_xrcObj;
+  ticpp::Element *m_xfbObj;
+  ticpp::Element *m_xrcObj;
 
-  void ImportTextProperty(const wxString &xrcPropName, TiXmlElement *property, bool parseXrcText = false);
-  void ImportIntegerProperty(const wxString &xrcPropName, TiXmlElement *property);
-  void ImportBitlistProperty(const wxString &xrcPropName, TiXmlElement *property);
-  void ImportBitmapProperty(const wxString &xrcPropName, TiXmlElement *property);
-  void ImportColourProperty(const wxString &xrcPropName, TiXmlElement *property);
-  void ImportFontProperty(const wxString &xrcPropName, TiXmlElement *property);
-  void ImportStringListProperty(const wxString &xrcPropName, TiXmlElement *property, bool parseXrcText = false);
+  void ImportTextProperty(const wxString &xrcPropName, ticpp::Element *property, bool parseXrcText = false);
+  void ImportIntegerProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportBitlistProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportBitmapProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportColourProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportFontProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportStringListProperty(const wxString &xrcPropName, ticpp::Element *property, bool parseXrcText = false);
 
   void AddStyleProperty();
   void AddExtraStyleProperty();
 
-  TiXmlElement *GetXrcProperty(const wxString &name);
+  ticpp::Element *GetXrcProperty(const wxString &name);
 };
 

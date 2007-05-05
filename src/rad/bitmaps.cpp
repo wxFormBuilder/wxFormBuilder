@@ -31,6 +31,8 @@
 #include "utils/stringutils.h"
 #include "utils/wxfbexception.h"
 
+#include <ticpp.h>
+
 static std::map< wxString, wxBitmap > m_bitmaps;
 
 wxBitmap AppBitmaps::GetBitmap( wxString iconname, unsigned int size )
@@ -64,22 +66,23 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 	{
 		m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
 
-		TiXmlDocument doc;
+		ticpp::Document doc;
 		XMLUtils::LoadXMLFile( doc, filepath );
 
-		TiXmlElement* root = doc.FirstChildElement("icons");
-		if (root)
+		ticpp::Element* root = doc.FirstChildElement( "icons" );
+		ticpp::Element* elem = root->FirstChildElement( "icon", false );
+		while ( elem )
 		{
-			TiXmlElement* elem = root->FirstChildElement("icon");
-			while (elem)
-			{
-				wxString name = _WXSTR( elem->Attribute("name") );
-				wxString file = _WXSTR( elem->Attribute("file") );
-				m_bitmaps[name] = wxBitmap( iconpath + file, wxBITMAP_TYPE_ANY );
+			wxString name = _WXSTR( elem->GetAttribute("name") );
+			wxString file = _WXSTR( elem->GetAttribute("file") );
+			m_bitmaps[name] = wxBitmap( iconpath + file, wxBITMAP_TYPE_ANY );
 
-				elem = elem->NextSiblingElement("icon");
-			}
+			elem = elem->NextSiblingElement( "icon", false );
 		}
+	}
+	catch ( ticpp::Exception& ex )
+	{
+		wxLogError( _("Error loading images: %s"), _WXSTR( ex.m_details ).c_str() );
 	}
 	catch ( wxFBException& ex )
 	{

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 20 2007)
+// C++ code generated with wxFormBuilder (version May  4 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -69,6 +69,8 @@ class MainFrame : public wxFrame
 		};
 		
 		wxMenuBar* m_menubar1;
+		wxMenu* m_fileMenu;
+		wxMenu* m_helpMenu;
 		wxToolBar* m_toolBar1;
 		
 		// Virtual event handlers, overide them in your derived class
@@ -261,6 +263,12 @@ class AdditionalPanel : public wxPanel
 	
 	public:
 		AdditionalPanel( wxWindow* parent, int id = wxID_ANY, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 447,514 ), int style = wxTAB_TRAVERSAL );
+		void m_splitter1OnIdle( wxIdleEvent& )
+		{
+		m_splitter1->SetSashPosition( 85 );
+		m_splitter1->Disconnect( wxEVT_IDLE, wxIdleEventHandler( AdditionalPanel::m_splitter1OnIdle ), NULL, this );
+		}
+		
 	
 };
 
