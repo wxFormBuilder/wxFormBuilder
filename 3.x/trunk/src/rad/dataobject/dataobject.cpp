@@ -18,6 +18,10 @@ wxDataObject()
 		ticpp::Element element;
 		obj->SerializeObject( &element );
 
+		// add version info to xml data, just in case it is pasted into a different version of wxFB
+		element.SetAttribute( "fbp_version_major", AppData()->m_fbpVerMajor );
+		element.SetAttribute( "fbp_version_minor", AppData()->m_fbpVerMinor );
+
 		ticpp::Document doc;
 		doc.LinkEndChild( &element );
 		m_data = doc.GetAsString();
@@ -97,20 +101,34 @@ PObjectBase wxFBDataObject::GetObj()
 		return PObjectBase();
 	}
 
-	// Load FILE into TiXmlDocument
-	TiXmlDocument doc;
-	if ( !doc.LoadFromString( m_data, TIXML_ENCODING_UTF8 ) )
+	// Read Object from xml
+	try
 	{
+		ticpp::Document doc;
+		doc.LoadFromString( m_data, TIXML_ENCODING_UTF8 );
+		ticpp::Element* element = doc.FirstChildElement();
+
+
+		int major, minor;
+		element->GetAttribute( "fbp_version_major", &major );
+		element->GetAttribute( "fbp_version_minor", &minor );
+
+		if ( major > AppData()->m_fbpVerMajor || ( AppData()->m_fbpVerMajor == major && minor > AppData()->m_fbpVerMinor ) )
+		{
+			wxLogError( _("This object cannot be pasted because it is from a newer version of wxFormBuilder") );
+		}
+
+		if ( major < AppData()->m_fbpVerMajor || ( AppData()->m_fbpVerMajor == major && minor < AppData()->m_fbpVerMinor ) )
+		{
+			AppData()->ConvertObject( element, major, minor );
+		}
+
+		PObjectDatabase db = AppData()->GetObjectDatabase();
+		return db->CreateObject( element );
+	}
+	catch( ticpp::Exception& ex )
+	{
+		wxLogError( _WXSTR( ex.m_details ) );
 		return PObjectBase();
 	}
-
-	// Read ObjectBase from xml
-	TiXmlElement* element = doc.RootElement();
-	if ( NULL == element )
-	{
-		return PObjectBase();
-	}
-
-	PObjectDatabase db = AppData()->GetObjectDatabase();
-	return db->CreateObject( element );
 }

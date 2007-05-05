@@ -1,9 +1,11 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Feb 20 2007)
+// C++ code generated with wxFormBuilder (version May  4 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
+
+#ifdef WX_PRECOMP
 
 #include "wx/wxprec.h"
 
@@ -11,7 +13,7 @@
 #pragma hdrstop
 #endif //__BORLANDC__
 
-#ifndef WX_PRECOMP
+#else
 #include <wx/wx.h>
 #endif //WX_PRECOMP
 
@@ -35,7 +37,6 @@ MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxS
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	
 	m_menubar1 = new wxMenuBar( 0 );
-	wxMenu* m_fileMenu;
 	m_fileMenu = new wxMenu();
 	wxMenuItem* fileOpenMenuItem = new wxMenuItem( m_fileMenu, ID_FILE_OPEN, wxString( wxT("&Open") ) , wxEmptyString, wxITEM_NORMAL );
 	m_fileMenu->Append( fileOpenMenuItem );
@@ -46,11 +47,12 @@ MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxS
 	wxMenuItem* fileExitMenuItem = new wxMenuItem( m_fileMenu, ID_FILE_EXIT, wxString( wxT("E&xit") ) , wxEmptyString, wxITEM_NORMAL );
 	m_fileMenu->Append( fileExitMenuItem );
 	m_menubar1->Append( m_fileMenu, wxT("&File") );
-	wxMenu* m_helpMenu;
+	
 	m_helpMenu = new wxMenu();
 	wxMenuItem* helpAboutMenuItem = new wxMenuItem( m_helpMenu, ID_HELP_ABOUT_MENU_ITEM, wxString( wxT("&About") ) , wxEmptyString, wxITEM_NORMAL );
 	m_helpMenu->Append( helpAboutMenuItem );
 	m_menubar1->Append( m_helpMenu, wxT("Help") );
+	
 	this->SetMenuBar( m_menubar1 );
 	
 	m_toolBar1 = this->CreateToolBar( wxTB_FLAT|wxTB_HORIZONTAL|wxTB_TEXT, ID_TOOLBAR ); 
@@ -120,9 +122,8 @@ CommonPanel::CommonPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, in
 	m_comboBox1 = new wxComboBox( this, ID_COMBOBOX, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
 	fgSizer1->Add( m_comboBox1, 0, wxALL, 5 );
 	
-	wxString m_choice1Choices[] = {  };
-	int m_choice1NChoices = sizeof( m_choice1Choices ) / sizeof( wxString );
-	m_choice1 = new wxChoice( this, ID_CHOICE, wxDefaultPosition, wxDefaultSize, m_choice1NChoices, m_choice1Choices, 0 );
+	wxArrayString m_choice1Choices;
+	m_choice1 = new wxChoice( this, ID_CHOICE, wxDefaultPosition, wxDefaultSize, m_choice1Choices, 0 );
 	fgSizer1->Add( m_choice1, 0, wxALL, 5 );
 	
 	m_listBox1 = new wxListBox( this, ID_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 ); 
@@ -191,6 +192,7 @@ AdditionalPanel::AdditionalPanel( wxWindow* parent, int id, wxPoint pos, wxSize 
 	fgSizer2->Add( m_spinBtn1, 0, wxALL, 5 );
 	
 	m_splitter1 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_3D);
+	m_splitter1->Connect( wxEVT_IDLE, wxIdleEventHandler( AdditionalPanel::m_splitter1OnIdle ), NULL, this );
 	m_panel5 = new wxPanel( m_splitter1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );

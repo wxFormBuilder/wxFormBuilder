@@ -222,12 +222,12 @@ public:
 
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		return NULL;
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc(ticpp::Element *xrcObj)
 	{
 		return NULL;
 	}

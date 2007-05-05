@@ -30,865 +30,872 @@
 #include <string>
 #include <set>
 
-static wxString StringToXrcText(const wxString &str)
+#include <ticpp.h>
+
+static wxString StringToXrcText( const wxString &str )
 {
-  wxString result;
+	wxString result;
 
-  for (unsigned int i=0 ; i < str.Length() ; i++)
-  {
-    wxChar c = str[i];
+	for ( unsigned int i = 0 ; i < str.Length() ; i++ )
+	{
+		wxChar c = str[i];
 
-    switch (c)
-    {
-      case wxChar('\n'): result = result + wxT("\\n");
-                 break;
+		switch ( c )
+		{
+			case wxChar( '\n' ): result = result + wxT( "\\n" );
+				break;
 
-      case wxChar('\t'): result = result + wxT("\\t");
-                 break;
+			case wxChar( '\t' ): result = result + wxT( "\\t" );
+				break;
 
-      case wxChar('\r'): result = result + wxT("\\r");
-                 break;
+			case wxChar( '\r' ): result = result + wxT( "\\r" );
+				break;
 
-      case wxChar('\\'): result = result + wxT("\\\\");
-                 break;
+			case wxChar( '\\' ): result = result + wxT( "\\\\" );
+				break;
 
-      case wxChar('_'):  result = result + wxT("__");
-                 break;
+			case wxChar( '_' ):  result = result + wxT( "__" );
+				break;
 
-      case wxChar('&'):  result = result + wxT("_");
-                 break;
+			case wxChar( '&' ):  result = result + wxT( "_" );
+				break;
 
-      default:   result = result + c;
-                 break;
-    }
-  }
-  return result;
+			default:
+				result = result + c;
+				break;
+		}
+	}
+	return result;
 }
 
-static wxString XrcTextToString(const wxString &str)
+static wxString XrcTextToString( const wxString &str )
 {
-  wxString result;
+	wxString result;
 
-  for (unsigned int i=0 ; i < str.Length() ; i++)
-  {
-    wxChar c = str[i];
-    if (c == wxChar('\\') && i < str.length() - 1)
-    {
-      wxChar next = str[i+1];
+	for ( unsigned int i = 0 ; i < str.Length() ; i++ )
+	{
+		wxChar c = str[i];
+		if ( c == wxChar( '\\' ) && i < str.length() - 1 )
+		{
+			wxChar next = str[i+1];
 
-      switch (next)
-      {
-        case wxChar('n'): result = result + wxChar('\n'); i++;
-                  break;
+			switch ( next )
+			{
+				case wxChar( 'n' ): result = result + wxChar( '\n' ); i++;
+					break;
 
-        case wxChar('t'): result = result + wxChar('\t'); i++;
-                  break;
+				case wxChar( 't' ): result = result + wxChar( '\t' ); i++;
+					break;
 
-        case wxChar('r'): result = result + wxChar('\r'); i++;
-                  break;
+				case wxChar( 'r' ): result = result + wxChar( '\r' ); i++;
+					break;
 
-        case wxChar('\\'): result = result + wxChar('\\'); i++;
-                   break;
-      }
-    }
-    else if (c == wxChar('_'))
-    {
-      if (i < str.Length() - 1 && str[i+1] == wxChar('_'))
-      {
-        result = result + wxChar('_');
-        i++;
-      }
-      else
-        result = result + wxChar('&');
-    }
-    else
-      result = result + c;
-  }
+				case wxChar( '\\' ): result = result + wxChar( '\\' ); i++;
+					break;
+			}
+		}
+		else if ( c == wxChar( '_' ) )
+		{
+			if ( i < str.Length() - 1 && str[i+1] == wxChar( '_' ) )
+			{
+				result = result + wxChar( '_' );
+				i++;
+			}
+			else
+				result = result + wxChar( '&' );
+		}
+		else
+			result = result + c;
+	}
 
-  return result;
+	return result;
 }
 
-static wxString ReplaceSynonymous(const wxString &bitlist)
+static wxString ReplaceSynonymous( const wxString &bitlist )
 {
-  IComponentLibrary* lib = GetComponentLibrary( NULL );
-  wxString result, translation;
-  wxStringTokenizer tkz(bitlist, wxT("|"));
-  while (tkz.HasMoreTokens())
-  {
-    wxString token;
-    token = tkz.GetNextToken();
-    token.Trim(true);
-    token.Trim(false);
+	IComponentLibrary* lib = GetComponentLibrary( NULL );
+	wxString result, translation;
+	wxStringTokenizer tkz( bitlist, wxT( "|" ) );
+	while ( tkz.HasMoreTokens() )
+	{
+		wxString token;
+		token = tkz.GetNextToken();
+		token.Trim( true );
+		token.Trim( false );
 
-    if (result != wxT(""))
-        result = result + wxChar('|');
+		if ( result != wxT( "" ) )
+			result = result + wxChar( '|' );
 
-    if (lib->FindSynonymous(token, translation))
-      result += translation;
-    else
-      result += token;
+		if ( lib->FindSynonymous( token, translation ) )
+			result += translation;
+		else
+			result += token;
 
-  }
-  delete lib;
+	}
+	delete lib;
 
-  return result;
+	return result;
 }
 
-ObjectToXrcFilter::ObjectToXrcFilter(IObject *obj, const wxString &classname,
-                                     const wxString &objname,
-                                     const wxString &base)
+ObjectToXrcFilter::ObjectToXrcFilter( 	IObject *obj,
+										const wxString &classname,
+										const wxString &objname,
+										const wxString &base )
 {
-  m_obj = obj;
-  m_xrcObj = new TiXmlElement("object");
+	m_obj = obj;
+	m_xrcObj = new ticpp::Element( "object" );
 
-  m_xrcObj->SetAttribute("class",classname.mb_str( wxConvUTF8 ));
+	m_xrcObj->SetAttribute( "class", classname.mb_str( wxConvUTF8 ) );
 
-  if (objname != wxT(""))
-    m_xrcObj->SetAttribute("name",objname.mb_str( wxConvUTF8 ));
+	if ( objname != wxT( "" ) )
+		m_xrcObj->SetAttribute( "name", objname.mb_str( wxConvUTF8 ) );
 
-  if (base != wxT(""))
-    m_xrcObj->SetAttribute("base",base.mb_str( wxConvUTF8 ));
+	if ( base != wxT( "" ) )
+		m_xrcObj->SetAttribute( "base", base.mb_str( wxConvUTF8 ) );
 }
 
 ObjectToXrcFilter::~ObjectToXrcFilter()
 {
-  delete m_xrcObj;
+	delete m_xrcObj;
 }
 
-void ObjectToXrcFilter::AddProperty(const wxString &objPropName,
-                                    const wxString &xrcPropName,
-                                    const int &propType)
+void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
+                                     const wxString &xrcPropName,
+                                     const int &propType )
 {
 	std::string name( xrcPropName.mb_str( wxConvUTF8 ) );
-  TiXmlElement *propElement = new TiXmlElement(name);
+	ticpp::Element propElement( name );
 
-  switch (propType)
-  {
-    case XRC_TYPE_SIZE:
-    case XRC_TYPE_POINT:
-    case XRC_TYPE_BITLIST:
-      LinkText(m_obj->GetPropertyAsString(objPropName), propElement);
-      break;
+	switch ( propType )
+	{
+		case XRC_TYPE_SIZE:
+		case XRC_TYPE_POINT:
+		case XRC_TYPE_BITLIST:
+			LinkText( m_obj->GetPropertyAsString( objPropName ), &propElement );
+			break;
 
-    case XRC_TYPE_TEXT:
-      // El texto ha de ser convertido a formato XRC
-      {
-      wxString text = m_obj->GetPropertyAsString(objPropName);
-      LinkText(text, propElement, true);
-      }
-      break;
+		case XRC_TYPE_TEXT:
+			// El texto ha de ser convertido a formato XRC
+			{
+				wxString text = m_obj->GetPropertyAsString( objPropName );
+				LinkText( text, &propElement, true );
+			}
+			break;
 
-    case XRC_TYPE_BOOL:
-    case XRC_TYPE_INTEGER:
-      LinkInteger(m_obj->GetPropertyAsInteger(objPropName), propElement);
-      break;
+		case XRC_TYPE_BOOL:
+		case XRC_TYPE_INTEGER:
+			LinkInteger( m_obj->GetPropertyAsInteger( objPropName ), &propElement );
+			break;
 
-    case XRC_TYPE_COLOUR:
-      LinkColour(m_obj->GetPropertyAsColour(objPropName), propElement);
-      break;
+		case XRC_TYPE_COLOUR:
+			LinkColour( m_obj->GetPropertyAsColour( objPropName ), &propElement );
+			break;
 
-    case XRC_TYPE_FONT:
-      LinkFont(m_obj->GetPropertyAsFont(objPropName), propElement);
-      break;
+		case XRC_TYPE_FONT:
+			LinkFont( m_obj->GetPropertyAsFont( objPropName ), &propElement );
+			break;
 
-    case XRC_TYPE_STRINGLIST:
-      // LinkStringList convierte las cadenas a formato XRC
-      LinkStringList(m_obj->GetPropertyAsArrayString(objPropName), propElement, true);
-      break;
+		case XRC_TYPE_STRINGLIST:
+			// LinkStringList convierte las cadenas a formato XRC
+			LinkStringList( m_obj->GetPropertyAsArrayString( objPropName ), &propElement, true );
+			break;
 
-    case XRC_TYPE_BITMAP:
-      {
-        wxString bitmapProp = m_obj->GetPropertyAsString(objPropName);
-        wxString filename = bitmapProp.BeforeFirst(_T(';')).Trim();
-        wxString source = bitmapProp.AfterLast(_T(';')).Trim(false);
-        if (source == wxT("Load From File"))
-            LinkText(filename, propElement);
-      }
-      break;
-  }
+		case XRC_TYPE_BITMAP:
+			{
+				wxString bitmapProp = m_obj->GetPropertyAsString( objPropName );
+				wxString filename = bitmapProp.BeforeFirst( _T( ';' ) ).Trim();
+				wxString source = bitmapProp.AfterLast( _T( ';' ) ).Trim( false );
+				if ( source == wxT( "Load From File" ) )
+					LinkText( filename, &propElement );
+			}
+			break;
+	}
 
-  m_xrcObj->LinkEndChild(propElement);
+	m_xrcObj->LinkEndChild( &propElement );
 }
 
-void ObjectToXrcFilter::AddPropertyValue (const wxString &xrcPropName,
-                                          const wxString &xrcPropValue)
+void ObjectToXrcFilter::AddPropertyValue ( 	const wxString &xrcPropName,
+											const wxString &xrcPropValue )
 {
-  TiXmlElement *propElement = new TiXmlElement(xrcPropName.mb_str( wxConvUTF8 ));
-  LinkText(xrcPropValue, propElement);
-  m_xrcObj->LinkEndChild(propElement);
+	ticpp::Element propElement( xrcPropName.mb_str( wxConvUTF8 ) );
+	LinkText( xrcPropValue, &propElement );
+	m_xrcObj->LinkEndChild( &propElement );
 }
 
 void ObjectToXrcFilter::AddPropertyPair ( const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName )
 {
 	AddPropertyValue( 	xrcPropName,
-						wxString::Format( _("%d,%d"),
-							m_obj->GetPropertyAsInteger( objPropName1 ),
-							m_obj->GetPropertyAsInteger( objPropName2 )
-						)
-					);
+						wxString::Format(	_( "%d,%d" ),
+											m_obj->GetPropertyAsInteger( objPropName1 ),
+											m_obj->GetPropertyAsInteger( objPropName2 )
+										)
+	                );
 }
 
-TiXmlElement* ObjectToXrcFilter::GetXrcObject()
+ticpp::Element* ObjectToXrcFilter::GetXrcObject()
 {
-  return (m_xrcObj->Clone())->ToElement();
+	return m_xrcObj->Clone().release()->ToElement();
 }
 
-void ObjectToXrcFilter::LinkText(const wxString &text,TiXmlElement *propElement, bool xrcFormat)
+void ObjectToXrcFilter::LinkText( const wxString &text, ticpp::Element *propElement, bool xrcFormat )
 {
-  wxString value = (xrcFormat ? StringToXrcText(text) : text);
-  std::string val( value.mb_str( wxConvUTF8 ) );
-  propElement->LinkEndChild(new TiXmlText(val));
+	wxString value = ( xrcFormat ? StringToXrcText( text ) : text );
+	propElement->SetText( value.mb_str( wxConvUTF8 ) );
 }
 
-void ObjectToXrcFilter::LinkInteger(const int &integer, TiXmlElement *propElement)
+void ObjectToXrcFilter::LinkInteger( const int &integer, ticpp::Element *propElement )
 {
-  wxString text = wxString::Format(wxT("%d"),integer);
-  propElement->LinkEndChild(new TiXmlText(text.mb_str( wxConvUTF8 )));
+	propElement->SetText( integer );
 }
 
-
-void ObjectToXrcFilter::LinkColour(const wxColour &colour,
-                                   TiXmlElement *propElement)
+void ObjectToXrcFilter::LinkColour( const wxColour &colour, ticpp::Element *propElement )
 {
-
-  wxString value = wxString::Format(wxT("#%02x%02x%02x"),
-                     colour.Red(), colour.Green(), colour.Blue());
-
-  propElement->LinkEndChild(new TiXmlText(value.mb_str( wxConvUTF8 )));
+	wxString value = wxString::Format( wxT( "#%02x%02x%02x" ), colour.Red(), colour.Green(), colour.Blue() );
+	propElement->SetText( value.mb_str( wxConvUTF8 ) );
 }
 
-void ObjectToXrcFilter::LinkFont(const wxFont &font, TiXmlElement *propElement)
+void ObjectToXrcFilter::LinkFont( const wxFont &font, ticpp::Element *propElement )
 {
-  wxString aux;
-  TiXmlElement *element = new TiXmlElement("size");
-  aux.Printf(wxT("%d"), font.GetPointSize());
-  element->LinkEndChild(new TiXmlText(aux.mb_str( wxConvUTF8 )));
-  propElement->LinkEndChild(element);
+	wxString aux;
+	aux.Printf( wxT( "%d" ), font.GetPointSize() );
 
-  element = new TiXmlElement("family");
-  switch (font.GetFamily())
-  {
-      case wxDECORATIVE:
-          element->LinkEndChild(new TiXmlText("decorative"));
-          break;
-      case wxROMAN:
-          element->LinkEndChild(new TiXmlText("roman"));
-          break;
-      case wxSWISS:
-          element->LinkEndChild(new TiXmlText("swiss"));
-          break;
-      case wxMODERN:
-          element->LinkEndChild(new TiXmlText("modern"));
-          break;
-      default:
-          element->LinkEndChild(new TiXmlText("default"));
-          break;
-  }
-  propElement->LinkEndChild(element);
+	ticpp::Element size( "size" );
+	size.SetText( aux.mb_str( wxConvUTF8 ) );
+	propElement->LinkEndChild( &size );
 
-  element = new TiXmlElement("style");
-  switch (font.GetStyle())
-  {
-      case wxSLANT:
-          element->LinkEndChild(new TiXmlText("slant"));
-          break;
-      case wxITALIC:
-          element->LinkEndChild(new TiXmlText("italic"));
-          break;
-      default:
-          element->LinkEndChild(new TiXmlText("normal"));
-          break;
-  }
-  propElement->LinkEndChild(element);
+	ticpp::Element family( "family" );
+	switch ( font.GetFamily() )
+	{
+		case wxDECORATIVE:
+			family.SetText( "decorative" );
+			break;
+		case wxROMAN:
+			family.SetText( "roman" );
+			break;
+		case wxSWISS:
+			family.SetText( "swiss" );
+			break;
+		case wxMODERN:
+			family.SetText( "modern" );
+			break;
+		default:
+			family.SetText( "default" );
+			break;
+	}
+	propElement->LinkEndChild( &family );
 
-  element = new TiXmlElement("weight");
-  switch (font.GetWeight())
-  {
-      case wxLIGHT:
-          element->LinkEndChild(new TiXmlText("light"));
-          break;
-      case wxBOLD:
-          element->LinkEndChild(new TiXmlText("bold"));
-          break;
-      default:
-          element->LinkEndChild(new TiXmlText("normal"));
-          break;
-  }
-  propElement->LinkEndChild(element);
+	ticpp::Element style( "style" );
+	switch ( font.GetStyle() )
+	{
+		case wxSLANT:
+			style.SetText( "slant" );
+			break;
+		case wxITALIC:
+			style.SetText( "italic" );
+			break;
+		default:
+			style.SetText( "normal" );
+			break;
+	}
+	propElement->LinkEndChild( &style );
 
-  element = new TiXmlElement("underlined");
-  element->LinkEndChild(new TiXmlText(font.GetUnderlined() ? "1" : "0"));
-  propElement->LinkEndChild(element);
+	ticpp::Element weight( "weight" );
+	switch ( font.GetWeight() )
+	{
+		case wxLIGHT:
+			weight.SetText( "light" );
+			break;
+		case wxBOLD:
+			weight.SetText( "bold" );
+			break;
+		default:
+			weight.SetText( "normal" );
+			break;
+	}
+	propElement->LinkEndChild( &weight );
 
-  element = new TiXmlElement("face");
-  element->LinkEndChild(new TiXmlText(font.GetFaceName().mb_str( wxConvUTF8 )));
-  propElement->LinkEndChild(element);
+	ticpp::Element underlined( "underlined" );
+	underlined.SetText( font.GetUnderlined() ? "1" : "0" );
+	propElement->LinkEndChild( &underlined );
+
+	ticpp::Element face( "face" );
+	face.SetText( font.GetFaceName().mb_str( wxConvUTF8 ) );
+	propElement->LinkEndChild( &face );
 }
 
-void ObjectToXrcFilter::LinkStringList(const wxArrayString &array, TiXmlElement *propElement, bool xrcFormat)
+void ObjectToXrcFilter::LinkStringList( const wxArrayString &array, ticpp::Element *propElement, bool xrcFormat )
 {
-    for (size_t i = 0; i < array.GetCount(); i++)
-    {
-      wxString value = ( xrcFormat ? StringToXrcText(array[i]) : array[i]);
-      TiXmlElement *element = new TiXmlElement("item");
-      element->LinkEndChild(new TiXmlText(value.mb_str( wxConvUTF8 )));
-      propElement->LinkEndChild(element);
-    }
+	for ( size_t i = 0; i < array.GetCount(); i++ )
+	{
+		wxString value = ( xrcFormat ? StringToXrcText( array[i] ) : array[i] );
+		ticpp::Element item( "item" );
+		item.SetText( value.mb_str( wxConvUTF8 ) );
+		propElement->LinkEndChild( &item );
+	}
 }
 
 void ObjectToXrcFilter::AddWindowProperties()
 {
-  wxString style;
-  if (!m_obj->IsNull(_("style")))
-    style = m_obj->GetPropertyAsString(_T("style"));
-  if (!m_obj->IsNull(_("window_style"))){
-    if (!style.IsEmpty()) style += _T('|');
-    style += m_obj->GetPropertyAsString(_T("window_style"));
-  }
-  if (!style.IsEmpty()) AddPropertyValue(_T("style"), style);
+	wxString style;
+	if ( !m_obj->IsNull( _( "style" ) ) )
+		style = m_obj->GetPropertyAsString( _T( "style" ) );
+	if ( !m_obj->IsNull( _( "window_style" ) ) ){
+		if ( !style.IsEmpty() ) style += _T( '|' );
+		style += m_obj->GetPropertyAsString( _T( "window_style" ) );
+	}
+	if ( !style.IsEmpty() ) AddPropertyValue( _T( "style" ), style );
 
-  wxString extraStyle;
-  if (!m_obj->IsNull(_("extra_style")))
-    extraStyle = m_obj->GetPropertyAsString(_T("extra_style"));
-  if (!m_obj->IsNull(_("window_extra_style"))){
-    if (!extraStyle.IsEmpty()) extraStyle += _T('|');
-    extraStyle += m_obj->GetPropertyAsString(_T("window_extra_style"));
-  }
-  if (!extraStyle.IsEmpty()) AddPropertyValue(_T("exstyle"), extraStyle);
+	wxString extraStyle;
+	if ( !m_obj->IsNull( _( "extra_style" ) ) )
+		extraStyle = m_obj->GetPropertyAsString( _T( "extra_style" ) );
+	if ( !m_obj->IsNull( _( "window_extra_style" ) ) ){
+		if ( !extraStyle.IsEmpty() ) extraStyle += _T( '|' );
+		extraStyle += m_obj->GetPropertyAsString( _T( "window_extra_style" ) );
+	}
+	if ( !extraStyle.IsEmpty() ) AddPropertyValue( _T( "exstyle" ), extraStyle );
 
-  if (!m_obj->IsNull(_("pos")))
-    AddProperty(_("pos"), _("pos"), XRC_TYPE_SIZE);
+	if ( !m_obj->IsNull( _( "pos" ) ) )
+		AddProperty( _( "pos" ), _( "pos" ), XRC_TYPE_SIZE );
 
-  if (!m_obj->IsNull(_("size")))
-    AddProperty(_("size"), _("size"), XRC_TYPE_SIZE);
+	if ( !m_obj->IsNull( _( "size" ) ) )
+		AddProperty( _( "size" ), _( "size" ), XRC_TYPE_SIZE );
 
-  if (!m_obj->IsNull(_("bg")))
-    AddProperty(_("bg"), _("bg"), XRC_TYPE_COLOUR);
+	if ( !m_obj->IsNull( _( "bg" ) ) )
+		AddProperty( _( "bg" ), _( "bg" ), XRC_TYPE_COLOUR );
 
-  if (!m_obj->IsNull(_("fg")))
-    AddProperty(_("fg"), _("fg"), XRC_TYPE_COLOUR);
+	if ( !m_obj->IsNull( _( "fg" ) ) )
+		AddProperty( _( "fg" ), _( "fg" ), XRC_TYPE_COLOUR );
 
-  if (!m_obj->IsNull(_("enabled")) && !m_obj->GetPropertyAsInteger(_("enabled")))
-    AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
+	if ( !m_obj->IsNull( _( "enabled" ) ) && !m_obj->GetPropertyAsInteger( _( "enabled" ) ) )
+		AddProperty( _( "enabled" ), _( "enabled" ), XRC_TYPE_BOOL );
 
-  if (!m_obj->IsNull(_("focused")))
-    AddPropertyValue(_("focused"),_("0"));
+	if ( !m_obj->IsNull( _( "focused" ) ) )
+		AddPropertyValue( _( "focused" ), _( "0" ) );
 
-  if (!m_obj->IsNull(_("hidden")) && m_obj->GetPropertyAsInteger(_("hidden")))
-    AddProperty(_("hidden"), _("hidden"), XRC_TYPE_BOOL);
+	if ( !m_obj->IsNull( _( "hidden" ) ) && m_obj->GetPropertyAsInteger( _( "hidden" ) ) )
+		AddProperty( _( "hidden" ), _( "hidden" ), XRC_TYPE_BOOL );
 
-  if (!m_obj->IsNull(_("font")))
-    AddProperty(_("font"), _("font"), XRC_TYPE_FONT);
+	if ( !m_obj->IsNull( _( "font" ) ) )
+		AddProperty( _( "font" ), _( "font" ), XRC_TYPE_FONT );
 
-  if (!m_obj->IsNull(_("tooltip")))
-    AddProperty(_("tooltip"), wxT("tooltip"), XRC_TYPE_TEXT);
+	if ( !m_obj->IsNull( _( "tooltip" ) ) )
+		AddProperty( _( "tooltip" ), wxT( "tooltip" ), XRC_TYPE_TEXT );
 
-  if (!m_obj->IsNull(_("subclass")))
-  {
-  	wxString subclass = m_obj->GetChildFromParentProperty( _("subclass"), wxT("name") );
-  	if ( !subclass.empty() )
-  	{
-		m_xrcObj->SetAttribute("subclass", subclass.mb_str( wxConvUTF8 ));
-  	}
-  }
+	if ( !m_obj->IsNull( _( "subclass" ) ) )
+	{
+		wxString subclass = m_obj->GetChildFromParentProperty( _( "subclass" ), wxT( "name" ) );
+		if ( !subclass.empty() )
+		{
+			m_xrcObj->SetAttribute( "subclass", subclass.mb_str( wxConvUTF8 ) );
+		}
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
-XrcToXfbFilter::XrcToXfbFilter(TiXmlElement *obj, const wxString &classname,
-                                                  const wxString &objname)
+XrcToXfbFilter::XrcToXfbFilter( ticpp::Element *obj,
+								const wxString &classname,
+                                const wxString &objname )
 {
-  m_xrcObj = obj;
-  m_xfbObj = new TiXmlElement("object");
+	m_xrcObj = obj;
+	m_xfbObj = new ticpp::Element( "object" );
 
-  if (obj->Attribute("class"))
-    m_xfbObj->SetAttribute("class",obj->Attribute("class"));
+	try
+	{
+		std::string name;
+		obj->GetAttribute( "class", &name );
+		m_xfbObj->SetAttribute( "class", name );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 
-  if (objname != wxT(""))
-    AddProperty(wxT("name"), objname, XRC_TYPE_TEXT);
+	if ( !objname.empty() )
+		AddProperty( wxT( "name" ), objname, XRC_TYPE_TEXT );
 }
 
-XrcToXfbFilter::XrcToXfbFilter(TiXmlElement *obj, const wxString &classname)
+XrcToXfbFilter::XrcToXfbFilter( ticpp::Element *obj, const wxString &classname )
 {
-  m_xrcObj = obj;
-  m_xfbObj = new TiXmlElement("object");
+	m_xrcObj = obj;
+	m_xfbObj = new ticpp::Element( "object" );
 
-  m_xfbObj->SetAttribute("class",classname.mb_str( wxConvUTF8 ));
+	m_xfbObj->SetAttribute( "class", classname.mb_str( wxConvUTF8 ) );
 
-  if (obj->Attribute("name"))
-  {
-    wxString objname(obj->Attribute("name"),wxConvUTF8);
-    AddPropertyValue(wxT("name"), objname);
-  }
+	try
+	{
+		std::string name;
+		obj->GetAttribute( "name", &name );
+		wxString objname( name.c_str(), wxConvUTF8 );
+		AddPropertyValue( wxT( "name" ), objname );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
 XrcToXfbFilter::~XrcToXfbFilter()
 {
-  delete m_xfbObj;
+	delete m_xfbObj;
 }
 
 
-TiXmlElement* XrcToXfbFilter::GetXrcProperty(const wxString &name)
+ticpp::Element* XrcToXfbFilter::GetXrcProperty( const wxString &name )
 {
-  return m_xrcObj->FirstChildElement(name.mb_str( wxConvUTF8 ));
+	return m_xrcObj->FirstChildElement( name.mb_str( wxConvUTF8 ) );
 }
 
-void XrcToXfbFilter::AddProperty(const wxString &xrcPropName,
-                                 const wxString &xfbPropName,
-                                 const int &propType)
+void XrcToXfbFilter::AddProperty( const wxString &xrcPropName,
+                                  const wxString &xfbPropName,
+                                  const int &propType )
 {
-  TiXmlElement *propElement = new TiXmlElement("property");
-  propElement->SetAttribute("name",xfbPropName.mb_str( wxConvUTF8 ));
+	ticpp::Element propElement( "property" );
+	propElement.SetAttribute( "name", xfbPropName.mb_str( wxConvUTF8 ) );
 
-  switch (propType)
-  {
-    case XRC_TYPE_SIZE:
-    case XRC_TYPE_POINT:
-    case XRC_TYPE_BOOL:
-      ImportTextProperty(xrcPropName, propElement);
-      break;
+	switch ( propType )
+	{
+		case XRC_TYPE_SIZE:
+		case XRC_TYPE_POINT:
+		case XRC_TYPE_BOOL:
+			ImportTextProperty( xrcPropName, &propElement );
+			break;
 
-    case XRC_TYPE_TEXT:
-      ImportTextProperty(xrcPropName, propElement, true);
-      break;
+		case XRC_TYPE_TEXT:
+			ImportTextProperty( xrcPropName, &propElement, true );
+			break;
 
-    case XRC_TYPE_INTEGER:
-      ImportIntegerProperty(xrcPropName, propElement);
-      break;
+		case XRC_TYPE_INTEGER:
+			ImportIntegerProperty( xrcPropName, &propElement );
+			break;
 
-    case XRC_TYPE_BITLIST:
-      ImportBitlistProperty(xrcPropName, propElement);
-      break;
+		case XRC_TYPE_BITLIST:
+			ImportBitlistProperty( xrcPropName, &propElement );
+			break;
 
-    case XRC_TYPE_COLOUR:
-      ImportColourProperty(xrcPropName, propElement);
-      break;
+		case XRC_TYPE_COLOUR:
+			ImportColourProperty( xrcPropName, &propElement );
+			break;
 
-    case XRC_TYPE_FONT:
-      ImportFontProperty(xrcPropName, propElement);
-      break;
+		case XRC_TYPE_FONT:
+			ImportFontProperty( xrcPropName, &propElement );
+			break;
 
-    case XRC_TYPE_STRINGLIST:
-      ImportStringListProperty(xrcPropName, propElement, true);
-      break;
+		case XRC_TYPE_STRINGLIST:
+			ImportStringListProperty( xrcPropName, &propElement, true );
+			break;
 
-    case XRC_TYPE_BITMAP:
-      ImportBitmapProperty(xrcPropName, propElement);
-      break;
+		case XRC_TYPE_BITMAP:
+			ImportBitmapProperty( xrcPropName, &propElement );
+			break;
 
-  }
+	}
 
-  m_xfbObj->LinkEndChild(propElement);
+	m_xfbObj->LinkEndChild( &propElement );
 }
 
-void XrcToXfbFilter::AddPropertyValue (const wxString &xfbPropName,
-                                       const wxString &xfbPropValue)
+void XrcToXfbFilter::AddPropertyValue ( const wxString &xfbPropName,
+                                        const wxString &xfbPropValue )
 {
-  TiXmlElement *propElement = new TiXmlElement("property");
-  propElement->SetAttribute("name",xfbPropName.mb_str( wxConvUTF8 ));
-
-  TiXmlText *propValue = new TiXmlText(xfbPropValue.mb_str( wxConvUTF8 ));
-
-  propElement->LinkEndChild(propValue);
-  m_xfbObj->LinkEndChild(propElement);
+	ticpp::Element propElement( "property" );
+	propElement.SetAttribute( "name", xfbPropName.mb_str( wxConvUTF8 ) );
+	propElement.SetText( xfbPropValue.mb_str( wxConvUTF8 ) ) ;
+	m_xfbObj->LinkEndChild( &propElement );
 }
 
 void XrcToXfbFilter::AddStyleProperty()
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement("style");
-  if (xrcProperty)
-  {
-    TiXmlNode *textElement = xrcProperty->FirstChild();
-    if (textElement && textElement->ToText())
-    {
-      wxString bitlist = wxString(textElement->ToText()->Value(),wxConvUTF8);
-      bitlist = ReplaceSynonymous(bitlist);
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( "style" );
 
-      // FIXME: We should avoid hardcoding these things
-      std::set< wxString > windowStyles;
-      windowStyles.insert( wxT("wxSIMPLE_BORDER") );
-      windowStyles.insert( wxT("wxDOUBLE_BORDER") );
-      windowStyles.insert( wxT("wxSUNKEN_BORDER") );
-      windowStyles.insert( wxT("wxRAISED_BORDER") );
-      windowStyles.insert( wxT("wxSTATIC_BORDER") );
-      windowStyles.insert( wxT("wxNO_BORDER") );
-      windowStyles.insert( wxT("wxTRANSPARENT_WINDOW") );
-      windowStyles.insert( wxT("wxTAB_TRAVERSAL") );
-      windowStyles.insert( wxT("wxWANTS_CHARS") );
-      windowStyles.insert( wxT("wxVSCROLL") );
-      windowStyles.insert( wxT("wxHSCROLL") );
-      windowStyles.insert( wxT("wxALWAYS_SHOW_SB") );
-      windowStyles.insert( wxT("wxCLIP_CHILDREN") );
-      windowStyles.insert( wxT("wxFULL_REPAINT_ON_RESIZE") );
+		wxString bitlist = wxString( xrcProperty->GetText().c_str(), wxConvUTF8 );
+		bitlist = ReplaceSynonymous( bitlist );
 
-      wxString style, windowStyle;
-      wxStringTokenizer tkz(bitlist, wxT(" |"));
-      while (tkz.HasMoreTokens())
-      {
-        wxString token;
-        token = tkz.GetNextToken();
-        token.Trim(true);
-        token.Trim(false);
+		// FIXME: We should avoid hardcoding these things
+		std::set< wxString > windowStyles;
+		windowStyles.insert( wxT( "wxSIMPLE_BORDER" ) );
+		windowStyles.insert( wxT( "wxDOUBLE_BORDER" ) );
+		windowStyles.insert( wxT( "wxSUNKEN_BORDER" ) );
+		windowStyles.insert( wxT( "wxRAISED_BORDER" ) );
+		windowStyles.insert( wxT( "wxSTATIC_BORDER" ) );
+		windowStyles.insert( wxT( "wxNO_BORDER" ) );
+		windowStyles.insert( wxT( "wxTRANSPARENT_WINDOW" ) );
+		windowStyles.insert( wxT( "wxTAB_TRAVERSAL" ) );
+		windowStyles.insert( wxT( "wxWANTS_CHARS" ) );
+		windowStyles.insert( wxT( "wxVSCROLL" ) );
+		windowStyles.insert( wxT( "wxHSCROLL" ) );
+		windowStyles.insert( wxT( "wxALWAYS_SHOW_SB" ) );
+		windowStyles.insert( wxT( "wxCLIP_CHILDREN" ) );
+		windowStyles.insert( wxT( "wxFULL_REPAINT_ON_RESIZE" ) );
 
-        if (windowStyles.find(token) == windowStyles.end())
-        {
-          if (!style.IsEmpty()) style += _T("|");
-          style += token;
-        }
-        else
-        {
-          if (!windowStyle.IsEmpty()) windowStyle += _T("|");
-          windowStyle += token;
-        }
+		wxString style, windowStyle;
+		wxStringTokenizer tkz( bitlist, wxT( " |" ) );
+		while ( tkz.HasMoreTokens() )
+		{
+			wxString token;
+			token = tkz.GetNextToken();
+			token.Trim( true );
+			token.Trim( false );
 
-      }
+			if ( windowStyles.find( token ) == windowStyles.end() )
+			{
+				if ( !style.IsEmpty() ) style += _T( "|" );
+				style += token;
+			}
+			else
+			{
+				if ( !windowStyle.IsEmpty() ) windowStyle += _T( "|" );
+				windowStyle += token;
+			}
 
-      AddPropertyValue(_T("style"), style);
-      AddPropertyValue(_T("window_style"), windowStyle);
-    }
-  }
+		}
+
+		AddPropertyValue( wxT( "style" ), style );
+		AddPropertyValue( wxT( "window_style" ), windowStyle );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
 void XrcToXfbFilter::AddExtraStyleProperty()
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement("exstyle");
-  if (xrcProperty)
-  {
-    TiXmlNode *textElement = xrcProperty->FirstChild();
-    if (textElement && textElement->ToText())
-    {
-      wxString bitlist = wxString(textElement->ToText()->Value(),wxConvUTF8);
-      bitlist = ReplaceSynonymous(bitlist);
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( "exstyle" );
 
-      // FIXME: We should avoid hardcoding these things
-      std::set< wxString > windowStyles;
-      windowStyles.insert( wxT("wxWS_EX_VALIDATE_RECURSIVELY") );
-      windowStyles.insert( wxT("wxWS_EX_BLOCK_EVENTS") );
-      windowStyles.insert( wxT("wxWS_EX_TRANSIENT") );
-      windowStyles.insert( wxT("wxWS_EX_PROCESS_IDLE") );
-      windowStyles.insert( wxT("wxWS_EX_PROCESS_UI_UPDATES") );
+		wxString bitlist = wxString( xrcProperty->GetText().c_str(), wxConvUTF8 );
+		bitlist = ReplaceSynonymous( bitlist );
 
-      wxString style, windowStyle;
-      wxStringTokenizer tkz(bitlist, wxT(" |"));
-      while (tkz.HasMoreTokens())
-      {
-        wxString token;
-        token = tkz.GetNextToken();
-        token.Trim(true);
-        token.Trim(false);
+		// FIXME: We should avoid hardcoding these things
+		std::set< wxString > windowStyles;
+		windowStyles.insert( wxT( "wxWS_EX_VALIDATE_RECURSIVELY" ) );
+		windowStyles.insert( wxT( "wxWS_EX_BLOCK_EVENTS" ) );
+		windowStyles.insert( wxT( "wxWS_EX_TRANSIENT" ) );
+		windowStyles.insert( wxT( "wxWS_EX_PROCESS_IDLE" ) );
+		windowStyles.insert( wxT( "wxWS_EX_PROCESS_UI_UPDATES" ) );
 
-        if (windowStyles.find(token) == windowStyles.end())
-        {
-          if (!style.IsEmpty()) style += _T("|");
-          style += token;
-        }
-        else
-        {
-          if (!windowStyle.IsEmpty()) windowStyle += _T("|");
-          windowStyle += token;
-        }
+		wxString style, windowStyle;
+		wxStringTokenizer tkz( bitlist, wxT( " |" ) );
+		while ( tkz.HasMoreTokens() )
+		{
+			wxString token;
+			token = tkz.GetNextToken();
+			token.Trim( true );
+			token.Trim( false );
 
-      }
+			if ( windowStyles.find( token ) == windowStyles.end() )
+			{
+				if ( !style.IsEmpty() ) style += _T( "|" );
+				style += token;
+			}
+			else
+			{
+				if ( !windowStyle.IsEmpty() ) windowStyle += _T( "|" );
+				windowStyle += token;
+			}
 
-      AddPropertyValue(_T("extra_style"), style);
-      AddPropertyValue(_T("window_extra_style"), windowStyle);
-    }
-  }
+		}
+
+		AddPropertyValue( wxT( "extra_style" ), style );
+		AddPropertyValue( wxT( "window_extra_style" ), windowStyle );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
 void XrcToXfbFilter::AddPropertyPair( const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2 )
 {
-	TiXmlElement* pairProp = m_xrcObj->FirstChildElement( xrcPropName );
-	if ( pairProp )
+	try
 	{
-		TiXmlText* xmlValue = pairProp->FirstChild()->ToText();
-		if ( xmlValue )
+		ticpp::Element* pairProp = m_xrcObj->FirstChildElement( xrcPropName );
+
+		wxString width = wxEmptyString;
+		wxString height = wxEmptyString;
+		wxStringTokenizer tkz( wxString( pairProp->GetText().c_str(), wxConvUTF8 ), wxT( "," ) );
+		if ( tkz.HasMoreTokens() )
 		{
-			wxString width = wxEmptyString;
-			wxString height = wxEmptyString;
-			wxStringTokenizer tkz( wxString( xmlValue->Value(), wxConvUTF8 ), wxT(",") );
+			width = tkz.GetNextToken();
 			if ( tkz.HasMoreTokens() )
 			{
-				width = tkz.GetNextToken();
-				if ( tkz.HasMoreTokens() )
-				{
-					height = tkz.GetNextToken();
-				}
+				height = tkz.GetNextToken();
 			}
-			AddPropertyValue( xfbPropName1, width );
-			AddPropertyValue( xfbPropName2, height );
 		}
+		AddPropertyValue( xfbPropName1, width );
+		AddPropertyValue( xfbPropName2, height );
+	}
+	catch( ticpp::Exception& )
+	{
 	}
 }
 
-TiXmlElement* XrcToXfbFilter::GetXfbObject()
+ticpp::Element* XrcToXfbFilter::GetXfbObject()
 {
-  return (m_xfbObj->Clone())->ToElement();
+	return m_xfbObj->Clone().release()->ToElement();
 }
 
 //-----------------------------
 
-void XrcToXfbFilter::ImportTextProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property, bool parseXrcText)
+void XrcToXfbFilter::ImportTextProperty( 	const wxString &xrcPropName,
+											ticpp::Element *property,
+											bool parseXrcText )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (xrcProperty)
-  {
-    TiXmlNode *textElement = xrcProperty->FirstChild();
-    if (textElement && textElement->ToText())
-    {
-      // Convertimos el texto XRC a texto normal
-      wxString value(wxString(textElement->ToText()->Value(),wxConvUTF8));
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
 
-      if (parseXrcText)
-        value = XrcTextToString(value);
+		// Convert XRC text to normal text
+		wxString value( wxString( xrcProperty->GetText().c_str(), wxConvUTF8 ) );
 
-      TiXmlText *xmlText = new TiXmlText(value.mb_str( wxConvUTF8 ));
-      property->LinkEndChild(xmlText);
-    }
-  }
+		if ( parseXrcText )
+			value = XrcTextToString( value );
+
+		property->SetText( value.mb_str( wxConvUTF8 ) );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
-void XrcToXfbFilter::ImportIntegerProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property)
+void XrcToXfbFilter::ImportIntegerProperty( const wxString &xrcPropName, ticpp::Element *property )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (xrcProperty)
-  {
-    TiXmlNode *textElement = xrcProperty->FirstChild();
-    if (textElement && textElement->ToText())
-      property->LinkEndChild(textElement->Clone());
-    else
-      property->LinkEndChild(new TiXmlText("0"));
-  }
-  else
-    property->LinkEndChild(new TiXmlText("0"));
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
+		property->SetText( xrcProperty->GetText() );
+	}
+	catch( ticpp::Exception& )
+	{
+		property->SetText( "0" );
+	}
 }
 
-void XrcToXfbFilter::ImportBitlistProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property)
+void XrcToXfbFilter::ImportBitlistProperty( const wxString &xrcPropName, ticpp::Element *property )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (xrcProperty)
-  {
-    TiXmlNode *textElement = xrcProperty->FirstChild();
-    if (textElement && textElement->ToText())
-    {
-      wxString bitlist = wxString(textElement->ToText()->Value(),wxConvUTF8);
-      bitlist = ReplaceSynonymous(bitlist);
-      property->LinkEndChild(new TiXmlText(bitlist.mb_str( wxConvUTF8 )));
-    }
-  }
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
+
+		wxString bitlist = wxString( xrcProperty->GetText().c_str(), wxConvUTF8 );
+		bitlist = ReplaceSynonymous( bitlist );
+		property->SetText( bitlist.mb_str( wxConvUTF8 ) );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
-void XrcToXfbFilter::ImportFontProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property)
+void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Element *property )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (!xrcProperty)
-    return;
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
 
-  TiXmlElement *element;
-  TiXmlNode *xmlValue;
-  wxFont font;
+		ticpp::Element *element;
+		wxFont font;
 
-  // el tamaño
-  element = xrcProperty->FirstChildElement("size");
-  if (element)
-  {
-    wxString size_str;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      size_str = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
+		// the size
+		try
+		{
+			element = xrcProperty->FirstChildElement( "size" );
+			long size;
+			element->GetText( &size );
+			font.SetPointSize( size );
+		}
+		catch( ticpp::Exception& )
+		{
+		}
 
-    long size;
-    if (size_str.ToLong(&size))
-      font.SetPointSize(size);
-  }
+		// the family
+		try
+		{
+			element = xrcProperty->FirstChildElement( "family" );
+			wxString family_str( element->GetText().c_str(), wxConvUTF8 );
 
-  // la familia
-  element = xrcProperty->FirstChildElement("family");
-  if (element)
-  {
-    wxString family_str;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      family_str = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
+			if ( family_str == _( "decorative" ) )
+				font.SetFamily( wxDECORATIVE );
+			else if ( family_str == _( "roman" ) )
+				font.SetFamily( wxROMAN );
+			else if ( family_str == _( "swiss" ) )
+				font.SetFamily( wxSWISS );
+			else if ( family_str == _( "modern" ) )
+				font.SetFamily( wxMODERN );
+			else
+				font.SetFamily( wxDEFAULT );
+		}
+		catch( ticpp::Exception& )
+		{
+			font.SetFamily( wxDEFAULT );
+		}
 
-    if (family_str == _("decorative"))
-      font.SetFamily(wxDECORATIVE);
-    else if (family_str == _("roman"))
-      font.SetFamily(wxROMAN);
-    else if (family_str == _("swiss"))
-      font.SetFamily(wxSWISS);
-    else if (family_str == _("modern"))
-      font.SetFamily(wxMODERN);
-    else //if (family_str == "default")
-      font.SetFamily(wxDEFAULT);
-  }
+		// the style
+		try
+		{
+			element = xrcProperty->FirstChildElement( "style" );
+			wxString style_str( element->GetText().c_str(), wxConvUTF8 );
 
-  // el estilo
-  element = xrcProperty->FirstChildElement("style");
-  if (element)
-  {
-    wxString style_str;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      style_str = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
-
-    if (style_str == _("slant"))
-      font.SetStyle(wxSLANT);
-    else if (style_str == _("italic"))
-      font.SetStyle(wxITALIC);
-    else //if (style_str == "normal")
-      font.SetStyle(wxNORMAL);
-  }
+			if ( style_str == _( "slant" ) )
+				font.SetStyle( wxSLANT );
+			else if ( style_str == _( "italic" ) )
+				font.SetStyle( wxITALIC );
+			else
+				font.SetStyle( wxNORMAL );
+		}
+		catch( ticpp::Exception& )
+		{
+			font.SetStyle( wxNORMAL );
+		}
 
 
-  // grosor
-  element = xrcProperty->FirstChildElement("weight");
-  if (element)
-  {
-    wxString weight_str;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      weight_str = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
+		// weight
+		try
+		{
+			element = xrcProperty->FirstChildElement( "weight" );
+			wxString weight_str( element->GetText().c_str(), wxConvUTF8 );
 
-    if (weight_str == _("light"))
-      font.SetWeight(wxLIGHT);
-    else if (weight_str == _("bold"))
-      font.SetWeight(wxBOLD);
-    else //if (sweight_str == "normal")
-      font.SetWeight(wxNORMAL);
-  }
+			if ( weight_str == _( "light" ) )
+				font.SetWeight( wxLIGHT );
+			else if ( weight_str == _( "bold" ) )
+				font.SetWeight( wxBOLD );
+			else
+				font.SetWeight( wxNORMAL );
+		}
+		catch( ticpp::Exception )
+		{
+			font.SetWeight( wxNORMAL );
+		}
 
-  // subrayado
-  element = xrcProperty->FirstChildElement("underlined");
-  if (element)
-  {
-    wxString underlined_str;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      underlined_str = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
+		// underlined
+		try
+		{
+			element = xrcProperty->FirstChildElement( "underlined" );
+			wxString underlined_str( element->GetText().c_str(), wxConvUTF8 );
 
-    if (underlined_str == _("1"))
-      font.SetUnderlined(TRUE);
-    else
-      font.SetUnderlined(FALSE);
-  }
+			if ( underlined_str == wxT( "1" ) )
+				font.SetUnderlined( true );
+			else
+				font.SetUnderlined( false );
+		}
+		catch( ticpp::Exception )
+		{
+			font.SetUnderlined( false );
+		}
 
-  // tipo de letra
-  element = xrcProperty->FirstChildElement("face");
-  if (element)
-  {
-    wxString face;
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-      face = wxString(xmlValue->ToText()->Value(),wxConvUTF8);
+		// face
+		try
+		{
+			element = xrcProperty->FirstChildElement( "face" );
+			wxString face( element->GetText().c_str(), wxConvUTF8 );
+			font.SetFaceName( face );
+		}
+		catch( ticpp::Exception )
+		{
+			font.SetFaceName( wxEmptyString );
+		}
 
-    font.SetFaceName(face);
-  }
-
-  if (font.Ok())
-  {
-  // Ya tenemos el tipo de letra, sólo nos queda pasarlo a formato wxFB
-  wxString font_str =
-    wxString::Format(wxT("%s,%d,%d,%d"),font.GetFaceName().c_str(), font.GetStyle(),
-                                       font.GetWeight(), font.GetPointSize());
-  property->LinkEndChild(new TiXmlText(font_str.mb_str( wxConvUTF8 )));
-  }
-
+		if ( font.Ok() )
+		{
+			// Ya tenemos el tipo de letra, sólo nos queda pasarlo a formato wxFB
+			wxString font_str =
+				wxString::Format( wxT( "%s,%d,%d,%d" ), font.GetFaceName().c_str(), font.GetStyle(),
+								  font.GetWeight(), font.GetPointSize() );
+			property->SetText( font_str.mb_str( wxConvUTF8 ) );
+		}
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
-void XrcToXfbFilter::ImportBitmapProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property)
+void XrcToXfbFilter::ImportBitmapProperty( const wxString &xrcPropName, ticpp::Element *property )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (!xrcProperty)
-    return;
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
+		wxString res( xrcProperty->GetText().c_str(), wxConvUTF8 );
 
-  TiXmlNode *xmlValue = xrcProperty->FirstChild();
-  wxString res;
-  if (xmlValue && xmlValue->ToText())
-    res = wxString(xmlValue->ToText()->Value(), wxConvUTF8);
-
-  res.Trim();
-  res += _T("; Load From File");
-  property->LinkEndChild(new TiXmlText(res.mb_str( wxConvUTF8 )));
+		res.Trim();
+		res += wxT( "; Load From File" );
+		property->SetText( res.mb_str( wxConvUTF8 ) );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
-void XrcToXfbFilter::ImportColourProperty(const wxString &xrcPropName,
-                                        TiXmlElement *property)
+void XrcToXfbFilter::ImportColourProperty( const wxString &xrcPropName, ticpp::Element *property )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (!xrcProperty)
-    return;
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
+		std::string value = xrcProperty->GetText();
 
-  TiXmlNode *xmlValue = xrcProperty->FirstChild();
-  if (xmlValue && xmlValue->ToText())
-  {
-    std::string value = xmlValue->ToText()->Value();
+		// convertimos el formato "#rrggbb" a "rrr,ggg,bbb"
+		std::string hexColour = "0x" + value.substr( 1, 2 ) +
+								" 0x" + value.substr( 3, 2 ) +
+		                        " 0x" + value.substr( 5, 2 );
 
-    // convertimos el formato "#rrggbb" a "rrr,ggg,bbb"
-    std::string hexColour = "0x" + value.substr(1,2) + " 0x" + value.substr(3,2) +
-                       " 0x" + value.substr(5,2);
-    std::istringstream strIn;
-    std::ostringstream strOut;
-    unsigned int red,green,blue;
+		std::istringstream strIn;
+		std::ostringstream strOut;
+		unsigned int red, green, blue;
 
-    strIn.str(hexColour);
-    strIn >> std::hex;
+		strIn.str( hexColour );
+		strIn >> std::hex;
 
-    strIn >> red;
-    strIn >> green;
-    strIn >> blue;
+		strIn >> red;
+		strIn >> green;
+		strIn >> blue;
 
-    strOut << red << "," << green << "," << blue;
+		strOut << red << "," << green << "," << blue;
 
-    property->LinkEndChild(new TiXmlText(strOut.str()));
-  }
+		property->SetText( strOut.str() );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
-void XrcToXfbFilter::ImportStringListProperty(const wxString &xrcPropName,
-  TiXmlElement *property , bool parseXrcText)
+void XrcToXfbFilter::ImportStringListProperty( const wxString &xrcPropName, ticpp::Element *property , bool parseXrcText )
 {
-  TiXmlElement *xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str( wxConvUTF8 ));
-  if (!xrcProperty)
-    return;
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
 
-  TiXmlElement *element = NULL;
-  TiXmlNode *xmlValue = NULL;
-  wxString res;
+		wxString res;
 
-  element = xrcProperty->FirstChildElement("item");
-  while (element)
-  {
-    xmlValue = element->FirstChild();
-    if (xmlValue && xmlValue->ToText())
-    {
-      wxString value = wxString(xmlValue->ToText()->Value(), wxConvUTF8);
-      if (parseXrcText)
-        value = XrcTextToString(value);
+		ticpp::Element *element = xrcProperty->FirstChildElement( "item", false );
+		while ( element )
+		{
+			try
+			{
+				wxString value( element->GetText().c_str(), wxConvUTF8 );
+				if ( parseXrcText )
+					value = XrcTextToString( value );
 
-      res += wxChar('\'') + value + wxT("' ");
-    }
+				res += wxChar( '\'' ) + value + wxT( "' " );
+			}
+			catch( ticpp::Exception& )
+			{
+			}
 
-    element = element->NextSiblingElement("item");
-  }
+			element = element->NextSiblingElement( "item" );
+		}
 
-  res.Trim();
-  property->LinkEndChild(new TiXmlText(res.mb_str( wxConvUTF8 )));
+		res.Trim();
+		property->SetText( res.mb_str( wxConvUTF8 ) );
+	}
+	catch( ticpp::Exception& )
+	{
+	}
 }
 
 void XrcToXfbFilter::AddWindowProperties()
 {
-  // falta exstyle
-  AddProperty(_("pos"), _("pos"), XRC_TYPE_POINT);
-  AddProperty(_("size"), _("size"), XRC_TYPE_SIZE);
-  AddProperty(_("bg"), _("bg"), XRC_TYPE_COLOUR);
-  AddProperty(_("fg"), _("fg"), XRC_TYPE_COLOUR);
-  AddProperty(_("font"), _("font"), XRC_TYPE_FONT);
-  //AddProperty(_("style"), _("style"), XRC_TYPE_BITLIST);
-  AddStyleProperty();
-  AddExtraStyleProperty();
+	AddProperty( _( "pos" ), _( "pos" ), XRC_TYPE_POINT );
+	AddProperty( _( "size" ), _( "size" ), XRC_TYPE_SIZE );
+	AddProperty( _( "bg" ), _( "bg" ), XRC_TYPE_COLOUR );
+	AddProperty( _( "fg" ), _( "fg" ), XRC_TYPE_COLOUR );
+	AddProperty( _( "font" ), _( "font" ), XRC_TYPE_FONT );
+	AddStyleProperty();
+	AddExtraStyleProperty();
 };

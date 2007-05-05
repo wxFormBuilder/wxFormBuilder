@@ -563,7 +563,7 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 
 		try
 		{
-			TiXmlDocument doc;
+			ticpp::Document doc;
 			XMLUtils::LoadXMLFile( doc, dialog->GetPath() );
 
 			XrcLoader xrc;

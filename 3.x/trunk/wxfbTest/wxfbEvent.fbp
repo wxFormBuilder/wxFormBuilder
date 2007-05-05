@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <wxFormBuilder_Project>
-    <FileVersion major="1" minor="5" />
+    <FileVersion major="1" minor="6" />
     <object class="Project" expanded="1">
         <property name="bitmaps"></property>
+        <property name="class_decoration"></property>
         <property name="code_generation">C++|XRC</property>
         <property name="encoding">UTF-8</property>
         <property name="file">event_GUI</property>
@@ -10,6 +11,7 @@
         <property name="icons"></property>
         <property name="internationalize">0</property>
         <property name="name">wxFBEvent</property>
+        <property name="namespace"></property>
         <property name="path">.</property>
         <property name="precompiled_header">wx/wxprec.h</property>
         <property name="relative_path">1</property>
@@ -40,12 +42,28 @@
             <event name="OnActivateApp"></event>
             <event name="OnChar"></event>
             <event name="OnClose">OnClose</event>
+            <event name="OnEnterWindow"></event>
+            <event name="OnEraseBackground"></event>
             <event name="OnHibernate"></event>
+            <event name="OnIconize"></event>
             <event name="OnIdle"></event>
             <event name="OnKeyDown"></event>
             <event name="OnKeyUp"></event>
             <event name="OnKillFocus"></event>
+            <event name="OnLeaveWindow"></event>
+            <event name="OnLeftDClick"></event>
+            <event name="OnLeftDown"></event>
+            <event name="OnLeftUp"></event>
+            <event name="OnMiddleDClick"></event>
+            <event name="OnMiddleDown"></event>
+            <event name="OnMiddleUp"></event>
+            <event name="OnMotion"></event>
+            <event name="OnMouseEvents"></event>
+            <event name="OnMouseWheel"></event>
             <event name="OnPaint"></event>
+            <event name="OnRightDClick"></event>
+            <event name="OnRightDown"></event>
+            <event name="OnRightUp"></event>
             <event name="OnSetFocus"></event>
             <event name="OnSize">OnSize</event>
             <event name="OnUpdateUI"></event>
@@ -68,16 +86,11 @@
                 <property name="tooltip"></property>
                 <property name="window_extra_style"></property>
                 <property name="window_style"></property>
-                <event name="OnChar"></event>
-                <event name="OnKeyDown"></event>
-                <event name="OnKeyUp"></event>
-                <event name="OnKillFocus"></event>
-                <event name="OnSetFocus"></event>
-                <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
                 <object class="wxMenu" expanded="1">
                     <property name="label">&amp;File</property>
                     <property name="name">m_fileMenu</property>
+                    <property name="permission">protected</property>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
@@ -125,6 +138,7 @@
                 <object class="wxMenu" expanded="1">
                     <property name="label">Help</property>
                     <property name="name">m_helpMenu</property>
+                    <property name="permission">protected</property>
                     <object class="wxMenuItem" expanded="1">
                         <property name="bitmap"></property>
                         <property name="checked">0</property>
@@ -163,12 +177,6 @@
                 <property name="tooltip"></property>
                 <property name="window_extra_style"></property>
                 <property name="window_style"></property>
-                <event name="OnChar"></event>
-                <event name="OnKeyDown"></event>
-                <event name="OnKeyUp"></event>
-                <event name="OnKillFocus"></event>
-                <event name="OnSetFocus"></event>
-                <event name="OnSize"></event>
                 <event name="OnUpdateUI"></event>
                 <object class="tool" expanded="1">
                     <property name="bitmap"></property>
@@ -232,10 +240,24 @@
             <property name="window_extra_style"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <event name="OnChar"></event>
+            <event name="OnEnterWindow"></event>
             <event name="OnInitDialog"></event>
             <event name="OnKeyDown"></event>
             <event name="OnKeyUp"></event>
             <event name="OnKillFocus"></event>
+            <event name="OnLeaveWindow"></event>
+            <event name="OnLeftDClick"></event>
+            <event name="OnLeftDown"></event>
+            <event name="OnLeftUp"></event>
+            <event name="OnMiddleDClick"></event>
+            <event name="OnMiddleDown"></event>
+            <event name="OnMiddleUp"></event>
+            <event name="OnMotion"></event>
+            <event name="OnMouseEvents"></event>
+            <event name="OnMouseWheel"></event>
+            <event name="OnRightDClick"></event>
+            <event name="OnRightDown"></event>
+            <event name="OnRightUp"></event>
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
@@ -248,6 +270,7 @@
                 <property name="minimum_size"></property>
                 <property name="name">fgSizer1</property>
                 <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_NONE</property>
+                <property name="permission">none</property>
                 <property name="rows">2</property>
                 <property name="vgap">0</property>
                 <object class="sizeritem" expanded="1">
@@ -274,12 +297,6 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnButtonClick">OnClick</event>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -307,12 +324,6 @@
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
                         <event name="OnButtonClick">OnClickBitmap</event>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -340,12 +351,6 @@
                         <property name="value"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnText">OnText</event>
                         <event name="OnTextEnter">OnTextEnter</event>
                         <event name="OnTextMaxLen">OnTextMaxLen</event>
@@ -377,13 +382,7 @@
                         <property name="value">Combo!</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnCombobox">OnCombobox</event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnText">OnComboText</event>
                         <event name="OnTextEnter">OnComboTextEnter</event>
                         <event name="OnUpdateUI"></event>
@@ -411,13 +410,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnChoice">OnChoice</event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -444,14 +437,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnListBox">OnListBox</event>
                         <event name="OnListBoxDClick">OnListBoxDClick</event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -477,14 +464,10 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnListBeginDrag"></event>
                         <event name="OnListBeginLabelEdit"></event>
                         <event name="OnListBeginRDrag"></event>
-                        <event name="OnListCasheHint"></event>
+                        <event name="OnListCacheHint"></event>
                         <event name="OnListColBeginDrag"></event>
                         <event name="OnListColClick">OnListColClick</event>
                         <event name="OnListColDragging"></event>
@@ -493,7 +476,7 @@
                         <event name="OnListDeleteAllItems">OnListDeleteAllItems</event>
                         <event name="OnListDeleteItem"></event>
                         <event name="OnListEndLabelEdit"></event>
-                        <event name="OnListIsertItem"></event>
+                        <event name="OnListInsertItem"></event>
                         <event name="OnListItemActivated"></event>
                         <event name="OnListItemDeselected"></event>
                         <event name="OnListItemFocused"></event>
@@ -501,8 +484,6 @@
                         <event name="OnListItemRightClick"></event>
                         <event name="OnListItemSelected"></event>
                         <event name="OnListKeyDown"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -530,13 +511,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnCheckBox">OnCheckBox</event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -565,13 +540,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnRadioBox">OnRadioBox</event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -600,7 +569,6 @@
                         <property name="value">50</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnCommandScroll">OnCommandScroll</event>
                         <event name="OnCommandScrollBottom">OnCommandScrollBottom</event>
                         <event name="OnCommandScrollChanged">OnCommandScrollChanged</event>
@@ -611,9 +579,6 @@
                         <event name="OnCommandScrollThumbRelease"></event>
                         <event name="OnCommandScrollThumbTrack"></event>
                         <event name="OnCommandScrollTop"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnScroll">OnScroll</event>
                         <event name="OnScrollBottom"></event>
                         <event name="OnScrollChanged">OnScrollChanged</event>
@@ -624,8 +589,6 @@
                         <event name="OnScrollThumbRelease"></event>
                         <event name="OnScrollThumbTrack"></event>
                         <event name="OnScrollTop"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -652,7 +615,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnGridCellChange"></event>
                         <event name="OnGridCellLeftClick">OnGridCellClick</event>
                         <event name="OnGridCellLeftDClick">OnGridCellDClick</event>
@@ -685,11 +647,6 @@
                         <event name="OnGridRangeSelect">OnGridRangeSelect</event>
                         <event name="OnGridRowSize"></event>
                         <event name="OnGridSelectCell">OnGridCellSelected</event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -712,10 +669,24 @@
             <property name="window_extra_style"></property>
             <property name="window_style">wxTAB_TRAVERSAL</property>
             <event name="OnChar"></event>
+            <event name="OnEnterWindow"></event>
             <event name="OnInitDialog"></event>
             <event name="OnKeyDown"></event>
             <event name="OnKeyUp"></event>
             <event name="OnKillFocus"></event>
+            <event name="OnLeaveWindow"></event>
+            <event name="OnLeftDClick"></event>
+            <event name="OnLeftDown"></event>
+            <event name="OnLeftUp"></event>
+            <event name="OnMiddleDClick"></event>
+            <event name="OnMiddleDown"></event>
+            <event name="OnMiddleUp"></event>
+            <event name="OnMotion"></event>
+            <event name="OnMouseEvents"></event>
+            <event name="OnMouseWheel"></event>
+            <event name="OnRightDClick"></event>
+            <event name="OnRightDown"></event>
+            <event name="OnRightUp"></event>
             <event name="OnSetFocus"></event>
             <event name="OnSize"></event>
             <event name="OnUpdateUI"></event>
@@ -728,6 +699,7 @@
                 <property name="minimum_size"></property>
                 <property name="name">fgSizer2</property>
                 <property name="non_flexible_grow_mode">wxFLEX_GROWMODE_NONE</property>
+                <property name="permission">none</property>
                 <property name="rows">2</property>
                 <property name="vgap">0</property>
                 <object class="sizeritem" expanded="1">
@@ -758,12 +730,6 @@
                         <event name="OnCalendarSelChanged"></event>
                         <event name="OnCalendarWeekDayClicked"></event>
                         <event name="OnCalendarYear"></event>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -789,13 +755,7 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnDateChanged"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -821,15 +781,9 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnHtmlCellClicked"></event>
                         <event name="OnHtmlCellHover"></event>
                         <event name="OnHtmlLinkClicked"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -855,12 +809,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnTreeBeginDrag"></event>
                         <event name="OnTreeBeginLabelEdit"></event>
                         <event name="OnTreeBeginRDrag"></event>
@@ -909,13 +857,7 @@
                         <property name="value">0</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnRadioButton"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -942,12 +884,6 @@
                         <property name="value">0</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnToggleButton"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
@@ -978,7 +914,6 @@
                         <property name="value">0</property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnCommandScroll"></event>
                         <event name="OnCommandScrollBottom"></event>
                         <event name="OnCommandScrollChanged"></event>
@@ -989,9 +924,6 @@
                         <event name="OnCommandScrollThumbRelease"></event>
                         <event name="OnCommandScrollThumbTrack"></event>
                         <event name="OnCommandScrollTop"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnScroll"></event>
                         <event name="OnScrollBottom"></event>
                         <event name="OnScrollChanged"></event>
@@ -1002,8 +934,6 @@
                         <event name="OnScrollThumbRelease"></event>
                         <event name="OnScrollThumbTrack"></event>
                         <event name="OnScrollTop"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -1033,12 +963,6 @@
                         <property name="value"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnSpinCtrl"></event>
                         <event name="OnSpinCtrlText"></event>
                         <event name="OnUpdateUI"></event>
@@ -1066,12 +990,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnSpin"></event>
                         <event name="OnSpinDown"></event>
                         <event name="OnSpinUp"></event>
@@ -1105,12 +1023,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnSplitterDClick"></event>
                         <event name="OnSplitterSashPosChanged"></event>
                         <event name="OnSplitterSashPosChanging"></event>
@@ -1134,17 +1046,12 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                                 <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer1</property>
                                     <property name="orient">wxVERTICAL</property>
+                                    <property name="permission">none</property>
                                     <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL</property>
@@ -1169,12 +1076,6 @@
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
                                             <event name="OnButtonClick"></event>
-                                            <event name="OnChar"></event>
-                                            <event name="OnKeyDown"></event>
-                                            <event name="OnKeyUp"></event>
-                                            <event name="OnKillFocus"></event>
-                                            <event name="OnSetFocus"></event>
-                                            <event name="OnSize"></event>
                                             <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
@@ -1199,17 +1100,12 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                                 <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer2</property>
                                     <property name="orient">wxVERTICAL</property>
+                                    <property name="permission">none</property>
                                     <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL</property>
@@ -1234,12 +1130,6 @@
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
                                             <event name="OnButtonClick"></event>
-                                            <event name="OnChar"></event>
-                                            <event name="OnKeyDown"></event>
-                                            <event name="OnKeyUp"></event>
-                                            <event name="OnKillFocus"></event>
-                                            <event name="OnSetFocus"></event>
-                                            <event name="OnSize"></event>
                                             <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
@@ -1271,15 +1161,9 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnCheckListBox">OnCheckListBox</event>
                         <event name="OnCheckListBoxDClick">OnCheckListBoxDClick</event>
                         <event name="OnCheckListBoxToggled">OnCheckListBoxToggle</event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -1306,14 +1190,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnNotebookPageChanged"></event>
                         <event name="OnNotebookPageChanging"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                         <object class="notebookpage" expanded="1">
                             <property name="bitmap"></property>
@@ -1336,12 +1214,6 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
@@ -1366,12 +1238,6 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
@@ -1396,12 +1262,6 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                             </object>
                         </object>
@@ -1430,14 +1290,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
                         <event name="OnListbookPageChanged"></event>
                         <event name="OnListbookPageChanging"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                         <object class="listbookpage" expanded="1">
                             <property name="bitmap"></property>
@@ -1460,17 +1314,12 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                                 <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer4</property>
                                     <property name="orient">wxVERTICAL</property>
+                                    <property name="permission">none</property>
                                     <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL|wxEXPAND</property>
@@ -1495,12 +1344,6 @@
                                             <property name="value"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
-                                            <event name="OnChar"></event>
-                                            <event name="OnKeyDown"></event>
-                                            <event name="OnKeyUp"></event>
-                                            <event name="OnKillFocus"></event>
-                                            <event name="OnSetFocus"></event>
-                                            <event name="OnSize"></event>
                                             <event name="OnText"></event>
                                             <event name="OnTextEnter"></event>
                                             <event name="OnTextMaxLen"></event>
@@ -1535,14 +1378,8 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
                         <event name="OnChoicebookPageChanged"></event>
                         <event name="OnChoicebookPageChanging"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                         <object class="choicebookpage" expanded="1">
                             <property name="label">a page</property>
@@ -1564,17 +1401,12 @@
                                 <property name="tooltip"></property>
                                 <property name="window_extra_style"></property>
                                 <property name="window_style">wxTAB_TRAVERSAL</property>
-                                <event name="OnChar"></event>
-                                <event name="OnKeyDown"></event>
-                                <event name="OnKeyUp"></event>
-                                <event name="OnKillFocus"></event>
-                                <event name="OnSetFocus"></event>
-                                <event name="OnSize"></event>
                                 <event name="OnUpdateUI"></event>
                                 <object class="wxBoxSizer" expanded="1">
                                     <property name="minimum_size"></property>
                                     <property name="name">bSizer3</property>
                                     <property name="orient">wxVERTICAL</property>
+                                    <property name="permission">none</property>
                                     <object class="sizeritem" expanded="1">
                                         <property name="border">5</property>
                                         <property name="flag">wxALL</property>
@@ -1598,14 +1430,8 @@
                                             <property name="tooltip"></property>
                                             <property name="window_extra_style"></property>
                                             <property name="window_style"></property>
-                                            <event name="OnChar"></event>
-                                            <event name="OnKeyDown"></event>
-                                            <event name="OnKeyUp"></event>
-                                            <event name="OnKillFocus"></event>
                                             <event name="OnListBox"></event>
                                             <event name="OnListBoxDClick"></event>
-                                            <event name="OnSetFocus"></event>
-                                            <event name="OnSize"></event>
                                             <event name="OnUpdateUI"></event>
                                         </object>
                                     </object>
@@ -1637,12 +1463,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style"></property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>
@@ -1669,12 +1489,6 @@
                         <property name="tooltip"></property>
                         <property name="window_extra_style"></property>
                         <property name="window_style">wxHSCROLL|wxVSCROLL</property>
-                        <event name="OnChar"></event>
-                        <event name="OnKeyDown"></event>
-                        <event name="OnKeyUp"></event>
-                        <event name="OnKillFocus"></event>
-                        <event name="OnSetFocus"></event>
-                        <event name="OnSize"></event>
                         <event name="OnUpdateUI"></event>
                     </object>
                 </object>

@@ -26,7 +26,7 @@
 #include <component.h>
 #include <plugin.h>
 #include <xrcconv.h>
-#include <tinyxml.h>
+#include <ticpp.h>
 #include <wx/tokenzr.h>
 #include <wx/gbsizer.h>
 #include <map>
@@ -40,7 +40,7 @@ class SpacerComponent : public ComponentBase
 public:
 	// ImportFromXRC is handled in sizeritem components
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("spacer"));
 		xrc.AddPropertyPair( _("width"), _("height"), _("size") );
@@ -52,7 +52,7 @@ class GBSizerItemComponent : public ComponentBase
 {
 public:
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("sizeritem"));
 		xrc.AddPropertyPair( _("row"), _("column"), _("cellpos") );
@@ -62,7 +62,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		// XrcLoader::GetObject imports spacers as sizeritems
 		XrcToXfbFilter filter(xrcObj, _("gbsizeritem"));
@@ -70,10 +70,10 @@ public:
 		filter.AddPropertyPair( "cellspan", _("rowspan"), _("colspan") );
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
-		TiXmlElement* sizeritem = filter.GetXfbObject();
+		ticpp::Element* sizeritem = filter.GetXfbObject();
 
 		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
-		if ( xrcObj->FirstChildElement("size") && !xrcObj->FirstChildElement("object") )
+		if ( xrcObj->FirstChildElement( "size", false ) && !xrcObj->FirstChildElement( "object", false ) )
 		{
 			// it is a spacer
 			XrcToXfbFilter spacer( xrcObj, _("spacer") );
@@ -148,7 +148,7 @@ public:
 		}
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("sizeritem"));
 		xrc.AddProperty(_("proportion"), _("option"), XRC_TYPE_INTEGER);
@@ -157,13 +157,13 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("sizeritem"));
 		filter.AddProperty(_("option"), _("proportion"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("flag"),   _("flag"),   XRC_TYPE_BITLIST);
 		filter.AddProperty(_("border"), _("border"), XRC_TYPE_INTEGER);
-		TiXmlElement* sizeritem = filter.GetXfbObject();
+		ticpp::Element* sizeritem = filter.GetXfbObject();
 
 		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
 		if ( xrcObj->FirstChildElement("size") && !xrcObj->FirstChildElement("object") )
@@ -185,14 +185,14 @@ public:
 		return new wxBoxSizer(obj->GetPropertyAsInteger(_("orient")));
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxBoxSizer"));
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxBoxSizer"));
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
@@ -220,7 +220,7 @@ public:
 		return sizer;
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxStaticBoxSizer"));
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
@@ -228,7 +228,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxStaticBoxSizer"));
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
@@ -249,7 +249,7 @@ public:
 			obj->GetPropertyAsInteger(_("hgap")));
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxGridSizer"));
 		xrc.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
@@ -259,7 +259,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxGridSizer"));
 		filter.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
@@ -323,7 +323,7 @@ public:
 		return sizer;
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxFlexGridSizer"));
 		xrc.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
@@ -332,7 +332,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxFlexGridSizer"));
 		filter.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
@@ -489,14 +489,14 @@ public:
 		}
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxGridBagSizer"));
 		ExportXRCProperties( &xrc, obj );
 		return xrc.GetXrcObject();
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxGridBagSizer"));
 		ImportXRCProperties( &filter );
@@ -507,30 +507,37 @@ public:
 class StdDialogButtonSizerComponent : public ComponentBase
 {
 private:
-	void AddXRCButton( TiXmlElement* sizer, const std::string& id, const std::string& label )
+	void AddXRCButton( ticpp::Element* sizer, const std::string& id, const std::string& label )
 	{
-		TiXmlElement* button = new TiXmlElement( "object" );
-		button->SetAttribute( "class", "button" );
+		try
+		{
+			ticpp::Element button( "object" );
+			button.SetAttribute( "class", "button" );
 
-		TiXmlElement* flag = new TiXmlElement( "flag" );
-		flag->LinkEndChild( new TiXmlText( "wxALIGN_CENTER_HORIZONTAL|wxALL" ) );
-		button->LinkEndChild( flag );
+			ticpp::Element flag( "flag" );
+			flag.SetText( "wxALIGN_CENTER_HORIZONTAL|wxALL" );
+			button.LinkEndChild( &flag );
 
-		TiXmlElement* border = new TiXmlElement( "border" );
-		border->LinkEndChild( new TiXmlText( "5" ) );
-		button->LinkEndChild( border );
+			ticpp::Element border( "border" );
+			border.SetText( "5" );
+			button.LinkEndChild( &border );
 
-		TiXmlElement* wxbutton = new TiXmlElement( "object" );
-		wxbutton->SetAttribute( "class", "wxButton" );
-		wxbutton->SetAttribute( "name", id );
+			ticpp::Element wxbutton( "object" );
+			wxbutton.SetAttribute( "class", "wxButton" );
+			wxbutton.SetAttribute( "name", id );
 
-		TiXmlElement* labelEl = new TiXmlElement( "label" );
-		labelEl->LinkEndChild( new TiXmlText( label ) );
-		wxbutton->LinkEndChild( labelEl );
+			ticpp::Element labelEl( "label" );
+			labelEl.SetText( label );
+			wxbutton.LinkEndChild( &labelEl );
 
-		button->LinkEndChild( wxbutton );
+			button.LinkEndChild( &wxbutton );
 
-		sizer->LinkEndChild( button );
+			sizer->LinkEndChild( &button );
+		}
+		catch( ticpp::Exception& ex )
+		{
+			wxLogError( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
+		}
 	}
 
 public:
@@ -573,10 +580,10 @@ public:
 		return sizer;
 	}
 
-	TiXmlElement* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxStdDialogButtonSizer"));
-		TiXmlElement* sizer = xrc.GetXrcObject();
+		ticpp::Element* sizer = xrc.GetXrcObject();
 
 		if ( obj->GetPropertyAsInteger( _("OK") ) )
 		{
@@ -614,7 +621,7 @@ public:
 		return sizer;
 	}
 
-	TiXmlElement* ImportFromXrc(TiXmlElement *xrcObj)
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		std::map< wxString, wxString > buttons;
 		buttons[ _("OK") ] 			= wxT("0");
@@ -628,53 +635,65 @@ public:
 
 		XrcToXfbFilter filter(xrcObj, _("wxStdDialogButtonSizer"));
 
-		TiXmlElement* button = xrcObj->FirstChildElement( "object" );
+		ticpp::Element* button = xrcObj->FirstChildElement( "object" );
 		for (  ; button != 0; button = button->NextSiblingElement( "object" ) )
 		{
-			if ( std::string("button") != button->Attribute( "class" ) )
+			try
+			{
+				std::string button_class;
+				button->GetAttribute( "class", &button_class );
+				if ( std::string("button") != button_class )
+				{
+					continue;
+				}
+
+				ticpp::Element* wxbutton = button->FirstChildElement( "object" );
+				std::string wxbutton_class;
+				button->GetAttribute( "class", &wxbutton_class );
+				if ( std::string("wxButton") != wxbutton_class )
+				{
+					continue;
+				}
+
+				std::string name;
+				wxbutton->GetAttribute( "name", &name );
+
+				if ( name == "wxID_OK" )
+				{
+					buttons[ _("OK") ] = wxT("1");
+				}
+				else if ( name == "wxID_YES" )
+				{
+					buttons[ _("Yes") ] = wxT("1");
+				}
+				else if ( name == "wxID_SAVE" )
+				{
+					buttons[ _("Save") ] = wxT("1");
+				}
+				else if ( name == "wxID_APPLY" )
+				{
+					buttons[ _("Apply") ] = wxT("1");
+				}
+				else if ( name == "wxID_NO" )
+				{
+					buttons[ _("No") ] = wxT("1");
+				}
+				else if ( name == "wxID_CANCEL" )
+				{
+					buttons[ _("Cancel") ] = wxT("1");
+				}
+				else if ( name == "wxID_HELP" )
+				{
+					buttons[ _("Help") ] = wxT("1");
+				}
+				else if ( name == "wxID_CONTEXT_HELP" )
+				{
+					buttons[ _("ContextHelp") ] = wxT("1");
+				}
+			}
+			catch( ticpp::Exception& )
 			{
 				continue;
-			}
-
-			TiXmlElement* wxbutton = button->FirstChildElement( "object" );
-			if ( std::string("wxButton") != wxbutton->Attribute( "class" ) )
-			{
-				continue;
-			}
-
-			std::string name = wxbutton->Attribute( "name" );
-
-			if ( name == "wxID_OK" )
-			{
-				buttons[ _("OK") ] = wxT("1");
-			}
-			else if ( name == "wxID_YES" )
-			{
-				buttons[ _("Yes") ] = wxT("1");
-			}
-			else if ( name == "wxID_SAVE" )
-			{
-				buttons[ _("Save") ] = wxT("1");
-			}
-			else if ( name == "wxID_APPLY" )
-			{
-				buttons[ _("Apply") ] = wxT("1");
-			}
-			else if ( name == "wxID_NO" )
-			{
-				buttons[ _("No") ] = wxT("1");
-			}
-			else if ( name == "wxID_CANCEL" )
-			{
-				buttons[ _("Cancel") ] = wxT("1");
-			}
-			else if ( name == "wxID_HELP" )
-			{
-				buttons[ _("Help") ] = wxT("1");
-			}
-			else if ( name == "wxID_CONTEXT_HELP" )
-			{
-				buttons[ _("ContextHelp") ] = wxT("1");
 			}
 		}
 
