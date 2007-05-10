@@ -510,13 +510,7 @@ FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
 void FileCodeWriter::DoWrite( wxString code )
 
 {
-	wxString fixEOL = code;
-#if defined( __WXMSW__ )
-	fixEOL.Replace( wxT( "\n" ), wxT( "\r\n" ) );
-#elif defined( __WXMAC__ )
-	fixEOL.Replace( wxT( "\n" ), wxT( "\r" ) );
-#endif
-	m_file.Write( fixEOL );
+	m_file.Write( code );
 }
 
 void FileCodeWriter::Clear()

@@ -5,6 +5,8 @@ date Version 3.00.41 (Beta 3)
    Could probably still use some tweaking for the proper behavior in GTK.
 * Fixed FS#179 - "OnPaint for wxPanel"
    Moved the OnPaint and OnBackgroundErase events to the common events.
+* Fixed the wildly inefficient code for choosing the platform's EOL character.
+   Significantly improves code generation (to file) time for larger projects.
   
 05-04-2007 Version 3.00.40 (Beta 3)
 + Implemented FS#53 - "Copy/Paste between instances of wxFB"
