@@ -267,8 +267,10 @@ void VisualEditor::Create()
 		// --- [3] Title bar Setup
 		if (  m_form->GetClassName() == wxT("Frame") || m_form->GetClassName() == wxT("Dialog") )
 		{
-			m_back->SetTitle(m_form->GetPropertyAsString(wxT("title")));
-			m_back->ShowTitleBar(true);
+			m_back->SetTitle( m_form->GetPropertyAsString( wxT("title") ) );
+			long style = m_form->GetPropertyAsInteger( wxT("style") );
+			m_back->SetTitleStyle( style );
+			m_back->ShowTitleBar( (style & wxCAPTION) != 0 );
 		}
 		else
 		  m_back->ShowTitleBar(false);

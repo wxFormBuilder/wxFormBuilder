@@ -41,6 +41,8 @@ public:
   void SetTitle(const wxString &title);
   wxString GetTitle();
 
+  void SetTitleStyle( long style );
+
   void ShowTitleBar(bool show = true);
   void SetToBaseSize();
   bool IsTitleBarShown();
