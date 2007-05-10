@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <package name="Forms" lib="libcommon" icon="frame16x16.png" desc="wxWidgets windows">
   <objectinfo class="wxTopLevelWindow" smallIcon="wxwindow.png"  type="interface">
-    <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
-	<event name="OnIconize" class="wxIconizeEvent" help="Process a wxEVT_ICONIZE event."/>
-    <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
-	<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
     <event name="OnActivate" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE event." />
     <event name="OnActivateApp" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE_APP event." />
-    <event name="OnHibernate" class="wxActivateEvent" help="Process a hibernate event, supplying the member function. This event applies to wxApp only, and only on Windows SmartPhone and PocketPC. It is generated when the system is low on memory; the application should free up as much memory as possible, and restore full working state when it receives a wxEVT_ACTIVATE or wxEVT_ACTIVATE_APP event." />
+    <event name="OnClose" class="wxCloseEvent" help="Process a close event." />
+	<event name="OnHibernate" class="wxActivateEvent" help="Process a hibernate event, supplying the member function. This event applies to wxApp only, and only on Windows SmartPhone and PocketPC. It is generated when the system is low on memory; the application should free up as much memory as possible, and restore full working state when it receives a wxEVT_ACTIVATE or wxEVT_ACTIVATE_APP event." />
+	<event name="OnIconize" class="wxIconizeEvent" help="Process a wxEVT_ICONIZE event."/>
     <event name="OnIdle" class="wxIdleEvent" help="Process a wxEVT_IDLE event." />
   </objectinfo>
   
   <objectinfo class="Common Events" type="interface">
-	<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
-	<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
-	<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
+	<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
+	<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
+	<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
 	<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
 	<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
-	<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
+	<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
+	<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
+	<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
 	<event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
 	<event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
-	<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
+	<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
 	<event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
 	<event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
-	<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
+	<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
+	<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
+	<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
+	<event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
+	<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
 	<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
 	<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
-	<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
-	<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
-	<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
-	<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
-	<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
-	<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
+	<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
+	<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
   </objectinfo>
   
   <objectinfo class="Frame" icon="frame.xpm" type="form">
