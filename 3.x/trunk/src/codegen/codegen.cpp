@@ -44,7 +44,13 @@ void CodeWriter::WriteLn(wxString code)
 	else
 	{
 		Write( code );
-		Write( wxT("\n") );
+		#if defined( __WXMSW__ )
+			Write( wxT("\r\n") );
+		#elif defined( __WXMAC__ )
+			Write( wxT("\r") );
+		#else
+			Write( wxT("\n") );
+		#endif
 		m_cols = 0;
 	}
 }
