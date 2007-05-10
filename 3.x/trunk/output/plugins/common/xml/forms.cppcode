@@ -2,37 +2,37 @@
 <codegen language="C++">
 
 	<templates class="wxTopLevelWindow">
-		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
-		<template name="evt_entry_OnIconize">EVT_ICONIZE( #handler )</template>
-		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
-                 <template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template> 
 		<template name="evt_entry_OnActivate">EVT_ACTIVATE( #handler )</template>
 		<template name="evt_entry_OnActivateApp">EVT_ACTIVATE_APP( #handler )</template>
+		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
 		<template name="evt_entry_OnHibernate">EVT_HIBERNATE( #handler )</template>
+		<template name="evt_entry_OnIconize">EVT_ICONIZE( #handler )</template>
 		<template name="evt_entry_OnIdle">EVT_IDLE( #handler )</template>
 	</templates>
   
 	<templates class="Common Events">
-		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
-		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
-		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
+		<template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
+		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
 		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
 		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
-		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
-                 <template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>  
-                 <template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template> 
-                 <template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template> 
-                 <template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>  
-                 <template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template> 
-                 <template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template> 
-                 <template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>  
-                 <template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template> 
-                 <template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
-                 <template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
-                 <template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
-                 <template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
-                 <template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>  
-                 <template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>   
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
+		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
+		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>  
+		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>  
+		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
+		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
+		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
+		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
+		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
+		<template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
+		<template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>
+		<template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
 	</templates>
   
 	<templates class="Frame">
