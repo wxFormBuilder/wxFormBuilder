@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.41 (Beta 3)
+05-11-2007 Version 3.00.41 (Beta 3)
 * Fixed FS#176 - "Dialog/Frame preview always displays all close/minimize/maximize buttons"
    Could probably still use some tweaking for the proper behavior in GTK.
 * Fixed FS#179 - "OnPaint for wxPanel"
