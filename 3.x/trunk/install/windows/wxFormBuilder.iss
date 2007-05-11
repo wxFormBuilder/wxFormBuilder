@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.0.40"
+#define MyAppVer "3.0.41"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
