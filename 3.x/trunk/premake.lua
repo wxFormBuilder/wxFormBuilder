@@ -30,7 +30,7 @@ function CreateShareReadme( filename )
 end
 
 function CreateSymlink( pathToLink, symLink )
-	os.execute( "ln -s -f " .. pathToLink .. " " .. symLink  )
+	os.execute( "ln -s -f -n " .. pathToLink .. " " .. symLink  )
 end
 
 if ( not windows ) then
