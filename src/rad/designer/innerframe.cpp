@@ -196,40 +196,58 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 
 	dc.DrawLabel( m_titleText, wxRect( txtPosX, txtPosY, tw, th ) );
 
-	// On Windows, no buttons are drawn without System Menu
-	#ifdef __WXMSW__
-	if ( ( m_style & wxSYSTEM_MENU ) == 0 )
-	{
-		return;
-	}
-	#endif
-
 	// Draw Buttons
 	bool hasClose = ( m_style & wxCLOSE_BOX ) != 0;
 	bool hasMinimize = ( m_style & wxMINIMIZE_BOX ) != 0;
 	bool hasMaximize = ( m_style & wxMAXIMIZE_BOX ) != 0;
 
-	dc.DrawBitmap( hasClose ? m_close : m_closeDisabled, wbPosX, wbPosY, true );
-	wbPosX -= m_close.GetWidth();
+	#ifdef __WXMSW__
+		if ( ( m_style & wxSYSTEM_MENU ) == 0 )
+		{
+			// On Windows, no buttons are drawn without System Menu
+			return;
+		}
 
-	if ( hasMaximize )
-	{
-		dc.DrawBitmap( m_maximize, wbPosX, wbPosY, true );
-	}
-	else if ( hasMinimize )
-	{
-		dc.DrawBitmap( m_maximizeDisabled, wbPosX, wbPosY, true );
-	}
-	wbPosX -= m_maximize.GetWidth();
+		dc.DrawBitmap( hasClose ? m_close : m_closeDisabled, wbPosX, wbPosY, true );
+		wbPosX -= m_close.GetWidth();
 
-	if ( hasMinimize )
-	{
-		dc.DrawBitmap( m_minimize, wbPosX, wbPosY, true );
-	}
-	else if ( hasMaximize )
-	{
-		dc.DrawBitmap( m_minimizeDisabled, wbPosX, wbPosY, true );
-	}
+		if ( hasMaximize )
+		{
+			dc.DrawBitmap( m_maximize, wbPosX, wbPosY, true );
+		}
+		else if ( hasMinimize )
+		{
+			dc.DrawBitmap( m_maximizeDisabled, wbPosX, wbPosY, true );
+		}
+		wbPosX -= m_maximize.GetWidth();
+
+		if ( hasMinimize )
+		{
+			dc.DrawBitmap( m_minimize, wbPosX, wbPosY, true );
+		}
+		else if ( hasMaximize )
+		{
+			dc.DrawBitmap( m_minimizeDisabled, wbPosX, wbPosY, true );
+		}
+	#else // GTK
+		if ( hasClose )
+		{
+			dc.DrawBitmap( m_close, wbPosX, wbPosY, true );
+			wbPosX -= m_close.GetWidth();
+		}
+
+		bool hasResizeBorder = ( m_style & wxRESIZE_BORDER ) != 0;
+		if ( hasMaximize && hasResizeBorder )
+		{
+			dc.DrawBitmap( m_maximize, wbPosX, wbPosY, true );
+			wbPosX -= m_maximize.GetWidth();
+		}
+
+		if ( hasMinimize )
+		{
+			dc.DrawBitmap( m_minimize, wbPosX, wbPosY, true );
+		}
+	#endif
 }
 
 //////////////////////////////////////////////////////////////////////////////
