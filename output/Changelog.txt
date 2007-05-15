@@ -1,5 +1,9 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.42 (Beta 3)
++ Added Right-Click -> "Close Preview" to XRC Previews.
+  Also much improved the effect of the ESC key in GTK.
+
 05-11-2007 Version 3.00.41 (Beta 3)
 * Fixed FS#176 - "Dialog/Frame preview always displays all close/minimize/maximize buttons"
    Could probably still use some tweaking for the proper behavior in GTK.
