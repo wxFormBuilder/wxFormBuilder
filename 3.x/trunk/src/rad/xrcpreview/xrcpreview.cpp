@@ -9,6 +9,43 @@
 
 #include "wx/wxFlatNotebook/xh_fnb.h"
 
+#define MENU_DELETE 109
+
+class XrcPreviewPopupMenu : public wxMenu
+{
+	DECLARE_EVENT_TABLE()
+
+private:
+	wxWindow* m_window;
+
+public:
+	XrcPreviewPopupMenu( wxWindow* window )
+	:
+	wxMenu(),
+	m_window( window )
+	{
+		Append( MENU_DELETE, wxT("Close Preview") );
+	}
+
+	void OnMenuEvent ( wxCommandEvent& event )
+	{
+		int id = event.GetId();
+
+		switch ( id )
+		{
+		case MENU_DELETE:
+			m_window->Destroy();
+			break;
+		default:
+			break;
+		}
+	}
+};
+
+BEGIN_EVENT_TABLE( XrcPreviewPopupMenu, wxMenu )
+	EVT_MENU( wxID_ANY, XrcPreviewPopupMenu::OnMenuEvent )
+END_EVENT_TABLE()
+
 class XRCPreviewEvtHandler : public wxEvtHandler
 {
 private:
@@ -30,6 +67,13 @@ protected:
 		}
 	}
 
+	void OnRightDown( wxMouseEvent& event )
+	{
+		wxMenu* menu = new XrcPreviewPopupMenu( m_window );
+		wxPoint pos = event.GetPosition();
+		m_window->PopupMenu( menu, pos.x, pos.y );
+	}
+
 	void OnClose( wxCloseEvent& )
 	{
 		m_window->Destroy();
@@ -40,6 +84,7 @@ protected:
 
 BEGIN_EVENT_TABLE( XRCPreviewEvtHandler, wxEvtHandler )
 	EVT_KEY_UP( XRCPreviewEvtHandler::OnKeyUp )
+	EVT_RIGHT_DOWN( XRCPreviewEvtHandler::OnRightDown )
 	EVT_CLOSE ( XRCPreviewEvtHandler::OnClose )
 END_EVENT_TABLE()
 
@@ -98,7 +143,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	if ( window )
 	{
-		window->PushEventHandler( new XRCPreviewEvtHandler( window ) );
+		AddEventHandler( window, window );
 	}
 
 	::wxSetWorkingDirectory( workingDir );
@@ -108,4 +153,14 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	#endif
 
 	::wxRemoveFile( filePath );
+}
+
+void XRCPreview::AddEventHandler( wxWindow* window, wxWindow* form )
+{
+	const wxWindowList& children = window->GetChildren();
+	for ( size_t i = 0; i < children.GetCount(); ++i )
+	{
+		AddEventHandler( children.Item( i )->GetData(), form );
+	}
+	window->PushEventHandler( ( new XRCPreviewEvtHandler( form ) ) );
 }
