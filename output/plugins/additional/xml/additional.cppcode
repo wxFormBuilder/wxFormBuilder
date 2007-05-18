@@ -37,6 +37,25 @@
 	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
   </templates>
   
+  <templates class="wxRichTextCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+	<template name="include">@#include &lt;wx/richtext/richtextctrl.h&gt;</template>
+    <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
+    <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+    <template name="evt_entry_OnTextURL">EVT_TEXT_URL( $id, #handler )</template>
+    <template name="evt_entry_OnTextMaxLen">EVT_TEXT_MAXLEN( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextCharacter">EVT_RICHTEXT_CHARACTER( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextDelete">EVT_RICHTEXT_DELETE( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextReturn">EVT_RICHTEXT_RETURN( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextStyleChanged">EVT_RICHTEXT_STYLE_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextStyleSheetChanged">EVT_RICHTEXT_STYLESHEET_CHANGED( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextStyleSheetReplacing">EVT_RICHTEXT_STYLESHEET_REPLACING( $id, #handler )</template>
+	<template name="evt_entry_OnRichTextStyleSheetReplaced">EVT_RICHTEXT_STYLESHEET_REPLACED( $id, #handler )</template> 
+	<template name="evt_entry_OnRichTextContentInserted">EVT_RICHTEXT_CONTENT_INSERTED( $id, #handler )</template> 
+	<template name="evt_entry_OnRichTextContentDeleted">EVT_RICHTEXT_CONTENT_DELETED( $id, #handler )</template>
+  </templates>
+  
   <templates class="wxCheckListBox">
     <template name="declaration">#class* $name;</template>
     <template name="construction">

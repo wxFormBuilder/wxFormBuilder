@@ -54,6 +54,32 @@
 	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
   </objectinfo>
   
+  <objectinfo class="wxRichTextCtrl" icon="htmlwin.xpm" type="expanded_widget">
+    <inherits class="wxWindow">
+		<property name="window_style">wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS</property>
+	</inherits>
+    <property name="name" type="text">m_richText</property>
+	<property name="style" type="bitlist">
+      <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+      <option name="wxTE_PROCESS_TAB"   help="The control will receive wxEVT_CHAR events for TAB pressed - normally, TAB is used for passing to the next control in a dialog instead. For the control created with this style, you can still use Ctrl-Enter to pass to the next control from the keyboard."/>
+      <option name="wxTE_READONLY"      help="The text will not be user-editable."/>
+      <option name="wxTE_AUTO_URL"      help="Highlight the URLs and generate the wxTextUrl events when mouse events occur over them."/>
+    </property>
+	<event name="OnText" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_UPDATED event, generated when the text changes. Notice that this event will always be sent when the text controls contents changes - whether this is due to user input or comes from the program itself (for example, if SetValue() is called)" />
+    <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
+    <event name="OnTextURL" class="wxTextUrlEvent" help="A mouse event occurred over an URL in the text control (wxMSW and wxGTK2 only)" />
+    <event name="OnTextMaxLen" class="wxCommandEvent" help="User tried to enter more text into the control than the limit set by SetMaxLength." />
+	<event name="OnRichTextCharacter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CHARACTER event, generated when the user presses a character key. Valid event functions: GetFlags, GetPosition, GetCharacter." />
+	<event name="OnRichTextDelete" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_DELETE event, generated when the user presses the backspace or delete key. Valid event functions: GetFlags, GetPosition." />
+	<event name="OnRichTextReturn" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_RETURN event, generated when the user presses the return key. Valid event functions: GetFlags, GetPosition." />
+	<event name="OnRichTextStyleChanged" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED event, generated when styling has been applied to the control. Valid event functions: GetPosition, GetRange." />
+	<event name="OnRichTextStyleSheetChanged" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGING event, generated when the control's stylesheet has changed, for example the user added, edited or deleted a style. Valid event functions: GetRange, GetPosition." />
+	<event name="OnRichTextStyleSheetReplacing" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING event, generated when the control's stylesheet is about to be replaced, for example when a file is loaded into the control. Valid event functions: Veto, GetOldStyleSheet, GetNewStyleSheet." />
+	<event name="OnRichTextStyleSheetReplaced" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED event, generated when the control's stylesheet has been replaced, for example when a file is loaded into the control. Valid event functions: GetOldStyleSheet, GetNewStyleSheet." />
+	<event name="OnRichTextContentInserted" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED event, generated when content has been inserted into the control. Valid event functions: GetPosition, GetRange." />
+	<event name="OnRichTextContentDeleted" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED event, generated when content has been deleted from the control. Valid event functions: GetPosition, GetRange." />
+  </objectinfo>
+  
   <objectinfo class="wxCheckListBox" icon="checklistbox.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_checkList</property>

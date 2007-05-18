@@ -52,7 +52,7 @@
       <option name="wxTE_READONLY"      help="The text will not be user-editable."/>
       <option name="wxTE_RICH"          help="Use rich text control under Windows, this allows to have more than 64KB of text in the control even under Win9x. This style is ignored under other platforms."/>
       <option name="wxTE_RICH2"         help="Use rich text control version 2.0 or 3.0 under Windows, this style is ignored under other platforms."/>
-      <option name="wxTE_AUTO_URL"      help="Highlight the URLs and generate the wxTextUrlEvents when mouse events occur over them. This style is only supported for wxTE_RICH Windows and multi-line wxGTK2 text controls."/>
+      <option name="wxTE_AUTO_URL"      help="Highlight the URLs and generate the wxTextUrl events when mouse events occur over them. This style is only supported for wxTE_RICH Windows and multi-line wxGTK2 text controls."/>
       <option name="wxTE_NOHIDESEL"     help="By default, the Windows text control doesn't show the selection when it doesn't have focus - use this style to force it to always show it. It doesn't do anything under other platforms."/>
       <option name="wxHSCROLL"          help="A horizontal scrollbar will be created and used, so that text won't be wrapped. No effect under wxGTK1."/>
       <option name="wxTE_LEFT"          help="The text in the control will be left-justified (default)."/>

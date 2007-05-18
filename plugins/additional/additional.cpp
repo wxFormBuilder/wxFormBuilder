@@ -40,6 +40,9 @@
 #include <wx/grid.h>
 
 #if wxCHECK_VERSION( 2, 8, 0 )
+	#include <wx/richtext/richtextctrl.h>
+	#include "zebra.xpm"
+	#include "smiley.xpm"
 	#include <wx/clrpicker.h>
 	#include <wx/fontpicker.h>
 	#include <wx/filepicker.h>
@@ -138,6 +141,167 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxDatePickerCtrl"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+class RichTextCtrlComponent : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxRichTextCtrl* richText = new wxRichTextCtrl( 	(wxWindow*)parent,
+															wxID_ANY,
+															wxEmptyString,
+															obj->GetPropertyAsPoint(_("pos")),
+															obj->GetPropertyAsSize(_("size")),
+															obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		wxFont textFont = wxFont(12, wxROMAN, wxNORMAL, wxNORMAL);
+		wxFont boldFont = wxFont(12, wxROMAN, wxNORMAL, wxBOLD);
+		wxFont italicFont = wxFont(12, wxROMAN, wxITALIC, wxNORMAL);
+
+		wxFont font(12, wxROMAN, wxNORMAL, wxNORMAL);
+
+		wxRichTextCtrl& r = *richText;
+		r.SetFont(font);
+		r.BeginSuppressUndo();
+
+		r.BeginParagraphSpacing(0, 20);
+
+		r.BeginAlignment(wxTEXT_ALIGNMENT_CENTRE);
+		r.BeginBold();
+
+		r.BeginFontSize(14);
+		r.WriteText(wxT("Welcome to wxRichTextCtrl, a wxWidgets control for editing and presenting styled text and images"));
+		r.EndFontSize();
+		r.Newline();
+
+		r.BeginItalic();
+		r.WriteText(wxT("by Julian Smart"));
+		r.EndItalic();
+
+		r.EndBold();
+
+		r.Newline();
+		r.WriteImage(wxBitmap(zebra_xpm));
+
+		r.EndAlignment();
+
+		r.Newline();
+		r.Newline();
+
+		r.WriteText(wxT("What can you do with this thing? "));
+		r.WriteImage(wxBitmap(smiley_xpm));
+		r.WriteText(wxT(" Well, you can change text "));
+
+		r.BeginTextColour(wxColour(255, 0, 0));
+		r.WriteText(wxT("colour, like this red bit."));
+		r.EndTextColour();
+
+		r.BeginTextColour(wxColour(0, 0, 255));
+		r.WriteText(wxT(" And this blue bit."));
+		r.EndTextColour();
+
+		r.WriteText(wxT(" Naturally you can make things "));
+		r.BeginBold();
+		r.WriteText(wxT("bold "));
+		r.EndBold();
+		r.BeginItalic();
+		r.WriteText(wxT("or italic "));
+		r.EndItalic();
+		r.BeginUnderline();
+		r.WriteText(wxT("or underlined."));
+		r.EndUnderline();
+
+		r.BeginFontSize(14);
+		r.WriteText(wxT(" Different font sizes on the same line is allowed, too."));
+		r.EndFontSize();
+
+		r.WriteText(wxT(" Next we'll show an indented paragraph."));
+
+		r.BeginLeftIndent(60);
+		r.Newline();
+
+		r.WriteText(wxT("Indented paragraph."));
+		r.EndLeftIndent();
+
+		r.Newline();
+
+		r.WriteText(wxT("Next, we'll show a first-line indent, achieved using BeginLeftIndent(100, -40)."));
+
+		r.BeginLeftIndent(100, -40);
+		r.Newline();
+
+		r.WriteText(wxT("It was in January, the most down-trodden month of an Edinburgh winter."));
+		r.EndLeftIndent();
+
+		r.Newline();
+
+		r.WriteText(wxT("Numbered bullets are possible, again using subindents:"));
+
+		r.BeginNumberedBullet(1, 100, 60);
+		r.Newline();
+
+		r.WriteText(wxT("This is my first item. Note that wxRichTextCtrl doesn't automatically do numbering, but this will be added later."));
+		r.EndNumberedBullet();
+
+		r.BeginNumberedBullet(2, 100, 60);
+		r.Newline();
+
+		r.WriteText(wxT("This is my second item."));
+		r.EndNumberedBullet();
+
+		r.Newline();
+
+		r.WriteText(wxT("The following paragraph is right-indented:"));
+
+		r.BeginRightIndent(200);
+		r.Newline();
+
+		r.WriteText(wxT("It was in January, the most down-trodden month of an Edinburgh winter. An attractive woman came into the cafe, which is nothing remarkable."));
+		r.EndRightIndent();
+
+		r.Newline();
+
+		wxArrayInt tabs;
+		tabs.Add(400);
+		tabs.Add(600);
+		tabs.Add(800);
+		tabs.Add(1000);
+		wxTextAttrEx attr;
+		attr.SetFlags(wxTEXT_ATTR_TABS);
+		attr.SetTabs(tabs);
+		r.SetDefaultStyle(attr);
+
+		r.WriteText(wxT("This line contains tabs:\tFirst tab\tSecond tab\tThird tab"));
+
+		r.Newline();
+		r.WriteText(wxT("Other notable features of wxRichTextCtrl include:"));
+
+		r.BeginSymbolBullet(wxT('*'), 100, 60);
+		r.Newline();
+		r.WriteText(wxT("Compatibility with wxTextCtrl API"));
+		r.EndSymbolBullet();
+
+		r.WriteText(wxT("\nNote: this sample content was generated programmatically and copied from the sample. The images were loaded from inline XPMs. Enjoy wxRichTextCtrl!"));
+
+		r.EndSuppressUndo();
+
+		return richText;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxRichTextCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxRichTextCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
 	}
@@ -648,6 +812,12 @@ WINDOW_COMPONENT("wxSpinButton",SpinButtonComponent)
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
 
 #if wxCHECK_VERSION( 2, 8, 0 )
+// wxRichTextCtrl
+WINDOW_COMPONENT( "wxRichTextCtrl", RichTextCtrlComponent )
+MACRO(wxTE_PROCESS_ENTER);
+MACRO(wxTE_PROCESS_TAB);
+MACRO(wxTE_READONLY);
+MACRO(wxTE_AUTO_URL);
 
 // wxColourPickerCtrl
 WINDOW_COMPONENT("wxColourPickerCtrl", ColourPickerComponent)
