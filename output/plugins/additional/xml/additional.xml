@@ -54,7 +54,7 @@
 	<event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked." />
   </objectinfo>
   
-  <objectinfo class="wxRichTextCtrl" icon="htmlwin.xpm" type="expanded_widget">
+  <objectinfo class="wxRichTextCtrl" icon="richtextctrl.xpm" type="expanded_widget">
     <inherits class="wxWindow">
 		<property name="window_style">wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS</property>
 	</inherits>
