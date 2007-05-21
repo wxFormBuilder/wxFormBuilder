@@ -12,14 +12,6 @@ Introduction:
 Build File Creation:
 	To create the needed build files navigate to the 'sdk' directory and type
 	one of the following commands:
-
-		- Both Code::Blocks and GNU Makefiles:
-			There are included batch/sh script that you can run to just simplify
-			running	and creating the build files. Just run it to create the
-			necessary build files. You can jump to "Build Steps:" if you use these.
-
-			Windows:	create_build_files.bat
-			Linux:		create_build_files.sh
 	
 		- Code::Blocks Projects and workspace:
 			Windows:	premake\premake-win32 --target cb-gcc --with-wx-shared [--unicode]
