@@ -285,7 +285,7 @@ public:
 		r.WriteText(wxT("Compatibility with wxTextCtrl API"));
 		r.EndSymbolBullet();
 
-		r.WriteText(wxT("\nNote: this sample content was generated programmatically and copied from the sample. The images were loaded from inline XPMs. Enjoy wxRichTextCtrl!"));
+		r.WriteText(wxT("\nNote: this content was generated programmatically and copied from the sample. The images were loaded from inline XPMs. Enjoy wxRichTextCtrl!"));
 
 		r.EndSuppressUndo();
 
@@ -294,8 +294,8 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-		ObjectToXrcFilter xrc(obj, _("wxRichTextCtrl"), obj->GetPropertyAsString(_("name")));
-		xrc.AddWindowProperties();
+		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
+		//xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
