@@ -447,6 +447,7 @@ void MainFrame::SavePosition( const wxString &name )
 	}
 
 	config->SetPath( wxT( ".." ) );
+	config->Write( wxT("/mainframe/editor/notebook_style"), m_notebook->GetWindowStyleFlag() );
 }
 
 void MainFrame::OnSaveProject( wxCommandEvent &event )
@@ -1337,7 +1338,11 @@ wxToolBar * MainFrame::CreateFBToolBar()
 
 wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 {
-	m_notebook = new wxFlatNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+	long nbStyle;
+	wxConfigBase* config = wxConfigBase::Get();
+	config->Read( wxT("/mainframe/editor/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+
+	m_notebook = new wxFlatNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, nbStyle );
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// Set notebook icons

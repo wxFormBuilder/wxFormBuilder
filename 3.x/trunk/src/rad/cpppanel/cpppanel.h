@@ -93,6 +93,7 @@ class CppPanel : public wxPanel
   PTCCodeWriter m_hCW;
   PTCCodeWriter m_cppCW;
   wxFlatNotebookImageList m_icons;
+  wxFlatNotebook* m_notebook;
 
   void InitStyledTextCtrl(wxScintilla *stc);
 
