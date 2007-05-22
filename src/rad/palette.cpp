@@ -90,7 +90,11 @@ void wxFbPalette::Create()
 {
   wxBoxSizer *top_sizer = new wxBoxSizer(wxVERTICAL);
 
-  m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | DRAG_OPTION | wxFNB_DROPDOWN_TABS_LIST  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+  long nbStyle;
+  wxConfigBase* config = wxConfigBase::Get();
+  config->Read( wxT("/palette/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | DRAG_OPTION | wxFNB_DROPDOWN_TABS_LIST  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+
+  m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
   m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
   unsigned int pkg_count = AppData()->GetPackageCount();
@@ -208,4 +212,5 @@ wxFbPalette::~wxFbPalette()
 		pages << m_notebook->GetPageText( i ) << wxT(",");
 	}
 	config->Write( wxT("/palette/pageOrder"), pages );
+	config->Write( wxT("/palette/notebook_style"), m_notebook->GetWindowStyleFlag() );
 }
