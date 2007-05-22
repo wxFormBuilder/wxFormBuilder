@@ -576,7 +576,11 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	AppData()->AddHandler( this->GetEventHandler() );
 	m_currentSel = PObjectBase();
 
-	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+	long nbStyle;
+	wxConfigBase* config = wxConfigBase::Get();
+	config->Read( wxT("/mainframe/objectInspector/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+
+	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
 	m_nb->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// the colour of property grid description looks ugly if we don't set this
@@ -609,6 +613,7 @@ void ObjectInspector::SavePosition()
 	// Save Layout
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Write( wxT("/mainframe/objectInspector/DescBoxHeight" ), m_pg->GetDescBoxHeight() );
+	config->Write( wxT("/mainframe/objectInspector/notebook_style"), m_nb->GetWindowStyleFlag() );
 }
 
 void ObjectInspector::Create( bool force )

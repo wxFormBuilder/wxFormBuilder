@@ -36,6 +36,7 @@
 #include <rad/appdata.h>
 
 #include <wx/fdrepdlg.h>
+#include <wx/config.h>
 
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
@@ -57,23 +58,27 @@ wxPanel ( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	wxFlatNotebook* notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
-	notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
+	long nbStyle;
+	wxConfigBase* config = wxConfigBase::Get();
+	config->Read( wxT("/mainframe/editor/cpp/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+
+	m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
+	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
-	notebook->SetImageList( &m_icons );
+	m_notebook->SetImageList( &m_icons );
 
-	m_cppPanel = new CodeEditor( notebook, -1 );
+	m_cppPanel = new CodeEditor( m_notebook, -1 );
 	InitStyledTextCtrl( m_cppPanel->GetTextCtrl() );
-	notebook->AddPage( m_cppPanel, wxT( "cpp" ), false, 0 );
+	m_notebook->AddPage( m_cppPanel, wxT( "cpp" ), false, 0 );
 
-	m_hPanel = new CodeEditor( notebook, -1 );
+	m_hPanel = new CodeEditor( m_notebook, -1 );
 	InitStyledTextCtrl( m_hPanel->GetTextCtrl() );
-	notebook->AddPage( m_hPanel, wxT( "h" ), false, 1 );
+	m_notebook->AddPage( m_hPanel, wxT( "h" ), false, 1 );
 
-	top_sizer->Add( notebook, 1, wxEXPAND, 0 );
+	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 
 	SetSizer( top_sizer );
 	SetAutoLayout( true );
@@ -89,6 +94,8 @@ wxPanel ( parent, id )
 CppPanel::~CppPanel()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
+	wxConfigBase *config = wxConfigBase::Get();
+	config->Write( wxT("/mainframe/editor/cpp/notebook_style"), m_notebook->GetWindowStyleFlag() );
 }
 
 void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
