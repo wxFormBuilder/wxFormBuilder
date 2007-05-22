@@ -207,8 +207,8 @@ else
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )
 	
 	-- Set the wxWidgets link options.
-	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
-	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
+	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs std richtext`" )
+	table.insert( package.config["Release"].linkoptions, "`wx-config --libs std richtext`" )
 	
 	-- Set the Linux defines.
 	table.insert( package.defines, "__WXGTK__" )
