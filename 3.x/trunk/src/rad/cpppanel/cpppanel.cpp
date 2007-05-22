@@ -57,7 +57,8 @@ wxPanel ( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	wxFlatNotebook* notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG );
+	wxFlatNotebook* notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+	notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
