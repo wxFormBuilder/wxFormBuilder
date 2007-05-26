@@ -383,17 +383,21 @@ class TreeCtrlComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
+		int style = obj->GetPropertyAsInteger(_("style"));
 		wxTreeCtrl *tc = new wxTreeCtrl((wxWindow *)parent,-1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
-			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+			style | obj->GetPropertyAsInteger(_("window_style")));
 
 		// dummy nodes
 		wxTreeItemId root = tc->AddRoot(wxT("root node"));
 		wxTreeItemId node1 = tc->AppendItem(root,wxT("node1"));
 		wxTreeItemId node2 = tc->AppendItem(root,wxT("node2"));
 		wxTreeItemId node3 = tc->AppendItem(node2,wxT("node3"));
-		tc->Expand(root);
+		if ( ( style & wxTR_HIDE_ROOT ) == 0 )
+		{
+			tc->Expand(root);
+		}
 		tc->Expand(node1);
 		tc->Expand(node2);
 		tc->Expand(node3);

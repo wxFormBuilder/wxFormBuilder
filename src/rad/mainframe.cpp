@@ -388,7 +388,6 @@ void MainFrame::RestorePosition( const wxString &name )
 }
 
 void MainFrame::SavePosition( const wxString &name )
-
 {
 	m_objInsp->SavePosition();
 
