@@ -88,31 +88,80 @@
   </templates>
 
   <templates class="wxStdDialogButtonSizer">
-    <template name="declaration">wxStdDialogButtonSizer* $name;</template>
-    <template name="construction">$name = new wxStdDialogButtonSizer();
-		#ifequal $OK "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_OK ) ); @}
+    <template name="declaration">
+    	wxStdDialogButtonSizer* $name;
+    	#ifequal $OK "1"
+		@{ #nl wxButton* $name #append OK; @}
 
 		#ifequal $Yes "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_YES ) ); @}
+		@{ #nl wxButton* $name #append Yes; @}
 
 		#ifequal $Save "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_SAVE ) ); @}
+		@{ #nl wxButton* $name #append Save; @}
 
 		#ifequal $Apply "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_APPLY ) ); @}
+		@{ #nl wxButton* $name #append Apply; @}
 
 		#ifequal $No "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_NO ) ); @}
+		@{ #nl wxButton* $name #append No; @}
 
 		#ifequal $Cancel "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_CANCEL ) ); @}
+		@{ #nl wxButton* $name #append Cancel; @}
 
 		#ifequal $Help "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_HELP ) ); @}
+		@{ #nl wxButton* $name #append Help; @}
 
 		#ifequal $ContextHelp "1"
-		@{ #nl $name->AddButton( new wxButton( #wxparent $name, wxID_CONTEXT_HELP ) ); @}
+		@{ #nl wxButton* $name #append ContextHelp; @}
+    </template>
+    <template name="construction">$name = new wxStdDialogButtonSizer();
+		#ifequal $OK "1"
+		@{ 
+			#nl $name #append OK = new wxButton( #wxparent $name, wxID_OK );
+			#nl $name->AddButton( $name #append OK ); 
+		@}
+
+		#ifequal $Yes "1"
+		@{ 
+			#nl $name #append Yes = new wxButton( #wxparent $name, wxID_YES );
+			#nl $name->AddButton( $name #append Yes ); 
+		@}
+
+		#ifequal $Save "1"
+		@{ 
+			#nl $name #append Save = new wxButton( #wxparent $name, wxID_SAVE );
+			#nl $name->AddButton( $name #append Save ); 
+		@}
+
+		#ifequal $Apply "1"
+		@{ 
+			#nl $name #append Apply = new wxButton( #wxparent $name, wxID_APPLY );
+			#nl $name->AddButton( $name #append Apply ); 
+		@}
+
+		#ifequal $No "1"
+		@{ 
+			#nl $name #append No = new wxButton( #wxparent $name, wxID_NO );
+			#nl $name->AddButton( $name #append No ); 
+		@}
+
+		#ifequal $Cancel "1"
+		@{ 
+			#nl $name #append Cancel = new wxButton( #wxparent $name, wxID_CANCEL );
+			#nl $name->AddButton( $name #append Cancel ); 
+		@}
+
+		#ifequal $Help "1"
+		@{ 
+			#nl $name #append Help = new wxButton( #wxparent $name, wxID_HELP );
+			#nl $name->AddButton( $name #append Help ); 
+		@}
+
+		#ifequal $ContextHelp "1"
+		@{ 
+			#nl $name #append ContextHelp = new wxButton( #wxparent $name, wxID_CONTEXT_HELP );
+			#nl $name->AddButton( $name #append ContextHelp ); 
+		@}
 
 		 #nl $name->Realize();
 	</template>
