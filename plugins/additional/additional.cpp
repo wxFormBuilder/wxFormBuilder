@@ -573,6 +573,84 @@ public:
 			obj->GetPropertyAsInteger(_("rows")),
 			obj->GetPropertyAsInteger(_("cols")));
 
+		grid->EnableDragColMove( obj->GetPropertyAsInteger( _("drag_col_move") ) != 0 );
+		grid->EnableDragColSize( obj->GetPropertyAsInteger( _("drag_col_size") ) != 0 );
+		grid->EnableDragGridSize( obj->GetPropertyAsInteger( _("drag_grid_size") ) != 0 );
+		grid->EnableDragRowSize( obj->GetPropertyAsInteger( _("drag_row_size") ) != 0 );
+		grid->EnableEditing( obj->GetPropertyAsInteger( _("editing") ) != 0 );
+		grid->EnableGridLines( obj->GetPropertyAsInteger( _("grid_lines") ) != 0 );
+		if ( !obj->IsNull( _("grid_line_color") ) )
+		{
+			grid->SetGridLineColour( obj->GetPropertyAsColour( _("grid_line_color") ) );
+		}
+		grid->SetMargins( obj->GetPropertyAsInteger( _("margin_width") ), obj->GetPropertyAsInteger( _("margin_height") ) );
+
+		// Label Properties
+		grid->SetColLabelAlignment( obj->GetPropertyAsInteger( _("col_label_horiz_alignment") ), obj->GetPropertyAsInteger( _("col_label_vert_alignment") ) );
+		grid->SetColLabelSize( obj->GetPropertyAsInteger( _("col_label_size") ) );
+
+		wxArrayString columnLabels = obj->GetPropertyAsArrayString( _("col_label_values") );
+		for ( int i = 0; i < (int)columnLabels.size() && i < grid->GetNumberCols(); ++i )
+		{
+			grid->SetColLabelValue( i, columnLabels[i] );
+		}
+
+		grid->SetRowLabelAlignment( obj->GetPropertyAsInteger( _("row_label_horiz_alignment") ), obj->GetPropertyAsInteger( _("row_label_vert_alignment") ) );
+		grid->SetRowLabelSize( obj->GetPropertyAsInteger( _("row_label_size") ) );
+
+		wxArrayString rowLabels = obj->GetPropertyAsArrayString( _("row_label_values") );
+		for ( int i = 0; i < (int)rowLabels.size() && i < grid->GetNumberRows(); ++i )
+		{
+			grid->SetRowLabelValue( i, rowLabels[i] );
+		}
+
+		if ( !obj->IsNull( _("label_bg") ) )
+		{
+			grid->SetLabelBackgroundColour( obj->GetPropertyAsColour( _("label_bg") ) );
+		}
+		if ( !obj->IsNull( _("label_text") ) )
+		{
+			grid->SetLabelTextColour( obj->GetPropertyAsColour( _("label_text") ) );
+		}
+		if ( !obj->IsNull( _("label_font") ) )
+		{
+			grid->SetLabelFont( obj->GetPropertyAsFont( _("label_font") ) );
+		}
+
+		// Default Cell Properties
+		grid->SetDefaultCellAlignment( obj->GetPropertyAsInteger( _("cell_horiz_alignment") ), obj->GetPropertyAsInteger( _("cell_vert_alignment") ) );
+
+		if ( !obj->IsNull( _("cell_bg") ) )
+		{
+			grid->SetDefaultCellBackgroundColour( obj->GetPropertyAsColour( _("cell_bg") ) );
+		}
+		if ( !obj->IsNull( _("cell_text") ) )
+		{
+			grid->SetDefaultCellTextColour( obj->GetPropertyAsColour( _("cell_text") ) );
+		}
+		if ( !obj->IsNull( _("cell_font") ) )
+		{
+			grid->SetDefaultCellFont( obj->GetPropertyAsFont( _("cell_font") ) );
+		}
+
+		// Example Cell Values
+		for ( int col = 0; col < grid->GetNumberCols(); ++col )
+		{
+			for ( int row = 0; row < grid->GetNumberRows(); ++row )
+			{
+				grid->SetCellValue( row, col, grid->GetColLabelValue( col ) + wxT("-") + grid->GetRowLabelValue( row ) );
+			}
+		}
+
+		if ( obj->GetPropertyAsInteger( _("autosize_rows") ) != 0 )
+		{
+			grid->AutoSizeRows();
+		}
+		if ( obj->GetPropertyAsInteger( _("autosize_cols") ) != 0 )
+		{
+			grid->AutoSizeColumns();
+		}
+
 		grid->PushEventHandler( new ComponentEvtHandler( grid, GetManager() ) );
 
 		return grid;
@@ -891,6 +969,13 @@ MACRO(wxTR_SINGLE)
 MACRO(wxTR_MULTIPLE)
 MACRO(wxTR_EXTENDED)
 MACRO(wxTR_DEFAULT_STYLE)
+
+// wxGrid
+MACRO(wxALIGN_LEFT)
+MACRO(wxALIGN_CENTRE)
+MACRO(wxALIGN_RIGHT)
+MACRO(wxALIGN_TOP)
+MACRO(wxALIGN_BOTTOM)
 
 // wxScrollBar
 MACRO(wxSB_HORIZONTAL)

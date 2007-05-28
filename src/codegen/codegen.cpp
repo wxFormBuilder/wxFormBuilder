@@ -300,7 +300,7 @@ bool TemplateParser::ParseText()
 	if ( !m_in.Eof() )
 	{
 		wxChar peek( m_in.Peek() );
-		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$') && !m_in.Eof() )
+		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$') )
 		{
 			wxChar c( m_in.GetC() );
 			if (c == wxT('@') )
@@ -317,7 +317,7 @@ bool TemplateParser::ParseText()
 		}
 	}
 
-	//  Debug::Print("Parsed Text: %s",aux.str().c_str());
+	//Debug::Print(wxT("Parsed Text: %s"),text.c_str());
 	return true;
 }
 
