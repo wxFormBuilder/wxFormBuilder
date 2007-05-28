@@ -990,7 +990,6 @@ public:
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("tool"), obj->GetPropertyAsString(_("name")));
-		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
 		xrc.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
 		xrc.AddProperty(_("statusbar"), _("longhelp"), XRC_TYPE_TEXT);
@@ -1011,7 +1010,6 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("tool"));
-		filter.AddWindowProperties();
 		filter.AddProperty(_("longhelp"), _("statusbar"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
@@ -1093,7 +1091,6 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
-		xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
 
@@ -1102,7 +1099,6 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxChoice"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("content"),_("choices"), XRC_TYPE_STRINGLIST);
-		filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
 		return filter.GetXfbObject();
 	}
 

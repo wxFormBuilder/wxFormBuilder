@@ -166,7 +166,7 @@ public:
 		ticpp::Element* sizeritem = filter.GetXfbObject();
 
 		// XrcLoader::GetObject imports spacers as sizeritems, so check for a spacer
-		if ( xrcObj->FirstChildElement("size") && !xrcObj->FirstChildElement("object") )
+		if ( xrcObj->FirstChildElement("size", false ) && !xrcObj->FirstChildElement("object", false ) )
 		{
 			// it is a spacer
 			XrcToXfbFilter spacer( xrcObj, _("spacer") );
@@ -635,8 +635,8 @@ public:
 
 		XrcToXfbFilter filter(xrcObj, _("wxStdDialogButtonSizer"));
 
-		ticpp::Element* button = xrcObj->FirstChildElement( "object" );
-		for (  ; button != 0; button = button->NextSiblingElement( "object" ) )
+		ticpp::Element* button = xrcObj->FirstChildElement( "object", false );
+		for (  ; button != 0; button = button->NextSiblingElement( "object", false ) )
 		{
 			try
 			{
@@ -649,7 +649,7 @@ public:
 
 				ticpp::Element* wxbutton = button->FirstChildElement( "object" );
 				std::string wxbutton_class;
-				button->GetAttribute( "class", &wxbutton_class );
+				wxbutton->GetAttribute( "class", &wxbutton_class );
 				if ( std::string("wxButton") != wxbutton_class )
 				{
 					continue;
@@ -702,6 +702,8 @@ public:
 		{
 			filter.AddPropertyValue( prop->first, prop->second );
 		}
+
+		xrcObj->Clear();
 
 		return filter.GetXfbObject();
 	}

@@ -406,8 +406,9 @@ XrcToXfbFilter::XrcToXfbFilter( ticpp::Element *obj,
 		obj->GetAttribute( "class", &name );
 		m_xfbObj->SetAttribute( "class", name );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 
 	if ( !objname.empty() )
@@ -428,8 +429,9 @@ XrcToXfbFilter::XrcToXfbFilter( ticpp::Element *obj, const wxString &classname )
 		wxString objname( name.c_str(), wxConvUTF8 );
 		AddPropertyValue( wxT( "name" ), objname );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -552,8 +554,9 @@ void XrcToXfbFilter::AddStyleProperty()
 		AddPropertyValue( wxT( "style" ), style );
 		AddPropertyValue( wxT( "window_style" ), windowStyle );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -599,8 +602,9 @@ void XrcToXfbFilter::AddExtraStyleProperty()
 		AddPropertyValue( wxT( "extra_style" ), style );
 		AddPropertyValue( wxT( "window_extra_style" ), windowStyle );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -624,8 +628,9 @@ void XrcToXfbFilter::AddPropertyPair( const char* xrcPropName, const wxString& x
 		AddPropertyValue( xfbPropName1, width );
 		AddPropertyValue( xfbPropName2, height );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -652,8 +657,9 @@ void XrcToXfbFilter::ImportTextProperty( 	const wxString &xrcPropName,
 
 		property->SetText( value.mb_str( wxConvUTF8 ) );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -680,8 +686,9 @@ void XrcToXfbFilter::ImportBitlistProperty( const wxString &xrcPropName, ticpp::
 		bitlist = ReplaceSynonymous( bitlist );
 		property->SetText( bitlist.mb_str( wxConvUTF8 ) );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -702,8 +709,9 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			element->GetText( &size );
 			font.SetPointSize( size );
 		}
-		catch( ticpp::Exception& )
+		catch( ticpp::Exception& ex )
 		{
+			wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 		}
 
 		// the family
@@ -760,7 +768,7 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			else
 				font.SetWeight( wxNORMAL );
 		}
-		catch( ticpp::Exception )
+		catch( ticpp::Exception& )
 		{
 			font.SetWeight( wxNORMAL );
 		}
@@ -776,7 +784,7 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			else
 				font.SetUnderlined( false );
 		}
-		catch( ticpp::Exception )
+		catch( ticpp::Exception& )
 		{
 			font.SetUnderlined( false );
 		}
@@ -788,7 +796,7 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			wxString face( element->GetText().c_str(), wxConvUTF8 );
 			font.SetFaceName( face );
 		}
-		catch( ticpp::Exception )
+		catch( ticpp::Exception& )
 		{
 			font.SetFaceName( wxEmptyString );
 		}
@@ -802,8 +810,9 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			property->SetText( font_str.mb_str( wxConvUTF8 ) );
 		}
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -818,8 +827,9 @@ void XrcToXfbFilter::ImportBitmapProperty( const wxString &xrcPropName, ticpp::E
 		res += wxT( "; Load From File" );
 		property->SetText( res.mb_str( wxConvUTF8 ) );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -850,8 +860,9 @@ void XrcToXfbFilter::ImportColourProperty( const wxString &xrcPropName, ticpp::E
 
 		property->SetText( strOut.str() );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxString( ex.m_details.c_str(), wxConvUTF8 ) );
 	}
 }
 
@@ -872,20 +883,22 @@ void XrcToXfbFilter::ImportStringListProperty( const wxString &xrcPropName, ticp
 				if ( parseXrcText )
 					value = XrcTextToString( value );
 
-				res += wxChar( '\'' ) + value + wxT( "' " );
+				res += wxChar( '\'' ) + value + wxT( "\' " );
 			}
-			catch( ticpp::Exception& )
+			catch( ticpp::Exception& ex )
 			{
+				wxLogDebug( wxT("%s. line: %i"), wxString( ex.m_details.c_str(), wxConvUTF8 ).c_str(), __LINE__ );
 			}
 
-			element = element->NextSiblingElement( "item" );
+			element = element->NextSiblingElement( "item", false );
 		}
 
 		res.Trim();
 		property->SetText( res.mb_str( wxConvUTF8 ) );
 	}
-	catch( ticpp::Exception& )
+	catch( ticpp::Exception& ex )
 	{
+		wxLogDebug( wxT("%s. line: %i"), wxString( ex.m_details.c_str(), wxConvUTF8 ).c_str(), __LINE__ );
 	}
 }
 
