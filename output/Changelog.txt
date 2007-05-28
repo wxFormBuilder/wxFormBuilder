@@ -6,6 +6,8 @@ date Version 3.00.43 (Beta 3)
 + Implemented FS#185 - "Allowing access to wxStdDialogButtonSizer buttons."
 + Added many more properties to wxGrid.
   This includes FS#191 - "Editing wxGrid column properties in the designer."
+* Fixed xrc import of sizeritem, stringlist properties, and wxStdDialogButtonSizer.
+  This was a regresssion in version 3.00.40.
 
 05-21-2007 Version 3.00.42 (Beta 3)
 + Added Right-Click -> "Close Preview" to XRC Previews.
