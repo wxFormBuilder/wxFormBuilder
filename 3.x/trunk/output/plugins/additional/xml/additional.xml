@@ -102,6 +102,67 @@
     <property name="name" type="text">m_grid</property>
     <property name="rows" type="uint" help="Number of Rows.">5</property>
     <property name="cols" type="uint" help="Number of Columns.">5</property>
+    <property name="drag_col_move" type="bool" help="Allow moving columns by dragging.">0</property>
+    <property name="drag_col_size" type="bool" help="Allow sizing columns by dragging.">1</property>
+    <property name="drag_grid_size" type="bool" help="Allow sizing rows and columns by dragging gridlines.">0</property>
+    <property name="drag_row_size" type="bool" help="Allow sizing rows by dragging.">1</property>
+    <property name="editing" type="bool" help="Allow editing grid contents.">1</property>
+    <property name="grid_lines" type="bool" help="Show grid lines.">1</property>
+    <property name="autosize_rows" type="bool" help="Automatically sizes all rows to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
+    <property name="autosize_cols" type="bool" help="Automatically sizes all columns to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
+	<property name="grid_line_color" type="wxColour" help="The colour used to draw grid lines."/>
+	<property name="margin_width" type="uint" help="A grid may occupy more space than needed for its columns. This function allows to set how big this extra space is.">0</property>
+	<property name="margin_height" type="uint" help="A grid may occupy more space than needed for its rows. This function allows to set how big this extra space is.">0</property>
+	<category name="Label Properties">
+		<property name="col_label_horiz_alignment" type="option" help="Horizontal alignment of column label text.">
+		  <option name="wxALIGN_LEFT" 	help="Align labels left."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+		  <option name="wxALIGN_RIGHT" 	help="Align labels right."/>
+		  wxALIGN_CENTRE
+		</property>
+		<property name="col_label_vert_alignment" type="option" help="Vertical alignment of column label text.">
+		  <option name="wxALIGN_TOP" 	help="Align labels top."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+		  <option name="wxALIGN_BOTTOM" 	help="Align labels bottom."/>
+		  wxALIGN_CENTRE
+		</property>
+		<property name="col_label_size" type="uint" help="Height of column labels">30</property>
+		<property name="col_label_values" type="stringlist" help="List of column labels."></property>
+		<property name="row_label_horiz_alignment" type="option" help="Horizontal alignment of row label text.">
+		  <option name="wxALIGN_LEFT" 	help="Align labels left."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+		  <option name="wxALIGN_RIGHT" 	help="Align labels right."/>
+		  wxALIGN_CENTRE
+		</property>
+		<property name="row_label_vert_alignment" type="option" help="Vertical alignment of row label text.">
+		  <option name="wxALIGN_TOP" 	help="Align labels top."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+		  <option name="wxALIGN_BOTTOM" 	help="Align labels bottom."/>
+		  wxALIGN_CENTRE
+		</property>
+		<property name="row_label_size" type="uint" help="Width of row labels">80</property>
+		<property name="row_label_values" type="stringlist" help="List of row labels."></property>
+		<property name="label_bg" type="wxColour" help="Background color for row and column labels."/>
+		<property name="label_font" type="wxFont" help="Font for row and column labels."/>
+		<property name="label_text" type="wxColour" help="Colour for row and column label text."/>z    
+	</category>
+	<category name="Default Cell Properties">
+		<property name="cell_horiz_alignment" type="option" help="Default horizontal alignment of cell values.">
+		  <option name="wxALIGN_LEFT" 	help="Align left."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align centered."/>
+		  <option name="wxALIGN_RIGHT" 	help="Align right."/>
+		  wxALIGN_LEFT
+		</property>
+		<property name="cell_vert_alignment" type="option" help="Default vertical alignment of cell values.">
+		  <option name="wxALIGN_TOP" 	help="Align top."/>
+		  <option name="wxALIGN_CENTRE" 	help="Align centered."/>
+		  <option name="wxALIGN_BOTTOM" 	help="Align bottom."/>
+		  wxALIGN_TOP
+		</property>
+		<property name="cell_bg" type="wxColour" help="Default cell background color."/>
+		<property name="cell_font" type="wxFont" help="Default cell font."/>
+    	<property name="cell_text" type="wxColour" help="Default cell text color."/>
+	</category>
 	<event name="OnGridCellLeftClick" class="wxGridEvent" help="The user clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_CLICK." />
 	<event name="OnGridCellRightClick" class="wxGridEvent" help="The user clicked a cell with the right mouse button. Processes a wxEVT_GRID_CELL_RIGHT_CLICK." />
 	<event name="OnGridCellLeftDClick" class="wxGridEvent" help="The user double-clicked a cell with the left mouse button. Processes a wxEVT_GRID_CELL_LEFT_DCLICK." />

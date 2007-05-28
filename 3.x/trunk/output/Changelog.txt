@@ -4,6 +4,8 @@ date Version 3.00.43 (Beta 3)
 ^ Updated to wxFlatNotebook 2.2 - building with wx2.6.x is no longer supported.
 * Fixed FS#190 - "annoying warning with wxTR_HIDE_ROOT in wxTreeCtrl"
 + Implemented FS#185 - "Allowing access to wxStdDialogButtonSizer buttons."
++ Added many more properties to wxGrid.
+  This includes FS#191 - "Editing wxGrid column properties in the designer."
 
 05-21-2007 Version 3.00.42 (Beta 3)
 + Added Right-Click -> "Close Preview" to XRC Previews.

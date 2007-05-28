@@ -80,8 +80,79 @@
   <templates class="wxGrid">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
-    <template name="settings">$name->CreateGrid( $rows, $cols );</template>
     <template name="include">@#include &lt;wx/grid.h&gt;</template>
+    <template name="settings">
+    	$name->CreateGrid( $rows, $cols );
+    	#nl $name->EnableDragColMove( $drag_col_move );
+		#nl $name->EnableDragColSize( $drag_col_size );
+		#nl $name->EnableDragGridSize( $drag_grid_size );
+		#nl $name->EnableDragRowSize( $drag_row_size );
+		#nl $name->EnableEditing( $editing );
+		#nl $name->EnableGridLines( $grid_lines );
+		#ifnotnull $grid_line_color
+		@{
+			#nl $name->SetGridLineColour( $grid_line_color );
+		@}
+		#nl $name->SetMargins( $margin_width, $margin_height );
+		
+		#nl $name->SetColLabelAlignment( $col_label_horiz_alignment, $col_label_vert_alignment );
+		#nl $name->SetColLabelSize( $col_label_size );
+
+		#nl wxArrayString $name #append columnLabels;
+		#foreach $col_label_values
+      	@{ $name #append columnLabels.Add( #pred ); @}		
+		#nl for ( int i = 0; i &lt; (int)$name #append columnLabels.size() &amp;&amp; i &lt; $name->GetNumberCols(); ++i )
+		#nl {
+		#nl	$name->SetColLabelValue( i, $name #append columnLabels[i] );
+		#nl }
+		#nl $name->SetRowLabelAlignment( $row_label_horiz_alignment, $row_label_vert_alignment );
+		#nl $name->SetRowLabelSize( $row_label_size );
+		
+		#nl wxArrayString $name #append rowLabels;
+		#foreach $row_label_values
+      	@{ $name #append rowLabels.Add( #pred ); @}
+		#nl for ( int i = 0; i &lt; (int)$name #append rowLabels.size() &amp;&amp; i &lt; $name->GetNumberRows(); ++i )
+		#nl {
+		#nl	$name->SetRowLabelValue( i, $name #append rowLabels[i] );
+		#nl }
+
+		#ifnotnull $label_bg
+		@{
+			#nl $name->SetLabelBackgroundColour( $label_bg );
+		@}
+		#ifnotnull $label_text
+		@{
+			#nl $name->SetLabelTextColour( $label_text );
+		@}
+		#ifnotnull $label_font
+		@{
+			#nl $name->SetLabelFont( $label_font );
+		@}
+
+		#nl $name->SetDefaultCellAlignment( $cell_horiz_alignment, $cell_vert_alignment );
+
+		#ifnotnull $cell_bg
+		@{
+			#nl $name->SetDefaultCellBackgroundColour( $cell_bg );
+		@}
+		#ifnotnull $cell_text
+		@{
+			#nl $name->SetDefaultCellTextColour( $cell_text );
+		@}
+		#ifnotnull $cell_font
+		@{
+			#nl $name->SetDefaultCellFont( $cell_font );
+		@}
+
+		#ifnotequal $autosize_rows "0"
+		@{
+			#nl $name->AutoSizeRows();
+		@}
+		#ifnotequal $autosize_cols "0"
+		@{
+			#nl $name->AutoSizeColumns();
+		@}
+    </template>
 	<template name="evt_entry_OnGridCellLeftClick">EVT_GRID_CELL_LEFT_CLICK( #handler )</template>
 	<template name="evt_entry_OnGridCellRightClick">EVT_GRID_CELL_RIGHT_CLICK( #handler )</template>
 	<template name="evt_entry_OnGridCellLeftDClick">EVT_GRID_CELL_LEFT_DCLICK( #handler )</template>
