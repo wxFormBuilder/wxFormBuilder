@@ -5,7 +5,7 @@
 function archive
 {
   # copy monolithic wx lib to lib dir
-  cp /opt/wx/2.8.3/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0
+  cp /opt/wx/2.8.4/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0
 
   # remove the share/wxformbuilder symlink
   rm output/share/wxformbuilder
