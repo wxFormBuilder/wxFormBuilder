@@ -1,7 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.43 (Beta 3)
+05-29-2007 Version 3.00.43 (Beta 3)
 ^ Updated to wxFlatNotebook 2.2 - building with wx2.6.x is no longer supported.
+  All notebooks can now be configured by right-clicking in empty area of tab bar.
 * Fixed FS#190 - "annoying warning with wxTR_HIDE_ROOT in wxTreeCtrl"
 + Implemented FS#185 - "Allowing access to wxStdDialogButtonSizer buttons."
 + Added many more properties to wxGrid.
