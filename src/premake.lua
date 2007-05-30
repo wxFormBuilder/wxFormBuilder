@@ -35,7 +35,7 @@ package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml"
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 -- Set the packages dependancies.
-package.depends = { "additional-components-plugin", "common-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
+package.depends = { "additional-components-plugin", "common-components-plugin", "containers-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
 package.libpaths = { "../output", "../sdk/lib" }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
