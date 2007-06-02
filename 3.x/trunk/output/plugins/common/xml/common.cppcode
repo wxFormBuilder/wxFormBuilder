@@ -34,6 +34,7 @@
   <templates class="wxStaticText">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+  	<template name="settings">$name->Wrap( $wrap );</template>
   </templates>
 
   <templates class="wxCheckBox">
