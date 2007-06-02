@@ -80,6 +80,7 @@ private:
 	bool m_i18n;
 	wxString m_basePath;
 	unsigned int m_firstID;
+	bool m_useConnect;
 
 	/**
 	* Las macros predefinidas no generarán defines.
@@ -119,17 +120,17 @@ private:
 	/**
 	* Genera la declaración de clases en el fichero de cabecera.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events);
+	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events );
 
 	/**
 	* Generates the event table.
 	*/
-	void GenEventTable( PObjectBase class_obj, const EventVector &events);
+	void GenEvents( PObjectBase class_obj, const EventVector &events, const wxString& className = wxEmptyString );
 
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
-	bool GenEventTableEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName );
+	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName );
 
 	/**
 	* Función recursiva para la declaración de atributos, usada dentro
@@ -181,7 +182,7 @@ private:
 	* objeto y las de layout.
 	* El algoritmo es similar al de generación de la vista previa en el designer.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget);
+	void GenConstruction( PObjectBase obj, bool is_widget, const wxString& className );
 
 	/**
 	* Configura las propiedades del objeto, tanto las propias como las heredadas.
