@@ -336,11 +336,15 @@ public:
 
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		return  new wxStaticText((wxWindow *)parent,-1,
+		wxStaticText* st = new wxStaticText((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
+
+		return st;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
