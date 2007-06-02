@@ -6,6 +6,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/button.h&gt;</template>
     <template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
+    <template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( #handler ), NULL, this );</template>
   </templates>
 
   <templates class="wxBitmapButton">
