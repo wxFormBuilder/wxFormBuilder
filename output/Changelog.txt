@@ -2,6 +2,7 @@
 ************************************************************************
 date Version 3.00.44 (Beta 3)
 * Fixed FS#193 - "Missing wxTE_PROCESS_ENTER in style of wxComboBox."
++ Added FS#179 - "OnPaint for wxPanel."
 + Added wxStaticText::Wrap().
 + Implemented FS#192 - "Add support for dynamic event handling via Connect() methods."
   Connect() is now the default implementation of event handling.

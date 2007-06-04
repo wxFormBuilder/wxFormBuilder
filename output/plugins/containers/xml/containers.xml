@@ -2,6 +2,7 @@
 <package name="Containers" lib="libcontainers" icon="splitter_window.xpm" desc="wxWidgets container controls">
 
 	<objectinfo class="wxPanel" icon="panel.xpm" type="container">
+		<inherits class="Common Events" />
 		<inherits class="wxWindow">
 			<property name="window_style">wxTAB_TRAVERSAL</property>
 		</inherits>
