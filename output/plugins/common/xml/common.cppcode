@@ -6,7 +6,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/button.h&gt;</template>
     <template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
-    <template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( #handler ), NULL, this );</template>
+    <template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxBitmapButton">
@@ -14,7 +14,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
 	<template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
-	<template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxTextCtrl">
@@ -28,13 +28,13 @@
 		@}
 	</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
-	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
-	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextURL">EVT_TEXT_URL( $id, #handler )</template>
-	<template name="evt_connect_OnTextURL">$name->Connect( wxEVT_COMMAND_TEXT_URL, wxTextUrlEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnTextURL">$name->Connect( wxEVT_COMMAND_TEXT_URL, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextMaxLen">EVT_TEXT_MAXLEN( $id, #handler )</template>
-	<template name="evt_connect_OnTextMaxLen">$name->Connect( wxEVT_COMMAND_TEXT_MAXLEN, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnTextMaxLen">$name->Connect( wxEVT_COMMAND_TEXT_MAXLEN, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxStaticText">
@@ -51,7 +51,7 @@
 		@{ $name->SetValue(true); #nl @}
 	</template>
 	<template name="evt_entry_OnCheckBox">EVT_CHECKBOX( $id, #handler )</template>
-	<template name="evt_connect_OnCheckBox">$name->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCheckBox">$name->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxComboBox">
@@ -62,11 +62,11 @@
       @{ $name->Append( #pred ); @}
     </template>
 	<template name="evt_entry_OnCombobox">EVT_COMBOBOX( $id, #handler )</template>
-	<template name="evt_connect_OnCombobox">$name->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCombobox">$name->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, #handler, NULL, this );</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
-	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
-	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxListBox">
@@ -77,9 +77,9 @@
       @{ $name->Append( #pred ); @}
     </template>
 	<template name="evt_entry_OnListBox">EVT_LISTBOX( $id, #handler )</template>
-	<template name="evt_connect_OnListBox">$name->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListBox">$name->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListBoxDClick">$name->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListBoxDClick">$name->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxRadioBox">
@@ -98,7 +98,7 @@
 		@}
 	</template>
 	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
-	<template name="evt_connect_OnRadioBox">$name->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnRadioBox">$name->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxRadioButton">
@@ -106,7 +106,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
 	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
-	<template name="evt_connect_OnRadioButton">$name->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnRadioButton">$name->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxStaticBitmap">
@@ -126,45 +126,45 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
     <template name="include">@#include &lt;wx/listctrl.h&gt;</template>
 	<template name="evt_entry_OnListBeginDrag">EVT_LIST_BEGIN_DRAG( $id, #handler )</template>
-	<template name="evt_connect_OnListBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_DRAG, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListBeginRDrag">EVT_LIST_BEGIN_RDRAG( $id, #handler )</template>
-	<template name="evt_connect_OnListBeginRDrag">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_RDRAG, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListBeginRDrag">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_RDRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListBeginLabelEdit">EVT_LIST_BEGIN_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_connect_OnListBeginLabelEdit">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListBeginLabelEdit">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListEndLabelEdit">EVT_LIST_END_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_connect_OnListEndLabelEdit">$name->Connect( wxEVT_COMMAND_LIST_END_LABEL_EDIT, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListEndLabelEdit">$name->Connect( wxEVT_COMMAND_LIST_END_LABEL_EDIT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListDeleteItem">EVT_LIST_DELETE_ITEM( $id, #handler )</template>
-	<template name="evt_connect_OnListDeleteItem">$name->Connect( wxEVT_COMMAND_LIST_DELETE_ITEM, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListDeleteItem">$name->Connect( wxEVT_COMMAND_LIST_DELETE_ITEM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListDeleteAllItems">EVT_LIST_DELETE_ALL_ITEMS( $id, #handler )</template>
-	<template name="evt_connect_OnListDeleteAllItems">$name->Connect( wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListDeleteAllItems">$name->Connect( wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemSelected">EVT_LIST_ITEM_SELECTED( $id, #handler )</template>
-	<template name="evt_connect_OnListItemSelected">$name->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemSelected">$name->Connect( wxEVT_COMMAND_LIST_ITEM_SELECTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemDeselected">EVT_LIST_ITEM_DESELECTED( $id, #handler )</template>
-	<template name="evt_connect_OnListItemDeselected">$name->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemDeselected">$name->Connect( wxEVT_COMMAND_LIST_ITEM_DESELECTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemActivated">EVT_LIST_ITEM_ACTIVATED( $id, #handler )</template>
-	<template name="evt_connect_OnListItemActivated">$name->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemActivated">$name->Connect( wxEVT_COMMAND_LIST_ITEM_ACTIVATED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemFocused">EVT_LIST_ITEM_FOCUSED( $id, #handler )</template>
-	<template name="evt_connect_OnListItemFocused">$name->Connect( wxEVT_COMMAND_LIST_ITEM_FOCUSED, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemFocused">$name->Connect( wxEVT_COMMAND_LIST_ITEM_FOCUSED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemMiddleClick">EVT_LIST_ITEM_MIDDLE_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListItemMiddleClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemMiddleClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListItemRightClick">EVT_LIST_ITEM_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListItemRightClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListItemRightClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListKeyDown">EVT_LIST_KEY_DOWN( $id, #handler )</template>
-	<template name="evt_connect_OnListKeyDown">$name->Connect( wxEVT_COMMAND_LIST_KEY_DOWN, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListKeyDown">$name->Connect( wxEVT_COMMAND_LIST_KEY_DOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListInsertItem">EVT_LIST_INSERT_ITEM( $id, #handler )</template>
-	<template name="evt_connect_OnListInsertItem">$name->Connect( wxEVT_COMMAND_LIST_INSERT_ITEM, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListInsertItem">$name->Connect( wxEVT_COMMAND_LIST_INSERT_ITEM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColClick">EVT_LIST_COL_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListColClick">$name->Connect( wxEVT_COMMAND_LIST_COL_CLICK, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListColClick">$name->Connect( wxEVT_COMMAND_LIST_COL_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColRightClick">EVT_LIST_COL_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListColRightClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListColRightClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColBeginDrag">EVT_LIST_COL_BEGIN_DRAG( $id, #handler )</template>
-	<template name="evt_connect_OnListColBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListColBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColDragging">EVT_LIST_COL_DRAGGING( $id, #handler )</template>
-	<template name="evt_connect_OnListColDragging">$name->Connect( wxEVT_COMMAND_LIST_COL_DRAGGING, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListColDragging">$name->Connect( wxEVT_COMMAND_LIST_COL_DRAGGING, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColEndDrag">EVT_LIST_COL_END_DRAG( $id, #handler )</template>
-	<template name="evt_connect_OnListColEndDrag">$name->Connect( wxEVT_COMMAND_LIST_COL_END_DRAG, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListColEndDrag">$name->Connect( wxEVT_COMMAND_LIST_COL_END_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListCacheHint">EVT_LIST_CACHE_HINT( $id, #handler )</template>
-	<template name="evt_connect_OnListCacheHint">$name->Connect( wxEVT_COMMAND_LIST_CACHE_HINT, wxListEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnListCacheHint">$name->Connect( wxEVT_COMMAND_LIST_CACHE_HINT, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxChoice">
@@ -184,7 +184,7 @@
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>
 	<template name="evt_entry_OnChoice">EVT_CHOICE( $id, #handler )</template>
-	<template name="evt_connect_OnChoice">$name->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnChoice">$name->Connect( wxEVT_COMMAND_CHOICE_SELECTED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxGauge">
@@ -203,64 +203,64 @@
     <template name="include">@#include &lt;wx/slider.h&gt;</template>
 	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
 	<template name="evt_connect_OnScroll">
-		$name->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( #handler ), NULL, this );		
+		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );		
 	</template>
 	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
-	<template name="evt_connect_OnScrollTop">$name->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollBottom">EVT_SCROLL_BOTTOM( #handler )</template>
-	<template name="evt_connect_OnScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollLineUp">EVT_SCROLL_LINEUP( #handler )</template>
-	<template name="evt_connect_OnScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollLineDown">EVT_SCROLL_LINEDOWN( #handler )</template>
-	<template name="evt_connect_OnScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollPageUp">EVT_SCROLL_PAGEUP( #handler )</template>
-	<template name="evt_connect_OnScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollPageDown">EVT_SCROLL_PAGEDOWN( #handler )</template>
-	<template name="evt_connect_OnScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollThumbTrack">EVT_SCROLL_THUMBTRACK( #handler )</template>
-	<template name="evt_connect_OnScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollThumbRelease">EVT_SCROLL_THUMBRELEASE( #handler )</template>
-	<template name="evt_connect_OnScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
-	<template name="evt_connect_OnScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
 	<template name="evt_connect_OnCommandScroll">	
-		$name->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( #handler ), NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( #handler ), NULL, this );	
+		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );	
 	</template>
 	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollTop">$name->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_BOTTOM( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollLineDown">EVT_COMMAND_SCROLL_LINEDOWN( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( #handler ), NULL, this );</template>
+	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
   </templates>
 
 </codegen>

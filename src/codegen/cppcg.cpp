@@ -665,7 +665,15 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
-			wxString handlerName = wxString::Format( wxT("%s::%s%s"), class_name.c_str(), m_useConnect ? wxT("") : wxT("_wxFB_"), event->GetValue().c_str() );
+			wxString handlerName;
+			if ( m_useConnect )
+			{
+				handlerName.Printf( wxT("%sHandler( %s::%s )"), event->GetEventInfo()->GetEventClassName().c_str(), class_name.c_str(), event->GetValue().c_str() );
+			}
+			else
+			{
+				handlerName.Printf( wxT("%s::_wxFB_%s"), class_name.c_str(), event->GetValue().c_str() );
+			}
 			wxString templateName = wxString::Format( wxT("evt_%s_%s"), m_useConnect ? wxT("connect") : wxT("entry"), event->GetName().c_str() );
 
 			PObjectBase obj = event->GetObject();
