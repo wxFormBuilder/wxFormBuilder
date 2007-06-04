@@ -70,7 +70,9 @@
 	</template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnMenuSelection">this->Connect( $name->GetId(), wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
     <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+	<template name="evt_connect_OnUpdateUI">this->Connect( $name->GetId(), wxEVT_UPDATE_UI, #handler );</template>
   </templates>
 
   <templates class="separator">
@@ -106,10 +108,15 @@
   <templates class="tool">
     <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );</template>
 	<template name="evt_entry_OnToolClicked">EVT_TOOL( $id, #handler )</template>
+	<template name="evt_connect_OnToolClicked">this->Connect( $id, wxEVT_COMMAND_TOOL_CLICKED, #handler );</template>
 	<template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnMenuSelection">this->Connect( $id, wxEVT_COMMAND_MENU_SELECTED, #handler);</template>
 	<template name="evt_entry_OnToolRClicked">EVT_TOOL_RCLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnToolRClicked">this->Connect( $id, wxEVT_COMMAND_TOOL_RCLICKED, #handler );</template>
 	<template name="evt_entry_OnToolEnter">EVT_TOOL_ENTER(#parent $id, #handler )</template>
-         <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+	<template name="evt_connect_OnToolEnter">this->Connect( $id, wxEVT_COMMAND_TOOL_ENTER, #handler );</template>
+    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+	<template name="evt_connect_OnUpdateUI">this->Connect( $id, wxEVT_UPDATE_UI, #handler );</template>
   </templates>
   
   <templates class="toolSeparator">

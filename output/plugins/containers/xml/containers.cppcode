@@ -39,9 +39,13 @@
 			} #nl
 		</template>
 		<template name="evt_entry_OnSplitterSashPosChanging">EVT_SPLITTER_SASH_POS_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnSplitterSashPosChanging">$name->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING, #handler, NULL, this );</template>
 		<template name="evt_entry_OnSplitterSashPosChanged">EVT_SPLITTER_SASH_POS_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnSplitterSashPosChanged">$name->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, #handler, NULL, this );</template>
 		<template name="evt_entry_OnSplitterUnsplit">EVT_SPLITTER_UNSPLIT( $id, #handler )</template>
+		<template name="evt_connect_OnSplitterUnsplit">$name->Connect( wxEVT_COMMAND_SPLITTER_UNSPLIT, #handler, NULL, this );</template>
 		<template name="evt_entry_OnSplitterDClick">EVT_SPLITTER_DCLICK( $id, #handler )</template>
+		<template name="evt_connect_OnSplitterDClick">$name->Connect( wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, #handler, NULL, this );</template>
 	</templates>
 
   
@@ -68,7 +72,9 @@
 			@}
 		</template>
 		<template name="evt_entry_OnNotebookPageChanged">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
-		<template name="evt_entry_OnNotebookPageChanging">EVT_NOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnNotebookPageChanged">$name->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnNotebookPageChanging">EVT_NOTEBOOK_PAGE_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnNotebookPageChanging">$name->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, #handler, NULL, this );</template>
 	</templates>
 
 	<templates class="notebookpage">
@@ -126,7 +132,9 @@
 			@}
 		</template>
 		<template name="evt_entry_OnListbookPageChanged">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
-		<template name="evt_entry_OnListbookPageChanging">EVT_LISTBOOK_PAGE_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnListbookPageChanged">$name->Connect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnListbookPageChanging">EVT_LISTBOOK_PAGE_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnListbookPageChanging">$name->Connect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING, #handler, NULL, this );</template>
 	</templates>
 
 	<templates class="listbookpage">
@@ -154,7 +162,9 @@
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
 		<template name="include">@#include &lt;wx/choicebk.h&gt;</template>
 		<template name="evt_entry_OnChoicebookPageChanged">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
-		<template name="evt_entry_OnChoicebookPageChanging">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnChoicebookPageChanged">$name->Connect( wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnChoicebookPageChanging">EVT_CHOICEBOOK_PAGE_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnChoicebookPageChanging">$name->Connect( wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING, #handler, NULL, this );</template>
 	</templates>
 
 	<templates class="choicebookpage">
