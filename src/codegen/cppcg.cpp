@@ -595,7 +595,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		{
 			GenEvents( child, events );
 		}
-		GenConstructor( child );
+		GenConstructor( child, events );
 	}
 
     // namespace
@@ -614,30 +614,26 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	return true;
 }
 
-void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events, const wxString& className )
+void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events )
 {
 	if ( events.empty() )
 	{
 		return;
 	}
 
-	wxString class_name = className;
-	if ( className.empty() )
+	PProperty propName = class_obj->GetProperty( wxT("name") );
+	if ( !propName )
 	{
-		PProperty propName = class_obj->GetProperty( wxT("name") );
-		if ( !propName )
-		{
-			wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
-				class_obj->GetClassName().c_str());
-			return;
-		}
+		wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
+			class_obj->GetClassName().c_str());
+		return;
+	}
 
-		class_name = propName->GetValue();
-		if ( class_name.empty() )
-		{
-			wxLogError( wxT("Object name cannot be null") );
-			return;
-		}
+	wxString class_name = propName->GetValue();
+	if ( class_name.empty() )
+	{
+		wxLogError( wxT("Object name cannot be null") );
+		return;
 	}
 
 	wxString base_class;
@@ -1208,7 +1204,7 @@ void CppCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectInfo 
 	}
 }
 
-void CppCodeGenerator::GenConstructor( PObjectBase class_obj )
+void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector &events )
 {
 	m_source->WriteLn( wxT("") );
 	m_source->WriteLn( GetCode( class_obj, wxT("cons_def") ) );
@@ -1221,35 +1217,23 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj )
 		m_source->WriteLn( settings );
 	}
 
-	wxString className;
-	if ( m_useConnect )
-	{
-		PProperty propName = class_obj->GetProperty( wxT("name") );
-		if ( !propName )
-		{
-			wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
-				class_obj->GetClassName().c_str());
-			return;
-		}
-
-		className = propName->GetValue();
-		if ( className.empty() )
-		{
-			wxLogError( wxT("Object name cannot be null") );
-			return;
-		}
-	}
-
 	for ( unsigned int i = 0; i < class_obj->GetChildCount(); i++ )
 	{
-		GenConstruction( class_obj->GetChild( i ), true, className );
+		GenConstruction( class_obj->GetChild( i ), true );
+	}
+
+	if ( m_useConnect && !events.empty() )
+	{
+		m_source->WriteLn();
+		m_source->WriteLn( wxT("// Connect Events") );
+		GenEvents( class_obj, events );
 	}
 
 	m_source->Unindent();
 	m_source->WriteLn( wxT("}") );
 }
 
-void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, const wxString& className )
+void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 {
 	wxString type = obj->GetObjectTypeName();
 	PObjectInfo info = obj->GetObjectInfo();
@@ -1273,7 +1257,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, const wx
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
 			PObjectBase child = obj->GetChild( i );
-			GenConstruction( child, isWidget, className );
+			GenConstruction( child, isWidget );
 
 			if ( type == wxT("toolbar") )
 			{
@@ -1363,7 +1347,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, const wx
 	{
 		// El hijo, hay que añadirlo al sizer teniendo en cuenta el tipo
 		// del objeto hijo (hay 3 rutinas diferentes)
-		GenConstruction( obj->GetChild(0), false, className );
+		GenConstruction( obj->GetChild(0), false );
 
 		PObjectInfo childInfo = obj->GetChild(0)->GetObjectInfo();
 		wxString temp_name;
@@ -1393,7 +1377,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, const wx
 				type == wxT("choicebookpage")
 			)
 	{
-		GenConstruction( obj->GetChild( 0 ), false, className );
+		GenConstruction( obj->GetChild( 0 ), false );
 		m_source->WriteLn( GetCode( obj, wxT("page_add") ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 	}
@@ -1412,24 +1396,8 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, const wx
 		// Generate the children
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			GenConstruction( obj->GetChild( i ), false, className );
+			GenConstruction( obj->GetChild( i ), false );
 		}
-	}
-
-	if ( m_useConnect )
-	{
-		EventVector events;
-
-		for ( unsigned int i = 0; i < obj->GetEventCount(); i++ )
-		{
-			PEvent event = obj->GetEvent( i );
-			if ( !event->GetValue().IsEmpty() )
-			{
-				events.push_back( event );
-			}
-		}
-
-		GenEvents( obj, events, className );
 	}
 }
 

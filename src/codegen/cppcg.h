@@ -125,7 +125,7 @@ private:
 	/**
 	* Generates the event table.
 	*/
-	void GenEvents( PObjectBase class_obj, const EventVector &events, const wxString& className = wxEmptyString );
+	void GenEvents( PObjectBase class_obj, const EventVector &events );
 
 	/**
 	* helper function to find the event table entry template in the class or its base classes
@@ -175,14 +175,14 @@ private:
 	/**
 	* Generate the constructor of a classs
 	*/
-	void GenConstructor( PObjectBase class_obj );
+	void GenConstructor( PObjectBase class_obj, const EventVector &events );
 
 	/**
 	* Realiza la construcción de los objetos, configurando las propiedades del
 	* objeto y las de layout.
 	* El algoritmo es similar al de generación de la vista previa en el designer.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget, const wxString& className );
+	void GenConstruction( PObjectBase obj, bool is_widget );
 
 	/**
 	* Configura las propiedades del objeto, tanto las propias como las heredadas.
