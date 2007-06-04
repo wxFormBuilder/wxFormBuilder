@@ -4,28 +4,49 @@
   <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
+    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>	
 	<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginRDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_RDRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeEndDrag">$name->Connect( wxEVT_COMMAND_TREE_END_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_connect_OnTreeEndLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_END_LABEL_EDIT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+	<template name="evt_connect_OnTreeDeleteItem">$name->Connect( wxEVT_COMMAND_TREE_DELETE_ITEM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeGetInfo">EVT_TREE_GET_INFO( $id, #handler )</template>
+	<template name="evt_connect_OnTreeGetInfo">$name->Connect( wxEVT_COMMAND_TREE_GET_INFO, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeSetInfo">EVT_TREE_SET_INFO( $id, #handler )</template>
+	<template name="evt_connect_OnTreeSetInfo">$name->Connect( wxEVT_COMMAND_TREE_SET_INFO, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemActivated">$name->Connect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemCollapsed">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemCollapsing">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemExpanded">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemExpanding">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDING, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemRightClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemMiddleClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeSelChanged">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeSelChanging">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGING, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+	<template name="evt_connect_OnTreeKeyDown">$name->Connect( wxEVT_COMMAND_TREE_KEY_DOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemGetTooltip">EVT_TREE_ITEM_GETTOOLTIP( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemGetTooltip">$name->Connect( wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemMenu">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnTreeStateImageClick">$name->Connect( wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxHtmlWindow">
@@ -33,27 +54,43 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/html/htmlwin.h&gt;</template>
 	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnHtmlCellClicked">$name->Connect( wxEVT_COMMAND_HTML_CELL_CLICKED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnHtmlCellHover">EVT_HTML_CELL_HOVER( $id, #handler )</template>
+	<template name="evt_connect_OnHtmlCellHover">$name->Connect( wxEVT_COMMAND_HTML_CELL_HOVER, #handler, NULL, this );</template>
 	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnHtmlLinkClicked">$name->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, #handler, NULL, this );</template>
   </templates>
-  
+    
   <templates class="wxRichTextCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
 	<template name="include">@#include &lt;wx/richtext/richtextctrl.h&gt;</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
+	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextURL">EVT_TEXT_URL( $id, #handler )</template>
+	<template name="evt_connect_OnTextURL">$name->Connect( wxEVT_COMMAND_TEXT_URL, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextMaxLen">EVT_TEXT_MAXLEN( $id, #handler )</template>
+	<template name="evt_connect_OnTextMaxLen">$name->Connect( wxEVT_COMMAND_TEXT_MAXLEN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextCharacter">EVT_RICHTEXT_CHARACTER( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextCharacter">$name->Connect( wxEVT_COMMAND_RICHTEXT_CHARACTER, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextDelete">EVT_RICHTEXT_DELETE( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextDelete">$name->Connect( wxEVT_COMMAND_RICHTEXT_DELETE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextReturn">EVT_RICHTEXT_RETURN( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextReturn">$name->Connect( wxEVT_COMMAND_RICHTEXT_RETURN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextStyleChanged">EVT_RICHTEXT_STYLE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextStyleChanged">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextStyleSheetChanged">EVT_RICHTEXT_STYLESHEET_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextStyleSheetChanged">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextStyleSheetReplacing">EVT_RICHTEXT_STYLESHEET_REPLACING( $id, #handler )</template>
-	<template name="evt_entry_OnRichTextStyleSheetReplaced">EVT_RICHTEXT_STYLESHEET_REPLACED( $id, #handler )</template> 
-	<template name="evt_entry_OnRichTextContentInserted">EVT_RICHTEXT_CONTENT_INSERTED( $id, #handler )</template> 
+	<template name="evt_connect_OnRichTextStyleSheetReplacing">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING, #handler, NULL, this );</template>
+	<template name="evt_entry_OnRichTextStyleSheetReplaced">EVT_RICHTEXT_STYLESHEET_REPLACED( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextStyleSheetReplaced">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED, #handler, NULL, this );</template> 
+	<template name="evt_entry_OnRichTextContentInserted">EVT_RICHTEXT_CONTENT_INSERTED( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextContentInserted">$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED, #handler, NULL, this );</template> 
 	<template name="evt_entry_OnRichTextContentDeleted">EVT_RICHTEXT_CONTENT_DELETED( $id, #handler )</template>
+	<template name="evt_connect_OnRichTextContentDeleted">$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxCheckListBox">
@@ -73,8 +110,11 @@
     </template>
     <template name="include">@#include &lt;wx/checklst.h&gt;</template>
 	<template name="evt_entry_OnCheckListBoxToggled">EVT_CHECKLISTBOX( $id, #handler )</template>
+	<template name="evt_connect_OnCheckListBoxToggled">$name->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCheckListBox">EVT_LISTBOX( $id, #handler )</template>
+	<template name="evt_connect_OnCheckListBox">$name->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
+	<template name="evt_connect_OnCheckListBoxDClick">$name->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxGrid">
@@ -154,37 +194,69 @@
 		@}
     </template>
 	<template name="evt_entry_OnGridCellLeftClick">EVT_GRID_CELL_LEFT_CLICK( #handler )</template>
+	<template name="evt_connect_OnGridCellLeftClick">$name->Connect( wxEVT_GRID_CELL_LEFT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCellRightClick">EVT_GRID_CELL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_connect_OnGridCellRightClick">$name->Connect( wxEVT_GRID_CELL_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCellLeftDClick">EVT_GRID_CELL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_connect_OnGridCellLeftDClick">$name->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCellRightDClick">EVT_GRID_CELL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_connect_OnGridCellRightDClick">$name->Connect( wxEVT_GRID_CELL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridLabelLeftClick">EVT_GRID_LABEL_LEFT_CLICK( #handler )</template>
+	<template name="evt_connect_OnGridLabelLeftClick">$name->Connect( wxEVT_GRID_LABEL_LEFT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridLabelRightClick">EVT_GRID_LABEL_RIGHT_CLICK( #handler )</template>
+	<template name="evt_connect_OnGridLabelRightClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridLabelLeftDClick">EVT_GRID_LABEL_LEFT_DCLICK( #handler )</template>
+	<template name="evt_connect_OnGridLabelLeftDClick">$name->Connect( wxEVT_GRID_LABEL_LEFT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
+	<template name="evt_connect_OnGridLabelRightDClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
+	<template name="evt_connect_OnGridCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
+	<template name="evt_connect_OnGridSelectCell">$name->Connect( wxEVT_GRID_SELECT_CELL, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridEditorHidden">EVT_GRID_EDITOR_HIDDEN( #handler )</template>
+	<template name="evt_connect_OnGridEditorHidden">$name->Connect( wxEVT_GRID_EDITOR_HIDDEN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridEditorShown">EVT_GRID_EDITOR_SHOWN( #handler )</template>
+	<template name="evt_connect_OnGridEditorShown">$name->Connect( wxEVT_GRID_EDITOR_SHOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellLeftClick">EVT_GRID_CMD_CELL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellLeftClick">$name->Connect( wxEVT_GRID_CELL_LEFT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellRightClick">EVT_GRID_CMD_CELL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellRightClick">$name->Connect( wxEVT_GRID_CELL_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellLeftDClick">EVT_GRID_CMD_CELL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellLeftDClick">$name->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellRightDClick">EVT_GRID_CMD_CELL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellRightDClick">$name->Connect( wxEVT_GRID_CELL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdLabelLeftClick">EVT_GRID_CMD_LABEL_LEFT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdLabelLeftClick">$name->Connect( wxEVT_GRID_LABEL_LEFT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdLabelRightClick">EVT_GRID_CMD_LABEL_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdLabelRightClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdLabelLeftDClick">EVT_GRID_CMD_LABEL_LEFT_DCLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdLabelLeftDClick">$name->Connect( wxEVT_GRID_LABEL_LEFT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdLabelRightDClick">EVT_GRID_CMD_LABEL_RIGHT_DCLICK( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdLabelRightDClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellChange">EVT_GRID_CMD_CELL_CHANGE( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdSelectCell">EVT_GRID_CMD_SELECT_CELL( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdSelectCell">$name->Connect( wxEVT_GRID_SELECT_CELL, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdEditorHidden">EVT_GRID_CMD_EDITOR_HIDDEN( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdEditorHidden">$name->Connect( wxEVT_GRID_EDITOR_HIDDEN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdEditorShown">EVT_GRID_CMD_EDITOR_SHOWN( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdEditorShown">$name->Connect( wxEVT_GRID_EDITOR_SHOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridColSize">EVT_GRID_COL_SIZE( #handler )</template>
+	<template name="evt_connect_OnGridColSize">$name->Connect( wxEVT_GRID_COL_SIZE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridRowSize">EVT_GRID_ROW_SIZE( #handler )</template>
+	<template name="evt_connect_OnGridRowSize">$name->Connect( wxEVT_GRID_ROW_SIZE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdColSize">EVT_GRID_CMD_COL_SIZE( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdColSize">$name->Connect( wxEVT_GRID_COL_SIZE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdRowSize">EVT_GRID_CMD_ROW_SIZE( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdRowSize">$name->Connect( wxEVT_GRID_ROW_SIZE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridRangeSelect">EVT_GRID_RANGE_SELECT( #handler )</template>
+	<template name="evt_connect_OnGridRangeSelect">$name->Connect( wxEVT_GRID_RANGE_SELECT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdRangeSelect">EVT_GRID_CMD_RANGE_SELECT( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdRangeSelect">$name->Connect( wxEVT_GRID_RANGE_SELECT, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridEditorCreated">EVT_GRID_EDITOR_CREATED( #handler )</template>
+	<template name="evt_connect_OnGridEditorCreated">$name->Connect( wxEVT_GRID_EDITOR_CREATED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
+	<template name="evt_connect_OnGridCmdEditorCreated">$name->Connect( wxEVT_GRID_EDITOR_CREATED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxToggleButton">
@@ -192,6 +264,7 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
     <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
 	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
+	<template name="evt_connect_OnToggleButton">$name->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxColourPickerCtrl">
@@ -206,6 +279,7 @@
     </template>
     <template name="include">@#include &lt;wx/clrpicker.h&gt;</template>
     <template name="evt_entry_OnColourChanged">EVT_COLOURPICKER_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnColourChanged">$name->Connect( wxEVT_COMMAND_COLOURPICKER_CHANGED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxFontPickerCtrl">
@@ -224,6 +298,7 @@
 	</template>
     <template name="include">@#include &lt;wx/fontpicker.h&gt;</template>
     <template name="evt_entry_OnFontChanged">EVT_FONTPICKER_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnFontChanged">$name->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxFilePickerCtrl">
@@ -233,6 +308,7 @@
     </template>
     <template name="include">@#include &lt;wx/filepicker.h&gt;</template>
     <template name="evt_entry_OnFileChanged">EVT_FILEPICKER_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnFileChanged">$name->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxDirPickerCtrl">
@@ -242,6 +318,7 @@
     </template>
     <template name="include">@#include &lt;wx/filepicker.h&gt;</template>
     <template name="evt_entry_OnDirChanged">EVT_DIRPICKER_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDirChanged">$name->Connect( wxEVT_COMMAND_DIRPICKER_CHANGED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxDatePickerCtrl">
@@ -249,18 +326,25 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/datectrl.h&gt;</template>
 	<template name="evt_entry_OnDateChanged">EVT_DATE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDateChanged">$name->Connect( wxEVT_DATE_CHANGED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxCalendarCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/calctrl.h&gt;</template>
 	<template name="evt_entry_OnCalendar">EVT_CALENDAR( $id, #handler )</template>
+	<template name="evt_connect_OnCalendar">$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarSelChanged">$name->Connect( wxEVT_CALENDAR_SEL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarDay">$name->Connect( wxEVT_CALENDAR_DAY_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarMonth">$name->Connect( wxEVT_CALENDAR_MONTH_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarYear">EVT_CALENDAR_YEAR( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarYear">$name->Connect( wxEVT_CALENDAR_YEAR_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarWeekDayClicked">$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler, NULL, this );</template>
   </templates>
   
   <templates class="wxScrollBar">
@@ -268,25 +352,65 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/scrolbar.h&gt;</template>
 	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
+	<template name="evt_connect_OnScroll">
+		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );		
+	</template>
 	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
+	<template name="evt_connect_OnScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollBottom">EVT_SCROLL_BOTTOM( #handler )</template>
+	<template name="evt_connect_OnScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollLineUp">EVT_SCROLL_LINEUP( #handler )</template>
+	<template name="evt_connect_OnScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollLineDown">EVT_SCROLL_LINEDOWN( #handler )</template>
+	<template name="evt_connect_OnScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollPageUp">EVT_SCROLL_PAGEUP( #handler )</template>
+	<template name="evt_connect_OnScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollPageDown">EVT_SCROLL_PAGEDOWN( #handler )</template>
+	<template name="evt_connect_OnScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollThumbTrack">EVT_SCROLL_THUMBTRACK( #handler )</template>
+	<template name="evt_connect_OnScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollThumbRelease">EVT_SCROLL_THUMBRELEASE( #handler )</template>
+	<template name="evt_connect_OnScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
+	<template name="evt_connect_OnScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScroll">	
+		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );	
+	</template>
 	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollBottom">EVT_COMMAND_SCROLL_BOTTOM( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollBottom">$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollLineUp">EVT_COMMAND_SCROLL_LINEUP( $id, #handler )</template>
-	<template name="evt_entry_OnCommandScrollLinDown">EVT_COMMAND_SCROLL_LINEDOWN( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollLineUp">$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this );</template>
+	<template name="evt_entry_OnCommandScrollLineDown">EVT_COMMAND_SCROLL_LINEDOWN( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollLineDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollPageUp">EVT_COMMAND_SCROLL_PAGEUP( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollPageUp">$name->Connect( wxEVT_SCROLL_PAGEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollPageDown">EVT_COMMAND_SCROLL_PAGEDOWN( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollPageDown">$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollThumbTrack">EVT_COMMAND_SCROLL_THUMBTRACK( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollThumbTrack">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollThumbRelease">EVT_COMMAND_SCROLL_THUMBRELEASE( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxSpinCtrl">
@@ -294,7 +418,9 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial);</template>
     <template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
 	<template name="evt_entry_OnSpinCtrl">EVT_SPINCTRL( $id, #handler )</template>
+	<template name="evt_connect_OnSpinCtrl">$name->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnSpinCtrlText">EVT_TEXT( $id, #handler )</template>
+	<template name="evt_connect_OnSpinCtrlText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxSpinButton">
@@ -302,8 +428,11 @@
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="include">@#include &lt;wx/spinbutt.h&gt;</template>
 	<template name="evt_entry_OnSpin">EVT_SPIN( $id, #handler )</template>
+	<template name="evt_connect_OnSpin">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnSpinUp">EVT_SPIN_UP( $id, #handler )</template>
+	<template name="evt_connect_OnSpinUp">$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this );</template>
 	<template name="evt_entry_OnSpinDown">EVT_SPIN_DOWN( $id, #handler )</template>
+	<template name="evt_connect_OnSpinDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
   </templates>
 
 </codegen>
