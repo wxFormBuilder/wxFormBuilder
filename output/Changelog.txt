@@ -3,6 +3,9 @@
 date Version 3.00.44 (Beta 3)
 * Fixed FS#193 - "Missing wxTE_PROCESS_ENTER in style of wxComboBox."
 + Added wxStaticText::Wrap().
++ Implemented FS#192 - "Add support for dynamic event handling via Connect() methods."
+  Connect() is now the default implementation of event handling.
+  See the "event_generation" property of the Project object.
 
 05-29-2007 Version 3.00.43 (Beta 3)
 ^ Updated to wxFlatNotebook 2.2 - building with wx2.6.x is no longer supported.
