@@ -263,10 +263,4 @@
 	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
   </templates>
 
-  <templates class="CustomControl">
-    <template name="declaration">$declaration</template>
-    <template name="construction">$construction</template>
-    <template name="settings">$settings</template>
-	<template name="include">$include</template>
-  </templates>
 </codegen>
