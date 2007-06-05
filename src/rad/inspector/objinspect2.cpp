@@ -1221,8 +1221,25 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 {
 	PProperty prop = event.GetFBProperty();
 
-	if (prop->GetObject() != AppData()->GetSelectedObject())
-	  return;
+	PObjectBase propobj = prop->GetObject();
+	PObjectBase appobj = AppData()->GetSelectedObject();
+
+	bool shouldContinue = ( prop->GetObject() == AppData()->GetSelectedObject() );
+	if ( !shouldContinue )
+	{
+		// Item objects cannot be selected - their children are selected instead
+		if ( propobj->GetObjectInfo()->GetObjectType()->IsItem() )
+		{
+			if ( propobj->GetChildCount() > 0 )
+			{
+				shouldContinue = ( appobj == propobj->GetChild( 0 ) );
+			}
+		}
+	}
+	if ( !shouldContinue )
+	{
+		return;
+	}
 
 	wxPGId pgid = m_pg->GetPropertyByLabel(prop->GetName());
 	if (!pgid.IsOk()) return; // Puede que no se esté mostrando ahora esa página
