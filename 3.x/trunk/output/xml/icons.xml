@@ -6,28 +6,28 @@
 	<icon name="app32" 			file="logo.png"/>
 
 	<!-- Toolbar Icons -->
-	<icon name="new" 			file="new.png"			/>
-	<icon name="open" 		file="open.png"			/>
-	<icon name="save" 		file="save.png"			/>
-	<icon name="undo" 		file="undo.png"			/>
-	<icon name="redo" 		file="redo.png"			/>
-	<icon name="copy" 		file="copy.xpm"			/>
-	<icon name="paste" 		file="paste.png"		/>
-	<icon name="cut" 			file="cut.png"			/>
-	<icon name="delete" 	file="delete.png"		/>
-	<icon name="generate" file="generate.png" />
-	<icon name="lalign" 	file="lalign.xpm"		/>
-	<icon name="chalign" 	file="chalign.xpm"	/>
-	<icon name="ralign" 	file="ralign.xpm"		/>
-	<icon name="talign" 	file="talign.xpm"		/>
-	<icon name="cvalign" 	file="cvalign.xpm"	/>
-	<icon name="balign" 	file="balign.xpm"		/>
-	<icon name="expand" 	file="expand.xpm"		/>
-	<icon name="stretch" 	file="stretch.xpm"	/>
-	<icon name="left" 		file="left.xpm"			/>
-	<icon name="right" 		file="right.xpm"		/>
-	<icon name="top" 			file="top.xpm"			/>
-	<icon name="bottom" 	file="bottom.xpm"		/>
+	<icon name="new" 		file="new.png"		/>
+	<icon name="open" 		file="open.png"		/>
+	<icon name="save" 		file="save.png"		/>
+	<icon name="undo" 		file="undo.png"		/>
+	<icon name="redo" 		file="redo.png"		/>
+	<icon name="copy" 		file="copy.xpm"		/>
+	<icon name="paste" 		file="paste.png"	/>
+	<icon name="cut"		file="cut.png"		/>
+	<icon name="delete" 	file="delete.png"	/>
+	<icon name="generate"	file="generate.png"	/>
+	<icon name="lalign" 	file="lalign.png"	/>
+	<icon name="chalign" 	file="chalign.png"	/>
+	<icon name="ralign" 	file="ralign.png"	/>
+	<icon name="talign" 	file="talign.png"	/>
+	<icon name="cvalign" 	file="cvalign.png"	/>
+	<icon name="balign" 	file="balign.png"	/>
+	<icon name="expand" 	file="expand.png"	/>
+	<icon name="stretch" 	file="stretch.png"	/>
+	<icon name="left" 		file="left.xpm"		/>
+	<icon name="right" 		file="right.xpm"	/>
+	<icon name="top" 		file="top.xpm"		/>
+	<icon name="bottom" 	file="bottom.xpm"	/>
 
 	<!-- Object Tree -->
 	<icon name="project" 	file="project.xpm"	/>
@@ -36,11 +36,11 @@
 	<!-- <icon name="unknown" file="unknown.xpm"/> -->
 
 	<!-- Visual Editor -->
-	<icon name="cpp" 			file="cpp.png"			/>
-	<icon name="h" 				file="h.png"				/>
-	<icon name="designer" file="designer.png"	/>
-	<icon name="c++" 			file="c++.png"			/>
-	<icon name="xrc" 			file="xrc.png"			/>
+	<icon name="cpp" 			file="cpp.png"		/>
+	<icon name="h" 				file="h.png"		/>
+	<icon name="designer"		file="designer.png"	/>
+	<icon name="c++" 			file="c++.png"		/>
+	<icon name="xrc" 			file="xrc.png"		/>
 
 
 </icons>
