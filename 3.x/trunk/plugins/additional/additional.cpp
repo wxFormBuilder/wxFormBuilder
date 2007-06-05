@@ -876,6 +876,15 @@ void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& event )
 
 #endif
 
+class CustomControlComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -889,6 +898,7 @@ WINDOW_COMPONENT("wxGrid",GridComponent)
 WINDOW_COMPONENT("wxScrollBar",ScrollBarComponent)
 WINDOW_COMPONENT("wxSpinCtrl",SpinCtrlComponent)
 WINDOW_COMPONENT("wxSpinButton",SpinButtonComponent)
+WINDOW_COMPONENT("CustomControl", CustomControlComponent)
 
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
