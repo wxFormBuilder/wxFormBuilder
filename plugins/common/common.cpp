@@ -1178,6 +1178,15 @@ public:
 
 };
 
+class CustomControlComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1211,6 +1220,7 @@ ABSTRACT_COMPONENT("toolSeparator", ToolSeparatorComponent)
 WINDOW_COMPONENT("wxChoice", ChoiceComponent)
 WINDOW_COMPONENT("wxSlider", SliderComponent)
 WINDOW_COMPONENT("wxGauge", GaugeComponent)
+WINDOW_COMPONENT("CustomControl", CustomControlComponent)
 
 // wxWindow style macros
 MACRO(wxSIMPLE_BORDER)
