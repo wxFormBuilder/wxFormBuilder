@@ -743,10 +743,9 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	wxString name = prop->GetName();
 	wxVariant vTrue = wxVariant( true, wxT("true") );
 
-	if (type == PT_TEXT || type == PT_MACRO)
+	if (type == PT_MACRO)
 	{
 		result = wxStringProperty(name, wxPG_LABEL, prop->GetValueAsString());
-		result->SetAttribute(wxPG_BOOL_USE_DOUBLE_CLICK_CYCLING, vTrue);
 	}
 	else if (type == PT_INT)
 	{
@@ -756,7 +755,7 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	{
 		result = wxUIntProperty(name, wxPG_LABEL, (unsigned)prop->GetValueAsInteger());
 	}
-  	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
+  	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N || type == PT_TEXT)
 	{
 		result = wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
 	}

@@ -260,4 +260,12 @@
       <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
   </objectinfo>
 
+  <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
+	<property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
+    <property name="declaration" type="text" help="Code to generate for the declaration of this control."/>
+    <property name="construction" type="text" help="Code to generate for the construction of this control."/>
+	<property name="include" type="text" help="Code to generate for the include statements for this control."/>
+	<property name="settings" type="text" help="Code to generate for the settings of this control."/>
+  </objectinfo>
+  
 </package>

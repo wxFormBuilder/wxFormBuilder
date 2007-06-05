@@ -1351,7 +1351,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 
 		PObjectInfo childInfo = obj->GetChild(0)->GetObjectInfo();
 		wxString temp_name;
-		if ( childInfo->IsSubclassOf( wxT("wxWindow") ) )
+		if ( childInfo->IsSubclassOf( wxT("wxWindow") ) || wxT("CustomControl") == childInfo->GetClassName() )
 		{
 			temp_name = wxT("window_add");
 		}
