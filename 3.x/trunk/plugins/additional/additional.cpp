@@ -46,6 +46,7 @@
 	#include <wx/clrpicker.h>
 	#include <wx/fontpicker.h>
 	#include <wx/filepicker.h>
+	#include <wx/hyperlink.h>
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -874,6 +875,42 @@ void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& event )
 	}
 }
 
+class HyperlinkComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxHyperlinkCtrl* ctrl = new wxHyperlinkCtrl(
+			(wxWindow*)parent, -1,
+			obj->GetPropertyAsString(_("label")),
+			obj->GetPropertyAsString(_("url")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
+			);
+
+		return ctrl;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxHyperlinkCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("url"),_("url"),XRC_TYPE_TEXT);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxHyperlinkCtrl"));
+		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("url"),_("url"),XRC_TYPE_TEXT);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
 #endif
 
 class CustomControlComponent : public ComponentBase
@@ -940,6 +977,15 @@ MACRO(wxDIRP_DEFAULT_STYLE)
 MACRO(wxDIRP_USE_TEXTCTRL)
 MACRO(wxDIRP_DIR_MUST_EXIST)
 MACRO(wxDIRP_CHANGE_DIR)
+
+// wxHyperlinkCtrl
+WINDOW_COMPONENT("wxHyperlinkCtrl", HyperlinkComponent)
+MACRO(wxHL_ALIGN_LEFT)
+MACRO(wxHL_ALIGN_RIGHT)
+MACRO(wxHL_ALIGN_CENTRE)
+MACRO(wxHL_CONTEXTMENU)
+MACRO(wxHL_DEFAULT_STYLE)
+
 
 #endif
 
