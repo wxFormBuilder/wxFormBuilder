@@ -362,8 +362,11 @@
   <objectinfo class="wxHyperlinkCtrl" icon="hyperlink_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_hyperlink</property>
-	<property name="label" type="wxString_i18n">hyperlink</property>
-	<property name="url" type="wxString"></property>
+	<property name="label" type="wxString_i18n" help="Text of the hyperlink">wxFB Website</property>
+	<property name="url" type="wxString" help="Target of the hyperlink">http://www.wxformbuilder.org</property>
+	<property name="hover_color" type="wxColour" help="The colour used to print the label of the hyperlink when the mouse is over the control."/>
+	<property name="normal_color" type="wxColour" help="The colour used to print the label when the link has never been clicked before (i.e. the link has not been visited) and the mouse is not over the control."/>
+	<property name="visited_color" type="wxColour" help="The colour used to print the label when the mouse is not over the control and the link has already been clicked before (i.e. the link has been visited)."/>
     <property name="style" type="bitlist">
 		<option name="wxHL_ALIGN_LEFT" help="Align the text to the left."/>
 		<option name="wxHL_ALIGN_RIGHT" help="Align the text to the right."/>

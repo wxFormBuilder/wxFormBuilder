@@ -12,6 +12,7 @@ date Version 3.00.44 (Beta 3)
 + Added CustomControl - This allows the user to generate arbitrary code for a 
   control which is not yet fully supported by wxFormBuilder.
 ^ Updated a bunch of icons. This completes the new theme in wxFormBuilder.
++ Added wxHyperlinkCtrl.
 
 05-29-2007 Version 3.00.43 (Beta 3)
 ^ Updated to wxFlatNotebook 2.2 - building with wx2.6.x is no longer supported.
