@@ -438,8 +438,19 @@
   <templates class="wxHyperlinkCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $label, $url, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="settings">
+    	#ifnotnull $hover_color
+    	@{ #nl $name->SetHoverColour( $hover_color ); @}
+    	
+    	#ifnotnull $normal_color
+    	@{ #nl $name->SetNormalColour( $normal_color ); @}
+    	
+    	#ifnotnull $visited_color
+    	@{ #nl $name->SetVisitedColour( $visited_color ); @}
+    </template>
     <template name="include">@#include &lt;wx/hyperlink.h&gt;</template>
 	<template name="evt_entry_OnHyperlink">EVT_HYPERLINK( $id, #handler )</template>
+	<template name="evt_connect_OnHyperlink">$name->Connect( wxEVT_COMMAND_HYPERLINK, #handler, NULL, this );</template>
   </templates>
 
   <templates class="CustomControl">

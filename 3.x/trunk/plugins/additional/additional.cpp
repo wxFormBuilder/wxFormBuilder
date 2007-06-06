@@ -889,6 +889,19 @@ public:
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))
 			);
 
+		if ( !obj->IsNull( _("hover_color") ) )
+		{
+			ctrl->SetHoverColour( obj->GetPropertyAsColour( _("hover_color") ) );
+		}
+		if ( !obj->IsNull( _("normal_color") ) )
+		{
+			ctrl->SetNormalColour( obj->GetPropertyAsColour( _("normal_color") ) );
+		}
+		if ( !obj->IsNull( _("visited_color") ) )
+		{
+			ctrl->SetVisitedColour( obj->GetPropertyAsColour( _("visited_color") ) );
+		}
+
 		return ctrl;
 	}
 
