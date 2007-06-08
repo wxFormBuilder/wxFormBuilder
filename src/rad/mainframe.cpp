@@ -1339,7 +1339,7 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 {
 	long nbStyle;
 	wxConfigBase* config = wxConfigBase::Get();
-	config->Read( wxT("/mainframe/editor/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
+	config->Read( wxT("/mainframe/editor/notebook_style"), &nbStyle, wxFNB_BOTTOM | wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
 
 	m_notebook = new wxFlatNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, nbStyle );
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );

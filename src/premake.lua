@@ -32,11 +32,13 @@ package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
 package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml", "../sdk/plugin_interface" }
+package.libpaths = { "../output", "../sdk/lib" }
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 -- Set the packages dependancies.
 package.depends = { "additional-components-plugin", "common-components-plugin", "containers-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
-package.libpaths = { "../output", "../sdk/lib" }
+-- Set the pre-compiled header
+package.pchheader = "pch.h"
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
 if ( OS == "windows") then
