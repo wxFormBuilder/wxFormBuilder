@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.45 (Beta 3)
+* Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
+
 06-06-2007 Version 3.00.44 (Beta 3)
 * Fixed FS#193 - "Missing wxTE_PROCESS_ENTER in style of wxComboBox."
 * Fixed FS#178 - "crash using toolbar"
