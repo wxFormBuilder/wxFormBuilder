@@ -437,7 +437,7 @@
   
   <templates class="wxHyperlinkCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $label, $url, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="settings">
     	#ifnotnull $hover_color
     	@{ #nl $name->SetHoverColour( $hover_color ); @}
