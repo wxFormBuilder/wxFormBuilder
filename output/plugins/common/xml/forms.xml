@@ -62,7 +62,7 @@
 	  wxDEFAULT_FRAME_STYLE
 	</property>
     <property name="extra_style" type="bitlist">
-	  <option name="wxFRAME_EX_CONTEXTHELP" help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. Note that this is an extended style and must be set by calling SetExtraStyle before Create is called (two-step construction). You cannot use this style together with wxMAXIMIZE_BOX or wxMINIMIZE_BOX, so you should use wxDEFAULT_FRAME_STYLE & ~ (wxMINIMIZE_BOX | wxMAXIMIZE_BOX) for the frames having this style (the dialogs don't have a minimize or a maximize box by default)"/>
+	  <option name="wxFRAME_EX_CONTEXTHELP" help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. You cannot use this style together with wxMAXIMIZE_BOX or wxMINIMIZE_BOX, so you should use wxDEFAULT_FRAME_STYLE & ~ (wxMINIMIZE_BOX | wxMAXIMIZE_BOX) for the frames having this style (the dialogs don't have a minimize or a maximize box by default). Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
       <option name="wxFRAME_EX_METAL" help="On Mac OS X, frames with this style will be shown with a metallic look. This is an extra style."/>
 	</property>
 	<property name="center" type="option"		help="Centers the dialog box on the display in the chosen direction.">
@@ -105,7 +105,7 @@
 	  wxDEFAULT_DIALOG_STYLE
 	</property>
 	<property name="extra_style" type="bitlist">
-	  <option name="wxDIALOG_EX_CONTEXTHELP"	help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. Note that this is an extended style and must be set by calling SetExtraStyle before Create is called (two-step construction)."/>
+	  <option name="wxDIALOG_EX_CONTEXTHELP"	help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
       <option name="wxDIALOG_EX_METAL" 			help="On Mac OS X, frames with this style will be shown with a metallic look. This is an extra style."/>
 	</property>
 	<property name="center" type="option"		help="Centers the dialog box on the display in the chosen direction.">
