@@ -2,6 +2,12 @@
 ************************************************************************
 date Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
++ Added support for context-sensitive help.
+  To Use:
+  Set the Project's "help_provider" property to one of the help providers listed.
+  Set the "context_help" wxWindow property on any widget.
+  wxMSW: Use the wxDIALOG_EX_CONTEXTHELP extra style on the dialog or frame.
+  Others: Add a wxContextHelpButton by using wxStdDialogButtonSizer.
 
 06-06-2007 Version 3.00.44 (Beta 3)
 * Fixed FS#193 - "Missing wxTE_PROCESS_ENTER in style of wxComboBox."

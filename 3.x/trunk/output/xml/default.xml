@@ -28,11 +28,17 @@
 		  <option name="UTF-8" />
 		  <option name="ANSI" />UTF-8
 		</property>
-		<property name="namespace" type="stringlist" help="For C++ Only. Namespaces to wrap class declarations in."></property>
+		<property name="namespace" type="stringlist" help="For C++ Only. Namespaces to wrap class declarations in."/>
 		<property name="event_generation" type="option" help="For C++ Only. Type of event connection to generate.">
-		  <option name="connect" help="Use the Connect() function to link event handlers to events"/>
-		  <option name="table" help="Use event macro tables to link event handlers to events"/>
+		  <option name="connect" help="Use the Connect() function to link event handlers to events."/>
+		  <option name="table" help="Use event macro tables to link event handlers to events."/>
 		  connect
+		</property>
+		<property name="help_provider" type="option" help="For C++ Only. The class of help provider to use for context-sensitive help.">
+			<option name="none" help="No support for context-sensitive help."/>
+			<option name="wxSimpleHelpProvider" help="Use wxSimpleHelpProvider to provide context-sensitive help."/>
+			<option name="wxHelpControllerHelpProvider" help="Use wxHelpControllerHelpProvider to provide context-sensitive help."/>
+			none
 		</property>
 	</category>
 	<category name="XRC Properties">
@@ -80,6 +86,7 @@
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
     <property name="tooltip" type="wxString_i18n"   help="Attach a tooltip to the window."/>
+	<property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
     <property name="enabled" type="bool"            help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>
     <property name="hidden" type="bool"             help="Shows or hides the window.">0</property>
     <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
