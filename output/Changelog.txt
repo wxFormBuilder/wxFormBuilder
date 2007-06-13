@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.45 (Beta 3)
+06/13/2007 Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
 + Added support for context-sensitive help.
   To Use:
@@ -8,6 +8,8 @@ date Version 3.00.45 (Beta 3)
   Set the "context_help" wxWindow property on any widget.
   wxMSW: Use the wxDIALOG_EX_CONTEXTHELP extra style on the dialog or frame.
   Others: Add a wxContextHelpButton by using wxStdDialogButtonSizer.
+^ Updated the about dialog to include more details about the people involved in
+  the project.
 
 06-06-2007 Version 3.00.44 (Beta 3)
 * Fixed FS#193 - "Missing wxTE_PROCESS_ENTER in style of wxComboBox."
