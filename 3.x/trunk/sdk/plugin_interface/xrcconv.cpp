@@ -551,7 +551,11 @@ void XrcToXfbFilter::AddStyleProperty()
 
 		}
 
-		AddPropertyValue( wxT( "style" ), style );
+		if ( !style.empty() )
+		{
+			AddPropertyValue( wxT( "style" ), style );
+		}
+
 		AddPropertyValue( wxT( "window_style" ), windowStyle );
 	}
 	catch( ticpp::Exception& ex )
@@ -599,7 +603,10 @@ void XrcToXfbFilter::AddExtraStyleProperty()
 
 		}
 
-		AddPropertyValue( wxT( "extra_style" ), style );
+		if ( !style.empty() )
+		{
+			AddPropertyValue( wxT( "extra_style" ), style );
+		}
 		AddPropertyValue( wxT( "window_extra_style" ), windowStyle );
 	}
 	catch( ticpp::Exception& ex )
@@ -909,6 +916,23 @@ void XrcToXfbFilter::AddWindowProperties()
 	AddProperty( _( "bg" ), _( "bg" ), XRC_TYPE_COLOUR );
 	AddProperty( _( "fg" ), _( "fg" ), XRC_TYPE_COLOUR );
 	AddProperty( _( "font" ), _( "font" ), XRC_TYPE_FONT );
+	if ( m_xrcObj->FirstChildElement( "enabled", false ) )
+	{
+		AddProperty( _( "enabled"), _("enabled"), XRC_TYPE_BOOL );
+	}
+	AddProperty( _( "hidden"), _("hidden"), XRC_TYPE_BOOL );
+	AddProperty( _( "tooltip"), _("tooltip"), XRC_TYPE_TEXT );
 	AddStyleProperty();
 	AddExtraStyleProperty();
+
+	// Subclass
+	std::string subclass;
+	m_xrcObj->GetAttribute( "subclass", &subclass, false );
+	if ( !subclass.empty() )
+	{
+		ticpp::Element propElement( "property" );
+		propElement.SetAttribute( "name", "subclass" );
+		propElement.SetText( subclass );
+		m_xfbObj->LinkEndChild( &propElement );
+	}
 };
