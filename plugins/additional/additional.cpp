@@ -70,6 +70,8 @@ public:
 
 protected:
 	void OnGridClick( wxGridEvent& event );
+	void OnGridColSize( wxGridSizeEvent& event );
+	void OnGridRowSize( wxGridSizeEvent& event );
 	#if wxCHECK_VERSION( 2, 8, 0 )
 		void OnColourPickerColourChanged( wxColourPickerEvent& event );
 		void OnFontPickerFontChanged( wxFontPickerEvent& event );
@@ -89,6 +91,9 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 	EVT_GRID_LABEL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
+
+	EVT_GRID_COL_SIZE( ComponentEvtHandler::OnGridColSize )
+	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -596,6 +601,12 @@ public:
 			grid->SetColLabelValue( i, columnLabels[i] );
 		}
 
+		wxArrayInt columnSizes = obj->GetPropertyAsArrayInt( _("column_sizes") );
+		for ( int i = 0; i < (int)columnSizes.size() && i < grid->GetNumberCols(); ++i )
+		{
+			grid->SetColSize( i, columnSizes[i] );
+		}
+
 		grid->SetRowLabelAlignment( obj->GetPropertyAsInteger( _("row_label_horiz_alignment") ), obj->GetPropertyAsInteger( _("row_label_vert_alignment") ) );
 		grid->SetRowLabelSize( obj->GetPropertyAsInteger( _("row_label_size") ) );
 
@@ -603,6 +614,12 @@ public:
 		for ( int i = 0; i < (int)rowLabels.size() && i < grid->GetNumberRows(); ++i )
 		{
 			grid->SetRowLabelValue( i, rowLabels[i] );
+		}
+
+		wxArrayInt rowSizes = obj->GetPropertyAsArrayInt( _("row_sizes") );
+		for ( int i = 0; i < (int)rowSizes.size() && i < grid->GetNumberRows(); ++i )
+		{
+			grid->SetRowSize( i, rowSizes[i] );
 		}
 
 		if ( !obj->IsNull( _("label_bg") ) )
@@ -676,6 +693,42 @@ void ComponentEvtHandler::OnGridClick( wxGridEvent& event )
 {
 	m_manager->SelectObject( m_window );
 	event.Skip();
+}
+
+void ComponentEvtHandler::OnGridColSize( wxGridSizeEvent& event )
+{
+	wxGrid* grid = wxDynamicCast( m_window, wxGrid );
+	if ( NULL == grid )
+	{
+		return;
+	}
+
+	wxString sizes;
+	for ( int i = 0; i < grid->GetNumberCols(); ++i )
+	{
+		sizes += wxString::Format( wxT("%i,"), grid->GetColSize( i ) );
+	}
+	sizes = sizes.substr( 0, sizes.length() - 1 );
+
+	m_manager->ModifyProperty( m_window, _("column_sizes"), sizes, true );
+}
+
+void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& event )
+{
+	wxGrid* grid = wxDynamicCast( m_window, wxGrid );
+	if ( NULL == grid )
+	{
+		return;
+	}
+
+	wxString sizes;
+	for ( int i = 0; i < grid->GetNumberRows(); ++i )
+	{
+		sizes += wxString::Format( wxT("%i,"), grid->GetRowSize( i ) );
+	}
+	sizes = sizes.substr( 0, sizes.length() - 1 );
+
+	m_manager->ModifyProperty( m_window, _("row_sizes"), sizes, true );
 }
 
 #if wxCHECK_VERSION( 2, 8, 0 )

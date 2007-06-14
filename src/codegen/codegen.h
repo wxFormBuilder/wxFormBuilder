@@ -71,9 +71,10 @@
 *   Used to generate code as long as the property is not null
 *
 * - #foreach $property @{ ..... @}
-*   Used to repeat code for each subproperty of $property, where &propery is a comma delimited list.
+*   Used to repeat code for each subproperty of $property, where $property is a comma delimited list.
 *   The code is contained between '@{' and '@}'. The code will be generated as many times as there are subexpressions
-*   in the value of the property. Within the brace, access to the subexpression is obtained with the #pred directive.
+*   in the value of the property. Within the brace, access to the subexpression is obtained with the #pred directive, and
+*	access to index of the subexpression is obtained with #npred.
 *   Example:
 *    #foreach $growable_cols
 *    @{
@@ -81,6 +82,7 @@
 *    @}
 *
 * - #pred (see #foreach)
+* - #npred (see #foreach)
 *
 */
 
@@ -94,6 +96,7 @@ private:
 	wxStringInputStream m_in;
 	wxString m_out;
 	wxString m_pred;
+	wxString m_npred;
 	void ignore_whitespaces();
 
 protected:
@@ -114,6 +117,7 @@ protected:
 		ID_IFNULL,
 		ID_FOREACH,
 		ID_PREDEFINED,  // simbolo predefinido '#pred'
+		ID_PREDEFINED_INDEX, // #npred
 		ID_NEWLINE,
 		ID_IFEQUAL,
 		ID_IFNOTEQUAL,
@@ -181,6 +185,7 @@ protected:
 	bool ParseText();
 
 	bool ParsePred();
+	bool ParseNPred();
 
 public:
 	TemplateParser( PObjectBase obj, wxString _template);
@@ -217,10 +222,9 @@ public:
 	wxString ParseTemplate();
 
 	/**
-	* establece el texto predefinido, el cual será devuelto con la directiva
-	* #pred.
+	* Set the string for the #pred and #npred macros
 	*/
-	void SetPredefined(wxString pred) { m_pred = pred; };
+	void SetPredefined( wxString pred, wxString npred ) { m_pred = pred; m_npred = npred; };
 };
 
 /**

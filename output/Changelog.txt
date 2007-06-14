@@ -1,5 +1,10 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.46 (Beta 3)
++ Added "column_sizes" and "row_sizes" properties to wxGrid.
+  Resizing the columns/rows by dragging is the easiest way to use these.
+^ Reorganized wxGrid properties.
+
 06/13/2007 Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
 + Added support for context-sensitive help.
