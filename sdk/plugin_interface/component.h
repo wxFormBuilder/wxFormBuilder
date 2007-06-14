@@ -42,7 +42,7 @@ namespace ticpp
 
 class IComponent;
 
-// Secciones de la generacción de código
+// Sections for source code generation
 enum
 {
   CG_DECLARATION,
@@ -51,17 +51,16 @@ enum
   CG_SETTINGS
 };
 
-// Lenguajes de programación para la generacción de código
+// Programming languages for source code generation
 enum
 {
   CG_CPP
 };
 
 
-// interfaz para plugins
-// la idea es proporcionar una interfaz para acceder a las propiedades del
-// objeto de manera segura desde el plugin.
-
+// Plugins interface
+// The point is to provide an interface for accessing the object's properties
+// from the plugin itself, in a safe way.
 class IObject
 {
  public:
@@ -81,18 +80,18 @@ class IObject
   virtual ~IObject(){}
 };
 
-// Interfaz para almacenar todos los componentes de un plugin
-// es una clase abstracta y será el objeto que exportará la DLL.
+// Interface which intends to contain all the components for a plugin
+// This is an abstract class and it'll be the object that the DLL will export.
 class IComponentLibrary
 {
  public:
 
-  // usadas por el plugin para registrar los componentes y macros
+  // Used by the plugin for registering components and macros
   virtual void RegisterComponent(const wxString &text, IComponent *c) = 0;
   virtual void RegisterMacro(const wxString &text, const int value) = 0;
   virtual void RegisterMacroSynonymous(const wxString &text, const wxString &name) = 0;
 
-  // usadas por wxFormBuilder para extraer los componentes y macros
+  // Used by wxFormBuilder for recovering components and macros
   virtual IComponent* GetComponent(unsigned int idx) = 0;
   virtual wxString    GetComponentName(unsigned int idx) = 0;
   virtual wxString    GetMacroName(unsigned int i) = 0;
