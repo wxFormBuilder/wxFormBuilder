@@ -175,7 +175,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 			break;
 
 		case XRC_TYPE_TEXT:
-			// El texto ha de ser convertido a formato XRC
+			// The text must be converted to XRC format
 			{
 				wxString text = m_obj->GetPropertyAsString( objPropName );
 				LinkText( text, &propElement, true );
@@ -196,7 +196,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 			break;
 
 		case XRC_TYPE_STRINGLIST:
-			// LinkStringList convierte las cadenas a formato XRC
+			// LinkStringList converts strings to XRC format
 			LinkStringList( m_obj->GetPropertyAsArrayString( objPropName ), &propElement, true );
 			break;
 
@@ -810,7 +810,7 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 
 		if ( font.Ok() )
 		{
-			// Ya tenemos el tipo de letra, sólo nos queda pasarlo a formato wxFB
+			// We already have the font type. So we must now use the wxFB format
 			wxString font_str =
 				wxString::Format( wxT( "%s,%d,%d,%d" ), font.GetFaceName().c_str(), font.GetStyle(),
 								  font.GetWeight(), font.GetPointSize() );
@@ -847,7 +847,7 @@ void XrcToXfbFilter::ImportColourProperty( const wxString &xrcPropName, ticpp::E
 		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
 		std::string value = xrcProperty->GetText();
 
-		// convertimos el formato "#rrggbb" a "rrr,ggg,bbb"
+		// Changing "#rrggbb" format to "rrr,ggg,bbb"
 		std::string hexColour = "0x" + value.substr( 1, 2 ) +
 								" 0x" + value.substr( 3, 2 ) +
 		                        " 0x" + value.substr( 5, 2 );

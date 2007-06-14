@@ -43,13 +43,13 @@ namespace ticpp
 }
 
 /**
- * Filtro para exportar un objeto a formato XRC.
+ * Filter for exporting an objetc to XRC format.
  *
- * Esta clase sirve de ayuda para exportar un objeto a formato XRC, tan sólo
- * hay que configurar el "mapeado" de los nombres de las propiedades con su tipo
- * y se creará el elemento XML en formato XRC.
+ * This class helps exporting an objetc to XRC format. Just it's needed to setup
+ * the properties names' "mapping" with their types, and the XML element will be
+ * created in XRC format.
  *
- * Por ejemplo:
+ * For instance:
  *
  * @code
  *  ...
@@ -95,10 +95,10 @@ class ObjectToXrcFilter
 };
 
 /**
- * Filtro para exportar un objeto de formato XRC a formato XFB (Xml-FormBuilder)
+ * Filter for exporting an XRC object to XFB format (Xml-FormBuilder)
  *
- * La forma de uso es muy similar al filtro ObjectToXrcFilter, basta con ir
- * añadiendo las propiedades con su tipo.
+ * The usage is similar to the ObjectToXrcFilter filter. It's only
+ * needed to add the properties with their related types.
  *
  */
 class XrcToXfbFilter
@@ -142,4 +142,5 @@ class XrcToXfbFilter
 
   ticpp::Element *GetXrcProperty(const wxString &name);
 };
+
 

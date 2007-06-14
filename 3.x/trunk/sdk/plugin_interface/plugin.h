@@ -31,11 +31,10 @@
 #include <vector>
 #include <map>
 
-// Implementación de la librería. Este módulo debe estar implementado en la
-// librería.
-// En lugar de enlazarlo como un objeto para hacer el plugin
-// haremos una plantilla para que el preprocesador la implemente dentro del
-// propio módulo.
+// Library implementation. This module must be implemented inside the library,
+// instead of linking it as an object for doing the plugin.
+// We will make a template so that the preprocessor implements the library inside
+// the module itself.
 
 class ComponentLibrary : public IComponentLibrary
 {
