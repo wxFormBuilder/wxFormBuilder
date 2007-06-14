@@ -170,6 +170,9 @@ bool TemplateParser::ParseMacro()
 	case ID_PREDEFINED:
 		return ParsePred();
 		break;
+	case ID_PREDEFINED_INDEX:
+		return ParseNPred();
+		break;
 	case ID_CHILD:
 		return ParseChild();
 		break;
@@ -462,6 +465,7 @@ bool TemplateParser::ParseForEach()
 		{
 			// Para ello se utiliza la clase wxStringTokenizer de wxWidgets
 			wxStringTokenizer tkz( propvalue, wxT(","));
+			int i = 0;
 			while (tkz.HasMoreTokens())
 			{
 				wxString token;
@@ -473,7 +477,7 @@ bool TemplateParser::ParseForEach()
 				{
 					wxString code;
 					PTemplateParser parser = CreateParser( this, inner_template );
-					parser->SetPredefined( token );
+					parser->SetPredefined( token, wxString::Format( wxT("%i"), i++ ) );
 					code = parser->ParseTemplate();
 					m_out << wxT("\n") << code;
 				}
@@ -486,7 +490,7 @@ bool TemplateParser::ParseForEach()
 			{
 				wxString code;
 				PTemplateParser parser = CreateParser(this,inner_template);
-				parser->SetPredefined( ValueToCode( PT_WXSTRING_I18N, array[i] ) );
+				parser->SetPredefined( ValueToCode( PT_WXSTRING_I18N, array[i] ), wxString::Format( wxT("%i"), i ) );
 				code = parser->ParseTemplate();
 				m_out << wxT("\n") << code;
 			}
@@ -780,6 +784,8 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_FOREACH;
 	else if (ident == wxT("pred") )
 		return ID_PREDEFINED;
+	else if (ident == wxT("npred") )
+		return ID_PREDEFINED_INDEX;
 	else if (ident == wxT("child") )
 		return ID_CHILD;
 	else if (ident == wxT("parent") )
@@ -900,6 +906,14 @@ bool TemplateParser::ParsePred()
 {
 	if (m_pred != wxT("") )
 		m_out << m_pred;
+
+	return true;
+}
+
+bool TemplateParser::ParseNPred()
+{
+	if (m_npred != wxT("") )
+		m_out << m_npred;
 
 	return true;
 }
