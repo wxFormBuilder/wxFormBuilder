@@ -463,7 +463,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		m_header->WriteLn( wxT("") );
 	}
 
-	// generamos en el h los includes de las dependencias de los componentes.
+	// Generating in the .h header file those include from components dependencies.
 	std::set< wxString > templates;
 	GenIncludes(project, &headerIncludes, &templates );
 
@@ -523,7 +523,8 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxEmptyString );
 
-	// en el cpp generamos el include del .h generado y los xpm
+	// Inserting in the .cpp source file the include corresponding to the
+	// generated .h header file and the related xpm includes
 	code = GetCode( project, wxT("cpp_preamble") );
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxEmptyString );
@@ -578,7 +579,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
         }
 	}
 
-	// generamos los defines de las macros
+	// Generating "defines" for macros
 	if ( !useEnum )
 	{
 		GenDefines( project );
@@ -791,7 +792,7 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 		}
 	}
 
-	// recursivamente generamos los demás atributos
+	// Generate recursively the rest of the attributes
 	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
 	{
 		PObjectBase child = obj->GetChild(i);
@@ -1240,8 +1241,8 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 
 	if ( ObjectDatabase::HasCppProperties( type ) )
 	{
-		// comprobamos si no se ha declarado como atributo de clase
-		// en cuyo caso lo declaramos en el constructor
+		// Checking if it has not been declared as class attribute
+		// so that, we will declare it inside the constructor
 
 		wxString perm_str = obj->GetProperty( wxT("permission") )->GetValue();
 		if ( perm_str == wxT("none") )
@@ -1285,7 +1286,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		}
 		else if ( type == wxT("splitter") )
 		{
-			// generamos el split
+			// Generating the split
 			switch ( obj->GetChildCount() )
 			{
 				case 1:
@@ -1345,8 +1346,8 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	}
 	else if ( info->IsSubclassOf( wxT("sizeritembase") ) )
 	{
-		// El hijo, hay que añadirlo al sizer teniendo en cuenta el tipo
-		// del objeto hijo (hay 3 rutinas diferentes)
+		// The child must be added to the sizer having in mind the
+		// child object type (there are 3 different routines)
 		GenConstruction( obj->GetChild(0), false );
 
 		PObjectInfo childInfo = obj->GetChild(0)->GetObjectInfo();
@@ -1499,7 +1500,7 @@ void CppCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 		}
 	}
 
-	// procedemos recursivamente con las clases base
+	// Proceeding recursively with the base classes
 	for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
 	{
 		PObjectInfo base_info = info->GetBaseClass(i);
@@ -1527,7 +1528,7 @@ void CppCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 		}
 	}
 
-	// procedemos recursivamente con las clases base
+	// Proceeding recursively with the base classes
 	for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
 	{
 		PObjectInfo base_info = info->GetBaseClass(i);
@@ -1543,7 +1544,7 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 {
 	std::set< wxString > include_set;
 
-	// lo primero es obtener la lista de includes
+	// We begin obtaining the "include" list
 	FindXpmProperties( project, include_set );
 
 	if ( include_set.empty() )
@@ -1551,7 +1552,7 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 		return;
 	}
 
-	// y los generamos
+	// and then, we generate them
 	std::set<wxString>::iterator it;
 	for ( it = include_set.begin() ; it != include_set.end(); it++ )
 	{
@@ -1566,9 +1567,9 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 
 void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& xpmset )
 {
-	// recorremos cada una de las propiedades del objeto obj, si damos con
-	// alguna que sea de tipo PT_XPM_BITMAP añadimos la cadena del "include"
-	// en set. Luego recursivamente hacemos lo mismo con los hijos.
+	// We go through (browse) for each property in "obj" object. If any of the
+	// PT_XPM_BITMAP type is found, then the proper "include" string is added
+	// in "set". After that, we recursively do it the same with the child objects.
 	unsigned int i, count;
 
 	count = obj->GetPropertyCount();
@@ -1590,8 +1591,8 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 			{
 				wxString absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 
-				// Se supone el path contiene la ruta completa del archivo y no
-				// una relativa.
+				// It's supposed that "path" contains an absolut path to the file
+				// and not a relative one.
 				wxString relPath = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
 				wxString inc;

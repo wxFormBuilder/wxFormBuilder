@@ -34,9 +34,9 @@
 
 void CodeWriter::WriteLn(wxString code)
 {
-	// no se permitirán saltos de linea dentro de "code"
-	// si los hubiera, FixWrite toma la cadena y la trocea en líneas
-	// e inserta una a una mediante WriteLn
+	// It will not be allowed newlines (carry return) inside "code"
+	// If there was anyone, then FixWrite gets the string and breaks it
+	// in different lines, inserting them one after another using WriteLn
 	if ( !StringOk( code ) )
 	{
 		FixWrite( code );
@@ -85,7 +85,7 @@ void CodeWriter::Write(wxString code)
 {
 	if (m_cols == 0)
 	{
-		// insertamos el indentado
+		// Inserting indents
 		for ( int i = 0; i < m_indent; i++ )
 		{
 			DoWrite( wxT("\t") );
@@ -95,7 +95,7 @@ void CodeWriter::Write(wxString code)
 	}
 
 
-	// aquí debemos comprobar si hemos sobrepasado el maximo de columnas
+	// Here we must check if we have gone beyond limits (max columns)
 	//  if (m_cols + code.length() > GetColumns())
 	//    BreakLine(code)
 
@@ -219,7 +219,7 @@ TemplateParser::Ident TemplateParser::ParseIdent()
 			peek = wxChar( m_in.Peek() );
 		}
 
-		// buscar el identificador
+		// Searching the identifier
 		ident = SearchIdent( macro );
 	}
 	return ident;
@@ -445,10 +445,10 @@ PProperty TemplateParser::GetRelatedProperty( PObjectBase relative )
 
 bool TemplateParser::ParseForEach()
 {
-	// ignoramos los espacios que pudiera haber al principio
+	// Whitespaces at the very start are ignored
 	ignore_whitespaces();
 
-	// parseamos la propiedad
+	// parsing the property
 	if (GetNextToken() == TOK_PROPERTY)
 	{
 		wxString propname = ParsePropertyName();
@@ -457,13 +457,13 @@ bool TemplateParser::ParseForEach()
 		PProperty property = m_obj->GetProperty(propname);
 		wxString propvalue = property->GetValue();
 
-		// el valor de la propiedad debe ser una cadena de caracteres
-		// separada por ','. Se va a generar la plantilla anidada tantas
-		// veces como tokens se encuentren el el valor de la propiedad.
+		// Property value must be an string using ',' as separator.
+		// The template will be generated nesting as many times as
+		// tokens were found in the property value.
 
 		if (property->GetType() == PT_INTLIST)
 		{
-			// Para ello se utiliza la clase wxStringTokenizer de wxWidgets
+			// For doing that we will use wxStringTokenizer class from wxWidgets
 			wxStringTokenizer tkz( propvalue, wxT(","));
 			int i = 0;
 			while (tkz.HasMoreTokens())
@@ -473,7 +473,7 @@ bool TemplateParser::ParseForEach()
 				token.Trim(true);
 				token.Trim(false);
 
-				// parseamos la plantilla interna
+				// Parsing the internal template
 				{
 					wxString code;
 					PTemplateParser parser = CreateParser( this, inner_template );
@@ -648,33 +648,33 @@ wxString TemplateParser::ExtractLiteral()
 
 	wxChar c;
 
-	// ignoramos los espacios que pudiera haber al principio
+	// Whitespaces at the very start are ignored
 	ignore_whitespaces();
 
-	c = wxChar(m_in.GetC()); // comillas de inicio
+	c = wxChar(m_in.GetC()); // Initial quotation mark
 
 	if ( c == wxT('"') )
 	{
 		bool end = false;
-		// comenzamos la extracción de la plantilla
+		// Beginning the template extraction
 		while (!end && !m_in.Eof() && m_in.Peek() != EOF )
 		{
-			c = wxChar(m_in.GetC()); // extraemos un caracter
+			c = wxChar(m_in.GetC()); // obtaining one char
 
-			// comprobamos si estamos ante un posible cierre de comillas
+			// Checking for a possible closing quotation mark
 			if ( c == wxT('"') )
 			{
-				if ( m_in.Peek() == wxT('"') ) // caracter (") denotado por ("")
+				if ( m_in.Peek() == wxT('"') ) // Char (") denoted as ("")
 				{
-					m_in.GetC(); // ignoramos la segunda comilla
+					m_in.GetC(); // Second quotation mark is ignored
 					os << wxT('"');
 				}
-				else // cierre
+				else // Closing
 				{
 					end = true;
 
-					// ignoramos todo los caracteres siguientes hasta un espacio
-					// así errores como "hola"mundo" -> "hola"
+					// All the following chars are ignored up to an space char,
+					// so we can avoid errors like "hello"world" -> "hello"
 					wxChar peek( m_in.Peek() );
 					while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT(' ') )
 					{
@@ -683,7 +683,7 @@ wxString TemplateParser::ExtractLiteral()
 					}
 				}
 			}
-			else // un caracter del literal
+			else // one char from literal (N.B. ??)
 				os << c;
 		}
 	}
@@ -838,8 +838,8 @@ wxString TemplateParser::ParseTemplate()
 }
 
 /**
-* Extrae la plantilla encerrada entre '@{' y '@}'.
-* Nota: Los espacios al comienzo serán ignorados.
+* Obtaining the template enclosed between '@{' y '@}'.
+* Note: whitespaces at the very start will be ignored.
 */
 wxString TemplateParser::ExtractInnerTemplate()
 {
@@ -848,10 +848,10 @@ wxString TemplateParser::ExtractInnerTemplate()
 
 	wxChar c1, c2;
 
-	// ignoramos los espacios que pudiera haber al principio
+	// Initial whitespaces are ignored
 	ignore_whitespaces();
 
-	// los dos caracteres siguientes deberán ser '@{'
+	// The two following characters must be '@{'
 	c1 = wxChar(m_in.GetC());
 	c2 = wxChar(m_in.GetC());
 
@@ -861,12 +861,12 @@ wxString TemplateParser::ExtractInnerTemplate()
 
 		int level = 1;
 		bool end = false;
-		// comenzamos la extracción de la plantilla
+		// Beginning with the template extraction
 		while ( !end && !m_in.Eof() && m_in.Peek() != EOF )
 		{
 			c1 = wxChar(m_in.GetC());
 
-			// comprobamos si estamos ante un posible cierre o apertura de llaves.
+			// Checking if there are initial or closing braces
 			if (c1 == wxT('@') )
 			{
 				c2 = wxChar(m_in.GetC());
@@ -878,8 +878,8 @@ wxString TemplateParser::ExtractInnerTemplate()
 						end = true;
 					else
 					{
-						// no es el cierre final, por tanto metemos los caracteres
-						// y seguimos
+						// There isn't a final closing brace, so that we put in
+						// the chars and continue
 						os << c1;
 						os << c2;
 					}
