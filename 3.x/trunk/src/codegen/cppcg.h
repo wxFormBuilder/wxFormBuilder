@@ -83,32 +83,30 @@ private:
 	bool m_useConnect;
 
 	/**
-	* Las macros predefinidas no generarán defines.
+	* Predefined macros won't generate defines.
 	*/
 	std::set<wxString> m_predMacros;
 
 	void SetupPredefinedMacros();
 
 	/**
-	* Dado un objeto y el nombre de una plantilla, obtiene el código.
+	* Given an object and the name for a template, obtains the code.
 	*/
 	wxString GetCode( PObjectBase obj, wxString name);
 
 	/**
-	* Guarda el conjunto de clases de objetos del proyecto para generar
-	* los includes.
+	* Stores the project's objects classes set, for generating the includes.
 	*/
 	void FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set );
 
 	/**
-	* Guarda el conjunto de "includes" que hay que generar para las propiedades
-	* PT_XPM_BITMAP.
+	* Stores the needed "includes" set for the PT_XPM_BITMAP properties.
 	*/
 	void FindXpmProperties( PObjectBase obj, std::set< wxString >& xpmset);
 
 	/**
-	* Guarda todos las propiedades de objetos de tipo "macro" para generar
-	* su posterior '#define'.
+	* Stores all the properties for "macro" type objects, so that their
+	* related '#define' can be generated subsequently.
 	*/
 	void FindMacros( PObjectBase obj, std::vector< wxString >* macros );
 
@@ -118,7 +116,7 @@ private:
 	void FindEventHandlers(PObjectBase obj, EventVector &events);
 
 	/**
-	* Genera la declaración de clases en el fichero de cabecera.
+	* Generates classes declarations inside the header file.
 	*/
 	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events );
 
@@ -133,18 +131,17 @@ private:
 	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName );
 
 	/**
-	* Función recursiva para la declaración de atributos, usada dentro
-	* de GenClassDeclaration.
+	* Recursive function for the attributes declaration, used inside GenClassDeclaration.
 	*/
 	void GenAttributeDeclaration( PObjectBase obj, Permission perm);
 
 	/**
-	Generates the generated_event_handlers template
+	* Generates the generated_event_handlers template
 	*/
 	void GetGenEventHandlers( PObjectBase obj );
 
 	/**
-	* Genera la sección de '#include' fichero.
+	* Generates the '#include' section for files.
 	*/
 	void GenIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
 	void GenObjectIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
@@ -158,42 +155,41 @@ private:
 	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes );
 
 	/**
-	* Genera la sección de '#include' para las propiedades XPM.
+	* Generates the '#include' section for the XPM properties.
 	*/
 	void GenXpmIncludes( PObjectBase project);
 
 	/**
-	* Genera la sección de '#define' macro.
+	* Generates the '#define' section for macros.
 	*/
 	void GenDefines( PObjectBase project);
 
 	/**
-	* Generate a enum with wxWindow identifiers.
+	* Generates an enum with wxWindow identifiers.
 	*/
 	void GenEnumIds( PObjectBase class_obj);
 
 	/**
-	* Generate the constructor of a classs
+	* Generates the constructor for a class
 	*/
 	void GenConstructor( PObjectBase class_obj, const EventVector &events );
 
 	/**
-	* Realiza la construcción de los objetos, configurando las propiedades del
-	* objeto y las de layout.
-	* El algoritmo es similar al de generación de la vista previa en el designer.
+	* Makes the objects construction, setting up the objects' and Layout properties.
+	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
 	void GenConstruction( PObjectBase obj, bool is_widget );
 
 	/**
-	* Configura las propiedades del objeto, tanto las propias como las heredadas.
-	* Se le pasa la información de la clase porque recursivamente, realizará
-	* la configuración en las super-clases.
+	* Configures the object properties, both own and inherited ones.
+	* Information for the class is given, because it will recursively make the
+	* configuration in the "super-classes".
 	*/
 	void GenSettings( PObjectInfo info, PObjectBase obj);
 
 	/**
-	* Añade un control a una toolbar. Hay que pasarle el objectinfo de tipo
-	* wxWindow, donde se encuentra la plantilla, y el objectbase del control
+	* Adds a control for a toolbar. Needs the objectinfo (wxWindow type) where
+	* the template is found, and the objectbase for the control.
 	*/
 	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
 
@@ -236,8 +232,8 @@ public:
 
 
 	/**
-	* Configura el path de referencia para generar las rutas relativas
-	* al path que se pasa como parámetro.
+	* Configures the reference path for generating relative paths to
+	* that passed as parameter.
 	*
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.

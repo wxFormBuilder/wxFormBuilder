@@ -120,8 +120,8 @@ END_EVENT_TABLE()
 // FORMS
 ///////////////////////////////////////////////////////////////////////////////
 
-// TO-DO: El componente de tipo "Form" se dibujará en el designer, para así
-//        por ejemplo, dibujar un panel oscuro para el caso de wxFrame
+// TO-DO: The "Form" type component should be drawn in the designer, so that,
+//        for instance, a dark panel could be drawn for a wxFrame (N.B. ??)
 class FrameFormComponent : public ComponentBase
 {
 public:
@@ -530,7 +530,7 @@ public:
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 
-		// Rellenamos
+		// Refilling
 		int i,j;
 		wxString buf;
 		if ( (lc->GetWindowStyle() & wxLC_REPORT) != 0 )
@@ -1182,7 +1182,7 @@ public:
 
 BEGIN_LIBRARY()
 
-// Los forms no son considerados como windows !
+// forms aren't considered as windows !
 ABSTRACT_COMPONENT("Frame",FrameFormComponent)
 ABSTRACT_COMPONENT("Panel",PanelFormComponent)
 ABSTRACT_COMPONENT("Dialog",DialogFormComponent)
@@ -1401,4 +1401,5 @@ MACRO(wxBOTH)
 SYNONYMOUS(1,wxBOTH)
 
 END_LIBRARY()
+
 

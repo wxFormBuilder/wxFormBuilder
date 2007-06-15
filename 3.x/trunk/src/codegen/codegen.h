@@ -116,7 +116,7 @@ protected:
 		ID_IFNOTNULL,
 		ID_IFNULL,
 		ID_FOREACH,
-		ID_PREDEFINED,  // simbolo predefinido '#pred'
+		ID_PREDEFINED,  // predefined symbol '#pred'
 		ID_PREDEFINED_INDEX, // #npred
 		ID_NEWLINE,
 		ID_IFEQUAL,
@@ -130,22 +130,22 @@ protected:
 
 	wxString ParsePropertyName( wxString* child = NULL );
 	/**
-	* Esta rutina extrae el codigo de una plantilla encerrada entre
-	* las macros #begin y #end, teniendo en cuenta que puede estar anidados
+	* This routine extracts the source code from a template enclosed between
+	* the #begin and #end macros, having in mind that they can be nested
 	*/
 	wxString ExtractInnerTemplate();
 
 	/**
-	* Un valor literal es una cadena encerrada entre '"' (ej. "xxx"),
-	* el caracter " se representa con "".
+	* A literal value is an string enclosed between '"' (e.g. "xxx"),
+	* The " character is represented with "".
 	*/
 	wxString ExtractLiteral();
 
 	/**
-	* Consulta el siguiente símbolo de la entrada y devuelve el token.
-	* @return TOK_MACRO si a continuación viene un comando.
-	*         TOK_PROPERTY si a continuación viene una propiedad.
-	*         TOK_TEXT si a continuación viene texto normal.
+	* Look up for the following symbol from input and returns the token.
+	* @return TOK_MACRO when it's followed by a command.
+	*         TOK_PROPERTY when it's followed by a property.
+	*         TOK_TEXT when it's followed by normal text.
 	*/
 	Token GetNextToken();
 
@@ -191,33 +191,33 @@ public:
 	TemplateParser( PObjectBase obj, wxString _template);
 	TemplateParser( const TemplateParser & that, wxString _template );
 	/**
-	* Devuelve el código del valor de una propiedad en el formato del lenguaje.
+	* Returns the code for a property value in the language format.
 	* @note use ValueToCode
 	*/
 	wxString PropertyToCode( PProperty property );
 
 	/**
-	* Este método crea un nuevo parser del mismo tipo que el objeto que llama
-	* a dicho método.
+	* This method creates a new parser with the same type that the object
+	* calling such method.
 	*/
 	virtual PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template ) = 0;
 
 	virtual ~TemplateParser() {};
 
-	/** Devuelve el código del nombre del atributo "wxWindow *parent" raíz.
-	* En C++ será el puntero "this" pero en otros lenguajes no tiene porqué
-	* llamarse así.
+	/**
+	* Returns the code for a "wxWindow *parent" root attribute' name.
+	* In C++ it will be the "this" pointer, but in other languages it
+	* could be named differently.
 	*/
 	virtual wxString RootWxParentToCode() = 0;
 
 	/**
-	* A partir del valor de una propiedad genera el código.
+	* Generates the code from a property value.
 	*/
 	virtual wxString ValueToCode(PropertyType type, wxString value) = 0;
 
 	/**
-	* La función "estrella" de la clase. Analiza una plantilla devolviendo el
-	* código.
+	* The "star" function for this class. Analyzes a template, returning the code.
 	*/
 	wxString ParseTemplate();
 
@@ -262,8 +262,8 @@ protected:
 	bool StringOk( wxString s );
 
 	/**
-	* Divide una cadena de texto mal formada (con retornos de carro), en
-	* columnas simples insertándolas una a una respetando el indentado.
+	* Divides a badly formed string (including carriage returns) in simple
+	* columns, inserting them one after another and taking indent into account.
 	*/
 	void FixWrite( wxString s );
 
@@ -304,12 +304,12 @@ public:
 	void WriteLn( wxString code = wxEmptyString );
 
 	/**
-	* Escribe una cadena de texto en el código.
+	* Writes a text string into the code
 	*/
 	void Write( wxString code );
 
 	/**
-	* borra todo el código previamente escrito.
+	* Deletes all the code previously written.
 	*/
 	virtual void Clear() = 0;
 };
@@ -321,18 +321,17 @@ public:
 * The algorithms to generate the code are similar from one language to another.
 * Examples:
 *
-* - En C++ tenemos que generar las declaraciones de una clase y luego su
-*   implementación, a parte de los #defines e #includes pertinentes.
-* - En java, aunque tiene una sintaxis "parecida", implementación y declaración
-*   van ligadas en el mismo fichero, además requiere de un fichero por clase.
-* - En el formato XRC (XML), no tiene nada que ver con ninguno de los
-*   anteriores, pareciendose mucho al modelo de datos de la propia aplicación.
+* - In C++, we generate the class declarations and then its implementation,
+*   besides the related #define and #include.
+* - In java, it has a similar syntax, but declaration and implementation are
+*   together in the same file, and it's required one file per class.
+* - In XRC format (XML), it's a different way, it's more likely to the
+*   data model from the application itself.
 *
-* Dado que no existe un algoritmo "universal" para generar código no queda más
-* remedio que realizar una implementación diferente por cada lenguaje. A pesar
-* de esto, es posible reutilizar todo el sistema de plantillas de código
-* simplificando bastante la tarea de implementar el generador de un nuevo
-* lenguaje.
+* Given that doesn't exist an "universal" algorithm for generating code, there
+* is no choice but to make a different implementation for each language. It's
+* possible to reuse the whole code templates system, although, simplifying a lot
+* the implementation task for a new language.
 */
 class CodeGenerator
 {

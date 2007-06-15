@@ -33,7 +33,7 @@ namespace ticpp
 }
 
 /**
- * Generador de código XRC.
+ * XRC code generator
  */
 class XrcCodeGenerator : public CodeGenerator
 {
@@ -45,12 +45,12 @@ class XrcCodeGenerator : public CodeGenerator
  public:
 
   /**
-   * Configura el escritor de código para el fichero XML.
+   * Configures the code writer for the XML file
    */
   void SetWriter(PCodeWriter cw) { m_cw = cw; }
 
   /**
-   * Genera el código XRC del proyecto.
+   * Generates the XRC code for the project
    */
   bool GenerateCode(PObjectBase project);
 };
