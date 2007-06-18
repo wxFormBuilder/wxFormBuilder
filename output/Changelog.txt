@@ -6,6 +6,7 @@ date Version 3.00.46 (Beta 3)
 ^ Reorganized wxGrid properties.
 * Fixed FS#199 - "tooltips lost on XRC import"
 * Fixed import of "enabled", "hidden", and "subclass" properties.
+* Fixed "FS#208 - Error in generated OnUpdateUI event handler registration code."
 
 06/13/2007 Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
