@@ -116,6 +116,14 @@
     <property name="Cancel" type="bool" help="Include the 'Cancel' button">1</property>
     <property name="Help" 	type="bool" help="Include the 'Help' button">0</property>
     <property name="ContextHelp" type="bool" help="Include the 'ContextHelp' button">0</property>
+	<event name="OnOKButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_OK, when the button is clicked" />
+	<event name="OnYesButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_YES, when the button is clicked" />
+	<event name="OnSaveButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_SAVE, when the button is clicked" />
+	<event name="OnApplyButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_APPLY, when the button is clicked" />
+	<event name="OnNoButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_NO, when the button is clicked" />
+	<event name="OnCancelButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_CANCEL, when the button is clicked" />
+	<event name="OnHelpButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_HELP, when the button is clicked" />
+	<event name="OnContextHelpButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_CONTEXT_HELP, when the button is clicked" />
   </objectinfo>
 
   <objectinfo class="spacer" icon="spacer.xpm" type="widget">
