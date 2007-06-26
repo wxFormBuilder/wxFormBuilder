@@ -165,6 +165,22 @@
 
 		 #nl $name->Realize();
 	</template>
+	<template name="evt_entry_OnOKButtonClick">EVT_BUTTON( wxID_OK, #handler )</template>
+	<template name="evt_entry_OnYesButtonClick">EVT_BUTTON( wxID_YES, #handler )</template>
+	<template name="evt_entry_OnSaveButtonClick">EVT_BUTTON( wxID_SAVE, #handler )</template>
+	<template name="evt_entry_OnApplyButtonClick">EVT_BUTTON( wxID_APPLY, #handler )</template>
+	<template name="evt_entry_OnNoButtonClick">EVT_BUTTON( wxID_NO, #handler )</template>
+	<template name="evt_entry_OnCancelButtonClick">EVT_BUTTON( wxID_CANCEL, #handler )</template>
+	<template name="evt_entry_OnHelpButtonClick">EVT_BUTTON( wxID_HELP, #handler )</template>
+	<template name="evt_entry_OnContextHelpButtonClick">EVT_BUTTON( wxID_CONTEXT_HELP, #handler )</template>
+    <template name="evt_connect_OnOKButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnYesButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnSaveButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnApplyButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnNoButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnCancelButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnHelpButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
+    <template name="evt_connect_OnContextHelpButtonClick">this->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
   </templates>
 
 </codegen>
