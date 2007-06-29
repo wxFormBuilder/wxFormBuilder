@@ -454,10 +454,9 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 
 void VisualEditor::SetupSizer( PObjectBase obj, wxSizer* sizer )
 {
-	PProperty pminsize  = obj->GetProperty( wxT("minimum_size") );
-	if (pminsize)
+	wxSize minsize = obj->GetPropertyAsSize( wxT("minimum_size") );
+	if ( minsize != wxDefaultSize )
 	{
-		wxSize minsize = TypeConv::StringToSize( pminsize->GetValue() );
 		sizer->SetMinSize( minsize );
 		sizer->Layout();
 	}
@@ -468,35 +467,34 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	// All of the properties of the wxWindow object are applied in this function
 
 	// Position
+	/* Position does nothing in wxFB - this is pointless
 	wxPoint pos;
 	PProperty ppos = obj->GetProperty( wxT("pos") );
 	if ( ppos )
 	{
 		pos = TypeConv::StringToPoint( ppos->GetValue() );
 	}
+	*/
 
 	// Size
-	wxSize size;
-	PProperty psize = obj->GetProperty( wxT("size") );
-	if ( psize )
+	wxSize size = obj->GetPropertyAsSize( wxT("size") );
+	if ( size != wxDefaultSize )
 	{
-		size = TypeConv::StringToSize(psize->GetValue());
+		window->SetSize( size );
 	}
 
-	window->SetSize( pos.x, pos.y, size.GetWidth(), size.GetHeight() );
-
 	// Minimum size
-	PProperty pminsize = obj->GetProperty( wxT("minimum_size") );
-	if ( pminsize && !pminsize->GetValue().empty() )
+	wxSize minsize = obj->GetPropertyAsSize( wxT("minimum_size") );
+	if ( minsize != wxDefaultSize )
 	{
-		window->SetMinSize( TypeConv::StringToSize( pminsize->GetValue() ) );
+		window->SetMinSize( minsize );
 	}
 
 	// Maximum size
-	PProperty pmaxsize = obj->GetProperty( wxT("maximum_size") );
-	if ( pmaxsize && !pmaxsize->GetValue().empty() )
+	wxSize maxsize = obj->GetPropertyAsSize( wxT("maximum_size") );
+	if ( maxsize != wxDefaultSize )
 	{
-		window->SetMaxSize( TypeConv::StringToSize( pmaxsize->GetValue() ) );
+		window->SetMaxSize( maxsize );
 	}
 
 	// Font
