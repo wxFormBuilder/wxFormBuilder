@@ -20,6 +20,8 @@
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
+// Modified by
+//   Michal Bliznak
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -39,6 +41,7 @@ BEGIN_EVENT_TABLE( XrcPanel,  wxPanel )
 	EVT_FB_PROPERTY_MODIFIED( XrcPanel::OnPropertyModified )
 	EVT_FB_OBJECT_CREATED( XrcPanel::OnObjectChange )
 	EVT_FB_OBJECT_REMOVED( XrcPanel::OnObjectChange )
+	EVT_FB_OBJECT_SELECTED( XrcPanel::OnObjectChange )
 
 	EVT_FIND( wxID_ANY, XrcPanel::OnFind )
 	EVT_FIND_NEXT( wxID_ANY, XrcPanel::OnFind )
@@ -142,7 +145,25 @@ void XrcPanel::OnObjectChange( wxFBObjectEvent& event )
 
 void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 {
-	PObjectBase project = AppData()->GetProjectData();
+    PObjectBase project;
+
+	// Using the previously unused Id field in the event to carry a boolean
+	bool panelOnly = ( event.GetId() != 0 );
+
+	// For code preview generate only code relevant to selected form,
+	//  otherwise generate full project code.
+	if(panelOnly)
+	{
+	    project = AppData()->GetSelectedForm();
+	}
+
+	if(!panelOnly || !project)
+	{
+	    project = AppData()->GetProjectData();
+	}
+	//PObjectBase project = AppData()->GetProjectData();
+
+	if(!project)return;
 
 	// Generate code in the panel if the panel is active
 	if ( IsShown() )
@@ -164,8 +185,6 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		Thaw();
 	}
 
-	// Using the previously unused Id field in the event to carry a boolean
-	bool panelOnly = ( event.GetId() != 0 );
 	if ( panelOnly )
 	{
 		return;
