@@ -20,6 +20,8 @@
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
+// Modified by
+//   Michal Bliznak
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +47,7 @@ BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_PROPERTY_MODIFIED( CppPanel::OnPropertyModified )
 	EVT_FB_OBJECT_CREATED( CppPanel::OnObjectChange )
 	EVT_FB_OBJECT_REMOVED( CppPanel::OnObjectChange )
+	EVT_FB_OBJECT_SELECTED( CppPanel::OnObjectChange )
 	EVT_FB_EVENT_HANDLER_MODIFIED( CppPanel::OnEventHandlerModified )
 
 	EVT_FIND( wxID_ANY, CppPanel::OnFind )
@@ -214,14 +217,52 @@ void CppPanel::OnEventHandlerModified( wxFBEventHandlerEvent& event )
 
 void CppPanel::OnCodeGeneration( wxFBEvent& event )
 {
+    PObjectBase objectToGenerate;
+
 	// Generate code in the panel if the panel is active
 	bool doPanel = IsShown();
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
 
-	// Get C++ properties from the project
-	PObjectBase project = AppData()->GetProjectData();
+	// For code preview generate only code relevant to selected form,
+	// otherwise generate full project code.
+
+	// Create copy of the original project due to possible temporary modifications
+	PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
+
+	if(panelOnly)
+	{
+	    objectToGenerate = AppData()->GetSelectedForm();
+	}
+
+	if(!panelOnly || !objectToGenerate)
+	{
+	    objectToGenerate = project;
+	}
+
+	// If only one project item should be generated then remove the rest items
+	// from the temporary project
+	if(doPanel && panelOnly && (objectToGenerate != project))
+	{
+	    if( project->GetChildCount() > 0)
+	    {
+	        unsigned int i = 0;
+            while( project->GetChildCount() > 1 )
+            {
+                if(project->GetChild( i ) != objectToGenerate)
+                {
+                    project->RemoveChild( i );
+                }
+                else
+                    i++;
+            }
+	    }
+	}
+
+    if(!project || !objectToGenerate)return;
+
+    // Get C++ properties from the project
 
 	// If C++ generation is not enabled, do not generate the file
 	bool doFile = false;
@@ -360,6 +401,9 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 			UTF8ToAnsi(path + file + wxT( ".cpp" ));
 		}
 	}
+
+    // Is it needed???
+    //if(project)project.reset((ObjectBase*)NULL);
 }
 
 BEGIN_EVENT_TABLE ( CodeEditor,  wxPanel )
