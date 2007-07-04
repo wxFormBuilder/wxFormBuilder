@@ -849,7 +849,13 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	}
 	else if (type == PT_WXFONT)
 	{
-		result = wxFontProperty(name, wxPG_LABEL, prop->GetValueAsFont());
+		wxFontContainer font = TypeConv::StringToFont( prop->GetValueAsString() );
+		result = wxFontProperty(name, wxPG_LABEL, wxFontPropertyValue( 	font.m_pointSize,
+																		font.m_family,
+																		font.m_style,
+																		font.m_weight,
+																		font.m_underlined,
+																		font.m_faceName ) );
 	}
 	else if (type == PT_WXCOLOUR)
 	{
@@ -1124,8 +1130,14 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			}
 			case PT_WXFONT:
 			{
-				wxFont* font = wxPGVariantToWxObjectPtr( event.GetPropertyPtr()->DoGetValue(), wxFont );
-				AppData()->ModifyProperty( prop, TypeConv::FontToString( *font ) );
+				wxFontPropertyValue* fontVal = wxPGVariantToWxObjectPtr( event.GetPropertyPtr()->DoGetValue(), wxFontPropertyValue );
+				wxFontContainer font( 	fontVal->m_pointSize,
+										fontVal->m_family,
+										fontVal->m_style,
+										fontVal->m_weight,
+										fontVal->m_underlined,
+										fontVal->m_faceName );
+				AppData()->ModifyProperty( prop, TypeConv::FontToString( font ) );
 				break;
 			}
 			case PT_WXCOLOUR:
@@ -1281,7 +1293,13 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		break;
 	case PT_WXFONT:
 		{
-			wxFont val = prop->GetValueAsFont();
+			wxFontContainer font = TypeConv::StringToFont( prop->GetValueAsString() );
+			wxFontPropertyValue val( 	font.m_pointSize,
+										font.m_family,
+										font.m_style,
+										font.m_weight,
+										font.m_underlined,
+										font.m_faceName );
 			pgProp->DoSetValue((void*)&val);
 		}
 		break;

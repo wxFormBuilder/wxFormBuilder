@@ -501,7 +501,7 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	PProperty pfont = obj->GetProperty( wxT("font") );
 	if ( pfont && !pfont->GetValue().empty() )
 	{
-		window->SetFont( TypeConv::StringToFont( pfont->GetValue() ) );
+		window->SetFont( TypeConv::StringToFont( pfont->GetValue() ).GetFont() );
 	}
 
 	// Foreground

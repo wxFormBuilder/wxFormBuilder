@@ -172,7 +172,7 @@ public:
 	}
 
 	////////////////////
-	void SetValue(const wxFont &font);
+	void SetValue(const wxFontContainer &font);
 	void SetValue(const wxColour &colour);
 	void SetValue(const wxString &str, bool format = false);
 	void SetValue(const wxPoint &point);
@@ -180,7 +180,7 @@ public:
 	void SetValue(const int integer);
 	void SetValue(const double val );
 
-	wxFont   GetValueAsFont();
+	wxFontContainer GetValueAsFont();
 	wxColour GetValueAsColour();
 	wxPoint  GetValueAsPoint();
 	wxSize   GetValueAsSize();
@@ -518,7 +518,7 @@ public:
 	// plugins
 	bool     IsNull (const wxString& pname);
 	int      GetPropertyAsInteger (const wxString& pname);
-	wxFont   GetPropertyAsFont    (const wxString& pname);
+	wxFontContainer   GetPropertyAsFont    (const wxString& pname);
 	wxColour GetPropertyAsColour  (const wxString& pname);
 	wxString GetPropertyAsString  (const wxString& pname);
 	wxPoint  GetPropertyAsPoint   (const wxString& pname);

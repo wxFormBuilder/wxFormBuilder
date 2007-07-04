@@ -254,29 +254,38 @@ void ObjectToXrcFilter::LinkColour( const wxColour &colour, ticpp::Element *prop
 	propElement->SetText( value.mb_str( wxConvUTF8 ) );
 }
 
-void ObjectToXrcFilter::LinkFont( const wxFont &font, ticpp::Element *propElement )
+void ObjectToXrcFilter::LinkFont( const wxFontContainer &font, ticpp::Element *propElement )
 {
-	wxString aux;
-	aux.Printf( wxT( "%d" ), font.GetPointSize() );
+	if ( font.GetPointSize() > 0 )
+	{
+		wxString aux;
+		aux.Printf( wxT( "%d" ), font.GetPointSize() );
 
-	ticpp::Element size( "size" );
-	size.SetText( aux.mb_str( wxConvUTF8 ) );
-	propElement->LinkEndChild( &size );
+		ticpp::Element size( "size" );
+		size.SetText( aux.mb_str( wxConvUTF8 ) );
+		propElement->LinkEndChild( &size );
+	}
 
 	ticpp::Element family( "family" );
 	switch ( font.GetFamily() )
 	{
-		case wxDECORATIVE:
+		case wxFONTFAMILY_DECORATIVE:
 			family.SetText( "decorative" );
 			break;
-		case wxROMAN:
+		case wxFONTFAMILY_ROMAN:
 			family.SetText( "roman" );
 			break;
-		case wxSWISS:
+		case wxFONTFAMILY_SWISS:
 			family.SetText( "swiss" );
 			break;
-		case wxMODERN:
+		case wxFONTFAMILY_SCRIPT:
+			family.SetText( "script" );
+			break;
+		case wxFONTFAMILY_MODERN:
 			family.SetText( "modern" );
+			break;
+		case wxFONTFAMILY_TELETYPE:
+			family.SetText( "teletype" );
 			break;
 		default:
 			family.SetText( "default" );
@@ -287,10 +296,10 @@ void ObjectToXrcFilter::LinkFont( const wxFont &font, ticpp::Element *propElemen
 	ticpp::Element style( "style" );
 	switch ( font.GetStyle() )
 	{
-		case wxSLANT:
+		case wxFONTSTYLE_SLANT:
 			style.SetText( "slant" );
 			break;
-		case wxITALIC:
+		case wxFONTSTYLE_ITALIC:
 			style.SetText( "italic" );
 			break;
 		default:
@@ -302,10 +311,10 @@ void ObjectToXrcFilter::LinkFont( const wxFont &font, ticpp::Element *propElemen
 	ticpp::Element weight( "weight" );
 	switch ( font.GetWeight() )
 	{
-		case wxLIGHT:
+		case wxFONTWEIGHT_LIGHT:
 			weight.SetText( "light" );
 			break;
-		case wxBOLD:
+		case wxFONTWEIGHT_BOLD:
 			weight.SetText( "bold" );
 			break;
 		default:
@@ -318,9 +327,12 @@ void ObjectToXrcFilter::LinkFont( const wxFont &font, ticpp::Element *propElemen
 	underlined.SetText( font.GetUnderlined() ? "1" : "0" );
 	propElement->LinkEndChild( &underlined );
 
-	ticpp::Element face( "face" );
-	face.SetText( font.GetFaceName().mb_str( wxConvUTF8 ) );
-	propElement->LinkEndChild( &face );
+	if ( !font.GetFaceName().empty() )
+	{
+		ticpp::Element face( "face" );
+		face.SetText( font.GetFaceName().mb_str( wxConvUTF8 ) );
+		propElement->LinkEndChild( &face );
+	}
 }
 
 void ObjectToXrcFilter::LinkStringList( const wxArrayString &array, ticpp::Element *propElement, bool xrcFormat )
@@ -706,7 +718,7 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
 
 		ticpp::Element *element;
-		wxFont font;
+		wxFontContainer font;
 
 		// the size
 		try
@@ -733,8 +745,12 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 				font.SetFamily( wxROMAN );
 			else if ( family_str == _( "swiss" ) )
 				font.SetFamily( wxSWISS );
+			else if ( family_str == _( "script" ) )
+				font.SetFamily( wxSCRIPT );
 			else if ( family_str == _( "modern" ) )
 				font.SetFamily( wxMODERN );
+			else if ( family_str == _( "teletype" ) )
+				font.SetFamily( wxTELETYPE );
 			else
 				font.SetFamily( wxDEFAULT );
 		}
@@ -808,14 +824,12 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			font.SetFaceName( wxEmptyString );
 		}
 
-		if ( font.Ok() )
-		{
-			// We already have the font type. So we must now use the wxFB format
-			wxString font_str =
-				wxString::Format( wxT( "%s,%d,%d,%d" ), font.GetFaceName().c_str(), font.GetStyle(),
-								  font.GetWeight(), font.GetPointSize() );
-			property->SetText( font_str.mb_str( wxConvUTF8 ) );
-		}
+		// We already have the font type. So we must now use the wxFB format
+		wxString font_str =
+			wxString::Format( wxT("%s,%d,%d,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(),
+														font.GetWeight(), font.GetPointSize(),
+														font.GetFamily(), font.GetUnderlined() );
+		property->SetText( font_str.mb_str( wxConvUTF8 ) );
 	}
 	catch( ticpp::Exception& ex )
 	{

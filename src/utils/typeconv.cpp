@@ -163,84 +163,78 @@ int TypeConv::StringToInt(const wxString &str)
     return (int)l;
 }
 
-
-
-
-wxFont TypeConv::StringToFont (const wxString &str)
+wxFontContainer TypeConv::StringToFont (const wxString &str)
 {
-    // los tipos de letra tienen el siguiente formato
-    // face name, style, weight, point size
-    wxStringTokenizer tkz(str,wxT(","));
+	wxFontContainer font;
 
-    wxString face_name;
-    int style = wxNORMAL, weight = wxNORMAL, size = 12;
+    // face name, style, weight, point size, family, underlined
+    wxStringTokenizer tkz( str, wxT(",") );
 
-    bool set_face_name, set_style, set_weight, set_size;
-
-    set_face_name = set_style = set_weight = set_size = false;
-
-    if (tkz.HasMoreTokens())
+    if ( tkz.HasMoreTokens() )
     {
-        face_name = tkz.GetNextToken();
-        face_name.Trim(true);
-        face_name.Trim(false);
-        set_face_name = true;
+        wxString faceName = tkz.GetNextToken();
+        faceName.Trim( true );
+        faceName.Trim( false );
+        font.SetFaceName( faceName );
     }
 
-    if (tkz.HasMoreTokens())
+    if ( tkz.HasMoreTokens() )
     {
         long l_style;
         wxString s_style = tkz.GetNextToken();
-        if (s_style.ToLong(&l_style))
+        if ( s_style.ToLong( &l_style ) )
         {
-            style = (int)l_style;
-            set_style = true;
+            font.SetStyle( (int)l_style );
         }
     }
 
-    if (tkz.HasMoreTokens())
+    if ( tkz.HasMoreTokens() )
     {
         long l_weight;
         wxString s_weight = tkz.GetNextToken();
-        if (s_weight.ToLong(&l_weight))
+        if ( s_weight.ToLong( &l_weight ) )
         {
-            weight = (int)l_weight;
-            set_weight = true;
+            font.SetWeight( (int)l_weight );
         }
     }
 
-    if (tkz.HasMoreTokens())
+    if ( tkz.HasMoreTokens() )
     {
         long l_size;
         wxString s_size = tkz.GetNextToken();
-        if (s_size.ToLong(&l_size))
+        if ( s_size.ToLong( &l_size ) )
         {
-            size = (int)l_size;
-            set_size = true;
+        	font.SetPointSize( (int)l_size );
         }
     }
 
-    wxFont font;
+    if ( tkz.HasMoreTokens() )
+    {
+        long l_family;
+        wxString s_family = tkz.GetNextToken();
+        if ( s_family.ToLong( &l_family ) )
+        {
+            font.SetFamily( (int)l_family );
+        }
+    }
 
-    if (set_face_name)
-        font.SetFaceName(face_name);
-
-    if (set_style)
-        font.SetStyle(style);
-
-    if (set_weight)
-        font.SetWeight(weight);
-
-    if (set_size)
-        font.SetPointSize(size);
+    if ( tkz.HasMoreTokens() )
+    {
+        long l_underlined;
+        wxString s_underlined = tkz.GetNextToken();
+        if ( s_underlined.ToLong( &l_underlined ) )
+        {
+            font.SetUnderlined( l_underlined != 0 );
+        }
+    }
 
     return font;
-
 }
 
-wxString TypeConv::FontToString (const wxFont &font)
+wxString TypeConv::FontToString (const wxFontContainer &font)
 {
-    return wxString::Format( wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize() );
+	// face name, style, weight, point size, family, underlined
+    return wxString::Format( wxT("%s,%d,%d,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize(), font.GetFamily(), font.GetUnderlined() ? 1 : 0 );
 }
 
 wxBitmap TypeConv::StringToBitmap( const wxString& filename )
