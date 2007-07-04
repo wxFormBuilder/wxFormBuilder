@@ -1404,7 +1404,7 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 				wxString name;
 				wxFileName::SplitPath( path, NULL, NULL, &name, NULL );
 				wxFileDialog dialog( wxTheApp->GetTopWindow(), _( "Save \"user_headers\"" ), ::wxPathOnly( path ),
-				                     name + wxT( "_user_headers.txt" ), wxT( "All files (*.*)|*.*" ), wxSAVE );
+				                     name + wxT( "_user_headers.txt" ), wxT( "All files (*.*)|*.*" ), wxFD_SAVE );
 
 				if ( dialog.ShowModal() == wxID_OK )
 				{
@@ -1589,6 +1589,36 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 
 	// Version 1.7 now stores all font properties.
 	// The conversion is automatic because it is just an extension of the old values.
+
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 7 ) )
+	{
+		// Remove deprecated 2.6 things
+
+		// wxDialog styles wxTHICK_FRAME and wxNO_3D
+		if ( objClass == "Dialog" )
+		{
+			oldProps.clear();
+			oldProps.insert( "style" );
+			GetPropertiesToConvert( parent, oldProps, &newProps );
+
+			if ( !newProps.empty() )
+			{
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR( style->GetText( false ) );
+				if ( !styles.empty() )
+				{
+					if ( TypeConv::FlagSet( wxT("wxTHICK_FRAME"), styles ) )
+					{
+						styles = TypeConv::ClearFlag( wxT("wxTHICK_FRAME"), styles );
+						styles = TypeConv::SetFlag( wxT("wxRESIZE_BORDER"), styles );
+					}
+
+					styles = TypeConv::ClearFlag( wxT("wxNO_3D"), styles );
+					style->SetText( _STDSTR( styles ) );
+				}
+			}
+		}
+	}
 
 	/* The file is now at at least version 1.7 */
 }

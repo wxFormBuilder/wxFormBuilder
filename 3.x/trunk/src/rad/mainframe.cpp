@@ -473,7 +473,7 @@ void MainFrame::OnSaveProject( wxCommandEvent &event )
 void MainFrame::OnSaveAsProject( wxCommandEvent &event )
 {
 	wxFileDialog *dialog = new wxFileDialog( this, wxT( "Save Project" ), m_currentDir,
-	                       wxT( "" ), wxT( "wxFormBuilder Project File (*.fbp)|*.fbp|All files (*.*)|*.*" ), wxSAVE );
+	                       wxT( "" ), wxT( "wxFormBuilder Project File (*.fbp)|*.fbp|All files (*.*)|*.*" ), wxFD_SAVE );
 
 	if ( dialog->ShowModal() == wxID_OK )
 	{
@@ -509,7 +509,7 @@ void MainFrame::OnOpenProject( wxCommandEvent &event )
 		return;
 
 	wxFileDialog *dialog = new wxFileDialog( this, wxT( "Open Project" ), m_currentDir,
-	                       wxT( "" ), wxT( "wxFormBuilder Project File (*.fbp)|*.fbp|All files (*.*)|*.*" ), wxOPEN );
+	                       wxT( "" ), wxT( "wxFormBuilder Project File (*.fbp)|*.fbp|All files (*.*)|*.*" ), wxFD_OPEN );
 
 	if ( dialog->ShowModal() == wxID_OK )
 	{
@@ -555,7 +555,7 @@ void MainFrame::OnOpenRecent( wxCommandEvent &event )
 void MainFrame::OnImportXrc( wxCommandEvent &event )
 {
 	wxFileDialog *dialog = new wxFileDialog( this, wxT( "Import XRC file" ), m_currentDir,
-	                       wxT( "example.xrc" ), wxT( "*.xrc" ), wxOPEN );
+	                       wxT( "example.xrc" ), wxT( "*.xrc" ), wxFD_OPEN );
 
 	if ( dialog->ShowModal() == wxID_OK )
 	{

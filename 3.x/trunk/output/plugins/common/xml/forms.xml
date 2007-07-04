@@ -98,9 +98,7 @@
       <option name="wxCLOSE_BOX"				help="Displays a close box on the dialog." />
       <option name="wxMAXIMIZE_BOX" 			help="Displays a maximize box on the dialog." />
       <option name="wxMINIMIZE_BOX"				help="Displays a minimize box on the dialog." />
-      <option name="wxTHICK_FRAME"				help="Display a thick frame around the window." />
       <option name="wxSTAY_ON_TOP"				help="The dialog stays on top of all other windows." />
-      <option name="wxNO_3D"					help="Under Windows, specifies that the child controls should not have 3D borders unless specified in the control."/>
       <option name="wxDIALOG_NO_PARENT"			help="By default, a dialog created with a NULL parent window will be given the application's top level window as parent. Use this style to prevent this from happening and create an orphan dialog. This is not recommended for modal dialogs."/>
 	  wxDEFAULT_DIALOG_STYLE
 	</property>
