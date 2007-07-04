@@ -8,6 +8,7 @@ date Version 3.00.46 (Beta 3)
 * Fixed FS#199 - "tooltips lost on XRC import"
 * Fixed import of "enabled", "hidden", and "subclass" properties.
 * Fixed "FS#208 - Error in generated OnUpdateUI event handler registration code."
+* Fixed "Edit->Paste Object From Clipboard" was not enabled until the next selection.
 + Added "FS#211 - Optimized code/xrc generation in preview editors"
 ^ Massive font update.
     Default values for font properties are now allowed and encouraged.

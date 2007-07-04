@@ -139,6 +139,7 @@ EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
 EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
 EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
 EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
+EVT_UPDATE_UI( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI )
 EVT_CLOSE( MainFrame::OnClose )
 EVT_FLATNOTEBOOK_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
@@ -995,6 +996,11 @@ void MainFrame::OnClipboardPaste(wxCommandEvent& e)
 {
 	AppData()->PasteObjectFromClipboard( AppData()->GetSelectedObject() );
 	UpdateFrame();
+}
+
+void MainFrame::OnClipboardPasteUpdateUI( wxUpdateUIEvent& e )
+{
+	e.Enable( AppData()->CanPasteObjectFromClipboard() );
 }
 
 void MainFrame::OnToggleExpand ( wxCommandEvent &event )

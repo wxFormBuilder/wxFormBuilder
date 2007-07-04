@@ -118,6 +118,7 @@ class MainFrame : public wxFrame
   void OnDelete (wxCommandEvent &event);
   void OnClipboardCopy(wxCommandEvent& e);
   void OnClipboardPaste(wxCommandEvent& e);
+  void OnClipboardPasteUpdateUI( wxUpdateUIEvent& e );
   void OnToggleExpand (wxCommandEvent &event);
   void OnToggleStretch (wxCommandEvent &event);
   void OnMoveUp (wxCommandEvent &event);
