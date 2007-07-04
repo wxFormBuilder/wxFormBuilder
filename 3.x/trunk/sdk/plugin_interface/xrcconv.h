@@ -89,7 +89,7 @@ class ObjectToXrcFilter
 
   void LinkText(const wxString &text, ticpp::Element *propElement, bool xrcFormat = false);
   void LinkColour(const wxColour &colour, ticpp::Element *propElement);
-  void LinkFont(const wxFont &font, ticpp::Element *propElement);
+  void LinkFont(const wxFontContainer &font, ticpp::Element *propElement);
   void LinkInteger(const int &integer, ticpp::Element *propElement);
   void LinkStringList(const wxArrayString &array, ticpp::Element *propElement,  bool xrcFormat = false);
 };

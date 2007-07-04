@@ -96,7 +96,7 @@ void Property::SetDefaultValue()
 	m_value = m_info->GetDefaultValue();
 }
 
-void Property::SetValue(const wxFont &font)
+void Property::SetValue(const wxFontContainer &font)
 {
 	m_value = TypeConv::FontToString( font );
 }
@@ -129,7 +129,7 @@ void Property::SetValue(const double val )
 	m_value = TypeConv::FloatToString( val );
 }
 
-wxFont Property::GetValueAsFont()
+wxFontContainer Property::GetValueAsFont()
 {
 	return TypeConv::StringToFont( m_value );
 }
@@ -609,13 +609,13 @@ int ObjectBase::GetPropertyAsInteger (const wxString& pname)
 		return 0;
 }
 
-wxFont   ObjectBase::GetPropertyAsFont    (const wxString& pname)
+wxFontContainer ObjectBase::GetPropertyAsFont(const wxString& pname)
 {
 	PProperty property = GetProperty( pname );
 	if (property)
 		return property->GetValueAsFont();
 	else
-		return wxFont();
+		return wxFontContainer();
 }
 
 wxColour ObjectBase::GetPropertyAsColour  (const wxString& pname)

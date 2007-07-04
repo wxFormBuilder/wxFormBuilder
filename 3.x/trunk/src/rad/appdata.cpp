@@ -451,7 +451,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 6 )
+		m_fbpVerMinor( 7 )
 {
 	#ifdef __WXFB_DEBUG__
 	wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1586,6 +1586,11 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at at least version 1.6 */
+
+	// Version 1.7 now stores all font properties.
+	// The conversion is automatic because it is just an extension of the old values.
+
+	/* The file is now at at least version 1.7 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )

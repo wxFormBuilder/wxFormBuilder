@@ -31,6 +31,7 @@
 #include <vector>
 #include <map>
 #include "model/types.h"
+#include "fontcontainer.h"
 
 // macros para la conversión entre wxString <-> wxString
 #define _WXSTR(x)  TypeConv::_StringToWxString(x)
@@ -59,8 +60,8 @@ namespace TypeConv
 
   wxBitmap StringToBitmap( const wxString& filename );
 
-  wxFont StringToFont (const wxString &str);
-  wxString FontToString (const wxFont &font);
+  wxFontContainer StringToFont (const wxString &str);
+  wxString FontToString (const wxFontContainer &font);
 
   wxColour StringToColour(const wxString &str);
   wxSystemColour StringToSystemColour( const wxString& str );
