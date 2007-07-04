@@ -13,7 +13,10 @@ date Version 3.00.46 (Beta 3)
     Default values for font properties are now allowed and encouraged.
     The "underline" and "family" subproperties are now recognized.
     Fixed FS#205 - "wxStaticText If you bold a font and then remove the bold, the size shows up wrong"
-    Watch for bugs.   
+    Watch for bugs.
+^ Applied patch from ChrisBorgolte which removes the need for wx2.6 compatiblity mode.
+    -wxTHICK_FRAME and wxNO_3D styles have been removed from wxDialog. The project conversion wizard
+     will take appropriate action.
 
 06/13/2007 Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
