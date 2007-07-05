@@ -1051,9 +1051,16 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 		PProperty prop = it->second;
 		switch ( prop->GetType() )
 		{
+
+			case PT_FLOAT:
+			{
+				// use typeconv to properly handle locale
+				double val = event.GetPropertyValueAsDouble();
+				AppData()->ModifyProperty( prop, TypeConv::FloatToString( val ) );
+				break;
+			}
 			case PT_TEXT:
 			case PT_MACRO:
-			case PT_FLOAT:
 			case PT_INT:
 			case PT_UINT:
 			{
@@ -1259,15 +1266,22 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 
 	switch (prop->GetType())
 	{
+	case PT_FLOAT:
+	{
+		// use float instead of string -> typeconv handles locale
+		pgProp->DoSetValue( wxPGVariant( prop->GetValueAsFloat() ) );
+		break;
+	}
+	case PT_INT:
+	case PT_UINT:
+	{
+		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
+		break;
+	}
 	case PT_TEXT:
 	case PT_MACRO:
 	case PT_OPTION:
-	case PT_FLOAT:
 	case PT_PARENT:
-	case PT_INT:
-	case PT_UINT:
-		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
-		break;
 	case PT_WXSTRING:
 		pgProp->SetValueFromString(prop->GetValueAsText(), 0);
 		break;

@@ -9,6 +9,9 @@ date Version 3.00.46 (Beta 3)
 * Fixed import of "enabled", "hidden", and "subclass" properties.
 * Fixed "FS#208 - Error in generated OnUpdateUI event handler registration code."
 * Fixed "Edit->Paste Object From Clipboard" was not enabled until the next selection.
+* Properties with floating-point values will be saved and generated using the decimal point,
+  but user entry will use the separator ('.' or ',') according to the locale settings.
+  This closes "FS#203 - sashgravity -> float".
 + Added "FS#211 - Optimized code/xrc generation in preview editors"
 ^ Massive font update.
     Default values for font properties are now allowed and encouraged.

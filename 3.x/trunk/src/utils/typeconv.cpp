@@ -32,6 +32,93 @@
 #include <string>
 #include <cstring>
 #include "rad/appdata.h"
+#include <clocale>
+
+////////////////////////////////////
+
+// Assuming that the locale is constant throughout one execution,
+// store the locale so that numbers can be stored in the "C" locale,
+// but the rest of the program works in the user's locale.
+class LocaleFinder
+{
+private:
+	char* m_locale;
+
+public:
+	LocaleFinder()
+	{
+		// get current locale
+		char* localePtr = ::setlocale( LC_NUMERIC, 0 );
+		size_t size = ::strlen( localePtr ) + 1;
+		m_locale = new char[ size ];
+		::strncpy( m_locale, localePtr, size );
+	}
+
+	~LocaleFinder()
+	{
+		delete [] m_locale;
+	}
+
+	const char* GetString()
+	{
+		return m_locale;
+	}
+};
+
+// Unfortunately, the locale is "C" at the start of execution, and is changed to the correct locale
+// sometime later. This means that the LocaleFinder object cannot be simple declared like this:
+//  static LocaleFinder s_locale;
+// Instead, it must be created the first time that it is used, stored for the duration of the program,
+// and deleted on close.
+class LocaleHolder
+{
+private:
+	LocaleFinder* m_finder;
+
+public:
+	LocaleHolder()
+	:
+	m_finder( 0 )
+	{
+	}
+
+	~LocaleHolder()
+	{
+		delete m_finder;
+	}
+
+	const char* GetString()
+	{
+		if ( 0 == m_finder )
+		{
+			m_finder = new LocaleFinder;
+		}
+
+		return m_finder->GetString();
+	}
+};
+
+// Creating this object will determine the current locale (when needed) and store it for the duration of the program
+static LocaleHolder s_locale;
+
+// Utility class for switching to "C" locale and back
+class LocaleSwitcher
+{
+private:
+	const char* m_locale;
+
+public:
+	LocaleSwitcher()
+	{
+		m_locale = s_locale.GetString(); // Get the locale first, or it will be lost!
+		::setlocale( LC_NUMERIC, "C" );
+	}
+
+	~LocaleSwitcher()
+	{
+		::setlocale( LC_NUMERIC, m_locale );
+	}
+};
 
 ////////////////////////////////////
 
@@ -157,7 +244,7 @@ int TypeConv::GetMacroValue(const wxString &str)
 
 int TypeConv::StringToInt(const wxString &str)
 {
-    long l = 0;
+	long l = 0;
     str.ToLong(&l);
 
     return (int)l;
@@ -680,13 +767,19 @@ wxString TypeConv::StringToText(const wxString &str)
 
 double TypeConv::StringToFloat( const wxString& str )
 {
-    double out;
+	// Numbers are stored in "C" locale
+	LocaleSwitcher switcher;
+
+	double out;
     str.ToDouble( &out );
-    return out;
+	return out;
 }
 
 wxString TypeConv::FloatToString( const double& val )
 {
+	// Numbers are stored in "C" locale
+	LocaleSwitcher switcher;
+
     wxString convert;
     convert << val;
     return convert;
