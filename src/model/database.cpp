@@ -414,6 +414,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 				obj_type == wxT("flatnotebook")		||
 				obj_type == wxT("listbook")			||
 				obj_type == wxT("choicebook")		||
+				obj_type == wxT("auinotebook")		||
 				obj_type == wxT("expanded_widget")	||
 				obj_type == wxT("container")
 				)
@@ -756,6 +757,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("flatnotebook")		||
 			type == wxT("listbook")			||
 			type == wxT("choicebook")		||
+			type == wxT("auinotebook")		||
 			type == wxT("widget")			||
 			type == wxT("expanded_widget")	||
 			type == wxT("statusbar")		||
@@ -1136,11 +1138,12 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("flatnotebook")		||
 			type == wxT("listbook")			||
 			type == wxT("choicebook")		||
+			type == wxT("auinotebook")		||
 			type == wxT("widget")			||
 			type == wxT("expanded_widget")	||
-			type == wxT("statusbar")			||
-			type == wxT("component")			||
-			type == wxT("container")			||
+			type == wxT("statusbar")		||
+			type == wxT("component")		||
+			type == wxT("container")		||
 			type == wxT("menubar")			||
 			type == wxT("toolbar")			||
 			type == wxT("splitter")

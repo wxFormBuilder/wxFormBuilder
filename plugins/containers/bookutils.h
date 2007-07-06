@@ -8,6 +8,7 @@
 #include <wx/notebook.h>
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
+#include <wx/aui/auibook.h>
 
 class SuppressEventHandlers
 {
