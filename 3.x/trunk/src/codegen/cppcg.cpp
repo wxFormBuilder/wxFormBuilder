@@ -1337,6 +1337,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("toolbar")	||
 				type == wxT("listbook")	||
 				type == wxT("notebook")	||
+				type == wxT("auinotebook")	||
 				type == wxT("flatnotebook")
 			)
 		{
@@ -1379,7 +1380,8 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	else if (	type == wxT("notebookpage")		||
 				type == wxT("flatnotebookpage")	||
 				type == wxT("listbookpage")		||
-				type == wxT("choicebookpage")
+				type == wxT("choicebookpage")	||
+				type == wxT("auinotebookpage")
 			)
 	{
 		GenConstruction( obj->GetChild( 0 ), false );

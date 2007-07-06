@@ -78,6 +78,7 @@
     <childtype name="flatnotebook" nmax="1" />
     <childtype name="listbook" nmax="1" />
     <childtype name="choicebook" nmax="1" />
+	<childtype name="auinotebook" nmax="1" />
     <childtype name="splitter" nmax="1" />
   </objtype>
 
@@ -91,6 +92,7 @@
     <childtype name="flatnotebook" nmax="1" />
     <childtype name="listbook" nmax="1" />
     <childtype name="choicebook" nmax="1" />
+	<childtype name="auinotebook" nmax="1" />
     <childtype name="splitter" nmax="1" />
   </objtype>
 
@@ -134,7 +136,14 @@
     <childtype name="container" nmax="1" />
   </objtype>
 
+  <objtype name="auinotebook" >
+    <childtype name="auinotebookpage" />
+  </objtype>
 
+  <objtype name="auinotebookpage" item="1">
+    <childtype name="container" nmax="1" />
+  </objtype>
+  
   <objtype name="menubar">
     <childtype name="menu" />
   </objtype>

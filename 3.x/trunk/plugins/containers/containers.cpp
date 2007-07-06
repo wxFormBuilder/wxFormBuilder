@@ -31,7 +31,7 @@
 #include <wx/splitter.h>
 #include <wx/listctrl.h>
 
-// Includes notebook, listbook, choicebook
+// Includes notebook, listbook, choicebook, auibook
 #include "bookutils.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,6 +57,7 @@ protected:
 	void OnNotebookPageChanged( wxNotebookEvent& event );
 	void OnListbookPageChanged( wxListbookEvent& event );
 	void OnChoicebookPageChanged( wxChoicebookEvent& event );
+	void OnAuiNotebookPageChanged( wxAuiNotebookEvent& event );
 	void OnSplitterSashChanged( wxSplitterEvent& event );
 
 	template < class T >
@@ -100,6 +101,20 @@ protected:
 		}
 	}
 
+	void OnAuiNotebookPageClosed( wxAuiNotebookEvent& event )
+	{
+		wxMessageBox( wxT("wxAuiNotebook pages can normally be closed.\nHowever, it is difficult to design a page that has been closed, so this action has been vetoed."),
+						wxT("Page Close Vetoed!"), wxICON_INFORMATION, NULL );
+		event.Veto();
+	}
+
+	void OnAuiNotebookAllowDND( wxAuiNotebookEvent& event )
+	{
+		wxMessageBox( wxT("wxAuiNotebook pages can be dragged to other wxAuiNotebooks if the wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND event is caught and allowed.\nHowever, it is difficult to design a page that has been moved, so this action was not allowed."),
+						wxT("Page Move Not Allowed!"), wxICON_INFORMATION, NULL );
+		event.Veto();
+	}
+
 	DECLARE_EVENT_TABLE()
 };
 
@@ -107,6 +122,9 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_NOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnNotebookPageChanged )
 	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
+	EVT_AUINOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnAuiNotebookPageChanged )
+	EVT_AUINOTEBOOK_PAGE_CLOSE( -1, ComponentEvtHandler::OnAuiNotebookPageClosed )
+	EVT_AUINOTEBOOK_ALLOW_DND( -1, ComponentEvtHandler::OnAuiNotebookAllowDND )
 	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
 END_EVENT_TABLE()
 
@@ -655,6 +673,116 @@ public:
 	}
 };
 
+class AuiNotebookComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxAuiNotebook* book = new wxAuiNotebook((wxWindow *)parent,-1,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		book->SetTabCtrlHeight( obj->GetPropertyAsInteger( _("tab_ctrl_height") ) );
+		book->SetUniformBitmapSize( obj->GetPropertyAsSize( _("uniform_bitmap_size") ) );
+
+		book->PushEventHandler( new ComponentEvtHandler( book, GetManager() ) );
+
+		return book;
+	}
+
+/*
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxAuiNotebook"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxAuiNotebook"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+*/
+};
+
+void ComponentEvtHandler::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
+{
+	OnBookPageChanged< wxAuiNotebook >( event.GetSelection(), &event );
+	event.Skip();
+}
+
+class AuiNotebookPageComponent : public ComponentBase
+{
+public:
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		// Easy read-only property access
+		IObject* obj = GetManager()->GetIObject( wxobject );
+
+		wxAuiNotebook* book = wxDynamicCast( wxparent, wxAuiNotebook );
+
+		//This wouldn't compile in MinGW - strange
+		///wxWindow* page = wxDynamicCast( manager->GetChild( wxobject, 0 ), wxWindow );
+
+		// Do this instead
+		wxObject* child = GetManager()->GetChild( wxobject, 0 );
+		wxWindow* page = NULL;
+		if ( child->IsKindOf(CLASSINFO(wxWindow)))
+		{
+			page = (wxWindow*)child;
+		}
+
+		// Error checking
+		if ( !( obj && book && page ) )
+		{
+			wxLogError( _("AuiNotebookPageComponent is missing its wxFormBuilder object(%i), its parent(%i), or its child(%i)"), obj, book, page );
+			return;
+		}
+
+		// Prevent event handling by wxFB - these aren't user generated events
+		SuppressEventHandlers suppress( book );
+
+		// Save selection
+		int selection = book->GetSelection();
+		const wxBitmap& bitmap = obj->IsNull( _("bitmap") ) ? wxNullBitmap : obj->GetPropertyAsBitmap( _("bitmap") );
+		book->AddPage( page, obj->GetPropertyAsString( _("label") ), false, bitmap );
+
+		if ( obj->GetPropertyAsString( _("select") ) == wxT("0") && selection >= 0 )
+		{
+			book->SetSelection(selection);
+		}
+		else
+		{
+			book->SetSelection( book->GetPageCount() - 1 );
+		}
+	}
+
+	void OnSelected( wxObject* wxobject )
+	{
+		BookUtils::OnSelected< wxAuiNotebook >( wxobject, GetManager() );
+	}
+/*
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("auinotebookpage"));
+		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("auinotebookpage"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		return filter.GetXfbObject();
+	}
+*/
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -676,6 +804,9 @@ ABSTRACT_COMPONENT("listbookpage", ListbookPageComponent)
 
 WINDOW_COMPONENT("wxChoicebook", ChoicebookComponent)
 ABSTRACT_COMPONENT("choicebookpage", ChoicebookPageComponent)
+
+WINDOW_COMPONENT("wxAuiNotebook", AuiNotebookComponent)
+ABSTRACT_COMPONENT("auinotebookpage", AuiNotebookPageComponent)
 
 // wxSplitterWindow
 MACRO(wxSP_3D)
@@ -717,6 +848,18 @@ MACRO(wxCHB_LEFT)
 MACRO(wxCHB_RIGHT)
 MACRO(wxCHB_BOTTOM)
 MACRO(wxCHB_DEFAULT)
+
+// wxAuiNotebook
+MACRO(wxAUI_NB_DEFAULT_STYLE)
+MACRO(wxAUI_NB_TAB_SPLIT)
+MACRO(wxAUI_NB_TAB_MOVE)
+MACRO(wxAUI_NB_TAB_EXTERNAL_MOVE)
+MACRO(wxAUI_NB_TAB_FIXED_WIDTH)
+MACRO(wxAUI_NB_SCROLL_BUTTONS)
+MACRO(wxAUI_NB_WINDOWLIST_BUTTON)
+MACRO(wxAUI_NB_CLOSE_BUTTON)
+MACRO(wxAUI_NB_CLOSE_ON_ACTIVE_TAB)
+MACRO(wxAUI_NB_CLOSE_ON_ALL_TABS)
 
 END_LIBRARY()
 
