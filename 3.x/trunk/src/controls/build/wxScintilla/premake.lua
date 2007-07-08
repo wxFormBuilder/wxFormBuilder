@@ -85,7 +85,6 @@ if ( string.len( targetName ) == 0 ) then
 end
 
 -- Set the build options.
-package.buildflags = { "extra-warnings" }
 package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
