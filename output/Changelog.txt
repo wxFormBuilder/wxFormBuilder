@@ -5,6 +5,7 @@ date Version 3.00.46 (Beta 3)
   Resizing the columns/rows by dragging is the easiest way to use these.
 + Added events to wxStdDialogButtonSizer.
 + Added wxAuiNotebook.
++ FS#214 - "Create icon for wxAuiNotebook".
 ^ Reorganized wxGrid properties.
 * Fixed FS#199 - "tooltips lost on XRC import"
 * Fixed import of "enabled", "hidden", and "subclass" properties.
