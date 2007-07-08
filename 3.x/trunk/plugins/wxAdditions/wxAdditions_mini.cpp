@@ -184,8 +184,8 @@ public:
 			// image handlers, so it is not set this time.
 			pg->Append ( wxImageFileProperty(wxT("Example of ImageFileProperty"), wxT("ImageFileProp")));
 
-			// Font property has sub-properties. Note that we give window's font as initial value.
-			pg->Append ( wxFontProperty(wxT("Font"), wxPG_LABEL, wxFont()) );
+			// Font property has sub-properties.
+			pg->Append ( wxFontProperty(wxT("Font"), wxPG_LABEL, wxFontPropertyValue()) );
 
 			// Colour property with arbitrary colour.
 			pg->Append ( wxColourProperty(wxT("My Colour 1"), wxPG_LABEL, wxColour(242,109,0) ) );
@@ -287,8 +287,8 @@ public:
 			// image handlers, so it is not set this time.
 			pg->Append ( wxImageFileProperty(wxT("Example of ImageFileProperty"), wxT("ImageFileProp")));
 
-			// Font property has sub-properties. Note that we give window's font as initial value.
-			pg->Append ( wxFontProperty(wxT("Font"), wxPG_LABEL, wxFont()) );
+			// Font property has sub-properties.
+			pg->Append ( wxFontProperty(wxT("Font"), wxPG_LABEL, wxFontPropertyValue()) );
 
 			// Colour property with arbitrary colour.
 			pg->Append ( wxColourProperty(wxT("My Colour 1"), wxPG_LABEL, wxColour(242,109,0) ) );
