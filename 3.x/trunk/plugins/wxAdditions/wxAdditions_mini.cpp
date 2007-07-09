@@ -328,6 +328,8 @@ public:
 			book->SetImageList( images );
 		}
 
+		book->SetCustomizeOptions( obj->GetPropertyAsInteger( _("customize_options") ) );
+
 		book->PushEventHandler( new ComponentEvtHandler( book, GetManager() ) );
 
 		return book;
@@ -656,6 +658,17 @@ MACRO(wxFNB_DCLICK_CLOSES_TABS)
 MACRO(wxFNB_SMART_TABS)
 MACRO(wxFNB_DROPDOWN_TABS_LIST)
 MACRO(wxFNB_ALLOW_FOREIGN_DND)
+MACRO(wxFNB_FF2)
+MACRO(wxFNB_CUSTOM_DLG)
+
+// wxFNB Customizatio Options
+MACRO(wxFNB_CUSTOM_TAB_LOOK)
+MACRO(wxFNB_CUSTOM_ORIENTATION)
+MACRO(wxFNB_CUSTOM_FOREIGN_DRAG)
+MACRO(wxFNB_CUSTOM_LOCAL_DRAG)
+MACRO(wxFNB_CUSTOM_CLOSE_BUTTON)
+MACRO(wxFNB_CUSTOM_ALL)
+
 
 // wxScintilla
 WINDOW_COMPONENT("wxScintilla", ScintillaComponent )
