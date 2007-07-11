@@ -11,6 +11,7 @@ date Version 3.00.46 (Beta 3)
 * Fixed import of "enabled", "hidden", and "subclass" properties.
 * Fixed "FS#208 - Error in generated OnUpdateUI event handler registration code."
 * Fixed "Edit->Paste Object From Clipboard" was not enabled until the next selection.
+* Fixed  FS#216 - "missing header file for wxDatePickerCtrl"
 * Properties with floating-point values will be saved and generated using the decimal point,
   but user entry will use the separator ('.' or ',') according to the locale settings.
   This closes "FS#203 - sashgravity -> float".
