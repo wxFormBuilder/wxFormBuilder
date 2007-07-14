@@ -7,6 +7,10 @@
 --*		- use the '/' slash for all paths.
 --*****************************************************************************
 
+function trim (s)
+    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
 -- wxWidgets version
 local wx_ver = "28"
 local wx_ver_minor = ""
@@ -234,7 +238,20 @@ else
 	-- Set the Linux defines.
 	table.insert( package.defines, { "GTK", "__WXGTK__" } )
 	
+	-- Get wxWidgets lib names
+	local wxconfig = io.popen("wx-config " .. debug_option .. " --basename")
+	local debugBasename = trim( wxconfig:read("*a") )
+	wxconfig:close()
+	
+	wxconfig = io.popen("wx-config --debug=no --basename")
+	local basename = trim( wxconfig:read("*a") )
+	wxconfig:close()
+	
+	wxconfig = io.popen("wx-config --release")
+	local release = trim( wxconfig:read("*a") )
+	wxconfig:close()
+	
 	-- Set the targets.
-	package.config["Debug"].target = "`wx-config "..debug_option.." --basename`_"..targetName.."-`wx-config --release`"..wx_custom
-	package.config["Release"].target = "`wx-config --basename`_"..targetName.."-`wx-config --release`"..wx_custom
+	package.config["Debug"].target = debugBasename .. "_" .. targetName .. "-" .. release .. wx_custom
+	package.config["Release"].target = basename .. "_" .. targetName .. "-" .. release .. wx_custom
 end
