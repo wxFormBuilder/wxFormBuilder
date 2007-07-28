@@ -41,7 +41,7 @@
 
 #if wxCHECK_VERSION( 2, 8, 0 )
 	#include <wx/richtext/richtextctrl.h>
-	#include "zebra.xpm"
+	#include "logo.xpm"
 	#include "smiley.xpm"
 	#include <wx/clrpicker.h>
 	#include <wx/fontpicker.h>
@@ -191,11 +191,10 @@ public:
 		r.EndBold();
 
 		r.Newline();
-		r.WriteImage(wxBitmap(zebra_xpm));
+		r.WriteImage(wxBitmap(logo_xpm));
 
 		r.EndAlignment();
 
-		r.Newline();
 		r.Newline();
 
 		r.WriteText(wxT("What can you do with this thing? "));

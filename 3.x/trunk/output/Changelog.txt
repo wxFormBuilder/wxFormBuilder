@@ -24,6 +24,7 @@ date Version 3.00.46 (Beta 3)
 ^ Applied patch from ChrisBorgolte which removes the need for wx2.6 compatiblity mode.
     -wxTHICK_FRAME and wxNO_3D styles have been removed from wxDialog. The project conversion wizard
      will take appropriate action.
+^ Updated images in sample text in wxRichTextCtrl. This resolves FS#221.
 
 06/13/2007 Version 3.00.45 (Beta 3)
 * Fixed FS#198 - "Wrong place of the ID in a wxHyperlinkCtrl."
