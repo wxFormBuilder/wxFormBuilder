@@ -1,4 +1,9 @@
 project.name = "wxFormBuilder"
+if ( OS == "windows") then
+	project.bindir = "output"
+else
+	project.bindir = "output/lib"
+end
 
 -- Add packages here.
 dopackage( "src" )

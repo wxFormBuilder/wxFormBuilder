@@ -42,9 +42,9 @@ end
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
 if ( OS == "windows") then
-	package.bindir = "../../../../output"
+	--package.bindir = "../../../../output"
 else
-	package.bindir = "../../../../output/lib"
+	--package.bindir = "../../../../output/lib"
 end
 -- Set the defines.
 package.defines = { "WXMAKINGDLL_SCI", "MONOLITHIC", "LINK_LEXERS", "SCI_LEXER" }
@@ -94,6 +94,7 @@ if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
 if ( target == "cb-gcc" or target == "gnu" ) then
+	table.insert( package.buildflags, "no-import-lib" )
 	table.insert( package.config["Debug"].buildoptions, "-O0" )
 	table.insert( package.config["Release"].buildoptions, "-fno-strict-aliasing" )
 end
