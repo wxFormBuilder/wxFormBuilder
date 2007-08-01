@@ -1,5 +1,8 @@
 project.name = "wxFormBuilder 3rd-Party Controls"
 
+project.bindir = "../../../output"
+project.libdir = "../../../output"
+
 --dofile( "../../../premake/wrap_wxconfig.lua" )
 
 -- Path to wx-config.

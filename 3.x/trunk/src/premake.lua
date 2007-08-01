@@ -35,7 +35,7 @@ package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml"
 package.libpaths = { "../output", "../sdk/lib" }
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
--- Set the packages dependancies.
+-- Set the packages dependancies. NOT implimented in the official Premake build for Code::Blocks
 package.depends = { "additional-components-plugin", "common-components-plugin", "containers-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
 -- Set the pre-compiled header
 package.pchheader = "pch.h"
