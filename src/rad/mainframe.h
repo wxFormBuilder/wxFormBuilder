@@ -78,6 +78,12 @@ class MainFrame : public wxFrame
   XrcPanel *m_xrc;
   int m_style;
 
+  // Save which page is selected
+  int m_page_selection;
+
+  // Save right splitter's sash position
+  int m_rightSplitter_sash_pos;
+
   wxString m_currentDir;
   wxString m_recentProjects[4];
 
@@ -142,6 +148,8 @@ class MainFrame : public wxFrame
   void OnCodeGeneration( wxFBEvent& event );
   void OnProjectRefresh( wxFBEvent& event );
 
+  void OnSplitterChanged( wxSplitterEvent &event );
+
   void InsertRecentProject(const wxString &file);
 
   wxWindow  *CreateComponentPalette (wxWindow *parent);
@@ -157,7 +165,7 @@ class MainFrame : public wxFrame
   void OnFindDialog( wxCommandEvent& event );
   void OnFind( wxFindDialogEvent& event );
   void OnFindClose( wxFindDialogEvent& event );
-};
+  };
 
 
 

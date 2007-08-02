@@ -159,6 +159,8 @@ EVT_FIND( wxID_ANY, MainFrame::OnFind )
 EVT_FIND_NEXT( wxID_ANY, MainFrame::OnFind )
 EVT_FIND_CLOSE( wxID_ANY, MainFrame::OnFindClose )
 
+EVT_SPLITTER_SASH_POS_CHANGED( ID_RIGHT_SPLITTER, MainFrame::OnSplitterChanged )
+
 END_EVENT_TABLE()
 
 // Used to kill focus from propgrid when toolbar or menu items are clicked
@@ -277,6 +279,10 @@ m_findDialog( NULL )
 
 	RestorePosition( wxT( "mainframe" ) );
 	Layout();
+
+	// Init. m_cpp and m_xrc first
+	m_cpp = NULL;
+	m_xrc = NULL;
 
 	switch ( style )
 	{
@@ -655,6 +661,48 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 {
 	PObjectBase obj = event.GetFBObject();
 
+	Debug::Print(wxT("MainFrame::OnObjectSelected"));
+
+    // resize sash position if necessary
+    wxSize      panel_size;
+    int         sash_pos;
+
+    if(m_style != wxFB_CLASSIC_GUI) {
+
+        switch(m_page_selection)
+        {
+        case 1: // CPP panel
+               break;
+
+        case 2: // XRC panel
+           break;
+
+        default:
+            if(m_visualEdit != NULL) {
+
+                // If selected object is not a Frame or a Panel or a dialog, we won't
+                // adjust the sash position
+                if( (obj->GetClassName() == wxT("Frame")) ||
+                    (obj->GetClassName() == wxT("Panel")) ||
+                    (obj->GetClassName() == wxT("Dialog"))) {
+                    sash_pos = m_rightSplitter->GetSashPosition();
+                    panel_size = m_visualEdit->GetVirtualSize();
+
+                    Debug::Print(wxT("MainFrame::OnObjectSelected > sash pos = %d"), sash_pos);
+                    Debug::Print(wxT("MainFrame::OnObjectSelected > virtual width = %d"), panel_size.GetWidth());
+
+                    if(panel_size.GetWidth() > sash_pos) {
+                        //set the sash position
+                        Debug::Print(wxT("MainFrame::OnObjectSelected > set sash position"));
+                        m_rightSplitter_sash_pos = panel_size.GetWidth();
+                        m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
+                    }
+                }
+            }
+            break;
+        }
+    }
+
 	wxString name;
 	PProperty prop( obj->GetProperty( wxT( "name" ) ) );
 
@@ -676,6 +724,8 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 {
 	wxString message;
+
+	Debug::Print(wxT("MainFrame::OnObjectCreated"));
 
 	if ( event.GetFBObject() )
 	{
@@ -1203,6 +1253,65 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 {
 	bool enableFind = !( _("Designer") == m_notebook->GetPageText( event.GetSelection() ) );
 	int item = GetMenuBar()->FindMenuItem( _("Edit"), _("Find") );
+
+    m_page_selection = event.GetSelection();
+
+	Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > selection = %d"), m_page_selection);
+
+    wxSize panel_size;
+    int sash_pos;
+
+    if(m_style != wxFB_CLASSIC_GUI) {
+
+        switch(m_page_selection)
+        {
+        case 1: // CPP panel
+            if((m_cpp != NULL) && (m_rightSplitter != NULL)) {
+                panel_size = m_cpp->GetClientSize();
+                sash_pos = m_rightSplitter->GetSashPosition();
+
+                Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > CPP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+
+                if(panel_size.GetWidth() > sash_pos) {
+                    // set the sash position
+                    Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+                    m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+                }
+            }
+            break;
+
+        case 2: // XRC panel
+            if((m_xrc != NULL) && (m_rightSplitter != NULL)) {
+                panel_size = m_xrc->GetClientSize();
+                sash_pos = m_rightSplitter->GetSashPosition();
+
+                Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > XRC panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+
+                if(panel_size.GetWidth() > sash_pos) {
+                    // set the sash position
+                    Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+                    m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+                }
+            }
+            break;
+
+        default:
+            if(m_visualEdit != NULL) {
+                sash_pos = m_rightSplitter->GetSashPosition();
+
+                if(m_rightSplitter_sash_pos < sash_pos) {
+                    //restore the sash position
+                    Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position"));
+                    m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
+                } else {
+                    // update position
+                    m_rightSplitter_sash_pos = sash_pos;
+                }
+            }
+            break;
+        }
+    }
+
 	if ( item != -1 )
 	{
 		GetMenuBar()->Enable( item, enableFind );
@@ -1399,11 +1508,12 @@ wxWindow * MainFrame::CreateObjectInspector( wxWindow *parent )
 
 void MainFrame::CreateWideGui()
 {
+	// MainFrame only contains m_leftSplitter window
 	m_leftSplitter = new wxSplitterWindow( this, ID_LEFT_SPLITTER, wxDefaultPosition, wxDefaultSize, 0 );
 
 	wxWindow *objectTree = Title::CreateTitle( CreateObjectTree( m_leftSplitter ), wxT( "Object Tree" ) );
 
-	// panel1 contains Palette and splitter2
+	// panel1 contains Palette and splitter2 (m_rightSplitter)
 	wxPanel *panel1 = new wxPanel( m_leftSplitter, -1 );
 
 	wxWindow *palette = Title::CreateTitle( CreateComponentPalette( panel1 ), wxT( "Component Palette" ) );
@@ -1430,6 +1540,9 @@ void MainFrame::CreateWideGui()
 	m_rightSplitter->SetSashGravity( 1 );
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
+	// Init. m_rightSplitter_sash_pos
+	m_rightSplitter_sash_pos = m_rightSplitter->GetSashPosition();
+
 	m_style = wxFB_WIDE_GUI;
 
 	SetMinSize( wxSize( 700, 380 ) );
@@ -1437,9 +1550,13 @@ void MainFrame::CreateWideGui()
 
 void MainFrame::CreateClassicGui()
 {
-	m_leftSplitter = new wxSplitterWindow( this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+	// Give ID to left splitter
+	//m_leftSplitter = new wxSplitterWindow( this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+	m_leftSplitter = new wxSplitterWindow( this, ID_LEFT_SPLITTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
 
-	m_rightSplitter =  new wxSplitterWindow( m_leftSplitter, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+    // Give ID to right splitter
+	//m_rightSplitter =  new wxSplitterWindow( m_leftSplitter, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+	m_rightSplitter =  new wxSplitterWindow( m_leftSplitter, ID_RIGHT_SPLITTER, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
 	wxWindow *objectTree      = Title::CreateTitle( CreateObjectTree( m_rightSplitter ), wxT( "Object Tree" ) );
 	wxWindow *objectInspector = Title::CreateTitle( CreateObjectInspector( m_rightSplitter ), wxT( "Object Properties" ) );
 
@@ -1480,4 +1597,12 @@ void MainFrame::OnIdle( wxIdleEvent& )
 	}
 
 	Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
+}
+
+void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
+{
+    Debug::Print(wxT("MainFrame::OnSplitterChanged > pos = %d"), event.GetSashPosition());
+
+    // update position
+    m_rightSplitter_sash_pos = event.GetSashPosition();
 }
