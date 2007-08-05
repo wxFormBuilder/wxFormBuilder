@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.47 (Beta 3)
++ FS#223 - "missing wxTextCtrl style"
+
 07/27/2007 Version 3.00.46 (Beta 3)
 + Added "column_sizes" and "row_sizes" properties to wxGrid.
   Resizing the columns/rows by dragging is the easiest way to use these.
