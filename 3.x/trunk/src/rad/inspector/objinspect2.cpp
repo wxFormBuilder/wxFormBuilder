@@ -563,6 +563,9 @@ DEFINE_EVENT_TYPE( wxEVT_NEW_BITMAP_PROPERTY )
 BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_PG_CHANGED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridChange)
 	EVT_PG_CHANGED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridChange)
+	EVT_PG_ITEM_COLLAPSED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
+	EVT_PG_ITEM_EXPANDED (WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
+
 
 	EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
 	EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
@@ -967,6 +970,19 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 					m_pg->SetPropertyColour(id,wxColour(220,255,255)); // cyan
 			}
 
+			ExpandMap::iterator it = m_isExpanded.find( propName );
+			if ( it != m_isExpanded.end() )
+			{
+				if ( it->second )
+				{
+					m_pg->Expand( id );
+				}
+				else
+				{
+					m_pg->Collapse( id );
+				}
+			}
+
 			properties.insert( PropertyMap::value_type( propName, prop ) );
 			m_propMap.insert( ObjInspectorPropertyMap::value_type( id.GetPropertyPtr(), prop ) );
 		}
@@ -980,7 +996,19 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 		{
 			continue;
 		}
-		m_pg->AppendIn( category->GetName(), wxPropertyCategory( nextCat->GetName() ) );
+		wxPGId catId = m_pg->AppendIn( category->GetName(), wxPropertyCategory( nextCat->GetName() ) );
+		ExpandMap::iterator it = m_isExpanded.find( nextCat->GetName() );
+		if ( it != m_isExpanded.end() )
+		{
+			if ( it->second )
+			{
+				m_pg->Expand( catId );
+			}
+			else
+			{
+				m_pg->Collapse( catId );
+			}
+		}
 		AddItems( name, obj, obj_info, nextCat, properties );
 	}
 }
@@ -1223,6 +1251,11 @@ void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
 		PEvent evt = it->second;
 		AppData()->ModifyEventHandler( evt, event.GetPropertyValueAsString() );
 	}
+}
+
+void ObjectInspector::OnPropertyGridExpand(wxPropertyGridEvent& event)
+{
+	m_isExpanded[event.GetPropertyName()] = m_pg->IsPropertyExpanded( event.GetProperty() );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

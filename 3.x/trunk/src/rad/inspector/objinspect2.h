@@ -88,6 +88,9 @@ class ObjectInspector : public wxPanel
 
   int StringToBits(const wxString& strVal, wxPGChoices& constants);
 
+  typedef std::map< wxString, bool > ExpandMap;
+  ExpandMap m_isExpanded;
+
 	template < class ValueT >
 		void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, ValueT >& itemMap, bool addingEvents )
 	{
@@ -119,7 +122,20 @@ class ObjectInspector : public wxPanel
 			pg->AddPage( pageName, obj_info->GetSmallIconFile() );
 		}
 
-		pg->AppendCategory( category->GetName() );
+		const wxString& catName = category->GetName();
+		wxPGId id = pg->AppendCategory( catName );
+		ExpandMap::iterator it = m_isExpanded.find( catName );
+		if ( it != m_isExpanded.end() )
+		{
+			if ( it->second )
+			{
+				m_pg->Expand( id );
+			}
+			else
+			{
+				m_pg->Collapse( id );
+			}
+		}
 
 		AddItems( name, obj, obj_info, category, itemMap );
 
@@ -134,6 +150,7 @@ class ObjectInspector : public wxPanel
 
   void OnPropertyGridChange(wxPropertyGridEvent& event);
   void OnEventGridChange(wxPropertyGridEvent& event);
+  void OnPropertyGridExpand(wxPropertyGridEvent& event);
   void OnNewBitmapProperty( wxCommandEvent& event );
 
  protected:
