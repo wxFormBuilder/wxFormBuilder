@@ -4,6 +4,8 @@ date Version 3.00.47 (Beta 3)
 + FS#223 - "missing wxTextCtrl style"
 + FS#222 - "Add an annoying dialog to the XRC Preview."
 ^ FS#116 - "Having property editor remember its expanded property groups."
+^ Added "All image files" to the file type filter for the file browser for
+  bitmap properties.
 
 07/27/2007 Version 3.00.46 (Beta 3)
 + Added "column_sizes" and "row_sizes" properties to wxGrid.
