@@ -7,20 +7,7 @@
 		@{ @#include &lt;wx/cshelp.h&gt; #nl @}
     </template>
     <template name="header_epilogue">
-		#ifnotequal $help_provider "none"
-		@{
-		// Using the construction of a static object to ensure that the help provider is set #nl
-		class wxFBContextSensitiveHelpSetter #nl
-		{ #nl
-		public: #nl
-			wxFBContextSensitiveHelpSetter() #nl
-			{ #nl
-				wxHelpProvider::Set( new $help_provider ); #nl
-			} #nl
-		}; #nl
-		#nl
-		static wxFBContextSensitiveHelpSetter s_wxFBSetTheHelpProvider; #nl
-		@}///////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////
     </template>
     <template name="cpp_preamble">
 	  #ifnotnull $precompiled_header
@@ -38,8 +25,20 @@
 		  @#endif //WX_PRECOMP
 	  @}
 	</template>
-    <template name="cpp_epilogue">
-        ///////////////////////////////////////////////////////////////////////////
+    <template name="cpp_epilogue">#ifnotequal $help_provider "none"
+		@{
+		// Using the construction of a static object to ensure that the help provider is set #nl
+		class wxFBContextSensitiveHelpSetter #nl
+		{ #nl
+		public: #nl
+			wxFBContextSensitiveHelpSetter() #nl
+			{ #nl
+				wxHelpProvider::Set( new $help_provider ); #nl
+			} #nl
+		}; #nl
+		#nl
+		static wxFBContextSensitiveHelpSetter s_wxFBSetTheHelpProvider; #nl
+		@}///////////////////////////////////////////////////////////////////////////
     </template>
   </templates>
   <templates class="wxWindow">
