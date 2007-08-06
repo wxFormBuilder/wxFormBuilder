@@ -17,6 +17,7 @@
 #include <wx/stattext.h>
 #include <wx/statbmp.h>
 #include <wx/config.h>
+#include <wx/log.h>
 #include "annoyingdialog.h"
 
 BEGIN_EVENT_TABLE(AnnoyingDialog, wxDialog)
