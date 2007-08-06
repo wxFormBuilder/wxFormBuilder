@@ -3,6 +3,7 @@
 #include "model/objectbase.h"
 #include "codegen/xrccg.h"
 #include "rad/cpppanel/cpppanel.h"
+#include "utils/annoyingdialog.h"
 
 #include <wx/xrc/xmlres.h>
 #include <wx/filename.h>
@@ -90,6 +91,25 @@ END_EVENT_TABLE()
 
 void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 {
+
+	AnnoyingDialog dlg(_("WARNING - For XRC Developers ONLY!!"),
+						wxGetTranslation(	wxT("The XRC language is not as powerful as C++.\n")
+											wxT("It has limitations that will affect the GUI\n")
+											wxT("layout. This preview will ONLY show how the\n")
+											wxT("generated XRC will look, and it will probably\n")
+											wxT("be different from the Designer.\n\n")
+											wxT("If you are not using XRC, do NOT use the XRC\n")
+											wxT("preview, it will only confuse you.")
+										),
+								wxART_WARNING,
+								AnnoyingDialog::OK_CANCEL,
+								wxID_CANCEL);
+
+	if ( wxID_CANCEL == dlg.ShowModal() )
+	{
+		return;
+	}
+
 	wxString className = form->GetClassName();
 
 	XrcCodeGenerator codegen;
