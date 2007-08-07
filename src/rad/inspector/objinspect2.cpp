@@ -432,6 +432,8 @@ void wxPointPropertyClass::ChildChanged ( wxPGProperty* p )
 // -----------------------------------------------------------------------
 // wxBitmapWithResourcePropertyClass
 // -----------------------------------------------------------------------
+static long g_imageFilterIndex = -1;
+static wxString g_imageInitialPath = wxEmptyString;
 
 class wxBitmapWithResourcePropertyClass : public wxPGPropertyWithChildren
 {
@@ -439,7 +441,7 @@ class wxBitmapWithResourcePropertyClass : public wxPGPropertyWithChildren
 public:
 
 	wxBitmapWithResourcePropertyClass( const wxString& label, const wxString& name, const wxString& value );
-	virtual ~wxBitmapWithResourcePropertyClass(){};
+	virtual ~wxBitmapWithResourcePropertyClass();
 
 	WX_PG_DECLARE_PARENTAL_TYPE_METHODS()
 	WX_PG_DECLARE_PARENTAL_METHODS()
@@ -465,8 +467,9 @@ private:
 
 WX_PG_IMPLEMENT_PROPERTY_CLASS(wxBitmapWithResourceProperty,wxBaseParentProperty,wxString,const wxString&,TextCtrl)
 
-wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxString& label, const wxString& name, const wxString& value)
-	: wxPGPropertyWithChildren(label,name)
+wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxString& label, const wxString& name, const wxString& value )
+:
+wxPGPropertyWithChildren(label,name)
 {
 
 	// Add the options
@@ -483,6 +486,17 @@ wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxS
 		wxPGProperty* child = wxImageFileProperty( wxT("file_path"), wxPG_LABEL, m_image );
 		AddChild( child );
 		child->SetHelpString( wxT("Path to the image file.") );
+		if ( g_imageFilterIndex >= 0 )
+		{
+			wxVariant filterIndex( g_imageFilterIndex );
+			child->SetAttribute( wxPG_FILE_FILTER_INDEX, filterIndex );
+		}
+
+		if ( !g_imageInitialPath.empty() )
+		{
+			wxVariant initialPath( g_imageInitialPath );
+			child->SetAttribute( wxPG_FILE_INITIAL_PATH, initialPath );
+		}
 	}
 	else
 	{
@@ -504,6 +518,10 @@ wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxS
 	RefreshChildren();
 }
 
+wxBitmapWithResourcePropertyClass::~wxBitmapWithResourcePropertyClass()
+{
+
+}
 
 void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 {
@@ -551,7 +569,15 @@ void wxBitmapWithResourcePropertyClass::RefreshChildren()
 
 void wxBitmapWithResourcePropertyClass::ChildChanged( wxPGProperty* p )
 {
+	wxImageFilePropertyClass* prop = dynamic_cast< wxImageFilePropertyClass* >( p );
+	if ( prop )
+	{
+		g_imageFilterIndex = prop->GetFilterIndex();
 
+		wxPGVariant path = prop->DoGetValue();
+		wxFileName imgPath( path.GetString() );
+		g_imageInitialPath = imgPath.GetPath();
+	}
 }
 
 // -----------------------------------------------------------------------
@@ -1382,8 +1408,10 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 			pgProp->DoSetValue((void*)&val);
 		}
 		break;
+	case PT_BITMAP:
+		break;
 	default:
-		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
+		pgProp->SetValueFromString(prop->GetValueAsString(), wxPG_FULL_VALUE);
 	}
 	m_pg->Refresh();
 }
