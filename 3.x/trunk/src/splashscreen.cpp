@@ -21,7 +21,7 @@ void cbSplashScreen::DoPaint(wxDC &dc)
   static const wxString revision( wxT("3.0.47") );
 
   #ifdef __WXMSW__
-  dc.SetClippingRegion(r);
+  //dc.SetClippingRegion(r);
   #endif
 
   dc.DrawBitmap(m_label, 0, 0, false);
@@ -88,11 +88,11 @@ void cbSplashScreen::OnMouseEvent(wxMouseEvent &event)
 
 cbSplashScreen::cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, wxWindowID id, long style)
 : wxFrame(parent, id, wxEmptyString, wxPoint(0, 0), wxSize(100, 100), style),
-  m_timer(this, cbSplashScreen_timer_id), r(0, 0, 181, 181)
+  m_timer(this, cbSplashScreen_timer_id)//, r(0, 0, 181, 181)
 {
-  r.Union(50, 35, 181, 181);
-  r.Union(166, 13, 181, 181);
-  r.Union(259, 29, 181, 181);
+  //r.Union(50, 35, 181, 181);
+  //r.Union(166, 13, 181, 181);
+  //r.Union(259, 29, 181, 181);
 
   int w = label.GetWidth();
   int h = label.GetHeight();
@@ -123,7 +123,7 @@ cbSplashScreen::cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, 
   label_dc.DrawBitmap(label, 0, 0, true);
   label_dc.SelectObject(wxNullBitmap);
 
-  SetShape(r);
+  //SetShape(r);
 
   Show(true);
   SetThemeEnabled(false); // seems to be useful by description
