@@ -34,7 +34,7 @@
 #include "wx/wx.h"
 #endif
 
-#include <wx/splash.h>
+#include "splashscreen.h"
 #include "rad/mainframe.h"
 #include "rad/appdata.h"
 #include <wx/filename.h>
@@ -206,14 +206,12 @@ bool MyApp::OnInit()
 
 	#ifndef __WXFB_DEBUG__
 	wxBitmap bitmap;
-	std::auto_ptr< wxSplashScreen > splash;
+	std::auto_ptr< cbSplashScreen > splash;
 	if ( !justGenerate )
 	{
 		if ( bitmap.LoadFile( dataDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
 		{
-			splash = std::auto_ptr< wxSplashScreen >( new wxSplashScreen( bitmap, wxSPLASH_CENTRE_ON_SCREEN | wxSPLASH_TIMEOUT,
-					 3000, NULL, -1, wxDefaultPosition, wxDefaultSize,
-					 wxSIMPLE_BORDER | wxSTAY_ON_TOP ) );
+			splash = std::auto_ptr< cbSplashScreen >( new cbSplashScreen( bitmap, -1, 0, wxNewId() ) );
 		}
 	}
 	#endif
