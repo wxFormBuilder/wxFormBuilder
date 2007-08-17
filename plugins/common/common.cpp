@@ -103,6 +103,7 @@ public:
 protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
+	void OnRadioBox( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
@@ -111,6 +112,7 @@ protected:
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
+	EVT_RADIOBOX( wxID_ANY, ComponentEvtHandler::OnRadioBox )
 
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
@@ -618,14 +620,12 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
-		wxString *strings = new wxString[choices.Count()];
-		for (unsigned int i=0; i < choices.Count(); i++)
-			strings[i] = choices[i];
+		int count = choices.Count();
 
 		int majorDim = obj->GetPropertyAsInteger(_("majorDimension"));
 		if (majorDim < 1)
 		{
-			wxLogWarning(wxT("Property majorDimension of wxRadioBox set to \'1\'"));
+			wxLogWarning(_("majorDimension must be greater than zero."));
 			majorDim = 1;
 		}
 
@@ -633,12 +633,16 @@ public:
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
-			(int)choices.Count(),
-			strings,
+			choices,
 			majorDim,
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		delete []strings;
+		int selection = obj->GetPropertyAsInteger( _("selection") );
+		if ( selection < count )
+		{
+			radiobox->SetSelection( selection );
+		}
+		radiobox->PushEventHandler( new ComponentEvtHandler( radiobox, GetManager() ) );
 
 		return radiobox;
 	}
@@ -648,6 +652,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxRadioBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER );
 		xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
 		xrc.AddProperty(_("majorDimension"), _("dimension"), XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
@@ -658,11 +663,24 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxRadioBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER );
 		filter.AddProperty(_("content"),_("choices"), XRC_TYPE_STRINGLIST);
 		filter.AddProperty(_("dimension"), _("majorDimension"), XRC_TYPE_INTEGER);
 		return filter.GetXfbObject();
 	}
 };
+
+void ComponentEvtHandler::OnRadioBox( wxCommandEvent& event )
+{
+	wxRadioBox* rb = wxDynamicCast( m_window, wxRadioBox );
+	if ( rb != NULL )
+	{
+		wxString value;
+		value.Printf( wxT("%i"), rb->GetSelection() );
+		m_manager->ModifyProperty( m_window, _("selection"), value );
+		rb->SetFocus();
+	}
+}
 
 class RadioButtonComponent : public ComponentBase
 {

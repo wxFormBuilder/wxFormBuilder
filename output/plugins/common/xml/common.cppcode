@@ -16,7 +16,7 @@
 	<template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
 	<template name="evt_connect_OnButtonClick">$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxTextCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
@@ -89,7 +89,8 @@
 		@{
 			wxString $name #append Choices[] = { $choices }; #nl
 			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-			$name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} );
+			$name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} ); #nl
+			$name->SetSelection( $selection );
 		@}
 		#ifnull $choices
 		@{
@@ -100,7 +101,7 @@
 	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
 	<template name="evt_connect_OnRadioBox">$name->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxRadioButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -211,7 +212,7 @@
 		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );		
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );
 	</template>
 	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
 	<template name="evt_connect_OnScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
@@ -232,7 +233,7 @@
 	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
 	<template name="evt_connect_OnScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScroll">	
+	<template name="evt_connect_OnCommandScroll">
 		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
@@ -241,7 +242,7 @@
 		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );	
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );
 	</template>
 	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
 	<template name="evt_connect_OnCommandScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>

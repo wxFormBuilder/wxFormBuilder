@@ -9,6 +9,7 @@ date Version 3.00.47 (Beta 3)
   bitmap properties.
 * Switch to Code::Blocks splashscreen class to fix linux transparency.
   This resolves FS#224 - "Splashscreen problem in Linux".
+* FS#225 - "Current Radio Button selection not saved to fbp or generated in code."
 
 07/27/2007 Version 3.00.46 (Beta 3)
 + Added "column_sizes" and "row_sizes" properties to wxGrid.
