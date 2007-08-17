@@ -32,7 +32,11 @@ package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
 package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml", "../sdk/plugin_interface" }
-package.libpaths = { "../output", "../sdk/lib" }
+if ( OS == "windows") then
+	package.libpaths = { "../output", "../sdk/lib" }
+else
+	package.libpaths = { "../output/lib", "../sdk/lib" }
+end
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 -- Set the packages dependancies. NOT implimented in the official Premake build for Code::Blocks
