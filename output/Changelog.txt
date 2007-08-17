@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.47 (Beta 3)
+08/16/2007 Version 3.00.47 (Beta 3)
 + FS#223 - "missing wxTextCtrl style"
 + FS#222 - "Add an annoying dialog to the XRC Preview."
 ^ FS#116 - "Having property editor remember its expanded property groups."
