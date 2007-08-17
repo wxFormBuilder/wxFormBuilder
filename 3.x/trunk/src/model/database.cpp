@@ -56,7 +56,6 @@
 #define PACKAGE_TAG "package"
 #define PKGDESC_TAG "desc"
 #define PRGLANG_TAG "language"
-#define HIDDEN_TAG "hidden"     //Juan
 #define ICON_TAG "icon"
 #define SMALL_ICON_TAG "smallIcon"
 #define EXPANDED_TAG "expanded"
@@ -874,9 +873,6 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			std::string type;
 			elem_obj->GetAttribute( "type", &type );
 
-			std::string widget;
-			elem_obj->GetAttributeOrDefault( "widget", &widget, "" );
-
 			std::string icon;
 			elem_obj->GetAttributeOrDefault( "icon", &icon, "" );
 			wxString iconFullPath = iconPath + wxFILE_SEP_PATH + _WXSTR(icon);
@@ -961,10 +957,6 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		std::string pname;
 		elem_prop->GetAttribute( NAME_TAG, &pname );
 		category->AddProperty( _WXSTR(pname) );
-
-		// Hidden Attribute
-		bool hidden;
-		elem_prop->GetAttributeOrDefault( HIDDEN_TAG, &hidden, false );
 
 		std::string description;
 		elem_prop->GetAttributeOrDefault( DESCRIPTION_TAG, &description, "" );
@@ -1058,7 +1050,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		}
 
 		// create an instance of PropertyInfo
-		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), _WXSTR(customEditor), hidden, opt_list, children ) );
+		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), _WXSTR(customEditor), opt_list, children ) );
 
 		// add the PropertyInfo to the property
 		obj_info->AddPropertyInfo(prop_info);

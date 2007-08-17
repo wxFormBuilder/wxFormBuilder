@@ -33,12 +33,11 @@
 #include <wx/tokenzr.h>
 
 PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
-						   bool hidden, POptionList opt_list, const std::list< PropertyChild >& children )
+						   POptionList opt_list, const std::list< PropertyChild >& children )
 {
 	m_name = name;
 	m_type = type;
 	m_def_value = def_value;
-	m_hidden = hidden;    //Juan
 	m_opt_list = opt_list;
 	m_description = description;
 	m_children = children;
