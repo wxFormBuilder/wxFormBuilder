@@ -102,7 +102,7 @@ private:
 public:
 
 	PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
-		bool hidden, POptionList opt_list, const std::list< PropertyChild >& children ); //Juan
+		POptionList opt_list, const std::list< PropertyChild >& children );
 
 	~PropertyInfo();
 
@@ -113,8 +113,6 @@ public:
 	std::list< PropertyChild >* GetChildren(){ return &m_children; }
 	wxString		 GetDescription	()		  { return m_description;}
 	wxString	GetCustomEditor()			{ return m_customEditor; }
-	bool         IsHidden()               { return m_hidden; } // Juan
-	void         SetHidden(bool hidden)   { m_hidden = hidden; } // Juan
 };
 
 class EventInfo
