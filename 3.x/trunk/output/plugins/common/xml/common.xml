@@ -180,8 +180,9 @@
   <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_radioBox</property>
-    <property name="choices" type="stringlist"  help="Contents of the Radio Box.">'Radio Button'</property>
     <property name="label" type="wxString_i18n">wxRadioBox</property>
+    <property name="choices" type="stringlist"  help="Contents of the Radio Box.">'Radio Button'</property>
+    <property name="selection" type="uint" help="Zero-based position of the selected button.">0</property>
     <property name="majorDimension" type="uint" help="Specifies the maximum number of rows (if style contains wxRA_SPECIFY_ROWS) or columns (if style contains wxRA_SPECIFY_COLS) for a two-dimensional radiobox.">1</property>
     <property name="style" type="bitlist">
       <option name="wxRA_SPECIFY_ROWS"          help="The major dimension parameter refers to the maximum number of rows."/>
@@ -189,7 +190,7 @@
       <option name="wxRA_USE_CHECKBOX"          help="Use of the checkbox controls instead of radio buttons. (currently supported only on PalmOS)"/>wxRA_SPECIFY_COLS</property>
 	<event name="OnRadioBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBOX_SELECTED event, when a radiobutton is clicked." />
   </objectinfo>
-  
+
   <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_radioBtn</property>
@@ -260,5 +261,5 @@
       <option name="wxGA_VERTICAL"     help="Creates a vertical gauge."/>
       <option name="wxGA_SMOOTH"       help="Creates smooth progress bar with one pixel wide update step (not supported by all platforms)."/>wxGA_HORIZONTAL</property>
   </objectinfo>
-  
+
 </package>
