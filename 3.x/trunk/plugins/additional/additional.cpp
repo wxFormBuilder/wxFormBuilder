@@ -38,6 +38,7 @@
 #include <wx/checklst.h>
 #include <wx/datectrl.h>
 #include <wx/grid.h>
+#include <wx/dirctrl.h>
 
 #if wxCHECK_VERSION( 2, 8, 0 )
 	#include <wx/richtext/richtextctrl.h>
@@ -978,6 +979,46 @@ public:
 
 #endif
 
+class GenericDirCtrlComponent : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxGenericDirCtrl* ctrl = new wxGenericDirCtrl( (wxWindow*)parent,
+														wxID_ANY,
+														obj->GetPropertyAsString(_("defaultfolder")),
+														obj->GetPropertyAsPoint(_("pos")),
+														obj->GetPropertyAsSize(_("size")),
+														obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")),
+														obj->GetPropertyAsString(_("filter")),
+														obj->GetPropertyAsInteger(_("defaultfilter"))
+														);
+
+		ctrl->ShowHidden( obj->GetPropertyAsInteger( _("show_hidden") ) != 0 );
+		return ctrl;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxGenericDirCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("defaultfolder"),_("defaultfolder"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("filter"),_("filter"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("defaultfilter"),_("defaultfilter"),XRC_TYPE_INTEGER);
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxGenericDirCtrl"));
+		filter.AddProperty(_("defaultfolder"),_("defaultfolder"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("filter"),_("filter"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("defaultfilter"),_("defaultfilter"),XRC_TYPE_INTEGER);
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
 class CustomControlComponent : public ComponentBase
 {
 public:
@@ -1113,6 +1154,14 @@ MACRO(wxSP_ARROW_KEYS)
 MACRO(wxSP_WRAP)
 MACRO(wxSP_HORIZONTAL)
 MACRO(wxSP_VERTICAL)
+
+// wxGenericDirCtrl
+WINDOW_COMPONENT("wxGenericDirCtrl",GenericDirCtrlComponent)
+MACRO(wxDIRCTRL_DIR_ONLY)
+MACRO(wxDIRCTRL_3D_INTERNAL)
+MACRO(wxDIRCTRL_SELECT_FIRST)
+MACRO(wxDIRCTRL_SHOW_FILTERS)
+MACRO(wxDIRCTRL_EDIT_LABELS)
 
 END_LIBRARY()
 

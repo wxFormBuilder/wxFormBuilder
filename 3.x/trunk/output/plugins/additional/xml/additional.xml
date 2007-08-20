@@ -386,6 +386,25 @@
 	<event name="OnHyperlink" class="wxHyperlinkEvent" help="The hyperlink was (left) clicked. If this event is not handled in user's code (or it's skipped; see wxEvent::Skip), then a call to wxLaunchDefaultBrowser is done with the hyperlink's URL."/>
   </objectinfo>
 
+  <objectinfo class="wxGenericDirCtrl" icon="genericdir_ctrl.xpm" type="expanded_widget">
+    <inherits class="wxWindow">
+		<property name="window_style">wxSUNKEN_BORDER</property>
+	</inherits>
+    <property name="name" type="text">m_genericDirCtrl</property>
+	<property name="defaultfolder" type="wxString_i18n" help="Initial Directory."/>
+	<property name="filter" type="wxString_i18n" help="A filter string, using the same syntax as that for wxFileDialog. This may be empty if filters are not being used. Example: &quot;All files (*.*)|*.*|JPEG files (*.jpg)|*.jpg&quot;."/>
+	<property name="defaultfilter" type="uint" help="The zero-indexed default filter setting.">0</property>
+	<property name="show_hidden" type="bool" help="Show hidden files">0</property>
+	<property name="style" type="bitlist">
+		<option name="wxDIRCTRL_DIR_ONLY" help="Only show directories, and not files."/>
+		<option name="wxDIRCTRL_3D_INTERNAL" help="Use 3D borders for internal controls."/>
+		<option name="wxDIRCTRL_SELECT_FIRST" help="When setting the default path, select the first file in the directory."/>
+		<option name="wxDIRCTRL_SHOW_FILTERS" help="Show the drop-down filter list."/>
+		<option name="wxDIRCTRL_EDIT_LABELS" help="Allow the folder and file labels to be editable."/>
+		wxDIRCTRL_3D_INTERNAL
+	</property>
+  </objectinfo>
+
   <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
 	<property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
 	<property name="class" type="text" help="The control is generated to XRC with this class."/>
