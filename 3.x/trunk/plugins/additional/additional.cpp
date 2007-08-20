@@ -985,6 +985,12 @@ public:
 	{
 		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
 	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, obj->GetPropertyAsString(_("class")), obj->GetPropertyAsString(_("name")));
+		return xrc.GetXrcObject();
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////
