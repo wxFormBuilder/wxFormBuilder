@@ -4,7 +4,7 @@
   <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
-    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>	
+    <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
 	<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
 	<template name="evt_connect_OnTreeBeginDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
@@ -48,7 +48,7 @@
 	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
 	<template name="evt_connect_OnTreeStateImageClick">$name->Connect( wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -60,7 +60,7 @@
 	<template name="evt_entry_OnHtmlLinkClicked">EVT_HTML_LINK_CLICKED( $id, #handler )</template>
 	<template name="evt_connect_OnHtmlLinkClicked">$name->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, #handler, NULL, this );</template>
   </templates>
-    
+
   <templates class="wxRichTextCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
@@ -86,13 +86,13 @@
 	<template name="evt_entry_OnRichTextStyleSheetReplacing">EVT_RICHTEXT_STYLESHEET_REPLACING( $id, #handler )</template>
 	<template name="evt_connect_OnRichTextStyleSheetReplacing">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextStyleSheetReplaced">EVT_RICHTEXT_STYLESHEET_REPLACED( $id, #handler )</template>
-	<template name="evt_connect_OnRichTextStyleSheetReplaced">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED, #handler, NULL, this );</template> 
+	<template name="evt_connect_OnRichTextStyleSheetReplaced">$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextContentInserted">EVT_RICHTEXT_CONTENT_INSERTED( $id, #handler )</template>
-	<template name="evt_connect_OnRichTextContentInserted">$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED, #handler, NULL, this );</template> 
+	<template name="evt_connect_OnRichTextContentInserted">$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnRichTextContentDeleted">EVT_RICHTEXT_CONTENT_DELETED( $id, #handler )</template>
 	<template name="evt_connect_OnRichTextContentDeleted">$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxCheckListBox">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
@@ -116,7 +116,7 @@
 	<template name="evt_entry_OnCheckListBoxDClick">EVT_LISTBOX_DCLICK( $id, #handler )</template>
 	<template name="evt_connect_OnCheckListBoxDClick">$name->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxGrid">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
@@ -131,7 +131,7 @@
 			#nl $name->SetGridLineColour( $grid_line_color );
 		@}
 		#nl $name->EnableDragGridSize( $drag_grid_size );
-		#nl $name->SetMargins( $margin_width, $margin_height );	
+		#nl $name->SetMargins( $margin_width, $margin_height );
 		#nl
 		#nl // Columns
 		#foreach $column_sizes
@@ -157,7 +157,7 @@
 		#nl $name->EnableDragRowSize( $drag_row_size );
 		#nl $name->SetRowLabelSize( $row_label_size );
 		#foreach $row_label_values
-		@{ $name->SetRowLabelValue( #npred, #pred ); @}      					
+		@{ $name->SetRowLabelValue( #npred, #pred ); @}
 		#nl $name->SetRowLabelAlignment( $row_label_horiz_alignment, $row_label_vert_alignment );
 		#nl
 		#nl // Label Appearance
@@ -316,7 +316,7 @@
     <template name="evt_entry_OnDirChanged">EVT_DIRPICKER_CHANGED( $id, #handler )</template>
 	<template name="evt_connect_OnDirChanged">$name->Connect( wxEVT_COMMAND_DIRPICKER_CHANGED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxDatePickerCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -345,7 +345,7 @@
 	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarWeekDayClicked">$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxScrollBar">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -360,7 +360,7 @@
 		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );		
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );
 	</template>
 	<template name="evt_entry_OnScrollTop">EVT_SCROLL_TOP( #handler )</template>
 	<template name="evt_connect_OnScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
@@ -381,7 +381,7 @@
 	<template name="evt_entry_OnScrollChanged">EVT_SCROLL_CHANGED( #handler )</template>
 	<template name="evt_connect_OnScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScroll">EVT_COMMAND_SCROLL( $id, #handler )</template>
-	<template name="evt_connect_OnCommandScroll">	
+	<template name="evt_connect_OnCommandScroll">
 		$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_BOTTOM, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_LINEUP, #handler, NULL, this ); #nl
@@ -390,7 +390,7 @@
 		$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this ); #nl
 		$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this ); #nl
-		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );	
+		$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );
 	</template>
 	<template name="evt_entry_OnCommandScrollTop">EVT_COMMAND_SCROLL_TOP( $id, #handler )</template>
 	<template name="evt_connect_OnCommandScrollTop">$name->Connect( wxEVT_SCROLL_TOP, #handler, NULL, this );</template>
@@ -433,17 +433,17 @@
 	<template name="evt_entry_OnSpinDown">EVT_SPIN_DOWN( $id, #handler )</template>
 	<template name="evt_connect_OnSpinDown">$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxHyperlinkCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
     <template name="settings">
     	#ifnotnull $hover_color
     	@{ #nl $name->SetHoverColour( $hover_color ); @}
-    	
+
     	#ifnotnull $normal_color
     	@{ #nl $name->SetNormalColour( $normal_color ); @}
-    	
+
     	#ifnotnull $visited_color
     	@{ #nl $name->SetVisitedColour( $visited_color ); @}
     </template>
@@ -452,11 +452,20 @@
 	<template name="evt_connect_OnHyperlink">$name->Connect( wxEVT_COMMAND_HYPERLINK, #handler, NULL, this );</template>
   </templates>
 
+  <templates class="wxGenericDirCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter );</template>
+    <template name="settings">
+    	#nl $name->ShowHidden( $show_hidden );
+    </template>
+    <template name="include">@#include &lt;wx/dirctrl.h&gt;</template>
+  </templates>
+
   <templates class="CustomControl">
     <template name="declaration">$declaration</template>
     <template name="construction">$construction</template>
     <template name="settings">$settings</template>
 	<template name="include">$include</template>
   </templates>
-  
+
 </codegen>

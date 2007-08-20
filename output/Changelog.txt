@@ -2,6 +2,7 @@
 ************************************************************************
 date Version 3.00.48 (RC1)
 + FS#227: "Custom control class name"
++ Added wxGenericDirCtrl
 
 08/16/2007 Version 3.00.47 (Beta 3)
 + FS#223 - "missing wxTextCtrl style"
