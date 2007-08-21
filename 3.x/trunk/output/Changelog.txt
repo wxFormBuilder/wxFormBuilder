@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.48 (RC1)
+08/21/2007 Version 3.00.48 (RC1)
 + FS#227 - "Custom control class name"
 + Added wxGenericDirCtrl
 + FS#173 - "Generate event handler stubs in Tools/Generate Inherited Class"
