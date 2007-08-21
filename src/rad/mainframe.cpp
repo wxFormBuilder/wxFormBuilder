@@ -1165,33 +1165,7 @@ void MainFrame::OnXrcPreview( wxCommandEvent& WXUNUSED( e ) )
 
 void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 {
-	wxArrayString forms;
-	std::map< wxString, wxString > types; // base class name : type of class
-
-	PObjectBase project = AppData()->GetProjectData();
-
-	for ( unsigned int i = 0; i < project->GetChildCount(); ++i )
-	{
-		// Children of project are all Forms
-		PObjectBase child = project->GetChild( i );
-		wxString form = child->GetPropertyAsString( _( "name" ) );
-		forms.Add( form );
-		types[form] = child->GetClassName();;
-	}
-
-
-	// Show the dialog
-	GenInheritedClassDlg dlg( this, forms, project->GetPropertyAsString( _( "name" ) ) );
-
-	if ( wxID_OK != dlg.ShowModal() )
-	{
-		return;
-	}
-
-	wxArrayString selectedForms = dlg.GetFormsSelected();
-
 	wxString filePath;
-
 	try
 	{
 		// Get the output path
@@ -1203,28 +1177,25 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 		return;
 	}
 
-	for ( size_t i = 0; i < selectedForms.size(); ++i )
+	// Show the dialog
+	PObjectBase project = AppData()->GetProjectData();
+	GenInheritedClassDlg dlg( this, project );
+
+	if ( wxID_OK != dlg.ShowModal() )
 	{
-		wxString type;
-
-		// Get the class name for the selected form.
-		wxString className = dlg.GetClassName( selectedForms[i] );
-
-		// Find the type of the form that is selected.
-		std::map< wxString, wxString >::iterator it = types.find( selectedForms[i] );
-
-		if ( it != types.end() )
-		{
-			type = it->second;
-		}
-
-		// Get the file name for the selected form.
-		wxString fileName = dlg.GetFileName( selectedForms[i] );
-
-		// Create the class and files.
-		AppData()->GenerateInheritedClass( selectedForms[i], className, type, filePath, fileName );
+		return;
 	}
 
+	std::vector< GenClassDetails > selectedForms;
+	dlg.GetFormsSelected( &selectedForms );
+
+	for ( size_t i = 0; i < selectedForms.size(); ++i )
+	{
+		const GenClassDetails& details = selectedForms[i];
+
+		// Create the class and files.
+		AppData()->GenerateInheritedClass( details.m_form, details.m_className, filePath, details.m_fileName );
+	}
 }
 
 bool MainFrame::SaveWarning()

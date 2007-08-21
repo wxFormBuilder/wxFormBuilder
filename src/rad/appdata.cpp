@@ -1757,18 +1757,18 @@ void ApplicationData::GenerateCode( bool panelOnly )
 	NotifyCodeGeneration( panelOnly );
 }
 
-void ApplicationData::GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file )
+void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file )
 {
 	PObjectBase project = GetProjectData();
 	if ( !project )
 	{
-		wxLogWarning( wxT("No Project?!") );
+		wxLogWarning( _("No Project?!") );
 		return;
 	}
 
 	if ( !::wxDirExists( path ) )
 	{
-		wxLogWarning( wxT("Invalid Path: %s"), path.c_str() );
+		wxLogWarning( _("Invalid Path: %s"), path.c_str() );
 		return;
 	}
 
@@ -1786,17 +1786,17 @@ void ApplicationData::GenerateInheritedClass( wxString baseName, wxString classN
 		return;
 	}
 
-	baseNameProp->SetValue( baseName );
+	baseNameProp->SetValue( form->GetPropertyAsString( _("name") ) );
 	nameProp->SetValue( className );
 	fileProp->SetValue( file );
-	genfileProp->SetValue( project->GetPropertyAsString( wxT("file") ) );
-	typeProp->SetValue( type );
+	genfileProp->SetValue( project->GetPropertyAsString( _("file") ) );
+	typeProp->SetValue( form->GetClassName() );
 
 	CppCodeGenerator codegen;
 
 	// Determine if Microsoft BOM should be used
 	bool useMicrosoftBOM = false;
-	PProperty pUseMicrosoftBOM = project->GetProperty( wxT("use_microsoft_bom") );
+	PProperty pUseMicrosoftBOM = project->GetProperty( _("use_microsoft_bom") );
 
 	if ( pUseMicrosoftBOM )
 	{
@@ -1810,7 +1810,7 @@ void ApplicationData::GenerateInheritedClass( wxString baseName, wxString classN
 	codegen.SetHeaderWriter( h_cw );
 	codegen.SetSourceWriter( cpp_cw );
 
-	codegen.GenerateInheritedClass( obj );
+	codegen.GenerateInheritedClass( obj, form );
 
 	wxLogStatus( wxT( "Class generated at \'%s\'." ), path.c_str() );
 }

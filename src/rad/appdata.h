@@ -289,7 +289,7 @@ class ApplicationData
 
 		void GenerateCode( bool projectOnly = false );
 
-		void GenerateInheritedClass( wxString baseName, wxString className, wxString type, wxString path, wxString file );
+		void GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file );
 
 		void MovePosition( PObjectBase, bool right, unsigned int num = 1 );
 
