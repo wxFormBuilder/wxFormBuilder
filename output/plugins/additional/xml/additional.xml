@@ -1,7 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <package name="Additional" lib="libadditional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
 
+  
+  <objectinfo class="wxTreeCtrlBase" type="interface">
+    <event name="OnTreeBeginDrag" class="wxTreeEvent" help="Begin dragging with the left mouse button." />
+	<event name="OnTreeBeginRDrag" class="wxTreeEvent" help="Begin dragging with the right mouse button." />
+	<event name="OnTreeEndDrag" class="wxTreeEvent" help="End dragging with the left or right mouse button." />
+	<event name="OnTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
+	<event name="OnTreeGetInfo" class="wxTreeEvent" help="Request information from the application." />
+	<event name="OnTreeSetInfo" class="wxTreeEvent" help="Information is being supplied." />
+	<event name="OnTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
+	<event name="OnTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
+	<event name="OnTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
+	<event name="OnTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
+	<event name="OnTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
+	<event name="OnTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
+	<event name="OnTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
+	<event name="OnTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
+	<event name="OnTreeItemGetTooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
+	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
+	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
+  </objectinfo>
+  
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
+    <inherits class="wxTreeCtrlBase"/>
     <inherits class="wxWindow" />
     <property name="name" type="text">m_treeCtrl</property>
     <property name="style" type="bitlist">
@@ -19,27 +41,10 @@
       <option name="wxTR_MULTIPLE"                help="Use this style to allow a range of items to be selected. If a second range is selected, the current range, if any, is deselected." />
       <option name="wxTR_EXTENDED"                help="Use this style to allow disjoint items to be selected. (Only partially implemented; may not work in all cases.)" />
       <option name="wxTR_DEFAULT_STYLE"           help="The set of flags that are closest to the defaults for the native control for a particular toolkit." />wxTR_DEFAULT_STYLE</property>
-	<event name="OnTreeBeginDrag" class="wxTreeEvent" help="Begin dragging with the left mouse button." />
-	<event name="OnTreeBeginRDrag" class="wxTreeEvent" help="Begin dragging with the right mouse button." />
-	<event name="OnTreeEndDrag" class="wxTreeEvent" help="End dragging with the left or right mouse button." />
 	<event name="OnTreeBeginLabelEdit" class="wxTreeEvent" help="Begin editing a label. This can be prevented by calling Veto()." />
 	<event name="OnTreeEndLabelEdit" class="wxTreeEvent" help="Finish editing a label. This can be prevented by calling Veto()." />
-	<event name="OnTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
-	<event name="OnTreeGetInfo" class="wxTreeEvent" help="Request information from the application." />
-	<event name="OnTreeSetInfo" class="wxTreeEvent" help="Information is being supplied." />
-	<event name="OnTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
 	<event name="OnTreeItemCollapsed" class="wxTreeEvent" help="The item has been collapsed." />
-	<event name="OnTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
-	<event name="OnTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
 	<event name="OnTreeItemExpanding" class="wxTreeEvent" help="The item is being expanded. This can be prevented by calling Veto()." />
-	<event name="OnTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
-	<event name="OnTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
-	<event name="OnTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
-	<event name="OnTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
-	<event name="OnTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
-	<event name="OnTreeItemGetTooltip" class="wxTreeEvent" help="The opportunity to set the item tooltip is being given to the application (call wxTreeEvent::SetToolTip). Windows only." />
-	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
-	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
   </objectinfo>
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
@@ -387,6 +392,7 @@
   </objectinfo>
 
   <objectinfo class="wxGenericDirCtrl" icon="genericdir_ctrl.xpm" type="expanded_widget">
+	<inherits class="wxTreeCtrlBase"/>
     <inherits class="wxWindow">
 		<property name="window_style">wxSUNKEN_BORDER</property>
 	</inherits>
@@ -403,10 +409,6 @@
 		<option name="wxDIRCTRL_EDIT_LABELS" help="Allow the folder and file labels to be editable."/>
 		wxDIRCTRL_3D_INTERNAL
 	</property>
-	<event name="OnExpandItem" class="wxTreeEvent" help="An item in the tree was expanded."/>
-	<event name="OnCollapseItem" class="wxTreeEvent" help="An item in the tree was collapsed."/>
-	<event name="OnBeginEditItem" class="wxTreeEvent" help="If the wxDIRCTRL_EDIT_LABELS style is selected, this event is fired when the label has started to be edited."/>
-	<event name="OnEndEditItem" class="wxTreeEvent" help="If the wxDIRCTRL_EDIT_LABELS style is selected, this event is fired when the label is finished being edited."/>
   </objectinfo>
 
   <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
