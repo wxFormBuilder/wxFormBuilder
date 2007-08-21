@@ -393,6 +393,8 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	{
 		m_header->WriteLn( wxT("protected:") );
 		m_header->Indent();
+		code = GetCode( userClasses, wxT("event_handler_comment") );
+		m_header->WriteLn( code );
 
 		wxString className = userClasses->GetPropertyAsString( _("name") );
 		std::set<wxString> generatedHandlers;
@@ -407,7 +409,9 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				m_source->WriteLn();
 				m_source->WriteLn( wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ) );
 				m_source->WriteLn( wxT("{") );
-				m_source->WriteLn();
+				m_source->Indent();
+				m_source->WriteLn( wxString::Format( wxT("// TODO: Implement %s"), event->GetValue().c_str() ) );
+				m_source->Unindent();
 				m_source->WriteLn( wxT("}") );
 				generatedHandlers.insert(event->GetValue());
 			}
