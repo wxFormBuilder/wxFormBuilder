@@ -403,6 +403,10 @@
 		<option name="wxDIRCTRL_EDIT_LABELS" help="Allow the folder and file labels to be editable."/>
 		wxDIRCTRL_3D_INTERNAL
 	</property>
+	<event name="OnExpandItem" class="wxTreeEvent" help="An item in the tree was expanded."/>
+	<event name="OnCollapseItem" class="wxTreeEvent" help="An item in the tree was collapsed."/>
+	<event name="OnBeginEditItem" class="wxTreeEvent" help="If the wxDIRCTRL_EDIT_LABELS style is selected, this event is fired when the label has started to be edited."/>
+	<event name="OnEndEditItem" class="wxTreeEvent" help="If the wxDIRCTRL_EDIT_LABELS style is selected, this event is fired when the label is finished being edited."/>
   </objectinfo>
 
   <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
