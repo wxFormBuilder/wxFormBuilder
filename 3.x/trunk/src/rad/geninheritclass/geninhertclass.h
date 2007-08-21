@@ -35,7 +35,8 @@ the wxFormBuilder GUI code.
 
 
 #include "geninhertclass_gui.h"
-#include <map>
+#include <vector>
+#include "utils/wxfbdefs.h"
 
 /** Holds the details of the class to generate. */
 class GenClassDetails
@@ -47,17 +48,21 @@ public:
 
 	/**
 		Constructor.
+		@param form Form object.
 		@param className Name of the class to generate.
 		@param fileName File name of the output files the at generated class will be in.
 		@param isSelected If true then the class is selected, else it is not.
 	*/
-	GenClassDetails( wxString className, wxString fileName, bool isSelected = false )
+	GenClassDetails( PObjectBase form, const wxString& className, const wxString& fileName, bool isSelected = false )
+	:
+	m_form( form ),
+	m_className( className ),
+	m_fileName( fileName ),
+	m_isSelected( isSelected )
 	{
-		m_className = className;
-		m_fileName = fileName;
-		m_isSelected = isSelected;
 	}
 
+	PObjectBase m_form;			/**< Form object. */
 	wxString m_className;		/**< Name of the class to generate. */
 	wxString m_fileName;		/**< File name to generate the class in.  */
 	bool     m_isSelected;		/**< Holds if the checkbox is selected for the form. */
@@ -67,16 +72,11 @@ public:
 class GenInheritedClassDlg : public GenInheritedClassDlgBase
 {
 public:
-	GenInheritedClassDlg( wxWindow* parent, const wxArrayString& availableForms, const wxString& projectName );
-	wxString GetClassName( const wxString& form );
-	wxString GetFileName( const wxString& form );
-	wxArrayString GetFormsSelected();
+	GenInheritedClassDlg( wxWindow* parent, PObjectBase project );
+	void GetFormsSelected( std::vector< GenClassDetails >* forms );
 
 private:
-	wxArrayString	m_forms;
-	wxArrayString	m_selectedForms;
-	wxString		m_projectName;
-	std::map< wxString, GenClassDetails > m_classDetails;
+	std::vector< GenClassDetails > m_classDetails;
 
 	void OnFormsSelected( wxCommandEvent& event );
 	void OnFormsToggle( wxCommandEvent& event );

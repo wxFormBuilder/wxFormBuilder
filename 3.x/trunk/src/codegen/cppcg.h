@@ -253,7 +253,7 @@ public:
 	/**
 	* Generate an inherited class
 	*/
-	void GenerateInheritedClass( PObjectBase userClasses );
+	void GenerateInheritedClass( PObjectBase userClasses, PObjectBase form );
 };
 
 

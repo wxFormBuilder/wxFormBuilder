@@ -341,7 +341,7 @@ wxString CppCodeGenerator::ConvertXpmName( const wxString& text )
 	return name;
 }
 
-void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
+void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectBase form )
 {
 	if (!userClasses)
 	{
@@ -357,6 +357,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 
 	wxString type = userClasses->GetPropertyAsString( wxT("type") );
 
+	// Start header file
 	wxString code = GetCode( userClasses, wxT("guard_macro_open") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxEmptyString );
@@ -372,6 +373,51 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 	code = GetCode( userClasses, wxT("class_decl") );
 	m_header->WriteLn( code );
 	m_header->WriteLn( wxT("{") );
+
+	// Start source file
+	code = GetCode( userClasses, wxT("source_include") );
+	m_source->WriteLn( code );
+	m_source->WriteLn( wxEmptyString );
+
+	code = GetCode( userClasses, type + wxT("_cons_def") );
+	m_source->WriteLn( code );
+	m_source->WriteLn( wxT("{") );
+	m_source->WriteLn( wxEmptyString );
+	m_source->WriteLn( wxT("}") );
+
+	// Do events in both files
+	EventVector events;
+	FindEventHandlers( form, events );
+
+	if ( events.size() > 0 )
+	{
+		m_header->WriteLn( wxT("protected:") );
+		m_header->Indent();
+
+		wxString className = userClasses->GetPropertyAsString( _("name") );
+		std::set<wxString> generatedHandlers;
+		for ( size_t i = 0; i < events.size(); i++ )
+		{
+			PEvent event = events[i];
+			wxString prototype;
+			if ( generatedHandlers.find( event->GetValue() ) == generatedHandlers.end() )
+			{
+				prototype = wxString::Format( wxT("%s( %s& event )"), event->GetValue().c_str(), event->GetEventInfo()->GetEventClassName().c_str() );
+				m_header->WriteLn( wxString::Format( wxT("void %s;"), prototype.c_str() ) );
+				m_source->WriteLn();
+				m_source->WriteLn( wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ) );
+				m_source->WriteLn( wxT("{") );
+				m_source->WriteLn();
+				m_source->WriteLn( wxT("}") );
+				generatedHandlers.insert(event->GetValue());
+			}
+		}
+		m_header->WriteLn( wxEmptyString );
+
+		m_header->Unindent();
+	}
+
+	// Finish header file
 	m_header->WriteLn( wxT("public:") );
 
 	m_header->Indent();
@@ -383,16 +429,6 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses )
 	m_header->WriteLn( wxEmptyString );
 	code = GetCode( userClasses, wxT("guard_macro_close") );
 	m_header->WriteLn( code );
-
-	code = GetCode( userClasses, wxT("source_include") );
-	m_source->WriteLn( code );
-	m_source->WriteLn( wxEmptyString );
-
-	code = GetCode( userClasses, type + wxT("_cons_def") );
-	m_source->WriteLn( code );
-	m_source->WriteLn( wxT("{") );
-	m_source->WriteLn( wxEmptyString );
-	m_source->WriteLn( wxT("}") );
 }
 
 bool CppCodeGenerator::GenerateCode( PObjectBase project )

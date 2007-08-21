@@ -23,24 +23,24 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "geninhertclass.h"
+#include "model/objectbase.h"
 
-GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, const wxArrayString& availableForms, const wxString& projectName )
-	: GenInheritedClassDlgBase( parent )
+GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, PObjectBase project )
+:
+GenInheritedClassDlgBase( parent )
 {
-	m_forms			= availableForms;
-	m_projectName	= projectName;
+	const wxString& projectName = project->GetPropertyAsString( _("name") );
 
 	// Setup the initial values for the maps of class names and file names.
-	for ( size_t i = 0; i < availableForms.size(); ++i )
+	for ( unsigned int i = 0; i < project->GetChildCount(); ++i )
 	{
-		wxString name = projectName + availableForms[i];
-		m_classDetails[availableForms[i]] = GenClassDetails( name, name );
-	}
+		PObjectBase child = project->GetChild( i );
+		const wxString& formName = child->GetPropertyAsString( _("name") );
+		const wxString& name = projectName + formName;
+		m_classDetails.push_back( GenClassDetails( child, name, name ) );
 
-	// Add the forms to the listctrl.
-	for ( size_t i = 0; i < m_forms.size(); ++i )
-	{
-		m_formsCheckList->AppendString( m_forms[i] );
+		// Add the forms to the listctrl.
+		m_formsCheckList->AppendString( formName );
 	}
 
 	// Disable the controls till the check listbox is selected.
@@ -48,102 +48,52 @@ GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, const wxArrayStrin
 	m_fileNameTextCtrl->Disable();
 }
 
-wxString GenInheritedClassDlg::GetClassName( const wxString& form )
-{
-	std::map< wxString, GenClassDetails >::iterator it = m_classDetails.find( form );
-	if ( it != m_classDetails.end() )
-	{
-		return it->second.m_className;
-	}
-
-	return wxEmptyString;
-}
-
-wxString GenInheritedClassDlg::GetFileName( const wxString& form )
-{
-	std::map< wxString, GenClassDetails >::iterator it = m_classDetails.find( form );
-	if ( it != m_classDetails.end() )
-	{
-		return it->second.m_fileName;
-	}
-
-	return wxEmptyString;
-}
-
-wxArrayString GenInheritedClassDlg::GetFormsSelected()
+void GenInheritedClassDlg::GetFormsSelected( std::vector< GenClassDetails >* forms )
 {
 	// Clear the selected forms array.
-	m_selectedForms.Empty();
+	forms->clear();
 
-	for ( size_t i = 0; i < m_forms.size(); ++i )
+	for ( size_t i = 0; i < m_classDetails.size(); ++i )
 	{
-		std::map< wxString, GenClassDetails >::iterator it = m_classDetails.find( m_forms[i] );
-		if ( it != m_classDetails.end() )
+		if ( m_classDetails[i].m_isSelected )
 		{
-			if ( it->second.m_isSelected )
-			{
-				m_selectedForms.Add( m_forms[i] );
-			}
+			forms->push_back( m_classDetails[i] );
 		}
 	}
-	return m_selectedForms;
 }
 
 void GenInheritedClassDlg::OnFormsSelected( wxCommandEvent& event )
 {
 	// Enable controls because an item is selected.
-	if ( m_formsCheckList->GetSelection() != wxNOT_FOUND )
+	int selection = m_formsCheckList->GetSelection();
+	if ( wxNOT_FOUND == selection )
 	{
-		m_classNameTextCtrl->Enable();
-		m_fileNameTextCtrl->Enable();
+		m_classNameTextCtrl->Disable();
+		m_fileNameTextCtrl->Disable();
+		return;
 	}
 
-	// Set the values of the controls form the map.
-	std::map< wxString, GenClassDetails >::iterator it =
-		m_classDetails.find( m_formsCheckList->GetStringSelection() );
-	if ( it != m_classDetails.end() )
-	{
-		m_classNameTextCtrl->SetValue( it->second.m_className );
-		m_fileNameTextCtrl->SetValue( it->second.m_fileName );
-	}
+	m_classNameTextCtrl->Enable();
+	m_fileNameTextCtrl->Enable();
 
+	// Set the values of the controls
+	GenClassDetails& details = m_classDetails[ selection ];
+	m_classNameTextCtrl->SetValue( details.m_className );
+	m_fileNameTextCtrl->SetValue( details.m_fileName );
 }
 
 void GenInheritedClassDlg::OnFormsToggle( wxCommandEvent& event )
 {
-	int itemIndex = event.GetSelection();
-
-	std::map< wxString, GenClassDetails >::iterator it =
-		m_classDetails.find( m_formsCheckList->GetString( itemIndex ) );
-	if ( it != m_classDetails.end() )
-	{
-		if ( m_formsCheckList->IsChecked( itemIndex ) )
-		{
-			it->second.m_isSelected = true;
-		}
-		else
-		{
-			it->second.m_isSelected = false;
-		}
-	}
+	int selection = event.GetSelection();
+	m_classDetails[ selection ].m_isSelected = m_formsCheckList->IsChecked( selection );
 }
 
 void GenInheritedClassDlg::OnClassNameChange( wxCommandEvent& event )
 {
-	std::map< wxString, GenClassDetails >::iterator it =
-		m_classDetails.find( m_formsCheckList->GetStringSelection() );
-	if ( it != m_classDetails.end() )
-	{
-		it->second.m_className = m_classNameTextCtrl->GetValue();
-	}
+	m_classDetails[ m_formsCheckList->GetSelection() ].m_className = m_classNameTextCtrl->GetValue();
 }
 
 void GenInheritedClassDlg::OnFileNameChange( wxCommandEvent& event )
 {
-	std::map< wxString, GenClassDetails >::iterator it =
-		m_classDetails.find( m_formsCheckList->GetStringSelection() );
-	if ( it != m_classDetails.end() )
-	{
-		it->second.m_fileName = m_fileNameTextCtrl->GetValue();
-	}
+	m_classDetails[ m_formsCheckList->GetSelection() ].m_fileName = m_fileNameTextCtrl->GetValue();
 }
