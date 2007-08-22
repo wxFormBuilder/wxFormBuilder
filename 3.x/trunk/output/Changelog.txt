@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.49 (RC2)
+* wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
+
 08/21/2007 Version 3.00.48 (RC1)
 + FS#227 - "Custom control class name"
 + Added wxGenericDirCtrl
