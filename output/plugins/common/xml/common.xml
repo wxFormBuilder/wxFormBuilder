@@ -13,20 +13,16 @@
       <option name="wxNO_BORDER"    help="Creates a flat button. Windows and GTK+ only."/>
     </property>
     <property name="label" type="wxString_i18n">MyButton</property>
+    <property name="default" type="bool">0</property>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
   </objectinfo>
 
   <objectinfo class="wxBitmapButton" icon="bitmap_button.xpm" type="widget">
+    <inherits class="wxButton">
+    	<property name="name">m_bpButton</property>
+    </inherits>
     <inherits class="wxWindow" />
-    <property name="name" type="text">m_bpButton</property>
-    <property name="style" type="bitlist">
-      <option name="wxBU_LEFT"      help="Left-justifies the bitmap label. WIN32 only."/>
-      <option name="wxBU_TOP"       help="Aligns the bitmap label to the top of the button. WIN32 only."/>
-      <option name="wxBU_RIGHT"     help="Right-justifies the bitmap label. WIN32 only."/>
-      <option name="wxBU_BOTTOM"    help="Aligns the bitmap label to the bottom of the button. WIN32 only."/>
-      <option name="wxBU_AUTODRAW"  help="If this is specified, the button will be drawn automatically using the label bitmap only, providing a 3D-look border. If this style is not specified, the button will be drawn without borders and using all provided bitmaps. (Windows Only)"/>wxBU_AUTODRAW</property>
     <property name="bitmap" type="bitmap" />
-	<event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
   </objectinfo>
 
   <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">

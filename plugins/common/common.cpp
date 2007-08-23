@@ -221,11 +221,18 @@ public:
 
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		return new wxButton((wxWindow*)parent,-1,
+		wxButton* button = new wxButton((wxWindow*)parent,-1,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
+		{
+			button->SetDefault();
+		}
+
+		return button;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -233,7 +240,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddPropertyValue(_("default"),_("0"));
+		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -242,6 +249,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
 };
@@ -252,11 +260,18 @@ public:
 
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		return new wxBitmapButton((wxWindow*)parent,-1,
+		wxBitmapButton* button = new wxBitmapButton((wxWindow*)parent,-1,
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
+		{
+			button->SetDefault();
+		}
+
+		return button;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -264,7 +279,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
-		xrc.AddPropertyValue(_("default"),_("0"));
+		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -273,6 +288,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxBitmapButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
 };
