@@ -271,6 +271,25 @@ public:
 			button->SetDefault();
 		}
 
+		if ( !obj->IsNull( _("disabled") ) )
+		{
+			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
+		}
+
+		if ( !obj->IsNull( _("selected") ) )
+		{
+			button->SetBitmapSelected( obj->GetPropertyAsBitmap( _("selected") ) );
+		}
+
+		if ( !obj->IsNull( _("focus") ) )
+		{
+			button->SetBitmapFocus( obj->GetPropertyAsBitmap( _("focus") ) );
+		}
+
+		if ( !obj->IsNull( _("hover") ) )
+		{
+			button->SetBitmapHover( obj->GetPropertyAsBitmap( _("hover") ) );
+		}
 		return button;
 	}
 
@@ -279,6 +298,10 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
+		xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		xrc.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
@@ -288,6 +311,10 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxBitmapButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}

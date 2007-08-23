@@ -22,7 +22,19 @@
     	<property name="name">m_bpButton</property>
     </inherits>
     <inherits class="wxWindow" />
-    <property name="bitmap" type="bitmap" />
+    <property name="style" type="bitlist">
+      <option name="wxBU_LEFT"      help="Left-justifies the bitmap label. WIN32 only."/>
+      <option name="wxBU_TOP"       help="Aligns the bitmap label to the top of the button. WIN32 only."/>
+      <option name="wxBU_RIGHT"     help="Right-justifies the bitmap label. WIN32 only."/>
+      <option name="wxBU_BOTTOM"    help="Aligns the bitmap label to the bottom of the button. WIN32 only."/>
+      <option name="wxBU_AUTODRAW"  help="If this is specified, the button will be drawn automatically using the label bitmap only, providing a 3D-look border. If this style is not specified, the button will be drawn without borders and using all provided bitmaps. (Windows Only)"/>
+      wxBU_AUTODRAW
+    </property>
+    <property name="bitmap" type="bitmap" help="This is the bitmap shown in the default state, it must be always valid while all the other bitmaps are optional and don't have to be set."/>
+    <property name="disabled" type="bitmap" help="Bitmap shown when the button is disabled."/>
+    <property name="selected" type="bitmap" help="Bitmap shown when the button is pushed (e.g. while the user keeps the mouse button pressed on it)."/>
+    <property name="focus" type="bitmap" help="Bitmap shown when the button has keyboard focus but is not pressed."/>
+    <property name="hover" type="bitmap" help="Bitmap shown when the mouse is over the button (but it is not pressed). Notice that if hover bitmap is not specified but the current platform UI uses hover images for the buttons (such as Windows XP or GTK+), then the focus bitmap is used for hover state as well. This makes it possible to set focus bitmap only to get reasonably good behaviour on all platforms."/>
   </objectinfo>
 
   <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">
