@@ -9,10 +9,9 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-
-
-
 CFLAGS = -Wall -g
+CREATE_BUILD_FILES = cd $(CURDIR)/../.. && sdk/premake/premake-linux --target gnu --unicode --with-wx-shared
+CLEAN_BUILD_FILES = cd $(CURDIR)/../.. && sdk/premake/premake-linux clean
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -24,9 +23,8 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	# Add here commands to configure the package.
-
 	touch configure-stamp
-
+	$(CREATE_BUILD_FILES)
 
 build: build-stamp
 
@@ -45,7 +43,9 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
+	$(CREATE_BUILD_FILES)
 	-$(MAKE) --directory ../.. CONFIG=Release clean
+	$(CLEAN_BUILD_FILES)
 
 	dh_clean 
 
@@ -56,7 +56,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/wxformbuilder.
-	./wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
+	$(CURDIR)/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
 
 
 # Build architecture-independent files here.
