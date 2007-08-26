@@ -692,7 +692,7 @@ void ApplicationData::CreateObject( wxString name )
 {
 	try
 	{
-		Debug::Print( wxT( "ApplicationData::CreateObject] New %s" ), name.c_str() );
+		Debug::Print( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
 
 		PObjectBase parent = GetSelectedObject();
 		PObjectBase obj;
@@ -823,42 +823,61 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 void ApplicationData::CopyObjectToClipboard( PObjectBase obj )
 {
 	// Write some text to the clipboard
-	if ( wxTheClipboard->Open() )
+
+	// Do not call Open() when the clipboard is opened
+	if( !wxTheClipboard->IsOpened() )
 	{
-		// This data objects are held by the clipboard,
-		// so do not delete them in the app.
-		wxTheClipboard->SetData( new wxFBDataObject( obj ) );
-		wxTheClipboard->Close();
+        if ( !wxTheClipboard->Open() )
+        {
+            return;
+        }
 	}
+
+    // This data objects are held by the clipboard,
+    // so do not delete them in the app.
+    wxTheClipboard->SetData( new wxFBDataObject( obj ) );
+    wxTheClipboard->Close();
 }
 
 bool ApplicationData::PasteObjectFromClipboard( PObjectBase parent )
 {
-	if ( wxTheClipboard->Open() )
+	// Do not call Open() when the clipboard is opened
+	if( !wxTheClipboard->IsOpened() )
 	{
-		if ( wxTheClipboard->IsSupported( wxFBDataObjectFormat ) )
-		{
-			wxFBDataObject data;
-			if ( wxTheClipboard->GetData( data ) )
-			{
-				PObjectBase obj = data.GetObj();
-				if ( obj )
-				{
-					wxTheClipboard->Close();
-					return PasteObject( parent, obj );
-				}
-			}
-		}
-		wxTheClipboard->Close();
+        if ( !wxTheClipboard->Open() )
+        {
+            return false;
+        }
 	}
+
+    if ( wxTheClipboard->IsSupported( wxFBDataObjectFormat ) )
+    {
+        wxFBDataObject data;
+        if ( wxTheClipboard->GetData( data ) )
+        {
+            PObjectBase obj = data.GetObj();
+            if ( obj )
+            {
+                wxTheClipboard->Close();
+                return PasteObject( parent, obj );
+            }
+        }
+    }
+
+    wxTheClipboard->Close();
+
 	return false;
 }
 
 bool ApplicationData::CanPasteObjectFromClipboard()
 {
-	if ( !wxTheClipboard->Open() )
+	// Do not call Open() when the clipboard is opened
+	if( !wxTheClipboard->IsOpened() )
 	{
-		return false;
+        if ( !wxTheClipboard->Open() )
+        {
+            return false;
+        }
 	}
 
 	bool canPaste = wxTheClipboard->IsSupported( wxFBDataObjectFormat );
