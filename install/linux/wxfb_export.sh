@@ -1,5 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
+
+# Get output dir from caller
 if [ ! -n "$1" ]
 then
  echo "Please specify output directory."
@@ -7,7 +9,8 @@ then
 else
  outputDir=$1
 fi  
-  
+
+# Ensure target directories exist  
 if [ ! -d $outputDir ]
 then
   mkdir $outputDir
@@ -31,23 +34,25 @@ if [ ! -d $outputDir/share/wxformbuilder ]
 then
   mkdir $outputDir/share/wxformbuilder
 fi
-  
-cp -R --interactive --verbose ../../output/* $outputDir/share/wxformbuilder/
 
+# copy ouput files to target directories  
+cp -R --interactive output/* $outputDir/share/wxformbuilder/
+
+# reorganize target directories
 if [ -d $outputDir/bin ]
 then
-  mv -f -v $outputDir/share/wxformbuilder/bin/* $outputDir/bin
+  mv -f $outputDir/share/wxformbuilder/bin/* $outputDir/bin
   rm -r $outputDir/share/wxformbuilder/bin
 else
-  mv -f -v $outputDir/share/wxformbuilder/bin $outputDir/
+  mv -f $outputDir/share/wxformbuilder/bin $outputDir/
 fi
 
 if [ -d $outputDir/lib ]
 then
-  mv -f -v $outputDir/share/wxformbuilder/lib/* $outputDir/lib
+  mv -f $outputDir/share/wxformbuilder/lib/* $outputDir/lib
   rm - r $outputDir/share/wxformbuilder/lib
 else
- mv -f -v $outputDir/share/wxformbuilder/lib $outputDir/
+ mv -f $outputDir/share/wxformbuilder/lib $outputDir/
 fi
 
 if [ -d $outputDir/share/wxformbuilder/share ]
