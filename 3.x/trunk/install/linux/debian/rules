@@ -10,8 +10,9 @@
 #export DH_VERBOSE=1
 
 CFLAGS = -Wall -g
-CREATE_BUILD_FILES = cd $(CURDIR)/../.. && sdk/premake/premake-linux --target gnu --unicode --with-wx-shared
-CLEAN_BUILD_FILES = cd $(CURDIR)/../.. && sdk/premake/premake-linux clean
+CREATE_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --target gnu --unicode --with-wx-shared
+CLEAN_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux clean
+SCRIPTS_DIR = $(CURDIR)/debian/scripts
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -O0
@@ -32,7 +33,7 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# Add here commands to compile the package.
-	$(MAKE) --directory ../.. CONFIG=Release
+	$(MAKE) CONFIG=Release
 	#docbook-to-man debian/wxformbuilder.sgml > wxformbuilder.1
 
 	touch $@
@@ -44,7 +45,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	$(CREATE_BUILD_FILES)
-	-$(MAKE) --directory ../.. CONFIG=Release clean
+	-$(MAKE) CONFIG=Release clean
 	$(CLEAN_BUILD_FILES)
 
 	dh_clean 
@@ -56,7 +57,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/wxformbuilder.
-	$(CURDIR)/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
+	$(SCRIPTS_DIR)/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
 
 
 # Build architecture-independent files here.
@@ -67,7 +68,7 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs ../../output/Changelog.txt 
+	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
 #	dh_installdocs
 #	dh_installexamples
 	dh_install --sourcedir=debian/gnome --autodest \*
