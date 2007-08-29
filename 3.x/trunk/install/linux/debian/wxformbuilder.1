@@ -1,0 +1,38 @@
+.\" wxFormbuilder man page. 
+.\" Contact rjmyst3@gmail.com to correct errors or omissions. 
+.TH "WXFORMBUILDER" "1" "28 August 2007" "Ryan Mulder" ""
+.SH "NAME"
+wxformbuilder \- WYSIWYG GUI Designer and Code Generator for wxWidgets
+.SH "SYNOPSIS"
+.\" Syntax goes here. 
+.B wxformbuilder [\-g][\-l <str>][\-h]
+.I [filename(s)...]
+.SH "DESCRIPTION"
+.B wxformbuilder
+is a GUI designer for programs which use wxWidgets. It is a very WYSIWYG designer, because it uses the actual controls to show the result, not some fake representation.
+
+Features include generation of C++ or XRC code, custom plugin support, and import of XRC code.
+.SH "OPTIONS"
+.TP 8
+.B "\-h, \-\-help"
+Displays the list of accepted command\-line arguments.
+.TP 8
+.B "\-g, \-\-generate"
+Generate code from the passed file.
+.TP 8
+.B "\-l, \-\-language"
+Override the code_generation property from the passed file and generate the passed languages. 
+Separate multiple languages with commas.
+.SH "EXAMPLES"
+Generate XRC code from myproject.fbp
+.nf 
+wxformbuilder \-\-generate \-\-language XRC myproject.fbp
+.SH "AUTHORS"
+.nf 
+Jose Antonio Hurtado
+Juan Antonio Ortega
+Ryan Mulder
+Ryan Pusztai
+.fi 
+.SH "HISTORY"
+2007 \- Initial version
