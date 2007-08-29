@@ -17,6 +17,7 @@ then
 fi
 
 svn export $basedir/output   $tmpdir/output
+rm $tmpdir/output/license.txt
 svn export $basedir/plugins  $tmpdir/plugins
 svn export $basedir/sdk      $tmpdir/sdk
 svn export $basedir/sdk/tinyxml $tmpdir/sdk/tinyxml

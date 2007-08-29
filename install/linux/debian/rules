@@ -45,7 +45,7 @@ clean:
 
 	# Add here commands to clean up after the build process.
 	$(CREATE_BUILD_FILES)
-	-$(MAKE) CONFIG=Release clean
+	$(MAKE) CONFIG=Release clean
 	$(CLEAN_BUILD_FILES)
 
 	dh_clean 
@@ -69,7 +69,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
-#	dh_installdocs
+	dh_installdocs
 #	dh_installexamples
 	dh_install --sourcedir=debian/gnome --autodest \*
 	dh_installmenu
@@ -83,7 +83,7 @@ binary-arch: build install
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-#	dh_installman
+	dh_installman $(CURDIR)/debian/wxformbuilder.1
 	dh_link
 	dh_strip
 	dh_compress

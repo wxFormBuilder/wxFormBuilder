@@ -1,1 +1,1 @@
-?package(wxformbuilder):needs="X11" section="Apps/Editors" title="wxFormBuilder" command="/usr/bin/wxformbuilder" icon="/usr/share/wxformbuilder/resources/icons/logo.png"
+?package(wxformbuilder):needs="X11" section="Apps/Editors" title="wxFormBuilder" command="/usr/bin/wxformbuilder" icon="/usr/share/wxformbuilder/resources/icons/logo.xpm"
