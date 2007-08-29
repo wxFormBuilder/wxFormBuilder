@@ -1,5 +1,5 @@
 /* XPM */
-static char * minimize_xpm[] = {
+static const char * minimize_xpm[] = {
 "17 15 6 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -23,7 +23,7 @@ static char * minimize_xpm[] = {
 ".###############+",
 "+++++++++++++++++"};
 
-static char * minimize_disabled_xpm[] = {
+static const char * minimize_disabled_xpm[] = {
 "17 15 6 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -47,14 +47,14 @@ static char * minimize_disabled_xpm[] = {
 ".###############+",
 "+++++++++++++++++"};
 
-static char * maximize_xpm[] = {
+static const char * maximize_xpm[] = {
 "18 15 6 1",
 " 	c None",
 ".	c #FFFFFF",
 "+	c #404040",
 "@	c #D4D0C8",
 "#	c #808080",
-"$	c #000000",                
+"$	c #000000",
 " ................+",
 " .@@@@@@@@@@@@@@#+",
 " .@@@@@@@@@@@@@@#+",
@@ -71,14 +71,14 @@ static char * maximize_xpm[] = {
 " .###############+",
 " +++++++++++++++++"};
 
-static char * maximize_disabled_xpm[] = {
+static const char * maximize_disabled_xpm[] = {
 "18 15 6 1",
 " 	c None",
 ".	c #FFFFFF",
 "+	c #404040",
 "@	c #D4D0C8",
 "#	c #808080",
-"$	c #A0A0A4",                
+"$	c #A0A0A4",
 " ................+",
 " .@@@@@@@@@@@@@@#+",
 " .@@@@@@@@@@@@@@#+",
@@ -94,8 +94,8 @@ static char * maximize_disabled_xpm[] = {
 " .@@@@@@@@@@@@@@#+",
 " .###############+",
 " +++++++++++++++++"};
-               
-static char * close_xpm[] = {
+
+static const char * close_xpm[] = {
 "18 15 6 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -119,7 +119,7 @@ static char * close_xpm[] = {
 " .###############+",
 " +++++++++++++++++"};
 
-static char * close_disabled_xpm[] = {
+static const char * close_disabled_xpm[] = {
 "18 15 6 1",
 " 	c None",
 ".	c #FFFFFF",

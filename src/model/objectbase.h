@@ -156,7 +156,7 @@ public:
 	wxString GetName()                 { return m_info->GetName(); }
 	wxString GetValue()                { return m_value; }
 	void SetValue( wxString& val )     { m_value = val; }
-	void SetValue( wxChar* val )       { m_value = val;	}
+	void SetValue( const wxChar* val )       { m_value = val;	}
 
 	PPropertyInfo GetPropertyInfo() { return m_info; }
 	PropertyType  GetType()         { return m_info->GetType();  }
