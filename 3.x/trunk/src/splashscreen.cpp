@@ -35,7 +35,7 @@ void cbSplashScreen::DoPaint(wxDC &dc)
   dc.GetTextExtent(revision, &c, &d, 0, 0, &smallFont);
 
   a >>= 1; c >>=1;
-  int y = 180 - ((b + d + 8)>>1);
+//  int y = 180 - ((b + d + 8)>>1);
 
   dc.SetFont(largeFont);
   //dc.DrawText(release,  92 - a, y);
