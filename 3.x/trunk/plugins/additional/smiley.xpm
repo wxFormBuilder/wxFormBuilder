@@ -1,5 +1,5 @@
 /* XPM */
-static char * smiley_xpm[] = {
+static const char * smiley_xpm[] = {
 "16 16 147 2",
 "  	c None",
 ". 	c #F9BB00",
