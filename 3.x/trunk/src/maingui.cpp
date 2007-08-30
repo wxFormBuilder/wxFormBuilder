@@ -242,6 +242,11 @@ bool MyApp::OnInit()
 		frame->Show( TRUE );
 		SetTopWindow( frame );
 
+		#ifndef __WXFB_DEBUG__
+		// turn off the splash screen
+		delete splash.release();
+		#endif
+
 		#ifdef __WXFB_DEBUG__
 			wxLogWindow* log = dynamic_cast< wxLogWindow* >( AppData()->GetDebugLogTarget() );
 			if ( log )
