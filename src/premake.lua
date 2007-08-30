@@ -35,7 +35,7 @@ package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml"
 if ( OS == "windows") then
 	package.libpaths = { "../output", "../sdk/lib" }
 else
-	package.libpaths = { "../output/lib", "../sdk/lib" }
+	package.libpaths = { "../output/lib/wxformbuilder", "../sdk/lib" }
 end
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
@@ -53,12 +53,12 @@ end
 --package.libdir = "../../lib"
 -- Set the defines.
 package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA" }
--- Load the dlls from the 'lib' subdirectory.
+-- Load the shlibs from the 'lib/wxformbuilder' subdirectory.
 if ( OS == "linux" ) then
 	if ( target == "cb-gcc" ) then
-		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib" )
+		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder" )
 	else
-		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/../lib" )
+		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/../lib/wxformbuilder" )
 	end
 end
 

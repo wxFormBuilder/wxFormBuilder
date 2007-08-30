@@ -10,8 +10,8 @@
 #export DH_VERBOSE=1
 
 CFLAGS = -Wall -g
-CREATE_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --target gnu --unicode --with-wx-shared
-CLEAN_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux clean
+CREATE_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --target gnu --unicode --disable-wx-debug --with-wx-shared
+CLEAN_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --unicode --disable-wx-debug --with-wx-shared clean
 SCRIPTS_DIR = $(CURDIR)/debian/scripts
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
