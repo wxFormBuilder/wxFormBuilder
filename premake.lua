@@ -2,7 +2,7 @@ project.name = "wxFormBuilder"
 if ( OS == "windows") then
 	project.bindir = "output"
 else
-	project.bindir = "output/lib"
+	project.bindir = "output/lib/wxformbuilder"
 end
 
 -- Configureations. All I am doing is reordering them so that
