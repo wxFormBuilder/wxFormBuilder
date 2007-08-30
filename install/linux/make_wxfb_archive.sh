@@ -38,14 +38,13 @@ then
   exit 1
 fi
 
-versionRegEx="[0-9]\.[0-9]{1,2}\.[0-9]+"
-
 cat "$changelog" |
 while read line;
 do
- if [[ "$line" =~ ".*Version "$versionRegEx".*" ]]
+ version=`expr match "$line" '.*\([0-9]\.[0-9]\{1,2\}\.[0-9]\+\)'`
+ if [ -n "$version" ]
  then
-   version=`expr match "$line" '.*\([0-9]\.[0-9]\{1,2\}\.[0-9]\+\)'`
+ echo "$version"
    # because I redirected cat to the while loop, bash spawned a subshell
    # this means "version" will go out of scop at the end of the loop
    # so I need to do everything here
