@@ -37,15 +37,6 @@ package.bindir = "../../output/plugins/wxAdditions"
 -- Set the defines.
 package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }
 
--- Load the dlls from the plugin's directory.
-if ( OS == "linux" ) then
-	if ( target == "cb-gcc" ) then
-		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN" )
-	else
-		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN" )
-	end
-end
-
 -- Hack the dll output to prefix 'lib' to the begining.
 package.targetprefix = "lib"
 
@@ -53,7 +44,7 @@ package.targetprefix = "lib"
 if ( OS == "windows" ) then
 	package.libpaths = { "../../output" }
 else
-	package.libpaths = { "../../output/lib" }
+	package.libpaths = { "../../output/lib/wxformbuilder" }
 end
 
 -- Set the libraries it links to.
