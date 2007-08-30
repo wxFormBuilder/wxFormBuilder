@@ -6,6 +6,7 @@ date Version 3.00.49 (RC2)
 * Fixed missing bitmap properties on wxBitmapButton.
 * Applied patch from Ho Yin Kwok to check if the clipboard is open before opening it.
 * Fixed hang if opened with a project of an older version.
+* Fixed the find dialog only working one time.
 
 08/21/2007 Version 3.00.48 (RC1)
 + FS#227 - "Custom control class name"

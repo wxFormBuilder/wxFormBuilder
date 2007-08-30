@@ -1302,12 +1302,13 @@ void MainFrame::OnFindDialog( wxCommandEvent& event )
 		m_findDialog = new wxFindReplaceDialog( this, &m_findData, wxT("Find") );
 		m_findDialog->Centre( wxCENTRE_ON_SCREEN | wxBOTH );
 	}
-	m_findDialog->Show();
+	m_findDialog->Show( true );
 }
 
 void MainFrame::OnFindClose( wxFindDialogEvent& event )
 {
-	m_findDialog->Show( false );
+	m_findDialog->Destroy();
+	m_findDialog = 0;
 }
 
 void MainFrame::OnFind( wxFindDialogEvent& event )
