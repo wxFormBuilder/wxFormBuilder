@@ -29,7 +29,11 @@ package.includepaths = { "../../sdk/tinyxml", "../../sdk/plugin_interface" }
 package.links = { "plugin-interface", "TiCPP" }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-package.bindir = "../../output/plugins/layout"
+if ( OS == "windows" ) then
+	package.bindir = "../../output/plugins/layout"
+else
+	package.bindir = "../../output/lib/wxformbuilder"
+end
 --package.libdir = "../../lib"
 -- Set the defines.
 package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }

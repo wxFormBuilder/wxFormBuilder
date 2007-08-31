@@ -33,7 +33,12 @@ package.includepaths =
 }
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-package.bindir = "../../output/plugins/wxAdditions"
+if ( OS == "windows" ) then
+	package.bindir = "../../output/plugins/wxAdditions"
+else
+	package.bindir = "../../output/lib/wxformbuilder"
+end
+
 -- Set the defines.
 package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }
 
