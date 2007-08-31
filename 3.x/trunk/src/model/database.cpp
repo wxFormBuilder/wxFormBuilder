@@ -37,6 +37,8 @@
 #include <ticpp.h>
 #include <wx/config.h>
 #include <wx/tokenzr.h>
+#include <wx/stdpaths.h>
+#include <wx/app.h>
 
 //#define DEBUG_PRINT(x) cout << x
 
@@ -657,8 +659,16 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
     }
 }
 
-void ObjectDatabase::SetupPackage( const wxString& file, const wxString& libPath, PwxFBManager manager )
+void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, PwxFBManager manager )
 {
+	#ifdef __WXMSW__
+		wxString libPath = path;
+	#else
+		wxStandardPathsBase& stdpaths = wxStandardPaths::Get();
+		wxString libPath = stdpaths.GetPluginsDir();
+		libPath.Replace( wxTheApp->GetAppName().c_str(), wxT("wxformbuilder") );
+	#endif
+
 	try
 	{
 		ticpp::Document doc;

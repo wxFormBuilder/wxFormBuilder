@@ -167,7 +167,7 @@ class ObjectDatabase
    * Incluye la información heredada de los objetos de un paquete.
    * En la segunda pasada configura cada paquete con sus objetos base.
    */
-  void SetupPackage( const wxString& file, const wxString& libPath, PwxFBManager manager );
+  void SetupPackage( const wxString& file, const wxString& path, PwxFBManager manager );
 
   /**
    * Determina si el tipo de objeto hay que incluirlo en la paleta de
