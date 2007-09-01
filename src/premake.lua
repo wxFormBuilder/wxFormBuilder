@@ -52,7 +52,7 @@ else
 end
 --package.libdir = "../../lib"
 -- Set the defines.
-package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA" }
+package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA", "SCI_NAMESPACE" }
 -- Load the shlibs from the 'lib/wxformbuilder' subdirectory.
 if ( OS == "linux" ) then
 	if ( target == "cb-gcc" ) then

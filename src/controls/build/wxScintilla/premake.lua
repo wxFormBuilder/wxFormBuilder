@@ -47,7 +47,7 @@ else
 	--package.bindir = "../../../../output/lib"
 end
 -- Set the defines.
-package.defines = { "WXMAKINGDLL_SCI", "MONOLITHIC", "LINK_LEXERS", "SCI_LEXER" }
+package.defines = { "WXMAKINGDLL_SCI", "MONOLITHIC", "LINK_LEXERS", "SCI_LEXER", "SCI_NAMESPACE", "__WX__" }
 
 --------------------------- DO NOT EDIT BELOW ----------------------------------
 
@@ -201,7 +201,7 @@ if ( OS == "windows" ) then
 	end
 	
 	-- Set the Windows defines.
-	table.insert( package.defines, { "__WXMSW__", "WIN32", "_WINDOWS", "__WX__" } )
+	table.insert( package.defines, { "__WXMSW__", "WIN32", "_WINDOWS" } )
 	
 	-- Set the targets.
 	if ( target == "cb-gcc" or target == "gnu" ) then
