@@ -113,12 +113,12 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 	                          typename union unsigned using virtual void volatile wchar_t \
 	                          while" ) );
 
-#ifdef __WXMSW__
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
-#elif defined(__WXGTK__)
+#ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
 	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
 	font.SetFaceName( wxT( "Monospace" ) );
+#else
+	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
 #endif
 	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
 	stc->StyleClearAll();

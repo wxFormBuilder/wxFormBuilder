@@ -1,6 +1,7 @@
 #ifndef __DATA_OBJECT__
 #define __DATA_OBJECT__
 
+#include <string>
 #include <wx/dataobj.h>
 #include <wx/dnd.h>
 #include "utils/wxfbdefs.h"
