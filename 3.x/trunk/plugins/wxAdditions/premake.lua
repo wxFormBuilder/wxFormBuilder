@@ -40,7 +40,7 @@ else
 end
 
 -- Set the defines.
-package.defines = { "BUILD_DLL", "TIXML_USE_TICPP" }
+package.defines = { "BUILD_DLL", "TIXML_USE_TICPP", "SCI_NAMESPACE" }
 
 -- Hack the dll output to prefix 'lib' to the begining.
 package.targetprefix = "lib"
