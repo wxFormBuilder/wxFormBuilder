@@ -37,6 +37,7 @@ fi
 
 # copy ouput files to target directories  
 cp -R --interactive output/* $outputDir/share/wxformbuilder/
+rm $outputDir/share/wxformbuilder/Changelog.txt
 
 # reorganize target directories
 if [ -d $outputDir/bin ]
