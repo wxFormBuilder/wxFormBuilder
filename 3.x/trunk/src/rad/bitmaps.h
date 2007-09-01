@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ICONS__
-#define __ICONS__
+#ifndef __WXFB__BITMAPS_H__
+#define __WXFB__BITMAPS_H__
 
 #define ICON_SIZE 22
 #define TOOL_SIZE 22
@@ -40,4 +40,4 @@ public:
 	static void LoadBitmaps( wxString filepath, wxString iconpath );
 };
 
-#endif //__ICONS__
+#endif //__WXFB__BITMAPS_H__

@@ -1163,13 +1163,17 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		path += wxT("d");
 	#endif
 
+	// no extension is added for __WXMAC__
+	#ifdef __WXMAC__
+		path += wxT(".dylib");
+	#endif
+	
 	// Attempt to load the DLL
 	wxDynamicLibrary* library = new wxDynamicLibrary( path );
-
-	if ( !library->IsLoaded() )
+	if ( !library->IsLoaded() )	
 	{
 		THROW_WXFBEX( wxT("Error loading library ") << path )
-	}
+	}                                                             
 
 	m_libs.push_back( library );
 
