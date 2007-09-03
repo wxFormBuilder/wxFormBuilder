@@ -148,8 +148,15 @@ public:
 	// Used to ensure sash position is correct
 	void OnIdle( wxIdleEvent& event )
 	{
-		SetSashPosition( m_initialSashPos );
 		Disconnect( wxEVT_IDLE, wxIdleEventHandler( wxCustomSplitterWindow::OnIdle ) );
+
+		// So the selection of the sizer at its initial position is cleared, then shown at the correct position
+		Freeze();
+		SetSashPosition( m_initialSashPos );
+		Layout();
+		Refresh();
+		Update();
+		Thaw();
 	}
 
 private:
