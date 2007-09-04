@@ -223,9 +223,7 @@ m_findDialog( NULL )
 
 	SetIcons( bundle );
 
-	wxString date( wxT( __DATE__ ) );
-	wxString time( wxT( __TIME__ ) );
-	SetTitle( wxT( "wxFormBuilder (Build on " ) + date + wxT( " - " ) + time + wxT( ")" ) );
+	SetTitle( wxT( "wxFormBuilder" ) );
 
 	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 
@@ -882,19 +880,15 @@ void MainFrame::UpdateLayoutTools()
 
 void MainFrame::UpdateFrame()
 {
-	// Actualizamos el título
-	wxString date( wxT( __DATE__ ) );
-	wxString time( wxT( __TIME__ ) );
-	wxString title( wxT( "wxFormBuilder (Build on " ) + date + wxT( " - " ) + time + wxT( ") - " ) );
-
-	if ( AppData()->IsModified() )
-		title = title + wxChar( '*' );
-
+	// Build the title
 	wxString filename = AppData()->GetProjectFileName();
 
-	title = title + ( filename.IsEmpty() ?
-	                  wxT( "[untitled]" ) :
-	                  wxT( "[" ) + filename + wxT( "]" ) );
+	wxString title = ( filename.IsEmpty() ?
+	                  wxT( "untitled - wxFormBuilder v3.0" ) :
+	                  filename + wxT( " - wxFormBuilder v3.0" ) );
+
+	if ( AppData()->IsModified() )
+		title = wxChar( '*' ) + title;
 
 	SetTitle( title );
 
