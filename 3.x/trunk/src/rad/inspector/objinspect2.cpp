@@ -784,9 +784,14 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	{
 		result = wxUIntProperty(name, wxPG_LABEL, (unsigned)prop->GetValueAsInteger());
 	}
-  	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N || type == PT_TEXT)
+  	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
+  	{
+  		result = wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
+  	}
+  	else if (type == PT_TEXT)
 	{
-		result = wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
+		result = wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsString());
+		result->SetFlag( wxPG_PROP_NO_ESCAPE );
 	}
 	else if (type == PT_BOOL)
 	{
@@ -1338,6 +1343,8 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		break;
 	}
 	case PT_TEXT:
+		pgProp->SetValueFromString(prop->GetValueAsString(), 0);
+		break;
 	case PT_MACRO:
 	case PT_OPTION:
 	case PT_PARENT:

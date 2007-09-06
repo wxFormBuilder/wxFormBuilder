@@ -8,6 +8,11 @@ date Version 3.00.49 (RC2)
 * Fixed hang if opened with a project of an older version.
 * Fixed the find dialog only working one time.
 * Fixed FS#230 - "Repainting issue with border drawn by wxFormBuilder"
+* The value of the "precompiled_header" property should now be the exact code to be 
+   generated at the top of the source file to support precompiled headers. For example, 
+   to include wxprec.h, the value of this property should be:  #include <wx/wxprec.h>
+  This forced a project version uprev to 1.8.  
+  This closes FS#232 - "Precompiled headers with Visual C++ 2005".
 
 08/21/2007 Version 3.00.48 (RC1)
 + FS#227 - "Custom control class name"

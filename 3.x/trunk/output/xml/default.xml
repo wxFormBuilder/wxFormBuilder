@@ -16,11 +16,11 @@
       C++
 	</property>
 	<category name="C++ Properties">
-		<property name="use_enum" type="bool" help="For C++ Only. Generate an enumeration for control IDs instead of a list of #defines">0</property>
-		<property name="internationalize" type="bool" help="For C++ Only. Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
-		<property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only. Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
-		<property name="precompiled_header" type="text" help="For C++ Only. Precompiled header to include at the top of the generated source file. Define WX_PRECOMP when compiling to use a precompiled header.">wx/wxprec.h</property>
-		<property name="class_decoration" type="parent" help="For C++ Only. Used to decorate classes with DLL export macros.">
+		<property name="use_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for control IDs instead of a list of #defines">0</property>
+		<property name="internationalize" type="bool" help="For C++ Only.&#x0A;Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
+		<property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only.&#x0A;Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
+		<property name="precompiled_header" type="text" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
+		<property name="class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
 		  <child name="decoration" help="The name of the macro or the dll export decoration."/>
 		  <child name="header" help="Optional header file where the export macro is defined."/>
 	    </property>
@@ -28,13 +28,13 @@
 		  <option name="UTF-8" />
 		  <option name="ANSI" />UTF-8
 		</property>
-		<property name="namespace" type="stringlist" help="For C++ Only. Namespaces to wrap class declarations in."/>
-		<property name="event_generation" type="option" help="For C++ Only. Type of event connection to generate.">
+		<property name="namespace" type="stringlist" help="For C++ Only.&#x0A;Namespaces to wrap class declarations in."/>
+		<property name="event_generation" type="option" help="For C++ Only.&#x0A;Type of event connection to generate.">
 		  <option name="connect" help="Use the Connect() function to link event handlers to events."/>
 		  <option name="table" help="Use event macro tables to link event handlers to events."/>
 		  connect
 		</property>
-		<property name="help_provider" type="option" help="For C++ Only. The class of help provider to use for context-sensitive help.">
+		<property name="help_provider" type="option" help="For C++ Only.&#x0A;The class of help provider to use for context-sensitive help.">
 			<option name="none" help="No support for context-sensitive help."/>
 			<option name="wxSimpleHelpProvider" help="Use wxSimpleHelpProvider to provide context-sensitive help."/>
 			<option name="wxHelpControllerHelpProvider" help="Use wxHelpControllerHelpProvider to provide context-sensitive help."/>
@@ -42,8 +42,8 @@
 		</property>
 	</category>
 	<category name="XRC Properties">
-		<property name="bitmaps"	type="stringlist"	help="For XRC Only. A list of files to generate as wxBitmaps."/>
-		<property name="icons"		type="stringlist"	help="For XRC Only. A list of files to generate as wxIcons."/>
+		<property name="bitmaps"	type="stringlist"	help="For XRC Only.&#x0A;A list of files to generate as wxBitmaps."/>
+		<property name="icons"		type="stringlist"	help="For XRC Only.&#x0A;A list of files to generate as wxIcons."/>
 	</category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
