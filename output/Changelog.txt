@@ -13,6 +13,7 @@ date Version 3.00.49 (RC2)
    to include wxprec.h, the value of this property should be:  #include <wx/wxprec.h>
   This forced a project version uprev to 1.8.  
   This closes FS#232 - "Precompiled headers with Visual C++ 2005".
+* Removed #include <wx/wx.h> from the generated header.
 
 08/21/2007 Version 3.00.48 (RC1)
 + FS#227 - "Custom control class name"

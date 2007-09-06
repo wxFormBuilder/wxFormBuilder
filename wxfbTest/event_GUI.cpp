@@ -1,36 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version May  4 2007)
+// C++ code generated with wxFormBuilder (version Sep  5 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifdef WX_PRECOMP
-
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif //__BORLANDC__
-
-#else
-#include <wx/wx.h>
-#endif //WX_PRECOMP
-
 #include "event_GUI.h"
 
 ///////////////////////////////////////////////////////////////////////////
-BEGIN_EVENT_TABLE( MainFrame, wxFrame )
-	EVT_CLOSE( MainFrame::_wxFB_OnClose )
-	EVT_SIZE( MainFrame::_wxFB_OnSize )
-	EVT_MENU( ID_FILE_OPEN, MainFrame::_wxFB_OnFileOpen )
-	EVT_MENU( ID_FILE_SAVE, MainFrame::_wxFB_OnFileSave )
-	EVT_MENU( ID_FILE_EXIT, MainFrame::_wxFB_OnFileExit )
-	EVT_MENU( ID_OPEN_TOOL, MainFrame::_wxFB_OnOpenSelected )
-	EVT_TOOL_ENTER(ID_TOOLBAR, MainFrame::_wxFB_OnOpenEntered )
-	EVT_TOOL( ID_ABOUT_TOOL, MainFrame::_wxFB_OnAboutClicked )
-	EVT_TOOL_RCLICKED( ID_ABOUT_TOOL, MainFrame::_wxFB_OnAboutRClick )
-END_EVENT_TABLE()
 
 MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) : wxFrame( parent, id, title, pos, size, style )
 {
@@ -62,46 +39,18 @@ MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxS
 	m_toolBar1->AddTool( ID_ABOUT_TOOL, wxT("About"), wxNullBitmap, wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
 	m_toolBar1->Realize();
 	
+	
+	// Connect Events
+	this->Connect( wxEVT_CLOSE_WINDOW, wxCloseEventHandler( MainFrame::OnClose ) );
+	this->Connect( wxEVT_SIZE, wxSizeEventHandler( MainFrame::OnSize ) );
+	this->Connect( fileOpenMenuItem->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnFileOpen ) );
+	this->Connect( fileSaveMenuItem->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnFileSave ) );
+	this->Connect( fileExitMenuItem->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnFileExit ) );
+	this->Connect( ID_OPEN_TOOL, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnOpenSelected ));
+	this->Connect( ID_OPEN_TOOL, wxEVT_COMMAND_TOOL_ENTER, wxCommandEventHandler( MainFrame::OnOpenEntered ) );
+	this->Connect( ID_ABOUT_TOOL, wxEVT_COMMAND_TOOL_CLICKED, wxCommandEventHandler( MainFrame::OnAboutClicked ) );
+	this->Connect( ID_ABOUT_TOOL, wxEVT_COMMAND_TOOL_RCLICKED, wxCommandEventHandler( MainFrame::OnAboutRClick ) );
 }
-BEGIN_EVENT_TABLE( CommonPanel, wxPanel )
-	EVT_BUTTON( ID_BUTTON, CommonPanel::_wxFB_OnClick )
-	EVT_BUTTON( ID_BITMAP_BUTTON, CommonPanel::_wxFB_OnClickBitmap )
-	EVT_TEXT( ID_TEXTCTRL, CommonPanel::_wxFB_OnText )
-	EVT_TEXT_ENTER( ID_TEXTCTRL, CommonPanel::_wxFB_OnTextEnter )
-	EVT_TEXT_MAXLEN( ID_TEXTCTRL, CommonPanel::_wxFB_OnTextMaxLen )
-	EVT_TEXT_URL( ID_TEXTCTRL, CommonPanel::_wxFB_OnTextURL )
-	EVT_COMBOBOX( ID_COMBOBOX, CommonPanel::_wxFB_OnCombobox )
-	EVT_TEXT( ID_COMBOBOX, CommonPanel::_wxFB_OnComboText )
-	EVT_TEXT_ENTER( ID_COMBOBOX, CommonPanel::_wxFB_OnComboTextEnter )
-	EVT_CHOICE( ID_CHOICE, CommonPanel::_wxFB_OnChoice )
-	EVT_LISTBOX( ID_LISTBOX, CommonPanel::_wxFB_OnListBox )
-	EVT_LISTBOX_DCLICK( ID_LISTBOX, CommonPanel::_wxFB_OnListBoxDClick )
-	EVT_LIST_COL_CLICK( ID_LIST_CTRL, CommonPanel::_wxFB_OnListColClick )
-	EVT_LIST_DELETE_ALL_ITEMS( ID_LIST_CTRL, CommonPanel::_wxFB_OnListDeleteAllItems )
-	EVT_CHECKBOX( ID_CHECKBOX, CommonPanel::_wxFB_OnCheckBox )
-	EVT_RADIOBOX( ID_RADIOBOX, CommonPanel::_wxFB_OnRadioBox )
-	EVT_COMMAND_SCROLL( ID_SLIDER, CommonPanel::_wxFB_OnCommandScroll )
-	EVT_COMMAND_SCROLL_BOTTOM( ID_SLIDER, CommonPanel::_wxFB_OnCommandScrollBottom )
-	EVT_COMMAND_SCROLL_CHANGED( ID_SLIDER, CommonPanel::_wxFB_OnCommandScrollChanged )
-	EVT_SCROLL( CommonPanel::_wxFB_OnScroll )
-	EVT_SCROLL_CHANGED( CommonPanel::_wxFB_OnScrollChanged )
-	EVT_GRID_CELL_LEFT_CLICK( CommonPanel::_wxFB_OnGridCellClick )
-	EVT_GRID_CELL_LEFT_DCLICK( CommonPanel::_wxFB_OnGridCellDClick )
-	EVT_GRID_CMD_CELL_CHANGE( ID_GRID, CommonPanel::_wxFB_OnGridCellChanged )
-	EVT_GRID_CMD_CELL_RIGHT_CLICK( ID_GRID, CommonPanel::_wxFB_OnGridCellRightClick )
-	EVT_GRID_CMD_CELL_RIGHT_DCLICK( ID_GRID, CommonPanel::_wxFB_OnGridCellRightDClick )
-	EVT_GRID_CMD_EDITOR_CREATED( ID_GRID, CommonPanel::_wxFB_OnGridEditorCreated )
-	EVT_GRID_CMD_EDITOR_HIDDEN( ID_GRID, CommonPanel::_wxFB_OnGridEditorHidden )
-	EVT_GRID_CMD_LABEL_RIGHT_CLICK( ID_GRID, CommonPanel::_wxFB_OnGridLabelRightClick )
-	EVT_GRID_CMD_LABEL_RIGHT_DCLICK( ID_GRID, CommonPanel::_wxFB_OnGridLabelRightDClick )
-	EVT_GRID_CMD_ROW_SIZE( ID_GRID, CommonPanel::_wxFB_OnGridRowSize )
-	EVT_GRID_COL_SIZE( CommonPanel::_wxFB_OnGridColSize )
-	EVT_GRID_EDITOR_SHOWN( CommonPanel::_wxFB_OnGridEditorShown )
-	EVT_GRID_LABEL_LEFT_CLICK( CommonPanel::_wxFB_OnGridLabelClick )
-	EVT_GRID_LABEL_LEFT_DCLICK( CommonPanel::_wxFB_OnGridLabelDClick )
-	EVT_GRID_RANGE_SELECT( CommonPanel::_wxFB_OnGridRangeSelect )
-	EVT_GRID_SELECT_CELL( CommonPanel::_wxFB_OnGridCellSelected )
-END_EVENT_TABLE()
 
 CommonPanel::CommonPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) : wxPanel( parent, id, pos, size, style )
 {
@@ -139,23 +88,96 @@ CommonPanel::CommonPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, in
 	wxString m_radioBox1Choices[] = { wxT("Radio Button") };
 	int m_radioBox1NChoices = sizeof( m_radioBox1Choices ) / sizeof( wxString );
 	m_radioBox1 = new wxRadioBox( this, ID_RADIOBOX, wxT("wxRadioBox"), wxDefaultPosition, wxDefaultSize, m_radioBox1NChoices, m_radioBox1Choices, 1, wxRA_SPECIFY_COLS );
+	m_radioBox1->SetSelection( 0 );
 	fgSizer1->Add( m_radioBox1, 0, wxALL, 5 );
 	
 	m_slider1 = new wxSlider( this, ID_SLIDER, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
 	fgSizer1->Add( m_slider1, 0, wxALL, 5 );
 	
 	m_grid1 = new wxGrid( this, ID_GRID, wxDefaultPosition, wxDefaultSize, 0 );
+	
+	// Grid
 	m_grid1->CreateGrid( 2, 2 );
+	m_grid1->EnableEditing( true );
+	m_grid1->EnableGridLines( true );
+	m_grid1->EnableDragGridSize( false );
+	m_grid1->SetMargins( 0, 0 );
+	
+	// Columns
+	m_grid1->EnableDragColMove( false );
+	m_grid1->EnableDragColSize( true );
+	m_grid1->SetColLabelSize( 30 );
+	m_grid1->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Rows
+	m_grid1->EnableDragRowSize( true );
+	m_grid1->SetRowLabelSize( 80 );
+	m_grid1->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+	
+	// Label Appearance
+	
+	// Cell Defaults
+	m_grid1->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
 	fgSizer1->Add( m_grid1, 0, wxALL, 5 );
 	
 	this->SetSizer( fgSizer1 );
 	this->Layout();
+	
+	// Connect Events
+	m_button1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CommonPanel::OnClick ), NULL, this );
+	m_bpButton1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( CommonPanel::OnClickBitmap ), NULL, this );
+	m_textCtrl1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CommonPanel::OnText ), NULL, this );
+	m_textCtrl1->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( CommonPanel::OnTextEnter ), NULL, this );
+	m_textCtrl1->Connect( wxEVT_COMMAND_TEXT_MAXLEN, wxCommandEventHandler( CommonPanel::OnTextMaxLen ), NULL, this );
+	m_textCtrl1->Connect( wxEVT_COMMAND_TEXT_URL, wxTextUrlEventHandler( CommonPanel::OnTextURL ), NULL, this );
+	m_comboBox1->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, wxCommandEventHandler( CommonPanel::OnCombobox ), NULL, this );
+	m_comboBox1->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( CommonPanel::OnComboText ), NULL, this );
+	m_comboBox1->Connect( wxEVT_COMMAND_TEXT_ENTER, wxCommandEventHandler( CommonPanel::OnComboTextEnter ), NULL, this );
+	m_choice1->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( CommonPanel::OnChoice ), NULL, this );
+	m_listBox1->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CommonPanel::OnListBox ), NULL, this );
+	m_listBox1->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler( CommonPanel::OnListBoxDClick ), NULL, this );
+	m_listCtrl1->Connect( wxEVT_COMMAND_LIST_COL_CLICK, wxListEventHandler( CommonPanel::OnListColClick ), NULL, this );
+	m_listCtrl1->Connect( wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, wxListEventHandler( CommonPanel::OnListDeleteAllItems ), NULL, this );
+	m_checkBox1->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( CommonPanel::OnCheckBox ), NULL, this );
+	m_radioBox1->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( CommonPanel::OnRadioBox ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnCommandScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CommonPanel::OnCommandScrollBottom ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnCommandScrollChanged ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_BOTTOM, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_LINEUP, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_LINEDOWN, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_PAGEUP, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_PAGEDOWN, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_THUMBTRACK, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_THUMBRELEASE, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnScroll ), NULL, this );
+	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnScrollChanged ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellDClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( CommonPanel::OnGridCellChanged ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellRightClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellRightDClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_EDITOR_CREATED, wxGridEditorCreatedEventHandler( CommonPanel::OnGridEditorCreated ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_EDITOR_HIDDEN, wxGridEventHandler( CommonPanel::OnGridEditorHidden ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_LABEL_RIGHT_CLICK, wxGridEventHandler( CommonPanel::OnGridLabelRightClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, wxGridEventHandler( CommonPanel::OnGridLabelRightDClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_ROW_SIZE, wxGridSizeEventHandler( CommonPanel::OnGridRowSize ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_COL_SIZE, wxGridSizeEventHandler( CommonPanel::OnGridColSize ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_EDITOR_SHOWN, wxGridEventHandler( CommonPanel::OnGridEditorShown ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_LABEL_LEFT_CLICK, wxGridEventHandler( CommonPanel::OnGridLabelClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_LABEL_LEFT_DCLICK, wxGridEventHandler( CommonPanel::OnGridLabelDClick ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_RANGE_SELECT, wxGridRangeSelectEventHandler( CommonPanel::OnGridRangeSelect ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_SELECT_CELL, wxGridEventHandler( CommonPanel::OnGridCellSelected ), NULL, this );
 }
-BEGIN_EVENT_TABLE( AdditionalPanel, wxPanel )
-	EVT_LISTBOX( wxID_ANY, AdditionalPanel::_wxFB_OnCheckListBox )
-	EVT_LISTBOX_DCLICK( wxID_ANY, AdditionalPanel::_wxFB_OnCheckListBoxDClick )
-	EVT_CHECKLISTBOX( wxID_ANY, AdditionalPanel::_wxFB_OnCheckListBoxToggle )
-END_EVENT_TABLE()
 
 AdditionalPanel::AdditionalPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) : wxPanel( parent, id, pos, size, style )
 {
@@ -267,6 +289,7 @@ AdditionalPanel::AdditionalPanel( wxWindow* parent, int id, wxPoint pos, wxSize 
 	fgSizer2->Add( m_choicebook1, 1, wxEXPAND | wxALL, 5 );
 	
 	m_staticText1 = new wxStaticText( this, wxID_ANY, wxT("MyLabel"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText1->Wrap( -1 );
 	fgSizer2->Add( m_staticText1, 0, wxALL, 5 );
 	
 	m_scrolledWindow2 = new wxScrolledWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
@@ -275,4 +298,9 @@ AdditionalPanel::AdditionalPanel( wxWindow* parent, int id, wxPoint pos, wxSize 
 	
 	this->SetSizer( fgSizer2 );
 	this->Layout();
+	
+	// Connect Events
+	m_checkList1->Connect( wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( AdditionalPanel::OnCheckListBox ), NULL, this );
+	m_checkList1->Connect( wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, wxCommandEventHandler( AdditionalPanel::OnCheckListBoxDClick ), NULL, this );
+	m_checkList1->Connect( wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, wxCommandEventHandler( AdditionalPanel::OnCheckListBoxToggle ), NULL, this );
 }

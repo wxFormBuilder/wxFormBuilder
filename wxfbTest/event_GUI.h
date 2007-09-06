@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version May  4 2007)
+// C++ code generated with wxFormBuilder (version Sep  5 2007)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO "NOT" EDIT THIS FILE!
@@ -8,17 +8,25 @@
 #ifndef __event_GUI__
 #define __event_GUI__
 
-#include <wx/wx.h>
-
 #include <wx/menu.h>
+#include <wx/toolbar.h>
+#include <wx/frame.h>
 #include <wx/button.h>
 #include <wx/bmpbuttn.h>
+#include <wx/textctrl.h>
+#include <wx/combobox.h>
 #include <wx/choice.h>
+#include <wx/listbox.h>
 #include <wx/listctrl.h>
+#include <wx/checkbox.h>
+#include <wx/radiobox.h>
 #include <wx/slider.h>
 #include <wx/grid.h>
+#include <wx/sizer.h>
+#include <wx/panel.h>
 #include <wx/calctrl.h>
 #include <wx/datectrl.h>
+#include <wx/dateevt.h>
 #include <wx/html/htmlwin.h>
 #include <wx/treectrl.h>
 #include <wx/radiobut.h>
@@ -26,12 +34,13 @@
 #include <wx/scrolbar.h>
 #include <wx/spinctrl.h>
 #include <wx/spinbutt.h>
-#include <wx/panel.h>
 #include <wx/splitter.h>
 #include <wx/checklst.h>
 #include <wx/notebook.h>
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
+#include <wx/stattext.h>
+#include <wx/scrolwin.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -40,20 +49,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 class MainFrame : public wxFrame 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnClose( wxCloseEvent& event ){ OnClose( event ); }
-		void _wxFB_OnSize( wxSizeEvent& event ){ OnSize( event ); }
-		void _wxFB_OnFileOpen( wxCommandEvent& event ){ OnFileOpen( event ); }
-		void _wxFB_OnFileSave( wxCommandEvent& event ){ OnFileSave( event ); }
-		void _wxFB_OnFileExit( wxCommandEvent& event ){ OnFileExit( event ); }
-		void _wxFB_OnOpenSelected( wxCommandEvent& event ){ OnOpenSelected( event ); }
-		void _wxFB_OnOpenEntered( wxCommandEvent& event ){ OnOpenEntered( event ); }
-		void _wxFB_OnAboutClicked( wxCommandEvent& event ){ OnAboutClicked( event ); }
-		void _wxFB_OnAboutRClick( wxCommandEvent& event ){ OnAboutRClick( event ); }
-		
 	
 	protected:
 		enum
@@ -95,48 +91,7 @@ class MainFrame : public wxFrame
 ///////////////////////////////////////////////////////////////////////////////
 class CommonPanel : public wxPanel 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnClick( wxCommandEvent& event ){ OnClick( event ); }
-		void _wxFB_OnClickBitmap( wxCommandEvent& event ){ OnClickBitmap( event ); }
-		void _wxFB_OnText( wxCommandEvent& event ){ OnText( event ); }
-		void _wxFB_OnTextEnter( wxCommandEvent& event ){ OnTextEnter( event ); }
-		void _wxFB_OnTextMaxLen( wxCommandEvent& event ){ OnTextMaxLen( event ); }
-		void _wxFB_OnTextURL( wxTextUrlEvent& event ){ OnTextURL( event ); }
-		void _wxFB_OnCombobox( wxCommandEvent& event ){ OnCombobox( event ); }
-		void _wxFB_OnComboText( wxCommandEvent& event ){ OnComboText( event ); }
-		void _wxFB_OnComboTextEnter( wxCommandEvent& event ){ OnComboTextEnter( event ); }
-		void _wxFB_OnChoice( wxCommandEvent& event ){ OnChoice( event ); }
-		void _wxFB_OnListBox( wxCommandEvent& event ){ OnListBox( event ); }
-		void _wxFB_OnListBoxDClick( wxCommandEvent& event ){ OnListBoxDClick( event ); }
-		void _wxFB_OnListColClick( wxListEvent& event ){ OnListColClick( event ); }
-		void _wxFB_OnListDeleteAllItems( wxListEvent& event ){ OnListDeleteAllItems( event ); }
-		void _wxFB_OnCheckBox( wxCommandEvent& event ){ OnCheckBox( event ); }
-		void _wxFB_OnRadioBox( wxCommandEvent& event ){ OnRadioBox( event ); }
-		void _wxFB_OnCommandScroll( wxScrollEvent& event ){ OnCommandScroll( event ); }
-		void _wxFB_OnCommandScrollBottom( wxScrollEvent& event ){ OnCommandScrollBottom( event ); }
-		void _wxFB_OnCommandScrollChanged( wxScrollEvent& event ){ OnCommandScrollChanged( event ); }
-		void _wxFB_OnScroll( wxScrollEvent& event ){ OnScroll( event ); }
-		void _wxFB_OnScrollChanged( wxScrollEvent& event ){ OnScrollChanged( event ); }
-		void _wxFB_OnGridCellClick( wxGridEvent& event ){ OnGridCellClick( event ); }
-		void _wxFB_OnGridCellDClick( wxGridEvent& event ){ OnGridCellDClick( event ); }
-		void _wxFB_OnGridCellChanged( wxGridEvent& event ){ OnGridCellChanged( event ); }
-		void _wxFB_OnGridCellRightClick( wxGridEvent& event ){ OnGridCellRightClick( event ); }
-		void _wxFB_OnGridCellRightDClick( wxGridEvent& event ){ OnGridCellRightDClick( event ); }
-		void _wxFB_OnGridEditorCreated( wxGridEditorCreatedEvent& event ){ OnGridEditorCreated( event ); }
-		void _wxFB_OnGridEditorHidden( wxGridEvent& event ){ OnGridEditorHidden( event ); }
-		void _wxFB_OnGridLabelRightClick( wxGridEvent& event ){ OnGridLabelRightClick( event ); }
-		void _wxFB_OnGridLabelRightDClick( wxGridEvent& event ){ OnGridLabelRightDClick( event ); }
-		void _wxFB_OnGridRowSize( wxGridSizeEvent& event ){ OnGridRowSize( event ); }
-		void _wxFB_OnGridColSize( wxGridSizeEvent& event ){ OnGridColSize( event ); }
-		void _wxFB_OnGridEditorShown( wxGridEvent& event ){ OnGridEditorShown( event ); }
-		void _wxFB_OnGridLabelClick( wxGridEvent& event ){ OnGridLabelClick( event ); }
-		void _wxFB_OnGridLabelDClick( wxGridEvent& event ){ OnGridLabelDClick( event ); }
-		void _wxFB_OnGridRangeSelect( wxGridRangeSelectEvent& event ){ OnGridRangeSelect( event ); }
-		void _wxFB_OnGridCellSelected( wxGridEvent& event ){ OnGridCellSelected( event ); }
-		
 	
 	protected:
 		enum
@@ -217,14 +172,7 @@ class CommonPanel : public wxPanel
 ///////////////////////////////////////////////////////////////////////////////
 class AdditionalPanel : public wxPanel 
 {
-	DECLARE_EVENT_TABLE()
 	private:
-		
-		// Private event handlers
-		void _wxFB_OnCheckListBox( wxCommandEvent& event ){ OnCheckListBox( event ); }
-		void _wxFB_OnCheckListBoxDClick( wxCommandEvent& event ){ OnCheckListBoxDClick( event ); }
-		void _wxFB_OnCheckListBoxToggle( wxCommandEvent& event ){ OnCheckListBoxToggle( event ); }
-		
 	
 	protected:
 		wxCalendarCtrl* m_calendar1;

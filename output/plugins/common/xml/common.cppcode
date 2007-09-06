@@ -34,6 +34,7 @@
 
   <templates class="wxTextCtrl">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/textctrl.h&gt;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
 	<template name="settings">
 		#ifnotnull $maxlength
@@ -54,12 +55,14 @@
 
   <templates class="wxStaticText">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/stattext.h&gt;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
   	<template name="settings">$name->Wrap( $wrap );</template>
   </templates>
 
   <templates class="wxCheckBox">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/checkbox.h&gt;</template>
     <template name="construction">
 	  $name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} ); #nl
 	  #ifnotequal $checked "0"
@@ -71,6 +74,7 @@
 
   <templates class="wxComboBox">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/combobox.h&gt;</template>
     <template name="construction">
       $name = new #class( #wxparent $name, $id, $value, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
       #foreach $choices
@@ -86,6 +90,7 @@
 
   <templates class="wxListBox">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/listbox.h&gt;</template>
     <template name="construction">
       $name = new #class( #wxparent $name, $id, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
       #foreach $choices
@@ -99,6 +104,7 @@
 
   <templates class="wxRadioBox">
     <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/radiobox.h&gt;</template>
     <template name="construction">
         #ifnotnull $choices
 		@{

@@ -97,6 +97,7 @@
 			#ifnull $subclass/name
 			@{ wxFrame@}( parent, id, title, pos, size, style )
 		</template>
+		<template name="include">@#include &lt;wx/frame.h&gt;</template>
 		<template name="settings">
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 			
@@ -149,6 +150,7 @@
 			#ifnull $subclass/name
 			@{ wxPanel@}( parent, id, pos, size, style )
 		</template>
+		<template name="include">@#include &lt;wx/panel.h&gt;</template>
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
@@ -201,6 +203,7 @@
 			#ifnull $subclass/name
 			@{ wxDialog@}( parent, id, title, pos, size, style )
 		</template>
+		<template name="include">@#include &lt;wx/dialog.h&gt;</template>
 		<template name="settings">
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 			
