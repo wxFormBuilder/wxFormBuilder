@@ -101,7 +101,8 @@
 #define ID_CLIPBOARD_COPY 143
 #define ID_CLIPBOARD_PASTE 144
 
-#define STATUS_FIELD_OBJECT 1
+#define STATUS_FIELD_OBJECT 2
+#define STATUS_FIELD_PATH 1
 
 BEGIN_EVENT_TABLE( MainFrame, wxFrame )
 EVT_MENU( ID_NEW_PRJ, MainFrame::OnNewProject )
@@ -230,7 +231,7 @@ m_findDialog( NULL )
 	SetMenuBar( CreateFBMenuBar() );
 	CreateStatusBar( 3 );
 	SetStatusBarPane( 0 );
-	int widths[3] = { -1, 300 };
+	int widths[3] = { -1, -1, 300 };
 	SetStatusWidths( sizeof( widths ) / sizeof( int ), widths );
 	CreateFBToolBar();
 
@@ -882,15 +883,20 @@ void MainFrame::UpdateFrame()
 {
 	// Build the title
 	wxString filename = AppData()->GetProjectFileName();
+	wxString file;
 
-	wxString title = ( filename.IsEmpty() ?
-	                  wxT( "untitled - wxFormBuilder v3.0" ) :
-	                  filename + wxT( " - wxFormBuilder v3.0" ) );
+	if ( filename.empty() )
+	{
+		file = wxT("untitled");
+	}
+	else
+	{
+		wxFileName fn( filename );
+		file = fn.GetName();
+	}
 
-	if ( AppData()->IsModified() )
-		title = wxChar( '*' ) + title;
-
-	SetTitle( title );
+	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.0"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
+	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
 	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
