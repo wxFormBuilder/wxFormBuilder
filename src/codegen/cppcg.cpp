@@ -570,8 +570,11 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	// Inserting in the .cpp source file the include corresponding to the
 	// generated .h header file and the related xpm includes
 	code = GetCode( project, wxT("cpp_preamble") );
-	m_source->WriteLn( code );
-	m_source->WriteLn( wxEmptyString );
+	if ( !code.empty() )
+	{
+		m_source->WriteLn( code );
+		m_source->WriteLn( wxEmptyString );
+	}
 
 	// Write include lines for subclasses
 	for ( subclass_it = subclassSourceIncludes.begin(); subclass_it != subclassSourceIncludes.end(); ++subclass_it )

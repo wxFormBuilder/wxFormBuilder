@@ -451,7 +451,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 7 )
+		m_fbpVerMinor( 8 )
 {
 	#ifdef __WXFB_DEBUG__
 	wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1387,20 +1387,18 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 		return;
 	}
 
+	// Reusable sets for finding properties
+	std::set< std::string > oldProps;
+	std::set< ticpp::Element* > newProps;
+
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 5 ) )
 	{
 		// Find the user_headers property
 
-		std::set< std::string > oldProps;
-
-		std::set< ticpp::Element* > newProps;
-
 		oldProps.insert( "user_headers" );
-
 		GetPropertiesToConvert( project, oldProps, &newProps );
 
 		std::string user_headers;
-
 		if ( !newProps.empty() )
 		{
 			user_headers = ( *newProps.begin() )->GetText( false );
@@ -1445,6 +1443,58 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 					{
 						wxLogError( _( "Unable to open %s for writing.\nUser Headers:\n%s" ), filename.c_str(), wxuser_headers.c_str() );
 					}
+				}
+			}
+		}
+	}
+
+
+	// The pch property is now the exact code to be generated, not just the header filename
+	// The goal of this conversion block is to determine which of two possible pch blocks to use
+	// The pch block that wxFB generated changed in version 1.6
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 8 ) )
+	{
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert( "precompiled_header" );
+		GetPropertiesToConvert( project, oldProps, &newProps );
+
+		if ( !newProps.empty() )
+		{
+			std::string pch = ( *newProps.begin() )->GetText( false );
+			if ( !pch.empty() )
+			{
+				if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 6 ) )
+				{
+					// use the older block
+					( *newProps.begin() )->SetText(
+														  "#include \"" + pch + "\""
+														"\n"
+														"\n#ifdef __BORLANDC__"
+														"\n#pragma hdrstop"
+														"\n#endif //__BORLANDC__"
+														"\n"
+														"\n#ifndef WX_PRECOMP"
+														"\n#include <wx/wx.h>"
+														"\n#endif //WX_PRECOMP"
+													);
+				}
+				else
+				{
+					// use the newer block
+					( *newProps.begin() )->SetText(
+														  "#ifdef WX_PRECOMP"
+														"\n"
+														"\n#include \"" + pch + "\""
+														"\n"
+														"\n#ifdef __BORLANDC__"
+														"\n#pragma hdrstop"
+														"\n#endif //__BORLANDC__"
+														"\n"
+														"\n#else"
+														"\n#include <wx/wx.h>"
+														"\n#endif //WX_PRECOMP"
+													);
 				}
 			}
 		}
@@ -1607,7 +1657,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	/* The file is now at at least version 1.6 */
 
 	// Version 1.7 now stores all font properties.
-	// The conversion is automatic because it is just an extension of the old values.
+	// The font property conversion is automatic because it is just an extension of the old values.
 
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 7 ) )
 	{
@@ -1640,6 +1690,11 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at at least version 1.7 */
+
+	// The update to 1.8 only affected project properties
+	// See ConvertProjectProperties
+
+	/* The file is now at at least version 1.8 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
