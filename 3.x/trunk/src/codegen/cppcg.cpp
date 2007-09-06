@@ -487,7 +487,10 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_header->WriteLn( wxT("") );
 
 	code = GetCode( project, wxT("header_preamble") );
-	m_header->WriteLn( code );
+	if ( !code.empty() )
+	{
+		m_header->WriteLn( code );
+	}
 
 	// Generate the subclass sets
 	std::set< wxString > subclasses;

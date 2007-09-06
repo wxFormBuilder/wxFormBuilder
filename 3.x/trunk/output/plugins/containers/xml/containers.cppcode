@@ -199,6 +199,7 @@
 
 	<templates class="wxScrolledWindow">
 		<template name="declaration">#class* $name;</template>
+		<template name="include">@#include &lt;wx/scrolwin.h&gt;</template>
 		<template name="construction">
 			  $name = new #class( #wxparent $name, $id, $pos, $size, $window_style ); #nl
 			  $name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );

@@ -25,7 +25,7 @@ bool wxFBEventsApp::OnInit()
 	//::wxInitAllImageHandlers();
 
 	wxFBEventMainFrame* frame = new wxFBEventMainFrame( 0L );
-	frame->SetIcon( wxICON( aaaa ) ); // To Set App Icon
+//	frame->SetIcon( wxICON( aaaa ) ); // To Set App Icon
 	frame->Show();
 
 	return true;

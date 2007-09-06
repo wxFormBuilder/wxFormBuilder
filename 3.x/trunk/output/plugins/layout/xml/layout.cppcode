@@ -24,21 +24,25 @@
 
   <templates class="wxBoxSizer">
     <template name="declaration">wxBoxSizer* $name;</template>
+    <template name="include">@#include &lt;wx/sizer.h&gt;</template>
     <template name="construction">$name = new wxBoxSizer( $orient ); #nl</template>
   </templates>
 
   <templates class="wxStaticBoxSizer">
     <template name="declaration">wxStaticBoxSizer* $name;</template>
+    <template name="include">@#include &lt;wx/sizer.h&gt;</template>
     <template name="construction">$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, -1, $label ), $orient ); #nl</template>
   </templates>
 
   <templates class="wxGridSizer">
     <template name="declaration">wxGridSizer* $name;</template>
+    <template name="include">@#include &lt;wx/sizer.h&gt;</template>
     <template name="construction">$name = new wxGridSizer( $rows, $cols, $vgap, $hgap ); #nl</template>
   </templates>
 
   <templates class="wxFlexGridSizer">
     <template name="declaration">wxFlexGridSizer* $name;</template>
+    <template name="include">@#include &lt;wx/sizer.h&gt;</template>
     <template name="construction">$name = new wxFlexGridSizer( $rows, $cols, $vgap, $hgap );
       #ifnotnull $growablecols
       @{
@@ -88,6 +92,7 @@
   </templates>
 
   <templates class="wxStdDialogButtonSizer">
+  	<template name="include">@#include &lt;wx/sizer.h&gt;</template>
     <template name="declaration">
     	wxStdDialogButtonSizer* $name;
     	#ifequal $OK "1"

@@ -2,7 +2,6 @@
 <codegen language="C++">
   <templates class="Project">
     <template name="header_preamble">
-        @#include &lt;wx/wx.h&gt;  #nl
 		#ifnotequal $help_provider "none"
 		@{ @#include &lt;wx/cshelp.h&gt; #nl @}
     </template>
