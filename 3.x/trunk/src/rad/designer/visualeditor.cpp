@@ -887,7 +887,7 @@ wxMenu* DesignerWindow::GetMenuFromObject(PObjectBase menu)
 												lastMenuId++,
 												label,
 												menuItem->GetPropertyAsString( wxT("help") ),
-												menuItem->GetPropertyAsInteger( wxT("kind") )
+												( wxItemKind ) menuItem->GetPropertyAsInteger( wxT("kind") )
 											);
 
 			if ( !menuItem->GetProperty( wxT("bitmap") )->IsNull() )
