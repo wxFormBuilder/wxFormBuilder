@@ -46,8 +46,8 @@ namespace XMLUtils
 	// These are only vaguely string related, perhaps they deserve their own files.
 	// These load xml files and verify the encoding is correct, optionally converting
 	// the files using wxWidgets.
-	void LoadXMLFile( ticpp::Document& doc, const wxString& path = wxEmptyString );
-	void LoadXMLFile( TiXmlDocument& doc, const wxString& path = wxEmptyString );
+	void LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString );
+	void LoadXMLFile( TiXmlDocument& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString );
 
 	// Converts to UTF-8 and prepends declaration
 	void ConvertAndAddDeclaration( const wxString& path, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );

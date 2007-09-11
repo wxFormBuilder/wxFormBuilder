@@ -67,7 +67,7 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 		m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
 
 		ticpp::Document doc;
-		XMLUtils::LoadXMLFile( doc, filepath );
+		XMLUtils::LoadXMLFile( doc, true, filepath );
 
 		ticpp::Element* root = doc.FirstChildElement( "icons" );
 		ticpp::Element* elem = root->FirstChildElement( "icon", false );

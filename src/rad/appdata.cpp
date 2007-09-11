@@ -1197,7 +1197,8 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 	try
 	{
 		ticpp::Document doc;
-		doc.LoadFile( file.mb_str( wxConvFile ) );
+		XMLUtils::LoadXMLFile( doc, false, file );
+
 		ticpp::Element* root = doc.FirstChildElement();
 
 		m_objDb->ResetObjectCounters();
@@ -1255,7 +1256,7 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 					return false;
 				}
 
-				doc.LoadFile( file.mb_str( wxConvFile ) );
+				XMLUtils::LoadXMLFile( doc, false, file );
 				root = doc.FirstChildElement();
 			}
 			else
@@ -1304,24 +1305,9 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 {
 	try
 	{
-		// Version prior to 1 were not UTF-8
+		ticpp::Document doc;
+		XMLUtils::LoadXMLFile( doc, false, path );
 
-		if ( fileMajor < 1 )
-		{
-			try
-			{
-				XMLUtils::ConvertAndAddDeclaration( path, wxFONTENCODING_ISO8859_1, false );
-			}
-			catch ( wxFBException& ex )
-			{
-				wxLogError( ex.what() );
-				return false;
-			}
-		}
-
-		ticpp::Document doc( std::string( path.mb_str( wxConvFile ) ) );
-
-		doc.LoadFile();
 		ticpp::Element* root = doc.FirstChildElement();
 
 		if ( root->Value() == std::string( "object" ) )
