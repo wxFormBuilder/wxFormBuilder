@@ -95,7 +95,7 @@ wxFontEncoding StringUtils::GetEncodingFromUser( const wxString& message )
 namespace XMLUtils
 {
 	template < class T, class U >
-		void LoadXMLFileImp( T& doc, const wxString& path, U* declaration )
+		void LoadXMLFileImp( T& doc, bool condenseWhiteSpace, const wxString& path, U* declaration )
 	{
 		if ( NULL == declaration )
 		{
@@ -122,7 +122,7 @@ namespace XMLUtils
 			ConvertAndAddDeclaration( path, chosenEncoding );
 
 			// Reload
-			LoadXMLFile( doc, path );
+			LoadXMLFile( doc, condenseWhiteSpace, path );
 			return;
 		}
 
@@ -163,7 +163,7 @@ namespace XMLUtils
 			ConvertAndChangeDeclaration( path, version, standalone, chosenEncoding );
 
 			// Reload
-			LoadXMLFile( doc, path );
+			LoadXMLFile( doc, condenseWhiteSpace, path );
 			return;
 		}
 
@@ -201,13 +201,13 @@ namespace XMLUtils
 			ConvertAndChangeDeclaration( path, version, standalone, encoding );
 
 			// Reload
-			LoadXMLFile( doc, path );
+			LoadXMLFile( doc, condenseWhiteSpace, path );
 			return;
 		}
 	}
 };
 
-void XMLUtils::LoadXMLFile( ticpp::Document& doc, const wxString& path )
+void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path )
 {
 	try
 	{
@@ -220,7 +220,7 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, const wxString& path )
 		{
 			THROW_WXFBEX( _("The file does not exist.\nFile: ") << path )
 		}
-
+		TiXmlBase::SetCondenseWhiteSpace( condenseWhiteSpace );
 		doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 	}
@@ -247,7 +247,7 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, const wxString& path )
 
 		ConvertAndAddDeclaration( path, chosenEncoding );
 
-		LoadXMLFile( doc, path );
+		LoadXMLFile( doc, condenseWhiteSpace, path );
 	}
 
 	ticpp::Declaration* declaration;
@@ -261,10 +261,10 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, const wxString& path )
 		declaration = NULL;
 	}
 
-	LoadXMLFileImp( doc, path, declaration );
+	LoadXMLFileImp( doc, condenseWhiteSpace, path, declaration );
 }
 
-void XMLUtils::LoadXMLFile( TiXmlDocument& doc, const wxString& path )
+void XMLUtils::LoadXMLFile( TiXmlDocument& doc, bool condenseWhiteSpace, const wxString& path )
 {
 	if ( path.empty() )
 	{
@@ -276,6 +276,7 @@ void XMLUtils::LoadXMLFile( TiXmlDocument& doc, const wxString& path )
 		THROW_WXFBEX( _("The file does not exist.\nFile: ") << path )
 	}
 
+	TiXmlBase::SetCondenseWhiteSpace( condenseWhiteSpace );
 	doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
 	if ( !doc.LoadFile() )
 	{
@@ -300,7 +301,7 @@ void XMLUtils::LoadXMLFile( TiXmlDocument& doc, const wxString& path )
 
 		ConvertAndAddDeclaration( path, chosenEncoding );
 
-		LoadXMLFile( doc, path );
+		LoadXMLFile( doc, condenseWhiteSpace, path );
 	}
 
 	TiXmlDeclaration* declaration = NULL;
@@ -310,7 +311,7 @@ void XMLUtils::LoadXMLFile( TiXmlDocument& doc, const wxString& path )
 		declaration = firstChild->ToDeclaration();
 	}
 
-	LoadXMLFileImp( doc, path, declaration );
+	LoadXMLFileImp( doc, condenseWhiteSpace, path, declaration );
 }
 
 

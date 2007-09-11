@@ -570,7 +570,7 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 		try
 		{
 			ticpp::Document doc;
-			XMLUtils::LoadXMLFile( doc, dialog->GetPath() );
+			XMLUtils::LoadXMLFile( doc, false, dialog->GetPath() );
 
 			XrcLoader xrc;
 			xrc.SetObjectDatabase( AppData()->GetObjectDatabase() );

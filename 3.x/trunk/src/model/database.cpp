@@ -672,7 +672,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 	try
 	{
 		ticpp::Document doc;
-		XMLUtils::LoadXMLFile( doc, file );
+		XMLUtils::LoadXMLFile( doc, true, file );
 
 		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
 
@@ -787,7 +787,7 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 	try
 	{
 		ticpp::Document doc;
-		XMLUtils::LoadXMLFile( doc, file );
+		XMLUtils::LoadXMLFile( doc, true, file );
 
 		// read the codegen element
 		ticpp::Element* elem_codegen = doc.FirstChildElement("codegen");
@@ -842,7 +842,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 	try
 	{
 		ticpp::Document doc;
-		XMLUtils::LoadXMLFile( doc, file );
+		XMLUtils::LoadXMLFile( doc, true, file );
 
 		ticpp::Element* root = doc.FirstChildElement( PACKAGE_TAG );
 
@@ -1167,13 +1167,13 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 	#ifdef __WXMAC__
 		path += wxT(".dylib");
 	#endif
-	
+
 	// Attempt to load the DLL
 	wxDynamicLibrary* library = new wxDynamicLibrary( path );
-	if ( !library->IsLoaded() )	
+	if ( !library->IsLoaded() )
 	{
 		THROW_WXFBEX( wxT("Error loading library ") << path )
-	}                                                             
+	}
 
 	m_libs.push_back( library );
 
@@ -1269,7 +1269,7 @@ bool ObjectDatabase::LoadObjectTypes()
 {
 	ticpp::Document doc;
 	wxString xmlPath = m_xmlPath + wxT("objtypes.xml");
-	XMLUtils::LoadXMLFile( doc, xmlPath );
+	XMLUtils::LoadXMLFile( doc, true, xmlPath );
 
 	// First load the object types, then the children
 	try
