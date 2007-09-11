@@ -62,6 +62,7 @@
     <property name="font" type="wxFont"         help="Sets the font for this window. This should not be use for a parent window if you don't want its font to be inherited by its children"/>
     <property name="fg" type="wxColour"         help="Sets the foreground colour of the window."/>
     <property name="bg" type="wxColour"         help="Sets the background colour of the window."/>
+    <property name="window_name" type="wxString"help="The name of the window. This parameter is used to associate a name with the item, allowing the application user to set Motif resource values for individual windows."/>
     <property name="window_style" type="bitlist">
       <option name="wxSIMPLE_BORDER"            help="Displays a thin border around the window. wxBORDER is the old name for this style."/>
       <option name="wxDOUBLE_BORDER"            help="Displays a double border. Windows and Mac only."/>

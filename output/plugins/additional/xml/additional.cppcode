@@ -40,7 +40,7 @@
   
   <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/treectrl.h&gt;</template>
 	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
 	<template name="evt_connect_OnTreeBeginLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
@@ -54,7 +54,7 @@
 
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/html/htmlwin.h&gt;</template>
 	<template name="evt_entry_OnHtmlCellClicked">EVT_HTML_CELL_CLICKED( $id, #handler )</template>
 	<template name="evt_connect_OnHtmlCellClicked">$name->Connect( wxEVT_COMMAND_HTML_CELL_CLICKED, #handler, NULL, this );</template>
@@ -66,7 +66,7 @@
 
   <templates class="wxRichTextCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
 	<template name="include">@#include &lt;wx/richtext/richtextctrl.h&gt;</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
 	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
@@ -103,12 +103,12 @@
 		@{
 			wxString $name #append Choices[] = { $choices }; #nl
 			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
 		#ifnull $choices
 		@{
 			wxArrayString $name #append Choices; #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
     </template>
     <template name="include">@#include &lt;wx/checklst.h&gt;</template>
@@ -122,7 +122,7 @@
 
   <templates class="wxGrid">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/grid.h&gt;</template>
     <template name="settings">
     	#nl // Grid
@@ -260,7 +260,7 @@
 
   <templates class="wxToggleButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
 	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
 	<template name="evt_connect_OnToggleButton">$name->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, #handler, NULL, this );</template>
@@ -274,7 +274,7 @@
 	   @{ *wxBLACK, @}
 	   #ifnotnull $colour
 	   @{ $colour, @}
-	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
+	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
     </template>
     <template name="include">@#include &lt;wx/clrpicker.h&gt;</template>
     <template name="evt_entry_OnColourChanged">EVT_COLOURPICKER_CHANGED( $id, #handler )</template>
@@ -289,7 +289,7 @@
 	   @{ wxNullFont, @}
 	   #ifnotnull $value
 	   @{ $value, @}
-	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
+	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
     </template>
     <template name="settings">
 		#ifnotnull $max_point_size
@@ -303,7 +303,7 @@
   <templates class="wxFilePickerCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
-	   $name = new #class( #wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
+	   $name = new #class( #wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
     </template>
     <template name="include">@#include &lt;wx/filepicker.h&gt;</template>
     <template name="evt_entry_OnFileChanged">EVT_FILEPICKER_CHANGED( $id, #handler )</template>
@@ -313,7 +313,7 @@
   <templates class="wxDirPickerCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">
-	   $name = new #class( #wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
+	   $name = new #class( #wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
     </template>
     <template name="include">@#include &lt;wx/filepicker.h&gt;</template>
     <template name="evt_entry_OnDirChanged">EVT_DIRPICKER_CHANGED( $id, #handler )</template>
@@ -322,7 +322,7 @@
 
   <templates class="wxDatePickerCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">
 		@#include &lt;wx/datectrl.h&gt;
 		#nl @#include &lt;wx/dateevt.h&gt;
@@ -333,7 +333,7 @@
 
   <templates class="wxCalendarCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/calctrl.h&gt;</template>
 	<template name="evt_entry_OnCalendar">EVT_CALENDAR( $id, #handler )</template>
 	<template name="evt_connect_OnCalendar">$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler, NULL, this );</template>
@@ -351,7 +351,7 @@
 
   <templates class="wxScrollBar">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/scrolbar.h&gt;</template>
 	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
 	<template name="evt_connect_OnScroll">
@@ -417,7 +417,7 @@
 
   <templates class="wxSpinCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial);</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/spinctrl.h&gt;</template>
 	<template name="evt_entry_OnSpinCtrl">EVT_SPINCTRL( $id, #handler )</template>
 	<template name="evt_connect_OnSpinCtrl">$name->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, #handler, NULL, this );</template>
@@ -427,7 +427,7 @@
 
   <templates class="wxSpinButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/spinbutt.h&gt;</template>
 	<template name="evt_entry_OnSpin">EVT_SPIN( $id, #handler )</template>
 	<template name="evt_connect_OnSpin">$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler, NULL, this );</template>
@@ -439,7 +439,7 @@
 
   <templates class="wxHyperlinkCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="settings">
     	#ifnotnull $hover_color
     	@{ #nl $name->SetHoverColour( $hover_color ); @}
@@ -457,7 +457,7 @@
 
   <templates class="wxGenericDirCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="settings">
     	#nl $name->ShowHidden( $show_hidden );
     </template>
