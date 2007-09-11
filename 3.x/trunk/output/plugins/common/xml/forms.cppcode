@@ -86,16 +86,16 @@
 			@{ public wxFrame @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = $id, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
 
 			#ifnotnull $subclass/name
 			@{ $subclass/name @}
 
 			#ifnull $subclass/name
-			@{ wxFrame@}( parent, id, title, pos, size, style )
+			@{ wxFrame@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
 		</template>
 		<template name="include">@#include &lt;wx/frame.h&gt;</template>
 		<template name="settings">
@@ -139,16 +139,16 @@
 			@{ public wxPanel @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = $id, wxPoint pos = $pos, wxSize size = $size, int style = $window_style );
+			$name( wxWindow* parent, wxWindowID id = $id, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $window_style #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxPoint pos, wxSize size, int style ) :
+			$name::$name( wxWindow* parent, wxWindowID id, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
 
 			#ifnotnull $subclass/name
 			@{ $subclass/name @}
 
 			#ifnull $subclass/name
-			@{ wxPanel@}( parent, id, pos, size, style )
+			@{ wxPanel@}( parent, id, pos, size, style#ifnotnull $window_name @{, name@} )
 		</template>
 		<template name="include">@#include &lt;wx/panel.h&gt;</template>
 		<template name="settings">
@@ -192,16 +192,16 @@
 			@{ public wxDialog @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, int id = $id, wxString title = $title, wxPoint pos = $pos, wxSize size = $size, int style = $style #ifnotnull $window_style @{ |$window_style @} );
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, int id, wxString title, wxPoint pos, wxSize size, int style ) :
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
 
 			#ifnotnull $subclass/name
 			@{ $subclass/name @}
 
 			#ifnull $subclass/name
-			@{ wxDialog@}( parent, id, title, pos, size, style )
+			@{ wxDialog@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
 		</template>
 		<template name="include">@#include &lt;wx/dialog.h&gt;</template>
 		<template name="settings">

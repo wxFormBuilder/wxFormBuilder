@@ -3,13 +3,13 @@
 
 	<templates class="wxPanel">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style );</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">@#include &lt;wx/panel.h&gt;</template>
 	</templates>
 	
 	<templates class="wxSplitterWindow">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">@#include &lt;wx/splitter.h&gt;</template>
 		<template name="settings">
 			#ifnotnull $sashgravity
@@ -51,7 +51,7 @@
   
 	<templates class="wxNotebook">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">
 			@#include &lt;wx/notebook.h&gt;
 			#ifnotnull $bitmapsize
@@ -99,7 +99,7 @@
 
 	<templates class="wxListbook">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">
 			@#include &lt;wx/listbook.h&gt; #nl
 			@#include &lt;wx/listctrl.h&gt;
@@ -159,7 +159,7 @@
 
 	<templates class="wxChoicebook">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">@#include &lt;wx/choicebk.h&gt;</template>
 		<template name="evt_entry_OnChoicebookPageChanged">EVT_CHOICEBOOK_PAGE_CHANGED( $id, #handler )</template>
 		<template name="evt_connect_OnChoicebookPageChanged">$name->Connect( wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
@@ -201,7 +201,7 @@
 		<template name="declaration">#class* $name;</template>
 		<template name="include">@#include &lt;wx/scrolwin.h&gt;</template>
 		<template name="construction">
-			  $name = new #class( #wxparent $name, $id, $pos, $size, $window_style ); #nl
+			  $name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ); #nl
 			  $name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );
 		</template>
 	</templates>

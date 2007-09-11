@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.50
+* FS#234 - "wxFrame name parameter not available."
+
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
 * Fixed "default" property for wxButton and wxBitmapButton.

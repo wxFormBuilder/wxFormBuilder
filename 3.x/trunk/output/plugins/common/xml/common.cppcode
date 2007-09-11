@@ -3,7 +3,7 @@
 
   <templates class="wxButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="settings">
     	#ifnotequal $default "0"
     	@{ $name->SetDefault(); @}
@@ -15,7 +15,7 @@
 
   <templates class="wxBitmapButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
   	<template name="settings">
   		#ifnotnull $disabled
@@ -35,7 +35,7 @@
   <templates class="wxTextCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/textctrl.h&gt;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
 	<template name="settings">
 		#ifnotnull $maxlength
 		@{
@@ -56,7 +56,7 @@
   <templates class="wxStaticText">
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/stattext.h&gt;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
   	<template name="settings">$name->Wrap( $wrap );</template>
   </templates>
 
@@ -64,7 +64,7 @@
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/checkbox.h&gt;</template>
     <template name="construction">
-	  $name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} ); #nl
+	  $name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); #nl
 	  #ifnotequal $checked "0"
 		@{ $name->SetValue(true); #nl @}
 	</template>
@@ -76,7 +76,7 @@
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/combobox.h&gt;</template>
     <template name="construction">
-      $name = new #class( #wxparent $name, $id, $value, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
+      $name = new #class( #wxparent $name, $id, $value, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
       #foreach $choices
       @{ $name->Append( #pred ); @}
     </template>
@@ -92,7 +92,7 @@
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/listbox.h&gt;</template>
     <template name="construction">
-      $name = new #class( #wxparent $name, $id, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} );
+      $name = new #class( #wxparent $name, $id, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
       #foreach $choices
       @{ $name->Append( #pred ); @}
     </template>
@@ -110,7 +110,7 @@
 		@{
 			wxString $name #append Choices[] = { $choices }; #nl
 			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-			$name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} ); #nl
+			$name = new #class( #wxparent $name, $id, $label, $pos, $size, $name #append NChoices, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); #nl
 			$name->SetSelection( $selection );
 		@}
 		#ifnull $choices
@@ -125,7 +125,7 @@
 
   <templates class="wxRadioButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
 	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
 	<template name="evt_connect_OnRadioButton">$name->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, #handler, NULL, this );</template>
@@ -133,19 +133,19 @@
 
   <templates class="wxStaticBitmap">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/statbmp.h&gt;</template>
   </templates>
 
   <templates class="wxStaticLine">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
     <template name="include">@#include &lt;wx/statline.h&gt;</template>
   </templates>
 
   <templates class="wxListCtrl">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/listctrl.h&gt;</template>
 	<template name="evt_entry_OnListBeginDrag">EVT_LIST_BEGIN_DRAG( $id, #handler )</template>
 	<template name="evt_connect_OnListBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_BEGIN_DRAG, #handler, NULL, this );</template>
@@ -196,7 +196,7 @@
 		@{
 			wxString $name #append Choices[] = { $choices }; #nl
 			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $window_style );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
 		#ifnull $choices
 		@{
@@ -211,7 +211,7 @@
 
   <templates class="wxGauge">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="settings">
 		#ifnotnull $value
 		@{ $name->SetValue( $value ); @}
@@ -221,7 +221,7 @@
 
   <templates class="wxSlider">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/slider.h&gt;</template>
 	<template name="evt_entry_OnScroll">EVT_SCROLL( #handler )</template>
 	<template name="evt_connect_OnScroll">
