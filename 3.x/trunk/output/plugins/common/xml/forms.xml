@@ -9,34 +9,8 @@
     <event name="OnIdle" class="wxIdleEvent" help="Process a wxEVT_IDLE event." />
   </objectinfo>
   
-  <objectinfo class="Common Events" type="interface">
-	<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
-	<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
-	<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
-	<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
-	<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
-	<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
-	<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
-	<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
-	<event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
-	<event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
-	<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
-	<event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
-	<event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
-	<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
-	<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
-	<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
-	<event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
-	<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
-	<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
-	<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
-	<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
-	<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
-  </objectinfo>
-  
   <objectinfo class="Frame" icon="frame.xpm" type="form">
 	<inherits class="wxTopLevelWindow" />
-	<inherits class="Common Events" />
 	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
@@ -75,7 +49,6 @@
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">
-	<inherits class="Common Events" />
 	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
@@ -86,8 +59,7 @@
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
     <inherits class="wxTopLevelWindow" />
-	<inherits class="Common Events" />
-    <inherits class="wxWindow" />
+	<inherits class="wxWindow" />
     <property name="name" type="text" hidden="1">MyDialog</property>
     <property name="title" type="wxString_i18n" />
     <property name="style" type="bitlist">
@@ -112,7 +84,7 @@
       <option name="wxVERTICAL"/>
       <option name="wxBOTH"/>
 	</property>
-	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialised." />
+	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialized." />
   </objectinfo>
 
 </package>

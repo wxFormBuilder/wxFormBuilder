@@ -54,7 +54,7 @@
       <option name="public" />protected</property>
   </objectinfo>
   <objectinfo class="wxWindow" smallIcon="wxwindow.png" type="interface">
-    <property name="id" type="macro">wxID_ANY</property>
+	<property name="id" type="macro">wxID_ANY</property>
     <property name="pos" type="wxPoint"         help="Window position. The default is (-1, -1) which indicates that wxWidgets should generate a default position for the window."/>
     <property name="size" type="wxSize"         help="Window size. The default is (-1, -1) which indicates that wxWidgets should generate a default size for the window."/>
     <property name="minimum_size" type="wxSize" help="Sets the minimum size of the window, to indicate to the sizer layout mechanism that this is the minimum required size."/>
@@ -94,7 +94,37 @@
 		<child name="name" help="The name of the subclass."/>
 		<child name="header" help="For C++ Only. The header to be included for the subclass."/>
 	</property>
-	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
+	<category name="wxKeyEvent" type="interface">
+		<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
+		<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
+		<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
+	  </category>
+	  <category name="wxMouseEvent" type="interface">
+		<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
+		<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
+		<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
+		<event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+		<event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
+		<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
+		<event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
+		<event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
+		<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
+		<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
+		<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
+		<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
+		<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+		<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
+	  </category>
+	  <category name="wxFocusEvent" type="interface">
+		<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
+		<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
+	  </category>	
+	  <category name="Other Events" type="interface">
+		<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
+		<event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
+		<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
+		<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
+	  </category>
   </objectinfo>
   <objectinfo class="UserClasses" 	type="interface">
 	<property name="name" type="text" />
