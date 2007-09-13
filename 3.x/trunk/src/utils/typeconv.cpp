@@ -354,6 +354,7 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
 wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& basePath )
 {
     wxFileName fnFile( filename );
+    wxFileName noChanges = fnFile;
     if ( fnFile.IsRelative() )
     {
         // Es una ruta relativa, por tanto hemos de obtener la ruta completa
@@ -363,17 +364,19 @@ wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& 
         {
             if ( fnFile.MakeAbsolute(basePath) )
             {
-                return fnFile.GetFullPath();
+                return wxString::Format( wxT("%s%s%s"), fnFile.GetVolume().c_str(), fnFile.GetVolumeSeparator().c_str(), fnFile.GetFullPath( wxPATH_UNIX ).c_str() );
             }
         }
     }
 
-    return filename; // Either it is already absolute, or it could not be made absolute, so give it back
+	// Either it is already absolute, or it could not be made absolute, so give it back - but change to '/' for separators
+    return wxString::Format( wxT("%s%s%s"), noChanges.GetVolume().c_str(), noChanges.GetVolumeSeparator().c_str(), noChanges.GetFullPath( wxPATH_UNIX ).c_str() );
 }
 
 wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& basePath )
 {
     wxFileName fnFile( filename );
+    wxFileName noChanges = fnFile;
     if ( fnFile.IsAbsolute() )
     {
         wxFileName fnBasePath( basePath) ;
@@ -381,12 +384,20 @@ wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& b
         {
             if ( fnFile.MakeRelativeTo( basePath ) )
             {
-                return fnFile.GetFullPath();
+                return fnFile.GetFullPath( wxPATH_UNIX );
             }
         }
     }
 
-    return filename; // Either it is already relative, or it could not be made relative, so give it back
+	// Either it is already relative, or it could not be made relative, so give it back - but change to '/' for separators
+	if ( noChanges.IsAbsolute() )
+	{
+		return wxString::Format( wxT("%s%s%s"), noChanges.GetVolume().c_str(), noChanges.GetVolumeSeparator().c_str(), noChanges.GetFullPath( wxPATH_UNIX ).c_str() );
+	}
+	else
+	{
+		return noChanges.GetFullPath( wxPATH_UNIX );
+	}
 }
 
 #define ElseIfSystemColourConvert( NAME, value )	\

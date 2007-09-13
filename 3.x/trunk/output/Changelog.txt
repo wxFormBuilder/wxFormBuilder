@@ -7,6 +7,8 @@ date Version 3.00.50
 ^ Common Events are now shared by all controls.
 * Now clearing the dirty flag when all changes are undone.
 * Cleaned up the selection of objects on undo/redo.
+* FS#236 - "include path for XPM Data incorrect."
+^ All paths are now generated with '/' as a separator.
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
