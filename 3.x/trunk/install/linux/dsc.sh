@@ -45,7 +45,7 @@ function make_dsc
 	currentdir=`pwd`
 
 	cd $tmpdir
-	debuild -S
+	dpkg-buildpackage -S -sa -rfakeroot
 	cd $currentdir
 	rm -r $tmpdir
 }
