@@ -251,6 +251,16 @@ void InsertObjectCmd::DoExecute()
 
 	if ( m_pos >= 0 )
 		m_parent->ChangeChildPosition( m_object, m_pos );
+
+	PObjectBase obj = m_object;
+	while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
+	{
+		if ( obj->GetChildCount() > 0 )
+			obj = obj->GetChild( 0 );
+		else
+			return;
+	}
+	m_data->SelectObject( obj, false, false );
 }
 
 void InsertObjectCmd::DoRestore()
@@ -275,6 +285,7 @@ void RemoveObjectCmd::DoExecute()
 {
 	m_parent->RemoveChild( m_object );
 	m_object->SetParent( PObjectBase() );
+	m_data->DetermineObjectToSelect( m_parent, m_oldPos );
 }
 
 void RemoveObjectCmd::DoRestore()
@@ -373,6 +384,7 @@ void CutObjectCmd::DoExecute()
 	m_data->SetClipboardObject( m_object );
 	m_parent->RemoveChild( m_object );
 	m_object->SetParent( PObjectBase() );
+	m_data->DetermineObjectToSelect( m_parent, m_oldPos );
 }
 
 void CutObjectCmd::DoRestore()
@@ -740,7 +752,7 @@ void ApplicationData::CreateObject( wxString name )
 			obj = ( obj->GetChildCount() > 0 ? obj->GetChild( 0 ) : PObjectBase() );
 
 		if ( obj )
-			SelectObject( obj );
+			SelectObject( obj, true, true );
 	}
 	catch ( wxFBException& ex )
 	{
@@ -774,9 +786,6 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 			parent = obj->GetParent();
 		}
 
-		// get position so next control can be selected
-		unsigned int pos = parent->GetChildPosition( obj );
-
 		if ( cutObject )
 		{
 			m_copyOnPaste = false;
@@ -790,26 +799,7 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 		}
 
 		NotifyObjectRemoved( obj );
-
-		// get position of next control or last control
-		PObjectBase objToSelect;
-		unsigned int count = parent->GetChildCount();
-		if ( 0 == count )
-		{
-			objToSelect = parent;
-		}
-		else
-		{
-			pos = ( pos < count ? pos : count - 1 );
-			objToSelect = parent->GetChild( pos );
-		}
-
-		while ( objToSelect && objToSelect->GetObjectInfo()->GetObjectType()->IsItem() )
-		{
-			objToSelect = objToSelect->GetChild( 0 );
-		}
-
-		SelectObject( objToSelect );
+		SelectObject( GetSelectedObject(), true, true );
 	}
 	else
 	{
@@ -818,6 +808,29 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 	}
 
 	CheckProjectTree( m_project );
+}
+
+void ApplicationData::DetermineObjectToSelect( PObjectBase parent, unsigned int pos )
+{
+	// get position of next control or last control
+	PObjectBase objToSelect;
+	unsigned int count = parent->GetChildCount();
+	if ( 0 == count )
+	{
+		objToSelect = parent;
+	}
+	else
+	{
+		pos = ( pos < count ? pos : count - 1 );
+		objToSelect = parent->GetChild( pos );
+	}
+
+	while ( objToSelect && objToSelect->GetObjectInfo()->GetObjectType()->IsItem() )
+	{
+		objToSelect = objToSelect->GetChild( 0 );
+	}
+
+	SelectObject( objToSelect );
 }
 
 void ApplicationData::CopyObjectToClipboard( PObjectBase obj )
@@ -1160,6 +1173,7 @@ void ApplicationData::SaveProject( const wxString& filename )
 		m_projectFile = filename;
 		SetProjectPath( ::wxPathOnly( filename ) );
 		m_modFlag = false;
+		m_cmdProc.SetSavePoint();
 		NotifyProjectSaved();
 	}
 	catch ( ticpp::Exception& ex )
@@ -1965,6 +1979,7 @@ void ApplicationData::MoveHierarchy( PObjectBase obj, bool up )
 void ApplicationData::Undo()
 {
 	m_cmdProc.Undo();
+	m_modFlag = !m_cmdProc.IsAtSavePoint();
 	NotifyProjectRefresh();
 	CheckProjectTree( m_project );
 	NotifyObjectSelected( GetSelectedObject() );
@@ -1973,6 +1988,7 @@ void ApplicationData::Undo()
 void ApplicationData::Redo()
 {
 	m_cmdProc.Redo();
+	m_modFlag = !m_cmdProc.IsAtSavePoint();
 	NotifyProjectRefresh();
 	CheckProjectTree( m_project );
 	NotifyObjectSelected( GetSelectedObject() );

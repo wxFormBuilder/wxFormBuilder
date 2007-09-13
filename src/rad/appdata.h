@@ -262,6 +262,8 @@ class ApplicationData
 
 		void ExpandObject( PObjectBase obj, bool expand );
 
+		void DetermineObjectToSelect( PObjectBase parent, unsigned int pos );
+
 		// Object will not be selected if it already is selected, unless force = true
 		void SelectObject( PObjectBase obj, bool force = false, bool notify = true );
 

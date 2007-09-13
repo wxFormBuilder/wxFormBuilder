@@ -5,6 +5,8 @@ date Version 3.00.50
 * Property values are no longer trimmed for whitespace when projects are loaded.
 * FS#235 - "Events don't (always) get attached to the proper object."
 ^ Common Events are now shared by all controls.
+* Now clearing the dirty flag when all changes are undone.
+* Cleaned up the selection of objects on undo/redo.
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
