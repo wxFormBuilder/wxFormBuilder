@@ -25,11 +25,17 @@
 
 #include "cmdproc.h"
 
+CommandProcessor::CommandProcessor()
+:
+m_savePoint( 0 )
+{
+}
+
 void CommandProcessor::Execute(PCommand command)
 {
   command->Execute();
   m_undoStack.push(command);
-  
+
   while (!m_redoStack.empty())
     m_redoStack.pop();
 }
@@ -40,7 +46,7 @@ void CommandProcessor::Undo()
   {
     PCommand command = m_undoStack.top();
     m_undoStack.pop();
-    
+
     command->Restore();
     m_redoStack.push(command);
   }
@@ -52,7 +58,7 @@ void CommandProcessor::Redo()
   {
     PCommand command = m_redoStack.top();
     m_redoStack.pop();
-    
+
     command->Execute();
     m_undoStack.push(command);
   }
@@ -62,9 +68,11 @@ void CommandProcessor::Reset()
 {
   while (!m_redoStack.empty())
     m_redoStack.pop();
-    
+
   while (!m_undoStack.empty())
-    m_undoStack.pop();  
+    m_undoStack.pop();
+
+  m_savePoint = 0;
 }
 
 bool CommandProcessor::CanUndo()
@@ -74,6 +82,16 @@ bool CommandProcessor::CanUndo()
 bool CommandProcessor::CanRedo()
 {
   return (!m_redoStack.empty());
+}
+
+void CommandProcessor::SetSavePoint()
+{
+	m_savePoint = m_undoStack.size();
+}
+
+bool CommandProcessor::IsAtSavePoint()
+{
+	return m_undoStack.size() == m_savePoint;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

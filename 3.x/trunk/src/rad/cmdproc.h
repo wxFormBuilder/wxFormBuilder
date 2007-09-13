@@ -39,13 +39,18 @@ class CommandProcessor
 
   CommandStack m_undoStack;
   CommandStack m_redoStack;
+  size_t m_savePoint;
 
  public:
+   CommandProcessor();
    void Execute(PCommand command);
 
    void Undo();
    void Redo();
    void Reset();
+
+   void SetSavePoint();
+   bool IsAtSavePoint();
 
    bool CanUndo();
    bool CanRedo();
