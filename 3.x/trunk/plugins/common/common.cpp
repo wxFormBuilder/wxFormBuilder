@@ -298,10 +298,22 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
-		xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
-		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
-		xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
-		xrc.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
+		if ( !obj->IsNull( _("disabled") ) )
+		{
+			xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		}
+		if ( !obj->IsNull( _("selected") ) )
+		{
+			xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
+		}
+		if ( !obj->IsNull( _("focus") ) )
+		{
+			xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		}
+		if ( !obj->IsNull( _("hover") ) )
+		{
+			xrc.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
+		}
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
