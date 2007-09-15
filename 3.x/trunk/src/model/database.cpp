@@ -446,7 +446,16 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 		std::string class_name;
 		xml_obj->GetAttribute( CLASS_TAG, &class_name, false );
 
-		PObjectBase object = CreateObject( class_name, parent );
+		PObjectBase newobject = CreateObject( class_name, parent );
+
+		// It is possible the CreateObject returns an "item" containing the object, e.g. SizerItem or SplitterItem
+		// If that is the case, reassign "object" to the actual object
+		PObjectBase object = newobject;
+		if ( object && object->GetChildCount() > 0 )
+		{
+			object = object->GetChild( 0 );
+		}
+
 		if ( object )
 		{
 			// Get the state of expansion in the object tree
@@ -502,20 +511,20 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 			if ( parent )
 			{
 				// set up parent/child relationship
-				parent->AddChild( object );
-				object->SetParent( parent );
+				parent->AddChild( newobject );
+				newobject->SetParent( parent );
 			}
 
 			// create the children
 			ticpp::Element* child = xml_obj->FirstChildElement( OBJECT_TAG, false );
 			while ( child )
 			{
-				PObjectBase childObj = CreateObject( child, object );
+				CreateObject( child, object );
 				child = child->NextSiblingElement( OBJECT_TAG, false );
 			}
 		}
 
-		return object;
+		return newobject;
 	}
 	catch( ticpp::Exception& )
 	{

@@ -11,6 +11,10 @@ date Version 3.00.50 (RC3)
 ^ All paths are now generated with '/' as a separator.
 * Secondary bitmaps of wxBitmapButton are now only generated to XRC if they are used.
 * The "select" property of notebook pages now corresponds to "selected" in XRC.
+* Improved XRC import:
+    - Sizers are inserted if necessary and possible.
+    - Properties are now imported correctly where they used to fail in rare cases.
+    - New and informative warnings if an object cannot be imported.
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.

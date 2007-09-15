@@ -133,26 +133,66 @@ PObjectBase XrcLoader::GetObject( ticpp::Element *xrcObj, PObjectBase parent )
 	if ( objInfo )
 	{
 		IComponent *comp = objInfo->GetComponent();
-		if ( comp )
+		if ( !comp )
+		{
+			wxLogError( _("No component found for class \"%s\", found on line %i."), _WXSTR( className ).c_str(), xrcObj->Row() );
+		}
+		else
 		{
 			ticpp::Element *fbObj = comp->ImportFromXrc( xrcObj );
-			if ( fbObj )
+			if ( !fbObj )
+			{
+				wxLogError( _("ImportFromXrc returned NULL for class \"%s\", found on line %i."), _WXSTR( className ).c_str(), xrcObj->Row() );
+			}
+			else
 			{
 				object = m_objDb->CreateObject( fbObj, parent );
-
-				// It is possible the CreateObject returns an "item" containing the object, e.g. SizerItem or SplitterItem
-				// If that is the case, reassign "object" to the actual object
-				if ( object && object->GetClassName() != _WXSTR( className ) && object->GetChildCount() > 0 )
-					object = object->GetChild( 0 );
-
-				if ( object )
+				if ( !object )
 				{
-					// Recursively import the children
-					ticpp::Element *element = xrcObj->FirstChildElement( "object", false );
-					while ( element )
+					// Unable to create the object and add it to the parent - probably needs a sizer
+					PObjectBase newsizer = m_objDb->CreateObject( "wxBoxSizer", parent );
+					if ( newsizer )
 					{
-						GetObject( element, object );
-						element = element->NextSiblingElement( "object", false );
+						// It is possible the CreateObject returns an "item" containing the object, e.g. SizerItem or SplitterItem
+						// If that is the case, reassign "object" to the actual object
+						PObjectBase sizer = newsizer;
+						if ( sizer->GetChildCount() > 0 )
+						{
+							sizer = sizer->GetChild( 0 );
+						}
+
+						if ( sizer )
+						{
+							object = m_objDb->CreateObject( fbObj, sizer );
+							if ( object )
+							{
+								parent->AddChild( newsizer );
+								newsizer->SetParent( parent );
+							}
+						}
+					}
+				}
+
+				if ( !object )
+				{
+					wxLogError( wxT( "CreateObject failed for class \"%s\", with parent \"%s\", found on line %i" ), _WXSTR( className ).c_str(), parent->GetClassName().c_str(), xrcObj->Row() );
+				}
+				else
+				{
+					// It is possible the CreateObject returns an "item" containing the object, e.g. SizerItem or SplitterItem
+					// If that is the case, reassign "object" to the actual object
+					if ( object && object->GetChildCount() > 0 )
+						object = object->GetChild( 0 );
+
+					if ( object )
+					{
+						// Recursively import the children
+						ticpp::Element *element = xrcObj->FirstChildElement( "object", false );
+						while ( element )
+						{
+							GetObject( element, object );
+							element = element->NextSiblingElement( "object", false );
+						}
 					}
 				}
 			}
