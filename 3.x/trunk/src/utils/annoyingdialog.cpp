@@ -36,9 +36,12 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
 	int defRet;
 	if ( config->Read( wxT("annoyingdialog/") + caption, &defRet ) )
 	{
-		m_dontAnnoy = true;
-		m_defRet = defRet;
-        return;
+		if ( defRet != wxID_CANCEL )
+		{
+			m_dontAnnoy = true;
+			m_defRet = defRet;
+			return;
+		}
     }
 
     wxBoxSizer *outerSizer = new wxBoxSizer( wxVERTICAL );
@@ -158,12 +161,14 @@ void AnnoyingDialog::OnButton(wxCommandEvent& event)
         return;
     }
 
-	wxConfigBase* config = wxConfigBase::Get();
-	if ( m_cb->IsChecked() )
+	if ( event.GetId() != wxID_CANCEL )
 	{
-		config->Write( wxT("annoyingdialog/") + GetTitle(), event.GetId() );
+		wxConfigBase* config = wxConfigBase::Get();
+		if ( m_cb->IsChecked() )
+		{
+			config->Write( wxT("annoyingdialog/") + GetTitle(), event.GetId() );
+		}
 	}
-
     EndModal(event.GetId());
 }
 
