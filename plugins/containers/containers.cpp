@@ -510,7 +510,7 @@ public:
 	{
     ObjectToXrcFilter xrc(obj, _("notebookpage"));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("select"),_("selected"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -518,7 +518,7 @@ public:
 	{
     XrcToXfbFilter filter(xrcObj, _("notebookpage"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
@@ -599,7 +599,7 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("listbookpage"));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("select"),_("selected"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -607,7 +607,7 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("listbookpage"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
@@ -666,7 +666,7 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("choicebookpage"));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("select"),_("selected"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -674,7 +674,7 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("choicebookpage"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
