@@ -1061,7 +1061,7 @@ bool ApplicationData::PasteObject( PObjectBase parent, PObjectBase objToPaste )
 			obj = obj->GetChild( 0 );
 		}
 
-		SelectObject( obj );
+		SelectObject( obj, true, true );
 
 		CheckProjectTree( m_project );
 	}
@@ -2282,7 +2282,7 @@ void ApplicationData::CreateBoxSizerWithObject( PObjectBase obj )
 		PasteObject( newSizer );
 		m_clipboard = clipboard;
 
-		NotifyProjectRefresh();
+		//NotifyProjectRefresh();
 	}
 	else
 	{
