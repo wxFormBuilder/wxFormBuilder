@@ -89,11 +89,15 @@
     <template name="construction">
                  #ifparenttypeequal "form"
                  @{
-		  $name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
+					$name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
                  @}
-                 #ifparenttypeequal "container"
+                 #ifparenttypeequal "sizeritem"
                  @{
-                   $name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+					$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+                 @}  
+                 #ifparenttypeequal "gbsizeritem"
+                 @{
+					$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
                  @}                   
 		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
 

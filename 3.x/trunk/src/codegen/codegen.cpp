@@ -776,36 +776,27 @@ bool TemplateParser::ParseIfNotEqual()
 
 bool TemplateParser::ParseIfParentTypeEqual()
 {
-    bool fSuccess = false;
-    PObjectBase wxparent( GetWxParent() );
+    PObjectBase parent( m_obj->GetParent() );
 
     // get examined type name
     wxString type = ExtractLiteral();
+
     // get the template to generate if comparison is true
     wxString inner_template = ExtractInnerTemplate();
 
     // compare give type name with type of the wx parent object
-    if( wxparent )
+    if( parent )
     {
-        if( wxparent->GetObjectTypeName() == type )
+        if( parent->GetObjectTypeName() == type )
         {
-            fSuccess = true;
+            // generate the code
+			PTemplateParser parser = CreateParser( this, inner_template );
+			m_out << parser->ParseTemplate();
+			return true;
         }
     }
-    else
-    {
-        // function GetWxParent() returns NULL for form parent object...
-        if( type == wxT("form"))fSuccess = true;
-    }
 
-    if(fSuccess)
-    {
-        // generate the code
-        PTemplateParser parser = CreateParser( this, inner_template );
-        m_out << parser->ParseTemplate();;
-    }
-
-    return fSuccess;
+    return false;
 }
 
 TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
