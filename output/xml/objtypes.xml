@@ -80,6 +80,7 @@
     <childtype name="choicebook" nmax="1" />
 	<childtype name="auinotebook" nmax="1" />
     <childtype name="splitter" nmax="1" />
+    <childtype name="toolbar" nmax="1" />
   </objtype>
 
   <objtype name="gbsizeritem" item="1">

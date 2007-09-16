@@ -121,6 +121,7 @@ protected:
 		ID_NEWLINE,
 		ID_IFEQUAL,
 		ID_IFNOTEQUAL,
+		ID_IFPARENTTYPEEQUAL,
 		ID_APPEND,
 		ID_CLASS
 	} Ident;
@@ -161,6 +162,7 @@ protected:
 	bool ParseNewLine();
 	bool ParseIfEqual();
 	bool ParseIfNotEqual();
+	bool ParseIfParentTypeEqual();
 	void ParseAppend();
 	void ParseClass();
 

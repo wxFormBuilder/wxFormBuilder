@@ -15,6 +15,7 @@ date Version 3.00.50 (RC3)
     - Sizers are inserted if necessary and possible.
     - Properties are now imported correctly where they used to fail in rare cases.
     - New and informative warnings if an object cannot be imported.
+* FS#57 - "Can't add toolbar to non-frame containers."
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
