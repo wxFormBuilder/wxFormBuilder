@@ -87,7 +87,14 @@
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/toolbar.h&gt;</template>
     <template name="construction">
-		$name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
+                 #ifparenttypeequal "form"
+                 @{
+		  $name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
+                 @}
+                 #ifparenttypeequal "container"
+                 @{
+                   $name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+                 @}                   
 		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
 
 		#ifnotnull $separation
