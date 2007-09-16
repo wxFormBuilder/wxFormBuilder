@@ -831,9 +831,9 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 			}
 		}
 	}
-	else if (type == PT_INTLIST)
+	else if (type == PT_INTLIST || type == PT_UINTLIST)
 	{
-		result = wxStringProperty(name, wxPG_LABEL, IntList( prop->GetValueAsString() ).ToString());
+		result = wxStringProperty(name, wxPG_LABEL, IntList( prop->GetValueAsString(), type == PT_UINTLIST ).ToString());
 	}
 	else if (type == PT_OPTION)
 	{
@@ -1226,6 +1226,13 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			{
 				const wxArrayString &arraystr = event.GetPropertyValueAsArrayString();
 				AppData()->ModifyProperty(prop, TypeConv::ArrayStringToString(arraystr));
+				break;
+			}
+			case PT_INTLIST:
+			case PT_UINTLIST:
+			{
+				IntList il( event.GetPropertyValueAsString(), PT_UINTLIST == prop->GetType() );
+				AppData()->ModifyProperty( prop, il.ToString() );
 				break;
 			}
 			case PT_BITMAP:

@@ -29,6 +29,8 @@
 #include "utils/debug.h"
 #include "utils/typeconv.h"
 
+#include <cstdlib>
+
 ObjectType::ObjectType(wxString name, int id, bool hidden, bool item)
 {
   m_id = id;
@@ -91,9 +93,16 @@ PObjectType ObjectType::GetChildType(unsigned int idx)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-IntList::IntList(wxString value)
+IntList::IntList(wxString value, bool absolute_value )
+:
+m_abs( absolute_value )
 {
   SetList(value);
+}
+
+void IntList::Add(int value)
+{
+	m_ints.push_back( m_abs ? std::abs(value) : value );
 }
 
 void IntList::DeleteList()
@@ -128,9 +137,7 @@ wxString IntList::ToString()
 
     for (unsigned int i=1; i< m_ints.size() ; i++)
       result = result + wxT(",") + StringUtils::IntToStr(m_ints[i]);
-  }
-
-
+}
 
   return result;
 }

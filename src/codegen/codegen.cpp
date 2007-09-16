@@ -465,7 +465,7 @@ bool TemplateParser::ParseForEach()
 		// The template will be generated nesting as many times as
 		// tokens were found in the property value.
 
-		if (property->GetType() == PT_INTLIST)
+		if (property->GetType() == PT_INTLIST || property->GetType() == PT_UINTLIST)
 		{
 			// For doing that we will use wxStringTokenizer class from wxWidgets
 			wxStringTokenizer tkz( propvalue, wxT(","));

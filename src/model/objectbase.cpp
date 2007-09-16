@@ -675,8 +675,7 @@ wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& pname)
 	PProperty property = GetProperty( pname );
 	if (property)
 	{
-		IntList il;
-		il.SetList(property->GetValue());
+		IntList il( property->GetValue(), property->GetType() == PT_UINTLIST );
 		for (unsigned int i=0; i < il.GetSize() ; i++)
 			array.Add(il.GetValue(i));
 	}
