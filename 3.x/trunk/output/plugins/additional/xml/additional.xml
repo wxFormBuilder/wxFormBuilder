@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <package name="Additional" lib="libadditional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
 
-  
+
   <objectinfo class="wxTreeCtrlBase" type="interface">
     <event name="OnTreeBeginDrag" class="wxTreeEvent" help="Begin dragging with the left mouse button." />
 	<event name="OnTreeBeginRDrag" class="wxTreeEvent" help="Begin dragging with the right mouse button." />
@@ -21,7 +21,7 @@
 	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
 	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
   </objectinfo>
-  
+
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
     <inherits class="wxTreeCtrlBase"/>
     <inherits class="wxWindow" />
@@ -116,7 +116,7 @@
 		<property name="margin_height" type="uint" help="A grid may occupy more space than needed for its rows. This function allows to set how big this extra space is.">0</property>
 	</category>
 	<category name="Columns">
-		<property name="column_sizes" type="intlist" help="Comma separated list of column sizes. Note: wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large."/>
+		<property name="column_sizes" type="uintlist" help="Comma separated list of column sizes. Note: wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large."/>
 		<property name="autosize_cols" type="bool" help="Automatically sizes all columns to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
 		<property name="drag_col_move" type="bool" help="Allow moving columns by dragging.">0</property>
 		<property name="drag_col_size" type="bool" help="Allow sizing columns by dragging.">1</property>
@@ -136,7 +136,7 @@
 		</property>
 	</category>
 	<category name="Rows">
-		<property name="row_sizes" type="intlist" help="Comma separated list of row sizes. Note: wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large."/>
+		<property name="row_sizes" type="uintlist" help="Comma separated list of row sizes. Note: wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large."/>
 		<property name="autosize_rows" type="bool" help="Automatically sizes all rows to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
 		<property name="drag_row_size" type="bool" help="Allow sizing rows by dragging.">1</property>
 		<property name="row_label_size" type="uint" help="Width of row labels">80</property>
