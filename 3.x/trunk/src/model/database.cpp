@@ -1263,14 +1263,15 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("uint"),			PT_UINT		);
 	PT( wxT("bitlist"),		PT_BITLIST		);
 	PT( wxT("intlist"),		PT_INTLIST		);
+	PT( wxT("uintlist"),	PT_UINTLIST		);
 	PT( wxT("option"),		PT_OPTION		);
 	PT( wxT("macro"),		PT_MACRO		);
-	PT( wxT("path"),			PT_PATH			);
+	PT( wxT("path"),		PT_PATH			);
 	PT( wxT("wxString"), 	PT_WXSTRING		);
 	PT( wxT("wxPoint"),		PT_WXPOINT		);
 	PT( wxT("wxSize"),		PT_WXSIZE		);
 	PT( wxT("wxFont"),		PT_WXFONT		);
-	PT( wxT("wxColour"),		PT_WXCOLOUR		);
+	PT( wxT("wxColour"),	PT_WXCOLOUR		);
 	PT( wxT("bitmap"),		PT_BITMAP		);
 	PT( wxT("wxString_i18n"),PT_WXSTRING_I18N);
 	PT( wxT("stringlist"),	PT_STRINGLIST	);

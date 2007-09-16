@@ -124,6 +124,7 @@ typedef enum
   PT_UINT,
   PT_BITLIST,
   PT_INTLIST,
+  PT_UINTLIST,
   PT_OPTION,
   PT_MACRO,
   PT_WXSTRING,
@@ -164,17 +165,23 @@ typedef enum
  */
 class IntList
 {
-  private:
+private:
     typedef std::vector<int> IntVector;
     IntVector m_ints;
+	bool m_abs;
 
-  public:
-   IntList() {};
-   IntList(wxString value);
+public:
+   IntList( bool absolute_value = false )
+   :
+   m_abs( absolute_value )
+   {
+   }
+
+   IntList(wxString value, bool absolute_value = false );
 
    unsigned int GetSize() { return (unsigned int)m_ints.size(); };
    int GetValue(unsigned int idx) { return m_ints[idx]; };
-   void Add(int value) { m_ints.push_back(value); };
+   void Add(int value);
    void DeleteList();
    void SetList(wxString str);
    wxString ToString();

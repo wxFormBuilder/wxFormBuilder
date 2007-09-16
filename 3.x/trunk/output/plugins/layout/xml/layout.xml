@@ -74,8 +74,8 @@
   <objectinfo class="flexgridsizerbase" icon="flex_grid_sizer.xpm" type="interface">
     <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
     <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
-    <property name="growablerows" type="intlist" help="Comma separated list of row indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
-    <property name="growablecols" type="intlist" help="Comma separated list of column indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
+    <property name="growablerows" type="uintlist" help="Comma separated list of row indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
+    <property name="growablecols" type="uintlist" help="Comma separated list of column indices (starting from zero) that should be grown if there is extra space available to the sizer."/>
 	<property name="flexible_direction" type="option" help="Since wxWidgets 2.5.0, wxFlexGridSizer can size items equally in one direction but unequally ('flexibly') in the other" >
 	  <option name="wxVERTICAL"  	help="Rows are flexibly sized." />
 	  <option name="wxHORIZONTAL"  	help="Columns are flexibly sized." />
