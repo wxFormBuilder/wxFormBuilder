@@ -95,7 +95,10 @@
   </templates>
 
   <templates class="wxStdDialogButtonSizer">
-  	<template name="include">@#include &lt;wx/sizer.h&gt;</template>
+  	<template name="include">
+		@#include &lt;wx/sizer.h&gt; #nl
+		@#include &lt;wx/button.h&gt;
+	</template>
     <template name="declaration">
     	wxStdDialogButtonSizer* $name;
     	#ifequal $OK "1"
