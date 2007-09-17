@@ -367,43 +367,47 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	// Generate code in the file
 	if ( doFile )
 	{
-		CppCodeGenerator codegen;
-		codegen.UseRelativePath( useRelativePath, path );
-
-		if ( pFirstID )
+		try
 		{
-			codegen.SetFirstID( firstID );
+			CppCodeGenerator codegen;
+			codegen.UseRelativePath( useRelativePath, path );
+
+			if ( pFirstID )
+			{
+				codegen.SetFirstID( firstID );
+			}
+
+			// Determin if Microsoft BOM should be used
+			bool useMicrosoftBOM = false;
+
+			PProperty pUseMicrosoftBOM = project->GetProperty( wxT( "use_microsoft_bom" ) );
+
+			if ( pUseMicrosoftBOM )
+			{
+				useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
+			}
+
+			PCodeWriter h_cw( new FileCodeWriter( path + file + wxT( ".h" ), useMicrosoftBOM ) );
+
+			PCodeWriter cpp_cw( new FileCodeWriter( path + file + wxT( ".cpp" ), useMicrosoftBOM ) );
+
+			codegen.SetHeaderWriter( h_cw );
+			codegen.SetSourceWriter( cpp_cw );
+			codegen.GenerateCode( project );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
+
+			// check if we have to convert to ANSI encoding
+			if (project->GetPropertyAsString(wxT("encoding")) == wxT("ANSI"))
+			{
+				UTF8ToAnsi(path + file + wxT( ".h" ));
+				UTF8ToAnsi(path + file + wxT( ".cpp" ));
+			}
 		}
-
-		// Determin if Microsoft BOM should be used
-		bool useMicrosoftBOM = false;
-
-		PProperty pUseMicrosoftBOM = project->GetProperty( wxT( "use_microsoft_bom" ) );
-
-		if ( pUseMicrosoftBOM )
+		catch ( wxFBException& ex )
 		{
-			useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
-		}
-
-		PCodeWriter h_cw( new FileCodeWriter( path + file + wxT( ".h" ), useMicrosoftBOM ) );
-
-		PCodeWriter cpp_cw( new FileCodeWriter( path + file + wxT( ".cpp" ), useMicrosoftBOM ) );
-
-		codegen.SetHeaderWriter( h_cw );
-		codegen.SetSourceWriter( cpp_cw );
-		codegen.GenerateCode( project );
-		wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
-
-		// check if we have to convert to ANSI encoding
-		if (project->GetPropertyAsString(wxT("encoding")) == wxT("ANSI"))
-		{
-			UTF8ToAnsi(path + file + wxT( ".h" ));
-			UTF8ToAnsi(path + file + wxT( ".cpp" ));
+			wxLogError( ex.what() );
 		}
 	}
-
-    // Is it needed???
-    //if(project)project.reset((ObjectBase*)NULL);
 }
 
 BEGIN_EVENT_TABLE ( CodeEditor,  wxPanel )
@@ -560,14 +564,16 @@ FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
 }
 
 void FileCodeWriter::DoWrite( wxString code )
-
 {
 	m_file.Write( code );
 }
 
 void FileCodeWriter::Clear()
 {
-	m_file.Create( m_filename, true );
+	if ( !m_file.Create( m_filename, true ) )
+	{
+		THROW_WXFBEX( _("Unable to create file: ") << m_filename );
+	}
 
 #ifdef __WXMSW__
 

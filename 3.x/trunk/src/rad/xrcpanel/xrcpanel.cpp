@@ -218,30 +218,29 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		{
 			// Get the output path
 			path = AppData()->GetOutputPath();
+
+			PProperty pfile = project->GetProperty( wxT( "file" ) );
+
+			if ( pfile )
+				file = pfile->GetValue();
+
+			if ( file.empty() )
+			{
+				file = wxT( "noname" );
+			}
+
+			wxString filePath;
+
+			filePath << path << file << wxT( ".xrc" );
+			PCodeWriter cw( new FileCodeWriter( filePath ) );
+
+			codegen.SetWriter( cw );
+			codegen.GenerateCode( project );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
 		}
 		catch ( wxFBException& ex )
 		{
-			wxLogWarning( ex.what() );
-			return;
+			wxLogError( ex.what() );
 		}
-
-		PProperty pfile = project->GetProperty( wxT( "file" ) );
-
-		if ( pfile )
-			file = pfile->GetValue();
-
-		if ( file.empty() )
-		{
-			file = wxT( "noname" );
-		}
-
-		wxString filePath;
-
-		filePath << path << file << wxT( ".xrc" );
-		PCodeWriter cw( new FileCodeWriter( filePath ) );
-
-		codegen.SetWriter( cw );
-		codegen.GenerateCode( project );
-		wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
 	}
 }
