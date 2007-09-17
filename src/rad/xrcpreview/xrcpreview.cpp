@@ -4,6 +4,7 @@
 #include "codegen/xrccg.h"
 #include "rad/cpppanel/cpppanel.h"
 #include "utils/annoyingdialog.h"
+#include "utils/wxfbexception.h"
 
 #include <wx/xrc/xmlres.h>
 #include <wx/filename.h>
@@ -112,12 +113,20 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	wxString className = form->GetClassName();
 
-	XrcCodeGenerator codegen;
 	wxString filePath = wxFileName::CreateTempFileName( wxT( "wxFB" ) );
-	PCodeWriter cw( new FileCodeWriter( filePath ) );
+	try
+	{
+		XrcCodeGenerator codegen;
+		PCodeWriter cw( new FileCodeWriter( filePath ) );
 
-	codegen.SetWriter( cw );
-	codegen.GenerateCode( form );
+		codegen.SetWriter( cw );
+		codegen.GenerateCode( form );
+	}
+	catch ( wxFBException& ex )
+	{
+		wxLogError( ex.what() );
+		return;
+	}
 
 	wxString workingDir = ::wxGetCwd();
 	// We change the current directory so that the relative paths work properly
