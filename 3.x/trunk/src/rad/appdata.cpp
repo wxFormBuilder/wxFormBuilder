@@ -706,7 +706,8 @@ void ApplicationData::CreateObject( wxString name )
 	{
 		Debug::Print( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
 
-		PObjectBase parent = GetSelectedObject();
+		PObjectBase old_selected = GetSelectedObject();
+		PObjectBase parent = old_selected;
 		PObjectBase obj;
 
 		if ( parent )
@@ -752,7 +753,13 @@ void ApplicationData::CreateObject( wxString name )
 			obj = ( obj->GetChildCount() > 0 ? obj->GetChild( 0 ) : PObjectBase() );
 
 		if ( obj )
+		{
 			SelectObject( obj, true, true );
+		}
+		else
+		{
+			SelectObject( old_selected, true, true );
+		}
 	}
 	catch ( wxFBException& ex )
 	{
