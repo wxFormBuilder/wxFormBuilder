@@ -84,6 +84,9 @@ class MainFrame : public wxFrame
   // Save right splitter's sash position
   int m_rightSplitter_sash_pos;
 
+  // Automatically update sash in splitter window base on user action
+  bool m_autoSash;
+
   wxString m_currentDir;
   wxString m_recentProjects[4];
 

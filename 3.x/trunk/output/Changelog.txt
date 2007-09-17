@@ -17,6 +17,8 @@ date Version 3.00.50 (RC3)
     - New and informative warnings if an object cannot be imported.
 * FS#57 - "Can't add toolbar to non-frame containers."
 * FS#238 - "Crash on Negative Number to growable* properties."
+^ Auto sash positioning can now be disabled by setting /mainframe/AutoSash=0 in the config.
+^ Enabled live pane update when dragging sashes.
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
