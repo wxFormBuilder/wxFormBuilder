@@ -909,10 +909,13 @@ void MainFrame::UpdateFrame()
 	toolbar->EnableTool( ID_UNDO, undo );
 
 	bool copy = AppData()->CanCopyObject();
+	bool isEditor = ( _("Designer") != m_notebook->GetPageText( m_notebook->GetSelection() ) );
+	menuEdit->Enable( ID_FIND, isEditor );
+
 	menuEdit->Enable( ID_CLIPBOARD_COPY, copy );
 
-	menuEdit->Enable( ID_COPY, copy );
-	toolbar->EnableTool( ID_COPY, copy );
+	menuEdit->Enable( ID_COPY, copy || isEditor );
+	toolbar->EnableTool( ID_COPY, copy || isEditor );
 
 	menuEdit->Enable( ID_CUT, copy );
 	toolbar->EnableTool( ID_CUT, copy );
@@ -1225,12 +1228,7 @@ bool MainFrame::SaveWarning()
 
 void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 {
-	bool enableFind = !( _("Designer") == m_notebook->GetPageText( event.GetSelection() ) );
-	int item = GetMenuBar()->FindMenuItem( _("Edit"), _("Find") );
-	if ( item != -1 )
-	{
-		GetMenuBar()->Enable( item, enableFind );
-	}
+	UpdateFrame();
 
 	if ( m_autoSash )
 	{
