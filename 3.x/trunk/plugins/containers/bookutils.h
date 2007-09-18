@@ -2,7 +2,7 @@
 #define BOOKUTILS
 
 #include <component.h>
-#include "default.xpm"
+#include <default.xpm>
 #include <wx/image.h>
 #include <wx/imaglist.h>
 #include <wx/notebook.h>
