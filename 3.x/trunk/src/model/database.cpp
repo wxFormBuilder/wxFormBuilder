@@ -420,6 +420,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 				obj_type == wxT("listbook")			||
 				obj_type == wxT("choicebook")		||
 				obj_type == wxT("auinotebook")		||
+				obj_type == wxT("treelistctrl")		||
 				obj_type == wxT("expanded_widget")	||
 				obj_type == wxT("container")
 				)
@@ -791,6 +792,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("toolbar")			||
 			type == wxT("splitter")			||
 			type == wxT("sizer")			||
+			type == wxT("treelistctrl")		||
 			type == wxT("gbsizer")
 			);
 }
@@ -1142,25 +1144,27 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 
 bool ObjectDatabase::ShowInPalette(wxString type)
 {
-	return (type == wxT("form")				||
-			type == wxT("sizer")			||
-			type == wxT("gbsizer")			||
-			type == wxT("menu")				||
-			type == wxT("menuitem")			||
-			type == wxT("submenu")			||
-			type == wxT("tool")				||
-			type == wxT("notebook")			||
-			type == wxT("flatnotebook")		||
-			type == wxT("listbook")			||
-			type == wxT("choicebook")		||
-			type == wxT("auinotebook")		||
-			type == wxT("widget")			||
-			type == wxT("expanded_widget")	||
-			type == wxT("statusbar")		||
-			type == wxT("component")		||
-			type == wxT("container")		||
-			type == wxT("menubar")			||
-			type == wxT("toolbar")			||
+	return (type == wxT("form")					||
+			type == wxT("sizer")				||
+			type == wxT("gbsizer")				||
+			type == wxT("menu")					||
+			type == wxT("menuitem")				||
+			type == wxT("submenu")				||
+			type == wxT("tool")					||
+			type == wxT("notebook")				||
+			type == wxT("flatnotebook")			||
+			type == wxT("listbook")				||
+			type == wxT("choicebook")			||
+			type == wxT("auinotebook")			||
+			type == wxT("widget")				||
+			type == wxT("expanded_widget")		||
+			type == wxT("statusbar")			||
+			type == wxT("component")			||
+			type == wxT("container")			||
+			type == wxT("menubar")				||
+			type == wxT("treelistctrl")			||
+			type == wxT("treelistctrlcolumn")	||
+			type == wxT("toolbar")				||
 			type == wxT("splitter")
 			);
 }

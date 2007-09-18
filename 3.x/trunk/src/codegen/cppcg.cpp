@@ -1384,6 +1384,7 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("listbook")	||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
+				type == wxT("treelistctrl")	||
 				type == wxT("flatnotebook")
 			)
 		{
@@ -1432,6 +1433,11 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	{
 		GenConstruction( obj->GetChild( 0 ), false );
 		m_source->WriteLn( GetCode( obj, wxT("page_add") ) );
+		GenSettings( obj->GetObjectInfo(), obj );
+	}
+	else if ( type == wxT("treelistctrlcolumn") )
+	{
+		m_source->WriteLn( GetCode( obj, wxT("column_add") ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 	}
 	else if ( type == wxT("menuitem") )

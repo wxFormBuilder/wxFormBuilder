@@ -81,6 +81,7 @@
 	<childtype name="auinotebook" nmax="1" />
     <childtype name="splitter" nmax="1" />
     <childtype name="toolbar" nmax="1" />
+    <childtype name="treelistctrl" nmax="1" />
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
@@ -96,6 +97,7 @@
 	<childtype name="auinotebook" nmax="1" />
     <childtype name="splitter" nmax="1" />
     <childtype name="toolbar" nmax="1" />
+    <childtype name="treelistctrl" nmax="1" />
   </objtype>
 
   <objtype name="splitter" >
@@ -171,6 +173,12 @@
   </objtype>
 
   <objtype name="tool" />
+  
+  <objtype name="treelistctrl" >
+    <childtype name="treelistctrlcolumn" />
+  </objtype>
+
+  <objtype name="treelistctrlcolumn" />
 
 </definitions>
 

@@ -1,5 +1,5 @@
 /* XPM */ 
-static const unsigned char * project_xpm[] = {
+static const  char * project_xpm[] = {
 "22 22 171 2",
 "  	c None",
 "! 	c #878985",
