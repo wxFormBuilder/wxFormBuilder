@@ -20,6 +20,7 @@ date Version 3.00.50 (RC3)
 ^ Auto sash positioning can now be disabled by setting /mainframe/AutoSash=0 in the config.
 ^ Enabled live pane update when dragging sashes.
 * FS#239 - "button.h not included when adding StdDialogButtonSizer."
+* On Windows, Ctrl+C did not copy text from code editor when an object was not selected.
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
