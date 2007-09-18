@@ -25,7 +25,7 @@
 
 #include "bitmaps.h"
 #include "tinyxml.h"
-#include "unknown.h"
+#include <default.xpm>
 #include <wx/image.h>
 #include "utils/typeconv.h"
 #include "utils/stringutils.h"
@@ -64,7 +64,7 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 {
 	try
 	{
-		m_bitmaps[ wxT("unknown") ] = wxBitmap( unknown_xpm );
+		m_bitmaps[ wxT("unknown") ] = wxBitmap( default_xpm );
 
 		ticpp::Document doc;
 		XMLUtils::LoadXMLFile( doc, true, filepath );
