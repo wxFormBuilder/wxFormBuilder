@@ -28,6 +28,7 @@
 
 #include <wx/dynlib.h>
 #include <set>
+#include <map>
 #include "model/types.h"
 #include "utils/wxfbdefs.h"
 
@@ -117,6 +118,8 @@ class ObjectDatabase
   typedef std::map<wxString,PObjectType> ObjectTypeMap;
   typedef std::vector<wxDynamicLibrary *> CLibraryVector;
   typedef std::set<wxString> MacroSet;
+  typedef std::map< wxString, PCodeInfo > LangTemplateMap;
+  typedef std::map< PropertyType, LangTemplateMap > PTLangTemplateMap;
 
   wxString m_xmlPath;
   wxString m_iconPath;
@@ -137,6 +140,8 @@ class ObjectDatabase
   // used so libraries are only imported once, even if multiple libraries use them
   std::set< wxString > m_importedLibraries;
 
+  PTLangTemplateMap m_propertyTypeTemplates;
+
   /**
    * Initialize the property type map.
    */
@@ -154,7 +159,7 @@ class ObjectDatabase
    */
   PObjectPackage LoadPackage( const wxString& file, const wxString& iconPath = wxEmptyString );
 
-  void ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category );
+  void ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category, std::set< PropertyType >* types );
   void ParseEvents    ( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category );
 
   /**

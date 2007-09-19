@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+	<codegen language="C++">
+	<templates property="wxString">
+		<template name="include">@#include &lt;wx/string.h&gt; #nl</template>
+	</templates>
+	<templates property="wxString_i18n">
+		<template name="include">@#include &lt;wx/string.h&gt; #nl</template>
+	</templates>
+	<templates property="stringlist">
+		<template name="include">@#include &lt;wx/string.h&gt; #nl</template>
+	</templates>
+	<templates property="wxPoint">
+		<template name="include">@#include &lt;wx/gdicmn.h&gt; #nl</template>
+	</templates>
+	<templates property="wxSize">
+		<template name="include">@#include &lt;wx/gdicmn.h&gt; #nl</template>
+	</templates>
+	<templates property="wxFont">
+		<template name="include">@#include &lt;wx/font.h&gt; #nl</template>
+	</templates>
+	<templates property="wxColour">
+		<template name="include">
+			@#include &lt;wx/colour.h&gt; #nl
+			@#include &lt;wx/settings.h&gt; #nl
+		</template>
+	</templates>
+	<templates property="bitmap">
+		<template name="include">
+			@#include &lt;wx/bitmap.h&gt; #nl
+			@#include &lt;wx/image.h&gt; #nl
+		</template>
+	</templates>
+</codegen>
+
