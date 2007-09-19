@@ -867,7 +867,17 @@ bool ObjectInfo::IsSubclassOf(wxString classname)
 
 void ObjectInfo::AddCodeInfo(wxString lang, PCodeInfo codeinfo)
 {
-	m_codeTemp.insert( std::map< wxString, PCodeInfo >::value_type(lang, codeinfo));
+	std::map< wxString, PCodeInfo >::iterator templates = m_codeTemp.find( lang );
+	if ( templates == m_codeTemp.end() )
+	{
+		// First code info is a clean copy
+		m_codeTemp[ lang ] = PCodeInfo( new CodeInfo( *codeinfo ) );
+	}
+	else
+	{
+		// If code info already existed for the language, merge code info
+		templates->second->Merge( codeinfo );
+	}
 }
 
 PCodeInfo ObjectInfo::GetCodeInfo(wxString lang)
@@ -903,5 +913,16 @@ void CodeInfo::AddTemplate(wxString name, wxString _template)
 	m_templates.insert(TemplateMap::value_type(name,_template));
 }
 
-
+void CodeInfo::Merge( PCodeInfo merger )
+{
+	TemplateMap::iterator mergerTemplate;
+	for ( mergerTemplate = merger->m_templates.begin(); mergerTemplate != merger->m_templates.end(); ++mergerTemplate )
+	{
+		std::pair< TemplateMap::iterator, bool > mine = m_templates.insert( TemplateMap::value_type( mergerTemplate->first, mergerTemplate->second ) );
+		if ( !mine.second )
+		{
+			mine.first->second += mergerTemplate->second;
+		}
+	}
+}
 

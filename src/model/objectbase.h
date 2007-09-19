@@ -542,6 +542,7 @@ private:
 public:
 	wxString GetTemplate(wxString name);
 	void AddTemplate(wxString name, wxString _template);
+	void Merge( PCodeInfo merger );
 };
 
 ///////////////////////////////////////////////////////////////////////////////

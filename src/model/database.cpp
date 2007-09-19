@@ -547,6 +547,7 @@ bool IncludeInPalette(wxString type)
 void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 {
 	// Load some default templates
+	LoadCodeGen( m_xmlPath + wxT("properties.cppcode") );
 	LoadPackage( m_xmlPath + wxT("default.xml"), m_iconPath );
 	LoadCodeGen( m_xmlPath + wxT("default.cppcode") );
 
@@ -808,13 +809,19 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 		ticpp::Element* elem_codegen = doc.FirstChildElement("codegen");
 		std::string language;
 		elem_codegen->GetAttribute( "language", &language );
+		wxString lang = _WXSTR(language);
 
 		// read the templates
 		ticpp::Element* elem_templates = elem_codegen->FirstChildElement( "templates", false );
 		while ( elem_templates  )
 		{
+
+			std::string prop_name;
+			elem_templates->GetAttribute( "property", &prop_name, false );
+			bool hasProp = !prop_name.empty();
+
 			std::string class_name;
-			elem_templates->GetAttribute( "class", &class_name );
+			elem_templates->GetAttribute( "class", &class_name, !hasProp );
 
 			PCodeInfo code_info( new CodeInfo() );
 
@@ -831,10 +838,22 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 				elem_template = elem_template->NextSiblingElement( "template", false );
 			}
 
-			PObjectInfo obj_info = GetObjectInfo( _WXSTR(class_name) );
-			if ( obj_info )
+			if ( hasProp )
 			{
-				obj_info->AddCodeInfo( _WXSTR(language), code_info );
+				// store code info for properties
+				if ( !m_propertyTypeTemplates[ ParsePropertyType( _WXSTR(prop_name) ) ].insert( LangTemplateMap::value_type( lang, code_info ) ).second )
+				{
+					wxLogError( _("Found second template definition for property \"%s\" for language \"%s\""), _WXSTR(prop_name).c_str(), lang.c_str() );
+				}
+			}
+			else
+			{
+				// store code info for objects
+				PObjectInfo obj_info = GetObjectInfo( _WXSTR(class_name) );
+				if ( obj_info )
+				{
+					obj_info->AddCodeInfo( lang, code_info );
+				}
 			}
 
 			elem_templates = elem_templates->NextSiblingElement( "templates", false );
@@ -933,7 +952,8 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			}
 
 			// Parse the Properties
-			ParseProperties( elem_obj, obj_info, obj_info->GetCategory() );
+			std::set< PropertyType > types;
+			ParseProperties( elem_obj, obj_info, obj_info->GetCategory(), &types );
 			ParseEvents    ( elem_obj, obj_info, obj_info->GetCategory() );
 
 			// Add the ObjectInfo to the map
@@ -956,7 +976,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 	return package;
 }
 
-void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category )
+void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category, std::set< PropertyType >* types )
 {
 	ticpp::Element* elem_category = elem_obj->FirstChildElement( CATEGORY_TAG, false );
 	while ( elem_category )
@@ -970,7 +990,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		category->AddCategory( new_cat );
 
 		// Recurse
-		ParseProperties( elem_category, obj_info, new_cat );
+		ParseProperties( elem_category, obj_info, new_cat, types );
 
 		elem_category = elem_category->NextSiblingElement( CATEGORY_TAG, false );
 	}
@@ -1078,8 +1098,21 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		PPropertyInfo prop_info( new PropertyInfo( _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), _WXSTR(customEditor), opt_list, children ) );
 
 		// add the PropertyInfo to the property
-		obj_info->AddPropertyInfo(prop_info);
+		obj_info->AddPropertyInfo( prop_info );
 
+		// merge property code templates, once per property type
+		if ( types->insert( ptype ).second )
+		{
+			LangTemplateMap& propLangTemplates = m_propertyTypeTemplates[ ptype ];
+			LangTemplateMap::iterator lang;
+			for ( lang = propLangTemplates.begin(); lang != propLangTemplates.end(); ++lang )
+			{
+				if ( lang->second )
+				{
+					obj_info->AddCodeInfo( lang->first, lang->second );
+				}
+			}
+		}
 
 		elem_prop = elem_prop->NextSiblingElement( PROPERTY_TAG, false );
 	}
