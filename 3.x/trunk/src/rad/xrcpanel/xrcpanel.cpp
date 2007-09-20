@@ -60,7 +60,7 @@ XrcPanel::XrcPanel( wxWindow *parent, int id )
 
 	SetSizer( top_sizer );
 	SetAutoLayout( true );
-	top_sizer->SetSizeHints( this );
+	//top_sizer->SetSizeHints( this );
 	top_sizer->Fit( this );
 	top_sizer->Layout();
 
