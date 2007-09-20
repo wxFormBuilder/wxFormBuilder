@@ -85,7 +85,7 @@ wxPanel ( parent, id )
 
 	SetSizer( top_sizer );
 	SetAutoLayout( true );
-	top_sizer->SetSizeHints( this );
+	//top_sizer->SetSizeHints( this );
 	top_sizer->Fit( this );
 	top_sizer->Layout();
 
@@ -464,7 +464,7 @@ CodeEditor::CodeEditor( wxWindow *parent, int id )
 //	m_code->StyleSetFont(wxSCI_STYLE_DEFAULT, font);
 	sizer->Add( m_code, 1, wxEXPAND | wxALL );
 	SetSizer( sizer );
-	sizer->SetSizeHints( this );
+	//sizer->SetSizeHints( this );
 }
 
 void CodeEditor::OnMarginClick ( wxScintillaEvent &event )
