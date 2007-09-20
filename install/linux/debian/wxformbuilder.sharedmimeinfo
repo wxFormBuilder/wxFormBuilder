@@ -4,5 +4,9 @@
     <comment>wxFormBuilder Project</comment>
     <glob pattern="*.fbp"/>
     <sub-class-of type="application/xml"/>
+    <root-XML namespaceURI="" localName="wxFormBuilder_Project" />
+    <magic priority="90">
+      <match type="string" offset="58:59" value="wxFormBuilder_Project"/>
+    </magic>
   </mime-type>
 </mime-info>
