@@ -77,14 +77,6 @@ bool MyApp::OnInit()
 	wxString dataDir = stdPaths.GetDataDir();
 	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
 
-	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
-	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
-	// This puts an unneccessary lock on the directory.
-	// This changes the CWD to the already locked app directory as a workaround
-	#ifdef __WXMSW__
-	::wxSetWorkingDirectory( dataDir );
-	#endif
-
 	// Parse command line
 	wxCmdLineParser parser( s_cmdLineDesc, argc, argv );
 	if ( 0 != parser.Parse() )
@@ -292,6 +284,15 @@ bool MyApp::OnInit()
 	}
 
 	AppData()->NewProject();
+
+	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
+	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
+	// This puts an unneccessary lock on the directory.
+	// This changes the CWD to the already locked app directory as a workaround
+	#ifdef __WXMSW__
+	::wxSetWorkingDirectory( dataDir );
+	#endif
+
 	return true;
 }
 
