@@ -27,7 +27,7 @@ end
 --		Options: exe | winexe | lib | dll
 package.kind = "winexe"
 -- Set the files to include.
-package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
+package.files = { matchrecursive( "*.cpp", "*.h", "*.cc", "*.hh", "*.rc" ) }
 -- Set the files to exclude.
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
