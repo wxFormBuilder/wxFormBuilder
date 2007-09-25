@@ -1,0 +1,102 @@
+C++/object oriented translation and modification of MD5.
+
+Version: 1.00 (28 Aug 95)
+Version: 1.02 (22 Sep 97)
+
+ Translation and modification (c) 1995 by Mordechai T. Abzug 
+ Thanks to Martin Cleaver for for making it happy on Windows NT and Solaris.
+
+ This translation/ modification is provided "as is," without express or 
+ implied warranty of any kind.
+
+ The translator/ modifier does not claim (1) that MD5 will do what you think 
+ it does; (2) that this translation/ modification is accurate; or (3) that 
+ this software is "merchantible."  (Language for this disclaimer partially 
+ copied from the disclaimer below).
+
+Based on:
+
+   MD5.H - header file for MD5C.C
+   MD5C.C - RSA Data Security, Inc., MD5 message-digest algorithm
+   MDDRIVER.C - test driver for MD2, MD4 and MD5
+
+   Copyright (C) 1991-2, RSA Data Security, Inc. Created 1991. All
+rights reserved.
+
+License to copy and use this software is granted provided that it
+is identified as the "RSA Data Security, Inc. MD5 Message-Digest
+Algorithm" in all material mentioning or referencing this software
+or this function.
+
+License is also granted to make and use derivative works provided
+that such works are identified as "derived from the RSA Data
+Security, Inc. MD5 Message-Digest Algorithm" in all material
+mentioning or referencing the derived work.
+
+RSA Data Security, Inc. makes no representations concerning either
+the merchantability of this software or the suitability of this
+software for any particular purpose. It is provided "as is"
+without express or implied warranty of any kind.
+
+These notices must be retained in any copies of any part of this
+documentation and/or software.
+
+-------------------------------------------------------------------------------
+
+A note on compilation:
+
+	MD5 assumes that an unsigned char is at least a byte long, that an
+	unsigned short int is at least two bytes long, and that an unsigned
+	int is at least four bytes long.  If your system is different, you 
+	should modify md5.hh accordingly.
+
+
+HOW TO USE:
+
+(1) standalone:  
+
+	Driver.cc provides a nice interface for simple uses of md5.  The 
+	included makefile will do fine.  However, if this is the limit of your
+	md5 use, you may as well use the original C source, which is somewhat 
+	smaller.
+
+(2) as an object-oriented module:
+
+	The MD5 objects in this module are MD5 contexts that are initialized, 
+	then updated zero or more times, then finalized, and then have their 
+	digest accessed zero or more times.  Note that they *must* be 
+	"finalized" between initialization and the availability of the digest;
+	this is part of the definition of MD5.
+
+	The updating is done with a message, either with a stdio file opened 
+	for reading (it is the user's responsibility to make sure that the file
+	is open), with an ifstream (again, the user's responsibility), with an 
+	istream, or with an unsigned char string (typecast if you're using
+	normal char strings).  If you initialized with the default contructor
+	(see later), you can update a single MD5 object multiple times, even
+	with different types of objects (say, a file and then a string).  Note
+	that a stdio file is closed after an update, and the streams must no
+	longer be "good".  Example:  "context.update(file);".
+
+	Initialization of the object depends on the type of updating you
+	intend to do (which is why it's here).  If you want a general-purpose
+	MD5 object capable of being updated multiple times, with any object
+	type, use the default constructor (ie. "MD5 context;").  If you only
+	want to use the MD5 object for one update, you can initialize with
+	that object; this does an implicit finalization Example: "MD5 context
+	(cin);".
+
+	Finalization must be done explicitly on object initialized with the
+	default constructor (see above); finalization is implicit with all
+	other contrsuctors.  Once finalization has occurred, update is an
+	error.  Example:  "context.finalize();"
+
+	After finalizing, you can look at the digest.  MD5::raw_digest()
+	returns an 16-member array of unsigned chars (bytes).
+	MD5::hex_digest() returns a 33-byte long character string that is a
+	hex representation of the raw digest.  There is also a << operator for
+	ostreams.  Example:  "unsigned char *digest=context.hex_digest();".
+	Example:  'cout << "Digest is:  " << context << endl;'.
+
+	See driver.cc for more examples.
+
