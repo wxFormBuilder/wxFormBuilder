@@ -48,7 +48,7 @@ class MD5 {
 public:
 // methods for controlled operation:
   MD5              ();  // simple initializer
-  void  update     (unsigned char *input, unsigned int input_length);
+  void  update     (const unsigned char *input, unsigned int input_length);
   void  update     (std::istream& stream);
   void  update     (FILE *file);
   void  update     (std::ifstream& stream);
@@ -84,12 +84,12 @@ private:
 
 // last, the private methods, mostly static:
   void init             ();               // called by all constructors
-  void transform        (uint1 *buffer);  // does the real update work.  Note
+  void transform        (const uint1 *buffer);  // does the real update work.  Note
                                           // that length is implied to be 64.
 
   static void encode    (uint1 *dest, uint4 *src, uint4 length);
-  static void decode    (uint4 *dest, uint1 *src, uint4 length);
-  static void memcpy    (uint1 *dest, uint1 *src, uint4 length);
+  static void decode    (uint4 *dest, const uint1 *src, uint4 length);
+  static void memcpy    (uint1 *dest, const uint1 *src, uint4 length);
   static void memset    (uint1 *start, uint1 val, uint4 length);
 
   static inline uint4  rotate_left (uint4 x, uint4 n);

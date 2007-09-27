@@ -69,7 +69,7 @@ MD5::MD5(){
 // operation, processing another message block, and updating the
 // context.
 
-void MD5::update (uint1 *input, uint4 input_length) {
+void MD5::update ( const uint1 *input, uint4 input_length) {
 
   uint4 input_index, buffer_index;
   uint4 buffer_space;                // how much space is left in buffer
@@ -341,7 +341,7 @@ void MD5::init(){
 
 
 // MD5 basic transformation. Transforms state based on block.
-void MD5::transform (uint1 block[64]){
+void MD5::transform (const uint1 block[64]){
 
   uint4 a = state[0], b = state[1], c = state[2], d = state[3], x[16];
 
@@ -452,7 +452,7 @@ void MD5::encode (uint1 *output, uint4 *input, uint4 len) {
 
 // Decodes input (unsigned char) into output (UINT4). Assumes len is
 // a multiple of 4.
-void MD5::decode (uint4 *output, uint1 *input, uint4 len){
+void MD5::decode (uint4 *output, const uint1 *input, uint4 len){
 
   unsigned int i, j;
 
@@ -466,7 +466,7 @@ void MD5::decode (uint4 *output, uint1 *input, uint4 len){
 
 
 // Note: Replace "for loop" with standard memcpy if possible.
-void MD5::memcpy (uint1 *output, uint1 *input, uint4 len){
+void MD5::memcpy (uint1 *output, const uint1 *input, uint4 len){
 
   unsigned int i;
 

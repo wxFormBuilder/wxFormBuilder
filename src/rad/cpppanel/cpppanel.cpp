@@ -35,11 +35,14 @@
 #include "rad/wxfbevent.h"
 #include "utils/wxfbexception.h"
 #include "utils/encodingutils.h"
-#include <rad/appdata.h>
+#include "md5/md5.hh"
+#include "rad/appdata.h"
+
+#include <fstream>
+#include <cstring>
 
 #include <wx/fdrepdlg.h>
 #include <wx/config.h>
-
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
@@ -563,25 +566,83 @@ FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
 	Clear();
 }
 
+FileCodeWriter::~FileCodeWriter()
+{
+	WriteBuffer();
+}
+
+void FileCodeWriter::WriteBuffer()
+{
+	#ifdef __WXMSW__
+		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
+	#endif
+
+	// Compare buffer with existing file (if any) to determine if
+	// writing the file is necessary
+	bool shouldWrite = true;
+	std::ifstream file( m_filename.mb_str( wxConvFile ) );
+	if ( file )
+	{
+		MD5 diskHash( file );
+		unsigned char* diskDigest = diskHash.raw_digest();
+
+		MD5 bufferHash;
+		#ifdef __WXMSW__
+			if ( m_useMicrosoftBOM )
+			{
+				bufferHash.update( microsoftBOM, 3 );
+			}
+		#endif
+		bufferHash.update( reinterpret_cast< const unsigned char* >( (const char*)m_buffer.mb_str( wxConvUTF8 ) ), m_buffer.size() );
+		bufferHash.finalize();
+		unsigned char* bufferDigest = bufferHash.raw_digest();
+
+		shouldWrite = ( 0 != std::memcmp( diskDigest, bufferDigest, 16 ) );
+		delete [] diskDigest;
+		delete [] bufferDigest;
+	}
+
+	if ( shouldWrite )
+	{
+		if ( !m_file.Create( m_filename, true ) )
+		{
+			wxLogError( _("Unable to create file: %s"), m_filename.c_str() );
+			return;
+		}
+
+		#ifdef __WXMSW__
+			if ( m_useMicrosoftBOM )
+			{
+				m_file.Write( microsoftBOM, 3 );
+			}
+		#endif
+
+		m_file.Write( m_buffer );
+	}
+}
+
 void FileCodeWriter::DoWrite( wxString code )
 {
-	m_file.Write( code );
+	m_buffer += code;
 }
 
 void FileCodeWriter::Clear()
 {
-	if ( !m_file.Create( m_filename, true ) )
+	m_buffer.clear();
+
+	if ( ::wxFileExists( m_filename ) )
 	{
-		THROW_WXFBEX( _("Unable to create file: ") << m_filename );
+		// check for write access to the target file
+		if ( !wxFile::Access( m_filename, wxFile::write ) )
+		{
+			THROW_WXFBEX( _("Unable to write file: ") << m_filename );
+		}
 	}
-
-#ifdef __WXMSW__
-
-	if ( m_useMicrosoftBOM )
+	else
 	{
-		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
-		m_file.Write( microsoftBOM, 3 );
+		if ( !m_file.Create( m_filename, true ) )
+		{
+			THROW_WXFBEX( _("Unable to create file: ") << m_filename );
+		}
 	}
-
-#endif
 }
