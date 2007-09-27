@@ -24,6 +24,7 @@ date Version 3.00.50 (RC3)
 * FS#241 - "<wx/statbox.h> not included in generated header."
 * Removed minimum size from code windows so the tabs and scrollbars no longer disappear as the window is shrinking.
 * FS#242 - "wxFB does not respect current working directory."
+^ FS#246 - "Header file should be written to disk only if changed."
 
 09/06/2007 Version 3.00.49 (RC2)
 * wxStdDialogButtonSizer events now Connect() to the button, instead of the parent.
