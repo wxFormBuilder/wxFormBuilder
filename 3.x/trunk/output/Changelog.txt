@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.50 (RC3)
+09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
 * Property values are no longer trimmed for whitespace when projects are loaded.
 * FS#235 - "Events don't (always) get attached to the proper object."
