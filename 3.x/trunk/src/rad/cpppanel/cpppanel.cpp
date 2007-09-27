@@ -580,7 +580,7 @@ void FileCodeWriter::WriteBuffer()
 	// Compare buffer with existing file (if any) to determine if
 	// writing the file is necessary
 	bool shouldWrite = true;
-	std::ifstream file( m_filename.mb_str( wxConvFile ) );
+	std::ifstream file( m_filename.mb_str( wxConvFile ), std::ios::binary | std::ios::in );
 	if ( file )
 	{
 		MD5 diskHash( file );
