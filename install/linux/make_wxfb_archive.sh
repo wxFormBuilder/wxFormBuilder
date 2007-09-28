@@ -5,7 +5,7 @@
 function archive
 {
   # copy monolithic wx lib to lib dir
-  cp /opt/wx/2.8.4/lib/libwx_gtk2u-2.8.so.0.1.1 output/lib/libwx_gtk2u-2.8.so.0
+  cp -L `wx-config --prefix`/lib/libwx_gtk2u-2.8.so.0 output/lib/wxformbuilder/
 
   # remove the share/wxformbuilder symlink
   rm output/share/wxformbuilder
@@ -22,7 +22,7 @@ function archive
   mv output wxformbuilder
 
   # create archive
-  name="wxFormBuilder_v"$1"-beta3.tar.bz2"
+  name="wxFormBuilder_v"$1"-$2.tar.bz2"
   if [ -f $name ]
   then
     rm $name
@@ -52,7 +52,8 @@ do
    then
      version=${version/0/}
    fi
-   archive $version
+   label=`expr match "$line" '.*(\(.*\))'`
+   archive $version $label
    break
  fi
 done
