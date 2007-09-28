@@ -213,8 +213,25 @@ else
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )
 	
 	-- Set the wxWidgets link options.
-	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs std richtext`" )
-	table.insert( package.config["Release"].linkoptions, "`wx-config --libs std richtext`" )
+	
+	-- richtext is annoying, because it must be explicitly specified if wx is not monolithic, but cannot be specified if it is
+	-- so, determine if wx is monolithic by counting the occurences of "-l" in the --libs output
+	local wxconfig = io.popen("wx-config " .. debug_option .. " --libs")
+	local wxlibs = wxconfig:read("*a")
+	wxconfig:close()
+	
+	local wxLibCount = 0
+	for w in string.gfind(wxlibs, "-l") do
+      wxLibCount = wxLibCount + 1
+    end
+	
+	local richtext = ""
+	if ( wxLibCount > 1 ) then
+		richtext = " std richtext"
+	end
+	
+	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs" .. richtext .. "`" )
+	table.insert( package.config["Release"].linkoptions, "`wx-config --libs" .. richtext .. "`" )
 	
 	-- Set the Linux defines.
 	table.insert( package.defines, "__WXGTK__" )
