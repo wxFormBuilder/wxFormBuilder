@@ -45,6 +45,7 @@
 #include <wx/ffile.h>
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
+#include <wx/fs_mem.h>
 
 using namespace TypeConv;
 
@@ -473,6 +474,10 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT( "xml" ) + wxFILE_SEP_PATH ) ;
 	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "icons" ) + wxFILE_SEP_PATH );
 	m_objDb->SetPluginPath( m_rootDir + wxFILE_SEP_PATH + wxT( "plugins" ) + wxFILE_SEP_PATH ) ;
+
+	// Support loading files from memory
+	// Used to load the XRC preview, but could be useful elsewhere
+	wxFileSystem::AddHandler( new wxMemoryFSHandler );
 }
 
 ApplicationData::~ApplicationData()

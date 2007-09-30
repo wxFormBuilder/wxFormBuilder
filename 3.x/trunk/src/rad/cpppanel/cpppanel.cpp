@@ -557,6 +557,24 @@ void TCCodeWriter::Clear()
 		m_tc->ClearAll(); //*!*
 }
 
+StringCodeWriter::StringCodeWriter()
+{
+}
+
+void StringCodeWriter::DoWrite( wxString code )
+{
+	m_buffer += code;
+}
+
+void StringCodeWriter::Clear()
+{
+	m_buffer.clear();
+}
+
+wxString StringCodeWriter::GetString()
+{
+	return m_buffer;
+}
 
 FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
 		:
@@ -621,14 +639,9 @@ void FileCodeWriter::WriteBuffer()
 	}
 }
 
-void FileCodeWriter::DoWrite( wxString code )
-{
-	m_buffer += code;
-}
-
 void FileCodeWriter::Clear()
 {
-	m_buffer.clear();
+	StringCodeWriter::Clear();
 
 	if ( ::wxFileExists( m_filename ) )
 	{

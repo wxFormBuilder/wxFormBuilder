@@ -6,8 +6,8 @@
 #include "utils/annoyingdialog.h"
 #include "utils/wxfbexception.h"
 
+#include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
-#include <wx/filename.h>
 
 #include "wx/wxFlatNotebook/xh_fnb.h"
 
@@ -113,12 +113,10 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	wxString className = form->GetClassName();
 
-	wxString filePath = wxFileName::CreateTempFileName( wxT( "wxFB" ) );
+	PStringCodeWriter cw( new StringCodeWriter );
 	try
 	{
 		XrcCodeGenerator codegen;
-		PCodeWriter cw( new FileCodeWriter( filePath ) );
-
 		codegen.SetWriter( cw );
 		codegen.GenerateCode( form );
 	}
@@ -134,7 +132,9 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
 	res->AddHandler( new wxFlatNotebookXmlHandler );
-	res->Load( filePath );
+
+	wxMemoryFSHandler::AddFile(wxT("xrcpreview"), cw->GetString() );
+	res->Load( wxT("memory:xrcpreview") );
 
 	wxWindow* window = NULL;
 	if ( className == wxT( "Frame" ) )
@@ -178,10 +178,10 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	::wxSetWorkingDirectory( workingDir );
 
 	#if wxCHECK_VERSION( 2, 6, 3 )
-	res->Unload( filePath );
+	res->Unload( wxT("memory:xrcpreview") );
 	#endif
 
-	::wxRemoveFile( filePath );
+	wxMemoryFSHandler::RemoveFile( wxT("xrcpreview") );
 }
 
 void XRCPreview::AddEventHandler( wxWindow* window, wxWindow* form )

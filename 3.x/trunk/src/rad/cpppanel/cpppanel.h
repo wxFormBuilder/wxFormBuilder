@@ -53,22 +53,32 @@ class TCCodeWriter : public CodeWriter
   void Clear();
 };
 
-class FileCodeWriter : public CodeWriter
+class StringCodeWriter : public CodeWriter
+{
+ protected:
+  wxString m_buffer;
+  void DoWrite(wxString code);
+
+ public:
+  StringCodeWriter();
+  void Clear();
+  wxString GetString();
+};
+
+class FileCodeWriter : public StringCodeWriter
 {
  private:
   wxFile m_file;
   wxString m_filename;
-  wxString m_buffer;
   bool m_useMicrosoftBOM;
 
  protected:
-  void DoWrite(wxString code);
   void WriteBuffer();
 
  public:
   FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false );
-  ~FileCodeWriter();
   void Clear();
+  ~FileCodeWriter();
 };
 
 class CodeEditor : public wxPanel

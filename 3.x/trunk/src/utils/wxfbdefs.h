@@ -20,6 +20,7 @@ class wxFBManager;
 class CodeWriter;
 class TemplateParser;
 class TCCodeWriter;
+class StringCodeWriter;
 
 // Let's go with a few typedefs for frequently used types,
 // please use it, code will be cleaner and easier to read.
@@ -52,5 +53,6 @@ typedef boost::shared_ptr<wxFBManager> PwxFBManager;
 typedef boost::shared_ptr<CodeWriter> PCodeWriter;
 typedef boost::shared_ptr<TemplateParser> PTemplateParser;
 typedef boost::shared_ptr<TCCodeWriter> PTCCodeWriter;
+typedef boost::shared_ptr<StringCodeWriter> PStringCodeWriter;
 
 #endif //WXFBDEFS_H
