@@ -31,6 +31,7 @@
 
 // wxFlatNotebook
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
+#include <wx/wxFlatNotebook/xh_fnb.h>
 
 // wxPropertyGrid
 #include <wx/propgrid/propgrid.h>
@@ -39,6 +40,9 @@
 
 // wxScintilla
 #include <wx/wxScintilla/wxscintilla.h>
+
+// wxWidgets
+#include <wx/xrc/xmlres.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -613,6 +617,12 @@ void ComponentEvtHandler::OnMarginClick( wxScintillaEvent& event )
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
+
+// Load additional XRC handlers
+// This code is actually in the entry point of the plugin - the function GetComponentLibrary()
+// I know this looks funky, but it is perfectly valid
+wxXmlResource *res = wxXmlResource::Get();
+res->AddHandler( new wxFlatNotebookXmlHandler );
 
 // wxPropertyGrid
 WINDOW_COMPONENT("wxPropertyGrid", PropertyGridComponent)

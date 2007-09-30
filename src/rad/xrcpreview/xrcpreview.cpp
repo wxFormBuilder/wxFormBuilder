@@ -9,8 +9,6 @@
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
 
-#include "wx/wxFlatNotebook/xh_fnb.h"
-
 #define MENU_DELETE 109
 
 class XrcPreviewPopupMenu : public wxMenu
@@ -131,7 +129,6 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	::wxSetWorkingDirectory( projectPath );
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
-	res->AddHandler( new wxFlatNotebookXmlHandler );
 
 	wxMemoryFSHandler::AddFile(wxT("xrcpreview"), cw->GetString() );
 	res->Load( wxT("memory:xrcpreview") );
