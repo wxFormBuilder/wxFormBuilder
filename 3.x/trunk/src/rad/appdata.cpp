@@ -24,23 +24,26 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "appdata.h"
+#include "bitmaps.h"
+#include "wxfbevent.h"
+#include "wxfbmanager.h"
+
 #include "model/objectbase.h"
 #include "utils/typeconv.h"
 #include "utils/debug.h"
-#include "codegen/codegen.h"
-#include "rad/cpppanel/cpppanel.h"
-#include "bitmaps.h"
-#include "rad/wxfbevent.h"
-#include "codegen/xrccg.h"
-#include "wxfbmanager.h"
-#include "utils/wxfbexception.h"
 #include "utils/stringutils.h"
 #include "utils/wxfbipc.h"
+#include "utils/wxfbexception.h"
+#include "codegen/cppcg.h"
+#include "codegen/xrccg.h"
+#include "codegen/codewriter.h"
 #include "rad/xrcpreview/xrcpreview.h"
 #include "rad/dataobject/dataobject.h"
 
 #include <ticpp.h>
+
 #include <set>
+
 #include <wx/tokenzr.h>
 #include <wx/ffile.h>
 #include <wx/filename.h>

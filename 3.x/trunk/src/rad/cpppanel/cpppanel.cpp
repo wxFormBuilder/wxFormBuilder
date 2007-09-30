@@ -26,23 +26,26 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "cpppanel.h"
-#include "rad/bitmaps.h"
-#include "utils/typeconv.h"
-#include "model/objectbase.h"
-#include <wx/filename.h>
 
-#include "rad/bitmaps.h"
+#include "rad/codeeditor/codeeditor.h"
 #include "rad/wxfbevent.h"
-#include "utils/wxfbexception.h"
-#include "utils/encodingutils.h"
-#include "md5/md5.hh"
+#include "rad/bitmaps.h"
 #include "rad/appdata.h"
 
-#include <fstream>
-#include <cstring>
+#include "utils/typeconv.h"
+#include "utils/encodingutils.h"
+#include "utils/wxfbexception.h"
+
+#include "model/objectbase.h"
+
+#include "codegen/codewriter.h"
+#include "codegen/cppcg.h"
 
 #include <wx/fdrepdlg.h>
 #include <wx/config.h>
+
+#include <wx/wxScintilla/wxscintilla.h>
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
@@ -59,7 +62,8 @@ END_EVENT_TABLE()
 
 CppPanel::CppPanel( wxWindow *parent, int id )
 :
-wxPanel ( parent, id )
+wxPanel( parent, id ),
+m_icons( new wxFlatNotebookImageList )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
@@ -72,9 +76,9 @@ wxPanel ( parent, id )
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// Set notebook icons
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
-	m_notebook->SetImageList( &m_icons );
+	m_icons->Add( AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
+	m_icons->Add( AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
+	m_notebook->SetImageList( m_icons );
 
 	m_cppPanel = new CodeEditor( m_notebook, -1 );
 	InitStyledTextCtrl( m_cppPanel->GetTextCtrl() );
@@ -94,11 +98,11 @@ wxPanel ( parent, id )
 
 	m_hCW = PTCCodeWriter( new TCCodeWriter( m_hPanel->GetTextCtrl() ) );
 	m_cppCW = PTCCodeWriter( new TCCodeWriter( m_cppPanel->GetTextCtrl() ) );
-
 }
 
 CppPanel::~CppPanel()
 {
+	delete m_icons;
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	wxConfigBase *config = wxConfigBase::Get();
 	config->Write( wxT("/mainframe/editor/cpp/notebook_style"), m_notebook->GetWindowStyleFlag() );
@@ -409,253 +413,6 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 		catch ( wxFBException& ex )
 		{
 			wxLogError( ex.what() );
-		}
-	}
-}
-
-BEGIN_EVENT_TABLE ( CodeEditor,  wxPanel )
-	EVT_SCI_MARGINCLICK( -1, CodeEditor::OnMarginClick )
-	EVT_FIND( wxID_ANY, CodeEditor::OnFind )
-	EVT_FIND_NEXT( wxID_ANY, CodeEditor::OnFind )
-END_EVENT_TABLE()
-
-CodeEditor::CodeEditor( wxWindow *parent, int id )
-		: wxPanel( parent, id )
-{
-	wxBoxSizer *sizer = new wxBoxSizer( wxVERTICAL );
-	m_code = new wxScintilla( this, -1 );
-
-	// Line Numbers
-	m_code->SetMarginType( 0, wxSCI_MARGIN_NUMBER );
-	m_code->SetMarginWidth( 0, m_code->TextWidth ( wxSCI_STYLE_LINENUMBER, wxT( "_99999" ) )  );
-
-	// markers
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDER, wxSCI_MARK_BOXPLUS );
-	m_code->MarkerSetBackground ( wxSCI_MARKNUM_FOLDER, wxColour ( wxT( "BLACK" ) ) );
-	m_code->MarkerSetForeground ( wxSCI_MARKNUM_FOLDER, wxColour ( wxT( "WHITE" ) ) );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDEROPEN, wxSCI_MARK_BOXMINUS );
-	m_code->MarkerSetBackground ( wxSCI_MARKNUM_FOLDEROPEN, wxColour ( wxT( "BLACK" ) ) );
-	m_code->MarkerSetForeground ( wxSCI_MARKNUM_FOLDEROPEN, wxColour ( wxT( "WHITE" ) ) );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDERSUB, wxSCI_MARK_EMPTY );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDEREND, wxSCI_MARK_BOXPLUS );
-	m_code->MarkerSetBackground ( wxSCI_MARKNUM_FOLDEREND, wxColour ( wxT( "BLACK" ) ) );
-	m_code->MarkerSetForeground ( wxSCI_MARKNUM_FOLDEREND, wxColour ( wxT( "WHITE" ) ) );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDEROPENMID, wxSCI_MARK_BOXMINUS );
-	m_code->MarkerSetBackground ( wxSCI_MARKNUM_FOLDEROPENMID, wxColour ( wxT( "BLACK" ) ) );
-	m_code->MarkerSetForeground ( wxSCI_MARKNUM_FOLDEROPENMID, wxColour ( wxT( "WHITE" ) ) );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDERMIDTAIL, wxSCI_MARK_EMPTY );
-	m_code->MarkerDefine ( wxSCI_MARKNUM_FOLDERTAIL, wxSCI_MARK_EMPTY );
-
-	// folding
-	m_code->SetMarginType ( 1, wxSCI_MARGIN_SYMBOL );
-	m_code->SetMarginMask ( 1, wxSCI_MASK_FOLDERS );
-	m_code->SetMarginWidth ( 1, 16 );
-	m_code->SetMarginSensitive ( 1, true );
-
-	m_code->SetProperty( wxT( "fold" ),					wxT( "1" ) );
-	m_code->SetProperty( wxT( "fold.comment" ),			wxT( "1" ) );
-	m_code->SetProperty( wxT( "fold.compact" ),			wxT( "1" ) );
-	m_code->SetProperty( wxT( "fold.preprocessor" ),		wxT( "1" ) );
-	m_code->SetProperty( wxT( "fold.html" ),				wxT( "1" ) );
-	m_code->SetProperty( wxT( "fold.html.preprocessor" ),	wxT( "1" ) );
-	m_code->SetFoldFlags( wxSCI_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSCI_FOLDFLAG_LINEAFTER_CONTRACTED );
-
-	m_code->SetIndentationGuides( true );
-
-	m_code->SetMarginWidth( 2, 0 );
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
-//	m_code->StyleSetFont(wxSCI_STYLE_DEFAULT, font);
-	sizer->Add( m_code, 1, wxEXPAND | wxALL );
-	SetSizer( sizer );
-	//sizer->SetSizeHints( this );
-}
-
-void CodeEditor::OnMarginClick ( wxScintillaEvent &event )
-{
-	if ( event.GetMargin() == 1 ) {
-		int lineClick = m_code->LineFromPosition ( event.GetPosition() );
-		int levelClick = m_code->GetFoldLevel ( lineClick );
-
-		if ( ( levelClick & wxSCI_FOLDLEVELHEADERFLAG ) > 0 )
-		{
-			m_code->ToggleFold ( lineClick );
-		}
-	}
-}
-
-void CodeEditor::OnFind( wxFindDialogEvent& event )
-{
-	int wxflags = event.GetFlags();
-	int sciflags = 0;
-	if ( (wxflags & wxFR_WHOLEWORD) != 0 )
-	{
-		sciflags |= wxSCI_FIND_WHOLEWORD;
-	}
-	if ( (wxflags & wxFR_MATCHCASE) != 0 )
-	{
-		sciflags |= wxSCI_FIND_MATCHCASE;
-	}
-	int result;
-	if ( (wxflags & wxFR_DOWN) != 0 )
-	{
-		m_code->SetSelectionStart( m_code->GetSelectionEnd() );
-		m_code->SearchAnchor();
-		result = m_code->SearchNext( sciflags, event.GetFindString() );
-	}
-	else
-	{
-		m_code->SetSelectionEnd( m_code->GetSelectionStart() );
-		m_code->SearchAnchor();
-		result = m_code->SearchPrev( sciflags, event.GetFindString() );
-	}
-	if ( wxSCI_INVALID_POSITION == result )
-	{
-		wxMessageBox( wxString::Format( _("\"%s\" not found!"), event.GetFindString().c_str() ), _("Not Found!"), wxICON_ERROR, (wxWindow*)event.GetClientData() );
-	}
-	else
-	{
-		m_code->EnsureCaretVisible();
-	}
-}
-
-CppToolBar::CppToolBar( wxWindow *parent, int id )
-		: wxPanel( parent, id )
-{
-	wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
-	wxBitmapButton *button;
-	/*
-	button = new wxBitmapButton(this,-1,AppBitmaps::GetBitmap(wxT("open")),
-	wxDefaultPosition,wxSize(24,24));
-	sizer->Add(button,0,0,0);*/
-
-	button = new wxBitmapButton( this, -1, AppBitmaps::GetBitmap( wxT( "save" ) ),
-	                             wxDefaultPosition, wxSize( 24, 24 ) );
-	sizer->Add( button, 0, 0, 0 );
-	SetSizer( sizer );
-	sizer->SetSizeHints( this );
-}
-
-TCCodeWriter::TCCodeWriter()
-{
-	m_tc = NULL;
-}
-
-TCCodeWriter::TCCodeWriter( wxScintilla *tc )
-{
-	SetTextCtrl( tc );
-}
-
-void TCCodeWriter::DoWrite( wxString code )
-{
-	if ( m_tc )
-		m_tc->AddText( code );
-}
-
-void TCCodeWriter::Clear()
-{
-	if ( m_tc )
-		m_tc->ClearAll(); //*!*
-}
-
-StringCodeWriter::StringCodeWriter()
-{
-}
-
-void StringCodeWriter::DoWrite( wxString code )
-{
-	m_buffer += code;
-}
-
-void StringCodeWriter::Clear()
-{
-	m_buffer.clear();
-}
-
-wxString StringCodeWriter::GetString()
-{
-	return m_buffer;
-}
-
-FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
-		:
-		m_filename( file ),
-		m_useMicrosoftBOM( useMicrosoftBOM )
-{
-	Clear();
-}
-
-FileCodeWriter::~FileCodeWriter()
-{
-	WriteBuffer();
-}
-
-void FileCodeWriter::WriteBuffer()
-{
-	#ifdef __WXMSW__
-		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
-	#endif
-
-	// Compare buffer with existing file (if any) to determine if
-	// writing the file is necessary
-	bool shouldWrite = true;
-	std::ifstream file( m_filename.mb_str( wxConvFile ), std::ios::binary | std::ios::in );
-	if ( file )
-	{
-		MD5 diskHash( file );
-		unsigned char* diskDigest = diskHash.raw_digest();
-
-		MD5 bufferHash;
-		#ifdef __WXMSW__
-			if ( m_useMicrosoftBOM )
-			{
-				bufferHash.update( microsoftBOM, 3 );
-			}
-		#endif
-		bufferHash.update( reinterpret_cast< const unsigned char* >( (const char*)m_buffer.mb_str( wxConvUTF8 ) ), m_buffer.size() );
-		bufferHash.finalize();
-		unsigned char* bufferDigest = bufferHash.raw_digest();
-
-		shouldWrite = ( 0 != std::memcmp( diskDigest, bufferDigest, 16 ) );
-		delete [] diskDigest;
-		delete [] bufferDigest;
-	}
-
-	if ( shouldWrite )
-	{
-		if ( !m_file.Create( m_filename, true ) )
-		{
-			wxLogError( _("Unable to create file: %s"), m_filename.c_str() );
-			return;
-		}
-
-		#ifdef __WXMSW__
-			if ( m_useMicrosoftBOM )
-			{
-				m_file.Write( microsoftBOM, 3 );
-			}
-		#endif
-
-		m_file.Write( m_buffer );
-	}
-}
-
-void FileCodeWriter::Clear()
-{
-	StringCodeWriter::Clear();
-
-	if ( ::wxFileExists( m_filename ) )
-	{
-		// check for write access to the target file
-		if ( !wxFile::Access( m_filename, wxFile::write ) )
-		{
-			THROW_WXFBEX( _("Unable to write file: ") << m_filename );
-		}
-	}
-	else
-	{
-		if ( !m_file.Create( m_filename, true ) )
-		{
-			THROW_WXFBEX( _("Unable to create file: ") << m_filename );
 		}
 	}
 }

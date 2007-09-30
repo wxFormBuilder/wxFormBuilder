@@ -23,44 +23,28 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRC_PANEL__
-#define __XRC_PANEL__
+#ifndef __CODE_EDITOR__
+#define __CODE_EDITOR__
 
 #include <wx/panel.h>
 
-#include "utils/wxfbdefs.h"
-
-class CodeEditor;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
-
 class wxScintilla;
+class wxScintillaEvent;
 
 class wxFindDialogEvent;
 
-class XrcPanel : public wxPanel
+class CodeEditor : public wxPanel
 {
 private:
-	CodeEditor* m_xrcPanel;
-	PTCCodeWriter m_cw;
-
-	void InitStyledTextCtrl( wxScintilla* stc );
+	wxScintilla* m_code;
+	void OnMarginClick( wxScintillaEvent& event );
+	DECLARE_EVENT_TABLE()
 
 public:
-	XrcPanel( wxWindow *parent, int id );
-	~XrcPanel();
-
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
+	CodeEditor( wxWindow *parent, int id );
+	wxScintilla* GetTextCtrl();
 
 	void OnFind( wxFindDialogEvent& event );
-
-	DECLARE_EVENT_TABLE()
 };
 
-
-#endif //__XRC_PANEL__
+#endif //__CODE_EDITOR__

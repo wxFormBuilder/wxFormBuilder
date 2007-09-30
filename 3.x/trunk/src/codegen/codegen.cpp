@@ -32,77 +32,6 @@
 #include "model/objectbase.h"
 #include "utils/wxfbexception.h"
 
-void CodeWriter::WriteLn(wxString code)
-{
-	// It will not be allowed newlines (carry return) inside "code"
-	// If there was anyone, then FixWrite gets the string and breaks it
-	// in different lines, inserting them one after another using WriteLn
-	if ( !StringOk( code ) )
-	{
-		FixWrite( code );
-	}
-	else
-	{
-		Write( code );
-		#if defined( __WXMSW__ )
-			Write( wxT("\r\n") );
-		#elif defined( __WXMAC__ )
-			Write( wxT("\r") );
-		#else
-			Write( wxT("\n") );
-		#endif
-		m_cols = 0;
-	}
-}
-
-bool CodeWriter::StringOk(wxString s)
-{
-	if ( s.find( wxT("\n"), 0 ) == wxString::npos )
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-void CodeWriter::FixWrite( wxString s )
-{
-	wxStringTokenizer tkz( s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL );
-
-	while ( tkz.HasMoreTokens() )
-	{
-		wxString line = tkz.GetNextToken();
-		line.Trim( false );
-		line.Trim( true );
-		WriteLn( line );
-	}
-}
-
-
-void CodeWriter::Write(wxString code)
-{
-	if (m_cols == 0)
-	{
-		// Inserting indents
-		for ( int i = 0; i < m_indent; i++ )
-		{
-			DoWrite( wxT("\t") );
-		}
-
-		m_cols = m_indent;
-	}
-
-
-	// Here we must check if we have gone beyond limits (max columns)
-	//  if (m_cols + code.length() > GetColumns())
-	//    BreakLine(code)
-
-
-	DoWrite( code );
-}
-
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
 m_obj( obj ),
@@ -986,11 +915,4 @@ wxString TemplateParser::PropertyToCode(PProperty property)
 	{
 		return wxEmptyString;
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////
-CodeWriter::CodeWriter()
-{
-	m_indent = 0;
-	m_cols = 0;
 }

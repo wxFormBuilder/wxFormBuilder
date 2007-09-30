@@ -24,14 +24,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrccg.h"
+#include "codewriter.h"
 #include "utils/typeconv.h"
 #include "utils/debug.h"
-#include "tinyxml.h"
-#include <wx/filename.h>
-#include <wx/wfstream.h>
-#include <wx/txtstrm.h>
 #include "model/objectbase.h"
 #include "model/xrcfilter.h"
+
+#include <ticpp.h>
+
+void XrcCodeGenerator::SetWriter( PCodeWriter cw )
+{
+	m_cw = cw;
+}
 
 bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 {

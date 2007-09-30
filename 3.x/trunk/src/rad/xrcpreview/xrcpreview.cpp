@@ -2,7 +2,7 @@
 #include "rad/xrcpreview/xrcpreview.h"
 #include "model/objectbase.h"
 #include "codegen/xrccg.h"
-#include "rad/cpppanel/cpppanel.h"
+#include "codegen/codewriter.h"
 #include "utils/annoyingdialog.h"
 #include "utils/wxfbexception.h"
 
