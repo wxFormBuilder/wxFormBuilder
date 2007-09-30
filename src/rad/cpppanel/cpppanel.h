@@ -26,72 +26,17 @@
 #ifndef __CPP_PANEL__
 #define __CPP_PANEL__
 
-#include <wx/wx.h>
-#include <wx/wxScintilla/wxscintilla.h>
-#include <wx/fdrepdlg.h>
+#include <wx/panel.h>
 
-#include "codegen/codegen.h"
-#include "codegen/cppcg.h"
-#include "wx/file.h"
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
+#include "utils/wxfbdefs.h"
 
-#include <vector>
-#include <boost/smart_ptr.hpp>
+class CodeEditor;
 
-class TCCodeWriter : public CodeWriter
-{
- private:
-  wxScintilla *m_tc;
- protected:
-  void DoWrite(wxString code);
+class wxScintilla;
+class wxFlatNotebook;
+class wxFlatNotebookImageList;
 
- public:
-  TCCodeWriter();
-  TCCodeWriter(wxScintilla *tc);
-
-  void SetTextCtrl (wxScintilla *tc) { m_tc = tc; }
-  void Clear();
-};
-
-class StringCodeWriter : public CodeWriter
-{
- protected:
-  wxString m_buffer;
-  void DoWrite(wxString code);
-
- public:
-  StringCodeWriter();
-  void Clear();
-  wxString GetString();
-};
-
-class FileCodeWriter : public StringCodeWriter
-{
- private:
-  wxFile m_file;
-  wxString m_filename;
-  bool m_useMicrosoftBOM;
-
- protected:
-  void WriteBuffer();
-
- public:
-  FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false );
-  void Clear();
-  ~FileCodeWriter();
-};
-
-class CodeEditor : public wxPanel
-{
- private:
-  wxScintilla *m_code;
-  void OnMarginClick ( wxScintillaEvent &event);
-  DECLARE_EVENT_TABLE()
- public:
-  CodeEditor(wxWindow *parent, int id);
-  wxScintilla *GetTextCtrl() { return m_code; }
-  void OnFind( wxFindDialogEvent& event );
-};
+class wxFindDialogEvent;
 
 class wxFBEvent;
 class wxFBPropertyEvent;
@@ -100,38 +45,29 @@ class wxFBEventHandlerEvent;
 
 class CppPanel : public wxPanel
 {
- private:
-  CodeEditor *m_cppPanel;
-  CodeEditor *m_hPanel;
-  PTCCodeWriter m_hCW;
-  PTCCodeWriter m_cppCW;
-  wxFlatNotebookImageList m_icons;
-  wxFlatNotebook* m_notebook;
+private:
+	CodeEditor* m_cppPanel;
+	CodeEditor* m_hPanel;
+	PTCCodeWriter m_hCW;
+	PTCCodeWriter m_cppCW;
+	wxFlatNotebookImageList* m_icons;
+	wxFlatNotebook* m_notebook;
 
-  void InitStyledTextCtrl(wxScintilla *stc);
+	void InitStyledTextCtrl( wxScintilla* stc );
 
- public:
-  CppPanel(wxWindow *parent, int id);
-  ~CppPanel();
+public:
+	CppPanel( wxWindow *parent, int id );
+	~CppPanel();
 
-  void OnPropertyModified( wxFBPropertyEvent& event );
-  void OnProjectRefresh( wxFBEvent& event );
-  void OnCodeGeneration( wxFBEvent& event );
-  void OnObjectChange( wxFBObjectEvent& event );
-  void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+	void OnPropertyModified( wxFBPropertyEvent& event );
+	void OnProjectRefresh( wxFBEvent& event );
+	void OnCodeGeneration( wxFBEvent& event );
+	void OnObjectChange( wxFBObjectEvent& event );
+	void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
-  void OnFind( wxFindDialogEvent& event );
+	void OnFind( wxFindDialogEvent& event );
 
-  DECLARE_EVENT_TABLE()
+	DECLARE_EVENT_TABLE()
 };
-
-
-class CppToolBar : public wxPanel
-{
- public:
-   CppToolBar(wxWindow *parent, int id);
-};
-
-
 
 #endif //__CPP_PANEL__

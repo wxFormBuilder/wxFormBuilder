@@ -27,32 +27,28 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
+#include "utils/wxfbdefs.h"
+
 namespace ticpp
 {
 	class Element;
 }
 
-/**
- * XRC code generator
- */
+/// XRC code generator.
+
 class XrcCodeGenerator : public CodeGenerator
 {
- private:
-  PCodeWriter m_cw;
+private:
+	PCodeWriter m_cw;
 
-  ticpp::Element* GetElement( PObjectBase obj, ticpp::Element* parent = NULL );
+	ticpp::Element* GetElement( PObjectBase obj, ticpp::Element* parent = NULL );
 
- public:
+public:
+	/// Configures the code writer for the XML file.
+	void SetWriter( PCodeWriter cw );
 
-  /**
-   * Configures the code writer for the XML file
-   */
-  void SetWriter(PCodeWriter cw) { m_cw = cw; }
-
-  /**
-   * Generates the XRC code for the project
-   */
-  bool GenerateCode(PObjectBase project);
+	/// Generates the XRC code for the project.
+	bool GenerateCode( PObjectBase project );
 };
 
 

@@ -48,6 +48,8 @@
 #include <rad/appdata.h>
 #include "model/objectbase.h"
 
+#include <wx/wxScintilla/wxscintilla.h>
+
 #define ID_ABOUT         100
 #define ID_QUIT          101
 #define ID_SAVE_PRJ      102
