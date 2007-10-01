@@ -484,8 +484,11 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		file = wxT("noname");
 	}
 
-	m_header->WriteLn( wxT("#ifndef __") + file + wxT("__") );
-	m_header->WriteLn( wxT("#define __") + file + wxT("__") );
+	wxString guardMacro;
+	wxFileName::SplitPath( file, 0, &guardMacro, 0 );
+	guardMacro.Replace( wxT(" "), wxT("_") );
+	m_header->WriteLn( wxT("#ifndef __") + guardMacro + wxT("__") );
+	m_header->WriteLn( wxT("#define __") + guardMacro + wxT("__") );
 	m_header->WriteLn( wxT("") );
 
 	code = GetCode( project, wxT("header_preamble") );
@@ -662,7 +665,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
         m_header->WriteLn( wxEmptyString );
 	}
 
-	m_header->WriteLn( wxT("#endif //__") + file + wxT("__") );
+	m_header->WriteLn( wxT("#endif //__") + guardMacro + wxT("__") );
 
 	return true;
 }
