@@ -130,8 +130,8 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
 
-	wxMemoryFSHandler::AddFile(wxT("xrcpreview"), cw->GetString() );
-	res->Load( wxT("memory:xrcpreview") );
+	wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), cw->GetString() );
+	res->Load( wxT("memory:xrcpreview.xrc") );
 
 	wxWindow* window = NULL;
 	if ( className == wxT( "Frame" ) )
@@ -175,10 +175,10 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	::wxSetWorkingDirectory( workingDir );
 
 	#if wxCHECK_VERSION( 2, 6, 3 )
-	res->Unload( wxT("memory:xrcpreview") );
+	res->Unload( wxT("memory:xrcpreview.xrc") );
 	#endif
 
-	wxMemoryFSHandler::RemoveFile( wxT("xrcpreview") );
+	wxMemoryFSHandler::RemoveFile( wxT("xrcpreview.xrc") );
 }
 
 void XRCPreview::AddEventHandler( wxWindow* window, wxWindow* form )
