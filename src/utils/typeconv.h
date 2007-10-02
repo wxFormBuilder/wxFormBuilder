@@ -74,6 +74,12 @@ namespace TypeConv
   wxArrayString StringToArrayString(const wxString &str);
   wxString ArrayStringToString(const wxArrayString &arrayStr);
 
+  /**
+  @internal
+  Used to import old projects.
+  */
+  wxArrayString OldStringToArrayString( const wxString& str );
+
   wxString ReplaceSynonymous(const wxString &bitlist);
 
   // Obtiene la ruta absoluta de un archivo

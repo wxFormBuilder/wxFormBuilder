@@ -1222,12 +1222,6 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 				}
 				break;
 			}
-			case PT_STRINGLIST:
-			{
-				const wxArrayString &arraystr = event.GetPropertyValueAsArrayString();
-				AppData()->ModifyProperty(prop, TypeConv::ArrayStringToString(arraystr));
-				break;
-			}
 			case PT_INTLIST:
 			case PT_UINTLIST:
 			{
@@ -1414,12 +1408,6 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 					m_pg->SetPropertyValue( pgid, def );
 				}
 			}
-		}
-		break;
-	case PT_STRINGLIST:
-		{
-			wxArrayString val = prop->GetValueAsArrayString();
-			pgProp->DoSetValue((void*)&val);
 		}
 		break;
 	case PT_BITMAP:
