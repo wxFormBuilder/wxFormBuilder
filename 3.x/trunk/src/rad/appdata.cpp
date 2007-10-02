@@ -467,7 +467,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 8 )
+		m_fbpVerMinor( 9 )
 {
 	#ifdef __WXFB_DEBUG__
 	wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1514,6 +1514,28 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 			}
 		}
 	}
+
+	// The format of string list properties changed in version 1.9
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 9 ) )
+	{
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert( "namespace" );
+		oldProps.insert( "bitmaps" );
+		oldProps.insert( "icons" );
+		GetPropertiesToConvert( project, oldProps, &newProps );
+
+		std::set< ticpp::Element* >::iterator prop;
+		for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
+		{
+			std::string value = ( *prop )->GetText( false );
+			if ( !value.empty() )
+			{
+				wxArrayString array = TypeConv::OldStringToArrayString( _WXSTR( value ) );
+				( *prop )->SetText( _STDSTR( TypeConv::ArrayStringToString( array ) ) );
+			}
+		}
+	}
 }
 
 void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int fileMinor )
@@ -1710,6 +1732,46 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	// See ConvertProjectProperties
 
 	/* The file is now at at least version 1.8 */
+
+	// stringlist properties are stored in a different format as of version 1.9
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 9 ) )
+	{
+		oldProps.clear();
+		newProps.clear();
+
+		if  (	objClass == "wxComboBox"	||
+				objClass == "wxChoice"		||
+				objClass == "wxListBox"		||
+				objClass == "wxRadioBox"	||
+				objClass == "wxCheckListBox"
+			)
+		{
+			oldProps.insert( "choices" );
+		}
+		else if ( objClass == "wxGrid" )
+		{
+			oldProps.insert( "col_label_values" );
+			oldProps.insert( "row_label_values" );
+		}
+
+		if ( !oldProps.empty() )
+		{
+			GetPropertiesToConvert( parent, oldProps, &newProps );
+
+			std::set< ticpp::Element* >::iterator prop;
+			for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
+			{
+				std::string value = ( *prop )->GetText( false );
+				if ( !value.empty() )
+				{
+					wxArrayString array = TypeConv::OldStringToArrayString( _WXSTR( value ) );
+					( *prop )->SetText( _STDSTR( TypeConv::ArrayStringToString( array ) ) );
+				}
+			}
+		}
+	}
+
+	/* The file is now at at least version 1.9 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )

@@ -33,6 +33,8 @@
 #include <cstring>
 #include "rad/appdata.h"
 #include <clocale>
+#include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/propdev.h>
 
 ////////////////////////////////////
 
@@ -624,7 +626,7 @@ wxString TypeConv::SetFlag  (const wxString &flag, const wxString &currentValue)
 // 'string1' 'string2' 'string3'
 // el caracter (') se representa dentro de una cadena como ('')
 // 'wxString''1'''
-wxArrayString TypeConv::StringToArrayString(const wxString &str)
+wxArrayString TypeConv::OldStringToArrayString( const wxString& str )
 {
     int i=0, size = (int)str.Length(), state = 0;
     wxArrayString result;
@@ -660,22 +662,26 @@ wxArrayString TypeConv::StringToArrayString(const wxString &str)
         }
         i++;
     }
+    return result;
+}
+
+wxArrayString TypeConv::StringToArrayString( const wxString& str )
+{
+	wxArrayString result;
+
+    WX_PG_TOKENIZER2_BEGIN( str, wxT('"') )
+
+        result.Add ( token );
+
+    WX_PG_TOKENIZER2_END()
 
     return result;
 }
 
 wxString TypeConv::ArrayStringToString(const wxArrayString &arrayStr)
 {
-    wxString result;
-    wxString substr;
-    int i, size = (int)arrayStr.Count();
-
-    if (size > 0)
-        result = wxT('\'') + arrayStr[0] + wxT('\'');
-
-    for (i=1 ; i < size ; i++)
-        result = result +  wxT(" '") + arrayStr[i] + wxT('\'');
-
+	wxString result;
+	wxPropertyGrid::ArrayStringToString( result, arrayStr, wxT('"'), wxT('"'), 1 );
     return result;
 }
 
