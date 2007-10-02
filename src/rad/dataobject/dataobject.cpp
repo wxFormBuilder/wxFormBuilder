@@ -105,7 +105,7 @@ PObjectBase wxFBDataObject::GetObj()
 	try
 	{
 		ticpp::Document doc;
-		doc.LoadFromString( m_data, TIXML_ENCODING_UTF8 );
+		doc.Parse( m_data, true, TIXML_ENCODING_UTF8 );
 		ticpp::Element* element = doc.FirstChildElement();
 
 
