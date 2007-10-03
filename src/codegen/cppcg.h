@@ -123,12 +123,12 @@ private:
 	/**
 	* Generates the event table.
 	*/
-	void GenEvents( PObjectBase class_obj, const EventVector &events );
+	void GenEvents( PObjectBase class_obj, const EventVector &events, bool disconnect = false );
 
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
-	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName );
+	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, bool disconnect = false );
 
 	/**
 	* Recursive function for the attributes declaration, used inside GenClassDeclaration.
@@ -173,6 +173,11 @@ private:
 	* Generates the constructor for a class
 	*/
 	void GenConstructor( PObjectBase class_obj, const EventVector &events );
+
+	/**
+	* Generates the destructor for a class
+	*/
+	void GenDestructor( PObjectBase class_obj, const EventVector &events );
 
 	/**
 	* Makes the objects construction, setting up the objects' and Layout properties.

@@ -652,6 +652,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 			GenEvents( child, events );
 		}
 		GenConstructor( child, events );
+		GenDestructor( child, events );
 	}
 
     // namespace
@@ -670,7 +671,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	return true;
 }
 
-void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events )
+void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events, bool disconnect )
 {
 	if ( events.empty() )
 	{
@@ -710,6 +711,7 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 	{
 		if ( !m_useConnect )
 		{
+			m_source->WriteLn();
 			m_source->WriteLn( wxT("BEGIN_EVENT_TABLE( ") + class_name + wxT(", ") + base_class + wxT(" )") );
 			m_source->Indent();
 		}
@@ -726,12 +728,12 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 			{
 				handlerName.Printf( wxT("%s::_wxFB_%s"), class_name.c_str(), event->GetValue().c_str() );
 			}
-			wxString templateName = wxString::Format( wxT("evt_%s_%s"), m_useConnect ? wxT("connect") : wxT("entry"), event->GetName().c_str() );
+			wxString templateName = wxString::Format( wxT("%s_%s"), m_useConnect ? wxT("connect") : wxT("entry"), event->GetName().c_str() );
 
 			PObjectBase obj = event->GetObject();
-			if ( !GenEventEntry( obj, obj->GetObjectInfo(), templateName, handlerName ) )
+			if ( !GenEventEntry( obj, obj->GetObjectInfo(), templateName, handlerName, disconnect ) )
 			{
-				wxLogError( wxT("Missing \"%s\" template for \"%s\" class. Review your XML object description"),
+				wxLogError( wxT("Missing \"evt_%s\" template for \"%s\" class. Review your XML object description"),
 					templateName.c_str(), class_name.c_str() );
 			}
 		}
@@ -744,13 +746,19 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 	}
 }
 
-bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName )
+bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, bool disconnect )
 {
 	wxString _template;
 	PCodeInfo code_info = obj_info->GetCodeInfo( wxT("C++") );
 	if ( code_info )
 	{
-		_template = code_info->GetTemplate( templateName );
+		_template = code_info->GetTemplate( wxString::Format( wxT("evt_%s%s"), disconnect ? wxT("dis") : wxT(""), templateName.c_str() ) );
+		if ( disconnect && _template.empty() )
+		{
+			_template = code_info->GetTemplate( wxT("evt_") + templateName );
+			_template.Replace( wxT("Connect"), wxT("Disconnect"), false );
+		}
+
 		if ( !_template.empty() )
 		{
 			_template.Replace( wxT("#handler"), handlerName.c_str() ); // Ugly patch!
@@ -763,7 +771,7 @@ bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 	for ( unsigned int i = 0; i < obj_info->GetBaseClassCount(); i++ )
 	{
 		PObjectInfo base_info = obj_info->GetBaseClass( i );
-		if ( GenEventEntry( obj, base_info, templateName, handlerName ) )
+		if ( GenEventEntry( obj, base_info, templateName, handlerName, disconnect ) )
 		{
 			return true;
 		}
@@ -967,6 +975,9 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	// The constructor is also included within public
 	m_header->WriteLn( GetCode( class_obj, wxT("cons_decl") ) );
+
+	// Destructor
+	m_header->WriteLn( wxString::Format( wxT("~%s();"), class_name.c_str() ) );
 
 	GetGenEventHandlers( class_obj );
 	m_header->Unindent();
@@ -1262,7 +1273,7 @@ void CppCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectInfo 
 
 void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector &events )
 {
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn();
 	m_source->WriteLn( GetCode( class_obj, wxT("cons_def") ) );
 	m_source->WriteLn( wxT("{") );
 	m_source->Indent();
@@ -1283,6 +1294,24 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 		m_source->WriteLn();
 		m_source->WriteLn( wxT("// Connect Events") );
 		GenEvents( class_obj, events );
+	}
+
+	m_source->Unindent();
+	m_source->WriteLn( wxT("}") );
+}
+
+void CppCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &events )
+{
+	m_source->WriteLn();
+	wxString className = class_obj->GetPropertyAsString( wxT("name") );
+	m_source->WriteLn( wxString::Format( wxT("%s::~%s()"), className.c_str(), className.c_str() ) );
+	m_source->WriteLn( wxT("{") );
+	m_source->Indent();
+
+	if ( m_useConnect && !events.empty() )
+	{
+		m_source->WriteLn( wxT("// Disconnect Events") );
+		GenEvents( class_obj, events, true );
 	}
 
 	m_source->Unindent();
