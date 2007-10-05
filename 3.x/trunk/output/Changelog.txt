@@ -8,6 +8,7 @@ date Version 3.00.51
 * FS#249 - "Paste From Clipboard requires Administrator privileges on Vista"
 * FS#252 - "OnSize event bug in RC3 for wxPanel."
 * FS#250 - "Image File Browser default filter should be "All Image Files""
+* FS#251 - "UNC paths for images are not supported."
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
