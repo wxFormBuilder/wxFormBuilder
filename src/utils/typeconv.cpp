@@ -366,13 +366,21 @@ wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& 
         {
             if ( fnFile.MakeAbsolute(basePath) )
             {
-                return wxString::Format( wxT("%s%s%s"), fnFile.GetVolume().c_str(), fnFile.GetVolumeSeparator().c_str(), fnFile.GetFullPath( wxPATH_UNIX ).c_str() );
+                wxString path = fnFile.GetFullPath();
+            	#ifdef __WXMSW__
+					path.Replace( wxT("\\"), wxT("/"), true );
+            	#endif
+            	return path;
             }
         }
     }
 
 	// Either it is already absolute, or it could not be made absolute, so give it back - but change to '/' for separators
-    return wxString::Format( wxT("%s%s%s"), noChanges.GetVolume().c_str(), noChanges.GetVolumeSeparator().c_str(), noChanges.GetFullPath( wxPATH_UNIX ).c_str() );
+     wxString path = noChanges.GetFullPath();
+	#ifdef __WXMSW__
+		path.Replace( wxT("\\"), wxT("/"), true );
+	#endif
+	return path;
 }
 
 wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& basePath )
@@ -394,7 +402,11 @@ wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& b
 	// Either it is already relative, or it could not be made relative, so give it back - but change to '/' for separators
 	if ( noChanges.IsAbsolute() )
 	{
-		return wxString::Format( wxT("%s%s%s"), noChanges.GetVolume().c_str(), noChanges.GetVolumeSeparator().c_str(), noChanges.GetFullPath( wxPATH_UNIX ).c_str() );
+		 wxString path = noChanges.GetFullPath();
+		#ifdef __WXMSW__
+			path.Replace( wxT("\\"), wxT("/"), true );
+		#endif
+		return path;
 	}
 	else
 	{
