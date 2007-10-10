@@ -62,8 +62,7 @@
 			#ifnotnull $maximum_size
 			@{ $name->SetMaxSize( $maximum_size ); #nl @}
 		</template>
-		<template name="toolbar_add">#parent $name->AddControl( $name );</template>
-		
+
 		<!-- wxKeyEvent -->
 		<template name="evt_entry_OnChar">@#error wxKeyEvent does not propogate, so wxEVT_CHAR from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnChar">$name->Connect( wxEVT_CHAR, #handler, NULL, this );</template>
@@ -71,7 +70,7 @@
 		<template name="evt_connect_OnKeyDown">$name->Connect( wxEVT_KEY_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnKeyUp">@#error wxKeyEvent does not propogate, so wxEVT_KEY_UP from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnKeyUp">$name->Connect( wxEVT_KEY_UP, #handler, NULL, this );</template>
-		
+
 		<!-- wxMouseEvent -->
 		<template name="evt_entry_OnEnterWindow">@#error wxMouseEvent does not propogate, so wxEVT_ENTER_WINDOW from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnEnterWindow">$name->Connect( wxEVT_ENTER_WINDOW, #handler, NULL, this );</template>
@@ -80,9 +79,9 @@
 		<template name="evt_entry_OnLeftDClick">@#error wxMouseEvent does not propogate, so wxEVT_LEFT_DCLICK from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnLeftDClick">$name->Connect( wxEVT_LEFT_DCLICK, #handler, NULL, this );</template>
 		<template name="evt_entry_OnLeftDown">@#error wxMouseEvent does not propogate, so wxEVT_LEFT_DOWN from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnLeftDown">$name->Connect( wxEVT_LEFT_DOWN, #handler, NULL, this );</template>  
+		<template name="evt_connect_OnLeftDown">$name->Connect( wxEVT_LEFT_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnLeftUp">@#error wxMouseEvent does not propogate, so wxEVT_LEFT_UP from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnLeftUp">$name->Connect( wxEVT_LEFT_UP, #handler, NULL, this );</template>  
+		<template name="evt_connect_OnLeftUp">$name->Connect( wxEVT_LEFT_UP, #handler, NULL, this );</template>
 		<template name="evt_entry_OnMiddleDClick">@#error wxMouseEvent does not propogate, so wxEVT_MIDDLE_DCLICK from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnMiddleDClick">$name->Connect( wxEVT_MIDDLE_DCLICK, #handler, NULL, this );</template>
 		<template name="evt_entry_OnMiddleDown">@#error wxMouseEvent does not propogate, so wxEVT_MIDDLE_DOWN from $name can only be handled with Connect()</template>
@@ -114,26 +113,26 @@
 			$name->Connect( wxEVT_LEAVE_WINDOW, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_ENTER_WINDOW, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_MOUSEWHEEL, #handler, NULL, this );
-		</template>		
-		
+		</template>
+
 		<!-- wxFocusEvent -->
 		<template name="evt_entry_OnKillFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnKillFocus">$name->Connect( wxEVT_KILL_FOCUS, #handler, NULL, this );</template>
 		<template name="evt_entry_OnSetFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnSetFocus">$name->Connect( wxEVT_SET_FOCUS, #handler, NULL, this );</template>
-		
+
 		<!-- wxPaintEvent -->
 		<template name="evt_entry_OnPaint">@#error wxPaintEvent does not propogate, so wxEVT_PAINT from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnPaint">$name->Connect( wxEVT_PAINT, #handler, NULL, this );</template>
-		
+
 		<!-- wxEraseEvent -->
 		<template name="evt_entry_OnEraseBackground">@#error wxEraseEvent does not propogate, so wxEVT_ERASE_BACKGROUND from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnEraseBackground">$name->Connect( wxEVT_ERASE_BACKGROUND, #handler, NULL, this );</template>
-		
+
 		<!-- wxSizeEvent -->
 		<template name="evt_entry_OnSize">@#error wxSizeEvent does not propogate, so wxEVT_SIZE from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnSize">$name->Connect( wxEVT_SIZE, #handler, NULL, this );</template>
-		
+
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
