@@ -1654,7 +1654,7 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project)
 		}
 	}
 
-	m_source->WriteLn( wxEmptyString );
+	m_source->WriteLn();
 }
 
 void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& xpmset )
@@ -1688,7 +1688,7 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 				wxString relPath = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
 				wxString inc;
-				inc << wxT("#include \"") << ConvertCppString( relPath ) << wxT("\"");
+				inc << wxT("#include \"") << relPath << wxT("\"");
 				xpmset.insert(inc);
 			}
 		}
