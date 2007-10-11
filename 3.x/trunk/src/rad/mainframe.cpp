@@ -348,6 +348,7 @@ MainFrame::~MainFrame()
 	/*m_mgr.UnInit();*/
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	delete m_findDialog;
+	wxFlatNotebook::CleanUp();
 }
 
 void MainFrame::RestorePosition( const wxString &name )
