@@ -367,19 +367,13 @@ wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& 
             if ( fnFile.MakeAbsolute(basePath) )
             {
                 wxString path = fnFile.GetFullPath();
-            	#ifdef __WXMSW__
-					path.Replace( wxT("\\"), wxT("/"), true );
-            	#endif
             	return path;
             }
         }
     }
 
 	// Either it is already absolute, or it could not be made absolute, so give it back - but change to '/' for separators
-     wxString path = noChanges.GetFullPath();
-	#ifdef __WXMSW__
-		path.Replace( wxT("\\"), wxT("/"), true );
-	#endif
+	wxString path = noChanges.GetFullPath();
 	return path;
 }
 
@@ -402,10 +396,7 @@ wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& b
 	// Either it is already relative, or it could not be made relative, so give it back - but change to '/' for separators
 	if ( noChanges.IsAbsolute() )
 	{
-		 wxString path = noChanges.GetFullPath();
-		#ifdef __WXMSW__
-			path.Replace( wxT("\\"), wxT("/"), true );
-		#endif
+		wxString path = noChanges.GetFullPath();
 		return path;
 	}
 	else
