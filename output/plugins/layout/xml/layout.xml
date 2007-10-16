@@ -60,6 +60,8 @@
       <option name="wxVERTICAL" 			help="Align items vertically"/>
       <option name="wxHORIZONTAL" 			help="Align items vertically"/>wxVERTICAL</property>
     <property name="label" type="wxString_i18n">label</property>
+	<property name="id" type="macro">wxID_ANY</property>
+	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
   <objectinfo class="wxGridSizer" icon="grid_sizer.xpm" type="sizer">
