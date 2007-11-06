@@ -7,7 +7,7 @@
     <property name="style" type="bitlist">
       <option name="wxST_SIZEGRIP"       help="On Windows, displays a gripper at right-hand side of the status bar." />wxST_SIZEGRIP</property>
   </objectinfo>
-  
+
   <objectinfo class="wxMenuBar" icon="menubar.xpm" type="menubar" startgroup="1">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_menubar</property>
@@ -28,7 +28,7 @@
   </objectinfo>
 
   <objectinfo class="wxMenuItem" icon="menuitem.xpm" type="menuitem">
-    <property name="name" type="text">menuItem</property>
+    <property name="name" type="text">m_menuItem</property>
     <property name="label" type="wxString_i18n"    help="Text for the menu item, as shown on the menu. An accelerator key can be specified using the ampersand &quot;&amp;&quot; character.">MyMenuItem</property>
     <property name="shortcut" type="wxString" help="Optional shortcut keyboard shortcut. Remarks: The general syntax is any combination of &quot;CTRL&quot;, &quot;ALT&quot; and &quot;SHIFT&quot; strings (case doesn't matter) separated by either '-' or '+' characters and followed by the accelerator itself. The accelerator may be any alphanumeric character, any function key (from F1 to F12)"/>
     <property name="help" type="wxString_i18n"     help="Optional help string that will be shown on the status bar."/>
@@ -89,7 +89,7 @@
 	<event name="OnToolEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_ENTER event. This uses the tools parent ID, the ToolBar, so be sure you set it to something that is not the default. The value of wxCommandEvent::GetSelection is the tool id, or -1 if the mouse cursor has moved off a tool." />
 	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
-  
+
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
   </objectinfo>
 </package>

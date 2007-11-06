@@ -3,13 +3,13 @@
   <templates class="wxWindow">
     <template name="toolbar_add">#parent $name->AddControl( $name );</template>
   </templates>
-  
+
   <templates class="wxStatusBar">
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/statusbr.h&gt;</template>
     <template name="construction">$name = #wxparent $name->CreateStatusBar( $fields, $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );</template>
   </templates>
-  
+
   <templates class="wxMenuBar">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( $style #ifnotnull $window_style @{ |$window_style @} );</template>
@@ -32,7 +32,8 @@
   </templates>
 
   <templates class="wxMenuItem">
-    <template name="construction">wxMenuItem* $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );</template>
+    <template name="declaration">wxMenuItem* $name;</template>
+    <template name="construction">$name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );</template>
     <template name="settings">
       #ifequal $enabled "0"
       @{$name->Enable( $enabled ); #nl @}
@@ -51,9 +52,9 @@
     </template>
     <template name="menuitem_add">
 		#ifnotnull $bitmap
-		@{ 
+		@{
 			@#ifdef __WXMSW__ #nl
-			$name->SetBitmaps( $bitmap #ifnotnull $unchecked_bitmap @{, $unchecked_bitmap @} ); #nl 
+			$name->SetBitmaps( $bitmap #ifnotnull $unchecked_bitmap @{, $unchecked_bitmap @} ); #nl
 			@#elif defined( __WXGTK__ ) #nl
 			$name->SetBitmap( $bitmap ); #nl
 			@#endif #nl
@@ -96,11 +97,11 @@
                  #ifparenttypeequal "sizeritem"
                  @{
 					$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-                 @}  
+                 @}
                  #ifparenttypeequal "gbsizeritem"
                  @{
 					$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-                 @}                   
+                 @}
 		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
 
 		#ifnotnull $separation
@@ -133,7 +134,7 @@
     <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 	<template name="evt_connect_OnUpdateUI">this->Connect( $id, wxEVT_UPDATE_UI, #handler );</template>
   </templates>
-  
+
   <templates class="toolSeparator">
     <template name="construction">#parent $name->AddSeparator();</template>
   </templates>
