@@ -23,6 +23,7 @@
 	cp -r ./output/plugins/ ./output/wxFormBuilder.app/Contents/SharedSupport/plugins
 	cp -r ./output/resources/ ./output/wxFormBuilder.app/Contents/SharedSupport/resources
 	cp -r ./output/xml/ ./output/wxFormBuilder.app/Contents/SharedSupport/xml
+	cp ./install/macosx/icon.icns ./output/wxFormBuilder.app/Contents/Resources/icon.icns
 	
 	echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" >> $TOFILE
 	echo "<!DOCTYPE plist PUBLIC \"-//Apple Computer//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">" >> $TOFILE
