@@ -63,6 +63,10 @@
 #define EXPANDED_TAG "expanded"
 
 
+#ifdef __WXMAC__
+#include <dlfcn.h>
+#endif
+
 ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
 {
 	m_name = name;
@@ -1213,30 +1217,57 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		path += wxT("d");
 	#endif
 
+	// Find the GetComponentLibrary function - all plugins must implement this
+	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
+
 	// no extension is added for __WXMAC__
 	#ifdef __WXMAC__
 		path += wxT(".dylib");
-	#endif
-
-	// Attempt to load the DLL
-	wxDynamicLibrary* library = new wxDynamicLibrary( path );
-	if ( !library->IsLoaded() )
-	{
-		THROW_WXFBEX( wxT("Error loading library ") << path )
-	}
-
-	m_libs.push_back( library );
-
-	// Find the GetComponentLibrary function - all plugins must implement this
-	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
-	PFGetComponentLibrary GetComponentLibrary =	(PFGetComponentLibrary)library->GetSymbol( wxT("GetComponentLibrary") );
-
-	if ( !GetComponentLibrary )
-	{
-		THROW_WXFBEX( path << wxT(" is not a valid component library") )
-	}
-
-	Debug::Print( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
+		
+		// open the library
+		void* handle = dlopen(path.mb_str(), RTLD_LAZY);
+		
+		if (!handle)
+		{
+			wxString error = wxString(dlerror(), wxConvUTF8);
+			THROW_WXFBEX( wxT("Error loading library ") << path << wxT(" ") << error )
+		}
+		dlerror(); // reset errors
+		
+		// load the symbol
+		
+		PFGetComponentLibrary GetComponentLibrary = (PFGetComponentLibrary) dlsym(handle, "GetComponentLibrary");
+		
+		const char *dlsym_error = dlerror();
+		if (dlsym_error)
+		{
+			wxString error = wxString(dlsym_error, wxConvUTF8);
+			THROW_WXFBEX( path << wxT(" is not a valid component library: ") << error )
+			dlclose(handle);
+		}
+		
+		dlclose(handle);
+	#else
+		
+		// Attempt to load the DLL
+		wxDynamicLibrary* library = new wxDynamicLibrary( path );
+		if ( !library->IsLoaded() )
+		{
+			THROW_WXFBEX( wxT("Error loading library ") << path )
+		}
+		
+		m_libs.push_back( library );
+		
+		PFGetComponentLibrary GetComponentLibrary =	(PFGetComponentLibrary)library->GetSymbol( wxT("GetComponentLibrary") );
+		
+		if ( !GetComponentLibrary )
+		{
+			THROW_WXFBEX( path << wxT(" is not a valid component library") )
+		}
+		
+#endif
+		
+		Debug::Print( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
 
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );

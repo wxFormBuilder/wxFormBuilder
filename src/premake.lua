@@ -18,7 +18,7 @@ local wx_ver = "28"
 package.name = "wxFormBuilder"
 -- Set this if you want a different name for your target than the package's name.
 local targetName = ""
-if ( OS == "linux" ) then
+if ( not windows ) then
 	-- All lowercase binary names are normal in linux
 	targetName = "wxformbuilder"
 end
@@ -32,7 +32,7 @@ package.files = { matchrecursive( "*.cpp", "*.h", "*.cc", "*.hh", "*.rc" ) }
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
 package.includepaths = { "controls/include", "boost", "../src", "../sdk/tinyxml", "../sdk/plugin_interface" }
-if ( OS == "windows") then
+if ( windows ) then
 	package.libpaths = { "../output", "../sdk/lib" }
 else
 	package.libpaths = { "../output/lib/wxformbuilder", "../sdk/lib" }
@@ -45,7 +45,7 @@ package.depends = { "additional-components-plugin", "common-components-plugin", 
 package.pchheader = "pch.h"
 -- Setup the output directory options.
 --		Note: Use 'libdir' for "lib" kind only.
-if ( OS == "windows") then
+if ( windows ) then
 	package.bindir = "../output"
 else
 	package.bindir = "../output/bin"
@@ -54,7 +54,9 @@ end
 -- Set the defines.
 package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA", "SCI_NAMESPACE" }
 -- Load the shlibs from the 'lib/wxformbuilder' subdirectory.
-if ( OS == "linux" ) then
+if ( macosx ) then
+	table.insert( package.linkoptions, "-Wl,-L../output/lib/wxformbuilder" )
+elseif ( not windows ) then
 	if ( target == "cb-gcc" ) then
 		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder" )
 	else
@@ -71,7 +73,7 @@ end
 -- Package options
 addoption( "unicode", "Use the Unicode character set" )
 addoption( "with-wx-shared", "Link against wxWidgets as a shared library" )
-if ( OS == "linux" ) then
+if ( not windows ) then
 	addoption( "disable-wx-debug", "Compile against a wxWidgets library without debugging" )
 end
 
@@ -88,7 +90,7 @@ else
 end
 
 -- Set debug flags
-if ( options["disable-wx-debug"] and ( OS == "linux" ) ) then
+if ( options["disable-wx-debug"] and ( not windows ) ) then
 	debug_option = "--debug=no"
 	debug_macro = { "NDEBUG", "__WXFB_DEBUG__" }
 else
@@ -233,7 +235,9 @@ else
 	-- Set the wxWidgets link options.
 	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
 	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
-
-	-- Set the Linux defines.
-	table.insert( package.defines, "__WXGTK__" )
 end
+
+if ( macosx ) then
+	package.postbuildcommands = { "../install/macosx/postbuild.sh" }
+end
+
