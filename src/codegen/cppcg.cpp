@@ -35,6 +35,7 @@
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
+#include <wx/defs.h>
 
 CppTemplateParser::CppTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :
@@ -1729,7 +1730,13 @@ return auxPath;
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert( wxT(#x) )
 void CppCodeGenerator::SetupPredefinedMacros()
 {
-	ADD_PREDEFINED_MACRO(wxID_ANY);
+    /* no id matches this one when compared to it */
+    ADD_PREDEFINED_MACRO(wxID_NONE);
+
+    /*  id for a separator line in the menu (invalid for normal item) */
+    ADD_PREDEFINED_MACRO(wxID_SEPARATOR);
+
+    ADD_PREDEFINED_MACRO(wxID_ANY);
 
 	ADD_PREDEFINED_MACRO(wxID_LOWEST);
 
@@ -1752,7 +1759,12 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_HELP_PROCEDURES);
 	ADD_PREDEFINED_MACRO(wxID_HELP_CONTEXT);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_ALL);
+    ADD_PREDEFINED_MACRO(wxID_PAGE_SETUP);
+    ADD_PREDEFINED_MACRO(wxID_HELP_INDEX);
+    ADD_PREDEFINED_MACRO(wxID_HELP_SEARCH);
+    ADD_PREDEFINED_MACRO(wxID_PREFERENCES);
 
+    ADD_PREDEFINED_MACRO(wxID_EDIT);
 	ADD_PREDEFINED_MACRO(wxID_CUT);
 	ADD_PREDEFINED_MACRO(wxID_COPY);
 	ADD_PREDEFINED_MACRO(wxID_PASTE);
@@ -1775,6 +1787,7 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTSIZE);
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTTYPE);
 
+    ADD_PREDEFINED_MACRO(wxID_FILE);
 	ADD_PREDEFINED_MACRO(wxID_FILE1);
 	ADD_PREDEFINED_MACRO(wxID_FILE2);
 	ADD_PREDEFINED_MACRO(wxID_FILE3);
@@ -1785,7 +1798,8 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_FILE8);
 	ADD_PREDEFINED_MACRO(wxID_FILE9);
 
-	// Standard button IDs
+	/*  Standard button and menu IDs */
+
 	ADD_PREDEFINED_MACRO(wxID_OK);
 	ADD_PREDEFINED_MACRO(wxID_CANCEL);
 
@@ -1805,6 +1819,8 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_ABORT);
 	ADD_PREDEFINED_MACRO(wxID_RETRY);
 	ADD_PREDEFINED_MACRO(wxID_IGNORE);
+    ADD_PREDEFINED_MACRO(wxID_ADD);
+    ADD_PREDEFINED_MACRO(wxID_REMOVE);
 
 	ADD_PREDEFINED_MACRO(wxID_UP);
 	ADD_PREDEFINED_MACRO(wxID_DOWN);
@@ -1830,8 +1846,8 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_UNDELETE);
 	ADD_PREDEFINED_MACRO(wxID_REVERT_TO_SAVED);
 
-	// System menu IDs (used by wxUniv):
-	ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
+	/*  System menu IDs (used by wxUniv): */
+    ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_MOVE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_RESIZE_FRAME);
@@ -1839,8 +1855,7 @@ void CppCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_ICONIZE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_RESTORE_FRAME);
 
-	// IDs used by generic file dialog (13 consecutive starting from this value)
-
+	/*  IDs used by generic file dialog (13 consecutive starting from this value) */
 	ADD_PREDEFINED_MACRO(wxID_FILEDLGG);
 
 	ADD_PREDEFINED_MACRO(wxID_HIGHEST);
