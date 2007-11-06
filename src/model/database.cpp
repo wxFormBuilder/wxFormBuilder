@@ -763,7 +763,9 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 				if ( cpp_interface )
 				{
 					size_t baseIndex = class_info->AddBaseClass( cpp_interface );
-					if ( typeName == wxT("sizer") || typeName == wxT("gbsizer") )
+					if (    typeName == wxT("sizer")    ||
+                            typeName == wxT("gbsizer")  ||
+                            typeName == wxT("menuitem")  )
 					{
 						class_info->AddBaseClassDefaultPropertyValue( baseIndex, _("permission"), _("none") );
 					}
@@ -793,6 +795,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("container")		||
 			type == wxT("menubar")			||
 			type == wxT("menu")				||
+			type == wxT("menuitem")			||
 			type == wxT("submenu")			||
 			type == wxT("toolbar")			||
 			type == wxT("splitter")			||
@@ -1223,21 +1226,21 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 	// no extension is added for __WXMAC__
 	#ifdef __WXMAC__
 		path += wxT(".dylib");
-		
+
 		// open the library
 		void* handle = dlopen(path.mb_str(), RTLD_LAZY);
-		
+
 		if (!handle)
 		{
 			wxString error = wxString(dlerror(), wxConvUTF8);
 			THROW_WXFBEX( wxT("Error loading library ") << path << wxT(" ") << error )
 		}
 		dlerror(); // reset errors
-		
+
 		// load the symbol
-		
+
 		PFGetComponentLibrary GetComponentLibrary = (PFGetComponentLibrary) dlsym(handle, "GetComponentLibrary");
-		
+
 		const char *dlsym_error = dlerror();
 		if (dlsym_error)
 		{
@@ -1245,28 +1248,28 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 			THROW_WXFBEX( path << wxT(" is not a valid component library: ") << error )
 			dlclose(handle);
 		}
-		
+
 		dlclose(handle);
 	#else
-		
+
 		// Attempt to load the DLL
 		wxDynamicLibrary* library = new wxDynamicLibrary( path );
 		if ( !library->IsLoaded() )
 		{
 			THROW_WXFBEX( wxT("Error loading library ") << path )
 		}
-		
+
 		m_libs.push_back( library );
-		
+
 		PFGetComponentLibrary GetComponentLibrary =	(PFGetComponentLibrary)library->GetSymbol( wxT("GetComponentLibrary") );
-		
+
 		if ( !GetComponentLibrary )
 		{
 			THROW_WXFBEX( path << wxT(" is not a valid component library") )
 		}
-		
+
 #endif
-		
+
 		Debug::Print( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
 
 	// Get the component library

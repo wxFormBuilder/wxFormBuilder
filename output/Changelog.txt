@@ -11,6 +11,7 @@ date Version 3.00.51
 * FS#251 - "UNC paths for images are not supported."
 * FS#254 - "code duplicating."
 + FS#257 - "wxStaticBox inside a wxStaticBoxSizer lacks an id"
+* FS#261 - "wxMenuItem has no 'permission' property"
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
