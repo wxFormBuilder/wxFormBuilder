@@ -50,8 +50,6 @@
 
 #include <wx/wxScintilla/wxscintilla.h>
 
-#define ID_ABOUT         100
-#define ID_QUIT          101
 #define ID_SAVE_PRJ      102
 #define ID_OPEN_PRJ      103
 #define ID_NEW_PRJ       104
@@ -92,7 +90,8 @@
 #define ID_PREVIEW_XRC     136
 #define ID_GEN_INHERIT_CLS 137
 
-#define ID_SETTINGS_GLOBAL 138	// For the future preference dialogs
+// The preference dialog must use wxID_PREFERENCES for wxMAC
+//#define ID_SETTINGS_GLOBAL 138	// For the future preference dialogs
 #define ID_SETTINGS_PROJ   139	// For the future preference dialogs
 
 #define ID_FIND 142
@@ -108,8 +107,8 @@ EVT_MENU( ID_NEW_PRJ, MainFrame::OnNewProject )
 EVT_MENU( ID_SAVE_PRJ, MainFrame::OnSaveProject )
 EVT_MENU( ID_SAVE_AS_PRJ, MainFrame::OnSaveAsProject )
 EVT_MENU( ID_OPEN_PRJ, MainFrame::OnOpenProject )
-EVT_MENU( ID_ABOUT, MainFrame::OnAbout )
-EVT_MENU( ID_QUIT, MainFrame::OnExit )
+EVT_MENU( wxID_ABOUT, MainFrame::OnAbout )
+EVT_MENU( wxID_EXIT, MainFrame::OnExit )
 EVT_MENU( ID_IMPORT_XRC, MainFrame::OnImportXrc )
 EVT_MENU( ID_GENERATE_CODE, MainFrame::OnGenerateCode )
 EVT_MENU( ID_UNDO, MainFrame::OnUndo )
@@ -1345,8 +1344,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuFile->AppendSeparator();
 	menuFile->Append( ID_GENERATE_CODE, wxT( "&Generate Code\tF8" ), wxT( "Generate Code" ) );
 	menuFile->AppendSeparator();
-	menuFile->Append( ID_QUIT, wxT( "E&xit\tAlt-F4" ), wxT( "Quit wxFormBuilder" ) );
-	menuFile->AppendSeparator();
+	menuFile->Append( wxID_EXIT, wxT( "E&xit\tAlt-F4" ), wxT( "Quit wxFormBuilder" ) );
 
 	wxMenu *menuEdit = new wxMenu;
 	menuEdit->Append( ID_UNDO, wxT( "&Undo \tCtrl+Z" ), wxT( "Undo changes" ) );
@@ -1383,7 +1381,7 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuTools->Append( ID_GEN_INHERIT_CLS, wxT( "&Generate Inherited Class\tF6" ), wxT( "Creates the needed files and class for proper inheritance of your designed GUI" ) );
 
 	wxMenu *menuHelp = new wxMenu;
-	menuHelp->Append( ID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
+	menuHelp->Append( wxID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
 
 
 	// now append the freshly created menu to the menu bar...

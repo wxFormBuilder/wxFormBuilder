@@ -33,8 +33,6 @@
 #include <rad/appdata.h>
 
 #define ID_PALETTE_BUTTON 999
-#define ID_ABOUT 100
-#define ID_QUIT  101
 
 #ifdef __WXGTK__
 	#if wxCHECK_VERSION( 2, 8, 0 )
