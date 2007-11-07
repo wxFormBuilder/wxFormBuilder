@@ -189,7 +189,7 @@
     <inherits class="wxWindow" />
     <property name="name" type="text">m_radioBox</property>
     <property name="label" type="wxString_i18n">wxRadioBox</property>
-    <property name="choices" type="stringlist"  help="Contents of the Radio Box.">'Radio Button'</property>
+    <property name="choices" type="stringlist"  help="Contents of the Radio Box.">&quot;Radio Button&quot;</property>
     <property name="selection" type="uint" help="Zero-based position of the selected button.">0</property>
     <property name="majorDimension" type="uint" help="Specifies the maximum number of rows (if style contains wxRA_SPECIFY_ROWS) or columns (if style contains wxRA_SPECIFY_COLS) for a two-dimensional radiobox.">1</property>
     <property name="style" type="bitlist">
