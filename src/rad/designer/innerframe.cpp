@@ -281,6 +281,7 @@ wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
 
 	SetSizer( sizer );
 	SetAutoLayout( true );
+	Layout();
 
 	m_minSize = m_titleBar->GetMinSize();
 	m_minSize.x += 8;
@@ -289,10 +290,23 @@ wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
 
 	if ( wxDefaultSize == size )
 	{
-		SetSize( m_baseMinSize );
+		SetSize( GetBestSize() );
 	}
+}
 
-	Layout();
+wxSize wxInnerFrame::DoGetBestSize() const
+{
+    wxSize best;
+    best = m_titleBar->GetBestSize();
+    wxSize content = m_frameContent->GetBestSize();
+    best.IncBy( 0, content.GetHeight() );
+    int border = wxSystemSettings::GetMetric( wxSYS_BORDER_X );
+    best.SetWidth( ( content.GetWidth() + 1 > best.GetWidth() ? content.GetWidth() + 1 : best.GetWidth() ) + 2 + 2 * ( border > 0 ? border : 2 ) );
+
+    // spacers and borders
+    best.IncBy( 0, 3 );
+
+    return best;
 }
 
 void wxInnerFrame::OnMouseMotion( wxMouseEvent& e )

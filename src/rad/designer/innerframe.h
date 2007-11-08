@@ -26,7 +26,8 @@ private:
 
   TitleBar *m_titleBar;
   wxPanel *m_frameContent;
-
+protected:
+    wxSize DoGetBestSize() const;
 public:
   wxInnerFrame(wxWindow *parent, wxWindowID id,
                  const wxPoint &pos = wxDefaultPosition,
