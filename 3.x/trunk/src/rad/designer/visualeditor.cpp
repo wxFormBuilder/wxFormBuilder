@@ -321,27 +321,21 @@ void VisualEditor::Create()
 			}
 		}
 
-		m_back->Layout();
-
-		if ( backSize.GetHeight() == wxDefaultCoord || backSize.GetWidth() == wxDefaultCoord )
-		{
-			if ( m_back->GetFrameContentPanel()->GetSizer() )
-			{
-				m_back->GetSizer()->Fit( m_back );
-			}
-			else
-			{
-				m_back->SetToBaseSize();
-			}
-		}
-
-		// Set size after fitting so if only one dimesion is -1, it still fits that dimension
-		m_back->SetSize( backSize );
-
 		if ( menubar || statusbar || toolbar )
 		{
 			m_back->SetFrameWidgets( menubar, toolbar, statusbar );
 		}
+
+		m_back->Layout();
+
+		if ( backSize.GetHeight() == wxDefaultCoord || backSize.GetWidth() == wxDefaultCoord )
+		{
+		    m_back->GetSizer()->Fit( m_back );
+			m_back->SetSize( m_back->GetBestSize() );
+		}
+
+		// Set size after fitting so if only one dimesion is -1, it still fits that dimension
+		m_back->SetSize( backSize );
 
 		PProperty enabled( m_form->GetProperty( wxT("enabled") ) );
 		if ( enabled )
@@ -358,8 +352,6 @@ void VisualEditor::Create()
 	else
 	{
 		// There is no form to display
-		//m_back->SetSize(10,10);
-		//m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 		m_back->Show(false);
 	}
 
@@ -956,7 +948,9 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 	}
 
 	if (toolbar)
+	{
 		dummySizer->Add(toolbar, 0, wxEXPAND | wxALL, 0);
+	}
 
 	if (mainSizer)
 	{
@@ -971,7 +965,9 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 		dummySizer->AddStretchSpacer(1);
 
 	if (statusbar)
+	{
 		dummySizer->Add(statusbar, 0, wxEXPAND | wxALL, 0);
+	}
 
 
 	contentPanel->SetSizer(dummySizer, false);
