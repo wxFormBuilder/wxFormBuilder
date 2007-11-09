@@ -676,6 +676,11 @@ public:
 	{
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
 		int count = choices.Count();
+		if ( 0 == count )
+		{
+		    choices.Add( _("wxRadioBox must have at least one choice") );
+		    count = 1;
+		}
 
 		int majorDim = obj->GetPropertyAsInteger(_("majorDimension"));
 		if (majorDim < 1)
