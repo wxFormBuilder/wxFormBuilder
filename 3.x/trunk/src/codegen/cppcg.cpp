@@ -1288,6 +1288,12 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 		GenConstruction( class_obj->GetChild( i ), true );
 	}
 
+	wxString afterAddChild = GetCode( class_obj, wxT("after_addchild") );
+    if ( !afterAddChild.empty() )
+    {
+        m_source->WriteLn( afterAddChild );
+    }
+
 	if ( m_useConnect && !events.empty() )
 	{
 		m_source->WriteLn();
