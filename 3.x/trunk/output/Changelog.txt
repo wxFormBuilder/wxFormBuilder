@@ -17,6 +17,7 @@ date Version 3.00.51
 * FS#263 - "Frame not resized correctly in designer when menubar/toolbar/statusbar present"
 * FS#267 - "[OS X] radio button groups cause crash"
 * FS#276 - "Creation of two event handlers with different protoypes" (patch from Joel Low)
+* FS#279 - "missing Append() for wxMenuItem" (patch from denk_mal)
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
