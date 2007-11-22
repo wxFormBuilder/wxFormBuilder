@@ -824,15 +824,13 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
-			wxString aux;
+			wxString aux = wxT("virtual void ") + event->GetValue() + wxT("( ") +
+				event->GetEventInfo()->GetEventClassName() + wxT("& event ){ event.Skip(); }");
 
-      if (generatedHandlers.find(event->GetValue()) == generatedHandlers.end())
+			if (generatedHandlers.find(aux) == generatedHandlers.end())
 			{
-		  	aux = wxT("virtual void ") + event->GetValue() + wxT("( ") +
-			  event->GetEventInfo()->GetEventClassName() + wxT("& event ){ event.Skip(); }");
-
-			  m_header->WriteLn(aux);
-			  generatedHandlers.insert(event->GetValue());
+				m_header->WriteLn(aux);
+				generatedHandlers.insert(aux);
 			}
 		}
 		m_header->WriteLn( wxEmptyString );

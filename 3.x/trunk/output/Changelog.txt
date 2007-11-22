@@ -16,6 +16,7 @@ date Version 3.00.51
 * FS#269 - "[OS X] menu items shown at wrong place in menu bar" (patch from Auria)
 * FS#263 - "Frame not resized correctly in designer when menubar/toolbar/statusbar present"
 * FS#267 - "[OS X] radio button groups cause crash"
+* FS#276 - "Creation of two event handlers with different protoypes" (patch from Joel Low)
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
