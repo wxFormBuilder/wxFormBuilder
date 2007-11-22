@@ -126,6 +126,10 @@
   <templates class="wxRadioButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+    <template name="settings">
+    	#ifnotequal $value "0"
+    	@{ $name->SetValue( true ); @}
+    </template>
     <template name="include">@#include &lt;wx/radiobut.h&gt;</template>
 	<template name="evt_entry_OnRadioButton">EVT_RADIOBUTTON( $id, #handler )</template>
 	<template name="evt_connect_OnRadioButton">$name->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, #handler, NULL, this );</template>
