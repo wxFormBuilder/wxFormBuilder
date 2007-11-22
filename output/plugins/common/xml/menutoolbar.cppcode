@@ -33,7 +33,10 @@
 
   <templates class="wxMenuItem">
     <template name="declaration">wxMenuItem* $name;</template>
-    <template name="construction">$name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );</template>
+    <template name="construction">
+        $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind ); #nl
+        #parent $name->Append($name);
+    </template>
     <template name="settings">
       #ifequal $enabled "0"
       @{$name->Enable( $enabled ); #nl @}
