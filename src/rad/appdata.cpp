@@ -1939,10 +1939,32 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			return;
 		}
 
+        wxFileName inherFile( file );
+        if ( !inherFile.MakeAbsolute( path ) )
+        {
+            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), file.c_str(), path.c_str() );
+            return;
+        }
+
+        const wxString& genFileValue = project->GetPropertyAsString( _("file") );
+        wxFileName genFile( genFileValue );
+        if ( !genFile.MakeAbsolute( path ) )
+        {
+            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), genFileValue.c_str(), path.c_str() );
+            return;
+        }
+
+        const wxString& genFileFullPath = genFile.GetFullPath();
+        if ( !genFile.MakeRelativeTo( inherFile.GetPath( wxPATH_GET_VOLUME ) ) )
+        {
+            wxLogWarning( _("Unable to make \"%s\" relative to \"%s\""), genFileFullPath.c_str(), inherFile.GetPath( wxPATH_GET_VOLUME ).c_str() );
+            return;
+        }
+
 		baseNameProp->SetValue( form->GetPropertyAsString( _("name") ) );
 		nameProp->SetValue( className );
-		fileProp->SetValue( file );
-		genfileProp->SetValue( project->GetPropertyAsString( _("file") ) );
+		fileProp->SetValue( inherFile.GetName() );
+		genfileProp->SetValue( genFile.GetFullPath() );
 		typeProp->SetValue( form->GetClassName() );
 
 		CppCodeGenerator codegen;
@@ -1956,9 +1978,9 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
 		}
 
-		PCodeWriter h_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".h"), useMicrosoftBOM ) );
-
-		PCodeWriter cpp_cw( new FileCodeWriter( path + wxFILE_SEP_PATH + file + wxT(".cpp"), useMicrosoftBOM ) );
+        const wxString& fullPath = inherFile.GetFullPath();
+		PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM ) );
+		PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM ) );
 
 		codegen.SetHeaderWriter( h_cw );
 		codegen.SetSourceWriter( cpp_cw );
