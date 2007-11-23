@@ -20,6 +20,7 @@ date Version 3.00.51
 * FS#279 - "missing Append() for wxMenuItem" (patch from denk_mal)
 * FS#262 - "Centering of Frame/Dialog incorrect when frame/dialog size not pre-defined"
 * FS#258 - "wxRadioButton enabled value not respected" (patch from Joel Low)
+* FS#256 - "Gererating Inherited class in different folder output malformed code"
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
