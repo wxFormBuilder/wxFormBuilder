@@ -101,6 +101,8 @@ class ObjectPackage
 
 };
 
+class IComponentLibrary;
+
 /**
  * Base de datos de objetos.
  * Todos las informaciones de objetos importadas de los archivos XML, serán
@@ -116,7 +118,9 @@ class ObjectDatabase
   // Map the property type string to the property type number
   typedef std::map<wxString,PropertyType> PTMap;
   typedef std::map<wxString,PObjectType> ObjectTypeMap;
-  typedef std::vector<wxDynamicLibrary *> CLibraryVector;
+  typedef std::vector<wxDynamicLibrary *> LibraryVector;
+  typedef void (*PFFreeComponentLibrary)( IComponentLibrary* lib );
+  typedef std::map< PFFreeComponentLibrary, IComponentLibrary * > ComponentLibraryMap;
   typedef std::set<wxString> MacroSet;
   typedef std::map< wxString, PCodeInfo > LangTemplateMap;
   typedef std::map< PropertyType, LangTemplateMap > PTLangTemplateMap;
@@ -127,7 +131,8 @@ class ObjectDatabase
   std::map< wxString, PObjectInfo > m_objs;
   PackageVector m_pkgs;
   PTMap m_propTypes;
-  CLibraryVector m_libs;
+  LibraryVector m_libs;
+  ComponentLibraryMap m_componentLibs;
   ObjectTypeMap m_types; // register object types
 
   // para comprobar que no se nos han quedado macros sin añadir en las

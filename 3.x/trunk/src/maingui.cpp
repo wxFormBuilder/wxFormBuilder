@@ -44,12 +44,14 @@
 #include <wx/cmdline.h>
 #include <wx/config.h>
 #include <wx/stdpaths.h>
+#include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include "utils/wxfbexception.h"
 
 #include <memory>
 #include "maingui.h"
 
 #include "utils/debug.h"
+#include "utils/typeconv.h"
 #include "model/objectbase.h"
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
@@ -298,5 +300,7 @@ bool MyApp::OnInit()
 
 MyApp::~MyApp()
 {
+	MacroDictionary::Destroy();
+	wxFlatNotebook::CleanUp();
 	AppDataDestroy();
 }

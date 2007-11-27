@@ -119,6 +119,7 @@ class MacroDictionary
 
  public:
   static PMacroDictionary GetInstance();
+  static void Destroy();
   bool SearchMacro(wxString name, int *result);
   void AddMacro(wxString name, int value);
   void AddSynonymous(wxString synName, wxString name);

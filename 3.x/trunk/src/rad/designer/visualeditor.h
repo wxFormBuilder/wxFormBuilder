@@ -73,7 +73,7 @@ class DesignerWindow : public wxInnerFrame
  public:
    DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size = wxDefaultSize,
      long style = 0, const wxString &name = wxT("designer_win"));
-
+   ~DesignerWindow();
    void SetGrid(int x, int y);
    void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
    void SetSelectedItem(wxObject *item) { m_selItem = item; }

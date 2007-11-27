@@ -32,16 +32,20 @@
 void Debug::Print( const wxChar* format, ... )
 {
 	#ifdef __WXFB_DEBUG__
-		wxLog* oldTarget = wxLog::SetActiveTarget( AppData()->GetDebugLogTarget() );
-		va_list argptr;
-		va_start(argptr, format);
+        wxLog* target = AppData()->GetDebugLogTarget();
+        if ( target != 0 )
+        {
+            wxLog* oldTarget = wxLog::SetActiveTarget( target );
+            va_list argptr;
+            va_start(argptr, format);
 
-		wxString s;
-		s.PrintfV(format, argptr);
+            wxString s;
+            s.PrintfV(format, argptr);
 
-		wxLogMessage(s);
+            wxLogMessage(s);
 
-		va_end(argptr);
-		wxLog::SetActiveTarget( oldTarget );
+            va_end(argptr);
+            wxLog::SetActiveTarget( oldTarget );
+        }
 	#endif //__WXFB_DEBUG__
 }

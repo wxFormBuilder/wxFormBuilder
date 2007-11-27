@@ -807,16 +807,22 @@ wxString TypeConv::FloatToString( const double& val )
 
 ///////////////////////////////////////////////////////////////////////////////
 
-PMacroDictionary MacroDictionary::s_instance = NULL;
+PMacroDictionary MacroDictionary::s_instance = 0;
 
 PMacroDictionary MacroDictionary::GetInstance()
 {
-    if (!s_instance)
+    if ( 0 == s_instance )
     {
         s_instance = new MacroDictionary();
     }
 
     return s_instance;
+}
+
+void MacroDictionary::Destroy()
+{
+    delete s_instance;
+    s_instance = 0;
 }
 
 bool MacroDictionary::SearchMacro(wxString name, int *result)

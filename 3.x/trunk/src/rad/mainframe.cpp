@@ -199,6 +199,7 @@ MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize s
 :
 wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
 m_style( style ),
+m_autoSash( true ),
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
@@ -345,9 +346,13 @@ m_findDialog( NULL )
 MainFrame::~MainFrame()
 {
 	/*m_mgr.UnInit();*/
+	m_rightSplitter->Disconnect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, wxSplitterEventHandler( MainFrame::OnSplitterChanged ) );
+
+	// the focus killer event handler
+	PopEventHandler( true );
+
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	delete m_findDialog;
-	wxFlatNotebook::CleanUp();
 }
 
 void MainFrame::RestorePosition( const wxString &name )
