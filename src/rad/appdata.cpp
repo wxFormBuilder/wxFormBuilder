@@ -463,6 +463,7 @@ void ApplicationData::Initialize()
 ApplicationData::ApplicationData( const wxString &rootdir )
 		:
 		m_rootDir( rootdir ),
+		m_modFlag( false ),
 		m_objDb( new ObjectDatabase() ),
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
@@ -486,9 +487,8 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 ApplicationData::~ApplicationData()
 {
 	#ifdef __WXFB_DEBUG__
-	//No need to delete wxLogWindow because it is a child of MainFrame
-	//May possible log to a text control at a later date.
-	//delete m_debugLogTarget;
+        delete m_debugLogTarget;
+        m_debugLogTarget = 0;
 	#endif
 }
 

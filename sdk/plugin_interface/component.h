@@ -219,14 +219,22 @@ public:
 // Function that the application calls to get the library
 DLL_FUNC IComponentLibrary* GetComponentLibrary( IManager* manager );
 
+// Function that the application calls to free the library
+DLL_FUNC void FreeComponentLibrary( IComponentLibrary* lib );
+
 #define BEGIN_LIBRARY()  															\
 \
 extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary( IManager* manager ) 	\
 { 																					\
   IComponentLibrary* lib = new ComponentLibrary();
 
-#define END_LIBRARY()  \
-	return lib; }
+#define END_LIBRARY()                                                                   \
+        return lib;                                                                     \
+	}                                                                                   \
+	extern "C" WXEXPORT void FreeComponentLibrary( IComponentLibrary* lib ) 	        \
+	{                                                                                   \
+        delete lib;                                                                     \
+	}
 
 #define MACRO( name ) \
   lib->RegisterMacro( wxT(#name), name );

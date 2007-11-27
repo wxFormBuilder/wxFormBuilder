@@ -754,6 +754,11 @@ wxInnerFrame(parent, id, pos, size, style)
 	GetFrameContentPanel()->PushEventHandler(new HighlightPaintHandler(GetFrameContentPanel()));
 }
 
+DesignerWindow::~DesignerWindow()
+{
+    GetFrameContentPanel()->PopEventHandler( true );
+}
+
 void DesignerWindow::SetGrid( int x, int y )
 {
 	m_x = x;

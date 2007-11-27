@@ -96,7 +96,15 @@ ObjectDatabase::ObjectDatabase()
 
 ObjectDatabase::~ObjectDatabase()
 {
-	// destruir todos los objetos
+    for ( ComponentLibraryMap::iterator lib = m_componentLibs.begin(); lib != m_componentLibs.end(); ++lib )
+    {
+        (*(lib->first))( lib->second );
+    }
+
+    for ( LibraryVector::iterator lib = m_libs.begin(); lib != m_libs.end(); ++lib )
+    {
+        delete *lib;
+    }
 }
 
 PObjectInfo ObjectDatabase::GetObjectInfo(wxString class_name)
@@ -1240,6 +1248,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		// load the symbol
 
 		PFGetComponentLibrary GetComponentLibrary = (PFGetComponentLibrary) dlsym(handle, "GetComponentLibrary");
+		PFFreeComponentLibrary FreeComponentLibrary = (PFFreeComponentLibrary) dlsym(handle, "FreeComponentLibrary");
 
 		const char *dlsym_error = dlerror();
 		if (dlsym_error)
@@ -1262,8 +1271,9 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		m_libs.push_back( library );
 
 		PFGetComponentLibrary GetComponentLibrary =	(PFGetComponentLibrary)library->GetSymbol( wxT("GetComponentLibrary") );
+		PFFreeComponentLibrary FreeComponentLibrary =	(PFFreeComponentLibrary)library->GetSymbol( wxT("FreeComponentLibrary") );
 
-		if ( !GetComponentLibrary )
+		if ( !(GetComponentLibrary && FreeComponentLibrary) )
 		{
 			THROW_WXFBEX( path << wxT(" is not a valid component library") )
 		}
@@ -1274,6 +1284,9 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
+
+	// Store the function to free the library
+	m_componentLibs[ FreeComponentLibrary ] = comp_lib;
 
 	// Import all of the components
 	for ( unsigned int i = 0; i < comp_lib->GetComponentCount(); i++ )
@@ -1294,9 +1307,9 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 	}
 
 	// Add all of the macros in the library to the macro dictionary
+	PMacroDictionary dic = MacroDictionary::GetInstance();
 	for ( unsigned int i = 0; i < comp_lib->GetMacroCount(); i++ )
 	{
-		PMacroDictionary dic = MacroDictionary::GetInstance();
 		wxString name = comp_lib->GetMacroName( i );
 		int value = comp_lib->GetMacroValue( i );
 		dic->AddMacro( name, value );
