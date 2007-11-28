@@ -50,6 +50,20 @@ Menubar::~Menubar()
         delete menu;
         m_menus.erase(m_menus.begin());
     }
+
+    // Delete spawned event handlers
+    wxSizerItemList& labels = m_sizer->GetChildren();
+    for ( wxSizerItemList::iterator label = labels.begin(); label != labels.end(); ++label )
+    {
+        wxStaticText* text = dynamic_cast< wxStaticText* >( (*label)->GetWindow() );
+        if ( text != 0 )
+        {
+            if ( text->GetEventHandler() != text )
+            {
+                text->PopEventHandler( true );
+            }
+        }
+    }
 }
 
 void Menubar::AppendMenu(const wxString& name, wxMenu *menu)
