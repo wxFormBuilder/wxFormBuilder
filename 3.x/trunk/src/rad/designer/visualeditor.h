@@ -134,6 +134,9 @@ class VisualEditor : public wxScrolledWindow
   PObjectBase GetObjectBase( wxObject* wxobject );
   wxObject* GetWxObject( PObjectBase baseobject );
 
+  // Give components an opportunity to cleanup
+  void ClearComponents( wxWindow* parent );
+
   // Events
   void OnProjectLoaded ( wxFBEvent &event );
   void OnProjectSaved  ( wxFBEvent &event );

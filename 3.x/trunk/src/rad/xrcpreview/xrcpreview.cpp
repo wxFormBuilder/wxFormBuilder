@@ -34,7 +34,7 @@ public:
 		switch ( id )
 		{
 		case MENU_DELETE:
-			m_window->Destroy();
+			m_window->Close();
 			break;
 		default:
 			break;
@@ -63,7 +63,7 @@ protected:
 	{
 		if ( event.GetKeyCode() == WXK_ESCAPE )
 		{
-			m_window->Destroy();
+			m_window->Close();
 		}
 	}
 
@@ -74,9 +74,25 @@ protected:
 		m_window->PopupMenu( menu, pos.x, pos.y );
 	}
 
+    void RemoveEventHandler( wxWindow* window )
+    {
+        const wxWindowList& children = window->GetChildren();
+        for ( size_t i = 0; i < children.GetCount(); ++i )
+        {
+            RemoveEventHandler( children.Item( i )->GetData() );
+        }
+        wxEvtHandler* handler = window->PopEventHandler();
+        if ( handler != this )
+        {
+            delete handler;
+        }
+    }
+
 	void OnClose( wxCloseEvent& )
 	{
+	    RemoveEventHandler( m_window );
 		m_window->Destroy();
+		delete this;
 	}
 
 	DECLARE_EVENT_TABLE()
