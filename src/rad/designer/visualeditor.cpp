@@ -78,14 +78,23 @@ m_stopModifiedEvent( false )
 
 void VisualEditor::DeleteAbstractObjects()
 {
-	wxObjectMap::iterator wxNoObjectIt;
-	wxNoObject* wxnoobject;
-	for ( wxNoObjectIt = m_wxobjects.begin(); wxNoObjectIt != m_wxobjects.end(); ++wxNoObjectIt )
+	wxObjectMap::iterator it;
+	for ( it = m_wxobjects.begin(); it != m_wxobjects.end(); ++it )
 	{
-		wxnoobject = dynamic_cast< wxNoObject* >( wxNoObjectIt->first );
-		if ( wxnoobject )
+	    // The abstract objects are stored as wxNoObject*'s
+		wxNoObject* noobject = dynamic_cast< wxNoObject* >( it->first );
+		if ( noobject != 0 )
 		{
-			wxnoobject->Destroy();
+		    delete noobject;
+		}
+		else
+		{
+            // Delete push'd visual object event handlers
+            wxWindow* window = dynamic_cast< wxWindow* > ( it->first );
+            if ( window != 0 )
+            {
+                window->PopEventHandler( true );
+            }
 		}
 	}
 }
@@ -94,6 +103,7 @@ VisualEditor::~VisualEditor()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	DeleteAbstractObjects();
+	ClearComponents( m_back->GetFrameContentPanel() );
 }
 
 void VisualEditor::UpdateVirtualSize()
@@ -176,6 +186,27 @@ wxObject* VisualEditor::GetWxObject( PObjectBase baseobject )
 	}
 }
 
+void VisualEditor::ClearComponents( wxWindow* parent )
+{
+    wxLogNull stopTheLogging;
+    const wxWindowList& children = parent->GetChildren();
+    for ( wxWindowList::const_reverse_iterator child = children.rbegin(); child != children.rend(); ++child )
+    {
+        ClearComponents( *child );
+
+        PObjectBase obj = GetObjectBase( *child );
+        if ( obj )
+        {
+            PObjectInfo obj_info = obj->GetObjectInfo();
+            IComponent* comp = obj_info->GetComponent();
+            if ( comp )
+            {
+                comp->Cleanup( *child );
+            }
+        }
+    }
+}
+
 /**
 * Crea la vista preliminar borrando la previa.
 */
@@ -193,6 +224,7 @@ void VisualEditor::Create()
 	m_back->SetSelectedItem(NULL);
 	m_back->SetSelectedSizer(NULL);
 	m_back->SetSelectedObject(PObjectBase());
+	ClearComponents( m_back->GetFrameContentPanel() );
 	m_back->GetFrameContentPanel()->DestroyChildren();
 	m_back->GetFrameContentPanel()->SetSizer( NULL ); // *!*
 

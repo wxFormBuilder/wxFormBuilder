@@ -176,3 +176,8 @@ void wxFBManager::SelectObject( wxObject* wxobject )
 
 	AppData()->SelectObject( obj );
 }
+
+wxNoObject* wxFBManager::NewNoObject()
+{
+    return new wxNoObject;
+}

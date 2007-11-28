@@ -119,6 +119,11 @@ class IComponent
   virtual wxObject* Create( IObject* obj, wxObject* parent ) = 0;
 
   /**
+   * Cleanup (do the reverse of Create)
+   */
+   virtual void Cleanup( wxObject* obj ) = 0;
+
+  /**
    * Allows components to do something after they have been created.
    * For example, Abstract components like NotebookPage and SizerItem can
    * add the actual widget to the Notebook or sizer.
@@ -149,10 +154,14 @@ class IComponent
   virtual ~IComponent(){}
 };
 
+// Used to identify wxObject* that must be manually deleted
+class wxNoObject : public wxObject
+{
+};
+
 /**
 Interface to the "Manager" class in the application.
 Essentially a collection of utility functions that take a wxObject* and do something useful.
-
 */
 class IManager
 {
@@ -192,22 +201,15 @@ public:
 	*/
 	virtual void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true ) = 0;
 
+	// used so the wxNoObjects are both created and destroyed in the application
+	virtual wxNoObject* NewNoObject() = 0;
+
 	/**
 	Select the object in the object tree
 	*/
 	virtual void SelectObject( wxObject* wxobject ) = 0;
 
 	virtual ~IManager(){}
-};
-
-// Used to identify wxObject* that must be manually deleted
-class wxNoObject : public wxObject
-{
-public:
-	void Destroy()
-	{
-		delete this;
-	}
 };
 
 #ifdef BUILD_DLL

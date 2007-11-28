@@ -198,7 +198,10 @@ END_EVENT_TABLE()
 MainFrame::MainFrame( wxWindow *parent, int id, int style, wxPoint pos, wxSize size )
 :
 wxFrame( parent, id, wxEmptyString, pos, size, wxDEFAULT_FRAME_STYLE ),
+m_leftSplitterWidth( 300 ),
+m_rightSplitterWidth( -300 ),
 m_style( style ),
+m_rightSplitter_sash_pos( 300 ),
 m_autoSash( true ),
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
@@ -346,7 +349,6 @@ m_findDialog( NULL )
 MainFrame::~MainFrame()
 {
 	/*m_mgr.UnInit();*/
-	m_rightSplitter->Disconnect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, wxSplitterEventHandler( MainFrame::OnSplitterChanged ) );
 
 	// the focus killer event handler
 	PopEventHandler( true );
@@ -629,7 +631,7 @@ void MainFrame::OnClose( wxCloseEvent &event )
 		return;
 
 	SavePosition( wxT( "mainframe" ) );
-
+    m_rightSplitter->Disconnect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, wxSplitterEventHandler( MainFrame::OnSplitterChanged ) );
 	event.Skip();
 }
 
@@ -1529,13 +1531,6 @@ void MainFrame::CreateWideGui()
 	m_rightSplitter->SetSashGravity( 1 );
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
-	if ( m_autoSash )
-	{
-		// Init. m_rightSplitter_sash_pos
-		m_rightSplitter_sash_pos = m_rightSplitter->GetSashPosition();
-		m_rightSplitter->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, wxSplitterEventHandler( MainFrame::OnSplitterChanged ) );
-	}
-
 	m_style = wxFB_WIDE_GUI;
 
 	SetMinSize( wxSize( 700, 380 ) );
@@ -1587,6 +1582,13 @@ void MainFrame::OnIdle( wxIdleEvent& )
 	}
 
 	Disconnect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
+
+	if ( m_autoSash )
+	{
+		// Init. m_rightSplitter_sash_pos
+		m_rightSplitter_sash_pos = m_rightSplitter->GetSashPosition();
+		m_rightSplitter->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, wxSplitterEventHandler( MainFrame::OnSplitterChanged ) );
+	}
 }
 
 void MainFrame::OnSplitterChanged( wxSplitterEvent &event )

@@ -103,6 +103,11 @@ ObjectDatabase::~ObjectDatabase()
 
     for ( LibraryVector::iterator lib = m_libs.begin(); lib != m_libs.end(); ++lib )
     {
+        #ifdef __WXFB_DEBUG__
+        // Only unload in release - can't get a good stack trace if the library is unloaded
+        (*lib)->Detach();
+        #endif
+
         delete *lib;
     }
 }

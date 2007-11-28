@@ -21,6 +21,7 @@ public:
 	IObject* GetIParent( wxObject* wxobject );
 	IObject* GetIObject( wxObject* wxobject );
 	wxObject* GetWxObject( PObjectBase obj );
+	wxNoObject* NewNoObject();
 
 	void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true );
 
