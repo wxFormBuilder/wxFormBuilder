@@ -1,4 +1,4 @@
-﻿			wxFormBuilder ChangeLog
+			wxFormBuilder ChangeLog
 ************************************************************************
 date Version 3.00.51
 ^ No longer creating a temporary file on disk for the XRC Preview.
@@ -21,6 +21,7 @@ date Version 3.00.51
 * FS#262 - "Centering of Frame/Dialog incorrect when frame/dialog size not pre-defined"
 * FS#258 - "wxRadioButton enabled value not respected" (patch from Joel Low)
 * FS#256 - "Gererating Inherited class in different folder output malformed code"
+* FS#268 - "[OS X] crashes upon termination" (patch from Auria)
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."

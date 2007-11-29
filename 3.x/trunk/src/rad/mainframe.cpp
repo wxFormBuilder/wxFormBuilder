@@ -348,6 +348,12 @@ m_findDialog( NULL )
 
 MainFrame::~MainFrame()
 {
+#ifdef __WXMAC__
+    // work around problem on wxMac
+    m_rightSplitter->GetWindow1()->GetSizer()->Detach(m_notebook);
+    m_notebook->Destroy();
+#endif
+    
 	/*m_mgr.UnInit();*/
 
 	// the focus killer event handler
