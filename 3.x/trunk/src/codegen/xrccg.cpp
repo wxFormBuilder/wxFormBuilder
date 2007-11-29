@@ -76,13 +76,20 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 		{
 			ticpp::Element* child = GetElement( project->GetChild( i ) );
 			if ( child )
+			{
 				element.LinkEndChild( child );
+				delete child;
+			}
 		}
 	}
 	else
 	{
 		ticpp::Element* child = GetElement( project );
-		element.LinkEndChild( child );
+		if ( child )
+		{
+            element.LinkEndChild( child );
+            delete child;
+		}
 	}
 
 	doc.LinkEndChild( &element );
@@ -165,6 +172,7 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 					if ( aux )
 					{
 						element->LinkEndChild( aux );
+						delete aux;
 					}
 				}
 				return element;
@@ -174,7 +182,11 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
 			ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
-			if ( aux ) element->LinkEndChild( aux );
+			if ( aux )
+			{
+			    element->LinkEndChild( aux );
+			    delete aux;
+			}
 		}
 	}
 	else
