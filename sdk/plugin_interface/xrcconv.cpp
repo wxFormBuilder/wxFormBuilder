@@ -234,7 +234,7 @@ void ObjectToXrcFilter::AddPropertyPair ( const wxString& objPropName1, const wx
 
 ticpp::Element* ObjectToXrcFilter::GetXrcObject()
 {
-	return m_xrcObj->Clone().release()->ToElement();
+	return new ticpp::Element( *m_xrcObj );
 }
 
 void ObjectToXrcFilter::LinkText( const wxString &text, ticpp::Element *propElement, bool xrcFormat )
