@@ -151,7 +151,7 @@ class ObjectInspector : public wxPanel
   void OnPropertyGridChange(wxPropertyGridEvent& event);
   void OnEventGridChange(wxPropertyGridEvent& event);
   void OnPropertyGridExpand(wxPropertyGridEvent& event);
-  void OnNewBitmapProperty( wxCommandEvent& event );
+  void OnReCreateGrid( wxCommandEvent& event );
 
  protected:
 

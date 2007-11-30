@@ -583,8 +583,8 @@ void wxBitmapWithResourcePropertyClass::ChildChanged( wxPGProperty* p )
 // -----------------------------------------------------------------------
 // ObjectInspector
 // -----------------------------------------------------------------------
-
-DEFINE_EVENT_TYPE( wxEVT_NEW_BITMAP_PROPERTY )
+DECLARE_EVENT_TYPE( RECREATE_GRID_EVENT, -1 )
+DEFINE_EVENT_TYPE( RECREATE_GRID_EVENT )
 
 BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_PG_CHANGED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridChange)
@@ -592,6 +592,7 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_PG_ITEM_COLLAPSED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
 	EVT_PG_ITEM_EXPANDED (WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
 
+    EVT_COMMAND( wxID_ANY, RECREATE_GRID_EVENT, ObjectInspector::OnReCreateGrid )
 
 	EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
 	EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
@@ -1254,16 +1255,11 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 				// Respond to property modification
 				AppData()->ModifyProperty( prop, path );
 
-				// Recreate grid, the bitmap property may need to change
-				Create(true);
-
-				// Re-expand the bitmap property, if it was expanded
-				wxPGId bitmapProp = m_pg->GetPropertyByName( name );
-				if ( expanded )
-				{
-					m_pg->Expand( bitmapProp );
-				}
-				m_pg->SelectProperty( bitmapProp );
+                // It is bad to delete the property while handling an event from it!
+                wxCommandEvent e( RECREATE_GRID_EVENT );
+                e.SetString( name );
+                e.SetInt( expanded ? 1 : 0 );
+                AddPendingEvent( e );
 
 				break;
 			}
@@ -1272,6 +1268,20 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 				AppData()->ModifyProperty( prop, event.GetPropertyValueAsString() );
 		}
 	}
+}
+
+void ObjectInspector::OnReCreateGrid( wxCommandEvent& event )
+{
+    // Recreate grid, the bitmap property may need to change
+    Create( true );
+
+    // Re-expand the bitmap property, if it was expanded
+    wxPGId bitmapProp = m_pg->GetPropertyByName( event.GetString() );
+    m_pg->SelectProperty( bitmapProp );
+    if ( event.GetInt() != 0 )
+    {
+        m_pg->Expand( bitmapProp );
+    }
 }
 
 void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
