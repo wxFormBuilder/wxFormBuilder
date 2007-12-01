@@ -344,11 +344,6 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     bool usingFileSystem = path.StartsWith( wxT("file:"), &rest );
     if ( usingFileSystem )
     {
-        if ( !wxFileSystem::HasHandlerForPath( path ) )
-        {
-            return AppBitmaps::GetBitmap( wxT("unknown") );
-        }
-
         size_t poundIndex = rest.find( wxT("#") );
         if ( poundIndex != rest.npos )
         {
@@ -373,6 +368,11 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     if ( usingFileSystem )
     {
         path.Printf( wxT("file:%s%s"), file.GetFullPath().c_str(), rest.c_str() );
+        if ( !wxFileSystem::HasHandlerForPath( path ) )
+        {
+            return AppBitmaps::GetBitmap( wxT("unknown") );
+        }
+
         wxFileSystem system;
         wxFSFile* fsFile = system.OpenFile( path );
         if ( 0 == fsFile )
