@@ -35,6 +35,7 @@
 #include <clocale>
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/propdev.h>
+#include <wx/filesys.h>
 
 ////////////////////////////////////
 
@@ -328,26 +329,69 @@ wxString TypeConv::FontToString (const wxFontContainer &font)
 
 wxBitmap TypeConv::StringToBitmap( const wxString& filename )
 {
-    wxString basePath = AppData()->GetProjectPath();
+    #ifndef __WXFB_DEBUG__
+    wxLogNull stopLogging;
+    #endif
 
-    size_t semicolonIndex = filename.find_first_of( wxT(";") );
-    wxString fullpath;
+    size_t semicolonIndex = filename.find( wxT(";") );
+    wxString path = filename;
     if ( semicolonIndex != filename.npos )
     {
-        fullpath = TypeConv::MakeAbsolutePath( filename.substr( 0, semicolonIndex ), basePath );
-    }
-    else
-    {
-        fullpath = TypeConv::MakeAbsolutePath( filename.substr( 0, semicolonIndex ), basePath );
+        path = filename.substr( 0, semicolonIndex );
     }
 
-    if ( ::wxFileExists( fullpath ) )
+    wxString rest;
+    bool usingFileSystem = path.StartsWith( wxT("file:"), &rest );
+    if ( usingFileSystem )
     {
-        wxBitmap bitmap( fullpath, wxBITMAP_TYPE_ANY );
+        if ( !wxFileSystem::HasHandlerForPath( path ) )
+        {
+            return AppBitmaps::GetBitmap( wxT("unknown") );
+        }
+
+        size_t poundIndex = rest.find( wxT("#") );
+        if ( poundIndex != rest.npos )
+        {
+            path = rest.substr( 0, poundIndex );
+            wxString temp = rest.substr( poundIndex );
+            rest = temp;
+        }
+    }
+
+    wxFileName file( path );
+    if ( file.IsRelative() )
+    {
+        wxString basePath = AppData()->GetProjectPath();
+        file.MakeAbsolute( basePath );
+    }
+
+    if ( !file.FileExists() )
+    {
+        return AppBitmaps::GetBitmap( wxT("unknown") );
+    }
+
+    if ( usingFileSystem )
+    {
+        path.Printf( wxT("file:%s%s"), file.GetFullPath().c_str(), rest.c_str() );
+        wxFileSystem system;
+        wxFSFile* fsFile = system.OpenFile( path );
+        if ( 0 == fsFile )
+        {
+            return AppBitmaps::GetBitmap( wxT("unknown") );
+        }
+        wxImage image( *fsFile->GetStream() );
+        wxBitmap bitmap( image );
         if ( bitmap.Ok() )
         {
             return bitmap;
         }
+        delete fsFile;
+    }
+
+    wxBitmap bitmap( file.GetFullPath(), wxBITMAP_TYPE_ANY );
+    if ( bitmap.Ok() )
+    {
+        return bitmap;
     }
 
     return AppBitmaps::GetBitmap( wxT("unknown") );
