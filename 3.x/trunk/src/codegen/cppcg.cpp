@@ -30,6 +30,7 @@
 #include "rad/appdata.h"
 #include "model/objectbase.h"
 #include "model/database.h"
+#include "utils/wxfbexception.h"
 
 #include <algorithm>
 
@@ -228,23 +229,39 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 				break;
 			}
 
+            if ( path.StartsWith( wxT("file:") ) )
+            {
+                wxLogWarning( wxT("C++ code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
+                result = wxT("wxNullBitmap");
+                break;
+            }
+
 			if ( source == wxT("Load From File") )
 			{
-				wxString absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+			    wxString absPath;
+			    try
+				{
+				    absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+				}
+				catch( wxFBException& ex )
+				{
+				    wxLogError( ex.what() );
+				    result = wxT( "wxNullBitmap" );
+				    break;
+				}
+
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
-				wxString cppString = CppCodeGenerator::ConvertCppString( file );
-
-				wxFileName bmpFileName( path );
-				if ( bmpFileName.GetExt().Upper() == wxT("XPM") )
-				{
-					// If the bitmap is an XPM we will embed it in the code, otherwise it will be loaded from the file at run time.
-					result << wxT("wxBitmap( ") << CppCodeGenerator::ConvertXpmName( path ) << wxT(" )");
-				}
-				else
-				{
-					result << wxT("wxBitmap( wxT(\"") << cppString << wxT("\"), wxBITMAP_TYPE_ANY )");
-				}
+                wxFileName bmpFileName( path );
+                if ( bmpFileName.GetExt().Upper() == wxT("XPM") )
+                {
+                    // If the bitmap is an XPM we will embed it in the code, otherwise it will be loaded from the file at run time.
+                    result << wxT("wxBitmap( ") << CppCodeGenerator::ConvertXpmName( path ) << wxT(" )");
+                }
+                else
+                {
+                    result << wxT("wxBitmap( wxT(\"") << CppCodeGenerator::ConvertCppString( file ) << wxT("\"), wxBITMAP_TYPE_ANY )");
+                }
 			}
 			else if ( source == wxT("Load From Resource") )
 			{

@@ -49,6 +49,8 @@
 #include <wx/filename.h>
 #include <wx/clipbrd.h>
 #include <wx/fs_mem.h>
+#include <wx/fs_arc.h>
+#include <wx/fs_filter.h>
 
 using namespace TypeConv;
 
@@ -482,6 +484,10 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 	// Support loading files from memory
 	// Used to load the XRC preview, but could be useful elsewhere
 	wxFileSystem::AddHandler( new wxMemoryFSHandler );
+
+	// Support for loading files from archives
+	wxFileSystem::AddHandler( new wxArchiveFSHandler );
+	wxFileSystem::AddHandler( new wxFilterFSHandler );
 }
 
 ApplicationData::~ApplicationData()
