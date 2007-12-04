@@ -340,20 +340,15 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
         path = filename.substr( 0, semicolonIndex );
     }
 
-    wxString rest;
-    bool usingFileSystem = path.StartsWith( wxT("file:"), &rest );
-    if ( usingFileSystem )
+    wxString protocol, location, anchor;
+    SplitFileSystemURL( path, &protocol, &location, &anchor );
+    bool usingFileSystem = !protocol.empty();
+    if ( usingFileSystem && ( protocol != wxT("file:") ) )
     {
-        size_t poundIndex = rest.find( wxT("#") );
-        if ( poundIndex != rest.npos )
-        {
-            path = rest.substr( 0, poundIndex );
-            wxString temp = rest.substr( poundIndex );
-            rest = temp;
-        }
+        return AppBitmaps::GetBitmap( wxT("unknown") );
     }
 
-    wxFileName file( path );
+    wxFileName file( location );
     if ( file.IsRelative() )
     {
         wxString basePath = AppData()->GetProjectPath();
@@ -362,12 +357,13 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
 
     if ( !file.FileExists() )
     {
+        wxLogStatus( _("%s does not exist"), file.GetFullPath().c_str() );
         return AppBitmaps::GetBitmap( wxT("unknown") );
     }
 
     if ( usingFileSystem )
     {
-        path.Printf( wxT("file:%s%s"), file.GetFullPath().c_str(), rest.c_str() );
+        path.Printf( wxT("file:%s%s"), file.GetFullPath().c_str(), anchor.c_str() );
         if ( !wxFileSystem::HasHandlerForPath( path ) )
         {
             return AppBitmaps::GetBitmap( wxT("unknown") );
@@ -449,8 +445,38 @@ wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& b
 	}
 }
 
+void TypeConv::SplitFileSystemURL( const wxString& url, wxString* protocol, wxString* path, wxString* anchor )
+{
+    size_t colon = url.find( wxT(':') );
+    if ( colon == url.npos )
+    {
+        protocol->clear();
+    }
+    else
+    {
+        *protocol = url.substr( 0, colon + 1 );
+    }
+    wxString remainder = url.substr( protocol->size() );
+    *path = remainder.BeforeFirst( wxT('#') );
+    *anchor = remainder.substr( path->size() );
+}
+
+wxString TypeConv::MakeAbsoluteURL( const wxString& url, const wxString& basePath )
+{
+    wxString protocol, path, anchor;
+    SplitFileSystemURL( url, &protocol, &path, &anchor );
+    return protocol + MakeAbsolutePath( path, basePath ) + anchor;
+}
+
+wxString TypeConv::MakeRelativeURL( const wxString& url, const wxString& basePath )
+{
+    wxString protocol, path, anchor;
+    SplitFileSystemURL( url, &protocol, &path, &anchor );
+    return protocol + MakeRelativePath( path, basePath ) + anchor;
+}
+
 #define ElseIfSystemColourConvert( NAME, value )	\
-	else if ( value == wxT(#NAME) )						\
+	else if ( value == wxT(#NAME) )					\
 	{												\
 		systemVal =	NAME;							\
 	}
