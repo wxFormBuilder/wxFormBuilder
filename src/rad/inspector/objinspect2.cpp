@@ -1232,15 +1232,12 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			}
 			case PT_BITMAP:
 			{
-				// TODO: Usar ruta relativa al directorio de salida en el caso
-				//       de que la imagen se encuentre en un subdirectorio de este.
-
-				// Get property value
+			    // Get property value
 				wxString path = event.GetPropertyValueAsString();
 				size_t semicolon_index = path.find_first_of( wxT(";") );
 				if ( semicolon_index != path.npos )
 				{
-					path = TypeConv::MakeRelativePath( path.substr( 0, semicolon_index ), AppData()->GetProjectPath() ) + path.substr( semicolon_index  );
+					path = TypeConv::MakeRelativeURL( path.substr( 0, semicolon_index ), AppData()->GetProjectPath() ) + path.substr( semicolon_index  );
 				}
 
 				// Save state from old property to use after grid is recreated
