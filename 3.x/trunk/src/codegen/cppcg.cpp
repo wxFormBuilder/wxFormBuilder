@@ -207,20 +207,10 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_BITMAP:
 		{
-			// Splitting bitmap resource property value - it is of the form "path; source"
-			size_t semicolonIndex = value.find_first_of( wxT(";") );
 			wxString path;
 			wxString source;
-			if ( semicolonIndex != value.npos )
-			{
-				path = value.substr( 0, semicolonIndex );
-				source = value.substr( semicolonIndex + 2 ); // Separated by "; "
-			}
-			else
-			{
-				path = value;
-				source = wxT("Load From File");
-			}
+			wxSize icoSize;
+			TypeConv::ParseBitmapWithResource( value, &path, &source, &icoSize );
 
 			if ( path.empty() )
 			{
@@ -236,7 +226,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
                 break;
             }
 
-			if ( source == wxT("Load From File") )
+            if ( source == wxT("Load From File") )
 			{
 			    wxString absPath;
 			    try
@@ -269,7 +259,14 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else if ( source == wxT("Load From Icon Resource") )
 			{
-				result << wxT("wxICON( ") << path << wxT(" )");
+                if ( wxDefaultSize == icoSize )
+                {
+                    result << wxT("wxICON( ") << path << wxT(" )");
+                }
+                else
+                {
+                    result.Printf( wxT("wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+                }
 			}
 
 			break;

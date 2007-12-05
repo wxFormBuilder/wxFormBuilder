@@ -393,6 +393,43 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     return AppBitmaps::GetBitmap( wxT("unknown") );
 }
 
+void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, wxString* source, wxSize* icoSize )
+{
+    // Splitting bitmap resource property value - it is of the form "path; source [width; height]"
+
+    *image = value;
+    *source = wxT("Load From File");
+    *icoSize = wxDefaultSize;
+
+    wxArrayString children;
+    wxStringTokenizer tkz( value, wxT("[];"), wxTOKEN_RET_EMPTY );
+	while ( tkz.HasMoreTokens() )
+	{
+		wxString child = tkz.GetNextToken();
+		child.Trim( false );
+		child.Trim( true );
+		children.Add( child );
+	}
+
+    // "break;" was left out intentionally
+	long temp;
+	switch ( children.size() )
+	{
+	    case 4:
+            children[3].ToLong( &temp );
+            icoSize->SetHeight( temp );
+        case 3:
+            children[2].ToLong( &temp );
+            icoSize->SetWidth( temp );
+        case 2:
+            *source = children[1];
+        case 1:
+            *image = children[0];
+        default:
+            break;
+	}
+}
+
 wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& basePath )
 {
     wxFileName fnFile( filename );
