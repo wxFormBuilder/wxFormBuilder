@@ -353,7 +353,7 @@ MainFrame::~MainFrame()
     m_rightSplitter->GetWindow1()->GetSizer()->Detach(m_notebook);
     m_notebook->Destroy();
 #endif
-    
+
 	/*m_mgr.UnInit();*/
 
 	// the focus killer event handler
@@ -965,6 +965,12 @@ void MainFrame::UpdateRecentProjects()
 			menuFile->Destroy( ID_RECENT_0 + i );
 	}
 
+	wxMenuItem* mruSep = menuFile->FindItemByPosition( menuFile->GetMenuItemCount() - 1 );
+	if ( mruSep->IsSeparator() )
+	{
+	    menuFile->Destroy( mruSep );
+	}
+
 	// remove empty filenames and 'compress' the rest
     fi = 0;
 	for ( i = 0 ; i < 4 ; i++ )
@@ -974,6 +980,11 @@ void MainFrame::UpdateRecentProjects()
 	}
 	for ( i = fi ; i < 4 ; i++ )
         m_recentProjects[i] = wxT("");
+
+    if ( !m_recentProjects[0].IsEmpty() )
+    {
+        menuFile->AppendSeparator();
+    }
 
 	// creamos los nuevos ficheros recientes
 	for ( unsigned int i = 0 ; i < 4 && !m_recentProjects[i].IsEmpty() ; i++ )
