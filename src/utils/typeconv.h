@@ -74,6 +74,8 @@ namespace TypeConv
 	wxArrayString StringToArrayString( const wxString &str );
 	wxString ArrayStringToString( const wxArrayString &arrayStr );
 
+	void ParseBitmapWithResource( const wxString& value, wxString* image, wxString* source, wxSize* icoSize );
+
 	/**
 	@internal
 	Used to import old projects.

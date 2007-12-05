@@ -449,6 +449,7 @@ public:
 protected:
 	wxString m_image;
 	wxString m_source;
+	wxSize m_icoSize;
 	wxArrayString m_strings;
 private:
 	enum
@@ -515,6 +516,13 @@ wxPGPropertyWithChildren(label,name)
 							wxT("Windows Only. Load the image from a ICON resource in a .rc file\n\n")
 						);
 
+    if ( m_source == wxT("Load From Icon Resource") )
+    {
+        wxPGProperty* child3 = wxSizeProperty(wxT("ico_size"), wxPG_LABEL, wxDefaultSize);
+        AddChild( child3 );
+        child3->SetHelpString( wxT("The size of the icon to use from a ICON resource with multiple icons in it.") );
+    }
+
 	RefreshChildren();
 }
 
@@ -528,23 +536,12 @@ void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 	wxString* pObj = (wxString*)wxPGVariantToVoidPtr( value );
 	wxString newValue = *pObj;
 
-	// Split on the semi-colon
-	size_t splitIndex = newValue.find_first_of( wxT(";") );
-	if ( splitIndex != newValue.npos )
-	{
-		m_image = newValue.substr( 0, splitIndex );
-		m_source = newValue.substr( splitIndex + 1 );
-		m_source.Trim( false );
-		if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() )	)
-		{
-			m_source = wxT("Load From File");
-		}
-	}
-	else
-	{
-		m_image = newValue;
-		m_source = wxT("Load From File");
-	}
+    TypeConv::ParseBitmapWithResource( newValue, &m_image, &m_source, &m_icoSize );
+
+	if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() )	)
+    {
+        m_source = wxT("Load From File");
+    }
 
 	RefreshChildren();
 }
@@ -552,19 +549,24 @@ void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 wxPGVariant wxBitmapWithResourcePropertyClass::DoGetValue() const
 {
 	wxString value;
-	value << m_image << wxT("; ") << m_source;
+	value.Printf( wxT("%s; %s [%i; %i]"), m_image.c_str(), m_source.c_str(), m_icoSize.GetWidth(), m_icoSize.GetHeight() );
 	return wxPGVariant( (void*)&value );
 }
 
 void wxBitmapWithResourcePropertyClass::RefreshChildren()
 {
-	if ( !GetCount() )
+    size_t count = GetCount();
+	if ( 0 == count )
 	{
 		return;
 	}
 
 	Item( ITEM_FILE_OR_RESOURCE )->DoSetValue( m_image );
 	Item( ITEM_SOURCE )->DoSetValue( m_strings.Index( m_source ) );
+	if ( 3 == count )
+	{
+	    Item( 2 )->DoSetValue( m_icoSize );
+	}
 }
 
 void wxBitmapWithResourcePropertyClass::ChildChanged( wxPGProperty* p )
@@ -1278,6 +1280,7 @@ void ObjectInspector::OnReCreateGrid( wxCommandEvent& event )
     if ( event.GetInt() != 0 )
     {
         m_pg->Expand( bitmapProp );
+        m_pg->Expand( dynamic_cast< wxPGPropertyWithChildren* >( bitmapProp.GetPropertyPtr() )->Last() );
     }
 }
 
