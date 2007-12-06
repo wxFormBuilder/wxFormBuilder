@@ -1501,6 +1501,24 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	}
 	else if ( type == wxT("tool") )
 	{
+		// If loading bitmap from ICON resource, and size is not set, set size to toolbars bitmapsize
+		// So hacky, yet so useful ...
+		wxSize toolbarsize = obj->GetParent()->GetPropertyAsSize( _("bitmapsize") );
+		if ( wxDefaultSize != toolbarsize )
+		{
+			PProperty prop = obj->GetProperty( _("bitmap") );
+			wxString oldVal = prop->GetValueAsString();
+			wxString path, source;
+			wxSize toolsize;
+			TypeConv::ParseBitmapWithResource( oldVal, &path, &source, &toolsize );
+			if ( wxT("Load From Icon Resource") == source && wxDefaultSize == toolsize )
+			{
+				prop->SetValue( wxString::Format( wxT("%s; %s [%i; %i]"), path.c_str(), source.c_str(), toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
+				m_source->WriteLn( GetCode( obj, wxT("construction") ) );
+				prop->SetValue( oldVal );
+				return;
+			}
+		}
 		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
 	}
 	else

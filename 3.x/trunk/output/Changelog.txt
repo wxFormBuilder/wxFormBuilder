@@ -24,6 +24,7 @@ date Version 3.00.51
 * FS#268 - "[OS X] crashes upon termination" (patch from Auria)
 * FS#277 - "crash on using icon/bitmap resource"
 * FS#266 - "loading toolbar images from resource"
+* FS#259 - "Toolbar tools' icon code does not respect toolbar size"
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."
