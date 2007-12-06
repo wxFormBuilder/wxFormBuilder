@@ -41,6 +41,7 @@
 #include <wx/image.h>
 #include <wx/sysopt.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/clipbrd.h>
 #include <wx/cmdline.h>
 #include <wx/config.h>
 #include <wx/stdpaths.h>
@@ -303,4 +304,16 @@ MyApp::~MyApp()
 	MacroDictionary::Destroy();
 	wxFlatNotebook::CleanUp();
 	AppDataDestroy();
+
+	if( !wxTheClipboard->IsOpened() )
+	{
+        if ( !wxTheClipboard->Open() )
+        {
+            return;
+        }
+	}
+
+    // Allow clipboard data to persist after close
+    wxTheClipboard->Flush();
+    wxTheClipboard->Close();
 }
