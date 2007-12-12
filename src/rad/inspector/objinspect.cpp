@@ -23,7 +23,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "objinspect2.h"
+#include "objinspect.h"
 #include "model/objectbase.h"
 #include "utils/debug.h"
 #include "utils/typeconv.h"
