@@ -209,6 +209,7 @@
 		@}
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>
+    <template name="settings">$name->SetSelection( $selection );</template>
 	<template name="evt_entry_OnChoice">EVT_CHOICE( $id, #handler )</template>
 	<template name="evt_connect_OnChoice">$name->Connect( wxEVT_COMMAND_CHOICE_SELECTED, #handler, NULL, this );</template>
   </templates>
