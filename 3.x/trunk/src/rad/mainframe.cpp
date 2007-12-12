@@ -32,7 +32,7 @@
 #include "rad/cpppanel/cpppanel.h"
 #include "rad/xrcpanel/xrcpanel.h"
 #include "rad/geninheritclass/geninhertclass.h"
-#include "inspector/objinspect2.h"
+#include "inspector/objinspect.h"
 #include "objecttree/objecttree.h"
 #include "palette.h"
 #include "rad/designer/visualeditor.h"
