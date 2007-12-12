@@ -27,7 +27,7 @@ end
 --		Options: exe | winexe | lib | dll
 package.kind = "winexe"
 -- Set the files to include.
-package.files = { matchrecursive( "*.cpp", "*.h", "*.cc", "*.hh", "*.rc" ) }
+package.files = { matchrecursive( "*.cpp", "*.hpp", "*.h", "*.cc", "*.hh", "*.rc" ) }
 -- Set the files to exclude.
 package.excludes = { matchrecursive( "controls/*.cpp", "controls/*.h" ) }
 -- Set the include paths.
@@ -39,6 +39,13 @@ else
 end
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
+
+-- Add libraries and build options for stack trace in MinGW
+if ( windows and ( (target == "cb-gcc") or (target == "gnu") ) ) then
+	table.insert( package.links, { "bfd", "iberty", "psapi", "imagehlp" } )
+	table.insert( package.buildoptions, "-gstabs" )
+end
+
 -- Set the packages dependancies. NOT implimented in the official Premake build for Code::Blocks
 package.depends = { "additional-components-plugin", "common-components-plugin", "containers-components-plugin", "layout-components-plugin", "wxadditions-mini-plugin" }
 -- Set the pre-compiled header
@@ -109,7 +116,13 @@ package.config["Debug"].target = targetName.."d"
 
 -- Set the build options.
 package.buildflags = { "extra-warnings" }
-package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
+package.config["Release"].buildflags = { "optimize-speed" }
+
+-- Don't strip symbols in MinGW, need them for stack trace
+if ( not ( windows and ( (target == "cb-gcc") or (target == "gnu") ) ) ) then
+	table.insert( package.config["Release"].buildflags, "no-symbols" )
+end
+
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
