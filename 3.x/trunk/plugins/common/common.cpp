@@ -104,6 +104,7 @@ protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
 	void OnRadioBox( wxCommandEvent& event );
+	void OnChoice( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
@@ -113,6 +114,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
 	EVT_RADIOBOX( wxID_ANY, ComponentEvtHandler::OnRadioBox )
+	EVT_CHOICE( wxID_ANY, ComponentEvtHandler::OnChoice )
 
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
@@ -1158,6 +1160,8 @@ public:
 
 		delete []strings;
 
+		choice->PushEventHandler( new ComponentEvtHandler( choice, GetManager() ) );
+
 		return choice;
 	}
 
@@ -1165,6 +1169,7 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
+		xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
 		return xrc.GetXrcObject();
 	}
@@ -1173,11 +1178,24 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxChoice"));
 		filter.AddWindowProperties();
+		filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("content"),_("choices"), XRC_TYPE_STRINGLIST);
 		return filter.GetXfbObject();
 	}
 
 };
+
+void ComponentEvtHandler::OnChoice( wxCommandEvent& event )
+{
+	wxChoice* window = wxDynamicCast( m_window, wxChoice );
+	if ( window != NULL )
+	{
+		wxString value;
+		value.Printf( wxT("%i"), window->GetSelection() );
+		m_manager->ModifyProperty( m_window, _("selection"), value );
+		window->SetFocus();
+	}
+}
 
 class SliderComponent : public ComponentBase
 {

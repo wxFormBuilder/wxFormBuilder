@@ -109,6 +109,7 @@
     <inherits class="wxWindow" />
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
+    <property name="selection" type="uint" help="Zero-based position of the selected choice.">0</property>
 	<event name="OnChoice" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHOICE_SELECTED event, when an item on the list is selected." />
   </objectinfo>
 
