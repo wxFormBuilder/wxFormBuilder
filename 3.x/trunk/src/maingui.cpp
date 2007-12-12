@@ -22,38 +22,42 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifdef __BORLANDC__
-#pragma hdrstop
-#endif
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
 #include "splashscreen.h"
 #include "rad/mainframe.h"
 #include "rad/appdata.h"
 #include <wx/filename.h>
 #include <wx/image.h>
 #include <wx/sysopt.h>
-#include <wx/xrc/xmlres.h>
-#include <wx/clipbrd.h>
 #include <wx/cmdline.h>
 #include <wx/config.h>
 #include <wx/stdpaths.h>
+#include <wx/xrc/xmlres.h>
+#include <wx/clipbrd.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include "utils/wxfbexception.h"
-
 #include <memory>
 #include "maingui.h"
 
 #include "utils/debug.h"
 #include "utils/typeconv.h"
 #include "model/objectbase.h"
+
+// Abnormal Termination Handling
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
+	#include <wx/stackwalk.h>
+	#include <wx/utils.h>
+#elif defined(_WIN32) && defined(__MINGW32__)
+	#include "dbg_stack_trace/stack.hpp"
+	#include <sstream>
+	#include <excpt.h>
+
+	EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
+																void * EstablisherFrame,
+																struct _CONTEXT *ContextRecord,
+																void * DispatcherContext );
+#endif
+
+void LogStack();
 
 static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 {
@@ -66,8 +70,20 @@ static const wxCmdLineEntryDesc s_cmdLineDesc[] =
 
 IMPLEMENT_APP( MyApp )
 
-bool MyApp::OnInit()
+int MyApp::OnRun()
 {
+	// Abnormal Termination Handling
+	#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
+		::wxHandleFatalExceptions( true );
+	#elif defined(_WIN32) && defined(__MINGW32__)
+		// Structured Exception handlers are stored in a linked list at FS:[0]
+		// THIS MUST BE A LOCAL VARIABLE - windows won't use an object outside of the thread's stack frame
+		EXCEPTION_REGISTRATION ex;
+		ex.handler = StructuredExceptionHandler;
+		asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
+		asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
+	#endif
+
 	// Using a space so the initial 'w' will not be capitalized in wxLogGUI dialogs
 	wxApp::SetAppName( wxT( " wxFormBuilder" ) );
 
@@ -84,7 +100,7 @@ bool MyApp::OnInit()
 	wxCmdLineParser parser( s_cmdLineDesc, argc, argv );
 	if ( 0 != parser.Parse() )
 	{
-		return false;
+		return -1;
 	}
 
 	// Get project to load
@@ -167,7 +183,7 @@ bool MyApp::OnInit()
 		{
 			if ( !AppData()->VerifySingleInstance( projectToLoad ) )
 			{
-				return false;
+				return -1;
 			}
 		}
 	}
@@ -191,7 +207,7 @@ bool MyApp::OnInit()
 						wxICON_ERROR,
 						NULL
 					);
-		return false;
+		return -1;
 	}
 
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
@@ -275,12 +291,12 @@ bool MyApp::OnInit()
 					}
 				}
 				AppData()->GenerateCode( false );
-				return false;
+				return -1;
 			}
 			else
 			{
 				frame->InsertRecentProject( projectToLoad );
-				return true;
+				return 0;
 			}
 		}
 		else
@@ -291,12 +307,129 @@ bool MyApp::OnInit()
 
 	if ( justGenerate )
 	{
-		return false;
+		return -1;
 	}
 
 	AppData()->NewProject();
 
+	return wxApp::OnRun();
+}
+
+bool MyApp::OnInit()
+{
+	// Initialization is done in OnRun, so MinGW SEH works for all code (it needs a local variable, OnInit is called before OnRun)
 	return true;
+}
+
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
+	class StackLogger : public wxStackWalker
+	{
+	protected:
+		void OnStackFrame( const wxStackFrame& frame )
+		{
+			// Build param string
+			wxString params;
+			size_t paramCount = frame.GetParamCount();
+			if ( paramCount > 0 )
+			{
+				params << wxT("( ");
+
+				for ( size_t i = 0; i < paramCount; ++i )
+				{
+					wxString type, name, value;
+					if ( frame.GetParam( i, &type, &name, &value) )
+					{
+						params << type << wxT(" ") << name << wxT(" = ") << value << wxT(", ");
+					}
+				}
+
+				params << wxT(")");
+			}
+
+			wxString source;
+			if ( frame.HasSourceLocation() )
+			{
+				source.Printf( wxT("%s@%i"), frame.GetFileName().c_str(), frame.GetLine() );
+			}
+
+			wxLogError( wxT("%03i %i %s %s %s %s"),
+							frame.GetLevel(),
+							frame.GetAddress(),
+							frame.GetModule().c_str(),
+							frame.GetName().c_str(),
+							params.c_str(),
+							source.c_str() );
+		}
+	};
+
+	void MyApp::OnFatalException()
+	{
+		LogStack();
+	}
+#elif defined(_WIN32) && defined(__MINGW32__)
+	static _CONTEXT* context = 0;
+	EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
+																void * EstablisherFrame,
+																struct _CONTEXT *ContextRecord,
+																void * DispatcherContext )
+	{
+		context = ContextRecord;
+		LogStack();
+		return ExceptionContinueSearch;
+	}
+
+	class StackLogger
+	{
+	public:
+		void WalkFromException()
+		{
+			try
+			{
+				std::stringstream output;
+				dbg::stack s( 0, context );
+				dbg::stack::const_iterator frame;
+				for ( frame = s.begin(); frame != s.end(); ++frame )
+				{
+					output << *frame;
+					wxLogError( wxString( output.str().c_str(), *wxConvCurrent ) );
+					output.str( "" );
+				}
+			}
+			catch ( std::exception& ex )
+			{
+				wxLogError( wxString( ex.what(), *wxConvCurrent ) );
+			}
+		}
+	};
+#endif
+
+class LoggingStackWalker : public StackLogger
+{
+public:
+    LoggingStackWalker()
+    :
+    StackLogger()
+    {
+        wxLog::Suspend();
+    }
+
+    ~LoggingStackWalker()
+    {
+        wxLogError( wxT("A Fatal Error Occurred. Click Details for a backtrace.") );
+        wxLog::Resume();
+        wxLog* logger = wxLog::GetActiveTarget();
+        if ( 0 != logger )
+        {
+            logger->Flush();
+        }
+        exit(1);
+    }
+};
+
+void LogStack()
+{
+    LoggingStackWalker walker;
+    walker.WalkFromException();
 }
 
 MyApp::~MyApp()

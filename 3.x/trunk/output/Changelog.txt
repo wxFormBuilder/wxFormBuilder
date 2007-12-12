@@ -28,6 +28,7 @@ date Version 3.00.51
 * FS#282 - "empty clipboard after closing wxformbuilder"
 * FS#285 - "Whitespace event handler causes bad code"
 * FS#283 - "possiblity to set the selection of a wxChoice"
++ Added stack trace dialog on fatal error.
 
 09/27/2007 Version 3.00.50 (RC3)
 * FS#234 - "wxFrame name parameter not available."

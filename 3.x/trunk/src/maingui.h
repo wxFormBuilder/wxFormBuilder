@@ -1,7 +1,7 @@
 #ifndef __MAINGUI__
 #define __MAINGUI__
 
-#include "wx/wxprec.h"
+#include <wx/app.h>
 
 class MyApp : public wxApp
 {
@@ -10,7 +10,11 @@ private:
   wxLogWindow * m_log;
 
 public:
-  virtual bool OnInit();
+  bool OnInit();
+  #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
+  void OnFatalException();
+  #endif
+  int OnRun();
   ~MyApp();
 };
 
