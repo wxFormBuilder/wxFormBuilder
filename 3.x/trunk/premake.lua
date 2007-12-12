@@ -45,10 +45,13 @@ function CreateSymlink( pathToLink, symLink )
 end
 
 if ( not windows ) then
-	print( "Running pre-build file creation steps..." )
-	-- Create a 'share' directory.
-	-- HACK: make sure the warning isn't shown on the console.
-	os.execute( "mkdir output/share >/dev/null 2>/dev/null" )
-	CreateShareReadme( "output/share/README.txt" )
-	CreateSymlink( "../../output", "output/share/wxformbuilder" )
+	addoption( "skip-symlink", "Do not create the symlink output/share/wxformbuilder" )
+	if ( not options["skip-symlink"] ) then
+		print( "Running pre-build file creation steps..." )
+		-- Create a 'share' directory.
+		-- HACK: make sure the warning isn't shown on the console.
+		os.execute( "mkdir output/share >/dev/null 2>/dev/null" )
+		CreateShareReadme( "output/share/README.txt" )
+		CreateSymlink( "../../output", "output/share/wxformbuilder" )
+	end
 end
