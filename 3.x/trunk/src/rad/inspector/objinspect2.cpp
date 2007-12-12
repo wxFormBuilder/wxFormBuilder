@@ -599,6 +599,7 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
 	EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
 	EVT_FB_PROPERTY_MODIFIED( ObjectInspector::OnPropertyModified )
+	EVT_FB_EVENT_HANDLER_MODIFIED( ObjectInspector::OnEventHandlerModified )
 
 END_EVENT_TABLE()
 
@@ -1291,7 +1292,10 @@ void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
 	if ( it != m_eventMap.end() )
 	{
 		PEvent evt = it->second;
-		AppData()->ModifyEventHandler( evt, event.GetPropertyValueAsString() );
+		wxString handler = event.GetPropertyValueAsString();
+		handler.Trim();
+		handler.Trim( false );
+		AppData()->ModifyEventHandler( evt, handler );
 	}
 }
 
@@ -1309,6 +1313,13 @@ void ObjectInspector::OnObjectSelected( wxFBObjectEvent& event )
 void ObjectInspector::OnProjectRefresh( wxFBEvent& event )
 {
 	Create(true);
+}
+
+void ObjectInspector::OnEventHandlerModified( wxFBEventHandlerEvent& event )
+{
+    PEvent e = event.GetFBEventHandler();
+    m_eg->SetPropertyValue( e->GetName(), e->GetValue() );
+    m_eg->Refresh();
 }
 
 void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
