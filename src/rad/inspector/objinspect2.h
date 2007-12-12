@@ -61,6 +61,7 @@ WX_PG_DECLARE_PROPERTY( wxBitmapWithResourceProperty, const wxString&, wxEmptySt
 
 // -----------------------------------------------------------------------
 
+class wxFBEventHandlerEvent;
 class wxFBPropertyEvent;
 class wxFBObjectEvent;
 class wxFBEvent;
@@ -162,6 +163,7 @@ class ObjectInspector : public wxPanel
   void OnObjectSelected( wxFBObjectEvent& event );
   void OnProjectRefresh( wxFBEvent& event );
   void OnPropertyModified( wxFBPropertyEvent& event );
+  void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
   wxPropertyGridManager* CreatePropertyGridManager(wxWindow *parent, wxWindowID id);
   void SavePosition();
