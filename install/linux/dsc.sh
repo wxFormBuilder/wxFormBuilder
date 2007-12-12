@@ -12,7 +12,7 @@ function make_dsc
 	controls_c=src/controls/src
 
 	# create a temporary directory
-	tmpdir=wxformbuilder-$1
+	tmpdir=wxformbuilder_$1
 	mkdir $tmpdir
 	if [ ! -d $tmpdir ]
 	then
@@ -45,7 +45,7 @@ function make_dsc
 	currentdir=`pwd`
 
 	cd $tmpdir
-	dpkg-buildpackage -S -rfakeroot
+	dpkg-buildpackage -S -sa -rfakeroot
 	cd $currentdir
 	rm -r $tmpdir
 }
