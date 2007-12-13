@@ -232,6 +232,12 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
 
+	// Only generate to panel + panel is not shown = do nothing
+	if ( panelOnly && !doPanel )
+	{
+		return;
+	}
+
 	// For code preview generate only code relevant to selected form,
 	// otherwise generate full project code.
 
