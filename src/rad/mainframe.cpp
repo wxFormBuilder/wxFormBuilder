@@ -140,7 +140,6 @@ EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
 EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
 EVT_UPDATE_UI( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI )
 EVT_CLOSE( MainFrame::OnClose )
-EVT_FLATNOTEBOOK_PAGE_CHANGED( ID_EDITOR_FNB, MainFrame::OnFlatNotebookPageChanged )
 
 EVT_FB_CODE_GENERATION( MainFrame::OnCodeGeneration )
 EVT_FB_OBJECT_CREATED( MainFrame::OnObjectCreated )
@@ -343,11 +342,16 @@ m_findDialog( NULL )
 
 	// So splitter windows can be restored correctly
 	Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
+
+	// So we don't respond to a FlatNoteBookPageChanged event during construction
+	m_notebook->Connect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
 };
 
 
 MainFrame::~MainFrame()
 {
+	m_notebook->Disconnect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
+
 #ifdef __WXMAC__
     // work around problem on wxMac
     m_rightSplitter->GetWindow1()->GetSizer()->Detach(m_notebook);
