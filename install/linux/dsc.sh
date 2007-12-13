@@ -12,7 +12,7 @@ function make_dsc
 	controls_c=src/controls/src
 
 	# create a temporary directory
-	tmpdir=wxformbuilder_$1
+	tmpdir=wxformbuilder-$1
 	mkdir $tmpdir
 	if [ ! -d $tmpdir ]
 	then
@@ -22,6 +22,7 @@ function make_dsc
 
 	svn export $basedir/output   $tmpdir/output
 	rm $tmpdir/output/license.txt
+	
 	svn export $basedir/plugins  $tmpdir/plugins
 	svn export $basedir/sdk      $tmpdir/sdk
 	svn export $basedir/sdk/tinyxml $tmpdir/sdk/tinyxml
@@ -41,6 +42,8 @@ function make_dsc
 
 	cp $basedir/premake.lua $tmpdir/premake.lua
 	cp $basedir/README.txt $tmpdir/debian/README
+
+	cp -R $tmpdir $tmpdir.orig
 
 	currentdir=`pwd`
 
