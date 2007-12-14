@@ -321,6 +321,31 @@ bool MyApp::OnInit()
 	return true;
 }
 
+int MyApp::OnExit()
+{
+	MacroDictionary::Destroy();
+	wxFlatNotebook::CleanUp();
+	AppDataDestroy();
+
+	if( !wxTheClipboard->IsOpened() )
+	{
+        if ( !wxTheClipboard->Open() )
+        {
+            return wxApp::OnExit();
+        }
+	}
+
+    // Allow clipboard data to persist after close
+    wxTheClipboard->Flush();
+    wxTheClipboard->Close();
+
+	return wxApp::OnExit();
+}
+
+MyApp::~MyApp()
+{
+}
+
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 	class StackLogger : public wxStackWalker
 	{
@@ -430,23 +455,4 @@ void LogStack()
 {
     LoggingStackWalker walker;
     walker.WalkFromException();
-}
-
-MyApp::~MyApp()
-{
-	MacroDictionary::Destroy();
-	wxFlatNotebook::CleanUp();
-	AppDataDestroy();
-
-	if( !wxTheClipboard->IsOpened() )
-	{
-        if ( !wxTheClipboard->Open() )
-        {
-            return;
-        }
-	}
-
-    // Allow clipboard data to persist after close
-    wxTheClipboard->Flush();
-    wxTheClipboard->Close();
 }
