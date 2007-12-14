@@ -15,6 +15,7 @@ public:
   void OnFatalException();
   #endif
   int OnRun();
+  int OnExit();
   ~MyApp();
 };
 
