@@ -1,6 +1,7 @@
 			wxFormBuilder ChangeLog
 ************************************************************************
 * FS#288 - [OS X] Splash screen is truncated
+* FS#287 - Made wxFormBuilder compile on systems where wxStackWalker is not present
 
 12/14/2007 Version 3.00.51 (RC4)
 ^ No longer creating a temporary file on disk for the XRC Preview.
