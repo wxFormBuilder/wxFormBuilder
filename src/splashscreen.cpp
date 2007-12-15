@@ -103,12 +103,9 @@ cbSplashScreen::cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, 
   wxScreenDC screen_dc;
   wxMemoryDC label_dc;
 
-  int x;
-  int y;
-
   #ifndef __WXMAC__
-    x = GetPosition().x;
-    y = GetPosition().y;
+    int x = GetPosition().x;
+    int y = GetPosition().y;
   #endif
 
   m_label.Create(w, h);
@@ -128,10 +125,6 @@ cbSplashScreen::cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, 
   Show(true);
   SetThemeEnabled(false); // seems to be useful by description
   SetBackgroundStyle(wxBG_STYLE_CUSTOM); // the trick for GTK+ (notice it's after Show())
-
-  #ifdef __WXMAC__
-    Centre(wxBOTH | wxCENTRE_ON_SCREEN); // centre only works when the window is showing
-  #endif
 
   #if ( defined( __WXMAC__ ) || defined( __WXMSW__ ) )
     Update();

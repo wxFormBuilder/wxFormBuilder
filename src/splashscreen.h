@@ -24,7 +24,11 @@ class cbSplashScreen : public wxFrame
     wxRegion r;
   public:
     // A value of -1 for timeout makes it stay forever (you need to close it manually)
+#ifdef __WXMAC__
+    cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, wxWindowID id, long style = wxSTAY_ON_TOP | wxNO_BORDER | wxFRAME_TOOL_WINDOW);
+#else
     cbSplashScreen(wxBitmap &label, long timeout, wxWindow *parent, wxWindowID id, long style = wxSTAY_ON_TOP | wxNO_BORDER | wxFRAME_NO_TASKBAR | wxFRAME_SHAPED);
+#endif
     ~cbSplashScreen();
 
   private:
