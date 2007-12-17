@@ -428,7 +428,7 @@ MyApp::~MyApp()
 	};
 #endif
 
-#if wxUSE_STACKWALKER
+#if (wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER) || (defined(_WIN32) && defined(__MINGW32__))
 class LoggingStackWalker : public StackLogger
 {
 public:
@@ -456,10 +456,5 @@ void LogStack()
 {
     LoggingStackWalker walker;
     walker.WalkFromException();
-}
-#else
-void LogStack()
-{
-    wxLogError( wxT("A Fatal Error Occurred (retrieving backtrace is not supported on your system).") );
 }
 #endif
