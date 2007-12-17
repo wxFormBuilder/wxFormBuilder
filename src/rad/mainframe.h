@@ -96,7 +96,6 @@ class MainFrame : public wxFrame
   void UpdateRecentProjects();
   void OnOpenRecent(wxCommandEvent &event);
   void UpdateLayoutTools();
-  bool SaveWarning();
 
   // Used to correctly restore splitter position
   void OnIdle( wxIdleEvent& );
@@ -168,6 +167,8 @@ class MainFrame : public wxFrame
   void OnFindDialog( wxCommandEvent& event );
   void OnFind( wxFindDialogEvent& event );
   void OnFindClose( wxFindDialogEvent& event );
+  
+  bool SaveWarning();
   };
 
 

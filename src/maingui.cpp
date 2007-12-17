@@ -213,7 +213,7 @@ int MyApp::OnRun()
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
 	wxSystemOptions::SetOption( wxT( "msw.staticbox.optimized-paint" ), 0 );
 
-	MainFrame *frame = NULL;
+	m_frame = NULL;
 
 	#ifndef __WXFB_DEBUG__
 	wxBitmap bitmap;
@@ -247,11 +247,11 @@ int MyApp::OnRun()
 
 	config->SetPath( wxT("/") );
 
-	frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
+	m_frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
 	if ( !justGenerate )
 	{
-		frame->Show( TRUE );
-		SetTopWindow( frame );
+		m_frame->Show( TRUE );
+		SetTopWindow( m_frame );
 
 		#ifndef __WXFB_DEBUG__
 		// turn off the splash screen
@@ -295,7 +295,7 @@ int MyApp::OnRun()
 			}
 			else
 			{
-				frame->InsertRecentProject( projectToLoad );
+				m_frame->InsertRecentProject( projectToLoad );
 				return 0;
 			}
 		}
@@ -309,9 +309,18 @@ int MyApp::OnRun()
 	{
 		return -1;
 	}
-
+    
 	AppData()->NewProject();
-
+    
+#ifdef __WXMAC__
+    // document to open on startup
+    if(!m_mac_file_name.IsEmpty())
+    {
+        if ( AppData()->LoadProject( m_mac_file_name ) )
+            m_frame->InsertRecentProject( m_mac_file_name );
+    }
+#endif
+    
 	return wxApp::OnRun();
 }
 
@@ -345,6 +354,20 @@ int MyApp::OnExit()
 MyApp::~MyApp()
 {
 }
+
+#ifdef __WXMAC__
+void MyApp::MacOpenFile(const wxString &fileName)
+{
+    if(m_frame == NULL) m_mac_file_name = fileName;
+    else
+    {
+        if(!m_frame->SaveWarning()) return;
+        
+        if ( AppData()->LoadProject( fileName ) )
+            m_frame->InsertRecentProject( fileName );
+    }
+}
+#endif
 
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 	class StackLogger : public wxStackWalker
