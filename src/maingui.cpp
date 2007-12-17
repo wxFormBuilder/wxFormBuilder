@@ -296,7 +296,7 @@ int MyApp::OnRun()
 			else
 			{
 				m_frame->InsertRecentProject( projectToLoad );
-				return 0;
+				return wxApp::OnRun();
 			}
 		}
 		else
@@ -309,9 +309,9 @@ int MyApp::OnRun()
 	{
 		return -1;
 	}
-    
+
 	AppData()->NewProject();
-    
+
 #ifdef __WXMAC__
     // document to open on startup
     if(!m_mac_file_name.IsEmpty())
@@ -320,7 +320,7 @@ int MyApp::OnRun()
             m_frame->InsertRecentProject( m_mac_file_name );
     }
 #endif
-    
+
 	return wxApp::OnRun();
 }
 
@@ -362,7 +362,7 @@ void MyApp::MacOpenFile(const wxString &fileName)
     else
     {
         if(!m_frame->SaveWarning()) return;
-        
+
         if ( AppData()->LoadProject( fileName ) )
             m_frame->InsertRecentProject( fileName );
     }
