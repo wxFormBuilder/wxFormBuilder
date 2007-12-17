@@ -1,6 +1,7 @@
 			wxFormBuilder ChangeLog
 ************************************************************************
 12/17/2007 Version 3.00.52 (RC4-1)
+* Fixed application closing when double clicking on an .fpb file in Windows.
 * FS#288 - [OS X] Splash screen is truncated
 * FS#287 - Made wxFormBuilder compile on systems where wxStackWalker is not present
 * FS#289 - [OS X] Perform file associations on mac
