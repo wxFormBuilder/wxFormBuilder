@@ -1350,7 +1350,11 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		wxString perm_str = obj->GetProperty( wxT("permission") )->GetValue();
 		if ( perm_str == wxT("none") )
 		{
-			m_source->WriteLn( GetCode( obj, wxT("declaration") ) );
+			const wxString& decl = GetCode( obj, wxT("declaration") );
+			if ( !decl.empty() )
+			{
+				m_source->WriteLn( decl );
+			}
 		}
 
 		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
@@ -1491,12 +1495,6 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	else if ( type == wxT("treelistctrlcolumn") )
 	{
 		m_source->WriteLn( GetCode( obj, wxT("column_add") ) );
-		GenSettings( obj->GetObjectInfo(), obj );
-	}
-	else if ( type == wxT("menuitem") )
-	{
-		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
-		m_source->WriteLn( GetCode( obj, wxT("menuitem_add") ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 	}
 	else if ( type == wxT("tool") )

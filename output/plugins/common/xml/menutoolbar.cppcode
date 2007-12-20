@@ -34,26 +34,23 @@
   <templates class="wxMenuItem">
     <template name="declaration">wxMenuItem* $name;</template>
     <template name="construction">
-        $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind ); #nl
-        #parent $name->Append($name);
+        $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );
     </template>
     <template name="settings">
-      #ifequal $enabled "0"
-      @{$name->Enable( $enabled ); #nl @}
+		#ifequal $enabled "0"
+			@{$name->Enable( $enabled ); #nl @}
 
-      #ifequal $kind "wxITEM_CHECK"
-      @{
-        #ifequal $checked "1"
-        @{ $name->Check( $checked ); #nl @}
-      @}
+		#ifequal $kind "wxITEM_CHECK"
+		@{
+			#ifequal $checked "1"
+			@{ $name->Check( $checked ); #nl @}
+		@}
 
-      #ifequal $kind "wxITEM_RADIO"
-      @{
-        #ifequal $checked "1"
-        @{ $name->Check( $checked ); #nl @}
-      @}
-    </template>
-    <template name="menuitem_add">
+		#ifequal $kind "wxITEM_RADIO"
+		@{
+			#ifequal $checked "1"
+			@{ $name->Check( $checked ); #nl @}
+		@}
 		#ifnotnull $bitmap
 		@{
 			@#ifdef __WXMSW__ #nl
@@ -71,8 +68,8 @@
 				@#endif #nl
 			@}
 		@}
-		#parent $name->Append( $name );
-	</template>
+		#parent $name->Append( $name ); #nl
+    </template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
 	<template name="evt_connect_OnMenuSelection">this->Connect( $name->GetId(), wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
@@ -83,9 +80,7 @@
   </templates>
 
   <templates class="separator">
-    <template name="construction"></template>
-    <template name="settings"></template>
-    <template name="menuitem_add">#parent $name->AppendSeparator();</template>
+    <template name="construction">#parent $name->AppendSeparator(); #nl</template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
   </templates>
 
