@@ -262,7 +262,7 @@ int MyApp::OnRun()
 			wxLogWindow* log = dynamic_cast< wxLogWindow* >( AppData()->GetDebugLogTarget() );
 			if ( log )
 			{
-				frame->AddChild( log->GetFrame() );
+				m_frame->AddChild( log->GetFrame() );
 			}
 		#endif //__WXFB_DEBUG__
 	}
