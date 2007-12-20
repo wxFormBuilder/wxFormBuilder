@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.53
+* Fixed missing C++ code generation for menu separators and menu item bitmaps.
+
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
 * FS#288 - [OS X] Splash screen is truncated
