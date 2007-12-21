@@ -306,7 +306,6 @@ namespace
     }
 #elif defined(__GNUC__)
     #if defined(__i386__)
-
     void fill_frames(std::list<dbg::stack_frame> &frames, dbg::stack::depth_type limit)
     {
         // Based on code found at:
@@ -363,11 +362,17 @@ namespace
 
     #else
         // GNU, but neither x86 or PPC
-        #error "Sorry but dbg::stack is not supported on this architecture"
+        //#error "Sorry but dbg::stack is not supported on this architecture"
+        void fill_frames(std::list<dbg::stack_frame> &, dbg::stack::depth_type )
+        {
+        }
     #endif
 #else
     // Unsupported compiler
-    #error "Sorry but dbg::stack is not supported on this compiler"
+    //#error "Sorry but dbg::stack is not supported on this compiler"
+    void fill_frames(std::list<dbg::stack_frame> &, dbg::stack::depth_type )
+    {
+    }
 #endif
 }
 
