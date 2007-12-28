@@ -203,7 +203,22 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 		case XRC_TYPE_BITMAP:
 			{
 				wxString bitmapProp = m_obj->GetPropertyAsString( objPropName );
+				if ( bitmapProp.empty() )
+				{
+					break;
+				}
+
 				wxString filename = bitmapProp.BeforeFirst( wxT(';') );
+				if ( filename.empty() )
+				{
+					break;
+				}
+
+				if ( bitmapProp.size() < ( filename.size() + 2 ) )
+				{
+					break;
+				}
+
 				wxString source = bitmapProp.substr( filename.size() + 2 );
 				if ( source.StartsWith( wxT( "Load From File" ) ) )
 				{
