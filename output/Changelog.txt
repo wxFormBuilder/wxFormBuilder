@@ -4,6 +4,7 @@ date Version 3.00.53
 * Fixed missing C++ code generation for menu separators and menu item bitmaps.
 * FS#290 - "Toolbarseparator leads to crash if the Bitmapsize differs from default."
 ^ Improved refresh of selection inside a scrolled window.
+* Fixed crash on xrc generation for empty bitmap properties.
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
