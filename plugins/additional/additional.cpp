@@ -723,7 +723,7 @@ void ComponentEvtHandler::OnGridClick( wxGridEvent& event )
 	event.Skip();
 }
 
-void ComponentEvtHandler::OnGridColSize( wxGridSizeEvent& event )
+void ComponentEvtHandler::OnGridColSize( wxGridSizeEvent& )
 {
 	wxGrid* grid = wxDynamicCast( m_window, wxGrid );
 	if ( NULL == grid )
@@ -741,7 +741,7 @@ void ComponentEvtHandler::OnGridColSize( wxGridSizeEvent& event )
 	m_manager->ModifyProperty( m_window, _("column_sizes"), sizes, true );
 }
 
-void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& event )
+void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& )
 {
 	wxGrid* grid = wxDynamicCast( m_window, wxGrid );
 	if ( NULL == grid )
@@ -796,7 +796,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& event )
+void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& )
 {
 	wxColourPickerCtrl* window = wxDynamicCast( m_window, wxColourPickerCtrl );
 	if ( window != NULL )
@@ -849,7 +849,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& event )
+void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& )
 {
 	wxFontPickerCtrl* window = wxDynamicCast( m_window, wxFontPickerCtrl );
 	if ( window != NULL )
@@ -900,7 +900,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& event )
+void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& )
 {
 	wxFilePickerCtrl* window = wxDynamicCast( m_window, wxFilePickerCtrl );
 	if ( window != NULL )
@@ -947,7 +947,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& event )
+void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& )
 {
 	wxDirPickerCtrl* window = wxDynamicCast( m_window, wxDirPickerCtrl );
 	if ( window != NULL )
@@ -1058,7 +1058,7 @@ void GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick( wxMouseEvent& event )
 class CustomControlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject* /*obj*/, wxObject *parent)
 	{
 		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
 	}

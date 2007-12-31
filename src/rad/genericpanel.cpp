@@ -35,9 +35,8 @@ GenericWindow::GenericWindow(wxWindow *parent)
 }
 
 
-void GenericWindow::OnPaint(wxPaintEvent &event)
-{
-  
+void GenericWindow::OnPaint(wxPaintEvent &)
+{  
   wxPaintDC dc(this);
   wxSize size = GetSize();
   dc.SetPen(*wxBLACK_PEN);

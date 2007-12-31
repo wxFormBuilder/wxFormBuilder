@@ -366,12 +366,12 @@ void ObjectTree::RestoreItemStatus(PObjectBase obj)
 /////////////////////////////////////////////////////////////////////////////
 // wxFormBuilder Event Handlers
 /////////////////////////////////////////////////////////////////////////////
-void ObjectTree::OnProjectLoaded ( wxFBEvent &event )
+void ObjectTree::OnProjectLoaded ( wxFBEvent &)
 {
 	RebuildTree();
 }
 
-void ObjectTree::OnProjectSaved  ( wxFBEvent &event )
+void ObjectTree::OnProjectSaved  ( wxFBEvent &)
 {
 }
 
@@ -420,12 +420,12 @@ void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 	}
 }
 
-void ObjectTree::OnObjectCreated ( wxFBObjectEvent &event )
+void ObjectTree::OnObjectCreated ( wxFBObjectEvent &)
 {
 	RebuildTree();
 }
 
-void ObjectTree::OnObjectRemoved ( wxFBObjectEvent &event )
+void ObjectTree::OnObjectRemoved ( wxFBObjectEvent &)
 {
 	RebuildTree();
 }
@@ -444,7 +444,7 @@ void ObjectTree::OnPropertyModified ( wxFBPropertyEvent &event )
 	};
 }
 
-void ObjectTree::OnProjectRefresh ( wxFBEvent &event)
+void ObjectTree::OnProjectRefresh ( wxFBEvent &)
 {
   RebuildTree();
 }

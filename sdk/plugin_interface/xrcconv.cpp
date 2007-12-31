@@ -423,7 +423,7 @@ void ObjectToXrcFilter::AddWindowProperties()
 ///////////////////////////////////////////////////////////////////////////////
 
 XrcToXfbFilter::XrcToXfbFilter( ticpp::Element *obj,
-								const wxString &classname,
+								const wxString &/*classname*/,
                                 const wxString &objname )
 {
 	m_xrcObj = obj;

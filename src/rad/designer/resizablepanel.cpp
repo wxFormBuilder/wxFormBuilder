@@ -137,7 +137,7 @@ void ResizablePanel::OnLeftDown(wxMouseEvent& e)
   }
 }
 
-void ResizablePanel::OnLeftUp(wxMouseEvent& e)
+void ResizablePanel::OnLeftUp(wxMouseEvent& )
 {
   if (m_sizing != NONE)
   {

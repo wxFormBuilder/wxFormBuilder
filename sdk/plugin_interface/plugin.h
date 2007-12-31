@@ -206,7 +206,7 @@ public:
 		return m_manager;
 	}
 
-	wxObject* Create( IObject *obj, wxObject *parent )
+	wxObject* Create( IObject* /*obj*/, wxObject* /*parent*/ )
 	{
 		return m_manager->NewNoObject(); /* Even components which are not visible must be unique in the map */
 	}
@@ -223,22 +223,22 @@ public:
         }
     }
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	void OnCreated( wxObject* /*wxobject*/, wxWindow* /*wxparent*/ )
 	{
 
 	}
 
-	void OnSelected( wxObject* wxobject )
+	void OnSelected( wxObject* /*wxobject*/ )
 	{
 
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject* /*obj*/)
 	{
 		return NULL;
 	}
 
-	ticpp::Element* ImportFromXrc(ticpp::Element *xrcObj)
+	ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/)
 	{
 		return NULL;
 	}

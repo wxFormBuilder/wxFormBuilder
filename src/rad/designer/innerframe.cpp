@@ -82,16 +82,15 @@ void wxInnerFrame::TitleBar::OnLeftClick ( wxMouseEvent &event )
 	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
 
-void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent &event )
+void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent& )
 {
 	wxClientDC dc( this );
 	wxBufferedDC bdc( &dc, GetClientSize() );
 	DrawTitleBar( bdc );
 }
 
-void wxInnerFrame::TitleBar::OnPaint ( wxPaintEvent &event )
+void wxInnerFrame::TitleBar::OnPaint ( wxPaintEvent& )
 {
-
 	wxPaintDC dc( this );
 	wxBufferedDC bdc( &dc, GetClientSize() );
 	DrawTitleBar( bdc );
@@ -410,7 +409,7 @@ void wxInnerFrame::OnLeftDown( wxMouseEvent& e )
 	}
 }
 
-void wxInnerFrame::OnLeftUp( wxMouseEvent& e )
+void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 {
 	if ( m_sizing != NONE )
 	{

@@ -1305,12 +1305,12 @@ void ObjectInspector::OnPropertyGridExpand(wxPropertyGridEvent& event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void ObjectInspector::OnObjectSelected( wxFBObjectEvent& event )
+void ObjectInspector::OnObjectSelected( wxFBObjectEvent& )
 {
 	Create();
 }
 
-void ObjectInspector::OnProjectRefresh( wxFBEvent& event )
+void ObjectInspector::OnProjectRefresh( wxFBEvent& )
 {
 	Create(true);
 }

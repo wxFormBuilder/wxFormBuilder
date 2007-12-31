@@ -11,6 +11,10 @@
 #include <stdexcept>
 #include <iosfwd>
 
+#if defined(_WIN32)
+#include <windows.h>
+#endif
+
 namespace dbg
 {
     class stack_error : public std::exception
@@ -35,7 +39,7 @@ namespace dbg
 
         private:
             const void *instruction_;
-            const std::string function_;
+            std::string function_;
     };
 
     std::ostream &operator<< (std::ostream &out, const stack_frame &frame);
@@ -49,7 +53,7 @@ namespace dbg
             stack(depth_type limit = 0);
 
 			#if defined(_WIN32)
-			stack(depth_type limit = 0, CONTEXT* fromContext = 0);
+			stack(depth_type limit, CONTEXT* fromContext);
 			#endif
 
             const_iterator begin() const;

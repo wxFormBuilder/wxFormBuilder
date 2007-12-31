@@ -491,7 +491,7 @@ void MainFrame::OnSaveProject( wxCommandEvent &event )
 	}
 }
 
-void MainFrame::OnSaveAsProject( wxCommandEvent &event )
+void MainFrame::OnSaveAsProject( wxCommandEvent & )
 {
 	wxFileDialog *dialog = new wxFileDialog( this, wxT( "Save Project" ), m_currentDir,
 	                       wxT( "" ), wxT( "wxFormBuilder Project File (*.fbp)|*.fbp|All files (*.*)|*.*" ), wxFD_SAVE );
@@ -524,7 +524,7 @@ void MainFrame::OnSaveAsProject( wxCommandEvent &event )
 	dialog->Destroy();
 }
 
-void MainFrame::OnOpenProject( wxCommandEvent &event )
+void MainFrame::OnOpenProject( wxCommandEvent &)
 {
 	if ( !SaveWarning() )
 		return;
@@ -573,7 +573,7 @@ void MainFrame::OnOpenRecent( wxCommandEvent &event )
     }
 }
 
-void MainFrame::OnImportXrc( wxCommandEvent &event )
+void MainFrame::OnImportXrc( wxCommandEvent &)
 {
 	wxFileDialog *dialog = new wxFileDialog( this, wxT( "Import XRC file" ), m_currentDir,
 	                       wxT( "example.xrc" ), wxT( "*.xrc" ), wxFD_OPEN );
@@ -611,7 +611,7 @@ void MainFrame::OnImportXrc( wxCommandEvent &event )
 }
 
 
-void MainFrame::OnNewProject( wxCommandEvent &event )
+void MainFrame::OnNewProject( wxCommandEvent &)
 {
 	if ( !SaveWarning() )
 		return;
@@ -619,19 +619,19 @@ void MainFrame::OnNewProject( wxCommandEvent &event )
 	AppData()->NewProject();
 }
 
-void MainFrame::OnGenerateCode( wxCommandEvent &event )
+void MainFrame::OnGenerateCode( wxCommandEvent &)
 {
 	AppData()->GenerateCode( false );
 }
 
-void MainFrame::OnAbout( wxCommandEvent &event )
+void MainFrame::OnAbout( wxCommandEvent &)
 {
 	AboutDialog *dlg = new AboutDialog( this );
 	dlg->ShowModal();
 	dlg->Destroy();
 }
 
-void MainFrame::OnExit( wxCommandEvent &event )
+void MainFrame::OnExit( wxCommandEvent &)
 {
 	Close();
 }
@@ -646,7 +646,7 @@ void MainFrame::OnClose( wxCloseEvent &event )
 	event.Skip();
 }
 
-void MainFrame::OnProjectLoaded( wxFBEvent& event )
+void MainFrame::OnProjectLoaded( wxFBEvent& )
 {
 	GetStatusBar()->SetStatusText( wxT( "Project Loaded!" ) );
 	PObjectBase project = AppData()->GetProjectData();
@@ -660,13 +660,13 @@ void MainFrame::OnProjectLoaded( wxFBEvent& event )
 	UpdateFrame();
 }
 
-void MainFrame::OnProjectSaved( wxFBEvent& event )
+void MainFrame::OnProjectSaved( wxFBEvent& )
 {
 	GetStatusBar()->SetStatusText( wxT( "Project Saved!" ) );
 	UpdateFrame();
 }
 
-void MainFrame::OnObjectExpanded( wxFBObjectEvent& event )
+void MainFrame::OnObjectExpanded( wxFBObjectEvent& )
 {
 	UpdateFrame();
 }
@@ -820,7 +820,7 @@ void MainFrame::OnCodeGeneration( wxFBEvent& event )
 	}
 }
 
-void MainFrame::OnProjectRefresh( wxFBEvent& event )
+void MainFrame::OnProjectRefresh( wxFBEvent& )
 {
 	PObjectBase project = AppData()->GetProjectData();
 
@@ -833,12 +833,12 @@ void MainFrame::OnProjectRefresh( wxFBEvent& event )
 	UpdateFrame();
 }
 
-void MainFrame::OnUndo( wxCommandEvent &event )
+void MainFrame::OnUndo( wxCommandEvent &)
 {
 	AppData()->Undo();
 }
 
-void MainFrame::OnRedo( wxCommandEvent &event )
+void MainFrame::OnRedo( wxCommandEvent &)
 {
 	AppData()->Redo();
 }
@@ -1022,7 +1022,7 @@ void MainFrame::InsertRecentProject( const wxString &file )
 	UpdateRecentProjects();
 }
 
-void MainFrame::OnCopy( wxCommandEvent &event )
+void MainFrame::OnCopy( wxCommandEvent &)
 
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
@@ -1036,7 +1036,7 @@ void MainFrame::OnCopy( wxCommandEvent &event )
 	}
 }
 
-void MainFrame::OnCut ( wxCommandEvent &event )
+void MainFrame::OnCut ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
@@ -1049,13 +1049,13 @@ void MainFrame::OnCut ( wxCommandEvent &event )
 	}
 }
 
-void MainFrame::OnDelete ( wxCommandEvent &event )
+void MainFrame::OnDelete ( wxCommandEvent &)
 {
 	AppData()->RemoveObject( AppData()->GetSelectedObject() );
 	UpdateFrame();
 }
 
-void MainFrame::OnPaste ( wxCommandEvent &event )
+void MainFrame::OnPaste ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
@@ -1068,13 +1068,13 @@ void MainFrame::OnPaste ( wxCommandEvent &event )
 	}
 }
 
-void MainFrame::OnClipboardCopy(wxCommandEvent& e)
+void MainFrame::OnClipboardCopy(wxCommandEvent& )
 {
 	AppData()->CopyObjectToClipboard( AppData()->GetSelectedObject() );
 	UpdateFrame();
 }
 
-void MainFrame::OnClipboardPaste(wxCommandEvent& e)
+void MainFrame::OnClipboardPaste(wxCommandEvent& )
 {
 	AppData()->PasteObjectFromClipboard( AppData()->GetSelectedObject() );
 	UpdateFrame();
@@ -1085,32 +1085,32 @@ void MainFrame::OnClipboardPasteUpdateUI( wxUpdateUIEvent& e )
 	e.Enable( AppData()->CanPasteObjectFromClipboard() );
 }
 
-void MainFrame::OnToggleExpand ( wxCommandEvent &event )
+void MainFrame::OnToggleExpand ( wxCommandEvent &)
 {
 	AppData()->ToggleExpandLayout( AppData()->GetSelectedObject() );
 }
 
-void MainFrame::OnToggleStretch ( wxCommandEvent &event )
+void MainFrame::OnToggleStretch ( wxCommandEvent &)
 {
 	AppData()->ToggleStretchLayout( AppData()->GetSelectedObject() );
 }
 
-void MainFrame::OnMoveUp ( wxCommandEvent &event )
+void MainFrame::OnMoveUp ( wxCommandEvent &)
 {
 	AppData()->MovePosition( AppData()->GetSelectedObject(), false, 1 );
 }
 
-void MainFrame::OnMoveDown ( wxCommandEvent &event )
+void MainFrame::OnMoveDown ( wxCommandEvent &)
 {
 	AppData()->MovePosition( AppData()->GetSelectedObject(), true, 1 );
 }
 
-void MainFrame::OnMoveLeft ( wxCommandEvent &event )
+void MainFrame::OnMoveLeft ( wxCommandEvent &)
 {
 	AppData()->MoveHierarchy( AppData()->GetSelectedObject(), true );
 }
 
-void MainFrame::OnMoveRight ( wxCommandEvent &event )
+void MainFrame::OnMoveRight ( wxCommandEvent & )
 {
 	AppData()->MoveHierarchy( AppData()->GetSelectedObject(), false );
 }
@@ -1332,7 +1332,7 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 	AppData()->GenerateCode( true );
 }
 
-void MainFrame::OnFindDialog( wxCommandEvent& event )
+void MainFrame::OnFindDialog( wxCommandEvent& )
 {
 	if ( NULL == m_findDialog )
 	{
@@ -1342,7 +1342,7 @@ void MainFrame::OnFindDialog( wxCommandEvent& event )
 	m_findDialog->Show( true );
 }
 
-void MainFrame::OnFindClose( wxFindDialogEvent& event )
+void MainFrame::OnFindClose( wxFindDialogEvent& )
 {
 	m_findDialog->Destroy();
 	m_findDialog = 0;

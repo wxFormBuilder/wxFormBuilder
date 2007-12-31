@@ -62,7 +62,7 @@ void GenInheritedClassDlg::GetFormsSelected( std::vector< GenClassDetails >* for
 	}
 }
 
-void GenInheritedClassDlg::OnFormsSelected( wxCommandEvent& event )
+void GenInheritedClassDlg::OnFormsSelected( wxCommandEvent& )
 {
 	// Enable controls because an item is selected.
 	int selection = m_formsCheckList->GetSelection();
@@ -88,12 +88,12 @@ void GenInheritedClassDlg::OnFormsToggle( wxCommandEvent& event )
 	m_classDetails[ selection ].m_isSelected = m_formsCheckList->IsChecked( selection );
 }
 
-void GenInheritedClassDlg::OnClassNameChange( wxCommandEvent& event )
+void GenInheritedClassDlg::OnClassNameChange( wxCommandEvent& )
 {
 	m_classDetails[ m_formsCheckList->GetSelection() ].m_className = m_classNameTextCtrl->GetValue();
 }
 
-void GenInheritedClassDlg::OnFileNameChange( wxCommandEvent& event )
+void GenInheritedClassDlg::OnFileNameChange( wxCommandEvent& )
 {
 	m_classDetails[ m_formsCheckList->GetSelection() ].m_fileName = m_fileNameTextCtrl->GetValue();
 }
