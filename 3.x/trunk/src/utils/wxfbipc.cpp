@@ -226,7 +226,7 @@ wxConnectionBase* AppClient::OnMakeConnection()
 	return new AppConnection;
 }
 
-wxChar* AppConnection::OnRequest( const wxString& topic, const wxString& item, int* size, wxIPCFormat format )
+wxChar* AppConnection::OnRequest( const wxString& /*topic*/, const wxString& /*item*/, int* size, wxIPCFormat /*format*/ )
 {
 	unsigned long pid = ::wxGetProcessId();
 	if ( 0 == pid )

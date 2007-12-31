@@ -132,7 +132,7 @@ AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Abo
   SetSizerAndFit(mainSizer);
 }
 
-void AboutDialog::OnButtonEvent (wxCommandEvent &event)
+void AboutDialog::OnButtonEvent (wxCommandEvent &)
 {
   Close();
 }

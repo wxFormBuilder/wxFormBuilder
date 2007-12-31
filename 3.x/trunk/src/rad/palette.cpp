@@ -161,7 +161,7 @@ void wxFbPalette::Create()
   top_sizer->SetSizeHints(this);
 }
 
-void wxFbPalette::OnSpinUp(wxSpinEvent& e)
+void wxFbPalette::OnSpinUp(wxSpinEvent& )
 {
   int page = m_notebook->GetSelection();
   PObjectPackage pkg = AppData()->GetPackage(page);
@@ -174,7 +174,7 @@ void wxFbPalette::OnSpinUp(wxSpinEvent& e)
   toolbar->Realize();
 }
 
-void wxFbPalette::OnSpinDown(wxSpinEvent& e)
+void wxFbPalette::OnSpinDown(wxSpinEvent& )
 {
   int page = m_notebook->GetSelection();
   if (m_posVector[page] <= 0) return;

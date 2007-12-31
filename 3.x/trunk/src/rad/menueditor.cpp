@@ -433,17 +433,17 @@ void MenuEditor::AddNewItem()
     m_tcLabel->SetFocus();
 }
 
-void MenuEditor::OnAddMenuItem(wxCommandEvent& e)
+void MenuEditor::OnAddMenuItem(wxCommandEvent& )
 {
     AddNewItem();
 }
 
-void MenuEditor::OnAddSeparator(wxCommandEvent& e)
+void MenuEditor::OnAddSeparator(wxCommandEvent& )
 {
     AddItem(wxT("---"), wxT(""), wxT(""), wxT(""), wxT(""), wxT(""));
 }
 
-void MenuEditor::OnModifyMenuItem(wxCommandEvent& e)
+void MenuEditor::OnModifyMenuItem(wxCommandEvent& )
 {
     long index = GetSelectedItem();
     int identation = GetItemIdentation(index);
@@ -463,7 +463,7 @@ void MenuEditor::OnModifyMenuItem(wxCommandEvent& e)
     m_menuList->SetItem(index, 5, kind);
 }
 
-void MenuEditor::OnRemoveMenuItem(wxCommandEvent& e)
+void MenuEditor::OnRemoveMenuItem(wxCommandEvent& )
 {
     long sel = GetSelectedItem();
     if (sel < m_menuList->GetItemCount() - 1)
@@ -488,7 +488,7 @@ void MenuEditor::OnRemoveMenuItem(wxCommandEvent& e)
         m_menuList->DeleteItem(sel);
 }
 
-void MenuEditor::OnMenuLeft(wxCommandEvent& e)
+void MenuEditor::OnMenuLeft(wxCommandEvent& )
 {
     int sel = GetSelectedItem();
     int curIdent = GetItemIdentation(sel) - 1;
@@ -504,7 +504,7 @@ void MenuEditor::OnMenuLeft(wxCommandEvent& e)
     m_menuList->SetItemText(sel, label);
 }
 
-void MenuEditor::OnMenuRight(wxCommandEvent& e)
+void MenuEditor::OnMenuRight(wxCommandEvent& )
 {
     int sel = GetSelectedItem();
     int curIdent = GetItemIdentation(sel) + 1;
@@ -520,7 +520,7 @@ void MenuEditor::OnMenuRight(wxCommandEvent& e)
     m_menuList->SetItemText(sel, label);
 }
 
-void MenuEditor::OnMenuUp(wxCommandEvent& e)
+void MenuEditor::OnMenuUp(wxCommandEvent& )
 {
     long sel = GetSelectedItem();
     long prev = sel - 1;
@@ -563,7 +563,7 @@ long MenuEditor::GetEndIndex(long n)
     return res - 1;
 }
 
-void MenuEditor::OnMenuDown(wxCommandEvent& e)
+void MenuEditor::OnMenuDown(wxCommandEvent& )
 {
     long sel = GetSelectedItem();
     int selIdent = GetItemIdentation(sel);
@@ -590,12 +590,12 @@ void MenuEditor::OnMenuDown(wxCommandEvent& e)
     m_menuList->SetItemState(first, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
 }
 
-void MenuEditor::OnEnter(wxCommandEvent& e)
+void MenuEditor::OnEnter(wxCommandEvent& )
 {
   AddNewItem();
 }
 
-void MenuEditor::OnLabelChanged(wxCommandEvent& e)
+void MenuEditor::OnLabelChanged(wxCommandEvent& )
 {
   wxString label = m_tcLabel->GetValue();
   wxString id, name;

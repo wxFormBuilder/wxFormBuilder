@@ -60,7 +60,7 @@ bool wxFBDataObject::GetDataHere( const wxDataFormat&, void* buf ) const
 	return true;
 }
 
-size_t wxFBDataObject::GetDataSize( const wxDataFormat& format ) const
+size_t wxFBDataObject::GetDataSize( const wxDataFormat& /*format*/ ) const
 {
 	return m_data.length();
 }
@@ -78,7 +78,7 @@ size_t wxFBDataObject::GetFormatCount( Direction dir ) const
 	}
 }
 
-wxDataFormat wxFBDataObject::GetPreferredFormat( Direction dir ) const
+wxDataFormat wxFBDataObject::GetPreferredFormat( Direction /*dir*/ ) const
 {
 	return wxFBDataObjectFormat;
 }

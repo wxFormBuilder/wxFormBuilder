@@ -62,7 +62,7 @@ private:
 	wxWindow* m_window;
 	IManager* m_manager;
 
-	void OnLeftDown( wxMouseEvent& event )
+	void OnLeftDown( wxMouseEvent& )
 	{
 		m_manager->SelectObject( m_window );
 	}
@@ -129,7 +129,7 @@ END_EVENT_TABLE()
 class FrameFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject* /*obj*/, wxObject *parent)
 	{
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		panel->SetBackgroundColour(wxColour(50,50,50));
@@ -161,7 +161,7 @@ public:
 class PanelFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject* /*obj*/, wxObject *parent)
 	{
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		return panel;
@@ -185,7 +185,7 @@ public:
 class DialogFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject* /*obj*/, wxObject *parent)
 	{
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		return panel;
@@ -378,7 +378,7 @@ public:
 
 };
 
-void ComponentEvtHandler::OnText( wxCommandEvent& event )
+void ComponentEvtHandler::OnText( wxCommandEvent& )
 {
 	wxTextCtrl* tc = wxDynamicCast( m_window, wxTextCtrl );
 	if ( tc != NULL )
@@ -500,7 +500,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnChecked( wxCommandEvent& event )
+void ComponentEvtHandler::OnChecked( wxCommandEvent& )
 {
 	wxCheckBox* cb = wxDynamicCast( m_window, wxCheckBox );
 	if ( cb != NULL )
@@ -725,7 +725,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnRadioBox( wxCommandEvent& event )
+void ComponentEvtHandler::OnRadioBox( wxCommandEvent& )
 {
 	wxRadioBox* rb = wxDynamicCast( m_window, wxRadioBox );
 	if ( rb != NULL )
@@ -807,7 +807,7 @@ class MenuBarComponent : public ComponentBase
 {
 public:
 
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject* /*parent*/)
 	{
 		wxMenuBar *mb = new wxMenuBar(obj->GetPropertyAsInteger(_("style")) |
 			obj->GetPropertyAsInteger(_("window_style")));
@@ -978,7 +978,7 @@ public:
 		return tb;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxToolBar* tb = wxDynamicCast( wxobject, wxToolBar );
 		if ( NULL == tb )
@@ -1185,7 +1185,7 @@ public:
 
 };
 
-void ComponentEvtHandler::OnChoice( wxCommandEvent& event )
+void ComponentEvtHandler::OnChoice( wxCommandEvent& )
 {
 	wxChoice* window = wxDynamicCast( m_window, wxChoice );
 	if ( window != NULL )

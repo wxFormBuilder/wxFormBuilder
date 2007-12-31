@@ -124,7 +124,7 @@ void VisualEditor::OnClickBackPanel( wxMouseEvent& event )
 	event.Skip();
 }
 
-void VisualEditor::OnResizeBackPanel (wxCommandEvent &event) //(wxSashEvent &event)
+void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
 {
 	/*wxRect rect(event.GetDragRect());
 	Debug::Print("VisualEditor::OnResizeBackPanel [%d,%d,%d,%d]",rect.x,rect.y,rect.width, rect.height);
@@ -582,12 +582,12 @@ void VisualEditor::PreventOnModified( bool prevent )
 	m_stopModifiedEvent = prevent;
 }
 
-void VisualEditor::OnProjectLoaded ( wxFBEvent &event )
+void VisualEditor::OnProjectLoaded ( wxFBEvent &)
 {
   Create();
 }
 
-void VisualEditor::OnProjectSaved  ( wxFBEvent &event )
+void VisualEditor::OnProjectSaved  ( wxFBEvent & )
 {
   //Create();
 }
@@ -736,17 +736,17 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	m_back->Refresh();
 }
 
-void VisualEditor::OnObjectCreated( wxFBObjectEvent &event )
+void VisualEditor::OnObjectCreated( wxFBObjectEvent &)
 {
 	Create();
 }
 
-void VisualEditor::OnObjectRemoved( wxFBObjectEvent &event )
+void VisualEditor::OnObjectRemoved( wxFBObjectEvent & )
 {
 	Create();
 }
 
-void VisualEditor::OnPropertyModified( wxFBPropertyEvent &event )
+void VisualEditor::OnPropertyModified( wxFBPropertyEvent &)
 {
 	if ( !m_stopModifiedEvent )
 	{
@@ -761,7 +761,7 @@ void VisualEditor::OnPropertyModified( wxFBPropertyEvent &event )
 	}
 }
 
-void VisualEditor::OnProjectRefresh( wxFBEvent &event )
+void VisualEditor::OnProjectRefresh( wxFBEvent &)
 {
 	Create();
 }
@@ -772,7 +772,7 @@ BEGIN_EVENT_TABLE(DesignerWindow,wxInnerFrame)
   EVT_PAINT(DesignerWindow::OnPaint)
 END_EVENT_TABLE()
 
-DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString &name )
+DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString & /*name*/ )
 :
 wxInnerFrame(parent, id, pos, size, style)
 {

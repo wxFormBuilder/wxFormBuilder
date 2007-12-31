@@ -88,7 +88,7 @@ public:
 class SizerItemComponent : public ComponentBase
 {
 public:
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		// Get parent sizer
 		wxObject* parent = GetManager()->GetParent( wxobject );
@@ -180,7 +180,7 @@ public:
 class BoxSizerComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
 		return new wxBoxSizer(obj->GetPropertyAsInteger(_("orient")));
 	}
@@ -240,7 +240,7 @@ public:
 class GridSizerComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
 		return new wxGridSizer(
 			obj->GetPropertyAsInteger(_("rows")),
@@ -310,7 +310,7 @@ public:
 class FlexGridSizerComponent : public FlexGridSizerBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
 		wxFlexGridSizer *sizer = new wxFlexGridSizer(
 			obj->GetPropertyAsInteger(_("rows")),
@@ -393,7 +393,7 @@ private:
 	}
 
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
 		wxGridBagSizer* sizer = new wxGridBagSizer(
 			obj->GetPropertyAsInteger(_("vgap")),
@@ -409,7 +409,7 @@ public:
 		return sizer;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		// For storing objects whose postion needs to be determined
 		std::vector< std::pair< wxObject*, wxGBSizerItem* > > newObjects;

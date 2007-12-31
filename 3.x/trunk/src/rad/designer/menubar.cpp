@@ -86,7 +86,7 @@ int Menubar::GetMenuCount()
     return (unsigned int)m_menus.size();
 }
 
-wxMenu* Menubar::Remove(int i)
+wxMenu* Menubar::Remove(int /*i*/)
 {
     return NULL; //TODO: Implementar Menubar::Remove
 }
@@ -103,7 +103,7 @@ MenuEvtHandler::MenuEvtHandler(wxStaticText *st, wxMenu *menu)
     m_menu = menu;
 }
 
-void MenuEvtHandler::OnMouseEvent(wxMouseEvent& event)
+void MenuEvtHandler::OnMouseEvent(wxMouseEvent& )
 {
     m_label->PopupMenu(m_menu, 0, m_label->GetSize().y + 3);
 }

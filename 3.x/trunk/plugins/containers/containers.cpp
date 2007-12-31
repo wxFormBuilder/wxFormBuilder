@@ -146,7 +146,7 @@ public:
 	int m_initialSashPos;
 
 	// Used to ensure sash position is correct
-	void OnIdle( wxIdleEvent& event )
+	void OnIdle( wxIdleEvent& )
 	{
 		Disconnect( wxEVT_IDLE, wxIdleEventHandler( wxCustomSplitterWindow::OnIdle ) );
 
@@ -310,7 +310,7 @@ class SplitterWindowComponent : public ComponentBase
 		return filter.GetXfbObject();
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxCustomSplitterWindow* splitter = wxDynamicCast( wxobject, wxCustomSplitterWindow );
 		if ( NULL == splitter )
@@ -400,7 +400,7 @@ class SplitterWindowComponent : public ComponentBase
 	}
 };
 
-void ComponentEvtHandler::OnSplitterSashChanged( wxSplitterEvent& event )
+void ComponentEvtHandler::OnSplitterSashChanged( wxSplitterEvent& )
 {
 	wxCustomSplitterWindow* window = wxDynamicCast( m_window, wxCustomSplitterWindow );
 	if ( window != NULL )

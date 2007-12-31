@@ -224,7 +224,7 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const
 		doc.SetValue( std::string( path.mb_str( wxConvFile ) ) );
 		doc.LoadFile();
 	}
-	catch ( ticpp::Exception& ex )
+	catch ( ticpp::Exception& )
 	{
 		// Ask user to all wxFB to convert the file to UTF-8 and add the XML declaration
 		wxString msg = _("This xml file could not be loaded. This could be the result of an unsupported encoding.\n");
@@ -256,7 +256,7 @@ void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const
 		ticpp::Node* firstChild = doc.FirstChild();
 		declaration = firstChild->ToDeclaration();
 	}
-	catch( ticpp::Exception& ex )
+	catch( ticpp::Exception& )
 	{
 		declaration = NULL;
 	}
