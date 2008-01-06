@@ -279,6 +279,7 @@ class SplitterWindowComponent : public ComponentBase
 		ObjectToXrcFilter xrc(obj, _("wxSplitterWindow"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("sashpos"),_("sashpos"),XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("sashgravity"),_("gravity"),XRC_TYPE_FLOAT);
 		xrc.AddProperty(_("min_pane_size"),_("minsize"),XRC_TYPE_INTEGER);
 		if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
 			xrc.AddPropertyValue(_("orientation"),wxT("vertical"));
@@ -293,6 +294,7 @@ class SplitterWindowComponent : public ComponentBase
 		XrcToXfbFilter filter(xrcObj, _("wxSplitterWindow"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("sashpos"),_("sashpos"),XRC_TYPE_INTEGER);
+		filter.AddProperty(_("gravity"),_("sashgravity"),XRC_TYPE_FLOAT);
 		filter.AddProperty(_("minsize"),_("min_pane_size"),XRC_TYPE_INTEGER);
 		try
 		{

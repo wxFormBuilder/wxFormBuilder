@@ -187,6 +187,10 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 			LinkInteger( m_obj->GetPropertyAsInteger( objPropName ), &propElement );
 			break;
 
+		case XRC_TYPE_FLOAT:
+			LinkFloat( m_obj->GetPropertyAsFloat( objPropName ), &propElement );
+			break;
+
 		case XRC_TYPE_COLOUR:
 			LinkColour( m_obj->GetPropertyAsColour( objPropName ), &propElement );
 			break;
@@ -263,6 +267,11 @@ void ObjectToXrcFilter::LinkText( const wxString &text, ticpp::Element *propElem
 void ObjectToXrcFilter::LinkInteger( const int &integer, ticpp::Element *propElement )
 {
 	propElement->SetText( integer );
+}
+
+void ObjectToXrcFilter::LinkFloat( const double& value, ticpp::Element* propElement )
+{
+	propElement->SetText( value );
 }
 
 void ObjectToXrcFilter::LinkColour( const wxColour &colour, ticpp::Element *propElement )
@@ -498,6 +507,10 @@ void XrcToXfbFilter::AddProperty( const wxString &xrcPropName,
 			ImportIntegerProperty( xrcPropName, &propElement );
 			break;
 
+		case XRC_TYPE_FLOAT:
+			ImportFloatProperty( xrcPropName, &propElement );
+			break;
+
 		case XRC_TYPE_BITLIST:
 			ImportBitlistProperty( xrcPropName, &propElement );
 			break;
@@ -709,6 +722,19 @@ void XrcToXfbFilter::ImportIntegerProperty( const wxString &xrcPropName, ticpp::
 	catch( ticpp::Exception& )
 	{
 		property->SetText( "0" );
+	}
+}
+
+void XrcToXfbFilter::ImportFloatProperty( const wxString &xrcPropName, ticpp::Element *property )
+{
+	try
+	{
+		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
+		property->SetText( xrcProperty->GetText() );
+	}
+	catch( ticpp::Exception& )
+	{
+		property->SetText( "0.0" );
 	}
 }
 

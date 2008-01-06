@@ -5,6 +5,7 @@ date Version 3.00.53
 * FS#290 - "Toolbarseparator leads to crash if the Bitmapsize differs from default."
 ^ Improved refresh of selection inside a scrolled window.
 * Fixed crash on xrc generation for empty bitmap properties.
+* FS#295 - "SashGravity not exported in XRC"
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
