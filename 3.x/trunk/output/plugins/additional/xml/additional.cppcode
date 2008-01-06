@@ -37,7 +37,7 @@
 	<template name="evt_entry_OnTreeStateImageClick">EVT_TREE_STATE_IMAGE_CLICK( $id, #handler )</template>
 	<template name="evt_connect_OnTreeStateImageClick">$name->Connect( wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxTreeCtrl">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
@@ -261,6 +261,7 @@
   <templates class="wxToggleButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+    <template name="settings">#ifnotequal $value "0" @{ $name->SetValue( true ); @}</template>
     <template name="include">@#include &lt;wx/tglbtn.h&gt;</template>
 	<template name="evt_entry_OnToggleButton">EVT_TOGGLEBUTTON( $id, #handler )</template>
 	<template name="evt_connect_OnToggleButton">$name->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, #handler, NULL, this );</template>
