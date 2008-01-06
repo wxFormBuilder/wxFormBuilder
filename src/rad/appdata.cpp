@@ -699,11 +699,11 @@ void ApplicationData::ExpandObject( PObjectBase obj, bool expand )
 	NotifyObjectExpanded( obj );
 }
 
-void ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, bool notify /*= true */ )
+bool ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, bool notify /*= true */ )
 {
 	if ( ( obj == m_selObj ) && !force )
 	{
-		return;
+		return false;
 	}
 
 	m_selObj = obj;
@@ -712,6 +712,7 @@ void ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, boo
 	{
 		NotifyObjectSelected( obj );
 	}
+	return true;
 }
 
 void ApplicationData::CreateObject( wxString name )

@@ -206,8 +206,9 @@ public:
 
 	/**
 	Select the object in the object tree
+	Returns true if selection changed, false if already selected
 	*/
-	virtual void SelectObject( wxObject* wxobject ) = 0;
+	virtual bool SelectObject( wxObject* wxobject ) = 0;
 
 	virtual ~IManager(){}
 };

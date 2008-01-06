@@ -265,7 +265,8 @@ class ApplicationData
 		void DetermineObjectToSelect( PObjectBase parent, unsigned int pos );
 
 		// Object will not be selected if it already is selected, unless force = true
-		void SelectObject( PObjectBase obj, bool force = false, bool notify = true );
+		// Returns true if selection changed, false if already selected
+		bool SelectObject( PObjectBase obj, bool force = false, bool notify = true );
 
 		void CreateObject( wxString name );
 
