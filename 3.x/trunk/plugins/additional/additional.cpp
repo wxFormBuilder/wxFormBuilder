@@ -760,9 +760,61 @@ void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& )
 }
 
 #if wxCHECK_VERSION( 2, 8, 0 )
-
-class ColourPickerComponent : public ComponentBase
+class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
+private:
+	wxPickerBase* m_picker;
+
+public:
+	PickerComponentBase()
+	:
+	m_picker( 0 )
+	{
+	}
+
+	void OnLeftClick( wxMouseEvent& event )
+	{
+		if ( !GetManager()->SelectObject( m_picker ) )
+		{
+			event.Skip();
+		}
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		m_picker = dynamic_cast< wxPickerBase* >( wxobject );
+		if ( m_picker != 0 )
+		{
+			m_picker->GetPickerCtrl()->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+
+			wxTextCtrl* text = m_picker->GetTextCtrl();
+			if ( 0 != text )
+			{
+				text->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+			}
+		}
+	}
+
+	void Cleanup( wxObject* obj )
+	{
+		if ( m_picker == obj )
+		{
+			m_picker->GetPickerCtrl()->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+
+			wxTextCtrl* text = m_picker->GetTextCtrl();
+			if ( 0 != text )
+			{
+				text->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+			}
+		}
+		ComponentBase::Cleanup( obj );
+	}
+};
+
+class ColourPickerComponent : public PickerComponentBase
+{
+private:
+
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
@@ -806,7 +858,7 @@ void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& )
 	}
 }
 
-class FontPickerComponent : public ComponentBase
+class FontPickerComponent : public PickerComponentBase
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -859,7 +911,7 @@ void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& )
 	}
 }
 
-class FilePickerComponent : public ComponentBase
+class FilePickerComponent : public PickerComponentBase
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -909,7 +961,7 @@ void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& )
 	}
 }
 
-class DirPickerComponent : public ComponentBase
+class DirPickerComponent : public PickerComponentBase
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)

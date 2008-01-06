@@ -25,7 +25,8 @@ public:
 
 	void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true );
 
-	void SelectObject( wxObject* wxobject );
+	// Returns true if selection changed, false if already selected
+	bool SelectObject( wxObject* wxobject );
 };
 
 #endif //WXFBMANAGER

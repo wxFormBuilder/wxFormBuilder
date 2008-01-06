@@ -161,20 +161,20 @@ void wxFBManager::ModifyProperty( wxObject* wxobject, wxString property, wxStrin
 	}
 }
 
-void wxFBManager::SelectObject( wxObject* wxobject )
+bool wxFBManager::SelectObject( wxObject* wxobject )
 {
-	CHECK_VISUAL_EDITOR()
+	CHECK_VISUAL_EDITOR( false )
 
 	// Prevent loop of selection events
 	FlagFlipper stopSelectedEvent( m_visualEdit, &VisualEditor::PreventOnSelected );
 
-	CHECK_WX_OBJECT()
+	CHECK_WX_OBJECT( false )
 
 	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
-	CHECK_OBJECT_BASE()
+	CHECK_OBJECT_BASE( false )
 
-	AppData()->SelectObject( obj );
+	return AppData()->SelectObject( obj );
 }
 
 wxNoObject* wxFBManager::NewNoObject()

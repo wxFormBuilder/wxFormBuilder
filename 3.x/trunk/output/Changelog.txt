@@ -6,6 +6,10 @@ date Version 3.00.53
 ^ Improved refresh of selection inside a scrolled window.
 * Fixed crash on xrc generation for empty bitmap properties.
 * FS#295 - "SashGravity not exported in XRC"
+* FS#297 - "wxColourPicker not selectable on form"
+* FS#298 - "wxFontPickerCtrl not selectable on form"
+* FS#299 - "wxFilePickerCtrl not selectable on form"
+* FS#300 - "wxDirPickerCtrl not selectable on form"
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
