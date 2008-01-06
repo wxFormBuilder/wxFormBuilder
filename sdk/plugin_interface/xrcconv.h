@@ -36,6 +36,7 @@
 #define XRC_TYPE_POINT   7
 #define XRC_TYPE_STRINGLIST 8
 #define XRC_TYPE_BITMAP  9
+#define XRC_TYPE_FLOAT 10
 
 namespace ticpp
 {
@@ -91,6 +92,7 @@ class ObjectToXrcFilter
   void LinkColour(const wxColour &colour, ticpp::Element *propElement);
   void LinkFont(const wxFontContainer &font, ticpp::Element *propElement);
   void LinkInteger(const int &integer, ticpp::Element *propElement);
+  void LinkFloat( const double& value, ticpp::Element* propElement );
   void LinkStringList(const wxArrayString &array, ticpp::Element *propElement,  bool xrcFormat = false);
 };
 
@@ -131,6 +133,7 @@ class XrcToXfbFilter
 
   void ImportTextProperty(const wxString &xrcPropName, ticpp::Element *property, bool parseXrcText = false);
   void ImportIntegerProperty(const wxString &xrcPropName, ticpp::Element *property);
+  void ImportFloatProperty(const wxString &xrcPropName, ticpp::Element *property);
   void ImportBitlistProperty(const wxString &xrcPropName, ticpp::Element *property);
   void ImportBitmapProperty(const wxString &xrcPropName, ticpp::Element *property);
   void ImportColourProperty(const wxString &xrcPropName, ticpp::Element *property);
