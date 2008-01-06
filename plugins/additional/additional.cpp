@@ -377,19 +377,42 @@ public:
 
 
 
-class ToggleButtonComponent : public ComponentBase
+class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxToggleButton* tb = new wxToggleButton((wxWindow *)parent,-1,
+		wxToggleButton* window = new wxToggleButton((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
 
-		tb->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
-		return tb;
+		window->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+		window->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
+		return window;
+	}
+
+	void OnToggle( wxCommandEvent& event )
+	{
+		wxToggleButton* window = dynamic_cast< wxToggleButton* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%i"), window->GetValue() ? 1 : 0 );
+			GetManager()->ModifyProperty( window, _("value"), value );
+			window->SetFocus();
+		}
+	}
+
+	void Cleanup( wxObject* obj )
+	{
+		wxToggleButton* window = dynamic_cast< wxToggleButton* >( obj );
+		if ( 0 != window )
+		{
+			window->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
+		}
+		ComponentBase::Cleanup( obj );
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -762,32 +785,28 @@ void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& )
 #if wxCHECK_VERSION( 2, 8, 0 )
 class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
-private:
-	wxPickerBase* m_picker;
-
 public:
-	PickerComponentBase()
-	:
-	m_picker( 0 )
-	{
-	}
-
 	void OnLeftClick( wxMouseEvent& event )
 	{
-		if ( !GetManager()->SelectObject( m_picker ) )
+		wxWindow* window = dynamic_cast< wxWindow* >( event.GetEventObject() );
+		wxPickerBase* picker = dynamic_cast< wxPickerBase* >( window->GetParent() );
+		if ( 0 != picker )
 		{
-			event.Skip();
+			if ( !GetManager()->SelectObject( picker ) )
+			{
+				event.Skip();
+			}
 		}
 	}
 
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
-		m_picker = dynamic_cast< wxPickerBase* >( wxobject );
-		if ( m_picker != 0 )
+		wxPickerBase* picker = dynamic_cast< wxPickerBase* >( wxobject );
+		if ( picker != 0 )
 		{
-			m_picker->GetPickerCtrl()->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+			picker->GetPickerCtrl()->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
 
-			wxTextCtrl* text = m_picker->GetTextCtrl();
+			wxTextCtrl* text = picker->GetTextCtrl();
 			if ( 0 != text )
 			{
 				text->Connect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
@@ -797,11 +816,12 @@ public:
 
 	void Cleanup( wxObject* obj )
 	{
-		if ( m_picker == obj )
+		wxPickerBase* picker = dynamic_cast< wxPickerBase* >( obj );
+		if ( picker != 0 )
 		{
-			m_picker->GetPickerCtrl()->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
+			picker->GetPickerCtrl()->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
 
-			wxTextCtrl* text = m_picker->GetTextCtrl();
+			wxTextCtrl* text = picker->GetTextCtrl();
 			if ( 0 != text )
 			{
 				text->Disconnect( wxEVT_LEFT_DOWN, wxMouseEventHandler( PickerComponentBase::OnLeftClick ), NULL, this );
