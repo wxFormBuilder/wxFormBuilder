@@ -517,12 +517,12 @@ public:
 	}
 };
 
-class SpinCtrlComponent : public ComponentBase
+class SpinCtrlComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		return new wxSpinCtrl((wxWindow *)parent,-1,
+		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -530,6 +530,31 @@ public:
 			obj->GetPropertyAsInteger(_("min")),
 			obj->GetPropertyAsInteger(_("max")),
 			obj->GetPropertyAsInteger(_("initial")));
+
+		window->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( SpinCtrlComponent::OnSpin ), NULL, this );
+		return window;
+	}
+
+	void OnSpin( wxSpinEvent& event )
+	{
+		wxSpinCtrl* window = dynamic_cast< wxSpinCtrl* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%i"), window->GetValue() );
+			GetManager()->ModifyProperty( window, _("initial"), value );
+			window->SetFocus();
+		}
+	}
+
+	void Cleanup( wxObject* obj )
+	{
+		wxSpinCtrl* window = dynamic_cast< wxSpinCtrl* >( obj );
+		if ( 0 != window )
+		{
+			window->Disconnect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( SpinCtrlComponent::OnSpin ), NULL, this );
+		}
+		ComponentBase::Cleanup( obj );
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
