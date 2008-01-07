@@ -12,6 +12,7 @@ date Version 3.00.53
 * FS#300 - "wxDirPickerCtrl not selectable on form"
 * FS#301 - "wxToggleButton value property not updated"
 * Fixed C++ generation of the wxToggleButton "value" property
+* FS#302 - "wxSpinCtrl initial property not updating"
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
