@@ -103,7 +103,6 @@ public:
 protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
-	void OnRadioBox( wxCommandEvent& event );
 	void OnChoice( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
 
@@ -113,7 +112,6 @@ protected:
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
-	EVT_RADIOBOX( wxID_ANY, ComponentEvtHandler::OnRadioBox )
 	EVT_CHOICE( wxID_ANY, ComponentEvtHandler::OnChoice )
 
 	// Tools do not get click events, so this will help select them
@@ -664,7 +662,7 @@ public:
 	}
 };
 
-class RadioBoxComponent : public ComponentBase
+class RadioBoxComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -697,9 +695,34 @@ public:
 		{
 			radiobox->SetSelection( selection );
 		}
-		radiobox->PushEventHandler( new ComponentEvtHandler( radiobox, GetManager() ) );
+
+		radiobox->Connect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( RadioBoxComponent::OnRadioBox ), NULL, this );
 
 		return radiobox;
+	}
+
+	void OnRadioBox( wxCommandEvent& event )
+	{
+		wxRadioBox* window = dynamic_cast< wxRadioBox* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%i"), window->GetSelection() );
+			GetManager()->ModifyProperty( window, _("selection"), value );
+			window->SetFocus();
+
+			GetManager()->SelectObject( window );
+		}
+	}
+
+	void Cleanup( wxObject* obj )
+	{
+		wxRadioBox* window = dynamic_cast< wxRadioBox* >( obj );
+		if ( 0 != window )
+		{
+			window->Disconnect( wxEVT_COMMAND_RADIOBOX_SELECTED, wxCommandEventHandler( RadioBoxComponent::OnRadioBox ), NULL, this );
+		}
+		ComponentBase::Cleanup( obj );
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -724,18 +747,6 @@ public:
 		return filter.GetXfbObject();
 	}
 };
-
-void ComponentEvtHandler::OnRadioBox( wxCommandEvent& )
-{
-	wxRadioBox* rb = wxDynamicCast( m_window, wxRadioBox );
-	if ( rb != NULL )
-	{
-		wxString value;
-		value.Printf( wxT("%i"), rb->GetSelection() );
-		m_manager->ModifyProperty( m_window, _("selection"), value );
-		rb->SetFocus();
-	}
-}
 
 class RadioButtonComponent : public ComponentBase
 {
