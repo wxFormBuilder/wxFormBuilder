@@ -1,10 +1,4 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -23,7 +17,6 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
 	touch configure-stamp
 	$(CREATE_BUILD_FILES)
 
@@ -31,8 +24,6 @@ build: build-stamp
 
 build-stamp: configure-stamp 
 	dh_testdir
-
-	# Add here commands to compile the package.
 	$(MAKE) CONFIG=Release
 	#docbook-to-man debian/wxformbuilder.sgml > wxformbuilder.1
 
@@ -42,8 +33,6 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-
-	# Add here commands to clean up after the build process.
 	$(CREATE_BUILD_FILES)
 	$(MAKE) CONFIG=Release clean
 	$(CLEAN_BUILD_FILES)
@@ -55,41 +44,24 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
-
-	# Add here commands to install the package into debian/wxformbuilder.
 	$(SCRIPTS_DIR)/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
 
-
-# Build architecture-independent files here.
 binary-indep: build install
-# We have nothing to do by default.
 
-# Build architecture-dependent files here.
 binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
 	dh_installdocs
-#	dh_installexamples
 	dh_install --sourcedir=debian/gnome --autodest \*
 	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
 	dh_installmime
 	dh_desktop
-#	dh_python
-#	dh_installinit
-#	dh_installcron
-#	dh_installinfo
 	dh_installman $(CURDIR)/debian/wxformbuilder.1
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_perl
-#	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
