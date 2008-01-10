@@ -7,17 +7,12 @@ function make_src_tarball
 	# root source dir
 	basedir=.
 
-	# create a temporary directory
+	# use a temporary directory
 	tmpdir=wxformbuilder-$1.orig
-	mkdir $tmpdir
-	if [ ! -d $tmpdir ]
-	then
-	  echo "Unable to create temporary directory \"$tmpdir\""
-	  exit 1
-	fi
 
-	cp -R $basedir/output   $tmpdir/output
-	tar cjf ../$tmpdir.tar.gz $tmpdir
+	cp -R $basedir   ../$tmpdir
+	cd ..
+	tar czf $tmpdir.tar.gz $tmpdir
 	rm -rf $tmpdir
 }
 
