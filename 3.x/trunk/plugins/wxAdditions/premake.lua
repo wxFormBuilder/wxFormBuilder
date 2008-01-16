@@ -54,6 +54,13 @@ end
 -- Set the libraries it links to.
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "plugin-interface", "TiCPP" }
 
+if ( linux ) then
+	if ( target == "cb-gcc" ) then
+		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN" )
+	else
+		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN" )
+	end
+end
 --------------------------- DO NOT EDIT BELOW ----------------------------------
 
 --******* GENAERAL SETUP **********
