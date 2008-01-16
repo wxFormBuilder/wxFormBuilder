@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.53
+01/15/2008 Version 3.00.53 (RC5)
 * Fixed missing C++ code generation for menu separators and menu item bitmaps.
 * FS#290 - "Toolbarseparator leads to crash if the Bitmapsize differs from default."
 ^ Improved refresh of selection inside a scrolled window.
