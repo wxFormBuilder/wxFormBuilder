@@ -3,16 +3,15 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-CFLAGS = -Wall -g
-CREATE_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink
-CLEAN_BUILD_FILES = $(CURDIR)/sdk/premake/premake-linux --unicode --disable-wx-debug --with-wx-shared --skip-symlink clean
-SCRIPTS_DIR = $(CURDIR)/debian/scripts
+PREMAKE = $(CURDIR)/skd/premake/premake-linux
+PREMAKE_OPTIONS = --unicode --disable-wx-debug --with-wx-shared --skip-symlink
+CREATE_BUILD_FILES = $(PREMAKE) --target gnu $(PREMAKE_OPTIONS) 
+CLEAN_BUILD_FILES = $(PREMAKE) $(PREMAKE_OPTIONS) clean
 
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
+get-orig-source:
+	svn export https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk wxformbuilder
+	cd $(CURDIR)/wxformbuilder && install/linux/create_src_tarball
+	rm -rf $(CURDIR)/wxformbuilder
 
 configure: configure-stamp
 configure-stamp:
@@ -25,7 +24,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 	$(MAKE) CONFIG=Release
-	#docbook-to-man debian/wxformbuilder.sgml > wxformbuilder.1
 
 	touch $@
 
@@ -44,7 +42,7 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
-	$(SCRIPTS_DIR)/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
+	$(PREMAKE) install $(CURDIR)/debian/wxformbuilder/usr
 
 binary-indep: build install
 
@@ -53,11 +51,11 @@ binary-arch: build install
 	dh_testroot
 	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
 	dh_installdocs
-	dh_install --sourcedir=debian/gnome --autodest \*
+	dh_install --sourcedir=$(CURDIR)/install/linux/data/gnome --autodest \*
 	dh_installmenu
 	dh_installmime
 	dh_desktop
-	dh_installman $(CURDIR)/debian/wxformbuilder.1
+	dh_installman $(CURDIR)/install/linux/data/wxformbuilder.1
 	dh_link
 	dh_strip
 	dh_compress

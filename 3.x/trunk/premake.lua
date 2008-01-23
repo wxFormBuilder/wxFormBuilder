@@ -55,3 +55,16 @@ if ( not windows ) then
 		CreateSymlink( "../../output", "output/share/wxformbuilder" )
 	end
 end
+
+if ( linux ) then
+addoption("install", "Copy the application to the specified path")
+	
+function doinstall(cmd, arg)
+	if (not arg) then
+		error("You must specify an install location")
+	end
+		
+	os.execute( "install/linux/wxfb_export.sh " .. arg )
+end
+
+end
