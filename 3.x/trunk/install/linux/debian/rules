@@ -3,10 +3,9 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PREMAKE = $(CURDIR)/skd/premake/premake-linux
-PREMAKE_OPTIONS = --unicode --disable-wx-debug --with-wx-shared --skip-symlink
-CREATE_BUILD_FILES = $(PREMAKE) --target gnu $(PREMAKE_OPTIONS) 
-CLEAN_BUILD_FILES = $(PREMAKE) $(PREMAKE_OPTIONS) clean
+PREMAKE = $(CURDIR)/sdk/premake/premake-linux
+CREATE_BUILD_FILES = $(PREMAKE) --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink 
+CLEAN_BUILD_FILES = $(PREMAKE) --disable-wx-debug --skip-symlink --clean
 
 get-orig-source:
 	svn export https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk wxformbuilder
@@ -42,7 +41,7 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
-	$(PREMAKE) install $(CURDIR)/debian/wxformbuilder/usr
+	$(PREMAKE) --install $(CURDIR)/debian/wxformbuilder/usr
 
 binary-indep: build install
 

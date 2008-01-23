@@ -8,10 +8,14 @@ function make_src_tarball
 	basedir=.
 
 	# use a temporary directory
-	tmpdir=wxformbuilder-$1.orig
+	tmpdir=wxformbuilder_$1.orig
 
 	cp -R $basedir   ../$tmpdir
 	cd ..
+	
+	#move debian dir to base
+	mv  $tmpdir/install/linux/debian $tmpdir/debian
+	
 	tar czf $tmpdir.tar.gz $tmpdir
 	rm -rf $tmpdir
 }

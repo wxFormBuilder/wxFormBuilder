@@ -20,9 +20,6 @@ version=`expr match "$changelog" '.*Version: \([0-9]\.[0-9]\{1,2\}\.[0-9]\+\).*'
 sourcedir=wxformbuilder-$version
 mv wxformbuilder_*.orig $sourcedir
 
-#move debian dir to base
-cp -R  $sourcedir/install/linux/debian $sourcedir/debian
-
 #save current dir
 currentdir=`pwd`
 
