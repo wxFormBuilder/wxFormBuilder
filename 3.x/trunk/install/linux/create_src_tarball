@@ -1,11 +1,11 @@
 #!/bin/bash
 
-set -e
-
 # this function does the actual work of making the source package
 # the version is passed to it as the first argument, below
 function make_src_tarball
 {
+	set -e
+
 	# root source dir
 	basedir=.
 
