@@ -1,11 +1,11 @@
 #!/bin/bash
 
-set -e
-
 # this function does the actual work of copying files and archiving
 # the version is passed to it as the first argument, below
 function archive
 {
+  set -e
+  
   # copy monolithic wx lib to lib dir
   cp -L `wx-config --prefix`/lib/libwx_gtk2u-2.8.so.0 output/lib/wxformbuilder/
 
