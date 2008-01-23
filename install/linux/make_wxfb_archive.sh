@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # this function does the actual work of copying files and archiving
 # the version is passed to it as the first argument, below
 function archive

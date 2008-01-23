@@ -1,5 +1,6 @@
 #!/bin/sh
 
+set -e
 
 # Get output dir from caller
 if [ ! -n "$1" ]

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -f wxformbuilder-*.orig.tar.gz ]
 then
    echo "Please clean old source tarballs first"
@@ -13,7 +15,7 @@ debian/rules get-orig-source
 tar xzf wxformbuilder_*.orig.tar.gz
 
 #determine version
-changelog=`cd wxformbuilder_*.orig && dpkg-parsechangelog -linstall/linux/debian/changelog`
+changelog=`cd wxformbuilder_*.orig && dpkg-parsechangelog`
 version=`expr match "$changelog" '.*Version: \([0-9]\.[0-9]\{1,2\}\.[0-9]\+\).*'`
 
 #rename it
