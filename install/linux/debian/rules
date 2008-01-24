@@ -59,7 +59,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
-	dh_installdocs
+	dh_installdocs $(CURDIR)/README.txt
 	dh_install --sourcedir=$(CURDIR)/install/linux/data/gnome --autodest \*
 	dh_installmenu
 	dh_installmime
