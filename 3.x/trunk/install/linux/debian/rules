@@ -3,7 +3,13 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-PREMAKE = $(CURDIR)/sdk/premake/premake-linux
+DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
+
+ifeq ($(DEB_HOST_ARCH),amd64)
+	PREMAKE = $(CURDIR)/sdk/premake/premake-amd64
+else
+	PREMAKE = $(CURDIR)/sdk/premake/premake-linux
+endif
 CREATE_BUILD_FILES = $(PREMAKE) --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink 
 CLEAN_BUILD_FILES = $(PREMAKE) --disable-wx-debug --skip-symlink --clean
 

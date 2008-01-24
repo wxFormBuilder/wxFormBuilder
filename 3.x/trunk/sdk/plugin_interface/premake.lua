@@ -198,6 +198,8 @@ else
 	-- Ignore resource files in Linux.
 	table.insert( package.excludes, matchrecursive( "*.rc" ) )
 	
+	table.insert( package.buildoptions, "-fPIC" )
+	
 	-- Set wxWidgets build options.
 	table.insert( package.config["Debug"].buildoptions, "`wx-config "..debug_option.." --cflags`" )
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )

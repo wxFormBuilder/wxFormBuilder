@@ -206,6 +206,8 @@ else
 	-- Ignore resource files in Linux/Mac.
 	table.insert( package.excludes, matchrecursive( "*.rc" ) )
 	
+	table.insert( package.buildoptions, "-fPIC" )
+	
 	-- Add buildflag for proper dll building.
 	if ( macosx ) then
 		table.insert( package.buildflags, "dylib" )
