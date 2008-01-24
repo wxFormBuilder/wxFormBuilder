@@ -29,7 +29,7 @@ currentdir=`pwd`
 cd $sourcedir
 
 #make debian source archive
-dpkg-buildpackage -S -si -rfakeroot
+dpkg-buildpackage -S -sa -rfakeroot
 
 #cleanup
 cd $currentdir
