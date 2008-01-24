@@ -24,7 +24,19 @@ wxDataObject()
 
 		ticpp::Document doc;
 		doc.LinkEndChild( &element );
-		m_data = doc.GetAsString();
+		TiXmlPrinter printer;
+        printer.SetIndent( "\t" );
+
+        #if defined( __WXMSW__ )
+            printer.SetLineBreak( "\r\n" );
+        #elif defined( __WXMAC__ )
+            printer.SetLineBreak( "\r" );
+        #else
+            printer.SetLineBreak( "\n" );
+        #endif
+
+        doc.Accept( &printer );
+		m_data = printer.Str();
 	}
 }
 
