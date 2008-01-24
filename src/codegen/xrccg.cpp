@@ -94,7 +94,19 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 
 	doc.LinkEndChild( &element );
 
-	const std::string& xrcFile = doc.GetAsString();
+    TiXmlPrinter printer;
+	printer.SetIndent( "\t" );
+
+    #if defined( __WXMSW__ )
+        printer.SetLineBreak( "\r\n" );
+    #elif defined( __WXMAC__ )
+        printer.SetLineBreak( "\r" );
+    #else
+        printer.SetLineBreak( "\n" );
+    #endif
+
+    doc.Accept( &printer );
+    const std::string& xrcFile = printer.Str();
 
 	m_cw->Write( _WXSTR( xrcFile ) );
 
