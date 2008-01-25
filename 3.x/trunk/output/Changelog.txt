@@ -1,4 +1,4 @@
-			wxFormBuilder ChangeLog
+﻿			wxFormBuilder ChangeLog
 ************************************************************************
 01/15/2008 Version 3.00.53 (RC5)
 * Fixed missing C++ code generation for menu separators and menu item bitmaps.
@@ -14,6 +14,7 @@
 * Fixed C++ generation of the wxToggleButton "value" property
 * FS#302 - "wxSpinCtrl initial property not updating"
 * FS#294 - "wxRadioBox not selectable on form"
+* FS#311 - wxFB 3.0 RC5 still generating incorrect wxMenu(item) code
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
