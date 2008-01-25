@@ -37,20 +37,6 @@
         $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );
     </template>
     <template name="settings">
-		#ifequal $enabled "0"
-			@{$name->Enable( $enabled ); #nl @}
-
-		#ifequal $kind "wxITEM_CHECK"
-		@{
-			#ifequal $checked "1"
-			@{ $name->Check( $checked ); #nl @}
-		@}
-
-		#ifequal $kind "wxITEM_RADIO"
-		@{
-			#ifequal $checked "1"
-			@{ $name->Check( $checked ); #nl @}
-		@}
 		#ifnotnull $bitmap
 		@{
 			@#ifdef __WXMSW__ #nl
@@ -69,6 +55,19 @@
 			@}
 		@}
 		#parent $name->Append( $name ); #nl
+		#ifequal $enabled "0"
+			@{$name->Enable( $enabled ); #nl @}
+		#ifequal $kind "wxITEM_CHECK"
+		@{
+			#ifequal $checked "1"
+			@{ $name->Check( $checked ); #nl @}
+		@}
+
+		#ifequal $kind "wxITEM_RADIO"
+		@{
+			#ifequal $checked "1"
+			@{ $name->Check( $checked ); #nl @}
+		@}
     </template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
