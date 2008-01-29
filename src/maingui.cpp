@@ -33,6 +33,7 @@
 #include <wx/stdpaths.h>
 #include <wx/xrc/xmlres.h>
 #include <wx/clipbrd.h>
+#include <wx/msgout.h>
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #include "utils/wxfbexception.h"
 #include <memory>
@@ -96,11 +97,17 @@ int MyApp::OnRun()
 	wxString dataDir = stdPaths.GetDataDir();
 	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
 
+	// Log to stderr while working on the command line
+	delete wxLog::SetActiveTarget( new wxLogStderr );
+
+	// Message output to the same as the log target
+	delete wxMessageOutput::Set( new wxMessageOutputLog );
+
 	// Parse command line
 	wxCmdLineParser parser( s_cmdLineDesc, argc, argv );
 	if ( 0 != parser.Parse() )
 	{
-		return -1;
+		return 1;
 	}
 
 	// Get project to load
@@ -115,17 +122,10 @@ int MyApp::OnRun()
 	bool hasLanguage = parser.Found( wxT("l"), &language );
 	if ( parser.Found( wxT("g") ) )
 	{
-		#ifdef __WXMSW__
-		// Windows has no stderr in gui programs
-		delete wxLog::SetActiveTarget( new wxLogGui );
-		#else
-		delete wxLog::SetActiveTarget( new wxLogStderr );
-		#endif
-
 		if ( projectToLoad.empty() )
 		{
 			wxLogError( _("You must pass a path to a project file. Nothing to generate.") );
-			return false;
+			return 2;
 		}
 
 		if ( hasLanguage )
@@ -133,7 +133,7 @@ int MyApp::OnRun()
 			if ( language.empty() )
 			{
 				wxLogError( _("Empty language option. Nothing generated.") );
-				return false;
+				return 3;
 			}
 			language.Replace( wxT(","), wxT("|"), true );
 		}
@@ -183,7 +183,7 @@ int MyApp::OnRun()
 		{
 			if ( !AppData()->VerifySingleInstance( projectToLoad ) )
 			{
-				return -1;
+				return 4;
 			}
 		}
 	}
@@ -199,15 +199,9 @@ int MyApp::OnRun()
 	}
 	catch( wxFBException& ex )
 	{
+		wxLogError( _("Error loading application: %s\nwxFormBuilder cannot continue."),	ex.what() );
 		wxLog::FlushActive();
-		wxMessageBox( 	wxString::Format( 	_("Error loading application: %s\nwxFormBuilder cannot continue."),
-											ex.what()
-										),
-						_("Error loading application"),
-						wxICON_ERROR,
-						NULL
-					);
-		return -1;
+		return 5;
 	}
 
 	wxSystemOptions::SetOption( wxT( "msw.remap" ), 0 );
@@ -291,7 +285,7 @@ int MyApp::OnRun()
 					}
 				}
 				AppData()->GenerateCode( false );
-				return -1;
+				return 0;
 			}
 			else
 			{
@@ -307,7 +301,7 @@ int MyApp::OnRun()
 
 	if ( justGenerate )
 	{
-		return -1;
+		return 6;
 	}
 
 	AppData()->NewProject();

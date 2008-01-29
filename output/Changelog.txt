@@ -1,5 +1,12 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.54
+* FS#308 - Bugs in non-interactive (-g) mode
+  Note: stderr is not normally available on Windows for GUI apps.
+        If -g is used, all logging goes to stderr and debug output.
+		Either start the process with a pipe for stderr (most IDEs will do this
+		for you), or use a Debug Viewer to watch the output.
+
 01/15/2008 Version 3.00.53 (RC5)
 * Fixed missing C++ code generation for menu separators and menu item bitmaps.
 * FS#290 - "Toolbarseparator leads to crash if the Bitmapsize differs from default."
