@@ -1,11 +1,16 @@
-This is wxformbuilder, written by Jose Antonio Hurtado with package
-maintained by Ryan Mulder<rjmyst3@gmail.com>
+This is wxformbuilder, maintained by Ryan Mulder<rjmyst3@gmail.com>
 on Mon,  2 Apr 2007 20:06:25 -0400.
+
+Authors:
+  José Antonio Hurtado
+  Juan Antonio Ortega
+  Ryan Mulder
+  Ryan Pusztai
+  
+Copyright (C) 2005 José Antonio Hurtado
 
 The original source can always be found at:
 	http://wxformbuilder.sourceforge.net
-
-Copyright Holder:  Jose Antonio Hurtado
 
 License:
 
