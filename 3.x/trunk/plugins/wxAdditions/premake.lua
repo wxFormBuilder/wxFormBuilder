@@ -55,10 +55,17 @@ end
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "plugin-interface", "TiCPP" }
 
 if ( linux ) then
-	if ( target == "cb-gcc" ) then
-		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN" )
+	addoption("rpath", "Specify the rpath for the compiled binary")
+	if ( options["rpath"] ) then
+		-- need to upgrade premake before this works
+		-- table.insert( package.linkoptions, "-Wl,-rpath," .. options[rpath] )
+		table.insert( package.linkoptions, "-Wl,-rpath,/usr/lib/wxformbuilder" )
 	else
-		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN" )
+		if ( target == "cb-gcc" ) then
+			table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN" )
+		else
+			table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN" )
+		end
 	end
 end
 --------------------------- DO NOT EDIT BELOW ----------------------------------
