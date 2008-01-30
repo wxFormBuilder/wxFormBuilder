@@ -64,10 +64,17 @@ package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA", "SCI_N
 if ( macosx ) then
 	table.insert( package.linkoptions, "-Wl,-L../output/lib/wxformbuilder" )
 elseif ( not windows ) then
-	if ( target == "cb-gcc" ) then
-		table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder" )
+	addoption("rpath", "Specify the rpath for the compiled binary")
+	if ( options["rpath"] ) then
+		-- need to upgrade premake before this works
+		-- table.insert( package.linkoptions, "-Wl,-rpath," .. options[rpath] )
+		table.insert( package.linkoptions, "-Wl,-rpath,/usr/lib/wxformbuilder" )
 	else
-		table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/../lib/wxformbuilder" )
+		if ( target == "cb-gcc" ) then	
+			table.insert( package.linkoptions, "-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder" )
+		else
+			table.insert( package.linkoptions, "-Wl,-rpath,$$``ORIGIN/../lib/wxformbuilder" )
+		end
 	end
 end
 

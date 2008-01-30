@@ -10,7 +10,7 @@ ifeq ($(DEB_HOST_ARCH),amd64)
 else
 	PREMAKE = $(CURDIR)/sdk/premake/premake-linux
 endif
-CREATE_BUILD_FILES = $(PREMAKE) --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink 
+CREATE_BUILD_FILES = $(PREMAKE) --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
 CLEAN_BUILD_FILES = $(PREMAKE) --disable-wx-debug --skip-symlink --clean
 
 get-orig-source:
@@ -33,7 +33,6 @@ build: build-stamp
 build-stamp: configure-stamp 
 	dh_testdir
 	$(MAKE) CONFIG=Release
-
 	touch $@
 
 clean:
