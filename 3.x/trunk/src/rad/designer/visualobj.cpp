@@ -80,20 +80,10 @@ void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 		wxWindow *aux = m_window;
 		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
 		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
-		wxWindow* active = dsgnWin->GetActivePanel();
-		if ( active == m_window)
+		if (dsgnWin->GetActivePanel() == m_window)
 		{
 			wxPaintDC dc(m_window);
 			dsgnWin->HighlightSelection(dc);
-		}
-		else
-		{
-			// Improve refresh for selection within a scrolled window
-			wxScrolledWindow* scrolledWin = dynamic_cast< wxScrolledWindow* >( active );
-			if ( scrolledWin )
-			{
-				active->Refresh();
-			}
 		}
 	}
 	event.Skip();
