@@ -1,5 +1,5 @@
 wxformbuilder (3.0.54-0ubuntu1) hardy; urgency=low
 
-  * Initial Release. closes: bug#181412
+  * Initial Release. (LP: #181412)
 
  -- Ryan Mulder <rjmyst3@gmail.com>  Mon,  2 Apr 2007 20:06:25 -0400
