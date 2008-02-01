@@ -1,11 +1,12 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.54
+02/01/2008 Version 3.00.54 (RC6)
 * FS#308 - Bugs in non-interactive (-g) mode
   Note: stderr is not normally available on Windows for GUI apps.
         If -g is used, all logging goes to stderr and debug output.
 		Either start the process with a pipe for stderr (most IDEs will do this
 		for you), or use a Debug Viewer to watch the output.
+* FS#311 - wxFB 3.0 RC5 still generating incorrect wxMenu(item) code
 
 01/15/2008 Version 3.00.53 (RC5)
 * Fixed missing C++ code generation for menu separators and menu item bitmaps.
@@ -21,7 +22,6 @@ date Version 3.00.54
 * Fixed C++ generation of the wxToggleButton "value" property
 * FS#302 - "wxSpinCtrl initial property not updating"
 * FS#294 - "wxRadioBox not selectable on form"
-* FS#311 - wxFB 3.0 RC5 still generating incorrect wxMenu(item) code
 
 12/17/2007 Version 3.00.52 (RC4-1)
 * Fixed application closing when double clicking on an .fpb file in Windows.
