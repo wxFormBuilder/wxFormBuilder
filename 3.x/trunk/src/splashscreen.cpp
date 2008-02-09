@@ -1,6 +1,7 @@
 /* cbSplashScreen.cpp
  *
  * READ THE HEADER FILE COMMENT FOR A DESCRIPTION.
+ *   It was coded to be used in Code::Blocks IDE but I don't care if you use it for your own projects.
  *
  * Author: Ceniza
  */

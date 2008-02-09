@@ -15,10 +15,7 @@ CLEAN_BUILD_FILES = $(PREMAKE) --disable-wx-debug --skip-symlink --clean
 
 get-orig-source:
 	svn export https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk wxformbuilder
-	
-	# Copy of the GPL is not necessary
-	rm -f $(CURDIR)/wxformbuilder/output/license.txt
-	
+		
 	cd $(CURDIR)/wxformbuilder && install/linux/create_src_tarball
 	rm -rf $(CURDIR)/wxformbuilder
 
@@ -51,6 +48,12 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 	$(PREMAKE) --disable-wx-debug --skip-symlink --install $(CURDIR)/debian/wxformbuilder/usr
+	
+	# Changelog installed separately
+	rm -f $(CURDIR)/share/wxformbuilder/Changelog.txt
+	
+	# Another copy of the GPL is not necessary
+	rm -f $(CURDIR)/share/wxformbuilder/license.txt
 
 binary-indep: build install
 
