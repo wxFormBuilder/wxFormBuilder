@@ -50,10 +50,10 @@ install: build
 	$(PREMAKE) --disable-wx-debug --skip-symlink --install $(CURDIR)/debian/wxformbuilder/usr
 	
 	# Changelog installed separately
-	rm -f $(CURDIR)/share/wxformbuilder/Changelog.txt
+	rm -f $(CURDIR)/debian/wxformbuilder/usr/share/wxformbuilder/Changelog.txt
 	
 	# Another copy of the GPL is not necessary
-	rm -f $(CURDIR)/share/wxformbuilder/license.txt
+	rm -f $(CURDIR)/debian/wxformbuilder/usr/share/wxformbuilder/license.txt
 
 binary-indep: build install
 
