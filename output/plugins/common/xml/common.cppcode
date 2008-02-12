@@ -138,7 +138,7 @@ Written by
 		#ifnull $choices
 		@{
 			wxArrayString $name #append Choices; #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
 	</template>
 	<template name="evt_entry_OnRadioBox">EVT_RADIOBOX( $id, #handler )</template>
@@ -227,7 +227,7 @@ Written by
 		#ifnull $choices
 		@{
 			wxArrayString $name #append Choices; #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $window_style );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>

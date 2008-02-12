@@ -2,6 +2,7 @@
 ************************************************************************
 date Version 3.00.55
 * FS#319 - "Problems with Non-ASCII characters"
+* FS#318 - "wxChoice window_name not generated"
 
 02/01/2008 Version 3.00.54 (RC6)
 * FS#308 - Bugs in non-interactive (-g) mode
