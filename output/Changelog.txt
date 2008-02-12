@@ -1,5 +1,8 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.55
+* FS#319 - "Problems with Non-ASCII characters"
+
 02/01/2008 Version 3.00.54 (RC6)
 * FS#308 - Bugs in non-interactive (-g) mode
   Note: stderr is not normally available on Windows for GUI apps.
