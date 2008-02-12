@@ -27,6 +27,7 @@
 #include "codegen/codewriter.h"
 #include "utils/annoyingdialog.h"
 #include "utils/wxfbexception.h"
+#include "utils/typeconv.h"
 
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
@@ -168,7 +169,8 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
 
-	wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), cw->GetString() );
+	const std::string& data = _STDSTR( cw->GetString() );
+	wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), data.c_str(), data.size() );
 	res->Load( wxT("memory:xrcpreview.xrc") );
 
 	wxWindow* window = NULL;
