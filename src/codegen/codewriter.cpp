@@ -26,6 +26,7 @@
 #include "codewriter.h"
 #include "md5/md5.hh"
 #include "utils/wxfbexception.h"
+#include "utils/typeconv.h"
 
 #include <wx/file.h>
 #include <wx/tokenzr.h>
@@ -207,7 +208,8 @@ void FileCodeWriter::WriteBuffer()
 				bufferHash.update( microsoftBOM, 3 );
 			}
 		#endif
-		bufferHash.update( reinterpret_cast< const unsigned char* >(( const char* )m_buffer.mb_str( wxConvUTF8 ) ), m_buffer.size() );
+		const std::string& data = _STDSTR( m_buffer );
+		bufferHash.update( reinterpret_cast< const unsigned char* >( data.c_str() ), data.size() );
 
 		bufferHash.finalize();
 
