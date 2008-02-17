@@ -27,6 +27,7 @@
 #include "model/objectbase.h"
 #include "bitmaps.h"
 #include "utils/debug.h"
+#include "utils/wxfbdefs.h"
 #include "utils/typeconv.h"
 #include "rad/title.h"
 #include "wx/config.h"
@@ -92,7 +93,7 @@ void wxFbPalette::Create()
   wxConfigBase* config = wxConfigBase::Get();
   config->Read( wxT("/palette/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | DRAG_OPTION | wxFNB_DROPDOWN_TABS_LIST  | wxFNB_VC8 | wxFNB_CUSTOM_DLG );
 
-  m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
+  m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
   m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
   unsigned int pkg_count = AppData()->GetPackageCount();
