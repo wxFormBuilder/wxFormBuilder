@@ -109,7 +109,7 @@ documentation and/or software.
 ----------------------------------------------------------------------
 
 The sources for wxFlatNotebook, wxPropertyGrid, and wxScintilla are also included, and
-are both covered by the wxWindows License:
+are all covered by the wxWindows License:
 
                 wxWindows Library Licence, Version 3.1
                 ======================================
