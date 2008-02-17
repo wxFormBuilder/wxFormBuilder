@@ -3,19 +3,9 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-DEB_HOST_ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
-
-ifeq ($(DEB_HOST_ARCH),amd64)
-	PREMAKE = $(CURDIR)/sdk/premake/premake-amd64
-else
-	PREMAKE = $(CURDIR)/sdk/premake/premake-linux
-endif
-CREATE_BUILD_FILES = $(PREMAKE) --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
-CLEAN_BUILD_FILES = $(PREMAKE) --disable-wx-debug --skip-symlink --clean
-
 get-orig-source:
 	svn export https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk wxformbuilder
-		
+	
 	cd $(CURDIR)/wxformbuilder && install/linux/create_src_tarball
 	rm -rf $(CURDIR)/wxformbuilder
 
@@ -23,7 +13,6 @@ configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	touch configure-stamp
-	$(CREATE_BUILD_FILES)
 
 build: build-stamp
 
@@ -36,10 +25,7 @@ clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	$(CREATE_BUILD_FILES)
 	$(MAKE) CONFIG=Release clean
-	$(CLEAN_BUILD_FILES)
-
 	dh_clean 
 
 install: build
@@ -47,7 +33,7 @@ install: build
 	dh_testroot
 	dh_clean -k 
 	dh_installdirs
-	$(PREMAKE) --disable-wx-debug --skip-symlink --install $(CURDIR)/debian/wxformbuilder/usr
+	$(CURDIR)/install/linux/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
 	
 	# Changelog installed separately
 	rm -f $(CURDIR)/debian/wxformbuilder/usr/share/wxformbuilder/Changelog.txt
