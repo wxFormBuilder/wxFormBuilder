@@ -1,3 +1,9 @@
+wxformbuilder (3.0.55-0ubuntu1) hardy; urgency=low
+
+  * Fixed build on architectures other than i386 and amd64.
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Wed,  13 Feb 2008 20:06:25 -0400
+ 
 wxformbuilder (3.0.54-0ubuntu1) hardy; urgency=low
 
   * Initial Release. (LP: #181412)

@@ -32,12 +32,13 @@ debian/rules get-orig-source
 tar xzf wxformbuilder_*.orig.tar.gz
 
 #determine version
-changelog=`cd wxformbuilder_*.orig && dpkg-parsechangelog`
+changelog=`cd wxformbuilder_*.orig/install/linux && dpkg-parsechangelog`
 version=`expr match "$changelog" '.*Version: \([0-9]\.[0-9]\{1,2\}\.[0-9]\+\).*'`
 
 #rename it
 sourcedir=wxformbuilder-$version
 mv wxformbuilder_*.orig $sourcedir
+cp -R $sourcedir/install/linux/debian $sourcedir/debian
 
 #save current dir
 currentdir=`pwd`
