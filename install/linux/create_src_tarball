@@ -41,7 +41,7 @@ function make_src_tarball
 	  rm -rf $PREMAKE_DIR
 	  
 	  # remove scripts that execute premake, as they are no longer necessary
-	  rm -f $baseder/create_build_files*
+	  rm -f $basedir/create_build_files*
 
 	# use a temporary directory
 	tmpdir=wxformbuilder_$1.orig
