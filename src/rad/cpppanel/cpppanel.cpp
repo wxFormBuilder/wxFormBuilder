@@ -31,6 +31,7 @@
 #include "rad/wxfbevent.h"
 #include "rad/bitmaps.h"
 #include "rad/appdata.h"
+#include "utils/wxfbdefs.h"
 
 #include "utils/typeconv.h"
 #include "utils/encodingutils.h"
@@ -72,7 +73,7 @@ m_icons( new wxFlatNotebookImageList )
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Read( wxT("/mainframe/editor/cpp/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
 
-	m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
+	m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// Set notebook icons

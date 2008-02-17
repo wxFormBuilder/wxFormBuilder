@@ -27,6 +27,7 @@
 #include "model/objectbase.h"
 #include "utils/debug.h"
 #include "utils/typeconv.h"
+#include "utils/wxfbdefs.h"
 #include "rad/bitmaps.h"
 #include "rad/wxfbevent.h"
 #include "rad/appdata.h"
@@ -613,7 +614,7 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Read( wxT("/mainframe/objectInspector/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
 
-	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, nbStyle );
+	m_nb = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
 	m_nb->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 
 	// the colour of property grid description looks ugly if we don't set this

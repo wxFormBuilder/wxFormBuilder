@@ -78,4 +78,7 @@ typedef boost::shared_ptr<TemplateParser> PTemplateParser;
 typedef boost::shared_ptr<TCCodeWriter> PTCCodeWriter;
 typedef boost::shared_ptr<StringCodeWriter> PStringCodeWriter;
 
+// Flatnotebook styles are stored in config, if style #defines change, or config is manually modified, these style overrides still apply
+#define FNB_STYLE_OVERRIDES( x ) ( x | wxFNB_CUSTOM_DLG | wxFNB_NO_X_BUTTON ) & ( ~wxFNB_X_ON_TAB & ~wxFNB_MOUSE_MIDDLE_CLOSES_TABS & ~wxFNB_DCLICK_CLOSES_TABS & ~wxFNB_ALLOW_FOREIGN_DND )
+
 #endif //WXFBDEFS_H
