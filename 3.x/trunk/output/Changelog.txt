@@ -1,9 +1,10 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.55
+date Version 3.00.55 (RC7)
 * FS#319 - "Problems with Non-ASCII characters"
 * FS#318 - "wxChoice window_name not generated"
 * FS#314 - "wxListBox + Clicking on wxLC_VIRTUAL causes infinite loop"
+* FS#317 - "wxFB 3.0 RC6 doesn't show wxStaticBitmap when added (? is shown)"
 
 02/01/2008 Version 3.00.54 (RC6)
 * FS#308 - Bugs in non-interactive (-g) mode

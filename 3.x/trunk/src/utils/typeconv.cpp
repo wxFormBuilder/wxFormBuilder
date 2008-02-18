@@ -333,6 +333,7 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     wxLogNull stopLogging;
     #endif
 
+	// Get path from bitmap property
     size_t semicolonIndex = filename.find( wxT(";") );
     wxString path = filename;
     if ( semicolonIndex != filename.npos )
@@ -340,57 +341,47 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
         path = filename.substr( 0, semicolonIndex );
     }
 
-    wxString protocol, location, anchor;
-    SplitFileSystemURL( path, &protocol, &location, &anchor );
-    bool usingFileSystem = !protocol.empty();
-    if ( usingFileSystem && ( protocol != wxT("file:") ) )
+	// No value - default bitmap
+    if ( path.empty() )
+    {
+    	return AppBitmaps::GetBitmap( wxT("unknown") );
+    }
+
+	// Setup the working directory to the project path - paths should be saved in the .fbp file relative to the location
+	// of the .fbp file
+	wxFileSystem system;
+	system.ChangePathTo( AppData()->GetProjectPath(), true );
+
+	// The loader can get goofy on linux if it starts with file:, not sure why (wxGTK 2.8.7)
+    wxFSFile *fsfile = NULL;
+    wxString remainder;
+    if ( path.StartsWith( wxT("file:"), &remainder ) )
+    {
+    	fsfile = system.OpenFile( remainder, wxFS_READ | wxFS_SEEKABLE );
+    }
+    else
+    {
+    	fsfile = system.OpenFile( path, wxFS_READ | wxFS_SEEKABLE );
+    }
+
+	// Unable to open the file
+    if ( fsfile == NULL )
     {
         return AppBitmaps::GetBitmap( wxT("unknown") );
     }
 
-    wxFileName file( location );
-    if ( file.IsRelative() )
-    {
-        wxString basePath = AppData()->GetProjectPath();
-        file.MakeAbsolute( basePath );
-    }
+    // Create a wxImage from the file stream
+    wxImage img( *(fsfile->GetStream()) );
+    delete fsfile;
 
-    if ( !file.FileExists() )
+	// The stream is not an image
+    if ( !img.Ok() )
     {
-        wxLogStatus( _("%s does not exist"), file.GetFullPath().c_str() );
         return AppBitmaps::GetBitmap( wxT("unknown") );
     }
 
-    if ( usingFileSystem )
-    {
-        path.Printf( wxT("file:%s%s"), file.GetFullPath().c_str(), anchor.c_str() );
-        if ( !wxFileSystem::HasHandlerForPath( path ) )
-        {
-            return AppBitmaps::GetBitmap( wxT("unknown") );
-        }
-
-        wxFileSystem system;
-        wxFSFile* fsFile = system.OpenFile( path );
-        if ( 0 == fsFile )
-        {
-            return AppBitmaps::GetBitmap( wxT("unknown") );
-        }
-        wxImage image( *fsFile->GetStream() );
-        wxBitmap bitmap( image );
-        if ( bitmap.Ok() )
-        {
-            return bitmap;
-        }
-        delete fsFile;
-    }
-
-    wxBitmap bitmap( file.GetFullPath(), wxBITMAP_TYPE_ANY );
-    if ( bitmap.Ok() )
-    {
-        return bitmap;
-    }
-
-    return AppBitmaps::GetBitmap( wxT("unknown") );
+	// Create a wxBitmap from the image
+    return wxBitmap( img );
 }
 
 void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, wxString* source, wxSize* icoSize )
@@ -484,18 +475,26 @@ wxString TypeConv::MakeRelativePath( const wxString& filename, const wxString& b
 
 void TypeConv::SplitFileSystemURL( const wxString& url, wxString* protocol, wxString* path, wxString* anchor )
 {
-    size_t colon = url.find( wxT(':') );
-    if ( colon == url.npos )
+    wxString remainder;
+    if ( url.StartsWith( wxT("file:"), &remainder ) )
     {
-        protocol->clear();
+    	*protocol = wxT("file:");
     }
     else
     {
-        *protocol = url.substr( 0, colon + 1 );
+    	protocol->clear();
+    	remainder = url;
     }
-    wxString remainder = url.substr( protocol->size() );
-    *path = remainder.BeforeFirst( wxT('#') );
-    *anchor = remainder.substr( path->size() );
+
+	*path = remainder.BeforeFirst( wxT('#') );
+	if ( remainder.size() > path->size() )
+	{
+		*anchor = remainder.substr( path->size() );
+	}
+	else
+	{
+		anchor->clear();
+	}
 }
 
 wxString TypeConv::MakeAbsoluteURL( const wxString& url, const wxString& basePath )
