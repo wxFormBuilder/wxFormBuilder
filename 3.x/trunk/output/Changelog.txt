@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.55 (RC7)
+02/18/2008 Version 3.00.55 (RC7)
 * FS#319 - "Problems with Non-ASCII characters"
 * FS#318 - "wxChoice window_name not generated"
 * FS#314 - "wxListBox + Clicking on wxLC_VIRTUAL causes infinite loop"
