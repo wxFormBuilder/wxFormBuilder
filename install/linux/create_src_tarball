@@ -29,13 +29,11 @@ function make_src_tarball
 	# create Makefiles
 	
 	  # Build premake
-	  PREMAKE_DIR=$basedir/sdk/premake
-	  cp -f $PREMAKE_DIR/build/Makefile $PREMAKE_DIR/src/Makefile
-	  cp -f $PREMAKE_DIR/build/Src-Makefile $PREMAKE_DIR/src/Src/Makefile
-	  make -C$PREMAKE_DIR/src
+	  PREMAKE_DIR=sdk/premake
+	  make -C$PREMAKE_DIR/src -f../build/Makefile
 	  
 	  # Use premake to generate Makefiles
-	  $PREMAKE_DIR/src/bin/premake --linux --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
+	  $PREMAKE_DIR/bin/premake --linux --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
 
 	  # remove premake, as it is no longer necessary
 	  rm -rf $PREMAKE_DIR
