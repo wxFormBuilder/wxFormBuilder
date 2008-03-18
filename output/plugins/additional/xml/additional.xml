@@ -434,6 +434,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
+    <inherits class="wxWindow"/>
 	<property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
 	<property name="class" type="text" help="The control is generated to XRC with this class."/>
     <property name="declaration" type="text" help="Code to generate for the declaration of this control."/>

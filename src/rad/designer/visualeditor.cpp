@@ -984,14 +984,30 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 		dummySizer->Add(new wxStaticLine(contentPanel, -1), 0, wxEXPAND | wxALL, 0);
 	}
 
+	wxSizer* contentSizer = dummySizer;
 	if (toolbar)
 	{
-		dummySizer->Add(toolbar, 0, wxEXPAND | wxALL, 0);
+		if ( (toolbar->GetWindowStyle() & wxTB_VERTICAL) != 0 )
+		{
+			wxSizer* horiz = new wxBoxSizer( wxHORIZONTAL );
+			horiz->Add(toolbar, 0, wxEXPAND | wxALL, 0);
+
+			wxSizer* vert = new wxBoxSizer( wxVERTICAL );
+			horiz->Add( vert, 1, wxEXPAND, 0 );
+
+			dummySizer->Add( horiz, 1, wxEXPAND, 0);
+
+			contentSizer = vert;
+		}
+		else
+		{
+			dummySizer->Add(toolbar, 0, wxEXPAND | wxALL, 0);
+		}
 	}
 
 	if (mainSizer)
 	{
-		dummySizer->Add(mainSizer, 1, wxEXPAND | wxALL, 0);
+		contentSizer->Add(mainSizer, 1, wxEXPAND | wxALL, 0);
 		if ( mainSizer->GetChildren().IsEmpty() )
 		{
 			// Sizers do not expand if they are empty
@@ -999,11 +1015,11 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 		}
 	}
 	else
-		dummySizer->AddStretchSpacer(1);
+		contentSizer->AddStretchSpacer(1);
 
 	if (statusbar)
 	{
-		dummySizer->Add(statusbar, 0, wxEXPAND | wxALL, 0);
+		contentSizer->Add(statusbar, 0, wxEXPAND | wxALL, 0);
 	}
 
 

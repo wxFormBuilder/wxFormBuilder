@@ -1,5 +1,22 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
+date Version 3.00.56
+* Added #include <wx/intl.h> to header file when using internationalization.
+* Custom control now inherits from wxWindow, to provide common properties.
+* FS#336 - "Incorrect ScrollBar Disconnection"
+* FS#310 - "FB should not try to disconnect event handlers in dialog/frame's destructor."
+  This is now optional, see the "disconnect_events" property of the Project object.
+* FS#337 - "Incorrect Vertical Toolbar Rendering"
+* FS#328 - "Unknown style flag wxTE_BESTWRAP for wxTextCtrl"
+  Removed the flag, it is the default, and #define'd to 0x0000, so it was pointless anyway.
+* FS#339 - "wx/icon.h not included when using resource icons in wxToolBar"
+^ Removed the two project-level XRC properties, "bitmaps" and "icons". 
+  These never worked properly, and wxFB is not the right place to enter that information,
+  a standalone XRC file written with any text-editor would be much better.
+  This was prompted by, and caused the closure of, these issues:
+  FS#340 - "bitmap resources are unnamed, preventing use of wxXmlResource::Get()->LoadBitmap()" 
+  FS#329 - "XRC Properties - Follow on"
+
 02/18/2008 Version 3.00.55 (RC7)
 * FS#319 - "Problems with Non-ASCII characters"
 * FS#318 - "wxChoice window_name not generated"

@@ -28,6 +28,7 @@
 		<template name="include">
 			@#include &lt;wx/bitmap.h&gt; #nl
 			@#include &lt;wx/image.h&gt; #nl
+			@#include &lt;wx/icon.h&gt; #nl
 		</template>
 	</templates>
 </codegen>

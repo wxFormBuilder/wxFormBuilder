@@ -472,6 +472,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		m_i18n = true;
 
 	m_useConnect = !( _("table") == project->GetPropertyAsString( _("event_generation") ) );
+	m_disconnectEvents = ( project->GetPropertyAsInteger( _("disconnect_events") ) != 0 );
 
 	m_header->Clear();
 	m_source->Clear();
@@ -771,7 +772,7 @@ bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 		if ( disconnect && _template.empty() )
 		{
 			_template = code_info->GetTemplate( wxT("evt_") + templateName );
-			_template.Replace( wxT("Connect"), wxT("Disconnect"), false );
+			_template.Replace( wxT("Connect"), wxT("Disconnect"), true );
 		}
 
 		if ( !_template.empty() )
@@ -1327,7 +1328,7 @@ void CppCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 	m_source->WriteLn( wxT("{") );
 	m_source->Indent();
 
-	if ( m_useConnect && !events.empty() )
+	if ( m_disconnectEvents && m_useConnect && !events.empty() )
 	{
 		m_source->WriteLn( wxT("// Disconnect Events") );
 		GenEvents( class_obj, events, true );

@@ -4,6 +4,9 @@
     <template name="header_preamble">
 		#ifnotequal $help_provider "none"
 		@{ @#include &lt;wx/cshelp.h&gt; #nl @}
+		
+		#ifnotequal $internationalize "0"
+		@{ @#include &lt;wx/intl.h&gt; #nl @}
     </template>
     <template name="header_epilogue">
         ///////////////////////////////////////////////////////////////////////////
