@@ -93,7 +93,6 @@ Written by
       <option name="wxTE_DONTWRAP"      help="Same as wxHSCROLL style: don't wrap at all, show horizontal scrollbar instead."/>
       <option name="wxTE_CHARWRAP"      help="Wrap the lines too long to be shown entirely at any position (wxUniv and wxGTK2 only)."/>
       <option name="wxTE_WORDWRAP"      help="Wrap the lines too long to be shown entirely at word boundaries (wxUniv and wxGTK2 only)."/>
-      <option name="wxTE_BESTWRAP"      help="Wrap the lines at word boundaries or at any other character if there are words longer than the window width (this is the default)."/>
       <option name="wxTE_CAPITALIZE"    help="On PocketPC and Smartphone, causes the first letter to be capitalized."/>
     </property>
     <property name="value" type="wxString_i18n" />

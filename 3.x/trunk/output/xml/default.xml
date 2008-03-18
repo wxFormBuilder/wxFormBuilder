@@ -34,16 +34,15 @@
 		  <option name="table" help="Use event macro tables to link event handlers to events."/>
 		  connect
 		</property>
+		<property name="disconnect_events" type="bool" help="For event_generation=connect Only.&#x0A;Disconnect events in the destructor.">
+		  1
+		</property>
 		<property name="help_provider" type="option" help="For C++ Only.&#x0A;The class of help provider to use for context-sensitive help.">
 			<option name="none" help="No support for context-sensitive help."/>
 			<option name="wxSimpleHelpProvider" help="Use wxSimpleHelpProvider to provide context-sensitive help."/>
 			<option name="wxHelpControllerHelpProvider" help="Use wxHelpControllerHelpProvider to provide context-sensitive help."/>
 			none
 		</property>
-	</category>
-	<category name="XRC Properties">
-		<property name="bitmaps"	type="stringlist"	help="For XRC Only.&#x0A;A list of files to generate as wxBitmaps."/>
-		<property name="icons"		type="stringlist"	help="For XRC Only.&#x0A;A list of files to generate as wxIcons."/>
 	</category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">

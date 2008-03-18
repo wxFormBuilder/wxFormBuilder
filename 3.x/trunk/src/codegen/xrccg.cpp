@@ -49,26 +49,6 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	element.SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
 	element.SetAttribute( "version", "2.3.0.1" );
 
-	// wxBitmaps
-	wxArrayString bitmaps = project->GetPropertyAsArrayString( _("bitmaps") );
-	for ( size_t bitmap = 0; bitmap < bitmaps.size(); ++bitmap )
-	{
-		ticpp::Element bmp( "object" );
-		bmp.SetAttribute( "class", "wxBitmap" );
-		bmp.SetText( _STDSTR( bitmaps[ bitmap ] ) );
-		element.LinkEndChild( &bmp );
-	}
-
-	// wxIcons
-	wxArrayString icons = project->GetPropertyAsArrayString( _("icons") );
-	for ( size_t icon = 0; icon < icons.size(); ++icon )
-	{
-		ticpp::Element iconElement( "object" );
-		iconElement.SetAttribute( "class", "wxIcon" );
-		iconElement.SetText( _STDSTR( icons[ icon ] ) );
-		element.LinkEndChild( &iconElement );
-	}
-
 	// If project is not actually a "Project", generate it
 	if ( project->GetClassName() == wxT("Project") )
 	{
