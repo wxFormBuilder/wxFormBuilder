@@ -1,3 +1,9 @@
+wxformbuilder (3.0.56-0ubuntu1) gutsy; urgency=low
+
+  * Sync to upstream 3.0.56 (RC8). Bug fixes only. (LP: #203781)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Wed,  18 Mar 2008 20:06:25 -0400
+ 
 wxformbuilder (3.0.55-0ubuntu1) hardy; urgency=low
 
   * Fixed build on architectures other than i386 and amd64.
