@@ -17,29 +17,43 @@
 #* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #*
 #*****************************************************************************
-export TOFILE=./output/wxFormBuilder.app/Contents/info.plist
+
+APPCONTENTS=./output/wxFormBuilder.app/Contents
 
 cd ..
 	
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib ./output/bin/wxformbuilder
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib ./output/bin/wxformbuilder
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib ./output/bin/wxformbuilder
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib ./output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib ./output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib ./output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib
-
 rm -r -f ./output/wxFormBuilder.app
 mkdir ./output/wxFormBuilder.app	
-mkdir ./output/wxFormBuilder.app/Contents
-mkdir ./output/wxFormBuilder.app/Contents/Resources
-mkdir ./output/wxFormBuilder.app/Contents/MacOS
-mkdir ./output/wxFormBuilder.app/Contents/PlugIns
-mkdir ./output/wxFormBuilder.app/Contents/SharedSupport
-cp ./output/bin/wxformbuilder ./output/wxFormBuilder.app/Contents/MacOS/wxformbuilder
-cp ./output/lib/wxformbuilder/* ./output/wxFormBuilder.app/Contents/PlugIns
-cp -r ./output/plugins/ ./output/wxFormBuilder.app/Contents/SharedSupport/plugins
-cp -r ./output/resources/ ./output/wxFormBuilder.app/Contents/SharedSupport/resources
-cp -r ./output/xml/ ./output/wxFormBuilder.app/Contents/SharedSupport/xml
-cp ./install/macosx/icon.icns ./output/wxFormBuilder.app/Contents/Resources/icon.icns
-cp ./install/macosx/docicon.icns ./output/wxFormBuilder.app/Contents/Resources/docicon.icns
-cp ./install/macosx/Info.plist ./output/wxFormBuilder.app/Contents/Info.plist
+mkdir $APPCONTENTS
+mkdir $APPCONTENTS/Resources
+mkdir $APPCONTENTS/MacOS
+mkdir $APPCONTENTS/PlugIns
+mkdir $APPCONTENTS/SharedSupport
+cp ./output/bin/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+cp ./output/lib/wxformbuilder/* $APPCONTENTS/PlugIns
+cp -r ./output/plugins/ $APPCONTENTS/SharedSupport/plugins
+cp -r ./output/resources/ $APPCONTENTS/SharedSupport/resources
+cp -r ./output/xml/ $APPCONTENTS/SharedSupport/xml
+cp ./install/macosx/icon.icns $APPCONTENTS/Resources/icon.icns
+cp ./install/macosx/docicon.icns $APPCONTENTS/Resources/docicon.icns
+cp ./install/macosx/Info.plist $APPCONTENTS/Info.plist
+
+# fix libraries' internal name and path... not really necessary but better
+install_name_tool -id @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib
+install_name_tool -id @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib
+install_name_tool -id @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib
+install_name_tool -id @executable_path/../PlugIns/libwxadditions-mini.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
+install_name_tool -id @executable_path/../PlugIns/libadditional.dylib $APPCONTENTS/PlugIns/libadditional.dylib
+install_name_tool -id @executable_path/../PlugIns/libcommon.dylib $APPCONTENTS/PlugIns/libcommon.dylib
+install_name_tool -id @executable_path/../PlugIns/libcontainers.dylib $APPCONTENTS/PlugIns/libcontainers.dylib
+install_name_tool -id @executable_path/../PlugIns/liblayout.dylib $APPCONTENTS/PlugIns/liblayout.dylib
+
+# fix links betwen libraries now that we moved them, so they can find each other
+# in their new locations
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
+
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
+install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib

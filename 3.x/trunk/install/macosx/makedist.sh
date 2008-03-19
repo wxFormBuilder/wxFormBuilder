@@ -17,6 +17,13 @@
 #* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #*
 #*****************************************************************************
+
+# uses tool macdylibbundler.sf.net to integrate wxWidgets libraries
+# inside the app bundle. Not necessary if you require the user to install
+# them on his side, or if you use the ones that come with the system on Leopard
+#
+# will also be different if you built monolithic
+
 dylibbundler -c ./install/macosx/dylibbundler.conf -l -x ./output/wxFormBuilder.app/Contents/MacOS/wxformbuilder -d ./output/wxFormBuilder.app/Contents/libs/ -cd -od
 dylibbundler -c ./install/macosx/dylibbundler.conf -x ./output/wxFormBuilder.app/Contents/PlugIns/libadditional.dylib
 dylibbundler -c ./install/macosx/dylibbundler.conf -x ./output/wxFormBuilder.app/Contents/PlugIns/libcommon.dylib
