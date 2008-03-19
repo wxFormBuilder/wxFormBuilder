@@ -16,6 +16,7 @@ date Version 3.00.56
   This was prompted by, and caused the closure of, these issues:
   FS#340 - "bitmap resources are unnamed, preventing use of wxXmlResource::Get()->LoadBitmap()" 
   FS#329 - "XRC Properties - Follow on"
+* FS#324 - "[wxMac] Buttons on the component palette have a black background"
 
 02/18/2008 Version 3.00.55 (RC7)
 * FS#319 - "Problems with Non-ASCII characters"
