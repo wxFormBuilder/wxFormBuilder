@@ -5,7 +5,7 @@ set -e
 
 # Build premake
 PREMAKE_DIR=sdk/premake
-make -C$PREMAKE_DIR/src -f../build/Makefile
+make CONFIG=Release -C$PREMAKE_DIR/src -f../build/Makefile 
 
 # Autodetect wxWidgets settings
 if wx-config --unicode >/dev/null 2>/dev/null; then
