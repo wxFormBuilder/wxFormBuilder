@@ -1,6 +1,6 @@
 ﻿			wxFormBuilder ChangeLog
 ************************************************************************
-date Version 3.00.56
+03/18/2008 Version 3.00.56 (RC8)
 * Added #include <wx/intl.h> to header file when using internationalization.
 * Custom control now inherits from wxWindow, to provide common properties.
 * FS#336 - "Incorrect ScrollBar Disconnection"
