@@ -203,7 +203,7 @@ void wxFbPalette::OnSpinDown( wxSpinEvent& )
 
 	#ifdef __WXMAC__
 		wxBitmapButton* button = new wxBitmapButton( toolbar, nextId++, icon );
-		button->SetTool( widget );
+		button->SetToolTip( widget );
 		toolbar->InsertControl( 0, button );
 	#else
 		toolbar->InsertTool( 0, nextId++, icon, wxNullBitmap, false, NULL, widget, widget );
