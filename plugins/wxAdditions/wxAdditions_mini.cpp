@@ -206,6 +206,11 @@ public:
 
 		return pg;
 	}
+
+	void Cleanup( wxObject* )
+	{
+		// Prevent assert for missing event handler
+	}
 };
 
 class PropertyGridManagerComponent : public ComponentBase
@@ -311,6 +316,11 @@ public:
 		pg->SetTargetPage(0);
 
 		return pg;
+	}
+
+	void Cleanup( wxObject* )
+	{
+		// Prevent assert for missing event handler
 	}
 };
 
