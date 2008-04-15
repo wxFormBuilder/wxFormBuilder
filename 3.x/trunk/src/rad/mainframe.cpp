@@ -340,7 +340,8 @@ m_findDialog( NULL )
 
 	wxTheApp->SetTopWindow( this );
 
-	PushEventHandler( new FocusKillerEvtHandler );
+	m_focusKillEvtHandler = new FocusKillerEvtHandler;
+	PushEventHandler( m_focusKillEvtHandler );
 
 	// So splitter windows can be restored correctly
 	Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
@@ -363,7 +364,8 @@ MainFrame::~MainFrame()
 	/*m_mgr.UnInit();*/
 
 	// the focus killer event handler
-	PopEventHandler( true );
+	RemoveEventHandler( m_focusKillEvtHandler );
+	delete m_focusKillEvtHandler;
 
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	delete m_findDialog;

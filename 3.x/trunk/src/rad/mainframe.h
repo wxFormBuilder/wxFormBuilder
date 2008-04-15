@@ -103,6 +103,9 @@ class MainFrame : public wxFrame
   wxFindReplaceData m_findData;
   wxFindReplaceDialog* m_findDialog;
 
+  // Used to force propgrid to save on lost focus
+  wxEvtHandler* m_focusKillEvtHandler;
+
   DECLARE_EVENT_TABLE()
  public:
   MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
@@ -167,7 +170,7 @@ class MainFrame : public wxFrame
   void OnFindDialog( wxCommandEvent& event );
   void OnFind( wxFindDialogEvent& event );
   void OnFindClose( wxFindDialogEvent& event );
-  
+
   bool SaveWarning();
   };
 
