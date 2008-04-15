@@ -527,7 +527,7 @@ void ItemPopupMenu::OnMenuEvent (wxCommandEvent & event)
 		break;
 	case MENU_EDIT_MENUS:
 		{
-			PObjectBase obj = AppData()->GetSelectedObject();
+			PObjectBase obj = m_object;
 			if (obj && (obj->GetClassName() == wxT("wxMenuBar") || obj->GetClassName() == wxT("Frame") ) )
 			{
 				MenuEditor me(NULL);

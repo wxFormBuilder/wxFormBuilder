@@ -394,6 +394,10 @@ void MenuEditor::GetItem(long n, wxString& label, wxString& shortcut,
     item.m_col++;
     m_menuList->GetItem(item);
     id = item.GetText();
+    if ( id.empty() )
+    {
+    	id = wxT("wxID_ANY");
+    }
     item.m_col++;
     m_menuList->GetItem(item);
     name = item.GetText();
@@ -403,6 +407,10 @@ void MenuEditor::GetItem(long n, wxString& label, wxString& shortcut,
     item.m_col++;
     m_menuList->GetItem(item);
     kind = item.GetText();
+    if ( kind.empty() )
+    {
+    	kind = wxT("wxITEM_NORMAL");
+    }
     if ( NULL != obj )
     {
     	int origIndex = m_menuList->GetItemData( item );
