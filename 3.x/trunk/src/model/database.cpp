@@ -104,11 +104,17 @@ ObjectDatabase::~ObjectDatabase()
     for ( LibraryVector::iterator lib = m_libs.begin(); lib != m_libs.end(); ++lib )
     {
         #ifdef __WXFB_DEBUG__
-        // Only unload in release - can't get a good stack trace if the library is unloaded
-        (*lib)->Detach();
+			// Only unload in release - can't get a good stack trace if the library is unloaded
+			#ifdef __WXMAC__
+				dlclose( *lib );
+			#else
+				(*lib)->Detach();
+			#endif
         #endif
 
-        delete *lib;
+		#ifndef __WXMAC__
+			delete *lib;
+		#endif
     }
 }
 
@@ -1236,16 +1242,15 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 	// Find the GetComponentLibrary function - all plugins must implement this
 	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
 
-	// no extension is added for __WXMAC__
 	#ifdef __WXMAC__
 		path += wxT(".dylib");
 
 		// open the library
-		void* handle = dlopen(path.mb_str(), RTLD_LAZY);
+		void* handle = dlopen( path.mb_str(), RTLD_LAZY );
 
-		if (!handle)
+		if ( !handle )
 		{
-			wxString error = wxString(dlerror(), wxConvUTF8);
+			wxString error = wxString( dlerror(), wxConvUTF8 );
 			THROW_WXFBEX( wxT("Error loading library ") << path << wxT(" ") << error )
 		}
 		dlerror(); // reset errors
@@ -1258,12 +1263,14 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		const char *dlsym_error = dlerror();
 		if (dlsym_error)
 		{
-			wxString error = wxString(dlsym_error, wxConvUTF8);
+			wxString error = wxString( dlsym_error, wxConvUTF8 );
 			THROW_WXFBEX( path << wxT(" is not a valid component library: ") << error )
-			dlclose(handle);
+			dlclose( handle );
 		}
-
-		dlclose(handle);
+		else
+		{
+			m_libs.push_back( handle );
+		}
 	#else
 
 		// Attempt to load the DLL

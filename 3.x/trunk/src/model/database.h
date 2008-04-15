@@ -118,7 +118,11 @@ class ObjectDatabase
   // Map the property type string to the property type number
   typedef std::map<wxString,PropertyType> PTMap;
   typedef std::map<wxString,PObjectType> ObjectTypeMap;
-  typedef std::vector<wxDynamicLibrary *> LibraryVector;
+  #ifdef __WXMAC__
+	typedef std::vector< void * > LibraryVector;
+  #else
+	typedef std::vector< wxDynamicLibrary * > LibraryVector;
+  #endif
   typedef void (*PFFreeComponentLibrary)( IComponentLibrary* lib );
   typedef std::map< PFFreeComponentLibrary, IComponentLibrary * > ComponentLibraryMap;
   typedef std::set<wxString> MacroSet;

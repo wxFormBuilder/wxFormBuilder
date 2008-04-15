@@ -2,6 +2,7 @@
 ************************************************************************
 date Version 3.00.57 (Final)
 * FS#349 - "RC8 menu editor still generate incorect menu item code"
+* FS#345 - "Crash on Mac OS X when loading plugins"
 
 03/18/2008 Version 3.00.56 (RC8)
 * Added #include <wx/intl.h> to header file when using internationalization.
