@@ -1,4 +1,4 @@
-Ôªø			wxFormBuilder ChangeLog
+			wxFormBuilder ChangeLog
 ************************************************************************
 04/15/2008 Version 3.00.57
 * FS#349 - "RC8 menu editor still generate incorect menu item code"
@@ -239,22 +239,22 @@
 
 04-18-2007 Version 3.00.38 (Beta 3)
 ^ Updated the program icon.
-* Fixed FS#169 ‚Äî "About dialog box fails to open web browser for home page URL"
-* Fixed FS#171 ‚Äî "Wrong string literal macro in generated headers 
+* Fixed FS#169 ó "About dialog box fails to open web browser for home page URL"
+* Fixed FS#171 ó "Wrong string literal macro in generated headers 
   for internationalized code generation"
-* Fixed FS#165 ‚Äî "focus in wxNotebook always switches to the first panel after 
+* Fixed FS#165 ó "focus in wxNotebook always switches to the first panel after 
   adding a widget/layout to another panel"
-* Fixed FS#166 ‚Äî "Adding three tabs to tab control throws an error."
-* Fixed FS#172 ‚Äî "Event list for wxListCtrl shows "OnListCasheHint" instead of "OnListCacheHint""
+* Fixed FS#166 ó "Adding three tabs to tab control throws an error."
+* Fixed FS#172 ó "Event list for wxListCtrl shows "OnListCasheHint" instead of "OnListCacheHint""
 * Fixed crash when closing the Find dialog with the Cancel button.
-* Fixed FS#167 ‚Äî ""Object Properties" splitter position not remembered"
+* Fixed FS#167 ó ""Object Properties" splitter position not remembered"
 
 03-27-2007 Version 3.00.37 (Beta 3)
 + Added mouse events to common events.
 + Added wxEVT_ERASE_BACKGROUND to wxTopLevelWindow events.
 
 03-26-2007 Version 3.00.36 (Beta 3)
-* Fixed FS#99 ‚Äî "changes from menu editor remove all handlers."
+* Fixed FS#99 ó "changes from menu editor remove all handlers."
 ^ Added a warning for unsupported properties.
 ^ Moved all container controls to a new containers plug-in.
 ^ Moved wxGrid to the "Additional" tab.
@@ -274,7 +274,7 @@
 
 03-15-2007 Version 3.00.34 (Beta 3)
 + Added extra_style property to xrc. This resolves FS#163.
-* Updated propgrid, which fixed FS#162 ‚Äî "Changing font point
+* Updated propgrid, which fixed FS#162 ó "Changing font point
    size in properties panel causes font size to become huge."
 ^ Changed font size for xrc editor in gtk to match cpp editors.
 ^ Editors no longer move horizontal scrollbar when generating.
@@ -284,13 +284,13 @@
 ^ Now using wxWidgets v2.8.2.
 
 03-09-2007 Version 3.00.33 (Beta 3)
-+ Implemented FS#156 ‚Äî "Ability to wrap generated code in namespace(s)"
++ Implemented FS#156 ó "Ability to wrap generated code in namespace(s)"
    using patch supplied by kramar.
-+ Implemented FS#157 ‚Äî "Ability to decorate the generated class with dll export"
++ Implemented FS#157 ó "Ability to decorate the generated class with dll export"
    using patch supplied by kramar.
-+ Implemented FS#160 ‚Äî "Support for namespaces for subclass forward declarations"
++ Implemented FS#160 ó "Support for namespaces for subclass forward declarations"
    using patch supplied by kramar.
-* Fixed FS#161 ‚Äî "Tag of items in wxCheckListBox."
+* Fixed FS#161 ó "Tag of items in wxCheckListBox."
 ^ Moved declaration of menus and submenus to header file.
 
 03-07-2007 Version 3.00.32 (Beta 3)
@@ -298,26 +298,26 @@
    Cleaner and cross-platform.
 
 03-06-2007 Version 3.00.31 (Beta 3)
-* Fixed FS#149 ‚Äî "Double question whether you want to save a project on exit."
-* Fixed FS#148 ‚Äî "Different generated C++ and XRC file names for unnamed projects."
-* Fixed FS#154 ‚Äî "Crash when adding a sizer."
-* Fixed FS#147 ‚Äî "Accepting new property values when clicking on a menu/toolbar item."
-^ Implemented FS#138 ‚Äî "Select the 'next' control after deleting a control."
+* Fixed FS#149 ó "Double question whether you want to save a project on exit."
+* Fixed FS#148 ó "Different generated C++ and XRC file names for unnamed projects."
+* Fixed FS#154 ó "Crash when adding a sizer."
+* Fixed FS#147 ó "Accepting new property values when clicking on a menu/toolbar item."
+^ Implemented FS#138 ó "Select the 'next' control after deleting a control."
 
 03-05-2007 Version 3.00.30 (Beta 3)
-^ Implemented FS#130 ‚Äî "Support for searching through XRC or C++ code."
+^ Implemented FS#130 ó "Support for searching through XRC or C++ code."
 
 03-04-2007 Version 3.00.29 (Beta 3)
-+ FS#146 ‚Äî "Displaying keyboard shortcuts in toolbar tooltip windows."
++ FS#146 ó "Displaying keyboard shortcuts in toolbar tooltip windows."
 + New keyboard shortcut for 'New Project' Ctrl+N.
 ^ Updated the keyboard shortcut for 'Save As' from "F3" to "Ctrl-Shift+S".
 ^ Updated the keyboard shortcut for 'Open' from "F2" to "Ctrl+O".
 
 03-03-2007 Version 3.00.28 (Beta 3)
-* Fixed FS#143 ‚Äî "Silent code generation failure in case of an invalid project path."
+* Fixed FS#143 ó "Silent code generation failure in case of an invalid project path."
    This was a regression in Version 3.00.27.
-* Fixed FS#118 ‚Äî "Code not regenerated on property changes."
-* Fixed FS#119 ‚Äî "Generating files should not force the code display control to scroll back to the top."
+* Fixed FS#118 ó "Code not regenerated on property changes."
+* Fixed FS#119 ó "Generating files should not force the code display control to scroll back to the top."
 * Code in the visible panel is now regenerated on object removal and creation, project load, new project
    and event handler modification.
 * Fixed FS#144 - "Incorrectly generated C++ code when precompiled_header
@@ -325,38 +325,38 @@
 
 
 03-02-2007 Version 3.00.27 (Beta 3)
-^ Implemented FS#142 ‚Äî "set wxStaticline‚Äôs default value to wxEXPAND"
-^ Implemented FS#140 ‚Äî "Better code generation selection implementation."
+^ Implemented FS#142 ó "set wxStaticlineís default value to wxEXPAND"
+^ Implemented FS#140 ó "Better code generation selection implementation."
    Always generate code to the visible panel.
    Added -l (language) command line option to specify languages to generate
     when generating from command line. Separate multiple languages with commas.
 
 03-01-2007 Version 3.00.26 (Beta 3)
-* Fixed FS#136 ‚Äî "Panel size doesn't change properly when 'size' is set to -1"
-* Fixed FS#137 ‚Äî "Allow -1 for the 'size' property if the minimum/maximum size is set."
-* Fixed FS#113 ‚Äî "Error when undoing cutting controls."
-* Fixed FS#97 ‚Äî "Menu items in XRC preview window involve wxFB functionality"
-^ Implemented FS#117 ‚Äî "ESC should close the XRC preview form."
+* Fixed FS#136 ó "Panel size doesn't change properly when 'size' is set to -1"
+* Fixed FS#137 ó "Allow -1 for the 'size' property if the minimum/maximum size is set."
+* Fixed FS#113 ó "Error when undoing cutting controls."
+* Fixed FS#97 ó "Menu items in XRC preview window involve wxFB functionality"
+^ Implemented FS#117 ó "ESC should close the XRC preview form."
    Note: This will never work on wxGTK because it does not set key events to frames or dialogs.
 
 02-28-2007 Version 3.00.25 (Beta 3)
-* Fixed FS#100 ‚Äî "Problem with the relative path of XPM"
-* Fixed FS#126 ‚Äî "Splitter window control without a panel does not get redrawn correctly."
-* Fixed FS#132 ‚Äî "Splitter window control moves its sash unexpectedly at design time."
+* Fixed FS#100 ó "Problem with the relative path of XPM"
+* Fixed FS#126 ó "Splitter window control without a panel does not get redrawn correctly."
+* Fixed FS#132 ó "Splitter window control moves its sash unexpectedly at design time."
 * Fixed spacer not displaying properly in most sizers.
   This was a regression in build 3.00.23.
-* Fixed FS#133 ‚Äî "Error when moving between designer/C++/XRC tabs."
+* Fixed FS#133 ó "Error when moving between designer/C++/XRC tabs."
   This was a regression in build 3.00.24.
 ^ Now connecting an event handler to idle events for splitter windows to reliably
   set the initial sash position.
 
 02-27-2007 Version 3.00.24 (Beta 3)
-* Fixed FS#131 ‚Äî "Folder not getting released after saving a project into it."
-* Fixed FS#114 ‚Äî "Not being able to cut non-top-level sizers and paste them as top-level sizers."
-* Fixed FS#124 ‚Äî "Option to create a sizer around a control does not work on top-level sizers."
-* Fixed FS#104 ‚Äî "Editing XRC/C++ files should be disallowed completely or allowed to affect GUI properties."
-* Fixed FS#127 ‚Äî "Change 'new' label to 'new project'."
-* Fixed FS#125 ‚Äî "Buggy cut/paste of panels from splitter window controls."
+* Fixed FS#131 ó "Folder not getting released after saving a project into it."
+* Fixed FS#114 ó "Not being able to cut non-top-level sizers and paste them as top-level sizers."
+* Fixed FS#124 ó "Option to create a sizer around a control does not work on top-level sizers."
+* Fixed FS#104 ó "Editing XRC/C++ files should be disallowed completely or allowed to affect GUI properties."
+* Fixed FS#127 ó "Change 'new' label to 'new project'."
+* Fixed FS#125 ó "Buggy cut/paste of panels from splitter window controls."
 
 02-26-2007 Version 3.00.23 (Beta 3)
 + Added wxGridBagSizer. This closes FS#58.
@@ -382,16 +382,16 @@
 + Added wxEVT_UPDATE_UI event to all controls (if it has a sense).
 
 02-18-2007 Version 3.00.20 (Beta 3)
-* Fixed FS#93 ‚Äî "wxGrid -> Object type unknown in XRC."
-* Fixed FS#94 ‚Äî "Typo in code generation which includes <wx/imaglist.h>."
-* Fixed FS#96 ‚Äî "No XRC for wxStdDialogButtonSizer."
+* Fixed FS#93 ó "wxGrid -> Object type unknown in XRC."
+* Fixed FS#94 ó "Typo in code generation which includes <wx/imaglist.h>."
+* Fixed FS#96 ó "No XRC for wxStdDialogButtonSizer."
 * Added wxRadioBox label to XRC output.
 ^ "View:XRC Window" now only generates the form that it will display.
 
 02-12-2007 Version 3.00.19 (Beta 3)
-* Fixed FS#89 ‚Äî "wxSpinCtrl cannot have negative min/max value."
-* Fixed FS#90 ‚Äî "Can't change the source of a bitmap."
-* Fixed FS#91 ‚Äî "ID's that start with 'wx' are not properly generated."
+* Fixed FS#89 ó "wxSpinCtrl cannot have negative min/max value."
+* Fixed FS#90 ó "Can't change the source of a bitmap."
+* Fixed FS#91 ó "ID's that start with 'wx' are not properly generated."
 * MainFrame is updated when a property is changed, even if the object
   doesn't match with the selected object (i.e. sizeritem obj).
 ^ wxFrame title bar color now using ActiveCaption.
@@ -399,14 +399,14 @@
 02-01-2007  Version 3.00.18 (Beta 3)
 * Undo command of MoveHierarchy (move left) now restores the position of
   the object.
-* Fixed FS#86 ‚Äî "Object-tree context-menu "Copy" command has no effect"
-+ Implemented FS#6 ‚Äî "icons and bitmaps support"
-+ Implemented FS#87 ‚Äî "Run as command-line compiler"
+* Fixed FS#86 ó "Object-tree context-menu "Copy" command has no effect"
++ Implemented FS#6 ó "icons and bitmaps support"
++ Implemented FS#87 ó "Run as command-line compiler"
 
 01-19-2007  Version 3.00.17 (Beta 2)
 * Fixed bug where dragging on created dialog statusbar was resizing the main
   application window.
-* Fixed FS#85 ‚Äî "required wx/imagelist.h for wxListbook using image files."
+* Fixed FS#85 ó "required wx/imagelist.h for wxListbook using image files."
   with help from akira.
 * Fixed the "relative_path" and "internationalize" properties for code
   generated from the inner template of a macro. This resolves FS#83 and
@@ -422,7 +422,7 @@
   This resolves FS#78.
 + Added "kind" property to tools and added "tooltip" and "statusbar"
   properties to the generated XRC.
-  This resovles FS#79 ‚Äî "Toggle buttons on toolbar."
+  This resovles FS#79 ó "Toggle buttons on toolbar."
 ^ Updated the splash screen again.
 
 01-09-2007 Version 3.00.15 (Beta 2)
@@ -482,9 +482,9 @@
 12-4-2006 Version 3.00.11 (Beta 2)
 * Now generating user_headers include statements above the generated
   header include. This resolves FS#55.
-* Fixed FS#51 ‚Äî "notebook-like objects errors while they are included into each other"
-* Fixed FS#59 ‚Äî "wxCheckListBox: incorrect class name in XRC"
-* Fixed  FS#62 ‚Äî "Sub-Classing top level items doesn't work."
+* Fixed FS#51 ó "notebook-like objects errors while they are included into each other"
+* Fixed FS#59 ó "wxCheckListBox: incorrect class name in XRC"
+* Fixed  FS#62 ó "Sub-Classing top level items doesn't work."
   This was a big change. The subclass property is now a parent property with two
   children: name and header. The name is the subclass name, and header is the
   header to include so that the subclass is defined while building. The header
@@ -496,24 +496,24 @@
   properties will soon be added to the wiki.
 
 11-15-2006 Version 3.00.10 (Beta 2)
-* Fixed FS#63 ‚Äî "Size/minimum-size is not working."
-* Fixed FS#60 ‚Äî "wxFlexGridSizer vgap/hgap if empty they get generated empty."
+* Fixed FS#63 ó "Size/minimum-size is not working."
+* Fixed FS#60 ó "wxFlexGridSizer vgap/hgap if empty they get generated empty."
   This was actually a bug with most numerical properties. Added a "uint" property
   type to solve this. Most numerical properties are now unsigned integers, so the
   property grid will not let it remain blank, and negative numbers are not accepted.
   This approach is good because it is clear to the user what will happen when the
   code is generated.
-* Fixed FS#66 ‚Äî "Adding common controls to toolbar."
-* Fixed FS#65 ‚Äî "Unfriendly object tree."
-* Implemented FS#68 ‚Äî "Smart enable/disable of toolbar items."
+* Fixed FS#66 ó "Adding common controls to toolbar."
+* Fixed FS#65 ó "Unfriendly object tree."
+* Implemented FS#68 ó "Smart enable/disable of toolbar items."
   This was already mostly done. Just needed to enable/disable the appropriate alignment
   buttons for wxBoxSizer and wxStaticBoxSizer.
 
 10-30-2006 Version 3.00.09 (Beta 2)
 * Fixed moving left, right, and into a new wxBoxSizer for spacers.
-* Fixed FS#72 ‚Äî "When editing a property in the property grid, it is lost when you click away."
-* Fixed FS#73 ‚Äî "Toolbar tools not selecting the object in the object tree."
-* Fixed FS#71 ‚Äî "wxSplitter window sashpos not being set."
+* Fixed FS#72 ó "When editing a property in the property grid, it is lost when you click away."
+* Fixed FS#73 ó "Toolbar tools not selecting the object in the object tree."
+* Fixed FS#71 ó "wxSplitter window sashpos not being set."
 
 10-27-2006 Version 3.00.08 (Beta 2)
 * ID_DEFAULT is no longer defined when not used.
@@ -530,13 +530,13 @@
 ^ Improved both C++ and XRC code generation for wxSplitterWindow.
 
 10-25-2006 Version 3.00.06 (Beta 2)
-^ Implemented FS#26 ‚Äî "Chronological id creation."
+^ Implemented FS#26 ó "Chronological id creation."
 + Added support for using wxSplitterWindow with only one child.
 + Added min_pane_size and sashsize properties to wxSplitterWindow.
 + Added maximum size property to wxWindow properties.
 
 10-20-2006 Version 3.00.05 (Beta 2)
-+ Implemented FS#48 ‚Äî "Improve error notification when a plugin is missing."
++ Implemented FS#48 ó "Improve error notification when a plugin is missing."
   If widgets are missing, the project will not load at all.
 + Added a boolean "xrc_skip_sizer" property to Frame. The default is value is true.
   When true, the main sizer of the frame will not be generated in XRC, if the sizer
@@ -680,9 +680,9 @@
 + Now supports internationalization.
 + Can now set the encoding on XRC files.
 + Now building in Unicode for better Cross-Platform support.
-+ Now supports ‚Äúflexible_direction‚Äù and ‚Äúnon_flexible_grow_mode‚Äù on wxFlexGridSizer.
++ Now supports ìflexible_directionî and ìnon_flexible_grow_modeî on wxFlexGridSizer.
 + Now supports Sort style on wxComboBox.
-* Message box titles now begin with a lowercase ‚Äúw‚Äù.
+* Message box titles now begin with a lowercase ìwî.
 - Strange empty lines in generated code.
 
 06-05-2006  Version 2.00.52
@@ -720,4 +720,4 @@
 _______________________________________________________________________
 Legend:
 
-‚Äò+‚Äô = Addition, ‚Äò*‚Äô = Bug Fix, ‚Äò-‚Äò = Removed, ‚Äò~‚Äô = Move, ‚Äò^‚Äô = Updated
+ë+í = Addition, ë*í = Bug Fix, ë-ë = Removed, ë~í = Move, ë^í = Updated
