@@ -200,8 +200,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 			break;
 
 		case XRC_TYPE_STRINGLIST:
-			// LinkStringList converts strings to XRC format
-			LinkStringList( m_obj->GetPropertyAsArrayString( objPropName ), &propElement, true );
+			LinkStringList( m_obj->GetPropertyAsArrayString( objPropName ), &propElement );
 			break;
 
 		case XRC_TYPE_BITMAP:
