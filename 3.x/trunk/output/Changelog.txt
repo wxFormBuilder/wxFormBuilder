@@ -1,5 +1,5 @@
 			wxFormBuilder ChangeLog
-************************************************************************
+********************************************************************************
 04/15/2008 Version 3.00.57
 * FS#349 - "RC8 menu editor still generate incorect menu item code"
 * FS#345 - "Crash on Mac OS X when loading plugins"
@@ -717,7 +717,7 @@
 ^ Switch to tabs for indentation.
 * Background color issues in the palette.
 - Typedefs for easier understanding
-_______________________________________________________________________
+_______________________________________________________________
 Legend:
 
 ‘+’ = Addition, ‘*’ = Bug Fix, ‘-‘ = Removed, ‘~’ = Move, ‘^’ = Updated
