@@ -111,7 +111,7 @@
 		<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
 		<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
 		<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
-		<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+		<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DOWN event." />
 		<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
 	  </category>
 	  <category name="wxFocusEvent" type="interface">
