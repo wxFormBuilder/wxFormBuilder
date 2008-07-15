@@ -56,7 +56,7 @@ end
 package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugin-interface" }
 
 -- Add libraries and build options for stack trace in MinGW
-if ( windows and ( (target == "cb-gcc") or (target == "gnu") ) ) then
+if ( windows and ( (string.find( target, ".*-gcc" )) or (target == "gnu") ) ) then
 	table.insert( package.links, { "bfd", "iberty", "psapi", "imagehlp" } )
 	table.insert( package.buildoptions, "-gstabs" )
 end
@@ -141,14 +141,14 @@ package.buildflags = { "extra-warnings" }
 package.config["Release"].buildflags = { "optimize-speed" }
 
 -- Don't strip symbols in MinGW, need them for stack trace
-if ( not ( windows and ( (target == "cb-gcc") or (target == "gnu") ) ) ) then
+if ( not ( windows and ( (string.find( target, ".*-gcc" )) or (target == "gnu") ) ) ) then
 	table.insert( package.config["Release"].buildflags, "no-symbols" )
 end
 
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
-if ( target == "cb-gcc" or target == "gnu" ) then
+if ( string.find( target, ".*-gcc" ) or target == "gnu" ) then
 	table.insert( package.config["Debug"].buildoptions, "-O0" )
 	table.insert( package.config["Release"].buildoptions, "-fno-strict-aliasing" )
 end
@@ -181,7 +181,7 @@ if ( OS == "windows" ) then
 			if ( target == "cb-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_dll/mswud" )
 				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_dll/mswu" )
-			elseif ( target == "gnu" ) then
+			elseif ( target == "gnu" or target == "cl-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_dll/mswud" )
 				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_dll/mswu" )
 			else
@@ -192,7 +192,7 @@ if ( OS == "windows" ) then
 			if ( target == "cb-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_dll/mswd" )
 				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_dll/msw" )
-			elseif ( target == "gnu" ) then
+			elseif ( target == "gnu" or target == "cl-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_dll/mswd" )
 				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_dll/msw" )
 			else
@@ -205,7 +205,7 @@ if ( OS == "windows" ) then
 			if ( target == "cb-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_lib/mswud" )
 				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_lib/mswu" )
-			elseif ( target == "gnu" ) then
+			elseif ( target == "gnu" or target == "cl-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_lib/mswud" )
 				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_lib/mswu" )
 			else
@@ -216,7 +216,7 @@ if ( OS == "windows" ) then
 			if ( target == "cb-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(#WX.lib)/gcc_lib/mswd" )
 				table.insert( package.config["Release"].includepaths, "$(#WX.lib)/gcc_lib/msw" )
-			elseif ( target == "gnu" ) then
+			elseif ( target == "gnu" or target == "cl-gcc" ) then
 				table.insert( package.config["Debug"].includepaths, "$(WXWIN)/lib/gcc_lib/mswd" )
 				table.insert( package.config["Release"].includepaths, "$(WXWIN)/lib/gcc_lib/msw" )
 			else
@@ -230,7 +230,7 @@ if ( OS == "windows" ) then
 	if ( options["with-wx-shared"] ) then
 		if ( target == "cb-gcc" ) then
 			table.insert( package.libpaths, "$(#WX.lib)/gcc_dll" )
-		elseif ( target == "gnu" ) then
+		elseif ( target == "gnu" or target == "cl-gcc" ) then
 			table.insert( package.libpaths, "$(WXWIN)/lib/gcc_dll" )
 		else
 			table.insert( package.libpaths, "$(WXWIN)/lib/vc_dll" )
@@ -238,7 +238,7 @@ if ( OS == "windows" ) then
 	else
 		if ( target == "cb-gcc" ) then
 			table.insert( package.libpaths, "$(#WX.lib)/gcc_lib" )
-		elseif ( target == "gnu" ) then
+		elseif ( target == "gnu" or target == "cl-gcc" ) then
 			table.insert( package.libpaths, "$(WXWIN)/lib/gcc_lib" )
 		else
 			table.insert( package.libpaths, "$(WXWIN)/lib/vc_lib" )
