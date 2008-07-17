@@ -105,7 +105,7 @@ package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
-if ( string.find( target, ".*-gcc" ) or target == "gnu" ) then
+if ( string.find( target or "", ".*-gcc" ) or target == "gnu" ) then
 	table.insert( package.buildflags, "no-import-lib" )
 	table.insert( package.config["Debug"].buildoptions, "-O0" )
 	table.insert( package.config["Release"].buildoptions, "-fno-strict-aliasing" )
@@ -126,13 +126,13 @@ if ( windows ) then
 --******* WINDOWS SETUP ***********
 --*	Settings that are Windows specific.
 --*********************************
-	-- Set wxWidgets include paths 
+	-- Set wxWidgets include paths
 	if ( target == "cb-gcc" ) then
 		table.insert( package.includepaths, "$(#WX.include)" )
 	else
 		table.insert( package.includepaths, "$(WXWIN)/include" )
 	end
-	
+
 	-- Set the correct 'setup.h' include path.
 	if ( options["with-wx-shared"] ) then
 		if ( options["unicode"] ) then
@@ -183,7 +183,7 @@ if ( windows ) then
 			end
 		end
 	end
-	
+
 	-- Set the linker options.
 	if ( options["with-wx-shared"] ) then
 		if ( target == "cb-gcc" ) then
@@ -202,7 +202,7 @@ if ( windows ) then
 			table.insert( package.libpaths, "$(WXWIN)/lib/vc_lib" )
 		end
 	end
-	
+
 	-- Set wxWidgets libraries to link.
 	if ( options["unicode"] ) then
 		table.insert( package.config["Release"].links, "wxmsw"..wx_ver.."u" )
@@ -211,7 +211,7 @@ if ( windows ) then
 		table.insert( package.config["Release"].links, "wxmsw"..wx_ver )
 		table.insert( package.config["Debug"].links, "wxmsw"..wx_ver.."d" )
 	end
-	
+
 	-- Set the Windows defines.
 	table.insert( package.defines, { "__WXMSW__", "WIN32", "_WINDOWS" } )
 else
@@ -220,18 +220,18 @@ else
 --*************************************
 	-- Ignore resource files in Linux/Mac.
 	table.insert( package.excludes, matchrecursive( "*.rc" ) )
-	
+
 	table.insert( package.buildoptions, "-fPIC" )
-	
+
 	-- Add buildflag for proper dll building.
 	if ( macosx ) then
 		table.insert( package.buildflags, "dylib" )
 	end
-	
+
 	-- Set wxWidgets build options.
 	table.insert( package.config["Debug"].buildoptions, "`wx-config "..debug_option.." --cflags`" )
 	table.insert( package.config["Release"].buildoptions, "`wx-config --debug=no --cflags`" )
-	
+
 	-- Set the wxWidgets link options.
 	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
 	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
