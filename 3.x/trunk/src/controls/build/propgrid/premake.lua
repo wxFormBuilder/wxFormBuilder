@@ -94,7 +94,7 @@ package.config["Release"].buildflags = { "no-symbols", "optimize-speed" }
 if ( options["unicode"] ) then
 	table.insert( package.buildflags, "unicode" )
 end
-if ( string.find( target, ".*-gcc" ) or target == "gnu" ) then
+if ( string.find( target or "", ".*-gcc" ) or target == "gnu" ) then
 	table.insert( package.buildflags, "no-import-lib" )
 	table.insert( package.config["Debug"].buildoptions, "-O0" )
 	table.insert( package.config["Release"].buildoptions, "-fno-strict-aliasing" )
@@ -205,7 +205,7 @@ if ( windows ) then
 	table.insert( package.defines, { "__WXMSW__", "WIN32", "_WINDOWS" } )
 
 	-- Set the targets.
-	if ( string.find( target, ".*-gcc" ) or target == "gnu" ) then
+	if ( string.find( target or "", ".*-gcc" ) or target == "gnu" ) then
 		if ( options["unicode"] ) then
 			package.config["Debug"].target = "wxmsw"..wx_ver..wx_ver_minor.."umd_"..targetName.."_gcc"..wx_custom
 			package.config["Release"].target = "wxmsw"..wx_ver..wx_ver_minor.."um_"..targetName.."_gcc"..wx_custom
@@ -247,15 +247,15 @@ else
 	local wxconfig = io.popen("wx-config " .. debug_option .. " --basename")
 	local debugBasename = trim( wxconfig:read("*a") )
 	wxconfig:close()
-	
+
 	wxconfig = io.popen("wx-config --debug=no --basename")
 	local basename = trim( wxconfig:read("*a") )
 	wxconfig:close()
-	
+
 	wxconfig = io.popen("wx-config --release")
 	local release = trim( wxconfig:read("*a") )
 	wxconfig:close()
-	
+
 	-- Set the targets.
 	package.config["Debug"].target = debugBasename .. "_" .. targetName .. "-" .. release .. wx_custom
 	package.config["Release"].target = basename .. "_" .. targetName .. "-" .. release .. wx_custom
