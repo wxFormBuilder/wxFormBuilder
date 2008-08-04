@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-date Version 3.01.58 (Beta)
+08/04/2008 Version 3.01.58 (Beta)
 + Added validator support.
 
 04/15/2008 Version 3.00.57
