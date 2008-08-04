@@ -231,24 +231,35 @@ bool TemplateParser::ParseProperty()
 bool TemplateParser::ParseText()
 {
 	wxString text;
+	int sspace = 0;
 
 	if ( !m_in.Eof() )
 	{
 		wxChar peek( m_in.Peek() );
+
 		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$') )
 		{
 			wxChar c( m_in.GetC() );
 			if (c == wxT('@') )
+			{
 				c = wxChar(m_in.GetC());
+				if(c == wxT(' '))sspace++;
+			}
 
 			text << c;
 			peek = wxChar( m_in.Peek() );
 		}
 
-		// If text is all whitespace, ignore it
 		if ( text.find_first_not_of( wxT("\r\n\t ") ) != text.npos )
 		{
+		    // If text is all whitespace, ignore it
 			m_out << text;
+		}
+		else
+		{
+		    // ... but allow all '@ ' instances
+		    wxString spaces(wxT(' '), sspace);
+		    m_out << spaces;
 		}
 	}
 
