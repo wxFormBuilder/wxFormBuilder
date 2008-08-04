@@ -877,6 +877,47 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm)
 		GenAttributeDeclaration(child,perm);
 	}
 }
+void CppCodeGenerator::GenValidatorVariables( PObjectBase obj)
+{
+    GenValVarsBase(obj->GetObjectInfo(), obj);
+
+    // Proceeding recursively with the children
+    for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
+    {
+        PObjectBase child = obj->GetChild(i);
+        GenValidatorVariables(child);
+    }
+}
+
+void CppCodeGenerator::GenValVarsBase( PObjectInfo info, PObjectBase obj)
+{
+	wxString _template;
+	PCodeInfo code_info = info->GetCodeInfo( wxT("C++") );
+
+	if ( !code_info )
+	{
+		return;
+	}
+
+	_template = code_info->GetTemplate( wxT("valvar_declaration") );
+
+	if ( !_template.empty() )
+	{
+		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		wxString code = parser.ParseTemplate();
+		if ( !code.empty() )
+		{
+			m_header->WriteLn(code);
+		}
+	}
+
+    // Proceeding recursively with the base classes
+    for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
+    {
+        PObjectInfo base_info = info->GetBaseClass(i);
+        GenValVarsBase(base_info, obj);
+    }
+}
 
 void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 {
@@ -986,6 +1027,10 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	m_header->WriteLn( wxT("public:") );
 	m_header->Indent();
 	GenAttributeDeclaration(class_obj,P_PUBLIC);
+
+	// Validators' variables
+	GenValidatorVariables(class_obj);
+	m_header->WriteLn( wxT("") );
 
 	// The constructor is also included within public
 	m_header->WriteLn( GetCode( class_obj, wxT("cons_decl") ) );

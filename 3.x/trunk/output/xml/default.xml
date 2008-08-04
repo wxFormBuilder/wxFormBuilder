@@ -85,6 +85,33 @@
       <option name="wxWS_EX_PROCESS_IDLE"           help="This window should always process idle events, even if the mode set by wxIdleEvent::SetMode is wxIDLE_PROCESS_SPECIFIED." />
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
+	<category name="Validator">
+		<property name = "validator_type" type="option" hidden="1" help="Type of a validator assigned to the window">
+			<option name="wxDefaultValidator" help="Default validator (does nothing)"/>
+			<option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
+			<option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>wxDefaultValidator
+		</property>
+    	<property name="validator_style" type="bitlist" help="Data filtering style for wxTextValidator.">
+      		<option name="wxFILTER_NONE"   help="No filtering takes place." />
+      		<option name="wxFILTER_ASCII"           help="Non-ASCII characters are filtered out." />
+      		<option name="wxFILTER_ALPHA"              help="Non-alpha characters are filtered out." />
+      		<option name="wxFILTER_ALPHANUMERIC"           help="Non-alphanumeric characters are filtered out." />
+      		<option name="wxFILTER_NUMERIC"     help="Non-numeric characters are filtered out." />
+			<option name="wxFILTER_INCLUDE_LIST"     help="Use an include list. The validator checks if the user input is on the list, complaining if not. See wxTextValidator::SetIncludes." />
+			<option name="wxFILTER_EXCLUDE_LIST"     help="Use an exclude list. The validator checks if the user input is on the list, complaining if it is. See wxTextValidator::SetExcludes." />
+			<option name="wxFILTER_INCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if not. See wxTextValidator::SetIncludes." />
+			<option name="wxFILTER_EXCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if it is. See wxTextValidator::SetExcludes." />
+			wxFILTER_NONE
+    	</property>
+		<property name="validator_variable" type="text" help="Name of a member variable associated with the validator" />
+		<property name = "validator_data_type" type="option" hidden="1" help="Data type of the member variable">
+			<option name="" help ="Undefined data type."/>
+			<option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton." />
+			<option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>
+			<option name="wxString" help="String value. This should be used for wxButton, wxComboBox, wxStaticText, wxTextCtrl." />
+			<option name="wxArrayInt" help="Array of integers. This should be used for wxListBox, wxCheckListBox." />
+		</property>
+	</category>
     <property name="tooltip" type="wxString_i18n"   help="Attach a tooltip to the window."/>
 	<property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
     <property name="enabled" type="bool"            help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>

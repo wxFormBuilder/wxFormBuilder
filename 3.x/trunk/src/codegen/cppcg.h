@@ -137,6 +137,15 @@ private:
 	void GenAttributeDeclaration( PObjectBase obj, Permission perm);
 
 	/**
+	* Recursive function for the validators' variables declaration, used inside GenClassDeclaration.
+	*/
+	void GenValidatorVariables( PObjectBase obj);
+	/**
+	* Recursive function for the validators' variables declaration, used inside GenClassDeclaration.
+	*/
+	void GenValVarsBase( PObjectInfo info, PObjectBase obj);
+
+	/**
 	* Generates the generated_event_handlers template
 	*/
 	void GetGenEventHandlers( PObjectBase obj );

@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+date Version 3.01.58 (Beta)
++ Added validator support.
+
 04/15/2008 Version 3.00.57
 * FS#349 - "RC8 menu editor still generate incorect menu item code"
 * FS#345 - "Crash on Mac OS X when loading plugins"
