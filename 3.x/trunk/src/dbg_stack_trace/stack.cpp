@@ -8,6 +8,8 @@
 #include <ostream>
 #include <iostream>
 #include <cassert>
+#include <cstring>
+#include <cstdlib>
 
 #include "stack.hpp"
 
@@ -328,7 +330,7 @@ namespace
                 if (has_limit && limit-- == 0) break;
                 frames.push_back(dbg::stack_frame(ip, demangle(info.dli_sname) + " in " + info.dli_fname));
 
-                if(info.dli_sname && !strcmp(info.dli_sname, "main")) break;
+                if(info.dli_sname && !std::strcmp(info.dli_sname, "main")) break;
             }
 
             ip = bp[1];
