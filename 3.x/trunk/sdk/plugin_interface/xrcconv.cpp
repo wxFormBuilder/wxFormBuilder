@@ -946,7 +946,7 @@ void XrcToXfbFilter::ImportStringListProperty( const wxString &xrcPropName, ticp
 				if ( parseXrcText )
 					value = XrcTextToString( value );
 
-				res += wxChar( '\'' ) + value + wxT( "\' " );
+				res += wxChar( '\"' ) + value + wxT( "\" " );
 			}
 			catch( ticpp::Exception& ex )
 			{
