@@ -70,6 +70,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="separator" icon="separator.xpm" type="menuitem">
+	<property name="name" type="text">m_separator</property>
   </objectinfo>
 
   <objectinfo class="wxToolBar" icon="toolbar.xpm" type="toolbar" startgroup="1">
