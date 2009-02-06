@@ -1,5 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+
+02/06/2009 Version 3.01.59 (Beta)
+* FS#367 - Project-Properties: encoding is ignored. Fixed ANSII file generation - Loaden
+* FS#357 - wxFB overrides file without confirmation from user. - hykwok
+* FS#215 - Abstract or normal class generation. - c16
+* FS#394 - Separator reference not accessible through generated C++ code - pmendl
+* FS#379 - Un/escaped some property values in XRC - malcom
+
 08/04/2008 Version 3.01.58 (Beta)
 + Added validator support.
 
