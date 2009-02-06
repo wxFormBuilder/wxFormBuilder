@@ -36,12 +36,14 @@
 // macros para la conversión entre wxString <-> wxString
 #define _WXSTR(x)  TypeConv::_StringToWxString(x)
 #define _STDSTR(x) TypeConv::_WxStringToString(x)
+#define _ANSISTR(x) TypeConv::_WxStringToAnsiString(x)
 
 namespace TypeConv
 {
 	wxString _StringToWxString( const std::string &str );
 	wxString _StringToWxString( const char *str );
 	std::string _WxStringToString( const wxString &str );
+	std::string _WxStringToAnsiString( const wxString & str );
 
 	wxPoint StringToPoint( const wxString &str );
 	bool    StringToPoint( const wxString &str, wxPoint *point );
