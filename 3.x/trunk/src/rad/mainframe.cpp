@@ -513,6 +513,17 @@ void MainFrame::OnSaveAsProject( wxCommandEvent & )
 			filename = file.GetFullPath();
 		}
 
+		// Check the file whether exists or not
+		if ( file.FileExists() == true )
+		{
+		    wxMessageDialog msg_box( this, wxT("The file already exists. Do you want to replace it?"), wxT("Overwrite the file"), wxYES_NO|wxICON_INFORMATION|wxNO_DEFAULT );
+		    if( msg_box.ShowModal() == wxID_NO )
+			{
+		        dialog->Destroy();
+		        return;
+		    }
+		}
+
 		try
 		{
 			AppData()->SaveProject( filename );
