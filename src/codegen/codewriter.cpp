@@ -172,10 +172,11 @@ wxString StringCodeWriter::GetString()
 	return m_buffer;
 }
 
-FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM )
+FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM, bool useUtf8 )
 :
 m_filename( file ),
-m_useMicrosoftBOM( useMicrosoftBOM )
+m_useMicrosoftBOM( useMicrosoftBOM ),
+m_useUtf8( useUtf8 )
 {
 	Clear();
 }
@@ -196,6 +197,8 @@ void FileCodeWriter::WriteBuffer()
 	bool shouldWrite = true;
 	std::ifstream file( m_filename.mb_str( wxConvFile ), std::ios::binary | std::ios::in );
 
+	std::string buf;
+
 	if ( file )
 	{
 		MD5 diskHash( file );
@@ -208,7 +211,10 @@ void FileCodeWriter::WriteBuffer()
 				bufferHash.update( microsoftBOM, 3 );
 			}
 		#endif
-		const std::string& data = _STDSTR( m_buffer );
+		const std::string& data = m_useUtf8 ? _STDSTR( m_buffer ) : _ANSISTR( m_buffer );
+
+		if (!m_useUtf8) buf = data;
+
 		bufferHash.update( reinterpret_cast< const unsigned char* >( data.c_str() ), data.size() );
 
 		bufferHash.finalize();
@@ -238,7 +244,10 @@ void FileCodeWriter::WriteBuffer()
 		}
 		#endif
 
-		file.Write( m_buffer );
+		if (!m_useUtf8)
+            file.Write( buf.c_str(), buf.length() );
+        else
+            file.Write( m_buffer );
 	}
 }
 

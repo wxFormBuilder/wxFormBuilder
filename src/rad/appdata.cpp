@@ -1985,9 +1985,18 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			useMicrosoftBOM = ( pUseMicrosoftBOM->GetValueAsInteger() != 0 );
 		}
 
-        const wxString& fullPath = inherFile.GetFullPath();
-		PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM ) );
-		PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM ) );
+		// Determine if Utf8 or Ansi is to be created
+		bool useUtf8 = false;
+		PProperty pUseUtf8 = project->GetProperty( _("encoding") );
+
+		if ( pUseUtf8 )
+		{
+			useUtf8 = ( pUseUtf8->GetValueAsString() != wxT("ANSI") );
+		}
+
+		const wxString& fullPath = inherFile.GetFullPath();
+		PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
+		PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
 
 		codegen.SetHeaderWriter( h_cw );
 		codegen.SetSourceWriter( cpp_cw );
