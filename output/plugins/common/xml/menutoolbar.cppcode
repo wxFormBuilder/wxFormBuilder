@@ -101,7 +101,8 @@ Written by
   </templates>
 
   <templates class="separator">
-    <template name="construction">#parent $name->AppendSeparator(); #nl</template>
+	<template name="declaration">wxMenuItem* $name;</template>
+	<template name="construction">$name = #parent $name->AppendSeparator(); #nl</template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
   </templates>
 
