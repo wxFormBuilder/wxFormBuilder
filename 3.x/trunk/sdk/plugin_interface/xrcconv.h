@@ -76,7 +76,8 @@ class ObjectToXrcFilter
                     const int &propType);
 
   void AddPropertyValue (const wxString &xrcPropName,
-                         const wxString &xrcPropValue);
+                         const wxString &xrcPropValue,
+                         bool xrcFormat = false);
 
   void AddPropertyPair ( const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName );
 
@@ -119,7 +120,8 @@ class XrcToXfbFilter
                     const wxString &xfbPropName, const int &propType);
 
   void AddPropertyValue (const wxString &xfbPropName,
-                         const wxString &xfbPropValue);
+                         const wxString &xfbPropValue,
+                         bool parseXrcText = false);
 
   void AddWindowProperties();
 
