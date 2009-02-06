@@ -892,7 +892,7 @@ public:
 		else
 			label = obj->GetPropertyAsString(_("label")) + wxT("\\t") + shortcut;
 
-		xrc.AddPropertyValue(_("label"), label);
+		xrc.AddPropertyValue(_("label"), label, true);
 		xrc.AddProperty(_("help"),_("help"),XRC_TYPE_TEXT);
 
 	    if (!obj->IsNull(_("bitmap")))
@@ -932,7 +932,7 @@ public:
 				label = label.Left( pos );
 			}
 
-			filter.AddPropertyValue( _("label"), label );
+			filter.AddPropertyValue( _("label"), label, true );
 			filter.AddPropertyValue( _("shortcut"), shortcut );
 		}
 		catch( ticpp::Exception& )

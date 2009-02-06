@@ -235,10 +235,11 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 }
 
 void ObjectToXrcFilter::AddPropertyValue ( 	const wxString &xrcPropName,
-											const wxString &xrcPropValue )
+											const wxString &xrcPropValue,
+											bool xrcFormat )
 {
 	ticpp::Element propElement( xrcPropName.mb_str( wxConvUTF8 ) );
-	LinkText( xrcPropValue, &propElement );
+	LinkText( xrcPropValue, &propElement, xrcFormat );
 	m_xrcObj->LinkEndChild( &propElement );
 }
 
@@ -536,11 +537,13 @@ void XrcToXfbFilter::AddProperty( const wxString &xrcPropName,
 }
 
 void XrcToXfbFilter::AddPropertyValue ( const wxString &xfbPropName,
-                                        const wxString &xfbPropValue )
+                                        const wxString &xfbPropValue,
+                                        bool parseXrcText )
 {
 	ticpp::Element propElement( "property" );
 	propElement.SetAttribute( "name", xfbPropName.mb_str( wxConvUTF8 ) );
-	propElement.SetText( xfbPropValue.mb_str( wxConvUTF8 ) ) ;
+	wxString value = ( parseXrcText ? XrcTextToString( xfbPropValue ) : xfbPropValue );
+	propElement.SetText( value.mb_str( wxConvUTF8 ) );
 	m_xfbObj->LinkEndChild( &propElement );
 }
 

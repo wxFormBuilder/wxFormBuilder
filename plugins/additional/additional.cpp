@@ -1087,7 +1087,7 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxHyperlinkCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty(_("url"),_("url"),XRC_TYPE_TEXT);
+		xrc.AddPropertyValue(_("url"), obj->GetPropertyAsString(_("url")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
@@ -1096,7 +1096,18 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxHyperlinkCtrl"));
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		filter.AddProperty(_("url"),_("url"),XRC_TYPE_TEXT);
+
+		try
+		{
+			ticpp::Element *urlElement = xrcObj->FirstChildElement("url");
+			wxString url(urlElement->GetText().c_str(), wxConvUTF8);
+
+			filter.AddPropertyValue(_("url"), url);
+		}
+		catch(ticpp::Exception&)
+		{
+		}
+
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
 	}
