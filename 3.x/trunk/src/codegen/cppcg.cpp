@@ -656,13 +656,43 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		GenDefines( project );
 	}
 
+    wxString eventHandlerKind;
+	wxString eventHandlerPrefix;
+	wxString eventHandlerPostfix;
+	PProperty eventHandlerKindProp = project->GetProperty( wxT("event_handler") );
+	if ( eventHandlerKindProp )
+	{
+		eventHandlerKind = eventHandlerKindProp->GetValueAsString();
+	}
+
+    if (0 == eventHandlerKind.compare( wxT("decl_pure_virtual") ) )
+    {
+        eventHandlerPrefix = wxT("virtual ");
+        eventHandlerPostfix = wxT(" = 0;");
+    }
+    else if ( 0 == eventHandlerKind.compare( wxT("decl_virtual") ) )
+    {
+        eventHandlerPrefix = wxT("virtual ");
+        eventHandlerPostfix = wxT(";");
+    }
+    else if ( 0 == eventHandlerKind.compare( wxT("decl") ) )
+    {
+        eventHandlerPrefix = wxT("");
+        eventHandlerPostfix = wxT(";");
+    }
+    else // Default: impl_virtual
+    {
+        eventHandlerPrefix = wxT("virtual ");
+        eventHandlerPostfix = wxT(" { event.Skip(); }");
+    }
+
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
 		PObjectBase child = project->GetChild( i );
 
 		EventVector events;
 		FindEventHandlers( child, events );
-		GenClassDeclaration( child, useEnum, classDecoration, events );
+		GenClassDeclaration( child, useEnum, classDecoration, events, eventHandlerPrefix, eventHandlerPostfix );
 		if ( !m_useConnect )
 		{
 			GenEvents( child, events );
@@ -824,7 +854,7 @@ void CppCodeGenerator::GenPrivateEventHandlers( const EventVector& events )
 	}
 }
 
-void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
+void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const wxString& eventHandlerPrefix, const wxString& eventHandlerPostfix )
 {
 	if ( events.size() > 0 )
 	{
@@ -839,8 +869,8 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events )
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
-			wxString aux = wxT("virtual void ") + event->GetValue() + wxT("( ") +
-				event->GetEventInfo()->GetEventClassName() + wxT("& event ){ event.Skip(); }");
+			wxString aux = eventHandlerPrefix + wxT("void ") + event->GetValue() + wxT("( ") +
+				event->GetEventInfo()->GetEventClassName() + wxT("& event )") + eventHandlerPostfix;
 
 			if (generatedHandlers.find(aux) == generatedHandlers.end())
 			{
@@ -966,7 +996,7 @@ wxString CppCodeGenerator::GetCode(PObjectBase obj, wxString name)
 	return code;
 }
 
-void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events)
+void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPrefix, const wxString& eventHandlerPostfix)
 {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
@@ -1018,7 +1048,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 		GenEnumIds(class_obj);
 
 	GenAttributeDeclaration(class_obj,P_PROTECTED);
-	GenVirtualEventHandlers(events);
+	GenVirtualEventHandlers(events, eventHandlerPrefix, eventHandlerPostfix);
 
 	m_header->Unindent();
 	m_header->WriteLn( wxT("") );

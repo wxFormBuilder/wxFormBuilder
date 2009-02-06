@@ -119,7 +119,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events );
+	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPrefix, const wxString& eventHandlerPostfix );
 
 	/**
 	* Generates the event table.
@@ -209,7 +209,8 @@ private:
 	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
 
 	void GenPrivateEventHandlers(const EventVector &events);
-  void GenVirtualEventHandlers(const EventVector &events);
+
+    void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPrefix, const wxString& eventHandlerPostfix );
 
 public:
 	/**
