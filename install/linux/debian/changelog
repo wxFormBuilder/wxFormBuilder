@@ -1,8 +1,14 @@
-wxformbuilder (3.1.58-0ubuntu1) hardy; urgency=low
+wxformbuilder (3.1.59-0ubuntu1) jaunty; urgency=low
 
-  * Sync to upstream 3.1.58.
+  * Sync to upstream 3.1.59. (LP: #326747)
 
- -- Ryan Mulder <rjmyst3@gmail.com>  Wed, 06 Aug 2008 19:23:12 -0400
+ -- Ryan Mulder <rjmyst3@gmail.com>  Sat, 07 Feb 2009 20:51:58 -0500
+ 
+wxformbuilder (3.0.57-0ubuntu2) jaunty; urgency=low
+
+  * FTBFS on 9.04 armel. (LP: #310286)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Sun,  21 Dec 2008 14:00:00 -0400
  
 wxformbuilder (3.0.57-0ubuntu1) hardy; urgency=low
 
