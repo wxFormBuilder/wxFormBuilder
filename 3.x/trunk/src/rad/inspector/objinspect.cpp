@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
-// Copyright (C) 2005 JosÃ© Antonio Hurtado
+// Copyright (C) 2005 José Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // Written by
-//   JosÃ© Antonio Hurtado - joseantonio.hurtado@gmail.com
+//   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -592,6 +592,8 @@ DEFINE_EVENT_TYPE( RECREATE_GRID_EVENT )
 BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_PG_CHANGED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridChange)
 	EVT_PG_CHANGED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridChange)
+	EVT_PG_DOUBLE_CLICK(WXFB_EVENT_GRID, ObjectInspector::OnEventGridDblClick)
+	EVT_PG_DOUBLE_CLICK(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridDblClick)
 	EVT_PG_ITEM_COLLAPSED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
 	EVT_PG_ITEM_EXPANDED (WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
 
@@ -1348,7 +1350,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 	}
 
 	wxPGId pgid = m_pg->GetPropertyByLabel(prop->GetName());
-	if (!pgid.IsOk()) return; // Puede que no se estÃ© mostrando ahora esa pÃ¡gina
+	if (!pgid.IsOk()) return; // Puede que no se esté mostrando ahora esa página
 	wxPGProperty *pgProp = pgid.GetPropertyPtr();
 
 	switch (prop->GetType())
@@ -1437,6 +1439,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 	default:
 		pgProp->SetValueFromString(prop->GetValueAsString(), wxPG_FULL_VALUE);
 	}
+	AutoGenerateId(AppData()->GetSelectedObject(), event.GetFBProperty(), wxT("PropChange"));
 	m_pg->Refresh();
 }
 
@@ -1480,3 +1483,78 @@ wxPropertyGridManager* ObjectInspector::CreatePropertyGridManager(wxWindow *pare
 
 	return pg;
 }
+
+void ObjectInspector::OnPropertyGridDblClick(wxPropertyGridEvent& event)
+{
+	wxString propName = event.GetPropertyPtr()->GetLabel();
+	AutoGenerateId(AppData()->GetSelectedObject(), AppData()->GetSelectedObject()->GetProperty(propName), wxT("DblClk"));
+	m_pg->Refresh();
+}
+
+void ObjectInspector::OnEventGridDblClick(wxPropertyGridEvent& event)
+{
+	wxPGId pgid = m_pg->GetPropertyByLabel(wxT("name"));
+	if (!pgid.IsOk()) return;
+	wxPGProperty *pgProp = pgid.GetPropertyPtr();
+	event.GetPropertyPtr()->SetValueFromString(pgProp->GetDisplayedString() + event.GetPropertyPtr()->GetLabel());
+
+	ObjInspectorEventMap::iterator it = m_eventMap.find( event.GetPropertyPtr() );
+	if ( it != m_eventMap.end() )
+	{
+		PEvent evt = it->second;
+		wxString handler = event.GetPropertyValueAsString();
+		handler.Trim();
+		handler.Trim( false );
+		AppData()->ModifyEventHandler( evt, handler );
+	};
+}
+
+void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propChanged, wxString reason)
+{
+	if(objectChanged)
+	{
+		PProperty prop;
+		if((propChanged->GetName() == wxT("name") && reason == wxT("PropChange")) ||
+			propChanged->GetName() == wxT("id") && reason == wxT("DblClk"))
+		{
+			//wxPGId pgid = m_pg->GetPropertyByLabel(wxT(""));
+			prop = AppData()->GetProjectData()->GetProperty( wxT("event_generation") );
+			if ( prop )
+			{
+
+				if(prop->GetValueAsString() == wxT("table"))
+				{
+					prop = objectChanged->GetProperty(wxT("id"));
+					if ( prop )
+					{
+						if(prop->GetValueAsString() == wxT("wxID_ANY") || reason == wxT("DblClk"))
+						{
+							PProperty name(objectChanged->GetProperty(wxT("name")));
+							wxString idString;
+							idString << wxT("ID_");
+							idString << name->GetValueAsString().Upper();
+							AppData()->ModifyProperty( prop, idString);
+
+							wxPGId pgid = m_pg->GetPropertyByLabel(wxT("id"));
+							if (!pgid.IsOk()) return;
+							m_pg->SetPropertyValue( pgid, idString );
+						}
+					}
+				}
+				else
+				{
+					prop = objectChanged->GetProperty(wxT("id"));
+					if ( prop )
+					{
+						AppData()->ModifyProperty( prop, wxT("wxID_ANY"));
+						wxPGId pgid = m_pg->GetPropertyByLabel(wxT("id"));
+						if (!pgid.IsOk()) return;
+						m_pg->SetPropertyValue( pgid, wxT("wxID_ANY") );
+					}
+				}
+			}
+		}
+	}
+	m_pg->Update();
+}
+
