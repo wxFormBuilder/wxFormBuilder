@@ -1,6 +1,14 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
 
+03/06/2009 Version 3.01.60 (Beta)
+* Moved the 'event_handler' type to the Forms plug-in. This allows different 
+  event handling methods to be used per Frame/Dialog/Panel. This makes it even
+  easier to create Dialogs that don't need any inherited class to work.
+* Removed the 'virtual_decl' 'event_handler' method because it seemed like hassle
+  to get a linker error instead of a compiler error. It also cleans up the options
+  a bit.
+
 02/06/2009 Version 3.01.59 (Beta)
 * FS#367 - Project-Properties: encoding is ignored. Fixed ANSII file generation - Loaden
 * FS#357 - wxFB overrides file without confirmation from user. - hykwok

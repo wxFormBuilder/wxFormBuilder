@@ -119,7 +119,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPrefix, const wxString& eventHandlerPostfix );
+	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events );
 
 	/**
 	* Generates the event table.

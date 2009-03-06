@@ -34,13 +34,6 @@
 		  <option name="table" help="Use event macro tables to link event handlers to events."/>
 		  connect
 		</property>
-		<property name="event_handler" type="option" help="For C++ Only.&#x0A;The way how to declarate and implement event handlers.">
-		  <option name="decl_pure_virtual" help="Only declare event handlers as pure virtual methods."/>
-		  <option name="decl_virtual" help="Declare event handlers as virtual methods but don't generate default implementation. Implementation should be done in separate .cpp file (Not in a generated!)."/>
-		  <option name="decl" help="Declare event handlers but don't generate default implementation. Implementation should be done in separate .cpp file (Not in a generated!)."/>
-		  <option name="impl_virtual" help="Declare event handlers as virtual methods and generate default implementation."/>
-		  impl_virtual
-		</property>
 		<property name="disconnect_events" type="bool" help="For event_generation=connect Only.&#x0A;Disconnect events in the destructor.">
 		  1
 		</property>
