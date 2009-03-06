@@ -1995,15 +1995,11 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		}
 
 		const wxString& fullPath = inherFile.GetFullPath();
-		codegen.ParseFiles(fullPath + wxT(".h"), fullPath + wxT(".cpp"), obj->GetPropertyAsString( _("name")));
-
 		PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
 		PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
 
-
 		codegen.SetHeaderWriter( h_cw );
 		codegen.SetSourceWriter( cpp_cw );
-
 
 		codegen.GenerateInheritedClass( obj, form );
 

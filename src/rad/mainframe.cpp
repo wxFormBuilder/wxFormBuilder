@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
-// Copyright (C) 2005 José Antonio Hurtado
+// Copyright (C) 2005 JosÃ© Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // Written by
-//   José Antonio Hurtado - joseantonio.hurtado@gmail.com
+//   JosÃ© Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,9 +100,6 @@
 #define ID_CLIPBOARD_COPY 143
 #define ID_CLIPBOARD_PASTE 144
 
-#define ID_FB_SETTINGS 145
-#define ID_PROJECT_SETTINGS 146
-
 #define STATUS_FIELD_OBJECT 2
 #define STATUS_FIELD_PATH 1
 
@@ -142,8 +139,6 @@ EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
 EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
 EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
 EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
-EVT_MENU( ID_FB_SETTINGS, MainFrame::OnFBSettings )
-EVT_MENU( ID_PROJECT_SETTINGS, MainFrame::OnProjectSettings )
 EVT_UPDATE_UI( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI )
 EVT_CLOSE( MainFrame::OnClose )
 
@@ -213,8 +208,6 @@ m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
 
-	m_fbSettingsDialog = new wxFBDialogsFBSettings( this );
-	m_projectSettindDialog = new wxFBDialogsProjectSettings( this );
 	// initialize the splitters, wxAUI doesn't use them
 	m_leftSplitter = m_rightSplitter = NULL;
 
@@ -1025,9 +1018,9 @@ void MainFrame::InsertRecentProject( const wxString &file )
 	for ( i = 0; i < 4 && !found; i++ )
 		found = ( file == m_recentProjects[i] );
 
-	if ( found ) // en i-1 está la posición encontrada (0 < i < 4)
+	if ( found ) // en i-1 estÃ¡ la posiciÃ³n encontrada (0 < i < 4)
 	{
-		// desplazamos desde 0 hasta i-1 una posición a la derecha
+		// desplazamos desde 0 hasta i-1 una posiciÃ³n a la derecha
 
 		for ( i = i - 1; i > 0; i-- )
 			m_recentProjects[i] = m_recentProjects[i-1];
@@ -1379,22 +1372,6 @@ void MainFrame::OnFind( wxFindDialogEvent& event )
 	}
 }
 
-void MainFrame::OnProjectSettings(wxCommandEvent& e)
-{
-	if(m_projectSettindDialog->ShowModal() == wxID_OK)
-	{
-
-	}
-}
-
-void MainFrame::OnFBSettings(wxCommandEvent& e)
-{
-	if(m_fbSettingsDialog->ShowModal() == wxID_OK)
-	{
-
-	}
-}
-
 /////////////////////////////////////////////////////////////////////////////
 
 wxMenuBar * MainFrame::CreateFBMenuBar()
@@ -1450,12 +1427,6 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuHelp->Append( wxID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
 
 
-	wxMenu *menuSettings = new wxMenu;
-	menuSettings->Append( ID_FB_SETTINGS, wxT( "wxFB &Settings" ), wxT( "wxFormbuilder Settings" ) );
-	menuSettings->Append( ID_PROJECT_SETTINGS, wxT( "&Project Settings" ), wxT( "Project Specific Settings" ) );
-
-
-
 	// now append the freshly created menu to the menu bar...
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT( "&File" ) );
@@ -1463,7 +1434,6 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuBar->Append( menuView, wxT( "&View" ) );
 	menuBar->Append( menuTools, wxT( "&Tools" ) );
 	menuBar->Append( menuHelp, wxT( "&Help" ) );
-	menuBar->Append( menuSettings, wxT( "&Settings" ) );
 
 	return menuBar;
 }
@@ -1539,7 +1509,7 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 wxWindow * MainFrame::CreateComponentPalette ( wxWindow *parent )
 {
 	// la paleta de componentes, no es un observador propiamente dicho, ya
-	// que no responde ante los eventos de la aplicación
+	// que no responde ante los eventos de la aplicaciÃ³n
 	m_palette = new wxFbPalette( parent, -1 );
 	m_palette->Create();
 	m_palette->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
