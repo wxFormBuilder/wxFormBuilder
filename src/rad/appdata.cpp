@@ -470,7 +470,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 9 )
+		m_fbpVerMinor( 10 )
 {
 	#ifdef __WXFB_DEBUG__
 	wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1337,7 +1337,6 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 }
 
 bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int fileMinor )
-
 {
 	try
 	{
@@ -1541,6 +1540,27 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 				wxArrayString array = TypeConv::OldStringToArrayString( _WXSTR( value ) );
 				( *prop )->SetText( _STDSTR( TypeConv::ArrayStringToString( array ) ) );
 			}
+		}
+	}
+	
+	// event_handler moved to the forms in version 1.10
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 10 ) )
+	{
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert( "event_handler" );
+		GetPropertiesToConvert( project, oldProps, &newProps );
+
+
+		if ( !newProps.empty() )
+		{
+			ticpp::Iterator< ticpp::Element > object( "object" );
+			for ( object = project->FirstChildElement( "object", false ); object != object.end(); ++object )
+			{
+				object->LinkEndChild( ( *newProps.begin() )->Clone().get() );
+			}
+			
+			project->RemoveChild( *newProps.begin() );
 		}
 	}
 }
@@ -2035,7 +2055,7 @@ void ApplicationData::MovePosition( PObjectBase obj, bool right, unsigned int nu
 		unsigned int children_count = parent->GetChildCount();
 
 		if ( ( right && num + pos < children_count ) ||
-		        !right  && ( num <= pos ) )
+		        ( !right  && ( num <= pos ) ) )
 		{
 			pos = ( right ? pos + num : pos - num );
 
