@@ -98,6 +98,9 @@ private:
 	wxString m_pred;
 	wxString m_npred;
 	void ignore_whitespaces();
+	
+	// Current indentation level in the file
+	int m_indent;
 
 protected:
 	typedef enum {
@@ -123,7 +126,9 @@ protected:
 		ID_IFNOTEQUAL,
 		ID_IFPARENTTYPEEQUAL,
 		ID_APPEND,
-		ID_CLASS
+		ID_CLASS,
+		ID_INDENT,
+		ID_UNINDENT
 	} Ident;
 
 	Ident SearchIdent(wxString ident);
@@ -165,6 +170,8 @@ protected:
 	bool ParseIfParentTypeEqual();
 	void ParseAppend();
 	void ParseClass();
+	void ParseIndent();
+	void ParseUnindent();
 
 	PProperty GetProperty( wxString* childName = NULL );
 	PObjectBase GetWxParent();

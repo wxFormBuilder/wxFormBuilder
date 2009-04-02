@@ -37,7 +37,7 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	wxStaticBoxSizer* instructionsSbSizer;
 	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Instructions") ), wxVERTICAL );
 	
-	m_instructionsStaticText = new wxStaticText( this, wxID_ANY, wxT("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+	m_instructionsStaticText = new wxStaticText( this, wxID_ANY, wxT("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp/.py)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
 	m_instructionsStaticText->Wrap( -1 );
 	instructionsSbSizer->Add( m_instructionsStaticText, 0, wxALL|wxEXPAND, 5 );
 	
@@ -59,7 +59,7 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	m_classNameTextCtrl = new wxTextCtrl( this, ID_CLASS_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	classDescriptionSbSizer->Add( m_classNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 	
-	m_fileNameStaticText = new wxStaticText( this, wxID_ANY, wxT("File Names: (.cpp/.h)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_fileNameStaticText = new wxStaticText( this, wxID_ANY, wxT("File Names: (.cpp/.h/.py)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_fileNameStaticText->Wrap( -1 );
 	classDescriptionSbSizer->Add( m_fileNameStaticText, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxRIGHT|wxLEFT, 5 );
 	

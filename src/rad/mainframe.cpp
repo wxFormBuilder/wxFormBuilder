@@ -30,6 +30,7 @@
 #include "rad/title.h"
 #include "rad/bitmaps.h"
 #include "rad/cpppanel/cpppanel.h"
+#include "rad/pythonpanel/pythonpanel.h"
 #include "rad/xrcpanel/xrcpanel.h"
 #include "rad/geninheritclass/geninhertclass.h"
 #include "inspector/objinspect.h"
@@ -1247,6 +1248,8 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 		// Create the class and files.
 		AppData()->GenerateInheritedClass( details.m_form, details.m_className, filePath, details.m_fileName );
 	}
+	
+	wxMessageBox( wxString::Format( wxT( "Class(es) generated to \'%s\'." ), filePath.c_str() ), wxT("wxFormBuilder") );
 }
 
 bool MainFrame::SaveWarning()
@@ -1489,6 +1492,7 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
+	m_icons.Add( AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 	m_notebook->SetImageList( &m_icons );
 
@@ -1499,9 +1503,12 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 
 	m_cpp = new CppPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_cpp, wxT( "C++" ), false, 1 );
+	
+	m_python = new PythonPanel( m_notebook, -1 );
+	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
 
 	m_xrc = new XrcPanel( m_notebook, -1 );
-	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 2 );
+	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 3 );
 
 	return m_notebook;
 }

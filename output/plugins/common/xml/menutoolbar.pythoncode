@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Python code generation writen by
+  Michal Bližňák - michal.bliznak@gmail.com
+-->
+<codegen language="Python">
+  <templates class="wxWindow">
+	<template name="toolbar_add">#parent $name.AddControl( $name )</template>
+  </templates>
+
+  <templates class="wxStatusBar">
+	<template name="construction">self.$name = #wxparent $name.CreateStatusBar( $fields, $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} )</template>
+  </templates>
+
+  <templates class="wxMenuBar">
+	<template name="construction">self.$name = #class( $style #ifnotnull $window_style @{ |$window_style @} )</template>
+	<template name="after_addchild">#wxparent $name.SetMenuBar( self.$name )</template>
+  </templates>
+
+  <templates class="wxMenu">
+	<template name="construction">self.$name = #class()</template>
+	<template name="after_addchild">self.#parent $name.Append( self.$name, $label )</template>
+  </templates>
+
+  <templates class="submenu">
+	<template name="construction">self.$name = wx.Menu()</template>
+	<template name="after_addchild">self.#parent $name.AppendSubMenu( self.$name, $label )</template>
+  </templates>
+
+  <templates class="wxMenuItem">
+	<template name="construction">
+        self.$name = #class( self.#parent $name, $id, $label #ifnotnull $shortcut @{ + u"\t" + $shortcut @}, $help, $kind )</template>
+    <template name="settings">
+		#ifnotnull $bitmap
+		@{
+			self.$name.SetBitmap( $bitmap ) #nl
+		@}
+		self.#parent $name.AppendItem( self.$name ) #nl
+		#ifequal $enabled "0"
+			@{ self.$name.Enable( $enabled ) #nl @}
+		#ifequal $kind "wxITEM_CHECK"
+		@{
+			#ifequal $checked "1"
+			@{ self.$name.Check( $checked ) #nl @}
+		@}
+		#ifequal $kind "wxITEM_RADIO"
+		@{
+			#ifequal $checked "1"
+			@{ self.$name.Check( $checked ) #nl @}
+		@}
+    </template>
+	<template name="evt_connect_OnMenuSelection">self.Bind( wx.EVT_MENU, #handler, id = $id )</template>
+	<template name="evt_disconnect_OnMenuSelection">self.Unbind( wx.EVT_MENU, #handler, id = wx.ID_ANY )</template>
+	<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler, id = $id )</template>
+  	<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI, #handler, id = wx.ID_ANY )</template>
+  </templates>
+
+  <templates class="separator">
+	<template name="construction">self.#parent $name.AppendSeparator() #nl</template>
+  </templates>
+
+  <templates class="wxToolBar">
+	<template name="construction">
+                 #ifparenttypeequal "form"
+                 @{
+			self.$name = #wxparent $name.CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} )
+                 @}
+                 #ifparenttypeequal "sizeritem"
+                 @{
+			self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+                 @}
+                 #ifparenttypeequal "gbsizeritem"
+                 @{
+			self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+                 @}
+		#ifnotnull $bitmapsize @{ #nl self.$name.SetToolBitmapSize( $bitmapsize ) @}
+
+		#ifnotnull $separation
+		@{
+		  #ifnotequal $separation "5"
+		  @{ #nl self.$name.SetToolSeparation( $separation ) @}
+		@}
+
+		#ifnotnull $margins    @{ #nl self.$name.SetMargins( $margins ) @}
+
+		#ifnotnull $packing
+		@{
+			#ifnotequal $packing "1"
+			@{ #nl self.$name.SetToolPacking( $packing ) @}
+		@}</template>
+	<template name="after_addchild">self.$name.Realize()</template>
+  </templates>
+
+  <templates class="tool">
+    <template name="construction">self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar )</template>
+	<template name="evt_connect_OnToolClicked">self.Bind( wx.EVT_TOOL, #handler, id = $id )</template>
+	<template name="evt_connect_OnToolRClicked">self.Bind( wx.EVT_TOOL_RCLICKED, #handler, id = $id )</template>
+	<template name="evt_connect_OnToolEnter">self.Bind( wx.EVT_TOOL_ENTER, #handler, id = $id )</template>
+	<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler, id = $id )</template>
+  </templates>
+
+  <templates class="toolSeparator">
+    <template name="construction">self.#parent $name.AddSeparator()</template>
+  </templates>
+</codegen>
