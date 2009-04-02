@@ -12,6 +12,7 @@
 	</property>
     <property name="code_generation" type="bitlist">
       <option name="C++" help="Generate C++ Code" />
+      <option name="Python" help="Generate Python Code" />
       <option name="XRC" help="Generate XRC Code"/>
       C++
 	</property>
@@ -43,6 +44,10 @@
 			<option name="wxHelpControllerHelpProvider" help="Use wxHelpControllerHelpProvider to provide context-sensitive help."/>
 			none
 		</property>
+	</category>
+	<category name="Python Properties">
+		<property name="skip_python_events" type="bool" help="For Python Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+		<property name="disconnect_python_events" type="bool" help="For Python Only.&#x0A;Disconnect events in the destructor.">0</property>
 	</category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
@@ -86,12 +91,12 @@
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
 	<category name="Validator">
-		<property name = "validator_type" type="option" hidden="1" help="Type of a validator assigned to the window">
+		<property name = "validator_type" type="option" hidden="1" help="For C++ Only.&#x0A;Type of a validator assigned to the window">
 			<option name="wxDefaultValidator" help="Default validator (does nothing)"/>
 			<option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
 			<option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>wxDefaultValidator
 		</property>
-    	<property name="validator_style" type="bitlist" help="Data filtering style for wxTextValidator.">
+    	<property name="validator_style" type="bitlist" help="For C++ Only.&#x0A;Data filtering style for wxTextValidator.">
       		<option name="wxFILTER_NONE"   help="No filtering takes place." />
       		<option name="wxFILTER_ASCII"           help="Non-ASCII characters are filtered out." />
       		<option name="wxFILTER_ALPHA"              help="Non-alpha characters are filtered out." />
@@ -103,8 +108,8 @@
 			<option name="wxFILTER_EXCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if it is. See wxTextValidator::SetExcludes." />
 			wxFILTER_NONE
     	</property>
-		<property name="validator_variable" type="text" help="Name of a member variable associated with the validator" />
-		<property name = "validator_data_type" type="option" hidden="1" help="Data type of the member variable">
+		<property name="validator_variable" type="text" help="For C++ Only.&#x0A;Name of a member variable associated with the validator" />
+		<property name = "validator_data_type" type="option" hidden="1" help="For C++ Only.&#x0A;Data type of the member variable">
 			<option name="" help ="Undefined data type."/>
 			<option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton." />
 			<option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>

@@ -85,7 +85,12 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 	switch ( type )
 	{
-		case PT_WXSTRING:
+	case PT_WXPARENT:
+		{
+			result = value;
+			break;
+		}
+	case PT_WXSTRING:
 		{
 			if ( value.empty() )
 			{
@@ -116,12 +121,13 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			break;
 		}
-		case PT_MACRO:
-		case PT_TEXT:
-		case PT_OPTION:
-		case PT_FLOAT:
-		case PT_INT:
-		case PT_UINT:
+	case PT_CLASS:
+	case PT_MACRO:
+	case PT_TEXT:
+	case PT_OPTION:
+	case PT_FLOAT:
+	case PT_INT:
+	case PT_UINT:
 		{
 			result = value;
 			break;

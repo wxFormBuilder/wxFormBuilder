@@ -35,6 +35,7 @@
 #include "utils/wxfbipc.h"
 #include "utils/wxfbexception.h"
 #include "codegen/cppcg.h"
+#include "codegen/pythoncg.h"
 #include "codegen/xrccg.h"
 #include "codegen/codewriter.h"
 #include "rad/xrcpreview/xrcpreview.h"
@@ -1993,9 +1994,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		fileProp->SetValue( inherFile.GetName() );
 		genfileProp->SetValue( genFile.GetFullPath() );
 		typeProp->SetValue( form->GetClassName() );
-
-		CppCodeGenerator codegen;
-
+		
 		// Determine if Microsoft BOM should be used
 		bool useMicrosoftBOM = false;
 		PProperty pUseMicrosoftBOM = project->GetProperty( _("use_microsoft_bom") );
@@ -2014,14 +2013,31 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			useUtf8 = ( pUseUtf8->GetValueAsString() != wxT("ANSI") );
 		}
 
-		const wxString& fullPath = inherFile.GetFullPath();
-		PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
-		PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
+		PProperty pCodeGen = project->GetProperty( wxT( "code_generation" ) );
+		if ( pCodeGen && TypeConv::FlagSet( wxT("C++"), pCodeGen->GetValue() ) )
+		{
+			CppCodeGenerator codegen;
+			
+			const wxString& fullPath = inherFile.GetFullPath();
+			PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
+			PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
 
-		codegen.SetHeaderWriter( h_cw );
-		codegen.SetSourceWriter( cpp_cw );
+			codegen.SetHeaderWriter( h_cw );
+			codegen.SetSourceWriter( cpp_cw );
 
-		codegen.GenerateInheritedClass( obj, form );
+			codegen.GenerateInheritedClass( obj, form );
+		}
+		else if( pCodeGen && TypeConv::FlagSet( wxT("Python"), pCodeGen->GetValue() ) )
+		{
+			PythonCodeGenerator codegen;
+			
+			const wxString& fullPath = inherFile.GetFullPath();
+			PCodeWriter python_cw( new FileCodeWriter( fullPath + wxT(".py"), useMicrosoftBOM, useUtf8 ) );
+
+			codegen.SetSourceWriter( python_cw );
+
+			codegen.GenerateInheritedClass( obj, form );
+		}
 
 		wxLogStatus( wxT( "Class generated at \'%s\'." ), path.c_str() );
 	}

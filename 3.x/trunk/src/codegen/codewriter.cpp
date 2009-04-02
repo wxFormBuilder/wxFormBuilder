@@ -30,6 +30,7 @@
 
 #include <wx/file.h>
 #include <wx/tokenzr.h>
+#include <wx/regex.h>
 
 #include <wx/wxScintilla/wxscintilla.h>
 
@@ -97,6 +98,7 @@ bool CodeWriter::StringOk( wxString s )
 
 void CodeWriter::FixWrite( wxString s )
 {
+	wxRegEx reIndent( wxT("%TAB%\\s*"), wxRE_ADVANCED );
 	wxStringTokenizer tkz( s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL );
 
 	while ( tkz.HasMoreTokens() )
@@ -104,6 +106,8 @@ void CodeWriter::FixWrite( wxString s )
 		wxString line = tkz.GetNextToken();
 		line.Trim( false );
 		line.Trim( true );
+		// replace indentations defined in code templates by #indent and #unindent macros...
+		reIndent.Replace( &line, wxT("\t") );
 		WriteLn( line );
 	}
 }

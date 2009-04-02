@@ -35,14 +35,16 @@
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
 m_obj( obj ),
-m_in( _template )
+m_in( _template ),
+m_indent( 0 )
 {
 }
 
 TemplateParser::TemplateParser( const TemplateParser & that, wxString _template )
 :
 m_obj( that.m_obj ),
-m_in( _template )
+m_in( _template ),
+m_indent( 0 )
 {
 }
 
@@ -122,6 +124,12 @@ bool TemplateParser::ParseMacro()
 		break;
 	case ID_CLASS:
 		ParseClass();
+		break;
+	case ID_INDENT:
+		ParseIndent();
+		break;
+	case ID_UNINDENT:
+		ParseUnindent();
 		break;
 	default:
 		THROW_WXFBEX( wxT("Invalid Macro Type") );
@@ -311,7 +319,8 @@ bool TemplateParser::ParseWxParent()
 	if ( wxparent )
 	{
 		PProperty property = GetRelatedProperty( wxparent );
-		m_out << PropertyToCode(property);
+		//m_out << PropertyToCode(property);
+		m_out << ValueToCode( PT_WXPARENT, property->GetValue() );
 	}
 	else
 	{
@@ -773,6 +782,10 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_CLASS;
 	else if (ident == wxT("form") )
 		return ID_FORM;
+	else if (ident == wxT("indent") )
+		return ID_INDENT;
+	else if (ident == wxT("unindent") )
+		return ID_UNINDENT;
 	else
 		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
 }
@@ -804,7 +817,7 @@ wxString TemplateParser::ParseTemplate()
     {
         wxLogError( ex.what() );
     }
-
+	
 	return m_out;
 }
 
@@ -892,6 +905,9 @@ bool TemplateParser::ParseNPred()
 bool TemplateParser::ParseNewLine()
 {
 	m_out << wxT('\n');
+	// append custom indentation define in code templates (will be replace by '\t' in code writer)
+	for( int i = 0; i < m_indent; i++ ) m_out << wxT("%TAB%");
+	
 	return true;
 }
 
@@ -913,7 +929,19 @@ void TemplateParser::ParseClass()
 		}
 	}
 
-	m_out << m_obj->GetClassName();
+	m_out << ValueToCode( PT_CLASS, m_obj->GetClassName() );
+}
+
+void TemplateParser::ParseIndent()
+{
+	m_indent++;
+}
+
+void TemplateParser::ParseUnindent()
+{
+	m_indent--;
+	
+	if( m_indent < 0 ) m_indent = 0;
 }
 
 wxString TemplateParser::PropertyToCode(PProperty property)

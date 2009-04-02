@@ -132,12 +132,14 @@ typedef enum
   PT_WXSIZE,
   PT_WXFONT,
   PT_WXCOLOUR,
+  PT_WXPARENT,
   PT_PATH,
   PT_BITMAP,
   PT_STRINGLIST,
   PT_FLOAT,
   PT_WXSTRING_I18N,
-  PT_PARENT
+  PT_PARENT,
+  PT_CLASS
 } PropertyType;
 /*
 typedef enum
