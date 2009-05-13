@@ -165,14 +165,6 @@ class ObjectInspector : public wxPanel
   void OnPropertyModified( wxFBPropertyEvent& event );
   void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
-<<<<<<< .mine
-  void AutoGenerateProperty(PObjectBase object, wxPGProperty *prop, wxEventType reason, int eventID);
-  void AutoGenerateId(PObjectBase objectChanged, wxEventType reason);
-  void AutoGenerateEventHandler(PObjectBase object, wxPGProperty *evtProp);
-  wxString GenerateIDName(PObjectBase object);
-  wxString GenerateEventHandlerName(PObjectBase object, wxString eventName);
-=======
->>>>>>> .r1589
   wxPropertyGridManager* CreatePropertyGridManager(wxWindow *parent, wxWindowID id);
   void SavePosition();
 
