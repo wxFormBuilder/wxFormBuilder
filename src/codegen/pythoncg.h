@@ -83,6 +83,7 @@ private:
 	wxString m_basePath;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
+	wxString m_disconnecMode;
 
 	/**
 	* Predefined macros won't generate defines.

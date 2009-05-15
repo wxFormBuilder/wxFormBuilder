@@ -32,6 +32,27 @@ Python code generation written by
 	
 	<templates class="wxSplitterWindow">
 		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<!--<template name="settings">
+			#ifnotnull $sashgravity
+			@{
+				#ifnotequal $sashgravity "0.0"
+			@{ self.$name.SetSashGravity( $sashgravity ) #nl @}
+			@}
+			#ifnotnull $sashsize
+			@{
+				#ifnotequal $sashsize "-1"
+			@{	self.$name.SetSashSize( $sashsize ) #nl @}
+			@}
+			#ifnotnull $min_pane_size
+			@{
+				#ifnotequal $min_pane_size "0"
+			@{	self.$name.SetMinimumPaneSize( $min_pane_size ) #nl @}
+			@}
+			#ifnotnull $sashpos
+			@{
+			self.$name.SetSashPosition( $sashpos ) #nl
+			@}
+		</template>-->
 		<template name="settings">
 			#ifnotnull $sashgravity
 			@{
@@ -52,7 +73,7 @@ Python code generation written by
 		<template name="generated_event_handlers">
 			def $name #append OnIdle( self, event ): #indent #nl
 				self.$name.SetSashPosition( $sashpos ) #nl
-				self.$name.Unbind( wx.EVT_IDLE, handler = self.$name #append OnIdle ) #unindent #nl
+				self.$name.Unbind( wx.EVT_IDLE ) #unindent #nl
 		</template>
 		<template name="evt_connect_OnSplitterSashPosChanging">self.$name.Bind( wx.EVT_SPLITTER_SASH_POS_CHANGING, #handler )</template>
 		<template name="evt_connect_OnSplitterSashPosChanged">self.$name.Bind( wx.EVT_SPLITTER_SASH_POS_CHANGED, #handler )</template>
