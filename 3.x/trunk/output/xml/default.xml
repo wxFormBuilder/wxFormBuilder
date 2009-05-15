@@ -48,6 +48,10 @@
 	<category name="Python Properties">
 		<property name="skip_python_events" type="bool" help="For Python Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
 		<property name="disconnect_python_events" type="bool" help="For Python Only.&#x0A;Disconnect events in the destructor.">0</property>
+		<property name="disconnect_mode" type="option" help="For Python Only.&#x0A;Choose which strategy will be used for disconnecting of events (due to different prototypes of Unbind() function in wxPython).">
+		  <option name="source_name" help="Pass source widget name to Unbind() function."/>
+		  <option name="handler_name" help="Pass event handler name to Unbind() function."/>source_name
+		</property>
 	</category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">

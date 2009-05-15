@@ -70,8 +70,8 @@ Python code generation written by
 	<template name="evt_connect_OnTextURL">self.$name.Bind( wx.EVT_TEXT_URL, #handler )</template>
 	<template name="evt_connect_OnTextMaxLen">self.$name.Bind( wx.EVT_TEXT_MAXLEN, #handler )</template>ate>
 	<template name="evt_connect_OnRichTextCharacter">self.$name.Bind( wx.richtext.EVT_RICHTEXT_CHARACTER, #handler )</template>
-	<template name="evt_connect_OnRichTextDelete">self.$name.Bind( wx.richtext.EVT_RICHTEXT_DELETE, #handler )</template>te>
-	<template name="evt_connect_OnRichTextReturn">self.$name.Bind( wx.richtext.EVT_RICHTEXT_RETURN, #handler )</template>>
+	<template name="evt_connect_OnRichTextDelete">self.$name.Bind( wx.richtext.EVT_RICHTEXT_DELETE, #handler )</template>
+	<template name="evt_connect_OnRichTextReturn">self.$name.Bind( wx.richtext.EVT_RICHTEXT_RETURN, #handler )</template>
 	<template name="evt_connect_OnRichTextStyleChanged">self.$name.Bind( wx.richtext.EVT_RICHTEXT_STYLE_CHANGED, #handler )</template>
 	<template name="evt_connect_OnRichTextStyleSheetChanged">self.$name.Bind( wx.richtext.EVT_RICHTEXT_STYLESHEET_CHANGED, #handler )</template>
 	<template name="evt_connect_OnRichTextStyleSheetReplacing">self.$name.Bind( wx.richtext.EVT_RICHTEXT_STYLESHEET_REPLACING, #handler )</template>

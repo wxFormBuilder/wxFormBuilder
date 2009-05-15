@@ -514,6 +514,9 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	else
 		eventHandlerPostfix = wxT("pass");
+		
+	PProperty disconnectMode = project->GetProperty( wxT("disconnect_mode") );
+	m_disconnecMode = disconnectMode->GetValueAsString();
 
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
@@ -616,7 +619,8 @@ bool PythonCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 		{
 			if( disconnect )
 			{
-				_template.Replace( wxT("#handler"), wxT("handler = self.") + handlerName ); 
+				if( m_disconnecMode == wxT("handler_name")) _template.Replace( wxT("#handler"), wxT("handler = self.") + handlerName ); 
+				else if(m_disconnecMode == wxT("source_name")) _template.Replace( wxT("#handler"), wxT("None") ); //wxT("self.") + obj->GetProperty(wxT("name"))->GetValueAsString() ); 
 			}
 			else
 				_template.Replace( wxT("#handler"), wxT("self.") + handlerName ); 

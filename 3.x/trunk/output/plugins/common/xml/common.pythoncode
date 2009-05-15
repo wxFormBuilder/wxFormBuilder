@@ -64,7 +64,7 @@ Python code generation written by
 			@{ self.$name.SetMaxLength( $maxlength )  @}
 		@}
 	</template>
-	<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>>
+	<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
 	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
 	<template name="evt_connect_OnTextURL">self.$name.Bind( wx.EVT_TEXT_URL, #handler )</template>
 	<template name="evt_connect_OnTextMaxLen">self.$name.Bind( wx.EVT_TEXT_MAXLEN, #handler )</template>
@@ -138,7 +138,7 @@ Python code generation written by
 	<template name="settings">
     		#ifnotequal $value "0"
     		@{ self.$name.SetValue( True ) @}
-	</template>>
+	</template>
 	<template name="evt_connect_OnRadioButton">self.$name.Bind( wx.EVT_RADIOBUTTON, #handler )</template>
   </templates>
 
@@ -159,7 +159,7 @@ Python code generation written by
 	<template name="evt_connect_OnListDeleteItem">self.$name.Bind( wx.EVT_LIST_DELETE_ITEM, #handler )</template>
 	<template name="evt_connect_OnListDeleteAllItems">self.$name.Bind( wx.EVT_DELETE_ALL_ITEMS, #handler )</template>
 	<template name="evt_connect_OnListItemSelected">self.$name.Bind( wx.EVT_LIST_ITEM_SELECTED, #handler )</template>
-	<template name="evt_connect_OnListItemDeselected">$self.name.Bind( wx.EVT_LIST_ITEM_DESELECTED, #handler )</template>
+	<template name="evt_connect_OnListItemDeselected">self.name.Bind( wx.EVT_LIST_ITEM_DESELECTED, #handler )</template>
 	<template name="evt_connect_OnListItemActivated">self.$name.Bind( wx.EVT_LIST_ITEM_ACTIVATED, #handler )</template>
 	<template name="evt_connect_OnListItemFocused">self.$name.Bind( wx.EVT_LIST_ITEM_FOCUSED, #handler )</template>
 	<template name="evt_connect_OnListItemMiddleClick">self.$name.Bind( wx.EVT_LIST_ITEM_MIDDLE_CLICK, #handler )</template>
