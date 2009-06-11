@@ -1,7 +1,7 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
 
-03/27/2009 Version 3.01.61 (Beta)
+06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
 
 03/06/2009 Version 3.01.60 (Beta)
