@@ -448,7 +448,17 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	m_disconnectEvents = ( project->GetPropertyAsInteger( wxT("disconnect_python_events") ) != 0 );
 
 	m_source->Clear();
-	wxString code (
+	
+	// Insert python preamble
+	
+	wxString code = GetCode( project, wxT("python_preamble") );
+	if ( !code.empty() )
+	{
+		m_source->WriteLn( code );
+		m_source->WriteLn( wxEmptyString );
+	}
+	
+	code = (
 		wxT("###########################################################################\n")
 		wxT("## Python code generated with wxFormBuilder (version ") wxT(__DATE__) wxT(")\n")
 		wxT("## http://www.wxformbuilder.org/\n")
@@ -492,15 +502,6 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	if ( !headerIncludes.empty() )
 	{
 		m_source->WriteLn( wxT("") );
-	}
-
-	// Inserting in the .cpp source file the include corresponding to the
-	// generated .h header file and the related xpm includes
-	code = GetCode( project, wxT("python_preamble") );
-	if ( !code.empty() )
-	{
-		m_source->WriteLn( code );
-		m_source->WriteLn( wxEmptyString );
 	}
 	
 	// Generating "defines" for macros

@@ -3,6 +3,8 @@
 
 06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
+* FS#424 - No encoding declared
+* FS#425 - ListBook: C++ code instead of Python code 
 
 03/06/2009 Version 3.01.60 (Beta)
 * Moved the 'event_handler' type to the Forms plug-in. This allows different 

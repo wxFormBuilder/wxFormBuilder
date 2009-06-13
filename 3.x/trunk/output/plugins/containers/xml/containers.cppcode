@@ -108,11 +108,11 @@ Written by
 				@{
 					#parent $name #append Bitmap = $bitmap; #nl
 					if ( #parent $name #append Bitmap.Ok() ) #nl
-					@{ #nl
+					@{ #indent #nl
 						#parent $name #append Image = #parent $name #append Bitmap.ConvertToImage(); #nl
 						#parent $name #append Images->Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ); #nl
 						#parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
-						#parent $name #append Index++; #nl
+						#parent $name #append Index++; #unindent #nl
 					@}
 				@}
 			@}
@@ -168,11 +168,11 @@ Written by
 				@{
 					#parent $name #append Bitmap = $bitmap; #nl
 					if ( #parent $name #append Bitmap.Ok() ) #nl
-					@{ #nl
+					@{ #indent #nl
 						#parent $name #append Image = #parent $name #append Bitmap.ConvertToImage(); #nl
 						#parent $name #append Images->Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ); #nl
 						#parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
-						#parent $name #append Index++; #nl
+						#parent $name #append Index++; #unindent #nl
 					@}
 				@}
 			@}
