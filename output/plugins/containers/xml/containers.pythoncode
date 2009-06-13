@@ -105,13 +105,10 @@ Python code generation written by
 				#ifnotnull $bitmap
 				@{
 					#parent $name #append Bitmap = $bitmap #nl
-					if ( #parent $name #append Bitmap.Ok() ) #nl
-					@{ #nl
-						#parent $name #append Image = #parent $name #append Bitmap.ConvertToImage() #nl
-						#parent $name #append Images.Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ) #nl
-						#parent $name.SetPageImage( #parent $name #append Index, #parent $name #append Index ) #nl
-						#parent $name #append Index += 1 #nl
-					@}
+					if ( #parent $name #append Bitmap.Ok() ): #indent #nl
+						#parent $name #append Images.Add( #parent $name #append Bitmap ) #nl
+						self.#parent $name.SetPageImage( #parent $name #append Index, #parent $name #append Index ) #nl
+						#parent $name #append Index += 1 #unindent #nl
 				@}
 			@}
 		</template>
@@ -149,13 +146,10 @@ Python code generation written by
 				#ifnotnull $bitmap
 				@{
 					#parent $name #append Bitmap = $bitmap #nl
-					if ( #parent $name #append Bitmap.Ok() ) #nl
-					@{ #nl
-						#parent $name #append Image = #parent $name #append Bitmap.ConvertToImage() #nl
-						#parent $name #append Images.Add( #parent $name #append Image.Scale( #parent $name #append ImageSize.GetWidth(), #parent $name #append ImageSize.GetHeight() ) ) #nl
-						#parent $name.SetPageImage( #parent $name #append Index, #parent $name #append Index ) #nl
-						#parent $name #append Index += 1 #nl
-					@}
+					if ( #parent $name #append Bitmap.Ok() ): #indent #nl
+						#parent $name #append Images.Add( #parent $name #append Bitmap ) #nl
+						self.#parent $name.SetPageImage( #parent $name #append Index, #parent $name #append Index ) #nl
+						#parent $name #append Index += 1 #unindent #nl
 				@}
 			@}
 		</template>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="Python">
   <templates class="Project">
-    <template name="python_preamble"/>
+    	<template name="python_preamble">
+			#ifequal $encoding "UTF-8"
+			@{ @# -*- coding: utf-8 -*- @}
+	</template>
     <template name="python_epilogue"/>
   </templates>
   <templates class="wxWindow">
