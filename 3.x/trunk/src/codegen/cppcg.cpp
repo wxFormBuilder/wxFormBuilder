@@ -1479,7 +1479,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 				{
 					PObjectBase sub1 = obj->GetChild( 0 )->GetChild( 0 );
 					wxString _template = wxT( "$name->Initialize( " );
-					_template = _template + sub1->GetProperty( wxT( "name" ) )->GetValue() + wxT( " )" );
+					_template = _template + sub1->GetProperty( wxT( "name" ) )->GetValue() + wxT( " );" );
 
 					CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 					m_source->WriteLn( parser.ParseTemplate() );
