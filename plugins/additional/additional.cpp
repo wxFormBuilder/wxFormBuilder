@@ -48,6 +48,7 @@
 	#include <wx/fontpicker.h>
 	#include <wx/filepicker.h>
 	#include <wx/hyperlink.h>
+	#include <wx/srchctrl.h>
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,6 +79,7 @@ protected:
 		void OnFontPickerFontChanged( wxFontPickerEvent& event );
 		void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
 		void OnDirPickerDirChanged( wxFileDirPickerEvent& event );
+		void OnText( wxCommandEvent& event );
 	#endif
 	void OnGenericDirCtrlExpandItem( wxTreeEvent& event );
 	DECLARE_EVENT_TABLE()
@@ -89,7 +91,9 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 		EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
 		EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
 		EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
+		EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	#endif
+	
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 	EVT_GRID_LABEL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
@@ -1178,6 +1182,69 @@ public:
 	}
 };
 
+class SearchCtrlComponent : public ComponentBase
+{
+public:
+
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxSearchCtrl* sc = new wxSearchCtrl((wxWindow *)parent, wxID_ANY,
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		if ( !obj->IsNull( _("search_button") ) )
+		{
+			sc->ShowSearchButton( obj->GetPropertyAsInteger( _("search_button") ) );
+		}
+		
+		if ( !obj->IsNull( _("cancel_button") ) )
+		{
+			sc->ShowCancelButton( obj->GetPropertyAsInteger( _("cancel_button") ) );
+		}
+
+		sc->PushEventHandler( new ComponentEvtHandler( sc, GetManager() ) );
+
+		return sc;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		#if wxCHECK_VERSION( 2, 8, 0 )
+		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
+		return xrc.GetXrcObject();
+		#elif wxCHECK_VERSION( 2, 9, 0 )
+		ObjectToXrcFilter xrc(obj, _("wxSearchCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		return xrc.GetXrcObject();
+		#endif
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxSearchCtrl"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		return filter.GetXfbObject();
+	}
+
+};
+
+void ComponentEvtHandler::OnText( wxCommandEvent& event)
+{
+	wxSearchCtrl* sc = wxDynamicCast( m_window, wxSearchCtrl );
+	if ( sc != NULL )
+	{
+		m_manager->ModifyProperty( m_window, _("value"), sc->GetValue() );
+		sc->SetInsertionPointEnd();
+		sc->SetFocus();
+	}
+	
+	event.Skip();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1242,6 +1309,15 @@ MACRO(wxHL_ALIGN_CENTRE)
 MACRO(wxHL_CONTEXTMENU)
 MACRO(wxHL_DEFAULT_STYLE)
 
+// wxSearchCtrl
+WINDOW_COMPONENT("wxSearchCtrl", SearchCtrlComponent)
+MACRO(wxTE_PROCESS_ENTER);
+MACRO(wxTE_PROCESS_TAB);
+MACRO(wxTE_NOHIDESEL);
+MACRO(wxTE_LEFT);
+MACRO(wxTE_CENTER);
+MACRO(wxTE_RIGHT);
+MACRO(wxTE_CAPITALIZE);
 
 #endif
 

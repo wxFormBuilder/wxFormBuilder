@@ -924,6 +924,10 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
 	{
 		result = wxDirProperty(name, wxPG_LABEL, prop->GetValueAsString());
 	}
+	else if (type == PT_FILE)
+	{
+		result = wxFileProperty(name, wxPG_LABEL, prop->GetValueAsString());
+	}
 	else if (type == PT_BITMAP)
 	{
 		result = wxBitmapWithResourceProperty( name, wxPG_LABEL, prop->GetValueAsString() );

@@ -70,7 +70,7 @@
 
   <objtype name="sizeritem" item="1">
     <childtype name="widget" nmax="1" />
-	<childtype name="expanded_widget" nmax="1" />
+    <childtype name="expanded_widget" nmax="1" />
     <childtype name="container" nmax="1" />
     <childtype name="sizer" nmax="1" />
     <childtype name="gbsizer" nmax="1" />
@@ -86,7 +86,7 @@
 
   <objtype name="gbsizeritem" item="1">
     <childtype name="widget" nmax="1" />
-	<childtype name="expanded_widget" nmax="1" />
+    <childtype name="expanded_widget" nmax="1" />
     <childtype name="container" nmax="1" />
     <childtype name="sizer" nmax="1" />
     <childtype name="gbsizer" nmax="1" />

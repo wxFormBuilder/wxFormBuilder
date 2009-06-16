@@ -162,6 +162,22 @@ Written by
     <template name="include">@#include &lt;wx/statbmp.h&gt;</template>
   </templates>
 
+  <templates class="wxAnimationCtrl">
+    <template name="declaration">#class* $name;</template>
+    <template name="construction">
+		$name = new #class( #wxparent $name, $id, wxNullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		#ifnotnull $animation
+		@{ #nl $name->LoadFile( $animation ); @}
+    </template>
+    <template name="settings">
+		#ifnotnull $inactive_bitmap
+		@{ #nl $name->SetInactiveBitmap( $inactive_bitmap ); @}
+		#ifequal $play "1"
+		@{ #nl $name->Play(); @}
+    </template>
+    <template name="include">@#include &lt;wx/animate.h&gt;</template>
+  </templates>
+
   <templates class="wxStaticLine">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>

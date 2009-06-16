@@ -1371,6 +1371,7 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("option"),		PT_OPTION		);
 	PT( wxT("macro"),		PT_MACRO		);
 	PT( wxT("path"),		PT_PATH			);
+	PT( wxT("file"),		PT_FILE			);
 	PT( wxT("wxString"), 	PT_WXSTRING		);
 	PT( wxT("wxPoint"),		PT_WXPOINT		);
 	PT( wxT("wxSize"),		PT_WXSIZE		);

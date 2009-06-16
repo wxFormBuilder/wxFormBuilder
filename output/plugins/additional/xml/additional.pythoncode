@@ -345,6 +345,18 @@ Python code generation written by
 	</template>
   </templates>
 
+  <templates class="wxSearchCtrl">
+    <template name="construction">self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="settings">
+		self.$name.ShowSearchButton( $search_button )
+		#nl self.$name.ShowCancelButton( $cancel_button )
+	</template>
+	<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
+	<template name="evt_connect_OnSearchButton">self.$name.Bind( wx.EVT_SEARCHCTRL_SEARCH_BTN, #handler )</template>
+	<template name="evt_connect_OnCancelButton">self.$name.Bind( wx.EVT_SEARCHCTRL_CANCEL_BTN, #handler )</template>
+  </templates>
+
   <templates class="CustomControl">
 	<template name="construction">$construction</template>
 	<template name="settings">$settings</template>

@@ -10,34 +10,34 @@
   <templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
-			@{ self.$name.SetExtraStyle( $window_extra_style ); #nl @}
+			@{ self.$name.SetExtraStyle( $window_extra_style ) #nl @}
 
 			#ifnotnull $font
-			@{ self.$name.SetFont( $font ); #nl @}
+			@{ self.$name.SetFont( $font ) #nl @}
 
 			#ifnotnull $fg
-			@{ self.$name.SetForegroundColour( $fg ); #nl @}
+			@{ self.$name.SetForegroundColour( $fg ) #nl @}
 
 			#ifnotnull $bg
-			@{ self.$name.SetBackgroundColour( $bg ); #nl @}
+			@{ self.$name.SetBackgroundColour( $bg ) #nl @}
 
 			#ifequal $enabled "0"
-			@{ self.$name.Enable( $enabled ); #nl @}
+			@{ self.$name.Enable( $enabled ) #nl @}
 
 			#ifequal $hidden "1"
-			@{ self.$name.Hide(); #nl @}
+			@{ self.$name.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.$name.SetToolTip( $tooltip ); #nl @}
+			@{ self.$name.SetToolTip( $tooltip ) #nl @}
 
 			#ifnotnull $context_help
-			@{ self.$name.SetHelpText( $context_help ); #nl @}
+			@{ self.$name.SetHelpText( $context_help ) #nl @}
 
 			#ifnotnull $minimum_size
-			@{ self.$name.SetMinSize( $minimum_size ); #nl @}
+			@{ self.$name.SetMinSize( $minimum_size ) #nl @}
 
 			#ifnotnull $maximum_size
-			@{ self.$name.SetMaxSize( $maximum_size ); #nl @}
+			@{ self.$name.SetMaxSize( $maximum_size ) #nl @}
 		</template>
 
 		<!-- wxKeyEvent -->
