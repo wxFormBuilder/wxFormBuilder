@@ -32,6 +32,7 @@
 #include <wx/listctrl.h>
 #include <wx/radiobox.h>
 #include <wx/bmpbuttn.h>
+#include <wx/animate.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -1278,6 +1279,57 @@ public:
 
 };
 
+class AnimCtrlComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxAnimationCtrl* ac = new wxAnimationCtrl((wxWindow *)parent, wxID_ANY,
+			wxNullAnimation,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		if ( !obj->IsNull( _("animation") ) )
+		{
+			if( ac->LoadFile( obj->GetPropertyAsString( _("animation") ) ) )
+			{
+				if ( !obj->IsNull( _("play") ) && ( obj->GetPropertyAsInteger( _("play") ) == 1 ) ) ac->Play();
+				else
+					ac->Stop();
+			}
+		}
+		
+		if ( !obj->IsNull( _("inactive_bitmap") ) )
+		{
+			wxBitmap bmp = obj->GetPropertyAsBitmap( _("inactive_bitmap") );
+			if( bmp.IsOk() ) ac->SetInactiveBitmap( bmp );
+			else
+				ac->SetInactiveBitmap( wxNullBitmap );
+		}
+
+		ac->PushEventHandler( new ComponentEvtHandler( ac, GetManager() ) );
+
+		return ac;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxAnimationCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("animation"),_("animation"),XRC_TYPE_TEXT);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxAnimation"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("animation"),_("animation"),XRC_TYPE_TEXT);
+		return filter.GetXfbObject();
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1311,6 +1363,7 @@ ABSTRACT_COMPONENT("toolSeparator", ToolSeparatorComponent)
 WINDOW_COMPONENT("wxChoice", ChoiceComponent)
 WINDOW_COMPONENT("wxSlider", SliderComponent)
 WINDOW_COMPONENT("wxGauge", GaugeComponent)
+WINDOW_COMPONENT("wxAnimationCtrl",AnimCtrlComponent)
 
 // wxWindow style macros
 MACRO(wxSIMPLE_BORDER)
@@ -1496,6 +1549,10 @@ MACRO(wxGA_VERTICAL)
 //wxDialog
 MACRO(wxBOTH)
 SYNONYMOUS(1,wxBOTH)
+
+//wxAnimationCtrl
+MACRO(wxAC_DEFAULT_STYLE)
+MACRO(wxAC_NO_AUTORESIZE)
 
 END_LIBRARY()
 

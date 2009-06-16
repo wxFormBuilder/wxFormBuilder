@@ -97,6 +97,8 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			break;
 		}
 	case PT_WXSTRING:
+	case PT_FILE:
+	case PT_PATH:
 		{
 			if ( value.empty() )
 			{
@@ -229,7 +231,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				if ( value.find_first_of( wxT("wx") ) == 0 )
 				{
 					// System Colour
-					result << wxT("wx.SystemSettings.GetColour( ") << value << wxT(" )");
+					result << wxT("wx.SystemSettings.GetColour( ") << ValueToCode( PT_OPTION, value ) << wxT(" )");
 				}
 				else
 				{
@@ -280,11 +282,11 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 				
-				result << wxT("wx.Bitmap( \"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT("\", wx.BITMAP_TYPE_ANY )");
+				result << wxT("wx.Bitmap( u\"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT("\", wx.BITMAP_TYPE_ANY )");
 			}
 			else if ( source == wxT("Load From Resource") )
 			{
-				result << wxT("wx.Bitmap( \"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE )");
+				result << wxT("wx.Bitmap( u\"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE )");
 			}
 			else if ( source == wxT("Load From Icon Resource") )
 			{
@@ -294,7 +296,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
                 }
                 else
                 {
-                    result.Printf( wxT("wx.Icon( \"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+                    result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
                 }
 			}
 
@@ -1487,6 +1489,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxHtmlWindow, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
+	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.animate. );
 	
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.calendar. );
@@ -1518,4 +1521,6 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TOP, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_WINDOWLIST_BUTTON, wx.aui. );
 	
+	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.animate. );
+	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.animate. );
 }

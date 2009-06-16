@@ -240,6 +240,27 @@ Written by
 	<event name="OnToggleButton" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBUTTON_SELECTED event, when the radiobutton is clicked." />
   </objectinfo>
 
+  <objectinfo class="wxSearchCtrl" icon="search.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_searchCtrl</property>
+    <property name="style" type="bitlist">
+      <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+      <option name="wxTE_PROCESS_TAB"   help="The control will receive wxEVT_CHAR events for TAB pressed - normally, TAB is used for passing to the next control in a dialog instead. For the control created with this style, you can still use Ctrl-Enter to pass to the next control from the keyboard."/>
+      <option name="wxTE_NOHIDESEL"     help="By default, the Windows text control doesn't show the selection when it doesn't have focus - use this style to force it to always show it. It doesn't do anything under other platforms."/>
+      <option name="wxTE_LEFT"          help="The text in the control will be left-justified (default)."/>
+      <option name="wxTE_CENTRE"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
+      <option name="wxTE_RIGHT"         help="The text in the control will be right-justified (currently wxMSW and wxGTK2 only)."/>
+      <option name="wxTE_CAPITALIZE"    help="On PocketPC and Smartphone, causes the first letter to be capitalized."/>
+    </property>
+    <property name="value" type="wxString_i18n" />
+    <property name="search_button" type="bool" help="Shows or hides the search button.">1</property>
+    <property name="cancel_button" type="bool" help="Shows or hides the cancel button.">0</property>
+    <event name="OnText" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_UPDATED event, generated when the text changes. Notice that this event will always be sent when the text controls contents changes - whether this is due to user input or comes from the program itself (for example, if SetValue() is called)" />
+    <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
+    <event name="OnSearchButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_SEARCH_BTN event, generated when the search button is clicked. Note that this does not initiate a search." />
+    <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked." />
+  </objectinfo>
+
   <objectinfo class="wxColourPickerCtrl"  startgroup="1" icon="colourPickerIcon.xpm" type="widget">
         <inherits class="wxWindow"/>
         <property name="name" type="text">m_colourPicker</property>

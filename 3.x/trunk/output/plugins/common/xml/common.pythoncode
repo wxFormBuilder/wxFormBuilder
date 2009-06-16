@@ -146,6 +146,21 @@ Python code generation written by
 	<template name="construction">self.$name = #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
   </templates>
 
+  <templates class="wxAnimationCtrl">
+    <template name="construction">
+		self.$name = #class( #wxparent $name, $id, wx.animate.NullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )
+		#ifnotnull $animation
+		@{ #nl self.$name.LoadFile( $animation ) @}
+    </template>
+    <template name="settings">
+		#ifnotnull $inactive_bitmap
+		@{ #nl self.$name.SetInactiveBitmap( $inactive_bitmap ) @}
+		#ifequal $play "1"
+		@{ #nl self.$name.Play() @}
+    </template>
+    <template name="include">import wx.animate</template>
+  </templates>
+
   <templates class="wxStaticLine">
 	<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
   </templates>

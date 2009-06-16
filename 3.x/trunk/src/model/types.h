@@ -134,6 +134,7 @@ typedef enum
   PT_WXCOLOUR,
   PT_WXPARENT,
   PT_PATH,
+  PT_FILE,
   PT_BITMAP,
   PT_STRINGLIST,
   PT_FLOAT,

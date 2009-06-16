@@ -91,6 +91,8 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			break;
 		}
 	case PT_WXSTRING:
+	case PT_FILE:
+	case PT_PATH:
 		{
 			if ( value.empty() )
 			{

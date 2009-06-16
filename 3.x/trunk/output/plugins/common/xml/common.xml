@@ -109,6 +109,18 @@ Written by
     <property name="bitmap" type="bitmap" />
   </objectinfo>
 
+  <objectinfo class="wxAnimationCtrl" icon="animation.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_animCtrl</property>
+    <property name="style" type="bitlist">
+      <option name="wxAC_DEFAULT_STYLE" help="The default style: wxNO_BORDER." />
+      <option name="wxAC_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the animation when SetAnimation is called. If this style flag is given, the control will not change its size." />wxAC_DEFAULT_STYLE
+    </property>
+    <property name="animation" type="file" help="Full file path (only *.gif and *.ani files are supported)." />
+    <property name="inactive_bitmap" type="bitmap" />
+    <property name="play" type="bool">0</property>
+  </objectinfo>
+
   <objectinfo class="wxComboBox" icon="combo_box.xpm" type="widget">
     <inherits class="wxWindow" />
     <property name="name" type="text">m_comboBox</property>
