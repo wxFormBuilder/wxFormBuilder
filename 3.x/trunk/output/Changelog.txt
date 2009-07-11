@@ -3,6 +3,8 @@
 06/15/2009 Version 3.01.62 (Beta)
 + Added support for wxSearchCtrl widget
 + Added support for wxAnimationCtrl widget
+* Fixed code generation of system colors in Python
+* FS#430 - Spacer code generation in Python is incomplete (no proportion param)
 
 06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
