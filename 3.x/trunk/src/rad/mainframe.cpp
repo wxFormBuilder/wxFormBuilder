@@ -204,7 +204,7 @@ m_rightSplitterWidth( -300 ),
 m_style( style ),
 m_page_selection( 0 ),
 m_rightSplitter_sash_pos( 300 ),
-m_autoSash( true ),
+m_autoSash( false ), // autosash function is temporarily disabled due to bug in wxMSW event system (workaround is needed)
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
@@ -399,7 +399,7 @@ void MainFrame::RestorePosition( const wxString &name )
 
 	config->Read( wxT( "LeftSplitterWidth" ), &m_leftSplitterWidth, 300 );
 	config->Read( wxT( "RightSplitterWidth" ), &m_rightSplitterWidth, -300 );
-	config->Read( wxT( "AutoSash" ), &m_autoSash, true );
+	config->Read( wxT( "AutoSash" ), &m_autoSash, false ); // disabled in default
 
 	config->Read( wxT( "CurrentDirectory" ), &m_currentDir );
 
@@ -1306,8 +1306,25 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 					}
 				}
 				break;
+				
+			case 2: // Python panel
+				if( (m_python != NULL) && (m_rightSplitter != NULL) )
+				{
+					panel_size = m_python->GetClientSize();
+					sash_pos = m_rightSplitter->GetSashPosition();
 
-			case 2: // XRC panel
+					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > Python panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+
+					if(panel_size.GetWidth() > sash_pos)
+					{
+						// set the sash position
+						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+					}
+				}
+				break;
+
+			case 3: // XRC panel
 				if((m_xrc != NULL) && (m_rightSplitter != NULL))
 				{
 					panel_size = m_xrc->GetClientSize();
@@ -1328,11 +1345,11 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 				if(m_visualEdit != NULL)
 				{
 					sash_pos = m_rightSplitter->GetSashPosition();
-
+					
 					if(m_rightSplitter_sash_pos < sash_pos)
 					{
 						//restore the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position"));
+						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position: sash pos = %d"), m_rightSplitter_sash_pos);
 						m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
 					}
 					else
