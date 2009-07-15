@@ -204,7 +204,7 @@ m_rightSplitterWidth( -300 ),
 m_style( style ),
 m_page_selection( 0 ),
 m_rightSplitter_sash_pos( 300 ),
-m_autoSash( false ), // autosash function is temporarily disabled due to bug in wxMSW event system (workaround is needed)
+m_autoSash( false ), // autosash function is temporarily disabled due to possible bug(?) in wxMSW event system (workaround is needed)
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
@@ -284,6 +284,7 @@ m_findDialog( NULL )
 	// Init. m_cpp and m_xrc first
 	m_cpp = NULL;
 	m_xrc = NULL;
+	m_python = NULL;
 
 	switch ( style )
 	{
@@ -399,7 +400,7 @@ void MainFrame::RestorePosition( const wxString &name )
 
 	config->Read( wxT( "LeftSplitterWidth" ), &m_leftSplitterWidth, 300 );
 	config->Read( wxT( "RightSplitterWidth" ), &m_rightSplitterWidth, -300 );
-	config->Read( wxT( "AutoSash" ), &m_autoSash, false ); // disabled in default
+	config->Read( wxT( "AutoSash" ), &m_autoSash, false ); // disabled in default due to possible bug(?) in wxMSW
 
 	config->Read( wxT( "CurrentDirectory" ), &m_currentDir );
 
@@ -705,7 +706,10 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 			case 1: // CPP panel
 				break;
 
-			case 2: // XRC panel
+			case 2: // Python panel
+			   break;
+			   
+			case 3: // XRC panel
 			   break;
 
 			default:
