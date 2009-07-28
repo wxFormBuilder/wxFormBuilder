@@ -238,7 +238,7 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 	{
 		return;
 	}
-
+	
 	// For code preview generate only code relevant to selected form,
 	// otherwise generate full project code.
 
