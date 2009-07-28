@@ -269,7 +269,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 			return;
 		}
 	}
-
+	
 	// Generate code in the panel
 	if ( doPanel )
 	{

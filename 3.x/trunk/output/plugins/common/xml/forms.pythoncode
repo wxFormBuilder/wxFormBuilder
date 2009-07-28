@@ -84,7 +84,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTip( $tooltip ) #nl @}
+			@{ self.SetToolTipString( $tooltip ) #nl @}
 		</template>
 		<template name="after_addchild">
 			#ifnotnull $center
@@ -191,7 +191,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTip( $tooltip ; #nl @}
+			@{ self.SetToolTipString( $tooltip ; #nl @}
 
 			#ifnotnull $minimum_size
 			@{ self.SetMinSize( $minimum_size ) #nl @}
@@ -308,7 +308,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTip( $tooltip ) #nl @}
+			@{ self.SetToolTipString( $tooltip ) #nl @}
 		</template>
 		<template name="after_addchild">
 			#ifnotnull $center

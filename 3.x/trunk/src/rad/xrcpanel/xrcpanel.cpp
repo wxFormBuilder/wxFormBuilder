@@ -157,6 +157,15 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
+	
+	// Generate code in the panel if the panel is active
+	bool doPanel = IsShown();
+
+	// Only generate to panel + panel is not shown = do nothing
+	if ( panelOnly && !doPanel )
+	{
+		return;
+	}
 
 	// For code preview generate only code relevant to selected form,
 	//  otherwise generate full project code.
@@ -175,7 +184,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 	// Generate code in the panel if the panel is active
 	if ( IsShown() )
-	{
+	{		
 		Freeze();
 		wxScintilla* editor = m_xrcPanel->GetTextCtrl();
 		editor->SetReadOnly( false );

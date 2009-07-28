@@ -28,7 +28,7 @@
 			@{ self.$name.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.$name.SetToolTip( $tooltip ) #nl @}
+			@{ self.$name.SetToolTipString( $tooltip ) #nl @}
 
 			#ifnotnull $context_help
 			@{ self.$name.SetHelpText( $context_help ) #nl @}
