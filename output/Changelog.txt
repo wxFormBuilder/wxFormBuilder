@@ -5,7 +5,8 @@
 + Added support for wxAnimationCtrl widget
 * Fixed code generation of system colors in Python
 * FS#430 - Spacer code generation in Python is incomplete (no proportion param)
-* FS#432 - Fatal error when resizing Object Properties 
+* FS#432 - Fatal error when resizing Object Properties
+* Fixed tooltips' code generation in Python 
 
 06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
