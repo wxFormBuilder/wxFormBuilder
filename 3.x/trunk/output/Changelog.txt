@@ -6,7 +6,8 @@
 * Fixed code generation of system colors in Python
 * FS#430 - Spacer code generation in Python is incomplete (no proportion param)
 * FS#432 - Fatal error when resizing Object Properties
-* Fixed tooltips' code generation in Python 
+* Fixed tooltips' code generation in Python
+* Sash position of wxSplitterWindow is set only if differs from -1
 
 06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
