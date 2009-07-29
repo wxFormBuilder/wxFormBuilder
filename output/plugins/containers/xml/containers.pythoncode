@@ -64,16 +64,27 @@ Python code generation written by
 				#ifnotequal $sashsize "-1"
 			@{	self.$name.SetSashSize( $sashsize ) #nl @}
 			@}
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+			@{	self.$name.Bind( wx.EVT_IDLE, self.$name #append OnIdle ) #nl @}
+			@}
 			#ifnotnull $min_pane_size
 			@{
 				#ifnotequal $min_pane_size "0"
 			@{	self.$name.SetMinimumPaneSize( $min_pane_size ) #nl @}
-			@}self.$name.Bind( wx.EVT_IDLE, self.$name #append OnIdle )
+			@}
 		</template>
 		<template name="generated_event_handlers">
-			def $name #append OnIdle( self, event ): #indent #nl
-				self.$name.SetSashPosition( $sashpos ) #nl
-				self.$name.Unbind( wx.EVT_IDLE ) #unindent #nl
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+				@{
+					def $name #append OnIdle( self, event ): #indent #nl
+						self.$name.SetSashPosition( $sashpos ) #nl
+						self.$name.Unbind( wx.EVT_IDLE ) #unindent #nl
+				@}
+			@}
 		</template>
 		<template name="evt_connect_OnSplitterSashPosChanging">self.$name.Bind( wx.EVT_SPLITTER_SASH_POS_CHANGING, #handler )</template>
 		<template name="evt_connect_OnSplitterSashPosChanged">self.$name.Bind( wx.EVT_SPLITTER_SASH_POS_CHANGED, #handler )</template>
