@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+08/23/2009 Version 3.01.63 (Beta)
+* Fixed code generation of wxGrid events in Python
+
 08/19/2009 Version 3.01.62 (Beta)
 + Added support for wxSearchCtrl widget
 + Added support for wxAnimationCtrl widget
