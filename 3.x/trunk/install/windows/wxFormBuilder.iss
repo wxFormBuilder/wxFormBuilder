@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.1.62"
+#define MyAppVer "3.1.63"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "José Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
@@ -27,7 +27,7 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
-#if UNICODE
+#if defined UNICODE
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-beta
 #else
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
@@ -49,8 +49,9 @@ VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
 InfoAfterFile=files\Changelog.txt
 LicenseFile=files\license.txt
-#if UNICODE
-MinVersion=0,4.0.1381sp6
+#if defined UNICODE
+;MinVersion=0,4.0.1381sp6
+MinVersion=0,5.0
 #endif
 
 
@@ -61,7 +62,7 @@ BeveledLabel={#MyAppName} v{#MyAppVer}-Beta
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Files]
-#if UNICODE
+#if defined UNICODE
 Source: files\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
 #else
 Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
@@ -216,3 +217,4 @@ begin
 	end;
 end;
 // -- END -- Version checking
+
