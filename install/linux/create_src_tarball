@@ -42,7 +42,7 @@ function make_src_tarball
 	  rm -f $basedir/create_build_files*
 
 	# use a temporary directory
-	tmpdir=wxformbuilder-$1
+	tmpdir=wxformbuilder-$1.orig
 
 	cp -R $basedir   ../$tmpdir
 	cd ..
