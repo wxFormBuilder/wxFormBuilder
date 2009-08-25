@@ -19,7 +19,7 @@
 #*****************************************************************************
 set -e
 
-if [ -f wxformbuilder-*.orig.tar.gz ]
+if [ -f wxformbuilder_*.orig.tar.gz ]
 then
    echo "Please clean old source tarballs first"
    exit 1
