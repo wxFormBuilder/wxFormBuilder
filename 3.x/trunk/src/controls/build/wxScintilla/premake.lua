@@ -31,6 +31,22 @@ local wx_ver = "28"
 local wx_ver_minor = ""
 local wx_custom = "_wxfb"
 
+-- target name for libraries
+wx_target = ""
+if ( windows ) then
+	wx_target = "wxmsw"
+elseif ( linux ) then
+	wx_target = "wx_gtk2"
+elseif ( macosx ) then
+	wx_target = "wx_mac"
+end
+
+-- unicode sign
+usign = ""
+if( options["unicode"] ) then
+	usign = "u" 
+end
+
 --******* Initial Setup ************
 --*	Most of the setting are set here.
 --**********************************
@@ -257,19 +273,23 @@ else
 	end
 
 	-- Get wxWidgets lib names
-	local wxconfig = io.popen("wx-config " .. debug_option .. " --basename")
-	local debugBasename = trim( wxconfig:read("*a") )
-	wxconfig:close()
+	--local wxconfig = io.popen("wx-config " .. debug_option .. " --basename")
+	--local debugBasename = trim( wxconfig:read("*a") )
+	--wxconfig:close()
 
-	wxconfig = io.popen("wx-config --debug=no --basename")
-	local basename = trim( wxconfig:read("*a") )
-	wxconfig:close()
+	--wxconfig = io.popen("wx-config --debug=no --basename")
+	--local basename = trim( wxconfig:read("*a") )
+	--wxconfig:close()
 
-	wxconfig = io.popen("wx-config --release")
-	local release = trim( wxconfig:read("*a") )
-	wxconfig:close()
+	--wxconfig = io.popen("wx-config --release")
+	--local release = trim( wxconfig:read("*a") )
+	--wxconfig:close()
 
 	-- Set the targets.
-	package.config["Debug"].target = debugBasename .. "_" .. targetName .. "-" .. release .. wx_custom
-	package.config["Release"].target = basename .. "_" .. targetName .. "-" .. release .. wx_custom
+	--package.config["Debug"].target = debugBasename .. "_" .. targetName .. "-" .. release .. wx_custom
+	--package.config["Release"].target = basename .. "_" .. targetName .. "-" .. release .. wx_custom
+
+	package.config["Release"].target = wx_target .. usign .. "_" .. targetName .. "-" .. wx_ver .. wx_custom
+	package.config["Debug"].target = wx_target .. usign .. "d_" .. targetName .. "-" .. wx_ver .. wx_custom
 end
+
