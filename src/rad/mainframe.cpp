@@ -770,8 +770,11 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 		                event.GetFBObject()->GetClassName().c_str() );
 	}
 	else
+	{
 		message = wxT( "Impossible to create the object. Did you forget to add a sizer?" );
-
+		wxMessageBox( message, wxT("wxFormBuilder"), wxICON_WARNING | wxOK );
+	}
+	
 	GetStatusBar()->SetStatusText( message );
 
 	UpdateFrame();

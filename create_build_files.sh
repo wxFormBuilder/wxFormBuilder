@@ -19,6 +19,10 @@ $PREMAKE_DIR/bin/premake --target cb-gcc $unicode $debug --with-wx-shared $1
 echo done...
 echo
 #
+#$PREMAKE_DIR/bin/premake --target cl-gcc $unicode $debug --with-wx-shared $1
+#echo done...
+#echo
+#
 $PREMAKE_DIR/bin/premake --target gnu $unicode $debug --with-wx-shared $1
 echo done...
 echo
