@@ -1,9 +1,11 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-08/26/2009 Version 3.01.63 (Beta)
-* Fixed code generation of wxGrid events in Python
+08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default
 * FS#391 - Change (some) user notifications from status bar to message box 
+
+08/26/2009 Version 3.01.63 (Beta)
+* Fixed code generation of wxGrid events in Python
 
 08/19/2009 Version 3.01.62 (Beta)
 + Added support for wxSearchCtrl widget
