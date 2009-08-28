@@ -929,7 +929,19 @@ void CppCodeGenerator::GenValVarsBase( PObjectInfo info, PObjectBase obj )
 
 void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 {
-	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT( "C++" ) );
+	GenDefinedEventHandlers( obj->GetObjectInfo(), obj );
+	
+	// Process child widgets
+	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
+	{
+		PObjectBase child = obj->GetChild( i );
+		GetGenEventHandlers( child );
+	}
+}
+
+void CppCodeGenerator::GenDefinedEventHandlers( PObjectInfo info, PObjectBase obj )
+{
+	PCodeInfo code_info = info->GetCodeInfo( wxT( "C++" ) );
 	if ( code_info )
 	{
 		wxString _template = code_info->GetTemplate( wxT( "generated_event_handlers" ) );
@@ -945,13 +957,13 @@ void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 		}
 	}
 
-	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
+	// Proceeding recursively with the base classes
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
 	{
-		PObjectBase child = obj->GetChild( i );
-		GetGenEventHandlers( child );
+		PObjectInfo base_info = info->GetBaseClass( i );
+		GenDefinedEventHandlers( base_info, obj );
 	}
 }
-
 
 wxString CppCodeGenerator::GetCode( PObjectBase obj, wxString name )
 {
@@ -1412,7 +1424,11 @@ void CppCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 	{
 		m_source->WriteLn( wxT( "// Disconnect Events" ) );
 		GenEvents( class_obj, events, true );
+		m_source->WriteLn();
 	}
+	
+	// destruct objects
+	GenDestruction( class_obj );
 
 	m_source->Unindent();
 	m_source->WriteLn( wxT( "}" ) );
@@ -1716,6 +1732,36 @@ void CppCodeGenerator::GenSettings( PObjectInfo info, PObjectBase obj )
 	{
 		PObjectInfo base_info = info->GetBaseClass( i );
 		GenSettings( base_info, obj );
+	}
+}
+
+void CppCodeGenerator::GenDestruction( PObjectBase obj )
+{
+	wxString _template;
+	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT( "C++" ) );
+
+	if ( !code_info )
+	{
+		return;
+	}
+
+	_template = code_info->GetTemplate( wxT( "destruction" ) );
+
+	if ( !_template.empty() )
+	{
+		CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		wxString code = parser.ParseTemplate();
+		if ( !code.empty() )
+		{
+			m_source->WriteLn( code );
+		}
+	}
+	
+	// Process child widgets
+	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
+	{
+		PObjectBase child = obj->GetChild( i );
+		GenDestruction( child );
 	}
 }
 

@@ -149,6 +149,10 @@ private:
 	* Generates the generated_event_handlers template
 	*/
 	void GetGenEventHandlers( PObjectBase obj );
+	/**
+	* Generates the generated_event_handlers template
+	*/
+	void GenDefinedEventHandlers( PObjectInfo info, PObjectBase obj );
 
 	/**
 	* Generates the '#include' section for files.
@@ -194,6 +198,11 @@ private:
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
 	void GenConstruction( PObjectBase obj, bool is_widget );
+	
+	/**
+	* Makes the objects destructions.
+	*/
+	void GenDestruction( PObjectBase obj);
 
 	/**
 	* Configures the object properties, both own and inherited ones.

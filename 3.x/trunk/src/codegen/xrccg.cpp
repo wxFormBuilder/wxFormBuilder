@@ -170,6 +170,16 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 				return element;
 			}
 		}
+		else if( class_name == "wxMenu" )
+		{
+			// Do not generate context menus assigned to forms or widgets
+			std::string parent_name = parent->GetAttribute( "class" );
+			if( parent_name != "wxMenuBar" )
+			{
+				delete element;
+				return NULL;
+			}
+		}
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{

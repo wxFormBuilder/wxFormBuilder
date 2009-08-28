@@ -40,7 +40,43 @@ Python code generation writen by
 
   <templates class="wxMenu">
 	<template name="construction">self.$name = #class()</template>
-	<template name="after_addchild">self.#parent $name.Append( self.$name, $label )</template>
+    	<template name="after_addchild">
+		#ifnotnull #parent $context_menu
+		@{ #ifequal #parent $context_menu "1"
+		@{
+			#ifparenttypeequal "widget"
+	        	@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+			#ifparenttypeequal "container"
+	        	@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+			#ifparenttypeequal "form"
+	        	@{ self.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+		@}@}
+		#ifparenttypeequal "menubar"
+                @{
+			self.#parent $name.Append( self.$name, $label )
+		@}
+   	</template>
+    <template name="generated_event_handlers">
+		#ifnotnull #parent $context_menu
+		@{ #ifequal #parent $context_menu "1"
+		@{
+         		#ifparenttypeequal "widget"
+                	@{
+				def #parent $name #append OnContextMenu( self, event ): #indent #nl
+					self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+                	@}
+         		#ifparenttypeequal "container"
+                	@{
+				def #parent $name #append OnContextMenu( self, event ): #indent #nl
+					self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+                	@}
+         		#ifparenttypeequal "form"
+                	@{
+				def #parent $name #append OnContextMenu( self, event ): #indent #nl
+					self.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+                	@}
+		@}@}
+    </template>
   </templates>
 
   <templates class="submenu">

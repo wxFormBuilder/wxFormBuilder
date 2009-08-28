@@ -771,7 +771,7 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 	}
 	else
 	{
-		message = wxT( "Impossible to create the object. Did you forget to add a sizer?" );
+		message = wxT( "Impossible to create the object. Did you forget to add a sizer/parent object?" );
 		wxMessageBox( message, wxT("wxFormBuilder"), wxICON_WARNING | wxOK );
 	}
 	

@@ -49,11 +49,14 @@
   <objtype name="form">
     <childtype name="sizer" nmax="1" />
     <childtype name="menubar" nmax="1" />
+    <childtype name="menu" nmax="1" />
     <childtype name="statusbar" nmax="1" />
     <childtype name="toolbar" nmax="1" />
   </objtype>
 
-  <objtype name="widget" />
+  <objtype name="widget">
+	<childtype name="menu" nmax="1"/>
+  </objtype>
   <objtype name="expanded_widget" />
 
   <objtype name="sizer">
@@ -66,6 +69,7 @@
 
   <objtype name="container">
     <childtype name="sizer" nmax="1" />
+    <childtype name="menu" nmax="1" />
   </objtype>
 
   <objtype name="sizeritem" item="1">

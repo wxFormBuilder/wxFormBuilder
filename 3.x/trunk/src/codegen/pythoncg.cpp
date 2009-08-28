@@ -680,7 +680,18 @@ void PythonCodeGenerator::GenVirtualEventHandlers( const EventVector& events, co
 
 void PythonCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 {
-	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("Python") );
+	GenDefinedEventHandlers( obj->GetObjectInfo(), obj );
+
+	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
+	{
+		PObjectBase child = obj->GetChild(i);
+		GetGenEventHandlers(child);
+	}
+}
+
+void PythonCodeGenerator::GenDefinedEventHandlers( PObjectInfo info, PObjectBase obj )
+{
+	PCodeInfo code_info = info->GetCodeInfo( wxT( "Python" ) );
 	if ( code_info )
 	{
 		wxString _template = code_info->GetTemplate( wxT("generated_event_handlers") );
@@ -696,10 +707,11 @@ void PythonCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 		}
 	}
 
-	for (unsigned int i = 0; i < obj->GetChildCount() ; i++)
+	// Proceeding recursively with the base classes
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
 	{
-		PObjectBase child = obj->GetChild(i);
-		GetGenEventHandlers(child);
+		PObjectInfo base_info = info->GetBaseClass( i );
+		GenDefinedEventHandlers( base_info, obj );
 	}
 }
 

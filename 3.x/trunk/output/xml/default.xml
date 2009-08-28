@@ -122,6 +122,7 @@
 		</property>
 	</category>
     <property name="tooltip" type="wxString_i18n"   help="Attach a tooltip to the window."/>
+	<property name="context_menu" type="bool" help="Generates event handler for displaying of menu assigned to this widgets as a context menu.">1</property>
 	<property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
     <property name="enabled" type="bool"            help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>
     <property name="hidden" type="bool"             help="Shows or hides the window.">0</property>
