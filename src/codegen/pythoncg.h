@@ -132,6 +132,10 @@ private:
 	* Generates the generated_event_handlers template
 	*/
 	void GetGenEventHandlers( PObjectBase obj );
+	/**
+	* Generates the generated_event_handlers template
+	*/
+	void GenDefinedEventHandlers( PObjectInfo info, PObjectBase obj );
 
 	/**
 	* Generates the 'import' section for files.

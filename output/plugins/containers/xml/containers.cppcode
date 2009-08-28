@@ -60,11 +60,11 @@ Written by
 			@{
 				#ifnotequal $sashpos "-1"
 				@{
-				void $name #append OnIdle( wxIdleEvent&amp; ) #nl
-				{ #indent #nl
-					$name->SetSashPosition( $sashpos ); #nl
-					$name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this ); #unindent #nl
-				} #nl
+				#nl void $name #append OnIdle( wxIdleEvent&amp; )
+				#nl { #indent
+					#nl $name->SetSashPosition( $sashpos );
+					#nl $name->Disconnect( wxEVT_IDLE, wxIdleEventHandler( #form $name::$name #append OnIdle ), NULL, this ); #unindent
+				#nl}
 				@}
 			@}
 		</template>

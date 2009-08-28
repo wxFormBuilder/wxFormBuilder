@@ -891,7 +891,7 @@ public:
 		if (shortcut.IsEmpty())
 			label = obj->GetPropertyAsString(_("label"));
 		else
-			label = obj->GetPropertyAsString(_("label")) + wxT("\\t") + shortcut;
+			label = obj->GetPropertyAsString(_("label")) + wxT("\t") + shortcut;
 
 		xrc.AddPropertyValue(_("label"), label, true);
 		xrc.AddProperty(_("help"),_("help"),XRC_TYPE_TEXT);
@@ -1351,10 +1351,10 @@ WINDOW_COMPONENT("wxCheckBox", CheckBoxComponent)
 WINDOW_COMPONENT("wxStaticBitmap", StaticBitmapComponent)
 WINDOW_COMPONENT("wxStaticLine", StaticLineComponent)
 WINDOW_COMPONENT("wxMenuBar", MenuBarComponent)
-WINDOW_COMPONENT("wxMenu", MenuComponent)
-WINDOW_COMPONENT("submenu", SubMenuComponent)
-WINDOW_COMPONENT("wxMenuItem", MenuItemComponent)
-WINDOW_COMPONENT("separator", SeparatorComponent)
+ABSTRACT_COMPONENT("wxMenu", MenuComponent)
+ABSTRACT_COMPONENT("submenu", SubMenuComponent)
+ABSTRACT_COMPONENT("wxMenuItem", MenuItemComponent)
+ABSTRACT_COMPONENT("separator", SeparatorComponent)
 WINDOW_COMPONENT("wxListCtrl", ListCtrlComponent)
 WINDOW_COMPONENT("wxStatusBar", StatusBarComponent)
 WINDOW_COMPONENT("wxToolBar", ToolBarComponent)
