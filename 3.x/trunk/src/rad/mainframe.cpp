@@ -208,7 +208,7 @@ m_autoSash( false ), // autosash function is temporarily disabled due to possibl
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
-
+	
 	// initialize the splitters, wxAUI doesn't use them
 	m_leftSplitter = m_rightSplitter = NULL;
 
