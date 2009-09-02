@@ -27,7 +27,13 @@ function trim (s)
 end
 
 -- wxWidgets version
-local wx_ver = "28"
+local wx_ver = ""
+if( windows ) then
+	wx_ver = "28"
+else
+	wx_ver = "2.8"
+end
+
 local wx_ver_minor = ""
 local wx_custom = "_wxfb"
 

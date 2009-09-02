@@ -29,7 +29,11 @@ mkdir $APPCONTENTS/Resources
 mkdir $APPCONTENTS/MacOS
 mkdir $APPCONTENTS/PlugIns
 mkdir $APPCONTENTS/SharedSupport
-cp ./output/bin/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+if [ -f ./output/bin/wxformbuilder ]; then
+	cp ./output/bin/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+else
+	cp ./output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+fi
 cp ./output/lib/wxformbuilder/* $APPCONTENTS/PlugIns
 cp -r ./output/plugins/ $APPCONTENTS/SharedSupport/plugins
 cp -r ./output/resources/ $APPCONTENTS/SharedSupport/resources

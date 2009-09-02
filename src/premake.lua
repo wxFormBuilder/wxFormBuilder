@@ -23,7 +23,12 @@
 --*****************************************************************************
 
 -- wxWidgets version
-local wx_ver = "28"
+local wx_ver = ""
+if( windows ) then
+	wx_ver = "28"
+else
+	wx_ver = "2.8"
+end
 
 --******* Initial Setup ************
 --*	Most of the setting are set here.
@@ -273,6 +278,7 @@ else
 end
 
 if ( macosx ) then
-	package.postbuildcommands = { "../install/macosx/postbuild.sh" }
+	package.config["Release"].postbuildcommands = { "../install/macosx/postbuild.sh" }
+	package.config["Debug"].postbuildcommands = { "../install/macosx/postbuildd.sh" }
 end
 
