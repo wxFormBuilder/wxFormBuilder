@@ -54,6 +54,9 @@ LicenseFile=files\license.txt
 MinVersion=0,5.0
 #endif
 
+; -- Pre-Build Step
+#expr Exec( "create_install_files_pkg.bat", NULL, ".", 1, SW_SHOWMINIMIZED )
+#expr Exec( "create_source_package.bat", NULL, ".", 1, SW_SHOWMINIMIZED )
 
 [Messages]
 BeveledLabel={#MyAppName} v{#MyAppVer}-Beta
@@ -98,10 +101,6 @@ Root: HKCU; SubKey: Software\wxformbuilder\mainframe\editor; ValueType: none; Va
 Root: HKCU; SubKey: Software\wxformbuilder\mainframe\editor\cpp; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
 Root: HKCU; SubKey: Software\wxformbuilder\mainframe\objectInspector; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
 Root: HKCU; SubKey: Software\wxformbuilder\palette; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
-
-[_ISToolPreCompile]
-Name: create_install_files_pkg.bat; Parameters: ; Flags: runminimized
-Name: create_source_package.bat; Parameters: ; Flags: runminimized
 
 [Code]
 // -- Version checking functions
@@ -197,6 +196,8 @@ begin
 						result := true;
 					end;
 				end;
+			end else begin
+				result := true;
 			end;
 		end else begin
 			result := true;
