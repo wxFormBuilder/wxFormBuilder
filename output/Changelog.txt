@@ -6,9 +6,11 @@
   of wxMenu class can be now assigned directly to these objects. The context menu
   is displayed on a right-mouse-button click by default, but the behaviour can be
   changed by "context_menu" widget's option. Note that this feature is supported
-  in C++ a Python code generation only.
+  in C++ and Python code generation only.
 * FS#280 - wxMenu not part of a wxMenuBar 
 * Fixed startup crash on MacOS X 10.5.7 (for wxWidgets 2.8.10)
+* Fixed loading of wxTreeListCtrl events that were inherited from wxTreeCtrl in 
+  wxAdditions.
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default
