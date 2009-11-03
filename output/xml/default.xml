@@ -162,6 +162,25 @@
 		<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
 	  </category>
   </objectinfo>
+  <objectinfo class="wxTreeCtrlBase" type="interface">
+    <event name="OnTreeBeginDrag" class="wxTreeEvent" help="Begin dragging with the left mouse button." />
+	<event name="OnTreeBeginRDrag" class="wxTreeEvent" help="Begin dragging with the right mouse button." />
+	<event name="OnTreeEndDrag" class="wxTreeEvent" help="End dragging with the left or right mouse button." />
+	<event name="OnTreeBeginLabelEdit" class="wxTreeEvent" help="Begin editing a label. This can be prevented by calling Veto()." />
+	<event name="OnTreeEndLabelEdit" class="wxTreeEvent" help="Finish editing a label. This can be prevented by calling Veto()." />
+	<event name="OnTreeDeleteItem" class="wxTreeEvent" help="Delete an item." />
+	<event name="OnTreeItemActivated" class="wxTreeEvent" help="The item has been activated, i.e. chosen by double clicking it with mouse or from keyboard." />
+	<event name="OnTreeItemCollapsed" class="wxTreeEvent" help="The item has been collapsed." />
+	<event name="OnTreeItemCollapsing" class="wxTreeEvent" help="The item is being collapsed. This can be prevented by calling Veto()." />
+	<event name="OnTreeItemExpanded" class="wxTreeEvent" help="The item has been expanded." />
+	<event name="OnTreeItemExpanding" class="wxTreeEvent" help="The item is being expanded. This can be prevented by calling Veto()." />
+	<event name="OnTreeItemRightClick" class="wxTreeEvent" help="The user has clicked the item with the right mouse button" />
+	<event name="OnTreeItemMiddleClick" class="wxTreeEvent" help="The user has clicked the item with the middle mouse button." />
+	<event name="OnTreeSelChanged" class="wxTreeEvent" help="Selection has changed." />
+	<event name="OnTreeSelChanging" class="wxTreeEvent" help="Selection is changing. This can be prevented by calling Veto()." />
+	<event name="OnTreeKeyDown" class="wxTreeEvent" help="A key has been pressed." />
+	<event name="OnTreeItemMenu" class="wxTreeEvent" help="The context menu for the selected item has been requested, either by a right click or by using the menu key." />
+  </objectinfo>
   <objectinfo class="UserClasses" 	type="interface">
 	<property name="name" type="text" />
 	<property name="basename" type="text" />

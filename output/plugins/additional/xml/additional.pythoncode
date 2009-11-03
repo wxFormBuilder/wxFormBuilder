@@ -26,26 +26,6 @@ Python code generation written by
 -->
 <codegen language="Python">
 
-  <templates class="wxTreeCtrlBase">
-	<template name="evt_connect_OnTreeBeginDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_DRAG, #handler )</template>
-	<template name="evt_connect_OnTreeBeginRDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_RDRAG, #handler )</template>
-	<template name="evt_connect_OnTreeEndDrag">self.$name.Bind( wx.EVT_TREE_END_DRAG, #handler )</template>
-	<template name="evt_connect_OnTreeBeginLabelEdit">self.$name.Bind( wx.EVT_TREE_BEGIN_LABEL_EDIT, #handler )</template>
-	<template name="evt_connect_OnTreeEndLabelEdit">self.$name.Bind( wx.EVT_TREE_END_LABEL_EDIT, #handler )</template>
-	<template name="evt_connect_OnTreeDeleteItem">self.$name.Bind( wx.EVT_TREE_DELETE_ITEM, #handler )</template>
-	<template name="evt_connect_OnTreeItemActivated">self.$name.Bind( wx.EVT_TREE_ITEM_ACTIVATED, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsed">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSED, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsing">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSING, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanded">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDED, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanding">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDING, #handler )</template>
-	<template name="evt_connect_OnTreeItemRightClick">self.$name.Bind( wx.EVT_TREE_ITEM_RIGHT_CLICK, #handler )</template>
-	<template name="evt_connect_OnTreeItemMiddleClick">self.$name.Bind( wx.EVT_TREE_ITEM_MIDDLE_CLICK, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanged">self.$name.Bind( wx.EVT_TREE_SEL_CHANGED, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanging">self.$name.Bind( wx.EVT_TREE_SEL_CHANGING, #handler )</template>
-	<template name="evt_connect_OnTreeKeyDown">self.$name.Bind( wx.EVT_TREE_KEY_DOWN, #handler )</template>
-	<template name="evt_connect_OnTreeItemMenu">self.$name.Bind( wx.EVT_TREE_ITEM_MENU, #handler )</template>
-  </templates>
-
   <templates class="wxTreeCtrl">
     <template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
 	<template name="evt_connect_OnTreeGetInfo">self.$name.Bind( wx.EVT_TREE_GET_INFO, #handler )</template>

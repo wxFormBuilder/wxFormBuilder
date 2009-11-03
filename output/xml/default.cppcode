@@ -156,6 +156,42 @@
 		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
   </templates>
+  <templates class="wxTreeCtrlBase">
+    <template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_DRAG, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginRDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_RDRAG, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnTreeEndDrag">$name->Connect( wxEVT_COMMAND_TREE_END_DRAG, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_connect_OnTreeBeginLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+	<template name="evt_connect_OnTreeEndLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_END_LABEL_EDIT, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+	<template name="evt_connect_OnTreeDeleteItem">$name->Connect( wxEVT_COMMAND_TREE_DELETE_ITEM, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemActivated">$name->Connect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemCollapsed">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemCollapsing">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemExpanded">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemExpanding">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDING, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemRightClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemMiddleClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnTreeSelChanged">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+	<template name="evt_connect_OnTreeSelChanging">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGING, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+	<template name="evt_connect_OnTreeKeyDown">$name->Connect( wxEVT_COMMAND_TREE_KEY_DOWN, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnTreeItemMenu">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, #handler, NULL, this );</template>
+  </templates>
   <templates class="UserClasses">
 		<template name="header_comment">
 			/** #nl
