@@ -174,7 +174,7 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 		{
 			// Do not generate context menus assigned to forms or widgets
 			std::string parent_name = parent->GetAttribute( "class" );
-			if( parent_name != "wxMenuBar" )
+			if( (parent_name != "wxMenuBar") && (parent_name != "wxMenu") )
 			{
 				delete element;
 				return NULL;
