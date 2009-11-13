@@ -12,6 +12,7 @@
 * Fixed loading of wxTreeListCtrl events that were inherited from wxTreeCtrl in 
   wxAdditions.
 * FS#444 - python code generation error
+* FS#428 - extra import(s) in wxpython code generation
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default

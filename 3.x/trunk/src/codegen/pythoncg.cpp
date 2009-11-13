@@ -486,10 +486,9 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 
 	// Generate the subclass sets
 	std::set< wxString > subclasses;
-	std::set< wxString > subclassSourceIncludes;
 	std::vector< wxString > headerIncludes;
 
-	GenSubclassSets( project, &subclasses, &subclassSourceIncludes, &headerIncludes );
+	GenSubclassSets( project, &subclasses, &headerIncludes );
 
 	// Generating in the .h header file those include from components dependencies.
 	std::set< wxString > templates;
@@ -779,12 +778,12 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_en
 	m_source->WriteLn( wxT("") );
 }
 
-void PythonCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes )
+void PythonCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes )
 {
 	// Call GenSubclassForwardDeclarations on all children as well
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 	{
-		GenSubclassSets( obj->GetChild( i ), subclasses, sourceIncludes, headerIncludes );
+		GenSubclassSets( obj->GetChild( i ), subclasses, headerIncludes );
 	}
 
 	// Fill the set
@@ -840,18 +839,11 @@ void PythonCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >
 			return;
 		}
 
-		wxString include = wxT("import ") + headerVal;
-		if ( pkg->GetPackageName() == wxT("Forms") )
+		wxString include = wxT("from ") + headerVal + wxT(" import ") + nameVal;
+		std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
+		if ( headerIncludes->end() == it )
 		{
-			std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
-			if ( headerIncludes->end() == it )
-			{
-				headerIncludes->push_back( include );
-			}
-		}
-		else
-		{
-			sourceIncludes->insert( include );
+			headerIncludes->push_back( include );
 		}
 	}
 }
