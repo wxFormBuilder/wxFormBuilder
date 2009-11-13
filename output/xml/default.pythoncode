@@ -42,7 +42,7 @@
 
 		<!-- wxKeyEvent -->
 		<template name="evt_connect_OnChar">self.$name.Bind( wx.EVT_CHAR, #handler )</template>
-		<template name="evt_connect_OnKeyDown">self.$name.Bind( wxvEVT_KEY_DOWN, #handler )</template>
+		<template name="evt_connect_OnKeyDown">self.$name.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_connect_OnKeyUp">self.$name.Bind( wx.EVT_KEY_UP, #handler )</template>
 
 		<!-- wxMouseEvent -->
