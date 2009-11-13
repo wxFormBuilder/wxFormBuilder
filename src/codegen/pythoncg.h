@@ -146,10 +146,9 @@ private:
 	void AddUniqueIncludes( const wxString& include, std::vector< wxString >* includes );
 
 	/**
-	* Generate a set of all subclasses to forward declare in the generated header file.
-	* Also generate sets of header files to be include in either the source or header file.
+	* Generate a set of all subclasses to forward declare in the generated file.
 	*/
-	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes );
+	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes );
 
 	/**
 	* Generates the '#define' section for macros.
