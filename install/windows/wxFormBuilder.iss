@@ -55,8 +55,8 @@ MinVersion=0,5.0
 #endif
 
 ; -- Pre-Build Step
-#expr Exec( "create_install_files_pkg.bat", NULL, ".", 1, SW_SHOWMINIMIZED )
-#expr Exec( "create_source_package.bat", NULL, ".", 1, SW_SHOWMINIMIZED )
+#expr Exec( "create_install_files_pkg.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
+;#expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 
 [Messages]
 BeveledLabel={#MyAppName} v{#MyAppVer}-Beta
@@ -218,4 +218,6 @@ begin
 	end;
 end;
 // -- END -- Version checking
+
+
 

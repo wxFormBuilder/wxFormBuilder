@@ -53,8 +53,8 @@ mkdir files
 
 :BEGIN_COPY
 
-echo Coping 'output' directory to 'files' Current Directory: %CD%
-call xcopy ..\..\output files /E /I /H /Y /EXCLUDE:excludes
+echo Copying 'output' directory to 'files' Current Directory: %CD%
+xcopy ..\..\..\output files /F /E /I /H /Y /EXCLUDE:excludes > xcopy.log 2>&1
 
 goto END
 
