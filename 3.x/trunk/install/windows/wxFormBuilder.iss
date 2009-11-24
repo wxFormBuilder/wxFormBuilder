@@ -55,7 +55,8 @@ MinVersion=0,5.0
 #endif
 
 ; -- Pre-Build Step
-#expr Exec( "create_install_files_pkg.bat" )
+#expr Exec( "xcopy", "..\..\output files /E /I /H /Y /EXCLUDE:excludes" )
+;#expr Exec( "create_install_files_pkg.bat" )
 ;#expr Exec( "create_install_files_pkg.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 ;#expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 
@@ -219,6 +220,7 @@ begin
 	end;
 end;
 // -- END -- Version checking
+
 
 
 
