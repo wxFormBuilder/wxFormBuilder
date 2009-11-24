@@ -1,12 +1,12 @@
 @echo off
 ::**************************************************************************
 :: File:           create_source_package.bat
-:: Version:        1.03
+:: Version:        1.06
 :: Name:           RJP Computing 
 :: Date:           03/15/2007
 :: Description:    Creates a source directory so that the installer can
 ::                 include only the needed files.
-:: Copyright (C) 2007 RJP Computing
+:: Copyright (C) 2009 RJP Computing
 ::
 :: This program is free software; you can redistribute it and/or
 :: modify it under the terms of the GNU General Public License
@@ -22,7 +22,7 @@
 :: along with this program; if not, write to the Free Software
 :: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ::**************************************************************************
-set APP_VERSION=1.05
+set APP_VERSION=1.06
 set APP_TITLE=Create Source Package
 
 echo ----------------------------------------
@@ -61,22 +61,22 @@ echo     %SVN_REPOS%
 echo.
 
 echo [svn] Exporting workspace and premake scripts.
-%SVN_EXPORT% --non-recursive %SVN_REPOS% source\
+call %SVN_EXPORT% --non-recursive %SVN_REPOS% source\
 
 echo [svn] Exporting 'output' directory to 'source\output'
-%SVN_EXPORT% %SVN_REPOS%/output source\output
+call %SVN_EXPORT% %SVN_REPOS%/output source\output
 
 echo [svn] Exporting 'plugins' directory to 'source\plugins'
-%SVN_EXPORT% %SVN_REPOS%/plugins source\plugins
+call %SVN_EXPORT% %SVN_REPOS%/plugins source\plugins
 
 ::echo [svn] Exporting 'premake' directory to 'source\premake'
-::%SVN_EXPORT% %SVN_REPOS%/premake source\premake
+::call %SVN_EXPORT% %SVN_REPOS%/premake source\premake
 
 echo [svn] Exporting 'sdk' directory to 'source\sdk'
-%SVN_EXPORT% %SVN_REPOS%/sdk source\sdk
+call %SVN_EXPORT% %SVN_REPOS%/sdk source\sdk
 
 echo [svn] Exporting 'src' directory to 'source\src'
-%SVN_EXPORT% %SVN_REPOS%/src source\src
+call %SVN_EXPORT% %SVN_REPOS%/src source\src
 
 
 goto END
