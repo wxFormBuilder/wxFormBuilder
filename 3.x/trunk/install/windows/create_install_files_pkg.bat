@@ -1,12 +1,12 @@
 @echo off
 ::**************************************************************************
 :: File:           create_install_files_pkg.bat
-:: Version:        1.00
+:: Version:        1.02
 :: Name:           RJP Computing 
 :: Date:           03/01/2007
 :: Description:    Creates the install files package. This doesn't get the
 ::                 files from Subversion it just uses the export function.
-:: Copyright (C) 2007 RJP Computing
+:: Copyright (C) 2009 RJP Computing
 ::
 :: This program is free software; you can redistribute it and/or
 :: modify it under the terms of the GNU General Public License
@@ -25,8 +25,9 @@
 :: Notes:          1.00 - Initial release.
 ::                 1.01 - Changed where to copy files from to match new
 ::                        layout.
+::                 1.02 - Adding 'call' to the commands called.
 ::**************************************************************************
-set APP_VERSION=1.01
+set APP_VERSION=1.02
 set APP_TITLE=Create Install Files Package
 
 echo ----------------------------------------
@@ -40,6 +41,8 @@ echo             Copyright (c) 2007
 echo ----------------------------------------
 echo.
 
+echo Current Directory: %CD%
+ 
 :: Cleanup old source.
 if exist files rmdir /S /Q files
 
@@ -50,8 +53,8 @@ mkdir files
 
 :BEGIN_COPY
 
-echo Coping 'output' directory to 'files'
-xcopy ..\..\output files /E /I /H /Y /EXCLUDE:excludes
+echo Coping 'output' directory to 'files' Current Directory: %CD%
+call xcopy ..\..\output files /E /I /H /Y /EXCLUDE:excludes
 
 goto END
 
