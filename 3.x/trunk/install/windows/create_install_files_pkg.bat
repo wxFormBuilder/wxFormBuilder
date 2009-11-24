@@ -54,7 +54,7 @@ mkdir files
 :BEGIN_COPY
 
 echo Copying 'output' directory to 'files' Current Directory: %CD%
-xcopy ..\..\..\output files /F /E /I /H /Y /EXCLUDE:excludes > xcopy.log 2>&1
+xcopy ..\..\output files /F /E /I /H /Y /EXCLUDE:excludes > xcopy.log 2>&1
 
 goto END
 
