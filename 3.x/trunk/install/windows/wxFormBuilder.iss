@@ -47,8 +47,8 @@ UninstallDisplayIcon={app}\wxFormBuilder.exe
 ChangesAssociations=true
 VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
-InfoAfterFile=files\Changelog.txt
-LicenseFile=files\license.txt
+InfoAfterFile=..\..\output\Changelog.txt
+LicenseFile=..\..\output\license.txt
 #if defined UNICODE
 ;MinVersion=0,4.0.1381sp6
 MinVersion=0,5.0
@@ -217,6 +217,7 @@ begin
 	end;
 end;
 // -- END -- Version checking
+
 
 
 
