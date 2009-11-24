@@ -55,10 +55,7 @@ MinVersion=0,5.0
 #endif
 
 ; -- Pre-Build Step
-#expr Exec( "xcopy", "..\..\output files /E /I /H /Y /EXCLUDE:excludes" )
-;#expr Exec( "create_install_files_pkg.bat" )
-;#expr Exec( "create_install_files_pkg.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
-;#expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
+#expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 
 [Messages]
 BeveledLabel={#MyAppName} v{#MyAppVer}-Beta
@@ -68,9 +65,9 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 #if defined UNICODE
-Source: files\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db
 #else
-Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db
 #endif
 Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main\srccode
 
