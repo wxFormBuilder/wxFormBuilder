@@ -520,10 +520,21 @@ PObjectBase ApplicationData::GetSelectedObject()
 
 PObjectBase ApplicationData::GetSelectedForm()
 {
-	if ( m_selObj->GetObjectTypeName() == wxT( "form" ) )
+	PObjectBase retObj;
+	
+	if( m_selObj->GetObjectTypeName() == wxT( "form" ) )
 		return m_selObj;
-	else
-		return m_selObj->FindNearAncestor( wxT( "form" ) );
+	else if( m_selObj->GetObjectTypeName() == wxT( "menubar_form" ) )
+		return m_selObj;
+	else if( m_selObj->GetObjectTypeName() == wxT( "toolbar_form" ) )
+		return m_selObj;
+	
+	retObj = m_selObj->FindNearAncestor( wxT( "form" ) );
+	
+	if( retObj == NULL ) retObj = m_selObj->FindNearAncestor( wxT( "menubar_form" ) );
+	if( retObj == NULL ) retObj = m_selObj->FindNearAncestor( wxT( "toolbar_form" ) );
+	
+	return retObj;
 }
 
 

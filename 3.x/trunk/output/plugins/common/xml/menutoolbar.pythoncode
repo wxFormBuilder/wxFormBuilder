@@ -55,6 +55,10 @@ Python code generation writen by
                 @{
 			self.#parent $name.Append( self.$name, $label )
 		@}
+		#ifparenttypeequal "menubar_form"
+                @{
+			self.Append( self.$name, $label )
+		@}
    	</template>
     <template name="generated_event_handlers">
 		#ifnotnull #parent $context_menu
@@ -149,7 +153,16 @@ Python code generation writen by
   </templates>
 
   <templates class="tool">
-    <template name="construction">self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar )</template>
+    <template name="construction">
+	#ifparenttypeequal "toolbar"
+        @{
+		self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar )
+	@}
+	#ifparenttypeequal "toolbar_form"
+        @{
+		self.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar )
+	@}
+    	</template>
 	<template name="evt_connect_OnToolClicked">self.Bind( wx.EVT_TOOL, #handler, id = $id )</template>
 	<template name="evt_disconnect_OnToolClicked">self.Unbind( wx.EVT_TOOL, id = $id )</template>
 	<template name="evt_connect_OnToolRClicked">self.Bind( wx.EVT_TOOL_RCLICKED, #handler, id = $id )</template>

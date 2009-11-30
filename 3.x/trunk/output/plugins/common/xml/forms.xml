@@ -129,4 +129,33 @@ Written by
 	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialized." />
   </objectinfo>
 
+  <objectinfo class="MenuBar" icon="menubar.xpm" type="menubar_form" startgroup="1">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">MyMenuBar</property>
+    <property name="label" type="wxString_i18n">MyMenuBar</property>
+    <property name="style" type="bitlist">
+      <option name="wxMB_DOCKABLE" help="Allows the menu bar to be detached (wxGTK only)."/>
+    </property>
+  </objectinfo>
+
+  <objectinfo class="ToolBar" icon="toolbar.xpm" type="toolbar_form">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">MyToolBar</property>
+    <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels." />
+    <property name="margins" type="wxSize"    help="Values to be used as margins for the toolbar." />
+    <property name="packing" type="uint"      help="Value used for spacing tools. Remarks: The packing is used for spacing in the vertical direction if the toolbar is horizontal, and for spacing in the horizontal direction if the toolbar is vertical.">1</property>
+    <property name="separation" type="uint"   help="The default separator size. Remarks: This is the size between each toolbar tool.">5</property>
+    <property name="style" type="bitlist">
+      <option name="wxTB_FLAT"                help="Gives the toolbar a flat look (Windows and GTK only)." />
+      <option name="wxTB_DOCKABLE"            help="Makes the toolbar floatable and dockable (GTK only)." />
+      <option name="wxTB_HORIZONTAL"          help="Specifies horizontal layout." />
+      <option name="wxTB_VERTICAL"            help="Specifies vertical layout." />
+      <option name="wxTB_TEXT"                help="Shows the text in the toolbar buttons; by default only icons are shown." />
+      <option name="wxTB_NOICONS"             help="Specifies no icons in the toolbar buttons; by default they are shown." />
+      <option name="wxTB_NODIVIDER"           help="Specifies no divider (border) above the toolbar (Windows only)." />
+      <option name="wxTB_NOALIGN"             help="Specifies no alignment with the parent window (Windows only, not very useful)." />
+      <option name="wxTB_HORZ_LAYOUT"         help="Shows the text and the icons alongside, not vertically stacked (Windows and GTK 2 only). This style must be used with wxTB_TEXT." />
+      <option name="wxTB_HORZ_TEXT"           help="Combination of wxTB_HORZ_LAYOUT and wxTB_TEXT." />wxTB_HORIZONTAL</property>
+  </objectinfo>
+
 </package>

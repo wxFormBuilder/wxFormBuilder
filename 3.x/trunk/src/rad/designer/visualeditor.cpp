@@ -318,7 +318,12 @@ void VisualEditor::Create()
 		{
 			PObjectBase child = m_form->GetChild( i );
 
-			if (child->GetObjectTypeName() == wxT("menubar") )
+			if( !menubar && (m_form->GetObjectTypeName() == wxT("menubar_form")) )
+			{
+				// main form acts as a menubar
+				menubar = m_form;
+			}
+			else if (child->GetObjectTypeName() == wxT("menubar") )
 			{
 				// Create the menubar later
 				menubar = child;
@@ -346,7 +351,14 @@ void VisualEditor::Create()
 			}
 
 			// Attach the toolbar (if any) to the frame
-			if (child->GetClassName() == wxT("wxToolBar") )
+			if( !toolbar && (m_form->GetObjectTypeName() == wxT("toolbar_form")) )
+			{
+				Generate( m_form, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
+				
+				ObjectBaseMap::iterator it = m_baseobjects.find( m_form.get() );
+				toolbar = wxDynamicCast( it->second, wxToolBar );
+			}
+			else if (child->GetClassName() == wxT("wxToolBar") )
 			{
 				ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 				toolbar = wxDynamicCast( it->second, wxToolBar );
@@ -958,7 +970,7 @@ wxMenu* DesignerWindow::GetMenuFromObject(PObjectBase menu)
 
 void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow *statusbar)
 {
-  wxWindow *contentPanel = GetFrameContentPanel();
+	wxWindow *contentPanel = GetFrameContentPanel();
 	Menubar *mbWidget = NULL;
 
 
