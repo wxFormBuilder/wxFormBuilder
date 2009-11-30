@@ -1338,6 +1338,8 @@ BEGIN_LIBRARY()
 ABSTRACT_COMPONENT("Frame",FrameFormComponent)
 ABSTRACT_COMPONENT("Panel",PanelFormComponent)
 ABSTRACT_COMPONENT("Dialog",DialogFormComponent)
+ABSTRACT_COMPONENT("MenuBar",MenuBarComponent)
+ABSTRACT_COMPONENT("ToolBar",ToolBarComponent)
 
 WINDOW_COMPONENT("wxButton",ButtonComponent)
 WINDOW_COMPONENT("wxBitmapButton",BitmapButtonComponent)

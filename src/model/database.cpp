@@ -1212,6 +1212,8 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 bool ObjectDatabase::ShowInPalette(wxString type)
 {
 	return (type == wxT("form")					||
+			type == wxT("menubar_form")			||
+			type == wxT("toolbar_form")			||
 			type == wxT("sizer")				||
 			type == wxT("gbsizer")				||
 			type == wxT("menu")					||

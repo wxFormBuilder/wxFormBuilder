@@ -42,6 +42,8 @@
   -->
   <objtype name="project">
     <childtype name="form" />
+    <childtype name="menubar_form" />
+    <childtype name="toolbar_form" />
   </objtype>
 
   <objtype name="interface" />
@@ -52,6 +54,14 @@
     <childtype name="menu" nmax="1" />
     <childtype name="statusbar" nmax="1" />
     <childtype name="toolbar" nmax="1" />
+  </objtype>
+
+  <objtype name="menubar_form">
+    <childtype name="menu" />
+  </objtype>
+
+  <objtype name="toolbar_form">
+    <childtype name="tool" />
   </objtype>
 
   <objtype name="widget">

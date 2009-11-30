@@ -2,7 +2,7 @@
 ********************************************************************************
 08/27/2009 Version 3.01.65 (Beta)
 * Fixed menu items' shortcuts in XRC
-* Implemented context menus for forms, containers and widgets. An instance
++ Implemented context menus for forms, containers and widgets. An instance
   of wxMenu class can be now assigned directly to these objects. The context menu
   is displayed on a right-mouse-button click by default, but the behaviour can be
   changed by "context_menu" widget's option. Note that this feature is supported
@@ -14,6 +14,9 @@
 * FS#444 - python code generation error
 * FS#428 - extra import(s) in wxpython code generation
 * FS#446 - Can't add Submenu to a Menu
++ Menubar and toolbar can be inserted into project as top-level objects (they will
+  be generated as stand-alone classes which can be instantiated later or directly into XRC).
+  See 'Forms' palette.
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default

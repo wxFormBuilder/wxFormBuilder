@@ -67,7 +67,12 @@ Written by
 		#ifparenttypeequal "menubar"
                 @{
 			#parent $name->Append( $name, $label );
-		@}@}
+		@}
+		#ifparenttypeequal "menubar_form"
+                @{
+			Append( $name, $label );
+		@}
+		@}
     </template>
     <template name="generated_event_handlers">
 		#ifnotnull #parent $context_menu
@@ -194,7 +199,16 @@ Written by
   </templates>
 
   <templates class="tool">
-    <template name="construction">#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );</template>
+    <template name="construction">
+	#ifparenttypeequal "toolbar"
+        @{
+		#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );
+	@}
+	#ifparenttypeequal "toolbar_form"
+        @{
+		AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );
+	@}
+    </template>
 	<template name="evt_entry_OnToolClicked">EVT_TOOL( $id, #handler )</template>
 	<template name="evt_connect_OnToolClicked">this->Connect( $id, wxEVT_COMMAND_TOOL_CLICKED, #handler );</template>
 	<template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
@@ -208,6 +222,15 @@ Written by
   </templates>
 
   <templates class="toolSeparator">
-    <template name="construction">#parent $name->AddSeparator();</template>
+    <template name="construction">
+	#ifparenttypeequal "toolbar"
+        @{
+		#parent $name->AddSeparator();
+	@}
+	#ifparenttypeequal "toolbar_form"
+        @{
+		AddSeparator();
+	@}
+    </template>
   </templates>
 </codegen>

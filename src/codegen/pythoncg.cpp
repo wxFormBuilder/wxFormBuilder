@@ -956,10 +956,10 @@ void PythonCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVect
 {
 	m_source->WriteLn();
 	// generate function definition
-	m_source->WriteLn( wxT("def __init__( self, parent ):") );
+	m_source->WriteLn( GetCode( class_obj, wxT("cons_def") ) );
 	m_source->Indent();
 
-	m_source->WriteLn( GetCode( class_obj, wxT("cons_def") ) );
+	m_source->WriteLn( GetCode( class_obj, wxT("cons_call") ) );
 	m_source->WriteLn();
 
 	wxString settings = GetCode( class_obj, wxT("settings") );
