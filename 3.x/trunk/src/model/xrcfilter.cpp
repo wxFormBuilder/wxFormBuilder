@@ -108,7 +108,7 @@ PObjectBase XrcLoader::GetObject( ticpp::Element *xrcObj, PObjectBase parent )
 	// "separator" is also ambiguous - could be a toolbar separator or a menu separator
 	else if ( className == "separator" )
 	{
-		if ( parent->GetClassName() == wxT( "wxToolBar" ) )
+		if ( parent->GetClassName() == wxT( "wxToolBar" ) ||  parent->GetClassName() == wxT( "ToolBar" ) )
 		{
 			className = "toolSeparator";
 		}

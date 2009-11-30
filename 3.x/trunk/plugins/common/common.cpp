@@ -212,6 +212,125 @@ public:
 	}
 };
 
+class MenuBarFormComponent : public ComponentBase
+{
+public:
+
+	wxObject* Create(IObject *obj, wxObject* /*parent*/)
+	{
+		wxMenuBar *mb = new wxMenuBar(obj->GetPropertyAsInteger(_("style")) |
+			obj->GetPropertyAsInteger(_("window_style")));
+		return mb;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
+		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("MenuBar"));
+		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		return filter.GetXfbObject();
+	}
+};
+
+class ToolBarFormComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxToolBar *tb = new wxToolBar((wxWindow*)parent, -1,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN | wxTB_NODIVIDER | wxNO_BORDER);
+
+		if (!obj->IsNull(_("bitmapsize")))
+			tb->SetToolBitmapSize(obj->GetPropertyAsSize(_("bitmapsize")));
+		if (!obj->IsNull(_("margins")))
+		{
+			wxSize margins(obj->GetPropertyAsSize(_("margins")));
+			tb->SetMargins(margins.GetWidth(), margins.GetHeight());
+		}
+		if (!obj->IsNull(_("packing")))
+			tb->SetToolPacking(obj->GetPropertyAsInteger(_("packing")));
+		if (!obj->IsNull(_("separation")))
+			tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
+
+		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
+
+		return tb;
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxToolBar* tb = wxDynamicCast( wxobject, wxToolBar );
+		if ( NULL == tb )
+		{
+			// very very strange
+			return;
+		}
+
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if ( wxT("tool") == childObj->GetClassName() )
+			{
+				tb->AddTool( 	wxID_ANY,
+								childObj->GetPropertyAsString( _("label") ),
+								childObj->GetPropertyAsBitmap( _("bitmap") ),
+								wxNullBitmap,
+								(wxItemKind)childObj->GetPropertyAsInteger( _("kind") ),
+								childObj->GetPropertyAsString( _("help") ),
+								wxEmptyString,
+								child
+							);
+			}
+			else if ( wxT("toolSeparator") == childObj->GetClassName() )
+			{
+				tb->AddSeparator();
+			}
+			else
+			{
+				wxControl* control = wxDynamicCast( child, wxControl );
+				if ( NULL != control )
+				{
+					tb->AddControl( control );
+				}
+			}
+		}
+		tb->Realize();
+
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxToolBar"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
+		xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		xrc.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("ToolBar"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+		return filter.GetXfbObject();
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 // WIDGETS
 ///////////////////////////////////////////////////////////////////////////////
@@ -1338,8 +1457,8 @@ BEGIN_LIBRARY()
 ABSTRACT_COMPONENT("Frame",FrameFormComponent)
 ABSTRACT_COMPONENT("Panel",PanelFormComponent)
 ABSTRACT_COMPONENT("Dialog",DialogFormComponent)
-ABSTRACT_COMPONENT("MenuBar",MenuBarComponent)
-ABSTRACT_COMPONENT("ToolBar",ToolBarComponent)
+ABSTRACT_COMPONENT("MenuBar",MenuBarFormComponent)
+ABSTRACT_COMPONENT("ToolBar",ToolBarFormComponent)
 
 WINDOW_COMPONENT("wxButton",ButtonComponent)
 WINDOW_COMPONENT("wxBitmapButton",BitmapButtonComponent)
