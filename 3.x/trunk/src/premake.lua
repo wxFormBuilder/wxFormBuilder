@@ -62,7 +62,7 @@ package.links = { "wxFlatNotebook", "wxPropGrid", "wxScintilla", "TiCPP", "plugi
 
 -- Add libraries and build options for stack trace in MinGW
 if ( windows and ( (string.find( target or "", ".*-gcc" )) or (target == "gnu") ) ) then
-	table.insert( package.links, { "bfd", "iberty", "psapi", "imagehlp" } )
+	table.insert( package.links, { "bfd", "intl", "iberty", "psapi", "imagehlp" } )
 	table.insert( package.buildoptions, "-gstabs" )
 end
 
