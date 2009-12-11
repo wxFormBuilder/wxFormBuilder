@@ -216,7 +216,7 @@ void VisualEditor::Create()
 	{
 		Freeze(); // Prevent flickering
 	}
-
+	
 	// Delete objects which had no parent
 	DeleteAbstractObjects();
 
@@ -236,7 +236,7 @@ void VisualEditor::Create()
 	if ( m_form )
 	{
 		m_back->Show(true);
-
+		
 		// --- [1] Configure the size of the form ---------------------------
 
 		// Get size properties
