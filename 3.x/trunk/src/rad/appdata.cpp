@@ -771,13 +771,13 @@ void ApplicationData::CreateObject( wxString name )
 			}
 		}
 
-		NotifyObjectCreated( obj );
-
 		// Seleccionamos el objeto, si este es un item entonces se selecciona
 		// el objeto contenido. ¿Tiene sentido tener un item debajo de un item?
 
 		while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
 			obj = ( obj->GetChildCount() > 0 ? obj->GetChild( 0 ) : PObjectBase() );
+			
+		NotifyObjectCreated( obj );
 
 		if ( obj )
 		{
@@ -810,6 +810,7 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 	//  When removing an object it is important that the "item" objects
 	// are not left behind
 	PObjectBase parent = obj->GetParent();
+	PObjectBase deleted_obj = obj;
 
 	if ( parent )
 	{
@@ -832,7 +833,7 @@ void ApplicationData::DoRemoveObject( PObjectBase obj, bool cutObject )
 			Execute( command );
 		}
 
-		NotifyObjectRemoved( obj );
+		NotifyObjectRemoved( deleted_obj );
 		SelectObject( GetSelectedObject(), true, true );
 	}
 	else
