@@ -107,7 +107,7 @@ void ObjectTree::RebuildTree()
 		AddChildren(project, dummy, true );
 
 		// Expand items that were previously expanded
-		//RestoreItemStatus(project);
+		RestoreItemStatus(project);
 	}
 
 	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
@@ -230,9 +230,14 @@ void ObjectTree::OnExpansionChange(wxTreeEvent &event)
 	{
 		PObjectBase obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
+		
 		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+		
 		AppData()->ExpandObject( obj, m_tcObjects->IsExpanded( id ) );
+		
 		Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
+		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	}
 }
 
@@ -438,7 +443,7 @@ void ObjectTree::OnObjectExpanded( wxFBObjectEvent& event )
 
 void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 {
-  PObjectBase obj = event.GetFBObject();
+    PObjectBase obj = event.GetFBObject();
 
 	// Find the tree item associated with the object and select it
 	ObjectItemMap::iterator it = m_map.find(obj);
