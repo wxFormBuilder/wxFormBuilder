@@ -60,6 +60,9 @@ private:
    int GetImageIndex (wxString type);
    void UpdateItem(wxTreeItemId id, PObjectBase obj);
    void RestoreItemStatus(PObjectBase obj);
+   void AddItem(PObjectBase item, PObjectBase parent);
+   void RemoveItem(PObjectBase item);
+   void ClearMap(PObjectBase obj);
 
    PObjectBase GetObjectFromTreeItem( wxTreeItemId item );
 
