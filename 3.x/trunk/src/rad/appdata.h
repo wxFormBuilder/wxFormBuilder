@@ -202,6 +202,7 @@ class ApplicationData
 		*/
 		void TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName );
 
+		void PropagateExpansion(PObjectBase obj, bool expand, bool up);
 
 		// hiden constructor
 		ApplicationData( const wxString &rootdir = wxT( "." ) );

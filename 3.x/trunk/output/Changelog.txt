@@ -18,6 +18,8 @@
   be generated as stand-alone classes which can be instantiated later or directly into XRC).
   See 'Forms' palette.
 ^ Significantly improved speed of adding/removing of project items on large projects.
+^ Significantly improved speed of undo/redo/paste operations on large projects (note for existing projects: 
+  the patch will have an effect after manual expansion and collapsion of all form-based items in the object tree).
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default
