@@ -113,8 +113,6 @@ void ObjectTree::RebuildTree()
 	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	
-	m_tcObjects->Expand( m_map.find( project )->second );
-	
 	m_tcObjects->Thaw();
 }
 
@@ -235,7 +233,7 @@ void ObjectTree::OnExpansionChange(wxTreeEvent &event)
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 		
 		AppData()->ExpandObject( obj, m_tcObjects->IsExpanded( id ) );
-		
+
 		Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
 		Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	}
@@ -362,8 +360,8 @@ void ObjectTree::RestoreItemStatus(PObjectBase obj)
 
 		if ( obj->GetExpanded() )
 			m_tcObjects->Expand(id);
-		else
-			m_tcObjects->Collapse(id);
+		/*else
+			m_tcObjects->Collapse(id);*/
 	}
 
 	unsigned int i,count = obj->GetChildCount();

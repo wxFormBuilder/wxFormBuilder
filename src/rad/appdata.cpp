@@ -708,7 +708,39 @@ void ApplicationData::ExpandObject( PObjectBase obj, bool expand )
 {
 	PCommand command( new ExpandObjectCmd( obj, expand ) );
 	Execute( command );
+	
+	// collapse also all children ...
+	PropagateExpansion( obj, expand, !expand );
+	
 	NotifyObjectExpanded( obj );
+}
+
+void ApplicationData::PropagateExpansion( PObjectBase obj, bool expand, bool up )
+{
+	if( obj )
+	{
+		if( up )
+		{
+			PObjectBase child;
+			
+			for( size_t i = 0; i < obj->GetChildCount(); i++ )
+			{
+				child = obj->GetChild(i);
+				
+				PCommand command( new ExpandObjectCmd( child, expand ) );
+				Execute( command );
+				
+				PropagateExpansion( child, expand, up );
+			}
+		}
+		else
+		{
+			PropagateExpansion( obj->GetParent(), expand, up );
+			
+			PCommand command( new ExpandObjectCmd( obj, expand ) );
+			Execute( command );
+		}
+	}
 }
 
 bool ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, bool notify /*= true */ )
@@ -721,7 +753,7 @@ bool ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, boo
 	m_selObj = obj;
 
 	if ( notify )
-	{
+	{		
 		NotifyObjectSelected( obj );
 	}
 	return true;
