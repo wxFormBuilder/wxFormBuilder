@@ -810,7 +810,7 @@ void ApplicationData::CreateObject( wxString name )
 			obj = ( obj->GetChildCount() > 0 ? obj->GetChild( 0 ) : PObjectBase() );
 			
 		NotifyObjectCreated( obj );
-
+			
 		if ( obj )
 		{
 			SelectObject( obj, true, true );
