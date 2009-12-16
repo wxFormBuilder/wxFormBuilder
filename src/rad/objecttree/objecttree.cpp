@@ -468,7 +468,7 @@ void ObjectTree::OnObjectCreated ( wxFBObjectEvent &event )
 {
 	//RebuildTree();
 	
-	AddItem( event.GetFBObject(), event.GetFBObject()->GetParent() );
+	if( event.GetFBObject() ) AddItem( event.GetFBObject(), event.GetFBObject()->GetParent() );
 }
 
 void ObjectTree::OnObjectRemoved ( wxFBObjectEvent &event )
