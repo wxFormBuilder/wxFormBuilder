@@ -21,6 +21,7 @@
 ^ Significantly improved speed of undo/redo/paste operations on large projects (note for existing projects: 
   the patch will have an effect after manual expansion and collapsion of all form-based items in the object tree).
 * Fixed python code generation for wx.EVT_LIST_ITEM_DESELECTED event (wxListCtrl).
+* FS#420 - Minsize field is not generated.
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default

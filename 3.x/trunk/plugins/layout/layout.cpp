@@ -182,12 +182,15 @@ class BoxSizerComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
-		return new wxBoxSizer(obj->GetPropertyAsInteger(_("orient")));
+		wxBoxSizer *sizer = new wxBoxSizer(obj->GetPropertyAsInteger(_("orient")));
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
+		return sizer;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxBoxSizer"));
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
@@ -195,6 +198,7 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxBoxSizer"));
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
@@ -217,12 +221,15 @@ public:
 		wxStaticBoxSizer* sizer = new wxStaticBoxSizer(box,
 			obj->GetPropertyAsInteger(_("orient")));
 
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
+		
 		return sizer;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxStaticBoxSizer"));
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
@@ -231,6 +238,7 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxStaticBoxSizer"));
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -242,16 +250,21 @@ class GridSizerComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
-		return new wxGridSizer(
+		wxGridSizer *sizer = new wxGridSizer(
 			obj->GetPropertyAsInteger(_("rows")),
 			obj->GetPropertyAsInteger(_("cols")),
 			obj->GetPropertyAsInteger(_("vgap")),
 			obj->GetPropertyAsInteger(_("hgap")));
+		
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
+		
+		return sizer;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxGridSizer"));
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		xrc.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("cols"), _("cols"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
@@ -262,6 +275,7 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxGridSizer"));
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("cols"), _("cols"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
@@ -285,13 +299,15 @@ public:
 
 		for (i=0; i < grows.GetCount() ; i++)
 			sizer->AddGrowableRow(grows[i]);
-
+			
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 		sizer->SetFlexibleDirection( obj->GetPropertyAsInteger(_("flexible_direction")) );
 		sizer->SetNonFlexibleGrowMode( (wxFlexSizerGrowMode )obj->GetPropertyAsInteger(_("non_flexible_grow_mode")) );
 	}
 
 	void ExportXRCProperties( ObjectToXrcFilter* xrc, IObject* obj )
 	{
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc->AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		xrc->AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
 		xrc->AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
 		xrc->AddPropertyValue(_("growablecols"), obj->GetPropertyAsString(_("growablecols")));
@@ -300,6 +316,7 @@ public:
 
 	void ImportXRCProperties( XrcToXfbFilter* filter )
 	{
+		filter->AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter->AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
 		filter->AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
 		filter->AddProperty(_("growablecols"),_("growablecols"),XRC_TYPE_TEXT);
@@ -544,6 +561,9 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxStdDialogButtonSizer* sizer =  new wxStdDialogButtonSizer();
+		
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
+		
 		if ( obj->GetPropertyAsInteger( _("OK") ) )
 		{
 			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_OK ) );
@@ -576,6 +596,7 @@ public:
 		{
 			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_CONTEXT_HELP ) );
 		}
+		
 		sizer->Realize();
 		return sizer;
 	}
@@ -584,7 +605,11 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxStdDialogButtonSizer"));
 		ticpp::Element* sizer = xrc.GetXrcObject();
-
+		
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize )
+		{
+			xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
+		}
 		if ( obj->GetPropertyAsInteger( _("OK") ) )
 		{
 			AddXRCButton( sizer, "wxID_OK", "&OK" );
@@ -634,6 +659,7 @@ public:
 		buttons[ _("ContextHelp") ] = wxT("0");
 
 		XrcToXfbFilter filter(xrcObj, _("wxStdDialogButtonSizer"));
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 
 		ticpp::Element* button = xrcObj->FirstChildElement( "object", false );
 		for (  ; button != 0; button = button->NextSiblingElement( "object", false ) )
