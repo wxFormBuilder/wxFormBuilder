@@ -40,6 +40,7 @@ void XrcCodeGenerator::SetWriter( PCodeWriter cw )
 bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 {
 	m_cw->Clear();
+	m_contextMenus.clear();
 
 	ticpp::Document doc;
 	ticpp::Declaration decl( "1.0", "UTF-8", "yes" );
@@ -52,7 +53,7 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	// If project is not actually a "Project", generate it
 	if ( project->GetClassName() == wxT("Project") )
 	{
-		for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+		for( unsigned int i = 0; i < project->GetChildCount(); i++ )
 		{
 			ticpp::Element* child = GetElement( project->GetChild( i ) );
 			if ( child )
@@ -70,6 +71,13 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
             element.LinkEndChild( child );
             delete child;
 		}
+	}
+	
+	// generate context menus as top-level menus
+	for( std::vector<ticpp::Element*>::iterator it = m_contextMenus.begin(); it != m_contextMenus.end(); ++it )
+	{
+		element.LinkEndChild( *it );
+		delete *it;
 	}
 
 	doc.LinkEndChild( &element );
@@ -176,7 +184,18 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 			std::string parent_name = parent->GetAttribute( "class" );
 			if( (parent_name != "wxMenuBar") && (parent_name != "wxMenu") )
 			{
-				delete element;
+				// insert context menu into vector for delayed processing (context menus will be generated as top-level menus)
+				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
+				{
+					ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
+					if ( aux )
+					{
+						element->LinkEndChild( aux );
+						delete aux;
+					}
+				}
+				
+				m_contextMenus.push_back( element );
 				return NULL;
 			}
 		}

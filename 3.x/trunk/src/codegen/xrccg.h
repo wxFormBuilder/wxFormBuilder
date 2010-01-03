@@ -28,6 +28,7 @@
 
 #include "codegen.h"
 #include "utils/wxfbdefs.h"
+#include <vector>
 
 namespace ticpp
 {
@@ -40,6 +41,7 @@ class XrcCodeGenerator : public CodeGenerator
 {
 private:
 	PCodeWriter m_cw;
+	std::vector<ticpp::Element*> m_contextMenus;
 
 	ticpp::Element* GetElement( PObjectBase obj, ticpp::Element* parent = NULL );
 

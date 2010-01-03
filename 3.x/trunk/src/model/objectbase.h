@@ -425,6 +425,7 @@ public:
 	*/
 	PObjectBase FindNearAncestor(wxString type);
 	PObjectBase FindNearAncestorByBaseClass(wxString type);
+	PObjectBase FindParentForm();
 
 	/**
 	* Obtiene el documento xml del arbol tomando como raíz el nodo actual.
