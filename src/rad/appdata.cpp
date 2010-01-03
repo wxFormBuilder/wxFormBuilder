@@ -519,22 +519,13 @@ PObjectBase ApplicationData::GetSelectedObject()
 }
 
 PObjectBase ApplicationData::GetSelectedForm()
-{
-	PObjectBase retObj;
-	
-	if( m_selObj->GetObjectTypeName() == wxT( "form" ) )
+{		
+	if( ( m_selObj->GetObjectTypeName() == wxT( "form" ) ) ||
+		( m_selObj->GetObjectTypeName() == wxT( "menubar_form" ) ) ||
+		( m_selObj->GetObjectTypeName() == wxT( "toolbar_form" ) ) )
 		return m_selObj;
-	else if( m_selObj->GetObjectTypeName() == wxT( "menubar_form" ) )
-		return m_selObj;
-	else if( m_selObj->GetObjectTypeName() == wxT( "toolbar_form" ) )
-		return m_selObj;
-	
-	retObj = m_selObj->FindNearAncestor( wxT( "form" ) );
-	
-	if( retObj == NULL ) retObj = m_selObj->FindNearAncestor( wxT( "menubar_form" ) );
-	if( retObj == NULL ) retObj = m_selObj->FindNearAncestor( wxT( "toolbar_form" ) );
-	
-	return retObj;
+	else
+		return m_selObj->FindParentForm();
 }
 
 
@@ -558,7 +549,6 @@ void ApplicationData::BuildNameSet( PObjectBase obj, PObjectBase top, std::set< 
 }
 
 void ApplicationData::ResolveNameConflict( PObjectBase obj )
-
 {
 	while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
 	{
@@ -577,7 +567,8 @@ void ApplicationData::ResolveNameConflict( PObjectBase obj )
 	wxString originalName = nameProp->GetValue();
 
 	// el nombre no puede estar repetido dentro del mismo form
-	PObjectBase top = obj->FindNearAncestor( wxT( "form" ) );
+	/*PObjectBase top = obj->FindNearAncestor( wxT( "form" ) );*/
+	PObjectBase top = obj->FindParentForm();
 
 	if ( !top )
 		top = m_project; // el objeto es un form.
@@ -608,7 +599,8 @@ void ApplicationData::ResolveSubtreeNameConflicts( PObjectBase obj, PObjectBase 
 {
 	if ( !topObj )
 	{
-		topObj = obj->FindNearAncestor( wxT( "form" ) );
+		/*topObj = obj->FindNearAncestor( wxT( "form" ) );*/
+		topObj = obj->FindParentForm();
 
 		if ( !topObj )
 			topObj = m_project; // object is the project

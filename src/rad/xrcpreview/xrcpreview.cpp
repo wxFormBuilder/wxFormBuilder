@@ -206,6 +206,26 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 		dialog->Show();
 		window = dialog;
 	}
+	else if ( className == wxT( "MenuBar" ) )
+	{
+		wxFrame* frame = new wxFrame( NULL, wxID_ANY, form->GetPropertyAsString( wxT( "name" ) ) );
+		// Prevent events from propagating up to wxFB's frame
+		frame->SetExtraStyle( frame->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
+		frame->SetMenuBar( res->LoadMenuBar( form->GetPropertyAsString( wxT( "name" ) ) ) );
+		frame->CenterOnScreen();
+		frame->Show();
+		window = frame;
+	}
+	else if ( className == wxT( "ToolBar" ) )
+	{
+		wxFrame* frame = new wxFrame( NULL, wxID_ANY, form->GetPropertyAsString( wxT( "name" ) ) );
+		// Prevent events from propagating up to wxFB's frame
+		frame->SetExtraStyle( frame->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
+		frame->SetToolBar( res->LoadToolBar( frame, form->GetPropertyAsString( wxT( "name" ) ) ) );
+		frame->CenterOnScreen();
+		frame->Show();
+		window = frame;
+	}
 
 	if ( window )
 	{

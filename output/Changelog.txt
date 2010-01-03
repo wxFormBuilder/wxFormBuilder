@@ -1,5 +1,11 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+01/03/2010 Version 3.01.67 (Beta)
+* Fixed resolving of name conflicts in stand-alone toolbars and menubars.
+^ Context menus are now generated as top-level menus in XRC so function wxXmlResource::LoadMenu()
+  can be used on them.
+^ Implemented XRC preview (F5) for stand-alone MenuBar and ToolBar.
+
 12/17/2009 Version 3.01.66 (Beta)
 * Fixed python code generation for wx.EVT_LIST_ITEM_DESELECTED event (wxListCtrl).
 * FS#420 - Minsize field is not generated.
