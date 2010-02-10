@@ -197,7 +197,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTipString( $tooltip ; #nl @}
+			@{ self.SetToolTipString( $tooltip ) #nl @}
 
 			#ifnotnull $minimum_size
 			@{ self.SetMinSize( $minimum_size ) #nl @}
