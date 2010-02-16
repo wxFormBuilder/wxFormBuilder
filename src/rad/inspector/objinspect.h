@@ -151,6 +151,8 @@ class ObjectInspector : public wxPanel
 
   void OnPropertyGridChange(wxPropertyGridEvent& event);
   void OnEventGridChange(wxPropertyGridEvent& event);
+  void OnPropertyGridDblClick(wxPropertyGridEvent& event);
+  void OnEventGridDblClick(wxPropertyGridEvent& event);
   void OnPropertyGridExpand(wxPropertyGridEvent& event);
   void OnReCreateGrid( wxCommandEvent& event );
 
@@ -165,6 +167,7 @@ class ObjectInspector : public wxPanel
   void OnPropertyModified( wxFBPropertyEvent& event );
   void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
+  void AutoGenerateId(PObjectBase objectChanged, PProperty propChanged, wxString reason);
   wxPropertyGridManager* CreatePropertyGridManager(wxWindow *parent, wxWindowID id);
   void SavePosition();
 
@@ -172,3 +175,4 @@ class ObjectInspector : public wxPanel
 };
 
 #endif //__OBJ_INSPECT__
+

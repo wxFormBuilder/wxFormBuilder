@@ -32,6 +32,7 @@
 #include "wx/splitter.h"
 #include <wx/fdrepdlg.h>
 
+
 class wxFBEvent;
 class wxFBObjectEvent;
 class wxFBPropertyEvent;
@@ -142,6 +143,7 @@ class MainFrame : public wxFrame
   void OnChangeBorder(wxCommandEvent& e);
   void OnXrcPreview(wxCommandEvent& e);
   void OnGenInhertedClass(wxCommandEvent& e);
+
   void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event );
 
   void OnProjectLoaded( wxFBEvent& event );
@@ -175,7 +177,6 @@ class MainFrame : public wxFrame
 
   bool SaveWarning();
   };
-
 
 
 #endif //__MAIN_FRAME__

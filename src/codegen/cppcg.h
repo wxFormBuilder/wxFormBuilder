@@ -38,6 +38,7 @@ The value of all properties that are file or a directory paths must be absolute,
 #include <set>
 #include "codegen.h"
 #include <wx/string.h>
+#include "codeparser.h"
 
 /**
 * Parse the C++ templates.
@@ -72,6 +73,8 @@ private:
 		P_PROTECTED,
 		P_PUBLIC
 	} Permission;
+
+	CCodeParser m_inheritedCodeParser;
 
 	PCodeWriter m_header;
 	PCodeWriter m_source;
@@ -255,6 +258,14 @@ public:
 		m_source = cw;
 	}
 
+
+	/**
+	* Parse existing source/header files
+	*/
+	void ParseFiles(wxString headerFile, wxString sourceFile)
+	{
+		m_inheritedCodeParser = CCodeParser(headerFile, sourceFile);
+	}
 
 	/**
 	* Configures the reference path for generating relative paths to
