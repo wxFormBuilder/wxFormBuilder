@@ -2053,8 +2053,9 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		if ( pCodeGen && TypeConv::FlagSet( wxT("C++"), pCodeGen->GetValue() ) )
 		{
 			CppCodeGenerator codegen;
-			
 			const wxString& fullPath = inherFile.GetFullPath();
+			codegen.ParseFiles(fullPath + wxT(".h"), fullPath + wxT(".cpp"));
+			
 			PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
 			PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
 

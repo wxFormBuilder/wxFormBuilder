@@ -2,6 +2,7 @@
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
 // Copyright (C) 2005 José Antonio Hurtado
+// Copyright (C) 2005 José Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,17 +69,22 @@ void CodeWriter::Unindent()
 	}
 }
 
-void CodeWriter::WriteLn( wxString code )
+void CodeWriter::WriteLn( wxString code, bool keepIndents )
 {
 	// It will not be allowed newlines (carry return) inside "code"
 	// If there was anyone, then FixWrite gets the string and breaks it
 	// in different lines, inserting them one after another using WriteLn
 	if ( !StringOk( code ) )
 	{
-		FixWrite( code );
+		FixWrite( code, keepIndents);
 	}
 	else
 	{
+		if(keepIndents)
+		{
+			m_cols = m_indent;
+		}
+
 		Write( code );
 		#if defined( __WXMSW__ )
 			Write( wxT("\r\n") );
@@ -96,7 +102,7 @@ bool CodeWriter::StringOk( wxString s )
 	return ( s.find( wxT("\n"), 0 ) == wxString::npos );
 }
 
-void CodeWriter::FixWrite( wxString s )
+void CodeWriter::FixWrite( wxString s , bool keepIndents)
 {
 	wxRegEx reIndent( wxT("%TAB%\\s*"), wxRE_ADVANCED );
 	wxStringTokenizer tkz( s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL );
@@ -104,14 +110,17 @@ void CodeWriter::FixWrite( wxString s )
 	while ( tkz.HasMoreTokens() )
 	{
 		wxString line = tkz.GetNextToken();
-		line.Trim( false );
+		if(!keepIndents)
+		{
+			line.Trim( false );
+		}
 		line.Trim( true );
 		// replace indentations defined in code templates by #indent and #unindent macros...
 		reIndent.Replace( &line, wxT("\t") );
-		WriteLn( line );
+		WriteLn( line, keepIndents );
+
 	}
 }
-
 
 void CodeWriter::Write( wxString code )
 {

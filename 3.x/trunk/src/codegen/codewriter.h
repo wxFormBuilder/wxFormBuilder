@@ -51,7 +51,7 @@ protected:
 	/** Divides a badly formed string (including carriage returns) in simple
 	columns, inserting them one after another and taking indent into account.
 	*/
-	void FixWrite( wxString s );
+	void FixWrite( wxString s, bool keepIndents = false);
 
 public:
 	/// Constructor.
@@ -67,7 +67,7 @@ public:
 	void Unindent();
 
 	/// Write a line of code.
-	void WriteLn( wxString code = wxEmptyString );
+	void WriteLn( wxString code = wxEmptyString, bool keepIndents = false );
 
 	/// Writes a text string into the code.
 	void Write( wxString code );

@@ -2,6 +2,7 @@
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
 // Copyright (C) 2005 José Antonio Hurtado
+// Copyright (C) 2005 José Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,6 +101,7 @@
 
 #define ID_CLIPBOARD_COPY 143
 #define ID_CLIPBOARD_PASTE 144
+
 
 #define STATUS_FIELD_OBJECT 2
 #define STATUS_FIELD_PATH 1
@@ -1454,6 +1456,9 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append( wxID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
+
+
+
 
 
 	// now append the freshly created menu to the menu bar...
