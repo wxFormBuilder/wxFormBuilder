@@ -4,6 +4,7 @@
 #include <wx/textfile.h>
 #include <wx/string.h>
 #include <wx/hashmap.h>
+#include <wx/msgdlg.h>
 
 // Stores all of the information for all of the parsed funtions
 class Function
