@@ -1,5 +1,5 @@
 
-#include "codeparser.h"
+#include "codeParser.h"
 
 void Function::SetHeading(wxString heading)
 {
@@ -133,8 +133,23 @@ void CCodeParser::ParseCUserMembers(wxString code)
 	if (userMembersStart != wxNOT_FOUND)
 	{
 		userMembersStart = code.find('\n', userMembersStart);
-		userMembersStart++;
-		m_userMemebers = code.Mid(userMembersStart);
+		if(userMembersStart == wxNOT_FOUND)
+		{
+			m_userMemebers = wxT("");
+		}
+		else
+		{
+			userMembersStart++;
+			if(userMembersStart < code.Len())
+			{
+				m_userMemebers = code.Mid(userMembersStart);
+			}
+			else
+			{
+				m_userMemebers = wxT("");
+			}
+				
+		}
 	}
 	else
 	{
