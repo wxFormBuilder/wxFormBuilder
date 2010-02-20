@@ -1,5 +1,5 @@
 
-#include "codeParser.h"
+#include "codeparser.h"
 
 void Function::SetHeading(wxString heading)
 {
