@@ -140,7 +140,7 @@ void CCodeParser::ParseCUserMembers(wxString code)
 		else
 		{
 			userMembersStart++;
-			if(userMembersStart < code.Len())
+			if(userMembersStart < (int)code.Len())
 			{
 				m_userMemebers = code.Mid(userMembersStart);
 			}
@@ -162,11 +162,9 @@ wxString CCodeParser::ParseSourceFunctions(wxString code)
 	int functionStart = 0;
 	int functionEnd = 0;
 	int previousFunctionEnd = 0;
-	int contentSize;
 	wxString funcName, funcArg;
 	Function *func;
 	wxString Str, R;
-	int num;
 
 	int loop = 0;
 	while (1)

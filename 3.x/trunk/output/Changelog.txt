@@ -1,5 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+02/23/2010 Version 3.01.68 (Beta)
++ Generation of inherited class (F6) preserves all user code changes now (so it can be used
+  more than once) (spedgenius)
+
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
 ^ Context menus are now generated as top-level menus in XRC so function wxXmlResource::LoadMenu()
