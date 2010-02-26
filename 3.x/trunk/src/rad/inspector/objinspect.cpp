@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
-// Copyright (C) 2005 José Antonio Hurtado
+// Copyright (C) 2005 JosÃ© Antonio Hurtado
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 // Written by
-//   José Antonio Hurtado - joseantonio.hurtado@gmail.com
+//   JosÃ© Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -1354,7 +1354,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 	}
 
 	wxPGId pgid = m_pg->GetPropertyByLabel(prop->GetName());
-	if (!pgid.IsOk()) return; // Puede que no se esté mostrando ahora esa página
+	if (!pgid.IsOk()) return; // Puede que no se estÃ© mostrando ahora esa pÃ¡gina
 	wxPGProperty *pgProp = pgid.GetPropertyPtr();
 
 	switch (prop->GetType())
@@ -1490,9 +1490,13 @@ wxPropertyGridManager* ObjectInspector::CreatePropertyGridManager(wxWindow *pare
 
 void ObjectInspector::OnPropertyGridDblClick(wxPropertyGridEvent& event)
 {
-	wxString propName = event.GetPropertyPtr()->GetLabel();
-	AutoGenerateId(AppData()->GetSelectedObject(), AppData()->GetSelectedObject()->GetProperty(propName), wxT("DblClk"));
-	m_pg->Refresh();
+	PObjectBase obj = AppData()->GetSelectedObject();
+	if( obj )
+	{
+		wxString propName = event.GetPropertyPtr()->GetLabel();
+		AutoGenerateId(obj, obj->GetProperty(propName), wxT("DblClk"));
+		m_pg->Refresh();
+	}
 }
 
 void ObjectInspector::OnEventGridDblClick(wxPropertyGridEvent& event)
@@ -1515,7 +1519,7 @@ void ObjectInspector::OnEventGridDblClick(wxPropertyGridEvent& event)
 
 void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propChanged, wxString reason)
 {
-	if(objectChanged)
+	if(objectChanged && propChanged)
 	{
 		PProperty prop;
 		if((propChanged->GetName() == wxT("name") && reason == wxT("PropChange")) ||
@@ -1525,7 +1529,6 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
 			prop = AppData()->GetProjectData()->GetProperty( wxT("event_generation") );
 			if ( prop )
 			{
-
 				if(prop->GetValueAsString() == wxT("table"))
 				{
 					prop = objectChanged->GetProperty(wxT("id"));
