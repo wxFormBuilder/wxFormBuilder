@@ -183,6 +183,7 @@ private:
 	* the template is found, and the objectbase for the control.
 	*/
 	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
+	void GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines );
 
     void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPostfix );
 
