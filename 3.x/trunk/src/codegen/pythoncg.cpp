@@ -1294,15 +1294,24 @@ void PythonCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 	}
 }
 
-void PythonCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
+void PythonCodeGenerator::GenAddToolbar( PObjectInfo info, PObjectBase obj )
+{
+	wxArrayString arrCode;
+	
+	GetAddToolbarCode( info, obj, arrCode );
+	
+	for( size_t i = 0; i < arrCode.GetCount(); i++ ) m_source->WriteLn( arrCode[i] );
+}
+
+void PythonCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines )
 {
 	wxString _template;
-	PCodeInfo code_info = info->GetCodeInfo( wxT("Python") );
+	PCodeInfo code_info = info->GetCodeInfo( wxT( "Python" ) );
 
-	if (!code_info)
+	if ( !code_info )
 		return;
 
-	_template = code_info->GetTemplate( wxT("toolbar_add") );
+	_template = code_info->GetTemplate( wxT( "toolbar_add" ) );
 
 	if ( !_template.empty() )
 	{
@@ -1310,15 +1319,15 @@ void PythonCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 		wxString code = parser.ParseTemplate();
 		if ( !code.empty() )
 		{
-			m_source->WriteLn(code);
+			if( codelines.Index( code ) == wxNOT_FOUND ) codelines.Add( code );
 		}
 	}
-
+	
 	// Proceeding recursively with the base classes
-	for (unsigned int i=0; i< info->GetBaseClassCount(); i++)
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass(i);
-		GenAddToolbar(base_info,obj);
+		PObjectInfo base_info = info->GetBaseClass( i );
+		GetAddToolbarCode( base_info, obj, codelines );
 	}
 }
 

@@ -4,6 +4,7 @@
 + Generation of inherited class (F6) preserves all user code changes now (so it can be used
   more than once) (spedgenius)
 * FS#456 - App crashes when you double click on file_path property
+* FS#459 - duplicate python code generated on toolbar add widget
 
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
