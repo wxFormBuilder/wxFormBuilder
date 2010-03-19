@@ -62,6 +62,8 @@
 
   <objtype name="toolbar_form">
     <childtype name="tool" />
+    <childtype name="widget" />
+    <childtype name="expanded_widget" />
   </objtype>
 
   <objtype name="widget">
@@ -183,7 +185,7 @@
   <objtype name="toolbar">
     <childtype name="tool" />
     <childtype name="widget" />
-	<childtype name="expanded_widget" />
+    <childtype name="expanded_widget" />
   </objtype>
 
   <objtype name="tool" />

@@ -1458,7 +1458,7 @@ ABSTRACT_COMPONENT("Frame",FrameFormComponent)
 ABSTRACT_COMPONENT("Panel",PanelFormComponent)
 ABSTRACT_COMPONENT("Dialog",DialogFormComponent)
 ABSTRACT_COMPONENT("MenuBar",MenuBarFormComponent)
-ABSTRACT_COMPONENT("ToolBar",ToolBarFormComponent)
+WINDOW_COMPONENT("ToolBar",ToolBarFormComponent)
 
 WINDOW_COMPONENT("wxButton",ButtonComponent)
 WINDOW_COMPONENT("wxBitmapButton",BitmapButtonComponent)
