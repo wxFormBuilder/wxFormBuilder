@@ -80,6 +80,9 @@
 
 			#ifnotnull $maximum_size
 			@{ $name->SetMaxSize( $maximum_size ); #nl @}
+
+			#ifparenttypeequal "toolbar_form"
+			@{ AddControl( $name ); @}
 		</template>
 
 		<!-- wxKeyEvent -->

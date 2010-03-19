@@ -328,6 +328,15 @@ void VisualEditor::Create()
 				// Create the menubar later
 				menubar = child;
 			}
+			else if( !toolbar && (m_form->GetObjectTypeName() == wxT("toolbar_form")) )
+			{
+				Generate( m_form, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
+				
+				ObjectBaseMap::iterator it = m_baseobjects.find( m_form.get() );
+				toolbar = wxDynamicCast( it->second, wxToolBar );
+				
+				break;
+			}
 			else
 			{
 				// Recursively generate the ObjectTree
@@ -342,26 +351,19 @@ void VisualEditor::Create()
 					wxLogError ( ex.what() );
 				}
 			}
-
+			
+			// Attach the toolbar (if any) to the frame
+			if (child->GetClassName() == wxT("wxToolBar") )
+			{
+				ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
+				toolbar = wxDynamicCast( it->second, wxToolBar );
+			}
+			
 			// Attach the status bar (if any) to the frame
 			if ( child->GetClassName() == wxT("wxStatusBar") )
 			{
 				ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 				statusbar = wxDynamicCast( it->second, wxStatusBar );
-			}
-
-			// Attach the toolbar (if any) to the frame
-			if( !toolbar && (m_form->GetObjectTypeName() == wxT("toolbar_form")) )
-			{
-				Generate( m_form, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
-				
-				ObjectBaseMap::iterator it = m_baseobjects.find( m_form.get() );
-				toolbar = wxDynamicCast( it->second, wxToolBar );
-			}
-			else if (child->GetClassName() == wxT("wxToolBar") )
-			{
-				ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
-				toolbar = wxDynamicCast( it->second, wxToolBar );
 			}
 		}
 
@@ -463,7 +465,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 
 	// New wxparent for the window's children
 	wxWindow* new_wxparent = ( createdWindow ? createdWindow : wxparent );
-
+	
 	// Recursively generate the children
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 	{
@@ -741,7 +743,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		nextObj = nextObj->GetParent();
 	}
 
-  m_back->SetSelectedSizer( sizer );
+	m_back->SetSelectedSizer( sizer );
 	m_back->SetSelectedItem( item );
 	m_back->SetSelectedObject( obj );
 	m_back->SetSelectedPanel( selPanel );
@@ -1068,14 +1070,14 @@ void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 		HighlightSelection( dc );
 	}*/
 
-		wxWindow *aux = m_window;
-		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
-		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
-		if (dsgnWin->GetActivePanel() == m_window)
-		{
-			wxPaintDC dc(m_window);
-			dsgnWin->HighlightSelection(dc);
-		}
+	wxWindow *aux = m_window;
+	while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
+	DesignerWindow *dsgnWin = (DesignerWindow*) aux;
+	if (dsgnWin->GetActivePanel() == m_window)
+	{
+		wxPaintDC dc(m_window);
+		dsgnWin->HighlightSelection(dc);
+	}
 
 	event.Skip();
 }
