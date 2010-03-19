@@ -40,7 +40,7 @@
 			@{ self.$name.SetMaxSize( $maximum_size ) #nl @}
 
 			#ifparenttypeequal "toolbar_form"
-			@{ self.AddControl( self.$name ) #nl @}
+			@{ self.AddControl( self.$name ) @}
 		</template>
 
 		<!-- wxKeyEvent -->
