@@ -269,7 +269,25 @@ void ObjectTree::AddChildren(PObjectBase obj, wxTreeItemId &parent, bool is_root
 		if (is_root)
 			new_parent = m_tcObjects->AddRoot(wxT(""),-1,-1,item_data);
 		else
-			new_parent = m_tcObjects->AppendItem(parent,wxT(""),-1,-1,item_data);
+		{
+			unsigned int pos = 0;
+			
+			PObjectBase parent_obj = obj->GetParent();
+			// find a proper position where the added object should be displayed at
+			if( parent_obj->GetObjectInfo()->GetObjectType()->IsItem() )
+			{
+				parent_obj = parent_obj->GetParent();
+				pos = parent_obj->GetChildPosition( obj->GetParent() );
+			}
+			else
+				pos = parent_obj->GetChildPosition( obj );
+
+			// insert tree item to proper position
+			if( pos > 0 )
+				new_parent = m_tcObjects->InsertItem(parent, pos, wxT(""), -1, -1, item_data);
+			else
+				new_parent = m_tcObjects->AppendItem(parent,wxT(""),-1,-1,item_data);
+		}
 
 		// Add the item to the map
 		m_map.insert( ObjectItemMap::value_type( obj, new_parent ) );
