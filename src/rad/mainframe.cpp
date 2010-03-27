@@ -1395,11 +1395,19 @@ void MainFrame::OnFindClose( wxFindDialogEvent& )
 
 void MainFrame::OnFind( wxFindDialogEvent& event )
 {
-	for ( int page = 0; page < m_notebook->GetPageCount(); ++page )
+	/*for ( int page = 0; page < m_notebook->GetPageCount(); ++page )
 	{
 		event.StopPropagation();
 		event.SetClientData( m_findDialog );
 		m_notebook->GetPage( page )->GetEventHandler()->ProcessEvent( event );
+	}*/
+	
+	wxWindow *page = m_notebook->GetCurrentPage();
+	if( page )
+	{
+		event.StopPropagation();
+		event.SetClientData( m_findDialog );
+		page->GetEventHandler()->ProcessEvent( event );
 	}
 }
 

@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-02/23/2010 Version 3.01.68 (Beta)
+03/27/2010 Version 3.01.68 (Beta)
 + Generation of inherited class (F6) preserves all user code changes now (so it can be used
   more than once) (spedgenius).
 * FS#456 - App crashes when you double click on file_path property.
@@ -8,6 +8,8 @@
 + Any widget (wxWindow) can be added also to ToolBarForm (stand-alone toolbar class).
 * Fixed disconnection of menu items' event handlers.
 * Fixed positioning of newly created items in object tree.
+^ Searching scope of find dialog reduced to active editor page only to avoid confusing messages
+  like multiple "not found".
 
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
