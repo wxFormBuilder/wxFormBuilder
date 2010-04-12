@@ -530,6 +530,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxStaticText"), name);
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("wrap"),_("wrap"),XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
 
@@ -538,6 +539,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxStaticText"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("wrap"),_("wrap"),XRC_TYPE_INTEGER);
 		return filter.GetXfbObject();
 	}
 };
