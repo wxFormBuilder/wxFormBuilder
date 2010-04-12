@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-03/27/2010 Version 3.01.68 (Beta)
+04/12/2010 Version 3.01.68 (RC1)
 + Generation of inherited class (F6) preserves all user code changes now (so it can be used
   more than once) (spedgenius).
 * FS#456 - App crashes when you double click on file_path property.
@@ -10,6 +10,7 @@
 * Fixed positioning of newly created items in object tree.
 ^ Searching scope of find dialog reduced to active editor page only to avoid confusing messages
   like multiple "not found".
+* User-defined wrapping of static text is correctly generated also for XRC.
 
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
