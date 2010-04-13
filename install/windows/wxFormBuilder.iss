@@ -28,7 +28,7 @@ DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
 #if defined UNICODE
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}-beta
+OutputBaseFilename={#MyAppName}_v{#MyAppVer}-rc1
 #else
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
 #endif
@@ -58,7 +58,7 @@ MinVersion=0,5.0
 #expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 
 [Messages]
-BeveledLabel={#MyAppName} v{#MyAppVer}-Beta
+BeveledLabel={#MyAppName} v{#MyAppVer}-RC1
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
