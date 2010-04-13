@@ -120,7 +120,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				if ( m_i18n )
 				{
-					result << wxT("u\"") << PythonCodeGenerator::ConvertPythonString(value) << wxT("\"");
+					result << wxT("_(\"") << PythonCodeGenerator::ConvertPythonString(value) << wxT("\")");
 				}
 				else
 				{
@@ -502,6 +502,14 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	if ( !headerIncludes.empty() )
 	{
+		m_source->WriteLn( wxT("") );
+	}
+	
+	// Write internationalization support
+	if( m_i18n )
+	{
+		m_source->WriteLn( wxT("import gettext") );
+		m_source->WriteLn( wxT("_ = gettext.gettext") );
 		m_source->WriteLn( wxT("") );
 	}
 	
