@@ -2670,9 +2670,16 @@ wxString ApplicationData::GetOutputPath()
 				THROW_WXFBEX( wxT( "You must save the project when using a relative path for output files" ) );
 			}
 
-			path.SetCwd( projectPath );
-
-			path.MakeAbsolute();
+			path = wxFileName(  projectPath + 
+								wxFileName::GetPathSeparator() + 
+								pathEntry + 
+								wxFileName::GetPathSeparator() );
+							
+			path.Normalize();
+			
+			// this approach is probably incorrect if the fb project is located under a symlink
+			/*path.SetCwd( projectPath );
+			path.MakeAbsolute();*/
 		}
 	}
 
