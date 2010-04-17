@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-04/13/2010 Version 3.01.68 (RC1)
+04/17/2010 Version 3.01.68 (RC1)
 + Generation of inherited class (F6) preserves all user code changes now (so it can be used
   more than once) (spedgenius).
 * FS#456 - App crashes when you double click on file_path property.
@@ -12,6 +12,7 @@
   like multiple "not found".
 * User-defined wrapping of static text is correctly generated also for XRC.
 + Implemented internationalization support (gettext) in Python code.
+* FS#436 - Relative path in Linux when under a symlink not generating correctly when .xpm included.
 
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
