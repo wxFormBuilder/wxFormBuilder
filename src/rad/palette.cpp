@@ -131,20 +131,20 @@ void wxFbPalette::Create()
 		wxString pkg_name = pkg->GetPackageName();
 
 		wxPanel *panel = new wxPanel( m_notebook, -1 );
-		panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
+		//panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
 
 		wxPanel *tbPanel = new wxPanel( panel, -1 );
-		tbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
+		//tbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *tbSizer = new wxBoxSizer( wxHORIZONTAL );
 
 		wxPanel *sbPanel = new wxPanel( panel, -1 );
-		sbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
+		//sbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sbSizer = new wxBoxSizer( wxHORIZONTAL );
 
 		wxToolBar *toolbar = new wxToolBar( tbPanel, -1, wxDefaultPosition, wxDefaultSize, wxTB_NODIVIDER | wxTB_FLAT );
 		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
-		toolbar->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
+		//toolbar->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		PopulateToolbar( pkg, toolbar );
 		m_tv.push_back( toolbar );
 

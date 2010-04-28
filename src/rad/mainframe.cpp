@@ -230,7 +230,7 @@ m_findDialog( NULL )
 
 	SetTitle( wxT( "wxFormBuilder" ) );
 
-	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+	//SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 
 	SetMenuBar( CreateFBMenuBar() );
 	CreateStatusBar( 3 );
@@ -1558,7 +1558,7 @@ wxWindow * MainFrame::CreateComponentPalette ( wxWindow *parent )
 	// que no responde ante los eventos de la aplicación
 	m_palette = new wxFbPalette( parent, -1 );
 	m_palette->Create();
-	m_palette->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
+	//m_palette->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 
 	return m_palette;
 }
