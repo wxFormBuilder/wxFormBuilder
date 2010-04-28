@@ -13,6 +13,7 @@
 * User-defined wrapping of static text is correctly generated also for XRC.
 + Implemented internationalization support (gettext) in Python code.
 * FS#436 - Relative path in Linux when under a symlink not generating correctly when .xpm included.
+^ Slightly changed some main frame's components colors to better respect colours used in OS theme.
 
 02/10/2010 Version 3.01.67 (Beta)
 * Fixed resolving of name conflicts in stand-alone toolbars and menubars.
