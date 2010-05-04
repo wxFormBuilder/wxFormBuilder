@@ -27,26 +27,26 @@ function make_src_tarball
 	basedir=.
 
 	# create Makefiles
-	
+
 	  # Build premake
 	  PREMAKE_DIR=sdk/premake
 	  make -C$PREMAKE_DIR/src -f../build/Makefile
-	  
+
 	  # Use premake to generate Makefiles
 	  $PREMAKE_DIR/bin/premake --linux --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
 
 	  # remove premake, as it is no longer necessary
 	  rm -rf $PREMAKE_DIR
-	  
+
 	  # remove scripts that execute premake, as they are no longer necessary
 	  rm -f $basedir/create_build_files*
 
 	# use a temporary directory
-	tmpdir=wxformbuilder_$1.orig
+	tmpdir=wxformbuilder_$1 #.orig
 
 	cp -R $basedir   ../$tmpdir
 	cd ..
-		
+
 	tar czf wxformbuilder_$1.orig.tar.gz $tmpdir
 	rm -rf $tmpdir
 }
@@ -67,7 +67,7 @@ do
  then
  echo "$version"
    # because I redirected cat to the while loop, bash spawned a subshell
-   # this means "version" will go out of scop at the end of the loop
+   # this means "version" will go out of scope at the end of the loop
    # so I need to do everything here
    if [ ${#version} -ge 7 ]
    then
