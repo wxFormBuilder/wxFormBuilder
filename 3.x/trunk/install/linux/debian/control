@@ -15,5 +15,5 @@ Description: WYSIWYG GUI Designer and Code Generator for wxWidgets
  use wxWidgets. It is a very WYSIWYG designer, because it uses
  the actual controls to show the result, not some fake representation.
  .
- Features include generation of C++ or XRC code, custom plugin support,
- and import of XRC code.
+ Features include generation of C++, Python, or XRC code, custom plugin
+ support, and import of XRC code.
