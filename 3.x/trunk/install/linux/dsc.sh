@@ -98,11 +98,8 @@ sourcedir=`pwd`
 #copy the debian directory to the correct directory
 cp -R install/linux/debian .
 
-nano debian/changelog
-
 #update the changelog by hand for now
-echo "Press any key to continue…"
-pause
+nano debian/changelog
 
 #make debian source archive
 dpkg-buildpackage -S -sa -rfakeroot
