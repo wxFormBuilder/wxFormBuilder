@@ -5,6 +5,7 @@
 * Reverted patch for menu items' connection/disconnection. wxMenuItem::GetId()
   function in now used again instead of explicitly defined IDs. Explicitly defined
   IDs are now used for disconnection only.
+^ "internationalize" project property moved from C++ category to a common section.
 
 05/04/2010 Version 3.01.68 (RC1)
 + Generation of inherited class (F6) preserves all user code changes now (so it can be used
