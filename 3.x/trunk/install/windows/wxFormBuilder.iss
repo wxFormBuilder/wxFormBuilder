@@ -9,9 +9,9 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.1.68"
+#define MyAppVer "3.1.69"
 #define MyAppName "wxFormBuilder"
-#define MyAppPublisher "José Antonio Hurtado"
+#define MyAppPublisher "Jose Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
 #define wxFormBuilderMinVer "3.0.57"
@@ -28,7 +28,7 @@ DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
 #if defined UNICODE
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}-rc1
+OutputBaseFilename={#MyAppName}_v{#MyAppVer}
 #else
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
 #endif
@@ -58,7 +58,7 @@ MinVersion=0,5.0
 #expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
 
 [Messages]
-BeveledLabel={#MyAppName} v{#MyAppVer}-RC1
+BeveledLabel={#MyAppName} v{#MyAppVer}
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
@@ -217,6 +217,7 @@ begin
 	end;
 end;
 // -- END -- Version checking
+
 
 
 
