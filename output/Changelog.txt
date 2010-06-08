@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-05/27/2010 Version 3.01.69 (RC2)
+06/08/2010 Version 3.01.69
 ^ Slightly tuned the designer panel colour.
 * Reverted patch for menu items' connection/disconnection. wxMenuItem::GetId()
   function in now used again instead of explicitly defined IDs. Explicitly defined
