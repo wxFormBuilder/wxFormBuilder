@@ -461,7 +461,7 @@ Written by
 		#nl $name->ShowCancelButton( $cancel_button );
 	</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
-	<template name="evt_connect_OnText">$name->Connect( wxEVT_TEXT_UPDATED, #handler, NULL, this );</template>
+	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
 	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
     <template name="evt_entry_OnSearchButton">EVT_SEARCHCTRL_SEARCH_BTN( $id, #handler )</template>
