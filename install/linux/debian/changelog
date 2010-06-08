@@ -1,3 +1,9 @@
+wxformbuilder (3.1.69-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.1.69.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 08 Jun 2010 15:05:41 -0400
+ 
 wxformbuilder (3.1.68-0ubuntu1~lucid1) lucid; urgency=low
 
   * Sync to upstream 3.1.68.
