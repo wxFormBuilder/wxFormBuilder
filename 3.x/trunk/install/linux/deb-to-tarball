@@ -1,0 +1,10 @@
+#!/bin/bash
+noubuntu=${1//-*ubuntu*_/-}
+tbz2file=${noubuntu//deb/tar.bz2}
+outdir=deb-to-tarball-tmp
+dpkg -x $1 $outdir
+chrpath -r \$ORIGIN/../lib $outdir/usr/bin/wxformbuilder
+mv $outdir/usr/lib/wxformbuilder/libwx_gtk2u* $outdir/usr/lib/
+mv $outdir/usr wxformbuilder
+rm -r $outdir
+tar cjf $tbz2file wxformbuilder
