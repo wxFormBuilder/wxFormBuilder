@@ -1182,7 +1182,23 @@ void ObjectInspector::OnPropertyGridChange( wxPropertyGridEvent& event )
 			}
 			case PT_BOOL:
 			{
-				AppData()->ModifyProperty( prop, event.GetPropertyValueAsBool() ? wxT("1") : wxT("0") );
+				if( prop->GetName() == wxT("aui_managed") )
+				{
+					PObjectBase propobj = prop->GetObject();
+					if( propobj->GetChildCount() )
+					{
+						wxMessageBox(wxT("You have to remove all child widgets first."));
+						
+						// modified property must be reverted to its original form later.
+						wxCommandEvent e( RECREATE_GRID_EVENT );
+						e.SetString( event.GetPropertyName() );
+						AddPendingEvent( e );
+					}
+					else
+						AppData()->ModifyProperty( prop, event.GetPropertyValueAsBool() ? wxT("1") : wxT("0") );
+				}
+				else
+					AppData()->ModifyProperty( prop, event.GetPropertyValueAsBool() ? wxT("1") : wxT("0") );
 				break;
 			}
 			case PT_BITLIST:
@@ -1284,12 +1300,15 @@ void ObjectInspector::OnReCreateGrid( wxCommandEvent& event )
 
     // Re-expand the bitmap property, if it was expanded
     wxPGId bitmapProp = m_pg->GetPropertyByName( event.GetString() );
-    m_pg->SelectProperty( bitmapProp );
-    if ( event.GetInt() != 0 )
-    {
-        m_pg->Expand( bitmapProp );
-        m_pg->Expand( dynamic_cast< wxPGPropertyWithChildren* >( bitmapProp.GetPropertyPtr() )->Last() );
-    }
+	if( bitmapProp.IsOk() )
+	{
+		m_pg->SelectProperty( bitmapProp );
+		if ( event.GetInt() != 0 )
+		{
+			m_pg->Expand( bitmapProp );
+			m_pg->Expand( dynamic_cast< wxPGPropertyWithChildren* >( bitmapProp.GetPropertyPtr() )->Last() );
+		}
+	}
 }
 
 void ObjectInspector::OnEventGridChange(wxPropertyGridEvent& event)
@@ -1312,9 +1331,11 @@ void ObjectInspector::OnPropertyGridExpand(wxPropertyGridEvent& event)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-void ObjectInspector::OnObjectSelected( wxFBObjectEvent& )
+void ObjectInspector::OnObjectSelected( wxFBObjectEvent& event)
 {
-	Create();
+	if( event.GetString() == wxT("force") )	Create(true);
+	else
+		Create(false);
 }
 
 void ObjectInspector::OnProjectRefresh( wxFBEvent& )

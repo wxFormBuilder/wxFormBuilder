@@ -1,5 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+09/17/2010 Version 3.02.00 (Beta)
++ Added support for AUI and wxAuiToolbar.
++ Added support for wxBitmapComboBox and wxMediaCtrl.
+
 07/31/2010 Version 3.01.70
 ^ Stable release for 3.1 branch.
 

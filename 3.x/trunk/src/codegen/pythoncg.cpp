@@ -1004,7 +1004,10 @@ void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 		GenEvents( class_obj, events, true );
 	}
 	else
-		m_source->WriteLn( wxT("pass") );
+		if( !class_obj->GetPropertyAsInteger( wxT("aui_managed") ) ) m_source->WriteLn( wxT("pass") );
+		
+	// destruct objects
+	GenDestruction( class_obj );
 	
 	m_source->Unindent();
 }
@@ -1189,6 +1192,36 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		{
 			GenConstruction( obj->GetChild( i ), false );
 		}
+	}
+}
+
+void PythonCodeGenerator::GenDestruction( PObjectBase obj )
+{
+	wxString _template;
+	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT( "Python" ) );
+
+	if ( !code_info )
+	{
+		return;
+	}
+
+	_template = code_info->GetTemplate( wxT( "destruction" ) );
+
+	if ( !_template.empty() )
+	{
+		PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		wxString code = parser.ParseTemplate();
+		if ( !code.empty() )
+		{
+			m_source->WriteLn( code );
+		}
+	}
+	
+	// Process child widgets
+	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
+	{
+		PObjectBase child = obj->GetChild( i );
+		GenDestruction( child );
 	}
 }
 
@@ -1541,6 +1574,16 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_SPLIT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TOP, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_WINDOWLIST_BUTTON, wx.aui. );
+	
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_TEXT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_TOOLTIPS, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_AUTORESIZE, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_GRIPPER, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_OVERFLOW, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_VERTICAL, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_LAYOUT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_TEXT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_TB_DEFAULT_STYLE, wx.aui. );
 	
 	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.animate. );
 	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.animate. );

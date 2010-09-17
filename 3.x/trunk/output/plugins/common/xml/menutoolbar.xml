@@ -93,6 +93,28 @@ Written by
       <option name="wxTB_HORZ_TEXT"           help="Combination of wxTB_HORZ_LAYOUT and wxTB_TEXT." />wxTB_HORIZONTAL</property>
   </objectinfo>
 
+ <objectinfo class="wxAuiToolBar" icon="auitoolbar.xpm" type="toolbar">
+    <inherits class="wxWindow" />
+    <property name="name" type="text">m_auiToolBar</property>
+    <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels." />
+    <property name="margins" type="wxSize"    help="Values to be used as margins for the toolbar." />
+    <property name="packing" type="uint"      help="Value used for spacing tools. Remarks: The packing is used for spacing in the vertical direction if the toolbar is horizontal, and for spacing in the horizontal direction if the toolbar is vertical.">1</property>
+    <property name="separation" type="uint"   help="The default separator size. Remarks: This is the size between each toolbar tool.">5</property>
+    <property name="style" type="bitlist">
+      <option name="wxAUI_TB_TEXT" />
+      <option name="wxAUI_TB_NO_TOOLTIPS" />
+      <option name="wxAUI_TB_NO_AUTORESIZE" />
+      <option name="wxAUI_TB_GRIPPER" />
+      <option name="wxAUI_TB_OVERFLOW" />
+      <option name="wxAUI_TB_VERTICAL" />
+      <option name="wxAUI_TB_HORZ_LAYOUT" />
+      <option name="wxAUI_TB_HORZ_TEXT" />
+      <option name="wxAUI_TB_DEFAULT_STYLE" />wxAUI_TB_HORZ_LAYOUT
+    </property>
+    <property name="label_visible" type="bool">0</property>
+    <property name="toolbar_label" type="text">label</property>
+  </objectinfo>
+
   <objectinfo class="tool" icon="tool.xpm" type="tool">
     <property name="name" type="text">m_tool</property>
     <property name="label" type="wxString_i18n">tool</property>

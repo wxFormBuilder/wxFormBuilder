@@ -746,7 +746,7 @@ bool ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, boo
 
 	if ( notify )
 	{		
-		NotifyObjectSelected( obj );
+		NotifyObjectSelected( obj, force );
 	}
 	return true;
 }
@@ -2591,9 +2591,11 @@ void ApplicationData::NotifyObjectExpanded( PObjectBase obj )
 	NotifyEvent( event );
 }
 
-void ApplicationData::NotifyObjectSelected( PObjectBase obj )
+void ApplicationData::NotifyObjectSelected( PObjectBase obj, bool force )
 {
 	wxFBObjectEvent event( wxEVT_FB_OBJECT_SELECTED, obj );
+	if( force ) event.SetString( wxT("force") );
+	
 	NotifyEvent( event );
 }
 

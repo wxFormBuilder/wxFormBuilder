@@ -33,6 +33,7 @@
 #include <wx/radiobox.h>
 #include <wx/bmpbuttn.h>
 #include <wx/animate.h>
+#include <wx/aui/auibar.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -144,6 +145,7 @@ public:
 		{
 			xrc.AddPropertyValue( _("centered"), _("1") );
 		}
+		xrc.AddProperty( _("aui_managed"), _("aui_managed"), XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
@@ -153,6 +155,7 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty( _("title"), _("title"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("centered"), _("center"), XRC_TYPE_BITLIST);
+		filter.AddProperty( _("aui_managed"), _("aui_managed"), XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
 };
@@ -1177,6 +1180,100 @@ public:
 	}
 };
 
+
+class AuiToolBarComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxAuiToolBar *tb = new wxAuiToolBar((wxWindow*)parent, -1,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) );// | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN | wxTB_NODIVIDER | wxNO_BORDER);
+
+		if (!obj->IsNull(_("bitmapsize")))
+			tb->SetToolBitmapSize(obj->GetPropertyAsSize(_("bitmapsize")));
+		if (!obj->IsNull(_("margins")))
+		{
+			wxSize margins(obj->GetPropertyAsSize(_("margins")));
+			tb->SetMargins(margins.GetWidth(), margins.GetHeight());
+		}
+		if (!obj->IsNull(_("packing")))
+			tb->SetToolPacking(obj->GetPropertyAsInteger(_("packing")));
+		if (!obj->IsNull(_("separation")))
+			tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
+
+		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
+
+		return tb;
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxAuiToolBar* tb = wxDynamicCast( wxobject, wxAuiToolBar );
+		if ( NULL == tb )
+		{
+			// very very strange
+			return;
+		}
+
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if ( wxT("tool") == childObj->GetClassName() )
+			{
+				tb->AddTool( 	wxID_ANY,
+								childObj->GetPropertyAsString( _("label") ),
+								childObj->GetPropertyAsBitmap( _("bitmap") ),
+								wxNullBitmap,
+								(wxItemKind)childObj->GetPropertyAsInteger( _("kind") ),
+								childObj->GetPropertyAsString( _("help") ),
+								wxEmptyString,
+								child
+							);
+			}
+			else if ( wxT("toolSeparator") == childObj->GetClassName() )
+			{
+				tb->AddSeparator();
+			}
+			else
+			{
+				wxControl* control = wxDynamicCast( child, wxControl );
+				if ( NULL != control )
+				{
+					tb->AddControl( control );
+				}
+			}
+		}
+		tb->Realize();
+
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxAuiToolBar"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
+		xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		xrc.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxAuiToolBar"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+		return filter.GetXfbObject();
+	}
+};
+
 void ComponentEvtHandler::OnTool( wxCommandEvent& event )
 {
 	wxToolBar* tb = wxDynamicCast( event.GetEventObject(), wxToolBar );
@@ -1481,6 +1578,7 @@ ABSTRACT_COMPONENT("separator", SeparatorComponent)
 WINDOW_COMPONENT("wxListCtrl", ListCtrlComponent)
 WINDOW_COMPONENT("wxStatusBar", StatusBarComponent)
 WINDOW_COMPONENT("wxToolBar", ToolBarComponent)
+WINDOW_COMPONENT("wxAuiToolBar", AuiToolBarComponent)
 ABSTRACT_COMPONENT("tool", ToolComponent)
 ABSTRACT_COMPONENT("toolSeparator", ToolSeparatorComponent)
 WINDOW_COMPONENT("wxChoice", ChoiceComponent)

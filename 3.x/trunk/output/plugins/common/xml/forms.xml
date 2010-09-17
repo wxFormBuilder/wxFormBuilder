@@ -75,6 +75,7 @@ Written by
 	  <option name="impl_virtual" help="Declare event handlers as virtual methods and generate default implementation."/>
 	  impl_virtual
 	</property>
+	<property name="aui_managed" help="Manage this frame by AUI manager." type="bool">0</property>
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">
@@ -90,6 +91,7 @@ Written by
 	  impl_virtual
 	</property>
 	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialised." />
+	<property name="aui_managed" help="Manage this panel by AUI manager." type="bool">0</property>
   </objectinfo>
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
@@ -127,6 +129,7 @@ Written by
 	  impl_virtual
 	</property>
 	<event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialized." />
+	<property name="aui_managed" help="Manage this dialog by AUI manager." type="bool">0</property>
   </objectinfo>
 
   <objectinfo class="MenuBar" icon="menubar.xpm" type="menubar_form" startgroup="1">

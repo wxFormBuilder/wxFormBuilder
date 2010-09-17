@@ -54,6 +54,8 @@
     <childtype name="menu" nmax="1" />
     <childtype name="statusbar" nmax="1" />
     <childtype name="toolbar" nmax="1" />
+    <childtype name="widget" />
+    <childtype name="container" />
   </objtype>
 
   <objtype name="menubar_form">

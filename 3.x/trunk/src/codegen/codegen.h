@@ -125,11 +125,15 @@ protected:
 		ID_IFEQUAL,
 		ID_IFNOTEQUAL,
 		ID_IFPARENTTYPEEQUAL,
+		ID_IFPARENTCLASSEQUAL,
 		ID_APPEND,
 		ID_CLASS,
 		ID_INDENT,
-		ID_UNINDENT
+		ID_UNINDENT,
+		ID_IFTYPEEQUAL
 	} Ident;
+
+	bool IsEqual(const wxString& value, const wxString& set);
 
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
@@ -168,10 +172,12 @@ protected:
 	bool ParseIfEqual();
 	bool ParseIfNotEqual();
 	bool ParseIfParentTypeEqual();
+	bool ParseIfParentClassEqual();
 	void ParseAppend();
 	void ParseClass();
 	void ParseIndent();
 	void ParseUnindent();
+	bool ParseIfTypeEqual();
 
 	PProperty GetProperty( wxString* childName = NULL );
 	PObjectBase GetWxParent();
