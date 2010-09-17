@@ -26,7 +26,7 @@
 #ifndef __VISUAL_EDITOR__
 #define __VISUAL_EDITOR__
 
-
+#include "plugin.h"
 #include "wx/wx.h"
 #include "utils/wxfbdefs.h"
 #include "rad/designer/visualobj.h"
@@ -34,6 +34,7 @@
 #include <wx/sashwin.h>
 
 #include "innerframe.h"
+#include "wx/aui/aui.h"
 
 /**
  * Extends the wxInnerFrame to show the object highlight
@@ -84,7 +85,7 @@ class DesignerWindow : public wxInnerFrame
    PObjectBase GetSelectedObject() { return m_selObj.lock(); }
    wxWindow* GetActivePanel() { return m_actPanel; }
    wxMenu* GetMenuFromObject(PObjectBase menu);
-   void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar);
+   void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar, wxWindow *auipanel);
    void HighlightSelection(wxDC& dc);
    void OnPaint(wxPaintEvent &event);
 };
@@ -103,6 +104,7 @@ class VisualEditor : public wxScrolledWindow
   ObjectBaseMap m_baseobjects;
 
   DesignerWindow *m_back;
+  wxPanel *m_auipanel;
 
   PObjectBase m_form;  // Pointer to last form created
 
@@ -111,6 +113,9 @@ class VisualEditor : public wxScrolledWindow
 
   // Prevent OnModified in components
   bool m_stopModifiedEvent;
+  
+  // aui scan timer
+  wxTimer m_AuiScaner;
 
   DECLARE_EVENT_TABLE()
 
@@ -120,6 +125,12 @@ class VisualEditor : public wxScrolledWindow
   void SetupSizer( PObjectBase obj, wxSizer* sizer );
   void Create();
   void DeleteAbstractObjects();
+  
+  void ClearAui();
+  void SetupAui( PObjectBase obj, wxWindow* window );
+  void ScanPanes( wxWindow* parent );
+  
+  void OnAuiScaner(wxTimerEvent& event);
 
  public:
   VisualEditor(wxWindow *parent);
@@ -133,6 +144,9 @@ class VisualEditor : public wxScrolledWindow
 
   PObjectBase GetObjectBase( wxObject* wxobject );
   wxObject* GetWxObject( PObjectBase baseobject );
+  
+  //AUI
+  wxAuiManager *m_auimgr;
 
   // Give components an opportunity to cleanup
   void ClearComponents( wxWindow* parent );

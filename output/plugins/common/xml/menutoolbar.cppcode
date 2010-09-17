@@ -198,15 +198,41 @@ Written by
     <template name="after_addchild">$name->Realize();</template>
   </templates>
 
+  <templates class="wxAuiToolBar">
+    <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/aui/auibar.h&gt;</template>
+    <template name="construction">
+                 $name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
+
+		#ifnotnull $separation
+		@{
+		  #ifnotequal $separation "5"
+		  @{ #nl $name->SetToolSeparation( $separation ); @}
+		@}
+
+		#ifnotnull $margins    @{ #nl $name->SetMargins( $margins ); @}
+
+		#ifnotnull $packing
+		@{
+			#ifnotequal $packing "1"
+			@{ #nl $name->SetToolPacking( $packing ); @}
+		@}
+    </template>
+	<template name="after_addchild">
+		$name->Realize();
+	</template>
+  </templates>
+
   <templates class="tool">
     <template name="construction">
 	#ifparenttypeequal "toolbar"
         @{
-		#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );
+		#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
 	@}
 	#ifparenttypeequal "toolbar_form"
         @{
-		AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar );
+		AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
 	@}
     </template>
 	<template name="evt_entry_OnToolClicked">EVT_TOOL( $id, #handler )</template>

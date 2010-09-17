@@ -101,7 +101,7 @@ class ApplicationData
 
 		void NotifyObjectExpanded( PObjectBase obj );
 
-		void NotifyObjectSelected( PObjectBase obj );
+		void NotifyObjectSelected( PObjectBase obj, bool force = false );
 
 		void NotifyObjectCreated( PObjectBase obj );
 

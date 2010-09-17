@@ -775,7 +775,7 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 	}
 	else
 	{
-		message = wxT( "Impossible to create the object. Did you forget to add a sizer/parent object?" );
+		message = wxT( "Impossible to create the object. Did you forget to add a sizer/parent object or turn on/off an AUI management?" );
 		wxMessageBox( message, wxT("wxFormBuilder"), wxICON_WARNING | wxOK );
 	}
 	
@@ -939,7 +939,7 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.1"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
+	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.2 - beta"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries

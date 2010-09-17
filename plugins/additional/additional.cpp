@@ -39,6 +39,8 @@
 #include <wx/datectrl.h>
 #include <wx/grid.h>
 #include <wx/dirctrl.h>
+#include <wx/mediactrl.h>
+#include <wx/bmpcbox.h>
 
 #if wxCHECK_VERSION( 2, 8, 0 )
 	#include <wx/richtext/richtextctrl.h>
@@ -1245,6 +1247,106 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event)
 	event.Skip();
 }
 
+class MediaCtrlComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxMediaCtrl* mc = new wxMediaCtrl((wxWindow *)parent, wxID_ANY, wxT(""),obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+		
+		if ( !obj->IsNull( _("file") ) )
+		{
+			if( mc->Load( obj->GetPropertyAsString( _("file") ) ) )
+			{
+				if (!obj->IsNull( _("playback_rate"))) mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("playback_rate")));
+				if (!obj->IsNull( _("volume")) && (obj->GetPropertyAsFloat(_("volume"))>=0)&&(obj->GetPropertyAsFloat(_("volume"))<=1)) 
+						mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("volume")));
+				if (!obj->IsNull(_("player_controls")))
+				{
+					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("STEP") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);
+					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("VOLUME") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_VOLUME);
+					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("DEFAULT") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_DEFAULT);
+					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("NONE") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_NONE);
+						
+				}
+				
+				if ( !obj->IsNull( _("play") ) && ( obj->GetPropertyAsInteger( _("play") ) == 1 ) ) mc->Play();
+				else
+					mc->Stop();
+				
+				//GetManager()->ModifyProperty( m_window, wxT("size"), mc->GetBestSize() );
+			}
+		}
+		
+		if(!obj->IsNull(_("style"))) mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);
+
+		mc->PushEventHandler( new ComponentEvtHandler( mc, GetManager() ) );
+
+		return mc;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxMediaCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxMediaCtrl"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+class BitmapComboBoxComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxBitmapComboBox *bcombo = new wxBitmapComboBox((wxWindow *)parent,-1,
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			0,
+			NULL,
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		// choices
+		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
+		for (unsigned int i=0; i<choices.Count(); i++)
+		{
+			wxImage img(choices[i].BeforeFirst(wxChar(58)));
+			bcombo->Append(choices[i].AfterFirst(wxChar(58)), wxBitmap(img));
+		}
+			
+		return bcombo;
+	}
+	
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("choices"),_("content"),XRC_TYPE_STRINGLIST);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxBitmapComboBox"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("content"),_("choices"),XRC_TYPE_STRINGLIST);
+		return filter.GetXfbObject();
+	}
+};
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1262,6 +1364,9 @@ WINDOW_COMPONENT("CustomControl", CustomControlComponent)
 
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
+
+WINDOW_COMPONENT("wxMediaCtrl",MediaCtrlComponent)
+WINDOW_COMPONENT("wxBitmapComboBox", BitmapComboBoxComponent)
 
 #if wxCHECK_VERSION( 2, 8, 0 )
 // wxRichTextCtrl

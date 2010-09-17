@@ -61,6 +61,7 @@
       <option name="protected" />
       <option name="public" />protected</property>
   </objectinfo>
+
   <objectinfo class="wxWindow" smallIcon="wxwindow.png" type="interface">
 	<property name="id" type="macro">wxID_ANY</property>
     <property name="pos" type="wxPoint"         help="Window position. The default is (-1, -1) which indicates that wxWidgets should generate a default position for the window."/>
@@ -94,6 +95,56 @@
       <option name="wxWS_EX_PROCESS_IDLE"           help="This window should always process idle events, even if the mode set by wxIdleEvent::SetMode is wxIDLE_PROCESS_SPECIFIED." />
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
+
+	<category name="AUI">
+		<property name="aui_name" type="wxString" help="Sets the internale name of the pane."/>
+		<property name="caption_visible" type="bool" help="Indicates that a pane caption should be visible.">1</property>
+		<property name="caption" type="wxString" help="Sets the caption of the pane."/>
+		<property name="close_button" type="bool" help="Indicates that a close button should be drawn for the pane.">1</property>
+		<property name="maximize_button" type="bool" help="Indicates that a maximize button should be drawn for the pane.">0</property>
+		<property name="minimize_button" type="bool" help="Indicates that a minimize button should be drawn for the pane.">0</property>
+		<property name="pin_button" type="bool" help="Indicates that a pin button should be drawn for the pane.">1</property>
+		<property name="pane_border" type="bool" help="Indicates that a border should be drawn for the pane.">1</property>
+		<property name="show" type="bool" help="Indicates that a pane should be shown.">1</property>
+		<property name="gripper" type="bool" help="Indicates that a gripper should be drawn for the pane.">0</property>
+
+		<property name="center_pane" type="bool" help="Specifies that the pane should adopt the default center pane settings. Centre panes usually do not have caption bars. This function provides an easy way of preparing a pane to be displayed in the center dock position.">0</property>
+		<property name="default_pane" type="bool" help="Specifies that the pane should adopt the default pane settings.">0</property>
+		<property name="toolbar_pane" type="bool" help="Specifies that the pane should adopt the default toolbar pane settings.">0</property>
+
+
+		<property name="moveable" type="bool" help="Indicates whether a frame can be moved.">1</property>
+		<property name="resize" type="option">
+			<option name="Resizable" help="Allows a pane to be resized if the parameter is true, and forces it to be a fixed size if the parameter is false."/>
+			<option name="Fixed" help="Forces a pane to be fixed size so that it cannot be resized."/>Resizable
+		</property>
+		<property name="pane_size" type="wxSize" help="Sets the size of the floating pane." />
+
+		<property name="dock" type="option">
+			<option name="Dock" help="Indicates that a pane should be docked."/>
+			<option name="Float" help="Indicates that a pane should be floated."/>Dock
+		</property>	
+		<property name="dock_fixed" type="bool" help="Causes the containing dock to have no resize sash. This is useful for creating panes that span the entire width or height of a dock, but should not be resizable in the other direction.">0</property>
+		<property name="floatable" type="bool" help="Sets whether the user will be able to undock a pane and turn it into a floating window.">1</property>	
+		<property name="BottomDockable" type="bool" help="Indicates whether a pane can be docked at the bottom of the frame.">1</property>
+		<property name="TopDockable" type="bool" help="Indicates whether a pane can be docked at the top of the frame.">1</property>
+		<property name="LeftDockable" type="bool" help="Indicates whether a pane can be docked on the left of the frame.">1</property>
+		<property name="RightDockable" type="bool" help="Indicates whether a pane can be docked on the right of the frame.">1</property>	    
+		
+		<property name="docking" type="option" help="Determines the direction of the docked pane.">
+			<option name="Top"/>
+			<option name="Bottom"/>
+			<option name="Left"/>
+			<option name="Center"/>
+			<option name="Right"/>Left
+		</property>
+		<property name="pane_position" type="wxPoint" help="Sets the position of the floating pane."/>
+		<property name="position" type="uint" help="Determines the position of the docked pane."/>
+		<property name="row" type="uint" help="Determines the row of the docked pane."/>
+		<property name="layer" type="uint" help="Determines the layer of the docked pane. The dock layer is similar to an onion, the inner-most layer being layer 0. Each shell moving in the outward direction has a higher layer number. This allows for more complex docking layout formation."/>
+
+	</category>
+
 	<category name="Validator">
 		<property name = "validator_type" type="option" hidden="1" help="For C++ Only.&#x0A;Type of a validator assigned to the window">
 			<option name="wxDefaultValidator" help="Default validator (does nothing)"/>

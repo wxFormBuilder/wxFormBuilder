@@ -254,7 +254,7 @@ else
 	--table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs" .. richtext .. "`" )
 	--table.insert( package.config["Release"].linkoptions, "`wx-config --libs" .. richtext .. "`" )
 
-	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs`" )
-	table.insert( package.config["Release"].linkoptions, "`wx-config --libs`" )
+	table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs std,media`" )
+	table.insert( package.config["Release"].linkoptions, "`wx-config --libs std,media`" )
 end
 

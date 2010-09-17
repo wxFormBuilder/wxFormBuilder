@@ -266,6 +266,15 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		PObjectType parentType = parent->GetObjectInfo()->GetObjectType();
 		int max = parentType->FindChildType(objType);
 
+		//AUI
+		if( parentType->GetName() == wxT("form") )
+		{
+			// widgets and containers can be used without sizer only in AUI managed parents
+			if( (!parent->GetPropertyAsInteger(wxT("aui_managed")) && parent->GetObjectTypeName() != wxT("toolbar") ) && ( objType->GetName() == wxT("widget") || objType->GetName() == wxT("container") ) ) max = 0;
+			// sizer cannot be used with AUI managed parent
+			if( parent->GetPropertyAsInteger(wxT("aui_managed")) && ( objType->GetName() == wxT("sizer") ) ) max = 0;
+		}
+		
 		// FIXME! Esto es un parche para evitar crear los tipos menubar,statusbar y
 		// toolbar en un form que no sea wxFrame.
 		// Hay que modificar el conjunto de tipos para permitir tener varios tipos
