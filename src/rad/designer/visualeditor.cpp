@@ -387,12 +387,11 @@ void VisualEditor::Create()
 	m_back->SetSelectedSizer(NULL);
 	m_back->SetSelectedObject(PObjectBase());
 	
+	ClearAui();
 	ClearComponents( m_back->GetFrameContentPanel() );
 	
 	m_back->GetFrameContentPanel()->DestroyChildren();
-	ClearAui();
 	m_back->GetFrameContentPanel()->SetSizer( NULL ); // *!*
-	
 
 	// Clear all associations between ObjectBase and wxObjects
 	m_wxobjects.clear();
