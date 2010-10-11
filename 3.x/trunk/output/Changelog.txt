@@ -1,7 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-09/17/2010 Version 3.02.01 (Beta)
+10/11/2010 Version 3.02.01 (Beta)
 * Fixed occasional crash occured during design of forms managed by AUI. 
+* Fixed build issue on Linux when wxWidgets library was built with wxUSE_MEDIACTRL=0
+  (build files must be re-created by using ./create_build_files.sh)
 
 09/17/2010 Version 3.02.00 (Beta)
 + Added support for AUI and wxAuiToolbar.
