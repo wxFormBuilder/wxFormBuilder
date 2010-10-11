@@ -39,7 +39,9 @@
 #include <wx/datectrl.h>
 #include <wx/grid.h>
 #include <wx/dirctrl.h>
+#if wxUSE_MEDIACTRL
 #include <wx/mediactrl.h>
+#endif
 #include <wx/bmpcbox.h>
 
 #if wxCHECK_VERSION( 2, 8, 0 )
@@ -1247,6 +1249,7 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event)
 	event.Skip();
 }
 
+#if wxUSE_MEDIACTRL
 class MediaCtrlComponent : public ComponentBase
 {
 public:
@@ -1301,6 +1304,7 @@ public:
 		return filter.GetXfbObject();
 	}
 };
+#endif
 
 class BitmapComboBoxComponent : public ComponentBase
 {
@@ -1365,7 +1369,9 @@ WINDOW_COMPONENT("CustomControl", CustomControlComponent)
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
 
+#if wxUSE_MEDIACTRL
 WINDOW_COMPONENT("wxMediaCtrl",MediaCtrlComponent)
+#endif
 WINDOW_COMPONENT("wxBitmapComboBox", BitmapComboBoxComponent)
 
 #if wxCHECK_VERSION( 2, 8, 0 )
