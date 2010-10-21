@@ -1544,7 +1544,7 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
 	{
 		PProperty prop;
 		if((propChanged->GetName() == wxT("name") && reason == wxT("PropChange")) ||
-			propChanged->GetName() == wxT("id") && reason == wxT("DblClk"))
+			(propChanged->GetName() == wxT("id") && reason == wxT("DblClk")))
 		{
 			//wxPGId pgid = m_pg->GetPropertyByLabel(wxT(""));
 			prop = AppData()->GetProjectData()->GetProperty( wxT("event_generation") );

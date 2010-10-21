@@ -39,6 +39,9 @@
   "nmax" flag of a childtype object indicates the maximum number
   of objects that can be created. Items should contains just one
   object, so nmax is set to '1'.
+
+  "aui_nmax" flag has the same meaning like "nmax" but it is used for
+  frames managed by AUI only.
   -->
   <objtype name="project">
     <childtype name="form" />
@@ -49,13 +52,13 @@
   <objtype name="interface" />
 
   <objtype name="form">
-    <childtype name="sizer" nmax="1" />
-    <childtype name="menubar" nmax="1" />
-    <childtype name="menu" nmax="1" />
-    <childtype name="statusbar" nmax="1" />
-    <childtype name="toolbar" nmax="1" />
-    <childtype name="widget" />
-    <childtype name="container" />
+    <childtype name="sizer" nmax="1" aui_nmax="0" />
+    <childtype name="menubar" nmax="1" aui_nmax="1" />
+    <childtype name="menu" nmax="1" aui_nmax="1" />
+    <childtype name="statusbar" nmax="1" aui_nmax="1" />
+    <childtype name="toolbar" nmax="1" aui_nmax="1" />
+    <childtype name="widget" nmax="0" />
+    <childtype name="container" nmax="0" />
   </objtype>
 
   <objtype name="menubar_form">
@@ -69,7 +72,7 @@
   </objtype>
 
   <objtype name="widget">
-	<childtype name="menu" nmax="1"/>
+	<childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
   <objtype name="expanded_widget" />
 
@@ -82,48 +85,48 @@
   </objtype>
 
   <objtype name="container">
-    <childtype name="sizer" nmax="1" />
-    <childtype name="menu" nmax="1" />
+    <childtype name="sizer" nmax="1" aui_nmax="1" />
+    <childtype name="menu" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="sizeritem" item="1">
-    <childtype name="widget" nmax="1" />
-    <childtype name="expanded_widget" nmax="1" />
-    <childtype name="container" nmax="1" />
-    <childtype name="sizer" nmax="1" />
-    <childtype name="gbsizer" nmax="1" />
-    <childtype name="notebook" nmax="1" />
-    <childtype name="flatnotebook" nmax="1" />
-    <childtype name="listbook" nmax="1" />
-    <childtype name="choicebook" nmax="1" />
-	<childtype name="auinotebook" nmax="1" />
-    <childtype name="splitter" nmax="1" />
-    <childtype name="toolbar" nmax="1" />
-    <childtype name="treelistctrl" nmax="1" />
+    <childtype name="widget" nmax="1" aui_nmax="1" />
+    <childtype name="expanded_widget" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="sizer" nmax="1" aui_nmax="1" />
+    <childtype name="gbsizer" nmax="1" aui_nmax="1" />
+    <childtype name="notebook" nmax="1" aui_nmax="1" />
+    <childtype name="flatnotebook" nmax="1" aui_nmax="1" />
+    <childtype name="listbook" nmax="1" aui_nmax="1" />
+    <childtype name="choicebook" nmax="1" aui_nmax="1" />
+	<childtype name="auinotebook" nmax="1" aui_nmax="1" />
+    <childtype name="splitter" nmax="1" aui_nmax="1" />
+    <childtype name="toolbar" nmax="1" aui_nmax="1" />
+    <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
-    <childtype name="widget" nmax="1" />
-    <childtype name="expanded_widget" nmax="1" />
-    <childtype name="container" nmax="1" />
-    <childtype name="sizer" nmax="1" />
-    <childtype name="gbsizer" nmax="1" />
-    <childtype name="notebook" nmax="1" />
-    <childtype name="flatnotebook" nmax="1" />
-    <childtype name="listbook" nmax="1" />
-    <childtype name="choicebook" nmax="1" />
-	<childtype name="auinotebook" nmax="1" />
-    <childtype name="splitter" nmax="1" />
-    <childtype name="toolbar" nmax="1" />
-    <childtype name="treelistctrl" nmax="1" />
+    <childtype name="widget" nmax="1" aui_nmax="1" />
+    <childtype name="expanded_widget" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="sizer" nmax="1" aui_nmax="1" />
+    <childtype name="gbsizer" nmax="1" aui_nmax="1" />
+    <childtype name="notebook" nmax="1" aui_nmax="1" />
+    <childtype name="flatnotebook" nmax="1" aui_nmax="1" />
+    <childtype name="listbook" nmax="1" aui_nmax="1" />
+    <childtype name="choicebook" nmax="1" aui_nmax="1" />
+	<childtype name="auinotebook" nmax="1" aui_nmax="1" />
+    <childtype name="splitter" nmax="1" aui_nmax="1" />
+    <childtype name="toolbar" nmax="1" aui_nmax="1" />
+    <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="splitter" >
-    <childtype name="splitteritem" nmax="2" />
+    <childtype name="splitteritem" nmax="2" aui_nmax="2" />
   </objtype>
 
   <objtype name="splitteritem" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="notebook" >
@@ -131,7 +134,7 @@
   </objtype>
 
   <objtype name="notebookpage" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="flatnotebook" >
@@ -139,7 +142,7 @@
   </objtype>
 
   <objtype name="flatnotebookpage" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="listbook" >
@@ -147,7 +150,7 @@
   </objtype>
 
   <objtype name="listbookpage" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="choicebook" >
@@ -155,7 +158,7 @@
   </objtype>
 
   <objtype name="choicebookpage" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
 
   <objtype name="auinotebook" >
@@ -163,7 +166,7 @@
   </objtype>
 
   <objtype name="auinotebookpage" item="1">
-    <childtype name="container" nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1" />
   </objtype>
   
   <objtype name="menubar">

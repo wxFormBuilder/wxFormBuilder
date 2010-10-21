@@ -452,18 +452,19 @@ void VisualEditor::Create()
 			}
 			else
 			{
+				#ifdef __WXGTK__
 				m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
-				
-				/*if ( m_form->GetClassName() == wxT("Frame") )
+				#else
+				if ( m_form->GetClassName() == wxT("Frame") )
 				{
 					m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
 				}
 				else
 				{
 					m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
-				}*/
+				}
+				#endif
 			}
-
 
 			// --- [3] Title bar Setup
 			if (  m_form->GetClassName() == wxT("Frame") || m_form->GetClassName() == wxT("Dialog") )
@@ -607,6 +608,7 @@ void VisualEditor::Create()
 		}
 
 		Thaw();
+		
 	}
 
 	UpdateVirtualSize();
