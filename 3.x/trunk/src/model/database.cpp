@@ -264,16 +264,15 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 	{
 		// Comprobamos si el tipo es válido
 		PObjectType parentType = parent->GetObjectInfo()->GetObjectType();
-		int max = parentType->FindChildType(objType);
-
+		
 		//AUI
+		bool aui = false;
 		if( parentType->GetName() == wxT("form") )
 		{
-			// widgets and containers can be used without sizer only in AUI managed parents
-			if( (!parent->GetPropertyAsInteger(wxT("aui_managed")) && parent->GetObjectTypeName() != wxT("toolbar") ) && ( objType->GetName() == wxT("widget") || objType->GetName() == wxT("container") ) ) max = 0;
-			// sizer cannot be used with AUI managed parent
-			if( parent->GetPropertyAsInteger(wxT("aui_managed")) && ( objType->GetName() == wxT("sizer") ) ) max = 0;
+			aui = parent->GetPropertyAsInteger(wxT("aui_managed"));
 		}
+		
+		int max = parentType->FindChildType(objType, aui);
 		
 		// FIXME! Esto es un parche para evitar crear los tipos menubar,statusbar y
 		// toolbar en un form que no sea wxFrame.
@@ -306,11 +305,11 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			for (unsigned int i=0; !created && i < parentType->GetChildTypeCount(); i++)
 			{
 				PObjectType childType = parentType->GetChildType(i);
-				int max = childType->FindChildType(objType);
+				int max = childType->FindChildType(objType, aui);
 
 				if (childType->IsItem() && max != 0)
 				{
-					max = parentType->FindChildType(childType);
+					max = parentType->FindChildType(childType, aui);
 
 					// si el tipo es un item y además el tipo del objeto a crear
 					// puede ser hijo del tipo del item vamos a intentar crear la
@@ -1434,7 +1433,9 @@ bool ObjectDatabase::LoadObjectTypes()
 			while ( child )
 			{
 				int nmax = -1; // no limit
+				int aui_nmax = -1; // no limit
 				child->GetAttributeOrDefault( "nmax", &nmax, -1 );
+				child->GetAttributeOrDefault( "aui_nmax", &aui_nmax, -1 );
 
 				wxString childname = _WXSTR( child->GetAttribute("name") );
 
@@ -1445,7 +1446,7 @@ bool ObjectDatabase::LoadObjectTypes()
 					continue;
 				}
 
-				objType->AddChildType( childType, nmax );
+				objType->AddChildType( childType, nmax, aui_nmax );
 
 				child = child->NextSiblingElement( "childtype", false );
 			}

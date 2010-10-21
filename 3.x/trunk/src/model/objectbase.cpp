@@ -411,7 +411,16 @@ bool ObjectBase::ChildTypeOk (PObjectType type)
 {
 	// buscamos si puede haber objectos del tipo "type" como hijos
 	// del actual objeto tipo.
-	int nmax = GetObjectInfo()->GetObjectType()->FindChildType(type);
+	
+	int nmax = 0;
+		
+	// check allowed child count
+	if( GetObjectInfo()->GetObjectType()->GetName() == wxT("form") )
+	{
+		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, this->GetPropertyAsInteger(wxT("aui_managed")));
+	}
+	else
+		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, false);
 
 	if (nmax == 0)
 		return false;

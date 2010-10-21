@@ -343,7 +343,7 @@ Python code generation written by
 	<template name="include">$include</template>
   </templates>
 
-<templates class="wxMediaCtrl">
+  <templates class="wxMediaCtrl">
     <template name="construction">
 		self.$name = wx.media.MediaCtrl( #wxparent $name, $id, wx.EmptyString, $pos, $size)
 		#ifnotnull $file
@@ -361,19 +361,5 @@ Python code generation written by
     </template>	
     <template name="include">import wx.media</template>
 </templates>
-
-<templates class="wxBitmapComboBox">
-	<template name="construction">
-		self.$name = wx.combo.BitmapComboBox( #wxparent $name, $id, $value, $pos, $size, "", $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
-		#foreach $choices
-		@{ self.$name.Append( #pred.partition(":")[2], wx.Image.ConvertToBitmap(wx.Image(#pred.partition(":")[0]))); @}
-
-	</template>
-	<template name="evt_connect_OnCombobox">self.$name.Bind( wx.EVT_COMBOBOX, #handler )</template>
-	<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
-	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
-	<template name="include">import wx.combo</template>
-  </templates>
-
 
 </codegen>

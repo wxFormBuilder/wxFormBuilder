@@ -34,6 +34,7 @@
 #include <wx/bmpbuttn.h>
 #include <wx/animate.h>
 #include <wx/aui/auibar.h>
+#include <wx/bmpcbox.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -580,6 +581,49 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxComboBox"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("content"),_("choices"),XRC_TYPE_STRINGLIST);
+		return filter.GetXfbObject();
+	}
+};
+
+class BitmapComboBoxComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxBitmapComboBox *bcombo = new wxBitmapComboBox((wxWindow *)parent,-1,
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			0,
+			NULL,
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		// choices
+		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
+		for (unsigned int i=0; i<choices.Count(); i++)
+		{
+			wxImage img(choices[i].BeforeFirst(wxChar(58)));
+			bcombo->Append(choices[i].AfterFirst(wxChar(58)), wxBitmap(img));
+		}
+			
+		return bcombo;
+	}
+	
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("choices"),_("content"),XRC_TYPE_STRINGLIST);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxBitmapComboBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("content"),_("choices"),XRC_TYPE_STRINGLIST);
@@ -1564,6 +1608,7 @@ WINDOW_COMPONENT("wxBitmapButton",BitmapButtonComponent)
 WINDOW_COMPONENT("wxTextCtrl",TextCtrlComponent)
 WINDOW_COMPONENT("wxStaticText",StaticTextComponent)
 WINDOW_COMPONENT("wxComboBox", ComboBoxComponent)
+WINDOW_COMPONENT("wxBitmapComboBox", BitmapComboBoxComponent)
 WINDOW_COMPONENT("wxListBox", ListBoxComponent)
 WINDOW_COMPONENT("wxRadioBox", RadioBoxComponent)
 WINDOW_COMPONENT("wxRadioButton",RadioButtonComponent)

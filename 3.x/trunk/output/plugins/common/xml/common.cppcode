@@ -108,6 +108,24 @@ Written by
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
 	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
   </templates>
+  
+  <templates class="wxBitmapComboBox">
+	<template name="declaration">#class* $name;</template>
+	<template name="construction">
+		$name = new #class( #wxparent $name, $id, $value, $pos, $size, 0, NULL, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name 			@{, wxDefaultValidator, $window_name @} );
+
+     		#foreach $choices
+      		@{ $name->Append( wxString(#pred).AfterFirst(wxChar(58)), wxBitmap(wxImage(wxString(#pred).BeforeFirst(wxChar(58))))); @}
+
+	</template>
+	<template name="evt_entry_OnCombobox">EVT_COMBOBOX( $id, #handler )</template>
+	<template name="evt_connect_OnCombobox">$name->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
+	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
+	<template name="include">@#include &lt;wx/bmpcbox.h&gt;</template>
+  </templates>
 
   <templates class="wxListBox">
     <template name="declaration">#class* $name;</template>

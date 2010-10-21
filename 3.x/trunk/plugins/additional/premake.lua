@@ -66,8 +66,8 @@ package.targetprefix = "lib"
 -- Package options
 addoption( "unicode", "Use the Unicode character set" )
 addoption( "with-wx-shared", "Link against wxWidgets as a shared library" )
+addoption( "with-mediactrl", "Link against media control library (wxUSE_MEDIACTRL=1 must be present)" )
 if ( not windows ) then
-	addoption( "with-mediactrl", "Link against media control library (wxUSE_MEDIACTRL=1 must be present)" )
 	addoption( "disable-wx-debug", "Compile against a wxWidgets library without debugging" )
 end
 
@@ -121,6 +121,9 @@ if ( options["unicode"] ) then
 	table.insert( package.defines, { "UNICODE", "_UNICODE" } )
 end
 table.insert( package.defines, "__WX__" )
+if ( options["with-mediactrl"] ) then
+	table.insert( package.defines, "USE_MEDIACTRL" )
+end
 table.insert( package.config["Debug"].defines, debug_macro )
 table.insert( package.config["Release"].defines, "NDEBUG" )
 
@@ -255,7 +258,7 @@ else
 	--table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs" .. richtext .. "`" )
 	--table.insert( package.config["Release"].linkoptions, "`wx-config --libs" .. richtext .. "`" )
 	
-	if( options["with-mediactrl"]) then
+	if ( options["with-mediactrl"] ) then
 		table.insert( package.config["Debug"].linkoptions, "`wx-config "..debug_option.." --libs std,media`" )
 		table.insert( package.config["Release"].linkoptions, "`wx-config --libs std,media`" )
 	else
