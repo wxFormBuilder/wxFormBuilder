@@ -452,18 +452,19 @@ void VisualEditor::Create()
 			}
 			else
 			{
-				#ifdef __WXGTK__
-				m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
-				#else
 				if ( m_form->GetClassName() == wxT("Frame") )
 				{
 					m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_APPWORKSPACE ) );
 				}
 				else
 				{
+					#ifdef __WXGTK__
+					wxVisualAttributes attribs = wxToolBar::GetClassDefaultAttributes();
+					m_back->GetFrameContentPanel()->SetOwnBackgroundColour( attribs.colBg );
+					#else
 					m_back->GetFrameContentPanel()->SetOwnBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
+					#endif
 				}
-				#endif
 			}
 
 			// --- [3] Title bar Setup
