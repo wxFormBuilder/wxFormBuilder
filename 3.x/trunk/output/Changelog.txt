@@ -1,11 +1,12 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-10/21/2010 Version 3.02.01 (Beta)
+11/02/2010 Version 3.02.01 (Beta)
 * Fixed occasional crash occured during design of forms managed by AUI. 
 * Fixed build issue on Linux when wxWidgets library was built with wxUSE_MEDIACTRL=0
   (build files must be re-created by using ./create_build_files.sh)
 * Form/dialog background colour used in the designer is more "native".
 ^ wxBitmapComboBox moved from "Additional" palette to "Common" palette.
+* Fixed insertion of toolbars into AUI managed toolbar panes.
 
 09/17/2010 Version 3.02.00 (Beta)
 + Added support for AUI and wxAuiToolbar.
