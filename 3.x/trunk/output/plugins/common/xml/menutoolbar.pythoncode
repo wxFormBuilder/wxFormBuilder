@@ -150,11 +150,11 @@ Python code generation writen by
 			@{ #nl self.$name.SetToolPacking( $packing ) @}
 		@}</template>
 	<template name="after_addchild">
-		self.$name.Realize() #nl
+		self.$name.Realize()
 		#ifparenttypeequal "form"
 		@{
 		#ifequal #parent $aui_managed "1"
-		@{ 
+		@{ #nl
 			self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()#ifnotnull $aui_name
 			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
 			@{.Caption( $caption )@}#ifequal $caption_visible "0"
@@ -211,11 +211,11 @@ Python code generation writen by
 			@{ #nl self.$name.SetToolPacking( $packing ) @}
 		@}</template>
 	<template name="after_addchild">
-		self.$name.Realize() #nl
+		self.$name.Realize()
 		#ifparenttypeequal "form"
 		@{
 		#ifequal #parent $aui_managed "1"
-		@{ 
+		@{ #nl
 			self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()#ifnotnull $aui_name
 			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
 			@{.Caption( $caption )@}#ifequal $caption_visible "0"

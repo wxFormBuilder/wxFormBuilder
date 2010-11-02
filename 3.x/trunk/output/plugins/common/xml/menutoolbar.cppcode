@@ -196,11 +196,11 @@ Written by
 		@}
     </template>
     <template name="after_addchild">
-		$name->Realize(); #nl
+		$name->Realize();
 		#ifparenttypeequal "form"
 		@{			
 		#ifequal #parent $aui_managed "1"
-		@{ 
+		@{ #nl
 			m_mgr.AddPane( $name, wxAuiPaneInfo()#ifnotnull $aui_name
 			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
 			@{.Caption( $caption )@}#ifequal $caption_visible "0"
@@ -259,11 +259,11 @@ Written by
 		@}
     </template>
 	<template name="after_addchild">
-		$name->Realize(); #nl
+		$name->Realize();
 		#ifparenttypeequal "form"
 		@{			
 		#ifequal #parent $aui_managed "1"
-		@{ 
+		@{ #nl
 			m_mgr.AddPane( $name, wxAuiPaneInfo()#ifnotnull $aui_name
 			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
 			@{.Caption( $caption )@}#ifequal $caption_visible "0"
