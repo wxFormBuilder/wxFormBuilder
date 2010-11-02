@@ -43,7 +43,7 @@
 			@{
 			#ifequal #parent $aui_managed "1"
 			@{ 
-			#iftypeequal "widget || container || toolbar"
+			#iftypeequal "widget || container"
 			@{
 				self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()#ifnotnull $aui_name
 				@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
