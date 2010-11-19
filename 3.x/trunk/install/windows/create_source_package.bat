@@ -49,7 +49,7 @@ goto BEGIN_SVN_EXPORT
 
 :BEGIN_SVN_EXPORT
 :: Add Subversion install directory to the path.
-set SVN_ROOT=C:\Program Files\Subversion
+set SVN_ROOT=%ProgramFiles%\Subversion
 set SVN_EXPORT="%SVN_ROOT%\bin\svn.exe" export --force
 set SVN_REPOS=https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk
 
