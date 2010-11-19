@@ -22,7 +22,7 @@
 :: along with this program; if not, write to the Free Software
 :: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ::**************************************************************************
-set APP_VERSION=1.06
+set APP_VERSION=1.07
 set APP_TITLE=Create Source Package
 
 echo ----------------------------------------
@@ -34,7 +34,7 @@ echo Creates a source directory so that the
 echo installer can include only the needed
 echo files.
 echo.
-echo             Copyright (c) 2007  
+echo             Copyright (c) 2010  
 echo ----------------------------------------
 echo.
 
@@ -50,7 +50,7 @@ goto BEGIN_SVN_EXPORT
 :BEGIN_SVN_EXPORT
 :: Add Subversion install directory to the path.
 set SVN_ROOT=%ProgramFiles%\Subversion
-set SVN_EXPORT="%SVN_ROOT%\bin\svn.exe" export --force
+set SVN_EXPORT="svn.exe" export --force
 set SVN_REPOS=https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk
 
 echo Using Subversion with command :
@@ -61,6 +61,7 @@ echo     %SVN_REPOS%
 echo.
 
 echo [svn] Exporting workspace and premake scripts.
+echo %SVN_EXPORT% --non-recursive %SVN_REPOS% source\
 call %SVN_EXPORT% --non-recursive %SVN_REPOS% source\
 
 echo [svn] Exporting 'output' directory to 'source\output'
