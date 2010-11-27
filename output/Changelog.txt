@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+11/27/2010 Version 3.02.02 (Beta)
+* Fixed positioning of status bar on AUI-managed frame. 
+
 11/02/2010 Version 3.02.01 (Beta)
 * Fixed occasional crash occured during design of forms managed by AUI. 
 * Fixed build issue on Linux when wxWidgets library was built with wxUSE_MEDIACTRL=0

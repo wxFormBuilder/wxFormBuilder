@@ -557,7 +557,6 @@ void VisualEditor::Create()
 					ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 					statusbar = wxDynamicCast( it->second, wxStatusBar );
 				}
-				
 			}
 
 			if ( menubar || statusbar || toolbar || m_auipanel )
@@ -1286,6 +1285,7 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 	contentPanel->SetSizer( NULL, false );
 
 	wxSizer *dummySizer = new wxBoxSizer( wxVERTICAL );
+	
 	if ( mbWidget )
 	{
 		dummySizer->Add(mbWidget, 0, wxEXPAND | wxTOP | wxBOTTOM, 0);
@@ -1331,9 +1331,9 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 
 	if (statusbar)
 	{
+		if( auipanel ) statusbar->Reparent( contentPanel );
 		contentSizer->Add(statusbar, 0, wxEXPAND | wxALL, 0);
 	}
-
 
 	contentPanel->SetSizer(dummySizer, false);
 	contentPanel->Layout();
