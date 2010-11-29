@@ -642,11 +642,10 @@ public:
 	*/
 	bool IsSubclassOf(wxString classname);
 
-	PObjectInfo GetBaseClass(unsigned int idx);
-	unsigned int GetBaseClassCount();
+	PObjectInfo GetBaseClass(unsigned int idx, bool inherited = true);
+	void GetBaseClasses(std::vector<PObjectInfo> &classes, bool inherited = true);
+	unsigned int GetBaseClassCount(bool inherited = true);
 
-
-	//
 	void SetIconFile(wxBitmap icon) { m_icon = icon; };
 	wxBitmap GetIconFile() { return m_icon; }
 

@@ -855,9 +855,9 @@ bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 		}
 	}
 
-	for ( unsigned int i = 0; i < obj_info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < obj_info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = obj_info->GetBaseClass( i );
+		PObjectInfo base_info = obj_info->GetBaseClass( i, false );
 		if ( GenEventEntry( obj, base_info, templateName, handlerName, disconnect ) )
 		{
 			return true;
@@ -983,9 +983,9 @@ void CppCodeGenerator::GenValVarsBase( PObjectInfo info, PObjectBase obj )
 	}
 
 	// Proceeding recursively with the base classes
-	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i, false );
 		GenValVarsBase( base_info, obj );
 	}
 }
@@ -1021,9 +1021,9 @@ void CppCodeGenerator::GenDefinedEventHandlers( PObjectInfo info, PObjectBase ob
 	}
 
 	// Proceeding recursively with the base classes
-	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i, false );
 		GenDefinedEventHandlers( base_info, obj );
 	}
 }
@@ -1358,9 +1358,9 @@ void CppCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::
 	}
 
 	// Process all the base classes recursively
-	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i, false );
 		GenBaseIncludes( base_info, obj, includes, templates );
 	}
 
@@ -1791,9 +1791,9 @@ void CppCodeGenerator::GenSettings( PObjectInfo info, PObjectBase obj )
 	}
 
 	// Proceeding recursively with the base classes
-	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i, false );
 		GenSettings( base_info, obj );
 	}
 }
@@ -1858,9 +1858,9 @@ void CppCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxA
 	}
 	
 	// Proceeding recursively with the base classes
-	for ( unsigned int i = 0; i < info->GetBaseClassCount(); i++ )
+	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
-		PObjectInfo base_info = info->GetBaseClass( i );
+		PObjectInfo base_info = info->GetBaseClass( i, false );
 		GetAddToolbarCode( base_info, obj, codelines );
 	}
 }

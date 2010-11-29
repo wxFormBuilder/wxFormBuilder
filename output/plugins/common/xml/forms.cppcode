@@ -103,11 +103,11 @@ Written by
 			@{ m_mgr.SetManagedWindow(this); #nl @}
 		</template>
 		<template name="after_addchild">
-			#ifnotnull $center
-			@{ #nl this->Centre( $center ); @}
-
 			#ifequal $aui_managed "1"
 			@{ #nl m_mgr.Update();@}
+			
+			#ifnotnull $center
+			@{ #nl this->Centre( $center ); @}
 		</template>
 		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
 		<template name="evt_connect_OnChar">this->Connect( wxEVT_CHAR, #handler );</template>
@@ -363,10 +363,11 @@ Written by
 			@{ m_mgr.SetManagedWindow(this); #nl @}
 		</template>
 		<template name="after_addchild">
-			#ifnotnull $center
-			@{ #nl this->Centre( $center ); @}
 			#ifequal $aui_managed "1"
 			@{ #nl m_mgr.Update();@}
+			
+			#ifnotnull $center
+			@{ #nl this->Centre( $center ); @}
 		</template>
 		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
 		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>

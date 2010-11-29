@@ -701,7 +701,7 @@ void ObjectInspector::Create( bool force )
 			// We create the categories with the properties of the object organized by "classes"
 			CreateCategory( obj_desc->GetClassName(), sel_obj, obj_desc, propMap, false );
 			CreateCategory( obj_desc->GetClassName(), sel_obj, obj_desc, eventMap, true );
-
+			
 			for (unsigned int i=0; i<obj_desc->GetBaseClassCount() ; i++)
 			{
 				PObjectInfo info_base = obj_desc->GetBaseClass(i);

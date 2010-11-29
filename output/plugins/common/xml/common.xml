@@ -43,7 +43,6 @@ Written by
     <inherits class="wxButton">
     	<property name="name">m_bpButton</property>
     </inherits>
-    <inherits class="wxWindow" />
     <property name="style" type="bitlist">
       <option name="wxBU_LEFT"      help="Left-justifies the bitmap label. WIN32 only."/>
       <option name="wxBU_TOP"       help="Aligns the bitmap label to the top of the button. WIN32 only."/>
