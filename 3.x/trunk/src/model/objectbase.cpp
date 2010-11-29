@@ -838,15 +838,45 @@ wxString ObjectInfo::GetBaseClassDefaultPropertyValue( size_t baseIndex, const w
 	return wxString();
 }
 
-PObjectInfo ObjectInfo::GetBaseClass(unsigned int idx)
+PObjectInfo ObjectInfo::GetBaseClass(unsigned int idx, bool inherited)
 {
-	assert (idx < m_base.size());
-	return m_base[idx];
+	if( inherited )
+	{
+		std::vector<PObjectInfo> classes;
+		GetBaseClasses( classes );
+		
+		assert (idx < classes.size());
+		return classes[idx];
+	}
+	else
+	{
+		assert (idx < m_base.size());
+		return m_base[idx];
+	}
 }
 
-unsigned int ObjectInfo::GetBaseClassCount()
+unsigned int ObjectInfo::GetBaseClassCount(bool inherited)
 {
-	return (unsigned int)m_base.size();
+	if( inherited )
+	{
+		std::vector<PObjectInfo> classes;
+		GetBaseClasses( classes );
+		
+		return (unsigned int)classes.size();
+	}
+	else
+		return (unsigned int)m_base.size();
+}
+
+void ObjectInfo::GetBaseClasses(std::vector<PObjectInfo> &classes, bool inherited)
+{
+	for ( std::vector<PObjectInfo>::iterator it = m_base.begin(); it != m_base.end(); ++it )
+	{
+		PObjectInfo base_info = *it;;
+		classes.push_back( base_info );
+
+		if( inherited ) base_info->GetBaseClasses( classes );
+	}
 }
 
 bool ObjectInfo::IsSubclassOf(wxString classname)
@@ -943,4 +973,3 @@ void CodeInfo::Merge( PCodeInfo merger )
 		}
 	}
 }
-

@@ -1471,5 +1471,3 @@ PObjectType ObjectDatabase::GetObjectType(wxString name)
 
 	return type;
 }
-
-
