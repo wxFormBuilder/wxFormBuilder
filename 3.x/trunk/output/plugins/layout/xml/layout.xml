@@ -89,7 +89,7 @@ Written by
   <objectinfo class="wxGridSizer" icon="grid_sizer.xpm" type="sizer">
  	<inherits class="sizer" />
     <property name="name" type="text" hidden="1">gSizer</property>
-    <property name="rows" type="uint" help="Number of Rows">2</property>
+    <property name="rows" type="uint" help="Number of Rows. '0' tells wxWidgets to calculate the number of rows required to hold the supplied items. If you choose to fix the row number, set the 'cols' figure to zero instead.">0</property>
     <property name="cols" type="uint" help="Number of Columns">2</property>
     <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
     <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
@@ -118,7 +118,7 @@ Written by
  	<inherits class="sizer" />
  	<inherits class="flexgridsizerbase" />
     <property name="name" type="text" hidden="1">fgSizer</property>
-    <property name="rows" type="uint" help="Number of Rows">2</property>
+    <property name="rows" type="uint" help="Number of Rows. '0' tells wxWidgets to calculate the number of rows required to hold the supplied items. If you choose to fix the row number, set the 'cols' figure to zero instead.">0</property>
     <property name="cols" type="uint" help="Number of Columns">2</property>
   </objectinfo>
 
