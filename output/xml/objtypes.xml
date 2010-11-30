@@ -53,6 +53,7 @@
 
   <objtype name="form">
     <childtype name="sizer" nmax="1" aui_nmax="0" />
+	<childtype name="gbsizer" nmax="1" aui_nmax="0" />
     <childtype name="menubar" nmax="1" aui_nmax="1" />
     <childtype name="menu" nmax="1" aui_nmax="1" />
     <childtype name="statusbar" nmax="1" aui_nmax="1" />
