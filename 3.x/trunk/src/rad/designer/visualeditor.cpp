@@ -271,6 +271,7 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 						}
 						else
 						{
+							// scan "floating position"
 							wxPoint pos = inf.floating_pos;
 							if ( pos.x != -1 && pos.y != -1 )
 							{
@@ -281,6 +282,22 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 									updateNeeded = true;
 								}
 							}
+							
+							// scan "floating size"
+							wxSize paneSize = inf.floating_size;
+							if ( paneSize.x != -1 && paneSize.y != -1 )
+							{
+								PProperty psize = obj->GetProperty( wxT("pane_size") );
+								
+								if( psize->GetValue() != TypeConv::SizeToString( paneSize ) )
+								{
+									psize->SetValue( TypeConv::SizeToString( paneSize )  );
+									obj->GetProperty( wxT("resize") )->SetValue( wxT("Resizable") );
+									
+									updateNeeded = true;
+								}
+							}
+						
 							dock = wxT("Float");
 						}
 						PProperty pfloat = obj->GetProperty(wxT("dock") );
@@ -290,20 +307,20 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 							updateNeeded = true;
 						}
 						
-						// scan "size"
-						wxSize paneSize = inf.floating_size;
-						if ( paneSize.x != -1 && paneSize.y != -1 )
+						// scan "best size"
+						/*wxSize bestSize = inf.best_size;
+						if ( bestSize.x != -1 && bestSize.y != -1 )
 						{
-							PProperty psize = obj->GetProperty( wxT("pane_size") );
+							PProperty psize = obj->GetProperty( wxT("best_size") );
 							
-							if( psize->GetValue() != TypeConv::SizeToString( paneSize ) )
+							if( psize->GetValue() != TypeConv::SizeToString( bestSize ) )
 							{
-								psize->SetValue( TypeConv::SizeToString( paneSize )  );
+								psize->SetValue( TypeConv::SizeToString( bestSize )  );
 								obj->GetProperty( wxT("resize") )->SetValue( wxT("Resizable") );
 								
 								updateNeeded = true;
 							}
-						}
+						}*/
 						
 						// scan "row" and "layer"
 						PProperty prop = obj->GetProperty(wxT("row") );
@@ -792,7 +809,15 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	
 	//AUI
 	wxString tname = obj->GetObjectInfo()->GetObjectType()->GetName();
-	if( m_auimgr && ( tname == wxT("widget") || tname == wxT("container") ) )
+	if( m_auimgr && ( tname == wxT("widget") ||
+					tname == wxT("container") || 
+					tname == wxT("notebook") ||
+					tname == wxT("auinotebook") ||
+					tname == wxT("flatnotebook") ||
+					tname == wxT("listbook") ||
+					tname == wxT("choicebook") ||
+					tname == wxT("treelistctrl") ||
+					tname == wxT("splitter") ) )
 	{
 		if( obj->GetParent()->GetObjectTypeName() == wxT("form") )
 		{
@@ -857,7 +882,10 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 	m_auimgr->GetPane( window ).Movable( obj->GetPropertyAsInteger( wxT("movealbe") ));
 	m_auimgr->GetPane( window ).Floatable(obj->GetPropertyAsInteger( wxT("floatable") ));
 	
-	m_auimgr->GetPane( window ).FloatingSize( obj->GetPropertyAsSize( wxT("pane_size") ));
+	if( !obj->GetProperty( wxT("pane_size" ) )->IsNull() ) m_auimgr->GetPane( window ).FloatingSize( obj->GetPropertyAsSize( wxT("pane_size") ));
+	if( !obj->GetProperty( wxT("best_size" ) )->IsNull() ) m_auimgr->GetPane( window ).BestSize( obj->GetPropertyAsSize( wxT("best_size") ) );
+	if( !obj->GetProperty( wxT("min_size" ) )->IsNull() ) m_auimgr->GetPane( window ).MinSize( obj->GetPropertyAsSize( wxT("min_size") ) );
+	if( !obj->GetProperty( wxT("max_size" ) )->IsNull() ) m_auimgr->GetPane( window ).MaxSize( obj->GetPropertyAsSize( wxT("max_size") ) );
 	
 	if( obj->GetPropertyAsInteger( wxT("toolbar_pane") ) ) m_auimgr->GetPane( window ).ToolbarPane();
 	if( !obj->IsNull( wxT("position") ) )  m_auimgr->GetPane( window ).Position( obj->GetPropertyAsInteger( wxT("position") ));

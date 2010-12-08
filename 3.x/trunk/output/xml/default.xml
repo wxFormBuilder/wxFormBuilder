@@ -119,6 +119,9 @@
 			<option name="Fixed" help="Forces a pane to be fixed size so that it cannot be resized."/>Resizable
 		</property>
 		<property name="pane_size" type="wxSize" help="Sets the size of the floating pane." />
+		<property name="best_size" type="wxSize" help="Sets the ideal size for the pane." />
+		<property name="min_size" type="wxSize" help="Sets the minimum size of the pane." />
+		<property name="max_size" type="wxSize" help="Sets the maximum size of the pane." />
 
 		<property name="dock" type="option">
 			<option name="Dock" help="Indicates that a pane should be docked."/>
