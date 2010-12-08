@@ -60,6 +60,13 @@
     <childtype name="toolbar" nmax="1" aui_nmax="1" />
     <childtype name="widget" nmax="0" />
     <childtype name="container" nmax="0" />
+    <childtype name="notebook" nmax="0" />
+    <childtype name="auinotebook" nmax="0" />
+    <childtype name="flatnotebook" nmax="0" />
+    <childtype name="listbook" nmax="0" />
+    <childtype name="choicebook" nmax="0" />
+    <childtype name="treelistctrl" nmax="0" />
+    <childtype name="splitter" nmax="0" />
   </objtype>
 
   <objtype name="menubar_form">

@@ -37,6 +37,21 @@ Written by
 		<template name="evt_entry_OnIdle">EVT_IDLE( #handler )</template>
 		<template name="evt_connect_OnIdle">this->Connect( wxEVT_IDLE, #handler );</template>
 	</templates>
+	
+	<templates class="AUI Events">
+		<template name="evt_entry_OnAuiPaneButton">EVT_AUI_PANE_BUTTON( #handler )</template>
+		<template name="evt_connect_OnAuiPaneButton">this->Connect( wxEVT_AUI_PANE_BUTTON, #handler );</template>
+		<template name="evt_entry_OnAuiPaneClose">EVT_AUI_PANE_CLOSE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneClose">this->Connect( wxEVT_AUI_PANE_CLOSE, #handler );</template>
+		<template name="evt_entry_OnAuiPaneMaximize">EVT_AUI_PANE_MAXIMIZE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneMaximize">this->Connect( wxEVT_AUI_PANE_MAXIMIZE, #handler );</template>
+		<template name="evt_entry_OnAuiPaneRestore">EVT_AUI_PANE_RESTORE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneRestore">this->Connect( wxEVT_AUI_PANE_RESTORE, #handler );</template>
+		<template name="evt_entry_OnAuiRender">EVT_AUI_RENDER( #handler )</template>
+		<template name="evt_connect_OnAuiRender">this->Connect( wxEVT_AUI_RENDER, #handler );</template>
+		<template name="evt_entry_OnAuiFindManager">EVT_AUI_FIND_MANAGER( #handler )</template>
+		<template name="evt_connect_OnAuiFindManager">this->Connect( wxEVT_AUI_FIND_MANAGER, #handler );</template>
+	</templates>
   
 	<templates class="Frame">
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->

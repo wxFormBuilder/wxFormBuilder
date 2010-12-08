@@ -31,8 +31,18 @@ Written by
     <event name="OnIdle" class="wxIdleEvent" help="Process a wxEVT_IDLE event." />
   </objectinfo>
   
+<objectinfo class="AUI Events" smallIcon="wxwindow.png"  type="interface">
+    <event name="OnAuiPaneButton" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+    <event name="OnAuiPaneClose" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+    <event name="OnAuiPaneMaximize" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+    <event name="OnAuiPaneRestore" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+    <event name="OnAuiRender" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+    <event name="OnAuiFindManager" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only." />
+</objectinfo>
+  
   <objectinfo class="Frame" icon="frame.xpm" type="form">
 	<inherits class="wxTopLevelWindow" />
+	<inherits class="AUI Events" />
 	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
@@ -79,6 +89,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">
+    <inherits class="AUI Events" />
 	<inherits class="wxWindow">
 		<property name="window_style">wxTAB_TRAVERSAL</property>
 		<property name="size" type="wxSize">500,300</property>
@@ -96,6 +107,7 @@ Written by
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
     <inherits class="wxTopLevelWindow" />
+	<inherits class="AUI Events" />
 	<inherits class="wxWindow" />
     <property name="name" type="text" hidden="1">MyDialog</property>
     <property name="title" type="wxString_i18n" />

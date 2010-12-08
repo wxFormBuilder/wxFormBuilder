@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-11/30/2010 Version 3.02.02 (Beta)
+12/08/2010 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
 * Fixed centering of frame/dialog which is managed by AUI.
 ^ Improved and fixed components' inheritance definition.
@@ -9,6 +9,12 @@
 ^ Number of rows in wxGridSizer and wxFlexGridSizer is set to '0' by default which
   means that the correct rows number will be calculated by wxWidgets itself.
 * wxGridBagSizer can be added directly to a frame/dialog/panel.
+* Fixed code generation of empty wxCheckListBox in Python.
+^ Also following widgets can be placed directly into AUI-managed frame:
+  wxNotebook, wxAuiNotebook, wxFlatNotebook, wxListbook, wxChoicebook, wxTreeListCtrl
+  and wxSplitterWindow.
+^ AUI-managed frames can handle also AUI events.
+^ Added "best_size", "min_size" and "max_size" AUI properties.
 
 11/02/2010 Version 3.02.01 (Beta)
 * Fixed occasional crash occured during design of forms managed by AUI. 
