@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-12/08/2010 Version 3.02.02 (Beta)
+01/09/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
 * Fixed centering of frame/dialog which is managed by AUI.
 ^ Improved and fixed components' inheritance definition.
