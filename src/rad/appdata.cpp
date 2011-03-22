@@ -2492,7 +2492,12 @@ void ApplicationData::ShowXrcPreview()
 
 	if ( form == NULL )
 	{
-		wxMessageBox( wxT( "Please select a form and try again." ), wxT( "No Form Selected" ), wxICON_ERROR );
+		wxMessageBox( wxT( "Please select a form and try again." ), wxT( "XRC Preview" ), wxICON_ERROR );
+		return;
+	}
+	else if( form->GetPropertyAsInteger( wxT("aui_managed") ) )
+	{
+		wxMessageBox( wxT( "XRC preview doesn't support AUI-managed frames." ), wxT( "XRC Preview" ), wxICON_ERROR );
 		return;
 	}
 

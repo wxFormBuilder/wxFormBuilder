@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-01/09/2011 Version 3.02.02 (Beta)
+03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
 * Fixed centering of frame/dialog which is managed by AUI.
 ^ Improved and fixed components' inheritance definition.
@@ -15,6 +15,7 @@
   and wxSplitterWindow.
 ^ AUI-managed frames can handle also AUI events.
 ^ Added "best_size", "min_size" and "max_size" AUI properties.
+^ XRC preview is disabled for AUI-managed frames.
 
 11/02/2010 Version 3.02.01 (Beta)
 * Fixed occasional crash occured during design of forms managed by AUI. 
