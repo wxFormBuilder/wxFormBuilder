@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+06/01/2011 Version 3.02.03 (Beta)
+* Several toolbars can be inserted directly into AUI-managed frames.
+
 03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
 * Fixed centering of frame/dialog which is managed by AUI.
