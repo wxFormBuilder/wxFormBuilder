@@ -576,7 +576,11 @@ void VisualEditor::Create()
 				}
 				
 				// Add toolbar(s) to AuiManager and update content
-				if( m_auimgr && toolbar ) SetupAui( GetObjectBase( toolbar ), toolbar );
+				if( m_auimgr && toolbar )
+				{
+					SetupAui( GetObjectBase( toolbar ), toolbar );
+					toolbar = NULL;
+				}
 			}
 
 			if ( menubar || statusbar || toolbar || m_auipanel )
