@@ -475,7 +475,8 @@ wxPGPropertyWithChildren(label,name)
 {
 
 	// Add the options
-    m_strings.Add(wxT("Load From File"));
+	m_strings.Add(wxT("Load From File"));
+    m_strings.Add(wxT("Load From Embedded File"));
     m_strings.Add(wxT("Load From Resource"));
     m_strings.Add(wxT("Load From Icon Resource"));
 
@@ -483,7 +484,7 @@ wxPGPropertyWithChildren(label,name)
 	DoSetValue( (void*)&value );
 
 	// Add the appropriate child
-	if ( m_source == wxT("Load From File") )
+	if ( (m_source == wxT("Load From File")) || (m_source == wxT("Load From Embedded File")) )
 	{
 		wxPGProperty* child = wxImageFileProperty( wxT("file_path"), wxPG_LABEL, m_image );
 		AddChild( child );
@@ -511,6 +512,8 @@ wxPGPropertyWithChildren(label,name)
     AddChild( child2 );
     child2->SetHelpString( 	wxT("Load From File:\n")
 							wxT("Load the image from a file on disk.\n\n")
+							wxT("Load From Embedded File:\n")
+							wxT("C++ Only. Embed the image file in the exe and load it.\nFor other languages, behaves like \"Load From File\".\n\n")
 							wxT("Load From Resource:\n")
 							wxT("Windows Only. Load the image from a BITMAP resource in a .rc file\n\n")
 							wxT("Load From Icon Resource:\n")

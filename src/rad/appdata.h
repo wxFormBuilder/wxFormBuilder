@@ -207,6 +207,11 @@ class ApplicationData
 		// hiden constructor
 		ApplicationData( const wxString &rootdir = wxT( "." ) );
 
+		/**
+		 * Helper for GetOutputPath and GetEmbeddedFilesOutputPath
+		 */
+		wxString GetPathProperty( const wxString& pathName );
+
 		#ifdef __WXFB_DEBUG__
 		wxLog* m_debugLogTarget;
 		#endif
@@ -356,9 +361,16 @@ class ApplicationData
 		/** Path to the fbp file that is opened. */
 		const wxString &GetProjectPath() { return m_projectPath; };
 
+
 		/**
-		Path where the files will be generated. */
+		Path where the files will be generated.
+		*/
 		wxString GetOutputPath();
+
+		/**
+		Path where the embedded bitmap files will be generated.
+		*/
+		wxString GetEmbeddedFilesOutputPath();
 
 		void SetProjectPath( const wxString &path ) { m_projectPath = path; };
 

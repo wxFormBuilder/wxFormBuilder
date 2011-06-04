@@ -104,9 +104,9 @@ private:
 	void FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set );
 
 	/**
-	* Stores the needed "includes" set for the PT_XPM_BITMAP properties.
+	* Stores the needed "includes" set for the PT_BITMAP properties.
 	*/
-	void FindXpmProperties( PObjectBase obj, std::set< wxString >& xpmset);
+	void FindEmbeddedBitmapProperties( PObjectBase obj, std::set< wxString >& embedset);
 
 	/**
 	* Stores all the properties for "macro" type objects, so that their
@@ -172,9 +172,9 @@ private:
 	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::set< wxString >* sourceIncludes, std::vector< wxString >* headerIncludes );
 
 	/**
-	* Generates the '#include' section for the XPM properties.
+	* Generates the '#include' section for the embedded bitmap properties.
 	*/
-	void GenXpmIncludes( PObjectBase project);
+	void GenEmbeddedBitmapIncludes( PObjectBase project);
 
 	/**
 	* Generates the '#define' section for macros.
@@ -237,9 +237,9 @@ public:
 	//static wxString ConvertToRelativePath( wxString path, wxString basePath);
 
 	/**
-	* Convert an XPM filename to the name of the XPM's internal character array.
+	* Convert an Embedded Bitmap filename to the name of the character array.
 	*/
-	static wxString ConvertXpmName( const wxString& text );
+	static wxString ConvertEmbeddedBitmapName( const wxString& text );
 
 	CppCodeGenerator();
 
