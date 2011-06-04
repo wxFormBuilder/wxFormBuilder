@@ -31,6 +31,7 @@
 #include "model/objectbase.h"
 #include "model/database.h"
 #include "utils/wxfbexception.h"
+#include "utils/filetocarray.h"
 
 #include <algorithm>
 
@@ -254,11 +255,36 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 				if ( bmpFileName.GetExt().Upper() == wxT( "XPM" ) )
 				{
 					// If the bitmap is an XPM we will embed it in the code, otherwise it will be loaded from the file at run time.
-					result << wxT( "wxBitmap( " ) << CppCodeGenerator::ConvertXpmName( path ) << wxT( " )" );
+					result << wxT( "wxBitmap( " ) << CppCodeGenerator::ConvertEmbeddedBitmapName( path ) << wxT( " )" );
 				}
 				else
 				{
 					result << wxT( "wxBitmap( wxT(\"" ) << CppCodeGenerator::ConvertCppString( file ) << wxT( "\"), wxBITMAP_TYPE_ANY )" );
+				}
+			}
+			else if ( source == wxT( "Load From Embedded File" ) )
+			{
+				wxString absPath;
+				try
+				{
+					absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+				}
+				catch ( wxFBException& ex )
+				{
+					wxLogError( ex.what() );
+					result = wxT( "wxNullBitmap" );
+					break;
+				}
+
+				wxFileName bmpFileName( path );
+				if ( bmpFileName.GetExt().Upper() == wxT( "XPM" ) )
+				{
+					// If the bitmap is an XPM we will embed it as is, otherwise we'll generate a header
+					result << wxT( "wxBitmap( " ) << CppCodeGenerator::ConvertEmbeddedBitmapName( path ) << wxT( " )" );
+				}
+				else
+				{
+					result << CppCodeGenerator::ConvertEmbeddedBitmapName( path ) <<  wxT("_to_wx_bitmap()");
 				}
 			}
 			else if ( source == wxT( "Load From Resource" ) )
@@ -349,7 +375,7 @@ wxString CppCodeGenerator::ConvertCppString( wxString text )
 	return result;
 }
 
-wxString CppCodeGenerator::ConvertXpmName( const wxString& text )
+wxString CppCodeGenerator::ConvertEmbeddedBitmapName( const wxString& text )
 {
 	wxString name = text;
 	// the name consists of extracting the name of the file (without the directory)
@@ -361,7 +387,7 @@ wxString CppCodeGenerator::ConvertXpmName( const wxString& text )
 		name = name.substr( last_slash + 1 );
 	}
 
-	name.replace( name.rfind( wxT(".") ), 1, wxT("_") );
+	name.Replace( wxT("."), wxT("_") );
 
 	return name;
 }
@@ -685,7 +711,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_source->WriteLn( wxT( "#include \"" ) + file + wxT( ".h\"" ) );
 
 	m_source->WriteLn( wxEmptyString );
-	GenXpmIncludes( project );
+	GenEmbeddedBitmapIncludes( project );
 
 	code = GetCode( project, wxT( "cpp_epilogue" ) );
 	m_source->WriteLn( code );
@@ -1868,12 +1894,12 @@ void CppCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxA
 ///////////////////////////////////////////////////////////////////////
 
 
-void CppCodeGenerator::GenXpmIncludes( PObjectBase project )
+void CppCodeGenerator::GenEmbeddedBitmapIncludes( PObjectBase project )
 {
 	std::set< wxString > include_set;
 
 	// We begin obtaining the "include" list
-	FindXpmProperties( project, include_set );
+	FindEmbeddedBitmapProperties( project, include_set );
 
 	if ( include_set.empty() )
 	{
@@ -1893,10 +1919,10 @@ void CppCodeGenerator::GenXpmIncludes( PObjectBase project )
 	m_source->WriteLn();
 }
 
-void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& xpmset )
+void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<wxString>& embedset )
 {
 	// We go through (browse) for each property in "obj" object. If any of the
-	// PT_XPM_BITMAP type is found, then the proper "include" string is added
+	// PT_BITMAP type is found, then the proper "include" string is added
 	// in "set". After that, we recursively do it the same with the child objects.
 	unsigned int i, count;
 
@@ -1907,12 +1933,12 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 		PProperty property = obj->GetProperty( i );
 		if ( property->GetType() == PT_BITMAP )
 		{
-			wxString path = property->GetValue();
-			size_t semicolonindex = path.find_first_of( wxT( ";" ) );
-			if ( semicolonindex != path.npos )
-			{
-				path = path.substr( 0, semicolonindex );
-			}
+			wxString propValue = property->GetValue();
+
+			wxString path;
+			wxString source;
+			wxSize icoSize;
+			TypeConv::ParseBitmapWithResource( propValue, &path, &source, &icoSize );
 
 			wxFileName bmpFileName( path );
 			if ( bmpFileName.GetExt().Upper() == wxT( "XPM" ) )
@@ -1925,7 +1951,15 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 
 				wxString inc;
 				inc << wxT( "#include \"" ) << relPath << wxT( "\"" );
-				xpmset.insert( inc );
+				embedset.insert( inc );
+			}
+			else if ( source == wxT("Load From Embedded File") )
+			{
+				wxString absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+				wxString includePath = FileToCArray::Generate( absPath );
+				wxString inc;
+				inc << wxT( "#include \"" ) << includePath << wxT( "\"" );
+				embedset.insert( inc );
 			}
 		}
 	}
@@ -1934,7 +1968,7 @@ void CppCodeGenerator::FindXpmProperties( PObjectBase obj, std::set<wxString>& x
 	for ( i = 0; i < count; i++ )
 	{
 		PObjectBase child = obj->GetChild( i );
-		FindXpmProperties( child, xpmset );
+		FindEmbeddedBitmapProperties( child, embedset );
 	}
 }
 

@@ -266,7 +266,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
                 break;
             }
 
-            if ( source == wxT("Load From File") )
+            if ( source == wxT("Load From File") || source == wxT("Load From Embedded File"))
 			{
 			    wxString absPath;
 			    try

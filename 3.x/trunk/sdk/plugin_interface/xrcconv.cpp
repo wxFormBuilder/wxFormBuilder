@@ -223,7 +223,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 				}
 
 				wxString source = bitmapProp.substr( filename.size() + 2 );
-				if ( source.StartsWith( wxT( "Load From File" ) ) )
+				if ( source.StartsWith( wxT( "Load From File" ) ) || source.StartsWith( wxT( "Load From Embedded File" ) ) )
 				{
 					LinkText( filename, &propElement );
 				}

@@ -3,6 +3,7 @@
   <objectinfo class="Project" smallIcon="project.xpm" type="project">
     <property name="name" type="text">MyProject</property>
     <property name="path" type="path" help="The path to generated files">.</property>
+	<property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
     <property name="file" type="text" help="The filenames for generated files" />
     <property name="relative_path" type="bool" help="Use relative paths for external files ( e.g. image files )">
 		1

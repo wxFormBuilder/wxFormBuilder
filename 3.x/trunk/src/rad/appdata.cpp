@@ -2649,13 +2649,12 @@ bool ApplicationData::VerifySingleInstance( const wxString& file, bool switchTo 
 	return m_ipc->VerifySingleInstance( file, switchTo );
 }
 
-wxString ApplicationData::GetOutputPath()
-
+wxString ApplicationData::GetPathProperty( const wxString& pathName )
 {
 	PObjectBase project = GetProjectData();
 	wxFileName path;
 	// Get the output path
-	PProperty ppath = project->GetProperty( wxT( "path" ) );
+	PProperty ppath = project->GetProperty( pathName );
 
 	if ( ppath )
 	{
@@ -2663,7 +2662,7 @@ wxString ApplicationData::GetOutputPath()
 
 		if ( pathEntry.empty() )
 		{
-			THROW_WXFBEX( wxT( "You must set the \"path\" property of the project to a valid path for output files" ) );
+			THROW_WXFBEX( wxT( "You must set the \"") + pathName + wxT("\" property of the project to a valid path for output files" ) );
 		}
 
 		path = wxFileName::DirName( pathEntry );
@@ -2692,8 +2691,20 @@ wxString ApplicationData::GetOutputPath()
 
 	if ( !path.DirExists() )
 	{
-		THROW_WXFBEX( wxT( "Invalid Path: " ) << path.GetPath() << wxT( "\nYou must set the \"path\" property of the project to a valid path for output files" ) );
+		THROW_WXFBEX( wxT( "Invalid Path: " ) << path.GetPath() << wxT( "\nYou must set the \"") + pathName + wxT("\" property of the project to a valid path for output files" ) );
 	}
 
 	return path.GetPath( wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR );
+}
+
+
+
+wxString ApplicationData::GetOutputPath()
+{
+	return GetPathProperty( wxT("path") );
+}
+
+wxString ApplicationData::GetEmbeddedFilesOutputPath()
+{
+	return GetPathProperty( wxT("embedded_files_path") );
 }
