@@ -2,6 +2,7 @@
 ********************************************************************************
 06/01/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.
++ Added "Load From Embedded File" for bitmap properties.
 
 03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
