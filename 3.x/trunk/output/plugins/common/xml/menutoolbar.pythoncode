@@ -192,6 +192,7 @@ Python code generation writen by
   </templates>
 
   <templates class="wxAuiToolBar">
+	<template name="include">import wx.aui</template>
 	<template name="construction">
 		self.$name = wx.aui.AuiToolBar( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
 
