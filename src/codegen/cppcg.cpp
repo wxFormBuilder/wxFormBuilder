@@ -304,7 +304,10 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else if ( source == wxT("Load From Art Provider") )
 			{
-				result = wxT("wxArtProvider::GetBitmap( ") + path.BeforeFirst( wxT(':') ) + wxT(", ") +  path.AfterFirst( wxT(':') ) + wxT(" )");
+				wxString rid = path.BeforeFirst( wxT(':') );
+				if( rid.StartsWith( wxT("gtk-") ) ) rid = wxT("wxT(\"") + rid + wxT("\")");
+				
+				result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") +  path.AfterFirst( wxT(':') ) + wxT(" )");
 			}
 			break;
 		}
