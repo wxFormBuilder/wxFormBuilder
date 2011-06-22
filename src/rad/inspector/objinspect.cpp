@@ -449,9 +449,13 @@ public:
 
 protected:
 	wxString m_image;
+	wxString m_id;
+	wxString m_client;
 	wxString m_source;
 	wxSize m_icoSize;
 	wxArrayString m_strings;
+	wxArrayString m_ids;
+	wxArrayString m_clients;
 private:
 	enum
 	{
@@ -472,13 +476,13 @@ WX_PG_IMPLEMENT_PROPERTY_CLASS(wxBitmapWithResourceProperty,wxBaseParentProperty
 wxBitmapWithResourcePropertyClass::wxBitmapWithResourcePropertyClass ( const wxString& label, const wxString& name, const wxString& value )
 :
 wxPGPropertyWithChildren(label,name)
-{
-
+{	
 	// Add the options
 	m_strings.Add(wxT("Load From File"));
     m_strings.Add(wxT("Load From Embedded File"));
     m_strings.Add(wxT("Load From Resource"));
     m_strings.Add(wxT("Load From Icon Resource"));
+    m_strings.Add(wxT("Load From Art Provider"));
 
 	// Parse default value, ( sets m_image and m_source based on 'value' )
 	DoSetValue( (void*)&value );
@@ -501,6 +505,57 @@ wxPGPropertyWithChildren(label,name)
 			child->SetAttribute( wxPG_FILE_INITIAL_PATH, initialPath );
 		}
 	}
+	else if ( m_source == wxT("Load From Art Provider") )
+	{
+		m_ids.Add(wxT("wxART_ADD_BOOKMARK"));
+		m_ids.Add(wxT("wxART_DEL_BOOKMARK "));
+		m_ids.Add(wxT("wxART_HELP_SIDE_PANEL"));
+		m_ids.Add(wxT("wxART_HELP_SETTINGS"));
+		m_ids.Add(wxT("wxART_HELP_BOOK"));
+		m_ids.Add(wxT("wxART_HELP_FOLDER"));
+		m_ids.Add(wxT("wxART_HELP_PAGE"));
+		m_ids.Add(wxT("wxART_GO_BACK"));
+		m_ids.Add(wxT("wxART_GO_FORWARD"));
+		m_ids.Add(wxT("wxART_GO_UP"));
+		m_ids.Add(wxT("wxART_GO_DOWN"));
+		m_ids.Add(wxT("wxART_GO_TO_PARENT"));
+		m_ids.Add(wxT("wxART_GO_HOME"));
+		m_ids.Add(wxT("wxART_FILE_OPEN"));
+		m_ids.Add(wxT("wxART_PRINT"));
+		m_ids.Add(wxT("wxART_HELP"));
+		m_ids.Add(wxT("wxART_TIP"));
+		m_ids.Add(wxT("wxART_REPORT_VIEW"));
+		m_ids.Add(wxT("wxART_LIST_VIEW"));
+		m_ids.Add(wxT("wxART_NEW_DIR"));
+		m_ids.Add(wxT("wxART_FOLDER"));
+		m_ids.Add(wxT("wxART_GO_DIR_UP"));
+		m_ids.Add(wxT("wxART_EXECUTABLE_FILE"));
+		m_ids.Add(wxT("wxART_NORMAL_FILE"));
+		m_ids.Add(wxT("wxART_TICK_MARK"));
+		m_ids.Add(wxT("wxART_CROSS_MARK"));
+		m_ids.Add(wxT("wxART_ERROR"));
+		m_ids.Add(wxT("wxART_QUESTION"));
+		m_ids.Add(wxT("wxART_WARNING"));
+		m_ids.Add(wxT("wxART_INFORMATION"));
+		m_ids.Add(wxT("wxART_MISSING_IMAGE"));
+		
+		wxPGProperty* child = wxEnumProperty( wxT("id"), wxPG_LABEL, m_ids, m_ids.Index( m_id ) );
+		AddChild( child );
+		child->SetHelpString( wxT("wxArtID unique identifier of the bitmap.") );
+		
+		m_clients.Add(wxT("wxART_TOOLBAR"));
+		m_clients.Add(wxT("wxART_MENU"));
+		m_clients.Add(wxT("wxART_BUTTON"));
+		m_clients.Add(wxT("wxART_FRAME_ICON"));
+		m_clients.Add(wxT("wxART_CMN_DIALOG"));
+		m_clients.Add(wxT("wxART_HELP_BROWSER"));
+		m_clients.Add(wxT("wxART_MESSAGE_BOX"));
+		m_clients.Add(wxT("wxART_OTHER"));
+		
+		child = wxEnumProperty( wxT("client"), wxPG_LABEL, m_clients, m_clients.Index( m_client ) );
+		AddChild( child );
+		child->SetHelpString( wxT("wxArtClient identifier of the client (i.e. who is asking for the bitmap).") );
+	}
 	else
 	{
 		wxPGProperty* child = wxStringProperty( wxT("resource_name"), wxPG_LABEL, m_image );
@@ -509,8 +564,8 @@ wxPGPropertyWithChildren(label,name)
 	}
 
 	wxPGProperty* child2 = wxEnumProperty(wxT("source"), wxPG_LABEL, m_strings, m_strings.Index( m_source ) );
-    AddChild( child2 );
-    child2->SetHelpString( 	wxT("Load From File:\n")
+	AddChild( child2 );
+	child2->SetHelpString( 	wxT("Load From File:\n")
 							wxT("Load the image from a file on disk.\n\n")
 							wxT("Load From Embedded File:\n")
 							wxT("C++ Only. Embed the image file in the exe and load it.\nFor other languages, behaves like \"Load From File\".\n\n")
@@ -518,6 +573,8 @@ wxPGPropertyWithChildren(label,name)
 							wxT("Windows Only. Load the image from a BITMAP resource in a .rc file\n\n")
 							wxT("Load From Icon Resource:\n")
 							wxT("Windows Only. Load the image from a ICON resource in a .rc file\n\n")
+							wxT("Load From Art Provider:\n")
+							wxT("Query registered providers for bitmap with given ID.\n\n")
 						);
 
     if ( m_source == wxT("Load From Icon Resource") )
@@ -542,10 +599,15 @@ void wxBitmapWithResourcePropertyClass::DoSetValue ( wxPGVariant value )
 
     TypeConv::ParseBitmapWithResource( newValue, &m_image, &m_source, &m_icoSize );
 
-	if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() )	)
+	if ( wxNOT_FOUND == m_strings.Index( m_source.c_str() ) )
     {
         m_source = wxT("Load From File");
     }
+	else if( m_source == wxT("Load From Art Provider") )
+	{
+		m_id = m_image.BeforeFirst( wxT(':') );
+		m_client = m_image.AfterFirst( wxT(':') );
+	}
 
 	RefreshChildren();
 }
@@ -564,12 +626,21 @@ void wxBitmapWithResourcePropertyClass::RefreshChildren()
 	{
 		return;
 	}
-
-	Item( ITEM_FILE_OR_RESOURCE )->DoSetValue( m_image );
-	Item( ITEM_SOURCE )->DoSetValue( m_strings.Index( m_source ) );
-	if ( 3 == count )
+	
+	if( m_source != wxT("Load From Art Provider") )
 	{
-	    Item( 2 )->DoSetValue( m_icoSize );
+		if ( 3 == count )
+		{
+			Item( 2 )->DoSetValue( m_icoSize );
+		}
+		Item( ITEM_FILE_OR_RESOURCE )->DoSetValue( m_image );
+		Item( ITEM_SOURCE )->DoSetValue( m_strings.Index( m_source ) );
+	}
+	else
+	{
+		Item( 0 )->DoSetValue( m_ids.Index( m_id ) );
+		Item( 1 )->DoSetValue( m_clients.Index( m_client ) );
+		Item( 2 )->DoSetValue( m_strings.Index( m_source ) );
 	}
 }
 

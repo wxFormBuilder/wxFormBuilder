@@ -2,11 +2,13 @@
 <codegen language="C++">
   <templates class="Project">
     <template name="header_preamble">
+		@#include &lt;wx/artprov.h&gt;
 		#ifnotequal $help_provider "none"
-		@{ @#include &lt;wx/cshelp.h&gt; #nl @}
+		@{ #nl @#include &lt;wx/cshelp.h&gt; @}
 		
 		#ifnotequal $internationalize "0"
-		@{ @#include &lt;wx/intl.h&gt; #nl @}
+		@{ #nl @#include &lt;wx/intl.h&gt; @}
+		
     </template>
     <template name="header_epilogue">
         ///////////////////////////////////////////////////////////////////////////

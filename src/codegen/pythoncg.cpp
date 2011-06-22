@@ -299,7 +299,16 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
                     result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
                 }
 			}
-
+			else if ( source == wxT( "Load From Art Provider" ) )
+			{
+				wxString rid = path.BeforeFirst( wxT(':') );
+				rid.Replace( wxT("wx"), wxT("wx.") );
+				
+				wxString cid = path.AfterFirst( wxT(':') );
+				cid.Replace( wxT("wx"), wxT("wx.") );
+				
+				result = wxT("wx.ArtProvider.GetBitmap( ") + rid + wxT(", ") +  cid + wxT(" )");
+			}
 			break;
 		}
 	case PT_STRINGLIST:
@@ -1101,6 +1110,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("menu")		||
 				type == wxT("submenu")	||
 				type == wxT("toolbar")	||
+				type == wxT("tool")	||
 				type == wxT("listbook")	||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||

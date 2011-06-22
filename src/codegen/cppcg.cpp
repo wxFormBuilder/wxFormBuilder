@@ -302,7 +302,10 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT( "wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
-
+			else if ( source == wxT("Load From Art Provider") )
+			{
+				result = wxT("wxArtProvider::GetBitmap( ") + path.BeforeFirst( wxT(':') ) + wxT(", ") +  path.AfterFirst( wxT(':') ) + wxT(" )");
+			}
 			break;
 		}
 		case PT_STRINGLIST:
@@ -600,8 +603,9 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	wxString guardMacro;
 	wxFileName::SplitPath( file, 0, &guardMacro, 0 );
 	guardMacro.Replace( wxT( " " ), wxT( "_" ) );
-	m_header->WriteLn( wxT( "#ifndef __" ) + guardMacro + wxT( "__" ) );
-	m_header->WriteLn( wxT( "#define __" ) + guardMacro + wxT( "__" ) );
+	guardMacro.MakeUpper();
+	m_header->WriteLn( wxT( "#ifndef __" ) + guardMacro + wxT( "_H__" ) );
+	m_header->WriteLn( wxT( "#define __" ) + guardMacro + wxT( "_H__" ) );
 	m_header->WriteLn( wxT( "" ) );
 
 	code = GetCode( project, wxT( "header_preamble" ) );
@@ -779,7 +783,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		m_header->WriteLn( wxEmptyString );
 	}
 
-	m_header->WriteLn( wxT( "#endif //__" ) + guardMacro + wxT( "__" ) );
+	m_header->WriteLn( wxT( "#endif //__" ) + guardMacro + wxT( "_H__" ) );
 
 	return true;
 }
@@ -962,7 +966,8 @@ void CppCodeGenerator::GenAttributeDeclaration( PObjectBase obj, Permission perm
 		{
 			// Generate the declaration
 			wxString code = GetCode( obj, wxT( "declaration" ) );
-			m_header->WriteLn( code );
+			if ( !code.empty() )
+				m_header->WriteLn( code );
 		}
 	}
 
@@ -1624,6 +1629,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		           type == wxT( "menu" )		||
 		           type == wxT( "submenu" )	||
 		           type == wxT( "toolbar" )	||
+		           type == wxT( "tool" )	||
 		           type == wxT( "listbook" )	||
 		           type == wxT( "notebook" )	||
 		           type == wxT( "auinotebook" )	||

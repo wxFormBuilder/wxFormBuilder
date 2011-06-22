@@ -286,6 +286,17 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			objType->GetName() == wxT("toolbar") ))
 			return PObjectBase(); // tipo no válido
 
+		// No menu dropdown for wxToolBar until wx 2.9 :(
+		if ( parentType->GetName() == wxT("tool") )
+		{
+			PObjectBase gParent = parent->GetParent();
+			if (
+				( gParent->GetClassName() == wxT("wxToolBar") ) &&
+				( objType->GetName() == wxT("menu") )
+			)
+				return PObjectBase(); // not a valid type
+		}
+
 		if (max != 0) // tipo válido
 		{
 			bool create = true;
@@ -833,6 +844,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("menuitem")			||
 			type == wxT("submenu")			||
 			type == wxT("toolbar")			||
+			type == wxT("tool")				||
 			type == wxT("splitter")			||
 			type == wxT("sizer")			||
 			type == wxT("treelistctrl")		||

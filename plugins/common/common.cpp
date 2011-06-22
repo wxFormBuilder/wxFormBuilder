@@ -35,6 +35,7 @@
 #include <wx/animate.h>
 #include <wx/aui/auibar.h>
 #include <wx/bmpcbox.h>
+#include <wx/menu.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -107,6 +108,7 @@ protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
 	void OnChoice( wxCommandEvent& event );
+	void OnToolAUI( wxMouseEvent& event );
 	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
@@ -119,6 +121,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
+	EVT_LEFT_UP( ComponentEvtHandler::OnToolAUI )
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1224,7 +1227,6 @@ public:
 	}
 };
 
-
 class AuiToolBarComponent : public ComponentBase
 {
 public:
@@ -1260,7 +1262,7 @@ public:
 			// very very strange
 			return;
 		}
-
+		int toolIdx = -1;
 		size_t count = GetManager()->GetChildCount( wxobject );
 		for ( size_t i = 0; i < count; ++i )
 		{
@@ -1277,6 +1279,12 @@ public:
 								wxEmptyString,
 								child
 							);
+				toolIdx++;
+				wxAuiToolBarItem* itm = tb->FindToolByIndex( toolIdx );
+				if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 1 && !itm->HasDropDown() )
+                    tb->SetToolDropDown( itm->GetId(), true );
+				else if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 0 && itm->HasDropDown() )
+					tb->SetToolDropDown( itm->GetId(), false );
 			}
 			else if ( wxT("toolSeparator") == childObj->GetClassName() )
 			{
@@ -1292,9 +1300,8 @@ public:
 			}
 		}
 		tb->Realize();
-
 	}
-
+/*
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxAuiToolBar"), obj->GetPropertyAsString(_("name")));
@@ -1316,10 +1323,41 @@ public:
 		filter.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
 		return filter.GetXfbObject();
 	}
+*/
 };
+
+void ComponentEvtHandler::OnToolAUI( wxMouseEvent& event )
+{
+	// FIXME: A click on a tool item without this handler
+	// fires wxFB app events (wxFB toolbar tools like save, open project etc.).
+
+	if ( m_window != event.GetEventObject() ) return;
+
+	wxAuiToolBar* tb = static_cast< wxAuiToolBar* >( m_window );
+	wxAuiToolBarItem* item = tb->FindToolByPosition( event.GetX(), event.GetY() );
+
+	if ( item && item->HasDropDown() )
+	{
+		wxMenu mnuPopUp;
+		wxMenuItem* m1 =  new wxMenuItem( &mnuPopUp, wxID_ANY, _("Drop Down Item 1") );
+		wxMenuItem* m2 =  new wxMenuItem( &mnuPopUp, wxID_ANY, _("Drop Down Item 2") );
+		wxMenuItem* m3 =  new wxMenuItem( &mnuPopUp, wxID_ANY, _("Drop Down Item 3") );
+		mnuPopUp.Append( m1 );
+		mnuPopUp.Append( m2 );
+		mnuPopUp.Append( m3 );
+		tb->SetToolSticky( item->GetId(), true );
+		wxRect rect = tb->GetToolRect( item->GetId() );
+		wxPoint pt = tb->ClientToScreen( rect.GetBottomLeft() );
+		pt = tb->ScreenToClient( pt );
+		tb->PopupMenu( &mnuPopUp, pt );
+		tb->SetToolSticky( item->GetId(), false );
+	}
+}
 
 void ComponentEvtHandler::OnTool( wxCommandEvent& event )
 {
+	//FIXME: Same as above
+
 	wxToolBar* tb = wxDynamicCast( event.GetEventObject(), wxToolBar );
 	if ( NULL == tb )
 	{
@@ -1761,7 +1799,7 @@ MACRO(wxST_SIZEGRIP)
 // wxMenuBar
 MACRO(wxMB_DOCKABLE)
 
-// wxMenuItem
+// wxMenuItem & wxTool
 MACRO(wxITEM_NORMAL)
 MACRO(wxITEM_CHECK)
 MACRO(wxITEM_RADIO)
@@ -1777,11 +1815,6 @@ MACRO(wxTB_NODIVIDER)
 MACRO(wxTB_NOALIGN)
 MACRO(wxTB_HORZ_LAYOUT)
 MACRO(wxTB_HORZ_TEXT)
-
-// wxTool
-MACRO(wxITEM_NORMAL)
-MACRO(wxITEM_CHECK)
-MACRO(wxITEM_RADIO)
 
 // wxSlider
 MACRO(wxSL_AUTOTICKS)
@@ -1821,5 +1854,3 @@ MACRO(wxAC_DEFAULT_STYLE)
 MACRO(wxAC_NO_AUTORESIZE)
 
 END_LIBRARY()
-
-

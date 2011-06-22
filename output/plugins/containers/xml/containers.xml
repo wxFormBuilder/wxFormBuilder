@@ -105,6 +105,8 @@ Written by
 			<option name="wxAUI_NB_CLOSE_BUTTON"  help="With this style, a close button is available on the tab bar." />
 			<option name="wxAUI_NB_CLOSE_ON_ACTIVE_TAB"  help="With this style, the close button is visible on the active tab." />
 			<option name="wxAUI_NB_CLOSE_ON_ALL_TABS"  help="With this style, the close button is visible on all tabs." />
+			<option name="wxAUI_NB_TOP"  help="With this style, tabs are drawn along the top of the notebook." />
+			<option name="wxAUI_NB_BOTTOM"  help="With this style, tabs are drawn along the bottom of the notebook." />
 			wxAUI_NB_DEFAULT_STYLE
 		</property>
 		<property name="tab_ctrl_height" type="int" help="Sets the tab height. By default, the tab control height is calculated by measuring the text height and bitmap sizes on the tab captions. Calling this method will override that calculation and set the tab control to the specified height parameter. A call to this method will override any call to SetUniformBitmapSize(). Specifying -1 as the height will return the control to its default auto-sizing behaviour.">-1</property>

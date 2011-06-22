@@ -49,58 +49,76 @@ Written by
 	        @{ delete $name; @}
 		#ifparenttypeequal "form"
 	        @{ delete $name; @}
+		#ifparenttypeequal "tool"
+	        @{ delete $name; @}
     </template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="settings" >
     </template>
-    <template name="after_addchild">
+	<template name="after_addchild">
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
 			#ifparenttypeequal "widget"
-	        	@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
+				@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
 			#ifparenttypeequal "container"
-	        	@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
+				@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
 			#ifparenttypeequal "form"
-	        	@{ #wxparent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this );	@}
-		@}
+				@{ #wxparent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
+			#ifparenttypeequal "tool"
+				@{ #wxparent $name->Connect( #parent $name->GetId(), wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, wxAuiToolBarEventHandler( #form $name::#parent $name #append OnDropDownMenu ), NULL, this ); @}
+		@}@}
 		#ifparenttypeequal "menubar"
-                @{
+		@{
 			#parent $name->Append( $name, $label );
 		@}
 		#ifparenttypeequal "menubar_form"
-                @{
+		@{
 			Append( $name, $label );
 		@}
-		@}
-    </template>
-    <template name="generated_event_handlers">
+	</template>
+	<template name="generated_event_handlers">
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-         		#ifparenttypeequal "widget"
-                	@{
+			#ifparenttypeequal "widget"
+			@{
 				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
 				#nl { #indent
 					#nl #parent $name->PopupMenu( $name, event.GetPosition() ); #unindent
 				#nl }
-                	@}
-         		#ifparenttypeequal "container"
-                	@{
+			@}
+			#ifparenttypeequal "container"
+			@{
 				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
 				#nl { #indent
 					#nl #parent $name->PopupMenu( $name, event.GetPosition() ); #unindent
 				#nl }
-                	@}
-         		#ifparenttypeequal "form"
-                	@{
+			@}
+			#ifparenttypeequal "form"
+			@{
 				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
 				#nl { #indent
 					#nl #wxparent $name->PopupMenu( $name, event.GetPosition() ); #unindent
 				#nl }
-                	@}
+			@}
+			#ifparenttypeequal "tool"
+			@{
+				#nl void #parent $name #append OnDropDownMenu( wxAuiToolBarEvent &amp;event )
+				#nl { #indent
+					#nl if ( event.IsDropDownClicked() )
+					#nl { #indent
+						#nl #wxparent $name->SetToolSticky( event.GetId(), true );
+						#nl wxRect rect = #wxparent $name->GetToolRect( event.GetId() );
+						#nl wxPoint pt = #wxparent $name->ClientToScreen( rect.GetBottomLeft() );
+						#nl pt = ScreenToClient( pt );
+						#nl #wxparent $name->PopupMenu( $name, pt );
+						#nl #wxparent $name->SetToolSticky( event.GetId(), false ); #unindent
+					#nl } #unindent
+				#nl }
+			@}
 		@}@}
-    </template>
+	</template>
   </templates>
 
   <templates class="submenu">
@@ -301,16 +319,34 @@ Written by
   </templates>
 
   <templates class="tool">
-    <template name="construction">
+	<template name="declaration">
+		#ifparentclassequal "wxAuiToolBar"
+		@{
+			#ifequal $context_menu "1"
+			@{ wxAuiToolBarItem* $name; @}
+		@}
+	</template>
+	<template name="construction">
 	#ifparenttypeequal "toolbar"
-        @{
+	@{
 		#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
+		#ifparentclassequal "wxAuiToolBar"
+		@{
+			#ifequal $context_menu "1"
+			@{
+				#nl $name = myAuiBar->FindToolByIndex( myAuiBar->GetToolCount() - 1 );
+				#nl #parent $name->SetToolDropDown( $name->GetId(), true );
+				#nl
+			@}
+		@}
 	@}
 	#ifparenttypeequal "toolbar_form"
-        @{
+	@{
 		AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
 	@}
-    </template>
+	</template>
+	<template name="generated_event_handlers">
+	</template>
 	<template name="evt_entry_OnToolClicked">EVT_TOOL( $id, #handler )</template>
 	<template name="evt_connect_OnToolClicked">this->Connect( $id, wxEVT_COMMAND_TOOL_CLICKED, #handler );</template>
 	<template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
@@ -321,6 +357,11 @@ Written by
 	<template name="evt_connect_OnToolEnter">this->Connect( $id, wxEVT_COMMAND_TOOL_ENTER, #handler );</template>
     <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 	<template name="evt_connect_OnUpdateUI">this->Connect( $id, wxEVT_UPDATE_UI, #handler );</template>
+	<template name="evt_connect_OnAuiToolBarToolDropDown">#ifparentclassequal "wxAuiToolBar" @{this->Connect( $id, wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, #handler );@}</template>
+	<template name="evt_connect_OnAuiToolBarOverflowClick">#ifparentclassequal "wxAuiToolBar" @{this->Connect( $id, wxEVT_COMMAND_AUITOOLBAR_OVERFLOW_CLICK, #handler );@}</template>
+	<template name="evt_connect_OnAuiToolBarRightClick">#ifparentclassequal "wxAuiToolBar" @{this->Connect( $id, wxEVT_COMMAND_AUITOOLBAR_RIGHT_CLICK, #handler );@}</template>
+	<template name="evt_connect_OnAuiToolBarMiddleClick">#ifparentclassequal "wxAuiToolBar" @{this->Connect( $id, wxEVT_COMMAND_AUITOOLBAR_MIDDLE_CLICK, #handler );@}</template>
+	<template name="evt_connect_OnAuiToolBarBeginDrag">#ifparentclassequal "wxAuiToolBar" @{this->Connect( $id, wxEVT_COMMAND_AUITOOLBAR_BEGIN_DRAG, #handler );@}</template>
   </templates>
 
   <templates class="toolSeparator">
