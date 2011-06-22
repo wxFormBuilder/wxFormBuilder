@@ -454,8 +454,8 @@ protected:
 	wxString m_source;
 	wxSize m_icoSize;
 	wxArrayString m_strings;
-	wxArrayString m_ids;
-	wxArrayString m_clients;
+	static wxArrayString m_ids;
+	static wxArrayString m_clients;
 private:
 	enum
 	{
@@ -470,6 +470,9 @@ private:
 		ITEM_SOURCE
 	};
 };
+
+wxArrayString wxBitmapWithResourcePropertyClass::m_ids;
+wxArrayString wxBitmapWithResourcePropertyClass::m_clients;
 
 WX_PG_IMPLEMENT_PROPERTY_CLASS(wxBitmapWithResourceProperty,wxBaseParentProperty,wxString,const wxString&,TextCtrl)
 
@@ -507,50 +510,156 @@ wxPGPropertyWithChildren(label,name)
 	}
 	else if ( m_source == wxT("Load From Art Provider") )
 	{
-		m_ids.Add(wxT("wxART_ADD_BOOKMARK"));
-		m_ids.Add(wxT("wxART_DEL_BOOKMARK "));
-		m_ids.Add(wxT("wxART_HELP_SIDE_PANEL"));
-		m_ids.Add(wxT("wxART_HELP_SETTINGS"));
-		m_ids.Add(wxT("wxART_HELP_BOOK"));
-		m_ids.Add(wxT("wxART_HELP_FOLDER"));
-		m_ids.Add(wxT("wxART_HELP_PAGE"));
-		m_ids.Add(wxT("wxART_GO_BACK"));
-		m_ids.Add(wxT("wxART_GO_FORWARD"));
-		m_ids.Add(wxT("wxART_GO_UP"));
-		m_ids.Add(wxT("wxART_GO_DOWN"));
-		m_ids.Add(wxT("wxART_GO_TO_PARENT"));
-		m_ids.Add(wxT("wxART_GO_HOME"));
-		m_ids.Add(wxT("wxART_FILE_OPEN"));
-		m_ids.Add(wxT("wxART_PRINT"));
-		m_ids.Add(wxT("wxART_HELP"));
-		m_ids.Add(wxT("wxART_TIP"));
-		m_ids.Add(wxT("wxART_REPORT_VIEW"));
-		m_ids.Add(wxT("wxART_LIST_VIEW"));
-		m_ids.Add(wxT("wxART_NEW_DIR"));
-		m_ids.Add(wxT("wxART_FOLDER"));
-		m_ids.Add(wxT("wxART_GO_DIR_UP"));
-		m_ids.Add(wxT("wxART_EXECUTABLE_FILE"));
-		m_ids.Add(wxT("wxART_NORMAL_FILE"));
-		m_ids.Add(wxT("wxART_TICK_MARK"));
-		m_ids.Add(wxT("wxART_CROSS_MARK"));
-		m_ids.Add(wxT("wxART_ERROR"));
-		m_ids.Add(wxT("wxART_QUESTION"));
-		m_ids.Add(wxT("wxART_WARNING"));
-		m_ids.Add(wxT("wxART_INFORMATION"));
-		m_ids.Add(wxT("wxART_MISSING_IMAGE"));
+		if( m_ids.IsEmpty() )
+		{
+			m_ids.Add(wxT("wxART_ADD_BOOKMARK"));
+			m_ids.Add(wxT("wxART_DEL_BOOKMARK "));
+			m_ids.Add(wxT("wxART_HELP_SIDE_PANEL"));
+			m_ids.Add(wxT("wxART_HELP_SETTINGS"));
+			m_ids.Add(wxT("wxART_HELP_BOOK"));
+			m_ids.Add(wxT("wxART_HELP_FOLDER"));
+			m_ids.Add(wxT("wxART_HELP_PAGE"));
+			m_ids.Add(wxT("wxART_GO_BACK"));
+			m_ids.Add(wxT("wxART_GO_FORWARD"));
+			m_ids.Add(wxT("wxART_GO_UP"));
+			m_ids.Add(wxT("wxART_GO_DOWN"));
+			m_ids.Add(wxT("wxART_GO_TO_PARENT"));
+			m_ids.Add(wxT("wxART_GO_HOME"));
+			m_ids.Add(wxT("wxART_FILE_OPEN"));
+			m_ids.Add(wxT("wxART_PRINT"));
+			m_ids.Add(wxT("wxART_HELP"));
+			m_ids.Add(wxT("wxART_TIP"));
+			m_ids.Add(wxT("wxART_REPORT_VIEW"));
+			m_ids.Add(wxT("wxART_LIST_VIEW"));
+			m_ids.Add(wxT("wxART_NEW_DIR"));
+			m_ids.Add(wxT("wxART_FOLDER"));
+			m_ids.Add(wxT("wxART_GO_DIR_UP"));
+			m_ids.Add(wxT("wxART_EXECUTABLE_FILE"));
+			m_ids.Add(wxT("wxART_NORMAL_FILE"));
+			m_ids.Add(wxT("wxART_TICK_MARK"));
+			m_ids.Add(wxT("wxART_CROSS_MARK"));
+			m_ids.Add(wxT("wxART_ERROR"));
+			m_ids.Add(wxT("wxART_QUESTION"));
+			m_ids.Add(wxT("wxART_WARNING"));
+			m_ids.Add(wxT("wxART_INFORMATION"));
+			m_ids.Add(wxT("wxART_MISSING_IMAGE"));
+
+			m_ids.Add(wxT("gtk-about"));
+			m_ids.Add(wxT("gtk-add"));
+			m_ids.Add(wxT("gtk-apply"));
+			m_ids.Add(wxT("gtk-bold"));
+			m_ids.Add(wxT("gtk-cancel"));
+			m_ids.Add(wxT("gtk-caps-lock-warning"));
+			m_ids.Add(wxT("gtk-cdrom"));
+			m_ids.Add(wxT("gtk-clear"));
+			m_ids.Add(wxT("gtk-close"));
+			m_ids.Add(wxT("gtk-color-picker"));
+			m_ids.Add(wxT("gtk-convert"));
+			m_ids.Add(wxT("gtk-copy"));
+			m_ids.Add(wxT("gtk-cut"));
+			m_ids.Add(wxT("gtk-delete"));
+			m_ids.Add(wxT("gtk-dialog-authentication"));
+			m_ids.Add(wxT("gtk-dialog-error"));
+			m_ids.Add(wxT("gtk-dialog-info"));
+			m_ids.Add(wxT("gtk-dialog-question"));
+			m_ids.Add(wxT("gtk-dialog-warning"));
+			m_ids.Add(wxT("gtk-warning"));
+			m_ids.Add(wxT("gtk-discard"));
+			m_ids.Add(wxT("gtk-disconnect"));
+			m_ids.Add(wxT("gtk-dnd"));
+			m_ids.Add(wxT("gtk-dnd-multiple"));
+			m_ids.Add(wxT("gtk-edit"));
+			m_ids.Add(wxT("gtk-execute"));
+			m_ids.Add(wxT("gtk-file"));
+			m_ids.Add(wxT("gtk-find"));
+			m_ids.Add(wxT("gtk-find-and-replace"));
+			m_ids.Add(wxT("gtk-fullscreen"));
+			m_ids.Add(wxT("gtk-goto-bottom"));
+			m_ids.Add(wxT("gtk-goto-first"));
+			m_ids.Add(wxT("gtk-goto-last"));
+			m_ids.Add(wxT("gtk-goto-top"));
+			m_ids.Add(wxT("gtk-go-back"));
+			m_ids.Add(wxT("gtk-go-down"));
+			m_ids.Add(wxT("gtk-go-forward"));
+			m_ids.Add(wxT("gtk-go-up"));
+			m_ids.Add(wxT("gtk-harddisk"));
+			m_ids.Add(wxT("gtk-indent"));
+			m_ids.Add(wxT("gtk-index"));
+			m_ids.Add(wxT("gtk-info"));
+			m_ids.Add(wxT("gtk-italic"));
+			m_ids.Add(wxT("gtk-jump-to"));
+			m_ids.Add(wxT("gtk-justify-center"));
+			m_ids.Add(wxT("gtk-justify-fill"));
+			m_ids.Add(wxT("gtk-justify-left"));
+			m_ids.Add(wxT("gtk-justify-right"));
+			m_ids.Add(wxT("gtk-leave-fullscreen"));
+			m_ids.Add(wxT("gtk-media-forward"));
+			m_ids.Add(wxT("gtk-media-next"));
+			m_ids.Add(wxT("gtk-media-forward"));
+			m_ids.Add(wxT("gtk-media-pause"));
+			m_ids.Add(wxT("gtk-media-play"));
+			m_ids.Add(wxT("gtk-media-previous"));
+			m_ids.Add(wxT("gtk-media-record"));
+			m_ids.Add(wxT("gtk-media-rewind"));
+			m_ids.Add(wxT("gtk-media-stop"));
+			m_ids.Add(wxT("gtk-missing-image"));
+			m_ids.Add(wxT("gtk-network"));
+			m_ids.Add(wxT("gtk-new"));
+			m_ids.Add(wxT("gtk-no"));
+			m_ids.Add(wxT("gtk-ok"));
+			m_ids.Add(wxT("gtk-open"));
+			m_ids.Add(wxT("gtk-orientation-landscape"));
+			m_ids.Add(wxT("gtk-orientation-portrait"));
+			m_ids.Add(wxT("gtk-orientation-reverse-landscape"));
+			m_ids.Add(wxT("gtk-orientation-reverse-portrait"));
+			m_ids.Add(wxT("gtk-page-setup"));
+			m_ids.Add(wxT("gtk-paste"));
+			m_ids.Add(wxT("gtk-preferences"));
+			m_ids.Add(wxT("gtk-print"));
+			m_ids.Add(wxT("gtk-print-paused"));
+			m_ids.Add(wxT("gtk-print-report"));
+			m_ids.Add(wxT("gtk-print-warning"));
+			m_ids.Add(wxT("gtk-properties"));
+			m_ids.Add(wxT("gtk-quit"));
+			m_ids.Add(wxT("gtk-redo"));
+			m_ids.Add(wxT("gtk-refresh"));
+			m_ids.Add(wxT("gtk-remove"));
+			m_ids.Add(wxT("gtk-save"));
+			m_ids.Add(wxT("gtk-save-as"));
+			m_ids.Add(wxT("gtk-select-all"));
+			m_ids.Add(wxT("gtk-select-color"));
+			m_ids.Add(wxT("gtk-select-font"));
+			m_ids.Add(wxT("gtk-sort-ascending"));
+			m_ids.Add(wxT("gtk-sort-descending"));
+			m_ids.Add(wxT("gtk-spell-check"));
+			m_ids.Add(wxT("gtk-stop"));
+			m_ids.Add(wxT("gtk-strikethrough"));
+			m_ids.Add(wxT("gtk-undelete"));
+			m_ids.Add(wxT("gtk-underline"));
+			m_ids.Add(wxT("gtk-undo"));
+			m_ids.Add(wxT("gtk-unindent"));
+			m_ids.Add(wxT("gtk-yes"));
+			m_ids.Add(wxT("gtk-zoom-100"));
+			m_ids.Add(wxT("gtk-zoom-fit"));
+			m_ids.Add(wxT("gtk-zoom-in"));
+			m_ids.Add(wxT("gtk-zoom-out"));
+		}
 		
 		wxPGProperty* child = wxEnumProperty( wxT("id"), wxPG_LABEL, m_ids, m_ids.Index( m_id ) );
 		AddChild( child );
-		child->SetHelpString( wxT("wxArtID unique identifier of the bitmap.") );
+		child->SetHelpString( wxT("wxArtID unique identifier of the bitmap. IDs with prefix 'gtk-' are available under wxGTK only.") );
 		
-		m_clients.Add(wxT("wxART_TOOLBAR"));
-		m_clients.Add(wxT("wxART_MENU"));
-		m_clients.Add(wxT("wxART_BUTTON"));
-		m_clients.Add(wxT("wxART_FRAME_ICON"));
-		m_clients.Add(wxT("wxART_CMN_DIALOG"));
-		m_clients.Add(wxT("wxART_HELP_BROWSER"));
-		m_clients.Add(wxT("wxART_MESSAGE_BOX"));
-		m_clients.Add(wxT("wxART_OTHER"));
+		if( m_clients.IsEmpty() )
+		{
+			m_clients.Add(wxT("wxART_TOOLBAR"));
+			m_clients.Add(wxT("wxART_MENU"));
+			m_clients.Add(wxT("wxART_BUTTON"));
+			m_clients.Add(wxT("wxART_FRAME_ICON"));
+			m_clients.Add(wxT("wxART_CMN_DIALOG"));
+			m_clients.Add(wxT("wxART_HELP_BROWSER"));
+			m_clients.Add(wxT("wxART_MESSAGE_BOX"));
+			m_clients.Add(wxT("wxART_OTHER"));
+		}
 		
 		child = wxEnumProperty( wxT("client"), wxPG_LABEL, m_clients, m_clients.Index( m_client ) );
 		AddChild( child );

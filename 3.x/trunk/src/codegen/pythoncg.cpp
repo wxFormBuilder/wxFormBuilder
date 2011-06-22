@@ -302,7 +302,13 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			else if ( source == wxT( "Load From Art Provider" ) )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
-				rid.Replace( wxT("wx"), wxT("wx.") );
+				
+				if( rid.StartsWith( wxT("gtk-") ) )
+				{
+					rid = wxT("u\"") + rid + wxT("\"");
+				}
+				else
+					rid.Replace( wxT("wx"), wxT("wx.") );
 				
 				wxString cid = path.AfterFirst( wxT(':') );
 				cid.Replace( wxT("wx"), wxT("wx.") );
