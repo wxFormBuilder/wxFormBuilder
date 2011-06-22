@@ -201,8 +201,10 @@
     <childtype name="expanded_widget" />
   </objtype>
 
-  <objtype name="tool" />
-  
+  <objtype name="tool">
+    <childtype name="menu" nmax="1" aui_nmax="1" />
+  </objtype>
+
   <objtype name="treelistctrl" >
     <childtype name="treelistctrlcolumn" />
   </objtype>

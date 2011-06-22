@@ -954,7 +954,8 @@ bool ApplicationData::CanPasteObjectFromClipboard()
 
 	bool canPaste = wxTheClipboard->IsSupported( wxFBDataObjectFormat );
 
-	wxTheClipboard->Close();
+	if( wxTheClipboard->IsOpened() )
+		wxTheClipboard->Close();
 
 	return canPaste;
 }

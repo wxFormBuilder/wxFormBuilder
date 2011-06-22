@@ -40,47 +40,59 @@ Python code generation writen by
 
   <templates class="wxMenu">
 	<template name="construction">self.$name = #class()</template>
-    	<template name="after_addchild">
+		<template name="after_addchild">
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
 			#ifparenttypeequal "widget"
-	        	@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+				@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
 			#ifparenttypeequal "container"
-	        	@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+				@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
 			#ifparenttypeequal "form"
-	        	@{ self.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+				@{ self.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
+			#ifparenttypeequal "tool"
+				@{ self.Bind( wx.aui.EVT_AUITOOLBAR_TOOL_DROPDOWN, self.#parent $name #append OnDropDownMenu ) @}
 		@}@}
 		#ifparenttypeequal "menubar"
-                @{
+		@{
 			self.#parent $name.Append( self.$name, $label )
 		@}
 		#ifparenttypeequal "menubar_form"
-                @{
+		@{
 			self.Append( self.$name, $label )
 		@}
-   	</template>
-    <template name="generated_event_handlers">
+	</template>
+	<template name="generated_event_handlers">
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-         		#ifparenttypeequal "widget"
-                	@{
+			#ifparenttypeequal "widget"
+			@{
 				def #parent $name #append OnContextMenu( self, event ): #indent #nl
-					self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
-                	@}
-         		#ifparenttypeequal "container"
-                	@{
+				self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+			@}
+			#ifparenttypeequal "container"
+			@{
 				def #parent $name #append OnContextMenu( self, event ): #indent #nl
-					self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
-                	@}
-         		#ifparenttypeequal "form"
-                	@{
+				self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+			@}
+			#ifparenttypeequal "form"
+			@{
 				def #parent $name #append OnContextMenu( self, event ): #indent #nl
-					self.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
-                	@}
+				self.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+			@}
+			#ifparenttypeequal "tool"
+			@{
+				def #parent $name #append OnDropDownMenu( self, event ): #indent #nl
+				if event.IsDropDownClicked() == True: #indent #nl
+					#wxparent $name.SetToolSticky( event.GetId(), True ) #nl
+					rect = #wxparent $name.GetToolRect( event.GetId() ) #nl
+					pt = self.ScreenToClient( #wxparent $name.ClientToScreen( rect.GetBottomLeft() ) ); #nl
+					#wxparent $name.PopupMenu( self.$name, pt ) #nl
+					#wxparent $name.SetToolSticky( event.GetId(), False ) #nl #unindent #unindent
+			@}
 		@}@}
-    </template>
+	</template>
   </templates>
 
   <templates class="submenu">
@@ -254,19 +266,28 @@ Python code generation writen by
   </templates>
 
   <templates class="tool">
-    <template name="construction">
+	<template name="construction">
 	#ifparenttypeequal "toolbar"
-        @{
+	@{
 		#ifparentclassequal "wxToolBar"
-		@{self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None)@}
+		@{
+			self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
+		@}
 		#ifparentclassequal "wxAuiToolBar"
-		@{self.#parent $name.AddTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None)@}
+		@{
+			self.#parent $name.AddTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None ) #nl
+			#ifequal $context_menu "1"
+			@{
+				self.$name = self.#parent $name.FindToolByIndex( self.#parent $name.GetToolCount() - 1 ) #nl
+				self.#parent $name.SetToolDropDown( self.$name.GetId(), True );
+			@}
+		@}
 	@}
 	#ifparenttypeequal "toolbar_form"
-        @{
+	@{
 		self.AddTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
 	@}
-    	</template>
+	</template>
 	<template name="evt_connect_OnToolClicked">self.Bind( wx.EVT_TOOL, #handler, id = $id )</template>
 	<template name="evt_disconnect_OnToolClicked">self.Unbind( wx.EVT_TOOL, id = $id )</template>
 	<template name="evt_connect_OnMenuSelection">self.Bind( wx.EVT_TOOL, #handler, id = $id )</template>

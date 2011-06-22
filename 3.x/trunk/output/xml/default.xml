@@ -63,6 +63,17 @@
       <option name="public" />protected</property>
   </objectinfo>
 
+  <objectinfo class="UserCode" type="interface">
+		<property name="enable_user_code" type="bool">0</property>
+		<property name="user_cpp_code" type="text" />
+		<property name="user_python_code" type="text" />
+		<!--property name="insertion_mode" type="option">
+			<option name="prepend"/>
+			<option name="insert"/>
+			<option name="append"/>append
+		</property-->
+  </objectinfo>
+
   <objectinfo class="wxWindow" smallIcon="wxwindow.png" type="interface">
 	<property name="id" type="macro">wxID_ANY</property>
     <property name="pos" type="wxPoint"         help="Window position. The default is (-1, -1) which indicates that wxWidgets should generate a default position for the window."/>

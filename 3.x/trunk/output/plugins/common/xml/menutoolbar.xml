@@ -125,6 +125,7 @@ Written by
 		<option name="wxITEM_RADIO"  help="A checkable tool which makes part of a radio group of tools each of which is automatically unchecked whenever another button in the group is checked."/>
 		wxITEM_NORMAL
 	</property>
+	<property name="context_menu" type="bool" help="Specifies that a drop-down menu button will appear next to the tool button. Used only with wxAuiToolBar.">0</property>
 	<property name="tooltip" type="wxString_i18n"   help="Help string used in the tooltip." />
     <property name="statusbar" type="wxString_i18n" help="This string is shown in the statusbar (if any) of the parent frame when the mouse pointer is inside the tool." />
     <property name="id" type="macro">wxID_ANY</property>
@@ -133,6 +134,11 @@ Written by
 	<event name="OnToolRClicked" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_RCLICKED event." />
 	<event name="OnToolEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TOOL_ENTER event. This uses the tools parent ID, the ToolBar, so be sure you set it to something that is not the default. The value of wxCommandEvent::GetSelection is the tool id, or -1 if the mouse cursor has moved off a tool." />
 	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
+	<event name="OnAuiToolBarToolDropDown" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN event." />
+	<event name="OnAuiToolBarOverflowClick" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_OVERFLOW_CLICK event." />
+	<event name="OnAuiToolBarRightClick" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_RIGHT_CLICK event." />
+	<event name="OnAuiToolBarMiddleClick" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_MIDDLE_CLICK event." />
+	<event name="OnAuiToolBarBeginDrag" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_BEGIN_DRAG event." />
   </objectinfo>
 
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">

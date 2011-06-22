@@ -36,6 +36,8 @@
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/propdev.h>
 #include <wx/filesys.h>
+#include <wx/artprov.h>
+#include "rad/inspector/objinspect.h"
 
 ////////////////////////////////////
 
@@ -342,6 +344,21 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     #ifndef __WXFB_DEBUG__
     wxLogNull stopLogging;
     #endif
+	
+	// Get bitmap from art provider
+	if( filename.Contains( wxT("Load From Art Provider") ) )
+	{
+		wxString image = filename.BeforeLast( wxT(';') );
+		wxString rid = image.BeforeFirst( wxT(';') ).Trim();
+		wxString cid = image.AfterFirst( wxT(';') ).Trim();
+		
+		if( rid.IsEmpty() || cid.IsEmpty() )
+		{
+			return AppBitmaps::GetBitmap( wxT("unknown") );
+		}
+		else
+			return wxArtProvider::GetBitmap( rid, cid + wxT("_C") );
+	}
 
 	// Get path from bitmap property
     size_t semicolonIndex = filename.find( wxT(";") );
@@ -356,7 +373,7 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     {
     	return AppBitmaps::GetBitmap( wxT("unknown") );
     }
-
+	
 	// Setup the working directory to the project path - paths should be saved in the .fbp file relative to the location
 	// of the .fbp file
 	wxFileSystem system;
@@ -412,22 +429,38 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 		children.Add( child );
 	}
 
-    // "break;" was left out intentionally
-	long temp;
-	switch ( children.size() )
+	if( children.Index( wxT("Load From Art Provider") ) == wxNOT_FOUND )
 	{
-	    case 4:
-            children[3].ToLong( &temp );
-            icoSize->SetHeight( temp );
-        case 3:
-            children[2].ToLong( &temp );
-            icoSize->SetWidth( temp );
-        case 2:
-            *source = children[1];
-        case 1:
-            *image = children[0];
-        default:
-            break;
+		// "break;" was left out intentionally
+		long temp;
+		switch ( children.size() )
+		{
+			case 4:
+				children[3].ToLong( &temp );
+				icoSize->SetHeight( temp );
+			case 3:
+				children[2].ToLong( &temp );
+				icoSize->SetWidth( temp );
+			case 2:
+				*source = children[1];
+			case 1:
+				*image = children[0];
+			default:
+				break;
+		}
+	}
+	else
+	{
+		if( children.size() == 3 )
+		{
+			*image = children[0] + wxT(":") + children[1];
+			*source = children[2];
+		}
+		else
+		{
+			*image = wxT("");
+			*source = children[1];
+		}
 	}
 }
 
