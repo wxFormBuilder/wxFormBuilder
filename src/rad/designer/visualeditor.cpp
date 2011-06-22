@@ -881,7 +881,7 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 	}
 	
 	info.DockFixed( obj->GetPropertyAsInteger( wxT("dock_fixed") ) );
-	info.Movable( obj->GetPropertyAsInteger( wxT("movealbe") ));
+	info.Movable( obj->GetPropertyAsInteger( wxT("moveable") ));
 	info.Floatable(obj->GetPropertyAsInteger( wxT("floatable") ));
 	
 	if( !obj->GetProperty( wxT("pane_size" ) )->IsNull() ) info.FloatingSize( obj->GetPropertyAsSize( wxT("pane_size") ));

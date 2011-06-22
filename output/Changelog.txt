@@ -6,6 +6,7 @@
 * Added missing import for wx.aui.AuiToolBar class.
 + Added support for wxArtProvider.
 + Added support for drop-down menus in wxAuiToolBar - RedTide.
+* Fixed handling of "moveable" AUI property.
 
 03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
