@@ -81,7 +81,6 @@ Python code generation writen by
 			@{ self.m_mgr.UnInit() #nl @}
 		</template>
 		<template name="include">
-			import wx #nl
 			#ifequal $aui_managed "1"
 			@{import wx.aui @}
 		</template>
@@ -212,7 +211,6 @@ Python code generation writen by
 			@{ self.m_mgr.UnInit() #nl @}
 		</template>
 		<template name="include">
-			import wx #nl
 			#ifequal $aui_managed "1"
 			@{import wx.aui @}</template>
 		<template name="settings">
@@ -343,7 +341,7 @@ Python code generation writen by
 			#ifequal $aui_managed "1"
 			@{ self.m_mgr.UnInit() #nl @}
 		</template>
-		<template name="include">import wx#nl
+		<template name="include">
 			#ifequal $aui_managed "1"
 			@{import wx.aui @}</template>
 		<template name="settings">
@@ -469,7 +467,6 @@ Python code generation writen by
 			@{ wx.MenuBar.__init__@}
 			( self, style = $window_style )
 		</template>
-		<template name="include">import wx</template>
 	</templates>
 
 	<templates class="ToolBar">
@@ -491,7 +488,6 @@ Python code generation writen by
 			@{ wx.ToolBar.__init__@}
 			( self, parent, id = $id, pos = $pos, size = $size, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
 		</template>
-		<template name="include">import wx</template>
 		<template name="settings">
 			#ifnotnull $bitmapsize @{self.SetToolBitmapSize( $bitmapsize ) #nl @}
 

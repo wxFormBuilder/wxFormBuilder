@@ -4,7 +4,11 @@
     	<template name="python_preamble">
 			#ifequal $encoding "UTF-8"
 			@{ @# -*- coding: utf-8 -*- @}
-	</template>
+		</template>
+		<template name="include">
+			import wx #nl
+			import wx.xrc #nl
+		</template>
     <template name="python_epilogue"/>
   </templates>
   <templates class="wxWindow">
