@@ -3,6 +3,7 @@
   <templates class="Project">
     <template name="header_preamble">
 		@#include &lt;wx/artprov.h&gt;
+		#nl @#include &lt;wx/xrc/xmlres.h&gt;
 		#ifnotequal $help_provider "none"
 		@{ #nl @#include &lt;wx/cshelp.h&gt; @}
 		

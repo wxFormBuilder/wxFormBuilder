@@ -138,7 +138,12 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			
 			if( !pred.empty() )	result.Replace( wxT("wx"), pred );
 			else
-				result.Replace( wxT("wx"), wxT("wx.") );
+			{
+				if( result.StartsWith( wxT("XRCID") ) )
+					result.Prepend( wxT("wx.xrc.") );
+				else
+					result.Replace( wxT("wx"), wxT("wx.") );
+			}
 				
 			break;
 		}
@@ -1259,8 +1264,9 @@ void PythonCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* ma
 			value.Replace( wxT("wx"), wxT("wx.") );
 			
 			// Skip wx IDs
-            if ( m_predMacros.end() == m_predMacros.find( value ) )
-            {
+			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
+				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
+			{
                 if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
                 {
                     macros->push_back( value );

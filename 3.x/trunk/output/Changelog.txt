@@ -1,12 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-06/01/2011 Version 3.02.03 (Beta)
+06/27/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.
 + Added "Load From Embedded File" for bitmap properties.
 * Added missing import for wx.aui.AuiToolBar class.
 + Added support for wxArtProvider.
 + Added support for drop-down menus in wxAuiToolBar - RedTide.
 * Fixed handling of "moveable" AUI property.
++ XRCID() macro can be used as a widget ID.
 
 03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.

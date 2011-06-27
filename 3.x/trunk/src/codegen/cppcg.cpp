@@ -1740,7 +1740,8 @@ void CppCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 		{
 			wxString value = prop->GetValue();
 			// Skip wx IDs
-			if ( m_predMacros.end() == m_predMacros.find( value ) )
+			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
+				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
 			{
 				if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
 				{
