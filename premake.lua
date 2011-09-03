@@ -18,7 +18,6 @@ dopackage( "sdk/tinyxml/ticpp.lua" )
 dopackage( "plugins/additional" )
 dopackage( "plugins/common" )
 dopackage( "plugins/containers" )
-dopackage( "plugins/forms" )
 dopackage( "plugins/layout" )
 dopackage( "plugins/wxAdditions" )
 
