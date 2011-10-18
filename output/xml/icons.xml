@@ -42,5 +42,8 @@
 	<icon name="c++" 			file="c++.png"		/>
 	<icon name="xrc" 			file="xrc.png"		/>
 
+    <!-- Object Properties -->
+    <icon name="properties" file="properties.png"   />
+    <icon name="events"     file="events.png"       />
 
 </icons>

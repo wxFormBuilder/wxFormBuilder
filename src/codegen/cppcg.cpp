@@ -235,7 +235,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 				break;
 			}
 
-			if ( source == wxT( "Load From File" ) )
+			if ( source == _("Load From File") )
 			{
 				wxString absPath;
 				try
@@ -262,7 +262,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result << wxT( "wxBitmap( wxT(\"" ) << CppCodeGenerator::ConvertCppString( file ) << wxT( "\"), wxBITMAP_TYPE_ANY )" );
 				}
 			}
-			else if ( source == wxT( "Load From Embedded File" ) )
+			else if ( source == _("Load From Embedded File") )
 			{
 				wxString absPath;
 				try
@@ -287,11 +287,11 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result << CppCodeGenerator::ConvertEmbeddedBitmapName( path ) <<  wxT("_to_wx_bitmap()");
 				}
 			}
-			else if ( source == wxT( "Load From Resource" ) )
+			else if ( source == _("Load From Resource") )
 			{
 				result << wxT( "wxBitmap( wxT(\"" ) << path << wxT( "\"), wxBITMAP_TYPE_RESOURCE )" );
 			}
-			else if ( source == wxT( "Load From Icon Resource" ) )
+			else if ( source == _("Load From Icon Resource") )
 			{
 				if ( wxDefaultSize == icoSize )
 				{
@@ -302,7 +302,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT( "wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
-			else if ( source == wxT("Load From Art Provider") )
+			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
 				if( rid.StartsWith( wxT("gtk-") ) ) rid = wxT("wxT(\"") + rid + wxT("\")");
@@ -1706,7 +1706,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 				wxString path, source;
 				wxSize toolsize;
 				TypeConv::ParseBitmapWithResource( oldVal, &path, &source, &toolsize );
-				if ( wxT( "Load From Icon Resource" ) == source && wxDefaultSize == toolsize )
+				if ( _("Load From Icon Resource") == source && wxDefaultSize == toolsize )
 				{
 					prop->SetValue( wxString::Format( wxT( "%s; %s [%i; %i]" ), path.c_str(), source.c_str(), toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
 					m_source->WriteLn( GetCode( obj, wxT( "construction" ) ) );
@@ -1963,7 +1963,7 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<w
 				inc << wxT( "#include \"" ) << relPath << wxT( "\"" );
 				embedset.insert( inc );
 			}
-			else if ( source == wxT("Load From Embedded File") )
+			else if ( source == _("Load From Embedded File") )
 			{
 				wxString absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 				wxString includePath = FileToCArray::Generate( absPath );

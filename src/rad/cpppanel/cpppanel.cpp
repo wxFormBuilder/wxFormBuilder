@@ -187,11 +187,11 @@ void CppPanel::OnFind( wxFindDialogEvent& event )
 	wxString text = notebook->GetPageText( selection );
 	if ( wxT("cpp") == text )
 	{
-		m_cppPanel->ProcessEvent( event );
+		m_cppPanel->GetEventHandler()->ProcessEvent( event );
 	}
 	else if ( wxT("h") == text )
 	{
-		m_hPanel->ProcessEvent( event );
+		m_hPanel->GetEventHandler()->ProcessEvent( event );
 	}
 }
 

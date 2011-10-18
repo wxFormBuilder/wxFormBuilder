@@ -148,12 +148,13 @@ std::string TypeConv::_WxStringToString(const wxString &str)
 
 std::string TypeConv::_WxStringToAnsiString(const wxString &str)
 {
-//    std::string newstr( str.mb_str(wxConvISO8859_1) );
-    setlocale(LC_ALL, "");
-    size_t len = wcstombs(NULL, str.c_str(), 0);
-    std::vector<char> buf(len + 1);
-    wcstombs(&buf[0], str.c_str(), len);
-    return std::string(&buf[0]);
+    std::string newstr( str.mb_str(wxConvISO8859_1) );
+	return newstr;
+//    setlocale(LC_ALL, "");
+//    size_t len = wcstombs(NULL, str.char_str(), 0);
+//    std::vector<char> buf(len + 1);
+//    wcstombs(&buf[0], str.char_str(), len);
+//    return std::string(&buf[0]);
 }
 
 bool TypeConv::StringToPoint(const wxString &val, wxPoint *point)
@@ -346,11 +347,11 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
     #endif
 	
 	// Get bitmap from art provider
-	if( filename.Contains( wxT("Load From Art Provider") ) )
+	if( filename.Contains( _("Load From Art Provider") ) )
 	{
-		wxString image = filename.BeforeLast( wxT(';') );
-		wxString rid = image.BeforeFirst( wxT(';') ).Trim();
-		wxString cid = image.AfterFirst( wxT(';') ).Trim();
+		wxString image = filename.AfterFirst( wxT(';') ).Trim( false );
+		wxString rid = image.BeforeFirst( wxT(';') ).Trim( false );
+		wxString cid = image.AfterFirst( wxT(';') ).Trim( false );
 		
 		if( rid.IsEmpty() || cid.IsEmpty() )
 		{
@@ -361,15 +362,10 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
 	}
 
 	// Get path from bitmap property
-    size_t semicolonIndex = filename.find( wxT(";") );
-    wxString path = filename;
-    if ( semicolonIndex != filename.npos )
-    {
-        path = filename.substr( 0, semicolonIndex );
-    }
+    wxString path = filename.AfterFirst( wxT(';') ).Trim( false );
 
 	// No value - default bitmap
-    if ( path.empty() )
+    if ( !wxFileName( path ).IsOk() )
     {
     	return AppBitmaps::GetBitmap( wxT("unknown") );
     }
@@ -416,7 +412,7 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
     // Splitting bitmap resource property value - it is of the form "path; source [width; height]"
 
     *image = value;
-    *source = wxT("Load From File");
+    *source = _("Load From File");
     *icoSize = wxDefaultSize;
 
     wxArrayString children;
@@ -429,22 +425,23 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 		children.Add( child );
 	}
 
-	if( children.Index( wxT("Load From Art Provider") ) == wxNOT_FOUND )
+	if( children.Index( _("Load From Art Provider") ) == wxNOT_FOUND )
 	{
 		// "break;" was left out intentionally
 		long temp;
 		switch ( children.size() )
 		{
+            case 5:
 			case 4:
-				children[3].ToLong( &temp );
+				children[4].ToLong( &temp );
 				icoSize->SetHeight( temp );
 			case 3:
-				children[2].ToLong( &temp );
+				children[3].ToLong( &temp );
 				icoSize->SetWidth( temp );
 			case 2:
-				*source = children[1];
+				*image = children[1];
 			case 1:
-				*image = children[0];
+				*source = children[0];
 			default:
 				break;
 		}
@@ -453,15 +450,16 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 	{
 		if( children.size() == 3 )
 		{
-			*image = children[0] + wxT(":") + children[1];
-			*source = children[2];
+			*image = children[2] + wxT(":") + children[1];
+			*source = children[0];
 		}
 		else
 		{
 			*image = wxT("");
-			*source = children[1];
+			*source = children[0];
 		}
 	}
+	wxLogDebug( wxT("TypeConv:ParseBitmap: source:%s image:%s "), source->c_str(), image->c_str() );
 }
 
 wxString TypeConv::MakeAbsolutePath ( const wxString& filename, const wxString& basePath )

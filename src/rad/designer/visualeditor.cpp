@@ -323,14 +323,14 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 						}*/
 						
 						// scan "row" and "layer"
-						PProperty prop = obj->GetProperty(wxT("row") );
-						if( obj->GetPropertyAsInteger( wxT("row") ) != inf.dock_row )
+						PProperty prop = obj->GetProperty(wxT("aui_row") );
+						if( obj->GetPropertyAsInteger( wxT("aui_row") ) != inf.dock_row )
 						{
 							prop->SetValue( inf.dock_row );
 							updateNeeded = true;
 						}
-						prop = obj->GetProperty(wxT("layer") );
-						if( obj->GetPropertyAsInteger( wxT("layer") ) != inf.dock_layer )
+						prop = obj->GetProperty(wxT("aui_layer") );
+						if( obj->GetPropertyAsInteger( wxT("aui_layer") ) != inf.dock_layer )
 						{
 							prop->SetValue( inf.dock_layer );
 							updateNeeded = true;
@@ -890,9 +890,9 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 	if( !obj->GetProperty( wxT("max_size" ) )->IsNull() ) info.MaxSize( obj->GetPropertyAsSize( wxT("max_size") ) );
 	
 	if( obj->GetPropertyAsInteger( wxT("toolbar_pane") ) ) info.ToolbarPane();
-	if( !obj->IsNull( wxT("position") ) ) info.Position( obj->GetPropertyAsInteger( wxT("position") ));
-	if( !obj->IsNull( wxT("row") ) ) info.Row( obj->GetPropertyAsInteger( wxT("row") ));
-    if( !obj->IsNull( wxT("layer") ) ) info.Layer( obj->GetPropertyAsInteger( wxT("layer") ));
+	if( !obj->IsNull( wxT("aui_position") ) ) info.Position( obj->GetPropertyAsInteger( wxT("aui_position") ));
+	if( !obj->IsNull( wxT("aui_row") ) ) info.Row( obj->GetPropertyAsInteger( wxT("aui_row") ));
+    if( !obj->IsNull( wxT("aui_layer") ) ) info.Layer( obj->GetPropertyAsInteger( wxT("aui_layer") ));
 	if( !obj->GetPropertyAsInteger( wxT("show") ) ) info.Hide();
 
 }

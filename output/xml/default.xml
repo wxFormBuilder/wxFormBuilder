@@ -154,9 +154,9 @@
 			<option name="Right"/>Left
 		</property>
 		<property name="pane_position" type="wxPoint" help="Sets the position of the floating pane."/>
-		<property name="position" type="uint" help="Determines the position of the docked pane."/>
-		<property name="row" type="uint" help="Determines the row of the docked pane."/>
-		<property name="layer" type="uint" help="Determines the layer of the docked pane. The dock layer is similar to an onion, the inner-most layer being layer 0. Each shell moving in the outward direction has a higher layer number. This allows for more complex docking layout formation."/>
+		<property name="aui_position" type="uint" help="Determines the position of the docked pane."/>
+		<property name="aui_row" type="uint" help="Determines the row of the docked pane."/>
+		<property name="aui_layer" type="uint" help="Determines the layer of the docked pane. The dock layer is similar to an onion, the inner-most layer being layer 0. Each shell moving in the outward direction has a higher layer number. This allows for more complex docking layout formation."/>
 
 	</category>
 
