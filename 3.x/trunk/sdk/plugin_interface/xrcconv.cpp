@@ -211,7 +211,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 					break;
 				}
 
-				wxString filename = bitmapProp.BeforeFirst( wxT(';') );
+				wxString filename = bitmapProp.AfterFirst( wxT(';') );
 				if ( filename.empty() )
 				{
 					break;
@@ -222,22 +222,21 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 					break;
 				}
 
-				wxString source = bitmapProp.substr( filename.size() + 2 );
-				if ( source.StartsWith( wxT( "Load From File" ) ) || source.StartsWith( wxT( "Load From Embedded File" ) ) )
+				if ( bitmapProp.StartsWith( _("Load From File") ) || bitmapProp.StartsWith( _("Load From Embedded File") ) )
 				{
-					LinkText( filename, &propElement );
+					LinkText( filename.Trim().Trim(false), &propElement );
 				}
-				else if( source.Contains( wxT("Load From Art Provider") ) )
+				else if( bitmapProp.StartsWith( _("Load From Art Provider") ) )
 				{
-					propElement.SetAttribute( "stock_id", filename.mb_str( wxConvUTF8 ) );
-					propElement.SetAttribute( "stock_client", source.BeforeFirst( wxT(';') ).mb_str( wxConvUTF8 ) );
+					propElement.SetAttribute( "stock_id", filename.BeforeFirst( wxT(';') ).Trim().Trim(false).mb_str( wxConvUTF8 ) );
+					propElement.SetAttribute( "stock_client", filename.AfterFirst( wxT(';') ).Trim().Trim(false).mb_str( wxConvUTF8 ) );
 					
 					LinkText( wxT("undefined.png"), &propElement );
 				}
 			}
 			break;
 	}
-
+	
 	m_xrcObj->LinkEndChild( &propElement );
 }
 
@@ -897,21 +896,21 @@ void XrcToXfbFilter::ImportBitmapProperty( const wxString &xrcPropName, ticpp::E
 		
 		if( (xrcProperty->GetAttribute( "stock_id" ) != "") && (xrcProperty->GetAttribute( "stock_client" ) != "") )
 		{
-			// read wxArtProvider bitmap  
-			wxString res = wxString( xrcProperty->GetAttribute( "stock_id" ).c_str(), wxConvUTF8 );
+			// read wxArtProvider-based bitmap  			
+			wxString res = _("Load From Art Provider");
+			res += wxT(";");
+			res += wxString( xrcProperty->GetAttribute( "stock_id" ).c_str(), wxConvUTF8 );
 			res += wxT(";");
 			res += wxString( xrcProperty->GetAttribute( "stock_client" ).c_str(), wxConvUTF8 );
-			res += wxT("; Load From Art Provider");
-			property->SetText( res.mb_str( wxConvUTF8 ) );
+			property->SetText( res.Trim().mb_str( wxConvUTF8 ) );
 		}
 		else
 		{
 			// read file-based bitmap
-			wxString res( xrcProperty->GetText().c_str(), wxConvUTF8 );
-
-			res.Trim();
-			res += wxT( "; Load From File" );
-			property->SetText( res.mb_str( wxConvUTF8 ) );
+			wxString res = _("Load From File");
+			res += wxT(";");
+			res += wxString( xrcProperty->GetText().c_str(), wxConvUTF8 );
+			property->SetText( res.Trim().mb_str( wxConvUTF8 ) );
 		}
 	}
 	catch( ticpp::Exception& ex )

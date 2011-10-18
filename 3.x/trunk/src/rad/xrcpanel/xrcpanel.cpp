@@ -126,7 +126,7 @@ void XrcPanel::OnFind( wxFindDialogEvent& event )
 	wxString text = notebook->GetPageText( selection );
 	if ( wxT("XRC") == text )
 	{
-		m_xrcPanel->ProcessEvent( event );
+		m_xrcPanel->GetEventHandler()->ProcessEvent( event );
 	}
 }
 

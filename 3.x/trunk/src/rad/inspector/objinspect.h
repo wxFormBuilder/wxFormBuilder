@@ -21,45 +21,26 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
+// Modified by
+//   Andrea Zanellato - zanellato.andrea@gmail.com
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef __OBJ_INSPECT__
 #define __OBJ_INSPECT__
 
-#include "wx/wx.h"
+#if wxVERSION_NUMBER >= 2900 && !wxUSE_PROPGRID
+    #error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
+#endif
+
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#include <wx/propgrid/propgrid.h>
-#include <wx/propgrid/propdev.h>
-#include <wx/propgrid/advprops.h>
+
+#if wxVERSION_NUMBER >= 2900
+    #include <wx/propgrid/property.h>
+#endif
 #include <wx/propgrid/manager.h>
 #include "utils/wxfbdefs.h"
 #include "model/objectbase.h"
-
-#if wxUSE_SLIDER
-WX_PG_DECLARE_EDITOR_WITH_DECL(Slider,WXDLLIMPEXP_PG)
-#endif
-
-// -----------------------------------------------------------------------
-
-WX_PG_DECLARE_CUSTOM_COLOUR_PROPERTY(fbColourProperty)
-
-// -----------------------------------------------------------------------
-
-WX_PG_DECLARE_VALUE_TYPE_VOIDP(wxPoint)
-
-WX_PG_DECLARE_PROPERTY(wxPointProperty,const wxPoint&,wxPoint(0,0))
-
-// -----------------------------------------------------------------------
-
-WX_PG_DECLARE_VALUE_TYPE_VOIDP(wxSize)
-
-WX_PG_DECLARE_PROPERTY(wxSizeProperty,const wxSize&,wxSize(0,0))
-
-// -----------------------------------------------------------------------
-
-WX_PG_DECLARE_PROPERTY( wxBitmapWithResourceProperty, const wxString&, wxEmptyString )
-
-// -----------------------------------------------------------------------
 
 class wxFBEventHandlerEvent;
 class wxFBPropertyEvent;
@@ -67,112 +48,116 @@ class wxFBObjectEvent;
 class wxFBEvent;
 
 enum {
-  wxFB_OI_DEFAULT_STYLE,
-  wxFB_OI_MULTIPAGE_STYLE,
-  wxFB_OI_SINGLE_PAGE_STYLE
+    wxFB_OI_DEFAULT_STYLE,
+    wxFB_OI_MULTIPAGE_STYLE,
+    wxFB_OI_SINGLE_PAGE_STYLE
 };
 
 class ObjectInspector : public wxPanel
 {
- private:
-  typedef std::map< wxPGProperty*, PProperty> ObjInspectorPropertyMap;
-  typedef std::map< wxPGProperty*, PEvent> ObjInspectorEventMap;
+private:
+    typedef std::map< wxPGProperty*, PProperty> ObjInspectorPropertyMap;
+    typedef std::map< wxPGProperty*, PEvent> ObjInspectorEventMap;
 
-  ObjInspectorPropertyMap m_propMap;
-  ObjInspectorEventMap m_eventMap;
+    ObjInspectorPropertyMap m_propMap;
+    ObjInspectorEventMap m_eventMap;
 
-  PObjectBase m_currentSel;
-  wxFlatNotebook* m_nb;
-  wxPropertyGridManager* m_pg;
-  wxPropertyGridManager* m_eg;
-  int m_style;
+    PObjectBase m_currentSel;
 
-  int StringToBits(const wxString& strVal, wxPGChoices& constants);
+    wxFlatNotebook* m_nb;
+    wxFlatNotebookImageList m_icons;
 
-  typedef std::map< wxString, bool > ExpandMap;
-  ExpandMap m_isExpanded;
+    wxPropertyGridManager* m_pg;
+    wxPropertyGridManager* m_eg;
 
-	template < class ValueT >
-		void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, ValueT >& itemMap, bool addingEvents )
-	{
-		// Get Category
-		PPropertyCategory category = obj_info->GetCategory();
-		if ( !category )
-		{
-			return;
-		}
+    int m_style;
 
-		// Prevent page creation if there are no properties
-		if ( 0 == category->GetCategoryCount() && 0 == ( addingEvents ? category->GetEventCount() : category->GetPropertyCount() ) )
-		{
-			return;
-		}
+    int StringToBits( const wxString& strVal, wxPGChoices& constants );
 
-		wxString pageName;
+    typedef std::map< wxString, bool > ExpandMap;
+    ExpandMap m_isExpanded;
 
-		if (m_style == wxFB_OI_MULTIPAGE_STYLE)
-			pageName = name;
-		else
-			pageName = wxT("default");
+    template < class ValueT >
+        void CreateCategory( const wxString& name, PObjectBase obj, PObjectInfo obj_info, std::map< wxString, ValueT >& itemMap, bool addingEvents )
+    {
+        // Get Category
+        PPropertyCategory category = obj_info->GetCategory();
+        if ( !category )
+        {
+            return;
+        }
+
+        // Prevent page creation if there are no properties
+        if ( 0 == category->GetCategoryCount() && 0 == ( addingEvents ? category->GetEventCount() : category->GetPropertyCount() ) )
+        {
+            return;
+        }
+
+        wxString pageName;
+
+        if ( m_style == wxFB_OI_MULTIPAGE_STYLE )
+            pageName = name;
+        else
+            pageName = wxT("default");
 
 
-		wxPropertyGridManager* pg = ( addingEvents ? m_eg : m_pg );
-		int pageIndex = pg->GetPageByName( pageName );
-		if ( wxNOT_FOUND == pageIndex )
-		{
-			pg->AddPage( pageName, obj_info->GetSmallIconFile() );
-		}
+        wxPropertyGridManager* pg = ( addingEvents ? m_eg : m_pg );
+        int pageIndex = pg->GetPageByName( pageName );
+        if ( wxNOT_FOUND == pageIndex )
+        {
+            pg->AddPage( pageName, obj_info->GetSmallIconFile() );
+        }
 
-		const wxString& catName = category->GetName();
-		wxPGId id = pg->AppendCategory( catName );
-		ExpandMap::iterator it = m_isExpanded.find( catName );
-		if ( it != m_isExpanded.end() )
-		{
-			if ( it->second )
-			{
-				m_pg->Expand( id );
-			}
-			else
-			{
-				m_pg->Collapse( id );
-			}
-		}
+        const wxString& catName = category->GetName();
 
-		AddItems( name, obj, obj_info, category, itemMap );
+        wxPGProperty* id = pg->Append( new wxPropertyCategory( catName ) );
 
-		pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
-	}
+        ExpandMap::iterator it = m_isExpanded.find( catName );
+        if ( it != m_isExpanded.end() )
+        {
+            if ( it->second )
+            {
+                m_pg->Expand( id );
+            }
+            else
+            {
+                m_pg->Collapse( id );
+            }
+        }
 
-  void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, PropertyMap& map );
-  void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, EventMap& map );
-  wxPGProperty* GetProperty(PProperty prop);
+        AddItems( name, obj, obj_info, category, itemMap );
 
-  void Create(bool force = false);
+        pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
+    }
 
-  void OnPropertyGridChange(wxPropertyGridEvent& event);
-  void OnEventGridChange(wxPropertyGridEvent& event);
-  void OnPropertyGridDblClick(wxPropertyGridEvent& event);
-  void OnEventGridDblClick(wxPropertyGridEvent& event);
-  void OnPropertyGridExpand(wxPropertyGridEvent& event);
-  void OnReCreateGrid( wxCommandEvent& event );
+    void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, PropertyMap& map );
+    void AddItems( const wxString& name, PObjectBase obj, PObjectInfo obj_info, PPropertyCategory category, EventMap& map );
+    wxPGProperty* GetProperty( PProperty prop );
 
- protected:
+    void Create( bool force = false );
 
- public:
-  ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
-  ~ObjectInspector();
+    void OnPropertyGridChanging( wxPropertyGridEvent& event );
+    void OnPropertyGridChanged( wxPropertyGridEvent& event );
+    void OnEventGridChanged( wxPropertyGridEvent& event );
+    void OnPropertyGridDblClick( wxPropertyGridEvent& event );
+    void OnEventGridDblClick( wxPropertyGridEvent& event );
+    void OnPropertyGridExpand( wxPropertyGridEvent& event );
+    void OnReCreateGrid( wxCommandEvent& event );
 
-  void OnObjectSelected( wxFBObjectEvent& event );
-  void OnProjectRefresh( wxFBEvent& event );
-  void OnPropertyModified( wxFBPropertyEvent& event );
-  void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+public:
+    ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
+    ~ObjectInspector();
 
-  void AutoGenerateId(PObjectBase objectChanged, PProperty propChanged, wxString reason);
-  wxPropertyGridManager* CreatePropertyGridManager(wxWindow *parent, wxWindowID id);
-  void SavePosition();
+    void OnObjectSelected( wxFBObjectEvent& event );
+    void OnProjectRefresh( wxFBEvent& event );
+    void OnPropertyModified( wxFBPropertyEvent& event );
+    void OnEventHandlerModified( wxFBEventHandlerEvent& event );
 
-  DECLARE_EVENT_TABLE()
+    void AutoGenerateId( PObjectBase objectChanged, PProperty propChanged, wxString reason );
+    wxPropertyGridManager* CreatePropertyGridManager( wxWindow *parent, wxWindowID id );
+    void SavePosition();
+
+    DECLARE_EVENT_TABLE()
 };
 
 #endif //__OBJ_INSPECT__
-

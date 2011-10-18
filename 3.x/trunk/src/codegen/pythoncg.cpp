@@ -271,7 +271,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
                 break;
             }
 
-            if ( source == wxT("Load From File") || source == wxT("Load From Embedded File"))
+            if ( source == _("Load From File") || source == _("Load From Embedded File"))
 			{
 			    wxString absPath;
 			    try
@@ -289,11 +289,11 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				
 				result << wxT("wx.Bitmap( u\"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT("\", wx.BITMAP_TYPE_ANY )");
 			}
-			else if ( source == wxT("Load From Resource") )
+			else if ( source == _("Load From Resource") )
 			{
 				result << wxT("wx.Bitmap( u\"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE )");
 			}
-			else if ( source == wxT("Load From Icon Resource") )
+			else if ( source == _("Load From Icon Resource") )
 			{
                 if ( wxDefaultSize == icoSize )
                 {
@@ -304,7 +304,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
                     result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
                 }
 			}
-			else if ( source == wxT( "Load From Art Provider" ) )
+			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
 				
@@ -1195,7 +1195,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				wxString path, source;
 				wxSize toolsize;
 				TypeConv::ParseBitmapWithResource( oldVal, &path, &source, &toolsize );
-				if ( wxT("Load From Icon Resource") == source && wxDefaultSize == toolsize )
+				if ( _("Load From Icon Resource") == source && wxDefaultSize == toolsize )
 				{
 					prop->SetValue( wxString::Format( wxT("%s; %s [%i; %i]"), path.c_str(), source.c_str(), toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
 					m_source->WriteLn( GetCode( obj, wxT("construction") ) );

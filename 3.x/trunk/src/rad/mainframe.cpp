@@ -180,7 +180,7 @@ public:
 			if ( propgrid != NULL )
 			{
 				wxFocusEvent focusEvent( wxEVT_KILL_FOCUS );
-				propgrid->ProcessEvent( focusEvent );
+				propgrid->GetEventHandler()->ProcessEvent( focusEvent );
 				break;
 			}
 			windowWithFocus = windowWithFocus->GetParent();
