@@ -334,7 +334,7 @@ Written by
 		@{
 			#ifequal $context_menu "1"
 			@{
-				#nl $name = myAuiBar->FindToolByIndex( myAuiBar->GetToolCount() - 1 );
+				#nl $name = #parent $name->FindToolByIndex( #parent $name->GetToolCount() - 1 );
 				#nl #parent $name->SetToolDropDown( $name->GetId(), true );
 				#nl
 			@}

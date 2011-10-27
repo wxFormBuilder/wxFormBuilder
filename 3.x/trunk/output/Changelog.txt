@@ -9,6 +9,7 @@
 * Fixed handling of "moveable" AUI property.
 + XRCID() macro can be used as a widget ID.
 ^ Upgraded to use new wxPropertyGrid control.
+* Fixed C++ code generation for drop-down menus assigned to AUI toolbar's tools.
 
 03/22/2011 Version 3.02.02 (Beta)
 * Fixed positioning of status bar on AUI-managed frame.
