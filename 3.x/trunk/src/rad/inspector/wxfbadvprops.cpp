@@ -702,12 +702,15 @@ wxString wxFBBitmapProperty::SetupImage( const wxString &imgPath )
 {
 	if(!imgPath.IsEmpty())
 	{
+		wxFileName imgName = wxFileName( imgPath );
+		
+		// Allow user to specify any file path he needs (even if it seemingly doesn't exist)
+		if( !imgName.FileExists() ) return imgPath;
+		
 		wxString   res     = wxT("");
 		wxImage    img     = wxImage( imgPath );
 
 		if ( !img.IsOk() ) return res;
-
-		wxFileName imgName = wxFileName( imgPath );
 
 		// Setup for correct file_path
 		if ( imgName.IsAbsolute() )
