@@ -168,6 +168,7 @@ public:
 	{
 		m_info->m_def_value = value;
 	}
+	void NormalizeValue();
 
 	////////////////////
 	void SetValue(const wxFontContainer &font);

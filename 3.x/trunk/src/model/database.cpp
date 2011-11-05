@@ -522,6 +522,7 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 				{
 					// load the value
 					prop->SetValue( _WXSTR( xml_prop->GetText( false ) ) );
+					prop->NormalizeValue();
 				}
 				else
 				{

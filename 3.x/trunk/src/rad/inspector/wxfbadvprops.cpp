@@ -176,7 +176,7 @@ void GetChildValues( const wxString& parentValue, wxArrayString& childValues )
 	for ( wxArrayString::iterator value = childValues.begin(); value != childValues.end(); ++value )
 	{
 		value->Trim( false );
-	}	
+	}
 }
 
 wxFBBitmapProperty::wxFBBitmapProperty( const wxString& label,
