@@ -236,6 +236,28 @@ wxString Property::GetChildFromParent( const wxString& childName )
 	}
 }
 
+void Property::NormalizeValue()
+{
+	switch( GetType() )
+	{
+		case PT_BITMAP:
+		{
+			// normalize string value in a way that bitmap source will be placed before an image path (in older 
+			// wxFB projects it was placed after that)
+			if( m_value.AfterLast( ';' ).Contains( _("Load From") ) )
+			{
+				wxString source = m_value.AfterLast( ';' ).Trim().Trim(false);
+				wxString image = m_value.BeforeLast( ';' ).Trim().Trim(false);
+				
+				m_value = source + wxT("; ") + image;
+			}
+		}
+		
+		default:
+			break;
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 const int ObjectBase::INDENT = 2;
 
