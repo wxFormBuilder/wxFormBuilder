@@ -121,10 +121,14 @@ public:
 	
     virtual void OnSetValue();
 	void CreateChildren();
+
+	void UpdateChildValues(const wxString& value);
 	
-wxString GetValueAsString( int argFlags =0 ) const;
+	wxString GetValueAsString( int argFlags =0 ) const;
 
 protected:
+
+	void GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const;
 
 #if wxVERSION_NUMBER < 2900
     static wxPGChoices m_ids;
