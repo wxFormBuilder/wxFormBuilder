@@ -433,15 +433,21 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 		{
             case 5:
 			case 4:
-				children[4].ToLong( &temp );
-				icoSize->SetHeight( temp );
+				if( children.size() > 4 )
+				{
+					children[4].ToLong( &temp );
+					icoSize->SetHeight( temp );
+				}
 			case 3:
-				children[3].ToLong( &temp );
-				icoSize->SetWidth( temp );
+				if( children.size() > 3 )
+				{
+					children[3].ToLong( &temp );
+					icoSize->SetWidth( temp );
+				}
 			case 2:
-				*image = children[1];
+				if( children.size() > 1 ) *image = children[1];
 			case 1:
-				*source = children[0];
+				if( children.size() > 0 ) *source = children[0];
 			default:
 				break;
 		}

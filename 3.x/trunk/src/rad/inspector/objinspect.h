@@ -143,6 +143,7 @@ private:
     void OnEventGridDblClick( wxPropertyGridEvent& event );
     void OnPropertyGridExpand( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
+	void OnBitmapPropertyChanged( wxCommandEvent& event );
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
