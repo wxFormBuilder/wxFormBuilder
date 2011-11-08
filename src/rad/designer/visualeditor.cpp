@@ -67,6 +67,8 @@ wxScrolledWindow(parent,-1,wxDefaultPosition,wxDefaultSize,wxSUNKEN_BORDER),
 m_stopSelectedEvent( false ),
 m_stopModifiedEvent( false )
 {
+	SetExtraStyle( wxWS_EX_BLOCK_EVENTS );
+	
 	AppData()->AddHandler( this->GetEventHandler() );
 
 	#ifdef __WXMSW__

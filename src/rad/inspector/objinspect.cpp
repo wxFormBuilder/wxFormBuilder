@@ -1140,9 +1140,12 @@ void ObjectInspector::OnBitmapPropertyChanged( wxCommandEvent& event )
 	wxString propName = event.GetString().BeforeFirst( ':' );
 	wxString propVal = event.GetString().AfterFirst( ':' );
 	
-	wxFBBitmapProperty *bp = wxDynamicCast( m_pg->GetPropertyByLabel( propName ), wxFBBitmapProperty );
-	if( bp )
+	if( !propVal.IsEmpty() )
 	{
-		bp->UpdateChildValues( propVal );
+		wxFBBitmapProperty *bp = wxDynamicCast( m_pg->GetPropertyByLabel( propName ), wxFBBitmapProperty );
+		if( bp )
+		{
+			bp->UpdateChildValues( propVal );
+		}
 	}
 }
