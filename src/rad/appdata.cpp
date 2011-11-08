@@ -471,7 +471,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 10 )
+		m_fbpVerMinor( 11 )
 {
 	#ifdef __WXFB_DEBUG__
 	wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1703,7 +1703,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 	}
 
-	/* The file is now at at least version 1.3 */
+	/* The file is now at least version 1.3 */
 
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 4 ) )
 	{
@@ -1715,7 +1715,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 	}
 
-	/* The file is now at at least version 1.4 */
+	/* The file is now at least version 1.4 */
 
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 6 ) )
 	{
@@ -1756,7 +1756,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 	}
 
-	/* The file is now at at least version 1.6 */
+	/* The file is now at least version 1.6 */
 
 	// Version 1.7 now stores all font properties.
 	// The font property conversion is automatic because it is just an extension of the old values.
@@ -1791,12 +1791,12 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 	}
 
-	/* The file is now at at least version 1.7 */
+	/* The file is now at least version 1.7 */
 
 	// The update to 1.8 only affected project properties
 	// See ConvertProjectProperties
 
-	/* The file is now at at least version 1.8 */
+	/* The file is now at least version 1.8 */
 
 	// stringlist properties are stored in a different format as of version 1.9
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 9 ) )
@@ -1836,7 +1836,37 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 	}
 
-	/* The file is now at at least version 1.9 */
+	/* The file is now at least version 1.9 */
+	
+	// Version 1.11 now stores bitmap property in the following format:
+	// 'source'; 'data' instead of old form 'data'; 'source'
+
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 11 ) )
+	{
+		oldProps.clear();
+		oldProps.insert( "bitmap" );
+		GetPropertiesToConvert( parent, oldProps, &newProps );
+
+		std::set< ticpp::Element* >::iterator prop;
+		for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
+		{
+			ticpp::Element* bitmap = *prop;
+			
+			wxString image = _WXSTR( bitmap->GetText( false ) );
+			if ( !image.empty() )
+			{
+				if( image.AfterLast( ';' ).Contains( _("Load From") ) )
+				{
+					wxString source = image.AfterLast( ';' ).Trim().Trim(false);
+					wxString data = image.BeforeLast( ';' ).Trim().Trim(false);
+					
+					bitmap->SetText( _STDSTR( source + wxT("; ") + data ) );
+				}
+			}
+		}
+	}
+	
+	/* The file is now at least version 1.11 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
