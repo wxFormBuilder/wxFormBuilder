@@ -737,8 +737,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
                     if( propobj->GetChildCount() )
                     {
                         wxMessageBox(_("You have to remove all child widgets first."));
-
-                        m_pg->SetPropertyValueBool( propPtr, false );
+                        m_pg->SetPropertyValueBool( propPtr, ! m_pg->GetPropertyValueAsBool( propPtr ) );						
                     }
                     else
                         AppData()->ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
