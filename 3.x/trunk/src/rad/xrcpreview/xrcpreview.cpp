@@ -31,6 +31,7 @@
 
 #include <wx/fs_mem.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/wizard.h>
 
 #define MENU_DELETE 109
 
@@ -191,6 +192,33 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 		dialog->SetExtraStyle( dialog->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
 		dialog->Show();
 		window = dialog;
+	}
+	else if ( className == wxT("Wizard") )
+	{
+        wxString            wizName = form->GetPropertyAsString( wxT("name") );
+        wxString            pgName;
+        wxObject           *wizObj  = res->LoadObject( NULL, wizName, wxT("wxWizard") );
+        wxWizard           *wizard  = wxDynamicCast( wizObj, wxWizard );
+        wxWizardPageSimple *wizpge  = NULL;
+
+        if ( wizard )
+        {
+            wizard->SetExtraStyle( wizard->GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
+        }
+
+        if ( form->GetChildCount() > 0 )
+        {
+            pgName = form->GetChild(0)->GetPropertyAsString( wxT("name") );
+            wizpge = ( wxWizardPageSimple * )wizard->FindWindow( pgName );
+        }
+
+        if ( wizpge )
+        {
+            wizard->RunWizard( wizpge );
+            window = wizard;
+            wizard->Destroy();
+            window = NULL;
+        }
 	}
 	else if ( className == wxT( "Panel" ) )
 	{

@@ -32,6 +32,7 @@
 #include "rad/bitmaps.h"
 #include "rad/cpppanel/cpppanel.h"
 #include "rad/pythonpanel/pythonpanel.h"
+#include "rad/phppanel/phppanel.h"
 #include "rad/xrcpanel/xrcpanel.h"
 #include "rad/geninheritclass/geninhertclass.h"
 #include "inspector/objinspect.h"
@@ -210,7 +211,7 @@ m_autoSash( false ), // autosash function is temporarily disabled due to possibl
 m_findData( wxFR_DOWN ),
 m_findDialog( NULL )
 {
-	
+
 	// initialize the splitters, wxAUI doesn't use them
 	m_leftSplitter = m_rightSplitter = NULL;
 
@@ -287,6 +288,7 @@ m_findDialog( NULL )
 	m_cpp = NULL;
 	m_xrc = NULL;
 	m_python = NULL;
+	m_php = NULL;
 
 	switch ( style )
 	{
@@ -710,8 +712,11 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
 			case 2: // Python panel
 			   break;
-			   
-			case 3: // XRC panel
+
+            case 3: // PHP panel
+			   break;
+
+			case 4: // XRC panel
 			   break;
 
 			default:
@@ -721,6 +726,7 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 					// If selected object is not a Frame or a Panel or a dialog, we won't
 					// adjust the sash position
 					if ( obj->GetObjectTypeName() == wxT("form") ||
+                         obj->GetObjectTypeName() == wxT("wizard")       ||
 						 obj->GetObjectTypeName() == wxT("menubar_form") ||
 					     obj->GetObjectTypeName() == wxT("toolbar_form") )
 					{
@@ -778,7 +784,7 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 		message = wxT( "Impossible to create the object. Did you forget to add a sizer/parent object or turn on/off an AUI management?" );
 		wxMessageBox( message, wxT("wxFormBuilder"), wxICON_WARNING | wxOK );
 	}
-	
+
 	GetStatusBar()->SetStatusText( message );
 
 	UpdateFrame();
@@ -939,7 +945,7 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.2 - beta"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
+	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.3 - beta"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
@@ -1053,8 +1059,17 @@ void MainFrame::OnCopy( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-	if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-		( ( wxScintilla* )focusedWindow )->Copy();
+#if wxVERSION_NUMBER < 2900
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
+    {
+        ( ( wxScintilla* )focusedWindow )->Copy();
+    }
+#else
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
+    {
+        ( ( wxStyledTextCtrl* )focusedWindow )->Copy();
+    }
+#endif
 	else
 	{
 		AppData()->CopyObject( AppData()->GetSelectedObject() );
@@ -1066,8 +1081,16 @@ void MainFrame::OnCut ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-	if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-		( ( wxScintilla* )focusedWindow )->Cut();
+#if wxVERSION_NUMBER < 2900
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
+    {
+        ( ( wxScintilla* )focusedWindow )->Cut();
+#else
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
+    {
+        ( ( wxStyledTextCtrl* )focusedWindow )->Cut();
+#endif
+    }
 	else
 	{
 		AppData()->CutObject( AppData()->GetSelectedObject() );
@@ -1085,8 +1108,16 @@ void MainFrame::OnPaste ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-	if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-		( ( wxScintilla* )focusedWindow )->Paste();
+#if wxVERSION_NUMBER < 2900
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
+    {
+        ( ( wxScintilla* )focusedWindow )->Paste();
+#else
+    if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
+    {
+        ( ( wxStyledTextCtrl* )focusedWindow )->Paste();
+#endif
+    }
 	else
 	{
 		AppData()->PasteObject( AppData()->GetSelectedObject() );
@@ -1259,7 +1290,7 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 		// Create the class and files.
 		AppData()->GenerateInheritedClass( details.m_form, details.m_className, filePath, details.m_fileName );
 	}
-	
+
 	wxMessageBox( wxString::Format( wxT( "Class(es) generated to \'%s\'." ), filePath.c_str() ), wxT("wxFormBuilder") );
 }
 
@@ -1317,7 +1348,7 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 					}
 				}
 				break;
-				
+
 			case 2: // Python panel
 				if( (m_python != NULL) && (m_rightSplitter != NULL) )
 				{
@@ -1335,7 +1366,24 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 				}
 				break;
 
-			case 3: // XRC panel
+            case 3: // PHP panel
+				if( (m_php != NULL) && (m_rightSplitter != NULL) )
+				{
+					panel_size = m_xrc->GetClientSize();
+					sash_pos = m_rightSplitter->GetSashPosition();
+
+					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > PHP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+
+					if(panel_size.GetWidth() > sash_pos)
+					{
+						// set the sash position
+						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+					}
+				}
+				break;
+
+			case 4: // XRC panel
 				if((m_xrc != NULL) && (m_rightSplitter != NULL))
 				{
 					panel_size = m_xrc->GetClientSize();
@@ -1356,7 +1404,7 @@ void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 				if(m_visualEdit != NULL)
 				{
 					sash_pos = m_rightSplitter->GetSashPosition();
-					
+
 					if(m_rightSplitter_sash_pos < sash_pos)
 					{
 						//restore the sash position
@@ -1401,7 +1449,7 @@ void MainFrame::OnFind( wxFindDialogEvent& event )
 		event.SetClientData( m_findDialog );
 		m_notebook->GetPage( page )->GetEventHandler()->ProcessEvent( event );
 	}*/
-	
+
 	wxWindow *page = m_notebook->GetCurrentPage();
 	if( page )
 	{
@@ -1531,7 +1579,8 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	// Set notebook icons
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
+	m_icons.Add( AppBitmaps::GetBitmap( wxT( "python" ), 16 ) );
+	m_icons.Add( AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 	m_notebook->SetImageList( &m_icons );
 
@@ -1542,12 +1591,15 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 
 	m_cpp = new CppPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_cpp, wxT( "C++" ), false, 1 );
-	
+
 	m_python = new PythonPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
 
+	m_php = new PHPPanel( m_notebook, -1 );
+	m_notebook->AddPage( m_php, wxT( "PHP" ), false, 3 );
+
 	m_xrc = new XrcPanel( m_notebook, -1 );
-	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 3 );
+	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 4 );
 
 	return m_notebook;
 }

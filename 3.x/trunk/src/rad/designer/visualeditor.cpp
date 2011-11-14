@@ -33,6 +33,7 @@
 #include "wx/statline.h"
 #include "rad/designer/resizablepanel.h"
 #include "rad/wxfbevent.h"
+#include "rad/wxfbmanager.h"
 #include <rad/appdata.h>
 #include "utils/wxfbexception.h"
 #include "model/objectbase.h"
@@ -88,6 +89,8 @@ m_stopModifiedEvent( false )
 	// scan aui panes in run-time
 	m_AuiScaner.SetOwner( this, ID_TIMER_SCAN );
 	m_AuiScaner.Start( 200 );
+
+    m_wizard = NULL;
 }
 
 void VisualEditor::DeleteAbstractObjects()
@@ -121,6 +124,7 @@ VisualEditor::~VisualEditor()
 	DeleteAbstractObjects();
 
 	ClearAui();
+    ClearWizard();
 	ClearComponents( m_back->GetFrameContentPanel() );
 }
 
@@ -162,6 +166,17 @@ void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
 	}
 
 	//event.Skip();
+}
+
+void VisualEditor::OnWizardPageChanged( WizardEvent &event )
+{
+    int i = event.GetInt();
+    if ( !i )
+    {
+        AppData()->GetManager()->SelectObject( event.GetPage() );
+        return;
+    }
+    event.Skip();
 }
 
 PObjectBase VisualEditor::GetObjectBase( wxObject* wxobject )
@@ -367,6 +382,16 @@ void VisualEditor::ClearAui()
 	}
 }
 
+void VisualEditor::ClearWizard()
+{
+	if ( m_wizard )
+	{
+		m_wizard->Disconnect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGED, WizardEventHandler( VisualEditor::OnWizardPageChanged ) );
+        m_wizard->Destroy();
+		m_wizard = NULL;
+	}
+}
+
 void VisualEditor::ClearComponents( wxWindow* parent )
 {
     wxLogNull stopTheLogging;
@@ -393,11 +418,13 @@ void VisualEditor::ClearComponents( wxWindow* parent )
 */
 void VisualEditor::Create()
 {
+#if wxVERSION_NUMBER < 2900 && !defined(__WXGTK__ )
 	if ( IsShown() )
 	{
-		Freeze(); // Prevent flickering
+        Freeze();   // Prevent flickering on wx 2.8,
+                    // Causes problems on wx 2.9 in wxGTK (e.g. wxNoteBook objects)
 	}
-	
+#endif
 	// Delete objects which had no parent
 	DeleteAbstractObjects();
 	
@@ -407,6 +434,7 @@ void VisualEditor::Create()
 	m_back->SetSelectedObject(PObjectBase());
 	
 	ClearAui();
+    ClearWizard();
 	ClearComponents( m_back->GetFrameContentPanel() );
 	
 	m_back->GetFrameContentPanel()->DestroyChildren();
@@ -487,7 +515,9 @@ void VisualEditor::Create()
 			}
 
 			// --- [3] Title bar Setup
-			if (  m_form->GetClassName() == wxT("Frame") || m_form->GetClassName() == wxT("Dialog") )
+			if (  m_form->GetClassName() == wxT("Frame")  ||
+                  m_form->GetClassName() == wxT("Dialog") ||
+                  m_form->GetClassName() == wxT("Wizard") )
 			{
 				m_back->SetTitle( m_form->GetPropertyAsString( wxT("title") ) );
 				long style = m_form->GetPropertyAsInteger( wxT("style") );
@@ -506,6 +536,30 @@ void VisualEditor::Create()
 					m_auimgr = new wxAuiManager( m_auipanel );
 				}
 			}
+
+            // --- Wizard
+            if ( m_form->GetClassName() == wxT("Wizard") )
+            {
+                m_wizard = new Wizard( m_back->GetFrameContentPanel() );
+
+                bool showbutton = false;
+                PProperty pextra_style = m_form->GetProperty( wxT("extra_style") );
+                if ( pextra_style )
+                {
+                    showbutton = pextra_style->GetValue().Contains( wxT("wxWIZARD_EX_HELPBUTTON") );
+                }
+
+                m_wizard->ShowHelpButton( showbutton );
+
+                if ( !m_form->GetProperty( wxT("bitmap") )->IsNull() )
+                {
+                    wxBitmap bmp = m_form->GetPropertyAsBitmap( wxT("bitmap") );
+                    if ( bmp.IsOk() )
+                    {
+                        m_wizard->SetBitmap( bmp );
+                    }
+                }
+            }
 
 			// --- [4] Create the components of the form -------------------------
 
@@ -548,6 +602,10 @@ void VisualEditor::Create()
 						{
 							Generate( child, m_auipanel, m_auipanel );
 						}
+                        else if( m_wizard )
+                        {
+                            Generate( child, m_wizard, m_wizard );
+                        }
 						else
 							Generate( child, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
 							
@@ -585,12 +643,16 @@ void VisualEditor::Create()
 				}
 			}
 
-			if ( menubar || statusbar || toolbar || m_auipanel )
+			if ( menubar || statusbar || toolbar || m_auipanel || m_wizard )
 			{
 				if( m_auimgr )
 				{
 					m_back->SetFrameWidgets( menubar, NULL, statusbar, m_auipanel );
 				}
+                else if( m_wizard )
+                {
+                    m_back->SetFrameWidgets( menubar, NULL, NULL, m_wizard );
+                }
 				else
 					m_back->SetFrameWidgets( menubar, toolbar, statusbar, m_auipanel );
 			}
@@ -627,9 +689,9 @@ void VisualEditor::Create()
 			// There is no form to display
 			m_back->Show(false);
 		}
-
+#if wxVERSION_NUMBER < 2900 && !defined(__WXGTK__)
 		Thaw();
-		
+#endif
 	}
 
 	UpdateVirtualSize();
@@ -828,6 +890,11 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 			SetupAui(obj, window);
 		}
 	}
+    // Wizard
+    else if ( obj->GetParent()->GetObjectTypeName() == wxT("wizard") )
+    {
+        SetupWizard( obj, window, true );
+    }
 }
 
 void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
@@ -899,6 +966,39 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 
 }
 
+void VisualEditor::SetupWizard( PObjectBase obj, wxWindow *window, bool pageAdding )
+{
+    WizardPageSimple *wizpage = wxDynamicCast( window, WizardPageSimple );
+
+    if ( pageAdding )
+    {
+        m_wizard->AddPage( wizpage );
+        m_wizard->Connect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGED, WizardEventHandler( VisualEditor::OnWizardPageChanged ) );
+    }
+    else
+    {
+        WizardEvent eventChanged( wxFB_EVT_WIZARD_PAGE_CHANGED, m_wizard->GetId(), false, wizpage );
+        eventChanged.SetInt( 1 );
+        wizpage->GetEventHandler()->ProcessEvent( eventChanged );
+
+        bool wizBmpOk = !obj->GetParent()->GetProperty( wxT("bitmap") )->IsNull();
+        bool pgeBmpOk = !obj->GetProperty( wxT("bitmap") )->IsNull();
+        wxBitmap wizBmp = obj->GetParent()->GetPropertyAsBitmap( wxT("bitmap") );
+        wxBitmap pgeBmp = obj->GetPropertyAsBitmap( wxT("bitmap") );
+
+        if ( pgeBmpOk && pgeBmp.IsOk() )
+        {
+            m_wizard->SetBitmap( pgeBmp );
+        }
+        else if ( wizBmpOk && wizBmp.IsOk() )
+        {
+            m_wizard->SetBitmap( wizBmp );
+        }
+        size_t selection = m_wizard->GetPageIndex( wizpage );
+        m_wizard->SetSelection( selection );
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 void VisualEditor::PreventOnSelected( bool prevent )
 {
@@ -965,6 +1065,14 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		}
 	}
 
+    if ( obj->GetObjectInfo()->GetObjectTypeName() == wxT("WizardPageSimple") )
+    {
+        ObjectBaseMap::iterator pageIt = m_baseobjects.find( obj.get() );
+        WizardPageSimple* wizpage = wxDynamicCast( pageIt->second, WizardPageSimple );
+
+        SetupWizard( obj, wizpage );
+    }
+
 	if ( componentType != COMPONENT_TYPE_WINDOW && componentType != COMPONENT_TYPE_SIZER )
 	{
 		item = NULL;
@@ -982,6 +1090,12 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 				ObjectBaseMap::iterator parentIt = m_baseobjects.find( parent.get() );
 				if ( parentIt != m_baseobjects.end() )
 				{
+                    if ( parent->GetObjectInfo()->GetObjectTypeName() == wxT("WizardPageSimple") )
+                    {
+                        WizardPageSimple* wizpage = wxDynamicCast( parentIt->second, WizardPageSimple );
+
+                        SetupWizard( parent, wizpage );
+                    }
 					parentComp->OnSelected( parentIt->second );
 				}
 			}

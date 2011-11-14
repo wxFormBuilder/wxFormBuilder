@@ -32,7 +32,12 @@
 
 class CodeEditor;
 
-class wxScintilla;
+#if wxVERSION_NUMBER < 2900
+    class wxScintilla;
+#else
+    class wxStyledTextCtrl;
+#endif
+
 class wxFlatNotebook;
 class wxFlatNotebookImageList;
 
@@ -53,7 +58,11 @@ private:
 	wxFlatNotebookImageList* m_icons;
 	wxFlatNotebook* m_notebook;
 
+#if wxVERSION_NUMBER < 2900
 	void InitStyledTextCtrl( wxScintilla* stc );
+#else
+    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+#endif
 
 public:
 	CppPanel( wxWindow *parent, int id );

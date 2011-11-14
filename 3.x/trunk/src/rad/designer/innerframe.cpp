@@ -59,7 +59,10 @@ public:
 	           long style = 0 );
 
 	void OnPaint( wxPaintEvent &event );
+
+#if wxVERSION_NUMBER < 2900
 	void OnSize( wxSizeEvent &event );
+#endif
 	void OnLeftClick ( wxMouseEvent &event );
 	void SetTitle( const wxString &title ) { m_titleText = title; }
 	wxString GetTitle() { return m_titleText; }
@@ -69,9 +72,11 @@ public:
 
 
 BEGIN_EVENT_TABLE( wxInnerFrame::TitleBar, wxPanel )
-EVT_LEFT_DOWN( wxInnerFrame::TitleBar::OnLeftClick )
-EVT_PAINT( wxInnerFrame::TitleBar::OnPaint )
-EVT_SIZE( wxInnerFrame::TitleBar::OnSize )
+    EVT_LEFT_DOWN( wxInnerFrame::TitleBar::OnLeftClick )
+    EVT_PAINT( wxInnerFrame::TitleBar::OnPaint )
+#if wxVERSION_NUMBER < 2900
+    EVT_SIZE( wxInnerFrame::TitleBar::OnSize )
+#endif
 END_EVENT_TABLE()
 
 wxInnerFrame::TitleBar::TitleBar ( wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style )
@@ -106,12 +111,14 @@ void wxInnerFrame::TitleBar::OnLeftClick ( wxMouseEvent &event )
 	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
 
+#if wxVERSION_NUMBER < 2900
 void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent& )
 {
 	wxClientDC dc( this );
 	wxBufferedDC bdc( &dc, GetClientSize() );
 	DrawTitleBar( bdc );
 }
+#endif
 
 void wxInnerFrame::TitleBar::OnPaint ( wxPaintEvent& )
 {

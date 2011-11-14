@@ -74,9 +74,9 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 
 void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 {
-	PObjectBase wo = boost::shared_dynamic_cast<ObjectBase>(m_object.lock());
+/*	PObjectBase wo = boost::shared_dynamic_cast<ObjectBase>(m_object.lock());
 	if (wo->IsContainer())
-	{
+	{ TODO: what this check is for? */
 		wxWindow *aux = m_window;
 		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
 		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
@@ -85,7 +85,7 @@ void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 			wxPaintDC dc(m_window);
 			dsgnWin->HighlightSelection(dc);
 		}
-	}
+//	}
 	event.Skip();
 }
 

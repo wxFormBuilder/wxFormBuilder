@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+PHP code generation written by
+  Michal Bližňák - michal.bliznak@gmail.com
+-->
+<codegen language="PHP">
+
+	<templates class="wxPanel">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );</template>
+	</templates>
+	
+	<templates class="wxSplitterWindow">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<!--<template name="settings">
+			#ifnotnull $sashgravity
+			@{
+				#ifnotequal $sashgravity "0.0"
+			@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
+			@}
+			#ifnotnull $sashsize
+			@{
+				#ifnotequal $sashsize "-1"
+			@{	@$this->$name->SetSashSize( $sashsize ); #nl @}
+			@}
+			#ifnotnull $min_pane_size
+			@{
+				#ifnotequal $min_pane_size "0"
+			@{	@$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
+			@}
+			#ifnotnull $sashpos
+			@{
+			@$this->$name->SetSashPosition( $sashpos ); #nl
+			@}
+		</template>-->
+		<template name="settings">
+			#ifnotnull $sashgravity
+			@{
+				#ifnotequal $sashgravity "0.0"
+			@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
+			@}
+			#ifnotnull $sashsize
+			@{
+				#ifnotequal $sashsize "-1"
+			@{	@$this->$name->SetSashSize( $sashsize ); #nl @}
+			@}
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+			@{	@$this->$name->Connect( wxEVT_IDLE, @$this->$name #append OnIdle ); #nl @}
+			@}
+			#ifnotnull $min_pane_size
+			@{
+				#ifnotequal $min_pane_size "0"
+			@{	@$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
+			@}
+		</template>
+		<template name="generated_event_handlers">
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+				@{
+					function $name #append OnIdle( @$event ){ #indent #nl
+						@$this->$name->SetSashPosition( $sashpos ); #nl
+						@$this->$name->Disconnect( wxEVT_IDLE ); #unindent #nl
+					}
+				@}
+			@}
+		</template>
+		<template name="evt_connect_OnSplitterSashPosChanging">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING, #handler );</template>
+		<template name="evt_connect_OnSplitterSashPosChanged">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, #handler );</template>
+		<template name="evt_connect_OnSplitterUnsplit">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_UNSPLIT, #handler );</template>
+		<template name="evt_connect_OnSplitterDClick">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, #handler );</template>
+	</templates>
+
+  
+	<templates class="wxNotebook">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{
+				$name #append ImageSize = $bitmapsize; #nl
+				$name #append Index = 0; #nl
+				$name #append Images = new wxImageList( $name #append ImageSize->GetWidth(), $name #append ImageSize->GetHeight() ); #nl
+				@$this->$name->AssignImageList( $name #append Images );
+			@}
+		</template>
+		<template name="evt_connect_OnNotebookPageChanged">@$this->$name->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnNotebookPageChanging">@$this->$name->Connect( wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, #handler );</template>
+	</templates>
+
+	<templates class="notebookpage">
+		<template name="page_add">@$this->#parent $name->AddPage( @$this->#child $name, $label, $select );</template>
+		<template name="settings">
+			#ifnotnull #parent $bitmapsize
+			@{
+				#ifnotnull $bitmap
+				@{
+					#parent $name #append Bitmap = $bitmap #nl
+					if ( #parent $name #append Bitmap->Ok() ){ #indent #nl
+						#parent $name #append Images->Add( #parent $name #append Bitmap ); #nl
+						@$this->#parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
+						#parent $name #append Index += 1; #unindent #nl
+					}#nl
+				@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxListbook">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{
+				$name #append ImageSize = $bitmapsize; #nl
+				$name #append Index = 0; #nl
+				$name #append Images = new wxImageList( $name #append ImageSize->GetWidth(), $name #append ImageSize->GetHeight() ); #nl
+				@$this->$name->AssignImageList( $name #append Images );
+			@}
+		</template>
+		<!-- <template name="after_addchild">
+			#ifnull $bitmapsize
+			@{
+				$name #append ListView = @$this->$name->GetListView(); #nl
+				$name #append Flags = $name #append ListView.GetWindowStyleFlag(); #nl
+				$name #append Flags = ( $name #append Flags &amp; ~wxLC_ICON ) | wxLC_SMALL_ICON #nl
+				$name #append ListView.SetWindowStyleFlag( $name #append Flags ); #nl
+			@}
+		</template> -->
+		<template name="evt_connect_OnListbookPageChanged">@$this->$name->Connect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnListbookPageChanging">@$this->$name->Connect( wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING, #handler );</template>
+	</templates>
+
+	<templates class="listbookpage">
+		<template name="page_add">@$this->#parent $name->AddPage( @$this->#child $name, $label, $select );</template>
+		<template name="settings">
+			#ifnotnull #parent $bitmapsize
+			@{
+				#ifnotnull $bitmap
+				@{
+					#parent $name #append Bitmap = $bitmap; #nl
+					if ( #parent $name #append Bitmap.Ok() ){ #indent #nl
+						#parent $name #append Images->Add( #parent $name #append Bitmap ); #nl
+						@$this->#parent $name->SetPageImage( #parent $name #append Index, #parent $name #append Index ); #nl
+						#parent $name #append Index += 1; #unindent #nl
+					}#nl
+				@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxChoicebook">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="evt_connect_OnChoicebookPageChanged">@$this->$name->Connect( wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnChoicebookPageChanging">@$this->$name->Connect( wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING, #handler );</template>
+	</templates>
+
+	<templates class="choicebookpage">
+		<template name="page_add">@$this->#parent $name->AddPage( @$this->#child $name, $label, $select );</template>
+	</templates>
+	
+	<templates class="wxAuiNotebook">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
+		<template name="include" />
+		<template name="evt_connect_OnAuiNotebookPageClose">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookPageChanged">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookPageChanging">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGING, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookButton">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_BUTTON, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookBeginDrag">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookEndDrag">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookDragMotion">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, #handler );</template>
+		<template name="evt_connect_OnAuiNotebookAllowDND">@$this->$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, #handler );</template>
+	</templates>                      
+
+	<templates class="auinotebookpage">
+		<template name="page_add">@$this->#parent $name->AddPage( @$this->#child $name, $label, $select, $bitmap );</template>
+	</templates>
+
+	<templates class="wxScrolledWindow">
+		<template name="construction">
+			  @$this->$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ); #nl
+			  @$this->$name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );
+		</template>
+	</templates>
+
+
+</codegen>
