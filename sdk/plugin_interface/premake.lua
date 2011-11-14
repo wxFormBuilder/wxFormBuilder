@@ -37,7 +37,7 @@ local targetName = "fbPluginInterface"
 --		Options: exe | winexe | lib | dll
 package.kind = "lib"
 -- Set the files to include.
-package.files = { matchrecursive( "*.cpp", "*.h", "*.rc" ) }
+package.files = { matchrecursive( "*.cpp", "*.h", "*.rc", "*.fbp" ) }
 -- Set the include paths.
 package.includepaths = { "../tinyxml" }
 -- Set the libraries it links to.

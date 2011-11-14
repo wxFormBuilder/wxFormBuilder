@@ -45,7 +45,12 @@
 #include <wx/fdrepdlg.h>
 #include <wx/config.h>
 
-#include <wx/wxScintilla/wxscintilla.h>
+#if wxVERSION_NUMBER < 2900
+    #include <wx/wxScintilla/wxscintilla.h>
+#else
+    #include <wx/stc/stc.h>
+#endif
+
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
@@ -109,9 +114,15 @@ CppPanel::~CppPanel()
 	config->Write( wxT("/mainframe/editor/cpp/notebook_style"), m_notebook->GetWindowStyleFlag() );
 }
 
+#if wxVERSION_NUMBER < 2900
 void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 {
 	stc->SetLexer( wxSCI_LEX_CPP );
+#else
+void CppPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
+{
+    stc->SetLexer( wxSTC_LEX_CPP );
+#endif
 	stc->SetKeyWords( 0, wxT( "asm auto bool break case catch char class const const_cast \
 	                          continue default delete do double dynamic_cast else enum explicit \
 	                          export extern false float for friend goto if inline int long \
@@ -128,6 +139,8 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 #else
 	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
 #endif
+
+#if wxVERSION_NUMBER < 2900
 	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
 	stc->StyleClearAll();
 	stc->StyleSetBold( wxSCI_C_WORD, true );
@@ -140,6 +153,20 @@ void CppPanel::InitStyledTextCtrl( wxScintilla *stc )
 	stc->StyleSetForeground( wxSCI_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
 	stc->StyleSetForeground( wxSCI_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
 	stc->StyleSetForeground( wxSCI_C_NUMBER, *wxBLUE );
+#else
+    stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
+    stc->StyleClearAll();
+    stc->StyleSetBold( wxSTC_C_WORD, true );
+    stc->StyleSetForeground( wxSTC_C_WORD, *wxBLUE );
+    stc->StyleSetForeground( wxSTC_C_STRING, *wxRED );
+    stc->StyleSetForeground( wxSTC_C_STRINGEOL, *wxRED );
+    stc->StyleSetForeground( wxSTC_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
+    stc->StyleSetForeground( wxSTC_C_COMMENT, wxColour( 0, 128, 0 ) );
+    stc->StyleSetForeground( wxSTC_C_COMMENTLINE, wxColour( 0, 128, 0 ) );
+    stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
+    stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
+    stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
+#endif
 	stc->SetUseTabs( true );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -351,12 +378,17 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 
 		Freeze();
 
+#if wxVERSION_NUMBER < 2900
 		wxScintilla* cppEditor = m_cppPanel->GetTextCtrl();
+		wxScintilla* hEditor   = m_hPanel->GetTextCtrl();
+#else
+        wxStyledTextCtrl* cppEditor = m_cppPanel->GetTextCtrl();
+        wxStyledTextCtrl* hEditor   = m_hPanel->GetTextCtrl();
+#endif
 		cppEditor->SetReadOnly( false );
 		int cppLine = cppEditor->GetFirstVisibleLine() + cppEditor->LinesOnScreen() - 1;
 		int cppXOffset = cppEditor->GetXOffset();
 
-		wxScintilla* hEditor = m_hPanel->GetTextCtrl();
 		hEditor->SetReadOnly( false );
 		int hLine = hEditor->GetFirstVisibleLine() + hEditor->LinesOnScreen() - 1;
 		int hXOffset = hEditor->GetXOffset();

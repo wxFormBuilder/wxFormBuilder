@@ -176,16 +176,31 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 				wxFontContainer font = TypeConv::StringToFont( value );
 
 				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ? wxT( "wxNORMAL_FONT->GetPointSize()" ) : wxString::Format( wxT( "%i" ), pointSize ).c_str();
+				wxString size = pointSize <= 0 ?
+#if wxVERSION_NUMBER < 2900
+                                    wxT("wxNORMAL_FONT->GetPointSize()")
+                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
 
-				result	= wxString::Format( wxT( "wxFont( %s, %i, %i, %i, %s, %s )" ),
-				                           size.c_str(),
-				                           font.GetFamily(),
-				                           font.GetStyle(),
-				                           font.GetWeight(),
-				                           ( font.GetUnderlined() ? wxT( "true" ) : wxT( "false" ) ),
-				                           ( font.m_faceName.empty() ? wxT( "wxEmptyString" ) : wxString::Format( wxT( "wxT(\"%s\")" ), font.m_faceName.c_str() ).c_str() )
-				                         );
+                result = wxString::Format
+                        (
+                            wxT("wxFont( %s, %i, %i, %i, %s, %s )" ),
+                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
+                            ( font.GetUnderlined() ? wxT("true") : wxT("false") ),
+                            ( font.m_faceName.empty() ? wxT("wxEmptyString")
+                            : wxString::Format( wxT("wxT(\"%s\")" ), font.m_faceName.c_str() ).c_str() )
+#else
+                                    "wxNORMAL_FONT->GetPointSize()"
+                                    : wxString::Format( "%i", pointSize );
+
+                result = wxString::Format
+                        (
+                            "wxFont( %s, %i, %i, %i, %s, %s )",
+                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
+                            ( font.GetUnderlined() ? "true" : "false" ),
+                            ( font.m_faceName.empty() ? "wxEmptyString"
+                            : wxString::Format( "wxT(\"%s\")", font.m_faceName ) )
+#endif
+                        );
 			}
 			else
 			{
@@ -1212,16 +1227,21 @@ void CppCodeGenerator::GenEnumIds( PObjectBase class_obj )
 			macros.erase( it );
 		}
 
-		it = macros.begin();
-		if ( it != macros.end() )
+		size_t idx;
+		size_t count = macros.size();
+		wxString sId;
+
+		for ( idx = 0; idx < count; idx++ )
 		{
-			m_header->WriteLn( wxString::Format( wxT( "%s = %i," ), it->c_str(), m_firstID ) );
-			it++;
-			while ( it != macros.end() )
-			{
-				m_header->WriteLn( *it + wxT( "," ) );
-				it++;
-			}
+			sId = macros.at( idx );
+
+			if ( idx == 0 )
+				sId = wxString::Format( wxT("%s = %i"), sId.c_str(), m_firstID );
+
+			if ( idx < (count-1) )
+				sId << wxT(",");
+
+			m_header->WriteLn( sId );
 		}
 
 		//m_header->WriteLn(id);
@@ -1496,6 +1516,16 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	if ( !afterAddChild.empty() )
 	{
 		m_source->WriteLn( afterAddChild );
+        if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
+        {
+            m_source->WriteLn( wxT("for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )") );
+            m_source->WriteLn( wxT("{") );
+            m_source->Indent();
+            m_source->WriteLn( wxT("m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );") );
+            m_source->WriteLn( wxT("m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );") );
+            m_source->Unindent();
+            m_source->WriteLn( wxT("}") );
+        }
 	}
 
 	if ( m_useConnect && !events.empty() )
@@ -1680,7 +1710,8 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 	          type == wxT( "flatnotebookpage" )	||
 	          type == wxT( "listbookpage" )		||
 	          type == wxT( "choicebookpage" )	||
-	          type == wxT( "auinotebookpage" )
+	          type == wxT( "auinotebookpage" )  ||
+              type == wxT("WizardPageSimple")
 	        )
 	{
 		GenConstruction( obj->GetChild( 0 ), false );

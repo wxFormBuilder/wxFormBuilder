@@ -36,6 +36,7 @@
 #include "utils/wxfbexception.h"
 #include "codegen/cppcg.h"
 #include "codegen/pythoncg.h"
+#include "codegen/phpcg.h"
 #include "codegen/xrccg.h"
 #include "codegen/codewriter.h"
 #include "rad/xrcpreview/xrcpreview.h"
@@ -521,6 +522,7 @@ PObjectBase ApplicationData::GetSelectedObject()
 PObjectBase ApplicationData::GetSelectedForm()
 {		
 	if( ( m_selObj->GetObjectTypeName() == wxT( "form" ) ) ||
+        ( m_selObj->GetObjectTypeName() == wxT("wizard") ) ||
 		( m_selObj->GetObjectTypeName() == wxT( "menubar_form" ) ) ||
 		( m_selObj->GetObjectTypeName() == wxT( "toolbar_form" ) ) )
 		return m_selObj;
@@ -755,8 +757,11 @@ void ApplicationData::CreateObject( wxString name )
 {
 	try
 	{
+#if wxVERSION_NUMBER < 2900
 		Debug::Print( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
-
+#else
+        Debug::Print("[ApplicationData::CreateObject] New " + name );
+#endif
 		PObjectBase old_selected = GetSelectedObject();
 		PObjectBase parent = old_selected;
 		PObjectBase obj;
@@ -2106,6 +2111,17 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 
 			codegen.GenerateInheritedClass( obj, form );
 		}
+		else if( pCodeGen && TypeConv::FlagSet( wxT("PHP"), pCodeGen->GetValue() ) )
+		{
+			PHPCodeGenerator codegen;
+			
+			const wxString& fullPath = inherFile.GetFullPath();
+			PCodeWriter php_cw( new FileCodeWriter( fullPath + wxT(".php"), useMicrosoftBOM, useUtf8 ) );
+
+			codegen.SetSourceWriter( php_cw );
+
+			codegen.GenerateInheritedClass( obj, form );
+		}
 
 		wxLogStatus( wxT( "Class generated at \'%s\'." ), path.c_str() );
 	}
@@ -2294,8 +2310,13 @@ void ApplicationData::CheckProjectTree( PObjectBase obj )
 		PObjectBase child = obj->GetChild( i );
 
 		if ( child->GetParent() != obj )
+        {
+#if wxVERSION_NUMBER < 2900
 			wxLogError( wxString::Format( wxT( "Parent of object \'%s\' is wrong!" ), child->GetPropertyAsString( wxT( "name" ) ).c_str() ) );
-
+#else
+			wxLogError( wxString::Format("Parent of object \'" + child->GetPropertyAsString("name") + "\' is wrong!") );
+#endif
+        }
 		CheckProjectTree( child );
 	}
 }
@@ -2591,7 +2612,11 @@ void ApplicationData::NotifyEvent( wxFBEvent& event )
 	if ( count == 0 )
 	{
 		count++;
+#if wxVERSION_NUMBER < 2900
 		Debug::Print( wxT( "event: %s" ), event.GetEventName().c_str() );
+#else
+		Debug::Print( "event: " + event.GetEventName() );
+#endif
 		std::vector< wxEvtHandler* >::iterator handler;
 
 		for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )
@@ -2601,7 +2626,11 @@ void ApplicationData::NotifyEvent( wxFBEvent& event )
 	}
 	else
 	{
+#if wxVERSION_NUMBER < 2900
 		Debug::Print( wxT( "Pending event: %s" ), event.GetEventName().c_str() );
+#else
+		Debug::Print( "Pending event: " + event.GetEventName() );
+#endif
 		std::vector< wxEvtHandler* >::iterator handler;
 
 		for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )

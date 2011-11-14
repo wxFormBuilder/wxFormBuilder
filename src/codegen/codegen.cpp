@@ -299,6 +299,7 @@ PObjectBase TemplateParser::GetWxParent()
 	candidates.push_back( m_obj->FindNearAncestor( wxT("choicebook") ) );
 	candidates.push_back( m_obj->FindNearAncestor( wxT("auinotebook") ) );
 	candidates.push_back( m_obj->FindNearAncestor( wxT("toolbar") ) );
+	candidates.push_back( m_obj->FindNearAncestor( wxT("WizardPageSimple") ) );
 
 	for ( size_t i = 0; i < candidates.size(); i++ )
 	{
@@ -828,7 +829,7 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_APPEND;
 	else if (ident == wxT("class") )
 		return ID_CLASS;
-	else if (ident == wxT("form") )
+	else if (ident == wxT("form") || ident == wxT("wizard"))
 		return ID_FORM;
 	else if (ident == wxT("indent") )
 		return ID_INDENT;

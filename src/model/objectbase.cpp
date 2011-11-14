@@ -310,7 +310,11 @@ PEvent ObjectBase::GetEvent (wxString name)
 	if ( it != m_events.end() )
 		return it->second;
 
+#if wxVERSION_NUMBER < 2900
 	Debug::Print(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
+#else
+    Debug::Print("[ObjectBase::GetEvent] Event " + name + " not found!");
+#endif
 	return PEvent();
 }
 
@@ -377,6 +381,7 @@ PObjectBase ObjectBase::FindParentForm()
 	PObjectBase retObj = this->FindNearAncestor( wxT( "form" ) );
 	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "menubar_form" ) );
 	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "toolbar_form" ) );
+    if( retObj == NULL ) retObj = this->FindNearAncestor( wxT("wizard") );
 	
 	return retObj;
 }

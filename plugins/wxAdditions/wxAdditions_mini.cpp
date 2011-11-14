@@ -38,8 +38,10 @@
 #include <wx/propgrid/advprops.h>
 #include <wx/propgrid/manager.h>
 
-// wxScintilla
-#include <wx/wxScintilla/wxscintilla.h>
+#if wxVERSION_NUMBER < 2900
+    // wxScintilla
+    #include <wx/wxScintilla/wxscintilla.h>
+#endif
 
 // wxWidgets
 #include <wx/xrc/xmlres.h>
@@ -62,9 +64,10 @@ public:
 	m_manager( manager ) {}
 
 protected:
+#if wxVERSION_NUMBER < 2900
 	// Enable folding for wxScintilla
 	void OnMarginClick ( wxScintillaEvent& event );
-
+#endif
 	void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
 	{
 		// Only handle events from this book - prevents problems with nested books, because OnSelected is fired on an
@@ -119,7 +122,10 @@ protected:
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_FLATNOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnFlatNotebookPageChanged )
 	EVT_FLATNOTEBOOK_PAGE_CLOSING( -1, ComponentEvtHandler::OnFlatNotebookPageClosing )
+
+#if wxVERSION_NUMBER < 2900
 	EVT_SCI_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
+#endif
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -283,7 +289,7 @@ public:
         pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
 
 #if wxVERSION_NUMBER >= 2900
-        wxPropertyGridPage* pg = pgman->AddPage( _("Second Page") );
+        wxPropertyGridPage* pg2 = pgman->AddPage( _("Second Page") );
 #else
         pgman->AddPage( _("Second Page") ); wxPropertyGridPage* pg2 = pgman->GetPage( _("Second Page") );
 #endif
@@ -498,7 +504,7 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
+#if wxVERSION_NUMBER < 2900
 class ScintillaComponent : public ComponentBase
 {
 public:
@@ -636,7 +642,7 @@ void ComponentEvtHandler::OnMarginClick( wxScintillaEvent& event )
 	}
 	event.Skip();
 }
-
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -701,8 +707,8 @@ MACRO(wxFNB_CUSTOM_LOCAL_DRAG)
 MACRO(wxFNB_CUSTOM_CLOSE_BUTTON)
 MACRO(wxFNB_CUSTOM_ALL)
 
-
+#if wxVERSION_NUMBER < 2900
 // wxScintilla
 WINDOW_COMPONENT("wxScintilla", ScintillaComponent )
-
+#endif
 END_LIBRARY()

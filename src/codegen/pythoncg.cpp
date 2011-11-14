@@ -212,16 +212,31 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				wxFontContainer font = TypeConv::StringToFont( value );
 
 				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ? wxT("wx.NORMAL_FONT.GetPointSize()") : wxString::Format( wxT("%i"), pointSize ).c_str();
+				wxString size = pointSize <= 0 ?
+#if wxVERSION_NUMBER < 2900
+                                    wxT("wx.NORMAL_FONT.GetPointSize()")
+                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
 
-				result	= wxString::Format( wxT("wx.Font( %s, %i, %i, %i, %s, %s )" ),
-											size.c_str(),
-											font.GetFamily(),
-											font.GetStyle(),
-											font.GetWeight(),
-											( font.GetUnderlined() ? wxT("True") : wxT("False") ),
-											( font.m_faceName.empty() ? wxT("wx.EmptyString") : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
-											);
+                result = wxString::Format
+                        (
+                            wxT("wx.Font( %s, %i, %i, %i, %s, %s )"),
+                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
+                            ( font.GetUnderlined() ? wxT("True") : wxT("False") ),
+                            ( font.m_faceName.empty() ? wxT("wx.EmptyString")
+                            : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
+#else
+                                    "wx.NORMAL_FONT.GetPointSize()"
+                                    : wxString::Format( "%i", pointSize );
+
+                result = wxString::Format
+                        (
+                            "wx.Font( %s, %i, %i, %i, %s, %s )",
+                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
+                            ( font.GetUnderlined() ? "True" : "False" ),
+                            ( font.m_faceName.empty() ? "wx.EmptyString"
+                            : wxString::Format( "\"%s\"", font.m_faceName ) )
+#endif
+                        );
 			}
 			else
 			{
@@ -229,7 +244,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			break;
 		}
-	case PT_WXCOLOUR:
+		case PT_WXCOLOUR:
 		{
 			if ( !value.empty() )
 			{
@@ -1010,6 +1025,20 @@ void PythonCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVect
 	GenEvents( class_obj, events );
 
 	m_source->Unindent();
+
+    if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
+    {
+        m_source->WriteLn( wxT("def add_page(self, page):") );
+        m_source->Indent();
+        m_source->WriteLn( wxT("if self.m_pages:") );
+        m_source->Indent();
+        m_source->WriteLn( wxT("previous_page = self.m_pages[-1]") );
+        m_source->WriteLn( wxT("page.SetPrev(previous_page)") );
+        m_source->WriteLn( wxT("previous_page.SetNext(page)") );
+        m_source->Unindent();
+        m_source->WriteLn( wxT("self.m_pages.append(page)") );
+        m_source->Unindent();
+    }
 }
 
 void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &events )
@@ -1126,7 +1155,8 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
 				type == wxT("treelistctrl")	||
-				type == wxT("flatnotebook")
+				type == wxT("flatnotebook") ||
+                type == wxT("wizard")
 			)
 		{
 			wxString afterAddChild = GetCode( obj, wxT("after_addchild") );

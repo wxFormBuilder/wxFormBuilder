@@ -35,7 +35,7 @@
 
 #include "innerframe.h"
 #include "wx/aui/aui.h"
-
+#include <forms/wizard.h>
 /**
  * Extends the wxInnerFrame to show the object highlight
  */
@@ -132,6 +132,10 @@ class VisualEditor : public wxScrolledWindow
   
   void OnAuiScaner(wxTimerEvent& event);
 
+    void ClearWizard();
+    void SetupWizard( PObjectBase obj, wxWindow* window, bool pageAdding = false );
+    void OnWizardPageChanged( WizardEvent &event );
+
  public:
   VisualEditor(wxWindow *parent);
   ~VisualEditor();
@@ -147,6 +151,9 @@ class VisualEditor : public wxScrolledWindow
   
   //AUI
   wxAuiManager *m_auimgr;
+
+  //Wizard
+  Wizard            *m_wizard;
 
   // Give components an opportunity to cleanup
   void ClearComponents( wxWindow* parent );

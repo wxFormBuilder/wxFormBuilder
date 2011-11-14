@@ -45,6 +45,7 @@
   -->
   <objtype name="project">
     <childtype name="form" />
+    <childtype name="wizard"/>
     <childtype name="menubar_form" />
     <childtype name="toolbar_form" />
   </objtype>
@@ -68,6 +69,16 @@
     <childtype name="treelistctrl" nmax="0" />
     <childtype name="splitter" nmax="0" />
   </objtype>
+
+    <objtype name="wizard">
+        <childtype name="WizardPageSimple"/>
+        <childtype name="menu" nmax="1" />
+    </objtype>
+
+    <objtype name="WizardPageSimple">
+        <childtype name="sizer" nmax="1" />
+        <childtype name="menu"  nmax="1" />
+    </objtype>
 
   <objtype name="menubar_form">
     <childtype name="menu" />

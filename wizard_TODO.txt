@@ -1,0 +1,5 @@
+- Add a wxWizard 2-steps creation (with Create() function) in Python code to add the Help button on Python
+code generation like in C++ one (see wxWizard doc's webpage under 'Extended styles').
+
+- Only wxWizardPageSimple class is supported: we need a change to customcontrol in additional component plugin (change it from widget type to a standalone)
+in order to use it to create custom wxWizardPages.

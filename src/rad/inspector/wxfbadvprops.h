@@ -161,7 +161,11 @@ protected:
 
 class wxPGSliderEditor : public wxPGEditor
 {
+#if wxVERSION_NUMBER < 2900
     WX_PG_DECLARE_EDITOR_CLASS( wxPGSliderEditor )
+#else
+    wxDECLARE_DYNAMIC_CLASS( wxPGSliderEditor );
+#endif
 public:
     wxPGSliderEditor()
     :
@@ -170,10 +174,15 @@ public:
     }
 
     virtual ~wxPGSliderEditor();
-
+#if wxVERSION_NUMBER < 2900
     // See below for short explanations of what these are supposed to do.
     wxPG_DECLARE_CREATECONTROLS
-
+#else
+    virtual wxPGWindowList CreateControls(wxPropertyGrid* propgrid,
+                                          wxPGProperty* property,
+                                          const wxPoint& pos,
+                                          const wxSize& size) const;
+#endif
     virtual void UpdateControl( wxPGProperty* property, wxWindow* wnd ) const;
     virtual bool OnEvent( wxPropertyGrid* propgrid, wxPGProperty* property,
                           wxWindow* wnd, wxEvent& event ) const;

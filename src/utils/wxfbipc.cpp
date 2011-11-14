@@ -145,12 +145,17 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 			bool connected = false;
 			for ( int i = m_port; i < m_port + 20; ++i )
 			{
+            #if wxVERSION_NUMBER < 2900
 				wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
 				connection.reset( client->MakeConnection( wxT("127.0.0.1"), nameWithPort, name ) );
+            #else
+                wxString sPort = wxString::Format( "%i", i );
+                connection.reset( client->MakeConnection( "localhost", sPort, name ) );
+            #endif
 				if ( NULL != connection.get() )
 				{
 					connected = true;
-					wxChar* pid = connection->Request( wxT("PID"), NULL );
+					wxChar* pid = (wxChar*)connection->Request( wxT("PID"), NULL );
 					if ( NULL != pid )
 					{
 						wxLogStatus( wxT("%s already open in process %s"), file.c_str(), pid );
@@ -204,7 +209,11 @@ bool wxFBIPC::CreateServer( const wxString& name )
 			}
 			else
 			{
+#if wxVERSION_NUMBER < 2900
 				Debug::Print( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
+#else
+				Debug::Print( "Server Creation Failed. " + nameWithPort );
+#endif
 			}
 		}
 	}
@@ -249,6 +258,7 @@ wxConnectionBase* AppClient::OnMakeConnection()
 	return new AppConnection;
 }
 
+#if wxVERSION_NUMBER < 2900
 wxChar* AppConnection::OnRequest( const wxString& /*topic*/, const wxString& /*item*/, int* size, wxIPCFormat /*format*/ )
 {
 	unsigned long pid = ::wxGetProcessId();
@@ -270,3 +280,4 @@ wxChar* AppConnection::OnRequest( const wxString& /*topic*/, const wxString& /*i
 		return const_cast< wxChar* >( m_data.c_str() );
 	}
 }
+#endif

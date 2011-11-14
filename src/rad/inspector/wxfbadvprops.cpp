@@ -722,6 +722,7 @@ void wxFBBitmapProperty::OnSetValue()
 
 wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
 {
+#if wxVERSION_NUMBER < 2900
     if(GetCount() == 0)
 	{
 		return m_value.GetString();
@@ -729,6 +730,10 @@ wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
     wxString text;
     GenerateComposedValue(text, argFlags);
     return text;
+#else
+    // TODO: 2.9 version?
+    return wxEmptyString;
+#endif
 }
 
 wxString wxFBBitmapProperty::SetupImage( const wxString &imgPath )
@@ -780,14 +785,19 @@ wxString wxFBBitmapProperty::SetupResource( const wxString &resName )
 // -----------------------------------------------------------------------
 #ifdef wxUSE_SLIDER
 
+#if wxVERSION_NUMBER < 2900
 // This macro also defines global wxPGEditor_Slider for storing
 // the singleton class instance.
 WX_PG_IMPLEMENT_EDITOR_CLASS( Slider, wxPGSliderEditor, wxPGEditor )
-
+#else
+wxIMPLEMENT_DYNAMIC_CLASS( wxPGSliderEditor, wxPGEditor )
+#endif
 // Destructor. It is useful to reset the global pointer in it.
 wxPGSliderEditor::~wxPGSliderEditor()
 {
+#if wxVERSION_NUMBER < 2900
     wxPG_EDITOR( Slider ) = NULL;
+#endif
 }
 
 // Create controls and initialize event handling.
@@ -796,7 +806,11 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
                                                  const wxPoint&  pos,
                                                  const wxSize&   sz ) const
 {
+#if wxVERSION_NUMBER < 2900
     wxCHECK_MSG( property->IsKindOf( WX_PG_CLASSINFO( wxFloatProperty ) ),
+#else
+    wxCHECK_MSG( property->IsKindOf( wxCLASSINFO( wxFloatProperty ) ),
+#endif
                  NULL,
                  wxT("Slider editor can only be used with wxFloatProperty or derivative.") );
 
@@ -829,7 +843,12 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
     // already connected)
     propgrid->Connect( wxPG_SUBID1, wxEVT_SCROLL_THUMBTRACK,
                        (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
+#if wxVERSION_NUMBER < 2900
                        &wxPropertyGrid::OnCustomEditorEvent, NULL, propgrid );
+#else
+                       &wxPGEditor::OnEvent, NULL, propgrid );
+#endif
+
 #ifdef __WXMSW__
     ctrl->Show();
 #endif

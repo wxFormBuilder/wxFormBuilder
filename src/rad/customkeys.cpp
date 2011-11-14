@@ -52,17 +52,32 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
     PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 
     Debug::Print( wxT("#### Plantillas ####") );
+
+#if wxVERSION_NUMBER < 2900
     Debug::Print((wxChar *)(code_info->GetTemplate( wxT("construction") ).c_str()));
     Debug::Print((wxChar *)(code_info->GetTemplate( wxT("declaration") ).c_str()));
-
+#else
+    Debug::Print( code_info->GetTemplate( wxT("construction") ) );
+    Debug::Print( code_info->GetTemplate( wxT("declaration") ) );
+#endif
     Debug::Print( wxT("#### Código ####") );
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ), false, false, wxEmptyString );
+
+#if wxVERSION_NUMBER < 2900
       Debug::Print((wxChar *)parser.ParseTemplate().c_str());
+#else
+      Debug::Print( parser.ParseTemplate() );
+#endif
     }
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ), false, false, wxEmptyString );
+
+#if wxVERSION_NUMBER < 2900
       Debug::Print((wxChar *)parser.ParseTemplate().c_str());
+#else
+      Debug::Print( parser.ParseTemplate() );
+#endif
     }
   }
   else if (event.GetKeyCode() == 'C')

@@ -78,7 +78,11 @@ void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxToolBar *toolbar )
 		}
 		if ( NULL == info->GetComponent() )
 		{
+#if wxVERSION_NUMBER < 2900
 			Debug::Print( _( "Missing Component for Class \"%s\" of Package \"%s\"." ), info->GetClassName().c_str(), pkg->GetPackageName().c_str() );
+#else
+			Debug::Print(_("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() + "\".") );
+#endif
 		}
 		else
 		{
@@ -206,7 +210,11 @@ void wxFbPalette::OnSpinDown( wxSpinEvent& )
 		button->SetToolTip( widget );
 		toolbar->InsertControl( 0, button );
 	#else
-		toolbar->InsertTool( 0, nextId++, icon, wxNullBitmap, false, NULL, widget, widget );
+        #if wxVERSION_NUMBER < 2900
+            toolbar->InsertTool( 0, nextId++, icon, wxNullBitmap, false, NULL, widget, widget );
+        #else
+            toolbar->InsertTool( 0, nextId++, widget, icon );
+        #endif
 	#endif
 
 	toolbar->Realize();
