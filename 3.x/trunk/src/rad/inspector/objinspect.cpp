@@ -966,10 +966,20 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
         }
         break;
     case PT_WXPOINT:
-        m_pg->SetPropertyValue( pgProp, prop->GetValue() );
+		{
+			//m_pg->SetPropertyValue( pgProp, prop->GetValue() );
+			wxString aux = prop->GetValueAsString();
+            aux.Replace(wxT(","), wxT(";"));
+            pgProp->SetValueFromString(aux, 0);
+		}
         break;
     case PT_WXSIZE:
-        m_pg->SetPropertyValue( pgProp, prop->GetValue() );
+		{
+			//m_pg->SetPropertyValue( pgProp, prop->GetValue() );
+			wxString aux = prop->GetValueAsString();
+            aux.Replace(wxT(","), wxT(";"));
+            pgProp->SetValueFromString(aux, 0);
+		}
         break;
     case PT_WXFONT:
         {
