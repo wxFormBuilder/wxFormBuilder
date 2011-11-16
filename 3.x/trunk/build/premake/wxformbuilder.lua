@@ -20,7 +20,7 @@ project "wxFormBuilder"
         "../../src", "../../src/boost", "../../src/controls/include",
         "../../sdk/tinyxml", "../../sdk/plugin_interface"
     }
-    defines                 {"NO_GCC_PRAGMA", "TIXML_USE_TICPP"}
+    defines                 {"NO_GCC_PRAGMA", "TIXML_USE_TICPP", "APPEND_WXVERSION"}
     flags                   {"ExtraWarnings"}
     libdirs                 {"../../sdk/lib"}
     links                   {"TiCPP", "plugin-interface", "wxFlatNotebook"}
