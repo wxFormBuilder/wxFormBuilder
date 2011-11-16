@@ -144,6 +144,8 @@ private:
     void OnPropertyGridExpand( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
+	
+	void ModifyProperty( PProperty prop, wxString str );
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);

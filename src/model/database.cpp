@@ -749,11 +749,13 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
     // that used to cause crashes when trying to debug.
     wxString wxver = wxT("");
 
-#ifdef __WXDEBUG__
+#ifdef __WXDEBUG__ 
     #if wxVERSION_NUMBER < 2900
         wxver = wxT("d");
     #endif
-    wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
+	#ifdef APPEND_WXVERSION
+		wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
+	#endif
 #endif
 
 	try

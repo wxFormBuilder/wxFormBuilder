@@ -678,7 +678,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             {
                 // Use typeconv to properly handle locale
                 double val = m_pg->GetPropertyValueAsDouble( propPtr );
-                AppData()->ModifyProperty( prop, TypeConv::FloatToString( val ) );
+                ModifyProperty( prop, TypeConv::FloatToString( val ) );
                 break;
             }
             case PT_TEXT:
@@ -686,13 +686,13 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             case PT_INT:
             case PT_UINT:
             {
-                AppData()->ModifyProperty( prop, m_pg->GetPropertyValueAsString( propPtr ) );
+                ModifyProperty( prop, m_pg->GetPropertyValueAsString( propPtr ) );
                 break;
             }
             case PT_OPTION:
             {
                 wxString value = m_pg->GetPropertyValueAsString( propPtr );
-                AppData()->ModifyProperty( prop, value );
+                ModifyProperty( prop, value );
 
                 // Update displayed description for the new selection
                 PPropertyInfo prop_desc = prop->GetPropertyInfo();
@@ -722,7 +722,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             }
             case PT_PARENT:
             {
-                AppData()->ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
+                ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
                 break;
             }
             case PT_WXSTRING:
@@ -730,7 +730,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             {
                 // ObjectInspector's text strings are formatted.
                 wxString value = m_pg->GetPropertyValueAsString( propPtr );
-                AppData()->ModifyProperty( prop, value );
+                ModifyProperty( prop, value );
                 break;
             }
             case PT_BOOL:
@@ -748,10 +748,10 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 #endif
                     }
                     else
-                        AppData()->ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
+                        ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
                 }
                 else
-                    AppData()->ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
+                    ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
                 break;
             }
             case PT_BITLIST:
@@ -759,7 +759,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
                 wxString aux = m_pg->GetPropertyValueAsString( propPtr );
                 aux.Replace( wxT(" "), wxT("") );
                 aux.Replace( wxT(","), wxT("|") );
-                AppData()->ModifyProperty( prop, aux );
+                ModifyProperty( prop, aux );
                 break;
             }
             case PT_WXPOINT:
@@ -769,7 +769,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 #else
                 wxPoint point = wxPointRefFromVariant( event.GetPropertyValue () );
 #endif
-                AppData()->ModifyProperty( prop, wxString::Format(  wxT("%i,%i"), point.x, point.y ) );
+                ModifyProperty( prop, wxString::Format(  wxT("%i,%i"), point.x, point.y ) );
                 break;
             }
             case PT_WXSIZE:
@@ -779,7 +779,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 #else
                 wxSize size = wxSizeRefFromVariant( event.GetPropertyValue() );
 #endif
-                AppData()->ModifyProperty( prop, wxString::Format( wxT("%i,%i"), size.GetWidth(), size.GetHeight() ) );
+                ModifyProperty( prop, wxString::Format( wxT("%i,%i"), size.GetWidth(), size.GetHeight() ) );
                 break;
             }
             case PT_WXFONT:
@@ -792,7 +792,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
                                            font.GetWeight(),
                                            font.GetUnderlined(),
                                            font.GetFaceName() );
-                AppData()->ModifyProperty( prop, TypeConv::FontToString( container ) );
+                ModifyProperty( prop, TypeConv::FontToString( container ) );
                 break;
             }
             case PT_WXCOLOUR:
@@ -801,14 +801,14 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
                 colour << event.GetPropertyValue();
                 switch ( colour.m_type ) {
                 case wxSYS_COLOUR_MAX:
-                    AppData()->ModifyProperty( prop, wxT("") );
+                    ModifyProperty( prop, wxT("") );
                     break;
                 case wxPG_COLOUR_CUSTOM:
-                    AppData()->ModifyProperty( prop, TypeConv::ColourToString( colour.m_colour ) );
+                    ModifyProperty( prop, TypeConv::ColourToString( colour.m_colour ) );
                     break;
                 default:
                     wxString sCol = TypeConv::SystemColourToString( colour.m_type );
-                    AppData()->ModifyProperty( prop, sCol );
+                    ModifyProperty( prop, sCol );
                 }
                 break;
             }
@@ -816,7 +816,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             case PT_UINTLIST:
             {
                 IntList il( event.GetPropertyValue(), PT_UINTLIST == prop->GetType() );
-                AppData()->ModifyProperty( prop, il.ToString() );
+                ModifyProperty( prop, il.ToString() );
                 break;
             }
             case PT_BITMAP:
@@ -841,9 +841,9 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 #endif
 
  #if wxVERSION_NUMBER >= 2900
-				AppData()->ModifyProperty( prop, newVal.GetString() );
+				ModifyProperty( prop, newVal.GetString() );
 #else
-				AppData()->ModifyProperty( prop, bmpVal);
+				ModifyProperty( prop, bmpVal);
 #endif
 				
 				if( event.GetProperty()->GetIndexInParent() > 0 )
@@ -858,7 +858,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             }
 
             default:
-                AppData()->ModifyProperty( prop, event.GetPropertyValue() );
+                ModifyProperty( prop, event.GetPropertyValue() );
         }
     }
 }
@@ -1132,7 +1132,7 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
                             wxString idString;
                             idString << wxT("ID_");
                             idString << name->GetValueAsString().Upper();
-                            AppData()->ModifyProperty( prop, idString);
+                            ModifyProperty( prop, idString);
 
                             wxPGProperty *pgid = m_pg->GetPropertyByLabel(wxT("id"));
                             if ( !pgid ) return;
@@ -1145,7 +1145,7 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
                     prop = objectChanged->GetProperty(wxT("id"));
                     if ( prop )
                     {
-                        AppData()->ModifyProperty( prop, wxT("wxID_ANY"));
+                        ModifyProperty( prop, wxT("wxID_ANY"));
                         wxPGProperty *pgid = m_pg->GetPropertyByLabel(wxT("id"));
                         if ( !pgid ) return;
                         m_pg->SetPropertyValue( pgid, wxT("wxID_ANY") );
@@ -1172,4 +1172,11 @@ void ObjectInspector::OnBitmapPropertyChanged( wxCommandEvent& event )
 			bp->UpdateChildValues( propVal );
 		}
 	}
+}
+
+void ObjectInspector::ModifyProperty( PProperty prop, wxString str )
+{
+	AppData()->RemoveHandler( this->GetEventHandler() );
+	AppData()->ModifyProperty( prop, str );
+	AppData()->AddHandler( this->GetEventHandler() );
 }
