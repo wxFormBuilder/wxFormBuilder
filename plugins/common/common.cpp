@@ -298,6 +298,16 @@ void ComponentEvtHandler::OnText( wxCommandEvent& )
 		m_manager->ModifyProperty( m_window, _("value"), tc->GetValue() );
 		tc->SetInsertionPointEnd();
 		tc->SetFocus();
+		return;
+	}
+	
+	wxComboBox* cb = wxDynamicCast( m_window, wxComboBox );
+	if ( cb != NULL )
+	{
+		m_manager->ModifyProperty( m_window, _("value"), cb->GetValue() );
+		cb->SetInsertionPointEnd();
+		cb->SetFocus();
+		return;
 	}
 }
 
@@ -356,6 +366,8 @@ public:
 		for (unsigned int i=0; i<choices.Count(); i++)
 			combo->Append(choices[i]);
 
+		combo->PushEventHandler( new ComponentEvtHandler( combo, GetManager() ) );
+		
 		return combo;
 	}
 
