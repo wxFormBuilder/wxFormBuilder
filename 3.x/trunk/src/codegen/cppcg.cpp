@@ -1711,7 +1711,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 	          type == wxT( "listbookpage" )		||
 	          type == wxT( "choicebookpage" )	||
 	          type == wxT( "auinotebookpage" )  ||
-              type == wxT("WizardPageSimple")
+              type == wxT("wizardpagesimple")
 	        )
 	{
 		GenConstruction( obj->GetChild( 0 ), false );

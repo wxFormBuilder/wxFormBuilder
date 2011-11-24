@@ -5,6 +5,8 @@
 + Added support for wxWizard - Andrea Zanellato.
 + Added support for PHP code generation - JGM.
 ^ Combo box component (wxComboBox) now supports value change from visual designer.
+* Fixed gridbag sizer so it can be added directly to any container without need of 
+  any underlying sizer.
 
 11/08/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.

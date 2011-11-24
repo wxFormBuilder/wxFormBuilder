@@ -681,11 +681,11 @@ void ApplicationData::RemoveEmptyItems( PObjectBase obj )
 		RemoveEmptyItems( obj->GetChild( i ) );
 }
 
-PObjectBase  ApplicationData::SearchSizerInto( PObjectBase obj )
+PObjectBase ApplicationData::SearchSizerInto( PObjectBase obj )
 {
 	PObjectBase theSizer;
 
-	if ( obj->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) )
+	if ( obj->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) || obj->GetObjectInfo()->IsSubclassOf( wxT("gbsizer") ) )
 		theSizer = obj;
 	else
 	{
@@ -1635,7 +1635,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	{
 		// The property 'option' became 'proportion'
 
-		if ( objClass == "sizeritem" || objClass == "spacer" )
+		if ( objClass == "sizeritem" ||  objClass == "gbsizeritem" || objClass == "spacer" )
 		{
 			oldProps.clear();
 			oldProps.insert( "option" );
@@ -2185,9 +2185,9 @@ void ApplicationData::MoveHierarchy( PObjectBase obj, bool up )
 			{
 				nextSizer = nextSizer->GetParent();
 			}
-			while ( nextSizer && !nextSizer->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) );
+			while ( nextSizer && !nextSizer->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) && !nextSizer->GetObjectInfo()->IsSubclassOf( wxT("gbsizer") ) );
 
-			if ( nextSizer && nextSizer->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) )
+			if ( nextSizer && ( nextSizer->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) || nextSizer->GetObjectInfo()->IsSubclassOf( wxT("gbsizer") ) ) )
 			{
 				PCommand cmdReparent( new ReparentObjectCmd( sizeritem, nextSizer ) );
 				Execute( cmdReparent );
@@ -2286,7 +2286,7 @@ void ApplicationData::ToggleStretchLayout( PObjectBase obj )
 		return;
 	}
 
-	if ( parent->GetObjectTypeName() != wxT("sizeritem") )
+	if ( parent->GetObjectTypeName() != wxT("sizeritem") && parent->GetObjectTypeName() != wxT("gbsizeritem") )
 	{
 		return;
 	}
