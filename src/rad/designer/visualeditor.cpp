@@ -1065,7 +1065,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		}
 	}
 
-    if ( obj->GetObjectInfo()->GetObjectTypeName() == wxT("WizardPageSimple") )
+    if ( obj->GetObjectInfo()->GetObjectTypeName() == wxT("wizardpagesimple") )
     {
         ObjectBaseMap::iterator pageIt = m_baseobjects.find( obj.get() );
         WizardPageSimple* wizpage = wxDynamicCast( pageIt->second, WizardPageSimple );
@@ -1090,7 +1090,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 				ObjectBaseMap::iterator parentIt = m_baseobjects.find( parent.get() );
 				if ( parentIt != m_baseobjects.end() )
 				{
-                    if ( parent->GetObjectInfo()->GetObjectTypeName() == wxT("WizardPageSimple") )
+                    if ( parent->GetObjectInfo()->GetObjectTypeName() == wxT("wizardpagesimple") )
                     {
                         WizardPageSimple* wizpage = wxDynamicCast( parentIt->second, WizardPageSimple );
 
@@ -1226,7 +1226,7 @@ DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, co
 :
 wxInnerFrame(parent, id, pos, size, style)
 {
-  ShowTitleBar(false);
+	ShowTitleBar(false);
 	SetGrid( 10, 10 );
 	m_selSizer = NULL;
 	m_selItem = NULL;
@@ -1265,7 +1265,7 @@ void DesignerWindow::OnPaint(wxPaintEvent &event)
 
 void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
 {
-	bool isSizer = ( object->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) );
+	bool isSizer = ( object->GetObjectInfo()->IsSubclassOf( wxT("sizer") ) || object->GetObjectInfo()->IsSubclassOf( wxT("gbsizer") ) );
 	int min = ( isSizer ? 0 : 1 );
 
 	int border = object->GetParent()->GetPropertyAsInteger( wxT("border") );
@@ -1302,6 +1302,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		dc.SetPen( bluePen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
 		PObjectBase sizerParent = object->FindNearAncestorByBaseClass( wxT("sizer") );
+		if( !sizerParent ) sizerParent = object->FindNearAncestorByBaseClass( wxT("gbsizer") );
 		if ( sizerParent && sizerParent->GetParent() )
 		{
 			DrawRectangle( dc, point, size, sizerParent );

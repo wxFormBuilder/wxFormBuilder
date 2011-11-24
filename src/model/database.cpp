@@ -433,7 +433,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 
 	PProperty proportion = sizeritem->GetProperty( wxT("proportion") );
 
-	if ( childInfo->IsSubclassOf( wxT("sizer") ) || obj_type == wxT("splitter") || childInfo->GetClassName() == wxT("spacer") )
+	if ( childInfo->IsSubclassOf( wxT("sizer") ) || childInfo->IsSubclassOf( wxT("gbsizer") ) || obj_type == wxT("splitter") || childInfo->GetClassName() == wxT("spacer") )
 	{
 		if ( proportion )
 		{
@@ -870,10 +870,10 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("toolbar")			||
 			type == wxT("tool")				||
 			type == wxT("splitter")			||
-			type == wxT("sizer")			||
 			type == wxT("treelistctrl")		||
+			type == wxT("sizer")			||
 			type == wxT("gbsizer")          ||
-            type == wxT("WizardPageSimple")
+            type == wxT("wizardpagesimple")
 			);
 }
 
@@ -1258,7 +1258,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 {
 	return (type == wxT("form")					||
             type == wxT("wizard")               ||
-            type == wxT("WizardPageSimple")     ||
+            type == wxT("wizardpagesimple")     ||
 			type == wxT("menubar_form")			||
 			type == wxT("toolbar_form")			||
 			type == wxT("sizer")				||

@@ -186,7 +186,7 @@ Written by
         <event name="OnWizardFinished"      class="wxWizardEvent"       help="The wizard finished button was pressed."/>
     </objectinfo>
 
-    <objectinfo class="WizardPageSimple" icon="wizpage.xpm" type="WizardPageSimple">
+    <objectinfo class="WizardPageSimple" icon="wizpage.xpm" type="wizardpagesimple">
         <inherits class="wxWindow"/>
         <property name="name"   type="text">m_wizPage</property>
         <property name="bitmap" type="bitmap" help="Page-specific bitmap (default: none)."/>
