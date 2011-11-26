@@ -858,7 +858,8 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             }
 
             default:
-                ModifyProperty( prop, event.GetPropertyValue() );
+                //ModifyProperty( prop, event.GetPropertyValue() );
+                ModifyProperty( prop, propPtr->GetValueAsString() );
         }
     }
 }
@@ -1174,7 +1175,7 @@ void ObjectInspector::OnBitmapPropertyChanged( wxCommandEvent& event )
 	}
 }
 
-void ObjectInspector::ModifyProperty( PProperty prop, wxString str )
+void ObjectInspector::ModifyProperty( PProperty prop, const wxString& str )
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	AppData()->ModifyProperty( prop, str );
