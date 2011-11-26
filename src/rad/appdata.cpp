@@ -1850,8 +1850,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	/* The file is now at least version 1.9 */
 	
 	// Version 1.11 now stores bitmap property in the following format:
-	// 'source'; 'data' instead of old form 'data'; 'source'. Also choices
-	// property stores data in format A;B;C instead of "A" "B" "C"
+	// 'source'; 'data' instead of old form 'data'; 'source'.
 
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 11 ) )
 	{
@@ -1878,7 +1877,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			}
 		}
 		
-		oldProps.clear();
+		/* oldProps.clear();
 		newProps.clear();
 		oldProps.insert( "choices" );
 		GetPropertiesToConvert( parent, oldProps, &newProps );
@@ -1895,7 +1894,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 				
 				choices->SetText( _STDSTR( content ) );
 			}
-		}
+		}*/
 	}
 	
 	/* The file is now at least version 1.11 */

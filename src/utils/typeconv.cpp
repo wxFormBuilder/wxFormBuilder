@@ -827,13 +827,14 @@ wxArrayString TypeConv::OldStringToArrayString( const wxString& str )
 
 wxArrayString TypeConv::StringToArrayString( const wxString& str )
 {
-	wxArrayString result = wxStringTokenize( str, wxT(";") );
+	//wxArrayString result = wxStringTokenize( str, wxT(";") );
+	wxArrayString result;
 
-    /*WX_PG_TOKENIZER2_BEGIN( str, wxT('"') )
+    WX_PG_TOKENIZER2_BEGIN( str, wxT('"') )
 
         result.Add ( token );
 
-    WX_PG_TOKENIZER2_END()*/
+    WX_PG_TOKENIZER2_END()
 	
     return result;
 }

@@ -145,7 +145,7 @@ private:
     void OnReCreateGrid( wxCommandEvent& event );
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
 	
-	void ModifyProperty( PProperty prop, wxString str );
+	void ModifyProperty( PProperty prop, const wxString& str );
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
