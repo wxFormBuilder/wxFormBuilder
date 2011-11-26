@@ -1638,6 +1638,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		if ( objClass == "sizeritem" ||  objClass == "gbsizeritem" || objClass == "spacer" )
 		{
 			oldProps.clear();
+			newProps.clear();
 			oldProps.insert( "option" );
 			GetPropertiesToConvert( parent, oldProps, &newProps );
 
@@ -1671,6 +1672,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 
 		// Transfer the window styles
 		oldProps.clear();
+		newProps.clear();
 
 		oldProps.insert( "style" );
 
@@ -1693,6 +1695,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 
 		// Transfer the window extra styles
 		oldProps.clear();
+		newProps.clear();
 
 		oldProps.insert( "style" );
 
@@ -1735,6 +1738,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			spacer.SetAttribute( "class", "spacer" );
 
 			oldProps.clear();
+			newProps.clear();
 			oldProps.insert( "width" );
 			GetPropertiesToConvert( parent, oldProps, &newProps );
 
@@ -1747,6 +1751,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			}
 
 			oldProps.clear();
+			newProps.clear();
 			oldProps.insert( "height" );
 			GetPropertiesToConvert( parent, oldProps, &newProps );
 
@@ -1774,6 +1779,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		if ( objClass == "Dialog" )
 		{
 			oldProps.clear();
+			newProps.clear();
 			oldProps.insert( "style" );
 			GetPropertiesToConvert( parent, oldProps, &newProps );
 
@@ -1844,11 +1850,13 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	/* The file is now at least version 1.9 */
 	
 	// Version 1.11 now stores bitmap property in the following format:
-	// 'source'; 'data' instead of old form 'data'; 'source'
+	// 'source'; 'data' instead of old form 'data'; 'source'. Also choices
+	// property stores data in format A;B;C instead of "A" "B" "C"
 
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 11 ) )
 	{
 		oldProps.clear();
+		newProps.clear();
 		oldProps.insert( "bitmap" );
 		GetPropertiesToConvert( parent, oldProps, &newProps );
 
@@ -1867,6 +1875,25 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 					
 					bitmap->SetText( _STDSTR( source + wxT("; ") + data ) );
 				}
+			}
+		}
+		
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert( "choices" );
+		GetPropertiesToConvert( parent, oldProps, &newProps );
+
+		for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
+		{
+			ticpp::Element* choices = *prop;
+			
+			wxString content = _WXSTR( choices->GetText( false ) );
+			if ( !content.empty() )
+			{
+				content.Replace( wxT("\" \""), wxT(";") );
+				content.Replace( wxT("\""), wxT("") );
+				
+				choices->SetText( _STDSTR( content ) );
 			}
 		}
 	}
