@@ -107,8 +107,8 @@ protected:
 	void OnChecked( wxCommandEvent& event );
 	void OnChoice( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
-	void OnToolAUI( wxAuiToolBarEvent& event );
-
+	void OnDropDownMenu( wxAuiToolBarEvent& event );
+	
 private:
     wxWindow* m_window;
     IManager* m_manager;
@@ -124,6 +124,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
 END_EVENT_TABLE()
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // WIDGETS
@@ -956,7 +957,7 @@ public:
 			tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
 
 		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
-
+		
 		return tb;
 	}
 
@@ -999,8 +1000,8 @@ public:
 				}
 			}
 		}
+		
 		tb->Realize();
-
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -1026,7 +1027,7 @@ public:
 	}
 };
 
-void ComponentEvtHandler::OnToolAUI( wxAuiToolBarEvent& event )
+void ComponentEvtHandler::OnDropDownMenu( wxAuiToolBarEvent& event )
 {
     wxAuiToolBar* tb = wxDynamicCast( event.GetEventObject(), wxAuiToolBar );
 
@@ -1081,8 +1082,9 @@ public:
 		if (!obj->IsNull(_("separation")))
 			tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
 
-        tb->Connect( wxID_ANY, wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN,
-                     wxAuiToolBarEventHandler( ComponentEvtHandler::OnToolAUI ) );
+        tb->Connect( wxID_ANY, wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, wxAuiToolBarEventHandler( ComponentEvtHandler::OnDropDownMenu ) );
+		//tb->PushEventHandler( new AuiToolbarEvtHandler( tb, GetManager() ) );
+		
 		return tb;
 	}
 

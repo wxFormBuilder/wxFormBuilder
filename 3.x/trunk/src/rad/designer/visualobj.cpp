@@ -57,6 +57,13 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 		if (AppData()->GetSelectedObject() != obj)
 		{
 			AppData()->SelectObject(obj);
+			
+			#ifdef __WXMSW__
+			// this event is always redirected to parent toolbar even if its tool was clicked
+			// so it is important to skip the event to select clicked tool later in "common"
+			// plugin via EVT_TOOL event.
+			if( obj->GetObjectTypeName() == wxT("toolbar") ) event.Skip();
+			#endif
 		}
 		else
 		{
