@@ -1,12 +1,14 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-11/25/2011 Version 3.03.00 (Beta)
+12/01/2011 Version 3.03.00 (Beta)
 * Fixed improper placement of a comma at the end of the C/C++ enum list - Andrea Zanellato.
 + Added support for wxWizard - Andrea Zanellato.
 + Added support for PHP code generation - JGM.
 ^ Combo box component (wxComboBox) now supports value change from visual designer.
 * Fixed gridbag sizer so it can be added directly to any container without need of 
   another underlying sizer.
+^ Added missing IDs to wxArtProvider bitmap source.
+* Fixed AUI pane buttons.
 
 11/08/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.

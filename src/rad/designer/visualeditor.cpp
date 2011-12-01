@@ -898,10 +898,8 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 }
 
 void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
-{
-	m_auimgr->AddPane( window );
-	
-	wxAuiPaneInfo& info = m_auimgr->GetPane( window );
+{	
+	wxAuiPaneInfo info;
 	
 	wxString name = obj->GetPropertyAsString( wxT("aui_name") );
 	if( name != wxT("") ) info.Name( name );
@@ -964,6 +962,7 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
     if( !obj->IsNull( wxT("aui_layer") ) ) info.Layer( obj->GetPropertyAsInteger( wxT("aui_layer") ));
 	if( !obj->GetPropertyAsInteger( wxT("show") ) ) info.Hide();
 
+	m_auimgr->AddPane( window, info );
 }
 
 void VisualEditor::SetupWizard( PObjectBase obj, wxWindow *window, bool pageAdding )

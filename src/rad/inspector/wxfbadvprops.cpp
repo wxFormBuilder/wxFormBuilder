@@ -318,13 +318,20 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     artIdChoices.Add(wxT("wxART_GO_TO_PARENT"));
     artIdChoices.Add(wxT("wxART_GO_HOME"));
     artIdChoices.Add(wxT("wxART_FILE_OPEN"));
+    artIdChoices.Add(wxT("wxART_FILE_SAVE"));
+    artIdChoices.Add(wxT("wxART_FILE_SAVE_AS"));
     artIdChoices.Add(wxT("wxART_PRINT"));
     artIdChoices.Add(wxT("wxART_HELP"));
     artIdChoices.Add(wxT("wxART_TIP"));
     artIdChoices.Add(wxT("wxART_REPORT_VIEW"));
     artIdChoices.Add(wxT("wxART_LIST_VIEW"));
     artIdChoices.Add(wxT("wxART_NEW_DIR"));
+    artIdChoices.Add(wxT("wxART_HARDDISK"));
+    artIdChoices.Add(wxT("wxART_FLOPPY"));
+    artIdChoices.Add(wxT("wxART_CDROM"));
+    artIdChoices.Add(wxT("wxART_REMOVABLE"));
     artIdChoices.Add(wxT("wxART_FOLDER"));
+    artIdChoices.Add(wxT("wxART_FOLDER_OPEN"));
     artIdChoices.Add(wxT("wxART_GO_DIR_UP"));
     artIdChoices.Add(wxT("wxART_EXECUTABLE_FILE"));
     artIdChoices.Add(wxT("wxART_NORMAL_FILE"));
@@ -335,6 +342,16 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     artIdChoices.Add(wxT("wxART_WARNING"));
     artIdChoices.Add(wxT("wxART_INFORMATION"));
     artIdChoices.Add(wxT("wxART_MISSING_IMAGE"));
+    artIdChoices.Add(wxT("wxART_COPY"));
+    artIdChoices.Add(wxT("wxART_CUT"));
+    artIdChoices.Add(wxT("wxART_PASTE"));
+    artIdChoices.Add(wxT("wxART_DELETE"));
+    artIdChoices.Add(wxT("wxART_NEW"));
+    artIdChoices.Add(wxT("wxART_UNDO"));
+    artIdChoices.Add(wxT("wxART_REDO"));
+    artIdChoices.Add(wxT("wxART_QUIT"));
+    artIdChoices.Add(wxT("wxART_FIND"));
+    artIdChoices.Add(wxT("wxART_FIND_AND_REPLACE"));
 
     artIdChoices.Add(wxT("gtk-about"));
     artIdChoices.Add(wxT("gtk-add"));
