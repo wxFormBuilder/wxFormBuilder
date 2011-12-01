@@ -54,9 +54,9 @@
 				#ifnotnull $caption @{.Caption( $caption )@}
 				#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
 				#ifequal $close_button "0" @{.CloseButton( $close_button )@}
-				#ifequal $maximize_button "0" @{.MaximizeButton( $maximize_button )@}
-				#ifequal $minimize_button "0" @{.MinimizeButton( $minimize_button )@}
-				#ifequal $minimize_button "0" @{.PinButton( $pin_button )@}
+				#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
+				#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
+				#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
 				#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
 				#ifequal $gripper "1" @{.Gripper()@}
 				#ifequal $show "0" @{.Hide()@}
