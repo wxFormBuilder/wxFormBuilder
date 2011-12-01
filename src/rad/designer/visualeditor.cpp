@@ -1035,6 +1035,10 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		Debug::Print( wxT("The event object is NULL - why?") );
 		return;
 	}
+	
+	// highlight parent toolbar instead of its children
+	PObjectBase toolbar = obj->FindNearAncestor( wxT("toolbar") );
+	if( toolbar ) obj = toolbar;
 
 	// Make sure this is a visible object
 	ObjectBaseMap::iterator it = m_baseobjects.find( obj.get() );
