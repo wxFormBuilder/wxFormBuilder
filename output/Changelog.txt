@@ -9,6 +9,7 @@
   another underlying sizer.
 ^ Added missing IDs to wxArtProvider bitmap source.
 * Fixed AUI pane buttons.
+* Fixed AUI code generation for wxToolBar/wxAuiToolBar.
 
 11/08/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.
