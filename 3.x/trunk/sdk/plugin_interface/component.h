@@ -78,6 +78,9 @@ class IObject
   virtual double GetPropertyAsFloat(const wxString& pname) = 0;
   virtual wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName ) = 0;
   virtual wxString GetClassName() = 0;
+  virtual unsigned int  GetChildCount() = 0;
+  virtual wxString GetObjectTypeName() = 0;
+  virtual IObject* GetChildPtr (unsigned int idx) = 0;
   virtual ~IObject(){}
 };
 

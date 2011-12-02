@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-12/01/2011 Version 3.03.00 (Beta)
+12/02/2011 Version 3.03.00 (Beta)
 * Fixed improper placement of a comma at the end of the C/C++ enum list - Andrea Zanellato.
 + Added support for wxWizard - Andrea Zanellato.
 + Added support for PHP code generation - JGM.
@@ -10,6 +10,8 @@
 ^ Added missing IDs to wxArtProvider bitmap source.
 * Fixed AUI pane buttons.
 * Fixed AUI code generation for wxToolBar/wxAuiToolBar.
+^ Drop-down menu associated with AUI toolbar's tool now shows its real content in designer.
+^ Context menu associated with a widget is shown in designer after RMB click.
 
 11/08/2011 Version 3.02.03 (Beta)
 * Several toolbars can be inserted directly into AUI-managed frames.
