@@ -528,6 +528,8 @@ public:
 	wxArrayInt    GetPropertyAsArrayInt (const wxString& pname);
 	wxArrayString GetPropertyAsArrayString  (const wxString& pname);
 	wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName );
+	
+	IObject* GetChildPtr (unsigned int idx) { return GetChild(idx).get(); }
 };
 
 ///////////////////////////////////////////////////////////////////////////////

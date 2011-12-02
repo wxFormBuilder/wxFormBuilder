@@ -84,7 +84,7 @@ class DesignerWindow : public wxInnerFrame
    wxObject* GetSelectedItem() { return m_selItem; }
    PObjectBase GetSelectedObject() { return m_selObj.lock(); }
    wxWindow* GetActivePanel() { return m_actPanel; }
-   wxMenu* GetMenuFromObject(PObjectBase menu);
+   static wxMenu* GetMenuFromObject(PObjectBase menu);
    void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar, wxWindow *auipanel);
    void HighlightSelection(wxDC& dc);
    void OnPaint(wxPaintEvent &event);
