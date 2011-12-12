@@ -1,5 +1,15 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+12/12/2011 Version 3.03.01 (Beta)
+* Fixed code generation for bitmaps provided by wxArtProvider - John Labenski.
+^ Added support for custom resource and client wxArtProvider's IDs in bitmap properties - John Labenski.
+* ID: 3437910 - Fixed codegeneration for context menus assigned to subclassed controls.
+* ID: 3435478 - Fixed crash on loading icon from resource.
+* ID: 3432356 - Possible bug with generated code for wxGridBagSizer.
+* ID: 3396919 - Bug on AUI toolbar buttons.
+* ID: 3395468 - wxChoice missing wxCB_SORT style.
+^ Added ability to set default selection for wxComboBox/wxBitmapComboBox.
+
 12/02/2011 Version 3.03.00 (Beta)
 * Fixed improper placement of a comma at the end of the C/C++ enum list - Andrea Zanellato.
 + Added support for wxWizard - Andrea Zanellato.

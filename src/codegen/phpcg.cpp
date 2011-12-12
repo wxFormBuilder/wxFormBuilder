@@ -870,7 +870,7 @@ void PHPCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 			return;
 		}
 
-		wxString include = wxT("from ") + headerVal + wxT(" import ") + nameVal;
+		wxString include = wxT("include_once ") + headerVal + wxT(";");
 		std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
 		if ( headerIncludes->end() == it )
 		{
@@ -1080,6 +1080,13 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		{
 			if (is_widget)
 			{
+				wxString afterAddChild = GetCode( obj, wxT( "after_addchild" ) );
+				if ( !afterAddChild.empty() )
+				{
+					m_source->WriteLn( afterAddChild );
+				}
+				m_source->WriteLn();
+				
 				// the parent object is not a sizer. There is no template for
 				// this so we'll make it manually.
 				// It's not a good practice to embed templates into the source code,

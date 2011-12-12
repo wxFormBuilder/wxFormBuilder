@@ -101,6 +101,7 @@ Written by
       #foreach $choices
       @{ $name->Append( #pred ); @}
     </template>
+	<template name="settings">#ifnotequal $selection "-1" @{$name->SetSelection( $selection );@}</template>
 	<template name="evt_entry_OnCombobox">EVT_COMBOBOX( $id, #handler )</template>
 	<template name="evt_connect_OnCombobox">$name->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, #handler, NULL, this );</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
@@ -118,6 +119,7 @@ Written by
       		@{ $name->Append( wxString(#pred).AfterFirst(wxChar(58)), wxBitmap(wxImage(wxString(#pred).BeforeFirst(wxChar(58))))); @}
 
 	</template>
+	<template name="settings">#ifnotequal $selection "-1" @{$name->SetSelection( $selection );@}</template>
 	<template name="evt_entry_OnCombobox">EVT_COMBOBOX( $id, #handler )</template>
 	<template name="evt_connect_OnCombobox">$name->Connect( wxEVT_COMMAND_COMBOBOX_SELECTED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
@@ -255,12 +257,12 @@ Written by
 		@{
 			wxString $name #append Choices[] = { $choices }; #nl
 			int $name #append NChoices = sizeof( $name #append Choices ) / sizeof( wxString ); #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append NChoices, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
 		#ifnull $choices
 		@{
 			wxArrayString $name #append Choices; #nl
-			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+			$name = new #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		@}
     </template>
     <template name="include">@#include &lt;wx/choice.h&gt;</template>

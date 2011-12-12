@@ -125,6 +125,7 @@ Written by
     <property name="name" type="text">m_comboBox</property>
     <property name="value" type="wxString_i18n">Combo!</property>
     <property name="choices" type="stringlist" help="Contents of the Combo Box"></property>
+	<property name="selection" type="int" help="Zero-based position of the selected choice.">-1</property>
     <property name="style" type="bitlist">
       <option name="wxCB_SIMPLE"        help="Creates a combobox with a permanently displayed list. Windows only."/>
       <option name="wxCB_DROPDOWN"      help="Creates a combobox with a drop-down list."/>
@@ -142,6 +143,7 @@ Written by
     <property name="name" type="text">m_bcomboBox</property>
     <property name="value" type="wxString_i18n">Combo!</property>
     <property name="choices" type="stringlist" help="Contents of the Combo Box. Use format bitmap:choice "></property>
+	<property name="selection" type="int" help="Zero-based position of the selected choice.">-1</property>
     <property name="style" type="bitlist">
       <option name="wxCB_READONLY"      help="Same as wxCB_DROPDOWN but only the strings specified as the combobox choices can be selected, it is impossible to select (even from a program) a string which is not in the choices list."/>
       <option name="wxCB_SORT"          help="Sorts the entries in the list alphabetically."/>
@@ -157,6 +159,9 @@ Written by
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
     <property name="selection" type="uint" help="Zero-based position of the selected choice.">0</property>
+	<property name="style" type="bitlist">
+	  <option name="wxCB_SORT"          help="Sorts the entries in the list alphabetically."/>
+    </property>
 	<event name="OnChoice" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHOICE_SELECTED event, when an item on the list is selected." />
   </objectinfo>
 
