@@ -1599,15 +1599,15 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 
 		if ( !isWidget ) // sizers
 		{
+			wxString afterAddChild = GetCode( obj, wxT( "after_addchild" ) );
+			if ( !afterAddChild.empty() )
+			{
+				m_source->WriteLn( afterAddChild );
+			}
+			m_source->WriteLn();
+			
 			if ( is_widget )
 			{
-				wxString afterAddChild = GetCode( obj, wxT( "after_addchild" ) );
-				if ( !afterAddChild.empty() )
-				{
-					m_source->WriteLn( afterAddChild );
-				}
-				m_source->WriteLn();
-				
 				// the parent object is not a sizer. There is no template for
 				// this so we'll make it manually.
 				// It's not a good practice to embed templates into the source code,
