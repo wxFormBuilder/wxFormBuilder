@@ -362,7 +362,31 @@ wxBitmap TypeConv::StringToBitmap( const wxString& filename )
 			return AppBitmaps::GetBitmap( wxT("unknown") );
 		}
 		else
-			return wxArtProvider::GetBitmap( rid, cid + wxT("_C") );
+		{
+			//return wxArtProvider::GetBitmap( rid, cid + wxT("_C") ){
+		    wxBitmap bmp = wxArtProvider::GetBitmap( rid, cid + wxT("_C") );
+
+            if (!bmp.IsOk())
+            {
+				return AppBitmaps::GetBitmap( wxT("unknown") );
+				
+                /* // Create another bitmap of the appropriate size to show it's invalid.
+                // We can get here if the user entered a custom wxArtID which, presumably,
+                // they will have already installed in their app.
+                bmp = wxArtProvider::GetBitmap( wxT("wxART_MISSING_IMAGE"), cid + wxT("_C") );
+
+                if (bmp.IsOk())
+                {
+                    wxMemoryDC dc;
+                    dc.SelectObject(bmp);
+                    dc.SetPen(wxPen(*wxRED, 3));
+                    dc.DrawLine(wxPoint(0, 0), wxPoint(bmp.GetWidth(), bmp.GetHeight()));
+                    dc.SelectObject(wxNullBitmap);
+                } */
+            }
+			else
+				return bmp;
+		}
 	}
 
 	// Get path from bitmap property
@@ -460,7 +484,7 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 	{
 		if( children.size() == 3 )
 		{
-			*image = children[2] + wxT(":") + children[1];
+			*image = children[1] + wxT(":") + children[2];
 			*source = children[0];
 		}
 		else

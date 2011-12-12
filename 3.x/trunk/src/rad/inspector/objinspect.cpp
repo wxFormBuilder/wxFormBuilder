@@ -421,10 +421,12 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     }
     else if ( type == PT_PARENT )
     {
-//      wxPGProperty* parent = new wxPGProperty( name, wxPG_LABEL );
-//      parent->SetValueFromString( prop->GetValueAsString(), wxPG_FULL_VALUE );
-        wxPGProperty* parent = new wxStringProperty( name, wxPG_LABEL, wxT("<composed>") );
-        parent->SetValueFromString( prop->GetValueAsString() );
+		result = new wxPGProperty( name, wxPG_LABEL );
+		
+		/*wxPGProperty* parent = new wxPGProperty( name, wxPG_LABEL );
+		parent->SetValueFromString( prop->GetValueAsString(), wxPG_FULL_VALUE );
+        //wxPGProperty* parent = new wxStringProperty( name, wxPG_LABEL, wxT("<composed>") );
+        //parent->SetValueFromString( prop->GetValueAsString() );
 
         PPropertyInfo prop_desc = prop->GetPropertyInfo();
         std::list< PropertyChild >* children = prop_desc->GetChildren();
@@ -432,11 +434,11 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
         for ( it = children->begin(); it != children->end(); ++it )
         {
             wxPGProperty* child = new wxStringProperty( it->m_name, wxPG_LABEL, wxEmptyString );
-//          parent->AppendChild( child );
+			parent->AppendChild( child );
             m_pg->SetPropertyHelpString( child, it->m_description );
         }
 
-        result = parent;
+        result = parent;*/
     }
     else // Unknown property
     {
@@ -487,6 +489,23 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
                         // AppData()->ModifyProperty( prop, bp->GetValueAsString() );
                     }
                 }
+				else if( propType == PT_PARENT )
+				{
+					PPropertyInfo prop_desc = prop->GetPropertyInfo();
+					std::list< PropertyChild >* children = prop_desc->GetChildren();
+					std::list< PropertyChild >::iterator it;
+					for ( it = children->begin(); it != children->end(); ++it )
+					{
+						wxPGProperty* child = new wxStringProperty( it->m_name, wxPG_LABEL, wxEmptyString );
+						id->AppendChild( child );
+						m_pg->SetPropertyHelpString( child, it->m_description );
+					}
+					
+					// perform delayed child properties update
+					wxCommandEvent e( wxEVT_FB_PROP_BITMAP_CHANGED );
+					e.SetString( id->GetName() + wxT(":") + prop->GetValue() );
+					GetEventHandler()->AddPendingEvent( e );
+				}
             }
 
             wxString customEditor = propInfo->GetCustomEditor();
@@ -723,6 +742,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             case PT_PARENT:
             {
                 ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
+				/* ModifyProperty( prop, m_pg->GetPropertyValueAsString( propPtr ) ); */
                 break;
             }
             case PT_WXSTRING:

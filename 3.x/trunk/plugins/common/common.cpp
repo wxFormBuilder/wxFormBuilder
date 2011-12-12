@@ -137,6 +137,7 @@ protected:
 	void OnText( wxCommandEvent& event );
 	void OnChecked( wxCommandEvent& event );
 	void OnChoice( wxCommandEvent& event );
+	void OnComboBox( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
 	
 private:
@@ -150,6 +151,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	EVT_CHECKBOX( wxID_ANY, ComponentEvtHandler::OnChecked )
 	EVT_CHOICE( wxID_ANY, ComponentEvtHandler::OnChoice )
+	EVT_COMBOBOX( wxID_ANY, ComponentEvtHandler::OnComboBox )
 
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
@@ -394,8 +396,11 @@ public:
 
 		// choices
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
-		for (unsigned int i=0; i<choices.Count(); i++)
+		for (unsigned int i=0; i<choices.GetCount(); i++)
 			combo->Append(choices[i]);
+		
+		int sel = obj->GetPropertyAsInteger(_("selection"));
+		if( sel > -1 && sel < (int) choices.GetCount() ) combo->SetSelection(sel);
 
 		combo->PushEventHandler( new ComponentEvtHandler( combo, GetManager() ) );
 		
@@ -436,11 +441,16 @@ public:
 
 		// choices
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
-		for (unsigned int i=0; i<choices.Count(); i++)
+		for (unsigned int i=0; i<choices.GetCount(); i++)
 		{
 			wxImage img(choices[i].BeforeFirst(wxChar(58)));
 			bcombo->Append(choices[i].AfterFirst(wxChar(58)), wxBitmap(img));
 		}
+		
+		int sel = obj->GetPropertyAsInteger(_("selection"));
+		if( sel > -1 && sel < (int) choices.GetCount() ) bcombo->SetSelection(sel);
+		
+		bcombo->PushEventHandler( new ComponentEvtHandler( bcombo, GetManager() ) );
 			
 		return bcombo;
 	}
@@ -1213,7 +1223,6 @@ public:
 			// very very strange
 			return;
 		}
-		int toolIdx = -1;
 		size_t count = GetManager()->GetChildCount( wxobject );
 		for ( size_t i = 0; i < count; ++i )
 		{
@@ -1230,8 +1239,7 @@ public:
 								wxEmptyString,
 								child
 							);
-				toolIdx++;
-				wxAuiToolBarItem* itm = tb->FindToolByIndex( toolIdx );
+				wxAuiToolBarItem* itm = tb->FindToolByIndex( i );
 				itm->SetUserData( (long) child );
 				if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 1 && !itm->HasDropDown() )
                     tb->SetToolDropDown( itm->GetId(), true );
@@ -1381,8 +1389,8 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
-		wxString *strings = new wxString[choices.Count()];
-		for (unsigned int i=0; i < choices.Count(); i++)
+		wxString *strings = new wxString[choices.GetCount()];
+		for (unsigned int i=0; i < choices.GetCount(); i++)
 			strings[i] = choices[i];
 
 		wxChoice *choice = new wxChoice((wxWindow*)parent, -1,
@@ -1392,7 +1400,8 @@ public:
 			strings,
 			obj->GetPropertyAsInteger(_("window_style")));
 
-		choice->SetSelection(obj->GetPropertyAsInteger(_("selection")));
+		int sel = obj->GetPropertyAsInteger(_("selection"));
+		if( sel < (int) choices.GetCount() ) choice->SetSelection(sel);
 
 		delete []strings;
 
@@ -1424,6 +1433,18 @@ public:
 void ComponentEvtHandler::OnChoice( wxCommandEvent& )
 {
 	wxChoice* window = wxDynamicCast( m_window, wxChoice );
+	if ( window != NULL )
+	{
+		wxString value;
+		value.Printf( wxT("%i"), window->GetSelection() );
+		m_manager->ModifyProperty( m_window, _("selection"), value );
+		window->SetFocus();
+	}
+}
+
+void ComponentEvtHandler::OnComboBox( wxCommandEvent& )
+{
+	wxComboBox* window = wxDynamicCast( m_window, wxComboBox );
 	if ( window != NULL )
 	{
 		wxString value;

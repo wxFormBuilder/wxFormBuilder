@@ -1283,7 +1283,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 
 		//get namespaces
-		wxString originalValue = nameVal;
+		/*wxString originalValue = nameVal;
 		int delimiter = nameVal.Find( wxT( "::" ) ) ;
 		if ( wxNOT_FOUND == delimiter )
 		{
@@ -1324,7 +1324,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 
 			// Got a subclass
 			subclasses->insert( subClassDeclar );
-		}
+		}*/
 
 		// Now get the header
 		std::map< wxString, wxString >::iterator header;
@@ -1357,18 +1357,18 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 
 		wxString include = wxT( "#include \"" ) + headerVal + wxT( "\"" );
-		if ( pkg->GetPackageName() == wxT( "Forms" ) )
-		{
+		/*if ( pkg->GetPackageName() == wxT( "Forms" ) )
+		{*/
 			std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
 			if ( headerIncludes->end() == it )
 			{
 				headerIncludes->push_back( include );
 			}
-		}
+		/*}
 		else
 		{
 			sourceIncludes->insert( include );
-		}
+		}*/
 	}
 }
 
@@ -1601,6 +1601,13 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		{
 			if ( is_widget )
 			{
+				wxString afterAddChild = GetCode( obj, wxT( "after_addchild" ) );
+				if ( !afterAddChild.empty() )
+				{
+					m_source->WriteLn( afterAddChild );
+				}
+				m_source->WriteLn();
+				
 				// the parent object is not a sizer. There is no template for
 				// this so we'll make it manually.
 				// It's not a good practice to embed templates into the source code,

@@ -33,6 +33,7 @@
 #include <wx/file.h>
 #include <wx/log.h>
 #include <wx/tokenzr.h>
+#include <wx/regex.h>
 
 // -----------------------------------------------------------------------
 // wxFBSizeProperty
@@ -52,7 +53,7 @@ wxFBSizeProperty::~wxFBSizeProperty() {}
 
 void wxFBSizeProperty::RefreshChildren()
 {
-    if ( !GetChildCount() ) return;
+    if ( GetChildCount() < 2 ) return;
 
 #if wxVERSION_NUMBER < 2900
     const wxSize& size = wxSizeFromVariant( m_value );
@@ -60,8 +61,10 @@ void wxFBSizeProperty::RefreshChildren()
     const wxSize& size = wxSizeRefFromVariant( m_value );
 #endif
 
-    Item(0)->SetValue( (long)size.x );
-    Item(1)->SetValue( (long)size.y );
+	if( ! &size ) return;
+
+	Item(0)->SetValue( (long)size.x );
+	Item(1)->SetValue( (long)size.y );
 }
 
 #if wxVERSION_NUMBER < 2900
@@ -78,6 +81,8 @@ wxFBSizeProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant&
     wxSize& size = wxSizeRefFromVariant( thisValue );
 #endif
 
+	if( ! &size ) return;
+	
     int val = childValue.GetLong();
     switch ( childIndex )
     {
@@ -115,13 +120,15 @@ wxFBPointProperty::~wxFBPointProperty() { }
 
 void wxFBPointProperty::RefreshChildren()
 {
-    if ( !GetChildCount() ) return;
+    if ( GetChildCount() < 2 ) return;
 
 #if wxVERSION_NUMBER < 2900
     const wxPoint& point = wxPointFromVariant( m_value );
 #else
     const wxPoint& point = wxPointRefFromVariant( m_value );
 #endif
+
+	if( ! &point ) return;
 
     Item(0)->SetValue( (long)point.x );
     Item(1)->SetValue( (long)point.y );
@@ -141,6 +148,8 @@ wxFBPointProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant
     wxPoint& point = wxPointRefFromVariant( thisValue );
 #endif
 
+	if( ! &point ) return;
+	
     int val = childValue.GetLong();
     switch ( childIndex )
     {
@@ -172,10 +181,28 @@ WX_PG_IMPLEMENT_PROPERTY_CLASS( wxFBBitmapProperty, wxPGProperty,
 
 void wxFBBitmapProperty::GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const
 {
-	childValues = wxStringTokenize( parentValue, wxT(';'), wxTOKEN_RET_EMPTY_ALL );
+	// some properties can contain value like "[-1;-1]" which must be modified due to use of ";" as a
+	// string separator
+	wxString values = parentValue;
+	
+	wxRegEx regex( wxT("\\[.+;.+\\]") );
+	if( regex.IsValid() )
+	{
+		if( regex.Matches( values ) )
+		{
+			wxString sizeVal = regex.GetMatch( values );
+			sizeVal.Replace( wxT(";"), wxT("<semicolon>") );
+			sizeVal.Replace( wxT("["), wxT("") );
+			sizeVal.Replace( wxT("]"), wxT("") );
+			regex.Replace( &values, sizeVal );
+		}
+	}
+	
+	childValues = wxStringTokenize( values, wxT(';'), wxTOKEN_RET_EMPTY_ALL );
 	for ( wxArrayString::iterator value = childValues.begin(); value != childValues.end(); ++value )
 	{
 		value->Trim( false );
+		value->Replace( wxT("<semicolon>"), wxT(";") );
 	}
 }
 
@@ -192,7 +219,7 @@ void wxFBBitmapProperty::CreateChildren()
 	wxString  propValue  = m_value.GetString();
 	wxVariant thisValue  = WXVARIANT( propValue );
 	wxVariant childValue;
-	int       childIndex;	
+	int       childIndex = 0;	
 	wxArrayString childVals;
 	GetChildValues( propValue, childVals );
 	wxString  source;
@@ -453,8 +480,11 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     artIdChoices.Add(wxT("gtk-zoom-in"));
     artIdChoices.Add(wxT("gtk-zoom-out"));
 
-    wxPGProperty *propArtId = new wxEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, -1 );
-    propArtId->SetHelpString(_("wxArtID unique identifier of the bitmap. IDs with prefix 'gtk-' are available under wxGTK only.") );
+    /*wxPGProperty *propArtId = new wxEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, -1 );
+    propArtId->SetHelpString(_("wxArtID unique identifier of the bitmap. IDs with prefix 'gtk-' are available under wxGTK only.") );*/
+	
+	wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, wxT("") );
+    propArtId->SetHelpString(_("Choose a wxArtID unique identifier of the bitmap or enter a wxArtID for your custom wxArtProvider. IDs with prefix 'gtk-' are available under wxGTK only.") );
 
     return propArtId;
 }
@@ -476,8 +506,11 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
     artClientChoices.Add(wxT("wxART_MESSAGE_BOX"));
     artClientChoices.Add(wxT("wxART_OTHER"));
 
-    wxPGProperty *propArtClient = new wxEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, -1 );
-    propArtClient->SetHelpString(_("wxArtClient identifier of the client (i.e. who is asking for the bitmap).") );
+    /*wxPGProperty *propArtClient = new wxEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, -1 );
+    propArtClient->SetHelpString(_("wxArtClient identifier of the client (i.e. who is asking for the bitmap).") );*/
+	
+	wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, wxT("") );
+    propArtClient->SetHelpString(_("Choose a wxArtClient identifier of the client (i.e. who is asking for the bitmap) or enter a wxArtClient for your custom wxArtProvider.") );
 
     return propArtClient;
 }
@@ -583,7 +616,7 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 					
 					if( childVals.GetCount() > 3)
 					{
-						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; ") + childVals.Item(2);
+						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; [") + childVals.Item(2) + wxT("]");
 					}
 					
                     break;

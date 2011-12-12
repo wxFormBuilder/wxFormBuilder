@@ -94,17 +94,6 @@ Written by
   <templates class="wxGridBagSizer">
     <template name="declaration">wxGridBagSizer* $name;</template>
     <template name="construction">$name = new wxGridBagSizer( $vgap, $hgap );
-      #ifnotnull $growablecols
-      @{
-        #foreach $growablecols
-        @{ $name->AddGrowableCol( #pred ); @}
-      @}
-
-      #ifnotnull $growablerows
-      @{
-        #foreach $growablerows
-        @{ $name->AddGrowableRow( #pred ); @}
-      @}
       #ifnotnull $flexible_direction
       @{ #nl $name->SetFlexibleDirection( $flexible_direction ); @}
 
@@ -114,6 +103,12 @@ Written by
       #ifnotnull $empty_cell_size
       @{ #nl  $name->SetEmptyCellSize( $empty_cell_size ); @}
        #nl
+	</template>
+	<template name="after_addchild">
+	  #ifnotnull $growablecols
+      @{ #foreach $growablecols @{ $name->AddGrowableCol( #pred ); @} @}
+      #ifnotnull $growablerows
+      @{ #foreach $growablerows @{ $name->AddGrowableRow( #pred ); @} @}
 	</template>
 	<template name="include">@#include &lt;wx/gbsizer.h&gt;</template>
   </templates>
