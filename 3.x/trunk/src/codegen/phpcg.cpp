@@ -1248,20 +1248,18 @@ void PHPCodeGenerator::GenDestruction( PObjectBase obj )
 	wxString _template;
 	PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT( "PHP" ) );
 
-	if ( !code_info )
+	if ( code_info )
 	{
-		return;
-	}
+		_template = code_info->GetTemplate( wxT( "destruction" ) );
 
-	_template = code_info->GetTemplate( wxT( "destruction" ) );
-
-	if ( !_template.empty() )
-	{
-		PHPTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
-		wxString code = parser.ParseTemplate();
-		if ( !code.empty() )
+		if ( !_template.empty() )
 		{
-			m_source->WriteLn( code );
+			PHPTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+			wxString code = parser.ParseTemplate();
+			if ( !code.empty() )
+			{
+				m_source->WriteLn( code );
+			}
 		}
 	}
 
