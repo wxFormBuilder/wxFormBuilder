@@ -9,6 +9,8 @@
 * ID: 3396919 - Bug on AUI toolbar buttons.
 * ID: 3395468 - wxChoice missing wxCB_SORT style.
 ^ Added ability to set default selection for wxComboBox/wxBitmapComboBox.
+* ID: 3432383 - Missing delete for wxMenu object.
+* ID: 3417877 - Generated cpp file leads to compiler warnings.
 
 12/02/2011 Version 3.03.00 (Beta)
 * Fixed improper placement of a comma at the end of the C/C++ enum list - Andrea Zanellato.
