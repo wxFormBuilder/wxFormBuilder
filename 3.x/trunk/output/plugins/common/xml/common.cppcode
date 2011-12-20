@@ -239,7 +239,7 @@ Written by
 	<template name="evt_entry_OnListColClick">EVT_LIST_COL_CLICK( $id, #handler )</template>
 	<template name="evt_connect_OnListColClick">$name->Connect( wxEVT_COMMAND_LIST_COL_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColRightClick">EVT_LIST_COL_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnListColRightClick">$name->Connect( wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
+	<template name="evt_connect_OnListColRightClick">$name->Connect( wxEVT_COMMAND_LIST_COL_RIGHT_CLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColBeginDrag">EVT_LIST_COL_BEGIN_DRAG( $id, #handler )</template>
 	<template name="evt_connect_OnListColBeginDrag">$name->Connect( wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, #handler, NULL, this );</template>
 	<template name="evt_entry_OnListColDragging">EVT_LIST_COL_DRAGGING( $id, #handler )</template>
