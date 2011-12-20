@@ -196,7 +196,7 @@ Python code generation written by
 	<template name="evt_connect_OnListKeyDown">self.$name.Bind( wx.EVT_LIST_KEY_DOWN, #handler )</template>
 	<template name="evt_connect_OnListInsertItem">self.$name.Bind( wx.EVT_LIST_INSERT_ITEM, #handler )</template>
 	<template name="evt_connect_OnListColClick">self.$name.Bind( wx.EVT_LIST_COL_CLICK, #handler )</template>
-	<template name="evt_connect_OnListColRightClick">self.$name.Bind( wx.EVT_LIST_ITEM_RIGHT_CLICK, #handler )</template>
+	<template name="evt_connect_OnListColRightClick">self.$name.Bind( wx.EVT_LIST_COL_RIGHT_CLICK, #handler )</template>
 	<template name="evt_connect_OnListColBeginDrag">self.$name.Bind( wx.EVT_LIST_COL_BEGIN_DRAG, #handler )</template>
 	<template name="evt_connect_OnListColDragging">self.$name.Bind( wx.EVT_LIST_COL_DRAGGING, #handler )</template>
 	<template name="evt_connect_OnListColEndDrag">self.$name.Bind( wx.EVT_LIST_COL_END_DRAG, #handler )</template>
