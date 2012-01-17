@@ -24,7 +24,7 @@ project "forms-components-plugin"
 
     configuration "windows"
         targetprefix    "lib"
-        targetdir       "../../../output/plugins/layout"
+        targetdir       "../../../output/plugins/forms"
 
     configuration "Debug"
         targetsuffix    ( DebugSuffix )
