@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-12/20/2011 Version 3.03.01 (Beta)
+01/17/2012 Version 3.03.01 (Beta)
 * Fixed code generation for bitmaps provided by wxArtProvider - John Labenski.
 ^ Added support for custom resource and client wxArtProvider's IDs in bitmap properties - John Labenski.
 * ID: 3437910 - Fixed codegeneration for context menus assigned to subclassed controls.
@@ -12,6 +12,7 @@
 * ID: 3432383 - Missing delete for wxMenu object.
 * ID: 3417877 - Generated cpp file leads to compiler warnings.
 * ID: 3462454 - Fixed wxListCtrl code generation for wxEVT_COMMAND_LIST_COL_RIGHT_CLICK event.
+* wxFB source code can be built with wxWidgets 2.9.2 - Andrea Zanellato, Eran Ifrah.
 
 12/02/2011 Version 3.03.00 (Beta)
 * Fixed improper placement of a comma at the end of the C/C++ enum list - Andrea Zanellato.

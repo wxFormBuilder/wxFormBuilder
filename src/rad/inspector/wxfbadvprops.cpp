@@ -81,7 +81,12 @@ wxFBSizeProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant&
     wxSize& size = wxSizeRefFromVariant( thisValue );
 #endif
 
-	if( ! &size ) return;
+	if( ! &size ) return
+#if wxVERSION_NUMBER < 2900
+   ;
+#else
+    wxVariant();
+#endif
 	
     int val = childValue.GetLong();
     switch ( childIndex )
@@ -148,7 +153,12 @@ wxFBPointProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant
     wxPoint& point = wxPointRefFromVariant( thisValue );
 #endif
 
-	if( ! &point ) return;
+	if( ! &point ) return
+#if wxVERSION_NUMBER < 2900
+   ;
+#else
+    wxVariant();
+#endif
 	
     int val = childValue.GetLong();
     switch ( childIndex )
@@ -483,7 +493,11 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     /*wxPGProperty *propArtId = new wxEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, -1 );
     propArtId->SetHelpString(_("wxArtID unique identifier of the bitmap. IDs with prefix 'gtk-' are available under wxGTK only.") );*/
 	
+#if wxVERSION_NUMBER < 2900
 	wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, wxT("") );
+#else
+    wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices );
+#endif    
     propArtId->SetHelpString(_("Choose a wxArtID unique identifier of the bitmap or enter a wxArtID for your custom wxArtProvider. IDs with prefix 'gtk-' are available under wxGTK only.") );
 
     return propArtId;
@@ -508,8 +522,12 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
 
     /*wxPGProperty *propArtClient = new wxEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, -1 );
     propArtClient->SetHelpString(_("wxArtClient identifier of the client (i.e. who is asking for the bitmap).") );*/
-	
+
+#if wxVERSION_NUMBER < 2900
 	wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, wxT("") );
+#else
+    wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices );
+#endif    
     propArtClient->SetHelpString(_("Choose a wxArtClient identifier of the client (i.e. who is asking for the bitmap) or enter a wxArtClient for your custom wxArtProvider.") );
 
     return propArtClient;
