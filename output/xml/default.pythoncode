@@ -181,5 +181,9 @@
 			def __init__( self, parent ): #indent #nl
 				$gen_file.$basename.__init__( self, parent ) #unindent #nl
 		</template>
+		<template name="Wizard_cons_def">
+			def __init__( self, parent ): #indent #nl
+				$gen_file.$basename.__init__( self, parent ) #unindent #nl
+		</template>
   </templates>
 </codegen>
