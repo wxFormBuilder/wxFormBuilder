@@ -182,5 +182,10 @@
 				parent::__construct( @$parent ); #unindent #nl
 			} #nl
 		</template>
+		<template name="Wizard_cons_def">
+			function __construct(){ #indent #nl
+				parent::__construct( @$parent ); #unindent #nl
+			} #nl
+		</template>
   </templates>
 </codegen>
