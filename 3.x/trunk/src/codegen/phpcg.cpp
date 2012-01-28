@@ -203,23 +203,23 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 				int pointSize = font.GetPointSize();
 				wxString size = pointSize <= 0 ?
 #if wxVERSION_NUMBER < 2900
-                                    wxT("10 /*wxNORMAL_FONT->GetPointSize() Not implemented on wxPHP*/")
+                                    wxT("wxNORMAL_FONT->GetPointSize()")
                                     : wxString::Format( wxT("%i"), pointSize ).c_str();
 
                 result = wxString::Format
                         (
-                            wxT("new wxFont( %s, %i, %i, %i, %s, %s ) Not implemented on wxPHP*/" ),
+                            wxT("new wxFont( %s, %i, %i, %i, %s, %s )" ),
                             size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
                             ( font.GetUnderlined() ? wxT("true") : wxT("false") ),
                             ( font.m_faceName.empty() ? wxT("wxEmptyString")
                             : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
 #else
-                                    "10 /*wxNORMAL_FONT->GetPointSize() Not implemented on wxPHP*/"
+                                    "wxNORMAL_FONT->GetPointSize()"
                                     : wxString::Format( "%i", pointSize );
 
                 result = wxString::Format
                         (
-                            "new wxFont( %s, %i, %i, %i, %s, %s ) Not implemented on wxPHP*/",
+                            "new wxFont( %s, %i, %i, %i, %s, %s )",
                             size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
                             ( font.GetUnderlined() ? "true" : "false" ),
                             ( font.m_faceName.empty() ? "wxEmptyString"

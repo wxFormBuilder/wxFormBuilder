@@ -173,37 +173,38 @@ PHP code generation writen by
 		@{
 		#ifequal #parent $aui_managed "1"
 		@{ #nl
-			@$this->m_mgr->AddPane( @$this->$name, new wxAuiPaneInfo()#ifnotnull $aui_name
-			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
-			@{.Caption( $caption )@}#ifequal $caption_visible "0"
-			@{.CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
-			@{.CloseButton( $close_button )@}#ifequal $maximize_button "1"
-			@{.MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
-			@{.MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
-			@{.PinButton( $pin_button )@}#ifequal $pane_border "0"
-			@{.PaneBorder( $pane_border )@}#ifequal $gripper "1"
-			@{.Gripper()@}#ifequal $show "0"
-			@{.Hide()@}#ifequal $moveable "0"
-			@{.Movable( $moveable )@}#ifnotnull $dock
-			@{.$dock()#ifequal $dock "Float"
-				@{.FloatingPosition( $pane_position )@}	
+			@$this->$name #append PaneInfo = new wxAuiPaneInfo(); #nl
+			@$this->$name #append PaneInfo#ifnotnull $aui_name
+			@{->Name( $aui_name )@}->$docking()#ifnotnull $caption 
+			@{->Caption( $caption )@}#ifequal $caption_visible "0"
+			@{->CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
+			@{->CloseButton( $close_button )@}#ifequal $maximize_button "1"
+			@{->MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
+			@{->MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
+			@{->PinButton( $pin_button )@}#ifequal $pane_border "0"
+			@{->PaneBorder( $pane_border )@}#ifequal $gripper "1"
+			@{->Gripper()@}#ifequal $show "0"
+			@{->Hide()@}#ifequal $moveable "0"
+			@{->Movable( $moveable )@}#ifnotnull $dock
+			@{->$dock()#ifequal $dock "Float"
+				@{->FloatingPosition( $pane_position )@}	
 			@}#ifnotnull $resize
-			@{.$resize()#ifequal $resize "Resizable"
-				@{.FloatingSize( $pane_size )@}	
+			@{->$resize()#ifequal $resize "Resizable"
+				@{->FloatingSize( $pane_size )@}	
 			@}#ifequal $dock_fixed "0"
-			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
-			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
-			@{.TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
-			@{.LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
-			@{.RightDockable( $RightDockable )@}#ifequal $floatable "0"
-			@{.Floatable( $floatable )@}#ifnotnull $aui_row
-			@{.Row( $aui_row )@}#ifnotnull $aui_position
-			@{.Position( $aui_position )@}#ifnotnull $aui_layer
-			@{.Layer( $aui_layer )@}#ifequal $center_pane "1"
-			@{.CentrePane()@}#ifequal $default_pane "1"
-			@{.DefaultPane()@}#ifequal $toolbar_pane "1"
-			@{.ToolbarPane()@}
-			);				
+			@{->DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
+			@{->BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
+			@{->TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
+			@{->LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
+			@{->RightDockable( $RightDockable )@}#ifequal $floatable "0"
+			@{->Floatable( $floatable )@}#ifnotnull $aui_row
+			@{->Row( $aui_row )@}#ifnotnull $aui_position
+			@{->Position( $aui_position )@}#ifnotnull $aui_layer
+			@{->Layer( $aui_layer )@}#ifequal $center_pane "1"
+			@{->CentrePane()@}#ifequal $default_pane "1"
+			@{->DefaultPane()@}#ifequal $toolbar_pane "1"
+			@{->ToolbarPane()@}; #nl
+			@$this->m_mgr->AddPane( @$this->$name, @$this->$name #append PaneInfo );
 		@}
 		@}
 	</template>
@@ -234,37 +235,38 @@ PHP code generation writen by
 		@{
 		#ifequal #parent $aui_managed "1"
 		@{ #nl
-			@$this->m_mgr->AddPane( @$this->$name, new wxAuiPaneInfo()#ifnotnull $aui_name
-			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
-			@{.Caption( $caption )@}#ifequal $caption_visible "0"
-			@{.CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
-			@{.CloseButton( $close_button )@}#ifequal $maximize_button "1"
-			@{.MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
-			@{.MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
-			@{.PinButton( $pin_button )@}#ifequal $pane_border "0"
-			@{.PaneBorder( $pane_border )@}#ifequal $gripper "1"
-			@{.Gripper()@}#ifequal $show "0"
-			@{.Hide()@}#ifequal $moveable "0"
-			@{.Movable( $moveable )@}#ifnotnull $dock
-			@{.$dock()#ifequal $dock "Float"
-				@{.FloatingPosition( $pane_position )@}	
+			@$this->$name #append PaneInfo = new wxAuiPaneInfo(); #nl
+			@$this->$name #append PaneInfo#ifnotnull $aui_name
+			@{->Name( $aui_name )@}->$docking()#ifnotnull $caption 
+			@{->Caption( $caption )@}#ifequal $caption_visible "0"
+			@{->CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
+			@{->CloseButton( $close_button )@}#ifequal $maximize_button "1"
+			@{->MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
+			@{->MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
+			@{->PinButton( $pin_button )@}#ifequal $pane_border "0"
+			@{->PaneBorder( $pane_border )@}#ifequal $gripper "1"
+			@{->Gripper()@}#ifequal $show "0"
+			@{->Hide()@}#ifequal $moveable "0"
+			@{->Movable( $moveable )@}#ifnotnull $dock
+			@{->$dock()#ifequal $dock "Float"
+				@{->FloatingPosition( $pane_position )@}	
 			@}#ifnotnull $resize
-			@{.$resize()#ifequal $resize "Resizable"
-				@{.FloatingSize( $pane_size )@}	
+			@{->$resize()#ifequal $resize "Resizable"
+				@{->FloatingSize( $pane_size )@}	
 			@}#ifequal $dock_fixed "0"
-			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
-			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
-			@{.TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
-			@{.LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
-			@{.RightDockable( $RightDockable )@}#ifequal $floatable "0"
-			@{.Floatable( $floatable )@}#ifnotnull $aui_row
-			@{.Row( $aui_row )@}#ifnotnull $aui_position
-			@{.Position( $aui_position )@}#ifnotnull $aui_layer
-			@{.Layer( $aui_layer )@}#ifequal $center_pane "1"
-			@{.CentrePane()@}#ifequal $default_pane "1"
-			@{.DefaultPane()@}#ifequal $toolbar_pane "1"
-			@{.ToolbarPane()@}
-			);	
+			@{->DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
+			@{->BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
+			@{->TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
+			@{->LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
+			@{->RightDockable( $RightDockable )@}#ifequal $floatable "0"
+			@{->Floatable( $floatable )@}#ifnotnull $aui_row
+			@{->Row( $aui_row )@}#ifnotnull $aui_position
+			@{->Position( $aui_position )@}#ifnotnull $aui_layer
+			@{->Layer( $aui_layer )@}#ifequal $center_pane "1"
+			@{->CentrePane()@}#ifequal $default_pane "1"
+			@{->DefaultPane()@}#ifequal $toolbar_pane "1"
+			@{->ToolbarPane()@}; #nl
+			@$this->m_mgr->AddPane( @$this->$name, new wxAuiPaneInfo() );
 		@}
 		@}
 		</template>
