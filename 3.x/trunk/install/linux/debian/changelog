@@ -2,7 +2,7 @@ wxformbuilder (3.3.01-0ubuntu1~lucid1) lucid; urgency=low
 
   * Sync to upstream 3.3.01.
 
- -- Michal Bližňák <michal@michal-desktop>  Thu, 09 Feb 2012 12:03:13 +0100
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Thu, 09 Feb 2012 12:03:13 +0100
 
 wxformbuilder (3.2.01-0ubuntu1~lucid1) lucid; urgency=low
 

@@ -120,7 +120,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				if ( m_i18n )
 				{
-					result << wxT("_(\"") << PythonCodeGenerator::ConvertPythonString(value) << wxT("\")");
+					result << wxT("_(u\"") << PythonCodeGenerator::ConvertPythonString(value) << wxT("\")");
 				}
 				else
 				{
