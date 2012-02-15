@@ -30,7 +30,10 @@
 #define __WXFBADVPROPS_H__
 
 #include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/propdev.h>
 #include <wx/propgrid/advprops.h>
+
+#include "fontcontainer.h"
 
 // -----------------------------------------------------------------------
 // wxFBSizeProperty
@@ -193,5 +196,32 @@ private:
     int m_max;
 };
 #endif // wxUSE_SLIDER
+
+// -----------------------------------------------------------------------
+// wxFBFontProperty
+// -----------------------------------------------------------------------
+
+class WXDLLIMPEXP_PG wxFBFontProperty : public wxPGProperty
+{
+    WX_PG_DECLARE_PROPERTY_CLASS(wxFBFontProperty)
+public:
+
+    wxFBFontProperty( const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxFontContainer& value = *wxNORMAL_FONT);
+    virtual ~wxFBFontProperty();
+	
+#if wxVERSION_NUMBER < 2900
+    virtual void
+#else
+    virtual wxVariant
+#endif
+    ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
+
+    virtual void RefreshChildren();
+	
+    virtual void OnSetValue();
+    virtual wxString GetValueAsString( int argFlags = 0 ) const;
+
+    WX_PG_DECLARE_EVENT_METHODS()
+};
 
 #endif //__WXFBADVPROPS_H__

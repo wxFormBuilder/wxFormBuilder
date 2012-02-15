@@ -5,6 +5,8 @@
 * ID: 3472032 - Error in svn trunk 3.3-1 beta version generating python code.
 * ID: 3480059 - Gettext, Unicode and wxPython.
 * ID: 3486641 - XRC import does not accept CENTRE attributes.
+* ID: 3482829 - Default font is targeted to the current machine.
+* ID: 3460028 - Offer "default" value for fonts.
 
 01/17/2012 Version 3.03.01 (Beta)
 * Fixed code generation for bitmaps provided by wxArtProvider - John Labenski.

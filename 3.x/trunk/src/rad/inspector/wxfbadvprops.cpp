@@ -972,3 +972,233 @@ void wxPGSliderEditor::SetValueToUnspecified( wxPGProperty* WXUNUSED( property )
 }
 
 #endif //wxUSE_SLIDER
+
+// -----------------------------------------------------------------------
+// wxFBFontProperty
+// -----------------------------------------------------------------------
+
+#include <wx/fontdlg.h>
+#include <wx/fontenum.h>
+
+static const wxChar* gs_fp_es_family_labels[] = {
+    wxT("Default"), wxT("Decorative"),
+    wxT("Roman"), wxT("Script"),
+    wxT("Swiss"), wxT("Modern"),
+#if wxCHECK_VERSION(2,8,0)
+    wxT("Teletype"), wxT("Unknown"),
+#endif
+    (const wxChar*) NULL
+};
+
+static long gs_fp_es_family_values[] = {
+    wxFONTFAMILY_DEFAULT, wxFONTFAMILY_DECORATIVE,
+    wxFONTFAMILY_ROMAN, wxFONTFAMILY_SCRIPT,
+    wxFONTFAMILY_SWISS, wxFONTFAMILY_MODERN,
+#if wxCHECK_VERSION(2,8,0)
+    wxFONTFAMILY_TELETYPE, wxFONTFAMILY_UNKNOWN
+#endif
+};
+
+static const wxChar* gs_fp_es_style_labels[] = {
+    wxT("Normal"),
+    wxT("Slant"),
+    wxT("Italic"),
+    (const wxChar*) NULL
+};
+
+static long gs_fp_es_style_values[] = {
+    wxNORMAL,
+    wxSLANT,
+    wxITALIC
+};
+
+static const wxChar* gs_fp_es_weight_labels[] = {
+    wxT("Normal"),
+    wxT("Light"),
+    wxT("Bold"),
+    (const wxChar*) NULL
+};
+
+static long gs_fp_es_weight_values[] = {
+    wxNORMAL,
+    wxLIGHT,
+    wxBOLD
+};
+
+WX_PG_IMPLEMENT_PROPERTY_CLASS(wxFBFontProperty,wxPGProperty,
+                               wxFont,const wxFont&,TextCtrlAndButton)
+
+
+wxFBFontProperty::wxFBFontProperty( const wxString& label, const wxString& name,
+                                const wxFontContainer& value )
+    : wxPGProperty(label,name)
+{
+    SetValue( WXVARIANT( TypeConv::FontToString(value) ) );
+
+    // Initialize font family choices list
+    if ( !wxPGGlobalVars->m_fontFamilyChoices )
+    {
+        wxFontEnumerator enumerator;
+        enumerator.EnumerateFacenames();
+
+#if wxMINOR_VERSION > 6
+        wxArrayString faceNames = enumerator.GetFacenames();
+#else
+        wxArrayString& faceNames = *enumerator.GetFacenames();
+#endif
+
+        faceNames.Sort();
+		faceNames.Insert( wxEmptyString, 0 );
+
+        wxPGGlobalVars->m_fontFamilyChoices = new wxPGChoices(faceNames);
+    }
+
+    wxString emptyString(wxEmptyString);
+
+    AddPrivateChild( new wxIntProperty( _("Point Size"), wxT("Point Size"),
+					 value.m_pointSize) );
+
+    AddPrivateChild( new wxEnumProperty(_("Family"), wxT("Family"),
+                     gs_fp_es_family_labels,gs_fp_es_family_values,
+                     value.m_family) );
+
+    wxString faceName = value.m_faceName;
+    // If font was not in there, add it now
+    if ( faceName.length() &&
+         wxPGGlobalVars->m_fontFamilyChoices->Index(faceName) == wxNOT_FOUND )
+        wxPGGlobalVars->m_fontFamilyChoices->AddAsSorted(faceName);
+
+    wxPGProperty* p = new wxEnumProperty(_("Face Name"), wxT("Face Name"),
+                                         *wxPGGlobalVars->m_fontFamilyChoices);
+
+    p->SetValueFromString(faceName, wxPG_FULL_VALUE);
+
+    AddPrivateChild( p );
+
+    AddPrivateChild( new wxEnumProperty(_("Style"), wxT("Style"),
+              gs_fp_es_style_labels,gs_fp_es_style_values,value.m_style) );
+
+    AddPrivateChild( new wxEnumProperty(_("Weight"), wxT("Weight"),
+              gs_fp_es_weight_labels,gs_fp_es_weight_values,value.m_weight) );
+
+    AddPrivateChild( new wxBoolProperty(_("Underlined"), wxT("Underlined"),
+              value.m_underlined) );
+}
+
+wxFBFontProperty::~wxFBFontProperty() { }
+
+void wxFBFontProperty::OnSetValue()
+{
+	// do nothing
+}
+
+wxString wxFBFontProperty::GetValueAsString( int argFlags ) const
+{
+    return wxPGProperty::GetValueAsString(argFlags);
+}
+
+bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(primary),
+                              wxEvent& event )
+{
+    if ( propgrid->IsMainButtonEvent(event) )
+    {
+        // Update value from last minute changes
+        PrepareValueForDialogEditing(propgrid);
+
+        wxFontData data;
+        wxFont font = TypeConv::StringToFont( m_value.GetString() );
+
+        data.SetInitialFont( font );
+        data.SetColour(*wxBLACK);
+
+        wxFontDialog dlg(propgrid, data);
+        if ( dlg.ShowModal() == wxID_OK )
+        {
+            propgrid->EditorsValueWasModified();
+
+			wxFontContainer fcont( dlg.GetFontData().GetChosenFont() );
+	
+            wxVariant variant = WXVARIANT( TypeConv::FontToString( fcont ) );
+            SetValueInEvent( variant );
+			
+            return true;
+        }
+    }
+    return false;
+}
+
+void wxFBFontProperty::RefreshChildren()
+{
+    if ( !GetCount() ) return;
+	
+	wxString fstr = m_value.GetString();
+	wxFontContainer font = TypeConv::StringToFont( fstr );
+	
+	Item(0)->SetValue( font.m_pointSize );
+	Item(1)->SetValue( font.m_family );
+	Item(2)->SetValueFromString( font.m_faceName, wxPG_FULL_VALUE );
+	Item(3)->SetValue( font.m_style );
+	Item(4)->SetValue( font.m_weight );
+	Item(5)->SetValue( font.m_underlined );
+}
+
+#if wxVERSION_NUMBER < 2900
+    void
+#else
+    wxVariant
+#endif
+wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childValue ) const
+{
+	wxFontContainer font = TypeConv::StringToFont( thisValue.GetString() );
+
+    if ( ind == 0 )
+    {
+		font.m_pointSize = wxPGVariantToInt(childValue);
+    }
+    else if ( ind == 1 )
+    {
+        int fam = childValue.GetLong();
+        if ( fam < wxDEFAULT ||
+             fam > wxTELETYPE )
+             fam = wxDEFAULT;
+		font.m_family = fam;
+    }
+    else if ( ind == 2 )
+    {
+        wxString faceName;
+        int faceIndex = childValue.GetLong();
+
+        if ( faceIndex >= 0 )
+            faceName = wxPGGlobalVars->m_fontFamilyChoices->GetLabel(faceIndex);
+
+		font.m_faceName = faceName;
+    }
+    else if ( ind == 3 )
+    {
+        int st = childValue.GetLong();
+        if ( st != wxFONTSTYLE_NORMAL &&
+             st != wxFONTSTYLE_SLANT &&
+             st != wxFONTSTYLE_ITALIC )
+             st = wxFONTWEIGHT_NORMAL;
+		font.m_style = st;
+    }
+    else if ( ind == 4 )
+    {
+        int wt = childValue.GetLong();
+        if ( wt != wxFONTWEIGHT_NORMAL &&
+             wt != wxFONTWEIGHT_LIGHT &&
+             wt != wxFONTWEIGHT_BOLD )
+             wt = wxFONTWEIGHT_NORMAL;
+		font.m_weight = wt;
+    }
+    else if ( ind == 5 )
+    {
+		font.m_underlined = childValue.GetBool();
+    }
+	
+	thisValue = WXVARIANT( TypeConv::FontToString( font ) );
+	
+#if wxVERSION_NUMBER >= 2900
+	return thisValue;
+#endif
+}
