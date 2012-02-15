@@ -370,8 +370,7 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     }
     else if (type == PT_WXFONT)
     {
-        wxFontContainer container = TypeConv::StringToFont( prop->GetValueAsString() );
-        result = new wxFontProperty( name, wxPG_LABEL, container.GetFont() );
+        result = new wxFBFontProperty( name, wxPG_LABEL, TypeConv::StringToFont( prop->GetValueAsString() ) );
     }
     else if (type == PT_WXCOLOUR)
     {
@@ -804,15 +803,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             }
             case PT_WXFONT:
             {
-                wxFont font;
-                font << event.GetPropertyValue();
-                wxFontContainer container( font.GetPointSize(),
-                                           font.GetFamily(),
-                                           font.GetStyle(),
-                                           font.GetWeight(),
-                                           font.GetUnderlined(),
-                                           font.GetFaceName() );
-                ModifyProperty( prop, TypeConv::FontToString( container ) );
+				ModifyProperty( prop, event.GetPropertyValue().GetString() );
                 break;
             }
             case PT_WXCOLOUR:
@@ -1005,12 +996,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		}
         break;
     case PT_WXFONT:
-        {
-            wxFontContainer container = TypeConv::StringToFont( prop->GetValueAsString() );
-            wxVariant value;
-            value << container.GetFont();
-            pgProp->SetValue( value );
-        }
+		pgProp->SetValue( WXVARIANT( prop->GetValueAsString() ) );
         break;
     case PT_WXCOLOUR:
         {
