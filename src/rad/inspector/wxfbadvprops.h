@@ -30,7 +30,9 @@
 #define __WXFBADVPROPS_H__
 
 #include <wx/propgrid/propgrid.h>
+#if wxVERSION_NUMBER < 2900
 #include <wx/propgrid/propdev.h>
+#endif
 #include <wx/propgrid/advprops.h>
 
 #include "fontcontainer.h"
@@ -201,7 +203,7 @@ private:
 // wxFBFontProperty
 // -----------------------------------------------------------------------
 
-class WXDLLIMPEXP_PG wxFBFontProperty : public wxPGProperty
+class wxFBFontProperty : public wxPGProperty
 {
     WX_PG_DECLARE_PROPERTY_CLASS(wxFBFontProperty)
 public:
@@ -221,7 +223,7 @@ public:
     virtual void OnSetValue();
     virtual wxString GetValueAsString( int argFlags = 0 ) const;
 
-    WX_PG_DECLARE_EVENT_METHODS()
+	virtual bool OnEvent( wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event );
 };
 
 #endif //__WXFBADVPROPS_H__

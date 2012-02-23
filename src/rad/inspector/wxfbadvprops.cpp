@@ -1103,7 +1103,10 @@ bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(pri
     if ( propgrid->IsMainButtonEvent(event) )
     {
         // Update value from last minute changes
+
+#if wxVERSION_NUMBER < 2900
         PrepareValueForDialogEditing(propgrid);
+#endif
 
         wxFontData data;
         wxFont font = TypeConv::StringToFont( m_value.GetString() );
@@ -1129,7 +1132,9 @@ bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(pri
 
 void wxFBFontProperty::RefreshChildren()
 {
+#if wxVERSION_NUMBER < 2900
     if ( !GetCount() ) return;
+#endif
 	
 	wxString fstr = m_value.GetString();
 	wxFontContainer font = TypeConv::StringToFont( fstr );
@@ -1153,7 +1158,7 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
 
     if ( ind == 0 )
     {
-		font.m_pointSize = wxPGVariantToInt(childValue);
+		font.m_pointSize = childValue.GetLong();
     }
     else if ( ind == 1 )
     {
