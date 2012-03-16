@@ -91,6 +91,7 @@ void CCodeParser::ParseCCode(wxString header, wxString source)
 void CCodeParser::ParseCInclude(wxString code)
 {
 	int userIncludeEnd;
+	m_userInclude = wxT("");
 
 	//find the begining of the user include
 	int userIncludeStart = code.Find(wxT("//// end generated include"));
@@ -106,12 +107,9 @@ void CCodeParser::ParseCInclude(wxString code)
 			{
 				userIncludeStart++;
 				m_userInclude = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
-
 			}
 		}
-
 	}
-	m_userInclude = wxT("");
 }
 
 void CCodeParser::ParseCClass(wxString code)

@@ -7,6 +7,8 @@
 * ID: 3486641 - XRC import does not accept CENTRE attributes.
 * ID: 3482829 - Default font is targeted to the current machine.
 * ID: 3460028 - Offer "default" value for fonts.
+* ID: 3488348 - Newlines in wxStaticText.
+* ID: 3493539 - Generate Inherited Class deletes additional includes (c++).
 
 01/17/2012 Version 3.03.01 (Beta)
 * Fixed code generation for bitmaps provided by wxArtProvider - John Labenski.

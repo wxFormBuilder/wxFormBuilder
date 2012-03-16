@@ -271,11 +271,11 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     {
         result = new wxUIntProperty( name, wxPG_LABEL, (unsigned)prop->GetValueAsInteger() );
     }
-      else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
-      {
-        result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsText() );
-      }
-      else if (type == PT_TEXT)
+	else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N)
+    {
+		result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsText() );
+	}
+	else if (type == PT_TEXT)
     {
         result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsString() );
         result->ChangeFlag( wxPG_PROP_NO_ESCAPE, true );
@@ -748,7 +748,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             case PT_WXSTRING_I18N:
             {
                 // ObjectInspector's text strings are formatted.
-                wxString value = m_pg->GetPropertyValueAsString( propPtr );
+                wxString value = TypeConv::TextToString( m_pg->GetPropertyValueAsString( propPtr ) );
                 ModifyProperty( prop, value );
                 break;
             }
