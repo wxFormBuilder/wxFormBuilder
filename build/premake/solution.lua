@@ -43,11 +43,14 @@ end
         defines         {"DEBUG", "_DEBUG"}
         flags           {"Symbols"}
 
-    if wxCompiler == "gcc" then
-        buildoptions    {"-O0"}
-    end
+		if wxCompiler == "gcc" then
+			buildoptions    {"-O0"}
+		end
 
     configuration "Release"
+		if wxCompiler == "gcc" then
+			linkoptions {"-s"}
+		end
         defines         {"NDEBUG"}
         flags           {"OptimizeSpeed"}
 
