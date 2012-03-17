@@ -26,7 +26,7 @@ project "wxScintilla"
     {
         "WXMAKINGDLL_SCI","LINK_LEXERS","SCI_LEXER","SCI_NAMESPACE","__WX__"
     }
-    targetsuffix        ( "-" .. wxVersion )
+    targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
 
     configuration "linux or bsd"
         defines         {"GTK"}

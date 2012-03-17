@@ -17,7 +17,7 @@ project "wxPropertyGrid"
     includedirs         {"../../src/controls/include"}
     defines             {"WXMAKINGDLL_PROPGRID"}
     flags               {"ExtraWarnings"}
-    targetsuffix        ( "-" .. wxVersion )
+    targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
 
     configuration "not windows"
         targetdir       "../../output/lib/wxformbuilder"
