@@ -22,7 +22,7 @@ project "additional-components-plugin"
     local libs = "std,richtext"
 if wxUseMediaCtrl then
     defines             {"USE_MEDIACTRL"}
-    libs                = "std,richtext,media"
+    libs                = libs .. ",media"
 end
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"

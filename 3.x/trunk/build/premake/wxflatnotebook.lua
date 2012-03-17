@@ -17,7 +17,7 @@ project "wxFlatNotebook"
     includedirs         {"../../src/controls/include"}
     defines             {"WXMAKINGDLL_FNB"}
     flags               {"ExtraWarnings"}
-    targetsuffix        ( "-" .. wxVersion )
+    targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
 
     configuration "not windows"
         targetdir       "../../output/lib/wxformbuilder"
