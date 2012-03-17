@@ -19,12 +19,7 @@ solution "wxFormBuilder-Solution"
     local wxver         = string.gsub( wxVersion, '%.', '' )
     location            ( "../../build/" .. wxVersion .. "/" .. _ACTION )
     BuildDir            = solution().location
-	
-if os.is("windows") then
-    CustomPrefix        = "wx" .. wxTarget .. wxUnicodeSign
-else
 	CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
-end
 
 if wxVersion < "2.9" then
     DebugSuffix         = "d-" .. wxver
