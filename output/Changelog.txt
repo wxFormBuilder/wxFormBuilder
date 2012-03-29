@@ -1,5 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+03/29/2012 Version 3.03.03 (Beta)
+* ID: 3510480 - Subclass not displayed after reloading a project in 3.3.2.
+* ID: 3506972 - Generating Python code.
+
 02/10/2012 Version 3.03.02 (Beta)
 * ID: 3470209 - wxDIRCTRL_MULTIPLE Style missing for wxGenericDirCtrl.
 * ID: 3472032 - Error in svn trunk 3.3-1 beta version generating python code.

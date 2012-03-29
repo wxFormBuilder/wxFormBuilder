@@ -96,9 +96,9 @@ Python code generation writen by
 	</template>
 	<template name="after_addchild">
 	  #ifnotnull $growablecols
-      @{ #foreach $growablecols @{ $name->AddGrowableCol( #pred ) @} @}
+      @{ #foreach $growablecols @{ $name.AddGrowableCol( #pred ) @} @}
       #ifnotnull $growablerows
-      @{ #foreach $growablerows @{ $name->AddGrowableRow( #pred ) @} @}
+      @{ #foreach $growablerows @{ $name.AddGrowableRow( #pred ) @} @}
 	</template>
   </templates>
 
