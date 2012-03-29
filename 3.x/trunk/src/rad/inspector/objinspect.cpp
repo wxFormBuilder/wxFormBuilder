@@ -493,17 +493,19 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 					PPropertyInfo prop_desc = prop->GetPropertyInfo();
 					std::list< PropertyChild >* children = prop_desc->GetChildren();
 					std::list< PropertyChild >::iterator it;
+					wxArrayString values = wxStringTokenize( prop->GetValueAsString(), wxT(";"), wxTOKEN_RET_EMPTY_ALL );
+					size_t i = 0;
+					wxString value;
+					
 					for ( it = children->begin(); it != children->end(); ++it )
 					{
-						wxPGProperty* child = new wxStringProperty( it->m_name, wxPG_LABEL, wxEmptyString );
+						if( values.GetCount() > i ) value = values[i++].Trim().Trim(false);
+						else value = wxT("");
+						
+						wxPGProperty* child = new wxStringProperty( it->m_name, wxPG_LABEL, value );
 						id->AppendChild( child );
 						m_pg->SetPropertyHelpString( child, it->m_description );
 					}
-					
-					// perform delayed child properties update
-					wxCommandEvent e( wxEVT_FB_PROP_BITMAP_CHANGED );
-					e.SetString( id->GetName() + wxT(":") + prop->GetValue() );
-					GetEventHandler()->AddPendingEvent( e );
 				}
             }
 
