@@ -533,10 +533,10 @@ void VisualEditor::Create()
 			// --- AUI
 			if(  m_form->GetObjectTypeName() == wxT("form") )
 			{
-				if(  m_form->GetPropertyAsInteger( wxT("aui_managed")) == 1)
+				if(  m_form->GetPropertyAsInteger( wxT("aui_managed") ) == 1)
 				{
 					m_auipanel = new wxPanel( m_back->GetFrameContentPanel() );
-					m_auimgr = new wxAuiManager( m_auipanel );
+					m_auimgr = new wxAuiManager( m_auipanel, m_form->GetPropertyAsInteger( wxT("aui_manager_style") ) );
 				}
 			}
 
