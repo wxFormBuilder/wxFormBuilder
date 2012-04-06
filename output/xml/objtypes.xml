@@ -60,6 +60,7 @@
     <childtype name="statusbar" nmax="1" aui_nmax="1" />
     <childtype name="toolbar" nmax="1" />
     <childtype name="widget" nmax="0" />
+    <childtype name="expanded_widget" nmax="0" />
     <childtype name="container" nmax="0" />
     <childtype name="notebook" nmax="0" />
     <childtype name="auinotebook" nmax="0" />

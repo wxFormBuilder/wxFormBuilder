@@ -43,46 +43,6 @@
 			#ifnotnull $maximum_size
 			@{ self.$name.SetMaxSize( $maximum_size ) #nl @}
 
-			#ifparenttypeequal "form"
-			@{
-			#ifequal #parent $aui_managed "1"
-			@{ 
-			#iftypeequal "widget || container || notebook || auinotebook || flatnotebook || listbook || choicebook || treelistctrl || splitter"
-			@{
-				self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()
-				#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
-				#ifnotnull $caption @{.Caption( $caption )@}
-				#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
-				#ifequal $close_button "0" @{.CloseButton( $close_button )@}
-				#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
-				#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
-				#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
-				#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
-				#ifequal $gripper "1" @{.Gripper()@}
-				#ifequal $show "0" @{.Hide()@}
-				#ifequal $moveable "0" @{.Movable( $moveable )@}
-				#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
-				#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable"	@{.FloatingSize( $pane_size )@}@}
-				#ifequal $dock_fixed "0" @{.DockFixed( $dock_fixed )@}
-				#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
-				#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
-				#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
-				#ifequal $RightDockable "0"	@{.RightDockable( $RightDockable )@}
-				#ifequal $floatable "0"	@{.Floatable( $floatable )@}
-				#ifnotnull $aui_row	@{.Row( $aui_row )@}
-				#ifnotnull $aui_position @{.Position( $aui_position )@}
-				#ifnotnull $best_size @{.BestSize( $best_size )@}
-				#ifnotnull $min_size @{.MinSize( $min_size )@}
-				#ifnotnull $max_size @{.MaxSize( $max_size )@}
-				#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
-				#ifequal $center_pane "1" @{.CentrePane()@}
-				#ifequal $default_pane "1" @{.DefaultPane()@}
-				#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
-				) #nl				
-			@}
-			@}
-			@}
-
 			#ifparenttypeequal "toolbar_form"
 			@{ self.AddControl( self.$name ) @}
 		</template>
@@ -138,6 +98,51 @@
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">self.$name.Bind( wx.EVT_UPDATE_UI, #handler )</template>
   </templates>
+  
+  <templates class="AUI">
+	<template name="settings">
+		#ifparenttypeequal "form"
+		@{
+		#ifequal #parent $aui_managed "1"
+		@{ 
+		#iftypenotequal "toolbar"
+		@{ 
+			self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()
+			#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
+			#ifnotnull $caption @{.Caption( $caption )@}
+			#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
+			#ifequal $close_button "0" @{.CloseButton( $close_button )@}
+			#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
+			#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
+			#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
+			#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
+			#ifequal $gripper "1" @{.Gripper()@}
+			#ifequal $show "0" @{.Hide()@}
+			#ifequal $moveable "0" @{.Movable( $moveable )@}
+			#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
+			#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable"	@{.FloatingSize( $pane_size )@}@}
+			#ifequal $dock_fixed "0" @{.DockFixed( $dock_fixed )@}
+			#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
+			#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
+			#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
+			#ifequal $RightDockable "0"	@{.RightDockable( $RightDockable )@}
+			#ifequal $floatable "0"	@{.Floatable( $floatable )@}
+			#ifnotnull $aui_row	@{.Row( $aui_row )@}
+			#ifnotnull $aui_position @{.Position( $aui_position )@}
+			#ifnotnull $best_size @{.BestSize( $best_size )@}
+			#ifnotnull $min_size @{.MinSize( $min_size )@}
+			#ifnotnull $max_size @{.MaxSize( $max_size )@}
+			#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
+			#ifequal $center_pane "1" @{.CentrePane()@}
+			#ifequal $default_pane "1" @{.DefaultPane()@}
+			#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
+			) #nl				
+		@}
+		@}
+		@}
+	</template>
+  </templates>
+  
   <templates class="wxTreeCtrlBase">
 	<template name="evt_connect_OnTreeBeginDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_DRAG, #handler )</template>
 	<template name="evt_connect_OnTreeBeginRDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_RDRAG, #handler )</template>
@@ -157,6 +162,7 @@
 	<template name="evt_connect_OnTreeKeyDown">self.$name.Bind( wx.EVT_TREE_KEY_DOWN, #handler )</template>
 	<template name="evt_connect_OnTreeItemMenu">self.$name.Bind( wx.EVT_TREE_ITEM_MENU, #handler )</template>
   </templates>
+  
   <templates class="UserClasses">
 		<template name="file_comment">
 			"""Subclass of $basename, which is generated by wxFormBuilder."""

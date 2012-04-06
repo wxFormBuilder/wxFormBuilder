@@ -86,6 +86,19 @@ Written by
       impl_virtual
     </property>
     <property name="aui_managed" help="Manage this frame by AUI manager." type="bool">0</property>
+    <property name="aui_manager_style" help="Configure AUI manager." type="bitlist">
+      <option name="wxAUI_MGR_DEFAULT" help=""/>
+      <option name="wxAUI_MGR_ALLOW_FLOATING" help=""/>
+      <option name="wxAUI_MGR_ALLOW_ACTIVE_PANE"   help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_DRAG"     help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_HINT"      help=""/>
+      <option name="wxAUI_MGR_VENETIAN_BLINDS_HINT"      help=""/>
+      <option name="wxAUI_MGR_RECTANGLE_HINT"          help=""/>
+      <option name="wxAUI_MGR_HINT_FADE"         help=""/>
+      <option name="wxAUI_MGR_NO_VENETIAN_BLINDS_FADE"      help=""/>
+      <option name="wxAUI_MGR_LIVE_RESIZE"     help=""/>
+	  wxAUI_MGR_DEFAULT
+    </property>
   </objectinfo>
 
   <objectinfo class="Panel" icon="panel.xpm" type="form">
@@ -103,6 +116,19 @@ Written by
     </property>
     <event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialised." />
     <property name="aui_managed"                help="Manage this panel by AUI manager." type="bool">0</property>
+	<property name="aui_manager_style" help="Configure AUI manager." type="bitlist">
+      <option name="wxAUI_MGR_DEFAULT" help=""/>
+      <option name="wxAUI_MGR_ALLOW_FLOATING" help=""/>
+      <option name="wxAUI_MGR_ALLOW_ACTIVE_PANE"   help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_DRAG"     help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_HINT"      help=""/>
+      <option name="wxAUI_MGR_VENETIAN_BLINDS_HINT"      help=""/>
+      <option name="wxAUI_MGR_RECTANGLE_HINT"          help=""/>
+      <option name="wxAUI_MGR_HINT_FADE"         help=""/>
+      <option name="wxAUI_MGR_NO_VENETIAN_BLINDS_FADE"      help=""/>
+      <option name="wxAUI_MGR_LIVE_RESIZE"     help=""/>
+	  wxAUI_MGR_DEFAULT
+    </property>
   </objectinfo>
 
   <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
@@ -142,6 +168,19 @@ Written by
     </property>
     <event name="OnInitDialog" class="wxInitDialogEvent" help="Process a wxEVT_INIT_DIALOG event. A wxEVT_INIT_DIALOG is sent as a dialog or panel is being initialized." />
     <property name="aui_managed" help="Manage this dialog by AUI manager." type="bool">0</property>
+	<property name="aui_manager_style" help="Configure AUI manager." type="bitlist">
+      <option name="wxAUI_MGR_DEFAULT" help=""/>
+      <option name="wxAUI_MGR_ALLOW_FLOATING" help=""/>
+      <option name="wxAUI_MGR_ALLOW_ACTIVE_PANE"   help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_DRAG"     help=""/>
+      <option name="wxAUI_MGR_TRANSPARENT_HINT"      help=""/>
+      <option name="wxAUI_MGR_VENETIAN_BLINDS_HINT"      help=""/>
+      <option name="wxAUI_MGR_RECTANGLE_HINT"          help=""/>
+      <option name="wxAUI_MGR_HINT_FADE"         help=""/>
+      <option name="wxAUI_MGR_NO_VENETIAN_BLINDS_FADE"      help=""/>
+      <option name="wxAUI_MGR_LIVE_RESIZE"     help=""/>
+	  wxAUI_MGR_DEFAULT
+    </property>
   </objectinfo>
 
     <objectinfo class="Wizard" icon="wizard.xpm" type="wizard" startgroup="1">

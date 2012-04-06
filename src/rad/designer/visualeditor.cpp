@@ -238,7 +238,10 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 			PObjectInfo obj_info = obj->GetObjectInfo();
 			wxString cname = obj_info->GetObjectType()->GetName();
 			
-			if( cname == wxT("widget") || cname == wxT("toolbar") || cname == wxT("container") )
+			if( cname == wxT("widget") || 
+				cname == wxT("expanded_widget") ||
+				cname == wxT("toolbar") ||
+				cname == wxT("container") )
 			{
 				wxAuiPaneInfo inf = m_auimgr->GetPane(*child);
 				if(inf.IsOk())
@@ -876,6 +879,7 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	//AUI
 	wxString tname = obj->GetObjectInfo()->GetObjectType()->GetName();
 	if( m_auimgr && ( tname == wxT("widget") ||
+					tname == wxT("expanded_widget") ||
 					tname == wxT("container") || 
 					tname == wxT("notebook") ||
 					tname == wxT("auinotebook") ||
@@ -901,6 +905,9 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 {	
 	wxAuiPaneInfo info;
 	
+	// check whether the object contains AUI info...
+	if( !obj->GetProperty( wxT("aui_name") ) ) return;
+
 	wxString name = obj->GetPropertyAsString( wxT("aui_name") );
 	if( name != wxT("") ) info.Name( name );
 	

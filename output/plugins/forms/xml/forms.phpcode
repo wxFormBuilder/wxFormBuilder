@@ -107,6 +107,8 @@ PHP code generation writen by
 			@{ 
 				@$this->m_mgr = new wxAuiManager(); #nl
 				@$this->m_mgr->SetManagedWindow( @$this ); #nl
+				#ifnotnull $aui_manager_style
+				@{ @$this->m_mgr->SetFlags($aui_manager_style); #nl @}
 			@}
 		</template>
 		<template name="after_addchild">

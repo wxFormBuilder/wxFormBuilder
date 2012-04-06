@@ -115,7 +115,10 @@ Written by
 			@{ this->SetToolTip( $tooltip ); #nl @}
 			
 			#ifequal $aui_managed "1"
-			@{ m_mgr.SetManagedWindow(this); #nl @}
+			@{ m_mgr.SetManagedWindow(this); #nl
+				#ifnotnull $aui_manager_style
+				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
+			@}
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"

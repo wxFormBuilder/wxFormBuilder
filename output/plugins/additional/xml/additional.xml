@@ -24,8 +24,9 @@ Written by
 <package name="Additional" lib="libadditional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
 
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
-    <inherits class="wxTreeCtrlBase"/>
+    <inherits class="wxTreeCtrlBase" />
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_treeCtrl</property>
     <property name="style" type="bitlist">
       <option name="wxTR_EDIT_LABELS"             help="Use this style if you wish the user to be able to edit labels in the tree control." />
@@ -50,6 +51,7 @@ Written by
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_htmlWin</property>
     <property name="style" type="bitlist">
       <option name="wxHW_SCROLLBAR_NEVER" help="Never display scrollbars, not even when the page is larger than the window." />
@@ -64,6 +66,7 @@ Written by
     <inherits class="wxWindow">
 		<property name="window_style">wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS</property>
 	</inherits>
+	<inherits class="AUI" />
     <property name="name" type="text">m_richText</property>
 	<property name="style" type="bitlist">
       <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
@@ -88,6 +91,7 @@ Written by
 
   <objectinfo class="wxCheckListBox" icon="checklistbox.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_checkList</property>
     <property name="style" type="bitlist">
       <option name="wxLB_SINGLE"    help="Single-selection list." />
@@ -105,6 +109,7 @@ Written by
 
   <objectinfo class="wxGrid" icon="grid.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_grid</property>
     <category name="Grid">
     	<property name="rows" type="uint" help="Number of Rows.">5</property>
@@ -213,6 +218,7 @@ Written by
 
   <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_toggleBtn</property>
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
@@ -221,6 +227,7 @@ Written by
 
   <objectinfo class="wxSearchCtrl" icon="search.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_searchCtrl</property>
     <property name="style" type="bitlist">
       <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
@@ -242,6 +249,7 @@ Written by
 
   <objectinfo class="wxColourPickerCtrl"  startgroup="1" icon="colourPickerIcon.xpm" type="widget">
         <inherits class="wxWindow"/>
+		<inherits class="AUI" />
         <property name="name" type="text">m_colourPicker</property>
         <property name="style" type="bitlist">
           <option name="wxCLRP_DEFAULT_STYLE" help="The default style: 0."/>
@@ -255,6 +263,7 @@ Written by
 
   <objectinfo class="wxFontPickerCtrl" icon="fontPicker.xpm" type="widget">
         <inherits class="wxWindow"/>
+		<inherits class="AUI" />
         <property name="name" type="text">m_fontPicker</property>
         <property name="style" type="bitlist">
           <option name="wxFNTP_DEFAULT_STYLE" help="The default style: wxFNTP_FONTDESC_AS_LABEL | wxFNTP_USEFONT_FOR_LABEL."/>
@@ -272,6 +281,7 @@ Written by
 
   <objectinfo class="wxFilePickerCtrl" icon="filePicker.xpm" type="widget">
         <inherits class="wxWindow"/>
+		<inherits class="AUI" />
         <property name="name" type="text">m_filePicker</property>
         <property name="style" type="bitlist">
 			<option name="wxFLP_DEFAULT_STYLE" help="The default style: includes wxFLP_OPEN | wxFLP_FILE_MUST_EXIST and, under wxMSW only, wxFLP_USE_TEXTCTRL."/>
@@ -291,6 +301,7 @@ Written by
 
   <objectinfo class="wxDirPickerCtrl" icon="dirPicker.xpm" type="widget">
         <inherits class="wxWindow"/>
+		<inherits class="AUI" />
         <property name="name" type="text">m_dirPicker</property>
         <property name="style" type="bitlist">
 			<option name="wxDIRP_DEFAULT_STYLE" help="The default style: includes wxDIRP_DIR_MUST_EXIST and, under wxMSW only, wxDIRP_USE_TEXTCTRL."/>
@@ -306,6 +317,7 @@ Written by
 
   <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_datePicker</property>
     <property name="style" type="bitlist">
       <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
@@ -318,6 +330,7 @@ Written by
 
   <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_calendar</property>
     <property name="style" type="bitlist">
       <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
@@ -337,6 +350,7 @@ Written by
 
   <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_scrollBar</property>
     <property name="value" help="The position of the scrollbar in scroll units." type="uint">0</property>
     <property name="range" help="The maximum position of the scrollbar." type="uint">100</property>
@@ -369,6 +383,7 @@ Written by
 
   <objectinfo class="wxSpinCtrl" icon="spin_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_spinCtrl</property>
     <property name="value" type="wxString"></property>
     <property name="min" type="int"     help="Minimal value.">0</property>
@@ -383,6 +398,7 @@ Written by
 
   <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_spinBtn</property>
     <property name="style" type="bitlist">
       <option name="wxSP_HORIZONTAL" help="Specifies a horizontal spin button (note that this style is not supported in wxGTK)." />
@@ -396,6 +412,7 @@ Written by
 
   <objectinfo class="wxHyperlinkCtrl" icon="hyperlink_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_hyperlink</property>
 	<property name="label" type="wxString_i18n" help="Text of the hyperlink">wxFB Website</property>
 	<property name="url" type="wxString" help="Target of the hyperlink">http://www.wxformbuilder.org</property>
@@ -418,6 +435,7 @@ Written by
     <inherits class="wxWindow">
 		<property name="window_style">wxSUNKEN_BORDER</property>
 	</inherits>
+	<inherits class="AUI" />
     <property name="name" type="text">m_genericDirCtrl</property>
 	<property name="defaultfolder" type="wxString_i18n" help="Initial Directory."/>
 	<property name="filter" type="wxString_i18n" help="A filter string, using the same syntax as that for wxFileDialog. This may be empty if filters are not being used. Example: &quot;All files (*.*)|*.*|JPEG files (*.jpg)|*.jpg&quot;."/>
@@ -435,7 +453,8 @@ Written by
   </objectinfo>
 
   <objectinfo class="CustomControl" icon="custom_control.xpm" type="widget">
-    <inherits class="wxWindow"/>
+    <inherits class="wxWindow" />
+	<inherits class="AUI" />
 	<property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
 	<property name="class" type="text" help="The control is generated to XRC with this class."/>
     <property name="declaration" type="text" help="Code to generate for the declaration of this control."/>
@@ -447,6 +466,7 @@ Written by
   <objectinfo class="wxMediaCtrl" startgroup="1" icon="media_ctrl.xpm" type="widget">
 	<inherits class="wxControl" />	
 	<inherits class="wxWindow" />
+	<inherits class="AUI" />
 		<property name="name" type="text">m_mediaCtrl</property>
 		<property name="file" type="file" help="The path to media file."/>
 		<property name="play" type="bool" help="Play the media file"/>

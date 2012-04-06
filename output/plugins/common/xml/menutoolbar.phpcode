@@ -142,15 +142,22 @@ PHP code generation writen by
 	<template name="construction">
                  #ifparenttypeequal "form"
                  @{
-			@$this->$name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
+					#ifequal #parent $aui_managed "1"
+					@{
+						@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+					@}
+					#ifequal #parent $aui_managed "0"
+					@{
+						@$this->$name = #wxparent $name->CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} );
+					@}
                  @}
                  #ifparenttypeequal "sizeritem"
                  @{
-			@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+						@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
                  @}
                  #ifparenttypeequal "gbsizeritem"
                  @{
-			@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+						@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
                  @}
 		#ifnotnull $bitmapsize @{ #nl @$this->$name->SetToolBitmapSize( $bitmapsize ); @}
 
@@ -174,24 +181,21 @@ PHP code generation writen by
 		#ifequal #parent $aui_managed "1"
 		@{ #nl
 			@$this->$name #append PaneInfo = new wxAuiPaneInfo(); #nl
-			@$this->$name #append PaneInfo#ifnotnull $aui_name
+			@$this->$name #append PaneInfo#ifnotnull $aui_name 
 			@{->Name( $aui_name )@}->$docking()#ifnotnull $caption 
-			@{->Caption( $caption )@}#ifequal $caption_visible "0"
-			@{->CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
-			@{->CloseButton( $close_button )@}#ifequal $maximize_button "1"
-			@{->MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
+			@{->Caption( $caption )@}#ifequal $caption_visible "0" 
+			@{->CaptionVisible( $caption_visible )@}#ifequal $close_button "0" 
+			@{->CloseButton( $close_button )@}#ifequal $maximize_button "1" 
+			@{->MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1" 
 			@{->MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
 			@{->PinButton( $pin_button )@}#ifequal $pane_border "0"
 			@{->PaneBorder( $pane_border )@}#ifequal $gripper "1"
-			@{->Gripper()@}#ifequal $show "0"
+			@{->Gripper()@}#ifequal $show "0" 
 			@{->Hide()@}#ifequal $moveable "0"
-			@{->Movable( $moveable )@}#ifnotnull $dock
-			@{->$dock()#ifequal $dock "Float"
-				@{->FloatingPosition( $pane_position )@}	
-			@}#ifnotnull $resize
+			@{->Movable( $moveable )@}#ifnotnull $dock 
+			@{->$dock()#ifequal $dock "Float" @{->FloatingPosition( $pane_position )@}@}#ifnotnull $resize
 			@{->$resize()#ifequal $resize "Resizable"
-				@{->FloatingSize( $pane_size )@}	
-			@}#ifequal $dock_fixed "0"
+			@{->FloatingSize( $pane_size )@}@}#ifequal $dock_fixed "0"
 			@{->DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
 			@{->BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
 			@{->TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
@@ -199,12 +203,15 @@ PHP code generation writen by
 			@{->RightDockable( $RightDockable )@}#ifequal $floatable "0"
 			@{->Floatable( $floatable )@}#ifnotnull $aui_row
 			@{->Row( $aui_row )@}#ifnotnull $aui_position
-			@{->Position( $aui_position )@}#ifnotnull $aui_layer
+			@{->Position( $aui_position )@}#ifnotnull $best_size
+			@{->BestSize( $best_size )@}#ifnotnull $min_size
+			@{->MinSize( $min_size )@}#ifnotnull $max_size
+			@{->MaxSize( $max_size )@}#ifnotnull $aui_layer
 			@{->Layer( $aui_layer )@}#ifequal $center_pane "1"
 			@{->CentrePane()@}#ifequal $default_pane "1"
 			@{->DefaultPane()@}#ifequal $toolbar_pane "1"
 			@{->ToolbarPane()@}; #nl
-			@$this->m_mgr->AddPane( @$this->$name, @$this->$name #append PaneInfo );
+			@$this->m_mgr->AddPane( @$this->$name, @$this->$name #append PaneInfo ); #nl
 		@}
 		@}
 	</template>
