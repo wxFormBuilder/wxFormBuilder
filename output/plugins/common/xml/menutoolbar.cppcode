@@ -266,7 +266,10 @@ Written by
 
   <templates class="wxAuiToolBar">
     <template name="declaration">#class* $name;</template>
-    <template name="include">@#include &lt;wx/aui/auibar.h&gt;</template>
+    <template name="include">
+		@#include &lt;wx/aui/aui.h&gt; #nl
+		@#include &lt;wx/aui/auibar.h&gt;
+	</template>
     <template name="construction">
                  $name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		#ifnotnull $bitmapsize @{ #nl $name->SetToolBitmapSize( $bitmapsize ); @}
