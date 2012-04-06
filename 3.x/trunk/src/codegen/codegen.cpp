@@ -137,6 +137,9 @@ bool TemplateParser::ParseMacro()
 	case ID_IFTYPEEQUAL:
 		ParseIfTypeEqual();
 		break;
+	case ID_IFTYPENOTEQUAL:
+		ParseIfTypeNotEqual();
+		break;
 	default:
 		THROW_WXFBEX( wxT("Invalid Macro Type") );
 		break;
@@ -795,6 +798,26 @@ bool TemplateParser::ParseIfTypeEqual()
     return false;
 }
 
+bool TemplateParser::ParseIfTypeNotEqual()
+{
+    // get examined type name
+    wxString type = ExtractLiteral();
+
+    // get the template to generate if comparison is true
+    wxString inner_template = ExtractInnerTemplate();
+
+    // compare give type name with type of the wx parent object
+    if( !IsEqual( m_obj->GetObjectTypeName(), type) )
+    {
+        // generate the code
+		PTemplateParser parser = CreateParser( this, inner_template );
+		m_out << parser->ParseTemplate();
+		return true;
+	}
+	
+    return false;
+}
+
 TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 {
 	//  Debug::Print("Parsing command %s",ident.c_str());
@@ -837,6 +860,8 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_UNINDENT;
 	else if (ident == wxT("iftypeequal") )
 		return ID_IFTYPEEQUAL;
+	else if (ident == wxT("iftypenotequal") )
+		return ID_IFTYPENOTEQUAL;
 	else
 		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
 }

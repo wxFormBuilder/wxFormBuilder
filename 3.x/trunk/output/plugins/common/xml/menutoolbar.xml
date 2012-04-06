@@ -75,6 +75,7 @@ Written by
 
   <objectinfo class="wxToolBar" icon="toolbar.xpm" type="toolbar" startgroup="1">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_toolBar</property>
     <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels." />
     <property name="margins" type="wxSize"    help="Values to be used as margins for the toolbar." />
@@ -95,6 +96,7 @@ Written by
 
  <objectinfo class="wxAuiToolBar" icon="auitoolbar.xpm" type="toolbar">
     <inherits class="wxWindow" />
+	<inherits class="AUI" />
     <property name="name" type="text">m_auiToolBar</property>
     <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels." />
     <property name="margins" type="wxSize"    help="Values to be used as margins for the toolbar." />

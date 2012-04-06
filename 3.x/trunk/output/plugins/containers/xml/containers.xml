@@ -28,11 +28,13 @@ Written by
 		<inherits class="wxWindow">
 			<property name="window_style">wxTAB_TRAVERSAL</property>
 		</inherits>
+		<inherits class="AUI" />
 		<property name="name" type="text">m_panel</property>
 	</objectinfo>
 	
 	<objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter"  startgroup="1">
 		<inherits class="wxWindow" />
+		<inherits class="AUI" />
 		<property name="name" type="text">m_splitter</property>
 		<property name="style" type="bitlist">
 			<option name="wxSP_3D"                  help="Draws a 3D effect border and sash." />
@@ -62,6 +64,7 @@ Written by
 		<inherits class="wxWindow">
 			<property name="window_style">wxHSCROLL|wxVSCROLL</property>
 		</inherits>
+		<inherits class="AUI" />
 		<property name="name" type="text">m_scrolledWindow</property>
 		<property name="scroll_rate_x" type="uint" help="Set the horizontal scrolling increment.">5</property>
 		<property name="scroll_rate_y" type="uint" help="Set the vertical scrolling increment.">5</property>
@@ -69,6 +72,7 @@ Written by
 
 	<objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook"  startgroup="1">
 		<inherits class="wxWindow" />
+		<inherits class="AUI" />
 		<property name="name" type="text">m_notebook</property>
 		<property name="bitmapsize" type="wxSize" help="Size of page images"/>
 		<property name="style" type="bitlist">
@@ -93,6 +97,7 @@ Written by
 
 	<objectinfo class="wxAuiNotebook" icon="auinotebook.xpm" type="auinotebook">
 		<inherits class="wxWindow" />
+		<inherits class="AUI" />
 		<property name="name" type="text">m_auinotebook</property>
 		<property name="style" type="bitlist">
 			<option name="wxAUI_NB_DEFAULT_STYLE"  help="Defined as wxAUI_NB_TOP | wxAUI_NB_TAB_SPLIT | wxAUI_NB_TAB_MOVE | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_CLOSE_ON_ACTIVE_TAB." />
@@ -129,6 +134,7 @@ Written by
 	
 	<objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
 		<inherits class="wxWindow" />
+		<inherits class="AUI" />
 		<property name="name" type="text">m_listbook</property>
 		<property name="bitmapsize" type="wxSize" help="Size of page images"/>
 		<property name="style" type="bitlist">
@@ -149,6 +155,7 @@ Written by
 
 	<objectinfo class="wxChoicebook" icon="choicebook.xpm" type="choicebook">
 		<inherits class="wxWindow" />
+		<inherits class="AUI" />
 		<property name="name" type="text">m_choicebook</property>
 		<property name="style" type="bitlist">
 			<option name="wxCHB_DEFAULT" help="Choose the default location for the labels depending on the current platform (left everywhere except Mac where it is top)." />

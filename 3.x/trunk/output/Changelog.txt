@@ -1,8 +1,11 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-03/29/2012 Version 3.03.03 (Beta)
+04/06/2012 Version 3.03.03 (Beta)
 * ID: 3510480 - Subclass not displayed after reloading a project in 3.3.2.
 * ID: 3506972 - Generating Python code.
+* ID: 3148236 - Configure wxAuiManager + AUI-related properties aren't shown for widgets/forms where it has no sense.
+* Fixed code generation for wxToolBar/wxAuiToolBar if parent form is managed by AUI.
+* wxAdditions widgets (such are wxPropertyGrid, wxScintilla, etc.) can be placed directly to the AUI-managed frame as well.
 
 02/10/2012 Version 3.03.02 (Beta)
 * ID: 3470209 - wxDIRCTRL_MULTIPLE Style missing for wxGenericDirCtrl.

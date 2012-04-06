@@ -130,7 +130,8 @@ protected:
 		ID_CLASS,
 		ID_INDENT,
 		ID_UNINDENT,
-		ID_IFTYPEEQUAL
+		ID_IFTYPEEQUAL,
+		ID_IFTYPENOTEQUAL
 	} Ident;
 
 	bool IsEqual(const wxString& value, const wxString& set);
@@ -178,6 +179,7 @@ protected:
 	void ParseIndent();
 	void ParseUnindent();
 	bool ParseIfTypeEqual();
+	bool ParseIfTypeNotEqual();
 
 	PProperty GetProperty( wxString* childName = NULL );
 	PObjectBase GetWxParent();
