@@ -1269,7 +1269,7 @@ void DesignerWindow::OnPaint(wxPaintEvent &event)
 		dc.SetDeviceOrigin( origin.x, origin.y );
 		HighlightSelection( dc );
 	}
-
+	
 	event.Skip();
 }
 
@@ -1298,9 +1298,22 @@ void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize
 
 void DesignerWindow::HighlightSelection( wxDC& dc )
 {
-	// do not highlight if AUI is used
+	// do not highlight if AUI is used in floating mode
 	VisualEditor *editor = wxDynamicCast( GetParent(), VisualEditor );
-	if( editor && editor->m_auimgr ) return ;
+	if( editor && editor->m_auimgr )
+	{
+		wxWindow *windowItem =  wxDynamicCast( m_selItem, wxWindow );
+		while( windowItem )
+		{
+			wxAuiPaneInfo info = editor->m_auimgr->GetPane( windowItem );
+			if( info.IsOk() )
+			{
+				if( info.IsFloating() ) return;
+				else break;
+			}
+			windowItem = windowItem->GetParent();
+		}
+	}
 	
 	wxSize size;
 	PObjectBase object = m_selObj.lock();
@@ -1509,22 +1522,6 @@ DesignerWindow::HighlightPaintHandler::HighlightPaintHandler(wxWindow *win)
 
 void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 {
-//	wxPaintDC dc(this);
-/*	wxSize size = GetSize();
-	dc.SetPen(*wxBLACK_PEN);
-	for ( int i = 0; i < size.GetWidth(); i += m_x )
-	{
-		for ( int j = 0; j < size.GetHeight(); j += m_y )
-		{
-			dc.DrawPoint( i - 1, j - 1 );
-		}
-	}*/
-
-	/*if ( m_actPanel == this)
-	{
-		HighlightSelection( dc );
-	}*/
-
 	wxWindow *aux = m_window;
 	while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
 	DesignerWindow *dsgnWin = (DesignerWindow*) aux;
@@ -1533,6 +1530,6 @@ void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 		wxPaintDC dc(m_window);
 		dsgnWin->HighlightSelection(dc);
 	}
-
+	
 	event.Skip();
 }
