@@ -26,6 +26,7 @@ Written by
   <objectinfo class="wxButton" icon="button.xpm" type="widget">
     <inherits class="wxWindow" />
     <inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_button</property>
     <property name="style" type="bitlist">
       <option name="wxBU_LEFT"      help="Left-justifies the label. Windows and GTK+ only."/>
@@ -76,6 +77,7 @@ Written by
   <objectinfo class="wxTextCtrl" icon="text_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_textCtrl</property>
     <property name="style" type="bitlist">
       <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
@@ -128,6 +130,7 @@ Written by
   <objectinfo class="wxComboBox" icon="combo_box.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_comboBox</property>
     <property name="value" type="wxString_i18n">Combo!</property>
     <property name="choices" type="stringlist" help="Contents of the Combo Box"></property>
@@ -147,6 +150,7 @@ Written by
   <objectinfo class="wxBitmapComboBox" icon="combo_box.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_bcomboBox</property>
     <property name="value" type="wxString_i18n">Combo!</property>
     <property name="choices" type="stringlist" help="Contents of the Combo Box. Use format bitmap:choice "></property>
@@ -164,6 +168,7 @@ Written by
   <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_choice</property>
     <property name="choices" type="stringlist" help="An array of strings with which to initialise the choice control." />
     <property name="selection" type="uint" help="Zero-based position of the selected choice.">0</property>
@@ -176,6 +181,7 @@ Written by
   <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_listBox</property>
     <property name="choices" type="stringlist" help="Contents of the List Box."/>
     <property name="style" type="bitlist" help="Note that wxLB_SINGLE, wxLB_MULTIPLE and wxLB_EXTENDED styles are mutually exclusive and you can specify at most one of them (single selection is the default).">
@@ -194,6 +200,7 @@ Written by
   <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_listCtrl</property>
     <property name="style" type="bitlist">
       <option name="wxLC_LIST"            help="Multicolumn list view, with optional small icons. Columns are computed automatically, i.e. you don't set columns as in wxLC_REPORT. In other words, the list wraps, unlike a wxListBox." />
@@ -237,6 +244,7 @@ Written by
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_checkBox</property>
     <property name="label" type="wxString_i18n">Check Me!</property>
     <property name="style" type="bitlist">
@@ -252,6 +260,7 @@ Written by
   <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_radioBox</property>
     <property name="label" type="wxString_i18n">wxRadioBox</property>
     <property name="choices" type="stringlist"  help="Contents of the Radio Box.">&quot;Radio Button&quot;</property>
@@ -267,6 +276,7 @@ Written by
   <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_radioBtn</property>
     <property name="label" type="wxString_i18n">RadioBtn</property>
     <property name="style" type="bitlist">
@@ -289,6 +299,7 @@ Written by
   <objectinfo class="wxSlider" icon="slider.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_slider</property>
     <property name="value" type="int"    help="Initial position for the slider.">50</property>
     <property name="minValue" type="int" help="Minimum slider position.">0</property>
@@ -330,6 +341,7 @@ Written by
   <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
+	<inherits class="Validator" />
     <property name="name" type="text">m_gauge</property>
     <property name="range" type="uint" help="Integer range (maximum value) of the gauge.">100</property>
     <property name="value" type="uint" help="Initial position for the gauge."></property>
