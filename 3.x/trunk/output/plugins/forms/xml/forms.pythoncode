@@ -247,6 +247,8 @@ Python code generation writen by
 			@{ 
 				self.m_mgr = wx.aui.AuiManager() #nl
 				self.m_mgr.SetManagedWindow( self ) #nl
+				#ifnotnull $aui_manager_style
+				@{ self.m_mgr.SetFlags($aui_manager_style) #nl @}
 			@}
 		</template>
 		<template name="after_addchild">
@@ -377,6 +379,8 @@ Python code generation writen by
 			@{ 
 				self.m_mgr = wx.aui.AuiManager() #nl
 				self.m_mgr.SetManagedWindow( self ) #nl
+				#ifnotnull $aui_manager_style
+				@{ self.m_mgr.SetFlags($aui_manager_style) #nl @}
 			@}
 		</template>
 		<template name="after_addchild">
