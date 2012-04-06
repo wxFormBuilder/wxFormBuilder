@@ -99,6 +99,12 @@
 		<template name="evt_connect_OnUpdateUI">self.$name.Bind( wx.EVT_UPDATE_UI, #handler )</template>
   </templates>
   
+  <templates class="Validator">
+  	<template name="include" />   
+	<template name="valvar_declaration" />
+	<template name="settings" />           
+  </templates>
+  
   <templates class="AUI">
 	<template name="settings">
 		#ifparenttypeequal "form"

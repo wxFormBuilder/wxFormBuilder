@@ -116,34 +116,6 @@
       <option name="wxWS_EX_PROCESS_IDLE"           help="This window should always process idle events, even if the mode set by wxIdleEvent::SetMode is wxIDLE_PROCESS_SPECIFIED." />
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
-
-	<category name="Validator">
-		<property name = "validator_type" type="option" hidden="1" help="For C++ Only.&#x0A;Type of a validator assigned to the window">
-			<option name="wxDefaultValidator" help="Default validator (does nothing)"/>
-			<option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
-			<option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>wxDefaultValidator
-		</property>
-    	<property name="validator_style" type="bitlist" help="For C++ Only.&#x0A;Data filtering style for wxTextValidator.">
-      		<option name="wxFILTER_NONE"   help="No filtering takes place." />
-      		<option name="wxFILTER_ASCII"           help="Non-ASCII characters are filtered out." />
-      		<option name="wxFILTER_ALPHA"              help="Non-alpha characters are filtered out." />
-      		<option name="wxFILTER_ALPHANUMERIC"           help="Non-alphanumeric characters are filtered out." />
-      		<option name="wxFILTER_NUMERIC"     help="Non-numeric characters are filtered out." />
-			<option name="wxFILTER_INCLUDE_LIST"     help="Use an include list. The validator checks if the user input is on the list, complaining if not. See wxTextValidator::SetIncludes." />
-			<option name="wxFILTER_EXCLUDE_LIST"     help="Use an exclude list. The validator checks if the user input is on the list, complaining if it is. See wxTextValidator::SetExcludes." />
-			<option name="wxFILTER_INCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if not. See wxTextValidator::SetIncludes." />
-			<option name="wxFILTER_EXCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if it is. See wxTextValidator::SetExcludes." />
-			wxFILTER_NONE
-    	</property>
-		<property name="validator_variable" type="text" help="For C++ Only.&#x0A;Name of a member variable associated with the validator" />
-		<property name = "validator_data_type" type="option" hidden="1" help="For C++ Only.&#x0A;Data type of the member variable">
-			<option name="" help ="Undefined data type."/>
-			<option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton." />
-			<option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>
-			<option name="wxString" help="String value. This should be used for wxButton, wxComboBox, wxStaticText, wxTextCtrl." />
-			<option name="wxArrayInt" help="Array of integers. This should be used for wxListBox, wxCheckListBox." />
-		</property>
-	</category>
     <property name="tooltip" type="wxString_i18n"   help="Attach a tooltip to the window."/>
 	<property name="context_menu" type="bool" help="Generates event handler for displaying of menu assigned to this widgets as a context menu.">1</property>
 	<property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
@@ -214,7 +186,7 @@
 	<property name="type" 			type="text"	/>
   </objectinfo>
 
-<objectinfo class="AUI" type="interface">
+  <objectinfo class="AUI" type="interface">
 	<property name="aui_name" type="wxString" help="Sets the internal name of the pane."/>
 	<property name="caption_visible" type="bool" help="Indicates that a pane caption should be visible.">1</property>
 	<property name="caption" type="wxString" help="Sets the caption of the pane."/>
@@ -262,6 +234,34 @@
 	<property name="aui_position" type="uint" help="Determines the position of the docked pane."/>
 	<property name="aui_row" type="uint" help="Determines the row of the docked pane."/>
 	<property name="aui_layer" type="uint" help="Determines the layer of the docked pane. The dock layer is similar to an onion, the inner-most layer being layer 0. Each shell moving in the outward direction has a higher layer number. This allows for more complex docking layout formation."/>
-</objectinfo>
+  </objectinfo>
+
+  <objectinfo class="Validator" type="interface">
+	<property name = "validator_type" type="option" hidden="1" help="For C++ Only.&#x0A;Type of a validator assigned to the window">
+		<option name="wxDefaultValidator" help="Default validator (does nothing)"/>
+		<option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
+		<option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>wxDefaultValidator
+	</property>
+	<property name="validator_style" type="bitlist" help="For C++ Only.&#x0A;Data filtering style for wxTextValidator.">
+		<option name="wxFILTER_NONE"   help="No filtering takes place." />
+		<option name="wxFILTER_ASCII"           help="Non-ASCII characters are filtered out." />
+		<option name="wxFILTER_ALPHA"              help="Non-alpha characters are filtered out." />
+		<option name="wxFILTER_ALPHANUMERIC"           help="Non-alphanumeric characters are filtered out." />
+		<option name="wxFILTER_NUMERIC"     help="Non-numeric characters are filtered out." />
+		<option name="wxFILTER_INCLUDE_LIST"     help="Use an include list. The validator checks if the user input is on the list, complaining if not. See wxTextValidator::SetIncludes." />
+		<option name="wxFILTER_EXCLUDE_LIST"     help="Use an exclude list. The validator checks if the user input is on the list, complaining if it is. See wxTextValidator::SetExcludes." />
+		<option name="wxFILTER_INCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if not. See wxTextValidator::SetIncludes." />
+		<option name="wxFILTER_EXCLUDE_CHAR_LIST"     help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if it is. See wxTextValidator::SetExcludes." />
+		wxFILTER_NONE
+	</property>
+	<property name="validator_variable" type="text" help="For C++ Only.&#x0A;Name of a member variable associated with the validator" />
+	<property name = "validator_data_type" type="option" hidden="1" help="For C++ Only.&#x0A;Data type of the member variable">
+		<option name="" help ="Undefined data type."/>
+		<option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton." />
+		<option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>
+		<option name="wxString" help="String value. This should be used for wxButton, wxComboBox, wxStaticText, wxTextCtrl." />
+		<option name="wxArrayInt" help="Array of integers. This should be used for wxListBox, wxCheckListBox." />
+	</property>
+  </objectinfo>
   
 </package>
