@@ -6,7 +6,8 @@
 * ID: 3148236 - Configure wxAuiManager + AUI-related properties aren't shown for widgets/forms where it has no sense.
 * Fixed code generation for wxToolBar/wxAuiToolBar if parent form is managed by AUI.
 * wxAdditions widgets (such are wxPropertyGrid, wxScintilla, etc.) can be placed directly to the AUI-managed frame as well.
-* Offer validators for just those controls where it has a sense.
+* Offers validators just for those controls where it has a sense.
+* Improved highlighting of widgets if AUI is used.
 
 02/10/2012 Version 3.03.02 (Beta)
 * ID: 3470209 - wxDIRCTRL_MULTIPLE Style missing for wxGenericDirCtrl.
