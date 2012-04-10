@@ -691,6 +691,7 @@ void VisualEditor::Create()
 		{
 			// There is no form to display
 			m_back->Show(false);
+			Refresh();
 		}
 #if wxVERSION_NUMBER < 2900 && !defined(__WXGTK__)
 		Thaw();

@@ -221,7 +221,6 @@ wxFBBitmapProperty::wxFBBitmapProperty( const wxString& label,
                                         const wxString& value ) : wxPGProperty( label, name )
 {
     SetValue( WXVARIANT( value ) );
-	
 }
 
 void wxFBBitmapProperty::CreateChildren()
@@ -272,11 +271,8 @@ void wxFBBitmapProperty::CreateChildren()
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
 {
-#if wxVERSION_NUMBER < 2900
     wxPGChoices sourceChoices;
-#else
-    wxArrayString sourceChoices;
-#endif
+
     // Add 'source' property (common for all other children)
     sourceChoices.Add(_("Load From File") );
     sourceChoices.Add(_("Load From Embedded File") );
@@ -335,11 +331,8 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyIconSize()
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
 {
-#if wxVERSION_NUMBER < 2900
     wxPGChoices artIdChoices;
-#else
-    wxArrayString artIdChoices;
-#endif
+
     // Create 'id' property ('Load From Art Provider' only)
     artIdChoices.Add(wxT("wxART_ADD_BOOKMARK"));
     artIdChoices.Add(wxT("wxART_DEL_BOOKMARK "));
@@ -490,9 +483,6 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     artIdChoices.Add(wxT("gtk-zoom-in"));
     artIdChoices.Add(wxT("gtk-zoom-out"));
 
-    /*wxPGProperty *propArtId = new wxEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, -1 );
-    propArtId->SetHelpString(_("wxArtID unique identifier of the bitmap. IDs with prefix 'gtk-' are available under wxGTK only.") );*/
-	
 #if wxVERSION_NUMBER < 2900
 	wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, wxT("") );
 #else
@@ -505,11 +495,8 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
 {
-#if wxVERSION_NUMBER < 2900
     wxPGChoices artClientChoices;
-#else
-    wxArrayString artClientChoices;
-#endif
+
     // Create 'client' property ('Load From Art Provider' only)
     artClientChoices.Add(wxT("wxART_TOOLBAR"));
     artClientChoices.Add(wxT("wxART_MENU"));
@@ -519,9 +506,6 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
     artClientChoices.Add(wxT("wxART_HELP_BROWSER"));
     artClientChoices.Add(wxT("wxART_MESSAGE_BOX"));
     artClientChoices.Add(wxT("wxART_OTHER"));
-
-    /*wxPGProperty *propArtClient = new wxEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, -1 );
-    propArtClient->SetHelpString(_("wxArtClient identifier of the client (i.e. who is asking for the bitmap).") );*/
 
 #if wxVERSION_NUMBER < 2900
 	wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, wxT("") );
@@ -546,13 +530,12 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
                                   int        childIndex,
                                   wxVariant& childValue ) const
 {
-
 	wxFBBitmapProperty* bp = (wxFBBitmapProperty*)this;
 	
     wxString val = thisValue.GetString();	
 	wxArrayString childVals;
 	GetChildValues( val, childVals );
-	wxString newVal;
+	wxString newVal = val;
 
     // Find the appropriate new state
     switch ( childIndex )
@@ -583,10 +566,10 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyFilePath() );
 					}
 					
-					if( childVals.GetCount() > 2)
-					{
+					if( childVals.GetCount() == 2 )
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
-					}
+					else if( childVals.GetCount() > 1 )
+						newVal = childVals.Item(0) + wxT("; ");
 					
                     break;
                 }
@@ -607,11 +590,11 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyResourceName() );  
 					}
 					
-					if( childVals.GetCount() > 2)
-					{
+					if( childVals.GetCount() == 2)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
-					}
-					
+					else if( childVals.GetCount() > 1 )
+						newVal = childVals.Item(0) + wxT("; ");
+						
                     break;
                 }
                 // 'Load From Icon Resource'
@@ -632,10 +615,10 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyIconSize() );
 					}
 					
-					if( childVals.GetCount() > 3)
-					{
+					if( childVals.GetCount() == 3)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; [") + childVals.Item(2) + wxT("]");
-					}
+					else if( childVals.GetCount() > 1 )
+						newVal = childVals.Item(0) + wxT("; ; []");
 					
                     break;
                 }
@@ -657,11 +640,10 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyArtClient() );
 					}
 					
-					if( childVals.GetCount() > 3)
-					{
+					if( childVals.GetCount() == 3)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; ") + childVals.Item(2);
-					}
-			
+					else if( childVals.GetCount() > 1 )
+						newVal = childVals.Item(0) + wxT("; ; ");
                     break;
                 }
             }
@@ -704,7 +686,6 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
         bp->SetValue( ret );
 
 #if wxVERSION_NUMBER >= 2900
-
         return ret;
 #else
         thisValue = ret;
@@ -799,8 +780,7 @@ wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
     GenerateComposedValue(text, argFlags);
     return text;
 #else
-    // TODO: 2.9 version?
-    return wxEmptyString;
+    return GenerateComposedValue();
 #endif
 }
 

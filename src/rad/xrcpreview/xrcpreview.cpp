@@ -166,7 +166,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	wxString workingDir = ::wxGetCwd();
 	// We change the current directory so that the relative paths work properly
-	::wxSetWorkingDirectory( projectPath );
+	if( !projectPath.IsEmpty() ) ::wxSetWorkingDirectory( projectPath );
 	wxXmlResource *res = wxXmlResource::Get();
 	res->InitAllHandlers();
 

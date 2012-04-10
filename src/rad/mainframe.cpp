@@ -353,13 +353,22 @@ m_findDialog( NULL )
 	Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
 
 	// So we don't respond to a FlatNoteBookPageChanged event during construction
+#ifdef USE_FLATNOTEBOOK
 	m_notebook->Connect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
+#else
+	m_notebook->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, wxAuiNotebookEventHandler( MainFrame::OnAuiNotebookPageChanged ), NULL, this );
+#endif
+
 };
 
 
 MainFrame::~MainFrame()
 {
+#ifdef USE_FLATNOTEBOOK
 	m_notebook->Disconnect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
+#else
+	m_notebook->Disconnect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, wxAuiNotebookEventHandler( MainFrame::OnAuiNotebookPageChanged ), NULL, this );
+#endif
 
 #ifdef __WXMAC__
     // work around problem on wxMac
@@ -476,7 +485,9 @@ void MainFrame::SavePosition( const wxString &name )
 	}
 
 	config->SetPath( wxT( ".." ) );
+#ifdef USE_FLATNOTEBOOK
 	config->Write( wxT("/mainframe/editor/notebook_style"), m_notebook->GetWindowStyleFlag() );
+#endif
 }
 
 void MainFrame::OnSaveProject( wxCommandEvent &event )
@@ -1316,7 +1327,11 @@ bool MainFrame::SaveWarning()
 	return ( result != wxCANCEL );
 }
 
+#ifdef USE_FLATNOTEBOOK
 void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
+#else
+void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
+#endif
 {
 	UpdateFrame();
 
@@ -1569,6 +1584,7 @@ wxToolBar * MainFrame::CreateFBToolBar()
 
 wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 {
+#ifdef USE_FLATNOTEBOOK
 	long nbStyle;
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Read( wxT("/mainframe/editor/notebook_style"), &nbStyle, wxFNB_BOTTOM | wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
@@ -1583,23 +1599,41 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
 	m_icons.Add( AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 	m_notebook->SetImageList( &m_icons );
+#else
+	m_notebook = new wxAuiNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+#endif
 
 	m_visualEdit = new VisualEditor( m_notebook );
 	AppData()->GetManager()->SetVisualEditor( m_visualEdit );
 
 	m_notebook->AddPage( m_visualEdit, wxT( "Designer" ), false, 0 );
+#ifndef USE_FLATNOTEBOOK
+	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
+#endif
 
 	m_cpp = new CppPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_cpp, wxT( "C++" ), false, 1 );
+#ifndef USE_FLATNOTEBOOK
+	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
+#endif
 
 	m_python = new PythonPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
+#ifndef USE_FLATNOTEBOOK
+	m_notebook->SetPageBitmap( 2, AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
+#endif
 
 	m_php = new PHPPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_php, wxT( "PHP" ), false, 3 );
+#ifndef USE_FLATNOTEBOOK
+	m_notebook->SetPageBitmap( 3, AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
+#endif
 
 	m_xrc = new XrcPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 4 );
+#ifndef USE_FLATNOTEBOOK
+	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
+#endif
 
 	return m_notebook;
 }
