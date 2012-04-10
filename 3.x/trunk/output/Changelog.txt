@@ -8,6 +8,8 @@
 * wxAdditions widgets (such are wxPropertyGrid, wxScintilla, etc.) can be placed directly to the AUI-managed frame as well.
 * Offers validators just for those controls where it has a sense.
 * Improved highlighting of widgets if AUI is used.
+* AUI notebook is used instead of FlatNotebook if wxFB built with wxWidgets 2.9.x and later.
+* Fixed various bugs if wxFB built with wxWidgets 2.9.x and later.
 
 02/10/2012 Version 3.03.02 (Beta)
 * ID: 3470209 - wxDIRCTRL_MULTIPLE Style missing for wxGenericDirCtrl.

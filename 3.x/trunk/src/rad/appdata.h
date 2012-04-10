@@ -92,7 +92,7 @@ class ApplicationData
 
 		HandlerVector m_handlers;
 
-		void NotifyEvent( wxFBEvent& event );
+		void NotifyEvent( wxFBEvent& event, bool forcedelayed = false );
 
 		// Notifican a cada observador el evento correspondiente
 		void NotifyProjectLoaded();
@@ -113,7 +113,7 @@ class ApplicationData
 
 		void NotifyProjectRefresh();
 
-		void NotifyCodeGeneration( bool panelOnly = false );
+		void NotifyCodeGeneration( bool panelOnly = false, bool forcedelayed = false );
 
 		/**
 		 * Comprueba las referencias cruzadas de todos los nodos del árbol

@@ -43,7 +43,11 @@
 	#if wxCHECK_VERSION( 2, 8, 0 )
 		#define DRAG_OPTION 0
 	#else
-		#define DRAG_OPTION wxFNB_NODRAG
+		#ifdef USE_FLATNOTEBOOK
+			#define DRAG_OPTION wxFNB_NODRAG
+		#else
+			#define DRAG_OPTION 0
+		#endif
 	#endif
 #else
 	#define DRAG_OPTION 0
@@ -108,17 +112,22 @@ void wxFbPalette::Create()
 {
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
+#ifdef USE_FLATNOTEBOOK
 	long nbStyle;
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Read( wxT( "/palette/notebook_style" ), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | DRAG_OPTION | wxFNB_DROPDOWN_TABS_LIST  | wxFNB_VC8 | wxFNB_CUSTOM_DLG );
 
 	m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
+#else
+	m_notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+#endif
 
 	unsigned int pkg_count = AppData()->GetPackageCount();
 
 	Debug::Print( wxT( "[Palette] Pages %d" ), pkg_count );
 
+#ifdef USE_FLATNOTEBOOK
 	// Populate icon vector
 	for ( unsigned int j = 0; j < pkg_count;j++ )
 	{
@@ -128,7 +137,10 @@ void wxFbPalette::Create()
 
 	// Add icons to notebook
 	m_notebook->SetImageList( &m_icons );
-
+#else
+	wxSize minsize;
+#endif
+	
 	for ( unsigned int i = 0; i < pkg_count;i++ )
 	{
 		PObjectPackage pkg = AppData()->GetPackage( i );
@@ -169,16 +181,35 @@ void wxFbPalette::Create()
 		sizer->Fit( panel );
 		sizer->SetSizeHints( panel );
 
+#ifndef USE_FLATNOTEBOOK
+		wxSize cursize = panel->GetSize();
+		if( cursize.x > minsize.x ) minsize.x = cursize.x;
+		if( cursize.y > minsize.y ) minsize.y = cursize.y + 30;
+#endif
+		
 		m_notebook->AddPage( panel, pkg_name, false, i );
+#ifndef USE_FLATNOTEBOOK	
+		m_notebook->SetPageBitmap( i, pkg->GetPackageIcon() );
+#endif
 
 	}
 	//Title *title = new Title( this, wxT("Component Palette") );
 	//top_sizer->Add(title,0,wxEXPAND,0);
-	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
+#ifdef USE_FLATNOTEBOOK
+	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
 	SetAutoLayout( true );
 	SetSizer( top_sizer );
 	top_sizer->Fit( this );
 	top_sizer->SetSizeHints( this );
+#else
+top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
+	SetSizer( top_sizer );
+	SetSize( minsize );
+	SetMinSize( minsize );
+	Layout();
+	Fit();
+#endif
+	
 }
 
 void wxFbPalette::OnSpinUp( wxSpinEvent& )
@@ -243,6 +274,7 @@ void wxFbPalette::OnButtonClick( wxCommandEvent &event )
 
 wxFbPalette::~wxFbPalette()
 {
+#ifdef USE_FLATNOTEBOOK
 	wxConfigBase* config = wxConfigBase::Get();
 	wxString pages;
 	for ( size_t i = 0; i < ( size_t )m_notebook->GetPageCount(); ++i )
@@ -251,4 +283,5 @@ wxFbPalette::~wxFbPalette()
 	}
 	config->Write( wxT( "/palette/pageOrder" ), pages );
 	config->Write( wxT( "/palette/notebook_style" ), m_notebook->GetWindowStyleFlag() );
+#endif
 }

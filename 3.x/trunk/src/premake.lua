@@ -79,7 +79,7 @@ else
 end
 --package.libdir = "../../lib"
 -- Set the defines.
-package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA", "SCI_NAMESPACE" }
+package.defines = { "WXUSINGDLL_FNB", "TIXML_USE_TICPP", "NO_GCC_PRAGMA", "SCI_NAMESPACE", "USE_FLATNOTEBOOK" }
 -- Load the shlibs from the 'lib/wxformbuilder' subdirectory.
 if ( macosx ) then
 	table.insert( package.linkoptions, "-Wl,-L../output/lib/wxformbuilder" )

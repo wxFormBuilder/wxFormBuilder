@@ -2031,7 +2031,11 @@ void ApplicationData::NewProject()
 
 void ApplicationData::GenerateCode( bool panelOnly )
 {
+#ifdef USE_FLATNOTEBOOK
 	NotifyCodeGeneration( panelOnly );
+#else
+	NotifyCodeGeneration( panelOnly, true );
+#endif
 }
 
 void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file )
@@ -2631,11 +2635,11 @@ void ApplicationData::RemoveHandler( wxEvtHandler* handler )
 	}
 }
 
-void ApplicationData::NotifyEvent( wxFBEvent& event )
+void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 {
 	static int count = 0;
 
-	if ( count == 0 )
+	if ( !forcedelayed && count == 0 )
 	{
 		count++;
 #if wxVERSION_NUMBER < 2900
@@ -2714,14 +2718,14 @@ void ApplicationData::NotifyEventHandlerModified( PEvent evtHandler )
 	NotifyEvent( event );
 }
 
-void ApplicationData::NotifyCodeGeneration( bool panelOnly )
+void ApplicationData::NotifyCodeGeneration( bool panelOnly, bool forcedelayed )
 {
 	wxFBEvent event( wxEVT_FB_CODE_GENERATION );
 
 	// Using the previously unused Id field in the event to carry a boolean
 	event.SetId( ( panelOnly ? 1 : 0 ) );
 
-	NotifyEvent( event );
+	NotifyEvent( event, forcedelayed );
 }
 
 void ApplicationData::NotifyProjectRefresh()
