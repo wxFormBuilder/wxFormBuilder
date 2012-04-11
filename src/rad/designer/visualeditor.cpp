@@ -1046,6 +1046,7 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	
 	// highlight parent toolbar instead of its children
 	PObjectBase toolbar = obj->FindNearAncestor( wxT("toolbar") );
+	if( !toolbar ) toolbar = obj->FindNearAncestor( wxT("toolbar_form") );
 	if( toolbar ) obj = toolbar;
 
 	// Make sure this is a visible object

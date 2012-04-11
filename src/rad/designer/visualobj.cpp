@@ -62,7 +62,8 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 			// this event is always redirected to parent (aui)toolbar even if its tool was clicked
 			// so it is important to skip the event to select clicked tool later in "common"
 			// plugin.
-			if( obj->GetObjectTypeName() == wxT("toolbar") ) event.Skip();
+			if( obj->GetObjectTypeName() == wxT("toolbar") ||
+				obj->GetObjectTypeName() == wxT("toolbar_form") ) event.Skip();
 		}
 		else
 		{
