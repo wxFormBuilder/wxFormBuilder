@@ -768,10 +768,10 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 void wxFBBitmapProperty::OnSetValue()
 {
 }
-
+#if wxVERSION_NUMBER < 2900
 wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
 {
-#if wxVERSION_NUMBER < 2900
+//if wxVERSION_NUMBER < 2900
     if(GetCount() == 0)
 	{
 		return m_value.GetString();
@@ -779,11 +779,11 @@ wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
     wxString text;
     GenerateComposedValue(text, argFlags);
     return text;
-#else
-    return GenerateComposedValue();
-#endif
+//else
+//  return GenerateComposedValue();
+//endif
 }
-
+#endif
 wxString wxFBBitmapProperty::SetupImage( const wxString &imgPath )
 {
 	if(!imgPath.IsEmpty())
