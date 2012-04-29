@@ -128,9 +128,9 @@ public:
 	void CreateChildren();
 
 	void UpdateChildValues(const wxString& value);
-	
+#if wxVERSION_NUMBER < 2900
 	wxString GetValueAsString( int argFlags =0 ) const;
-
+#endif
 protected:
 
 	void GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const;
