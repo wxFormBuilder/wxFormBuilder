@@ -22,7 +22,7 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 // PHP code generation writen by
-//   Michal Bližňak - michal.bliznak@gmail.com
+//   Jefferson González - jgmdev@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -203,7 +203,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 				int pointSize = font.GetPointSize();
 				wxString size = pointSize <= 0 ?
 #if wxVERSION_NUMBER < 2900
-                                    wxT("wxNORMAL_FONT->GetPointSize()")
+                                    wxT("wxC2D(wxNORMAL_FONT)->GetPointSize()")
                                     : wxString::Format( wxT("%i"), pointSize ).c_str();
 
                 result = wxString::Format
@@ -214,7 +214,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
                             ( font.m_faceName.empty() ? wxT("wxEmptyString")
                             : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
 #else
-                                    "wxNORMAL_FONT->GetPointSize()"
+                                    "wxC2D(wxNORMAL_FONT)->GetPointSize()"
                                     : wxString::Format( "%i", pointSize );
 
                 result = wxString::Format
@@ -240,7 +240,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 				if ( value.find_first_of( wxT("wx") ) == 0 )
 				{
 					// System Colour
-					result << wxT("wxSystemSettings->GetColour( ") << ValueToCode( PT_OPTION, value ) << wxT(" )");
+					result << wxT("wxSystemSettings::GetColour( ") << ValueToCode( PT_OPTION, value ) << wxT(" )");
 				}
 				else
 				{
@@ -1144,7 +1144,8 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 					break;
 			}
 		}
-		else if ( 	type == wxT("menubar")	||
+		else if (
+				type == wxT("menubar")	||
 				type == wxT("menu")		||
 				type == wxT("submenu")	||
 				type == wxT("toolbar")	||
