@@ -25,7 +25,7 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 // PHP code generation writen by
-//   Michal Bližňak - michal.bliznak@gmail.com
+//   Jefferson González - jgmdev@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
 

@@ -22,7 +22,7 @@ Written by
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 
 PHP code generation written by
-  Michal Bližňák - michal.bliznak@gmail.com
+  Jefferson González - jgmdev@gmail.com
 -->
 <codegen language="PHP">
 
@@ -162,7 +162,7 @@ PHP code generation written by
 
   <templates class="wxAnimationCtrl">
     <template name="construction">
-		@$this->$name = new #class( #wxparent $name, $id, wxanimate.NullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		@$this->$name = new #class( #wxparent $name, $id, wxNullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
 		#ifnotnull $animation
 		@{ #nl @$this->$name->LoadFile( $animation ); @}
     </template>
