@@ -192,7 +192,7 @@ wxString CCodeParser::ParseSourceFunctions(wxString code)
 		func->SetDocumentation(code.Mid(previousFunctionEnd, functionStart - previousFunctionEnd));
 		functionStart++;
 
-		functionEnd = code.find('\n', functionStart);
+		functionEnd = code.find('{', functionStart);
 		func->SetHeading(code.Mid(functionStart, functionEnd - functionStart));
 
 		//find the opening brackets of the function
