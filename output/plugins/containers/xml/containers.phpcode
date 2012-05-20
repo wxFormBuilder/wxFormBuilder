@@ -67,7 +67,7 @@ PHP code generation written by
 			#ifnotnull $sashpos
 			@{
 				#ifnotequal $sashpos "-1"
-			@{	@$this->$name->Connect( wxEVT_IDLE, @$this->$name #append OnIdle ); #nl @}
+			@{	@$this->$name->Connect( wxEVT_IDLE, array(@$this, "$name #append OnIdle") ); #nl @}
 			@}
 			#ifnotnull $min_pane_size
 			@{
