@@ -154,6 +154,10 @@ private:
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
 	
 	void ModifyProperty( PProperty prop, const wxString& str );
+	
+#if wxVERSION_NUMBER >= 2900
+	void OnChildFocus( wxChildFocusEvent& event );
+#endif
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);

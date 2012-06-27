@@ -71,7 +71,9 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
     EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
     EVT_FB_PROPERTY_MODIFIED( ObjectInspector::OnPropertyModified )
     EVT_FB_EVENT_HANDLER_MODIFIED( ObjectInspector::OnEventHandlerModified )
-
+#if wxVERSION_NUMBER >= 2900
+	EVT_CHILD_FOCUS( ObjectInspector::OnChildFocus ) 
+#endif
 END_EVENT_TABLE()
 
 ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
@@ -1202,3 +1204,10 @@ void ObjectInspector::ModifyProperty( PProperty prop, const wxString& str )
 	AppData()->ModifyProperty( prop, str );
 	AppData()->AddHandler( this->GetEventHandler() );
 }
+
+#if wxVERSION_NUMBER >= 2900
+void ObjectInspector::OnChildFocus( wxChildFocusEvent& event )
+{
+	// do nothing to avoid "scrollbar jump" if wx2.9 is used
+}
+#endif
