@@ -466,6 +466,8 @@ public:
 	* Obtiene un hijo del objeto.
 	*/
 	PObjectBase GetChild (unsigned int idx);
+	
+	PObjectBase GetChild (unsigned int idx, const wxString& type);
 
 	/**
 	* Obtiene el número de hijos del objeto.

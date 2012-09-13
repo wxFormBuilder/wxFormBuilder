@@ -1283,7 +1283,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 
 		//get namespaces
-		/*wxString originalValue = nameVal;
+		wxString originalValue = nameVal;
 		int delimiter = nameVal.Find( wxT( "::" ) ) ;
 		if ( wxNOT_FOUND == delimiter )
 		{
@@ -1324,7 +1324,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 
 			// Got a subclass
 			subclasses->insert( subClassDeclar );
-		}*/
+		}
 
 		// Now get the header
 		std::map< wxString, wxString >::iterator header;
@@ -1357,18 +1357,19 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 
 		wxString include = wxT( "#include \"" ) + headerVal + wxT( "\"" );
-		/*if ( pkg->GetPackageName() == wxT( "Forms" ) )
-		{*/
+		if ( pkg->GetPackageName() == wxT( "Forms" ) ||
+			 obj->GetChild( 1, wxT("menu") ) )
+		{
 			std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
 			if ( headerIncludes->end() == it )
 			{
 				headerIncludes->push_back( include );
 			}
-		/*}
+		}
 		else
 		{
 			sourceIncludes->insert( include );
-		}*/
+		}
 	}
 }
 
