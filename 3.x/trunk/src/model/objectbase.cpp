@@ -483,6 +483,20 @@ PObjectBase ObjectBase::GetChild (unsigned int idx)
 	return m_children[idx];
 }
 
+PObjectBase ObjectBase::GetChild (unsigned int idx, const wxString& type)
+{
+	assert (idx < m_children.size());
+
+	unsigned int cnt = 0;
+	
+	for( std::vector< PObjectBase >::iterator it =  m_children.begin(); it != m_children.end(); ++it )
+	{
+		if( (*it)->GetObjectInfo()->GetObjectTypeName() == type && ++cnt == idx ) return *it;
+	}
+
+	return PObjectBase();
+}
+
 int ObjectBase::Deep()
 {
 	int deep = 0;

@@ -447,6 +447,9 @@ public:
     {
         ObjectToXrcFilter xrc(obj, _("wxScrolledWindow"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
+		xrc.AddPropertyValue( _("scrollrate"), wxString::Format( wxT("%d,%d"),
+				obj->GetPropertyAsInteger(_("scroll_rate_x")),
+				obj->GetPropertyAsInteger(_("scroll_rate_y")) ) );
         return xrc.GetXrcObject();
     }
 
@@ -454,6 +457,13 @@ public:
     {
         XrcToXfbFilter filter(xrcObj, _("wxScrolledWindow"));
         filter.AddWindowProperties();
+		
+		ticpp::Element *scrollrate = xrcObj->FirstChildElement("scrollrate");
+		if( scrollrate ) {
+			wxString value( wxString( scrollrate->GetText().c_str(), wxConvUTF8 ) );
+			filter.AddPropertyValue( _("scroll_rate_x"), value.BeforeFirst( wxT(',') ) );
+			filter.AddPropertyValue( _("scroll_rate_y"), value.AfterFirst( wxT(',') ) );
+		}
         return filter.GetXfbObject();
     }
 };
