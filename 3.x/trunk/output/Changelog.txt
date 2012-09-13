@@ -1,6 +1,6 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-06/27/2012 Version 3.03.04 (Beta)
+09/13/2012 Version 3.03.04 (Beta)
 * ID: 3519419 - Create inherited class bracket error.
 * Fixed code generation for PHP wxSplitterWindow wxEVT_IDLE.
 * Fixed "scrollbar jump" in Object Inspector occured if wxFB built with wxWidgets 2.9.x and later.
