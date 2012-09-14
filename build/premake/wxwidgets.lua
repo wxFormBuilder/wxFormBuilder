@@ -30,6 +30,10 @@ newoption  {
     description =   "Whether to use wxWidgets as monolithic DLL (MSW only)"
 }
 newoption  {
+    trigger     =   "disable-shared",
+    description =   "Whether to use wxWidgets as static build"
+}
+newoption  {
     trigger     =   "wx-version",
     description =   "wxWidgets version to use"
 }
@@ -76,7 +80,7 @@ function wx_config(options)
     local allowedWxOptions  =
     {
         "Root", "Debug", "Host", "Version", "Static",
-        "Unicode", "Universal", "Libs", "WindowsCompiler"
+        "Unicode", "Universal", "Libs", "WindowsCompiler", "WithoutLibs"
     }
     for option in pairs(options) do
         if not table.contains(allowedWxOptions, option) then
@@ -99,19 +103,26 @@ function wx_config(options)
         useUnicode = "no"
     end
 
+-- Unicode static build
+    local useStatic = "no"
+    if _OPTIONS["disable-shared"] then
+        useStatic = "yes"
+    end
+	
     wx_config_Private( options.Root             or "",
                        options.Debug            or "",
                        options.Host             or "",
                        options.Version          or wxVersion,
-                       options.Static           or "",
+                       options.Static           or useStatic,
                        options.Unicode          or useUnicode,
                        options.Universal        or "",
                        options.Libs             or "",
-                       options.WindowsCompiler  or "gcc"
+                       options.WindowsCompiler  or "gcc",
+					   options.WithoutLibs  	or "no"
                      )
 end
 
-function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler)
+function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxWithoutLibs)
     -- some options are not allowed for newer version of wxWidgets
     if wxVersion > "2.8" then -- alphabetical comparison may fail...
         wxDebugSuffix   = ""
@@ -167,28 +178,37 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
             path.join(wxLibPath, "msw" .. wxBuildType)   -- something like "%WXWIN%\lib\vc_lib\mswud" to find "wx/setup.h"
             }
 
-        -- common library path
-        libdirs { wxLibPath }
+		if wxWithoutLibs == "no" then
+			-- common library path
+			libdirs { wxLibPath }
 
-        -- add the libs
-        libVersion = string.gsub(wxVersion, '%.', '') -- remove dot from version
-        if wxMonolithic then
-            links { "wxmsw"..libVersion..wxBuildType }
-        else
-            links { "wxbase"..libVersion..wxBuildType } -- base lib
-            for i, lib in ipairs(string.explode(wxLibs, ",")) do
-                local libPrefix = 'wxmsw'
-                if lib == "xml" or lib == "net" or lib == "odbc" then
-                    libPrefix = 'wxbase'
-                end
-                links { libPrefix..libVersion..wxBuildType..'_'..lib}
-            end
-            -- link with support libraries
-            for i, lib in ipairs({"wxjpeg", "wxpng", "wxzlib", "wxtiff", "wxexpat"}) do
-                links { lib..wxDebugSuffix }
-            end
-            links { "wxregex" .. wxBuildType }
-        end
+			-- add the libs
+			libVersion = string.gsub(wxVersion, '%.', '') -- remove dot from version
+			if wxMonolithic then
+				links { "wxmsw"..libVersion..wxBuildType }
+			else
+				links { "wxbase"..libVersion..wxBuildType } -- base lib
+				for i, lib in ipairs(string.explode(wxLibs, ",")) do
+					local libPrefix = 'wxmsw'
+					if lib == "xml" or lib == "net" or lib == "odbc" then
+						libPrefix = 'wxbase'
+					end
+					links { libPrefix..libVersion..wxBuildType..'_'..lib}
+				end
+				-- link with support libraries
+				for i, lib in ipairs({"wxjpeg", "wxpng", "wxzlib", "wxtiff", "wxexpat"}) do
+					links { lib..wxDebugSuffix }
+				end
+				links { "wxregex" .. wxBuildType }
+			end
+			
+			if string.match(_ACTION, "vs(.*)$") then
+				-- link with MSVC support libraries
+				for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32"}) do
+					links { lib }
+				end
+			end
+		end
     end
 
     -- use wx-config to figure out build parameters
@@ -211,7 +231,10 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
         -- set the parameters to the current configuration
         buildoptions {"`" .. configCmd .." --cxxflags`"}
-        linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
+		
+		if wxWithoutLibs == "no" then
+			linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
+		end
     end
 
 -- BUG: here, using any configuration() function will reset the current filter
