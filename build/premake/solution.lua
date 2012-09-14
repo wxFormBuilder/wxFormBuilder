@@ -48,11 +48,11 @@ end
 		end
 
     configuration "Release"
-		if wxCompiler == "gcc" then
-			linkoptions {"-s"}
-		end
+		-- if wxCompiler == "gcc" then
+		-- 	 linkoptions {"-s"}
+		-- end
         defines         {"NDEBUG"}
-        flags           {"OptimizeSpeed"}
+        -- flags           {"OptimizeSpeed"}
 
     dofile( scriptDir .. "/ticpp.lua" )
     dofile( scriptDir .. "/plugin-interface.lua" )

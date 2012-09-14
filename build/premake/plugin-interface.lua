@@ -16,12 +16,20 @@ project "plugin-interface"
         "../../sdk/plugin_interface/**.fbp"
     }
     includedirs         {"../../sdk/tinyxml"}
-    libdirs             {"../../sdk/lib"}
-    targetdir           "../../sdk/lib/"
+    targetdir           "../../sdk/lib"
     flags               {"ExtraWarnings"}
     defines             {"TIXML_USE_TICPP"}
-    links               {"TiCPP"}
     targetsuffix        ( "-" .. wxVersion )
+
+
+configuration "not codelite"
+	links               {"TiCPP"}
+	
+configuration {"codelite", "Release"}
+	links				{"../../sdk/lib/libticpp.a"}
+	
+configuration {"codelite", "Debug"}
+	links				{"../../sdk/lib/libticppd.a"}
 
 configuration "not windows"
     buildoptions {"-fPIC"}
