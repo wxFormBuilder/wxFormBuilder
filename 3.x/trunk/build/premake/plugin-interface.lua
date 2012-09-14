@@ -21,16 +21,6 @@ project "plugin-interface"
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ( "-" .. wxVersion )
 
-
-configuration "not codelite"
-	links               {"TiCPP"}
-	
-configuration {"codelite", "Release"}
-	links				{"../../sdk/lib/libticpp.a"}
-	
-configuration {"codelite", "Debug"}
-	links				{"../../sdk/lib/libticppd.a"}
-
 configuration "not windows"
     buildoptions {"-fPIC"}
 
@@ -40,11 +30,11 @@ configuration "vs*"
 
 configuration "Debug"
     targetname          ( CustomPrefix .. wxDebugSuffix .. "_plugin-interface" )
-    wx_config           { Debug="yes" }
+    wx_config           { Debug="yes", WithoutLibs="yes" }
 
 configuration "Release"
     buildoptions        {"-fno-strict-aliasing"}
     targetname          ( CustomPrefix .. "_plugin-interface" )
-    wx_config           {}
+    wx_config           { WithoutLibs="yes" }
 
 
