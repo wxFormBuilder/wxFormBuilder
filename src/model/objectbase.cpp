@@ -181,7 +181,6 @@ wxString Property::GetValueAsText()
 	return TypeConv::StringToText(m_value);
 }
 
-
 wxArrayString Property::GetValueAsArrayString()
 {
 	return TypeConv::StringToArrayString(m_value);

@@ -59,10 +59,7 @@ PHP code generation written by
 	</template>
 	<template name="settings">
 		#ifnotnull $maxlength
-		@{
-			#ifnotequal $maxlength "0"
-			@{ @$this->$name->SetMaxLength( $maxlength );  @}
-		@}
+		@{ @$this->$name->SetMaxLength( $maxlength ); @}
 	</template>
 	<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
 	<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
