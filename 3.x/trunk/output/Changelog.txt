@@ -1,12 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-09/25/2012 Version 3.03.04 (Beta)
+10/07/2012 Version 3.03.04 (Beta)
 * ID: 3519419 - Create inherited class bracket error.
 * Fixed code generation for PHP wxSplitterWindow wxEVT_IDLE.
 * Fixed "scrollbar jump" in Object Inspector occured if wxFB built with wxWidgets 2.9.x and later.
 * ID: 3536076, 3536080 - Sub-class behaviour changed 3.2 to 3.3
 * ID: 3556216 - Missing field <scrollrate> in generated XRC
 * ID: 3530800 - wxTextCtrl "maxlenght"
+* ID: 3142678 - Adds 'public' to python class when doing 'subclass'
 
 04/06/2012 Version 3.03.03 (Beta)
 * ID: 3510480 - Subclass not displayed after reloading a project in 3.3.2.
