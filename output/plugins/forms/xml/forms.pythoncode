@@ -70,7 +70,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.Frame.__init__@}
@@ -192,7 +192,7 @@ Python code generation writen by
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
 		<template name="base">
 			#ifnotnull $subclass/name
-			@{ public $subclass/name @}
+			@{ $subclass/name @}
 
 			#ifnull $subclass/name
 			@{ wx.Panel @}
@@ -202,7 +202,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.Panel.__init__@}
@@ -325,7 +325,7 @@ Python code generation writen by
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
 		<template name="base">
 			#ifnotnull $subclass/name
-			@{ public $subclass/name @}
+			@{ $subclass/name @}
 
 			#ifnull $subclass/name
 			@{ wx.Dialog @}
@@ -335,7 +335,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.Dialog.__init__@}
@@ -458,7 +458,7 @@ Python code generation writen by
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
 		<template name="base">
 			#ifnotnull $subclass/name
-			@{ public $subclass/name @}
+			@{ $subclass/name @}
 
 			#ifnull $subclass/name
 			@{ wx.wizard.Wizard @}
@@ -468,7 +468,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.wizard.Wizard.__init__@}
@@ -598,7 +598,7 @@ Python code generation writen by
 	<templates class="MenuBar">
 		<template name="base">
 			#ifnotnull $subclass/name
-			@{ public $subclass/name @}
+			@{ $subclass/name @}
 
 			#ifnull $subclass/name
 			@{ wx.MenuBar @}
@@ -608,7 +608,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.MenuBar.__init__@}
@@ -619,7 +619,7 @@ Python code generation writen by
 	<templates class="ToolBar">
 		<template name="base">
 			#ifnotnull $subclass/name
-			@{ public $subclass/name @}
+			@{ $subclass/name @}
 
 			#ifnull $subclass/name
 			@{ wx.ToolBar @}
@@ -629,7 +629,7 @@ Python code generation writen by
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
-			@{ $subclass/name.__init__( self )@}
+			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
 			@{ wx.ToolBar.__init__@}
