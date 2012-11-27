@@ -37,8 +37,13 @@ newoption  {
     trigger     =   "wx-version",
     description =   "wxWidgets version to use"
 }
+newoption  {
+    trigger     =   "architecture",
+    description =   "Targeted architecture (e.g i386)"
+}
 -- Common globals
 wxCompiler      = _OPTIONS["compiler"]
+wxArchitecture  = _OPTIONS["architecture"]
 wxDebugSuffix   = "d"
 wxPrefix        = "wx_"
 wxTarget        = "gtk2"

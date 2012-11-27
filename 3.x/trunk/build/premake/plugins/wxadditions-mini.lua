@@ -35,6 +35,11 @@ else
         "../../../src/controls/src/wxScintilla/**.cpp"
     }
 end
+
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
+	
     configuration {"codelite", "not windows"}
         linkoptions     {"-Wl,-rpath,$$``ORIGIN"}
 

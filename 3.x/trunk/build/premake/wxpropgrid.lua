@@ -18,6 +18,10 @@ project "wxPropertyGrid"
     defines             {"WXMAKINGDLL_PROPGRID"}
     flags               {"ExtraWarnings"}
     targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
+	
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
 
     configuration "not windows"
         targetdir       "../../output/lib/wxformbuilder"

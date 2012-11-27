@@ -18,6 +18,10 @@ project "layout-components-plugin"
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
+	
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
 
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
