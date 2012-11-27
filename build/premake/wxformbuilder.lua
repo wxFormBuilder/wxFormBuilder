@@ -32,29 +32,34 @@ if wxVersion < "2.9" then
 else
     excludes
     {
-        "../../../src/controls/include/wx/propgrid/**.h",
-        "../../../src/controls/include/wx/wxScintilla/**.h",
-        "../../../src/controls/include/wx/wxFlatNotebook/**.h",
-        "../../../src/controls/src/propgrid/**.cpp",
-        "../../../src/controls/src/wxScintilla/**.cpp",
-        "../../../src/controls/src/wxFlatNotebook/**.cpp"
+        "../../src/controls/include/wx/propgrid/**.h",
+        "../../src/controls/include/wx/wxScintilla/**.h",
+        "../../src/controls/include/wx/wxFlatNotebook/**.h",
+        "../../src/controls/src/propgrid/**.cpp",
+        "../../src/controls/src/wxScintilla/**.cpp",
+        "../../src/controls/src/wxFlatNotebook/**.cpp"
     }
     libs                    = "all"
 end
-    configuration {"codelite", "not windows"}
+
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
+
+	configuration {"codelite", "linux"}
         linkoptions         {"-Wl,-rpath,$$``ORIGIN/../lib/wxformbuilder"}
 
-    configuration {"codeblocks", "not windows"}
+    configuration {"codeblocks", "linux"}
         linkoptions         {"-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder"}
 
     configuration "macosx"
-        linkoptions         {"-L../../output/lib/wxformbuilder"}
+        linkoptions         {"-Wl,-L../../output/lib/wxformbuilder"}
 
     configuration {"macosx", "Debug"}
-        postbuildcommands   {"../macosx/postbuildd.sh"}
+        postbuildcommands   {"../../../install/macosx/postbuildd4.sh"}
 
     configuration {"macosx", "Release"}
-        postbuildcommands   {"../macosx/postbuild.sh"}
+        postbuildcommands   {"../../../install/macosx/postbuild4.sh"}
 
     configuration "not windows"
         excludes            {"../../src/*.rc"}

@@ -27,6 +27,10 @@ project "wxScintilla"
         "WXMAKINGDLL_SCI","LINK_LEXERS","SCI_LEXER","SCI_NAMESPACE","__WX__"
     }
     targetsuffix        ( "-" .. wxVersion .. "_wxfb" )
+	
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
 
     configuration "linux or bsd"
         defines         {"GTK"}

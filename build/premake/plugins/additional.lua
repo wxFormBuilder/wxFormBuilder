@@ -24,6 +24,11 @@ if wxUseMediaCtrl then
     defines             {"USE_MEDIACTRL"}
     libs                = libs .. ",media"
 end
+
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
+	
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
 

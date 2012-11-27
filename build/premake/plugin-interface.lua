@@ -20,6 +20,10 @@ project "plugin-interface"
     flags               {"ExtraWarnings"}
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ( "-" .. wxVersion )
+	
+	if wxArchitecture then
+		buildoptions	{"-arch " .. wxArchitecture}
+	end
 
 configuration "not windows"
     buildoptions {"-fPIC"}
