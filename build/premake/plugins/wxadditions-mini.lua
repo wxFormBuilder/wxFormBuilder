@@ -21,11 +21,11 @@ project "wxadditions-mini-plugin"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     flags               {"ExtraWarnings"}
-    links               {"plugin-interface", "TiCPP", "wxFlatNotebook"}
+    links               {"plugin-interface", "TiCPP"}
 
 if wxVersion < "2.9" then
     defines             {"SCI_NAMESPACE", "__WX__"}
-    links               {"wxPropertyGrid", "wxScintilla"}
+    links               {"wxFlatNotebook", "wxPropertyGrid", "wxScintilla"}
 else
     excludes
     {

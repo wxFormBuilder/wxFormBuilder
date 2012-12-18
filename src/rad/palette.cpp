@@ -31,7 +31,8 @@
 #include "utils/typeconv.h"
 #include "rad/title.h"
 #include "wx/config.h"
-#include <rad/appdata.h>
+#include "rad/appdata.h"
+#include "rad/auitabart.h"
 
 #ifdef __WXMAC__
 	#include <wx/tooltip.h>
@@ -70,7 +71,11 @@ wxFbPalette::wxFbPalette( wxWindow *parent, int id )
 {
 }
 
+#if wxVERSION_NUMBER >= 2900
+void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxAuiToolBar *toolbar )
+#else
 void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxToolBar *toolbar )
+#endif
 {
 	unsigned int j = 0;
 	while ( j < pkg->GetObjectCount() )
@@ -121,6 +126,7 @@ void wxFbPalette::Create()
 	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
 #else
 	m_notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+	m_notebook->SetArtProvider( new AuiTabArt() );
 #endif
 
 	unsigned int pkg_count = AppData()->GetPackageCount();
@@ -149,7 +155,15 @@ void wxFbPalette::Create()
 		wxPanel *panel = new wxPanel( m_notebook, -1 );
 		//panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
-
+		
+#if wxVERSION_NUMBER >= 2900
+		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, -1, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
+		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
+		PopulateToolbar( pkg, toolbar );
+		m_tv.push_back( toolbar );
+		
+		sizer->Add( toolbar, 1, wxEXPAND, 0 );
+#else
 		wxPanel *tbPanel = new wxPanel( panel, -1 );
 		//tbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *tbSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -176,6 +190,8 @@ void wxFbPalette::Create()
 
 		sizer->Add( tbPanel, 1, wxEXPAND, 0 );
 		sizer->Add( sbPanel, 0, wxEXPAND, 0 );
+#endif
+		
 		panel->SetAutoLayout( true );
 		panel->SetSizer( sizer );
 		sizer->Fit( panel );
@@ -202,18 +218,18 @@ void wxFbPalette::Create()
 	top_sizer->Fit( this );
 	top_sizer->SetSizeHints( this );
 #else
-top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
+	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
 	SetSizer( top_sizer );
 	SetSize( minsize );
 	SetMinSize( minsize );
 	Layout();
 	Fit();
 #endif
-	
 }
 
 void wxFbPalette::OnSpinUp( wxSpinEvent& )
 {
+#if wxVERSION_NUMBER < 2900
 	int page = m_notebook->GetSelection();
 	PObjectPackage pkg = AppData()->GetPackage( page );
 
@@ -223,10 +239,12 @@ void wxFbPalette::OnSpinUp( wxSpinEvent& )
 	wxToolBar *toolbar = m_tv[page];
 	toolbar->DeleteToolByPos( 0 );
 	toolbar->Realize();
+#endif
 }
 
 void wxFbPalette::OnSpinDown( wxSpinEvent& )
 {
+#if wxVERSION_NUMBER < 2900
 	int page = m_notebook->GetSelection();
 	if ( m_posVector[page] <= 0 ) return;
 
@@ -249,6 +267,7 @@ void wxFbPalette::OnSpinDown( wxSpinEvent& )
 	#endif
 
 	toolbar->Realize();
+#endif
 }
 
 void wxFbPalette::OnButtonClick( wxCommandEvent &event )
@@ -262,7 +281,11 @@ void wxFbPalette::OnButtonClick( wxCommandEvent &event )
 	#else
 		for ( unsigned int i = 0; i < m_tv.size(); i++ )
 		{
+			#if wxVERSION_NUMBER >= 2900
+			if ( m_tv[i]->GetToolIndex( event.GetId() ) != wxNOT_FOUND )
+			#else
 			if ( m_tv[i]->FindById( event.GetId() ) )
+			#endif
 			{
 				wxString name = m_tv[i]->GetToolShortHelp( event.GetId() );
 				AppData()->CreateObject( name );

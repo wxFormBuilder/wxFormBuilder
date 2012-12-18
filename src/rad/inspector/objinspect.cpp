@@ -46,6 +46,7 @@
 #include "rad/appdata.h"
 #include "rad/bitmaps.h"
 #include "rad/wxfbevent.h"
+#include "rad/auitabart.h"
 
 #include <wx/tokenzr.h>
 #include <wx/config.h>
@@ -95,6 +96,7 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
     m_nb->SetImageList( &m_icons );
 #else
 	m_nb = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+	m_nb->SetArtProvider( new AuiTabArt() );
 #endif
 
     // The colour of property grid description looks ugly if we don't set this colour

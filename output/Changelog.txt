@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+12/18/2012 Version 3.03.05 (Beta)
+* Fixed various issues if built with wxWidgets 2.9.x and later.
+
 10/07/2012 Version 3.03.04 (Beta)
 * ID: 3519419 - Create inherited class bracket error.
 * Fixed code generation for PHP wxSplitterWindow wxEVT_IDLE.

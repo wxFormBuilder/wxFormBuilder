@@ -56,9 +56,9 @@ end
 
     dofile( scriptDir .. "/ticpp.lua" )
     dofile( scriptDir .. "/plugin-interface.lua" )
-	dofile( scriptDir .. "/wxflatnotebook.lua" )
 
 if wxVersion < "2.9" then
+	dofile( scriptDir .. "/wxflatnotebook.lua" )
     dofile( scriptDir .. "/wxpropgrid.lua" )
     dofile( scriptDir .. "/wxscintilla.lua" )
 end

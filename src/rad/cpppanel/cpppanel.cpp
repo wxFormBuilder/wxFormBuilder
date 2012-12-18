@@ -31,6 +31,7 @@
 #include "rad/wxfbevent.h"
 #include "rad/bitmaps.h"
 #include "rad/appdata.h"
+#include "rad/auitabart.h"
 #include "utils/wxfbdefs.h"
 
 #include "utils/typeconv.h"
@@ -94,6 +95,7 @@ wxPanel( parent, id )
 	m_notebook->SetImageList( m_icons );
 #else
 	m_notebook = new wxAuiNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+	m_notebook->SetArtProvider( new AuiTabArt() );
 #endif
 
 	m_cppPanel = new CodeEditor( m_notebook, -1 );
