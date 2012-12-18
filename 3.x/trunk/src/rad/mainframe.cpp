@@ -35,6 +35,7 @@
 #include "rad/phppanel/phppanel.h"
 #include "rad/xrcpanel/xrcpanel.h"
 #include "rad/geninheritclass/geninhertclass.h"
+#include "rad/auitabart.h"
 #include "inspector/objinspect.h"
 #include "objecttree/objecttree.h"
 #include "palette.h"
@@ -1601,6 +1602,7 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_notebook->SetImageList( &m_icons );
 #else
 	m_notebook = new wxAuiNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+	m_notebook->SetArtProvider( new AuiTabArt() );
 #endif
 
 	m_visualEdit = new VisualEditor( m_notebook );

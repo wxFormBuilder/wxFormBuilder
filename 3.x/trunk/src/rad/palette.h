@@ -36,8 +36,15 @@
 #include <vector>
 #include <utils/wxfbdefs.h>
 #include <model/database.h>
+#if wxVERSION_NUMBER >= 2900
+#include <wx/aui/auibar.h>
+#endif
 
+#if wxVERSION_NUMBER >= 2900
+typedef std::vector<wxAuiToolBar*> ToolbarVector;
+#else
 typedef std::vector<wxToolBar*> ToolbarVector;
+#endif
 
 class wxFbPalette : public wxPanel
 {
@@ -52,8 +59,11 @@ class wxFbPalette : public wxPanel
   static wxWindowID nextId;
   std::vector<int> m_posVector;
 
-
+#if wxVERSION_NUMBER >= 2900
+  void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar *toolbar);
+#else
   void PopulateToolbar(PObjectPackage pkg, wxToolBar *toolbar);
+#endif
 
   DECLARE_EVENT_TABLE()
 
