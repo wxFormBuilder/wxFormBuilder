@@ -1305,6 +1305,11 @@ public:
 };
 #endif
 
+class TimerComponent : public ComponentBase
+{
+public:
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1453,6 +1458,9 @@ MACRO(wxDIRCTRL_EDIT_LABELS)
 #if wxVERSION_NUMBER >=2900
 MACRO(wxDIRCTRL_MULTIPLE)
 #endif
+
+// wxTimer
+ABSTRACT_COMPONENT("wxTimer", TimerComponent)
 
 END_LIBRARY()
 

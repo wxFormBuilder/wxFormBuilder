@@ -356,4 +356,16 @@ Python code generation written by
     <template name="include">import wx.media</template>
 </templates>
 
+  <templates class="wxTimer">
+    <template name="construction">
+		self.$name = #class() #nl
+		self.$name.SetOwner( #wxparent $name, $id )
+	</template>
+    <template name="settings">
+		#ifequal $enabled "1"
+		@{ self.$name.Start( $period #ifequal $oneshot "1" @{, true@} ) #nl @}
+	</template>
+	<template name="evt_connect_OnTimer">#wxparent $name.Bind( wx.EVT_TIMER, #handler, id=$id )</template>
+  </templates>
+
 </codegen>

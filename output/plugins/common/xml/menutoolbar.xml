@@ -145,4 +145,37 @@ Written by
 
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
   </objectinfo>
+  
+  <objectinfo class="wxInfoBar" icon="infobar.xpm" type="widget" wxversion="2901" startgroup="1">
+	<inherits class="wxWindow" />
+    <inherits class="AUI" />
+	<property name="name" type="text">m_infoCtrl</property>
+    <property name="show_effect" type="option" help="Set the effects to use when showing the bar.">
+      <option name="wxSHOW_EFFECT_NONE" help="No effect, equivalent to normal wxWindow::Show() or Hide() call."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_LEFT"   help="Roll window to the left."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_RIGHT"     help="Roll window to the right."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_TOP"      help="Roll window to the top."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_BOTTOM"      help="Roll window to the bottom."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_LEFT"          help="Slide window to the left."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_RIGHT"         help="Slide window to the right."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_TOP"      help="Slide window to the top."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_BOTTOM"     help="Slide window to the bottom."/>
+      <option name="wxSHOW_EFFECT_BLEND"          help="Fade in or out effect."/>
+      <option name="wxSHOW_EFFECT_EXPAND"    help="Expanding or collapsing effect."/>wxSHOW_EFFECT_NONE
+     </property>
+    <property name="hide_effect" type="option" help="Set the effects to use when hiding the bar. ">
+      <option name="wxSHOW_EFFECT_NONE" help="No effect, equivalent to normal wxWindow::Show() or Hide() call."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_LEFT"   help="Roll window to the left."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_RIGHT"     help="Roll window to the right."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_TOP"      help="Roll window to the top."/>
+      <option name="wxSHOW_EFFECT_ROLL_TO_BOTTOM"      help="Roll window to the bottom."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_LEFT"          help="Slide window to the left."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_RIGHT"         help="Slide window to the right."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_TOP"      help="Slide window to the top."/>
+      <option name="wxSHOW_EFFECT_SLIDE_TO_BOTTOM"     help="Slide window to the bottom."/>
+      <option name="wxSHOW_EFFECT_BLEND"          help="Fade in or out effect."/>
+      <option name="wxSHOW_EFFECT_EXPAND"    help="Expanding or collapsing effect."/>wxSHOW_EFFECT_NONE
+     </property>
+	 <property name="duration" type="int" help="Set the duration of the animation (in milliseconds) used when showing or hiding the bar. ">500</property>
+  </objectinfo>
 </package>

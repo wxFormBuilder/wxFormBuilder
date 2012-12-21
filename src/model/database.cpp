@@ -61,6 +61,7 @@
 #define ICON_TAG "icon"
 #define SMALL_ICON_TAG "smallIcon"
 #define EXPANDED_TAG "expanded"
+#define WXVERSION_TAG "wxversion"
 
 
 #ifdef __WXMAC__
@@ -795,6 +796,19 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 		ticpp::Element* elem_obj = root->FirstChildElement( OBJINFO_TAG, false );
 		while ( elem_obj )
 		{
+			std::string wxver;
+			elem_obj->GetAttributeOrDefault( WXVERSION_TAG, &wxver, "" );
+			if( wxver != "" )
+			{
+				long wxversion = 0;
+				// skip widgets supported by higher wxWidgets version than used for the build
+				if( (! _WXSTR(wxver).ToLong( &wxversion ) ) || (wxversion > wxVERSION_NUMBER) )
+				{
+					elem_obj = elem_obj->NextSiblingElement( OBJINFO_TAG, false );
+					continue;
+				}
+			}
+			
 			std::string class_name;
 			elem_obj->GetAttribute( CLASS_TAG, &class_name );
 
@@ -872,6 +886,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("splitter")			||
 			type == wxT("treelistctrl")		||
 			type == wxT("sizer")			||
+			type == wxT("nonvisual")		||
 			type == wxT("gbsizer")          ||
             type == wxT("wizardpagesimple")
 			);
@@ -1003,6 +1018,19 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			std::string smallIcon;
 			elem_obj->GetAttributeOrDefault( "smallIcon", &smallIcon, "" );
 			wxString smallIconFullPath = iconPath + wxFILE_SEP_PATH + _WXSTR(smallIcon);
+			
+			std::string wxver;
+			elem_obj->GetAttributeOrDefault( WXVERSION_TAG, &wxver, "" );
+			if( wxver != "" )
+			{
+				long wxversion = 0;
+				// skip widgets supported by higher wxWidgets version than used for the build
+				if( (! _WXSTR(wxver).ToLong( &wxversion ) ) || (wxversion > wxVERSION_NUMBER) )
+				{
+					elem_obj = elem_obj->NextSiblingElement( OBJINFO_TAG, false );
+					continue;
+				}
+			}
 
 			bool startGroup;
 			elem_obj->GetAttributeOrDefault( "startgroup", &startGroup, false );
@@ -1281,6 +1309,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("treelistctrl")			||
 			type == wxT("treelistctrlcolumn")	||
 			type == wxT("toolbar")				||
+			type == wxT("nonvisual")			||
 			type == wxT("splitter")
 			);
 }

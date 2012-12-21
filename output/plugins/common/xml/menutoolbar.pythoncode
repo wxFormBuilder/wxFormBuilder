@@ -309,4 +309,13 @@ Python code generation writen by
   <templates class="toolSeparator">
     <template name="construction">self.#parent $name.AddSeparator()</template>
   </templates>
+  
+  <templates class="wxInfoBar">
+    <template name="construction">self.$name = #class( #wxparent $name )</template>
+	<template name="settings">
+		self.$name.SetShowHideEffects( $show_effect, $hide_effect ) #nl
+		self.$name.SetEffectDuration( $duration )
+	</template>
+  </templates>
+  
 </codegen>

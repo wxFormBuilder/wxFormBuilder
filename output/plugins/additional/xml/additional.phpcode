@@ -354,5 +354,17 @@ PHP code generation written by
     </template>	
     <template name="include" />
   </templates>
+  
+  <templates class="wxTimer">
+    <template name="construction">
+		@$this->$name = new #class(); #nl
+		@$this->$name->SetOwner( #wxparent $name, $id );
+	</template>
+    <template name="settings">
+		#ifequal $enabled "1"
+		@{ @$this->$name->Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
+	</template>
+	<template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
+  </templates>
 
 </codegen>
