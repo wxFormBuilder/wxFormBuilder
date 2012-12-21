@@ -212,10 +212,13 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 	}
 	else
 	{
-		// The componenet does not XRC
-		element = new ticpp::Element( "object" );
-		element->SetAttribute( "class", "unknown" );
-		element->SetAttribute( "name", _STDSTR( obj->GetPropertyAsString( _( "name" ) ) ) );
+		if( obj->GetObjectTypeName() != wxT("nonvisual") )
+		{
+			// The componenet does not XRC
+			element = new ticpp::Element( "object" );
+			element->SetAttribute( "class", "unknown" );
+			element->SetAttribute( "name", _STDSTR( obj->GetPropertyAsString( _( "name" ) ) ) );
+		}
 	}
 
 	return element;
