@@ -317,4 +317,13 @@ PHP code generation writen by
   <templates class="toolSeparator">
     <template name="construction">@$this->#parent $name->AddSeparator();</template>
   </templates>
+  
+  <templates class="wxInfoBar">
+    <template name="construction">@$this->$name = new #class( #wxparent $name );</template>
+	<template name="settings">
+		@$this->$name->SetShowHideEffects( $show_effect, $hide_effect ); #nl
+		@$this->$name->SetEffectDuration( $duration );
+	</template>
+  </templates>
+  
 </codegen>

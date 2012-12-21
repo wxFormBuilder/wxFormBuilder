@@ -8,18 +8,16 @@
 class AuiTabArt : public wxAuiGenericTabArt
 {
 public:
-	virtual ~AuiTabArt();
-	
 	virtual wxSize GetTabSize(
-                 wxDC& dc,
-                 wxWindow* wnd,
-                 const wxString& caption,
-                 const wxBitmap& bitmap,
-                 bool active,
-                 int close_button_state,
-                 int* x_extent) {
-					 
-		return wxAuiGenericTabArt::GetTabSize( dc, wnd, caption, bitmap, active, close_button_state, x_extent ) + wxSize( 0, 3 );
+	    wxDC& dc,
+	    wxWindow* wnd,
+	    const wxString& caption,
+	    const wxBitmap& bitmap,
+	    bool active,
+	    int close_button_state,
+	    int* x_extent) {
+
+		return wxAuiGenericTabArt::GetTabSize( dc, wnd, caption, bitmap, active, close_button_state, x_extent ) + wxSize( 0, 2 );
 	}
 };
 

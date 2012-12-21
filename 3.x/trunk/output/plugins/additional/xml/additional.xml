@@ -474,21 +474,30 @@ Written by
 	<property name="settings" type="text" help="Code to generate for the settings of this control."/>
   </objectinfo>
 
+  <objectinfo class="wxTimer" startgroup="1" icon="timer.xpm" type="nonvisual">
+	<property name="name" type="text" help="wxTimer object name.">m_timer</property>
+	<property name="id" type="macro" help="Timer identifier.">wxID_ANY</property>
+	<property name="period" type="int" help="Timer period in milliseconds.">1000</property>
+	<property name="enabled" type="bool" help="Enable timer on startup.">0</property>
+	<property name="oneshot" type="bool" help="Produce timer event just once.">0</property>
+	<event name="OnTimer" class="wxTimerEvent" help="Process a wxEVT_TIMER event, when the timer ticks." />
+  </objectinfo>
+  
   <objectinfo class="wxMediaCtrl" startgroup="1" icon="media_ctrl.xpm" type="widget">
 	<inherits class="wxControl" />	
 	<inherits class="wxWindow" />
 	<inherits class="AUI" />
-		<property name="name" type="text">m_mediaCtrl</property>
-		<property name="file" type="file" help="The path to media file."/>
-		<property name="play" type="bool" help="Play the media file"/>
-		<property name="playback_rate" type="float" help="Sets the playback rate, or speed of the media, to that referred by dRate. 1.0 represents normal speed, while 2.0 represents twice the normal speed of the media, for example. Not supported on the GStreamer (Unix) backend.">1</property>
-		<property name="volume" type="float" help="Sets the volume of the media from a 0.0 to 1.0 range to that referred by dVolume. 1.0 represents full volume, while 0.5 represents half (50 percent) volume, for example. Note that this may not be exact due to conversion and rounding errors, although setting the volume to full or none is always exact.">1</property>
-		<property name="player_controls" type="option">
-			<option name="STEP" help="wxMEDIACTRLPLAYERCONTROLS_STEP, Step controls like fastfoward, step one frame etc. "/>		
-			<option name="VOLUME" help="wxMEDIACTRLPLAYERCONTROLS_VOLUME, Volume controls like the speaker icon, volume slider, etc. "/>
-			<option name="DEFAULT" help="wxMEDIACTRLPLAYERCONTROLS_DEFAULT, Default controls for the toolkit. Currently a typedef for wxMEDIACTRLPLAYERCONTROLS_STEP and wxMEDIACTRLPLAYERCONTROLS_VOLUME. "/>
-			<option name="NONE" help="wxMEDIACTRLPLAYERCONTROLS_NONE, No controls. return wxMediaCtrl to it's default state. "/>
-		</property>
+	<property name="name" type="text">m_mediaCtrl</property>
+	<property name="file" type="file" help="The path to media file."/>
+	<property name="play" type="bool" help="Play the media file."/>
+	<property name="playback_rate" type="float" help="Sets the playback rate, or speed of the media, to that referred by dRate. 1.0 represents normal speed, while 2.0 represents twice the normal speed of the media, for example. Not supported on the GStreamer (Unix) backend.">1</property>
+	<property name="volume" type="float" help="Sets the volume of the media from a 0.0 to 1.0 range to that referred by dVolume. 1.0 represents full volume, while 0.5 represents half (50 percent) volume, for example. Note that this may not be exact due to conversion and rounding errors, although setting the volume to full or none is always exact.">1</property>
+	<property name="player_controls" type="option">
+		<option name="STEP" help="wxMEDIACTRLPLAYERCONTROLS_STEP, Step controls like fastfoward, step one frame etc. "/>		
+		<option name="VOLUME" help="wxMEDIACTRLPLAYERCONTROLS_VOLUME, Volume controls like the speaker icon, volume slider, etc. "/>
+		<option name="DEFAULT" help="wxMEDIACTRLPLAYERCONTROLS_DEFAULT, Default controls for the toolkit. Currently a typedef for wxMEDIACTRLPLAYERCONTROLS_STEP and wxMEDIACTRLPLAYERCONTROLS_VOLUME. "/>
+		<option name="NONE" help="wxMEDIACTRLPLAYERCONTROLS_NONE, No controls. return wxMediaCtrl to it's default state. "/>
+	</property>
   </objectinfo>
 
 </package>

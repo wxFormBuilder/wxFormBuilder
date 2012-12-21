@@ -69,6 +69,7 @@
     <childtype name="choicebook" nmax="0" />
     <childtype name="treelistctrl" nmax="0" />
     <childtype name="splitter" nmax="0" />
+	<childtype name="nonvisual" />
   </objtype>
 
     <objtype name="wizard">
@@ -224,6 +225,8 @@
   </objtype>
 
   <objtype name="treelistctrlcolumn" />
+  
+  <objtype name="nonvisual" />
 
 </definitions>
 

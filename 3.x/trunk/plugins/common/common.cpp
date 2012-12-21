@@ -36,6 +36,9 @@
 #include <wx/aui/auibar.h>
 #include <wx/bmpcbox.h>
 #include <wx/menu.h>
+#if wxVERSION_NUMBER >= 2901
+#include <wx/infobar.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -1568,18 +1571,52 @@ public:
 
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
-		XrcToXfbFilter filter(xrcObj, _("wxAnimation"));
+		XrcToXfbFilter filter(xrcObj, _("wxAnimationCtrl"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("animation"),_("animation"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
 };
 
+#if wxVERSION_NUMBER >= 2901
+class InfoBarComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxInfoBar* ib = new wxInfoBar((wxWindow *)parent);
+			
+		ib->SetShowHideEffects( (wxShowEffect)obj->GetPropertyAsInteger(_("show_effect")),
+								(wxShowEffect)obj->GetPropertyAsInteger(_("hide_effect")) );
+		ib->SetEffectDuration( obj->GetPropertyAsInteger(_("duration")) );
+		ib->ShowMessage( wxT("Some message"), wxICON_INFORMATION );
+
+		ib->PushEventHandler( new ComponentEvtHandler( ib, GetManager() ) );
+
+		return ib;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxInfoBar"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxInfoBar"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
 
-WINDOW_COMPONENT("wxButton",ButtonComponent)
+WINDOW_COMPONENT("wxButton", ButtonComponent)
 WINDOW_COMPONENT("wxBitmapButton",BitmapButtonComponent)
 WINDOW_COMPONENT("wxTextCtrl",TextCtrlComponent)
 WINDOW_COMPONENT("wxStaticText",StaticTextComponent)
@@ -1605,7 +1642,10 @@ ABSTRACT_COMPONENT("toolSeparator", ToolSeparatorComponent)
 WINDOW_COMPONENT("wxChoice", ChoiceComponent)
 WINDOW_COMPONENT("wxSlider", SliderComponent)
 WINDOW_COMPONENT("wxGauge", GaugeComponent)
-WINDOW_COMPONENT("wxAnimationCtrl",AnimCtrlComponent)
+WINDOW_COMPONENT("wxAnimationCtrl", AnimCtrlComponent)
+#if wxVERSION_NUMBER >= 2901
+WINDOW_COMPONENT("wxInfoBar", InfoBarComponent)
+#endif
 
 // wxButton
 MACRO(wxBU_LEFT)
@@ -1736,8 +1776,23 @@ MACRO(wxGA_HORIZONTAL)
 MACRO(wxGA_SMOOTH)
 MACRO(wxGA_VERTICAL)
 
-//wxAnimationCtrl
+// wxAnimationCtrl
 MACRO(wxAC_DEFAULT_STYLE)
 MACRO(wxAC_NO_AUTORESIZE)
+
+// wxInfoBar
+#if wxVERSION_NUMBER >= 2901
+MACRO(wxSHOW_EFFECT_NONE)
+MACRO(wxSHOW_EFFECT_ROLL_TO_LEFT)
+MACRO(wxSHOW_EFFECT_ROLL_TO_RIGHT)
+MACRO(wxSHOW_EFFECT_ROLL_TO_TOP)
+MACRO(wxSHOW_EFFECT_ROLL_TO_BOTTOM)
+MACRO(wxSHOW_EFFECT_SLIDE_TO_LEFT)
+MACRO(wxSHOW_EFFECT_SLIDE_TO_RIGHT)
+MACRO(wxSHOW_EFFECT_SLIDE_TO_TOP)
+MACRO(wxSHOW_EFFECT_SLIDE_TO_BOTTOM)
+MACRO(wxSHOW_EFFECT_BLEND)
+MACRO(wxSHOW_EFFECT_EXPAND)
+#endif
 
 END_LIBRARY()

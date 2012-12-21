@@ -388,4 +388,15 @@ Written by
 	@}
     </template>
   </templates>
+  
+  <templates class="wxInfoBar">
+    <template name="declaration">#class* $name;</template>
+    <template name="include">@#include &lt;wx/infobar.h&gt;</template>
+    <template name="construction">$name = new #class( #wxparent $name );</template>
+	<template name="settings">
+		$name->SetShowHideEffects( $show_effect, $hide_effect ); #nl
+		$name->SetEffectDuration( $duration );
+	</template>
+  </templates>
+  
 </codegen>
