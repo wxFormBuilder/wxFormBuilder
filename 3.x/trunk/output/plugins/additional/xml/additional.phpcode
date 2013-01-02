@@ -366,5 +366,26 @@ PHP code generation written by
 	</template>
 	<template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
   </templates>
+  
+	<templates class="wxPropertyGrid">
+		<template name="construction">
+			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+			@$this->$name = new wxWindow( #wxparent $name );
+		</template>
+	</templates>
+
+	<templates class="wxPropertyGridManager">
+		<template name="construction">
+			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+			@$this->$name = new wxWindow( #wxparent $name );
+		</template>
+	</templates>
+	
+	<templates class="wxStyledTextCtrl">
+		<template name="construction">
+			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+			@$this->$name = new wxWindow( #wxparent $name );
+		</template>
+	</templates>
 
 </codegen>

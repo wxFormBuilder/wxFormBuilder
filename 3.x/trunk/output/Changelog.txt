@@ -1,8 +1,10 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
 12/18/2012 Version 3.03.05 (Beta)
-* Fixed various issues if built with wxWidgets 2.9.x and later.
-+ Added support for wxInfoBar widget ( wxWidgets 2.9.1 and later ).
+* Fixed various issues when built with wxWidgets 2.9.x and later.
++ Added support for wxInfoBar widget ( when built with wxWidgets 2.9.4 and later ).
++ Added support for wxPropertyGrid and wxPropertyGridManager widgets ( when built with wxWidgets 2.9.4 and later ).
++ Added support for wxStyledTextCtrl widget ( when built with wxWidgets 2.9.4 and later ).
 + Added support for wxTimer non-visual object.
 
 10/07/2012 Version 3.03.04 (Beta)

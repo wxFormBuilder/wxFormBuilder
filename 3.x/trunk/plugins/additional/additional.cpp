@@ -42,6 +42,14 @@
 #ifdef USE_MEDIACTRL
 #include <wx/mediactrl.h>
 #endif
+#if wxVERSION_NUMBER >= 2904
+// wxPropertyGrid
+#include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/advprops.h>
+#include <wx/propgrid/manager.h>
+// wxStyledTextCtrl
+#include <wx/stc/stc.h>
+#endif
 
 #if wxCHECK_VERSION( 2, 8, 0 )
 	#include <wx/richtext/richtextctrl.h>
@@ -85,6 +93,10 @@ protected:
 		void OnText( wxCommandEvent& event );
 	#endif
 	void OnGenericDirCtrlExpandItem( wxTreeEvent& event );
+#if wxVERSION_NUMBER >= 2904
+	// Enable folding for wxStyledTextCtrl
+	void OnMarginClick ( wxStyledTextEvent& event );
+#endif
 	DECLARE_EVENT_TABLE()
 };
 
@@ -103,6 +115,10 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 
 	EVT_GRID_COL_SIZE( ComponentEvtHandler::OnGridColSize )
 	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
+	
+#if wxVERSION_NUMBER >= 2904
+	EVT_STC_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
+#endif
 END_EVENT_TABLE()
 
 /**
@@ -1310,6 +1326,353 @@ class TimerComponent : public ComponentBase
 public:
 };
 
+#if wxVERSION_NUMBER >= 2904
+class PropertyGridComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject *obj, wxObject *parent)
+    {
+        wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent,-1,
+                                                obj->GetPropertyAsPoint(wxT("pos")),
+                                                obj->GetPropertyAsSize(wxT("size")),
+                                                obj->GetPropertyAsInteger(wxT("style")) |
+                                                obj->GetPropertyAsInteger(wxT("window_style")));
+
+        if ( !obj->GetPropertyAsString(wxT("extra_style")).empty() )
+        {
+            pg->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
+        }
+
+        pg->Append( new wxPropertyCategory( _("Sample Category") ) );
+
+        // Add string property
+        pg->Append( new wxStringProperty(wxT("Label"),wxT("Name"),wxT("Initial Value")) );
+
+        // Add int property
+        pg->Append( new wxIntProperty ( wxT("IntProperty"), wxPG_LABEL, 12345678 ) );
+
+        // Add float property (value type is actually double)
+        pg->Append( new wxFloatProperty ( wxT("FloatProperty"), wxPG_LABEL, 12345.678 ) );
+
+        // Add a bool property
+        pg->Append( new wxBoolProperty ( wxT("BoolProperty"), wxPG_LABEL, false ) );
+        pg->Append( new wxBoolProperty ( wxT("BoolPropertyAsCheckbox"), wxPG_LABEL, true ) );
+        pg->SetPropertyAttribute( wxT("BoolPropertyAsCheckbox"), wxPG_BOOL_USE_CHECKBOX, (long)1);
+
+        // A string property that can be edited in a separate editor dialog.
+        pg->Append( new wxLongStringProperty ( wxT("LongStringProperty"), wxPG_LABEL,
+                    wxString(_("This is much longer string than the ") ) +
+                    wxString(_("first one. Edit it by clicking the button.") ) ) );
+
+        // String editor with dir selector button.
+        pg->Append( new wxDirProperty( wxT("DirProperty"), wxPG_LABEL, ::wxGetUserHome()) );
+
+        // A file selector property.
+        pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
+
+        pg->Append( new wxPropertyCategory( _("Sample Parent Property") ) );
+        wxPGProperty *carProp = pg->Append( new wxStringProperty( _("Car"), wxPG_LABEL, wxT("<composed>") ) );
+        pg->AppendIn( carProp, new wxStringProperty( _("Model"), wxPG_LABEL, wxT("Lamborghini Diablo SV") ) );
+        pg->AppendIn( carProp, new wxIntProperty( _("Engine Size (cc)"), wxPG_LABEL, 5707 ) );
+
+        wxPGProperty *speedsProp = pg->AppendIn( carProp, new wxStringProperty( _("Speeds"), wxPG_LABEL, wxT("<composed>") ) );
+        pg->AppendIn( speedsProp, new wxIntProperty( _("Max. Speed (mph)"), wxPG_LABEL, 300 ) );
+        pg->AppendIn( speedsProp, new wxFloatProperty( _("0-100 mph (sec)"), wxPG_LABEL, 3.9 ) );
+        pg->AppendIn( speedsProp, new wxFloatProperty( _("1/4 mile (sec)"), wxPG_LABEL, 8.6 ) );
+        pg->AppendIn( carProp, new wxIntProperty( _("Price ($)"), wxPG_LABEL, 300000) );
+
+        if ( obj->GetPropertyAsInteger( wxT("include_advanced") ) )
+        {
+            pg->Append( new wxPropertyCategory( _("Advanced Properties") ) );
+            // wxArrayStringProperty embeds a wxArrayString.
+            pg->Append( new wxArrayStringProperty( _("Example of ArrayStringProperty"), wxT("ArrayStringProp") ) );
+
+            // Image file property. Wildcard is auto-generated from available
+            // image handlers, so it is not set this time.
+            pg->Append( new wxImageFileProperty( _("Example of ImageFileProperty"), wxT("ImageFileProp") ) );
+
+            // Font property has sub-properties.
+            pg->Append( new wxFontProperty( _("Font"), wxPG_LABEL ) );
+
+            // Colour property with arbitrary colour.
+            pg->Append( new wxColourProperty( _("My Colour 1"), wxPG_LABEL, wxColour( 242, 109, 0 ) ) );
+
+            // System colour property.
+            pg->Append( new wxSystemColourProperty( _("My SysColour 1"), wxPG_LABEL, wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) ) );
+
+            // System colour property with custom colour.
+            pg->Append( new wxSystemColourProperty( _("My SysColour 2"), wxPG_LABEL, wxColour( 0, 200, 160 ) ) );
+
+            // Cursor property
+            pg->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
+        }
+
+        return pg;
+    }
+
+    void Cleanup( wxObject* )
+    {
+        // Prevent assert for missing event handler
+    }
+};
+
+class PropertyGridManagerComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject *obj, wxObject *parent)
+    {
+        wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, -1,
+                                                                obj->GetPropertyAsPoint(wxT("pos")),
+                                                                obj->GetPropertyAsSize(wxT("size")),
+                                                                obj->GetPropertyAsInteger(wxT("style")) |
+                                                                obj->GetPropertyAsInteger(wxT("window_style")));
+
+        if ( !obj->GetPropertyAsString( wxT("extra_style") ).empty() )
+        {
+            pgman->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
+        }
+		
+        pgman->ShowHeader( obj->GetPropertyAsInteger( wxT("show_header") ) );
+		
+        // Adding a page sets target page to the one added, so
+        // we don't have to call SetTargetPage if we are filling
+        // it right after adding.
+        wxPropertyGridPage* pg = pgman->AddPage( _("First Page") );
+
+        pg->Append( new wxPropertyCategory( _("Sample Category") ) );
+
+        // Add string property
+        wxPGProperty *id = pg->Append( new wxStringProperty( _("Label"), wxPG_LABEL, _("Initial Value") ) );
+        pg->SetPropertyHelpString( id, _("A string property") );
+
+        // Add int property
+        pg->Append( new wxIntProperty ( wxT("IntProperty"), wxPG_LABEL, 12345678 ) );
+
+        // Add float property (value type is actually double)
+        pg->Append( new wxFloatProperty ( wxT("FloatProperty"), wxPG_LABEL, 12345.678 ) );
+
+        // Add a bool property
+        pg->Append( new wxBoolProperty ( wxT("BoolProperty"), wxPG_LABEL, false ) );
+        pg->Append( new wxBoolProperty ( wxT("BoolPropertyAsCheckbox"), wxPG_LABEL, true ) );
+        pg->SetPropertyAttribute( wxT("BoolPropertyAsCheckbox"), wxPG_BOOL_USE_CHECKBOX, (long)1 );
+
+        // Add an enum property
+        wxArrayString strings;
+        strings.Add( _("Herbivore") );
+        strings.Add( _("Carnivore") );
+        strings.Add( _("Omnivore") );
+
+        wxArrayInt indexes;
+        indexes.Add( 0 );
+        indexes.Add( 1 );
+        indexes.Add( 2 );
+
+        pg->Append( new wxEnumProperty( wxT("EnumProperty"), wxPG_LABEL, strings, indexes, 0 ) );
+
+        pg->Append( new wxPropertyCategory( _("Low Priority Properties") ) );
+
+        // A string property that can be edited in a separate editor dialog.
+        pg->Append( new wxLongStringProperty( wxT("LongStringProperty"), wxPG_LABEL,
+                                              wxString(_("This is much longer string than the ") ) +
+                                              wxString(_("first one. Edit it by clicking the button.") ) ) );
+
+        // String editor with dir selector button.
+        pg->Append( new wxDirProperty( wxT("DirProperty"), wxPG_LABEL, ::wxGetUserHome() ) );
+
+        // A file selector property.
+        pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
+
+        wxPropertyGridPage* pg2 = pgman->AddPage( _("Second Page") );
+
+        pg2->Append( new wxPropertyCategory( _("Sample Parent Property"), wxPG_LABEL ) );
+
+        wxPGProperty* carProp2 = pg2->Append( new wxStringProperty( _("Car"), wxPG_LABEL, wxT("<composed>") ) );
+        pg2->AppendIn( carProp2, new wxStringProperty( _("Model"), wxPG_LABEL, wxT("Lamborghini Diablo SV") ) );
+        pg2->AppendIn( carProp2, new wxIntProperty( _("Engine Size (cc)"), wxPG_LABEL, 5707) );
+
+        wxPGProperty* speedsProp2 = pg2->AppendIn( carProp2, new wxStringProperty( _("Speeds"), wxPG_LABEL, wxT("<composed>") ) );
+        pg2->AppendIn( speedsProp2, new wxIntProperty( _("Max. Speed (mph)"), wxPG_LABEL, 300 ) );
+        pg2->AppendIn( speedsProp2, new wxFloatProperty( _("0-100 mph (sec)"), wxPG_LABEL, 3.9 ) );
+        pg2->AppendIn( speedsProp2, new wxFloatProperty( _("1/4 mile (sec)"), wxPG_LABEL, 8.6) );
+
+        pg2->AppendIn( carProp2, new wxIntProperty( _("Price ($)"), wxPG_LABEL, 300000 ) );
+
+        if ( obj->GetPropertyAsInteger( wxT("include_advanced") ) )
+        {
+            pg2->Append( new wxPropertyCategory( _("Advanced Properties"), wxPG_LABEL ) );
+            // wxArrayStringProperty embeds a wxArrayString.
+            pg2->Append( new wxArrayStringProperty( _("Example of ArrayStringProperty"), wxT("ArrayStringProp") ) );
+
+            // Image file property. Wildcard is auto-generated from available
+            // image handlers, so it is not set this time.
+            pg2->Append( new wxImageFileProperty( _("Example of ImageFileProperty"), wxT("ImageFileProp") ) );
+
+            // Font property has sub-properties.
+            pg2->Append( new wxFontProperty( _("Font"), wxPG_LABEL ) );
+
+            // Colour property with arbitrary colour.
+            pg2->Append( new wxColourProperty( _("My Colour 1"), wxPG_LABEL, wxColour( 242, 109, 0 ) ) );
+
+            // System colour property.
+            pg2->Append( new wxSystemColourProperty( _("My SysColour 1"), wxPG_LABEL, wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) ) );
+
+            // System colour property with custom colour.
+            pg2->Append( new wxSystemColourProperty( _("My SysColour 2"), wxPG_LABEL, wxColour( 0, 200, 160 ) ) );
+
+            // Cursor property
+            pg2->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
+        }
+
+        pgman->SelectPage( 0 );
+
+        return pgman;
+    }
+/*
+    void Cleanup( wxObject* )
+    {
+        // Prevent assert for missing event handler
+    }*/
+};
+
+class StyledTextComponent : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxStyledTextCtrl* m_code = new wxStyledTextCtrl( 	(wxWindow *)parent, -1,
+												obj->GetPropertyAsPoint(_("pos")),
+												obj->GetPropertyAsSize(_("size")),
+												obj->GetPropertyAsInteger(_("window_style")),
+												obj->GetPropertyAsString(_("name"))
+											);
+
+		// Line Numbers
+		if ( 0 != obj->GetPropertyAsInteger(_("line_numbers") ) )
+		{
+			m_code->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
+			m_code->SetMarginWidth( 0, m_code->TextWidth (wxSTC_STYLE_LINENUMBER, wxT("_99999"))  );
+		}
+		else
+		{
+			m_code->SetMarginWidth( 0, 0 );
+		}
+
+		// markers
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS);
+		m_code->MarkerSetBackground (wxSTC_MARKNUM_FOLDER, wxColour (wxT("BLACK")));
+		m_code->MarkerSetForeground (wxSTC_MARKNUM_FOLDER, wxColour (wxT("WHITE")));
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS);
+		m_code->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPEN, wxColour (wxT("BLACK")));
+		m_code->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPEN, wxColour (wxT("WHITE")));
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY);
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS);
+		m_code->MarkerSetBackground (wxSTC_MARKNUM_FOLDEREND, wxColour (wxT("BLACK")));
+		m_code->MarkerSetForeground (wxSTC_MARKNUM_FOLDEREND, wxColour (wxT("WHITE")));
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS);
+		m_code->MarkerSetBackground (wxSTC_MARKNUM_FOLDEROPENMID, wxColour (wxT("BLACK")));
+		m_code->MarkerSetForeground (wxSTC_MARKNUM_FOLDEROPENMID, wxColour (wxT("WHITE")));
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY);
+		m_code->MarkerDefine (wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY);
+
+		// folding
+		if ( 0 != obj->GetPropertyAsInteger(_("folding") ) )
+		{
+			m_code->SetMarginType (1, wxSTC_MARGIN_SYMBOL);
+			m_code->SetMarginMask (1, wxSTC_MASK_FOLDERS);
+			m_code->SetMarginWidth (1, 16);
+			m_code->SetMarginSensitive (1, true);
+
+			m_code->SetProperty( wxT("fold"), wxT("1") );
+			m_code->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+		}
+		else
+		{
+			m_code->SetMarginWidth( 1, 0 );
+		}
+		m_code->SetIndentationGuides( ( 0 != obj->GetPropertyAsInteger( _("indentation_guides") ) ) );
+
+		m_code->SetMarginWidth( 2, 0 );
+
+		m_code->SetLexer(wxSTC_LEX_CPP);
+		m_code->SetKeyWords(0, wxT("asm auto bool break case catch char class const const_cast \
+							   continue default delete do double dynamic_cast else enum explicit \
+							   export extern false float for friend goto if inline int long \
+							   mutable namespace new operator private protected public register \
+							   reinterpret_cast return short signed sizeof static static_cast \
+							   struct switch template this throw true try typedef typeid \
+							   typename union unsigned using virtual void volatile wchar_t \
+							   while"));
+
+		wxFont font(10, wxMODERN, wxNORMAL, wxNORMAL);
+		if ( !obj->GetPropertyAsString(_("font")).empty() )
+		{
+			font = obj->GetPropertyAsFont(_("font"));
+		}
+
+		m_code->StyleSetFont(wxSTC_STYLE_DEFAULT, font );
+
+		m_code->StyleClearAll();
+		m_code->StyleSetBold(wxSTC_C_WORD, true);
+		m_code->StyleSetForeground(wxSTC_C_WORD, *wxBLUE);
+		m_code->StyleSetForeground(wxSTC_C_STRING, *wxRED);
+		m_code->StyleSetForeground(wxSTC_C_STRINGEOL, *wxRED);
+		m_code->StyleSetForeground(wxSTC_C_PREPROCESSOR, wxColour(49, 106, 197));
+		m_code->StyleSetForeground(wxSTC_C_COMMENT, wxColour(0, 128, 0));
+		m_code->StyleSetForeground(wxSTC_C_COMMENTLINE, wxColour(0, 128, 0));
+		m_code->StyleSetForeground(wxSTC_C_COMMENTDOC, wxColour(0, 128, 0));
+		m_code->StyleSetForeground(wxSTC_C_COMMENTLINEDOC, wxColour(0, 128, 0));
+		m_code->StyleSetForeground(wxSTC_C_NUMBER, *wxBLUE );
+		m_code->SetUseTabs( ( 0 != obj->GetPropertyAsInteger( _("use_tabs") ) ) );
+		m_code->SetTabWidth( obj->GetPropertyAsInteger( _("tab_width") ) );
+		m_code->SetTabIndents( ( 0 != obj->GetPropertyAsInteger( _("tab_indents") ) ) );
+		m_code->SetBackSpaceUnIndents( ( 0 != obj->GetPropertyAsInteger( _("backspace_unindents") ) ) );
+		m_code->SetIndent( obj->GetPropertyAsInteger( _("tab_width") ) );
+		m_code->SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
+		m_code->SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
+		m_code->SetViewEOL( ( 0 != obj->GetPropertyAsInteger( _("view_eol") ) ) );
+		m_code->SetViewWhiteSpace( ( 0 != obj->GetPropertyAsInteger( _("view_whitespace") ) ) );
+
+		m_code->SetCaretWidth(2);
+
+		m_code->SetText( 	wxT( "/** Sample Class to Display wxScintilla */\n" )
+							wxT( "class ScintillaSampleCode\n" )
+							wxT( "{\n" )
+							wxT( "private:\n" )
+							wxT( "\tint m_privateMember;\n\n" )
+							wxT( "public:\n\n" )
+							wxT( "\t// Sample Member Function\n" )
+							wxT( "\tint SampleFunction( int sample = 0 )\n" )
+							wxT( "\t{\n" )
+							wxT( "\t\treturn sample;\n" )
+							wxT( "\t}\n" )
+							wxT( "};\n" )
+						);
+
+		m_code->PushEventHandler( new ComponentEvtHandler( m_code, GetManager() ) );
+
+		return m_code;
+	}
+};
+
+void ComponentEvtHandler::OnMarginClick( wxStyledTextEvent& event )
+{
+	wxStyledTextCtrl* scintilla = wxDynamicCast( m_window, wxStyledTextCtrl );
+	if ( scintilla != NULL )
+	{
+		if ( event.GetMargin() == 1 )
+		{
+			int lineClick = scintilla->LineFromPosition( event.GetPosition() );
+			int levelClick = scintilla->GetFoldLevel( lineClick );
+			if ( ( levelClick & wxSTC_FOLDLEVELHEADERFLAG ) > 0 )
+			{
+				scintilla->ToggleFold( lineClick );
+			}
+		}
+	}
+	event.Skip();
+}
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -1461,6 +1824,35 @@ MACRO(wxDIRCTRL_MULTIPLE)
 
 // wxTimer
 ABSTRACT_COMPONENT("wxTimer", TimerComponent)
+
+#if wxVERSION_NUMBER >= 2904
+// wxPropertyGrid
+WINDOW_COMPONENT("wxPropertyGrid", PropertyGridComponent)
+MACRO(wxPG_AUTO_SORT)
+MACRO(wxPG_HIDE_CATEGORIES)
+MACRO(wxPG_ALPHABETIC_MODE)
+MACRO(wxPG_BOLD_MODIFIED)
+MACRO(wxPG_SPLITTER_AUTO_CENTER)
+MACRO(wxPG_TOOLTIPS)
+MACRO(wxPG_HIDE_MARGIN)
+MACRO(wxPG_STATIC_SPLITTER)
+MACRO(wxPG_STATIC_LAYOUT)
+MACRO(wxPG_LIMITED_EDITING)
+MACRO(wxPG_EX_INIT_NOCAT)
+MACRO(wxPG_DEFAULT_STYLE)
+MACRO(wxTAB_TRAVERSAL)
+
+// wxPropertyGridManager
+WINDOW_COMPONENT("wxPropertyGridManager", PropertyGridManagerComponent)
+MACRO(wxPG_EX_NO_FLAT_TOOLBAR)
+MACRO(wxPG_EX_MODE_BUTTONS)
+MACRO(wxPGMAN_DEFAULT_STYLE)
+MACRO(wxPG_DESCRIPTION)
+MACRO(wxPG_TOOLBAR)
+
+// wxStyledTextCtrl
+WINDOW_COMPONENT("wxStyledTextCtrl", StyledTextComponent )
+#endif
 
 END_LIBRARY()
 

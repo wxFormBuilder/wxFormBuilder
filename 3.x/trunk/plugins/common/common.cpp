@@ -142,10 +142,17 @@ protected:
 	void OnChoice( wxCommandEvent& event );
 	void OnComboBox( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
+#if wxVERSION_NUMBER >= 2904
+	void OnButton( wxCommandEvent& event );
+	void OnTimer( wxTimerEvent& event );
+#endif
 	
 private:
     wxWindow* m_window;
     IManager* m_manager;
+#if wxVERSION_NUMBER >= 2904
+	wxTimer m_timer;
+#endif
 
 	DECLARE_EVENT_TABLE()
 };
@@ -158,7 +165,15 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
+	
+#if wxVERSION_NUMBER >= 2904
+	// wxInfoBar related handlers
+	EVT_BUTTON( wxID_ANY, ComponentEvtHandler::OnButton )
+	EVT_TIMER( wxID_ANY, ComponentEvtHandler::OnTimer )
+#endif
 END_EVENT_TABLE()
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1578,7 +1593,7 @@ public:
 	}
 };
 
-#if wxVERSION_NUMBER >= 2901
+#if wxVERSION_NUMBER >= 2904
 class InfoBarComponent : public ComponentBase
 {
 public:
@@ -1589,7 +1604,7 @@ public:
 		ib->SetShowHideEffects( (wxShowEffect)obj->GetPropertyAsInteger(_("show_effect")),
 								(wxShowEffect)obj->GetPropertyAsInteger(_("hide_effect")) );
 		ib->SetEffectDuration( obj->GetPropertyAsInteger(_("duration")) );
-		ib->ShowMessage( wxT("Some message"), wxICON_INFORMATION );
+		ib->ShowMessage( wxT("Message ..."), wxICON_INFORMATION );
 
 		ib->PushEventHandler( new ComponentEvtHandler( ib, GetManager() ) );
 
@@ -1598,18 +1613,42 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-		ObjectToXrcFilter xrc(obj, _("wxInfoBar"), obj->GetPropertyAsString(_("name")));
-		xrc.AddWindowProperties();
+		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
+		
+		/*ObjectToXrcFilter xrc(obj, _("wxInfoBar"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();*/
+		
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	/*ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxInfoBar"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
-	}
+	}*/
 };
+
+void ComponentEvtHandler::OnButton( wxCommandEvent &event )
+{
+	wxInfoBar *ib = wxDynamicCast( m_window, wxInfoBar );
+	if( ib )
+	{
+		m_timer.SetOwner( this );
+		m_timer.Start( ib->GetEffectDuration() + 1000, true );
+	}
+	
+	event.Skip();
+}
+
+void ComponentEvtHandler::OnTimer( wxTimerEvent &event )
+{
+	wxInfoBar *ib = wxDynamicCast( m_window, wxInfoBar );
+	if( ib )
+	{
+		ib->ShowMessage( _("Message ...") );
+	}
+}
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1643,7 +1682,7 @@ WINDOW_COMPONENT("wxChoice", ChoiceComponent)
 WINDOW_COMPONENT("wxSlider", SliderComponent)
 WINDOW_COMPONENT("wxGauge", GaugeComponent)
 WINDOW_COMPONENT("wxAnimationCtrl", AnimCtrlComponent)
-#if wxVERSION_NUMBER >= 2901
+#if wxVERSION_NUMBER >= 2904
 WINDOW_COMPONENT("wxInfoBar", InfoBarComponent)
 #endif
 
@@ -1781,7 +1820,7 @@ MACRO(wxAC_DEFAULT_STYLE)
 MACRO(wxAC_NO_AUTORESIZE)
 
 // wxInfoBar
-#if wxVERSION_NUMBER >= 2901
+#if wxVERSION_NUMBER >= 2904
 MACRO(wxSHOW_EFFECT_NONE)
 MACRO(wxSHOW_EFFECT_ROLL_TO_LEFT)
 MACRO(wxSHOW_EFFECT_ROLL_TO_RIGHT)
