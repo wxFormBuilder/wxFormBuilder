@@ -146,7 +146,7 @@ Written by
   <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
   </objectinfo>
   
-  <objectinfo class="wxInfoBar" icon="infobar.xpm" type="widget" wxversion="2901" startgroup="1">
+  <objectinfo class="wxInfoBar" icon="infobar.xpm" type="widget" wxversion="2904" startgroup="1">
 	<inherits class="wxWindow" />
     <inherits class="AUI" />
 	<property name="name" type="text">m_infoCtrl</property>
