@@ -81,7 +81,7 @@ GOTO Loop
 build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %unicode% %mediactrl% codelite
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx_root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %unicode% %mediactrl% gmake
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %unicode% %mediactrl% gmake
 ECHO.
 
 ECHO Done generating all project files for wxFormBuilder.
