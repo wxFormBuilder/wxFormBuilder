@@ -1,11 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-12/18/2012 Version 3.03.05 (Beta)
+03/13/2013 Version 3.03.05 (Beta)
 * Fixed various issues when built with wxWidgets 2.9.x and later.
 + Added support for wxInfoBar widget ( when built with wxWidgets 2.9.4 and later ).
 + Added support for wxPropertyGrid and wxPropertyGridManager widgets ( when built with wxWidgets 2.9.4 and later ).
 + Added support for wxStyledTextCtrl widget ( when built with wxWidgets 2.9.4 and later ).
 + Added support for wxTimer non-visual object.
+* Fixed "default" font family in generated XRC under wxWidgets 2.9.x and later.
+* Fixed minor visual issues under wxWidgets 2.9.x and later.
 
 10/07/2012 Version 3.03.04 (Beta)
 * ID: 3519419 - Create inherited class bracket error.

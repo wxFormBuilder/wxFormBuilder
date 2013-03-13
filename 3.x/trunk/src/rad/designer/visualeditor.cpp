@@ -665,15 +665,11 @@ void VisualEditor::Create()
 			if ( backSize.GetHeight() == wxDefaultCoord || backSize.GetWidth() == wxDefaultCoord )
 			{
 				m_back->GetSizer()->Fit( m_back );
-				m_back->SetSize( m_back->GetBestSize() );
+				m_back->SetClientSize( m_back->GetBestSize() );
 			}
 
 			// Set size after fitting so if only one dimesion is -1, it still fits that dimension
 			m_back->SetSize( backSize );
-			
-			if( m_auimgr ) m_auimgr->Update();
-			else
-				m_back->Refresh();
 
 			PProperty enabled( m_form->GetProperty( wxT("enabled") ) );
 			if ( enabled )
@@ -686,6 +682,12 @@ void VisualEditor::Create()
 			{
 				m_back->Show( TypeConv::StringToInt( hidden->GetValue() ) == 0 );
 			}
+			
+			if( m_auimgr ) m_auimgr->Update();
+			else
+				m_back->Refresh();
+				
+			Refresh();
 		}
 		else
 		{

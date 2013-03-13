@@ -14,7 +14,11 @@ project "wxFormBuilder"
         "../../src/**.h", "../../src/**.hpp", "../../src/**.hh",
         "../../src/**.cpp", "../../src/**.cc", "../../src/**.fbp"
     }
-    excludes                { "../../src/controls/**" }
+    excludes
+	{
+		"../../src/controls/**",
+		"../../src/rad/designer/resizablepanel.*"
+	}
     includedirs
     {
         "../../src", "../../src/boost", "../../src/controls/include",
