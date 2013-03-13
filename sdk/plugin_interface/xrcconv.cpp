@@ -298,6 +298,7 @@ void ObjectToXrcFilter::LinkFont( const wxFontContainer &font, ticpp::Element *p
 		propElement->LinkEndChild( &size );
 	}
 
+	bool skipFamily = false;
 	ticpp::Element family( "family" );
 	switch ( font.GetFamily() )
 	{
@@ -320,10 +321,15 @@ void ObjectToXrcFilter::LinkFont( const wxFontContainer &font, ticpp::Element *p
 			family.SetText( "teletype" );
 			break;
 		default:
+		// wxWidgets 2.9.0 doesn't define "default" family
+#if wxVERSION_NUMBER < 2900
 			family.SetText( "default" );
+#else
+			skipFamily = true;
+#endif
 			break;
 	}
-	propElement->LinkEndChild( &family );
+	if( ! skipFamily ) propElement->LinkEndChild( &family );
 
 	ticpp::Element style( "style" );
 	switch ( font.GetStyle() )

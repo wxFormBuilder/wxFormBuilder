@@ -290,7 +290,7 @@ END_EVENT_TABLE()
 
 wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
                             const wxPoint &pos, const wxSize &size, long style )
-		: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
+	: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
 {
 	m_sizing = NONE;
 	m_curX = m_curY = -1;
