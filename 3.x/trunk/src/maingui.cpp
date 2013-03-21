@@ -45,6 +45,10 @@
 #include "utils/typeconv.h"
 #include "model/objectbase.h"
 
+#if wxVERSION_NUMBER >= 2905
+#include <wx/xrc/xh_auinotbk.h>
+#endif
+
 // Abnormal Termination Handling
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 	#include <wx/stackwalk.h>
@@ -200,6 +204,9 @@ int MyApp::OnRun()
 	// Init handlers
 	wxInitAllImageHandlers();
 	wxXmlResource::Get()->InitAllHandlers();
+	#if wxVERSION_NUMBER >= 2905
+	wxXmlResource::Get()->AddHandler(new wxAuiNotebookXmlHandler);
+	#endif
 
 	// Init AppData
 	try
