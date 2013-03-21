@@ -525,6 +525,7 @@ public:
     ObjectToXrcFilter xrc(obj, _("notebookpage"));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("select"),_("selected"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 		return xrc.GetXrcObject();
 	}
 
@@ -532,8 +533,9 @@ public:
 	{
     XrcToXfbFilter filter(xrcObj, _("notebookpage"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 		return filter.GetXfbObject();
 	}
 };
@@ -712,7 +714,7 @@ public:
 		return book;
 	}
 
-/*
+#if wxVERSION_NUMBER >= 2905
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxAuiNotebook"), obj->GetPropertyAsString(_("name")));
@@ -726,7 +728,7 @@ public:
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
 	}
-*/
+#endif
 };
 
 void ComponentEvtHandler::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
@@ -785,24 +787,27 @@ public:
 	{
 		BookUtils::OnSelected< wxAuiNotebook >( wxobject, GetManager() );
 	}
-/*
+
+#if wxVERSION_NUMBER >= 2905
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-		ObjectToXrcFilter xrc(obj, _("auinotebookpage"));
-		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
+		ObjectToXrcFilter xrc(obj, _("notebookpage"));
+		xrc.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("selected"),_("selected"), XRC_TYPE_BOOL);
+		xrc.AddProperty(_("bitmap"),_("bitmap"), XRC_TYPE_BITMAP);
 		return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
-		XrcToXfbFilter filter(xrcObj, _("auinotebookpage"));
+		XrcToXfbFilter filter(xrcObj, _("notebookpage"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BOOL);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 		return filter.GetXfbObject();
 	}
-*/
+#endif
 };
 
 ///////////////////////////////////////////////////////////////////////////////

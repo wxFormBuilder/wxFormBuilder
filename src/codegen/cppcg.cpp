@@ -1714,12 +1714,12 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 
 		m_source->WriteLn( GetCode( obj, temp_name ) );
 	}
-	else if (	type == wxT( "notebookpage" )		||
+	else if ( type == wxT( "notebookpage" )		||
 	          type == wxT( "flatnotebookpage" )	||
 	          type == wxT( "listbookpage" )		||
 	          type == wxT( "choicebookpage" )	||
 	          type == wxT( "auinotebookpage" )  ||
-              type == wxT("wizardpagesimple")
+              type == wxT(" wizardpagesimple" )
 	        )
 	{
 		GenConstruction( obj->GetChild( 0 ), false );
