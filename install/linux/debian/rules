@@ -4,7 +4,7 @@
 #export DH_VERBOSE=1
 
 get-orig-source:
-	svn export https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk wxformbuilder
+	svn export svn://svn.code.sf.net/p/wxformbuilder/code/3.x/trunk wxformbuilder
 	
 	cd $(CURDIR)/wxformbuilder && install/linux/create_src_tarball
 	rm -rf $(CURDIR)/wxformbuilder
