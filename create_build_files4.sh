@@ -13,12 +13,13 @@ for args in "$@"
 do
     haveroot=`expr "${args}" : '--wx-root=.*'`
 	havearch=`expr "${args}" : '--architecture=.*'`
+	haverpath=`expr "${args}" : '--rpath=.*'`
     if ( [ ${args} = "--help" ] || [ ${args} = "-h" ] ); then
 			echo "Available options:"
 			echo
 			echo "--disable-mediactrl       Disable wxMediaCtrl / wxMedia library."
 			echo
-			echo "--disable-shared			 Use static wxWidgets build instead of shared libraries."
+			echo "--disable-shared          Use static wxWidgets build instead of shared libraries."
 			echo
 			echo "--disable-unicode         Whether to use an Unicode or an ANSI build."
 			echo "                          Ignored in wxWidgets 2.9 and later."
@@ -32,7 +33,8 @@ do
 			echo "                          Example: --wx-root=/home/devel/wx/3.0/buildgtk"
 			echo "                          Current: $wxpath"
 			echo
-			echo "--architecture			 Specify build architecture (e.g. --architecture=i386)."
+			echo "--architecture            Specify build architecture (e.g. --architecture=i386)."
+			echo "--rpath                   Specify a rpath  (e.g. --rpath=/usr/lib/wxformbuilder)."
 			echo
 			exit
     elif [ ${args} = "--disable-mediactrl" ]; then
@@ -52,6 +54,9 @@ do
         continue
 	elif ( [ "$havearch" -gt "0" ] ); then
         arch=${args}
+        continue
+    elif ( [ "$haverpath" -gt "0" ] ); then
+        rpath=${args}
         continue
     fi
 done
@@ -84,8 +89,8 @@ cd build
 make CONFIG=Release -C./premake/$platform
 
 #./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch codeblocks
-./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch codelite
-./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch gmake
+./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
+./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
 if [ "$platform" = "macosx" ]; then
    ./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch xcode3
 fi

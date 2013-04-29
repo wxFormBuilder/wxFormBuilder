@@ -18,14 +18,14 @@ build: build-stamp
 
 build-stamp: configure-stamp 
 	dh_testdir
-	$(MAKE) CONFIG=Release
+	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	$(MAKE) CONFIG=Release clean
+	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release clean
 	dh_clean 
 
 install: build
@@ -58,7 +58,7 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_shlibdeps
+	dh_shlibdeps -Xlibwxadditions-mini
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
