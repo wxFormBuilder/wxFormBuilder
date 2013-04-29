@@ -49,13 +49,34 @@ end
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
+	
+	if os.is( "linux" ) then
+		newoption
+		{
+			trigger		= "rpath",
+			description	= "Linux only, set rpath on the linker line to find shared libraries next to executable"
+		}
 
-	configuration {"codelite", "linux"}
-        linkoptions         {"-Wl,-rpath,$$``ORIGIN/../lib/wxformbuilder"}
+		-- Set rpath
+		local useRpath = true
+		local rpath= _ACTION == "codeblocks" and "$" or "$$"
+		rpath = rpath .. "``ORIGIN/../lib/wxformbuilder"
+		local rpathOption = _OPTIONS[ "rpath" ]
 
-    configuration {"codeblocks", "linux"}
-        linkoptions         {"-Wl,-rpath,$``ORIGIN/../lib/wxformbuilder"}
+		if rpathOption then
+			if "no" == rpathOption or "" == rpathOption then
+				useRpath = false
+			else
+				rpath = rpathOption
+			end
+		end
 
+		if useRpath then
+		print( "rpath: -Wl,-rpath," .. rpath )
+			linkoptions( "-Wl,-rpath," .. rpath )
+		end
+	end
+	
     configuration "macosx"
         linkoptions         {"-Wl,-L../../output/lib/wxformbuilder"}
 
@@ -70,6 +91,7 @@ end
         libdirs             {"../../output/lib/wxformbuilder"}
         targetdir           "../../output/bin"
         targetname          "wxformbuilder"
+        links               {"dl"}
 
     configuration "windows"
         files               {"../../src/*.rc"}
