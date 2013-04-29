@@ -45,7 +45,11 @@ end
 
 -- Set the kind of package you want to create.
 --		Options: exe | winexe | lib | dll
-package.kind = "winexe"
+if ( windows ) then
+	package.kind = "winexe"
+else
+	package.kind = "exe"
+end
 -- Set the files to include.
 package.files = { matchrecursive( "*.cpp", "*.hpp", "*.h", "*.cc", "*.hh", "*.rc" ) }
 -- Set the files to exclude.
