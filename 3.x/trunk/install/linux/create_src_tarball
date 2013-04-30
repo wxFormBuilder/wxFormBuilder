@@ -29,25 +29,18 @@ function make_src_tarball
 	# create Makefiles
 	$basedir/create_build_files4.sh --rpath=/usr/lib/wxformbuilder
 
-	  # Build premake
-	  #PREMAKE_DIR=sdk/premake
-	  #make -C$PREMAKE_DIR/src -f../build/Makefile
+	# remove premake, as it is no longer necessary
+	rm -rf $PREMAKE_DIR
 
-	  # Use premake to generate Makefiles
-	  #$PREMAKE_DIR/bin/premake --linux --target gnu --unicode --disable-wx-debug --with-wx-shared --skip-symlink --rpath /usr/lib/wxformbuilder
+	# remove scripts that execute premake, as they are no longer necessary
+	rm -f $basedir/create_build_files*
 
-	  # remove premake, as it is no longer necessary
-	  rm -rf $PREMAKE_DIR
-
-	  # remove scripts that execute premake, as they are no longer necessary
-	  rm -f $basedir/create_build_files*
-	  
-	  # Cleanup premake build-from-source files
-	  rm -rf $basedir/build/4.3
-	  rm -rf $basedir/build/bsd
-	  rm -rf $basedir/build/linux
-	  rm -rf $basedir/build/macosx
-	  rm -rf $basedir/build/windows
+	# Cleanup premake build-from-source files
+	rm -rf $basedir/build/4.3
+	rm -rf $basedir/build/bsd
+	rm -rf $basedir/build/linux
+	rm -rf $basedir/build/macosx
+	rm -rf $basedir/build/windows
 
 	# use a temporary directory
 	tmpdir=wxformbuilder-$1 #.orig
@@ -56,7 +49,7 @@ function make_src_tarball
 	cd ..
 
 	tar czf wxformbuilder_$1.orig.tar.gz $tmpdir
-	#rm -rf $tmpdir
+	rm -rf $tmpdir
 }
 
 changelog="output/Changelog.txt"
