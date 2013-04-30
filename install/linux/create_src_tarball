@@ -36,11 +36,11 @@ function make_src_tarball
 	rm -f $basedir/create_build_files*
 
 	# Cleanup premake build-from-source files
-	rm -rf $basedir/build/4.3
-	rm -rf $basedir/build/bsd
-	rm -rf $basedir/build/linux
-	rm -rf $basedir/build/macosx
-	rm -rf $basedir/build/windows
+	rm -rf $basedir/build/premake/4.3
+	rm -rf $basedir/build/premake/bsd
+	rm -rf $basedir/build/premake/linux
+	rm -rf $basedir/build/premake/macosx
+	rm -rf $basedir/build/premake/windows
 
 	# use a temporary directory
 	tmpdir=wxformbuilder-$1 #.orig
