@@ -43,6 +43,7 @@ class wxFBEventHandlerEvent;
 
 class CppPanel;
 class PythonPanel;
+class LuaPanel;
 class PHPPanel;
 class XrcPanel;
 class ObjectTree;
@@ -86,6 +87,7 @@ class MainFrame : public wxFrame
   VisualEditor *m_visualEdit;
   CppPanel *m_cpp;
   PythonPanel *m_python;
+  LuaPanel *m_lua;
   PHPPanel *m_php;
   XrcPanel *m_xrc;
   int m_style;

@@ -37,6 +37,7 @@
 #include "codegen/cppcg.h"
 #include "codegen/pythoncg.h"
 #include "codegen/phpcg.h"
+#include "codegen/luacg.h"
 #include "codegen/xrccg.h"
 #include "codegen/codewriter.h"
 #include "rad/xrcpreview/xrcpreview.h"
@@ -2151,6 +2152,17 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			codegen.SetSourceWriter( php_cw );
 
 			codegen.GenerateInheritedClass( obj, form );
+		}
+		else if( pCodeGen && TypeConv::FlagSet( wxT("Lua"), pCodeGen->GetValue() ) )
+		{
+			LuaCodeGenerator codegen;
+			
+			const wxString& fullPath = inherFile.GetFullPath();
+			PCodeWriter lua_cw( new FileCodeWriter( fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8 ) );
+
+			codegen.SetSourceWriter( lua_cw );
+
+			codegen.GenerateInheritedClass( obj, form, genFileFullPath );
 		}
 
 		wxLogStatus( wxT( "Class generated at \'%s\'." ), path.c_str() );

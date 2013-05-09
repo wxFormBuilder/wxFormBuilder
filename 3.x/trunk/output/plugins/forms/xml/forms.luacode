@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Lua code generation writen by
+  Vratislav Zival
+-->
+<codegen language="Lua">
+
+	<templates class="wxTopLevelWindow">
+		<template name="evt_connect_OnActivate">#utbl$name:Connect( wx.wxEVT_ACTIVATE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnActivate">$name:Disconnect( wx.wxEVT_ACTIVATE )</template>
+		<template name="evt_connect_OnActivateApp">#utbl$name:Connect( wx.wxEVT_ACTIVATE_APP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnActivateApp">$name:Disconnect( wx.wxEVT_ACTIVATE_APP )</template>
+		<template name="evt_connect_OnClose">#utbl$name:Connect( wx.wxEVT_CLOSE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnClose">$name:Disconnect( wx.wxEVT_CLOSE_WINDOW )</template>
+		<template name="evt_connect_OnHibernate">#utbl$name:Connect( wx.wxEVT_HIBERNATE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnHibernate">$name:Disconnect( wx.wxEVT_HIBERNATE )</template>
+		<template name="evt_connect_OnIconize">#utbl$name:Connect( wx.wxEVT_ICONIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnIconize">$name:Disconnect( wx.wxEVT_ICONIZE )</template>
+		<template name="evt_connect_OnIdle">#utbl$name:Connect( wx.wxEVT_IDLE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnIdle">$name:Disconnect( wx.wxEVT_IDLE )</template>
+	</templates>
+  
+	<templates class="AUI Events">
+		<template name="evt_connect_OnAuiPaneButton">#utbl$name:Connect( wxaui.wxEVT_AUI_PANE_BUTTON, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiPaneButton">$name:Disconnect( wxaui.wxEVT_AUI_PANE_BUTTON )</template>
+		<template name="evt_connect_OnAuiPaneClose">#utbl$name:Connect( wxaui.wxEVT_AUI_PANE_CLOSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiPaneClose">$name:Disconnect( wxaui.wxEVT_AUI_PANE_CLOSE )</template>
+		<template name="evt_connect_OnAuiPaneMaximize">#utbl$name:Connect( wxaui.wxEVT_AUI_PANE_MAXIMIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiPaneMaximize">$name:Disconnect( wxaui.wxEVT_AUI_PANE_MAXIMIZE )</template>
+		<template name="evt_connect_OnAuiPaneRestore">#utbl$name:Connect( wxaui.wxEVT_AUI_PANE_RESTORE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiPaneRestore">$name:Disconnect( wxaui.wxEVT_AUI_PANE_RESTORE )</template>
+		<template name="evt_connect_OnAuiRender">#utbl$name:Connect( wxaui.wxEVT_AUI_RENDER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiRender">$name:Disconnect( wxaui.wxEVT_AUI_RENDER )</template>
+		<template name="evt_connect_OnAuiFindManager">#utbl$name:Connect( wxaui.wxEVT_AUI_FIND_MANAGER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnAuiFindManager">$name:Disconnect( wxaui.wxEVT_AUI_FIND_MANAGER )</template>
+	</templates>
+	
+	<templates class="Frame">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.Frame @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxFrame@}
+			(wx.NULL, $id, $title, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ #utbl$name .m_mgr:UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			<!--@{import wxaui @ -->
+		</template>
+		<template name="settings">
+			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
+			
+			#ifnotnull $window_extra_style
+			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ #utbl$name :SetExtraStyle( $extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ #utbl$name :SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ #utbl$name :SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ #utbl$name :SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ #utbl$name :Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ #utbl$name :Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
+			
+			#ifequal $aui_managed "1"
+			@{ 
+				 #utbl$name.m_mgr = wxaui.wxAuiManager() #nl
+				 #utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
+			@}
+		</template>
+		<template name="after_addchild">
+		  #ifequal $aui_managed "1"
+			@{ #nl #utbl$name .m_mgr:Update() @} 
+			#ifnotnull $center
+			@{ #nl #utbl$name:Centre( $center ) @}
+		</template>
+		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnChar">$name:Disconnect( wx.wxEVT_CHAR )</template>
+		<template name="evt_connect_OnEnterWindow">#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect( wx.wxEVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect( wx.wxEVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyDown">$name:Disconnect( wx.wxEVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyUp">$name:Disconnect( wx.wxEVT_KEY_UP )</template>
+		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnLeaveWindow">#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect( wx.wxEVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect( wx.wxEVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMotion">$name:Disconnect( wx.wxEVT_MOTION )</template>
+		<template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+		</template>-->
+		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect( wx.wxEVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
+		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDClick">$name:Disconnect( wx.wxEVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDown">$name:Disconnect( wx.wxEVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightUp">$name:Disconnect( wx.wxEVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSize">$name:Disconnect( wx.wxEVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect( wx.wxEVT_UPDATE_UI )</template>
+	</templates>
+
+	<templates class="Panel">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.wxPanel @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxPanel@}
+			(wx.NULL, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ #utbl$name .m_mgr:UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			<!--@{import wxaui @ --></template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ #utbl$name :SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ #utbl$name :SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ #utbl$name :SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ #utbl$name :Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ #utbl$name :Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
+
+			#ifnotnull $minimum_size
+			@{ #utbl$name :SetMinSize( $minimum_size ) #nl @}
+			
+			#ifnotnull $maximum_size
+			@{ #utbl$name :SetMaxSize( $maximum_size ) #nl @}
+
+			#ifequal $aui_managed "1"
+			@{ 
+				 #utbl$name.m_mgr = wxaui.wxAuiManager() #nl
+				 #utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl #utbl$name .m_mgr:Update() @} 
+		</template>
+		<template name="evt_connect_OnInitDialog">#utbl$name:Connect( wx.wxEVT_INIT_DIALOG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnInitDialog">$name:Disconnect( wx.wxEVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnChar">$name:Disconnect( wx.wxEVT_CHAR )</template>
+		<template name="evt_connect_OnEnterWindow">#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect( wx.wxEVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect( wx.wxEVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyDown">$name:Disconnect( wx.wxEVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyUp">$name:Disconnect( wx.wxEVT_KEY_UP )</template>
+		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnLeaveWindow">#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect( wx.wxEVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect( wx.wxEVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMotion">$name:Disconnect( wx.wxEVT_MOTION )</template>
+		<template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+		</template>-->
+		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect( wx.wxEVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
+		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDClick">$name:Disconnect( wx.wxEVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDown">$name:Disconnect( wx.wxEVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightUp">$name:Disconnect( wx.wxEVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSize">$name:Disconnect( wx.wxEVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect( wx.wxEVT_UPDATE_UI )</template>
+	</templates>
+
+
+	<templates class="Dialog">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.wxDialog @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxDialog@}
+			(wx.NULL, $id, $title, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ #utbl$name .m_mgr:UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			<!--@{import wxaui @ --></template>
+		<template name="settings">
+			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
+			
+			#ifnotnull $window_extra_style
+			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ #utbl$name :SetExtraStyle( $extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ #utbl$name :SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ #utbl$name :SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ #utbl$name :SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ #utbl$name :Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ #utbl$name :Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
+
+			#ifequal $aui_managed "1"
+			@{ 
+				#utbl$name.m_mgr = wxaui.wxAuiManager() #nl
+				#utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl #utbl$name .m_mgr:Update() @} 
+			#ifnotnull $center
+			@{ #nl #utbl$name:Centre( $center ) @}
+		</template>
+		<template name="evt_connect_OnInitDialog">#utbl$name:Connect( wx.wxEVT_INIT_DIALOG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnInitDialog">$name:Disconnect( wx.wxEVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnChar">$name:Disconnect( wx.wxEVT_CHAR )</template>
+		<template name="evt_connect_OnEnterWindow">#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect( wx.wxEVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect( wx.wxEVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyDown">$name:Disconnect( wx.wxEVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyUp">$name:Disconnect( wx.wxEVT_KEY_UP )</template>
+		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnLeaveWindow">#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect( wx.wxEVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect( wx.wxEVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMotion">$name:Disconnect( wx.wxEVT_MOTION )</template>
+		<template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+		</template>-->
+		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect( wx.wxEVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
+		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDClick">$name:Disconnect( wx.wxEVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDown">$name:Disconnect( wx.wxEVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightUp">$name:Disconnect( wx.wxEVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSize">$name:Disconnect( wx.wxEVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect( wx.wxEVT_UPDATE_UI )</template>
+	</templates>
+
+	<templates class="Wizard">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.wxWizard @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxWizard@}
+			(wx.NULL, $id, $title, $bitmap, $pos, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
+		</template>
+		<template name="include">
+        </template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ #utbl$name :SetExtraStyle( wx.WIZARD_EX_HELPBUTTON ) #nl @}
+
+			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
+
+			#ifnotnull $font
+			@{ #utbl$name :SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ #utbl$name :SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ #utbl$name :SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ #utbl$name :Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ #utbl$name :Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
+
+            #utbl$name .m_pages = {} #nl
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $center
+			@{ #utbl$name:Centre( $center ) #nl @}
+		</template>
+		<template name="evt_connect_OnInitDialog">#utbl$name:Connect( wx.wxEVT_INIT_DIALOG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnInitDialog">$name:Disconnect( wx.wxEVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnChar">$name:Disconnect( wx.wxEVT_CHAR )</template>
+		<template name="evt_connect_OnEnterWindow">#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect( wx.wxEVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect( wx.wxEVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyDown">$name:Disconnect( wx.wxEVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKeyUp">$name:Disconnect( wx.wxEVT_KEY_UP )</template>
+		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnLeaveWindow">#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect( wx.wxEVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect( wx.wxEVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMotion">$name:Disconnect( wx.wxEVT_MOTION )</template>
+		<template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
+			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+		</template>-->
+		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect( wx.wxEVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
+		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDClick">$name:Disconnect( wx.wxEVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightDown">$name:Disconnect( wx.wxEVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnRightUp">$name:Disconnect( wx.wxEVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnSize">$name:Disconnect( wx.wxEVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect( wx.wxEVT_UPDATE_UI )</template>
+		<template name="evt_connect_OnWizardPageChanged">#utbl$name:Connect( wx.wxEVT_WIZARD_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardPageChanged">$name:Disconnect( wx.wxEVT_WIZARD_PAGE_CHANGED )</template>
+		<template name="evt_connect_OnWizardPageChanging">#utbl$name:Connect( wx.wxEVT_WIZARD_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardPageChanging">$name:Disconnect( wx.wxEVT_WIZARD_PAGE_CHANGING )</template>
+		<template name="evt_connect_OnWizardPageShown">#utbl$name:Connect( wx.wxEVT_WIZARD_PAGE_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardPageShown">$name:Disconnect( wx.wxEVT_WIZARD_PAGE_SHOWN )</template>
+		<template name="evt_connect_OnWizardCancel">#utbl$name:Connect( wx.wxEVT_WIZARD_CANCEL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardCancel">$name:Disconnect( wx.wxEVT_WIZARD_CANCEL )</template>
+		<template name="evt_connect_OnWizardHelp">#utbl$name:Connect( wx.wxEVT_WIZARD_HELP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardHelp">$name:Disconnect( wx.wxEVT_WIZARD_HELP )</template>
+		<template name="evt_connect_OnWizardFinished">#utbl$name:Connect( wx.wxEVT_WIZARD_FINISHED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnWizardFinished">$name:Disconnect( wx.wxEVT_WIZARD_FINISHED )</template>
+
+	</templates>
+
+    <templates class="WizardPageSimple">
+        <template name="construction">
+            #utbl$name  = wx.wxWizardPageSimple(  #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
+            add_page( #utbl$name ) #nl
+        </template>
+    </templates>
+
+	<templates class="MenuBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.wxMenuBar@}
+		</template>
+		<template name="cons_def">
+			def __init__:
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxMenuBar@}
+			( $window_style )
+		</template>
+	</templates>
+
+	<templates class="ToolBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.wxToolBar@}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name@}
+
+			#ifnull $subclass/name
+			@{ wx.wxToolBar@}
+			(wx.NULL, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
+		</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize @{$name:SetToolBitmapSize( $bitmapsize ) #nl @}
+
+			#ifnotnull $separation
+			@{
+				#ifnotequal $separation "5"
+				@{ #utbl$name :SetToolSeparation( $separation ) #nl @}
+			@}
+
+			#ifnotnull $margins 
+			@{ #utbl$name :SetMargins( $margins ) #nl @}
+
+			#ifnotnull $packing
+			@{
+				#ifnotequal $packing "1"
+				@{ #utbl$name :SetToolPacking( $packing ) #nl @}
+			@}
+    		</template>
+    		<template name="after_addchild">#nl #utbl$name :Realize()</template>
+	</templates>
+
+</codegen>

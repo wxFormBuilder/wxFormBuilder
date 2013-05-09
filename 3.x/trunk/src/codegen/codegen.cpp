@@ -140,6 +140,9 @@ bool TemplateParser::ParseMacro()
 	case ID_IFTYPENOTEQUAL:
 		ParseIfTypeNotEqual();
 		break;
+	case ID_UTBL:
+		ParseLuaTable();
+		break;
 	default:
 		THROW_WXFBEX( wxT("Invalid Macro Type") );
 		break;
@@ -365,6 +368,19 @@ bool TemplateParser::ParseForm()
 	m_out << PropertyToCode( property );
 
 	return true;
+}
+
+void TemplateParser::ParseLuaTable()
+{
+	PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
+	PProperty propNs= project->GetProperty( wxT( "ui_table" ) );
+	if ( propNs )
+	{
+		wxString strTableName = propNs->GetValueAsString();
+		if(strTableName.length() <= 0)
+			strTableName = wxT("UI");
+		m_out <<strTableName + wxT(".");
+	}
 }
 
 bool TemplateParser::ParseParent()
@@ -862,6 +878,8 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 		return ID_IFTYPEEQUAL;
 	else if (ident == wxT("iftypenotequal") )
 		return ID_IFTYPENOTEQUAL;
+	else if(ident == wxT("utbl"))
+		return ID_UTBL;
 	else
 		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
 }
