@@ -43,6 +43,7 @@
 	<icon name="python" 		file="python.png"		/>
 	<icon name="php" 			file="php.png"		/>
 	<icon name="xrc" 			file="xrc.png"		/>
+    <icon name="lua" 			file="lua.png"		/>
 
     <!-- Object Properties -->
     <icon name="properties" file="properties.png"   />

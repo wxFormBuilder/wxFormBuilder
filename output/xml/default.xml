@@ -16,6 +16,7 @@
       <option name="Python" help="Generate Python Code" />
       <option name="PHP" help="Generate PHP Code" />
       <option name="XRC" help="Generate XRC Code"/>
+      <option name="Lua" help="Generate Lua Code"/>
       C++
 	</property>
 	<property name="internationalize" type="bool" help="For C++ Only.&#x0A;Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
@@ -47,6 +48,10 @@
 			none
 		</property>
 	</category>
+	<category name="Lua Properties">
+		<property name="skip_lua_events" type="bool" help="For Lua Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+		<property name = "ui_table" type="text" help="For Lua Only.&#x0A;Define a table which will store- all UI stuff you'll create.">UI</property>
+	</category>
 	<category name="Python Properties">
 		<property name="skip_python_events" type="bool" help="For Python Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
 		<property name="disconnect_python_events" type="bool" help="For Python Only.&#x0A;Disconnect events in the destructor.">0</property>
@@ -76,6 +81,7 @@
 		<property name="enable_user_code" type="bool">0</property>
 		<property name="user_cpp_code" type="text" />
 		<property name="user_python_code" type="text" />
+                <property name="user_lua_code" type="text" />
 		<!--property name="insertion_mode" type="option">
 			<option name="prepend"/>
 			<option name="insert"/>
