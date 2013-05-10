@@ -336,4 +336,36 @@ Lua code generation written by
     <template name="include"/><!--import wx.media</template>-->
 </templates>
 
+<templates class="wxTimer">
+    <template name="construction">
+		#utbl$name = wx.wxTimer(#utbl#wxparent $name, $id) #nl
+	</template>
+    <template name="settings">
+		#ifequal $enabled "1"
+		@{ #utbl$name:Start( $period #ifequal $oneshot "1" @{, true@} ) #nl @}
+	</template>
+	<template name="evt_connect_OnTimer">#utbl$name:Connect( wx.wxEVT_TIMER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+  
+  	<templates class="wxPropertyGrid">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
+		</template>
+	</templates>
+
+	<templates class="wxPropertyGridManager">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
+		</template>
+	</templates>
+
+	<templates class="wxStyledTextCtrl">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
+		</template>
+	</templates>
+
 </codegen>
