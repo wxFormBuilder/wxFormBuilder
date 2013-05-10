@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+05/10/2013 Version 3.04.00 (Beta)
++ Added support for wxLUA code generation.
+
 03/21/2013 Version 3.03.05 (Beta)
 * Fixed various issues when built with wxWidgets 2.9.x and later.
 + Added support for wxInfoBar widget ( when built with wxWidgets 2.9.4 and later ).
