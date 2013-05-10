@@ -729,8 +729,11 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
             case 3: // PHP panel
 			   break;
+			   
+			case 4: // LUA panel
+			   break;
 
-			case 4: // XRC panel
+			case 5: // XRC panel
 			   break;
 
 			default:
@@ -1550,10 +1553,6 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append( wxID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
 
-
-
-
-
 	// now append the freshly created menu to the menu bar...
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT( "&File" ) );
@@ -1656,16 +1655,14 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_lua = new LuaPanel(m_notebook, -1);
 	m_notebook->AddPage(m_lua,wxT( "Lua" ), false, 4 );
 #ifndef USE_FLATNOTEBOOK
-	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
+	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
 #endif
 
 	m_xrc = new XrcPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 5 );
 #ifndef USE_FLATNOTEBOOK
-	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
+	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 #endif
-
-
 
 	return m_notebook;
 }

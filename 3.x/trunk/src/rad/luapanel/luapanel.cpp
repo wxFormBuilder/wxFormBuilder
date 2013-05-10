@@ -98,7 +98,7 @@ void LuaPanel::InitStyledTextCtrl( wxScintilla *stc )
 #else
 void LuaPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
-    stc->SetLexer( wxSCI_LEX_LUA );
+    stc->SetLexer( wxSTC_LEX_LUA );
 #endif
 	stc->SetKeyWords( 0, wxT( "and assert break class continue def del elif else \
 							   except exec finally for from global if import in \
