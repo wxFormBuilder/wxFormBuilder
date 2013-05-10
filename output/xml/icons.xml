@@ -40,10 +40,10 @@
 	<icon name="h" 				file="h.png"		/>
 	<icon name="designer"		file="designer.png"	/>
 	<icon name="c++" 			file="c++.png"		/>
-	<icon name="python" 		file="python.png"		/>
+	<icon name="python" 		file="python.png"	/>
 	<icon name="php" 			file="php.png"		/>
-	<icon name="xrc" 			file="xrc.png"		/>
     <icon name="lua" 			file="lua.png"		/>
+	<icon name="xrc" 			file="xrc.png"		/>
 
     <!-- Object Properties -->
     <icon name="properties" file="properties.png"   />
