@@ -38,13 +38,13 @@ Lua code generation writen by
   <templates class="sizeritem">
     <template name="window_add">#utbl#parent $name:Add( #utbl#child $name, $proportion, $flag, $border ) #nl</template>
     <template name="sizer_add">#utbl#parent $name:Add( #utbl#child $name, $proportion, $flag, $border ) #nl</template>
-    <template name="spacer_add">#utbl#parent $name:Add( #utbl#child $width, #utbl#child $height, $proportion, $flag, $border ) #nl</template>
+    <template name="spacer_add">#utbl#parent $name:Add( #child $width, #child $height, $proportion, $flag, $border ) #nl</template>
   </templates>
 
   <templates class="gbsizeritem">
     <template name="window_add">#utbl#parent $name:Add( #utbl#child $name, wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
     <template name="sizer_add">#utbl#parent $name:Add( #utbl#child $name, wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
-    <template name="spacer_add">#utbl#parent $name:Add( #utbl#child $width, #utbl#child $height , wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+    <template name="spacer_add">#utbl#parent $name:Add( #child $width, #child $height , wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
   </templates>
 
   <templates class="wxBoxSizer">
