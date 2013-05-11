@@ -65,10 +65,10 @@ Lua code generation written by
 				@}
 			@}
 		</template>
-		<template name="evt_connect_OnSplitterSashPosChanging">#utbl$name:Connect( wx.wxEVT_SPLITTER_SASH_POS_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnSplitterSashPosChanged">#utbl$name:Connect( wx.wxEVT_SPLITTER_SASH_POS_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnSplitterUnsplit">#utbl$name:Connect( wx.wxEVT_SPLITTER_UNSPLIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnSplitterDClick">#utbl$name:Connect( wx.wxEVT_SPLITTER_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterSashPosChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterSashPosChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterUnsplit">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_UNSPLIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
   
@@ -83,8 +83,8 @@ Lua code generation written by
 				#utbl$name:AssignImageList(#utbl$name #append Images )
 			@}
 		</template>
-		<template name="evt_connect_OnNotebookPageChanged">#utbl$name:Connect( wx.wxEVT_NOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnNotebookPageChanging">#utbl$name:Connect( wx.wxEVT_NOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnNotebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnNotebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
 	<templates class="notebookpage">
@@ -124,8 +124,8 @@ Lua code generation written by
 				$name #append ListView.SetWindowStyleFlag(#utbl$name #append Flags ) #nl
 			@}
 		</template> -->
-		<template name="evt_connect_OnListbookPageChanged">#utbl$name:Connect( wx.wxEVT_LISTBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnListbookPageChanging">#utbl$name:Connect( wx.wxEVT_LISTBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListbookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListbookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
 	<templates class="listbookpage">
@@ -147,8 +147,8 @@ Lua code generation written by
 
 	<templates class="wxChoicebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-		<template name="evt_connect_OnChoicebookPageChanged">#utbl$name:Connect( wx.wxEVT_CHOICEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnChoicebookPageChanging">#utbl$name:Connect( wx.wxEVT_CHOICEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnChoicebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnChoicebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
 	<templates class="choicebookpage">
@@ -158,14 +158,14 @@ Lua code generation written by
 	<templates class="wxAuiNotebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>
 		<template name="include"/><!--import wx.aui</template>	-->
-		<template name="evt_connect_OnAuiNotebookPageClose">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_PAGE_CLOSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookPageChanged">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookPageChanging">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookButton">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_BUTTON, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookBeginDrag">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookEndDrag">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookDragMotion">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_DRAG_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnAuiNotebookAllowDND">#utbl$name:Connect( wx.aui.EVT_AUINOTEBOOK_ALLOW_DND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageClose">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageChanged">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageChanging">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookButton">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BUTTON, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookBeginDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookEndDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookDragMotion">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookAllowDND">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>                      
 
 	<templates class="auinotebookpage">
