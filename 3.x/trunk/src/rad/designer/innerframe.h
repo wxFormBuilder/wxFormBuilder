@@ -27,6 +27,7 @@
 
 #include <wx/wx.h>
 #include <wx/aui/aui.h>
+#include "utils/debug.h"
 
 
 class wxInnerFrame : public wxPanel
@@ -59,14 +60,14 @@ public:
                  const wxPoint &pos = wxDefaultPosition,
                  const wxSize &size = wxDefaultSize,
                  long style = 0);
-				 
+
   //virtual ~wxInnerFrame(){m_mgr.UnInit();}
 
   wxPanel *GetFrameContentPanel() { return m_frameContent; }
   void OnMouseMotion(wxMouseEvent& e);
   void OnLeftDown(wxMouseEvent& e);
   void OnLeftUp(wxMouseEvent& e);
-  
+
   //wxAuiManager& GetAuiManager() {return m_mgr;}
 
   void SetTitle(const wxString &title);

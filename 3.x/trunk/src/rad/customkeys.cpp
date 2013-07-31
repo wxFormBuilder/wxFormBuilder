@@ -36,7 +36,7 @@ END_EVENT_TABLE()
 
 void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
 {
-  Debug::Print( wxT("%d"),event.GetKeyCode());
+  LogDebug( wxT("%d"),event.GetKeyCode());
 
   if (event.GetKeyCode() == WXK_DELETE)
     AppData()->RemoveObject(AppData()->GetSelectedObject());
@@ -46,37 +46,37 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
     // prueba del parser
     /////
 
-    Debug::Print( wxT("#### Prueba del parser ####") );
+    LogDebug( wxT("#### Prueba del parser ####") );
 
     PObjectBase obj = AppData()->GetSelectedObject();
     PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
 
-    Debug::Print( wxT("#### Plantillas ####") );
+    LogDebug( wxT("#### Plantillas ####") );
 
 #if wxVERSION_NUMBER < 2900
-    Debug::Print((wxChar *)(code_info->GetTemplate( wxT("construction") ).c_str()));
-    Debug::Print((wxChar *)(code_info->GetTemplate( wxT("declaration") ).c_str()));
+    LogDebug((wxChar *)(code_info->GetTemplate( wxT("construction") ).c_str()));
+    LogDebug((wxChar *)(code_info->GetTemplate( wxT("declaration") ).c_str()));
 #else
-    Debug::Print( code_info->GetTemplate( wxT("construction") ) );
-    Debug::Print( code_info->GetTemplate( wxT("declaration") ) );
+    LogDebug( code_info->GetTemplate( wxT("construction") ) );
+    LogDebug( code_info->GetTemplate( wxT("declaration") ) );
 #endif
-    Debug::Print( wxT("#### Código ####") );
+    LogDebug( wxT("#### Código ####") );
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ), false, false, wxEmptyString );
 
 #if wxVERSION_NUMBER < 2900
-      Debug::Print((wxChar *)parser.ParseTemplate().c_str());
+      LogDebug((wxChar *)parser.ParseTemplate().c_str());
 #else
-      Debug::Print( parser.ParseTemplate() );
+      LogDebug( parser.ParseTemplate() );
 #endif
     }
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ), false, false, wxEmptyString );
 
 #if wxVERSION_NUMBER < 2900
-      Debug::Print((wxChar *)parser.ParseTemplate().c_str());
+      LogDebug((wxChar *)parser.ParseTemplate().c_str());
 #else
-      Debug::Print( parser.ParseTemplate() );
+      LogDebug( parser.ParseTemplate() );
 #endif
     }
   }
