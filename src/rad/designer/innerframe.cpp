@@ -108,14 +108,14 @@ m_style( style )
 
 void wxInnerFrame::TitleBar::OnLeftClick ( wxMouseEvent &event )
 {
-	wxLogDebug("OnLeftClick");
+	LogDebug("OnLeftClick");
 	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
 
 #if wxVERSION_NUMBER < 2900
 void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent& )
 {
-	wxLogDebug("OnSize");
+	LogDebug("OnSize");
 	wxClientDC dc( this );
 	wxBufferedDC bdc( &dc, GetClientSize() );
 	DrawTitleBar( bdc );
