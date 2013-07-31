@@ -476,9 +476,9 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_fbpVerMinor( 11 )
 {
 	#ifdef __WXFB_DEBUG__
-	wxLog* log = wxLog::SetActiveTarget( NULL );
+	//wxLog* log = wxLog::SetActiveTarget( NULL );
 	m_debugLogTarget = new wxLogWindow( NULL, wxT( "Logging" ) );
-	wxLog::SetActiveTarget( log );
+	//wxLog::SetActiveTarget( log );
 	#endif
 	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT( "xml" ) + wxFILE_SEP_PATH ) ;
 	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "icons" ) + wxFILE_SEP_PATH );
@@ -521,7 +521,7 @@ PObjectBase ApplicationData::GetSelectedObject()
 }
 
 PObjectBase ApplicationData::GetSelectedForm()
-{		
+{
 	if( ( m_selObj->GetObjectTypeName() == wxT( "form" ) ) ||
         ( m_selObj->GetObjectTypeName() == wxT("wizard") ) ||
 		( m_selObj->GetObjectTypeName() == wxT( "menubar_form" ) ) ||
@@ -703,10 +703,10 @@ void ApplicationData::ExpandObject( PObjectBase obj, bool expand )
 {
 	PCommand command( new ExpandObjectCmd( obj, expand ) );
 	Execute( command );
-	
+
 	// collapse also all children ...
 	PropagateExpansion( obj, expand, !expand );
-	
+
 	NotifyObjectExpanded( obj );
 }
 
@@ -717,21 +717,21 @@ void ApplicationData::PropagateExpansion( PObjectBase obj, bool expand, bool up 
 		if( up )
 		{
 			PObjectBase child;
-			
+
 			for( size_t i = 0; i < obj->GetChildCount(); i++ )
 			{
 				child = obj->GetChild(i);
-				
+
 				PCommand command( new ExpandObjectCmd( child, expand ) );
 				Execute( command );
-				
+
 				PropagateExpansion( child, expand, up );
 			}
 		}
 		else
 		{
 			PropagateExpansion( obj->GetParent(), expand, up );
-			
+
 			PCommand command( new ExpandObjectCmd( obj, expand ) );
 			Execute( command );
 		}
@@ -748,7 +748,7 @@ bool ApplicationData::SelectObject( PObjectBase obj, bool force /*= false*/, boo
 	m_selObj = obj;
 
 	if ( notify )
-	{		
+	{
 		NotifyObjectSelected( obj, force );
 	}
 	return true;
@@ -759,9 +759,9 @@ void ApplicationData::CreateObject( wxString name )
 	try
 	{
 #if wxVERSION_NUMBER < 2900
-		Debug::Print( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
+		LogDebug( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
 #else
-        Debug::Print("[ApplicationData::CreateObject] New " + name );
+        LogDebug("[ApplicationData::CreateObject] New " + name );
 #endif
 		PObjectBase old_selected = GetSelectedObject();
 		PObjectBase parent = old_selected;
@@ -806,9 +806,9 @@ void ApplicationData::CreateObject( wxString name )
 
 		while ( obj && obj->GetObjectInfo()->GetObjectType()->IsItem() )
 			obj = ( obj->GetChildCount() > 0 ? obj->GetChild( 0 ) : PObjectBase() );
-			
+
 		NotifyObjectCreated( obj );
-			
+
 		if ( obj )
 		{
 			SelectObject( obj, true, true );
@@ -1258,7 +1258,7 @@ void ApplicationData::SaveProject( const wxString& filename )
 bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstance )
 
 {
-	Debug::Print( wxT( "LOADING" ) );
+	LogDebug( wxT( "LOADING" ) );
 
 	if ( !wxFileName::FileExists( file ) )
 	{
@@ -1586,7 +1586,7 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 			}
 		}
 	}
-	
+
 	// event_handler moved to the forms in version 1.10
 	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 10 ) )
 	{
@@ -1603,7 +1603,7 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 			{
 				object->LinkEndChild( ( *newProps.begin() )->Clone().get() );
 			}
-			
+
 			project->RemoveChild( *newProps.begin() );
 		}
 	}
@@ -1849,7 +1849,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at least version 1.9 */
-	
+
 	// Version 1.11 now stores bitmap property in the following format:
 	// 'source'; 'data' instead of old form 'data'; 'source'.
 
@@ -1864,7 +1864,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
 		{
 			ticpp::Element* bitmap = *prop;
-			
+
 			wxString image = _WXSTR( bitmap->GetText( false ) );
 			if ( !image.empty() )
 			{
@@ -1872,12 +1872,12 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 				{
 					wxString source = image.AfterLast( ';' ).Trim().Trim(false);
 					wxString data = image.BeforeLast( ';' ).Trim().Trim(false);
-					
+
 					bitmap->SetText( _STDSTR( source + wxT("; ") + data ) );
 				}
 			}
 		}
-		
+
 		/* oldProps.clear();
 		newProps.clear();
 		oldProps.insert( "choices" );
@@ -1886,18 +1886,18 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		for ( prop = newProps.begin(); prop != newProps.end(); ++prop )
 		{
 			ticpp::Element* choices = *prop;
-			
+
 			wxString content = _WXSTR( choices->GetText( false ) );
 			if ( !content.empty() )
 			{
 				content.Replace( wxT("\" \""), wxT(";") );
 				content.Replace( wxT("\""), wxT("") );
-				
+
 				choices->SetText( _STDSTR( content ) );
 			}
 		}*/
 	}
-	
+
 	/* The file is now at least version 1.11 */
 }
 
@@ -2097,7 +2097,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		fileProp->SetValue( inherFile.GetName() );
 		genfileProp->SetValue( genFile.GetFullPath() );
 		typeProp->SetValue( form->GetClassName() );
-		
+
 		// Determine if Microsoft BOM should be used
 		bool useMicrosoftBOM = false;
 		PProperty pUseMicrosoftBOM = project->GetProperty( _("use_microsoft_bom") );
@@ -2122,7 +2122,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			CppCodeGenerator codegen;
 			const wxString& fullPath = inherFile.GetFullPath();
 			codegen.ParseFiles(fullPath + wxT(".h"), fullPath + wxT(".cpp"));
-			
+
 			PCodeWriter h_cw( new FileCodeWriter( fullPath + wxT(".h"), useMicrosoftBOM, useUtf8 ) );
 			PCodeWriter cpp_cw( new FileCodeWriter( fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8 ) );
 
@@ -2134,7 +2134,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		else if( pCodeGen && TypeConv::FlagSet( wxT("Python"), pCodeGen->GetValue() ) )
 		{
 			PythonCodeGenerator codegen;
-			
+
 			const wxString& fullPath = inherFile.GetFullPath();
 			PCodeWriter python_cw( new FileCodeWriter( fullPath + wxT(".py"), useMicrosoftBOM, useUtf8 ) );
 
@@ -2145,7 +2145,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		else if( pCodeGen && TypeConv::FlagSet( wxT("PHP"), pCodeGen->GetValue() ) )
 		{
 			PHPCodeGenerator codegen;
-			
+
 			const wxString& fullPath = inherFile.GetFullPath();
 			PCodeWriter php_cw( new FileCodeWriter( fullPath + wxT(".php"), useMicrosoftBOM, useUtf8 ) );
 
@@ -2156,7 +2156,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		else if( pCodeGen && TypeConv::FlagSet( wxT("Lua"), pCodeGen->GetValue() ) )
 		{
 			LuaCodeGenerator codegen;
-			
+
 			const wxString& fullPath = inherFile.GetFullPath();
 			PCodeWriter lua_cw( new FileCodeWriter( fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8 ) );
 
@@ -2655,9 +2655,9 @@ void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 	{
 		count++;
 #if wxVERSION_NUMBER < 2900
-		Debug::Print( wxT( "event: %s" ), event.GetEventName().c_str() );
+		LogDebug( wxT( "event: %s" ), event.GetEventName().c_str() );
 #else
-		Debug::Print( "event: " + event.GetEventName() );
+		LogDebug( "event: " + event.GetEventName() );
 #endif
 		std::vector< wxEvtHandler* >::iterator handler;
 
@@ -2669,9 +2669,9 @@ void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 	else
 	{
 #if wxVERSION_NUMBER < 2900
-		Debug::Print( wxT( "Pending event: %s" ), event.GetEventName().c_str() );
+		LogDebug( wxT( "Pending event: %s" ), event.GetEventName().c_str() );
 #else
-		Debug::Print( "Pending event: " + event.GetEventName() );
+		LogDebug( "Pending event: " + event.GetEventName() );
 #endif
 		std::vector< wxEvtHandler* >::iterator handler;
 
@@ -2702,7 +2702,7 @@ void ApplicationData::NotifyObjectSelected( PObjectBase obj, bool force )
 {
 	wxFBObjectEvent event( wxEVT_FB_OBJECT_SELECTED, obj );
 	if( force ) event.SetString( wxT("force") );
-	
+
 	NotifyEvent( event );
 }
 
@@ -2778,13 +2778,13 @@ wxString ApplicationData::GetPathProperty( const wxString& pathName )
 				THROW_WXFBEX( wxT( "You must save the project when using a relative path for output files" ) );
 			}
 
-			path = wxFileName(  projectPath + 
-								wxFileName::GetPathSeparator() + 
-								pathEntry + 
+			path = wxFileName(  projectPath +
+								wxFileName::GetPathSeparator() +
+								pathEntry +
 								wxFileName::GetPathSeparator() );
-							
+
 			path.Normalize();
-			
+
 			// this approach is probably incorrect if the fb project is located under a symlink
 			/*path.SetCwd( projectPath );
 			path.MakeAbsolute();*/

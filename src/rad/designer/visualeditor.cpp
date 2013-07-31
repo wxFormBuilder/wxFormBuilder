@@ -57,7 +57,7 @@ BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
 	EVT_FB_PROPERTY_MODIFIED( VisualEditor::OnPropertyModified )
 	EVT_FB_PROJECT_REFRESH( VisualEditor::OnProjectRefresh )
 	EVT_FB_CODE_GENERATION( VisualEditor::OnProjectRefresh )
-	
+
 	EVT_TIMER( ID_TIMER_SCAN, VisualEditor::OnAuiScaner )
 
 END_EVENT_TABLE()
@@ -69,7 +69,7 @@ m_stopSelectedEvent( false ),
 m_stopModifiedEvent( false )
 {
 	SetExtraStyle( wxWS_EX_BLOCK_EVENTS );
-	
+
 	AppData()->AddHandler( this->GetEventHandler() );
 
 	#ifdef __WXMSW__
@@ -82,10 +82,10 @@ m_stopModifiedEvent( false )
 
 	m_back = new DesignerWindow( this, wxID_ANY, wxPoint(10,10) );
 	m_back->GetEventHandler()->Connect( wxID_ANY, wxEVT_LEFT_DOWN, wxMouseEventHandler( VisualEditor::OnClickBackPanel ), NULL, this );
-	
+
 	m_auimgr = NULL;
 	m_auipanel = NULL;
-	
+
 	// scan aui panes in run-time
 	m_AuiScaner.SetOwner( this, ID_TIMER_SCAN );
 	m_AuiScaner.Start( 200 );
@@ -119,7 +119,7 @@ void VisualEditor::DeleteAbstractObjects()
 VisualEditor::~VisualEditor()
 {
 	m_AuiScaner.Stop();
-	
+
 	AppData()->RemoveHandler( this->GetEventHandler() );
 	DeleteAbstractObjects();
 
@@ -144,14 +144,25 @@ void VisualEditor::OnClickBackPanel( wxMouseEvent& event )
 		AppData()->SelectObject(m_form);
 	}
 	event.Skip();
+
+#if wxVERSION_NUMBER < 2900
+		LogDebug( wxT( "event: %s" ), wxT("OnClickBackPanel") );
+#else
+		//LogDebug( "event: " + wxString("OnClickBackPanel") );
+#endif
 }
 
 void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
 {
 	/*wxRect rect(event.GetDragRect());
-	Debug::Print("VisualEditor::OnResizeBackPanel [%d,%d,%d,%d]",rect.x,rect.y,rect.width, rect.height);
+	LogDebug("VisualEditor::OnResizeBackPanel [%d,%d,%d,%d]",rect.x,rect.y,rect.width, rect.height);
 	m_back->SetSize(rect.width,rect.height);
 	m_back->Layout();*/
+#if wxVERSION_NUMBER < 2900
+		LogDebug( wxT( "event: %s" ), wxT("OnResizeBackPanel") );
+#else
+		LogDebug( "event: " + wxString("OnResizeBackPanel") );
+#endif
 
 	PObjectBase form (AppData()->GetSelectedForm());
 
@@ -222,23 +233,23 @@ wxObject* VisualEditor::GetWxObject( PObjectBase baseobject )
 void VisualEditor::ScanPanes( wxWindow* parent)
 {
 	bool updateNeeded;
-	
+
 	wxLogNull stopTheLogging;
 	const wxWindowList& children = parent->GetChildren();
 	for ( wxWindowList::const_reverse_iterator child = children.rbegin(); child != children.rend(); ++child )
 	{
 		ScanPanes(*child);
-		
+
 		PObjectBase obj = GetObjectBase( *child );
-		
+
 		if ( obj )
 		{
 			updateNeeded = false;
-			
+
 			PObjectInfo obj_info = obj->GetObjectInfo();
 			wxString cname = obj_info->GetObjectType()->GetName();
-			
-			if( cname == wxT("widget") || 
+
+			if( cname == wxT("widget") ||
 				cname == wxT("expanded_widget") ||
 				cname == wxT("toolbar") ||
 				cname == wxT("container") )
@@ -258,35 +269,35 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 								case 1:
 									dockDir = wxT("Top");
 									break;
-									
+
 								case 2:
 									dockDir = wxT("Right");
 									break;
-								
+
 								case 3:
 									dockDir = wxT("Bottom");
 									break;
-									
+
 								case 4:
 									dockDir = wxT("Left");
 									break;
-									
+
 								case 5:
 									dockDir = wxT("Center");
 									break;
-									
+
 								default:
 									dockDir = wxT("Left");
 									break;
 							}
 							PProperty pdock = obj->GetProperty( wxT("docking") );
-							
+
 							if( pdock->GetValue() != dockDir )
 							{
 								pdock->SetValue( dockDir );
 								updateNeeded = true;
 							}
-							
+
 							dock = wxT("Dock");
 						}
 						else
@@ -302,22 +313,22 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 									updateNeeded = true;
 								}
 							}
-							
+
 							// scan "floating size"
 							wxSize paneSize = inf.floating_size;
 							if ( paneSize.x != -1 && paneSize.y != -1 )
 							{
 								PProperty psize = obj->GetProperty( wxT("pane_size") );
-								
+
 								if( psize->GetValue() != TypeConv::SizeToString( paneSize ) )
 								{
 									psize->SetValue( TypeConv::SizeToString( paneSize )  );
 									obj->GetProperty( wxT("resize") )->SetValue( wxT("Resizable") );
-									
+
 									updateNeeded = true;
 								}
 							}
-						
+
 							dock = wxT("Float");
 						}
 						PProperty pfloat = obj->GetProperty(wxT("dock") );
@@ -326,22 +337,22 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 							pfloat->SetValue( dock );
 							updateNeeded = true;
 						}
-						
+
 						// scan "best size"
 						/*wxSize bestSize = inf.best_size;
 						if ( bestSize.x != -1 && bestSize.y != -1 )
 						{
 							PProperty psize = obj->GetProperty( wxT("best_size") );
-							
+
 							if( psize->GetValue() != TypeConv::SizeToString( bestSize ) )
 							{
 								psize->SetValue( TypeConv::SizeToString( bestSize )  );
 								obj->GetProperty( wxT("resize") )->SetValue( wxT("Resizable") );
-								
+
 								updateNeeded = true;
 							}
 						}*/
-						
+
 						// scan "row" and "layer"
 						PProperty prop = obj->GetProperty(wxT("aui_row") );
 						if( obj->GetPropertyAsInteger( wxT("aui_row") ) != inf.dock_row )
@@ -356,7 +367,7 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 							updateNeeded = true;
 						}
 					}
-					
+
 					// scan "show" property
 					PProperty pshow = obj->GetProperty(wxT("show") );
 					if( obj->GetPropertyAsInteger( wxT("show") ) != (int) inf.IsShown() )
@@ -364,7 +375,7 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 						pshow->SetValue( inf.IsShown() );
 						updateNeeded = true;
 					}
-					
+
 					if( updateNeeded ) AppData()->SelectObject( obj, true, true );
 				}
 			}
@@ -378,7 +389,7 @@ void VisualEditor::ClearAui()
 	if ( m_auimgr )
 	{
 		m_auimgr->UnInit();
-		
+
 		delete m_auimgr;
 		m_auimgr = NULL;
 		m_auipanel = NULL;
@@ -430,30 +441,30 @@ void VisualEditor::Create()
 #endif
 	// Delete objects which had no parent
 	DeleteAbstractObjects();
-	
+
 	// Clear selections, delete objects
 	m_back->SetSelectedItem(NULL);
 	m_back->SetSelectedSizer(NULL);
 	m_back->SetSelectedObject(PObjectBase());
-	
+
 	ClearAui();
     ClearWizard();
 	ClearComponents( m_back->GetFrameContentPanel() );
-	
+
 	m_back->GetFrameContentPanel()->DestroyChildren();
 	m_back->GetFrameContentPanel()->SetSizer( NULL ); // *!*
 
 	// Clear all associations between ObjectBase and wxObjects
 	m_wxobjects.clear();
 	m_baseobjects.clear();
-	
+
 	if( IsShown() )
 	{
 		m_form = AppData()->GetSelectedForm();
 		if ( m_form )
 		{
 			m_back->Show(true);
-			
+
 			// --- [1] Configure the size of the form ---------------------------
 
 			// Get size properties
@@ -529,7 +540,7 @@ void VisualEditor::Create()
 			}
 			else
 			  m_back->ShowTitleBar(false);
-			  
+
 			// --- AUI
 			if(  m_form->GetObjectTypeName() == wxT("form") )
 			{
@@ -588,10 +599,10 @@ void VisualEditor::Create()
 				else if( !toolbar && (m_form->GetObjectTypeName() == wxT("toolbar_form")) )
 				{
 					Generate( m_form, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
-					
+
 					ObjectBaseMap::iterator it = m_baseobjects.find( m_form.get() );
 					toolbar = wxDynamicCast( it->second, wxToolBar );
-					
+
 					break;
 				}
 				else
@@ -611,14 +622,14 @@ void VisualEditor::Create()
                         }
 						else
 							Generate( child, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
-							
+
 					}
 					catch ( wxFBException& ex )
 					{
 						wxLogError ( ex.what() );
 					}
 				}
-				
+
 				// Attach the toolbar (if any) to the frame
 				if (child->GetClassName() == wxT("wxToolBar") )
 				{
@@ -630,14 +641,14 @@ void VisualEditor::Create()
 					ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 					toolbar = wxDynamicCast( it->second, wxAuiToolBar );
 				}
-				
+
 				// Attach the status bar (if any) to the frame
 				if ( child->GetClassName() == wxT("wxStatusBar") )
 				{
 					ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 					statusbar = wxDynamicCast( it->second, wxStatusBar );
 				}
-				
+
 				// Add toolbar(s) to AuiManager and update content
 				if( m_auimgr && toolbar )
 				{
@@ -682,11 +693,11 @@ void VisualEditor::Create()
 			{
 				m_back->Show( TypeConv::StringToInt( hidden->GetValue() ) == 0 );
 			}
-			
+
 			if( m_auimgr ) m_auimgr->Update();
 			else
 				m_back->Refresh();
-				
+
 			Refresh();
 		}
 		else
@@ -726,7 +737,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 	wxObject* createdObject = comp->Create( obj.get(), wxparent );
 	wxWindow* createdWindow = NULL;
 	wxSizer*  createdSizer  = NULL;
-	
+
 	switch ( comp->GetComponentType() )
 	{
 		case COMPONENT_TYPE_WINDOW:
@@ -760,7 +771,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 
 	// New wxparent for the window's children
 	wxWindow* new_wxparent = ( createdWindow ? createdWindow : wxparent );
-	
+
 	// Recursively generate the children
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 	{
@@ -878,12 +889,12 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	{
 		window->SetToolTip( ptooltip->GetValueAsString() );
 	}
-	
+
 	//AUI
 	wxString tname = obj->GetObjectInfo()->GetObjectType()->GetName();
 	if( m_auimgr && ( tname == wxT("widget") ||
 					tname == wxT("expanded_widget") ||
-					tname == wxT("container") || 
+					tname == wxT("container") ||
 					tname == wxT("notebook") ||
 					tname == wxT("auinotebook") ||
 					tname == wxT("flatnotebook") ||
@@ -905,18 +916,18 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 }
 
 void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
-{	
+{
 	wxAuiPaneInfo info;
-	
+
 	// check whether the object contains AUI info...
 	if( !obj->GetProperty( wxT("aui_name") ) ) return;
 
 	wxString name = obj->GetPropertyAsString( wxT("aui_name") );
 	if( name != wxT("") ) info.Name( name );
-	
+
 	if( obj->GetPropertyAsInteger( wxT("center_pane") )) info.CenterPane();
 	if( obj->GetPropertyAsInteger( wxT("default_pane") )) info.DefaultPane();
-	
+
 	if( !obj->IsNull(wxT("caption"))) info.Caption(obj->GetPropertyAsString(wxT("caption")));
 	info.CaptionVisible( obj->GetPropertyAsInteger( wxT("caption_visible") ) );
 	info.CloseButton( obj->GetPropertyAsInteger( wxT("close_button") ) );
@@ -925,12 +936,12 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 	info.PinButton( obj->GetPropertyAsInteger( wxT("pin_button") ) );
 	info.PaneBorder( obj->GetPropertyAsInteger( wxT("pane_border") ) );
 	info.Gripper(obj->GetPropertyAsInteger( wxT("gripper") ));
-	
+
 	info.BottomDockable( obj->GetPropertyAsInteger( wxT("BottomDockable") ) );
 	info.TopDockable( obj->GetPropertyAsInteger( wxT("TopDockable") ) );
 	info.LeftDockable( obj->GetPropertyAsInteger( wxT("LeftDockable") ) );
 	info.RightDockable( obj->GetPropertyAsInteger( wxT("RightDockable") ) );
-	
+
 	if( !obj->IsNull(wxT("dock")) )
 	{
 		if( obj->GetPropertyAsString( wxT("dock") ) == wxT("Dock"))
@@ -950,22 +961,22 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 			info.FloatingPosition( obj->GetPropertyAsPoint( wxT("pane_position") ) );
 		}
 	}
-	
+
 	if( !obj->IsNull(wxT("resize")) )
 	{
 		if( obj->GetPropertyAsString( wxT("resize") ) == wxT("Resizable")) info.Resizable();
 		else info.Fixed();
 	}
-	
+
 	info.DockFixed( obj->GetPropertyAsInteger( wxT("dock_fixed") ) );
 	info.Movable( obj->GetPropertyAsInteger( wxT("moveable") ));
 	info.Floatable(obj->GetPropertyAsInteger( wxT("floatable") ));
-	
+
 	if( !obj->GetProperty( wxT("pane_size" ) )->IsNull() ) info.FloatingSize( obj->GetPropertyAsSize( wxT("pane_size") ));
 	if( !obj->GetProperty( wxT("best_size" ) )->IsNull() ) info.BestSize( obj->GetPropertyAsSize( wxT("best_size") ) );
 	if( !obj->GetProperty( wxT("min_size" ) )->IsNull() ) info.MinSize( obj->GetPropertyAsSize( wxT("min_size") ) );
 	if( !obj->GetProperty( wxT("max_size" ) )->IsNull() ) info.MaxSize( obj->GetPropertyAsSize( wxT("max_size") ) );
-	
+
 	if( obj->GetPropertyAsInteger( wxT("toolbar_pane") ) ) info.ToolbarPane();
 	if( !obj->IsNull( wxT("aui_position") ) ) info.Position( obj->GetPropertyAsInteger( wxT("aui_position") ));
 	if( !obj->IsNull( wxT("aui_row") ) ) info.Row( obj->GetPropertyAsInteger( wxT("aui_row") ));
@@ -1042,10 +1053,10 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 	if ( !obj )
 	{
 		// Strange...
-		Debug::Print( wxT("The event object is NULL - why?") );
+		LogDebug( wxT("The event object is NULL - why?") );
 		return;
 	}
-	
+
 	// highlight parent toolbar instead of its children
 	PObjectBase toolbar = obj->FindNearAncestor( wxT("toolbar") );
 	if( !toolbar ) toolbar = obj->FindNearAncestor( wxT("toolbar_form") );
@@ -1273,7 +1284,7 @@ void DesignerWindow::OnPaint(wxPaintEvent &event)
 		dc.SetDeviceOrigin( origin.x, origin.y );
 		HighlightSelection( dc );
 	}
-	
+
 	event.Skip();
 }
 
@@ -1318,7 +1329,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 			windowItem = windowItem->GetParent();
 		}
 	}
-	
+
 	wxSize size;
 	PObjectBase object = m_selObj.lock();
 	if ( m_selSizer )
@@ -1459,7 +1470,7 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 	contentPanel->SetSizer( NULL, false );
 
 	wxSizer *dummySizer = new wxBoxSizer( wxVERTICAL );
-	
+
 	if ( mbWidget )
 	{
 		dummySizer->Add(mbWidget, 0, wxEXPAND | wxTOP | wxBOTTOM, 0);
@@ -1486,7 +1497,7 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 			dummySizer->Add(toolbar, 0, wxEXPAND | wxALL, 0);
 		}
 	}
-	
+
 	if (auipanel)
 	{
 		contentSizer->Add(auipanel, 1, wxEXPAND | wxALL, 0);
@@ -1534,6 +1545,6 @@ void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 		wxPaintDC dc(m_window);
 		dsgnWin->HighlightSelection(dc);
 	}
-	
+
 	event.Skip();
 }

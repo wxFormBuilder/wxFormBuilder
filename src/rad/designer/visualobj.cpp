@@ -58,7 +58,7 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 		if (AppData()->GetSelectedObject() != obj)
 		{
 			AppData()->SelectObject(obj);
-			
+
 			// this event is always redirected to parent (aui)toolbar even if its tool was clicked
 			// so it is important to skip the event to select clicked tool later in "common"
 			// plugin.
@@ -82,7 +82,7 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 {
 	// show context menu associated with the widget if any
-	
+
 	PObjectBase obj = m_object.lock();
 
 	if (obj)
@@ -90,7 +90,7 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 		if( obj->GetObjectTypeName() == wxT("widget") && obj->GetPropertyAsInteger( wxT("context_menu") ) )
 		{
 			PObjectBase menu;
-			
+
 			for( size_t i = 0; i < obj->GetChildCount(); i++ )
 			{
 				if( obj->GetChild( i )->GetObjectTypeName() == wxT("menu") )
@@ -99,7 +99,7 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 					break;
 				}
 			}
-			
+
 			if( menu ) m_window->PopupMenu( DesignerWindow::GetMenuFromObject( menu ), event.GetPosition() );
 		}
 		else

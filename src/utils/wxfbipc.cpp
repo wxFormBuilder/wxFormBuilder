@@ -210,9 +210,9 @@ bool wxFBIPC::CreateServer( const wxString& name )
 			else
 			{
 #if wxVERSION_NUMBER < 2900
-				Debug::Print( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
+				LogDebug( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
 #else
-				Debug::Print( "Server Creation Failed. " + nameWithPort );
+				LogDebug( "Server Creation Failed. " + nameWithPort );
 #endif
 			}
 		}

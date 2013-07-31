@@ -709,7 +709,7 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 {
 	PObjectBase obj = event.GetFBObject();
 
-	Debug::Print( wxT("MainFrame::OnObjectSelected") );
+	LogDebug( wxT("MainFrame::OnObjectSelected") );
 
     // resize sash position if necessary
     if ( m_autoSash )
@@ -729,7 +729,7 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
             case 3: // PHP panel
 			   break;
-			   
+
 			case 4: // LUA panel
 			   break;
 
@@ -750,13 +750,13 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 						sash_pos = m_rightSplitter->GetSashPosition();
 						panel_size = m_visualEdit->GetVirtualSize();
 
-						Debug::Print(wxT("MainFrame::OnObjectSelected > sash pos = %d"), sash_pos);
-						Debug::Print(wxT("MainFrame::OnObjectSelected > virtual width = %d"), panel_size.GetWidth());
+						LogDebug(wxT("MainFrame::OnObjectSelected > sash pos = %d"), sash_pos);
+						LogDebug(wxT("MainFrame::OnObjectSelected > virtual width = %d"), panel_size.GetWidth());
 
 						if ( panel_size.GetWidth() > sash_pos )
 						{
 							//set the sash position
-							Debug::Print(wxT("MainFrame::OnObjectSelected > set sash position"));
+							LogDebug(wxT("MainFrame::OnObjectSelected > set sash position"));
 							m_rightSplitter_sash_pos = panel_size.GetWidth();
 							m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
 						}
@@ -788,7 +788,7 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 {
 	wxString message;
 
-	Debug::Print(wxT("MainFrame::OnObjectCreated"));
+	LogDebug(wxT("MainFrame::OnObjectCreated"));
 
 	if ( event.GetFBObject() )
 	{
@@ -1344,7 +1344,7 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 	if ( m_autoSash )
 	{
 		m_page_selection = event.GetSelection();
-		Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > selection = %d"), m_page_selection);
+		LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > selection = %d"), m_page_selection);
 
 		wxSize panel_size;
 		int sash_pos;
@@ -1359,12 +1359,12 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					panel_size = m_cpp->GetClientSize();
 					sash_pos = m_rightSplitter->GetSashPosition();
 
-					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > CPP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > CPP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
 
 					if(panel_size.GetWidth() > sash_pos)
 					{
 						// set the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
 						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
 					}
 				}
@@ -1376,12 +1376,12 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					panel_size = m_python->GetClientSize();
 					sash_pos = m_rightSplitter->GetSashPosition();
 
-					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > Python panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > Python panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
 
 					if(panel_size.GetWidth() > sash_pos)
 					{
 						// set the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
 						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
 					}
 				}
@@ -1393,29 +1393,29 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					panel_size = m_xrc->GetClientSize();
 					sash_pos = m_rightSplitter->GetSashPosition();
 
-					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > PHP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > PHP panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
 
 					if(panel_size.GetWidth() > sash_pos)
 					{
 						// set the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
 						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
 					}
 				}
 				break;
-				
+
 			case 4: // Lua panel
 				if( (m_lua != NULL) && (m_rightSplitter != NULL) )
 				{
 					panel_size = m_lua->GetClientSize();
 					sash_pos = m_rightSplitter->GetSashPosition();
 
-					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > Lua panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > Lua panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
 
 					if(panel_size.GetWidth() > sash_pos)
 					{
 						// set the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
 						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
 					}
 				}
@@ -1427,18 +1427,18 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					panel_size = m_xrc->GetClientSize();
 					sash_pos = m_rightSplitter->GetSashPosition();
 
-					Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > XRC panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > XRC panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
 
 					if(panel_size.GetWidth() > sash_pos)
 					{
 						// set the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
 						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
 					}
 				}
 				break;
-				
-			
+
+
 
 			default:
 				if(m_visualEdit != NULL)
@@ -1448,7 +1448,7 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					if(m_rightSplitter_sash_pos < sash_pos)
 					{
 						//restore the sash position
-						Debug::Print(wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position: sash pos = %d"), m_rightSplitter_sash_pos);
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position: sash pos = %d"), m_rightSplitter_sash_pos);
 						m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
 					}
 					else
@@ -1790,7 +1790,7 @@ void MainFrame::OnIdle( wxIdleEvent& )
 
 void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
 {
-	Debug::Print(wxT("MainFrame::OnSplitterChanged > pos = %d"), event.GetSashPosition());
+	LogDebug(wxT("MainFrame::OnSplitterChanged > pos = %d"), event.GetSashPosition());
 
 	// update position
 	m_rightSplitter_sash_pos = event.GetSashPosition();
