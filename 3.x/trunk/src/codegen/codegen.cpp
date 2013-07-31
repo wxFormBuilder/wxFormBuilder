@@ -243,7 +243,7 @@ bool TemplateParser::ParseProperty()
 		m_out << property->GetChildFromParent( childName );
 	}
 
-	//  Debug::Print("parsing property %s",propname.c_str());
+	//  LogDebug("parsing property %s",propname.c_str());
 
 	return true;
 }
@@ -283,7 +283,7 @@ bool TemplateParser::ParseText()
 		}
 	}
 
-	//Debug::Print(wxT("Parsed Text: %s"),text.c_str());
+	//LogDebug(wxT("Parsed Text: %s"),text.c_str());
 	return true;
 }
 
@@ -810,7 +810,7 @@ bool TemplateParser::ParseIfTypeEqual()
 		m_out << parser->ParseTemplate();
 		return true;
 	}
-	
+
     return false;
 }
 
@@ -830,13 +830,13 @@ bool TemplateParser::ParseIfTypeNotEqual()
 		m_out << parser->ParseTemplate();
 		return true;
 	}
-	
+
     return false;
 }
 
 TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 {
-	//  Debug::Print("Parsing command %s",ident.c_str());
+	//  LogDebug("Parsing command %s",ident.c_str());
 
 	if (ident == wxT("wxparent") )
 		return ID_WXPARENT;
@@ -911,7 +911,7 @@ wxString TemplateParser::ParseTemplate()
     {
         wxLogError( ex.what() );
     }
-	
+
 	return m_out;
 }
 
@@ -1001,7 +1001,7 @@ bool TemplateParser::ParseNewLine()
 	m_out << wxT('\n');
 	// append custom indentation define in code templates (will be replace by '\t' in code writer)
 	for( int i = 0; i < m_indent; i++ ) m_out << wxT("%TAB%");
-	
+
 	return true;
 }
 
@@ -1034,7 +1034,7 @@ void TemplateParser::ParseIndent()
 void TemplateParser::ParseUnindent()
 {
 	m_indent--;
-	
+
 	if( m_indent < 0 ) m_indent = 0;
 }
 
@@ -1053,19 +1053,19 @@ wxString TemplateParser::PropertyToCode(PProperty property)
 bool TemplateParser::IsEqual(const wxString& value, const wxString& set)
 {
 	bool contains = false;
-	
-	wxStringTokenizer tokens( set, wxT("||") ); 
+
+	wxStringTokenizer tokens( set, wxT("||") );
 	while ( tokens.HasMoreTokens() )
 	{
 		wxString token = tokens.GetNextToken();
 		token.Trim().Trim(false);
-		
+
 		if( token == value )
 		{
 			contains = true;
 			break;
 		}
 	}
-	
+
 	return contains;
 }

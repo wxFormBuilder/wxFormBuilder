@@ -53,7 +53,7 @@ m_strUserIDsVec(strUserIDsVec)
 	{
 		m_basePath.clear();
 	}
-	
+
 	SetupModulePrefixes();
 }
 
@@ -91,7 +91,7 @@ PTemplateParser LuaTemplateParser::CreateParser( const TemplateParser* oldparser
 wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 {
 	wxString result;
-	
+
 	switch ( type )
 	{
 	case PT_WXPARENT:
@@ -138,7 +138,7 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			result = value;
 			wxString pred = m_predModulePrefix[value];
-			
+
 			if( !pred.empty() )
 				result.Replace( wxT("wx"), pred );
 			else
@@ -148,7 +148,7 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Prepend(wxT("wx."));
 				}
 			}
-				
+
 			break;
 		}
 	case PT_TEXT:
@@ -169,12 +169,12 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			wxString pred, bit, res, pref;
 			wxStringTokenizer bits( result, wxT("|"), wxTOKEN_STRTOK );
-			
+
 			while( bits.HasMoreTokens() )
 			{
 				bit = bits.GetNextToken();
 				pred = m_predModulePrefix[bit];
-			
+
 				if(pred.empty() )
 				{
 					res += pref + wxT("wx.") + bit;
@@ -311,7 +311,7 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 				}
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
-				
+
 				result << wxT("wx.wxBitmap( \"") << LuaCodeGenerator::ConvertLuaString( file ) << wxT("\", wx.wxBITMAP_TYPE_ANY )");
 			}
 			else if ( source == _("Load From Resource") )
@@ -336,17 +336,17 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
-				
+
 				if( rid.StartsWith( wxT("gtk-") ) )
 				{
 					rid = wxT("\"") + rid + wxT("\"");
 				}
 				else
 					rid.Replace( wxT("wx"), wxT("wx.wx") );
-				
+
 				wxString cid = path.AfterFirst( wxT(':') );
 				cid.Replace( wxT("wx"), wxT("wx.wx") );
-				
+
 				result = wxT("wx.wxArtProvider.GetBitmap( ") + rid + wxT(", ") +  cid + wxT(" )");
 			}
 			break;
@@ -383,7 +383,7 @@ LuaCodeGenerator::LuaCodeGenerator()
 	m_firstID = 1000;
 	m_strEventHandlerPostfix = wxT("");
 	m_strUITable = wxT("");
-	
+
 	//this classes aren't wrapped by wxLua - make exception
 	m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxSearchCtrl"));
@@ -445,22 +445,22 @@ void LuaCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	// Start file
 	wxString code = GetCode( userClasses, wxT("file_comment") );
 	m_source->WriteLn( code );
-	
+
 	wxString fullGenPath = genFileFullPath;
 	fullGenPath.Replace(wxT("\\"), wxT("\\\\"));
-	
+
 	code = wxT("package.path = \"") + fullGenPath + wxT(".lua\"");
 	m_source->WriteLn( code );
 
 	code = GetCode( userClasses, wxT("source_include") );
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxEmptyString );
-	
+
 
 			EventVector events;
 			FindEventHandlers( form, events );
 
-		
+
 			if ( events.size() > 0 )
 			{
 				code = GetCode( userClasses, wxT("event_handler_comment") );
@@ -473,16 +473,16 @@ void LuaCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				for ( size_t i = 0; i < events.size(); i++ )
 				{
 					PEvent event = events[i];
-					
+
 					wxString handlerName = event->GetValue();
 					wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName().c_str() );
-					
+
 					PObjectBase obj = event->GetObject();
 					PObjectInfo obj_info = obj->GetObjectInfo();
-					
+
 					wxString strClassName = wxT("");
 					wxString code = GenEventEntryForInheritedClass(obj, obj_info, templateName, handlerName, strClassName);
-					
+
 					bool bAddCaption = false;
 					PProperty propName = obj->GetProperty( wxT("name") );
 					if ( propName != NULL){
@@ -493,11 +493,11 @@ void LuaCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 							eventsGroupID = wxString::Format( wxT("-- %s (%s) event handlers: "), strClassName.c_str(), obj->GetClassName().c_str());
 						}
 					}
-					
+
 					if(code.length() > 0){
 						if(bAddCaption)
 							m_source->WriteLn(eventsGroupID);
-						
+
 						m_source->WriteLn( code);
 						m_source->WriteLn();
 					}
@@ -505,7 +505,7 @@ void LuaCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				m_source->WriteLn( wxEmptyString );
 				m_source->WriteLn( wxEmptyString );
 			}
-	
+
 	m_source->Unindent();
 }
 
@@ -521,12 +521,12 @@ wxString LuaCodeGenerator::GenEventEntryForInheritedClass( PObjectBase obj, PObj
 		{
 			_template.Replace( wxT("#handler"),handlerName );
 			_template.Replace( wxT("#skip"),wxT("\n") + m_strEventHandlerPostfix );
-		} 
-					
+		}
+
 		LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 		code = parser.ParseTemplate();
 		if(code.length() > 0) return code;
-		
+
 		for ( unsigned int i = 0; i < obj_info->GetBaseClassCount(false); i++ )
 		{
 			PObjectInfo base_info = obj_info->GetBaseClass( i, false );
@@ -555,21 +555,21 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 	m_disconnectEvents = ( project->GetPropertyAsInteger( wxT("disconnect_lua_events") ) != 0 );
 
 	m_source->Clear();
-	
+
 	// Insert Lua preamble
-	
+
 	wxString code = GetCode( project, wxT("lua_preamble") );
 	if ( !code.empty() )
 	{
 		m_source->WriteLn( code );
 		m_source->WriteLn( wxEmptyString );
 	}
-	
+
 	code = (
 		wxT("----------------------------------------------------------------------------\n")
 		wxT("-- Lua code generated with wxFormBuilder (version ") wxT(__DATE__) wxT(")\n")
 		wxT("-- http://www.wxformbuilder.org/\n")
-		wxT("----------------------------------------------------------------------------\n") 
+		wxT("----------------------------------------------------------------------------\n")
 		);
 
 	m_source->WriteLn( code );
@@ -607,10 +607,10 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		m_source->WriteLn( wxT("") );
 	}
-	
+
 	// Generating "defines" for macros
-	GenDefines( project );	
-	
+	GenDefines( project );
+
 	PProperty propNamespace = project->GetProperty( wxT( "ui_table" ) );
 	if ( propNamespace )
 	{
@@ -621,8 +621,8 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 		code = m_strUITable +  wxT(" = {} \n");
 		m_source->WriteLn( code );
 	}
-	
-	
+
+
 	PProperty eventKindProp = project->GetProperty( wxT("skip_lua_events") );
 	if( eventKindProp->GetValueAsInteger() ){
 		 m_strEventHandlerPostfix = wxT("event:Skip()");
@@ -631,7 +631,7 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 		m_strEventHandlerPostfix = wxT("");
 	}
 
-		
+
 	PProperty disconnectMode = project->GetProperty( wxT("disconnect_mode") );
 	m_disconnecMode = disconnectMode->GetValueAsString();
 
@@ -646,9 +646,9 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	code = GetCode( project, wxT("lua_epilogue") );
-	if( !code.empty() ) 
+	if( !code.empty() )
 		m_source->WriteLn( code );
-	
+
 	return true;
 }
 
@@ -658,7 +658,7 @@ void LuaCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 	{
 		return;
 	}
-	
+
 	if( disconnect )
 	{
 		m_source->WriteLn( wxT("-- Disconnect Events\n") );
@@ -668,7 +668,7 @@ void LuaCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 		m_source->WriteLn();
 		m_source->WriteLn( wxT("-- Connect Events\n") );
 	}
-	
+
 
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
@@ -684,7 +684,7 @@ void LuaCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 		wxLogError( wxT("Object name cannot be null") );
 		return;
 	}
-	
+
 	/*
 	wxString base_class;
 	PProperty propSubclass = class_obj->GetProperty( wxT("subclass") );
@@ -699,7 +699,7 @@ void LuaCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 
 	if ( base_class.empty() )
 		base_class = wxT("wx.") + class_obj->GetClassName();
-		
+
 	*/
 	wxString handlerName;
 	if ( events.size() > 0 )
@@ -707,9 +707,9 @@ void LuaCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
-			
+
 			handlerName = event->GetValue();// + wxT("_") + class_name;
-			
+
 			wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName().c_str() );
 
 			PObjectBase obj = event->GetObject();
@@ -739,14 +739,14 @@ bool LuaCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 		{
 			if( disconnect )
 			{
-				if( m_disconnecMode == wxT("handler_name")) _template.Replace( wxT("#handler"), wxT("handler = ") + handlerName ); 
-				else if(m_disconnecMode == wxT("source_name")) _template.Replace( wxT("#handler"), wxT("None") ); 
+				if( m_disconnecMode == wxT("handler_name")) _template.Replace( wxT("#handler"), wxT("handler = ") + handlerName );
+				else if(m_disconnecMode == wxT("source_name")) _template.Replace( wxT("#handler"), wxT("None") );
 			}
 			else{
 				_template.Replace( wxT("#handler"),  handlerName );
 				_template.Replace( wxT("#skip"),wxT("\n") + m_strEventHandlerPostfix );
-			} 
-			
+			}
+
 			LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 			wxString code = parser.ParseTemplate();
 			wxString strRootCode = parser.RootWxParentToCode();
@@ -856,20 +856,20 @@ wxString LuaCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent/*
 		}
 		return wxT("");
 	}
-			
+
 	_template = code_info->GetTemplate(name);
 	_template.Replace(wxT("#parentname"), strSelf);
-	
-	
+
+
 	if(m_strUITable.length() > 0)
 		_template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
 	else
 		_template.Replace(wxT("#utbl"), wxT(""));
-	
+
 
 	LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 	wxString code = parser.ParseTemplate();
-	
+
 	//handle unsupported classes
 	std::vector<wxString>::iterator iter = m_strUnsupportedInstances.begin();
 	for(; iter != m_strUnsupportedInstances.end(); ++iter){
@@ -877,7 +877,7 @@ wxString LuaCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent/*
 	}
 	if(iter != m_strUnsupportedInstances.end())
 		code.Prepend(wxT("--"));
-	
+
 	wxString strRootCode = parser.RootWxParentToCode();
 	int pos = code.Find(strRootCode);
 	if(pos != -1){
@@ -889,7 +889,7 @@ wxString LuaCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent/*
 			code.Replace(strRootCode, wxT(""));
 		}
 	}
-	
+
 	return code;
 }
 
@@ -1007,7 +1007,7 @@ void LuaCodeGenerator::GenObjectIncludes( PObjectBase project, std::vector< wxSt
 			}
 		}
 	}
-	
+
 	// Call GenIncludes on all children as well
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
@@ -1096,24 +1096,24 @@ void LuaCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 		            class_obj->GetClassName().c_str() );
 		return;
 	}
-	
+
 	wxString strName = propName->GetValue();
-	
+
 	if(m_strUITable.length() > 0)
 		strName = m_strUITable + wxT(".") + strName;
-	
+
 	m_source->WriteLn();
 	m_source->WriteLn( wxT("-- create ") + strClassName );
-	
+
 	m_source->WriteLn(strName + wxT(" = ") + GetCode( class_obj, wxT("cons_call") ));
-	
+
 	m_source->Indent();
 	wxString settings = GetCode( class_obj, wxT("settings") );
 	if ( !settings.IsEmpty() )
 	{
 		m_source->WriteLn( settings );
 	}
-	
+
 	    if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
     {
         m_source->WriteLn( wxT("function add_page(page)") );
@@ -1151,7 +1151,7 @@ void LuaCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 	m_source->WriteLn();
 	// generate function definition
 	m_source->Indent();
-	
+
 	wxString strClassName;
 	if ( m_disconnectEvents && !events.empty() )
 	{
@@ -1159,10 +1159,10 @@ void LuaCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 	}
 	else
 		if( !class_obj->GetPropertyAsInteger( wxT("aui_managed") ) ) m_source->WriteLn( wxT("pass") );
-		
+
 	// destruct objects
 	GenDestruction( class_obj );
-	
+
 	m_source->Unindent();
 }
 wxString GetParentWindow(PObjectBase obj)
@@ -1171,7 +1171,7 @@ wxString GetParentWindow(PObjectBase obj)
 	PObjectBase ob = obj->GetLayout();
 	if(ob)
 		strName = ob->GetClassName();
-		
+
 	return strName;
 }
 void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString &strClassName  )
@@ -1181,26 +1181,26 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 
 	if ( ObjectDatabase::HasCppProperties( type ) )
 	{
-		
+
 		wxString strName;
 		PProperty propName = obj->GetProperty( wxT("name") );
 		if(propName)
 			strName = propName->GetValue();
-			
+
 		wxString strClass = obj->GetClassName();
-		
+
 
 		std::vector<wxString>::iterator itr;
 		if(m_strUnsupportedClasses.end() != (itr = std::find(m_strUnsupportedClasses.begin(),m_strUnsupportedClasses.end(),strClass))){
-			
+
 			m_source->WriteLn(wxT("--Instance ") + strName + wxT(" of Control ") + *itr + wxT(" you try to use isn't unfortunately wrapped by wxLua."));
 			m_source->WriteLn(wxT("--Please try to use another control\n"));
 			m_strUnsupportedInstances.push_back(strName);
 			return;
 		}
-		
+
 		m_source->WriteLn( GetCode( obj, wxT("construction"), false, strClassName ) );
-		
+
 		GenSettings( obj->GetObjectInfo(), obj, strClassName );
 
 		bool isWidget = !info->IsSubclassOf( wxT("sizer") );
@@ -1224,14 +1224,14 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 				m_source->WriteLn( afterAddChild );
 			}
 			m_source->WriteLn();
-				
+
 			if (is_widget)
 			{
 				// the parent object is not a sizer. There is no template for
 				// this so we'll make it manually.
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
-				
+
 				wxString _template =	wxT("#utbl#parent$name:SetSizer( #utbl$name ) #nl")
 										wxT("#utbl#parent$name:Layout()")
 										wxT("#ifnull #parent $size")
@@ -1276,12 +1276,12 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 					{
 						_template = wxT("#utbl$name:SplitHorizontally( ");
 					}
-				
+
 					_template = _template + wxT("#utbl") + sub1->GetProperty( wxT("name") )->GetValue() +
 						wxT(", #utbl") + sub2->GetProperty( wxT("name") )->GetValue() + wxT(", $sashpos )");
 					_template = _template + wxT("#nl #utbl$name") + wxT(":SetSplitMode(") + wxString::Format(wxT("%d"),(bSplitVertical ? 1 : 0)) + wxT(")");
 					_template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
-					
+
 					LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 					m_source->WriteLn(parser.ParseTemplate());
 					break;
@@ -1335,13 +1335,13 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 		}
 		else
 		{
-			Debug::Print( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
+			LogDebug( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
 			return;
 		}
-		
+
 
 			m_source->WriteLn( GetCode( obj, temp_name ) );
-		
+
 	}
 	else if (	type == wxT("notebookpage")		||
 				type == wxT("flatnotebookpage")	||
@@ -1413,7 +1413,7 @@ void LuaCodeGenerator::GenDestruction( PObjectBase obj )
 			}
 		}
 	}
-	
+
 	// Process child widgets
 	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
 	{
@@ -1435,7 +1435,7 @@ void LuaCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 		{
 			wxString value = prop->GetValue();
 			if( value.IsEmpty() ) continue;
-			
+
 			// Skip wx IDs
 			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
 				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
@@ -1519,12 +1519,12 @@ void LuaCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxString &
 	{
 		LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 		wxString code = parser.ParseTemplate();
-		
+
 		wxString strRootCode = parser.RootWxParentToCode();
 		if(code.Find(strRootCode) != -1){
 				code.Replace(strRootCode, strClassName);
 		}
-		
+
 		if ( !code.empty() )
 		{
 			m_source->WriteLn(code);
@@ -1542,9 +1542,9 @@ void LuaCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxString &
 void LuaCodeGenerator::GenAddToolbar( PObjectInfo info, PObjectBase obj )
 {
 	wxArrayString arrCode;
-	
+
 	GetAddToolbarCode( info, obj, arrCode );
-	
+
 	for( size_t i = 0; i < arrCode.GetCount(); i++ ) m_source->WriteLn( arrCode[i] );
 }
 
@@ -1567,7 +1567,7 @@ void LuaCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxA
 			if( codelines.Index( code ) == wxNOT_FOUND ) codelines.Add( code );
 		}
 	}
-	
+
 	// Proceeding recursively with the base classes
 	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
@@ -1736,7 +1736,7 @@ void LuaTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wxaui.wx );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.wx );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.wx );
-	
+
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.);
 	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.);
@@ -1745,12 +1745,12 @@ void LuaTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.);
 	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_AUTO, wx.);
 	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_NEVER, wx. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_BOTTOM, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_BUTTON, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_ON_ACTIVE_TAB, wxaui. );
@@ -1766,7 +1766,7 @@ void LuaTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_SPLIT, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TOP, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_WINDOWLIST_BUTTON, wxaui. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_TEXT, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_TOOLTIPS, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_AUTORESIZE, wxaui. );
@@ -1776,7 +1776,7 @@ void LuaTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_LAYOUT, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_TEXT, wxaui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_DEFAULT_STYLE, wxaui. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx. );
 	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx. );
 }

@@ -14,7 +14,7 @@ void Function::SetContents(wxString contents)
 wxString Function::GetFunction()
 {
 	wxString Str;
-	
+
 	Str << wxT("\n");
 	Str << m_documentation;
 	Str << wxT("\n");
@@ -127,6 +127,7 @@ void CCodeParser::ParseCClass(wxString code)
 
 void CCodeParser::ParseCUserMembers(wxString code)
 {
+	m_userMemebers = wxT("");
 	int userMembersStart = code.Find(wxT("//// end generated class members"));
 	if (userMembersStart != wxNOT_FOUND)
 	{
@@ -142,20 +143,12 @@ void CCodeParser::ParseCUserMembers(wxString code)
 			{
 				m_userMemebers = code.Mid(userMembersStart);
 			}
-			else
-			{
-				m_userMemebers = wxT("");
-			}
-				
+
 		}
-	}
-	else
-	{
-		m_userMemebers = wxT("");
 	}
 }
 
-wxString CCodeParser::ParseSourceFunctions(wxString code)
+void CCodeParser::ParseSourceFunctions(wxString code)
 {
 	int functionStart = 0;
 	int functionEnd = 0;
@@ -175,7 +168,7 @@ wxString CCodeParser::ParseSourceFunctions(wxString code)
 			//Get the last bit of remaining code after the last function in the file
 			m_trailingCode = code.Mid(previousFunctionEnd);
 			m_trailingCode.RemoveLast();
-			return wxT("");
+			return;
 		}
 		//found a function now creat a new function class
 		func = new Function();
@@ -184,7 +177,7 @@ wxString CCodeParser::ParseSourceFunctions(wxString code)
 		functionEnd = code.find_first_of(wxT("("), functionStart);
 		functionStart += m_className.Len() + 2;
 		funcName = code.Mid(functionStart, functionEnd - functionStart);
-		
+
 		m_functions[funcName] = func;
 
 		//find the begining of the line on which the function name resides
@@ -211,13 +204,10 @@ wxString CCodeParser::ParseSourceFunctions(wxString code)
 		previousFunctionEnd = functionEnd + 1;
 		if (loop == 100)
 		{
-			return wxT("");
+			return;
 		}
 		loop++;
 	}
-	
-	
-	return wxT("");
 }
 
 wxString CCodeParser::ParseBrackets(wxString code, int& functionStart)

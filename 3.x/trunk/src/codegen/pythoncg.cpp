@@ -52,7 +52,7 @@ m_basePath( basePath )
 	{
 		m_basePath.clear();
 	}
-	
+
 	SetupModulePrefixes();
 }
 
@@ -88,7 +88,7 @@ PTemplateParser PythonTemplateParser::CreateParser( const TemplateParser* oldpar
 wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 {
 	wxString result;
-	
+
 	switch ( type )
 	{
 	case PT_WXPARENT:
@@ -135,7 +135,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			result = value;
 			wxString pred = m_predModulePrefix[value];
-			
+
 			if( !pred.empty() )	result.Replace( wxT("wx"), pred );
 			else
 			{
@@ -144,7 +144,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				else
 					result.Replace( wxT("wx"), wxT("wx.") );
 			}
-				
+
 			break;
 		}
 	case PT_TEXT:
@@ -158,15 +158,15 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 	case PT_BITLIST:
 		{
 			result = ( value.empty() ? wxT("0") : value );
-			
+
 			wxString pred, bit;
 			wxStringTokenizer bits( result, wxT("|"), wxTOKEN_STRTOK );
-			
+
 			while( bits.HasMoreTokens() )
 			{
 				bit = bits.GetNextToken();
 				pred = m_predModulePrefix[bit];
-			
+
 				if( bit.Contains( wxT("wx") ) )
 				{
 					if( !pred.empty() )	result.Replace( bit, pred + bit.AfterFirst('x') );
@@ -301,7 +301,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				}
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
-				
+
 				result << wxT("wx.Bitmap( u\"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT("\", wx.BITMAP_TYPE_ANY )");
 			}
 			else if ( source == _("Load From Resource") )
@@ -322,17 +322,17 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
-				
+
 				if( rid.StartsWith( wxT("gtk-") ) )
 				{
 					rid = wxT("u\"") + rid + wxT("\"");
 				}
 				else
 					rid.Replace( wxT("wx"), wxT("wx.") );
-				
+
 				wxString cid = path.AfterFirst( wxT(':') );
 				cid.Replace( wxT("wx"), wxT("wx.") );
-				
+
 				result = wxT("wx.ArtProvider.GetBitmap( ") + rid + wxT(", ") +  cid + wxT(" )");
 			}
 			break;
@@ -485,16 +485,16 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	m_disconnectEvents = ( project->GetPropertyAsInteger( wxT("disconnect_python_events") ) != 0 );
 
 	m_source->Clear();
-	
+
 	// Insert python preamble
-	
+
 	wxString code = GetCode( project, wxT("python_preamble") );
 	if ( !code.empty() )
 	{
 		m_source->WriteLn( code );
 		m_source->WriteLn( wxEmptyString );
 	}
-	
+
 	code = (
 		wxT("###########################################################################\n")
 		wxT("## Python code generated with wxFormBuilder (version ") wxT(__DATE__) wxT(")\n")
@@ -504,7 +504,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("###########################################################################\n") );
 
 	m_source->WriteLn( code );
-	
+
 
 	PProperty propFile = project->GetProperty( wxT("file") );
 	if (!propFile)
@@ -539,7 +539,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		m_source->WriteLn( wxT("") );
 	}
-	
+
 	// Write internationalization support
 	if( m_i18n )
 	{
@@ -547,7 +547,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 		m_source->WriteLn( wxT("_ = gettext.gettext") );
 		m_source->WriteLn( wxT("") );
 	}
-	
+
 	// Generating "defines" for macros
 	GenDefines( project );
 
@@ -559,7 +559,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	else
 		eventHandlerPostfix = wxT("pass");
-		
+
 	PProperty disconnectMode = project->GetProperty( wxT("disconnect_mode") );
 	m_disconnecMode = disconnectMode->GetValueAsString();
 
@@ -575,7 +575,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 
 	code = GetCode( project, wxT("python_epilogue") );
 	if( !code.empty() ) m_source->WriteLn( code );
-	
+
 	return true;
 }
 
@@ -585,7 +585,7 @@ void PythonCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &e
 	{
 		return;
 	}
-	
+
 	if( disconnect )
 	{
 		m_source->WriteLn( wxT("# Disconnect Events") );
@@ -613,7 +613,7 @@ void PythonCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &e
 
 	wxString base_class;
 	wxString handlerName;
-	
+
 	PProperty propSubclass = class_obj->GetProperty( wxT("subclass") );
 	if ( propSubclass )
 	{
@@ -632,9 +632,9 @@ void PythonCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &e
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
 			PEvent event = events[i];
-			
+
 			handlerName = event->GetValue();
-			
+
 			wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName().c_str() );
 
 			PObjectBase obj = event->GetObject();
@@ -664,12 +664,12 @@ bool PythonCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 		{
 			if( disconnect )
 			{
-				if( m_disconnecMode == wxT("handler_name")) _template.Replace( wxT("#handler"), wxT("handler = self.") + handlerName ); 
-				else if(m_disconnecMode == wxT("source_name")) _template.Replace( wxT("#handler"), wxT("None") ); //wxT("self.") + obj->GetProperty(wxT("name"))->GetValueAsString() ); 
+				if( m_disconnecMode == wxT("handler_name")) _template.Replace( wxT("#handler"), wxT("handler = self.") + handlerName );
+				else if(m_disconnecMode == wxT("source_name")) _template.Replace( wxT("#handler"), wxT("None") ); //wxT("self.") + obj->GetProperty(wxT("name"))->GetValueAsString() );
 			}
 			else
-				_template.Replace( wxT("#handler"), wxT("self.") + handlerName ); 
-			
+				_template.Replace( wxT("#handler"), wxT("self.") + handlerName );
+
 			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 			m_source->WriteLn( parser.ParseTemplate() );
 			return true;
@@ -711,7 +711,7 @@ void PythonCodeGenerator::GenVirtualEventHandlers( const EventVector& events, co
 				m_source->Indent();
 				m_source->WriteLn(eventHandlerPostfix);
 				m_source->Unindent();
-				
+
 				generatedHandlers.insert(aux);
 			}
 			if( i < (events.size()-1) )  m_source->WriteLn();
@@ -798,7 +798,7 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_en
 		wxLogError( wxT("Object name can not be null") );
 		return;
 	}
-	
+
 	m_source->WriteLn( wxT("###########################################################################") );
 	m_source->WriteLn( wxT("## Class ") + class_name);
 	m_source->WriteLn( wxT("###########################################################################") );
@@ -810,13 +810,13 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_en
 	// The constructor is also included within public
 	GenConstructor( class_obj, events );
 	GenDestructor( class_obj, events );
-	
+
 	m_source->WriteLn( wxT("") );
-	
+
 	// event handlers
 	GenVirtualEventHandlers(events, eventHandlerPostfix);
 	GetGenEventHandlers( class_obj );
-	
+
 	m_source->Unindent();
 	m_source->WriteLn( wxT("") );
 }
@@ -912,7 +912,7 @@ void PythonCodeGenerator::GenObjectIncludes( PObjectBase project, std::vector< w
 			}
 		}
 	}
-	
+
 	// Call GenIncludes on all children as well
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
@@ -1047,17 +1047,17 @@ void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 	// generate function definition
 	m_source->WriteLn( wxT("def __del__( self ):") );
 	m_source->Indent();
-	
+
 	if ( m_disconnectEvents && !events.empty() )
 	{
 		GenEvents( class_obj, events, true );
 	}
 	else
 		if( !class_obj->GetPropertyAsInteger( wxT("aui_managed") ) ) m_source->WriteLn( wxT("pass") );
-		
+
 	// destruct objects
 	GenDestruction( class_obj );
-	
+
 	m_source->Unindent();
 }
 
@@ -1069,7 +1069,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	if ( ObjectDatabase::HasCppProperties( type ) )
 	{
 		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
-		
+
 		GenSettings( obj->GetObjectInfo(), obj );
 
 		bool isWidget = !info->IsSubclassOf( wxT("sizer") );
@@ -1093,7 +1093,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				m_source->WriteLn( afterAddChild );
 			}
 			m_source->WriteLn();
-				
+
 			if (is_widget)
 			{
 				// the parent object is not a sizer. There is no template for
@@ -1196,7 +1196,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		}
 		else
 		{
-			Debug::Print( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
+			LogDebug( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
 			return;
 		}
 
@@ -1272,7 +1272,7 @@ void PythonCodeGenerator::GenDestruction( PObjectBase obj )
 			}
 		}
 	}
-	
+
 	// Process child widgets
 	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
 	{
@@ -1294,10 +1294,10 @@ void PythonCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* ma
 		{
 			wxString value = prop->GetValue();
 			if( value.IsEmpty() ) continue;
-			
+
 			//if( value.Contains( wxT("wx") ) && !value.Contains( wxT("wx.") ) ) value.Replace( wxT("wx"), wxT("wx.") );
 			value.Replace( wxT("wx"), wxT("wx.") );
-			
+
 			// Skip wx IDs
 			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
 				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
@@ -1395,9 +1395,9 @@ void PythonCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 void PythonCodeGenerator::GenAddToolbar( PObjectInfo info, PObjectBase obj )
 {
 	wxArrayString arrCode;
-	
+
 	GetAddToolbarCode( info, obj, arrCode );
-	
+
 	for( size_t i = 0; i < arrCode.GetCount(); i++ ) m_source->WriteLn( arrCode[i] );
 }
 
@@ -1420,7 +1420,7 @@ void PythonCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, 
 			if( codelines.Index( code ) == wxNOT_FOUND ) codelines.Add( code );
 		}
 	}
-	
+
 	// Proceeding recursively with the base classes
 	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{
@@ -1601,7 +1601,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.animate. );
-	
+
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.calendar. );
 	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.calendar. );
@@ -1610,12 +1610,12 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.calendar. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.calendar. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.calendar. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_AUTO, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_NEVER, wx.html. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_BOTTOM, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_BUTTON, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_ON_ACTIVE_TAB, wx.aui. );
@@ -1631,7 +1631,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_SPLIT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_TOP, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_NB_WINDOWLIST_BUTTON, wx.aui. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_TEXT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_TOOLTIPS, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_AUTORESIZE, wx.aui. );
@@ -1641,7 +1641,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_LAYOUT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_TEXT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_DEFAULT_STYLE, wx.aui. );
-	
+
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_FLOATING, wx.aui. );
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_ACTIVE_PANE, wx.aui. );
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_TRANSPARENT_DRAG, wx.aui. );
@@ -1652,7 +1652,7 @@ void PythonTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_NO_VENETIAN_BLINDS_FADE, wx.aui. );
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_LIVE_RESIZE, wx.aui. );
     ADD_PREDEFINED_PREFIX( wxAUI_MGR_DEFAULT, wx.aui. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.animate. );
 	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.animate. );
 }

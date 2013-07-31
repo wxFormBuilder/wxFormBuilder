@@ -244,7 +244,7 @@ m_expanded( true )
 {
 	m_class = class_name;
 
-	Debug::Print(wxT("new ObjectBase"));
+	LogDebug(wxT("new ObjectBase"));
 }
 
 ObjectBase::~ObjectBase()
@@ -258,7 +258,7 @@ ObjectBase::~ObjectBase()
 		parent->RemoveChild(pobj);
 	}
 
-	Debug::Print(wxT("delete ObjectBase"));
+	LogDebug(wxT("delete ObjectBase"));
 }
 
 wxString ObjectBase::GetIndentString(int indent)
@@ -279,7 +279,7 @@ PProperty ObjectBase::GetProperty (wxString name)
 	if ( it != m_properties.end() )
 		return it->second;
 
-  //Debug::Print(wxT("[ObjectBase::GetProperty] Property %s not found!"),name.c_str());
+  //LogDebug(wxT("[ObjectBase::GetProperty] Property %s not found!"),name.c_str());
 	// este aserto falla siempre que se crea un sizeritem
 	// assert(false);
 	return PProperty();
@@ -310,9 +310,9 @@ PEvent ObjectBase::GetEvent (wxString name)
 		return it->second;
 
 #if wxVERSION_NUMBER < 2900
-	Debug::Print(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
+	LogDebug(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
 #else
-    Debug::Print("[ObjectBase::GetEvent] Event " + name + " not found!");
+    LogDebug("[ObjectBase::GetEvent] Event " + name + " not found!");
 #endif
 	return PEvent();
 }
@@ -381,7 +381,7 @@ PObjectBase ObjectBase::FindParentForm()
 	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "menubar_form" ) );
 	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "toolbar_form" ) );
     if( retObj == NULL ) retObj = this->FindNearAncestor( wxT("wizard") );
-	
+
 	return retObj;
 }
 
@@ -415,9 +415,9 @@ bool ObjectBase::ChildTypeOk (PObjectType type)
 {
 	// buscamos si puede haber objectos del tipo "type" como hijos
 	// del actual objeto tipo.
-	
+
 	int nmax = 0;
-		
+
 	// check allowed child count
 	if( GetObjectInfo()->GetObjectType()->GetName() == wxT("form") )
 	{
@@ -487,7 +487,7 @@ PObjectBase ObjectBase::GetChild (unsigned int idx, const wxString& type)
 	assert (idx < m_children.size());
 
 	unsigned int cnt = 0;
-	
+
 	for( std::vector< PObjectBase >::iterator it =  m_children.begin(); it != m_children.end(); ++it )
 	{
 		if( (*it)->GetObjectInfo()->GetObjectTypeName() == type && ++cnt == idx ) return *it;
@@ -862,7 +862,7 @@ PObjectInfo ObjectInfo::GetBaseClass(unsigned int idx, bool inherited)
 	{
 		std::vector<PObjectInfo> classes;
 		GetBaseClasses( classes );
-		
+
 		assert (idx < classes.size());
 		return classes[idx];
 	}
@@ -879,7 +879,7 @@ unsigned int ObjectInfo::GetBaseClassCount(bool inherited)
 	{
 		std::vector<PObjectInfo> classes;
 		GetBaseClasses( classes );
-		
+
 		return (unsigned int)classes.size();
 	}
 	else

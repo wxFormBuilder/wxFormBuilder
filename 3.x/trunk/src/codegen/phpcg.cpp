@@ -316,7 +316,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
 				if( rid.StartsWith( wxT("gtk-") ) ) rid = wxT("wxT(\"") + rid + wxT("\")");
-				
+
 				result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") +  path.AfterFirst( wxT(':') ) + wxT(" )");
 			}
 			break;
@@ -1084,7 +1084,7 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				m_source->WriteLn( afterAddChild );
 			}
 			m_source->WriteLn();
-				
+
 			if (is_widget)
 			{
 				// the parent object is not a sizer. There is no template for
@@ -1187,7 +1187,7 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		}
 		else
 		{
-			Debug::Print( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
+			LogDebug( wxT("SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer.") );
 			return;
 		}
 

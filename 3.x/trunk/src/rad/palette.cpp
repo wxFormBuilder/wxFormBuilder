@@ -88,9 +88,9 @@ void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxToolBar *toolbar )
 		if ( NULL == info->GetComponent() )
 		{
 #if wxVERSION_NUMBER < 2900
-			Debug::Print( _( "Missing Component for Class \"%s\" of Package \"%s\"." ), info->GetClassName().c_str(), pkg->GetPackageName().c_str() );
+			LogDebug( _( "Missing Component for Class \"%s\" of Package \"%s\"." ), info->GetClassName().c_str(), pkg->GetPackageName().c_str() );
 #else
-			Debug::Print(_("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() + "\".") );
+			LogDebug(_("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() + "\".") );
 #endif
 		}
 		else
@@ -131,7 +131,7 @@ void wxFbPalette::Create()
 
 	unsigned int pkg_count = AppData()->GetPackageCount();
 
-	Debug::Print( wxT( "[Palette] Pages %d" ), pkg_count );
+	LogDebug( wxT( "[Palette] Pages %d" ), pkg_count );
 
 #ifdef USE_FLATNOTEBOOK
 	// Populate icon vector
@@ -146,7 +146,7 @@ void wxFbPalette::Create()
 #else
 	wxSize minsize;
 #endif
-	
+
 	for ( unsigned int i = 0; i < pkg_count;i++ )
 	{
 		PObjectPackage pkg = AppData()->GetPackage( i );
@@ -155,13 +155,13 @@ void wxFbPalette::Create()
 		wxPanel *panel = new wxPanel( m_notebook, -1 );
 		//panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
-		
+
 #if wxVERSION_NUMBER >= 2900
 		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, -1, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
 		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
 		PopulateToolbar( pkg, toolbar );
 		m_tv.push_back( toolbar );
-		
+
 		sizer->Add( toolbar, 1, wxEXPAND, 0 );
 #else
 		wxPanel *tbPanel = new wxPanel( panel, -1 );
@@ -191,7 +191,7 @@ void wxFbPalette::Create()
 		sizer->Add( tbPanel, 1, wxEXPAND, 0 );
 		sizer->Add( sbPanel, 0, wxEXPAND, 0 );
 #endif
-		
+
 		panel->SetAutoLayout( true );
 		panel->SetSizer( sizer );
 		sizer->Fit( panel );
@@ -202,9 +202,9 @@ void wxFbPalette::Create()
 		if( cursize.x > minsize.x ) minsize.x = cursize.x;
 		if( cursize.y > minsize.y ) minsize.y = cursize.y + 30;
 #endif
-		
+
 		m_notebook->AddPage( panel, pkg_name, false, i );
-#ifndef USE_FLATNOTEBOOK	
+#ifndef USE_FLATNOTEBOOK
 		m_notebook->SetPageBitmap( i, pkg->GetPackageIcon() );
 #endif
 
@@ -212,13 +212,13 @@ void wxFbPalette::Create()
 	//Title *title = new Title( this, wxT("Component Palette") );
 	//top_sizer->Add(title,0,wxEXPAND,0);
 #ifdef USE_FLATNOTEBOOK
-	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
+	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 	SetAutoLayout( true );
 	SetSizer( top_sizer );
 	top_sizer->Fit( this );
 	top_sizer->SetSizeHints( this );
 #else
-	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );	
+	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 	SetSizer( top_sizer );
 	SetSize( minsize );
 	SetMinSize( minsize );

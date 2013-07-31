@@ -321,7 +321,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
 				if( rid.StartsWith( wxT("gtk-") ) ) rid = wxT("wxT(\"") + rid + wxT("\")");
-				
+
 				result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") +  path.AfterFirst( wxT(':') ) + wxT(" )");
 			}
 			break;
@@ -426,9 +426,9 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 		wxLogError(wxT("This not a UserClasses object"));
 		return;
 	}
-	
+
 	m_inheritedCodeParser.ParseCFiles(userClasses->GetPropertyAsString( _("name") ));
-	
+
 	//(FileCodeWriter*)m_header->
 	wxString type = userClasses->GetPropertyAsString( wxT("type") );
 	wxString userCode;
@@ -778,7 +778,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
 		PObjectBase child = project->GetChild( i );
-		
+
 		EventVector events;
 		FindEventHandlers( child, events );
 		GenClassDeclaration( child, useEnum, classDecoration, events );
@@ -1042,7 +1042,7 @@ void CppCodeGenerator::GenValVarsBase( PObjectInfo info, PObjectBase obj )
 void CppCodeGenerator::GetGenEventHandlers( PObjectBase obj )
 {
 	GenDefinedEventHandlers( obj->GetObjectInfo(), obj );
-	
+
 	// Process child widgets
 	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
 	{
@@ -1150,11 +1150,11 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 		GenEnumIds( class_obj );
 
 	GenAttributeDeclaration( class_obj, P_PROTECTED );
-	
+
 	wxString eventHandlerKind;
 	wxString eventHandlerPrefix;
 	wxString eventHandlerPostfix;
-	
+
 	PProperty eventHandlerKindProp = class_obj->GetProperty( wxT( "event_handler" ) );
 	if ( eventHandlerKindProp )
 	{
@@ -1176,7 +1176,7 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 		eventHandlerPrefix = wxT( "virtual " );
 		eventHandlerPostfix = wxT( " { event.Skip(); }" );
 	}
-	
+
 	GenVirtualEventHandlers( events, eventHandlerPrefix, eventHandlerPostfix );
 
 	m_header->Unindent();
@@ -1554,7 +1554,7 @@ void CppCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 		GenEvents( class_obj, events, true );
 		m_source->WriteLn();
 	}
-	
+
 	// destruct objects
 	GenDestruction( class_obj );
 
@@ -1606,7 +1606,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 				m_source->WriteLn( afterAddChild );
 			}
 			m_source->WriteLn();
-			
+
 			if ( is_widget )
 			{
 				// the parent object is not a sizer. There is no template for
@@ -1708,7 +1708,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		}
 		else
 		{
-			Debug::Print( wxT( "SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer." ) );
+			LogDebug( wxT( "SizerItem child is not a Spacer and is not a subclass of wxWindow or of sizer." ) );
 			return;
 		}
 
@@ -1892,7 +1892,7 @@ void CppCodeGenerator::GenDestruction( PObjectBase obj )
 			}
 		}
 	}
-	
+
 	// Process child widgets
 	for ( unsigned int i = 0; i < obj->GetChildCount() ; i++ )
 	{
@@ -1904,9 +1904,9 @@ void CppCodeGenerator::GenDestruction( PObjectBase obj )
 void CppCodeGenerator::GenAddToolbar( PObjectInfo info, PObjectBase obj )
 {
 	wxArrayString arrCode;
-	
+
 	GetAddToolbarCode( info, obj, arrCode );
-	
+
 	for( size_t i = 0; i < arrCode.GetCount(); i++ ) m_source->WriteLn( arrCode[i] );
 }
 
@@ -1929,7 +1929,7 @@ void CppCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxA
 			if( codelines.Index( code ) == wxNOT_FOUND ) codelines.Add( code );
 		}
 	}
-	
+
 	// Proceeding recursively with the base classes
 	for ( unsigned int i = 0; i < info->GetBaseClassCount(false); i++ )
 	{

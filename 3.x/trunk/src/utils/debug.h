@@ -28,9 +28,25 @@
 
 #include <wx/string.h>
 
-namespace Debug
-{
-	void Print( const wxChar*, ... );
-};
+#ifdef __WXFB_DEBUG__
+
+#define LogDebug(...) \
+	{									            	\
+		wxString LOG_MSG; 								\
+		LOG_MSG << wxT(__FILE__);						\
+		LOG_MSG << wxT("@");							\
+		LOG_MSG << __LINE__;							\
+		LOG_MSG << wxT(" ");							\
+		LOG_MSG << __FUNCTION__;						\
+		LOG_MSG << wxT(": ");							\
+		LOG_MSG << wxPrintf(__VA_ARGS__);				\
+		wxLogDebug(LOG_MSG);							\
+	}
+
+#else
+
+#define LogDebug(MSG)
+
+#endif
 
 #endif //__DEBUG_H__

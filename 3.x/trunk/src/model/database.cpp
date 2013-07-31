@@ -265,16 +265,16 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 	{
 		// Comprobamos si el tipo es válido
 		PObjectType parentType = parent->GetObjectInfo()->GetObjectType();
-		
+
 		//AUI
 		bool aui = false;
 		if( parentType->GetName() == wxT("form") )
 		{
 			aui = parent->GetPropertyAsInteger(wxT("aui_managed"));
 		}
-		
+
 		int max = parentType->FindChildType(objType, aui);
-		
+
 		// FIXME! Esto es un parche para evitar crear los tipos menubar,statusbar y
 		// toolbar en un form que no sea wxFrame.
 		// Hay que modificar el conjunto de tipos para permitir tener varios tipos
@@ -424,7 +424,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 {
 	if ( !sizeritem->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ) )
 	{
-		Debug::Print( wxT("SetDefaultLayoutProperties expects a subclass of sizeritembase") );
+		LogDebug( wxT("SetDefaultLayoutProperties expects a subclass of sizeritembase") );
 		return;
 	}
 
@@ -678,7 +678,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							// Load the C++ code tempates
 							xmlFileName.SetExt( wxT("cppcode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
-							
+
 							// Load the Python code tempates
 							xmlFileName.SetExt( wxT("pythoncode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
@@ -686,7 +686,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							// Load the PHP code tempates
 							xmlFileName.SetExt( wxT("phpcode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
-							
+
 							// Load the Lua code tempates
 							xmlFileName.SetExt( wxT("luacode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
@@ -696,9 +696,9 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							{
 								addedPackage.first->second->AppendPackage( packageIt->second );
 #if wxVERSION_NUMBER < 2900
-								Debug::Print( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
+								LogDebug( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
 #else
-                                Debug::Print( "Merged plugins named \"" + packageIt->second->GetPackageName() + "\"" );
+                                LogDebug( "Merged plugins named \"" + packageIt->second->GetPackageName() + "\"" );
 #endif
 							}
 
@@ -756,7 +756,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
     // that used to cause crashes when trying to debug.
     wxString wxver = wxT("");
 
-#ifdef DEBUG 
+#ifdef DEBUG
     #if wxVERSION_NUMBER < 2900
         wxver = wxT("d");
     #endif
@@ -814,7 +814,7 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 					continue;
 				}
 			}
-			
+
 			std::string class_name;
 			elem_obj->GetAttribute( CLASS_TAG, &class_name );
 
@@ -1024,7 +1024,7 @@ PObjectPackage ObjectDatabase::LoadPackage( const wxString& file, const wxString
 			std::string smallIcon;
 			elem_obj->GetAttributeOrDefault( "smallIcon", &smallIcon, "" );
 			wxString smallIconFullPath = iconPath + wxFILE_SEP_PATH + _WXSTR(smallIcon);
-			
+
 			std::string wxver;
 			elem_obj->GetAttributeOrDefault( WXVERSION_TAG, &wxver, "" );
 			if( wxver != "" )
@@ -1344,7 +1344,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		if ( !handle )
 		{
 			wxString error = wxString( dlerror(), wxConvUTF8 );
-            
+
 			THROW_WXFBEX( wxT("Error loading library ") << path << wxT(" ") << error )
 		}
 		dlerror(); // reset errors
@@ -1394,9 +1394,9 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 
 #endif
 #if wxVERSION_NUMBER < 2900
-		Debug::Print( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
+		LogDebug( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
 #else
-        Debug::Print("[Database::ImportComponentLibrary] Importing " + path + " library");
+        LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
 #endif
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
@@ -1419,9 +1419,9 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		else
 		{
 #if wxVERSION_NUMBER < 2900
-			Debug::Print( wxT("ObjectInfo for <%s> not found while loading library <%s>"), class_name.c_str(), path.c_str() );
+			LogDebug( wxT("ObjectInfo for <%s> not found while loading library <%s>"), class_name.c_str(), path.c_str() );
 #else
-            Debug::Print("ObjectInfo for <" + class_name + "> not found while loading library <" + path + ">");
+            LogDebug("ObjectInfo for <" + class_name + "> not found while loading library <" + path + ">");
 #endif
 		}
 	}

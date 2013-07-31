@@ -6,7 +6,7 @@
 #include <wx/hashmap.h>
 #include <wx/msgdlg.h>
 
-// Stores all of the information for all of the parsed funtions
+/** Stores all of the information for all of the parsed funtions */
 class Function
 {
 	public:
@@ -15,30 +15,30 @@ class Function
 		~Function()
 		{}
 
-		//stores the code contained in the body of the function
+		/** stores the code contained in the body of the function */
 		void SetContents(wxString contents);
 
-		//stores the whole first line of the function as a single string ex: "void fubar::DoSomething(int number)"
+		/** stores the whole first line of the function as a single string ex: "void fubar::DoSomething(int number)" */
 		void SetHeading(wxString heading);
 
-		//stores any code/documentation located between the previous function and the current function
+		/** stores any code/documentation located between the previous function and the current function */
 		void SetDocumentation(wxString documentation)
 		{
 			m_documentation = documentation;
 		}
 
-		//retrieves the body code
+		/** retrieves the body code */
 		wxString GetContents()
 		{
 			return m_functionContents;
 		}
 
-		//retrieves the documentation
+		/** retrieves the documentation */
 		wxString GetDocumentation()
 		{
 			return m_documentation;
 		}
-		//retrieves everything including documentation
+		/** retrieves everything including documentation */
 		wxString GetFunction();
 
 	protected:
@@ -47,49 +47,49 @@ class Function
 		wxString m_documentation;
 };
 
-//map class mapping Function* to function name
+/** map class mapping Function* to function name */
 WX_DECLARE_STRING_HASH_MAP(Function*, FunctionMap);
 #define funcIterator FunctionMap::iterator
 
 
-//parses the source and header files for all code added to the generated
+/** parses the source and header files for all code added to the generated */
 class CodeParser
 {
 	public:
-		//constructor
+		/** constructor */
 		CodeParser()
-		{ 
+		{
 		}
 
 		~CodeParser()
 		{}
-		
-		
+
+
 
 		///////////////////////////////////////////////////////////////////
-		
-		//returns all user header include code before the class declaration
+
+		/** returns all user header include code before the class declaration */
 		wxString GetUserIncludes()
 		{
 			return m_userInclude;
 		}
 
-		//returns user class members
+		/** returns user class members */
 		wxString GetUserMembers()
 		{
 			return m_userMemebers;
 		}
-		
-          //returns the Documentation of a function by name
+
+		/** returns the Documentation of a function by name */
 		wxString GetFunctionDocumentation( wxString function );
-          
-		//returns the contents of a function by name and then removes it from the list of remaining functions
+
+		/** returns the contents of a function by name and then removes it from the list of remaining functions */
 		wxString GetFunctionContents(wxString function);
 
-		//returns all ramaining functions including documentation as one string.
-		// this may rearange functions, but should keep them intact
+		/** returns all ramaining functions including documentation as one string.
+		 this may rearange functions, but should keep them intact */
 		wxString GetRemainingFunctions();
-		
+
 		wxString GetTrailingCode()
 		{
 			return m_trailingCode;
@@ -108,19 +108,19 @@ class CodeParser
 
 
 
-//parses the source and header files for all code added to the generated
+/** parses the source and header files for all code added to the generated */
 class CCodeParser : public CodeParser
 {
 	private:
 		wxString m_hFile;
 		wxString m_cFile;
-		
+
 	public:
-		//constructor
+		/** constructor */
 		CCodeParser()
 		{
 		}
-		
+
 		CCodeParser(wxString headerFileName, wxString sourceFileName)
 		{
 			m_hFile = headerFileName;
@@ -130,30 +130,30 @@ class CCodeParser : public CodeParser
 		~CCodeParser()
 		{}
 
-		/* c++ Parser */
-		
-			//opens the header and source,  'className' is the Inherited class
+		/** c++ Parser */
+
+			/** opens the header and source,  'className' is the Inherited class */
 			void ParseCFiles(wxString className);
 
-			//extracts the contents of the files.  take the the entire contents of both files in string form
+			/** extracts the contents of the files.  take the the entire contents of both files in string form */
 			void ParseCCode(wxString header, wxString source);
 
-			//extracts all user header include code before the class declaration
+			/** extracts all user header include code before the class declaration */
 			void ParseCInclude(wxString code);
 
-			//extracts the contents of the generated class declaration
+			/** extracts the contents of the generated class declaration */
 			void ParseCClass(wxString code);
-			
-			wxString ParseSourceFunctions(wxString code);
-			
+
+			void ParseSourceFunctions(wxString code);
+
 			wxString ParseBrackets(wxString code, int& functionStart);
-			
+
 			void ParseCUserMembers(wxString code);
-			
+
 		/***************/
 };
 
-//class PCodeParser : public CodeParser
+/**class PCodeParser : public CodeParser */
 
 #endif // CODEPARSER_H_INCLUDED
 

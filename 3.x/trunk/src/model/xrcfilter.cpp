@@ -36,7 +36,7 @@
 PObjectBase XrcLoader::GetProject( ticpp::Document* xrcDoc )
 {
 	assert( m_objDb );
-	Debug::Print( wxT( "[XrcFilter::GetProject]" ) );
+	LogDebug( wxT( "[XrcFilter::GetProject]" ) );
 
 	PObjectBase project( m_objDb->CreateObject( "Project" ) );
 
