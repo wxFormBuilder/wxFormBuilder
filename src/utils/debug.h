@@ -48,7 +48,7 @@
 
 #else
 
-#define LogDebug(MSG)
+#define LogDebug(...)
 
 #endif
 
