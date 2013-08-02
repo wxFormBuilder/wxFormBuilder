@@ -89,7 +89,7 @@ cd build
 make CONFIG=Release -C./premake/$platform
 
 ./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch codeblocks
-#./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
+./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
 ./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
 if [ "$platform" = "macosx" ]; then
    ./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxunicode $wxroot $wxversion $mediactrl $shared $arch xcode3
