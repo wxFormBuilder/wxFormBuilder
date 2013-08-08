@@ -423,7 +423,7 @@ void wxInnerFrame::OnMouseMotion( wxMouseEvent& e )
 
 void wxInnerFrame::OnLeftDown( wxMouseEvent& e )
 {
-	wxLogDebug(wxT("OnLeftDown"));
+	LogDebug(wxT("OnLeftDown"));
 	if ( m_sizing == NONE )
 	{
 		if ( e.GetX() >= GetSize().x - m_resizeBorder && e.GetY() >= GetSize().y - m_resizeBorder )
@@ -466,11 +466,20 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 		dc.SetPen( wxNullPen );
 		dc.SetBrush( wxNullBrush );
 
+		wxScrolledWindow * VEditor = (wxScrolledWindow*)GetParent();
+		wxPoint scrolledpos = VEditor->GetViewStart();
 		SetSize( m_curX, m_curY );
+		Freeze();
+		VEditor->FitInside();
+		VEditor->SetVirtualSize(GetSize().x + 20, GetSize().y + 20);
 
 		wxCommandEvent event( wxEVT_INNER_FRAME_RESIZED, GetId() );
 		event.SetEventObject( this );
 		GetEventHandler()->ProcessEvent( event );
+
+		VEditor->Scroll(scrolledpos);
+		Thaw();
+		Update();
 
 		m_curX = m_curY = -1;
 	}
