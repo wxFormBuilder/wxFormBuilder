@@ -73,7 +73,7 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
     EVT_FB_PROPERTY_MODIFIED( ObjectInspector::OnPropertyModified )
     EVT_FB_EVENT_HANDLER_MODIFIED( ObjectInspector::OnEventHandlerModified )
 #if wxVERSION_NUMBER >= 2900
-	EVT_CHILD_FOCUS( ObjectInspector::OnChildFocus ) 
+	EVT_CHILD_FOCUS( ObjectInspector::OnChildFocus )
 #endif
 END_EVENT_TABLE()
 
@@ -116,7 +116,7 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 
     m_nb->AddPage( m_pg, _("Properties"), false, 0 );
     m_nb->AddPage( m_eg, _("Events"),     false, 1 );
-	
+
 #ifndef USE_FLATNOTEBOOK
 	m_nb->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT("properties"), 16 ) );
 	m_nb->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT("events"), 16 ) );
@@ -125,14 +125,14 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
     wxBoxSizer* topSizer = new wxBoxSizer( wxVERTICAL );
     topSizer->Add( m_nb, 1, wxALL | wxEXPAND, 0 );
     SetSizer( topSizer );
-	
-	Connect( wxID_ANY, wxEVT_FB_PROP_BITMAP_CHANGED, wxCommandEventHandler( ObjectInspector::OnBitmapPropertyChanged) ); 
+
+	Connect( wxID_ANY, wxEVT_FB_PROP_BITMAP_CHANGED, wxCommandEventHandler( ObjectInspector::OnBitmapPropertyChanged) );
 }
 
 ObjectInspector::~ObjectInspector()
 {
-	Disconnect( wxID_ANY, wxEVT_FB_PROP_BITMAP_CHANGED, wxCommandEventHandler( ObjectInspector::OnBitmapPropertyChanged) ); 
-	
+	Disconnect( wxID_ANY, wxEVT_FB_PROP_BITMAP_CHANGED, wxCommandEventHandler( ObjectInspector::OnBitmapPropertyChanged) );
+
     AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
@@ -434,7 +434,7 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     else if ( type == PT_PARENT )
     {
 		result = new wxPGProperty( name, wxPG_LABEL );
-		
+
 		/*wxPGProperty* parent = new wxPGProperty( name, wxPG_LABEL );
 		parent->SetValueFromString( prop->GetValueAsString(), wxPG_FULL_VALUE );
         //wxPGProperty* parent = new wxStringProperty( name, wxPG_LABEL, wxT("<composed>") );
@@ -492,12 +492,12 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
                     if ( bp )
                     {
                         bp->CreateChildren();
-						
+
 						// perform delayed child properties update
 						wxCommandEvent e( wxEVT_FB_PROP_BITMAP_CHANGED );
 						e.SetString( bp->GetName() + wxT(":") + prop->GetValue() );
 						GetEventHandler()->AddPendingEvent( e );
-						
+
                         //AppData()->ModifyProperty( prop, bp->GetValueAsString() );
                     }
                 }
@@ -509,12 +509,12 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 					wxArrayString values = wxStringTokenize( prop->GetValueAsString(), wxT(";"), wxTOKEN_RET_EMPTY_ALL );
 					size_t i = 0;
 					wxString value;
-					
+
 					for ( it = children->begin(); it != children->end(); ++it )
 					{
 						if( values.GetCount() > i ) value = values[i++].Trim().Trim(false);
 						else value = wxT("");
-						
+
 						wxPGProperty* child = new wxStringProperty( it->m_name, wxPG_LABEL, value );
 						id->AppendChild( child );
 						m_pg->SetPropertyHelpString( child, it->m_description );
@@ -676,14 +676,14 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 //
 //wxLogDebug( wxT("OI::OnPGChanged: thisValue (AsString):%s"),  bp->GetValueAsString().c_str() );
 //wxLogDebug( wxT("OI::OnPGChanged: childValue (AsString):%s"), propPtr->GetValueAsString().c_str() );
-//wxLogDebug( wxT("OI::OnPGChanged: thisValue:%s childIndex:%i childValue:%s" ), 
+//wxLogDebug( wxT("OI::OnPGChanged: thisValue:%s childIndex:%i childValue:%s" ),
 //        thisValue.GetString().c_str(), childIndex, childValue.GetString().c_str() );
 //
 //        ObjInspectorPropertyMap::iterator itBmp = m_propMap.find( bp );
 //        PProperty bmpProp = itBmp->second;
 //
 //#if wxVERSION_NUMBER >= 2900
-//        wxVariant newVal = 
+//        wxVariant newVal =
 //#endif
 //        bp->ChildChanged( thisValue, propPtr->GetIndexInParent(), childValue );
 //
@@ -695,7 +695,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 //        wxLogDebug( wxT("OI::OnPGChanged: Changed prop value to %s"), bmpProp->GetValueAsString().c_str() );
 //#endif
 //    }
-	
+
     ObjInspectorPropertyMap::iterator it = m_propMap.find( propPtr );
 
     if ( m_propMap.end() == it )
@@ -704,7 +704,6 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
         propPtr = propPtr->GetParent();
         it = m_propMap.find( propPtr );
     }
-
     if ( it != m_propMap.end() )
     {
         PProperty prop = it->second;
@@ -759,8 +758,11 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
             }
             case PT_PARENT:
             {
+#if wxVERSION_NUMBER >= 2900
+				ModifyProperty( prop, propPtr->GenerateComposedValue( ));
+#else
                 ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
-				/* ModifyProperty( prop, m_pg->GetPropertyValueAsString( propPtr ) ); */
+#endif
                 break;
             }
             case PT_WXSTRING:
@@ -862,9 +864,9 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 
 				// Handle changes in values, as needed
 				wxVariant thisValue  = WXVARIANT(bmpVal);
-				
+
 #if wxVERSION_NUMBER >= 2900
-				wxVariant newVal = 
+				wxVariant newVal =
                 propPtr->ChildChanged( thisValue, (int)event.GetProperty()->GetIndexInParent(), childValue );
 #else
 				propPtr->ChildChanged( thisValue, event.GetProperty()->GetIndexInParent(), childValue );
@@ -875,7 +877,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 #else
 				ModifyProperty( prop, bmpVal);
 #endif
-				
+
 				if( event.GetProperty()->GetIndexInParent() > 0 )
 				{
 					// perform delayed child properties update
@@ -883,7 +885,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 					e.SetString( propPtr->GetName() + wxT(":") + bmpVal );
 					GetEventHandler()->AddPendingEvent( e );
 				}
-				
+
                 break;
             }
 
@@ -935,6 +937,7 @@ void ObjectInspector::OnEventHandlerModified( wxFBEventHandlerEvent& event )
 
 void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 {
+	LogDebug("");
     PProperty prop = event.GetFBProperty();
 
     PObjectBase propobj = prop->GetObject();
@@ -1047,7 +1050,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
         break;
     case PT_BITMAP:
 //      pgProp->SetValue( WXVARIANT( prop->GetValueAsString() ) );
-        wxLogDebug( wxT("OI::OnPropertyModified: prop:%s"), prop->GetValueAsString().c_str() ); 
+        wxLogDebug( wxT("OI::OnPropertyModified: prop:%s"), prop->GetValueAsString().c_str() );
         break;
     default:
         pgProp->SetValueFromString(prop->GetValueAsString(), wxPG_FULL_VALUE);
@@ -1186,10 +1189,10 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
 void ObjectInspector::OnBitmapPropertyChanged( wxCommandEvent& event )
 {
 	wxLogDebug( wxT("OI::BitmapPropertyChanged: %s"), event.GetString().c_str() );
-	
+
 	wxString propName = event.GetString().BeforeFirst( ':' );
 	wxString propVal = event.GetString().AfterFirst( ':' );
-	
+
 	if( !propVal.IsEmpty() )
 	{
 		wxFBBitmapProperty *bp = wxDynamicCast( m_pg->GetPropertyByLabel( propName ), wxFBBitmapProperty );

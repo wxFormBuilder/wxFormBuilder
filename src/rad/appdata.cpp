@@ -2649,34 +2649,28 @@ void ApplicationData::RemoveHandler( wxEvtHandler* handler )
 
 void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 {
-	static int count = 0;
 
-	if ( !forcedelayed && count == 0 )
+	if ( !forcedelayed )
 	{
-		count++;
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "event: %s" ), event.GetEventName().c_str() );
-#else
-		LogDebug( "event: " + event.GetEventName() );
-#endif
+		LogDebug( "event: %s", event.GetEventName().c_str() );
+
 		std::vector< wxEvtHandler* >::iterator handler;
 
 		for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )
+		{
 			( *handler )->ProcessEvent( event );
-
-		count--;
+		}
 	}
 	else
 	{
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "Pending event: %s" ), event.GetEventName().c_str() );
-#else
-		LogDebug( "Pending event: " + event.GetEventName() );
-#endif
+		LogDebug( "Pending event: %s", event.GetEventName().c_str() );
+
 		std::vector< wxEvtHandler* >::iterator handler;
 
 		for ( handler = m_handlers.begin(); handler != m_handlers.end(); handler++ )
+		{
 			( *handler )->AddPendingEvent( event );
+		}
 	}
 }
 
