@@ -40,6 +40,7 @@ BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_TREE_ITEM_RIGHT_CLICK( -1, ObjectTree::OnRightClick )
 	EVT_TREE_BEGIN_DRAG( -1, ObjectTree::OnBeginDrag )
 	EVT_TREE_END_DRAG( -1, ObjectTree::OnEndDrag )
+	EVT_TREE_KEY_DOWN(-1, ObjectTree::OnKeyDown )
 
 	EVT_FB_PROJECT_LOADED( ObjectTree::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( ObjectTree::OnProjectSaved )
@@ -67,7 +68,39 @@ wxPanel( parent, id )
     Connect( wxID_ANY, wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler( ObjectTree::OnObjectSelected ) );
     Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
     Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
+
+    m_altKeyIsDown = false;
 }
+
+void ObjectTree::OnKeyDown(wxTreeEvent &event )
+{
+	if( event.GetKeyEvent().AltDown() && event.GetKeyCode() != WXK_ALT)
+	{
+#ifdef __WXGTK__
+		switch (event.GetKeyCode())
+		{
+			case WXK_UP:
+				AppData()->MovePosition(GetObjectFromTreeItem(m_tcObjects->GetSelection()),false);
+				return;
+			case WXK_DOWN:
+				AppData()->MovePosition(GetObjectFromTreeItem(m_tcObjects->GetSelection()),true);
+				return;
+			case WXK_RIGHT:
+				AppData()->MoveHierarchy(GetObjectFromTreeItem(m_tcObjects->GetSelection()),false);
+				return;
+			case WXK_LEFT:
+				AppData()->MoveHierarchy(GetObjectFromTreeItem(m_tcObjects->GetSelection()),true);
+				return;
+		}
+#endif
+		event.Skip();
+	}
+	else
+	{
+		event.Skip();
+	}
+}
+
 
 ObjectTree::~ObjectTree()
 {
@@ -91,7 +124,7 @@ PObjectBase ObjectTree::GetObjectFromTreeItem( wxTreeItemId item )
 void ObjectTree::RebuildTree()
 {
 	m_tcObjects->Freeze();
-	
+
 	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 
@@ -112,7 +145,7 @@ void ObjectTree::RebuildTree()
 
 	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
 	Connect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
-	
+
 	m_tcObjects->Thaw();
 }
 
@@ -228,10 +261,10 @@ void ObjectTree::OnExpansionChange(wxTreeEvent &event)
 	{
 		PObjectBase obj(((ObjectTreeItemData *)item_data)->GetObject());
 		assert(obj);
-		
+
 		Disconnect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
 		Disconnect( wxID_ANY, wxEVT_COMMAND_TREE_ITEM_EXPANDED, wxTreeEventHandler( ObjectTree::OnExpansionChange ) );
-		
+
 		AppData()->ExpandObject( obj, m_tcObjects->IsExpanded( id ) );
 
 		Connect( wxID_ANY, wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler( ObjectTree::OnObjectExpanded ) );
@@ -271,7 +304,7 @@ void ObjectTree::AddChildren(PObjectBase obj, wxTreeItemId &parent, bool is_root
 		else
 		{
 			unsigned int pos = 0;
-			
+
 			PObjectBase parent_obj = obj->GetParent();
 			// find a proper position where the added object should be displayed at
 			if( parent_obj->GetObjectInfo()->GetObjectType()->IsItem() )
@@ -299,7 +332,7 @@ void ObjectTree::AddChildren(PObjectBase obj, wxTreeItemId &parent, bool is_root
 
 		// Set the name
 		UpdateItem( new_parent, obj );
-		
+
 		// Add the rest of the children
 		unsigned int count = obj->GetChildCount();
 		unsigned int i;
@@ -393,7 +426,7 @@ void ObjectTree::AddItem(PObjectBase item, PObjectBase parent)
 	{
 		// find parent item displayed in the object tree
 		while( parent && parent->GetObjectInfo()->GetObjectType()->IsItem() ) parent = parent->GetParent();
-		
+
 		// add new item to the object tree
 		ObjectItemMap::iterator it = m_map.find( parent );
 		if( (it != m_map.end()) && it->second.IsOk() )
@@ -418,7 +451,7 @@ void ObjectTree::RemoveItem(PObjectBase item)
 void ObjectTree::ClearMap(PObjectBase obj)
 {
 	m_map.erase( obj );
-	
+
 	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 	{
 		ClearMap( obj->GetChild( i ) );
@@ -485,14 +518,14 @@ void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 void ObjectTree::OnObjectCreated ( wxFBObjectEvent &event )
 {
 	//RebuildTree();
-	
+
 	if( event.GetFBObject() ) AddItem( event.GetFBObject(), event.GetFBObject()->GetParent() );
 }
 
 void ObjectTree::OnObjectRemoved ( wxFBObjectEvent &event )
 {
 	//RebuildTree();
-	
+
 	RemoveItem( event.GetFBObject() );
 }
 

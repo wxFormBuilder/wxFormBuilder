@@ -52,6 +52,8 @@ private:
 
    wxTreeItemId m_draggedItem;
 
+   bool m_altKeyIsDown;
+
    /**
     * Crea el arbol completamente.
     */
@@ -87,6 +89,7 @@ public:
   void OnObjectRemoved ( wxFBObjectEvent &event );
   void OnPropertyModified ( wxFBPropertyEvent &event );
   void OnProjectRefresh ( wxFBEvent &event);
+  void OnKeyDown ( wxTreeEvent &event);
 
   void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); };
 };
