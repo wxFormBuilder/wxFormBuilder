@@ -113,7 +113,7 @@ class VisualEditor : public wxScrolledWindow
 
   // Prevent OnModified in components
   bool m_stopModifiedEvent;
-  
+
   // aui scan timer
   wxTimer m_AuiScaner;
 
@@ -125,11 +125,11 @@ class VisualEditor : public wxScrolledWindow
   void SetupSizer( PObjectBase obj, wxSizer* sizer );
   void Create();
   void DeleteAbstractObjects();
-  
+
   void ClearAui();
   void SetupAui( PObjectBase obj, wxWindow* window );
   void ScanPanes( wxWindow* parent );
-  
+
   void OnAuiScaner(wxTimerEvent& event);
 
     void ClearWizard();
@@ -148,7 +148,7 @@ class VisualEditor : public wxScrolledWindow
 
   PObjectBase GetObjectBase( wxObject* wxobject );
   wxObject* GetWxObject( PObjectBase baseobject );
-  
+
   //AUI
   wxAuiManager *m_auimgr;
 
