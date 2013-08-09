@@ -1334,8 +1334,14 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 	PObjectBase object = m_selObj.lock();
 	if ( m_selSizer )
 	{
+		wxScrolledWindow* scrolwin = wxDynamicCast(m_selSizer->GetContainingWindow (), wxScrolledWindow);
+		if(scrolwin)
+		{
+			scrolwin->FitInside();
+		}
 		wxPoint point = m_selSizer->GetPosition();
 		size = m_selSizer->GetSize();
+
 		wxPen bluePen( *wxBLUE, 1, wxSOLID );
 		dc.SetPen( bluePen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
