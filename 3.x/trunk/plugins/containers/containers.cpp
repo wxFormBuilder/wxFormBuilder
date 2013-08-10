@@ -516,22 +516,25 @@ public:
 	}
 
 	void OnSelected( wxObject* wxobject )
-		{
+	{
 		BookUtils::OnSelected< wxNotebook >( wxobject, GetManager() );
-				}
+	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-    ObjectToXrcFilter xrc(obj, _("notebookpage"));
+		ObjectToXrcFilter xrc(obj, _("notebookpage"));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("select"),_("selected"),XRC_TYPE_BOOL);
-		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		if ( !obj->IsNull( _("bitmap") ) )
+		{
+			xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		}
 		return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
-    XrcToXfbFilter filter(xrcObj, _("notebookpage"));
+		XrcToXfbFilter filter(xrcObj, _("notebookpage"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("selected"),_("select"),XRC_TYPE_BOOL);
