@@ -467,7 +467,9 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 		dc.SetBrush( wxNullBrush );
 
 		wxScrolledWindow * VEditor = (wxScrolledWindow*)GetParent();
-		wxPoint scrolledpos = VEditor->GetViewStart();
+		int scrolledposX = 0;
+		int scrolledposY = 0;
+		VEditor->GetViewStart( &scrolledposX, &scrolledposY );
 		SetSize( m_curX, m_curY );
 		Freeze();
 		VEditor->FitInside();
@@ -477,7 +479,7 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 		event.SetEventObject( this );
 		GetEventHandler()->ProcessEvent( event );
 
-		VEditor->Scroll(scrolledpos);
+		VEditor->Scroll( scrolledposX, scrolledposY );
 		Thaw();
 		Update();
 
