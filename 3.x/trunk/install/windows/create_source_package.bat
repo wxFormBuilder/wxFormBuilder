@@ -22,7 +22,7 @@
 :: along with this program; if not, write to the Free Software
 :: Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ::**************************************************************************
-set APP_VERSION=1.07
+set APP_VERSION=1.08
 set APP_TITLE=Create Source Package
 
 echo ----------------------------------------
@@ -49,9 +49,8 @@ goto BEGIN_SVN_EXPORT
 
 :BEGIN_SVN_EXPORT
 :: Add Subversion install directory to the path.
-set SVN_ROOT=%ProgramFiles%\Subversion
 set SVN_EXPORT="svn.exe" export --force
-set SVN_REPOS=https://wxformbuilder.svn.sourceforge.net/svnroot/wxformbuilder/3.x/trunk
+set SVN_REPOS=https://svn.code.sf.net/p/wxformbuilder/code/3.x/trunk
 
 echo Using Subversion with command :
 echo     %SVN_EXPORT%
@@ -70,9 +69,6 @@ call %SVN_EXPORT% %SVN_REPOS%/output source\output
 echo [svn] Exporting 'plugins' directory to 'source\plugins'
 call %SVN_EXPORT% %SVN_REPOS%/plugins source\plugins
 
-::echo [svn] Exporting 'premake' directory to 'source\premake'
-::call %SVN_EXPORT% %SVN_REPOS%/premake source\premake
-
 echo [svn] Exporting 'sdk' directory to 'source\sdk'
 call %SVN_EXPORT% %SVN_REPOS%/sdk source\sdk
 
@@ -89,7 +85,6 @@ echo Finished creating source package...
 :: Cleanup environment.
 set APP_VERSION=
 set APP_TITLE=
-set SVN_ROOT=
 set SVN_EXPORT=
 set SVN_REPOS=
 
