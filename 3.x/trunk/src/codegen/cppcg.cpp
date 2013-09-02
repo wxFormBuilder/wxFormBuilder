@@ -559,17 +559,12 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	userCode = m_inheritedCodeParser.GetRemainingFunctions();
 	if ( !userCode.IsEmpty() )
 	{
-		//m_source->Indent();
 		m_source->Write( userCode );
-		//LogDebug(userCode);
-		//m_source->Unindent();
 	}
 	userCode = m_inheritedCodeParser.GetTrailingCode();
 	if ( !userCode.IsEmpty() )
 	{
-		//m_source->Indent();
 		m_source->WriteLn( userCode, true );
-		//m_source->Unindent();
 	}
 }
 
