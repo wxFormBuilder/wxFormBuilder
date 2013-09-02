@@ -1,6 +1,21 @@
 
 #include "codeparser.h"
 
+wxString RemoveWhiteSpace(wxString str)
+{
+	int index = 0;
+	while(index < str.Len())
+	{
+		if(str.GetChar(index) == ' ' || str.GetChar(index) == '\t' || str.GetChar(index) == '\n')
+		{
+			str.Remove(index, 1);
+		}
+		else
+		{index++;}
+	}
+	return str;
+}
+
 void Function::SetHeading(wxString heading)
 {
 	m_functionHeading = heading;
@@ -8,6 +23,14 @@ void Function::SetHeading(wxString heading)
 
 void Function::SetContents(wxString contents)
 {
+	if(contents.Left(1) == '\n')
+	{
+		contents.Remove(0, 1);
+	}
+	if(contents.Right(1) == '\n')
+	{
+		contents.Remove(contents.Len() -1, 1);
+	}
 	m_functionContents = contents;
 }
 
@@ -23,6 +46,9 @@ wxString Function::GetFunction()
 	Str << m_functionContents;
 	Str << wxT("\n}");
 
+	LogDebug("documentation >>" + m_documentation);
+	LogDebug("heading >>" + m_functionHeading);
+	LogDebug("contents >>" + m_functionContents);
 	return  Str;
 }
 
@@ -173,20 +199,18 @@ void CCodeParser::ParseSourceFunctions(wxString code)
 		//found a function now creat a new function class
 		func = new Function();
 
-		//find end of function name
-		functionEnd = code.find_first_of(wxT("("), functionStart);
-		functionStart += m_className.Len() + 2;
-		funcName = code.Mid(functionStart, functionEnd - functionStart);
-
-		m_functions[funcName] = func;
-
 		//find the begining of the line on which the function name resides
 		functionStart = code.rfind('\n', functionStart);
 		func->SetDocumentation(code.Mid(previousFunctionEnd, functionStart - previousFunctionEnd));
 		functionStart++;
 
 		functionEnd = code.find('{', functionStart);
-		func->SetHeading(code.Mid(functionStart, functionEnd - functionStart));
+		wxString heading = code.Mid(functionStart, functionEnd - functionStart);
+		if(heading.Right(1) == '\n')
+		{heading.RemoveLast();}
+		func->SetHeading(heading);
+
+		m_functions[RemoveWhiteSpace(heading)] = func;
 
 		//find the opening brackets of the function
 		func->SetContents(ParseBrackets(code,  functionStart));
@@ -201,7 +225,7 @@ void CCodeParser::ParseSourceFunctions(wxString code)
 			func->SetContents(wxT(""));
 		}
 
-		previousFunctionEnd = functionEnd + 1;
+		previousFunctionEnd = functionEnd;
 		if (loop == 100)
 		{
 			return;
@@ -217,11 +241,12 @@ wxString CCodeParser::ParseBrackets(wxString code, int& functionStart)
 	int index = 0;
 	wxString Str;
 
+	int functionLength = 0;
 	index = code.find('{', functionStart);
 	if (index != wxNOT_FOUND)
 	{
 		openingBrackets++;
-		index +=2;
+		index++;
 		functionStart = index;
 		int loop = 0;
 		while (openingBrackets > closingBrackets)
@@ -249,15 +274,16 @@ wxString CCodeParser::ParseBrackets(wxString code, int& functionStart)
 			}
 			loop++;
 		}
-		index = index - functionStart;
-		index -= 2;
+		index--;
+		functionLength = index - functionStart;
+		//index -= 2;
 	}
 	else
 	{
 		wxMessageBox(wxT("no brackets found"));
 	}
-	Str = code.Mid(functionStart, index);
-	functionStart = functionStart + index + 2;
+	Str = code.Mid(functionStart, functionLength);
+	functionStart = functionStart + functionLength + 1;
 	return Str;
 }
 
@@ -272,6 +298,7 @@ wxString CodeParser::GetFunctionDocumentation(wxString function)
 		func = m_functionIter->second;
 		contents = func->GetDocumentation();
 	}
+	LogDebug("documentation >>" + contents);
 	return contents;
 }
 
@@ -280,7 +307,7 @@ wxString CodeParser::GetFunctionContents(wxString function)
 	wxString contents = wxT("");
 	Function *func;
 
-	m_functionIter = m_functions.find(function);
+	m_functionIter = m_functions.find(RemoveWhiteSpace(function));
 	if (m_functionIter != m_functions.end())
 	{
 		func = m_functionIter->second;
@@ -288,6 +315,7 @@ wxString CodeParser::GetFunctionContents(wxString function)
 		m_functions.erase(m_functionIter);
 		delete func;
 	}
+	LogDebug("contents >>" + contents);
 	return contents;
 }
 

@@ -5,6 +5,9 @@
 #include <wx/string.h>
 #include <wx/hashmap.h>
 #include <wx/msgdlg.h>
+#include "utils/debug.h"
+
+wxString RemoveWhiteSpace(wxString str);
 
 /** Stores all of the information for all of the parsed funtions */
 class Function
@@ -24,7 +27,21 @@ class Function
 		/** stores any code/documentation located between the previous function and the current function */
 		void SetDocumentation(wxString documentation)
 		{
+			if(documentation.Left(1) == '\n')
+			{
+				documentation.Remove(0, 1);
+			}
+			if(documentation.Right(1) == '\n')
+			{
+				documentation.Remove(documentation.Len() -1, 1);
+			}
 			m_documentation = documentation;
+		}
+
+		/** retrieves the body code */
+		wxString GetHeading()
+		{
+			return m_functionHeading;
 		}
 
 		/** retrieves the body code */

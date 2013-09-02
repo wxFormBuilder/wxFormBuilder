@@ -464,9 +464,10 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	m_source->WriteLn( wxEmptyString );
 
 	code = GetCode( userClasses, type + wxT("_cons_def") );
+	LogDebug(code + "<");
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxT("{") );
-	userCode = m_inheritedCodeParser.GetFunctionContents( userClasses->GetPropertyAsString( _("name") ) );
+	userCode = m_inheritedCodeParser.GetFunctionContents( code );
 	if ( !userCode.IsEmpty() )
 	{
 		m_source->WriteLn( userCode, true );
@@ -501,7 +502,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				userCode = m_inheritedCodeParser.GetFunctionDocumentation( event->GetValue() );
 				if ( !userCode.IsEmpty() )
 				{
-					m_source->WriteLn( userCode, true );
+					m_source->Write( userCode );
 				}
 				else
 				{
@@ -509,10 +510,11 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				}
 				m_source->WriteLn( wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ) );
 				m_source->WriteLn( wxT("{") );
-				userCode = m_inheritedCodeParser.GetFunctionContents( event->GetValue() );
+				userCode = m_inheritedCodeParser.GetFunctionContents(  wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() )  );
+				LogDebug(wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ) + "<");
 				if ( !userCode.IsEmpty() )
 				{
-					m_source->WriteLn( userCode, true );
+					m_source->WriteLn( userCode);
 				}
 				else
 				{
@@ -558,7 +560,8 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	if ( !userCode.IsEmpty() )
 	{
 		//m_source->Indent();
-		m_source->WriteLn( userCode, true );
+		m_source->Write( userCode );
+		//LogDebug(userCode);
 		//m_source->Unindent();
 	}
 	userCode = m_inheritedCodeParser.GetTrailingCode();
