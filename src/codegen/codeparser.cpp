@@ -46,9 +46,6 @@ wxString Function::GetFunction()
 	Str << m_functionContents;
 	Str << wxT("\n}");
 
-	LogDebug("documentation >>" + m_documentation);
-	LogDebug("heading >>" + m_functionHeading);
-	LogDebug("contents >>" + m_functionContents);
 	return  Str;
 }
 
@@ -276,7 +273,6 @@ wxString CCodeParser::ParseBrackets(wxString code, int& functionStart)
 		}
 		index--;
 		functionLength = index - functionStart;
-		//index -= 2;
 	}
 	else
 	{
@@ -298,7 +294,6 @@ wxString CodeParser::GetFunctionDocumentation(wxString function)
 		func = m_functionIter->second;
 		contents = func->GetDocumentation();
 	}
-	LogDebug("documentation >>" + contents);
 	return contents;
 }
 
@@ -315,7 +310,6 @@ wxString CodeParser::GetFunctionContents(wxString function)
 		m_functions.erase(m_functionIter);
 		delete func;
 	}
-	LogDebug("contents >>" + contents);
 	return contents;
 }
 
