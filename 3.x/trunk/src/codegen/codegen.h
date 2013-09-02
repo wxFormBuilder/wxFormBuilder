@@ -98,7 +98,7 @@ private:
 	wxString m_pred;
 	wxString m_npred;
 	void ignore_whitespaces();
-	
+
 	// Current indentation level in the file
 	int m_indent;
 
