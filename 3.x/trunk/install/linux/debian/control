@@ -1,19 +1,19 @@
 Source: wxformbuilder
 Section: contrib/devel
 Priority: optional
-XSBC-Original-Maintainer: Ryan Mulder <rjmyst3@gmail.com>
+XSBC-Original-Maintainer: Ryan Mulder <ryanjmulder@gmail.com>
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
 Build-Depends: debhelper (>= 5), libwxgtk2.8-dev (>= 2.8.9)
-Standards-Version: 3.7.3
+Standards-Version: 3.9.4
 Homepage: http://www.wxformbuilder.org
 
 Package: wxformbuilder
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends} ${misc:Depends}
 Description: WYSIWYG GUI Designer and Code Generator for wxWidgets
  wxFormBuilder is a GUI designer for programs which
  use wxWidgets. It is a very WYSIWYG designer, because it uses
  the actual controls to show the result, not some fake representation.
  .
- Features include generation of C++, Python, or XRC code, custom plugin
- support, and import of XRC code.
+ Features include generation of C++, Python, XRC, wxLua, PHP. Also
+ custom plugins are supported and import of XRC code.

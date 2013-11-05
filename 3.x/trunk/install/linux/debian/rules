@@ -5,7 +5,7 @@
 
 get-orig-source:
 	svn export svn://svn.code.sf.net/p/wxformbuilder/code/3.x/trunk wxformbuilder
-	
+
 	cd $(CURDIR)/wxformbuilder && install/linux/create_src_tarball
 	rm -rf $(CURDIR)/wxformbuilder
 
@@ -14,9 +14,10 @@ configure-stamp:
 	dh_testdir
 	touch configure-stamp
 
-build: build-stamp
-
-build-stamp: configure-stamp 
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
+build-stamp: configure-stamp
 	dh_testdir
 	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release
 	touch $@
@@ -26,18 +27,18 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release clean
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_clean -k
 	dh_installdirs
 	$(CURDIR)/install/linux/wxfb_export.sh $(CURDIR)/debian/wxformbuilder/usr
-	
+
 	# Changelog installed separately
 	rm -f $(CURDIR)/debian/wxformbuilder/usr/share/wxformbuilder/Changelog.txt
-	
+
 	# Another copy of the GPL is not necessary
 	rm -f $(CURDIR)/debian/wxformbuilder/usr/share/wxformbuilder/license.txt
 
@@ -46,12 +47,10 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs $(CURDIR)/output/Changelog.txt 
-	dh_installdocs $(CURDIR)/README.txt
+	dh_installchangelogs $(CURDIR)/output/Changelog.txt
 	dh_install --sourcedir=$(CURDIR)/install/linux/data/gnome --autodest \*
 	dh_installmenu
 	dh_installmime
-	dh_desktop
 	dh_installman $(CURDIR)/install/linux/data/wxformbuilder.1
 	dh_link
 	dh_strip
