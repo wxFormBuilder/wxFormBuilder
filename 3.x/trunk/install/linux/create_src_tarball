@@ -27,7 +27,7 @@ function make_src_tarball
 	basedir=.
 
 	# create Makefiles
-	$basedir/create_build_files4.sh --rpath=/usr/lib/wxformbuilder
+	$basedir/create_build_files4.sh --disable-mediactrl --rpath=/usr/lib/wxformbuilder
 
 	# remove premake, as it is no longer necessary
 	rm -rf $PREMAKE_DIR
