@@ -9,7 +9,7 @@ Homepage: http://www.wxformbuilder.org
 
 Package: wxformbuilder
 Architecture: any
-Depends: ${shlibs:Depends} ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: WYSIWYG GUI Designer and Code Generator for wxWidgets
  wxFormBuilder is a GUI designer for programs which
  use wxWidgets. It is a very WYSIWYG designer, because it uses
