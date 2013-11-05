@@ -54,7 +54,9 @@
 #include <rad/appdata.h>
 #include "model/objectbase.h"
 
+#if wxVERSION_NUMBER < 2900
 #include <wx/wxScintilla/wxscintilla.h>
+#endif
 
 #define ID_SAVE_PRJ      102
 #define ID_OPEN_PRJ      103

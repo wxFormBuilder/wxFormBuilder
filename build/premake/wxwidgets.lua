@@ -122,8 +122,8 @@ function wx_config(options)
                        options.Unicode          or useUnicode,
                        options.Universal        or "",
                        options.Libs             or "",
-                       options.WindowsCompiler  or "gcc",
-					   options.WithoutLibs  	or "no"
+                       options.WindowsCompiler  or wxCompiler,
+                       options.WithoutLibs      or "no"
                      )
 end
 
@@ -179,8 +179,8 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
         -- common include path
         includedirs {
-            path.join(wxRoot, "include"),
-            path.join(wxLibPath, "msw" .. wxBuildType)   -- something like "%WXWIN%\lib\vc_lib\mswud" to find "wx/setup.h"
+            path.join(wxLibPath, "msw" .. wxBuildType),   -- something like "%WXWIN%\lib\vc_lib\mswud" to find "wx/setup.h"
+            path.join(wxRoot, "include")
             }
 
 		if wxWithoutLibs == "no" then
@@ -209,7 +209,7 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 			
 			if string.match(_ACTION, "vs(.*)$") then
 				-- link with MSVC support libraries
-				for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32"}) do
+				for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32", "Dbghelp"}) do
 					links { lib }
 				end
 			end

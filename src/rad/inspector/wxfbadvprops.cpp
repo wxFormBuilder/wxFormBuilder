@@ -856,11 +856,13 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
 {
 #if wxVERSION_NUMBER < 2900
     wxCHECK_MSG( property->IsKindOf( WX_PG_CLASSINFO( wxFloatProperty ) ),
-#else
-    wxCHECK_MSG( property->IsKindOf( wxCLASSINFO( wxFloatProperty ) ),
-#endif
                  NULL,
                  wxT("Slider editor can only be used with wxFloatProperty or derivative.") );
+#else
+    wxCHECK_MSG( property->IsKindOf( wxCLASSINFO( wxFloatProperty ) ),
+                 NULL,
+                 wxT("Slider editor can only be used with wxFloatProperty or derivative.") );
+#endif
 
     // Use two stage creation to allow cleaner display on wxMSW
     wxSlider* ctrl = new wxSlider();

@@ -21,9 +21,15 @@ project "wxFormBuilder"
 	}
     includedirs
     {
-        "../../src", "../../src/boost", "../../src/controls/include",
+        "../../src", "../../src/boost",
         "../../sdk/tinyxml", "../../sdk/plugin_interface"
     }
+if wxVersion < "2.9" then
+    includedirs
+    {
+        "../../src/controls/include",
+    }
+end
     defines                 {"NO_GCC_PRAGMA", "TIXML_USE_TICPP", "APPEND_WXVERSION"}
     flags                   {"ExtraWarnings"}
     libdirs                 {"../../sdk/lib"}
@@ -97,6 +103,7 @@ end
         files               {"../../src/*.rc"}
         libdirs             {"../../output"}
         targetdir           "../../output"
+		 flags               {"Symbols", "WinMain"}
 
 if wxCompiler == "gcc" then
         buildoptions        {"-gstabs"}
@@ -110,7 +117,3 @@ end
     configuration "Release"
         buildoptions        {"-fno-strict-aliasing"}
         wx_config           { Libs=libs }
-
-    if os.is("windows") then
-        flags               {"Symbols"}
-    end

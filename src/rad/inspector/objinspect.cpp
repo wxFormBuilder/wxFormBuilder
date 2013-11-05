@@ -426,6 +426,10 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     else if (type == PT_STRINGLIST)
     {
         result = new wxArrayStringProperty( name, wxPG_LABEL,prop->GetValueAsArrayString() );
+#if wxVERSION_NUMBER >= 2901
+        wxVariant v("\"");
+        result->DoSetAttribute(wxPG_ARRAY_DELIMITER, v);
+#endif
     }
     else if (type == PT_FLOAT)
     {
