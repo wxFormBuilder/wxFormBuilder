@@ -1,5 +1,10 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+11/12/2013 Version 3.04.01 (Beta)
+* Fixed build error with wxWidgets 3.0.0.
+^ Removed borders from designer frame/dialog/panel when built with wxWidgets 2.9 or later
+  under wxGTK.
+
 05/10/2013 Version 3.04.00 (Beta)
 + Added support for wxLUA code generation.
 

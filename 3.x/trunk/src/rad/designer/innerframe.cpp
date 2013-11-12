@@ -285,14 +285,22 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 //////////////////////////////////////////////////////////////////////////////
 
 BEGIN_EVENT_TABLE( wxInnerFrame, wxPanel )
-EVT_MOTION( wxInnerFrame::OnMouseMotion )
-EVT_LEFT_DOWN( wxInnerFrame::OnLeftDown )
-EVT_LEFT_UP( wxInnerFrame::OnLeftUp )
+	EVT_MOTION( wxInnerFrame::OnMouseMotion )
+	EVT_LEFT_DOWN( wxInnerFrame::OnLeftDown )
+	EVT_LEFT_UP( wxInnerFrame::OnLeftUp )
 END_EVENT_TABLE()
 
 wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
                             const wxPoint &pos, const wxSize &size, long style )
+#ifdef __WXGTK__
+	#if wxVERSION_NUMBER < 2900
+		: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
+	#else
+		: wxPanel( parent, id, pos, size, wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE )
+	#endif
+#else
 	: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
+#endif
 {
 	m_sizing = NONE;
 	m_curX = m_curY = -1;

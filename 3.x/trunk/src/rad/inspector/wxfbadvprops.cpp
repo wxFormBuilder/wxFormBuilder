@@ -1023,7 +1023,7 @@ wxFBFontProperty::wxFBFontProperty( const wxString& label, const wxString& name,
         wxFontEnumerator enumerator;
         enumerator.EnumerateFacenames();
 
-#if wxMINOR_VERSION > 6
+#if wxVERSION_NUMBER > 2600
         wxArrayString faceNames = enumerator.GetFacenames();
 #else
         wxArrayString& faceNames = *enumerator.GetFacenames();
