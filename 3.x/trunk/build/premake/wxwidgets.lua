@@ -55,6 +55,13 @@ wxMonolithic    = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 
+if wxCompiler == "mingw64_32" then
+	buildoptions( "-m32" )
+	linkoptions( "-m32" )
+	resoptions( "-F pe-i386" )
+	wxCompiler = "gcc"
+end
+
 if os.is("windows") then
     wxPrefix = "wx"
     wxTarget = "msw"

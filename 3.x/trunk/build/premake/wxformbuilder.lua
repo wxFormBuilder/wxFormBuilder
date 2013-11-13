@@ -103,11 +103,11 @@ end
         files               {"../../src/*.rc"}
         libdirs             {"../../output"}
         targetdir           "../../output"
-		 flags               {"Symbols", "WinMain"}
+		flags               {"Symbols", "WinMain"}
 
 if wxCompiler == "gcc" then
         buildoptions        {"-gstabs"}
-        links               {"bfd", "intl", "iberty", "psapi", "imagehlp"}
+        links               {"bfd", "iberty", "psapi", "imagehlp"}
 end
     configuration "Debug"
         defines             {"__WXFB_DEBUG__"}
