@@ -18,7 +18,8 @@
     #include <imagehlp.h> // link against imagehlp.lib
 
     #if defined(__MINGW32__)
-        #include <bfd.h> // link against libbfd and libiberty
+        #define PACKAGE
+		#include <bfd.h> // link against libbfd and libiberty
         #include <psapi.h> // link against psapi
         #include <cxxabi.h>
     #endif

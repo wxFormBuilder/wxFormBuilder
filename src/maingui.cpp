@@ -58,7 +58,7 @@
 	#include <sstream>
 	#include <excpt.h>
 
-	EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
+	__stdcall EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
 																void * EstablisherFrame,
 																struct _CONTEXT *ContextRecord,
 																void * DispatcherContext );
