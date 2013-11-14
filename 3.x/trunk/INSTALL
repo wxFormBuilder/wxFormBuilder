@@ -1,0 +1,30 @@
+WXFORMBUILDER INSTALL FROM SOURCE
+---------------------------------
+
+0. Pre-requisites (Ubuntu 12.04 LTS)
+
+sudo apt-get install libwxgtk2.8-0 libwxgtk2.8-dev
+
+1. Download source code
+
+mkdir ~/src/wxformbuider
+cd ~/src/wxformbuilder
+svn checkout svn://svn.code.sf.net/p/wxformbuilder/code/3.x/trunk head
+
+
+2. Prepare build files
+
+cd head
+./create_build_files4.sh
+
+3. Build
+
+cd build/2.8/gmake
+make config=release
+
+4. Test
+
+cd ../../../output/bin/
+./wxformbuilder
+
+
