@@ -18,6 +18,10 @@ newoption  {
     description =   "Compiler in use"
 }
 newoption  {
+    trigger     =   "compiler-version",
+    description =   "Compiler in use version (eg. 48 for GCC 4.8 or 120 for VC2013)"
+}
+newoption  {
     trigger     =   "disable-mediactrl",
     description =   "Whether to use wxMediaCtrl in wxMedia library"
 }
@@ -42,16 +46,17 @@ newoption  {
     description =   "Targeted architecture (e.g i386)"
 }
 -- Common globals
-wxCompiler      = _OPTIONS["compiler"]
-wxArchitecture  = _OPTIONS["architecture"]
-wxDebugSuffix   = "d"
-wxPrefix        = "wx_"
-wxTarget        = "gtk2"
-wxVersion       = _OPTIONS["wx-version"]
-wxUnicodeSign   = "u"
-wxUseMediaCtrl  = true
-wxUseUnicode    = true
-wxMonolithic    = true
+wxCompiler        = _OPTIONS["compiler"]
+wxCompilerVersion = _OPTIONS["compiler-version"] or ""
+wxArchitecture    = _OPTIONS["architecture"]
+wxDebugSuffix     = "d"
+wxPrefix          = "wx_"
+wxTarget          = "gtk2"
+wxVersion         = _OPTIONS["wx-version"]
+wxUnicodeSign     = "u"
+wxUseMediaCtrl    = true
+wxUseUnicode      = true
+wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 
@@ -130,11 +135,12 @@ function wx_config(options)
                        options.Universal        or "",
                        options.Libs             or "",
                        options.WindowsCompiler  or wxCompiler,
+					   options.CompilerVersion  or wxCompilerVersion,
                        options.WithoutLibs      or "no"
                      )
 end
 
-function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxWithoutLibs)
+function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs)
     -- some options are not allowed for newer version of wxWidgets
     if wxVersion > "2.8" then -- alphabetical comparison may fail...
         wxDebugSuffix   = ""
@@ -171,7 +177,7 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
     -- function to compensate lack of wx-config program on windows
     -- but wait, look at http://sites.google.com/site/wxconfig/ for one !
-    function wx_config_for_windows(wxCompiler)
+    function wx_config_for_windows(wxCompiler, wxCompilerVersion)
         local wxBuildType   = ""  -- buildtype is one of "", "u", "d" or "ud"
 
         if wxUnicode ~= "" then wxBuildType = wxBuildType .. "u" end
@@ -180,7 +186,7 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
         end
 
         local wxLibPath = path.join(wxRoot, "lib")
-        wxLibPath = path.join(wxLibPath, wxCompiler .. "_" .. iif(wxStatic == 'yes', 'lib', 'dll'))
+        wxLibPath = path.join(wxLibPath, wxCompiler .. wxCompilerVersion .. "_" .. iif(wxStatic == 'yes', 'lib', 'dll'))
         -- common defines
         defines{ "__WXMSW__" }
 
@@ -276,6 +282,6 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 --~             wxCompiler = _OPTIONS.cc
 --~             print("seen option '--cc=" .. _OPTIONS["cc"] .. "' overriding default cc='vc'")
 --~         end
-        wx_config_for_windows(wxCompiler)
+        wx_config_for_windows(wxCompiler, wxCompilerVersion)
     end
 end
