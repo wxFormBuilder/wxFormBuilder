@@ -44,8 +44,10 @@
 #include "rad/dataobject/dataobject.h"
 
 #include <ticpp.h>
-
 #include <set>
+#include <iterator>
+#include <sstream>
+#include <algorithm>
 
 #include <wx/tokenzr.h>
 #include <wx/ffile.h>
@@ -469,11 +471,12 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		:
 		m_rootDir( rootdir ),
 		m_modFlag( false ),
+		m_warnOnAdditionsUpdate( true ),
 		m_objDb( new ObjectDatabase() ),
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 11 )
+		m_fbpVerMinor( 12 )
 {
 	#ifdef __WXFB_DEBUG__
 	//wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1899,26 +1902,92 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at least version 1.11 */
-}
-
-void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
+	if ( fileMajor < 1 || ( 1 == fileMajor && fileMinor < 12 ) )
 	{
-		// Clear result set
-		properties->clear();
-
-		ticpp::Iterator< ticpp::Element > prop( "property" );
-
-		for ( prop = parent->FirstChildElement( "property", false ); prop != prop.end(); ++prop )
+		bool classUpdated = false;
+		if( "wxScintilla" == objClass )
 		{
-			std::string name;
-			prop->GetAttribute( "name", &name );
+			objClass = "wxStyledTextCtrl";
+			parent->SetAttribute( "class", objClass );
+			classUpdated = true;
+		}
+		if( "wxTreeListCtrl" == objClass )
+		{
+			objClass = "wxadditions::wxTreeListCtrl";
+			parent->SetAttribute( "class", objClass );
+			classUpdated = true;
+		}
+		if( "wxTreeListCtrlColumn" == objClass )
+		{
+			objClass = "wxadditions::wxTreeListCtrlColumn";
+			parent->SetAttribute( "class", objClass );
+			classUpdated = true;
+		}
+		if( m_warnOnAdditionsUpdate && classUpdated )
+		{
+			m_warnOnAdditionsUpdate = false;
+			wxLogWarning( _("Updated classes from wxAdditions. You must use the latest version of wxAdditions to continue.\nNote wxScintilla is now wxStyledListCtrl, wxTreeListCtrl is now wxadditions::wxTreeListCtrl, and wxTreeListCtrlColumn is now wxadditions::wxTreeListCtrlColumn") );
+		}
+		
+		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
 
-			if ( names.find( name ) != names.end() )
+		static std::set< std::string > propertyRemovalWarnings;
+		const PropertiesToRemove& propertiesToRemove = GetPropertiesToRemove_v1_12();
+		PropertiesToRemove::const_iterator it = propertiesToRemove.find( objClass );
+		if( it != propertiesToRemove.end() )
+		{
+			RemoveProperties( parent, it->second );
+			if( 0 == propertyRemovalWarnings.count( objClass ) )
 			{
-				properties->insert( prop.Get() );
+				std::stringstream ss;
+				std::ostream_iterator< std::string > out_it (ss, ", ");
+				std::copy( it->second.begin(), it->second.end(), out_it );
+				
+				wxLogMessage( _("Removed properties for class %s because they are no longer supported: %s"), objClass, ss.str() );
+				propertyRemovalWarnings.insert( objClass );
 			}
 		}
 	}
+	/* The file is now at least version 1.12 */
+}
+
+void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
+{
+	// Clear result set
+	properties->clear();
+
+	ticpp::Iterator< ticpp::Element > prop( "property" );
+
+	for ( prop = parent->FirstChildElement( "property", false ); prop != prop.end(); ++prop )
+	{
+		std::string name;
+		prop->GetAttribute( "name", &name );
+
+		if ( names.find( name ) != names.end() )
+		{
+			properties->insert( prop.Get() );
+		}
+	}
+}
+	
+void ApplicationData::RemoveProperties( ticpp::Node* parent, const std::set< std::string >& names )
+{
+	ticpp::Iterator< ticpp::Element > prop( "property" );
+
+	for ( prop = parent->FirstChildElement( "property", false ); prop != prop.end(); )
+	{
+		ticpp::Element element = *prop;
+		++prop;
+		
+		std::string name;
+		element.GetAttribute( "name", &name );
+		
+		if ( names.find( name ) != names.end() )
+		{
+			parent->RemoveChild( &element );
+		}
+	}	
+}
 
 void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName )
 
@@ -2793,8 +2862,6 @@ wxString ApplicationData::GetPathProperty( const wxString& pathName )
 	return path.GetPath( wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR );
 }
 
-
-
 wxString ApplicationData::GetOutputPath()
 {
 	return GetPathProperty( wxT("path") );
@@ -2803,4 +2870,81 @@ wxString ApplicationData::GetOutputPath()
 wxString ApplicationData::GetEmbeddedFilesOutputPath()
 {
 	return GetPathProperty( wxT("embedded_files_path") );
+}
+
+ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_12( void ) const
+{
+	static PropertiesToRemove propertiesToRemove;
+	if( propertiesToRemove.empty() )
+	{
+		propertiesToRemove[ "Dialog" ].insert( "BottomDockable" );
+		propertiesToRemove[ "Dialog" ].insert( "LeftDockable" );
+		propertiesToRemove[ "Dialog" ].insert( "RightDockable" );
+		propertiesToRemove[ "Dialog" ].insert( "TopDockable" );
+		propertiesToRemove[ "Dialog" ].insert( "caption_visible" );
+		propertiesToRemove[ "Dialog" ].insert( "center_pane" );
+		propertiesToRemove[ "Dialog" ].insert( "close_button" );
+		propertiesToRemove[ "Dialog" ].insert( "default_pane" );
+		propertiesToRemove[ "Dialog" ].insert( "dock" );
+		propertiesToRemove[ "Dialog" ].insert( "dock_fixed" );
+		propertiesToRemove[ "Dialog" ].insert( "docking" );
+		propertiesToRemove[ "Dialog" ].insert( "floatable" );
+		propertiesToRemove[ "Dialog" ].insert( "gripper" );
+		propertiesToRemove[ "Dialog" ].insert( "maximize_button" );
+		propertiesToRemove[ "Dialog" ].insert( "minimize_button" );
+		propertiesToRemove[ "Dialog" ].insert( "moveable" );
+		propertiesToRemove[ "Dialog" ].insert( "pane_border" );
+		propertiesToRemove[ "Dialog" ].insert( "pin_button" );
+		propertiesToRemove[ "Dialog" ].insert( "resize" );
+		propertiesToRemove[ "Dialog" ].insert( "show" );
+		propertiesToRemove[ "Dialog" ].insert( "toolbar_pane" );
+		propertiesToRemove[ "Dialog" ].insert( "validator_style" );
+		propertiesToRemove[ "Dialog" ].insert( "validator_type" );
+		propertiesToRemove[ "Dialog" ].insert( "aui_name" );
+		
+		propertiesToRemove[ "Panel" ].insert( "BottomDockable" );
+		propertiesToRemove[ "Panel" ].insert( "LeftDockable" );
+		propertiesToRemove[ "Panel" ].insert( "RightDockable" );
+		propertiesToRemove[ "Panel" ].insert( "TopDockable" );
+		propertiesToRemove[ "Panel" ].insert( "caption_visible" );
+		propertiesToRemove[ "Panel" ].insert( "center_pane" );
+		propertiesToRemove[ "Panel" ].insert( "close_button" );
+		propertiesToRemove[ "Panel" ].insert( "default_pane" );
+		propertiesToRemove[ "Panel" ].insert( "dock" );
+		propertiesToRemove[ "Panel" ].insert( "dock_fixed" );
+		propertiesToRemove[ "Panel" ].insert( "docking" );
+		propertiesToRemove[ "Panel" ].insert( "floatable" );
+		propertiesToRemove[ "Panel" ].insert( "gripper" );
+		propertiesToRemove[ "Panel" ].insert( "maximize_button" );
+		propertiesToRemove[ "Panel" ].insert( "minimize_button" );
+		propertiesToRemove[ "Panel" ].insert( "moveable" );
+		propertiesToRemove[ "Panel" ].insert( "pane_border" );
+		propertiesToRemove[ "Panel" ].insert( "pin_button" );
+		propertiesToRemove[ "Panel" ].insert( "resize" );
+		propertiesToRemove[ "Panel" ].insert( "show" );
+		propertiesToRemove[ "Panel" ].insert( "toolbar_pane" );
+		propertiesToRemove[ "Panel" ].insert( "validator_style" );
+		propertiesToRemove[ "Panel" ].insert( "validator_type" );		
+		
+		propertiesToRemove[ "wxStaticText" ].insert( "validator_style" );
+		propertiesToRemove[ "wxStaticText" ].insert( "validator_type" );
+		propertiesToRemove[ "CustomControl" ].insert( "validator_style" );
+		propertiesToRemove[ "CustomControl" ].insert( "validator_type" );
+		propertiesToRemove[ "wxAuiNotebook" ].insert( "validator_style" );
+		propertiesToRemove[ "wxAuiNotebook" ].insert( "validator_type" );
+		propertiesToRemove[ "wxPanel" ].insert( "validator_style" );
+		propertiesToRemove[ "wxPanel" ].insert( "validator_type" );	
+		propertiesToRemove[ "wxToolBar" ].insert( "validator_style" );
+		propertiesToRemove[ "wxToolBar" ].insert( "validator_type" );	
+		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "use_wxAddition" );
+		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "validator_style" );
+		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "validator_type" );
+		propertiesToRemove[ "wxPropertyGridManager" ].insert( "use_wxAddition" );
+		propertiesToRemove[ "wxPropertyGridManager" ].insert( "validator_style" );
+		propertiesToRemove[ "wxPropertyGridManager" ].insert( "validator_type" );	
+
+		propertiesToRemove[ "wxadditions::wxTreeListCtrl" ].insert( "validator_style" );
+		propertiesToRemove[ "wxadditions::wxTreeListCtrl" ].insert( "validator_type" );	
+	}	
+	return propertiesToRemove;
 }

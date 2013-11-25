@@ -65,6 +65,8 @@ class ApplicationData
 
 		bool m_modFlag;           // flag de proyecto modificado
 
+		bool m_warnOnAdditionsUpdate;	// flag to warn on additions update / class renames
+
 		PObjectDatabase m_objDb;  // Base de datos de objetos
 
 		PObjectBase m_project;    // Proyecto
@@ -195,6 +197,14 @@ class ApplicationData
 		void GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties );
 
 		/**
+		Iterates through 'property' element children of @a parent.
+		Removes all properties with a 'name' attribute matching one of @a names
+		@param parent Object element with child properties.
+		@param names Set of property names to search for.
+		*/
+		void RemoveProperties( ticpp::Node* parent, const std::set< std::string >& names );
+
+		/**
 		Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't exist.
 		@param prop Property containing the options to transfer.
 		@param options Set of options to search for and transfer.
@@ -215,6 +225,9 @@ class ApplicationData
 		#ifdef __WXFB_DEBUG__
 		wxLog* m_debugLogTarget;
 		#endif
+
+		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
+		PropertiesToRemove& GetPropertiesToRemove_v1_12( void ) const;
 
 	public:
 
