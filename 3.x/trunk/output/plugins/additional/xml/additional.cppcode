@@ -589,8 +589,12 @@ Written by
 			@}			
 			#ifnotnull $font
 			@{
+				#nl {
+				#indent
 				#nl wxFont font = $font;
 				#nl $name->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
+				#unindent
+				#nl }
 			@}
 			#nl $name->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
 			#nl $name->MarkerSetBackground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("BLACK") ) );
