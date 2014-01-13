@@ -3,7 +3,7 @@ Section: contrib/devel
 Priority: optional
 XSBC-Original-Maintainer: Ryan Mulder <ryanjmulder@gmail.com>
 Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
-Build-Depends: debhelper (>= 5), libwxgtk2.8-dev (>= 2.8.9)
+Build-Depends: debhelper (>= 5), libwxgtk3.0-dev (>= 3.0.0)
 Standards-Version: 3.9.4
 Homepage: http://www.wxformbuilder.org
 
