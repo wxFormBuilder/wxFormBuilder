@@ -19,14 +19,14 @@ build-arch: build-stamp
 build-indep: build-stamp
 build-stamp: configure-stamp
 	dh_testdir
-	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release
+	$(MAKE) -C $(CURDIR)/build/3.0/gmake config=release
 	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
-	$(MAKE) -C $(CURDIR)/build/2.8/gmake config=release clean
+	$(MAKE) -C $(CURDIR)/build/3.0/gmake config=release clean
 	dh_clean
 
 install: build

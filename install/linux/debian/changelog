@@ -1,3 +1,10 @@
+wxformbuilder (3.4.01-0ubuntu1~saucy1) saucy; urgency=low
+
+  * Sync to upstream 3.4.01.
+  * Building with wxWidgets 3.0.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Mon, 13 Jan 2014 16:13:54 -0500
+
 wxformbuilder (3.4.00-0ubuntu1~lucid1) lucid; urgency=low
 
   * Sync to upstream 3.4.00.
