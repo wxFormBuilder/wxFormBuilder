@@ -1,3 +1,9 @@
+wxformbuilder (3.4.01-0ubuntu1~precise2) precise; urgency=low
+
+  * Fixed dependancy on wxWidgets media control
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 14 Jan 2014 13:38:08 -0500
+
 wxformbuilder (3.4.01-0ubuntu1~saucy1) saucy; urgency=low
 
   * Sync to upstream 3.4.01.
