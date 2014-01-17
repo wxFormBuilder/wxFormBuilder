@@ -753,14 +753,24 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 			break;
 
 		case COMPONENT_TYPE_SIZER:
-			createdSizer = wxDynamicCast( createdObject, wxSizer );
+		{
+			wxStaticBoxSizer* staticBoxSizer = wxDynamicCast( createdObject, wxStaticBoxSizer );
+			if ( staticBoxSizer )
+			{
+				createdWindow = staticBoxSizer->GetStaticBox();
+				createdSizer = staticBoxSizer;
+			}
+			else
+			{
+				createdSizer = wxDynamicCast( createdObject, wxSizer );
+			}
 			if ( NULL == createdSizer )
 			{
 				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a sizer component, but this is not a wxSizer!"), obj->GetClassName().c_str() ) );
 			}
 			SetupSizer( obj, createdSizer );
 			break;
-
+		}
 		default:
 			break;
 	}
