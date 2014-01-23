@@ -19,7 +19,7 @@ project "additional-components-plugin"
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
 
-    local libs = "std,richtext"
+    local libs = "std,richtext,propgrid,stc"
 if wxUseMediaCtrl then
     defines             {"USE_MEDIACTRL"}
     libs                = libs .. ",media"

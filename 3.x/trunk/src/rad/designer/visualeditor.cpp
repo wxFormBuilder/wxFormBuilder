@@ -643,7 +643,7 @@ void VisualEditor::Create()
 				}
 
 				// Attach the status bar (if any) to the frame
-				if ( child->GetClassName() == wxT("wxStatusBar") )
+				if ( child->GetObjectInfo()->IsSubclassOf( wxT("wxStatusBar") ) )
 				{
 					ObjectBaseMap::iterator it = m_baseobjects.find( child.get() );
 					statusbar = wxDynamicCast( it->second, wxStatusBar );
@@ -788,8 +788,8 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 		Generate( obj->GetChild( i ), new_wxparent, createdObject );
 	}
 
-	comp->OnCreated( createdObject, new_wxparent );
-
+	comp->OnCreated( createdObject, wxparent );
+	
 	// If the created object is a sizer and the parent object is a window, set the sizer to the window
 	if (
 			( createdSizer != NULL && NULL != wxDynamicCast( parentObject, wxWindow ) )

@@ -1,5 +1,11 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+01/24/2014 Version 3.04.02 (Beta)
+* #126 wxWidgets > 2.8 compile fix (patch by sodev)
+* #127 Wrong parent passed to IComponent::OnCreated() (patch by sodev)
+* #128 Object Inspector expansion fix (patch by sodev)
+* #129 Support for statusbar plugins (patch by sodev)
+
 11/12/2013 Version 3.04.01 (Beta)
 * Fixed build error with wxWidgets 3.0.0.
 ^ Removed borders from designer frame/dialog/panel when built with wxWidgets 2.9 or later

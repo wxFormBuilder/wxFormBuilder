@@ -47,7 +47,7 @@ wxString GetBitmapTypeName( long type )
 
 wxString GetBitmapType( const wxFileName& sourceFileName )
 {
-	wxImageHandler* handler = wxImage::FindHandler( sourceFileName.GetExt(), -1 );
+	wxImageHandler* handler = wxImage::FindHandler( sourceFileName.GetExt(), wxBITMAP_TYPE_ANY );
 	if ( handler)
 	{
 		return GetBitmapTypeName( handler->GetType() );

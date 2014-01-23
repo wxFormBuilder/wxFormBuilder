@@ -891,12 +891,10 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
     // Connect all required events to grid's OnCustomEditorEvent
     // (all relevenat wxTextCtrl, wxComboBox and wxButton events are
     // already connected)
+#if wxVERSION_NUMBER < 2900
     propgrid->Connect( wxPG_SUBID1, wxEVT_SCROLL_THUMBTRACK,
                        (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
-#if wxVERSION_NUMBER < 2900
                        &wxPropertyGrid::OnCustomEditorEvent, NULL, propgrid );
-#else
-                       &wxPGEditor::OnEvent, NULL, propgrid );
 #endif
 
 #ifdef __WXMSW__

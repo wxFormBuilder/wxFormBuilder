@@ -120,20 +120,20 @@ private:
 
         wxPGProperty* id = pg->Append( new wxPropertyCategory( catName ) );
 
-        ExpandMap::iterator it = m_isExpanded.find( catName );
-        if ( it != m_isExpanded.end() )
+        AddItems( name, obj, obj_info, category, itemMap );
+
+        ExpandMap::iterator it = m_isExpanded.find(catName);
+        if (it != m_isExpanded.end())
         {
             if ( it->second )
             {
-                m_pg->Expand( id );
+                pg->Expand( id );
             }
             else
             {
-                m_pg->Collapse( id );
+                pg->Collapse( id );
             }
         }
-
-        AddItems( name, obj, obj_info, category, itemMap );
 
         pg->SetPropertyAttributeAll( wxPG_BOOL_USE_CHECKBOX, (long)1 );
     }
@@ -150,6 +150,7 @@ private:
     void OnPropertyGridDblClick( wxPropertyGridEvent& event );
     void OnEventGridDblClick( wxPropertyGridEvent& event );
     void OnPropertyGridExpand( wxPropertyGridEvent& event );
+    void OnEventGridExpand( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
 	

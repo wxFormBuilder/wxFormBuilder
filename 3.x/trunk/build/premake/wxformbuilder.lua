@@ -49,7 +49,11 @@ else
         "../../src/controls/src/wxScintilla/**.cpp",
         "../../src/controls/src/wxFlatNotebook/**.cpp"
     }
-    libs                    = "all"
+	if wxUseMediaCtrl then
+		libs                    = "all"
+	else
+		libs					= "std,stc,richtext,propgrid,aui,ribbon"
+	end
 end
 
 	if wxArchitecture then
