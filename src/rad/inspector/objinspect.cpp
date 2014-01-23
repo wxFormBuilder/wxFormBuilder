@@ -67,6 +67,8 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
     EVT_PG_DOUBLE_CLICK(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridDblClick)
     EVT_PG_ITEM_COLLAPSED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
     EVT_PG_ITEM_EXPANDED (WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
+    EVT_PG_ITEM_COLLAPSED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridExpand)
+    EVT_PG_ITEM_EXPANDED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridExpand)
 
     EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
     EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
@@ -163,24 +165,10 @@ void ObjectInspector::Create( bool force )
         }
 
         // Clear Property Grid Manager
-        int pageCount = (int)m_pg->GetPageCount();
-        if ( pageCount > 0 )
-        {
-            for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex )
-            {
-                m_pg->RemovePage( pageIndex );
-            }
-        }
+        m_pg->Clear();
 
         // Now we do the same thing for event grid...
-        pageCount = (int)m_eg->GetPageCount();
-        if ( pageCount > 0)
-        {
-            for ( int pageIndex = pageCount - 1; pageIndex >= 0; --pageIndex)
-            {
-                m_eg->RemovePage( pageIndex );
-            }
-        }
+        m_eg->Clear();
 
         m_propMap.clear();
         m_eventMap.clear();
@@ -550,7 +538,14 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
             ExpandMap::iterator it = m_isExpanded.find( propName );
             if ( it != m_isExpanded.end() )
             {
-                id->SetExpanded( it->second );
+                if ( it->second )
+                {
+                    m_pg->Expand( id );
+                }
+                else
+                {
+                    m_pg->Collapse( id );
+                }
             }
 
             properties.insert( PropertyMap::value_type( propName, prop ) );
@@ -567,13 +562,21 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
             continue;
         }
         wxPGProperty* catId = m_pg->AppendIn( category->GetName() , new wxPropertyCategory( nextCat->GetName() ) );
+        
+        AddItems( name, obj, obj_info, nextCat, properties );
+        
         ExpandMap::iterator it = m_isExpanded.find( nextCat->GetName() );
         if ( it != m_isExpanded.end() )
         {
-            catId->SetExpanded( it->second );
+            if ( it->second )
+            {
+                m_pg->Expand( catId );
+            }
+            else
+            {
+                m_pg->Collapse( catId );
+            }
         }
-
-        AddItems( name, obj, obj_info, nextCat, properties );
     }
 }
 
@@ -610,6 +613,19 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
                     m_eg->SetPropertyBackgroundColour( id, wxColour( 220, 255, 255 ) ); // Cyan
             }
 
+            ExpandMap::iterator it = m_isExpanded.find(eventName);
+            if ( it != m_isExpanded.end() )
+            {
+                if ( it->second )
+                {
+                    m_eg->Expand( id );
+                }
+                else
+                {
+                    m_eg->Collapse( id );
+                }
+            }
+
             events.insert( EventMap::value_type( eventName, event ) );
             m_eventMap.insert( ObjInspectorEventMap::value_type( id, event ) );
         }
@@ -623,8 +639,22 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
         {
             continue;
         }
-        m_eg->AppendIn( category->GetName(), new wxPropertyCategory( nextCat->GetName() ) );
+        wxPGProperty* catId = m_eg->AppendIn( category->GetName(), new wxPropertyCategory( nextCat->GetName() ) );
+        
         AddItems( name, obj, obj_info, nextCat, events );
+
+        ExpandMap::iterator it = m_isExpanded.find( nextCat->GetName() );
+        if ( it != m_isExpanded.end() )
+        {
+            if ( it->second )
+            {
+                m_eg->Expand( catId );
+            }
+            else
+            {
+                m_eg->Collapse( catId );
+            }
+        }
     }
 }
 
@@ -916,7 +946,38 @@ void ObjectInspector::OnEventGridChanged( wxPropertyGridEvent& event )
 
 void ObjectInspector::OnPropertyGridExpand( wxPropertyGridEvent& event )
 {
-    m_isExpanded[event.GetPropertyName()] = m_pg->IsPropertyExpanded( event.GetProperty() );
+    m_isExpanded[event.GetPropertyName()] = event.GetProperty()->IsExpanded();
+
+    wxPGProperty* egProp = m_eg->GetProperty( event.GetProperty()->GetName() );
+    if ( egProp )
+    {
+        if ( event.GetProperty()->IsExpanded() )
+        {
+            m_eg->Expand( egProp );
+        }
+        else
+        {
+            m_eg->Collapse( egProp );
+        }
+    }
+}
+
+void ObjectInspector::OnEventGridExpand( wxPropertyGridEvent& event )
+{
+    m_isExpanded[event.GetPropertyName()] = event.GetProperty()->IsExpanded();
+
+    wxPGProperty* pgProp = m_pg->GetProperty( event.GetProperty()->GetName() );
+    if ( pgProp )
+    {
+        if ( event.GetProperty()->IsExpanded() )
+        {
+            m_pg->Expand( pgProp );
+        }
+        else
+        {
+            m_pg->Collapse( pgProp );
+        }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
