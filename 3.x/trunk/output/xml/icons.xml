@@ -28,6 +28,7 @@
 	<icon name="right" 		file="right.xpm"	/>
 	<icon name="top" 		file="top.xpm"		/>
 	<icon name="bottom" 	file="bottom.xpm"	/>
+	<icon name="swap" 		file="swap.png"	/>
 
 	<!-- Object Tree -->
 	<icon name="project" 	file="project.xpm"	/>

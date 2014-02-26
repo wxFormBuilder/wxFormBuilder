@@ -107,6 +107,8 @@
 #define ID_CLIPBOARD_COPY 143
 #define ID_CLIPBOARD_PASTE 144
 
+//added by tyysoft to define the swap button ID.
+#define ID_WINDOW_SWAP 200
 
 #define STATUS_FIELD_OBJECT 2
 #define STATUS_FIELD_PATH 1
@@ -147,6 +149,8 @@ EVT_MENU( ID_PREVIEW_XRC, MainFrame::OnXrcPreview )
 EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
 EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
 EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
+EVT_MENU( ID_WINDOW_SWAP, MainFrame::OnWindowSwap )
+
 EVT_UPDATE_UI( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI )
 EVT_CLOSE( MainFrame::OnClose )
 
@@ -418,6 +422,8 @@ void MainFrame::RestorePosition( const wxString &name )
 
 	config->Read( wxT( "LeftSplitterWidth" ), &m_leftSplitterWidth, 300 );
 	config->Read( wxT( "RightSplitterWidth" ), &m_rightSplitterWidth, -300 );
+	config->Read( wxT( "RightSplitterType" ), &m_rightSplitterType, _("editor"));
+
 	config->Read( wxT( "AutoSash" ), &m_autoSash, false ); // disabled in default due to possible bug(?) in wxMSW
 
 	config->Read( wxT( "CurrentDirectory" ), &m_currentDir );
@@ -474,6 +480,15 @@ void MainFrame::SavePosition( const wxString &name )
 				{
 					int rightSash = -1 * ( m_rightSplitter->GetSize().GetWidth() - m_rightSplitter->GetSashPosition() );
 					config->Write( wxT( "RightSplitterWidth" ), rightSash );
+
+					if(m_rightSplitter->GetWindow1()->GetChildren()[0]->GetChildren()[0]->GetLabel() == _("Editor"))
+                    {
+                        config->Write( wxT( "RightSplitterType" ), _("editor") );
+                    }
+                    else
+                    {
+                        config->Write( wxT( "RightSplitterType" ), _("prop") );
+                    }
 					break;
 				}
 
@@ -1548,6 +1563,8 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 
 	wxMenu *menuView = new wxMenu;
 	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );
+	menuView->AppendSeparator();
+	menuView->Append( ID_WINDOW_SWAP, wxT( "&Swap The Editor and Properties Window\tF12" ), wxT( "Swap The Editor and Properties Window" ) );
 
 	wxMenu *menuTools = new wxMenu;
 	menuTools->Append( ID_GEN_INHERIT_CLS, wxT( "&Generate Inherited Class\tF6" ), wxT( "Creates the needed files and class for proper inheritance of your designed GUI" ) );
@@ -1599,7 +1616,8 @@ wxToolBar * MainFrame::CreateFBToolBar()
 	toolbar->AddTool( ID_BORDER_RIGHT, wxT( "" ), AppBitmaps::GetBitmap( wxT( "right" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Right Border" ), wxT( "A border will be  added on the right side of the item." ) );
 	toolbar->AddTool( ID_BORDER_TOP, wxT( "" ), AppBitmaps::GetBitmap( wxT( "top" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Top Border" ), wxT( "A border will be  added on the top of the item." ) );
 	toolbar->AddTool( ID_BORDER_BOTTOM, wxT( "" ), AppBitmaps::GetBitmap( wxT( "bottom" ), TOOL_SIZE ), wxNullBitmap, wxITEM_CHECK, wxT( "Bottom Border" ), wxT( "A border will be  added on the bottom of the item." ) );
-
+    toolbar->AddSeparator();
+    toolbar->AddTool( ID_WINDOW_SWAP, wxT( "" ), AppBitmaps::GetBitmap( wxT( "swap" ), TOOL_SIZE ), wxNullBitmap, wxITEM_NORMAL, wxT( "Swap The Editor and Properties Window (F12)" ), wxT( "Swap the design window and properties window." ) );
 	toolbar->Realize();
 
 	return toolbar;
@@ -1726,7 +1744,15 @@ void MainFrame::CreateWideGui()
 	m_leftSplitter->UpdateSize();
 	m_leftSplitter->SetMinimumPaneSize( 2 );
 
-	m_rightSplitter->SplitVertically( designer, objectInspector, m_rightSplitterWidth );
+    //modified by tyysoft to restore the last layout.
+    if(m_rightSplitterType == _("editor"))
+    {
+        m_rightSplitter->SplitVertically( designer, objectInspector, m_rightSplitterWidth );
+    }
+    else
+    {
+        m_rightSplitter->SplitVertically( objectInspector, designer, m_rightSplitterWidth );
+    }
 	m_rightSplitter->SetSashGravity( 1 );
 	m_rightSplitter->SetMinimumPaneSize( 2 );
 
@@ -1796,4 +1822,19 @@ void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
 
 	// update position
 	m_rightSplitter_sash_pos = event.GetSashPosition();
+}
+
+void MainFrame::OnWindowSwap(wxCommandEvent& e)
+{
+    wxWindow* win1 = m_rightSplitter->GetWindow1();
+    wxWindow* win2 = m_rightSplitter->GetWindow2();
+
+    int pos = m_rightSplitter->GetSashPosition();
+    wxSize sz = m_rightSplitter->GetClientSize();
+
+    m_rightSplitter->Unsplit();
+    m_rightSplitter->SplitVertically(win2, win1);
+
+    m_rightSplitter->SetSashPosition(sz.GetWidth() - pos);
+
 }
