@@ -58,10 +58,11 @@
 	#include <sstream>
 	#include <excpt.h>
 
-	__stdcall EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
-																void * EstablisherFrame,
-																struct _CONTEXT *ContextRecord,
-																void * DispatcherContext );
+	//__stdcall EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord, /* breaks build with MinGW */
+	EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord,
+														void * EstablisherFrame,
+														struct _CONTEXT *ContextRecord,
+														void * DispatcherContext );
 #endif
 
 void LogStack();

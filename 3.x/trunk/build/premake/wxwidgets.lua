@@ -45,6 +45,10 @@ newoption  {
     trigger     =   "architecture",
     description =   "Targeted architecture (e.g i386)"
 }
+newoption  {
+    trigger     =   "force-wx-config",
+    description =   "Use wx-config for configuration even under MS Windows"
+}
 -- Common globals
 wxCompiler        = _OPTIONS["compiler"]
 wxCompilerVersion = _OPTIONS["compiler-version"] or ""
@@ -126,21 +130,28 @@ function wx_config(options)
         useStatic = "yes"
     end
 	
+-- Use wx-config
+	local useWXConfig = "no"
+    if _OPTIONS["force-wx-config"] then
+        useWXConfig = "yes"
+    end
+	
     wx_config_Private( options.Root             or "",
-                       options.Debug            or "",
-                       options.Host             or "",
-                       options.Version          or wxVersion,
-                       options.Static           or useStatic,
-                       options.Unicode          or useUnicode,
-                       options.Universal        or "",
-                       options.Libs             or "",
-                       options.WindowsCompiler  or wxCompiler,
-					   options.CompilerVersion  or wxCompilerVersion,
-                       options.WithoutLibs      or "no"
+							options.Debug				or "",
+							options.Host				or "",
+							options.Version			or wxVersion,
+							options.Static			or useStatic,
+							options.Unicode			or useUnicode,
+							options.Universal			or "",
+							options.Libs				or "",
+							options.WindowsCompiler	or wxCompiler,
+							options.CompilerVersion	or wxCompilerVersion,
+							options.WithoutLibs		or "no",
+							options.UseWXConfig		or useWXConfig
                      )
 end
 
-function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs)
+function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs, wxUseWXConfig)
     -- some options are not allowed for newer version of wxWidgets
     if wxVersion > "2.8" then -- alphabetical comparison may fail...
         wxDebugSuffix   = ""
@@ -247,11 +258,28 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
         if wxHost ~= "" then configCmd = configCmd .. " --host=" .. wxHost end
 --      if wxVersion ~= "" then configCmd = configCmd .. " --version=" .. wxVersion end
 
-        -- set the parameters to the current configuration
-        buildoptions {"`" .. configCmd .." --cxxflags`"}
-		
-		if wxWithoutLibs == "no" then
-			linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
+		if _ACTION == "codelite" then
+			-- set the parameters to the current configuration
+			buildoptions {"$(shell " .. configCmd .." --cxxflags)"}
+			
+			if wxWithoutLibs == "no" then
+				linkoptions  {"$(shell " .. configCmd .." --libs " .. wxLibs .. ")"}
+			end
+			
+			if os.get() == "windows" then
+				resoptions  {"$(shell " .. configCmd .." --rcflags)"}
+			end
+		else
+			-- set the parameters to the current configuration
+			buildoptions {"`" .. configCmd .." --cxxflags`"}
+			
+			if wxWithoutLibs == "no" then
+				linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
+			end
+			
+			if os.get() == "windows" then
+				resoptions  {"`" .. configCmd .." --rcflags`"}
+			end
 		end
     end
 
@@ -282,6 +310,10 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 --~             wxCompiler = _OPTIONS.cc
 --~             print("seen option '--cc=" .. _OPTIONS["cc"] .. "' overriding default cc='vc'")
 --~         end
-        wx_config_for_windows(wxCompiler, wxCompilerVersion)
+		if wxUseWXConfig == "no" then
+			wx_config_for_windows(wxCompiler, wxCompilerVersion)
+		else
+			wx_config_for_posix()
+		end
     end
 end

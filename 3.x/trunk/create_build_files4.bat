@@ -6,9 +6,10 @@ CLS
 REM Set Defaults
 SET unicode=
 SET wxroot=%WXWIN%
-SET wxver=2.9
+SET wxver=3.0
 SET compiler=gcc
 SET compilerversion=
+SET usewxconfig=
 
 REM Handle parameters
 :Loop
@@ -21,6 +22,7 @@ IF [%1]==[--disable-mediactrl]  GOTO Mediactrl
 IF [%1]==[--wx-root]            GOTO Root
 IF [%1]==[--disable-unicode]    GOTO Unicode
 IF [%1]==[--wx-version]         GOTO Version
+IF [%1]==[--force-wx-config]    GOTO WXConfig
 GOTO Premake
 
 :Help
@@ -51,6 +53,11 @@ ECHO.
 ECHO --wx-version           Specify the wxWidgets version.
 ECHO                        Example: --wx-version=2.9
 ECHO                        Default: %wxver%
+ECHO
+ECHO --force-wx-config      Force wx-config for the configuration
+ECHO							even under MS Windows (usefull when CodeLite IDE
+ECHO							is used for the building)
+ECHO                        Default: Don't use wx-config under MS Windows
 ECHO.
 GOTO End
 
@@ -82,6 +89,11 @@ SET unicode=%1
 SHIFT
 GOTO Loop
 
+:WXConfig
+SET usewxconfig=%1
+SHIFT
+GOTO Loop
+
 :Version
 SET wxver=%2
 SHIFT
@@ -89,10 +101,10 @@ SHIFT
 GOTO Loop
 
 :Premake
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %unicode% %mediactrl% codelite
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %unicode% %mediactrl% %usewxconfig% codelite
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %unicode% %mediactrl% gmake
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %unicode% %mediactrl% %usewxconfig% gmake
 ECHO.
 
 ECHO Done generating all project files for wxFormBuilder.
