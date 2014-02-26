@@ -432,7 +432,7 @@ void VisualEditor::ClearComponents( wxWindow* parent )
 */
 void VisualEditor::Create()
 {
-#if wxVERSION_NUMBER < 2900 && !defined(__WXGTK__ )
+#if !defined(__WXGTK__ )
 	if ( IsShown() )
 	{
         Freeze();   // Prevent flickering on wx 2.8,
@@ -706,7 +706,7 @@ void VisualEditor::Create()
 			m_back->Show(false);
 			Refresh();
 		}
-#if wxVERSION_NUMBER < 2900 && !defined(__WXGTK__)
+#if !defined(__WXGTK__)
 		Thaw();
 #endif
 	}

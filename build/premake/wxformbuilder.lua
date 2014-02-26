@@ -50,9 +50,9 @@ else
         "../../src/controls/src/wxFlatNotebook/**.cpp"
     }
 	if wxUseMediaCtrl then
-		libs                    = "all"
+		libs                 = "std,stc,richtext,propgrid,aui,media"
 	else
-		libs					= "std,stc,richtext,propgrid,aui,ribbon"
+		libs					= "std,stc,richtext,propgrid,aui"
 	end
 end
 
@@ -111,7 +111,7 @@ end
 
 if wxCompiler == "gcc" then
         buildoptions        {"-gstabs"}
-        links               {"bfd", "iberty", "psapi", "imagehlp"}
+        links               {"bfd", "iberty", "psapi", "imagehlp", "intl"}
 end
     configuration "Debug"
         defines             {"__WXFB_DEBUG__"}

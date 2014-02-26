@@ -5,6 +5,7 @@
 * #127 Wrong parent passed to IComponent::OnCreated() (patch by sodev)
 * #128 Object Inspector expansion fix (patch by sodev)
 * #129 Support for statusbar plugins (patch by sodev)
+* Avoid flickering on MS Windows
 + Added abbility to swap the editor and the object properties panels (patch by tuyanyi)
 
 11/12/2013 Version 3.04.01 (Beta)
