@@ -73,6 +73,7 @@ class MainFrame : public wxFrame
   wxSplitterWindow *m_rightSplitter;
   int m_leftSplitterWidth;
   int m_rightSplitterWidth;
+  wxString m_rightSplitterType;
 
   //wxFrameManager m_mgr;
 #ifdef USE_FLATNOTEBOOK
@@ -154,6 +155,7 @@ class MainFrame : public wxFrame
   void OnChangeBorder(wxCommandEvent& e);
   void OnXrcPreview(wxCommandEvent& e);
   void OnGenInhertedClass(wxCommandEvent& e);
+  void OnWindowSwap(wxCommandEvent& e);
 
 #ifdef USE_FLATNOTEBOOK
   void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event );
