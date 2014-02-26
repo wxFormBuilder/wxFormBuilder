@@ -75,6 +75,9 @@ call %SVN_EXPORT% %SVN_REPOS%/sdk source\sdk
 echo [svn] Exporting 'src' directory to 'source\src'
 call %SVN_EXPORT% %SVN_REPOS%/src source\src
 
+echo [svn] Exporting 'build' directory to 'source\build'
+call %SVN_EXPORT% %SVN_REPOS%/build source\build
+
 
 goto END
 
