@@ -111,7 +111,10 @@ end
 
 if wxCompiler == "gcc" then
         buildoptions        {"-gstabs"}
-        links               {"bfd", "iberty", "psapi", "imagehlp", "intl"}
+        links               {"bfd", "iberty", "psapi", "imagehlp"}
+		if not ( wxCompilerName == "mingw64" ) then
+			links               {"intl"}
+		end
 end
     configuration "Debug"
         defines             {"__WXFB_DEBUG__"}

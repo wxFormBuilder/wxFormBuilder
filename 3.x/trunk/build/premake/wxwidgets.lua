@@ -51,6 +51,7 @@ newoption  {
 }
 -- Common globals
 wxCompiler        = _OPTIONS["compiler"]
+wxCompilerName    = nil
 wxCompilerVersion = _OPTIONS["compiler-version"] or ""
 wxArchitecture    = _OPTIONS["architecture"]
 wxDebugSuffix     = "d"
@@ -63,11 +64,14 @@ wxUseUnicode      = true
 wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
+wxCompilerName = wxCompiler
 
-if wxCompiler == "mingw64_32" then
-	buildoptions( "-m32" )
-	linkoptions( "-m32" )
-	resoptions( "-F pe-i386" )
+if wxCompiler == "mingw64" then
+	if not ( "x86_64" == wxArchitecture ) then
+		buildoptions( "-m32" )
+		linkoptions( "-m32" )
+		resoptions( "-F pe-i386" )
+	end
 	wxCompiler = "gcc"
 end
 
