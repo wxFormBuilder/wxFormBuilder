@@ -271,33 +271,36 @@ Lua code generation written by
 	@{
 		#ifparentclassequal "wxToolBar"
 		@{
-			#utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar)
+			#utbl$name = #utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar)
+		@}
+		#ifparentclassequal "ToolBar"
+		@{
+			#utbl$name = #utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar)
 		@}
 		#ifparentclassequal "wxAuiToolBar"
 		@{
-			#utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar) #nl
+			#utbl$name = #utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar) #nl
 			#ifequal $context_menu "1"
 			@{
-				#utbl$name = #utbl#parent $name:FindToolByIndex( #utbl#parent $name:GetToolCount() - 1 ) #nl
 				#utbl#parent $name:SetToolDropDown( #utbl$name:GetId(), True );
 			@}
 		@}
 	@}
 	#ifparenttypeequal "toolbar_form"
 	@{
-		#utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar )
+		#utbl$name = #utbl#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar )
 	@}
 	</template>
-	<template name="evt_connect_OnToolClicked">#utbl#parent $name:Connect( $id , wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_disconnect_OnToolClicked">#utbl#parent $name:Disconnect( $id ,wx.wxEVT_COMMAND_TOOL_CLICKED )</template>
-	<template name="evt_connect_OnMenuSelection">#utbl#parent $name:Connect( $id ,wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
-	<template name="evt_disconnect_OnMenuSelection">#utbl#parent $name:Disconnect($id , wx.wxEVT_COMMAND_TOOL_CLICKED)</template>
-	<template name="evt_connect_OnToolRClicked">#utbl#parent $name:Connect($id , wx.wxEVT_COMMAND_TOOL_RCLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
-	<template name="evt_disconnect_OnToolRClicked">#utbl#parent $name:Disconnect($id , wx.wxEVT_COMMAND_TOOL_RCLICKED)</template>
-	<template name="evt_connect_OnToolEnter">#utbl#parent $name:Connect($id , wx.wxEVT_COMMAND_TOOL_ENTER, function(vent)#nl --implements  #handler#nl #skip #nl end)</template>
-	<template name="evt_disconnect_OnToolEnter">#utbl#parent $name:Disconnect($id , wx.wxEVT_COMMAND_TOOL_ENTER )</template>
-	<template name="evt_connect_OnUpdateUI">#utbl#parent $name:Connect($id , wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_disconnect_OnUpdateUI">#utbl#parent $name:Disconnect($id , wx.wxEVT_UPDATE_UI)</template>
+	<template name="evt_connect_OnToolClicked">#utbl#parent $name:Connect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_disconnect_OnToolClicked">#utbl#parent $name:Disconnect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED )</template>
+	<template name="evt_connect_OnMenuSelection">#utbl#parent $name:Connect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnMenuSelection">#utbl#parent $name:Disconnect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED)</template>
+	<template name="evt_connect_OnToolRClicked">#utbl#parent $name:Connect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_RCLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnToolRClicked">#utbl#parent $name:Disconnect( #utbl$name:GetId() , wx.wxEVT_COMMAND_TOOL_RCLICKED)</template>
+	<template name="evt_connect_OnToolEnter">#utbl#parent $name:Connect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_ENTER, function(vent)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnToolEnter">#utbl#parent $name:Disconnect( #utbl$name:GetId(), wx.wxEVT_COMMAND_TOOL_ENTER )</template>
+	<template name="evt_connect_OnUpdateUI">#utbl#parent $name:Connect( #utbl$name:GetId(), wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_disconnect_OnUpdateUI">#utbl#parent $name:Disconnect( #utbl$name:GetId(), wx.wxEVT_UPDATE_UI)</template>
   </templates>
 
   <templates class="toolSeparator">

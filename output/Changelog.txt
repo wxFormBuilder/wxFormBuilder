@@ -1,5 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+03/14/2014 Version 3.04.03 (Beta)
+* Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle
+  ID assigned to the tools automatically.
+
 01/24/2014 Version 3.04.02 (Beta)
 * #126 wxWidgets > 2.8 compile fix (patch by sodev)
 * #127 Wrong parent passed to IComponent::OnCreated() (patch by sodev)
