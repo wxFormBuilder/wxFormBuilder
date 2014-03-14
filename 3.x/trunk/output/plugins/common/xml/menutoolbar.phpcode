@@ -285,33 +285,36 @@ PHP code generation writen by
     @{
 		#ifparentclassequal "wxToolBar"
 		@{
-			@$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+			@$this->$name = @$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+		@}
+		#ifparentclassequal "ToolBar"
+		@{
+			@$this->$name = @$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
 		@}
 		#ifparentclassequal "wxAuiToolBar"
 		@{
-			@$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+			@$this->$name = @$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
 			#ifequal $context_menu "1"
 			@{
-				@$this->$name = @$this->#parent $name->FindToolByIndex( @$this->#parent $name->GetToolCount() - 1 ); #nl
 				@$this->#parent $name->SetToolDropDown( @$this->$name->GetId(), true );
 			@}
 		@}
 	@}
 	#ifparenttypeequal "toolbar_form"
-        @{
-		@$this->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None );
+	@{
+		@$this->$name = @$this->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None );
 	@}
     	</template>
-	<template name="evt_connect_OnToolClicked">@$this->Connect( $id, wxEVT_COMMAND_TOOL_CLICKED, #handler );</template>
-	<template name="evt_disconnect_OnToolClicked">@$this->Disconnect( $id, wxEVT_COMMAND_TOOL_CLICKED );</template>
-	<template name="evt_connect_OnMenuSelection">@$this->Connect( $id, wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
-	<template name="evt_disconnect_OnMenuSelection">@$this->Disconnect( $id, wxEVT_COMMAND_MENU_SELECTED );</template>
-	<template name="evt_connect_OnToolRClicked">@$this->Connect( $id, wxEVT_COMMAND_TOOL_RCLICKED, #handler );</template>
-	<template name="evt_disconnect_OnToolRClicked">@$this->Disconnect( $id, wxEVT_COMMAND_TOOL_RCLICKED );</template>
-	<template name="evt_connect_OnToolEnter">@$this->Connect( $id, wxEVT_COMMAND_TOOL_ENTER, #handler );</template>
-	<template name="evt_disconnect_OnToolEnter">@$this->Disconnect( $id, wxEVT_COMMAND_TOOL_ENTER );</template>
-	<template name="evt_connect_OnUpdateUI">@$this->Connect( $id, wxEVT_UPDATE_UI, #handler );</template>
-	<template name="evt_disconnect_OnUpdateUI">@$this->Disconnect( $id, wxEVT_UPDATE_UI );</template>
+	<template name="evt_connect_OnToolClicked">@$this->Connect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_CLICKED, #handler );</template>
+	<template name="evt_disconnect_OnToolClicked">@$this->Disconnect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_CLICKED );</template>
+	<template name="evt_connect_OnMenuSelection">@$this->Connect( @$this->$name->GetId(), wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
+	<template name="evt_disconnect_OnMenuSelection">@$this->Disconnect( @$this->$name->GetId(), wxEVT_COMMAND_MENU_SELECTED );</template>
+	<template name="evt_connect_OnToolRClicked">@$this->Connect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_RCLICKED, #handler );</template>
+	<template name="evt_disconnect_OnToolRClicked">@$this->Disconnect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_RCLICKED );</template>
+	<template name="evt_connect_OnToolEnter">@$this->Connect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_ENTER, #handler );</template>
+	<template name="evt_disconnect_OnToolEnter">@$this->Disconnect( @$this->$name->GetId(), wxEVT_COMMAND_TOOL_ENTER );</template>
+	<template name="evt_connect_OnUpdateUI">@$this->Connect( @$this->$name->GetId(), wxEVT_UPDATE_UI, #handler );</template>
+	<template name="evt_disconnect_OnUpdateUI">@$this->Disconnect( @$this->$name->GetId(), wxEVT_UPDATE_UI );</template>
   </templates>
 
   <templates class="toolSeparator">
