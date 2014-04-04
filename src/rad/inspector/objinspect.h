@@ -67,6 +67,10 @@ private:
     ObjInspectorEventMap m_eventMap;
 
     PObjectBase m_currentSel;
+	
+	//save the current selected property
+	wxString m_strSelPropItem;
+	wxString m_pageName;
 
 #ifdef USE_FLATNOTEBOOK
     wxFlatNotebook* m_nb;
@@ -151,8 +155,11 @@ private:
     void OnEventGridDblClick( wxPropertyGridEvent& event );
     void OnPropertyGridExpand( wxPropertyGridEvent& event );
     void OnEventGridExpand( wxPropertyGridEvent& event );
+	void OnPropertyGridItemSelected( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
+	
+	void RestoreLastSelectedPropItem();
 	
 	void ModifyProperty( PProperty prop, const wxString& str );
 	
