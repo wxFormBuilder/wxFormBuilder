@@ -1,16 +1,18 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-03/14/2014 Version 3.04.03 (Beta)
+04/04/2014 Version 3.04.03 (Beta)
 * Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle
   ID assigned to the tools automatically.
++ The object inspector now remembers name of the last modified property and tries to select it
+  again when active widget is changed (patch by tuyanyi).
 
 01/24/2014 Version 3.04.02 (Beta)
-* #126 wxWidgets > 2.8 compile fix (patch by sodev)
-* #127 Wrong parent passed to IComponent::OnCreated() (patch by sodev)
-* #128 Object Inspector expansion fix (patch by sodev)
-* #129 Support for statusbar plugins (patch by sodev)
-* Avoid flickering on MS Windows
-+ Added abbility to swap the editor and the object properties panels (patch by tuyanyi)
+* #126 wxWidgets > 2.8 compile fix (patch by sodev).
+* #127 Wrong parent passed to IComponent::OnCreated() (patch by sodev).
+* #128 Object Inspector expansion fix (patch by sodev).
+* #129 Support for statusbar plugins (patch by sodev).
+* Avoid flickering on MS Windows.
++ Added abbility to swap the editor and the object properties panels (patch by tuyanyi).
 
 11/12/2013 Version 3.04.01 (Beta)
 * Fixed build error with wxWidgets 3.0.0.

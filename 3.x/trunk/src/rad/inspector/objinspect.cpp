@@ -66,9 +66,11 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
     EVT_PG_DOUBLE_CLICK(WXFB_EVENT_GRID, ObjectInspector::OnEventGridDblClick)
     EVT_PG_DOUBLE_CLICK(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridDblClick)
     EVT_PG_ITEM_COLLAPSED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
-    EVT_PG_ITEM_EXPANDED (WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
+    EVT_PG_ITEM_EXPANDED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridExpand)
     EVT_PG_ITEM_COLLAPSED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridExpand)
     EVT_PG_ITEM_EXPANDED(WXFB_EVENT_GRID, ObjectInspector::OnEventGridExpand)
+	EVT_PG_SELECTED(WXFB_PROPERTY_GRID, ObjectInspector::OnPropertyGridItemSelected)
+	EVT_PG_SELECTED(WXFB_EVENT_GRID, ObjectInspector::OnPropertyGridItemSelected)
 
     EVT_FB_OBJECT_SELECTED( ObjectInspector::OnObjectSelected )
     EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
@@ -228,6 +230,8 @@ void ObjectInspector::Create( bool force )
         m_eg->Refresh();
         m_eg->Update();
         Thaw();
+		
+		RestoreLastSelectedPropItem();
     }
 }
 
@@ -1281,3 +1285,43 @@ void ObjectInspector::OnChildFocus( wxChildFocusEvent& event )
 	// do nothing to avoid "scrollbar jump" if wx2.9 is used
 }
 #endif
+
+void ObjectInspector::OnPropertyGridItemSelected( wxPropertyGridEvent& event )
+{
+	wxPGProperty *p = event.GetProperty();
+	if( p )
+	{
+		if( m_nb->GetSelection() == 0 )
+		{
+			m_strSelPropItem = m_pg->GetPropertyLabel( p );
+			m_pageName = wxT("Properties");
+		}
+		else
+		{
+			m_strSelPropItem = m_eg->GetPropertyLabel( p );
+			m_pageName = wxT("Events");
+		}
+	}
+}
+
+void ObjectInspector::RestoreLastSelectedPropItem()
+{
+	if( m_pageName == wxT("Properties") )
+	{
+		wxPGProperty* p = m_pg->GetPropertyByLabel( m_strSelPropItem );
+		if( p )
+		{
+			m_pg->SelectProperty(p, true);
+			m_pg->SetFocus();
+		}
+	}
+	else if( m_pageName == wxT("Events") )
+	{
+		wxPGProperty* p = m_eg->GetPropertyByLabel(m_strSelPropItem);
+		if( p )
+		{
+			m_eg->SelectProperty(p, true);
+			m_eg->SetFocus();
+		}
+	}
+}
