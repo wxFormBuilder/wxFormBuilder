@@ -1,3 +1,9 @@
+wxformbuilder (3.4.03-0ubuntu1~precise1) precise; urgency=low
+
+  * Sync to upstream 3.4.03.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Mon, 07 Apr 2014 11:41:34 -0400
+
 wxformbuilder (3.4.02-0ubuntu1~precise1) precise; urgency=low
 
   * Sync to upstream 3.4.02.
