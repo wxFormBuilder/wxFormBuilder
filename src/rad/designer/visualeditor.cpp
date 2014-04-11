@@ -1406,7 +1406,15 @@ wxMenu* DesignerWindow::GetMenuFromObject(PObjectBase menu)
 		PObjectBase menuItem = menu->GetChild( j );
 		if ( menuItem->GetObjectTypeName() == wxT("submenu") )
 		{
-			menuWidget->Append( lastMenuId++, menuItem->GetPropertyAsString( wxT("label") ), GetMenuFromObject( menuItem ) );
+			wxMenuItem *item = new wxMenuItem( 	menuWidget,
+												lastMenuId++,
+												menuItem->GetPropertyAsString( wxT("label") ),
+												menuItem->GetPropertyAsString( wxT("help") ),
+												wxITEM_NORMAL,
+												GetMenuFromObject( menuItem )
+											);
+			item->SetBitmap( menuItem->GetPropertyAsBitmap( wxT("bitmap") ) );
+			menuWidget->Append( item );
 		}
 		else if ( menuItem->GetClassName() == wxT("separator") )
 		{

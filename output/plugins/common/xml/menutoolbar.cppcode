@@ -123,9 +123,20 @@ Written by
 
   <templates class="submenu">
     <template name="declaration">wxMenu* $name;</template>
-    <template name="construction">$name = new wxMenu();</template>
+    <template name="construction">
+		$name = new wxMenu(); #nl
+		wxMenuItem* $name #append Item = new wxMenuItem( #parent $name, wxID_ANY, $label, wxEmptyString, wxITEM_NORMAL, $name );
+	</template>
+	<template name="settings">
+		#ifnotnull $bitmap
+		@{
+			@#if (defined( __WXMSW__ ) || defined( __WXGTK__ ) || defined( __WXOSX__ )) #nl
+			$name #append Item->SetBitmap( $bitmap ); #nl
+			@#endif #nl
+		@}
+    </template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
-    <template name="after_addchild">#parent $name->Append( -1, $label, $name );</template>
+    <template name="after_addchild">#parent $name->Append( $name #append Item );</template>
   </templates>
 
   <templates class="wxMenuItem">
@@ -138,7 +149,7 @@ Written by
 		@{
 			@#ifdef __WXMSW__ #nl
 			$name->SetBitmaps( $bitmap #ifnotnull $unchecked_bitmap @{, $unchecked_bitmap @} ); #nl
-			@#elif defined( __WXGTK__ ) #nl
+			@#elif (defined( __WXGTK__ ) || defined( __WXOSX__ )) #nl
 			$name->SetBitmap( $bitmap ); #nl
 			@#endif #nl
 		@}

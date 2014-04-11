@@ -46,6 +46,7 @@ Written by
 
   <objectinfo class="submenu" icon="submenu.xpm" type="submenu">
     <property name="name" type="text">m_menu</property>
+	<property name="bitmap" type="bitmap" help="Bitmap for the menu item. (Windows, GTK+, and OSX only) This doubles as the checked bitmap is the menu item is wxITEM_CHECK." />
     <property name="label" type="wxString_i18n">MyMenu</property>
   </objectinfo>
 
@@ -55,7 +56,7 @@ Written by
     <property name="shortcut" type="wxString" help="Optional shortcut keyboard shortcut. Remarks: The general syntax is any combination of &quot;CTRL&quot;, &quot;ALT&quot; and &quot;SHIFT&quot; strings (case doesn't matter) separated by either '-' or '+' characters and followed by the accelerator itself. The accelerator may be any alphanumeric character, any function key (from F1 to F12)"/>
     <property name="help" type="wxString_i18n"     help="Optional help string that will be shown on the status bar."/>
     <property name="id" type="macro">wxID_ANY</property>
-    <property name="bitmap" type="bitmap" help="Bitmap for the menu item. (Windows and GTK+ only) This doubles as the checked bitmap is the menu item is wxITEM_CHECK." />
+    <property name="bitmap" type="bitmap" help="Bitmap for the menu item. (Windows, GTK+, and OSX only) This doubles as the checked bitmap is the menu item is wxITEM_CHECK." />
 	<property name="unchecked_bitmap" type="bitmap"     help="Unchecked bitmap for the menu item. This will be shown if the menu item is wxITEM_CHECK and it is currently unchecked. (Windows only)" />
     <property name="checked" type="bool">0</property>
     <property name="enabled" type="bool">1</property>
