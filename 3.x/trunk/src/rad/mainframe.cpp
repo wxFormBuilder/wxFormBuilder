@@ -1663,13 +1663,13 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_python = new PythonPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
 #ifndef USE_FLATNOTEBOOK
-	m_notebook->SetPageBitmap( 2, AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
+	m_notebook->SetPageBitmap( 2, AppBitmaps::GetBitmap( wxT( "python" ), 16 ) );
 #endif
 
 	m_php = new PHPPanel( m_notebook, -1 );
 	m_notebook->AddPage( m_php, wxT( "PHP" ), false, 3 );
 #ifndef USE_FLATNOTEBOOK
-	m_notebook->SetPageBitmap( 3, AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
+	m_notebook->SetPageBitmap( 3, AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
 #endif
 
 	m_lua = new LuaPanel(m_notebook, -1);

@@ -1230,10 +1230,10 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-		#if wxCHECK_VERSION( 2, 8, 0 )
+		#if wxVERSION_NUMBER < 2900
 		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
 		return xrc.GetXrcObject();
-		#elif wxCHECK_VERSION( 2, 9, 0 )
+		#else
 		ObjectToXrcFilter xrc(obj, _("wxSearchCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
