@@ -1,10 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-04/04/2014 Version 3.04.03 (Beta)
+04/13/2014 Version 3.04.03 (Beta)
 * Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle
   ID assigned to the tools automatically.
 + The object inspector now remembers name of the last modified property and tries to select it
   again when active widget is changed (patch by tuyanyi).
+* #138 Wrong Icons in GUI.
+* #137 XRC generation uses class "unknown" for search control.
+* #136 AUI pane captions dont get marked for translation.
 
 01/24/2014 Version 3.04.02 (Beta)
 * #126 wxWidgets > 2.8 compile fix (patch by sodev).

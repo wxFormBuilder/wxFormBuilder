@@ -195,7 +195,7 @@
   <objectinfo class="AUI" type="interface">
 	<property name="aui_name" type="wxString" help="Sets the internal name of the pane."/>
 	<property name="caption_visible" type="bool" help="Indicates that a pane caption should be visible.">1</property>
-	<property name="caption" type="wxString" help="Sets the caption of the pane."/>
+	<property name="caption" type="wxString_i18n" help="Sets the caption of the pane."/>
 	<property name="close_button" type="bool" help="Indicates that a close button should be drawn for the pane.">1</property>
 	<property name="maximize_button" type="bool" help="Indicates that a maximize button should be drawn for the pane.">0</property>
 	<property name="minimize_button" type="bool" help="Indicates that a minimize button should be drawn for the pane.">0</property>
