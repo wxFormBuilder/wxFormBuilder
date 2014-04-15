@@ -116,6 +116,7 @@ Written by
     </property>
     <property name="label_visible" type="bool">0</property>
     <property name="toolbar_label" type="text">label</property>
+	<property name="use_explicit_ids" type="bool" help="Use user-specified tool IDs instead of automatically assigned ones (needed for old wxAuiToolBar implementation).">0</property>
   </objectinfo>
 
   <objectinfo class="tool" icon="tool.xpm" type="tool">
