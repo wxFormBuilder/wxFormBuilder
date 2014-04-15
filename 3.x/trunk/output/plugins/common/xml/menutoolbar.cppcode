@@ -359,9 +359,21 @@ Written by
 	<template name="construction">
 	#ifparenttypeequal "toolbar"
 	@{
-		$name = #parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
+		#ifparentclassnotequal "wxAuiToolBar"
+		@{
+			$name = #parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
+		@}
 		#ifparentclassequal "wxAuiToolBar"
 		@{
+			#ifequal #parent $use_explicit_ids "1"
+			@{
+				#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL ); #nl
+				$name = #parent $name->FindTool( $id );
+			@}
+			#ifequal #parent $use_explicit_ids "0"
+			@{
+				$name = #parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, NULL );
+			@}
 			#ifequal $context_menu "1"
 			@{
 				#nl #parent $name->SetToolDropDown( $name->GetId(), true );

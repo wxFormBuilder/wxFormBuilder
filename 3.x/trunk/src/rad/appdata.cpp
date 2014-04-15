@@ -476,7 +476,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 12 )
+		m_fbpVerMinor( 13 )
 {
 	#ifdef __WXFB_DEBUG__
 	//wxLog* log = wxLog::SetActiveTarget( NULL );

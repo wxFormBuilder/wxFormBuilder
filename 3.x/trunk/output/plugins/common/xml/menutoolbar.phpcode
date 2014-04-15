@@ -283,22 +283,28 @@ PHP code generation writen by
     <template name="construction">
 	#ifparenttypeequal "toolbar"
     @{
-		#ifparentclassequal "wxToolBar"
-		@{
-			@$this->$name = @$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
-		@}
-		#ifparentclassequal "ToolBar"
+		#ifparentclassnotequal "wxAuiToolBar"
 		@{
 			@$this->$name = @$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
 		@}
 		#ifparentclassequal "wxAuiToolBar"
 		@{
-			@$this->$name = @$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+			#ifequal #parent $use_explicit_ids "1"
+			@{
+				@$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None); #nl
+				@$this->$name = @$this->#parent $name->FindTool( $id );
+			@}
+			#ifequal #parent $use_explicit_ids "0"
+			@{
+				@$this->$name = @$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+			@}
 			#ifequal $context_menu "1"
 			@{
-				@$this->#parent $name->SetToolDropDown( @$this->$name->GetId(), true );
+				#nl @$this->#parent $name->SetToolDropDown( @$this->$name->GetId(), true );
+				#nl
 			@}
 		@}
+
 	@}
 	#ifparenttypeequal "toolbar_form"
 	@{
