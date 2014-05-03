@@ -37,6 +37,163 @@ Written by
 	<template name="evt_connect_OnTreeStateImageClick">$name->Connect( wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #handler, NULL, this );</template>
   </templates>
 
+  <templates class="wxDataViewCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
+	<template name="construction">
+		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="generated_event_handlers"></template>
+	<template name="evt_entry_OnDataViewCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlSelectionChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemActivated">EVT_DATAVIEW_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemActivated">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemStartEditing">EVT_DATAVIEW_ITEM_START_EDITING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemStartEditing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemEditingStarted">EVT_DATAVIEW_ITEM_EDITING_STARTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingStarted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemEditingDone">EVT_DATAVIEW_ITEM_EDITING_DONE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingDone">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemCollapsing">EVT_DATAVIEW_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemCollapsed">EVT_DATAVIEW_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsed">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemExpanding">EVT_DATAVIEW_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanding">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemExpanded">EVT_DATAVIEW_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanded">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemValueChanged">EVT_DATAVIEW_ITEM_VALUE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemValueChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemContextMenu">EVT_DATAVIEW_ITEM_CONTEXT_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemContextMenu">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlColumnHeaderClick">EVT_DATAVIEW_COLUMN_HEADER_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlColumnHeaderRightClick">EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlColumnSorted">EVT_DATAVIEW_COLUMN_SORTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnSorted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlColumnReordered">EVT_DATAVIEW_COLUMN_REORDERED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnReordered">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemBeginDrag">EVT_DATAVIEW_ITEM_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemBeginDrag">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemDropPossible">EVT_DATAVIEW_ITEM_DROP_POSSIBLE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemDropPossible">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE, #handler );</template>
+	<template name="evt_entry_OnDataViewCtrlItemDrop">EVT_DATAVIEW_ITEM_DROP( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewCtrlItemDrop">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP, #handler );</template>
+  </templates>
+
+  <templates class="wxDataViewTreeCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
+	<template name="construction">
+		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="generated_event_handlers"></template>
+	<template name="evt_entry_OnDataViewTreeCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemActivated">EVT_DATAVIEW_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemActivated">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemStartEditing">EVT_DATAVIEW_ITEM_START_EDITING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemEditingStarted">EVT_DATAVIEW_ITEM_EDITING_STARTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemEditingDone">EVT_DATAVIEW_ITEM_EDITING_DONE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemCollapsing">EVT_DATAVIEW_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemCollapsed">EVT_DATAVIEW_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemExpanding">EVT_DATAVIEW_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanding">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemExpanded">EVT_DATAVIEW_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanded">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemValueChanged">EVT_DATAVIEW_ITEM_VALUE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemContextMenu">EVT_DATAVIEW_ITEM_CONTEXT_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlColumnHeaderClick">EVT_DATAVIEW_COLUMN_HEADER_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlColumnHeaderRightClick">EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlColumnSorted">EVT_DATAVIEW_COLUMN_SORTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnSorted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlColumnReordered">EVT_DATAVIEW_COLUMN_REORDERED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnReordered">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemBeginDrag">EVT_DATAVIEW_ITEM_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemDropPossible">EVT_DATAVIEW_ITEM_DROP_POSSIBLE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE, #handler );</template>
+	<template name="evt_entry_OnDataViewTreeCtrlItemDrop">EVT_DATAVIEW_ITEM_DROP( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDrop">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP, #handler );</template>
+  </templates>
+
+  <templates class="wxDataViewListCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
+	<template name="construction">
+		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="generated_event_handlers"></template>
+	<template name="evt_entry_OnDataViewListCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlSelectionChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemActivated">EVT_DATAVIEW_ITEM_ACTIVATED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemActivated">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemStartEditing">EVT_DATAVIEW_ITEM_START_EDITING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemStartEditing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemEditingStarted">EVT_DATAVIEW_ITEM_EDITING_STARTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingStarted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemEditingDone">EVT_DATAVIEW_ITEM_EDITING_DONE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingDone">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemCollapsing">EVT_DATAVIEW_ITEM_COLLAPSING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsing">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemCollapsed">EVT_DATAVIEW_ITEM_COLLAPSED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsed">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemExpanding">EVT_DATAVIEW_ITEM_EXPANDING( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanding">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemExpanded">EVT_DATAVIEW_ITEM_EXPANDED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanded">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemValueChanged">EVT_DATAVIEW_ITEM_VALUE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemValueChanged">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemContextMenu">EVT_DATAVIEW_ITEM_CONTEXT_MENU( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemContextMenu">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlColumnHeaderClick">EVT_DATAVIEW_COLUMN_HEADER_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlColumnHeaderRightClick">EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlColumnSorted">EVT_DATAVIEW_COLUMN_SORTED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnSorted">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlColumnReordered">EVT_DATAVIEW_COLUMN_REORDERED( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnReordered">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemBeginDrag">EVT_DATAVIEW_ITEM_BEGIN_DRAG( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemBeginDrag">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemDropPossible">EVT_DATAVIEW_ITEM_DROP_POSSIBLE( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDropPossible">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE, #handler );</template>
+	<template name="evt_entry_OnDataViewListCtrlItemDrop">EVT_DATAVIEW_ITEM_DROP( $id, #handler )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDrop">this->Connect( $id, wxEVT_COMMAND_DATAVIEW_ITEM_DROP, #handler );</template>
+  </templates>
+
+  <templates class="dataViewListColumn">
+	<template name="declaration">wxDataViewColumn* $name;</template>
+	<template name="construction">
+		#ifequal $type "Text"
+		@{
+			$name = #parent $name->AppendTextColumn( $label );
+		@}
+		#ifequal $type "Toggle"
+		@{
+			$name = #parent $name->AppendToggleColumn( $label );
+		@}
+		#ifequal $type "Progress"
+		@{
+			$name = #parent $name->AppendProgressColumn( $label );
+		@}
+		#ifequal $type "IconText"
+		@{
+			$name = #parent $name->AppendIconTextColumn( $label );
+		@}
+	</template>
+  </templates>
+
   <templates class="wxHtmlWindow">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>

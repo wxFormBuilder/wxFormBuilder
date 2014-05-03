@@ -34,6 +34,90 @@ PHP code generation written by
 	<template name="evt_connect_OnTreeStateImageClick">@$this->$name->Connect( wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #handler );</template>
   </templates>
 
+  <templates class="wxDataViewCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="construction">
+		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+		@$this->$name = new wxWindow( #wxparent $name );
+	</template>
+	<template name="evt_connect_OnDataViewCtrlSelectionChanged">// event wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemActivated">// event wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemStartEditing">// event wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingStarted">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingDone">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsing">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsed">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanding">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanded">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemValueChanged">// event wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemContextMenu">// event wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlColumnSorted">// event wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlColumnReordered">// event wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemBeginDrag">// event wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemDropPossible">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewCtrlItemDrop">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP isn't currently supported by wxPHP</template>
+  </templates>
+
+  <templates class="wxDataViewTreeCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="construction">
+		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+		@$this->$name = new wxWindow( #wxparent $name );
+	</template>
+	<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">// event wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemActivated">// event wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing">// event wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanding">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanded">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged">// event wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu">// event wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnSorted">// event wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnReordered">// event wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag">// event wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDrop">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP isn't currently supported by wxPHP</template>
+  </templates>
+
+  <templates class="wxDataViewListCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="construction">
+		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+		@$this->$name = new wxWindow( #wxparent $name );
+	</template>
+	<template name="evt_connect_OnDataViewListCtrlSelectionChanged">// event wxEVT_COMMAND_DATAVIEW_SELECTION_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemActivated">// event wxEVT_COMMAND_DATAVIEW_ITEM_ACTIVATED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemStartEditing">// event wxEVT_COMMAND_DATAVIEW_ITEM_START_EDITING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingStarted">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_STARTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingDone">// event wxEVT_COMMAND_DATAVIEW_ITEM_EDITING_DONE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsing">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsed">// event wxEVT_COMMAND_DATAVIEW_ITEM_COLLAPSED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanding">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDING isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanded">// event wxEVT_COMMAND_DATAVIEW_ITEM_EXPANDED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemValueChanged">// event wxEVT_COMMAND_DATAVIEW_ITEM_VALUE_CHANGED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemContextMenu">// event wxEVT_COMMAND_DATAVIEW_ITEM_CONTEXT_MENU isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick">// event wxEVT_COMMAND_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnSorted">// event wxEVT_COMMAND_DATAVIEW_COLUMN_SORTED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnReordered">// event wxEVT_COMMAND_DATAVIEW_COLUMN_REORDERED isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemBeginDrag">// event wxEVT_COMMAND_DATAVIEW_ITEM_BEGIN_DRAG isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDropPossible">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP_POSSIBLE isn't currently supported by wxPHP</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDrop">// event wxEVT_COMMAND_DATAVIEW_ITEM_DROP isn't currently supported by wxPHP</template>
+  </templates>
+
+  <templates class="dataViewListColumn">
+	<template name="construction">
+		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+	</template>
+  </templates>
+
   <templates class="wxHtmlWindow">
     <template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
 	<template name="include" />

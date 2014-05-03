@@ -70,7 +70,11 @@
     <childtype name="treelistctrl" nmax="0" />
     <childtype name="splitter" nmax="0" />
 	<childtype name="nonvisual" />
-  </objtype>
+    <childtype name="ribbonbar" nmax="0" />
+    <childtype name="dataviewctrl" nmax="0" />
+    <childtype name="dataviewtreectrl" nmax="0" />
+    <childtype name="dataviewlistctrl" nmax="0" />
+ </objtype>
 
     <objtype name="wizard">
         <childtype name="wizardpagesimple"/>
@@ -126,6 +130,10 @@
     <childtype name="splitter" nmax="1" aui_nmax="1" />
     <childtype name="toolbar" nmax="1" aui_nmax="1" />
     <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
+    <childtype name="ribbonbar" nmax="1" />
+    <childtype name="dataviewctrl" nmax="1" />
+    <childtype name="dataviewlistctrl" nmax="1" />
+    <childtype name="dataviewtreectrl" nmax="1" />
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
@@ -142,6 +150,10 @@
     <childtype name="splitter" nmax="1" aui_nmax="1" />
     <childtype name="toolbar" nmax="1" aui_nmax="1" />
     <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
+    <childtype name="ribbonbar" nmax="1" />
+    <childtype name="dataviewctrl" nmax="1" />
+    <childtype name="dataviewlistctrl" nmax="1" />
+    <childtype name="dataviewtreectrl" nmax="1" />
   </objtype>
 
   <objtype name="splitter" >
@@ -208,6 +220,57 @@
     <childtype name="submenu" />
   </objtype>
 
+  <objtype name="ribbonbar" >
+    <childtype name="ribbonpage" />
+  </objtype>
+
+  <objtype name="ribbonpage" >
+    <childtype name="ribbonpanel" />
+  </objtype>
+
+  <objtype name="ribbonpanel" >
+    <childtype name="ribbonbuttonbar" nmax="1" />
+    <childtype name="ribbontoolbar" nmax="1"  />
+    <childtype name="ribbongallery" nmax="1" />
+	nmax="1"
+  </objtype>
+
+  <objtype name="ribbonbuttonbar" >
+    <childtype name="ribbonbutton" />
+    <childtype name="ribbondropdownbutton" />
+    <childtype name="ribbonhybridbutton" />
+    <childtype name="ribbontogglebutton" />
+  </objtype>
+
+  <objtype name="ribbonbutton" />
+
+  <objtype name="ribbondropdownbutton" />
+
+  <objtype name="ribbonhybridbutton" />
+
+  <objtype name="ribbontogglebutton" />
+
+  <objtype name="ribbontoolbar" >
+    <childtype name="ribbontool" />
+    <childtype name="ribbondropdowntool" />
+    <childtype name="ribbonhybridtool" />
+    <childtype name="ribbontoggletool" />
+  </objtype>
+
+  <objtype name="ribbontool" />
+
+  <objtype name="ribbondropdowntool" />
+
+  <objtype name="ribbonhybridtool" />
+
+  <objtype name="ribbontoggletool" />
+
+  <objtype name="ribbongallery" >
+    <childtype name="ribbongalleryitem" />
+  </objtype>
+
+  <objtype name="ribbongalleryitem" />
+
   <objtype name="statusbar" />
 
   <objtype name="toolbar">
@@ -227,6 +290,16 @@
   <objtype name="treelistctrlcolumn" />
   
   <objtype name="nonvisual" />
+
+  <objtype name="dataviewctrl" />
+
+  <objtype name="dataviewtreectrl" />
+
+  <objtype name="dataviewlistctrl" >
+    <childtype name="dataviewlistcolumn" />
+  </objtype>
+
+  <objtype name="dataviewlistcolumn" />
 
 </definitions>
 

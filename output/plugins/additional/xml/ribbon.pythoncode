@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Python code generation writen by
+  Michal Bližňák - michal.bliznak@gmail.com
+-->
+<codegen language="Python">
+  	<templates class="wxRibbonBar">
+		<template name="include">import wx.lib.agw.ribbon as rb</template>
+		<template name="construction">
+			self.$name = rb.RibbonBar( self , $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="after_addchild">
+			self.$name.Realize()
+		</template>
+		<template name="setting">
+			#ifequal $theme "Default"
+			@{ self.$name.SetArtProvider(wxRibbonDefaultArtProvider) @}
+			#ifequal $theme "Generic"
+			@{ self.$name.SetArtProvider(wxRibbonAUIArtProvider) @}
+			#ifequal $theme "MSW"
+			@{ self.$name.SetArtProvider(wxRibbonMSWArtProvider); @}
+		</template>
+		<template name="evt_connect_OnRibbonButtonClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_CLICKED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarPageChanged">self.Bind( rb.EVT_RIBBONBAR_PAGE_CHANGED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarPageChanging">self.Bind( rb.EVT_RIBBONBAR_PAGE_CHANGING, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleDown">self.Bind( rb.EVT_RIBBONBAR_TAB_MIDDLE_DOWN, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleUp">self.Bind( rb.EVT_RIBBONBAR_TAB_MIDDLE_UP, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarTabRightDown">self.Bind( rb.EVT_RIBBONBAR_TAB_RIGHT_DOWN, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarTabRightUp">self.Bind( rb.EVT_RIBBONBAR_TAB_RIGHT_UP, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarTabLeftDClick">self.Bind( rb.EVT_RIBBONBAR_TAB_LEFT_DCLICK, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonBarToggled">@# event EVT_RIBBONBAR_TOGGLED isn't currently supported by wxPython</template>
+		<template name="evt_connect_OnRibbonBarHelpClick">@# event EVT_RIBBONBAR_HELP_CLICK isn't currently supported by wxPython</template>
+	</templates>
+
+	<templates class="wxRibbonPage">
+		<template name="construction">
+			self.$name = rb.RibbonPage( self.#parent $name,  $id, $label , $bitmap ,  0 )
+		</template>
+	</templates>
+
+	<templates class="wxRibbonPanel">
+		<template name="construction">
+			self.$name = rb.RibbonPanel( self.#parent $name,  $id, $label , $bitmap , $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="evt_connect_OnRibbonPanelExtbuttonActivated">@# event EVT_COMMAND_RIBBONPANEL_EXTBUTTON_ACTIVATED isn't currently supported by wxPython</template>
+	</templates>
+ 
+	<templates class="wxRibbonButtonBar">
+		<template name="construction">
+			self.$name = rb.RibbonButtonBar( self.#parent $name,  $id, $pos, $size, 0)
+		</template>
+	</templates>
+
+	<templates class="ribbonButton">
+		<template name="construction">
+			self.#parent $name.AddSimpleButton( $id, $label, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonButtonClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonDropdownButton">
+		<template name="construction">
+			self.#parent $name.AddDropdownButton( $id, $label, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonHybridButton">
+		<template name="construction">
+			self.#parent $name.AddHybridButton( $id, $label, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonButtonClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_CLICKED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonToggleButton">
+		<template name="construction">
+			self.#parent $name.AddToggleButton( $id, $label, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonButtonClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="wxRibbonToolBar">
+		<template name="construction">
+			self.$name = rb.RibbonToolBar( self.#parent $name,  $id, $pos, $size, 0)
+		</template>
+	</templates>
+
+	<templates class="ribbonTool">
+		<template name="construction">
+			self.#parent $name.AddSimpleTool( $id, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonToolClicked">self.Bind( rb.EVT_RIBBONTOOLBAR_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonDropdownTool">
+		<template name="construction">
+			self.#parent $name.AddDropdownTool( $id, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonToolDropdownClicked">self.Bind( rb.EVT_RIBBONTOOLBAR_DROPDOWN_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonHybridTool">
+		<template name="construction">
+			self.#parent $name.AddHybridTool( $id, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonToolClicked">self.Bind( rb.EVT_RIBBONTOOLBAR_CLICKED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonToolDropdownClicked">self.Bind( rb.EVT_RIBBONTOOLBAR_DROPDOWN_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonToggleTool">
+		<template name="construction">
+			self.#parent $name.AddToggleTool( $id, $bitmap, $help)
+		</template>
+		<template name="evt_connect_OnRibbonToolClicked">self.Bind( rb.EVT_RIBBONTOOLBAR_CLICKED, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="wxRibbonGallery">
+		<template name="construction">
+			self.$name = rb.RibbonGallery( self.#parent $name,  $id, $pos, $size, 0)
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_connect_OnRibbonGallerySelected">self.Bind( rb.EVT_RIBBONGALLERY_SELECTED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonGalleryClicked">self.Bind( rb.EVT_RIBBONGALLERY_CLICKED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonGalleryHoverChanged">self.Bind( rb.EVT_RIBBONGALLERY_HOVER_CHANGED, #handler, id = $id )</template>
+		<template name="evt_connect_OnRibbonGalleryExtensionButtonPressed">self.Bind( wx.EVT_BUTTON, #handler, id = $id )</template>
+	</templates>
+
+	<templates class="ribbonGalleryItem">
+		<template name="declaration"></template>
+		<template name="construction">
+			self.#parent $name.Append( $bitmap, $id)
+		</template>
+	</templates>
+
+</codegen>

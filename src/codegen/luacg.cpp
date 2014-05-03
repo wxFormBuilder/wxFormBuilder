@@ -388,6 +388,10 @@ LuaCodeGenerator::LuaCodeGenerator()
 	m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxSearchCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxAuiToolBar"));
+	m_strUnsupportedClasses.push_back(wxT("wxRibbonBar"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewListCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewTreeCtrl"));
 }
 
 wxString LuaCodeGenerator::ConvertLuaString( wxString text )

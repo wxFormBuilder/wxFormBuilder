@@ -1149,6 +1149,7 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("menu")		||
 				type == wxT("submenu")	||
 				type == wxT("toolbar")	||
+				type == wxT("ribbonbar")	||
 				type == wxT("listbook")	||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
