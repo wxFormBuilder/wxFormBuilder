@@ -55,6 +55,15 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 
 	if (obj)
 	{
+		if( obj->GetObjectTypeName() == wxT("ribbonbar") ) 
+		{
+			if (AppData()->GetSelectedObject() != obj)
+				AppData()->SelectObject(obj);
+
+			event.Skip();
+			return;
+		}
+		
 		if (AppData()->GetSelectedObject() != obj)
 		{
 			AppData()->SelectObject(obj);

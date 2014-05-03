@@ -49,6 +49,17 @@
 #include <wx/propgrid/manager.h>
 // wxStyledTextCtrl
 #include <wx/stc/stc.h>
+// wxDataViewCtrl
+#include <wx/dataview.h>
+// wxRibbonBar
+#include <wx/ribbon/bar.h>
+#include <wx/ribbon/control.h>
+#include <wx/ribbon/art.h>
+#include <wx/ribbon/page.h>
+#include <wx/ribbon/panel.h>
+#include <wx/ribbon/buttonbar.h>
+#include <wx/ribbon/toolbar.h>
+#include <wx/ribbon/gallery.h>
 #endif
 
 #if wxCHECK_VERSION( 2, 8, 0 )
@@ -1671,6 +1682,319 @@ void ComponentEvtHandler::OnMarginClick( wxStyledTextEvent& event )
 	}
 	event.Skip();
 }
+
+class DataViewCtrl : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxDataViewListCtrl* dataViewCtrl = new wxDataViewListCtrl((wxWindow *)parent,
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("window_style")));
+			
+	return dataViewCtrl;
+	}
+};
+
+
+class DataViewTreeCtrl : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxDataViewTreeCtrl* dataViewTreeCtrl = new wxDataViewTreeCtrl((wxWindow *)parent,
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("window_style")));
+			
+	return dataViewTreeCtrl;
+	}
+};
+
+class DataViewListCtrl : public ComponentBase
+{
+public:
+	wxObject* Create( IObject* obj, wxObject* parent )
+	{
+		wxDataViewListCtrl* dataViewListCtrl = new wxDataViewListCtrl((wxWindow *)parent,
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("window_style")));
+			
+		return dataViewListCtrl;
+	}
+	
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxDataViewListCtrl* list = wxDynamicCast( wxobject, wxDataViewListCtrl);
+		if ( NULL == list )
+		{
+			// very very strange
+			return;
+		}
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (childObj->GetClassName() == _("dataViewListColumn"))
+			{
+				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
+				{
+					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
+				{
+					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
+				{
+					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
+				{
+					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")));
+				}
+			}
+		}
+	}
+};
+
+class DataViewListColumn : public ComponentBase{};
+
+class RibbonBarComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonBar *rb = new wxRibbonBar((wxWindow*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))  );
+
+		if( obj->GetPropertyAsString( _("theme"))  == _("Default")) 
+				rb->SetArtProvider( new wxRibbonDefaultArtProvider );
+		else if( obj->GetPropertyAsString( _("theme"))  == _("Generic")) 
+				rb->SetArtProvider( new wxRibbonAUIArtProvider );
+		else if( obj->GetPropertyAsString( _("theme"))  == _("MSW") ) 
+				rb->SetArtProvider( new wxRibbonMSWArtProvider );
+
+		// rb->PushEventHandler( new ComponentEvtHandler( rb, GetManager() ) );
+		
+		return rb;
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxRibbonBar* rb = wxDynamicCast( wxobject, wxRibbonBar );
+		if ( NULL == rb )
+		{
+			// very very strange
+			return;
+		}
+		
+		rb->Realize();
+	}
+};
+
+class RibbonPageComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonPage *rbpage = new wxRibbonPage((wxRibbonBar*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsString(_("label")),
+			obj->GetPropertyAsBitmap(_("bitmap")),
+			0);
+			
+		//rbpage->PushEventHandler( new ComponentEvtHandler( rbpage, GetManager() ) );
+		
+		return rbpage;
+	}
+};
+
+class RibbonPanelComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonPanel *rbp = new wxRibbonPanel((wxRibbonPage*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsString(_("label")),
+			obj->GetPropertyAsBitmap(_("bitmap")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))  );
+			
+		//rbp->PushEventHandler( new ComponentEvtHandler( rbp, GetManager() ) );
+
+		return rbp;
+	}
+
+};
+ 
+class RibbonButtonBarComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonButtonBar *rbb = new wxRibbonButtonBar((wxRibbonPanel*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			0);
+			
+		//rbb->PushEventHandler( new ComponentEvtHandler( rbb, GetManager() ) );
+		
+		return rbb;
+	}
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxRibbonButtonBar* rb = wxDynamicCast( wxobject, wxRibbonButtonBar );
+		if ( NULL == rb )
+		{
+			// very very strange
+			return;
+		}
+
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (childObj->GetClassName() == wxT("ribbonButton"))
+			{
+				rb->AddButton(wxID_ANY,
+							childObj->GetPropertyAsString( _("label") ),
+							childObj->GetPropertyAsBitmap( _("bitmap") ),
+							childObj->GetPropertyAsString( _("help") ) );				
+			} else if (childObj->GetClassName() == wxT("ribbonDropdownButton"))
+			{
+				rb->AddDropdownButton(wxID_ANY,
+									childObj->GetPropertyAsString( _("label") ),
+									childObj->GetPropertyAsBitmap( _("bitmap") ),
+									childObj->GetPropertyAsString( _("help") ) );
+			} else if (childObj->GetClassName() == wxT("ribbonHybridButton"))
+			{
+				rb->AddHybridButton(wxID_ANY,
+								childObj->GetPropertyAsString( _("label") ),
+								childObj->GetPropertyAsBitmap( _("bitmap") ),
+								childObj->GetPropertyAsString( _("help") ) );
+			} else if (childObj->GetClassName() == wxT("ribbonToggleButton"))
+			{
+				rb->AddToggleButton(wxID_ANY,
+									childObj->GetPropertyAsString( _("label") ),
+									childObj->GetPropertyAsBitmap( _("bitmap") ),
+									childObj->GetPropertyAsString( _("help") ) );
+			}
+		}
+	}
+};
+
+class RibbonButtonComponent : public ComponentBase{};
+class RibbonDropdownButtonComponent : public ComponentBase{};
+class RibbonHybridButtonComponent : public ComponentBase{};
+class RibbonToggleButtonComponent : public ComponentBase{};
+
+class RibbonToolBarComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonToolBar *rbb = new wxRibbonToolBar((wxRibbonPanel*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			0 );
+			
+		//rbb->PushEventHandler( new ComponentEvtHandler( rbb, GetManager() ) );
+		
+		return rbb;
+	}
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxRibbonToolBar* rb = wxDynamicCast( wxobject, wxRibbonToolBar );
+		if ( NULL == rb )
+		{
+			// very very strange
+			return;
+		}
+
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (wxT("ribbonTool") == childObj->GetClassName() )
+			{
+				rb->AddTool(wxID_ANY,
+							childObj->GetPropertyAsBitmap( _("bitmap") ),
+							childObj->GetPropertyAsString( _("help") ) );				
+			} else if (wxT("ribbonDropdownTool") == childObj->GetClassName() )
+			{
+				rb->AddDropdownTool(wxID_ANY,
+									childObj->GetPropertyAsBitmap( _("bitmap") ),
+									childObj->GetPropertyAsString( _("help") ) );
+			} else if (wxT("ribbonHybridTool") == childObj->GetClassName() )
+			{
+				rb->AddHybridTool(wxID_ANY,
+								childObj->GetPropertyAsBitmap( _("bitmap") ),
+								childObj->GetPropertyAsString( _("help") ) );
+			} else if (wxT("ribbonToggleTool") == childObj->GetClassName() )
+			{
+				rb->AddToggleTool(wxID_ANY,
+								childObj->GetPropertyAsBitmap( _("bitmap") ),
+								childObj->GetPropertyAsString( _("help") ) );
+
+			}
+		}
+	}
+};
+
+class RibbonToolComponent : public ComponentBase{};
+class RibbonDropdownToolComponent : public ComponentBase{};
+class RibbonHybridToolComponent : public ComponentBase{};
+class RibbonToggleToolComponent : public ComponentBase{};
+
+class RibbonGalleryComponent : public ComponentBase
+{
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxRibbonGallery *ribbonGallery = new wxRibbonGallery((wxRibbonPanel*)parent, 
+			wxID_ANY,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			0);
+			
+		//ribbonGallery->PushEventHandler( new ComponentEvtHandler( ribbonGallery, GetManager() ) );
+		
+		return ribbonGallery;
+	}
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxRibbonGallery* rg = wxDynamicCast( wxobject, wxRibbonGallery );
+		if ( NULL == rg )
+		{
+			// very very strange
+			return;
+		}
+
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if ( wxT("ribbonGalleryItem") == childObj->GetClassName() )
+			{
+				rg->Append(childObj->GetPropertyAsBitmap( _("bitmap") ), wxID_ANY );					
+			}
+		}
+	}
+};
+
+class RibbonGalleryItemComponent : public ComponentBase{};
+
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1687,6 +2011,25 @@ WINDOW_COMPONENT("wxScrollBar",ScrollBarComponent)
 WINDOW_COMPONENT("wxSpinCtrl",SpinCtrlComponent)
 WINDOW_COMPONENT("wxSpinButton",SpinButtonComponent)
 WINDOW_COMPONENT("CustomControl", CustomControlComponent)
+WINDOW_COMPONENT("wxDataViewCtrl", DataViewCtrl )
+WINDOW_COMPONENT("wxDataViewTreeCtrl", DataViewTreeCtrl )
+WINDOW_COMPONENT("wxDataViewListCtrl", DataViewListCtrl )
+ABSTRACT_COMPONENT("dataViewListColumn", DataViewListColumn)
+WINDOW_COMPONENT("wxRibbonBar", RibbonBarComponent)
+WINDOW_COMPONENT("wxRibbonPage", RibbonPageComponent)
+WINDOW_COMPONENT("wxRibbonPanel", RibbonPanelComponent)
+WINDOW_COMPONENT("wxRibbonButtonBar", RibbonButtonBarComponent)
+WINDOW_COMPONENT("wxRibbonToolBar", RibbonToolBarComponent)
+WINDOW_COMPONENT("wxRibbonGallery", RibbonGalleryComponent)
+ABSTRACT_COMPONENT("ribbonButton", RibbonButtonComponent)
+ABSTRACT_COMPONENT("ribbonDropdownButton", RibbonDropdownButtonComponent)
+ABSTRACT_COMPONENT("ribbonHybridButton", RibbonHybridButtonComponent)
+ABSTRACT_COMPONENT("ribbonToggleButton", RibbonToggleButtonComponent)
+ABSTRACT_COMPONENT("ribbonTool", RibbonToolComponent)
+ABSTRACT_COMPONENT("ribbonDropdownTool", RibbonDropdownToolComponent)
+ABSTRACT_COMPONENT("ribbonHybridTool", RibbonHybridToolComponent)
+ABSTRACT_COMPONENT("ribbonToggleTool", RibbonToggleToolComponent)
+ABSTRACT_COMPONENT("ribbonGalleryItem", RibbonGalleryItemComponent)
 
 // wxCheckListBox
 WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
@@ -1852,6 +2195,35 @@ MACRO(wxPG_TOOLBAR)
 
 // wxStyledTextCtrl
 WINDOW_COMPONENT("wxStyledTextCtrl", StyledTextComponent )
+
+// wxDataViewCtrl
+MACRO(wxDV_SINGLE)
+MACRO(wxDV_MULTIPLE)
+MACRO(wxDV_ROW_LINES)
+MACRO(wxDV_HORIZ_RULES)
+MACRO(wxDV_VERT_RULES)
+MACRO(wxDV_VARIABLE_LINE_HEIGHT)
+MACRO(wxDV_NO_HEADER)
+
+// wxRibbonBar
+MACRO(wxRIBBON_BAR_DEFAULT_STYLE)
+MACRO(wxRIBBON_BAR_FOLDBAR_STYLE)
+MACRO(wxRIBBON_BAR_SHOW_PAGE_LABELS)
+MACRO(wxRIBBON_BAR_SHOW_PAGE_ICONS)
+MACRO(wxRIBBON_BAR_FLOW_HORIZONTAL)
+MACRO(wxRIBBON_BAR_FLOW_VERTICAL)
+MACRO(wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS)
+MACRO(wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS)
+MACRO(wxRIBBON_BAR_SHOW_TOGGLE_BUTTON)
+MACRO(wxRIBBON_BAR_SHOW_HELP_BUTTON)
+
+// wxRibbonPanel
+MACRO(wxRIBBON_PANEL_DEFAULT_STYLE)
+MACRO(wxRIBBON_PANEL_NO_AUTO_MINIMISE)
+MACRO(wxRIBBON_PANEL_EXT_BUTTON)
+MACRO(wxRIBBON_PANEL_MINIMISE_BUTTON)
+MACRO(wxRIBBON_PANEL_STRETCH)
+MACRO(wxRIBBON_PANEL_FLEXIBLE)
 #endif
 
 END_LIBRARY()

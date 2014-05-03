@@ -1156,6 +1156,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		else if ( 	type == wxT("menubar")	||
 				type == wxT("menu")		||
 				type == wxT("submenu")	||
+				type == wxT( "ribbonbar" )        ||
 				type == wxT("toolbar")	||
 				type == wxT("tool")	||
 				type == wxT("listbook")	||

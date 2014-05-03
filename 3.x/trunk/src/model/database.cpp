@@ -284,6 +284,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		if (parentType->GetName() == wxT("form") && parent->GetClassName() != wxT("Frame") &&
 			(objType->GetName() == wxT("statusbar") ||
 			objType->GetName() == wxT("menubar") ||
+			objType->GetName() == wxT("ribbonbar") ||
 			objType->GetName() == wxT("toolbar") ))
 			return PObjectBase(); // tipo no válido
 
@@ -717,7 +718,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 
     // Get previous plugin order
 	wxConfigBase* config = wxConfigBase::Get();
-	wxString pages = config->Read( wxT("/palette/pageOrder"), wxT("Common,Additional,Containers,Menu/Toolbar,Layout,Forms,") );
+	wxString pages = config->Read( wxT("/palette/pageOrder"), wxT("Common,Additional,Containers,Menu/Toolbar,Layout,Forms,Ribbon") );
 
 	// Add packages to the vector in the correct order
 	wxStringTokenizer packageList( pages, wxT(",") );
@@ -880,14 +881,33 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("auinotebook")		||
 			type == wxT("widget")			||
 			type == wxT("expanded_widget")	||
-			type == wxT("statusbar")		||
-			type == wxT("component")		||
-			type == wxT("container")		||
-			type == wxT("menubar")			||
-			type == wxT("menu")				||
-			type == wxT("menuitem")			||
-			type == wxT("submenu")			||
-			type == wxT("toolbar")			||
+			type == wxT("statusbar")		   ||
+			type == wxT("component")		   ||
+			type == wxT("container")		   ||
+			type == wxT("menubar")			   ||
+			type == wxT("menu")				   ||
+			type == wxT("menuitem")			   ||
+			type == wxT("submenu")			   ||
+			type == wxT("toolbar")			   ||
+			type == wxT("ribbonbar")			||
+			type == wxT("ribbonpage")			||
+			type == wxT("ribbonpanel")			||
+			type == wxT("ribbonbuttonbar")		||
+			type == wxT("ribbonbutton")			||
+			type == wxT("ribbondropdownbutton" )	||
+			type == wxT("ribbonhybridbutton" ) 	||
+			type == wxT("ribbontogglebutton" ) 	||
+			type == wxT("ribbontoolbar")	   		||
+			type == wxT("ribbontool")		   	||
+			type == wxT("ribbondropdowntool" )  	||
+			type == wxT("ribbonhybridtool" )  		||
+			type == wxT("ribbontoggletool" )  		||
+			type == wxT("ribbongallery")	   		||
+			type == wxT("ribbongalleryitem")   		||
+			type == wxT("dataviewctrl")		   	||
+			type == wxT("dataviewtreectrl")	  	||
+			type == wxT("dataviewlistctrl")	   	||
+			type == wxT("dataviewlistcolumn")	   	||
 			type == wxT("tool")				||
 			type == wxT("splitter")			||
 			type == wxT("treelistctrl")		||
@@ -1301,6 +1321,25 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("menuitem")				||
 			type == wxT("submenu")				||
 			type == wxT("tool")					||
+			type == wxT("ribbonbar")			||
+			type == wxT("ribbonpage")			||
+			type == wxT("ribbonpanel")      		||
+			type == wxT("ribbonbuttonbar")  		||
+			type == wxT("ribbonbutton")  			||
+			type == wxT("ribbondropdownbutton" )	||
+			type == wxT("ribbonhybridbutton" )  	||
+			type == wxT("ribbontogglebutton" )  	||
+			type == wxT("ribbontoolbar")	   		||
+			type == wxT("ribbontool")		   	||
+			type == wxT("ribbondropdowntool" )  	||
+			type == wxT("ribbonhybridtool" ) 		||
+			type == wxT("ribbontoggletool" )  		||
+			type == wxT("ribbongallery")  			||
+			type == wxT("ribbongalleryitem")		||
+			type == wxT("dataviewctrl")			||
+			type == wxT("dataviewtreectrl")		||
+			type == wxT("dataviewlistctrl")		||
+			type == wxT("dataviewlistcolumn")		||
 			type == wxT("notebook")				||
 			type == wxT("flatnotebook")			||
 			type == wxT("listbook")				||

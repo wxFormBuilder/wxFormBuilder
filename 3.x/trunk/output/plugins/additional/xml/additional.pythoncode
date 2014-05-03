@@ -34,12 +34,103 @@ Python code generation written by
 	<template name="evt_connect_OnTreeStateImageClick">self.$name.Bind( wx.EVT_TREE_STATE_IMAGE_CLICK, #handler )</template>
   </templates>
 
-  <templates class="wxHtmlWindow">
-    <template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="include">import wx.html</template>
-	<template name="evt_connect_OnHtmlCellClicked">self.$name.Bind( wx.html.EVT_HTML_CELL_CLICKED, #handler )</template>
-	<template name="evt_connect_OnHtmlCellHover">self.$name.Bind( wx.html.EVT_HTML_CELL_HOVER, #handler )</template>
-	<template name="evt_connect_OnHtmlLinkClicked">self.$name.Bind( wx.html.EVT_HTML_LINK_CLICKED, #handler )</template>
+  <templates class="wxDataViewCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">import wx.dataview</template>
+	<template name="construction">
+		self.$name = wx.dataview.DataViewCtrl( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="evt_connect_OnDataViewCtrlSelectionChanged">self.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemActivated">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemStartEditing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_START_EDITING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingStarted">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_STARTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemEditingDone">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_DONE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemCollapsed">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanding">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemExpanded">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemValueChanged">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_VALUE_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemContextMenu">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_CONTEXT_MENU, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnSorted">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_SORTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlColumnReordered">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_REORDERED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemBeginDrag">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_BEGIN_DRAG, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemDropPossible">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP_POSSIBLE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewCtrlItemDrop">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP, #handler, id = $id )</template>
+  </templates>
+
+  <templates class="wxDataViewTreeCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">import wx.dataview</template>
+	<template name="construction">
+		self.$name = wx.dataview.DataViewTreeCtrl( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">self.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemActivated">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_START_EDITING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_STARTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_DONE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanding">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemExpanded">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_VALUE_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_CONTEXT_MENU, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnSorted">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_SORTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlColumnReordered">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_REORDERED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_BEGIN_DRAG, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP_POSSIBLE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewTreeCtrlItemDrop">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP, #handler, id = $id )</template>
+  </templates>
+
+  <templates class="wxDataViewListCtrl">
+	<template name="declaration">#class* $name;</template>
+	<template name="include">import wx.dataview</template>
+	<template name="construction">
+		self.$name = wx.dataview.DataViewListCtrl( #wxparent $name, $id, $pos, $size, $window_style);
+	</template>
+	<template name="evt_connect_OnDataViewListCtrlSelectionChanged">self.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemActivated">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemStartEditing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_START_EDITING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingStarted">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_STARTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemEditingDone">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EDITING_DONE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsing">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemCollapsed">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanding">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDING, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemExpanded">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemValueChanged">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_VALUE_CHANGED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemContextMenu">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_CONTEXT_MENU, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnSorted">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_SORTED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlColumnReordered">self.Bind( wx.dataview.EVT_DATAVIEW_COLUMN_REORDERED, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemBeginDrag">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_BEGIN_DRAG, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDropPossible">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP_POSSIBLE, #handler, id = $id )</template>
+	<template name="evt_connect_OnDataViewListCtrlItemDrop">self.Bind( wx.dataview.EVT_DATAVIEW_ITEM_DROP, #handler, id = $id )</template>
+  </templates>
+
+  <templates class="dataViewListColumn">
+	<template name="construction">
+		#ifequal $type "Text"
+		@{
+			self.$name = self.#parent $name.AppendTextColumn( $label )
+		@}
+		#ifequal $type "Toggle"
+		@{
+			self.$name = self.#parent $name.AppendToggleColumn( $label )
+		@}
+		#ifequal $type "Progress"
+		@{
+			self.$name = self.#parent $name.AppendProgressColumn( $label )
+		@}
+		#ifequal $type "IconText"
+		@{
+			self.$name = self.#parent $name.AppendIconTextColumn( $label )
+		@}
+	</template>
   </templates>
 
   <templates class="wxRichTextCtrl">
@@ -388,5 +479,5 @@ Python code generation written by
 			self.$name = wx.Window( #wxparent $name )
 		</template>
 	</templates>
-	
+
 </codegen>

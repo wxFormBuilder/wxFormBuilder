@@ -911,6 +911,7 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 					tname == wxT("listbook") ||
 					tname == wxT("choicebook") ||
 					tname == wxT("treelistctrl") ||
+					tname == wxT("ribbonbar") ||
 					tname == wxT("splitter") ) )
 	{
 		if( obj->GetParent()->GetObjectTypeName() == wxT("form") )

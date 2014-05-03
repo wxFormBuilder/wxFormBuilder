@@ -236,7 +236,7 @@ m_findDialog( NULL )
 	bundle.AddIcon( ico32 );
 
 	SetIcons( bundle );
-
+	
 	SetTitle( wxT( "wxFormBuilder" ) );
 
 	//SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
@@ -979,7 +979,7 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.4 - beta"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
+	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.5 - beta"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries

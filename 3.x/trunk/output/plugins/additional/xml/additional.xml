@@ -49,7 +49,121 @@ Written by
 	<event name="OnTreeStateImageClick" class="wxTreeEvent" help="The state image has been clicked. Windows only." />
   </objectinfo>
 
-  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
+  <objectinfo class="wxDataViewCtrl" icon="dataview_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
+	<inherits class="wxControl" />	
+	<inherits class="wxWindow" />
+	<property name="name" type="text">m_dataViewCtrl</property>
+	<property name="style" type="bitlist">
+		<option name="wxDV_SINGLE" help="Single selection mode. This is the default." />
+		<option name="wxDV_MULTIPLE" help="Multiple selection mode." />
+		<option name="wxDV_ROW_LINES" help="Use alternating colours for rows if supported by platform and theme. Currently only supported by the native GTK and OS X implementations but not by the generic one." />
+		<option name="wxDV_HORIZ_RULES" help="Display the separator lines between rows" />
+		<option name="wxDV_VERT_RULES" help="Display the separator lines between columns." />
+		<option name="wxDV_VARIABLE_LINE_HEIGHT" help="Allow variable line heights. This can be inefficient when displaying large number of items." />
+		<option name="wxDV_NO_HEADER" help="Do not show column headers (which are shown by default)." />
+	</property>
+	<template name="generated_event_handlers"></template>
+	<event name="OnDataViewCtrlSelectionChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_SELECTION_CHANGED event." />
+	<event name="OnDataViewCtrlItemActivated" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_ACTIVATED event. This event is triggered by double clicking an item or pressing some special key (usually 'Enter') when it is focused." />
+	<event name="OnDataViewCtrlItemStartEditing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_START_EDITING event. This event can be vetoed in order to prevent editing on an item by item basis." />
+	<event name="OnDataViewCtrlItemEditingStarted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_STARTED event." />
+	<event name="OnDataViewCtrlItemEditingDone" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_DONE event." />
+	<event name="OnDataViewCtrlItemCollapsing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSING event." />
+	<event name="OnDataViewCtrlItemCollapsed" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSED event." />
+	<event name="OnDataViewCtrlItemExpanding" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDING event." />
+	<event name="OnDataViewCtrlItemExpanded" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDED event." />
+	<event name="OnDataViewCtrlItemValueChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_VALUE_CHANGED event" />
+	<event name="OnDataViewCtrlItemContextMenu" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_CONTEXT_MENU event generated when the user right clicks inside the control. Notice that this menu is generated even if the click didn't occur on any valid item, in this case wxDataViewEvent::GetItem() simply returns an invalid item." />
+	<event name="OnDataViewCtrlColumnHeaderClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_CLICK event." />
+	<event name="OnDataViewCtrlColumnHeaderRightClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK event. Notice that currently this event is not generated in the native OS X versions of the control." />
+	<event name="OnDataViewCtrlColumnSorted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_SORTED event." />
+	<event name="OnDataViewCtrlColumnReordered" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_REORDERED event." />
+	<event name="OnDataViewCtrlItemBeginDrag" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_BEGIN_DRAG event." />
+	<event name="OnDataViewCtrlItemDropPossible" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP_POSSIBLE event." />
+	<event name="OnDataViewCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
+ </objectinfo>
+
+  <objectinfo class="wxDataViewTreeCtrl"  icon="dataviewtree_ctrl.xpm" type="dataviewtreectrl" wxversion="2904" >
+	<inherits class="wxControl" />	
+	<inherits class="wxWindow" />
+	<property name="name" type="text">m_dataViewTreeCtrl</property>
+	<property name="style" type="bitlist">
+		<option name="wxDV_SINGLE" help="Single selection mode. This is the default." />
+		<option name="wxDV_MULTIPLE" help="Multiple selection mode." />
+		<option name="wxDV_ROW_LINES" help="Use alternating colours for rows if supported by platform and theme. Currently only supported by the native GTK and OS X implementations but not by the generic one." />
+		<option name="wxDV_HORIZ_RULES" help="Display the separator lines between rows" />
+		<option name="wxDV_VERT_RULES" help="Display the separator lines between columns." />
+		<option name="wxDV_VARIABLE_LINE_HEIGHT" help="Allow variable line heights. This can be inefficient when displaying large number of items." />
+		<option name="wxDV_NO_HEADER" help="Do not show column headers (which are shown by default)." />
+	</property>
+	<template name="generated_event_handlers"></template>
+	<event name="OnDataViewTreeCtrlSelectionChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_SELECTION_CHANGED event." />
+	<event name="OnDataViewTreeCtrlItemActivated" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_ACTIVATED event. This event is triggered by double clicking an item or pressing some special key (usually 'Enter') when it is focused." />
+	<event name="OnDataViewTreeCtrlItemStartEditing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_START_EDITING event. This event can be vetoed in order to prevent editing on an item by item basis." />
+	<event name="OnDataViewTreeCtrlItemEditingStarted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_STARTED event." />
+	<event name="OnDataViewTreeCtrlItemEditingDone" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_DONE event." />
+	<event name="OnDataViewTreeCtrlItemCollapsing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSING event." />
+	<event name="OnDataViewTreeCtrlItemCollapsed" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSED event." />
+	<event name="OnDataViewTreeCtrlItemExpanding" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDING event." />
+	<event name="OnDataViewTreeCtrlItemExpanded" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDED event." />
+	<event name="OnDataViewTreeCtrlItemValueChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_VALUE_CHANGED event" />
+	<event name="OnDataViewTreeCtrlItemContextMenu" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_CONTEXT_MENU event generated when the user right clicks inside the control. Notice that this menu is generated even if the click didn't occur on any valid item, in this case wxDataViewEvent::GetItem() simply returns an invalid item." />
+	<event name="OnDataViewTreeCtrlColumnHeaderClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_CLICK event." />
+	<event name="OnDataViewTreeCtrlColumnHeaderRightClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK event. Notice that currently this event is not generated in the native OS X versions of the control." />
+	<event name="OnDataViewTreeCtrlColumnSorted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_SORTED event." />
+	<event name="OnDataViewTreeCtrlColumnReordered" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_REORDERED event." />
+	<event name="OnDataViewTreeCtrlItemBeginDrag" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_BEGIN_DRAG event." />
+	<event name="OnDataViewTreeCtrlItemDropPossible" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP_POSSIBLE event." />
+	<event name="OnDataViewTreeCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
+  </objectinfo>
+
+  <objectinfo class="wxDataViewListCtrl" icon="dataviewlist_ctrl.xpm" type="dataviewlistctrl" wxversion="2904" >
+	<inherits class="wxControl" />	
+	<inherits class="wxWindow" />
+	<property name="name" type="text">m_dataViewListCtrl</property>
+	<property name="style" type="bitlist">
+		<option name="wxDV_SINGLE" help="Single selection mode. This is the default." />
+		<option name="wxDV_MULTIPLE" help="Multiple selection mode." />
+		<option name="wxDV_ROW_LINES" help="Use alternating colours for rows if supported by platform and theme. Currently only supported by the native GTK and OS X implementations but not by the generic one." />
+		<option name="wxDV_HORIZ_RULES" help="Display the separator lines between rows" />
+		<option name="wxDV_VERT_RULES" help="Display the separator lines between columns." />
+		<option name="wxDV_VARIABLE_LINE_HEIGHT" help="Allow variable line heights. This can be inefficient when displaying large number of items." />
+		<option name="wxDV_NO_HEADER" help="Do not show column headers (which are shown by default)." />
+	</property>
+	<template name="generated_event_handlers"></template>
+	<event name="OnDataViewListCtrlSelectionChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_SELECTION_CHANGED event." />
+	<event name="OnDataViewListCtrlItemActivated" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_ACTIVATED event. This event is triggered by double clicking an item or pressing some special key (usually 'Enter') when it is focused." />
+	<event name="OnDataViewListCtrlItemStartEditing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_START_EDITING event. This event can be vetoed in order to prevent editing on an item by item basis." />
+	<event name="OnDataViewListCtrlItemEditingStarted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_STARTED event." />
+	<event name="OnDataViewListCtrlItemEditingDone" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EDITING_DONE event." />
+	<event name="OnDataViewListCtrlItemCollapsing" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSING event." />
+	<event name="OnDataViewListCtrlItemCollapsed" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_COLLAPSED event." />
+	<event name="OnDataViewListCtrlItemExpanding" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDING event." />
+	<event name="OnDataViewListCtrlItemExpanded" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_EXPANDED event." />
+	<event name="OnDataViewListCtrlItemValueChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_VALUE_CHANGED event" />
+	<event name="OnDataViewListCtrlItemContextMenu" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_CONTEXT_MENU event generated when the user right clicks inside the control. Notice that this menu is generated even if the click didn't occur on any valid item, in this case wxDataViewEvent::GetItem() simply returns an invalid item." />
+	<event name="OnDataViewListCtrlColumnHeaderClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_CLICK event." />
+	<event name="OnDataViewListCtrlColumnHeaderRightClick" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_HEADER_RIGHT_CLICK event. Notice that currently this event is not generated in the native OS X versions of the control." />
+	<event name="OnDataViewListCtrlColumnSorted" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_SORTED event." />
+	<event name="OnDataViewListCtrlColumnReordered" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_COLUMN_REORDERED event." />
+	<event name="OnDataViewListCtrlItemBeginDrag" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_BEGIN_DRAG event." />
+	<event name="OnDataViewListCtrlItemDropPossible" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP_POSSIBLE event." />
+	<event name="OnDataViewListCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
+  </objectinfo>
+
+  <objectinfo class="dataViewListColumn" icon="dataviewlist_column.xpm" type="dataviewlistcolumn" wxversion="2904" >
+	<property name="name" type="text">m_dataViewListColumn</property>
+    <property name="label" type="wxString_i18n">Name</property>
+	<property name="type" type="option">
+		<option name="Text" help="Appends a text column to the control and the store."/>
+		<option name="Toggle" help="Appends a toggle column to the control and the store."/>
+		<option name="Progress" help="Appends a progress column to the control and the store."/>
+		<option name="IconText" help="Appends an icon-and-text column to the control and the store."/>
+		Text
+	</property>
+  </objectinfo>
+
+  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" startgroup="1" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />
     <property name="name" type="text">m_htmlWin</property>
@@ -266,7 +380,7 @@ Written by
     <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked." />
   </objectinfo>
   
-	<objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="expanded_widget" wxversion="2904" startgroup="1">
+	<objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="expanded_widget" wxversion="2904" >
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
 		<property name="style" type="bitlist">
@@ -586,7 +700,7 @@ Written by
 	<event name="OnTimer" class="wxTimerEvent" help="Process a wxEVT_TIMER event, when the timer ticks." />
   </objectinfo>
   
-  <objectinfo class="wxMediaCtrl" startgroup="1" icon="media_ctrl.xpm" type="widget">
+  <objectinfo class="wxMediaCtrl" startgroup="0" icon="media_ctrl.xpm" type="widget">
 	<inherits class="wxControl" />	
 	<inherits class="wxWindow" />
 	<inherits class="AUI" />

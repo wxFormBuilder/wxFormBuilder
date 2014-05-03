@@ -50,9 +50,9 @@ else
         "../../src/controls/src/wxFlatNotebook/**.cpp"
     }
 	if wxUseMediaCtrl then
-		libs                 = "std,stc,richtext,propgrid,aui,media"
+		libs	= "std,stc,richtext,propgrid,aui,ribbon,media"
 	else
-		libs					= "std,stc,richtext,propgrid,aui"
+		libs	= "std,stc,richtext,propgrid,aui,ribbon"
 	end
 end
 
