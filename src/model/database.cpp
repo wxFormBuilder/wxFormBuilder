@@ -718,7 +718,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 
     // Get previous plugin order
 	wxConfigBase* config = wxConfigBase::Get();
-	wxString pages = config->Read( wxT("/palette/pageOrder"), wxT("Common,Additional,Containers,Menu/Toolbar,Layout,Forms,Ribbon") );
+	wxString pages = config->Read( wxT("/palette/pageOrder"), wxT("Common,Additional,Data,Containers,Menu/Toolbar,Layout,Forms,Ribbon") );
 
 	// Add packages to the vector in the correct order
 	wxStringTokenizer packageList( pages, wxT(",") );

@@ -44,11 +44,9 @@ Python code generation writen by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 				@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
-			#ifparenttypeequal "container"
-				@{ self.#parent $name.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 				@{ self.Bind( wx.EVT_RIGHT_DOWN, self.#parent $name #append OnContextMenu ) @}
 			#ifparenttypeequal "tool"
 				@{ self.Bind( wx.aui.EVT_AUITOOLBAR_TOOL_DROPDOWN, self.#parent $name #append OnDropDownMenu ) @}
@@ -66,17 +64,12 @@ Python code generation writen by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 			@{
 				def #parent $name #append OnContextMenu( self, event ): #indent #nl
 				self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
 			@}
-			#ifparenttypeequal "container"
-			@{
-				def #parent $name #append OnContextMenu( self, event ): #indent #nl
-				self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
-			@}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 			@{
 				def #parent $name #append OnContextMenu( self, event ): #indent #nl
 				self.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent

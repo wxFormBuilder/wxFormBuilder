@@ -96,7 +96,7 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 
 	if (obj)
 	{
-		if( obj->GetObjectTypeName() == wxT("widget") && obj->GetPropertyAsInteger( wxT("context_menu") ) )
+		if( obj->GetPropertyAsInteger( wxT("context_menu") ) )
 		{
 			PObjectBase menu;
 

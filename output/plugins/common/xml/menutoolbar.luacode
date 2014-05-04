@@ -44,11 +44,9 @@ Lua code generation written by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 				@{ #utbl#parent $name:Connect( wx.wxEVT_RIGHT_DOWN, #utbl#parent $name #append OnContextMenu ) @}
-			#ifparenttypeequal "container"
-				@{ #utbl#parent $name:Connect( wx.wxEVT_RIGHT_DOWN, #utbl#parent $name #append OnContextMenu ) @}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 				@{ #utbl#parent$name:Connect( wx.wxEVT_RIGHT_DOWN, #utbl#parent $name #append OnContextMenu ) @}
 			#ifparenttypeequal "tool"
 				@{ #utbl#parent$name:Connect( wx.aui.EVT_AUITOOLBAR_TOOL_DROPDOWN, #utbl#parent $name #append OnDropDownMenu ) @}
@@ -66,17 +64,12 @@ Lua code generation written by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 			@{
 				function #utbl#parent $name #append OnContextMenu(  event ) #indent #nl
 				#utbl#parent $name:PopupMenu( #utbl$name, event:GetPosition() ) #nl #unindent #nl end
 			@}
-			#ifparenttypeequal "container"
-			@{
-				function #utbl#parent $name #append OnContextMenu(  event ) #indent #nl
-				#utbl#parent $name:PopupMenu( #utbl$name, event:GetPosition() ) #nl #unindent #nl end
-			@}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 			@{
 				function #utbl#parent $name #append OnContextMenu(  event ) #indent #nl
 				#utbl#parent$name:PopupMenu( #utbl$name, event:GetPosition() ) #nl #unindent #nl end

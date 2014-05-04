@@ -59,11 +59,9 @@ Written by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 				@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
-			#ifparenttypeequal "container"
-				@{ #parent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 				@{ #wxparent $name->Connect( wxEVT_RIGHT_DOWN, wxMouseEventHandler( #form $name::#parent $name #append OnContextMenu ), NULL, this ); @}
 			#ifparenttypeequal "tool"
 				@{ #wxparent $name->Connect( #parent $name->GetId(), wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, wxAuiToolBarEventHandler( #form $name::#parent $name #append OnDropDownMenu ), NULL, this ); @}
@@ -81,21 +79,14 @@ Written by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 			@{
 				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
 				#nl { #indent
 					#nl #parent $name->PopupMenu( $name, event.GetPosition() ); #unindent
 				#nl }
 			@}
-			#ifparenttypeequal "container"
-			@{
-				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
-				#nl { #indent
-					#nl #parent $name->PopupMenu( $name, event.GetPosition() ); #unindent
-				#nl }
-			@}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 			@{
 				#nl void #parent $name #append OnContextMenu( wxMouseEvent &amp;event )
 				#nl { #indent
