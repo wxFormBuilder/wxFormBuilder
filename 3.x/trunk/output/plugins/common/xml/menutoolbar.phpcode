@@ -44,11 +44,9 @@ PHP code generation writen by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		  @{
-			#ifparenttypeequal "widget"
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
 	        	@{ @$this->#parent $name->Connect( wxEVT_RIGHT_DOWN, @$this->#parent $name #append OnContextMenu ); @}
-			#ifparenttypeequal "container"
-	        	@{ @$this->#parent $name->Connect( wxEVT_RIGHT_DOWN, @$this->#parent $name #append OnContextMenu ); @}
-			#ifparenttypeequal "form"
+			#ifparenttypeequal "form || wizard"
 	        	@{ @$this->Connect( wxEVT_RIGHT_DOWN, @$this->#parent $name #append OnContextMenu ); @}
 	        #ifparenttypeequal "tool"
 				@{ @$this->Connect( wxEVT_COMMAND_AUITOOLBAR_TOOL_DROPDOWN, @$this->#parent $name #append OnDropDownMenu ); @}
@@ -67,19 +65,13 @@ PHP code generation writen by
 		#ifnotnull #parent $context_menu
 		@{ #ifequal #parent $context_menu "1"
 		@{
-         		#ifparenttypeequal "widget"
+         		#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
                 	@{
 				function #parent $name #append OnContextMenu( @$event ){ #indent #nl
 					@$this->#parent $name->PopupMenu( @$this->$name, @$event->GetPosition() ) #nl #unindent
 				}
                 	@}
-         		#ifparenttypeequal "container"
-                	@{
-				function #parent $name #append OnContextMenu( @$event ){ #indent #nl
-					@$this->#parent $name->PopupMenu( @$this->$name, @$event->GetPosition() ) #nl #unindent
-				}
-                	@}
-         		#ifparenttypeequal "form"
+         		#ifparenttypeequal "form || wizard"
                 	@{
 				function #parent $name #append OnContextMenu(@$event ){ #indent #nl
 					@$this->PopupMenu( @$this->$name, @$event->GetPosition() ); #nl #unindent

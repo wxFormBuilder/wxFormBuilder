@@ -103,8 +103,10 @@
 	<childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
   
-  <objtype name="expanded_widget" />
-
+  <objtype name="expanded_widget">
+	<childtype name="menu" nmax="1" aui_nmax="1"/>
+  </objtype>
+  
   <objtype name="sizer">
     <childtype name="sizeritem" />
   </objtype>
@@ -292,18 +294,24 @@
 
   <objtype name="treelistctrl" >
     <childtype name="treelistctrlcolumn" />
+	<childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="treelistctrlcolumn" />
   
   <objtype name="nonvisual" />
 
-  <objtype name="dataviewctrl" />
+  <objtype name="dataviewctrl">
+    <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
+  </objtype>
 
-  <objtype name="dataviewtreectrl" />
+  <objtype name="dataviewtreectrl">
+    <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
+  </objtype>
 
   <objtype name="dataviewlistctrl" >
     <childtype name="dataviewlistcolumn" />
+	<!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
 
   <objtype name="dataviewlistcolumn" />
