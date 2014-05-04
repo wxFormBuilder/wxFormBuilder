@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Lua code generation written by
+  Vratislav Zival
+-->
+<codegen language="Lua">
+
+  <templates class="wxTreeCtrl">
+    <template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnTreeGetInfo">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_GET_INFO, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTreeSetInfo">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SET_INFO, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTreeItemGetTooltip">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTreeStateImageClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+  
+	<templates class="wxDataViewCtrl">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
+		</template>
+		<template name="evt_connect_OnDataViewCtrlSelectionChanged">-- event #utbl$name:OnDataViewCtrlSelectionChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemActivated">-- event #utbl$name:OnDataViewCtrlItemActivated isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemStartEditing">-- event #utbl$name:OnDataViewCtrlItemStartEditing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemEditingStarted">-- event #utbl$name:OnDataViewCtrlItemEditingStarted isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemEditingDone">-- event #utbl$name:OnDataViewCtrlItemEditingDone isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemCollapsing">-- event #utbl$name:OnDataViewCtrlItemCollapsing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemCollapsed">-- event #utbl$name:OnDataViewCtrlItemCollapsed isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemExpanding">-- event #utbl$name:OnDataViewCtrlItemExpanding isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemExpanded">-- event #utbl$name:OnDataViewCtrlItemExpanded isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemValueChanged">-- event #utbl$name:OnDataViewCtrlItemValueChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemContextMenu">-- event #utbl$name:OnDataViewCtrlItemContextMenu isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlColumnHeaderClick">-- event #utbl$name:OnDataViewCtrlColumnHeaderClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick">-- event #utbl$name:OnDataViewCtrlColumnHeaderRightClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlColumnSorted">-- event #utbl$name:OnDataViewCtrlColumnSortedisn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlColumnReordered">-- event #utbl$name:OnDataViewCtrlColumnReordered isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemBeginDrag">-- event #utbl$name:OnDataViewCtrlItemBeginDrag isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemDropPossible">-- event #utbl$name:OnDataViewCtrlItemDropPossible isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewCtrlItemDrop">-- event #utbl$name:OnDataViewCtrlItemDrop isn't currently supported by wxLua</template>
+	</templates>
+
+	<templates class="wxDataViewTreeCtrl">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
+		</template>
+		<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">-- event #utbl$name:OnDataViewTreeCtrlSelectionChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemActivated">-- event #utbl$name:OnDataViewTreeCtrlItemActivated isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing">-- event #utbl$name:OnDataViewTreeCtrlItemStartEditing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted">-- event #utbl$name:OnDataViewTreeCtrlItemEditingStarted isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone">-- event #utbl$name:OnDataViewTreeCtrlItemEditingDone isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing">-- event #utbl$name:OnDataViewTreeCtrlItemCollapsing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed">-- event #utbl$name:OnDataViewTreeCtrlItemCollapsed isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemExpanding">-- event #utbl$name:OnDataViewTreeCtrlItemExpanding isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemExpanded">-- event #utbl$name:OnDataViewTreeCtrlItemExpanded isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged">-- event #utbl$name:OnDataViewTreeCtrlItemValueChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu">-- event #utbl$name:OnDataViewTreeCtrlItemContextMenu isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick">-- event #utbl$name:OnDataViewTreeCtrlColumnHeaderClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick">-- event #utbl$name:OnDataViewTreeCtrlColumnHeaderRightClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnSorted">-- event #utbl$name:OnDataViewTreeCtrlColumnSortedisn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnReordered">-- event #utbl$name:OnDataViewTreeCtrlColumnReordered isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag">-- event #utbl$name:OnDataViewTreeCtrlItemBeginDrag isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible">-- event #utbl$name:OnDataViewTreeCtrlItemDropPossible isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemDrop">-- event #utbl$name:OnDataViewTreeCtrlItemDrop isn't currently supported by wxLua</template>
+	</templates>
+
+	<templates class="wxDataViewListCtrl">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
+		</template>
+		<template name="evt_connect_OnDataViewListCtrlSelectionChanged">-- event #utbl$name:OnDataViewListCtrlSelectionChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemActivated">-- event #utbl$name:OnDataViewListCtrlItemActivated isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemStartEditing">-- event #utbl$name:OnDataViewListCtrlItemStartEditing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemEditingStarted">-- event #utbl$name:OnDataViewListCtrlItemEditingStarted isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemEditingDone">-- event #utbl$name:OnDataViewListCtrlItemEditingDone isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemCollapsing">-- event #utbl$name:OnDataViewListCtrlItemCollapsing isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemCollapsed">-- event #utbl$name:OnDataViewListCtrlItemCollapsed isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemExpanding">-- event #utbl$name:OnDataViewListCtrlItemExpanding isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemExpanded">-- event #utbl$name:OnDataViewListCtrlItemExpanded isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemValueChanged">-- event #utbl$name:OnDataViewListCtrlItemValueChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemContextMenu">-- event #utbl$name:OnDataViewListCtrlItemContextMenu isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick">-- event #utbl$name:OnDataViewListCtrlColumnHeaderClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick">-- event #utbl$name:OnDataViewListCtrlColumnHeaderRightClick isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnSorted">-- event #utbl$name:OnDataViewListCtrlColumnSortedisn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnReordered">-- event #utbl$name:OnDataViewListCtrlColumnReordered isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemBeginDrag">-- event #utbl$name:OnDataViewListCtrlItemBeginDrag isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemDropPossible">-- event #utbl$name:OnDataViewListCtrlItemDropPossible isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnDataViewListCtrlItemDrop">-- event #utbl$name:OnDataViewListCtrlItemDrop isn't currently supported by wxLua</template>
+	</templates>
+	
+	<templates class="dataViewListColumn">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+		</template>
+	</templates>
+
+  <templates class="wxCheckListBox">
+	<template name="construction">
+		#utbl$name #append Choices = {$choices} #nl
+		#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+	<template name="evt_connect_OnCheckListBoxToggled">#utbl$name:Connect( wx.wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCheckListBox">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCheckListBoxDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxGrid">
+    <template name="include"/><!--import wx.grid</template>-->
+	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="settings">
+    	#nl @-- Grid
+    	#nl #utbl$name:CreateGrid( $rows, $cols )
+		#nl #utbl$name:EnableEditing( $editing )
+		#nl #utbl$name:EnableGridLines( $grid_lines )
+		#ifnotnull $grid_line_color
+		@{
+			#nl #utbl$name:SetGridLineColour( $grid_line_color )
+		@}
+		#nl #utbl$name:EnableDragGridSize( $drag_grid_size )
+		#nl #utbl$name:SetMargins( $margin_width, $margin_height )
+		#nl
+		#nl @-- Columns
+		#foreach $column_sizes
+		@{ #utbl$name:SetColSize( #npred, #pred ) @}
+		#ifnotequal $autosize_cols "0"
+		@{
+			#nl #utbl$name:AutoSizeColumns()
+		@}
+		#nl #utbl$name:EnableDragColSize( $drag_col_size )
+		#nl #utbl$name:SetColLabelSize( $col_label_size )
+		#foreach $col_label_values
+		@{ #utbl$name:SetColLabelValue( #npred, #pred ) @}
+		#nl #utbl$name:SetColLabelAlignment( $col_label_horiz_alignment, $col_label_vert_alignment )
+		#nl
+		#nl @-- Rows
+		#foreach $row_sizes
+		@{ #utbl$name:SetRowSize( #npred, #pred ) @}
+		#ifnotequal $autosize_rows "0"
+		@{
+			#nl #utbl$name:AutoSizeRows()
+		@}
+		#nl #utbl$name:EnableDragRowSize( $drag_row_size )
+		#nl #utbl$name:SetRowLabelSize( $row_label_size )
+		#foreach $row_label_values
+		@{ #utbl$name:SetRowLabelValue( #npred, #pred ) @}
+		#nl #utbl$name:SetRowLabelAlignment( $row_label_horiz_alignment, $row_label_vert_alignment )
+		#nl
+		#nl @-- Label Appearance
+		#ifnotnull $label_bg
+		@{
+			#nl #utbl$name:SetLabelBackgroundColour( $label_bg )
+		@}
+		#ifnotnull $label_font
+		@{
+			#nl #utbl$name:SetLabelFont( $label_font )
+		@}
+		#ifnotnull $label_text
+		@{
+			#nl #utbl$name:SetLabelTextColour( $label_text )
+		@}
+		#nl
+		#nl @-- Cell Defaults
+		#ifnotnull $cell_bg
+		@{
+			#nl #utbl$name:SetDefaultCellBackgroundColour( $cell_bg )
+		@}
+		#ifnotnull $cell_text
+		@{
+			#nl #utbl$name:SetDefaultCellTextColour( $cell_text )
+		@}
+		#ifnotnull $cell_font
+		@{
+			#nl #utbl$name:SetDefaultCellFont( $cell_font )
+		@}
+		#nl #utbl$name:SetDefaultCellAlignment( $cell_horiz_alignment, $cell_vert_alignment )
+    </template>
+	<template name="evt_connect_OnGridCellLeftClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCellRightClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCellLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCellRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridLabelLeftClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridLabelRightClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridLabelLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridLabelRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridSelectCell">#utbl$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridEditorHidden">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridEditorShown">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellLeftClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellRightClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdLabelLeftClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdLabelRightClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdLabelLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdLabelRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdSelectCell">#utbl$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdEditorHidden">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdEditorShown">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridColSize">#utbl$name:Connect( wx.wxEVT_GRID_COL_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridRowSize">#utbl$name:Connect( wx.wxEVT_GRID_ROW_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdColSize">#utbl$name:Connect( wx.wxEVT_GRID_COL_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdRowSize">#utbl$name:Connect( wx.wxEVT_GRID_ROW_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridRangeSelect">#utbl$name:Connect( wx.wxEVT_GRID_RANGE_SELECT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdRangeSelect">#utbl$name:Connect( wx.wxEVT_GRID_RANGE_SELECT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridEditorCreated">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdEditorCreated">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+  
+  	<templates class="wxPropertyGrid">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
+		</template>
+	</templates>
+
+	<templates class="wxPropertyGridManager">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
+		</template>
+	</templates>
+
+</codegen>
