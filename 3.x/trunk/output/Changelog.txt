@@ -3,6 +3,7 @@
 05/03/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.
 + Added support for wxDataViewCtrl and derived classes.
+* #140 GUI dont work after some controls added
 
 04/13/2014 Version 3.04.03 (Beta)
 * Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle

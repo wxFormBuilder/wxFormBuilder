@@ -138,10 +138,10 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 	int tbWidth, tbHeight;
 
 	int wbPosX, wbPosY; // window buttons
-	int wbWidth, wbHeight;
+	int wbWidth /*, wbHeight*/;
 
 	int txtPosX, txtPosY; // title text position
-	int txtWidth, txtHeight;
+	int /*txtWidth,*/ txtHeight;
 
 	// setup all variables
 
@@ -152,7 +152,7 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 	tbHeight = m_close.GetHeight() + margin * 2;
 	tbWidth = clientSize.GetWidth();
 
-	wbHeight = m_close.GetHeight();
+	/*wbHeight = m_close.GetHeight();*/
 	wbWidth = m_close.GetWidth();
 	wbPosX = tbPosX + tbWidth - wbWidth - 2 * margin;
 	wbPosY = tbPosX + margin;
@@ -160,7 +160,7 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 	txtPosY = tbPosY + margin;
 	txtPosX = tbPosX + 15 + 2 * margin;
 	txtHeight = tbHeight - 2 * margin + 1;
-	txtWidth = wbPosX - 2 * margin - txtPosX;
+	/*txtWidth = wbPosX - 2 * margin - txtPosX;*/
 
 	// Draw title background with vertical gradient.
 	float incR = ( float )( m_colour2.Red() - m_colour1.Red() ) / tbWidth;
@@ -485,7 +485,7 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 
 		wxCommandEvent event( wxEVT_INNER_FRAME_RESIZED, GetId() );
 		event.SetEventObject( this );
-		GetEventHandler()->ProcessEvent( event );
+		GetEventHandler()->AddPendingEvent( event );
 
 		VEditor->Scroll( scrolledposX, scrolledposY );
 		Thaw();

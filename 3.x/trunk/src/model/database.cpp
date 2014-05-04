@@ -881,6 +881,8 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("auinotebook")		||
 			type == wxT("widget")			||
 			type == wxT("expanded_widget")	||
+			type == wxT("propgrid")	||
+			type == wxT("propgridman")	||
 			type == wxT("statusbar")		   ||
 			type == wxT("component")		   ||
 			type == wxT("container")		   ||
@@ -1347,6 +1349,10 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("auinotebook")			||
 			type == wxT("widget")				||
 			type == wxT("expanded_widget")		||
+			type == wxT("propgrid")		||
+			type == wxT("propgridman")		||
+			type == wxT("propgridpage")		||
+			type == wxT("propgriditem")		||
 			type == wxT("statusbar")			||
 			type == wxT("component")			||
 			type == wxT("container")			||

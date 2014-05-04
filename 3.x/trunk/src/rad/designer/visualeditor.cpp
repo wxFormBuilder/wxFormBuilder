@@ -47,7 +47,7 @@ static const int ID_TIMER_SCAN = wxNewId();
 BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
 	//EVT_SASH_DRAGGED(-1, VisualEditor::OnResizeBackPanel)
 	//EVT_COMMAND(-1, wxEVT_PANEL_RESIZED, VisualEditor::OnResizeBackPanel)
-	EVT_INNER_FRAME_RESIZED(-1, VisualEditor::OnResizeBackPanel)
+	EVT_INNER_FRAME_RESIZED(wxID_ANY, VisualEditor::OnResizeBackPanel)
 
 	EVT_FB_PROJECT_LOADED( VisualEditor::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( VisualEditor::OnProjectSaved )
@@ -176,7 +176,7 @@ void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
 		}
 	}
 
-	//event.Skip();
+	/*event.Skip();*/
 }
 
 void VisualEditor::OnWizardPageChanged( WizardEvent &event )
@@ -251,6 +251,12 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 
 			if( cname == wxT("widget") ||
 				cname == wxT("expanded_widget") ||
+				cname == wxT("ribbonbar") ||
+				cname == wxT("propgrid") ||
+				cname == wxT("propgridman") ||
+				cname == wxT("dataviewctrl") ||
+				cname == wxT("dataviewtreectrl") ||
+				cname == wxT("dataviewlistctrl") ||
 				cname == wxT("toolbar") ||
 				cname == wxT("container") )
 			{
@@ -912,6 +918,11 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 					tname == wxT("choicebook") ||
 					tname == wxT("treelistctrl") ||
 					tname == wxT("ribbonbar") ||
+					tname == wxT("dataviewctrl") ||
+					tname == wxT("dataviewtreectrl") ||
+					tname == wxT("dataviewlistctrl") ||
+					tname == wxT("propgrid") ||
+					tname == wxT("propgridman") ||
 					tname == wxT("splitter") ) )
 	{
 		if( obj->GetParent()->GetObjectTypeName() == wxT("form") )

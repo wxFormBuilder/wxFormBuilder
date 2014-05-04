@@ -1421,10 +1421,10 @@ public:
         return pg;
     }
 
-    void Cleanup( wxObject* )
+    /*void Cleanup( wxObject* )
     {
         // Prevent assert for missing event handler
-    }
+    }*/
 };
 
 class PropertyGridManagerComponent : public ComponentBase
