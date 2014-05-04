@@ -380,7 +380,7 @@ Written by
     <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked." />
   </objectinfo>
   
-	<objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="expanded_widget" wxversion="2904" >
+	<objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="propgrid" startgroup="1" wxversion="2904" >
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
 		<property name="style" type="bitlist">
@@ -421,7 +421,7 @@ Written by
 		<event name="OnPropertyGridChanged"  class="wxPropertyGridEvent" help="Property value is modified." />
 	</objectinfo>
 
-	<objectinfo class="wxPropertyGridManager" icon="propgridman.xpm" type="expanded_widget" wxversion="2904">
+	<objectinfo class="wxPropertyGridManager" icon="propgridman.xpm" type="propgridman" wxversion="2904">
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
 		<property name="style" type="bitlist">

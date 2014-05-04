@@ -81,17 +81,16 @@ public:
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
-    DECLARE_LOCAL_EVENT_TYPE(wxEVT_INNER_FRAME_RESIZED, 6000)
+    DECLARE_LOCAL_EVENT_TYPE(wxEVT_INNER_FRAME_RESIZED, -1)
 END_DECLARE_EVENT_TYPES()
 
 #define EVT_INNER_FRAME_RESIZED(id, fn) \
-    DECLARE_EVENT_TABLE_ENTRY( \
-        wxEVT_INNER_FRAME_RESIZED, id, wxID_ANY, \
-        (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
-    ),
+  wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED,id,wxCommandEventHandler(fn))
 
+/*wxDECLARE_EVENT(wxEVT_INNER_FRAME_RESIZED, wxCommandEvent);
 
+#define EVT_INNER_FRAME_RESIZED(id, func) \
+wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, &func)*/
 
 #endif //__INNER_FRAME__
 

@@ -62,7 +62,6 @@ class DesignerWindow : public wxInnerFrame
       wxWindow *m_window;
 
      public:
-
        HighlightPaintHandler(wxWindow *win);
        void OnPaint(wxPaintEvent &event);
    };
@@ -153,7 +152,7 @@ class VisualEditor : public wxScrolledWindow
   wxAuiManager *m_auimgr;
 
   //Wizard
-  Wizard            *m_wizard;
+  Wizard *m_wizard;
 
   // Give components an opportunity to cleanup
   void ClearComponents( wxWindow* parent );
@@ -168,6 +167,4 @@ class VisualEditor : public wxScrolledWindow
   void OnProjectRefresh ( wxFBEvent &event);
 };
 
-
 #endif //__VISUAL_EDITOR__
-

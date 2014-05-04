@@ -74,6 +74,8 @@
     <childtype name="dataviewctrl" nmax="0" />
     <childtype name="dataviewtreectrl" nmax="0" />
     <childtype name="dataviewlistctrl" nmax="0" />
+    <childtype name="propgrid" nmax="0" />
+    <childtype name="propgridman" nmax="0" />
  </objtype>
 
     <objtype name="wizard">
@@ -100,6 +102,7 @@
   <objtype name="widget">
 	<childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
+  
   <objtype name="expanded_widget" />
 
   <objtype name="sizer">
@@ -134,6 +137,8 @@
     <childtype name="dataviewctrl" nmax="1" />
     <childtype name="dataviewlistctrl" nmax="1" />
     <childtype name="dataviewtreectrl" nmax="1" />
+    <childtype name="propgrid" nmax="1" />
+    <childtype name="propgridman" nmax="1" />
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
@@ -154,6 +159,8 @@
     <childtype name="dataviewctrl" nmax="1" />
     <childtype name="dataviewlistctrl" nmax="1" />
     <childtype name="dataviewtreectrl" nmax="1" />
+    <childtype name="propgrid" nmax="1" />
+    <childtype name="propgridman" nmax="1" />
   </objtype>
 
   <objtype name="splitter" >
@@ -300,6 +307,29 @@
   </objtype>
 
   <objtype name="dataviewlistcolumn" />
+  
+  <objtype name="propgrid">
+	<childtype name="menu" nmax="1" aui_nmax="1"/>
+  </objtype>
+  
+  <objtype name="propgridman">
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
+  </objtype>
+  
+  <objtype name="propgriditem" />
+  <objtype name="propgridpage" />
+  
+  <objtype name="propgridman" >
+    <childtype name="propgridpage" />
+  </objtype>
+
+  <objtype name="propgridpage" >
+    <childtype name="propgriditem" />
+  </objtype>
+  
+  <objtype name="propgrid" >
+    <childtype name="propgriditem" />
+  </objtype>
 
 </definitions>
 
