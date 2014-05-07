@@ -57,6 +57,10 @@ Python code generation writen by
 		<template name="construction">
 			self.$name = rb.RibbonPage( self.#parent $name,  $id, $label , $bitmap ,  0 )
 		</template>
+		<template name="settings">
+			#ifequal $select "1"
+			@{ self.#parent $name.SetActivePage( self.$name ) @}
+		</template>
 	</templates>
 
 	<templates class="wxRibbonPanel">

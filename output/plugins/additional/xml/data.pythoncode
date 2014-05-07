@@ -261,5 +261,17 @@ Python code generation written by
 			self.$name = wx.Window( #wxparent $name )
 		</template>
 	</templates>
+	
+	<templates class="propGridItem">
+		<template name="construction">
+			@# WARNING: wxPython code generation isn't supported for this widget yet. #nl
+		</template>
+	</templates>
+	
+	<templates class="propGridPage">
+		<template name="construction">
+			@# WARNING: wxPython code generation isn't supported for this widget yet. #nl
+		</template>
+	</templates>
 
 </codegen>

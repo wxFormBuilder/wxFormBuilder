@@ -1,9 +1,13 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-05/03/2014 Version 3.05.00 (Beta)
+05/06/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.
 + Added support for wxDataViewCtrl and derived classes.
++ Added abbility to define property grid's/manager's content.
++ Re-arranged widgets palettes.
 * #140 GUI dont work after some controls added
+^ Property names used in code templates may be encapsulated by curly brackets (e.g. ${name})
+  so they can be surrounded by the template's content without any extra white spaces now.
 
 04/13/2014 Version 3.04.03 (Beta)
 * Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle

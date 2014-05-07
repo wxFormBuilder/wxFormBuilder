@@ -107,6 +107,7 @@ protected:
 #if wxVERSION_NUMBER >= 2904
 	// Enable folding for wxStyledTextCtrl
 	void OnMarginClick ( wxStyledTextEvent& event );
+	void OnRibbonBarPageChanged( wxRibbonBarEvent& event );
 #endif
 	DECLARE_EVENT_TABLE()
 };
@@ -129,6 +130,7 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	
 #if wxVERSION_NUMBER >= 2904
 	EVT_STC_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
+	EVT_RIBBONBAR_PAGE_CHANGED( -1, ComponentEvtHandler::OnRibbonBarPageChanged )
 #endif
 END_EVENT_TABLE()
 
@@ -1347,75 +1349,11 @@ public:
                                                 obj->GetPropertyAsPoint(wxT("pos")),
                                                 obj->GetPropertyAsSize(wxT("size")),
                                                 obj->GetPropertyAsInteger(wxT("style")) |
-                                                obj->GetPropertyAsInteger(wxT("window_style")));
+                                                obj->GetPropertyAsInteger(wxT("window_style")) );
 
         if ( !obj->GetPropertyAsString(wxT("extra_style")).empty() )
         {
             pg->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
-        }
-
-        pg->Append( new wxPropertyCategory( _("Sample Category") ) );
-
-        // Add string property
-        pg->Append( new wxStringProperty(wxT("Label"),wxT("Name"),wxT("Initial Value")) );
-
-        // Add int property
-        pg->Append( new wxIntProperty ( wxT("IntProperty"), wxPG_LABEL, 12345678 ) );
-
-        // Add float property (value type is actually double)
-        pg->Append( new wxFloatProperty ( wxT("FloatProperty"), wxPG_LABEL, 12345.678 ) );
-
-        // Add a bool property
-        pg->Append( new wxBoolProperty ( wxT("BoolProperty"), wxPG_LABEL, false ) );
-        pg->Append( new wxBoolProperty ( wxT("BoolPropertyAsCheckbox"), wxPG_LABEL, true ) );
-        pg->SetPropertyAttribute( wxT("BoolPropertyAsCheckbox"), wxPG_BOOL_USE_CHECKBOX, (long)1);
-
-        // A string property that can be edited in a separate editor dialog.
-        pg->Append( new wxLongStringProperty ( wxT("LongStringProperty"), wxPG_LABEL,
-                    wxString(_("This is much longer string than the ") ) +
-                    wxString(_("first one. Edit it by clicking the button.") ) ) );
-
-        // String editor with dir selector button.
-        pg->Append( new wxDirProperty( wxT("DirProperty"), wxPG_LABEL, ::wxGetUserHome()) );
-
-        // A file selector property.
-        pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
-
-        pg->Append( new wxPropertyCategory( _("Sample Parent Property") ) );
-        wxPGProperty *carProp = pg->Append( new wxStringProperty( _("Car"), wxPG_LABEL, wxT("<composed>") ) );
-        pg->AppendIn( carProp, new wxStringProperty( _("Model"), wxPG_LABEL, wxT("Lamborghini Diablo SV") ) );
-        pg->AppendIn( carProp, new wxIntProperty( _("Engine Size (cc)"), wxPG_LABEL, 5707 ) );
-
-        wxPGProperty *speedsProp = pg->AppendIn( carProp, new wxStringProperty( _("Speeds"), wxPG_LABEL, wxT("<composed>") ) );
-        pg->AppendIn( speedsProp, new wxIntProperty( _("Max. Speed (mph)"), wxPG_LABEL, 300 ) );
-        pg->AppendIn( speedsProp, new wxFloatProperty( _("0-100 mph (sec)"), wxPG_LABEL, 3.9 ) );
-        pg->AppendIn( speedsProp, new wxFloatProperty( _("1/4 mile (sec)"), wxPG_LABEL, 8.6 ) );
-        pg->AppendIn( carProp, new wxIntProperty( _("Price ($)"), wxPG_LABEL, 300000) );
-
-        if ( obj->GetPropertyAsInteger( wxT("include_advanced") ) )
-        {
-            pg->Append( new wxPropertyCategory( _("Advanced Properties") ) );
-            // wxArrayStringProperty embeds a wxArrayString.
-            pg->Append( new wxArrayStringProperty( _("Example of ArrayStringProperty"), wxT("ArrayStringProp") ) );
-
-            // Image file property. Wildcard is auto-generated from available
-            // image handlers, so it is not set this time.
-            pg->Append( new wxImageFileProperty( _("Example of ImageFileProperty"), wxT("ImageFileProp") ) );
-
-            // Font property has sub-properties.
-            pg->Append( new wxFontProperty( _("Font"), wxPG_LABEL ) );
-
-            // Colour property with arbitrary colour.
-            pg->Append( new wxColourProperty( _("My Colour 1"), wxPG_LABEL, wxColour( 242, 109, 0 ) ) );
-
-            // System colour property.
-            pg->Append( new wxSystemColourProperty( _("My SysColour 1"), wxPG_LABEL, wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) ) );
-
-            // System colour property with custom colour.
-            pg->Append( new wxSystemColourProperty( _("My SysColour 2"), wxPG_LABEL, wxColour( 0, 200, 160 ) ) );
-
-            // Cursor property
-            pg->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
         }
 
         return pg;
@@ -1425,6 +1363,45 @@ public:
     {
         // Prevent assert for missing event handler
     }*/
+	
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxPropertyGrid* pg = wxDynamicCast( wxobject, wxPropertyGrid);
+		if ( NULL == pg )
+		{
+			// very very strange
+			return;
+		}
+		
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (childObj->GetClassName() == _("propGridItem"))
+			{
+				if (childObj->GetPropertyAsString( _("type") ) == _("Category") )
+				{
+					pg->Append( new wxPropertyCategory( childObj->GetPropertyAsString( _("label") ), childObj->GetPropertyAsString( _("label") ) ) );
+				}
+				else
+				{
+					wxPGProperty *prop = wxDynamicCast( wxCreateDynamicObject( wxT("wx") + (childObj->GetPropertyAsString( _("type") ) ) + wxT("Property") ), wxPGProperty );
+					if( prop )
+					{
+						prop->SetLabel( childObj->GetPropertyAsString( _("label") ) );
+						prop->SetName( childObj->GetPropertyAsString( _("label") ) );
+						pg->Append( prop );
+						
+						if( childObj->GetPropertyAsString( _("help") ) != wxEmptyString )
+						{
+							pg->SetPropertyHelpString( prop, childObj->GetPropertyAsString( _("help") ) );
+						}
+					}
+				}
+			}
+		}
+	}
 };
 
 class PropertyGridManagerComponent : public ComponentBase
@@ -1448,7 +1425,7 @@ public:
         // Adding a page sets target page to the one added, so
         // we don't have to call SetTargetPage if we are filling
         // it right after adding.
-        wxPropertyGridPage* pg = pgman->AddPage( _("First Page") );
+        /*wxPropertyGridPage* pg = pgman->AddPage( _("First Page") );
 
         pg->Append( new wxPropertyCategory( _("Sample Category") ) );
 
@@ -1532,9 +1509,7 @@ public:
 
             // Cursor property
             pg2->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
-        }
-
-        pgman->SelectPage( 0 );
+        }*/
 
         return pgman;
     }
@@ -1543,7 +1518,65 @@ public:
     {
         // Prevent assert for missing event handler
     }*/
+	
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxPropertyGridManager* pgm = wxDynamicCast( wxobject, wxPropertyGridManager);
+		if ( NULL == pgm )
+		{
+			// very very strange
+			return;
+		}
+		
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (childObj->GetClassName() == _("propGridPage"))
+			{
+				wxPropertyGridPage *page = pgm->AddPage( childObj->GetPropertyAsString( _("label") ), childObj->GetPropertyAsBitmap( _("bitmap") ) );
+				
+				for( size_t j = 0; j < childObj->GetChildCount(); ++j )
+				{
+					IObject* innerChildObj = childObj->GetChildPtr( j );
+					if (innerChildObj->GetClassName() == _("propGridItem"))
+					{
+						if (innerChildObj->GetPropertyAsString( _("type") ) == _("Category") )
+						{
+							page->Append( new wxPropertyCategory( innerChildObj->GetPropertyAsString( _("label") ), innerChildObj->GetPropertyAsString( _("label") ) ) );
+						}
+						else
+						{
+							wxPGProperty *prop = wxDynamicCast( wxCreateDynamicObject( wxT("wx") + (innerChildObj->GetPropertyAsString( _("type") ) ) + wxT("Property") ), wxPGProperty );
+							if( prop )
+							{
+								prop->SetLabel( innerChildObj->GetPropertyAsString( _("label") ) );
+								prop->SetName( innerChildObj->GetPropertyAsString( _("label") ) );
+								page->Append( prop );
+								
+								if( innerChildObj->GetPropertyAsString( _("help") ) != wxEmptyString )
+								{
+									page->SetPropertyHelpString( prop, innerChildObj->GetPropertyAsString( _("help") ) );
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		if( count )
+		{
+			pgm->SelectPage( 0 );
+		}
+		
+		pgm->Update();
+	}
 };
+
+class PropertyGridItemComponent : public ComponentBase{};
+class PropertyGridPageComponent : public ComponentBase{};
 
 class StyledTextComponent : public ComponentBase
 {
@@ -1783,7 +1816,7 @@ class RibbonBarComponent : public ComponentBase
 		else if( obj->GetPropertyAsString( _("theme"))  == _("MSW") ) 
 				rb->SetArtProvider( new wxRibbonMSWArtProvider );
 
-		// rb->PushEventHandler( new ComponentEvtHandler( rb, GetManager() ) );
+		rb->PushEventHandler( new ComponentEvtHandler( rb, GetManager() ) );
 		
 		return rb;
 	}
@@ -1801,6 +1834,46 @@ class RibbonBarComponent : public ComponentBase
 	}
 };
 
+void ComponentEvtHandler::OnRibbonBarPageChanged( wxRibbonBarEvent& event )
+{
+	if ( m_window != event.GetEventObject() )
+	{
+		return;
+	}
+	
+	wxRibbonBar *rb = wxDynamicCast( event.GetEventObject(), wxRibbonBar );
+	if( rb == NULL )
+	{
+		return;
+	}
+	
+	int selPage = rb->GetActivePage();
+
+	size_t count = m_manager->GetChildCount( m_window );
+	for ( size_t i = 0; i < count; i++ )
+	{
+		wxObject* wxChild = m_manager->GetChild( m_window, i );
+		IObject*  iChild = m_manager->GetIObject( wxChild );
+		if ( iChild )
+		{
+			if ( (int)i == selPage && !iChild->GetPropertyAsInteger( _("select") ) )
+			{
+				m_manager->ModifyProperty( wxChild, _("select"), wxT("1"), false );
+			}
+			else if ( (int)i != selPage && iChild->GetPropertyAsInteger( _("select") ) )
+			{
+				m_manager->ModifyProperty( wxChild, _("select"), wxT("0"), false );
+			}
+		}
+	}
+
+	// Select the corresponding ribbon page in the object tree
+	if ( NULL != rb )
+	{
+		m_manager->SelectObject( rb->GetPage( selPage ) );
+	}
+}
+
 class RibbonPageComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -1810,6 +1883,10 @@ class RibbonPageComponent : public ComponentBase
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			0);
+			
+		if( obj->GetPropertyAsInteger(_("select") ) ) {
+			((wxRibbonBar*)parent)->SetActivePage(rbpage);
+		}
 			
 		//rbpage->PushEventHandler( new ComponentEvtHandler( rbpage, GetManager() ) );
 		
@@ -2171,6 +2248,7 @@ ABSTRACT_COMPONENT("wxTimer", TimerComponent)
 #if wxVERSION_NUMBER >= 2904
 // wxPropertyGrid
 WINDOW_COMPONENT("wxPropertyGrid", PropertyGridComponent)
+ABSTRACT_COMPONENT("propGridItem", PropertyGridItemComponent)
 MACRO(wxPG_AUTO_SORT)
 MACRO(wxPG_HIDE_CATEGORIES)
 MACRO(wxPG_ALPHABETIC_MODE)
@@ -2187,6 +2265,7 @@ MACRO(wxTAB_TRAVERSAL)
 
 // wxPropertyGridManager
 WINDOW_COMPONENT("wxPropertyGridManager", PropertyGridManagerComponent)
+ABSTRACT_COMPONENT("propGridPage", PropertyGridPageComponent)
 MACRO(wxPG_EX_NO_FLAT_TOOLBAR)
 MACRO(wxPG_EX_MODE_BUTTONS)
 MACRO(wxPGMAN_DEFAULT_STYLE)

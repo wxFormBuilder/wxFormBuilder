@@ -293,7 +293,7 @@ Written by
   
 <objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="propgrid" startgroup="1" wxversion="2904" >
     <inherits class="wxWindow" />
-    <inherits class="AUI" />
+    <inherits class="AUI" /> <property name="bitmap" type="bitmap" help="This is the bitmap shown in the default state, it must be always valid while all the other bitmaps are optional and don't have to be set."/>
     <property name="style" type="bitlist">
         <option name="wxPG_AUTO_SORT" 				help="This will cause Sort() automatically after an item is added.
 												            When inserting a lot of items in this mode, it may make sense to
@@ -316,7 +316,7 @@ Written by
         <option name="wxTAB_TRAVERSAL"				help="wxTAB_TRAVERSAL allows using Tab/Shift-Tab to travel between properties
 												            in grid. Travelling forwards from last property will navigate to the
 												            next control, and backwards from first will navigate to the previous one."/>
-        wxPG_DEFAULT_STYLE
+        wxPG_DEFAULT_STYLE | wxPG_SPLITTER_AUTO_CENTER
     </property>
     <property name="extra_style" type="bitlist">
         <option name="wxPG_EX_INIT_NOCAT"			help="Speeds up switching to wxPG_HIDE_CATEGORIES mode. Initially, if wxPG_HIDE_CATEGORIES
@@ -360,7 +360,7 @@ Written by
         <option name="wxPGMAN_DEFAULT_STYLE"	help="Combines various styles."/>
         <option name="wxPG_DESCRIPTION"			help="Show adjustable text box showing description or help text, if available, for currently selected property."/>
         <option name="wxPG_TOOLBAR"				help="Show toolbar for mode and page selection."/>
-        wxPGMAN_DEFAULT_STYLE | wxPG_TOOLBAR | wxPG_COMPACTOR
+        wxPGMAN_DEFAULT_STYLE | wxPG_TOOLBAR | wxPG_SPLITTER_AUTO_CENTER
     </property>
     <property name="extra_style" type="bitlist">
         <option name="wxPG_EX_NO_FLAT_TOOLBAR"	help="Extended window style that sets wxPropertyGridManager toolbar to not use flat style."/>
@@ -377,6 +377,40 @@ Written by
     <property name="include_advanced" type="bool" help="Include Advanced Properties">1</property>
     <event name="OnPropertyGridChanging" class="wxPropertyGridEvent" help="Property value is about to be changed. Use wxPropertyGridEvent::GetValue() to take a peek at the pending value, and wxPropertyGridEvent::Veto() to prevent change from taking place, if necessary." />
     <event name="OnPropertyGridChanged"  class="wxPropertyGridEvent" help="Property value is modified." />
+</objectinfo>
+
+<objectinfo class="propGridPage" icon="propgridpage.xpm" type="propgridpage" wxversion="2904">
+	<property name="name" type="text" help="Instance name.">m_propertyGridPage</property>
+    <property name="label" type="wxString_i18n" help="Label shown as a tooltip of the manager's tool button.">Page</property>
+	<property name="bitmap" type="bitmap" help="Bitmap shown in the property manager's header."/>
+</objectinfo>
+
+<objectinfo class="propGridItem" icon="propgriditem.xpm" type="propgriditem" wxversion="2904">
+	<property name="name" type="text" help="Instance name and an internal name of the property item.">m_propertyGridItem</property>
+    <property name="label" type="wxString_i18n" help="Label shown in parent property grid/page.">Name</property>
+    <property name="type" type="option" help="Type of the property item.">
+        <option name="Category" help="Append properties category."/>
+        <option name="Bool" help="Append Boolean property to the parent property grid (page)."/>
+		<option name="Colour" help="Append Colour property to the parent property grid (page)."/>
+		<option name="Cursor" help="Append Cursor property to the parent property grid (page)."/>
+		<option name="Date" help="Append Date property to the parent property grid (page)."/>
+		<option name="Dir" help="Append Dir property to the parent property grid (page)."/>
+		<option name="EditEnum" help="Append EditEnum property to the parent property grid (page)."/>
+		<option name="Enum" help="Append Enum property to the parent property grid (page)."/>
+		<option name="File" help="Append File property to the parent property grid (page)."/>
+		<option name="Flags" help="Append Flags property to the parent property grid (page)."/>
+		<option name="Float" help="Append Float property to the parent property grid (page)."/>
+		<option name="Font" help="Append Font property to the parent property grid (page)."/>
+		<option name="ImageFile" help="Append ImageFile property to the parent property grid (page)."/>
+		<option name="Int" help="Append Int property to the parent property grid (page)."/>
+		<option name="LongString" help="Append LongString property to the parent property grid (page)."/>
+		<option name="MultiChoice" help="Append MultiChoice property to the parent property grid (page)."/>
+		<option name="String" help="Append String property to the parent property grid (page)."/>
+		<option name="SystemColour" help="Append SystemColour property to the parent property grid (page)."/>
+		<option name="UInt" help="Append UInt property to the parent property grid (page)."/>
+        String
+    </property>
+	<property name="help" type="wxString_i18n" help="Property item's name."></property>
 </objectinfo>
 
 </package>

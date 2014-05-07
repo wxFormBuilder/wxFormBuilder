@@ -72,6 +72,10 @@ Written by
 		<template name="include">
 			@#include &lt;wx/ribbon/page.h&gt;
 		</template>
+		<template name="settings">
+			#ifequal $select "1"
+			@{ #parent $name->SetActivePage( $name ); @}
+		</template>
 	</templates>
 
 	<templates class="wxRibbonPanel">

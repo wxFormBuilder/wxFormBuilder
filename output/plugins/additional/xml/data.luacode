@@ -242,5 +242,17 @@ Lua code generation written by
 			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
 		</template>
 	</templates>
+	
+	<templates class="propGridItem">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+		</template>
+	</templates>
+	
+	<templates class="propGridPage">
+		<template name="construction">
+			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+		</template>
+	</templates>
 
 </codegen>

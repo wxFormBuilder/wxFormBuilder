@@ -916,6 +916,9 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("sizer")			||
 			type == wxT("nonvisual")		||
 			type == wxT("gbsizer")          ||
+			type == wxT("propgriditem")          ||
+			type == wxT("propgridpage")          ||
+			type == wxT("gbsizer")          ||
             type == wxT("wizardpagesimple")
 			);
 }
