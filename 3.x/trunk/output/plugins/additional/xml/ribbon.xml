@@ -62,6 +62,7 @@ Written by
 		<property name="name" type="text">m_ribbonPage</property>
 		<property name="label" type="wxString_i18n">MyRibbonPage</property>
 		<property name="bitmap" type="bitmap" help="wxRibbonPage bitmap." />
+		<property name="select" type="bool" help="Select this ribbon page when adding.">0</property>
 	</objectinfo>
 
 	<objectinfo class="wxRibbonPanel" icon="ribbon_panel.xpm" type="ribbonpanel" startgroup="0" wxversion="2904" >

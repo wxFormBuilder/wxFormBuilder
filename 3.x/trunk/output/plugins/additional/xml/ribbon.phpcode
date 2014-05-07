@@ -48,6 +48,10 @@ PHP code generation writen by
 			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
 			@$this->$name = new wxWindow( #wxparent $name );
 		</template>
+		<!-- <template name="settings">
+			#ifequal $select "1"
+			@{ #parent $name->SetActivePage( $this->$name ); @}
+		</template> -->
 	</templates>
 
 	<templates class="wxRibbonPanel">

@@ -189,6 +189,9 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 
 	// children of parent properties can be referred to with a '/' like "$parent/child"
 	bool foundSlash = false;
+	// property names used in templates may be encapsulated by curly brackets (e.g. ${name}) so they
+    // can be surrounded by the template content without any white spaces now.
+	bool foundLeftCurlyBracket = false;
 	bool saveChild = ( NULL != child );
 
 	if (!m_in.Eof())
@@ -200,6 +203,7 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 			&& ( (peek >= wxT('a') && peek <= wxT('z') ) ||
 			(peek >= wxT('A') && peek <= wxT('Z') ) ||
 			(peek >= wxT('0') && peek <= wxT('9') ) ||
+			(peek >= wxT('{') && peek <= wxT('}') ) ||
 			peek == wxT('_') || peek == wxT('/') ) )
 		{
 			if ( foundSlash )
@@ -212,7 +216,15 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 			else
 			{
 				wxChar next = wxChar( m_in.GetC() );
-				if ( wxT('/') == next )
+				if ( wxT('{') == next )
+				{
+					foundLeftCurlyBracket = true;
+				}
+				else if ( ( wxT('}') == next) && (foundLeftCurlyBracket == true) )
+				{
+					break;
+				}
+				else if ( wxT('/') == next )
 				{
 					foundSlash = true;
 				}

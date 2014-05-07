@@ -247,4 +247,16 @@ PHP code generation written by
 		</template>
 	</templates>
 	
+	<templates class="propGridItem">
+		<template name="construction">
+			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+		</template>
+	</templates>
+	
+	<templates class="propGridPage">
+		<template name="construction">
+			@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+		</template>
+	</templates>
+	
 </codegen>

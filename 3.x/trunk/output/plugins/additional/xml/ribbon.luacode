@@ -44,6 +44,10 @@ Lua code generation written by
 		<template name="construction">
 			#utbl$name = wx.RibbonPage( #utbl#wxparent $name, $id, $label , $bitmap , $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
 		</template>
+		<template name="settings">
+			#ifequal $select "1"
+			@{ #utbl#wxparent $name:SetActivePage( #utbl$name ) @}
+		</template>
 	</templates>
 
 	<templates class="wxRibbonPanel">
