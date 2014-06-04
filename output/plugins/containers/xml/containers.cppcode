@@ -153,10 +153,13 @@ Written by
 		<template name="after_addchild">
 			#ifnull $bitmapsize
 			@{
-				@#ifndef  __WXGTK__ // Small icon style not supported in GTK #nl
+				@#ifdef  __WXGTK__ // Small icon style not supported in GTK #nl
 				wxListView* $name #append ListView = $name->GetListView(); #nl
 				long $name #append Flags = $name #append ListView->GetWindowStyleFlag(); #nl
-				$name #append Flags = ( $name #append Flags &amp; ~wxLC_ICON ) | wxLC_SMALL_ICON; #nl
+				if( $name #append Flags &amp; wxLC_SMALL_ICON ) #nl
+				@{ #indent #nl
+					$name #append Flags = ( $name #append Flags &amp; ~wxLC_SMALL_ICON ) | wxLC_ICON; #unindent #nl
+				@} #nl
 				$name #append ListView->SetWindowStyleFlag( $name #append Flags ); #nl
 				@#endif
 			@}
