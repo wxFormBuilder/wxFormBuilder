@@ -8,6 +8,7 @@
 * #140 GUI dont work after some controls added
 ^ Property names used in code templates may be encapsulated by curly brackets (e.g. ${name})
   so they can be surrounded by the template's content without any extra white spaces now.
+* #112 Using wxListbook under MSW causes assertion on startup
 
 04/13/2014 Version 3.04.03 (Beta)
 * Both wxToolBar and wxAuiToolBar now use GetId() function member of their tools to handle
