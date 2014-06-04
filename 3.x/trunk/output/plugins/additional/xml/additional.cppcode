@@ -233,6 +233,8 @@ Written by
 	<template name="evt_connect_OnSpinCtrl">$name->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnSpinCtrlText">EVT_TEXT( $id, #handler )</template>
 	<template name="evt_connect_OnSpinCtrlText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
+    <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
+	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxSpinButton">
