@@ -263,9 +263,13 @@ Written by
     <property name="initial" type="uint" help="Initial value.">0</property>
     <property name="style" type="bitlist">
         <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
-        <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />wxSP_ARROW_KEYS</property>
+        <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
+		<option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+		wxSP_ARROW_KEYS
+	</property>        
     <event name="OnSpinCtrl" class="wxSpinEvent" help="Generated whenever the numeric value of the spinctrl is updated." />
     <event name="OnSpinCtrlText" class="wxCommandEvent" help="Generated whenever the user modifies the text in the edit part of the spin control directly." />
+	<event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
 </objectinfo>
 
 <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">

@@ -165,6 +165,7 @@ Python code generation written by
 	<template name="construction">self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial #ifnotnull $window_name @{, $window_name @} )</template>
 	<template name="evt_connect_OnSpinCtrl">self.$name.Bind( wx.EVT_SPINCTRL, #handler )</template>
 	<template name="evt_connect_OnSpinCtrlText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
   </templates>
 
   <templates class="wxSpinButton">
