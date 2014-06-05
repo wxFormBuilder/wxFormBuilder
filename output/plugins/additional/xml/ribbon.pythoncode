@@ -35,11 +35,11 @@ Python code generation writen by
 		</template>
 		<template name="setting">
 			#ifequal $theme "Default"
-			@{ self.$name.SetArtProvider(wxRibbonDefaultArtProvider) @}
+			@{ self.$name.SetArtProvider(rb.RibbonDefaultArtProvider) @}
 			#ifequal $theme "Generic"
-			@{ self.$name.SetArtProvider(wxRibbonAUIArtProvider) @}
+			@{ self.$name.SetArtProvider(rb.RibbonAUIArtProvider) @}
 			#ifequal $theme "MSW"
-			@{ self.$name.SetArtProvider(wxRibbonMSWArtProvider); @}
+			@{ self.$name.SetArtProvider(rb.RibbonMSWArtProvider) @}
 		</template>
 		<template name="evt_connect_OnRibbonButtonClicked">self.Bind( rb.EVT_RIBBONBUTTONBAR_CLICKED, #handler, id = $id )</template>
 		<template name="evt_connect_OnRibbonBarPageChanged">self.Bind( rb.EVT_RIBBONBAR_PAGE_CHANGED, #handler, id = $id )</template>
