@@ -41,7 +41,7 @@ Written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
 	<template name="construction">
-		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+		$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
 	</template>
 	<template name="generated_event_handlers"></template>
 	<template name="evt_entry_OnDataViewCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
@@ -86,7 +86,7 @@ Written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
 	<template name="construction">
-		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+		$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
 	</template>
 	<template name="generated_event_handlers"></template>
 	<template name="evt_entry_OnDataViewTreeCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
@@ -131,7 +131,7 @@ Written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">@#include &lt;wx/dataview.h&gt;</template>
 	<template name="construction">
-		$name = new #class( #wxparent $name, $id, $pos, $size, $window_style);
+		$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );
 	</template>
 	<template name="generated_event_handlers"></template>
 	<template name="evt_entry_OnDataViewListCtrlSelectionChanged">EVT_DATAVIEW_SELECTION_CHANGED( $id, #handler )</template>
