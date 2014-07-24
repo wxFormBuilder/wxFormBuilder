@@ -2099,12 +2099,12 @@ void ApplicationData::NewProject()
 	NotifyProjectRefresh();
 }
 
-void ApplicationData::GenerateCode( bool panelOnly )
+void ApplicationData::GenerateCode( bool panelOnly, bool noDelayed )
 {
 #ifdef USE_FLATNOTEBOOK
 	NotifyCodeGeneration( panelOnly );
 #else
-	NotifyCodeGeneration( panelOnly, true );
+	NotifyCodeGeneration( panelOnly, !noDelayed );
 #endif
 }
 

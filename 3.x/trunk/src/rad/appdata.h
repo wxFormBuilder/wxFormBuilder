@@ -309,7 +309,7 @@ class ApplicationData
 
 		void ModifyEventHandler( PEvent evt, wxString value );
 
-		void GenerateCode( bool projectOnly = false );
+		void GenerateCode( bool panelOnly = false, bool noDelayed = false );
 
 		void GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file );
 
