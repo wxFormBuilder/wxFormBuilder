@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+07/24/2014 Version 3.05.01 (Beta)
+* #142 3.5-0 beta doesn't generates cpp/h files from command line (patch by Alexey Elizarov).
+
 05/06/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.
 + Added support for wxDataViewCtrl and derived classes.

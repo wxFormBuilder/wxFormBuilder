@@ -307,7 +307,7 @@ int MyApp::OnRun()
 						codeGen->SetValue( language );
 					}
 				}
-				AppData()->GenerateCode( false );
+				AppData()->GenerateCode( false, true );
 				return 0;
 			}
 			else
