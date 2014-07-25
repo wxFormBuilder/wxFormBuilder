@@ -245,7 +245,7 @@ Written by
 			#ifequal $moveable "0" @{.Movable( $moveable )@}
 			#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
 			#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable" @{.FloatingSize( $pane_size )@}@}
-			#ifequal $dock_fixed "0" @{.DockFixed( $dock_fixed )@}
+			#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
 			#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
 			#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
 			#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
@@ -313,7 +313,7 @@ Written by
 			@}#ifnotnull $resize
 			@{.$resize()#ifequal $resize "Resizable"
 				@{.FloatingSize( $pane_size )@}	
-			@}#ifequal $dock_fixed "0"
+			@}#ifequal $dock_fixed "1"
 			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
 			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
 			@{.TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
