@@ -177,7 +177,7 @@ Lua code generation written by
 			@}#ifnotnull $resize
 			@{:$resize()#ifequal $resize "Resizable"
 				@{:FloatingSize( $pane_size )@}	
-			@}#ifequal $dock_fixed "0"
+			@}#ifequal $dock_fixed "1"
 			@{:Fixed( $dock_fixed )@}#ifequal $BottomDockable "0"
 			@{:BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
 			@{:TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
@@ -239,7 +239,7 @@ Lua code generation written by
 			@}#ifnotnull $resize
 			@{.$resize()#ifequal $resize "Resizable"
 				@{.FloatingSize( $pane_size )@}	
-			@}#ifequal $dock_fixed "0"
+			@}#ifequal $dock_fixed "1"
 			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
 			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
 			@{.TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"

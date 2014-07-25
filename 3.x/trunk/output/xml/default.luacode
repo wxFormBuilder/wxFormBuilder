@@ -64,7 +64,7 @@
 				#ifequal $moveable "0" @{:Movable( $moveable )@}
 				#ifnotnull $dock @{:$dock()#ifequal $dock "Float" @{:FloatingPosition( $pane_position )@}@}
 				#ifnotnull $resize @{:$resize()#ifequal $resize "Resizable"	@{:FloatingSize( $pane_size )@}@}
-				#ifequal $dock_fixed "0" @{:Fixed( $dock_fixed )@}
+				#ifequal $dock_fixed "1" @{:Fixed( $dock_fixed )@}
 				#ifequal $BottomDockable "0" @{:BottomDockable( $BottomDockable )@}
 				#ifequal $TopDockable "0" @{:TopDockable( $TopDockable )@}
 				#ifequal $LeftDockable "0" @{:LeftDockable( $LeftDockable )@}
