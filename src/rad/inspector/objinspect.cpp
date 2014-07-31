@@ -1293,12 +1293,12 @@ void ObjectInspector::OnPropertyGridItemSelected( wxPropertyGridEvent& event )
 	{
 		if( m_nb->GetSelection() == 0 )
 		{
-			m_strSelPropItem = m_pg->GetPropertyLabel( p );
+			m_strSelPropItem = m_pg->GetPropertyName( p );
 			m_pageName = wxT("Properties");
 		}
 		else
 		{
-			m_strSelPropItem = m_eg->GetPropertyLabel( p );
+			m_strSelPropItem = m_eg->GetPropertyName( p );
 			m_pageName = wxT("Events");
 		}
 	}
@@ -1308,7 +1308,7 @@ void ObjectInspector::RestoreLastSelectedPropItem()
 {
 	if( m_pageName == wxT("Properties") )
 	{
-		wxPGProperty* p = m_pg->GetPropertyByLabel( m_strSelPropItem );
+		wxPGProperty* p = m_pg->GetPropertyByName( m_strSelPropItem );
 		if( p )
 		{
 			m_pg->SelectProperty(p, true);
@@ -1317,7 +1317,7 @@ void ObjectInspector::RestoreLastSelectedPropItem()
 	}
 	else if( m_pageName == wxT("Events") )
 	{
-		wxPGProperty* p = m_eg->GetPropertyByLabel(m_strSelPropItem);
+		wxPGProperty* p = m_eg->GetPropertyByName(m_strSelPropItem);
 		if( p )
 		{
 			m_eg->SelectProperty(p, true);
