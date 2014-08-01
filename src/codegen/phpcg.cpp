@@ -96,6 +96,11 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 			result = wxT("$this->") + value;
 			break;
 		}
+	case PT_WXPARENT_SB:
+		{
+			result = wxT("$") + value + wxT("->GetStaticBox()");
+			break;
+		}
 	case PT_WXSTRING:
 	case PT_FILE:
 	case PT_PATH:

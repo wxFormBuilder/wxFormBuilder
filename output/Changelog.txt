@@ -1,8 +1,9 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-07/24/2014 Version 3.05.01 (Beta)
+08/01/2014 Version 3.05.01 (RC1)
 * #142 3.5-0 beta doesn't generates cpp/h files from command line (patch by Alexey Elizarov).
-* #145 ObjectInspector sometimes reselects wrong item 
+* #145 ObjectInspector sometimes reselects wrong item (patch by sodev).
+* #146 Fixed codegeneration to use the static box of a wxStaticBoxSizer as parent for its children (patch by sodev).
 
 05/06/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.
