@@ -91,6 +91,11 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			result = value;
 			break;
 		}
+	case PT_WXPARENT_SB:
+		{
+			result = value + wxT("->GetStaticBox()");
+			break;
+		}
 	case PT_WXSTRING:
 	case PT_FILE:
 	case PT_PATH:

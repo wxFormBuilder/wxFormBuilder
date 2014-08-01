@@ -324,6 +324,7 @@ PObjectBase TemplateParser::GetWxParent()
 	candidates.push_back( m_obj->FindNearAncestor( wxT("auinotebook") ) );
 	candidates.push_back( m_obj->FindNearAncestor( wxT("toolbar") ) );
 	candidates.push_back( m_obj->FindNearAncestor( wxT("wizardpagesimple") ) );
+	candidates.push_back(m_obj->FindNearAncestorByBaseClass(wxT("wxStaticBoxSizer")));
 
 	for ( size_t i = 0; i < candidates.size(); i++ )
 	{
@@ -351,7 +352,16 @@ bool TemplateParser::ParseWxParent()
 	{
 		PProperty property = GetRelatedProperty( wxparent );
 		//m_out << PropertyToCode(property);
-		m_out << ValueToCode( PT_WXPARENT, property->GetValue() );
+		if (wxparent->GetClassName() == wxT("wxStaticBoxSizer"))
+		{
+			// We got a wxStaticBoxSizer as parent, use the special PT_WXPARENT_SB type to
+			// generate code to get its static box
+			m_out << ValueToCode(PT_WXPARENT_SB, property->GetValue());
+		}
+		else
+		{
+			m_out << ValueToCode(PT_WXPARENT, property->GetValue());
+		}
 	}
 	else
 	{
