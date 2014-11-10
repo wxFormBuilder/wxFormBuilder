@@ -136,6 +136,8 @@ Written by
         $name = new wxMenuItem( #parent $name, $id, wxString( $label ) #ifnotnull $shortcut @{ + wxT('\t') + $shortcut @}, $help, $kind );
     </template>
     <template name="settings">
+        #ifnotequal $kind "wxITEM_RADIO"
+		@{
 		#ifnotnull $bitmap
 		@{
 			@#ifdef __WXMSW__ #nl
@@ -152,6 +154,7 @@ Written by
 				$name->SetBitmaps( wxNullBitmap, $unchecked_bitmap ); #nl
 				@#endif #nl
 			@}
+		@}
 		@}
 		#parent $name->Append( $name ); #nl
 		#ifequal $enabled "0"
