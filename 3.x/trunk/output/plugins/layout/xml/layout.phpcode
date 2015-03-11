@@ -160,7 +160,7 @@ PHP code generation writen by
     <template name="evt_connect_OnApplyButtonClick">@$this->$name #append Apply->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
     <template name="evt_connect_OnNoButtonClick">@$this->$name #append No->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
     <template name="evt_connect_OnCancelButtonClick">@$this->$name #append Cancel->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnHelpButtonClick">@$this->$name #append Help->Connectt(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+    <template name="evt_connect_OnHelpButtonClick">@$this->$name #append Help->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
     <template name="evt_connect_OnContextHelpButtonClick">@$this->$name #append ContextHelp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
   </templates>
 
