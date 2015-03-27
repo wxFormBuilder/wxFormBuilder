@@ -18,6 +18,8 @@ project "forms-components-plugin"
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
+
+    local libs = "std,richtext,propgrid,stc,ribbon,aui"
 	
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
@@ -32,9 +34,9 @@ project "forms-components-plugin"
 
     configuration "Debug"
         targetsuffix    ( DebugSuffix )
-        wx_config       { Debug="yes" }
+        wx_config       { Debug="yes", Libs=libs }
 
     configuration "Release"
         buildoptions    {"-fno-strict-aliasing"}
-        wx_config       {}
+        wx_config       { Libs=libs }
 
