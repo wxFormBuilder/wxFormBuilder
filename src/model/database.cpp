@@ -910,6 +910,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 			type == wxT("dataviewtreectrl")	  	||
 			type == wxT("dataviewlistctrl")	   	||
 			type == wxT("dataviewlistcolumn")	   	||
+			type == wxT("dataviewcolumn")	   	||
 			type == wxT("tool")				||
 			type == wxT("splitter")			||
 			type == wxT("treelistctrl")		||
@@ -1345,6 +1346,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("dataviewtreectrl")		||
 			type == wxT("dataviewlistctrl")		||
 			type == wxT("dataviewlistcolumn")		||
+			type == wxT("dataviewcolumn")		||
 			type == wxT("notebook")				||
 			type == wxT("flatnotebook")			||
 			type == wxT("listbook")				||

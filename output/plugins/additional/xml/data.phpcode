@@ -117,6 +117,12 @@ PHP code generation written by
 		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
 	</template>
   </templates>
+  
+  <templates class="dataViewColumn">
+	<template name="construction">
+		@/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
+	</template>
+  </templates>
 
   <templates class="wxCheckListBox">
 	<template name="construction">
