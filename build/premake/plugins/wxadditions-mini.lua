@@ -23,6 +23,8 @@ project "wxadditions-mini-plugin"
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
 
+    local libs = "std,richtext,propgrid,stc,ribbon,aui"
+
 if wxVersion < "2.9" then
     defines             {"SCI_NAMESPACE", "__WX__"}
     links               {"wxFlatNotebook", "wxPropertyGrid", "wxScintilla"}
@@ -55,8 +57,8 @@ end
 
     configuration "Debug"
         targetsuffix    ( DebugSuffix )
-        wx_config       { Debug="yes" }
+        wx_config       { Debug="yes", Libs=libs }
 
     configuration "Release"
         buildoptions    {"-fno-strict-aliasing"}
-        wx_config       {}
+        wx_config       { Libs=libs }

@@ -88,7 +88,7 @@ end
 	end
 	
     configuration "macosx"
-        linkoptions         {"-Wl,-L../../output/lib/wxformbuilder"}
+        linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}
 
     configuration {"macosx", "Debug"}
         postbuildcommands   {"../../../install/macosx/postbuildd4.sh"}

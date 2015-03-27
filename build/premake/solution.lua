@@ -39,6 +39,13 @@ end
     configuration "windows"
         defines         {"WIN32", "_WINDOWS"}
 
+    configuration "macosx"
+        -- adding symbols so that premake does not include the "Wl,x"
+        -- flags, as these flags make clang linking fail
+        -- see http://industriousone.com/topic/how-remove-flags-ldflags
+        flags { "Symbols" }
+        buildoptions { "-Wno-overloaded-virtual" }
+
     configuration "Debug"
         defines         {"DEBUG", "_DEBUG"}
         flags           {"Symbols"}

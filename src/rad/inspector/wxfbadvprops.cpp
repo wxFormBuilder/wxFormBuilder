@@ -878,9 +878,10 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
         else if ( v_d > 1 )
             v_d = 1;
     }
+    int sliderId = wxNewId();
 
     ctrl->Create( propgrid->GetPanel(),
-                  wxPG_SUBID1,
+                  sliderId,
                   (int)(v_d * m_max),
                   0,
                   m_max,
@@ -892,7 +893,7 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
     // (all relevenat wxTextCtrl, wxComboBox and wxButton events are
     // already connected)
 #if wxVERSION_NUMBER < 2900
-    propgrid->Connect( wxPG_SUBID1, wxEVT_SCROLL_THUMBTRACK,
+    propgrid->Connect( sliderId, wxEVT_SCROLL_THUMBTRACK,
                        (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
                        &wxPropertyGrid::OnCustomEditorEvent, NULL, propgrid );
 #endif
