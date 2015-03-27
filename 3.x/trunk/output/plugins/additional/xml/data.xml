@@ -177,7 +177,7 @@ Written by
     <event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
 </objectinfo>
 
-<objectinfo class="wxDataViewCtrl" icon="dataview_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
+<objectinfo class="wxDataViewCtrl" icon="dataviewtree_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
     <inherits class="wxControl" />	
     <inherits class="wxWindow" />
     <property name="name" type="text">m_dataViewCtrl</property>
@@ -211,7 +211,7 @@ Written by
     <event name="OnDataViewCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
 </objectinfo>
 
-    <objectinfo class="wxDataViewTreeCtrl"  icon="dataviewtree_ctrl.xpm" type="dataviewtreectrl" wxversion="2904" >
+    <objectinfo class="wxDataViewTreeCtrl"  icon="dataview_ctrl.xpm" type="dataviewtreectrl" wxversion="2904" >
     <inherits class="wxControl" />	
     <inherits class="wxWindow" />
     <property name="name" type="text">m_dataViewTreeCtrl</property>
@@ -277,6 +277,21 @@ Written by
     <event name="OnDataViewListCtrlItemBeginDrag" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_BEGIN_DRAG event." />
     <event name="OnDataViewListCtrlItemDropPossible" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP_POSSIBLE event." />
     <event name="OnDataViewListCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
+</objectinfo>
+
+<objectinfo class="dataViewColumn" icon="dataviewlist_column.xpm" type="dataviewcolumn" wxversion="2904" >
+    <property name="name" type="text">m_dataViewColumn</property>
+    <property name="label" type="wxString_i18n">Name</property>
+	<property name="model_column" type="uint">0</property>
+    <property name="type" type="option">
+		<option name="Text" help="Appends a text column to the control and the store."/>
+		<option name="Bitmap" help="Appends a column for rendering a bitmap."/>
+		<option name="Date" help="Appends a column for rendering a date."/>
+        <option name="Toggle" help="Appends a toggle column to the control and the store."/>
+        <option name="Progress" help="Appends a progress column to the control and the store."/>
+        <option name="IconText" help="Appends an icon-and-text column to the control and the store."/>
+        Text
+    </property>
 </objectinfo>
 
 <objectinfo class="dataViewListColumn" icon="dataviewlist_column.xpm" type="dataviewlistcolumn" wxversion="2904" >

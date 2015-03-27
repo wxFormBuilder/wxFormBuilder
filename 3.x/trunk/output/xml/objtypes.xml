@@ -302,19 +302,21 @@
   <objtype name="nonvisual" />
 
   <objtype name="dataviewctrl">
+	<childtype name="dataviewcolumn" />
     <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
 
   <objtype name="dataviewtreectrl">
-    <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
 
   <objtype name="dataviewlistctrl" >
     <childtype name="dataviewlistcolumn" />
 	<!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
-
+  
   <objtype name="dataviewlistcolumn" />
+  
+  <objtype name="dataviewcolumn" />
   
   <objtype name="propgrid">
 	<childtype name="menu" nmax="1" aui_nmax="1"/>

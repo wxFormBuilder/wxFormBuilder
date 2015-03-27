@@ -1716,18 +1716,90 @@ void ComponentEvtHandler::OnMarginClick( wxStyledTextEvent& event )
 	event.Skip();
 }
 
+class DataViewModel : public wxDataViewModel
+{
+public:
+	unsigned int GetChildren(const wxDataViewItem& item, wxDataViewItemArray& children) const {
+		return 0;
+	}
+	unsigned int GetColumnCount() const {
+		return 0;
+	}
+	wxString GetColumnType(unsigned int col) const {
+		return wxVariant("Dummy").GetType();
+	}
+	wxDataViewItem GetParent(const wxDataViewItem& item) const {
+		return wxDataViewItem( NULL );
+	}
+	bool IsContainer(const wxDataViewItem& item) const {
+		return false;
+	}
+	void GetValue (wxVariant &variant, const wxDataViewItem &item, unsigned int col) const {
+	}
+	bool SetValue (const wxVariant &variant, const wxDataViewItem &item, unsigned int col) {
+		return true;
+	}
+};
+
 class DataViewCtrl : public ComponentBase
 {
 public:
 	wxObject* Create( IObject* obj, wxObject* parent )
 	{
-		wxDataViewListCtrl* dataViewCtrl = new wxDataViewListCtrl((wxWindow *)parent,
+		wxDataViewCtrl* dataViewCtrl = new wxDataViewCtrl((wxWindow *)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
 			
-	return dataViewCtrl;
+			wxObjectDataPtr<DataViewModel> model;
+			model = new DataViewModel;
+			dataViewCtrl->AssociateModel( model.get() );
+			
+		return dataViewCtrl;
+	}
+	
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	{
+		wxDataViewCtrl* list = wxDynamicCast( wxobject, wxDataViewCtrl);
+		if ( NULL == list )
+		{
+			// very very strange
+			return;
+		}
+		size_t count = GetManager()->GetChildCount( wxobject );
+		for ( size_t i = 0; i < count; ++i )
+		{
+			wxObject* child = GetManager()->GetChild( wxobject, i );
+			IObject* childObj = GetManager()->GetIObject( child );
+			if (childObj->GetClassName() == _("dataViewColumn"))
+			{
+				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
+				{
+					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
+				{
+					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
+				{
+					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
+				{
+					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Date"))
+				{
+					list->AppendDateColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+				else if (childObj->GetPropertyAsString( _("type")) == _("Bitmap"))
+				{
+					list->AppendBitmapColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+				}
+			}
+		}
 	}
 };
 
@@ -1743,7 +1815,7 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
 			
-	return dataViewTreeCtrl;
+		return dataViewTreeCtrl;
 	}
 };
 
@@ -1798,6 +1870,8 @@ public:
 };
 
 class DataViewListColumn : public ComponentBase{};
+
+class DataViewColumn : public ComponentBase{};
 
 class RibbonBarComponent : public ComponentBase
 {
@@ -2092,6 +2166,7 @@ WINDOW_COMPONENT("wxDataViewCtrl", DataViewCtrl )
 WINDOW_COMPONENT("wxDataViewTreeCtrl", DataViewTreeCtrl )
 WINDOW_COMPONENT("wxDataViewListCtrl", DataViewListCtrl )
 ABSTRACT_COMPONENT("dataViewListColumn", DataViewListColumn)
+ABSTRACT_COMPONENT("dataViewColumn", DataViewColumn)
 WINDOW_COMPONENT("wxRibbonBar", RibbonBarComponent)
 WINDOW_COMPONENT("wxRibbonPage", RibbonPageComponent)
 WINDOW_COMPONENT("wxRibbonPanel", RibbonPanelComponent)

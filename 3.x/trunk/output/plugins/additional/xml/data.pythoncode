@@ -114,22 +114,13 @@ Python code generation written by
 
   <templates class="dataViewListColumn">
 	<template name="construction">
-		#ifequal $type "Text"
-		@{
-			self.$name = self.#parent $name.AppendTextColumn( $label )
-		@}
-		#ifequal $type "Toggle"
-		@{
-			self.$name = self.#parent $name.AppendToggleColumn( $label )
-		@}
-		#ifequal $type "Progress"
-		@{
-			self.$name = self.#parent $name.AppendProgressColumn( $label )
-		@}
-		#ifequal $type "IconText"
-		@{
-			self.$name = self.#parent $name.AppendIconTextColumn( $label )
-		@}
+		self.$name = self.#parent $name.Append${type}Column( $label )
+	</template>
+  </templates>
+  
+  <templates class="dataViewColumn">
+	<template name="construction">
+		self.$name = self.#parent $name.Append${type}Column( $label, $model_column )
 	</template>
   </templates>
 
