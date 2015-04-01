@@ -106,6 +106,11 @@ void VisualEditor::DeleteAbstractObjects()
 		}
 		else
 		{
+			if( wxStaticBoxSizer* staticBoxSizer = dynamic_cast< wxStaticBoxSizer* >( it->first ) )
+			{
+				if( wxWindow* window = staticBoxSizer->GetStaticBox() )
+					window->PopEventHandler( true );
+			}
             // Delete push'd visual object event handlers
             wxWindow* window = dynamic_cast< wxWindow* > ( it->first );
             if ( window != 0 )
@@ -775,6 +780,9 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a sizer component, but this is not a wxSizer!"), obj->GetClassName().c_str() ) );
 			}
 			SetupSizer( obj, createdSizer );
+			// Push event handler in order to respond to Paint and Mouse events
+			if( createdWindow)
+				createdWindow->PushEventHandler( new VObjEvtHandler( createdWindow, obj ) );
 			break;
 		}
 		default:
@@ -1167,6 +1175,14 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 			break;
 		}
 
+		ObjectBaseMap::iterator it = m_baseobjects.find( nextParent.get() );
+		if ( m_baseobjects.end() != it )
+		{
+			wxObject* parentObj = it->second;
+			if( wxDynamicCast( parentObj, wxStaticBoxSizer ))
+				break;
+		}
+
 		nextParent = nextParent->GetParent();
 	}
 
@@ -1181,7 +1197,12 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		}
 		else
 		{
-			selPanel = wxDynamicCast( it->second, wxWindow );
+			if( wxStaticBoxSizer *sizer = wxDynamicCast( it->second, wxStaticBoxSizer ))
+			{
+				selPanel = sizer->GetStaticBox();
+			}
+			else
+				selPanel = wxDynamicCast( it->second, wxWindow );
 		}
 	}
 	else
@@ -1362,6 +1383,21 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 			scrolwin->FitInside();
 		}
 		wxPoint point = m_selSizer->GetPosition();
+		if( wxStaticBoxSizer *sbSizer = wxDynamicCast(m_selSizer, wxStaticBoxSizer) )
+		{
+			// In case of wxStaticBoxSizer, m_actPanel is not a parent window
+			// of the sizer (m_actPanel==sbSizer->GetStaticBox()).
+			// Thus we need to convert the sizer's position into coordinates
+			// of m_actPanel.
+			// We could do this via parent window of the sizer, but it's hard to
+			// obtain this window. The m_selSizer->GetContainingWindow() doesn't
+			// always return the parent window of the sizer, namely in the case
+			// the m_selSizer is inside another wxStaticBoxSizer
+			// (at least in MSW build, wxWidgets 3.0.1).
+			// We convert its StaticBox origin (StaticBox is a window) since origins
+			// of wxStaticBoxSizer and its StaticBox are the same point.
+			point = m_actPanel->ScreenToClient( sbSizer->GetStaticBox()->GetScreenPosition() );
+		}
 		size = m_selSizer->GetSize();
 
 		wxPen bluePen( *wxBLUE, 1, wxSOLID );
@@ -1384,7 +1420,14 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		wxSizer* sizerItem = wxDynamicCast( m_selItem, wxSizer );
 		if ( NULL != windowItem )
 		{
-			point = windowItem->GetPosition();
+			// In case the windowItem is inside a wxStaticBoxSizer its position is relative to
+			// the wxStaticBox which is NOT m_actPanel in on which the highlight is painted,
+			// so get the screen coordinates of the item and convert them into client coordinates
+			// of the panel to get the correct relative coordinates. This doesn't do any harm if
+			// the item is not inside a wxStaticBoxSizer, if this conversion results in a big
+			// performance penalty maybe check if the parent is a wxStaticBox and only then do
+			// this conversion.
+			point = m_actPanel->ScreenToClient(windowItem->GetScreenPosition());
 			size = windowItem->GetSize();
 			shown = windowItem->IsShown();
 		}
