@@ -7,7 +7,7 @@
 * #153 Incorrect generated python eventbinding code.
 * #7 get wxformbuilder to build on Mac OS X.
 + #61 wxDataViewCtrlColumn support.
-* #131 wxStaticBoxSizer highlight error (patch by Alexey Elizarov).
+* Partial fix of #131 wxStaticBoxSizer highlighting issues.
 
 05/06/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.
