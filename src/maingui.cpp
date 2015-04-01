@@ -58,7 +58,7 @@
 	#include <sstream>
 	#include <excpt.h>
 
-	#if defined( __MINGW32_MAJOR_VERSION ) /* MinGW-w64 required */
+	#if defined  __MINGW64_VERSION_MAJOR && defined __MINGW64_VERSION_MINOR /* MinGW-w64 required */
 		__stdcall EXCEPTION_DISPOSITION StructuredExceptionHandler(	struct _EXCEPTION_RECORD *ExceptionRecord, /* breaks build with MinGW 32 */
 															void * EstablisherFrame,
 															struct _CONTEXT *ContextRecord,

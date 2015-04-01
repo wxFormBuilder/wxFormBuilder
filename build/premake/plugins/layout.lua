@@ -19,6 +19,8 @@ project "layout-components-plugin"
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
 	
+	local libs = "std,richtext,propgrid,stc,ribbon,aui"
+	
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
@@ -32,8 +34,8 @@ project "layout-components-plugin"
 
     configuration "Debug"
         targetsuffix    ( DebugSuffix )
-        wx_config       { Debug="yes" }
+        wx_config       { Debug="yes", Libs=libs }
 
     configuration "Release"
         buildoptions    {"-fno-strict-aliasing"}
-        wx_config       {}
+        wx_config       { Libs=libs }
