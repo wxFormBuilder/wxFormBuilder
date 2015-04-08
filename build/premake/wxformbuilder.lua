@@ -91,10 +91,10 @@ end
         linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}
 
     configuration {"macosx", "Debug"}
-        postbuildcommands   {"../../../install/macosx/postbuildd4.sh"}
+        postbuildcommands   {"sh ../../../install/macosx/postbuild.sh -c debug" }
 
     configuration {"macosx", "Release"}
-        postbuildcommands   {"../../../install/macosx/postbuild4.sh"}
+        postbuildcommands   {"sh ../../../install/macosx/postbuild.sh -c release" }
 
     configuration "not windows"
         excludes            {"../../src/*.rc"}

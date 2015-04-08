@@ -8,6 +8,10 @@
 * #7 get wxformbuilder to build on Mac OS X.
 + #61 wxDataViewCtrlColumn support.
 * Partial fix of #131 wxStaticBoxSizer highlighting issues.
++ #8 Support for wxAUI_NB_MIDDLE_CLICK_CLOSE (patch by FGI).
+* #9 fix mac os install scripts (patch by Roberto Perpuly).
+* #10 update line endings in code generation on Mac OS X (patch by Roberto Perpuly).
+* #121 Incorrect line endings for newer versions of Mac OS.
 
 05/06/2014 Version 3.05.00 (Beta)
 + Added support for wxRibbonBar and related classes.

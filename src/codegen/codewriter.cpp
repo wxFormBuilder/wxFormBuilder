@@ -93,7 +93,7 @@ void CodeWriter::WriteLn( wxString code, bool keepIndents )
 		#if defined( __WXMSW__ )
 			Write( wxT("\r\n") );
 		#elif defined( __WXMAC__ )
-			Write( wxT("\r") );
+			Write( wxT("\n") );
 		#else
 			Write( wxT("\n") );
 		#endif
