@@ -18,46 +18,81 @@
 #*
 #*****************************************************************************
 
-APPCONTENTS=./output/wxFormBuilder.app/Contents
+usage() { echo "Usage: $0 -c (debug|release) " 1>&2; exit 1; }
 
-cd ..
-	
-rm -r -f ./output/wxFormBuilder.app
-mkdir ./output/wxFormBuilder.app	
-mkdir $APPCONTENTS
-mkdir $APPCONTENTS/Resources
-mkdir $APPCONTENTS/MacOS
-mkdir $APPCONTENTS/PlugIns
-mkdir $APPCONTENTS/SharedSupport
-if [ -f ./output/bin/wxformbuilder ]; then
-	cp ./output/bin/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
-else
-	cp ./output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+while getopts ":c:" c; do
+    case "${c}" in
+        c)
+			CONFIG="${OPTARG}"
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+shift $((OPTIND-1))
+
+
+if [ "debug" != "$CONFIG" ] && [ "release" != "$CONFIG" ]; then
+    usage
 fi
-cp ./output/lib/wxformbuilder/* $APPCONTENTS/PlugIns
-cp -r ./output/plugins/ $APPCONTENTS/SharedSupport/plugins
-cp -r ./output/resources/ $APPCONTENTS/SharedSupport/resources
-cp -r ./output/xml/ $APPCONTENTS/SharedSupport/xml
-cp ./install/macosx/icon.icns $APPCONTENTS/Resources/icon.icns
-cp ./install/macosx/docicon.icns $APPCONTENTS/Resources/docicon.icns
-cp ./install/macosx/Info.plist $APPCONTENTS/Info.plist
 
-# fix libraries' internal name and path... not really necessary but better
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib
-install_name_tool -id @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib
-install_name_tool -id @executable_path/../PlugIns/libwxadditions-mini.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
-install_name_tool -id @executable_path/../PlugIns/libadditional.dylib $APPCONTENTS/PlugIns/libadditional.dylib
-install_name_tool -id @executable_path/../PlugIns/libcommon.dylib $APPCONTENTS/PlugIns/libcommon.dylib
-install_name_tool -id @executable_path/../PlugIns/libcontainers.dylib $APPCONTENTS/PlugIns/libcontainers.dylib
-install_name_tool -id @executable_path/../PlugIns/liblayout.dylib $APPCONTENTS/PlugIns/liblayout.dylib
+# reliable way to get the absolute path inside a bash script
+# per http://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
+pushd `dirname $0` > /dev/null
+cd ../../
+PROJECT_ROOT=`pwd`
+popd > /dev/null
 
-# fix links betwen libraries now that we moved them, so they can find each other
-# in their new locations
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/MacOS/wxformbuilder
+if [ "$CONFIG" == "debug" ]; then
+	APPCONTENTS="$PROJECT_ROOT/output/wxFormBuilderd.app/Contents"
+	rm -r -f $PROJECT_ROOT/output/wxFormBuilderd.app
+	mkdir -p $PROJECT_ROOT/output/wxFormBuilderd.app
+else 
+	APPCONTENTS="$PROJECT_ROOT/output/wxFormBuilder.app/Contents"
+	rm -r -f $PROJECT_ROOT/output/wxFormBuilder.app
+	mkdir -p $PROJECT_ROOT/output/wxFormBuilder.app
+fi
 
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_flatnotebook-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_flatnotebook-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_propgrid-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_propgrid-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
-install_name_tool -change ../../../../output/lib/wxformbuilder/libwx_macu_scintilla-2.8_wxfb.dylib @executable_path/../PlugIns/libwx_macu_scintilla-2.8_wxfb.dylib $APPCONTENTS/PlugIns/libwxadditions-mini.dylib
+mkdir -p $APPCONTENTS
+mkdir -p $APPCONTENTS/Resources
+mkdir -p $APPCONTENTS/MacOS
+mkdir -p $APPCONTENTS/PlugIns
+mkdir -p $APPCONTENTS/SharedSupport
+
+# read carefully, the original output by the compiler is itself an app bundle 
+# located in output/bin/, but we create our own directory for another app 
+# bundle
+if [ -f $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-2.8 ]; then
+	cp $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-2.8 $APPCONTENTS/MacOS/wxformbuilder
+fi
+if [ -f $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-2.9 ]; then
+	cp $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-2.9 $APPCONTENTS/MacOS/wxformbuilder
+fi
+if [ -f $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-3.1 ]; then
+	cp $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder-3.1 $APPCONTENTS/MacOS/wxformbuilder
+fi
+if [ -f $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder ]; then
+	cp $PROJECT_ROOT/output/bin/wxformbuilder.app/Contents/MacOS/wxformbuilder $APPCONTENTS/MacOS/wxformbuilder
+fi
+
+cp $PROJECT_ROOT/output/lib/wxformbuilder/* $APPCONTENTS/PlugIns
+cp -r $PROJECT_ROOT/output/plugins/ $APPCONTENTS/SharedSupport/plugins
+cp -r $PROJECT_ROOT/output/resources/ $APPCONTENTS/SharedSupport/resources
+cp -r $PROJECT_ROOT/output/xml/ $APPCONTENTS/SharedSupport/xml
+
+cp $PROJECT_ROOT/install/macosx/icon.icns $APPCONTENTS/Resources/icon.icns
+cp $PROJECT_ROOT/install/macosx/docicon.icns $APPCONTENTS/Resources/docicon.icns
+cp $PROJECT_ROOT/install/macosx/Info.plist $APPCONTENTS/Info.plist
+
+# fix libraries' internal name and path
+# we set the ID to be the full path, so that the dylibbundler tool
+# can find them when we make an app bundle
+for filename in $APPCONTENTS/PlugIns/*.dylib; do
+	base=`basename "$filename"`
+	`install_name_tool -id "$APPCONTENTS/PlugIns/$base" "$APPCONTENTS/PlugIns/$base"`
+done
+
+if [ "$CONFIG" == "release" ]; then
+	sh $PROJECT_ROOT/install/macosx/makedist.sh
+fi

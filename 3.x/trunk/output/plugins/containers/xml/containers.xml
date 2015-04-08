@@ -110,6 +110,7 @@ Written by
 			<option name="wxAUI_NB_CLOSE_BUTTON"  help="With this style, a close button is available on the tab bar." />
 			<option name="wxAUI_NB_CLOSE_ON_ACTIVE_TAB"  help="With this style, the close button is visible on the active tab." />
 			<option name="wxAUI_NB_CLOSE_ON_ALL_TABS"  help="With this style, the close button is visible on all tabs." />
+			<option name="wxAUI_NB_MIDDLE_CLICK_CLOSE"  help="With this style, a tab is closed when clicked with the middle mouse button." />
 			<option name="wxAUI_NB_TOP"  help="With this style, tabs are drawn along the top of the notebook." />
 			<option name="wxAUI_NB_BOTTOM"  help="With this style, tabs are drawn along the bottom of the notebook." />
 			wxAUI_NB_DEFAULT_STYLE
