@@ -1,5 +1,8 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
+06/17/2015 Version 3.05.01.01 (RC1)
+* Updated installer scripts.
+
 03/27/2015 Version 3.05.01 (RC1)
 * #142 3.5-0 beta doesn't generates cpp/h files from command line (patch by Alexey Elizarov).
 * #145 ObjectInspector sometimes reselects wrong item (patch by sodev).
