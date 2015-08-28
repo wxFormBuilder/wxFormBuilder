@@ -357,7 +357,7 @@ Written by
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 			
 			#ifnotnull $window_extra_style
-			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+			@{ this->SetExtraStyle( this->GetExtraStyle() | $window_extra_style ); #nl @}
 
 			#ifnotnull $extra_style
 			@{ this->SetExtraStyle( $extra_style ); #nl @}
