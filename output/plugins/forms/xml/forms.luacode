@@ -348,7 +348,7 @@ Lua code generation writen by
 			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
 			
 			#ifnotnull $window_extra_style
-			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
+			@{ #utbl$name :SetExtraStyle( #utbl$name :GetExtraStyle() + $window_extra_style ) #nl @}
 
 			#ifnotnull $extra_style
 			@{ #utbl$name :SetExtraStyle( $extra_style ) #nl @}

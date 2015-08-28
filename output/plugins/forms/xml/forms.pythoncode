@@ -352,7 +352,7 @@ Python code generation writen by
 			self.SetSizeHintsSz( $minimum_size, $maximum_size ) #nl
 			
 			#ifnotnull $window_extra_style
-			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
+			@{ self.SetExtraStyle( self.GetExtraStyle() | $window_extra_style ) #nl @}
 
 			#ifnotnull $extra_style
 			@{ self.SetExtraStyle( $extra_style ) #nl @}
