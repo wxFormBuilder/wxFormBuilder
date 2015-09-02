@@ -274,6 +274,23 @@ Written by
 	<event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
 </objectinfo>
 
+<objectinfo class="wxSpinCtrlDouble" icon="spin_ctrl_double.xpm" type="widget">
+    <inherits class="wxWindow" />
+    <inherits class="AUI" />
+    <property name="name" type="text">m_spinCtrlDouble</property>
+    <property name="value" type="wxString"></property>
+    <property name="min" type="float"     help="Minimal value.">0</property>
+    <property name="max" type="float"     help="Maximal value.">100</property>
+	<property name="initial" type="float" help="Initial value.">0</property>
+	<property name="inc" type="float"     help="Increment value.">1</property>
+    <property name="style" type="bitlist">
+        <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
+        <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
+		wxSP_ARROW_KEYS
+	</property>        
+    <event name="OnSpinCtrlDouble" class="wxSpinDoubleEvent" help="Generated whenever the numeric value of the control is updated." />
+</objectinfo>
+
 <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
     <inherits class="wxWindow" />
     <inherits class="AUI" />

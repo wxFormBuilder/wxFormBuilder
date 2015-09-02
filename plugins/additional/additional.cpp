@@ -620,6 +620,74 @@ public:
 	}
 };
 
+#if wxCHECK_VERSION( 2, 9, 0 )
+class SpinCtrlDoubleComponent : public ComponentBase, public wxEvtHandler
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxSpinCtrlDouble* window = new wxSpinCtrlDouble((wxWindow *)parent, -1,
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")),
+			obj->GetPropertyAsFloat(_("min")),
+			obj->GetPropertyAsFloat(_("max")),
+			obj->GetPropertyAsFloat(_("initial")),
+			obj->GetPropertyAsFloat(_("inc")));
+
+		window->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinEventHandler( SpinCtrlDoubleComponent::OnSpin ), NULL, this );
+		return window;
+	}
+
+	void OnSpin( wxSpinEvent& event )
+	{
+		wxSpinCtrlDouble* window = dynamic_cast< wxSpinCtrlDouble* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%f"), window->GetValue() );
+			GetManager()->ModifyProperty( window, _("initial"), value );
+			window->SetFocus();
+		}
+	}
+
+	void Cleanup( wxObject* obj )
+	{
+		wxSpinCtrlDouble* window = dynamic_cast< wxSpinCtrlDouble* >( obj );
+		if ( 0 != window )
+		{
+			window->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinEventHandler( SpinCtrlDoubleComponent::OnSpin ), NULL, this );
+		}
+		ComponentBase::Cleanup( obj );
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxSpinCtrlDouble"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("initial"),_("value"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxSpinCtrl"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("value"),_("value"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("value"),_("initial"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+
+		return filter.GetXfbObject();
+	}
+};
+#endif
+
 class SpinButtonComponent : public ComponentBase
 {
 public:
@@ -2342,6 +2410,10 @@ MACRO(wxTE_CENTER);
 MACRO(wxTE_RIGHT);
 MACRO(wxTE_CAPITALIZE);
 
+#endif
+
+#if wxCHECK_VERSION( 2, 9, 0 )
+WINDOW_COMPONENT("wxSpinCtrlDouble",SpinCtrlDoubleComponent)
 #endif
 
 // wxCalendarCtrl
