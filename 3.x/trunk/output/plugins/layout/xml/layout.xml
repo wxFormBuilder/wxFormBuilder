@@ -83,6 +83,7 @@ Written by
       <option name="wxHORIZONTAL" 			help="Align items vertically"/>wxVERTICAL</property>
     <property name="label" type="wxString_i18n">label</property>
 	<property name="id" type="macro">wxID_ANY</property>
+    <property name="parent" type="bool" help="Use encapsulated wxStaticBox as a parent of managed children (recommended for wxWidgets 2.9.1 and later).">1</property>
 	<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
   </objectinfo>
 
