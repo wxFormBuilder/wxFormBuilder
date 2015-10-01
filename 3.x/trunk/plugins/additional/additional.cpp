@@ -558,13 +558,15 @@ class SpinCtrlComponent : public ComponentBase, public wxEvtHandler
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
+        int max = obj->GetPropertyAsInteger(_("max"));
+        int min = obj->GetPropertyAsInteger(_("min"));
 		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")),
-			obj->GetPropertyAsInteger(_("min")),
-			obj->GetPropertyAsInteger(_("max")),
+			min < max ? min : max,
+			max,
 			obj->GetPropertyAsInteger(_("initial")));
 
 		window->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler( SpinCtrlComponent::OnSpin ), NULL, this );

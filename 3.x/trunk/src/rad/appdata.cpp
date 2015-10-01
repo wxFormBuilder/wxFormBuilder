@@ -2766,19 +2766,19 @@ void ApplicationData::NotifyObjectSelected( PObjectBase obj, bool force )
 	wxFBObjectEvent event( wxEVT_FB_OBJECT_SELECTED, obj );
 	if( force ) event.SetString( wxT("force") );
 
-	NotifyEvent( event );
+	NotifyEvent( event, true );
 }
 
 void ApplicationData::NotifyObjectCreated( PObjectBase obj )
 {
 	wxFBObjectEvent event( wxEVT_FB_OBJECT_CREATED, obj );
-	NotifyEvent( event );
+	NotifyEvent( event, true );
 }
 
 void ApplicationData::NotifyObjectRemoved( PObjectBase obj )
 {
 	wxFBObjectEvent event( wxEVT_FB_OBJECT_REMOVED, obj );
-	NotifyEvent( event );
+	NotifyEvent( event, true );
 }
 
 void ApplicationData::NotifyPropertyModified( PProperty prop )
