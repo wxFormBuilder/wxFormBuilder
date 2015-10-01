@@ -1,9 +1,11 @@
 			wxFormBuilder ChangeLog
 ********************************************************************************
-09/21/2015 Version 3.05.02 (RC2)
+10/01/2015 Version 3.05.02 (RC2)
 * #162 Setting extra style interferres with base class
 * #159 Generated code for wxDataViewCtrl & co. is wrong/inconsistent
-* #164 Alignment issues 3.5-RC1 
+* #164 Alignment issues 3.5-RC1
+* #165 A Fatal Error Occured
+* #157 Setting min larger than max causes crash 
 
 06/17/2015 Version 3.05.01.01 (RC1)
 * Updated installer scripts.
