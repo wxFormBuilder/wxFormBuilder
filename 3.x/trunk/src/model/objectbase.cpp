@@ -157,6 +157,7 @@ int Property::GetValueAsInteger()
 
 	switch (GetType())
 	{
+	case PT_EDIT_OPTION:
 	case PT_OPTION:
 	case PT_MACRO:
 		result = TypeConv::GetMacroValue(m_value);
@@ -484,7 +485,7 @@ PObjectBase ObjectBase::GetChild (unsigned int idx)
 
 PObjectBase ObjectBase::GetChild (unsigned int idx, const wxString& type)
 {
-	assert (idx < m_children.size());
+	//assert (idx < m_children.size());
 
 	unsigned int cnt = 0;
 

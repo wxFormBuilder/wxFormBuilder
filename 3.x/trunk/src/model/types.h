@@ -157,7 +157,8 @@ typedef enum
 	PT_FLOAT,
 	PT_WXSTRING_I18N,
 	PT_PARENT,
-	PT_CLASS
+	PT_CLASS,
+	PT_EDIT_OPTION
 } PropertyType;
 /*
 typedef enum

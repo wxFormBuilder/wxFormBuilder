@@ -121,6 +121,21 @@ Lua code generation written by
 		</template>
 	</templates>
 
+	<templates class="wxTreeListCtrl">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		<template name="evt_connect_OnTreelistSelectionChanged">#utbl$name:Connect( wx.wxEVT_TREELIST_SELECTION_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistItemExpanding">#utbl$name:Connect( wx.wxEVT_TREELIST_ITEM_EXPANDING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistItemExpanded">#utbl$name:Connect( wx.wxEVT_TREELIST_ITEM_EXPANDED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistItemChecked">#utbl$name:Connect( wx.wxEVT_TREELIST_ITEM_CHECKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistItemActivated">#utbl$name:Connect( wx.wxEVT_TREELIST_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistItemContextMenu">#utbl$name:Connect( wx.wxEVT_TREELIST_ITEM_CONTEXT_MENU, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistColumnSorted">#utbl$name:Connect( wx.wxEVT_TREELIST_COLUMN_SORTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="wxTreeListCtrlColumn">
+		<template name="column_add">#utbl#parent $name:AppendColumn( $name, $width, $alignment, $flag )</template>
+	</templates>
+
   <templates class="wxCheckListBox">
 	<template name="construction">
 		#utbl$name #append Choices = {$choices} #nl

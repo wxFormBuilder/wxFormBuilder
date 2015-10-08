@@ -137,6 +137,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 	case PT_CLASS:
 	case PT_MACRO:
 	case PT_OPTION:
+	case PT_EDIT_OPTION:
 		{
 			result = value;
 			wxString pred = m_predModulePrefix[value];

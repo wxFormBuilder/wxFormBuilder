@@ -60,6 +60,8 @@
 #include <wx/ribbon/buttonbar.h>
 #include <wx/ribbon/toolbar.h>
 #include <wx/ribbon/gallery.h>
+// wxTreeListCtrl
+#include <wx/treelist.h>
 #endif
 
 #if wxCHECK_VERSION( 2, 8, 0 )
@@ -1875,6 +1877,96 @@ class DataViewListColumn : public ComponentBase{};
 
 class DataViewColumn : public ComponentBase{};
 
+
+///////////////////////////////////////////////////////////////////////////////
+class wxcoreTreeListCtrlComponent : public ComponentBase
+{
+public:
+
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxTreeListCtrl* treeListCtrl = new wxTreeListCtrl( (wxWindow *)parent, -1,
+				obj->GetPropertyAsPoint(_("pos")),
+				obj->GetPropertyAsSize(_("size")),
+				obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		return treeListCtrl;
+	}
+
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		// initialize tree
+		wxTreeListCtrl* treeListCtrl = wxDynamicCast( wxobject, wxTreeListCtrl );
+		int colCount = treeListCtrl->GetColumnCount();
+
+		// Check for columns
+		if ( 0 == colCount )
+		{
+			return;
+		}
+
+		wxTreeListItem root = treeListCtrl->GetRootItem();
+
+		wxTreeListItem treeListParent;
+		wxTreeListItem treeListItem;
+		int n = 0;
+
+		// Build tree.
+		treeListItem = treeListCtrl->AppendItem( root, wxString::Format( _("Item #%d"), ++n ) );
+		FillItem( treeListCtrl, treeListItem, colCount, n );
+
+		treeListParent = treeListItem;
+		for ( int i = 0; i < 5; ++i )
+		{
+			treeListItem = treeListCtrl->AppendItem( treeListParent, wxString::Format( _("Item #%d"), ++n ) );
+			FillItem( treeListCtrl, treeListItem, colCount, n );
+		}
+		treeListCtrl->Expand( treeListParent );
+
+		treeListParent = treeListItem;
+		for ( int i = 0; i < 5; ++i )
+		{
+			treeListItem = treeListCtrl->AppendItem( treeListParent, wxString::Format( _("Item #%d"), ++n ) );
+			FillItem( treeListCtrl, treeListItem, colCount, n );
+		}
+		treeListCtrl->Expand( treeListParent );
+	}
+
+	void FillItem( wxTreeListCtrl* treeListCtrl, wxTreeListItem itemId, int colCount, int row )
+	{
+		for ( int i = 0; i < colCount; ++i )
+		{
+			treeListCtrl->SetItemText( itemId, i, wxString::Format( _("Item #%d, column #%d" ), row, i ) );
+		}
+	}
+};
+
+class wxcoreTreeListCtrlColumnComponent : public ComponentBase
+{
+public:
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		IObject* obj = GetManager()->GetIObject( wxobject );
+		wxTreeListCtrl* treeList = wxDynamicCast( wxparent, wxTreeListCtrl );
+
+		if ( !( obj && treeList ) )
+		{
+			wxLogError( _("wxcoreTreeListCtrlColumnComponent is missing its wxFormBuilder object(%i) or its parent(%i)"), obj,treeList );
+			return;
+		}
+
+		treeList->AppendColumn( obj->GetPropertyAsString( _("name") ),
+			obj->GetPropertyAsInteger( _("width") ),
+			static_cast< wxAlignment >( obj->GetPropertyAsInteger( _("alignment") ) ),
+			obj->GetPropertyAsInteger( _("flag") ) );
+	}
+
+	void OnSelected( wxObject* wxobject )
+	{
+
+	}
+};
+
 class RibbonBarComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -2383,6 +2475,20 @@ MACRO(wxRIBBON_PANEL_MINIMISE_BUTTON)
 MACRO(wxRIBBON_PANEL_STRETCH)
 MACRO(wxRIBBON_PANEL_FLEXIBLE)
 #endif
+
+
+// wxTreeListCtrl
+WINDOW_COMPONENT( "wxTreeListCtrl", wxcoreTreeListCtrlComponent )
+MACRO(wxTL_SINGLE)
+MACRO(wxTL_MULTIPLE)
+MACRO(wxTL_CHECKBOX)
+MACRO(wxTL_3STATE)
+MACRO(wxTL_USER_3STATE)
+MACRO(wxTR_DEFAULT_STYLE)
+
+ABSTRACT_COMPONENT( "wxTreeListCtrlColumn", wxcoreTreeListCtrlColumnComponent )
+MACRO(wxCOL_RESIZABLE)
+MACRO(wxCOL_SORTABLE)
 
 END_LIBRARY()
 
