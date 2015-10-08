@@ -249,13 +249,6 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 		XrcCodeGenerator codegen;
 
 		wxString file, pathEntry;
-		bool useRelativePath = false;
-
-		// Determine if the path is absolute or relative
-		PProperty pRelPath = project->GetProperty( wxT( "relative_path" ) );
-
-		if ( pRelPath )
-			useRelativePath = ( pRelPath->GetValueAsInteger() ? true : false );
 
 		wxString path;
 
