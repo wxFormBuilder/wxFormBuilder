@@ -3,7 +3,7 @@
 
 wxString RemoveWhiteSpace(wxString str)
 {
-	int index = 0;
+	size_t index = 0;
 	while(index < str.Len())
 	{
 		if(str.GetChar(index) == ' ' || str.GetChar(index) == '\t' || str.GetChar(index) == '\n')
