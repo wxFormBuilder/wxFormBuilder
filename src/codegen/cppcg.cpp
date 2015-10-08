@@ -133,6 +133,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 	case PT_MACRO:
 	case PT_TEXT:
 	case PT_OPTION:
+	case PT_EDIT_OPTION:
 	case PT_FLOAT:
 	case PT_INT:
 	case PT_UINT:

@@ -1175,7 +1175,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		// if the property is a "bitlist" then parse all of the options
 		POptionList opt_list;
 		std::list< PropertyChild > children;
-		if ( ptype == PT_BITLIST || ptype == PT_OPTION )
+		if ( ptype == PT_BITLIST || ptype == PT_OPTION || ptype == PT_EDIT_OPTION )
 		{
 			opt_list = POptionList( new OptionList() );
 			ticpp::Element* elem_opt = elem_prop->FirstChildElement( "option", false );
@@ -1532,6 +1532,7 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("stringlist"),	PT_STRINGLIST	);
 	PT( wxT("float"),		PT_FLOAT		);
 	PT( wxT("parent"),		PT_PARENT		);
+	PT( wxT("editoption"),	PT_EDIT_OPTION	);
 }
 
 bool ObjectDatabase::LoadObjectTypes()

@@ -177,6 +177,51 @@ Written by
     <event name="OnCheckListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked." />
 </objectinfo>
 
+<objectinfo class="wxTreeListCtrl" icon="treelistctrl.xpm" type="treelistctrl" startgroup="1">
+	<inherits class="wxWindow"/>
+	<inherits class="AUI"/>
+	<property name="name" type="text">m_treeListCtrl</property>
+	<property name="style" type="bitlist">
+		<option name="wxTL_SINGLE" help="Single selection, this is the default."/>
+		<option name="wxTL_MULTIPLE" help="Allow multiple selection."/>
+		<option name="wxTL_CHECKBOX" help="Show the usual, 2 state, checkboxes for the items in the first column."/>
+		<option name="wxTL_3STATE" help="Show the checkboxes that can possibly be set by the program, but not the user, to a third, undetermined, state, for the items in the first column. Implies wxTL_CHECKBOX."/>
+		<option name="wxTL_USER_3STATE" help="Same as wxTL_3STATE but the user can also set the checkboxes to the undetermined state. Implies wxTL_3STATE."/>
+		<option name="wxTL_DEFAULT_STYLE" help="Style used by the control by default, just wxTL_SINGLE currently."/>
+		wxTL_DEFAULT_STYLE
+	</property>
+	<event name="OnTreelistSelectionChanged" class="wxTreeListEvent" help="Process wxEVT_TREELIST_SELECTION_CHANGED event and notifies about the selection change in the control. In the single selection case the item indicated by the event has been selected and previously selected item, if any, was deselected. In multiple selection case, the selection of this item has just changed (it may have been either selected or deselected) but notice that the selection of other items could have changed as well, use wxTreeListCtrl::GetSelections() to retrieve the new selection if necessary." />
+	<event name="OnTreelistItemExpanding" class="wxTreeListEvent" help="Process wxEVT_TREELIST_ITEM_EXPANDING event notifying about the given branch being expanded. This event is sent before the expansion occurs and can be vetoed to prevent it from happening." />
+	<event name="OnTreelistItemExpanded" class="wxTreeListEvent" help="Process wxEVT_TREELIST_ITEM_EXPANDED event notifying about the expansion of the given branch. This event is sent after the expansion occurs and can't be vetoed." />
+	<event name="OnTreelistItemChecked" class="wxTreeListEvent" help="Process wxEVT_TREELIST_ITEM_CHECKED event notifying about the user checking or unchecking the item. You can use wxTreeListCtrl::GetCheckedState() to retrieve the new item state and wxTreeListEvent::GetOldCheckedState() to get the previous one." />
+	<event name="OnTreelistItemActivated" class="wxTreeListEvent" help="Process wxEVT_TREELIST_ITEM_ACTIVATED event notifying about the user double clicking the item or activating it from keyboard." />
+	<event name="OnTreelistItemContextMenu" class="wxTreeListEvent" help="Process wxEVT_TREELIST_ITEM_CONTEXT_MENU event indicating that the popup menu for the given item should be displayed." />
+	<event name="OnTreelistColumnSorted" class="wxTreeListEvent" help="Process wxEVT_TREELIST_COLUMN_SORTED event indicating that the control contents has just been resorted using the specified column. The event doesn't carry the sort direction, use GetSortColumn() method if you need to know it." />
+</objectinfo>
+
+<objectinfo class="wxTreeListCtrlColumn" icon="treelistctrlcolumn.xpm" type="treelistctrlcolumn">
+	<property name="name" type="wxString_i18n" help="The column label.">Column</property>
+	<property name="width" type="editoption" help="The width of the column in pixels or the special wxCOL_WIDTH_AUTOSIZE value indicating that the column should adjust to its contents. Notice that the first column is special and will be always resized to fill all the space not taken by the other columns, i.e. the width specified here is ignored for it.">
+		<option name="wxCOL_WIDTH_DEFAULT" 	help="Special value used for column width meaning unspecified or default."/>
+		<option name="wxCOL_WIDTH_AUTOSIZE" help="Size the column automatically to fit all values.
+
+Note:
+On OS X, this style is only implemented in the Cocoa build on OS X >= 10.5; it behaves identically to wxCOL_WIDTH_DEFAULT otherwise."/>
+		wxCOL_WIDTH_DEFAULT
+	</property>
+	<property name="alignment" type="option" help="Alignment of both the column header and its items.">
+		<option name="wxALIGN_LEFT" 				help="Align the item to the left."/>
+		<option name="wxALIGN_RIGHT" 				help="Align the item to the right."/>
+		<option name="wxALIGN_CENTER" 			help="Align the item to the center."/>
+		wxALIGN_LEFT
+	</property>
+	<property name="flag" type="bitlist">
+		<option name="wxCOL_RESIZABLE" help="Allow the user to resize the column."/>
+		<option name="wxCOL_SORTABLE" help="Allow the user to resort the control contents by clicking on this column."/>
+		wxCOL_RESIZABLE
+	</property>
+</objectinfo>
+
 <objectinfo class="wxDataViewCtrl" icon="dataviewtree_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
     <inherits class="wxControl" />	
     <inherits class="wxWindow" />
@@ -211,7 +256,7 @@ Written by
     <event name="OnDataViewCtrlItemDrop" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_ITEM_DROP event." />
 </objectinfo>
 
-    <objectinfo class="wxDataViewTreeCtrl"  icon="dataview_ctrl.xpm" type="dataviewtreectrl" wxversion="2904" >
+<objectinfo class="wxDataViewTreeCtrl"  icon="dataview_ctrl.xpm" type="dataviewtreectrl" wxversion="2904" >
     <inherits class="wxControl" />	
     <inherits class="wxWindow" />
     <property name="name" type="text">m_dataViewTreeCtrl</property>

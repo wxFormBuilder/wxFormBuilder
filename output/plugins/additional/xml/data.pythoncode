@@ -124,6 +124,21 @@ Python code generation written by
 	</template>
   </templates>
 
+  <templates class="wxTreeListCtrl">
+	<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnTreelistSelectionChanged">self.$name.Bind( wx.EVT_TREELIST_SELECTION_CHANGED, #handler )</template>
+	<template name="evt_connect_OnTreelistItemExpanding">self.$name.Bind( wx.EVT_TREELIST_ITEM_EXPANDING, #handler )</template>
+	<template name="evt_connect_OnTreelistItemExpanded">self.$name.Bind( wx.EVT_TREELIST_ITEM_EXPANDED, #handler )</template>
+	<template name="evt_connect_OnTreelistItemChecked">self.$name.Bind( wx.EVT_TREELIST_ITEM_CHECKED, #handler )</template>
+	<template name="evt_connect_OnTreelistItemActivated">self.$name.Bind( wx.EVT_TREELIST_ITEM_ACTIVATED, #handler )</template>
+	<template name="evt_connect_OnTreelistItemContextMenu">self.$name.Bind( wx.EVT_TREELIST_ITEM_CONTEXT_MENU, #handler )</template>
+	<template name="evt_connect_OnTreelistColumnSorted">self.$name.Bind( wx.EVT_TREELIST_COLUMN_SORTED, #handler )</template>
+  </templates>
+
+  <templates class="wxTreeListCtrlColumn">
+	  <template name="column_add">#parent $name.AppendColumn( $name, $width, $alignment, $flag )</template>
+  </templates>
+
   <templates class="wxCheckListBox">
 	<template name="construction">
 		$name #append Choices = [$choices] #nl

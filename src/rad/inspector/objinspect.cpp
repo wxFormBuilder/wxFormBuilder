@@ -327,7 +327,7 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
     {
         result = new wxStringProperty( name, wxPG_LABEL, IntList( prop->GetValueAsString(), type == PT_UINTLIST ).ToString() );
     }
-    else if (type == PT_OPTION)
+    else if (type == PT_OPTION || type == PT_EDIT_OPTION)
     {
         PPropertyInfo prop_desc = prop->GetPropertyInfo();
         POptionList opt_list = prop_desc->GetOptionList();
@@ -351,7 +351,14 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
             }
         }
 
-        result = new wxEnumProperty( name, wxPG_LABEL, constants );
+        if ( type == PT_EDIT_OPTION )
+        {
+            result = new wxEditEnumProperty( name, wxPG_LABEL, constants );
+        }
+        else
+        {
+            result = new wxEnumProperty( name, wxPG_LABEL, constants );
+        }
         result->SetValueFromString( value, 0 );
         wxString desc = prop_desc->GetDescription();
         if ( desc.empty() )
@@ -764,6 +771,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
                 break;
             }
             case PT_OPTION:
+            case PT_EDIT_OPTION:
             {
                 wxString value = m_pg->GetPropertyValueAsString( propPtr );
                 ModifyProperty( prop, value );
@@ -1052,6 +1060,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
         break;
     case PT_MACRO:
     case PT_OPTION:
+    case PT_EDIT_OPTION:
     case PT_PARENT:
     case PT_WXSTRING:
         pgProp->SetValueFromString(prop->GetValueAsText(), 0);
