@@ -461,7 +461,8 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 	}
 	else if (	obj_type == wxT("notebook")			||
 				obj_type == wxT("flatnotebook")		||
-				obj_type == wxT("listbook")			||
+				obj_type == wxT("listbook")			||				
+				obj_type == wxT("simplebook")       ||
 				obj_type == wxT("choicebook")		||
 				obj_type == wxT("auinotebook")		||
 				obj_type == wxT("treelistctrl")		||
@@ -877,6 +878,7 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 	return (type == wxT("notebook")			||
 			type == wxT("flatnotebook")		||
 			type == wxT("listbook")			||
+			type == wxT("simplebook")		||
 			type == wxT("choicebook")		||
 			type == wxT("auinotebook")		||
 			type == wxT("widget")			||
@@ -1350,6 +1352,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 			type == wxT("notebook")				||
 			type == wxT("flatnotebook")			||
 			type == wxT("listbook")				||
+			type == wxT("simplebook")			||
 			type == wxT("choicebook")			||
 			type == wxT("auinotebook")			||
 			type == wxT("widget")				||

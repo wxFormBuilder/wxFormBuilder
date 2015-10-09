@@ -172,5 +172,18 @@ Written by
 		<property name="label" type="wxString_i18n">a page</property>
 		<property name="select" type="bool" help="Select Page when Adding">0</property>
 	</objectinfo>
-    
+
+	<objectinfo class="wxSimplebook" icon="panel.xpm" type="simplebook">
+		<inherits class="wxWindow" />
+		<inherits class="AUI" />
+		<property name="name" type="text">m_simplebook</property>
+		<event name="OnSimplebookPageChanged" class="wxBookCtrlEvent" help="The page selection was changed. Processes a wxEVT_BOOKCTRL_PAGE_CHANGED event." />
+		<event name="OnSimplebookPageChanging" class="wxBookCtrlEvent" help="The page selection is about to be changed. Processes a wxEVT_BOOKCTRL_PAGE_CHANGING event. This event can be vetoed." />
+	</objectinfo>
+
+	<objectinfo class="simplebookpage" icon="choicebook.xpm" type="simplebookpage">
+		<property name="label" type="wxString_i18n">a page</property>
+		<property name="select" type="bool" help="Select Page when Adding">0</property>
+	</objectinfo>
+
 </package>

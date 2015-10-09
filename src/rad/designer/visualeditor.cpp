@@ -925,6 +925,7 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 					tname == wxT("auinotebook") ||
 					tname == wxT("flatnotebook") ||
 					tname == wxT("listbook") ||
+					tname == wxT("simplebook") ||
 					tname == wxT("choicebook") ||
 					tname == wxT("treelistctrl") ||
 					tname == wxT("ribbonbar") ||
