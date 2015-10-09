@@ -175,6 +175,16 @@ Python code generation written by
 	<templates class="choicebookpage">
 		<template name="page_add">self.#parent $name.AddPage( self.#child $name, $label, $select )</template>
 	</templates>
+
+	<templates class="wxSimplebook">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="evt_connect_OnSimplebookPageChanged">self.$name.Bind( wx.EVT_COMMAND_BOOKCTRL_PAGE_CHANGED, #handler )</template>
+		<template name="evt_connect_OnSimplebookPageChanging">self.$name.Bind( wx.EVT_COMMAND_BOOKCTRL_PAGE_CHANGING, #handler )</template>
+	</templates>
+
+	<templates class="simplebookpage">
+		<template name="page_add">self.#parent $name.AddPage( self.#child $name, $label, $select )</template>
+	</templates>
 	
 	<templates class="wxAuiNotebook">
 		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>

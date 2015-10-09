@@ -1307,6 +1307,7 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 				type == wxT("toolbar")	||
 				type == wxT("tool")	||
 				type == wxT("listbook")	||
+				type == wxT("simplebook") ||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
 				type == wxT("treelistctrl")	||
@@ -1356,6 +1357,7 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 	else if (	type == wxT("notebookpage")		||
 				type == wxT("flatnotebookpage")	||
 				type == wxT("listbookpage")		||
+				type == wxT("simplebookpage")	||
 				type == wxT("choicebookpage")	||
 				type == wxT("auinotebookpage")
 			)

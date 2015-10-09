@@ -468,7 +468,6 @@ public:
     }
 };
 
-
 class NotebookComponent : public ComponentBase
 {
 public:
@@ -813,6 +812,32 @@ public:
 #endif
 };
 
+class SimplebookComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		return new wxSimplebook((wxWindow *)parent,-1,
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("window_style")));
+	}
+};
+
+class SimplebookPageComponent : public ComponentBase
+{
+public:
+	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
+	{
+		BookUtils::OnCreated< wxSimplebook >( wxobject, wxparent, GetManager(), _("SimplebookPageComponent") );
+	}
+
+	void OnSelected( wxObject* wxobject )
+	{
+		BookUtils::OnSelected< wxSimplebook >( wxobject, GetManager() );
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -836,6 +861,9 @@ ABSTRACT_COMPONENT("choicebookpage", ChoicebookPageComponent)
 
 WINDOW_COMPONENT("wxAuiNotebook", AuiNotebookComponent)
 ABSTRACT_COMPONENT("auinotebookpage", AuiNotebookPageComponent)
+
+WINDOW_COMPONENT("wxSimplebook", SimplebookComponent)
+ABSTRACT_COMPONENT("simplebookpage", SimplebookPageComponent)
 
 // wxSplitterWindow
 MACRO(wxSP_3D)

@@ -154,6 +154,16 @@ Lua code generation written by
 	<templates class="choicebookpage">
 		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child$name, $label, $select )</template>
 	</templates>
+
+	<templates class="wxSimplebook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="evt_connect_OnSimplebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSimplebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="simplebookpage">
+		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child$name, $label, $select )</template>
+	</templates>
 	
 	<templates class="wxAuiNotebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>

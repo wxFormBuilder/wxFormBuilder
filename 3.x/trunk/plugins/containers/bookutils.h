@@ -31,6 +31,7 @@
 #include <wx/notebook.h>
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
+#include <wx/simplebook.h>
 #include <wx/aui/auibook.h>
 
 class SuppressEventHandlers
@@ -97,7 +98,7 @@ namespace BookUtils
 		// Error checking
 		if ( !( obj && book && page ) )
 		{
-			wxLogError( _("%s is missing its wxFormBuilder object(%i), its parent(%i), or its child(%i)"), name.c_str(), obj, book, page );
+			wxLogError( _("%s is missing its wxFormBuilder object(%p), its parent(%p), or its child(%p)"), name.c_str(), obj, book, page );
 			return;
 		}
 
