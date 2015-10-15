@@ -42,25 +42,33 @@ Written by
   	<template name="settings">
   		#ifnotnull $disabled
   		@{ #nl $name->SetBitmapDisabled( $disabled ); @}
-  		
   		#ifnotnull $selected
   		@{ #nl $name->SetBitmapSelected( $selected ); @}
-  		
+
   		#ifnotnull $focus
   		@{ #nl $name->SetBitmapFocus( $focus ); @}
-  		
+
   		#ifnotnull $hover
   		@{ #nl $name->SetBitmapHover( $hover ); @}
   	</template>
   </templates>
 
   <templates class="wxTextCtrl">
-    <template name="declaration">#class* $name;</template>  
+    <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/textctrl.h&gt;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
 	<template name="settings">
-		#ifnotnull $maxlength
-		@{ $name->SetMaxLength( $maxlength ); @}
+		#ifnotequal $maxlength "0"
+		@{
+			@#ifdef __WXGTK__#nl
+				if ( !$name->HasFlag( wxTE_MULTILINE ) )#nl
+				{#nl
+					$name->SetMaxLength( $maxlength );#nl
+				}#nl
+			@#else#nl
+				$name->SetMaxLength( $maxlength );#nl
+			@#endif
+		@}
 	</template>
     <template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
 	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
@@ -106,7 +114,7 @@ Written by
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
 	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
   </templates>
-  
+
   <templates class="wxBitmapComboBox">
 	<template name="declaration">#class* $name;</template>
 	<template name="construction">
