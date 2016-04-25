@@ -65,6 +65,8 @@ namespace TypeConv
 	wxFontContainer StringToFont( const wxString &str );
 	wxString FontToString( const wxFontContainer &font );
 
+	wxString FontFamilyToString( int family );
+
 	wxColour StringToColour( const wxString &str );
 	wxSystemColour StringToSystemColour( const wxString& str );
 	wxString ColourToString( const wxColour &colour );
@@ -86,7 +88,7 @@ namespace TypeConv
 
 	wxString ReplaceSynonymous( const wxString &bitlist );
 
-    void SplitFileSystemURL( const wxString& url, wxString* protocol, wxString* path, wxString* anchor );
+	void SplitFileSystemURL( const wxString& url, wxString* protocol, wxString* path, wxString* anchor );
 
 	// Obtiene la ruta absoluta de un archivo
 	wxString MakeAbsolutePath( const wxString& filename, const wxString& basePath );

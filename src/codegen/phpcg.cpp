@@ -204,38 +204,23 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			if ( !value.empty() )
 			{
-				wxFontContainer font = TypeConv::StringToFont( value );
+				 wxFontContainer fontContainer = TypeConv::StringToFont( value );
+				 wxFont font = fontContainer.GetFont();
 
-				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ?
-#if wxVERSION_NUMBER < 2900
-                                    wxT("wxC2D(wxNORMAL_FONT)->GetPointSize()")
-                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
+				 const int pointSize = fontContainer.GetPointSize();
 
-                result = wxString::Format
-                        (
-                            wxT("new wxFont( %s, %i, %i, %i, %s, %s )" ),
-                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? wxT("true") : wxT("false") ),
-                            ( font.m_faceName.empty() ? wxT("wxEmptyString")
-                            : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
-#else
-                                    "wxC2D(wxNORMAL_FONT)->GetPointSize()"
-                                    : wxString::Format( "%i", pointSize );
-
-                result = wxString::Format
-                        (
-                            "new wxFont( %s, %i, %i, %i, %s, %s )",
-                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? "true" : "false" ),
-                            ( font.m_faceName.empty() ? "wxEmptyString"
-                            : wxString::Format( "\"%s\"", font.m_faceName ) )
-#endif
-                        );
+				 result = wxString::Format( "new wxFont( %s, %s, %s, %s, %s, %s )",
+							 ((pointSize <= 0) ? "wxC2D(wxNORMAL_FONT)->GetPointSize()" : (wxString() << pointSize)),
+							 TypeConv::FontFamilyToString( fontContainer.GetFamily() ),
+							 font.GetStyleString(),
+							 font.GetWeightString(),
+							 ( fontContainer.GetUnderlined() ? "true" : "false" ),
+							 ( fontContainer.m_faceName.empty() ? "wxEmptyString" : ("\"" + fontContainer.m_faceName + "\"") )
+						 );
 			}
 			else
 			{
-				result = wxT("wxNORMAL_FONT");
+				result = "wxC2D(wxNORMAL_FONT)";
 			}
 			break;
 		}
@@ -274,25 +259,25 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 				break;
 			}
 
-            if ( path.StartsWith( wxT("file:") ) )
-            {
-                wxLogWarning( wxT("PHP code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
-                result = wxT("wxNullBitmap");
-                break;
-            }
-
-            if ( source == wxT("Load From File") )
+			if ( path.StartsWith( wxT("file:") ) )
 			{
-			    wxString absPath;
-			    try
+				wxLogWarning( wxT("PHP code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
+				result = wxT("wxNullBitmap");
+				break;
+			}
+
+			if ( source == wxT("Load From File") )
+			{
+				wxString absPath;
+				try
 				{
-				    absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+					absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 				}
 				catch( wxFBException& ex )
 				{
-				    wxLogError( ex.what() );
-				    result = wxT( "wxNullBitmap" );
-				    break;
+					wxLogError( ex.what() );
+					result = wxT( "wxNullBitmap" );
+					break;
 				}
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
@@ -309,14 +294,14 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else if ( source == wxT("Load From Icon Resource") )
 			{
-                if ( wxDefaultSize == icoSize )
-                {
-                    result << wxT("new wxICON( ") << path << wxT(" )");
-                }
-                else
-                {
-                    result.Printf( wxT("new wxIcon( \"%s\", wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }
+				if ( wxDefaultSize == icoSize )
+				{
+					result << wxT("new wxICON( ") << path << wxT(" )");
+				}
+				else
+				{
+					result.Printf( wxT("new wxIcon( \"%s\", wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}
 			}
 			else if ( source == _("Load From Art Provider") )
 			{
@@ -1011,10 +996,10 @@ void PHPCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT("after_addchild") );
-    if ( !afterAddChild.IsEmpty() )
-    {
-        m_source->WriteLn( afterAddChild );
-    }
+	if ( !afterAddChild.IsEmpty() )
+	{
+		m_source->WriteLn( afterAddChild );
+	}
 
 	GenEvents( class_obj, events );
 
@@ -1023,20 +1008,20 @@ void PHPCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	m_source->WriteLn( wxT("") );
 
 	if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
-    {
-        m_source->WriteLn( wxT("function AddPage($page){") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("if(count($this->m_pages) > 0){") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("$previous_page = $this->m_pages[count($this->m_pages)-1];") );
-        m_source->WriteLn( wxT("$page->SetPrev($previous_page);") );
-        m_source->WriteLn( wxT("$previous_page->SetNext($page);") );
-        m_source->Unindent();
-        m_source->WriteLn( wxT("}") );
-        m_source->WriteLn( wxT("$this->m_pages[] = $page;") );
-        m_source->Unindent();
-        m_source->WriteLn( wxT("}") );
-    }
+	{
+		m_source->WriteLn( wxT("function AddPage($page){") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("if(count($this->m_pages) > 0){") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("$previous_page = $this->m_pages[count($this->m_pages)-1];") );
+		m_source->WriteLn( wxT("$page->SetPrev($previous_page);") );
+		m_source->WriteLn( wxT("$previous_page->SetNext($page);") );
+		m_source->Unindent();
+		m_source->WriteLn( wxT("}") );
+		m_source->WriteLn( wxT("$this->m_pages[] = $page;") );
+		m_source->Unindent();
+		m_source->WriteLn( wxT("}") );
+	}
 }
 
 void PHPCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &events )
@@ -1156,13 +1141,13 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("submenu")	||
 				type == wxT("toolbar")	||
 				type == wxT("ribbonbar")	||
-				type == wxT("listbook")	||				 
+				type == wxT("listbook")	||
 				type == wxT("simplebook") ||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
 				type == wxT("treelistctrl")	||
 				type == wxT("flatnotebook") ||
-                type == wxT("wizard")
+				type == wxT("wizard")
 			)
 		{
 			wxString afterAddChild = GetCode( obj, wxT("after_addchild") );
@@ -1296,14 +1281,14 @@ void PHPCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 			if( value.IsEmpty() ) continue;
 
 			// Skip wx IDs
-            if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
+			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
 				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
-            {
-                if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
-                {
-                    macros->push_back( value );
-                }
-            }
+			{
+				if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
+				{
+					macros->push_back( value );
+				}
+			}
 		}
 	}
 
@@ -1318,15 +1303,15 @@ void PHPCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector &events)
   unsigned int i;
   for (i=0; i < obj->GetEventCount(); i++)
   {
-    PEvent event = obj->GetEvent(i);
-    if (!event->GetValue().IsEmpty())
-      events.push_back(event);
+	PEvent event = obj->GetEvent(i);
+	if (!event->GetValue().IsEmpty())
+	  events.push_back(event);
   }
 
   for (i=0; i < obj->GetChildCount(); i++)
   {
-    PObjectBase child = obj->GetChild(i);
-    FindEventHandlers(child,events);
+	PObjectBase child = obj->GetChild(i);
+	FindEventHandlers(child,events);
   }
 }
 
@@ -1352,9 +1337,9 @@ void PHPCodeGenerator::GenDefines( PObjectBase project)
 	}
 	for (it = macros.begin() ; it != macros.end(); it++)
 	{
-	    // Don't redefine wx IDs
-        m_source->WriteLn( wxString::Format( wxT("const %s = %i;"), it->c_str(), id ) );
-        id++;
+		// Don't redefine wx IDs
+		m_source->WriteLn( wxString::Format( wxT("const %s = %i;"), it->c_str(), id ) );
+		id++;
 	}
 	if( !macros.empty() ) m_source->WriteLn( wxT("") );
 }
@@ -1457,13 +1442,13 @@ return auxPath;
 
 void PHPCodeGenerator::SetupPredefinedMacros()
 {
-    /* no id matches this one when compared to it */
-    ADD_PREDEFINED_MACRO(wxID_NONE);
+	/* no id matches this one when compared to it */
+	ADD_PREDEFINED_MACRO(wxID_NONE);
 
-    /*  id for a separator line in the menu (invalid for normal item) */
-    ADD_PREDEFINED_MACRO(wxID_SEPARATOR);
+	/*  id for a separator line in the menu (invalid for normal item) */
+	ADD_PREDEFINED_MACRO(wxID_SEPARATOR);
 
-    ADD_PREDEFINED_MACRO(wxID_ANY);
+	ADD_PREDEFINED_MACRO(wxID_ANY);
 
 	ADD_PREDEFINED_MACRO(wxID_LOWEST);
 
@@ -1486,12 +1471,12 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_HELP_PROCEDURES);
 	ADD_PREDEFINED_MACRO(wxID_HELP_CONTEXT);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_ALL);
-    ADD_PREDEFINED_MACRO(wxID_PAGE_SETUP);
-    ADD_PREDEFINED_MACRO(wxID_HELP_INDEX);
-    ADD_PREDEFINED_MACRO(wxID_HELP_SEARCH);
-    ADD_PREDEFINED_MACRO(wxID_PREFERENCES);
+	ADD_PREDEFINED_MACRO(wxID_PAGE_SETUP);
+	ADD_PREDEFINED_MACRO(wxID_HELP_INDEX);
+	ADD_PREDEFINED_MACRO(wxID_HELP_SEARCH);
+	ADD_PREDEFINED_MACRO(wxID_PREFERENCES);
 
-    ADD_PREDEFINED_MACRO(wxID_EDIT);
+	ADD_PREDEFINED_MACRO(wxID_EDIT);
 	ADD_PREDEFINED_MACRO(wxID_CUT);
 	ADD_PREDEFINED_MACRO(wxID_COPY);
 	ADD_PREDEFINED_MACRO(wxID_PASTE);
@@ -1514,7 +1499,7 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTSIZE);
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTTYPE);
 
-    ADD_PREDEFINED_MACRO(wxID_FILE);
+	ADD_PREDEFINED_MACRO(wxID_FILE);
 	ADD_PREDEFINED_MACRO(wxID_FILE1);
 	ADD_PREDEFINED_MACRO(wxID_FILE2);
 	ADD_PREDEFINED_MACRO(wxID_FILE3);
@@ -1546,8 +1531,8 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_ABORT);
 	ADD_PREDEFINED_MACRO(wxID_RETRY);
 	ADD_PREDEFINED_MACRO(wxID_IGNORE);
-    ADD_PREDEFINED_MACRO(wxID_ADD);
-    ADD_PREDEFINED_MACRO(wxID_REMOVE);
+	ADD_PREDEFINED_MACRO(wxID_ADD);
+	ADD_PREDEFINED_MACRO(wxID_REMOVE);
 
 	ADD_PREDEFINED_MACRO(wxID_UP);
 	ADD_PREDEFINED_MACRO(wxID_DOWN);
@@ -1574,7 +1559,7 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_REVERT_TO_SAVED);
 
 	/*  System menu IDs (used by wxUniv): */
-    ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
+	ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_MOVE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_RESIZE_FRAME);

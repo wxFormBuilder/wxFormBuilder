@@ -225,34 +225,19 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			if ( !value.empty() )
 			{
-				wxFontContainer font = TypeConv::StringToFont( value );
+				wxFontContainer fontContainer = TypeConv::StringToFont( value );
+				wxFont font = fontContainer.GetFont();
 
-				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ?
-#if wxVERSION_NUMBER < 2900
-                                    wxT("wx.wxNORMAL_FONT:GetPointSize()")
-                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
+				const int pointSize = fontContainer.GetPointSize();
 
-                result = wxString::Format
-                        (
-                            wxT("wx.wxFont( %s, %i, %i, %i, %s, %s )"),
-                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? wxT("True") : wxT("False") ),
-                            ( font.m_faceName.empty() ? wxT("\"\"")
-                            : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
-#else
-                                    "wx.wxNORMAL_FONT:GetPointSize()"
-                                    : wxString::Format( "%i", pointSize );
-
-                result = wxString::Format
-                        (
-                            "wx.wxFont( %s, %i, %i, %i, %s, %s )",
-                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? "True" : "False" ),
-                            ( font.m_faceName.empty() ? "\"\""
-                            : wxString::Format( "\"%s\"", font.m_faceName ) )
-#endif
-                        );
+				result = wxString::Format( "wx.wxFont( %s, %s, %s, %s, %s, %s )",
+							((pointSize <= 0) ? "wx.wxNORMAL_FONT:GetPointSize()" : (wxString() << pointSize)),
+							"wx." + TypeConv::FontFamilyToString( fontContainer.GetFamily() ),
+							"wx." + font.GetStyleString(),
+							"wx." + font.GetWeightString(),
+							( fontContainer.GetUnderlined() ? "True" : "False" ),
+							( fontContainer.m_faceName.empty() ? "\"\"" : ("\"" + fontContainer.m_faceName + "\"") )
+						);
 			}
 			else
 			{
@@ -295,25 +280,25 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 				break;
 			}
 
-            if ( path.StartsWith( wxT("file:") ) )
-            {
-                wxLogWarning( wxT("Lua code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
-                result = wxT("wx.wxNullBitmap");
-                break;
-            }
-
-            if ( source == _("Load From File") || source == _("Load From Embedded File"))
+			if ( path.StartsWith( wxT("file:") ) )
 			{
-			    wxString absPath;
-			    try
+				wxLogWarning( wxT("Lua code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
+				result = wxT("wx.wxNullBitmap");
+				break;
+			}
+
+			if ( source == _("Load From File") || source == _("Load From Embedded File"))
+			{
+				wxString absPath;
+				try
 				{
-				    absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+					absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 				}
 				catch( wxFBException& ex )
 				{
-				    wxLogError( ex.what() );
-				    result = wxT( "wx.wxNullBitmap" );
-				    break;
+					wxLogError( ex.what() );
+					result = wxT( "wx.wxNullBitmap" );
+					break;
 				}
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
@@ -330,14 +315,14 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 				//load from icon isn't supported by wxLua
 				//wxStaticBitmap(wxWindow* parent, wxWindowID id, const wxBitmap& label = wxNullBitmap, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxString& name = "wxStaticBitmap")
 				/*
-                if ( wxDefaultSize == icoSize )
-                {
-                    result << wxT("wx.wxICON( ") << path << wxT(" )");
-                }
-                else
-                {
-                    result.Printf( wxT("wx.Icon( u\"%s\", wx.wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }*/
+				if ( wxDefaultSize == icoSize )
+				{
+					result << wxT("wx.wxICON( ") << path << wxT(" )");
+				}
+				else
+				{
+					result.Printf( wxT("wx.Icon( u\"%s\", wx.wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}*/
 			}
 			else if ( source == _("Load From Art Provider") )
 			{
@@ -1103,7 +1088,7 @@ void LuaCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	if ( !propName )
 	{
 		wxLogError( wxT( "Missing \"name\" property on \"%s\" class. Review your XML object description" ),
-		            class_obj->GetClassName().c_str() );
+					class_obj->GetClassName().c_str() );
 		return;
 	}
 
@@ -1124,21 +1109,21 @@ void LuaCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 		m_source->WriteLn( settings );
 	}
 
-	    if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
-    {
-        m_source->WriteLn( wxT("function add_page(page)") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("if ( #") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages) > 0 then") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("local previous_page = ") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages[ #") + m_strUITable + wxT(".") + strClassName +wxT(".m_pages ]") );
-        m_source->WriteLn( wxT("page:SetPrev(previous_page)") );
-        m_source->WriteLn( wxT("previous_page:SetNext(page)") );
-        m_source->Unindent();
+		if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
+	{
+		m_source->WriteLn( wxT("function add_page(page)") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("if ( #") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages) > 0 then") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("local previous_page = ") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages[ #") + m_strUITable + wxT(".") + strClassName +wxT(".m_pages ]") );
+		m_source->WriteLn( wxT("page:SetPrev(previous_page)") );
+		m_source->WriteLn( wxT("previous_page:SetNext(page)") );
+		m_source->Unindent();
 		m_source->WriteLn( wxT("end") );
-        m_source->WriteLn(wxT("table.insert( ") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages, page)") );
-        m_source->Unindent();
+		m_source->WriteLn(wxT("table.insert( ") + m_strUITable + wxT(".") + strClassName + wxT(".m_pages, page)") );
+		m_source->Unindent();
 		m_source->WriteLn( wxT("end") );
-    }
+	}
 
 	for ( unsigned int i = 0; i < class_obj->GetChildCount(); i++ )
 	{
@@ -1146,10 +1131,10 @@ void LuaCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT("after_addchild") );
-    if ( !afterAddChild.IsEmpty() )
-    {
-        m_source->WriteLn( afterAddChild );
-    }
+	if ( !afterAddChild.IsEmpty() )
+	{
+		m_source->WriteLn( afterAddChild );
+	}
 
 	GenEvents( class_obj, events, strClassName );
 
@@ -1312,7 +1297,7 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 				type == wxT("auinotebook")	||
 				type == wxT("treelistctrl")	||
 				type == wxT("flatnotebook") ||
-                type == wxT("wizard")
+				type == wxT("wizard")
 			)
 		{
 			wxString afterAddChild = GetCode( obj, wxT("after_addchild") );
@@ -1452,11 +1437,11 @@ void LuaCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* macro
 			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
 				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
 			{
-                if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
-                {
-                    macros->push_back( value );
-                }
-            }
+				if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
+				{
+					macros->push_back( value );
+				}
+			}
 		}
 	}
 
@@ -1472,15 +1457,15 @@ void LuaCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector &events)
   unsigned int evt_cnt = obj->GetEventCount();
   for (i=0; i < evt_cnt; i++)
   {
-    PEvent event = obj->GetEvent(i);
-    if (!event->GetValue().IsEmpty())
-      events.push_back(event);
+	PEvent event = obj->GetEvent(i);
+	if (!event->GetValue().IsEmpty())
+	  events.push_back(event);
   }
 
   for (i=0; i < obj->GetChildCount(); i++)
   {
-    PObjectBase child = obj->GetChild(i);
-    FindEventHandlers(child,events);
+	PObjectBase child = obj->GetChild(i);
+	FindEventHandlers(child,events);
   }
 }
 
@@ -1507,10 +1492,10 @@ void LuaCodeGenerator::GenDefines( PObjectBase project)
 	}
 	for (it = macros.begin() ; it != macros.end(); it++)
 	{
-	    // Don't redefine wx IDs
-        m_source->WriteLn( wxString::Format( wxT("%s = %i"), it->c_str(), id ) );
+		// Don't redefine wx IDs
+		m_source->WriteLn( wxString::Format( wxT("%s = %i"), it->c_str(), id ) );
 		m_strUserIDsVec.push_back(*it);
-        id++;
+		id++;
 	}
 	if( !macros.empty() ) m_source->WriteLn( wxT("") );
 }
@@ -1607,13 +1592,13 @@ void LuaCodeGenerator::UseRelativePath(bool relative, wxString basePath)
 
 void LuaCodeGenerator::SetupPredefinedMacros()
 {
-    /* no id matches this one when compared to it */
-    ADD_PREDEFINED_MACRO(wxID_NONE);
+	/* no id matches this one when compared to it */
+	ADD_PREDEFINED_MACRO(wxID_NONE);
 
-    /*  id for a separator line in the menu (invalid for normal item) */
-    ADD_PREDEFINED_MACRO(wxID_SEPARATOR);
+	/*  id for a separator line in the menu (invalid for normal item) */
+	ADD_PREDEFINED_MACRO(wxID_SEPARATOR);
 
-    ADD_PREDEFINED_MACRO(wxID_ANY);
+	ADD_PREDEFINED_MACRO(wxID_ANY);
 
 	ADD_PREDEFINED_MACRO(wxID_LOWEST);
 
@@ -1636,12 +1621,12 @@ void LuaCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_HELP_PROCEDURES);
 	ADD_PREDEFINED_MACRO(wxID_HELP_CONTEXT);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_ALL);
-    ADD_PREDEFINED_MACRO(wxID_PAGE_SETUP);
-    ADD_PREDEFINED_MACRO(wxID_HELP_INDEX);
-    ADD_PREDEFINED_MACRO(wxID_HELP_SEARCH);
-    ADD_PREDEFINED_MACRO(wxID_PREFERENCES);
+	ADD_PREDEFINED_MACRO(wxID_PAGE_SETUP);
+	ADD_PREDEFINED_MACRO(wxID_HELP_INDEX);
+	ADD_PREDEFINED_MACRO(wxID_HELP_SEARCH);
+	ADD_PREDEFINED_MACRO(wxID_PREFERENCES);
 
-    ADD_PREDEFINED_MACRO(wxID_EDIT);
+	ADD_PREDEFINED_MACRO(wxID_EDIT);
 	ADD_PREDEFINED_MACRO(wxID_CUT);
 	ADD_PREDEFINED_MACRO(wxID_COPY);
 	ADD_PREDEFINED_MACRO(wxID_PASTE);
@@ -1664,7 +1649,7 @@ void LuaCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTSIZE);
 	ADD_PREDEFINED_MACRO(wxID_VIEW_SORTTYPE);
 
-    ADD_PREDEFINED_MACRO(wxID_FILE);
+	ADD_PREDEFINED_MACRO(wxID_FILE);
 	ADD_PREDEFINED_MACRO(wxID_FILE1);
 	ADD_PREDEFINED_MACRO(wxID_FILE2);
 	ADD_PREDEFINED_MACRO(wxID_FILE3);
@@ -1696,8 +1681,8 @@ void LuaCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_ABORT);
 	ADD_PREDEFINED_MACRO(wxID_RETRY);
 	ADD_PREDEFINED_MACRO(wxID_IGNORE);
-    ADD_PREDEFINED_MACRO(wxID_ADD);
-    ADD_PREDEFINED_MACRO(wxID_REMOVE);
+	ADD_PREDEFINED_MACRO(wxID_ADD);
+	ADD_PREDEFINED_MACRO(wxID_REMOVE);
 
 	ADD_PREDEFINED_MACRO(wxID_UP);
 	ADD_PREDEFINED_MACRO(wxID_DOWN);
@@ -1724,7 +1709,7 @@ void LuaCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_REVERT_TO_SAVED);
 
 	/*  System menu IDs (used by wxUniv): */
-    ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
+	ADD_PREDEFINED_MACRO(wxID_SYSTEM_MENU);
 	ADD_PREDEFINED_MACRO(wxID_CLOSE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_MOVE_FRAME);
 	ADD_PREDEFINED_MACRO(wxID_RESIZE_FRAME);
