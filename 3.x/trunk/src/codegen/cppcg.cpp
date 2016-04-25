@@ -35,6 +35,7 @@
 
 #include <algorithm>
 
+#include <wx/font.h>
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
 #include <wx/defs.h>
@@ -179,38 +180,23 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			if ( !value.empty() )
 			{
-				wxFontContainer font = TypeConv::StringToFont( value );
+				wxFontContainer fontContainer = TypeConv::StringToFont( value );
+				wxFont font = fontContainer.GetFont();
 
-				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ?
-#if wxVERSION_NUMBER < 2900
-                                    wxT("wxNORMAL_FONT->GetPointSize()")
-                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
+				const int pointSize = fontContainer.GetPointSize();
 
-                result = wxString::Format
-                        (
-                            wxT("wxFont( %s, %i, %i, %i, %s, %s )" ),
-                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? wxT("true") : wxT("false") ),
-                            ( font.m_faceName.empty() ? wxT("wxEmptyString")
-                            : wxString::Format( wxT("wxT(\"%s\")" ), font.m_faceName.c_str() ).c_str() )
-#else
-                                    "wxNORMAL_FONT->GetPointSize()"
-                                    : wxString::Format( "%i", pointSize );
-
-                result = wxString::Format
-                        (
-                            "wxFont( %s, %i, %i, %i, %s, %s )",
-                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? "true" : "false" ),
-                            ( font.m_faceName.empty() ? "wxEmptyString"
-                            : wxString::Format( "wxT(\"%s\")", font.m_faceName ) )
-#endif
-                        );
+				result = wxString::Format( "wxFont( %s, %s, %s, %s, %s, %s )",
+							((pointSize <= 0) ? "wxNORMAL_FONT->GetPointSize()" : (wxString() << pointSize)),
+							TypeConv::FontFamilyToString( fontContainer.GetFamily() ),
+							font.GetStyleString(),
+							font.GetWeightString(),
+							( fontContainer.GetUnderlined() ? "true" : "false" ),
+							( fontContainer.m_faceName.empty() ? "wxEmptyString" : ("wxT(\"" + fontContainer.m_faceName + "\")") )
+						);
 			}
 			else
 			{
-				result = wxT( "*wxNORMAL_FONT" );
+				result = "*wxNORMAL_FONT";
 			}
 			break;
 		}
@@ -599,12 +585,12 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_header->Clear();
 	m_source->Clear();
 	wxString code (
-	    wxT( "///////////////////////////////////////////////////////////////////////////\n" )
-	    wxT( "// C++ code generated with wxFormBuilder (version " ) wxT( __DATE__ ) wxT( ")\n" )
-	    wxT( "// http://www.wxformbuilder.org/\n" )
-	    wxT( "//\n" )
-	    wxT( "// PLEASE DO \"NOT\" EDIT THIS FILE!\n" )
-	    wxT( "///////////////////////////////////////////////////////////////////////////\n" ) );
+		wxT( "///////////////////////////////////////////////////////////////////////////\n" )
+		wxT( "// C++ code generated with wxFormBuilder (version " ) wxT( __DATE__ ) wxT( ")\n" )
+		wxT( "// http://www.wxformbuilder.org/\n" )
+		wxT( "//\n" )
+		wxT( "// PLEASE DO \"NOT\" EDIT THIS FILE!\n" )
+		wxT( "///////////////////////////////////////////////////////////////////////////\n" ) );
 
 	m_header->WriteLn( code );
 	m_source->WriteLn( code );
@@ -821,7 +807,7 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 	if ( !propName )
 	{
 		wxLogError( wxT( "Missing \"name\" property on \"%s\" class. Review your XML object description" ),
-		            class_obj->GetClassName().c_str() );
+					class_obj->GetClassName().c_str() );
 		return;
 	}
 
@@ -873,7 +859,7 @@ void CppCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 			if ( !GenEventEntry( obj, obj->GetObjectInfo(), templateName, handlerName, disconnect ) )
 			{
 				wxLogError( wxT( "Missing \"evt_%s\" template for \"%s\" class. Review your XML object description" ),
-				            templateName.c_str(), class_name.c_str() );
+							templateName.c_str(), class_name.c_str() );
 			}
 		}
 
@@ -936,8 +922,8 @@ void CppCodeGenerator::GenPrivateEventHandlers( const EventVector& events )
 			if ( generatedHandlers.find( event->GetValue() ) == generatedHandlers.end() )
 			{
 				aux = wxT( "void _wxFB_" ) + event->GetValue() + wxT( "( " ) +
-				      event->GetEventInfo()->GetEventClassName() + wxT( "& event ){ " ) +
-				      event->GetValue() + wxT( "( event ); }" );
+					  event->GetEventInfo()->GetEventClassName() + wxT( "& event ){ " ) +
+					  event->GetValue() + wxT( "( event ); }" );
 
 				m_header->WriteLn( aux );
 				generatedHandlers.insert( event->GetValue() );
@@ -963,7 +949,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const
 		{
 			PEvent event = events[i];
 			wxString aux = eventHandlerPrefix + wxT( "void " ) + event->GetValue() + wxT( "( " ) +
-			               event->GetEventInfo()->GetEventClassName() + wxT( "& event )" ) + eventHandlerPostfix;
+						   event->GetEventInfo()->GetEventClassName() + wxT( "& event )" ) + eventHandlerPostfix;
 
 			if ( generatedHandlers.find( aux ) == generatedHandlers.end() )
 			{
@@ -983,8 +969,8 @@ void CppCodeGenerator::GenAttributeDeclaration( PObjectBase obj, Permission perm
 		wxString perm_str = obj->GetProperty( wxT( "permission" ) )->GetValue();
 
 		if ( ( perm == P_PUBLIC && perm_str == wxT( "public" ) ) ||
-		        ( perm == P_PROTECTED && perm_str == wxT( "protected" ) ) ||
-		        ( perm == P_PRIVATE && perm_str == wxT( "private" ) ) )
+				( perm == P_PROTECTED && perm_str == wxT( "protected" ) ) ||
+				( perm == P_PRIVATE && perm_str == wxT( "private" ) ) )
 		{
 			// Generate the declaration
 			wxString code = GetCode( obj, wxT( "declaration" ) );
@@ -1089,7 +1075,7 @@ wxString CppCodeGenerator::GetCode( PObjectBase obj, wxString name )
 	if ( !code_info )
 	{
 		wxString msg( wxString::Format( wxT( "Missing \"%s\" template for \"%s\" class. Review your XML object description" ),
-		                                name.c_str(), obj->GetClassName().c_str() ) );
+										name.c_str(), obj->GetClassName().c_str() ) );
 		wxLogError( msg );
 		return wxT( "" );
 	}
@@ -1108,7 +1094,7 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 	if ( !propName )
 	{
 		wxLogError( wxT( "Missing \"name\" property on \"%s\" class. Review your XML object description" ),
-		            class_obj->GetClassName().c_str() );
+					class_obj->GetClassName().c_str() );
 		return;
 	}
 
@@ -1311,15 +1297,15 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 				nameVal = nameVal.Mid( delimiter + 2 );
 				delimiter = nameVal.Find( wxT( "::" ) );
 
-            } while ( delimiter != wxNOT_FOUND );
+			} while ( delimiter != wxNOT_FOUND );
 
 			if ( delimiter != wxNOT_FOUND || nameVal.empty() )
 			{
 				wxLogError	( 	_( "Invalid Value for Property\n\tObject: %s\n\tProperty: %s\n\tValue: %s" ),
-				              obj->GetPropertyAsString( _( "name" ) ).c_str(),
-				              _( "subclass" ),
-				              originalValue.c_str()
-				           );
+							  obj->GetPropertyAsString( _( "name" ) ).c_str(),
+							  _( "subclass" ),
+							  originalValue.c_str()
+						   );
 				return;
 			}
 
@@ -1521,16 +1507,16 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 	if ( !afterAddChild.empty() )
 	{
 		m_source->WriteLn( afterAddChild );
-        if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
-        {
-            m_source->WriteLn( wxT("for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )") );
-            m_source->WriteLn( wxT("{") );
-            m_source->Indent();
-            m_source->WriteLn( wxT("m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );") );
-            m_source->WriteLn( wxT("m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );") );
-            m_source->Unindent();
-            m_source->WriteLn( wxT("}") );
-        }
+		if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
+		{
+			m_source->WriteLn( wxT("for ( unsigned int i = 1; i < m_pages.GetCount(); i++ )") );
+			m_source->WriteLn( wxT("{") );
+			m_source->Indent();
+			m_source->WriteLn( wxT("m_pages.Item( i )->SetPrev( m_pages.Item( i - 1 ) );") );
+			m_source->WriteLn( wxT("m_pages.Item( i - 1 )->SetNext( m_pages.Item( i ) );") );
+			m_source->Unindent();
+			m_source->WriteLn( wxT("}") );
+		}
 	}
 
 	if ( m_useConnect && !events.empty() )
@@ -1619,9 +1605,9 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 				// because you will need to recompile...
 
 				wxString _template =	wxT( "#wxparent $name->SetSizer( $name ); #nl" )
-				                     wxT( "#wxparent $name->Layout();" )
-				                     wxT( "#ifnull #parent $size" )
-				                     wxT( "@{ #nl $name->Fit( #wxparent $name ); @}" );
+									 wxT( "#wxparent $name->Layout();" )
+									 wxT( "#ifnull #parent $size" )
+									 wxT( "@{ #nl $name->Fit( #wxparent $name ); @}" );
 
 				CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 				m_source->WriteLn( parser.ParseTemplate() );
@@ -1659,7 +1645,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 					}
 
 					_template = _template + sub1->GetProperty( wxT( "name" ) )->GetValue() +
-					            wxT( ", " ) + sub2->GetProperty( wxT( "name" ) )->GetValue() + wxT( ", $sashpos );" );
+								wxT( ", " ) + sub2->GetProperty( wxT( "name" ) )->GetValue() + wxT( ", $sashpos );" );
 
 					CppTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 					m_source->WriteLn( parser.ParseTemplate() );
@@ -1671,18 +1657,18 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 			}
 		}
 		else if ( 	type == wxT( "menubar" )         ||
-		           type == wxT( "menu" )             ||
-		           type == wxT( "submenu" )          ||
-		           type == wxT( "ribbonbar" )        ||
-		           type == wxT( "toolbar" )          ||
-		           type == wxT( "tool" )             ||
-		           type == wxT( "listbook" )         ||
-		           type == wxT( "simplebook" )       ||
-		           type == wxT( "notebook" )         ||
-		           type == wxT( "auinotebook" )      ||
-		           type == wxT( "treelistctrl" )     ||
-		           type == wxT( "flatnotebook" )
-		        )
+				   type == wxT( "menu" )             ||
+				   type == wxT( "submenu" )          ||
+				   type == wxT( "ribbonbar" )        ||
+				   type == wxT( "toolbar" )          ||
+				   type == wxT( "tool" )             ||
+				   type == wxT( "listbook" )         ||
+				   type == wxT( "simplebook" )       ||
+				   type == wxT( "notebook" )         ||
+				   type == wxT( "auinotebook" )      ||
+				   type == wxT( "treelistctrl" )     ||
+				   type == wxT( "flatnotebook" )
+				)
 		{
 			wxString afterAddChild = GetCode( obj, wxT( "after_addchild" ) );
 			if ( !afterAddChild.empty() )
@@ -1721,13 +1707,13 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		m_source->WriteLn( GetCode( obj, temp_name ) );
 	}
 	else if ( type == wxT( "notebookpage" )		||
-	          type == wxT( "flatnotebookpage" )	||
-	          type == wxT( "listbookpage" )		||
-	          type == wxT( "choicebookpage" )	||
-	          type == wxT( "simplebookpage" )	||
-	          type == wxT( "auinotebookpage" )  ||
-              type == wxT(" wizardpagesimple" )
-	        )
+			  type == wxT( "flatnotebookpage" )	||
+			  type == wxT( "listbookpage" )		||
+			  type == wxT( "choicebookpage" )	||
+			  type == wxT( "simplebookpage" )	||
+			  type == wxT( "auinotebookpage" )  ||
+			  type == wxT(" wizardpagesimple" )
+			)
 	{
 		GenConstruction( obj->GetChild( 0 ), false );
 		m_source->WriteLn( GetCode( obj, wxT( "page_add" ) ) );

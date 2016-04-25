@@ -215,34 +215,19 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 		{
 			if ( !value.empty() )
 			{
-				wxFontContainer font = TypeConv::StringToFont( value );
+				wxFontContainer fontContainer = TypeConv::StringToFont( value );
+				wxFont font = fontContainer.GetFont();
 
-				int pointSize = font.GetPointSize();
-				wxString size = pointSize <= 0 ?
-#if wxVERSION_NUMBER < 2900
-                                    wxT("wx.NORMAL_FONT.GetPointSize()")
-                                    : wxString::Format( wxT("%i"), pointSize ).c_str();
+				const int pointSize = fontContainer.GetPointSize();
 
-                result = wxString::Format
-                        (
-                            wxT("wx.Font( %s, %i, %i, %i, %s, %s )"),
-                            size.c_str(), font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? wxT("True") : wxT("False") ),
-                            ( font.m_faceName.empty() ? wxT("wx.EmptyString")
-                            : wxString::Format( wxT("\"%s\""), font.m_faceName.c_str() ).c_str() )
-#else
-                                    "wx.NORMAL_FONT.GetPointSize()"
-                                    : wxString::Format( "%i", pointSize );
-
-                result = wxString::Format
-                        (
-                            "wx.Font( %s, %i, %i, %i, %s, %s )",
-                            size, font.GetFamily(), font.GetStyle(), font.GetWeight(),
-                            ( font.GetUnderlined() ? "True" : "False" ),
-                            ( font.m_faceName.empty() ? "wx.EmptyString"
-                            : wxString::Format( "\"%s\"", font.m_faceName ) )
-#endif
-                        );
+				result = wxString::Format( "wx.Font( %s, %s, %s, %s, %s, %s )",
+							((pointSize <= 0) ? "wx.NORMAL_FONT.GetPointSize()" : (wxString() << pointSize)),
+							TypeConv::FontFamilyToString( fontContainer.GetFamily() ).replace( 0, 2, "wx." ),
+							font.GetStyleString().replace( 0, 2, "wx." ),
+							font.GetWeightString().replace( 0, 2, "wx." ),
+							( fontContainer.GetUnderlined() ? "True" : "False" ),
+							( fontContainer.m_faceName.empty() ? "wx.EmptyString" : ("\"" + fontContainer.m_faceName + "\"") )
+						);
 			}
 			else
 			{
@@ -285,25 +270,25 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 				break;
 			}
 
-            if ( path.StartsWith( wxT("file:") ) )
-            {
-                wxLogWarning( wxT("Python code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
-                result = wxT("wx.NullBitmap");
-                break;
-            }
-
-            if ( source == _("Load From File") || source == _("Load From Embedded File"))
+			if ( path.StartsWith( wxT("file:") ) )
 			{
-			    wxString absPath;
-			    try
+				wxLogWarning( wxT("Python code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
+				result = wxT("wx.NullBitmap");
+				break;
+			}
+
+			if ( source == _("Load From File") || source == _("Load From Embedded File"))
+			{
+				wxString absPath;
+				try
 				{
-				    absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+					absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 				}
 				catch( wxFBException& ex )
 				{
-				    wxLogError( ex.what() );
-				    result = wxT( "wx.NullBitmap" );
-				    break;
+					wxLogError( ex.what() );
+					result = wxT( "wx.NullBitmap" );
+					break;
 				}
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
@@ -316,14 +301,14 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else if ( source == _("Load From Icon Resource") )
 			{
-                if ( wxDefaultSize == icoSize )
-                {
-                    result << wxT("wx.ICON( ") << path << wxT(" )");
-                }
-                else
-                {
-                    result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }
+				if ( wxDefaultSize == icoSize )
+				{
+					result << wxT("wx.ICON( ") << path << wxT(" )");
+				}
+				else
+				{
+					result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}
 			}
 			else if ( source == _("Load From Art Provider") )
 			{
@@ -1023,28 +1008,28 @@ void PythonCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVect
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT("after_addchild") );
-    if ( !afterAddChild.IsEmpty() )
-    {
-        m_source->WriteLn( afterAddChild );
-    }
+	if ( !afterAddChild.IsEmpty() )
+	{
+		m_source->WriteLn( afterAddChild );
+	}
 
 	GenEvents( class_obj, events );
 
 	m_source->Unindent();
 
-    if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
-    {
-        m_source->WriteLn( wxT("def add_page(self, page):") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("if self.m_pages:") );
-        m_source->Indent();
-        m_source->WriteLn( wxT("previous_page = self.m_pages[-1]") );
-        m_source->WriteLn( wxT("page.SetPrev(previous_page)") );
-        m_source->WriteLn( wxT("previous_page.SetNext(page)") );
-        m_source->Unindent();
-        m_source->WriteLn( wxT("self.m_pages.append(page)") );
-        m_source->Unindent();
-    }
+	if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
+	{
+		m_source->WriteLn( wxT("def add_page(self, page):") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("if self.m_pages:") );
+		m_source->Indent();
+		m_source->WriteLn( wxT("previous_page = self.m_pages[-1]") );
+		m_source->WriteLn( wxT("page.SetPrev(previous_page)") );
+		m_source->WriteLn( wxT("previous_page.SetNext(page)") );
+		m_source->Unindent();
+		m_source->WriteLn( wxT("self.m_pages.append(page)") );
+		m_source->Unindent();
+	}
 }
 
 void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &events )
@@ -1165,13 +1150,13 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT( "ribbonbar" )        ||
 				type == wxT("toolbar")	||
 				type == wxT("tool")	||
-				type == wxT("listbook")	||					
+				type == wxT("listbook")	||
 				type == wxT("simplebook" ) ||
 				type == wxT("notebook")	||
 				type == wxT("auinotebook")	||
 				type == wxT("treelistctrl")	||
 				type == wxT("flatnotebook") ||
-                type == wxT("wizard")
+				type == wxT("wizard")
 			)
 		{
 			wxString afterAddChild = GetCode( obj, wxT("after_addchild") );
@@ -1311,11 +1296,11 @@ void PythonCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* ma
 			if ( ( ! value.Contains( wxT("XRCID" ) ) ) &&
 				 ( m_predMacros.end() == m_predMacros.find( value ) ) )
 			{
-                if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
-                {
-                    macros->push_back( value );
-                }
-            }
+				if ( macros->end() == std::find( macros->begin(), macros->end(), value ) )
+				{
+					macros->push_back( value );
+				}
+			}
 		}
 	}
 
@@ -1330,15 +1315,15 @@ void PythonCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector &events
   unsigned int i;
   for (i=0; i < obj->GetEventCount(); i++)
   {
-    PEvent event = obj->GetEvent(i);
-    if (!event->GetValue().IsEmpty())
-      events.push_back(event);
+	PEvent event = obj->GetEvent(i);
+	if (!event->GetValue().IsEmpty())
+	  events.push_back(event);
   }
 
   for (i=0; i < obj->GetChildCount(); i++)
   {
-    PObjectBase child = obj->GetChild(i);
-    FindEventHandlers(child,events);
+	PObjectBase child = obj->GetChild(i);
+	FindEventHandlers(child,events);
   }
 }
 
@@ -1364,9 +1349,9 @@ void PythonCodeGenerator::GenDefines( PObjectBase project)
 	}
 	for (it = macros.begin() ; it != macros.end(); it++)
 	{
-	    // Don't redefine wx IDs
-        m_source->WriteLn( wxString::Format( wxT("%s = %i"), it->c_str(), id ) );
-        id++;
+		// Don't redefine wx IDs
+		m_source->WriteLn( wxString::Format( wxT("%s = %i"), it->c_str(), id ) );
+		id++;
 	}
 	if( !macros.empty() ) m_source->WriteLn( wxT("") );
 }
@@ -1469,13 +1454,13 @@ return auxPath;
 
 void PythonCodeGenerator::SetupPredefinedMacros()
 {
-    /* no id matches this one when compared to it */
-    ADD_PREDEFINED_MACRO(wx.ID_NONE);
+	/* no id matches this one when compared to it */
+	ADD_PREDEFINED_MACRO(wx.ID_NONE);
 
-    /*  id for a separator line in the menu (invalid for normal item) */
-    ADD_PREDEFINED_MACRO(wx.ID_SEPARATOR);
+	/*  id for a separator line in the menu (invalid for normal item) */
+	ADD_PREDEFINED_MACRO(wx.ID_SEPARATOR);
 
-    ADD_PREDEFINED_MACRO(wx.ID_ANY);
+	ADD_PREDEFINED_MACRO(wx.ID_ANY);
 
 	ADD_PREDEFINED_MACRO(wx.ID_LOWEST);
 
@@ -1498,12 +1483,12 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wx.ID_HELP_PROCEDURES);
 	ADD_PREDEFINED_MACRO(wx.ID_HELP_CONTEXT);
 	ADD_PREDEFINED_MACRO(wx.ID_CLOSE_ALL);
-    ADD_PREDEFINED_MACRO(wx.ID_PAGE_SETUP);
-    ADD_PREDEFINED_MACRO(wx.ID_HELP_INDEX);
-    ADD_PREDEFINED_MACRO(wx.ID_HELP_SEARCH);
-    ADD_PREDEFINED_MACRO(wx.ID_PREFERENCES);
+	ADD_PREDEFINED_MACRO(wx.ID_PAGE_SETUP);
+	ADD_PREDEFINED_MACRO(wx.ID_HELP_INDEX);
+	ADD_PREDEFINED_MACRO(wx.ID_HELP_SEARCH);
+	ADD_PREDEFINED_MACRO(wx.ID_PREFERENCES);
 
-    ADD_PREDEFINED_MACRO(wx.ID_EDIT);
+	ADD_PREDEFINED_MACRO(wx.ID_EDIT);
 	ADD_PREDEFINED_MACRO(wx.ID_CUT);
 	ADD_PREDEFINED_MACRO(wx.ID_COPY);
 	ADD_PREDEFINED_MACRO(wx.ID_PASTE);
@@ -1526,7 +1511,7 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wx.ID_VIEW_SORTSIZE);
 	ADD_PREDEFINED_MACRO(wx.ID_VIEW_SORTTYPE);
 
-    ADD_PREDEFINED_MACRO(wx.ID_FILE);
+	ADD_PREDEFINED_MACRO(wx.ID_FILE);
 	ADD_PREDEFINED_MACRO(wx.ID_FILE1);
 	ADD_PREDEFINED_MACRO(wx.ID_FILE2);
 	ADD_PREDEFINED_MACRO(wx.ID_FILE3);
@@ -1558,8 +1543,8 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wx.ID_ABORT);
 	ADD_PREDEFINED_MACRO(wx.ID_RETRY);
 	ADD_PREDEFINED_MACRO(wx.ID_IGNORE);
-    ADD_PREDEFINED_MACRO(wx.ID_ADD);
-    ADD_PREDEFINED_MACRO(wx.ID_REMOVE);
+	ADD_PREDEFINED_MACRO(wx.ID_ADD);
+	ADD_PREDEFINED_MACRO(wx.ID_REMOVE);
 
 	ADD_PREDEFINED_MACRO(wx.ID_UP);
 	ADD_PREDEFINED_MACRO(wx.ID_DOWN);
@@ -1586,7 +1571,7 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wx.ID_REVERT_TO_SAVED);
 
 	/*  System menu IDs (used by wxUniv): */
-    ADD_PREDEFINED_MACRO(wx.ID_SYSTEM_MENU);
+	ADD_PREDEFINED_MACRO(wx.ID_SYSTEM_MENU);
 	ADD_PREDEFINED_MACRO(wx.ID_CLOSE_FRAME);
 	ADD_PREDEFINED_MACRO(wx.ID_MOVE_FRAME);
 	ADD_PREDEFINED_MACRO(wx.ID_RESIZE_FRAME);
@@ -1651,20 +1636,20 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_TEXT, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_TB_DEFAULT_STYLE, wx.aui. );
 
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_FLOATING, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_ACTIVE_PANE, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_TRANSPARENT_DRAG, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_TRANSPARENT_HINT, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_VENETIAN_BLINDS_HINT, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_RECTANGLE_HINT, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_HINT_FADE, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_NO_VENETIAN_BLINDS_FADE, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_LIVE_RESIZE, wx.aui. );
-    ADD_PREDEFINED_PREFIX( wxAUI_MGR_DEFAULT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_FLOATING, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_ALLOW_ACTIVE_PANE, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_TRANSPARENT_DRAG, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_TRANSPARENT_HINT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_VENETIAN_BLINDS_HINT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_RECTANGLE_HINT, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_HINT_FADE, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_NO_VENETIAN_BLINDS_FADE, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_LIVE_RESIZE, wx.aui. );
+	ADD_PREDEFINED_PREFIX( wxAUI_MGR_DEFAULT, wx.aui. );
 
 	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.animate. );
 	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.animate. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_DEFAULT_STYLE, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_FOLDBAR_STYLE, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_SHOW_PAGE_LABELS, wx.lib.agw.ribbon. );
@@ -1675,14 +1660,14 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_SHOW_TOGGLE_BUTTON, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_SHOW_HELP_BUTTON, wx.lib.agw.ribbon. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_DEFAULT_STYLE, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_NO_AUTO_MINIMISE, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_EXT_BUTTON, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_MINIMISE_BUTTON, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_STRETCH, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_PANEL_FLEXIBLE, wx.lib.agw.ribbon. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxPG_AUTO_SORT, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPG_HIDE_CATEGORIES, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPG_ALPHABETIC_MODE, wx.propgrid. );
@@ -1701,7 +1686,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxPG_DESCRIPTION, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPG_TOOLBAR, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPGMAN_DEFAULT_STYLE, wx.propgrid. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxDV_SINGLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_MULTIPLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_ROW_LINES, wx.dataview. );
