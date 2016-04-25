@@ -223,14 +223,16 @@ Written by
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
 		<template name="include">@#include &lt;wx/aui/auibook.h&gt;</template>		
 		<template name="evt_entry_OnAuiNotebookPageClose">EVT_AUINOTEBOOK_PAGE_CLOSE( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookPageClosed">EVT_AUINOTEBOOK_PAGE_CLOSED( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookPageChanged">EVT_AUINOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookPageChanging">EVT_AUINOTEBOOK_PAGE_CHANGING( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookButton">EVT_AUINOTEBOOK_BUTTON( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookBeginDrag">EVT_AUINOTEBOOK_BEGIN_DRAG( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookEndDrag">EVT_AUINOTEBOOK_END_DRAG( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookDragMotion">EVT_AUINOTEBOOK_DRAG_MOTION( $id, #handler )</template>
-		<template name="evt_entry_OnAuiNotebookAllowDND">EVT_AUINOTEBOOK_ALLOW_DND( $id, #handler )</template>		
+		<template name="evt_entry_OnAuiNotebookAllowDND">EVT_AUINOTEBOOK_ALLOW_DND( $id, #handler )</template>
 		<template name="evt_connect_OnAuiNotebookPageClose">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookPageClosed">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSED, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookPageChanged">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookPageChanging">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGING, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookButton">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_BUTTON, #handler, NULL, this );</template>

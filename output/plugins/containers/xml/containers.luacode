@@ -169,6 +169,7 @@ Lua code generation written by
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>
 		<template name="include"/><!--import wx.aui</template>	-->
 		<template name="evt_connect_OnAuiNotebookPageClose">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageClosed">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookPageChanged">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookPageChanging">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookButton">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BUTTON, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
