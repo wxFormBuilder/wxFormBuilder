@@ -190,6 +190,7 @@ Python code generation written by
 		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>
 		<template name="include">import wx.aui</template>	
 		<template name="evt_connect_OnAuiNotebookPageClose">self.$name.Bind( wx.aui.EVT_AUINOTEBOOK_PAGE_CLOSE, #handler )</template>
+		<template name="evt_connect_OnAuiNotebookPageClosed">self.$name.Bind( wx.aui.EVT_AUINOTEBOOK_PAGE_CLOSED, #handler )</template>
 		<template name="evt_connect_OnAuiNotebookPageChanged">self.$name.Bind( wx.aui.EVT_AUINOTEBOOK_PAGE_CHANGED, #handler )</template>
 		<template name="evt_connect_OnAuiNotebookPageChanging">self.$name.Bind( wx.aui.EVT_AUINOTEBOOK_PAGE_CHANGING, #handler )</template>
 		<template name="evt_connect_OnAuiNotebookButton">self.$name.Bind( wx.aui.EVT_AUINOTEBOOK_BUTTON, #handler )</template>
