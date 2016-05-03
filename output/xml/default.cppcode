@@ -23,13 +23,19 @@
     <template name="cpp_epilogue">#ifnotequal $help_provider "none"
 		@{
 		// Using the construction of a static object to ensure that the help provider is set #nl
+		// wx Manages the most recent HelpProvider passed to ::Set, but not the previous ones #nl
+		// If ::Set gets called more than once, the previous one is returned and should be deleted #nl
 		class wxFBContextSensitiveHelpSetter #nl
 		{ #nl
-		public: #nl
-			wxFBContextSensitiveHelpSetter() #nl
-			{ #nl
-				wxHelpProvider::Set( new $help_provider ); #nl
-			} #nl
+			public: #nl
+				wxFBContextSensitiveHelpSetter() #nl
+				{ #nl
+					$help_provider* help = new wxSimpleHelpProvider(); #nl
+					wxHelpProvider* old = wxHelpProvider::Set( help  ); #nl
+					if (old != 0){ #nl
+						delete old; #nl
+					} #nl
+				} #nl
 		}; #nl
 		#nl
 		static wxFBContextSensitiveHelpSetter s_wxFBSetTheHelpProvider; #nl
