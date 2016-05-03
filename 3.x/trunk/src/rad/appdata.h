@@ -256,7 +256,7 @@ class ApplicationData
 		void RemoveHandler( wxEvtHandler* handler );
 
 		// Operaciones sobre los datos
-		bool LoadProject( const wxString &file, bool checkSingleInstance = true );
+		bool LoadProject( const wxString &file, bool justGenerate = false );
 
 		void SaveProject( const wxString &filename );
 
