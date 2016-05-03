@@ -1258,7 +1258,7 @@ void ApplicationData::SaveProject( const wxString& filename )
 	}
 }
 
-bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstance )
+bool ApplicationData::LoadProject( const wxString &file, bool justGenerate )
 
 {
 	LogDebug( wxT( "LOADING" ) );
@@ -1269,7 +1269,7 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 		return false;
 	}
 
-	if ( checkSingleInstance )
+	if ( !justGenerate)
 	{
 		if ( !m_ipc->VerifySingleInstance( file ) )
 		{
@@ -1318,14 +1318,22 @@ bool ApplicationData::LoadProject( const wxString &file, bool checkSingleInstanc
 
 		if ( newer )
 		{
-			wxMessageBox( wxT( "This project file is newer than this version of wxFormBuilder.\n" )
+			if( justGenerate ){
+				wxLogError( wxT( "This project file is newer than this version of wxFormBuilder.\n" ) );
+			}else{
+				wxMessageBox( wxT( "This project file is newer than this version of wxFormBuilder.\n" )
 			              wxT( "It cannot be opened.\n\n" )
 			              wxT( "Please download an updated version from http://www.wxFormBuilder.org" ), _( "New Version" ), wxICON_ERROR );
+			}
 			return false;
 		}
 
 		if ( older )
 		{
+			if( justGenerate ){
+				wxLogError( wxT( "This project file is out of date.  Update your .fbp before using --generate" ) );
+				return false;
+			}
 			if ( wxYES == wxMessageBox( wxT( "This project file is not of the current version.\n" )
 			                            wxT( "Would you to attempt automatic conversion?\n\n" )
 			                            wxT( "NOTE: This will modify your project file on disk!" ), _( "Old Version" ), wxYES_NO ) )
