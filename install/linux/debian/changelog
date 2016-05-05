@@ -1,3 +1,9 @@
+wxformbuilder (3.5.2-0rc2) stable; urgency=low
+
+  * Sync to upstream 3.5.02 rc2.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 05 May 2016 16:41:27 -0400
+
 wxformbuilder (3.5.01-1) stable; urgency=low
 
   * Sync to upstream 3.5.01.
