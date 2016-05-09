@@ -1,3 +1,9 @@
+wxformbuilder (3.5.2-1rc2) stable; urgency=low
+
+  * Fixed GTK output on stderr.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Mon, 09 May 2016 14:13:18 -0400
+
 wxformbuilder (3.5.2-0rc2) stable; urgency=low
 
   * Sync to upstream 3.5.02 rc2.
