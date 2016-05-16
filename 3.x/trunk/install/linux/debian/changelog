@@ -1,3 +1,9 @@
+wxformbuilder (3.5.2-2rc2) stable; urgency=low
+
+  * Fixed wxAuiToolbar styles.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Mon, 16 May 2016 15:52:13 -0400
+
 wxformbuilder (3.5.2-1rc2) stable; urgency=low
 
   * Fixed GTK output on stderr.
