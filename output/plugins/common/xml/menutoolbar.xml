@@ -109,9 +109,10 @@ Written by
       <option name="wxAUI_TB_NO_AUTORESIZE" />
       <option name="wxAUI_TB_GRIPPER" />
       <option name="wxAUI_TB_OVERFLOW" />
-      <option name="wxAUI_TB_VERTICAL" />
-      <option name="wxAUI_TB_HORZ_LAYOUT" />
-      <option name="wxAUI_TB_HORZ_TEXT" />
+      <option name="wxAUI_TB_VERTICAL" help="Using this style forces the toolbar to be vertical and be only dockable to the left or right sides of the window whereas by default it can be horizontal or vertical and be docked anywhere" />
+      <option name="wxAUI_TB_HORZ_LAYOUT" help="Analogous to wxAUI_TB_VERTICAL, but forces the toolbar to be horizontal" />
+      <option name="wxAUI_TB_PLAIN_BACKGROUND" help="Draw a plain background (based on parent) instead of the default gradient background." />
+      <option name="wxAUI_TB_HORZ_TEXT" help="Equivalent to wxAUI_TB_HORZ_LAYOUT | wxAUI_TB_TEXT" />
       <option name="wxAUI_TB_DEFAULT_STYLE" />wxAUI_TB_HORZ_LAYOUT
     </property>
     <property name="label_visible" type="bool">0</property>
