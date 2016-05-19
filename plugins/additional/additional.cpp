@@ -122,14 +122,14 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 		EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
 		EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 	#endif
-	
+
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 	EVT_GRID_LABEL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
 
 	EVT_GRID_COL_SIZE( ComponentEvtHandler::OnGridColSize )
 	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
-	
+
 #if wxVERSION_NUMBER >= 2904
 	EVT_STC_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
 	EVT_RIBBONBAR_PAGE_CHANGED( -1, ComponentEvtHandler::OnRibbonBarPageChanged )
@@ -525,11 +525,11 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        sb->SetScrollbar(obj->GetPropertyAsInteger(_T("value")),
-            obj->GetPropertyAsInteger(_T("thumbsize")),
-            obj->GetPropertyAsInteger(_T("range")),
-            obj->GetPropertyAsInteger(_T("pagesize")));
-        return sb;
+		sb->SetScrollbar(obj->GetPropertyAsInteger(_T("value")),
+			obj->GetPropertyAsInteger(_T("thumbsize")),
+			obj->GetPropertyAsInteger(_T("range")),
+			obj->GetPropertyAsInteger(_T("pagesize")));
+		return sb;
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj)
@@ -560,8 +560,8 @@ class SpinCtrlComponent : public ComponentBase, public wxEvtHandler
 public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-        int max = obj->GetPropertyAsInteger(_("max"));
-        int min = obj->GetPropertyAsInteger(_("min"));
+		int max = obj->GetPropertyAsInteger(_("max"));
+		int min = obj->GetPropertyAsInteger(_("min"));
 		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1234,7 +1234,7 @@ public:
 		{
 			sc->ShowSearchButton( obj->GetPropertyAsInteger( _("search_button") ) );
 		}
-		
+
 		if ( !obj->IsNull( _("cancel_button") ) )
 		{
 			sc->ShowCancelButton( obj->GetPropertyAsInteger( _("cancel_button") ) );
@@ -1277,7 +1277,7 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event)
 		sc->SetInsertionPointEnd();
 		sc->SetFocus();
 	}
-	
+
 	event.Skip();
 }
 
@@ -1285,18 +1285,18 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event)
 class MediaCtrlComponent : public ComponentBase
 {
 public:
-    wxObject* Create(IObject *obj, wxObject *parent)
+	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxMediaCtrl* mc = new wxMediaCtrl((wxWindow *)parent, wxID_ANY, wxT(""),obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
-		
+
 		if ( !obj->IsNull( _("file") ) )
 		{
 			if( mc->Load( obj->GetPropertyAsString( _("file") ) ) )
 			{
 				if (!obj->IsNull( _("playback_rate"))) mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("playback_rate")));
-				if (!obj->IsNull( _("volume")) && (obj->GetPropertyAsFloat(_("volume"))>=0)&&(obj->GetPropertyAsFloat(_("volume"))<=1)) 
+				if (!obj->IsNull( _("volume")) && (obj->GetPropertyAsFloat(_("volume"))>=0)&&(obj->GetPropertyAsFloat(_("volume"))<=1))
 						mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("volume")));
 				if (!obj->IsNull(_("player_controls")))
 				{
@@ -1304,17 +1304,17 @@ public:
 					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("VOLUME") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_VOLUME);
 					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("DEFAULT") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_DEFAULT);
 					if(  obj->GetPropertyAsString( _("player_controls") ) == wxT("NONE") )	mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_NONE);
-						
+
 				}
-				
+
 				if ( !obj->IsNull( _("play") ) && ( obj->GetPropertyAsInteger( _("play") ) == 1 ) ) mc->Play();
 				else
 					mc->Stop();
-				
+
 				//GetManager()->ModifyProperty( m_window, wxT("size"), mc->GetBestSize() );
 			}
 		}
-		
+
 		if(!obj->IsNull(_("style"))) mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);
 
 		mc->PushEventHandler( new ComponentEvtHandler( mc, GetManager() ) );
@@ -1347,27 +1347,27 @@ public:
 class PropertyGridComponent : public ComponentBase
 {
 public:
-    wxObject* Create(IObject *obj, wxObject *parent)
-    {
-        wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent,-1,
-                                                obj->GetPropertyAsPoint(wxT("pos")),
-                                                obj->GetPropertyAsSize(wxT("size")),
-                                                obj->GetPropertyAsInteger(wxT("style")) |
-                                                obj->GetPropertyAsInteger(wxT("window_style")) );
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent,-1,
+												obj->GetPropertyAsPoint(wxT("pos")),
+												obj->GetPropertyAsSize(wxT("size")),
+												obj->GetPropertyAsInteger(wxT("style")) |
+												obj->GetPropertyAsInteger(wxT("window_style")) );
 
-        if ( !obj->GetPropertyAsString(wxT("extra_style")).empty() )
-        {
-            pg->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
-        }
+		if ( !obj->GetPropertyAsString(wxT("extra_style")).empty() )
+		{
+			pg->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
+		}
 
-        return pg;
-    }
+		return pg;
+	}
 
-    /*void Cleanup( wxObject* )
-    {
-        // Prevent assert for missing event handler
-    }*/
-	
+	/*void Cleanup( wxObject* )
+	{
+		// Prevent assert for missing event handler
+	}*/
+
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxPropertyGrid* pg = wxDynamicCast( wxobject, wxPropertyGrid);
@@ -1376,7 +1376,7 @@ public:
 			// very very strange
 			return;
 		}
-		
+
 		size_t count = GetManager()->GetChildCount( wxobject );
 		for ( size_t i = 0; i < count; ++i )
 		{
@@ -1396,7 +1396,7 @@ public:
 						prop->SetLabel( childObj->GetPropertyAsString( _("label") ) );
 						prop->SetName( childObj->GetPropertyAsString( _("label") ) );
 						pg->Append( prop );
-						
+
 						if( childObj->GetPropertyAsString( _("help") ) != wxEmptyString )
 						{
 							pg->SetPropertyHelpString( prop, childObj->GetPropertyAsString( _("help") ) );
@@ -1411,118 +1411,118 @@ public:
 class PropertyGridManagerComponent : public ComponentBase
 {
 public:
-    wxObject* Create(IObject *obj, wxObject *parent)
-    {
-        wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, -1,
-                                                                obj->GetPropertyAsPoint(wxT("pos")),
-                                                                obj->GetPropertyAsSize(wxT("size")),
-                                                                obj->GetPropertyAsInteger(wxT("style")) |
-                                                                obj->GetPropertyAsInteger(wxT("window_style")));
+	wxObject* Create(IObject *obj, wxObject *parent)
+	{
+		wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, -1,
+																obj->GetPropertyAsPoint(wxT("pos")),
+																obj->GetPropertyAsSize(wxT("size")),
+																obj->GetPropertyAsInteger(wxT("style")) |
+																obj->GetPropertyAsInteger(wxT("window_style")));
 
-        if ( !obj->GetPropertyAsString( wxT("extra_style") ).empty() )
-        {
-            pgman->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
-        }
-		
-        pgman->ShowHeader( obj->GetPropertyAsInteger( wxT("show_header") ) );
-		
-        // Adding a page sets target page to the one added, so
-        // we don't have to call SetTargetPage if we are filling
-        // it right after adding.
-        /*wxPropertyGridPage* pg = pgman->AddPage( _("First Page") );
+		if ( !obj->GetPropertyAsString( wxT("extra_style") ).empty() )
+		{
+			pgman->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
+		}
 
-        pg->Append( new wxPropertyCategory( _("Sample Category") ) );
+		pgman->ShowHeader( obj->GetPropertyAsInteger( wxT("show_header") ) );
 
-        // Add string property
-        wxPGProperty *id = pg->Append( new wxStringProperty( _("Label"), wxPG_LABEL, _("Initial Value") ) );
-        pg->SetPropertyHelpString( id, _("A string property") );
+		// Adding a page sets target page to the one added, so
+		// we don't have to call SetTargetPage if we are filling
+		// it right after adding.
+		/*wxPropertyGridPage* pg = pgman->AddPage( _("First Page") );
 
-        // Add int property
-        pg->Append( new wxIntProperty ( wxT("IntProperty"), wxPG_LABEL, 12345678 ) );
+		pg->Append( new wxPropertyCategory( _("Sample Category") ) );
 
-        // Add float property (value type is actually double)
-        pg->Append( new wxFloatProperty ( wxT("FloatProperty"), wxPG_LABEL, 12345.678 ) );
+		// Add string property
+		wxPGProperty *id = pg->Append( new wxStringProperty( _("Label"), wxPG_LABEL, _("Initial Value") ) );
+		pg->SetPropertyHelpString( id, _("A string property") );
 
-        // Add a bool property
-        pg->Append( new wxBoolProperty ( wxT("BoolProperty"), wxPG_LABEL, false ) );
-        pg->Append( new wxBoolProperty ( wxT("BoolPropertyAsCheckbox"), wxPG_LABEL, true ) );
-        pg->SetPropertyAttribute( wxT("BoolPropertyAsCheckbox"), wxPG_BOOL_USE_CHECKBOX, (long)1 );
+		// Add int property
+		pg->Append( new wxIntProperty ( wxT("IntProperty"), wxPG_LABEL, 12345678 ) );
 
-        // Add an enum property
-        wxArrayString strings;
-        strings.Add( _("Herbivore") );
-        strings.Add( _("Carnivore") );
-        strings.Add( _("Omnivore") );
+		// Add float property (value type is actually double)
+		pg->Append( new wxFloatProperty ( wxT("FloatProperty"), wxPG_LABEL, 12345.678 ) );
 
-        wxArrayInt indexes;
-        indexes.Add( 0 );
-        indexes.Add( 1 );
-        indexes.Add( 2 );
+		// Add a bool property
+		pg->Append( new wxBoolProperty ( wxT("BoolProperty"), wxPG_LABEL, false ) );
+		pg->Append( new wxBoolProperty ( wxT("BoolPropertyAsCheckbox"), wxPG_LABEL, true ) );
+		pg->SetPropertyAttribute( wxT("BoolPropertyAsCheckbox"), wxPG_BOOL_USE_CHECKBOX, (long)1 );
 
-        pg->Append( new wxEnumProperty( wxT("EnumProperty"), wxPG_LABEL, strings, indexes, 0 ) );
+		// Add an enum property
+		wxArrayString strings;
+		strings.Add( _("Herbivore") );
+		strings.Add( _("Carnivore") );
+		strings.Add( _("Omnivore") );
 
-        pg->Append( new wxPropertyCategory( _("Low Priority Properties") ) );
+		wxArrayInt indexes;
+		indexes.Add( 0 );
+		indexes.Add( 1 );
+		indexes.Add( 2 );
 
-        // A string property that can be edited in a separate editor dialog.
-        pg->Append( new wxLongStringProperty( wxT("LongStringProperty"), wxPG_LABEL,
-                                              wxString(_("This is much longer string than the ") ) +
-                                              wxString(_("first one. Edit it by clicking the button.") ) ) );
+		pg->Append( new wxEnumProperty( wxT("EnumProperty"), wxPG_LABEL, strings, indexes, 0 ) );
 
-        // String editor with dir selector button.
-        pg->Append( new wxDirProperty( wxT("DirProperty"), wxPG_LABEL, ::wxGetUserHome() ) );
+		pg->Append( new wxPropertyCategory( _("Low Priority Properties") ) );
 
-        // A file selector property.
-        pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
+		// A string property that can be edited in a separate editor dialog.
+		pg->Append( new wxLongStringProperty( wxT("LongStringProperty"), wxPG_LABEL,
+											  wxString(_("This is much longer string than the ") ) +
+											  wxString(_("first one. Edit it by clicking the button.") ) ) );
 
-        wxPropertyGridPage* pg2 = pgman->AddPage( _("Second Page") );
+		// String editor with dir selector button.
+		pg->Append( new wxDirProperty( wxT("DirProperty"), wxPG_LABEL, ::wxGetUserHome() ) );
 
-        pg2->Append( new wxPropertyCategory( _("Sample Parent Property"), wxPG_LABEL ) );
+		// A file selector property.
+		pg->Append( new wxFileProperty( wxT("FileProperty"), wxPG_LABEL, wxEmptyString ) );
 
-        wxPGProperty* carProp2 = pg2->Append( new wxStringProperty( _("Car"), wxPG_LABEL, wxT("<composed>") ) );
-        pg2->AppendIn( carProp2, new wxStringProperty( _("Model"), wxPG_LABEL, wxT("Lamborghini Diablo SV") ) );
-        pg2->AppendIn( carProp2, new wxIntProperty( _("Engine Size (cc)"), wxPG_LABEL, 5707) );
+		wxPropertyGridPage* pg2 = pgman->AddPage( _("Second Page") );
 
-        wxPGProperty* speedsProp2 = pg2->AppendIn( carProp2, new wxStringProperty( _("Speeds"), wxPG_LABEL, wxT("<composed>") ) );
-        pg2->AppendIn( speedsProp2, new wxIntProperty( _("Max. Speed (mph)"), wxPG_LABEL, 300 ) );
-        pg2->AppendIn( speedsProp2, new wxFloatProperty( _("0-100 mph (sec)"), wxPG_LABEL, 3.9 ) );
-        pg2->AppendIn( speedsProp2, new wxFloatProperty( _("1/4 mile (sec)"), wxPG_LABEL, 8.6) );
+		pg2->Append( new wxPropertyCategory( _("Sample Parent Property"), wxPG_LABEL ) );
 
-        pg2->AppendIn( carProp2, new wxIntProperty( _("Price ($)"), wxPG_LABEL, 300000 ) );
+		wxPGProperty* carProp2 = pg2->Append( new wxStringProperty( _("Car"), wxPG_LABEL, wxT("<composed>") ) );
+		pg2->AppendIn( carProp2, new wxStringProperty( _("Model"), wxPG_LABEL, wxT("Lamborghini Diablo SV") ) );
+		pg2->AppendIn( carProp2, new wxIntProperty( _("Engine Size (cc)"), wxPG_LABEL, 5707) );
 
-        if ( obj->GetPropertyAsInteger( wxT("include_advanced") ) )
-        {
-            pg2->Append( new wxPropertyCategory( _("Advanced Properties"), wxPG_LABEL ) );
-            // wxArrayStringProperty embeds a wxArrayString.
-            pg2->Append( new wxArrayStringProperty( _("Example of ArrayStringProperty"), wxT("ArrayStringProp") ) );
+		wxPGProperty* speedsProp2 = pg2->AppendIn( carProp2, new wxStringProperty( _("Speeds"), wxPG_LABEL, wxT("<composed>") ) );
+		pg2->AppendIn( speedsProp2, new wxIntProperty( _("Max. Speed (mph)"), wxPG_LABEL, 300 ) );
+		pg2->AppendIn( speedsProp2, new wxFloatProperty( _("0-100 mph (sec)"), wxPG_LABEL, 3.9 ) );
+		pg2->AppendIn( speedsProp2, new wxFloatProperty( _("1/4 mile (sec)"), wxPG_LABEL, 8.6) );
 
-            // Image file property. Wildcard is auto-generated from available
-            // image handlers, so it is not set this time.
-            pg2->Append( new wxImageFileProperty( _("Example of ImageFileProperty"), wxT("ImageFileProp") ) );
+		pg2->AppendIn( carProp2, new wxIntProperty( _("Price ($)"), wxPG_LABEL, 300000 ) );
 
-            // Font property has sub-properties.
-            pg2->Append( new wxFontProperty( _("Font"), wxPG_LABEL ) );
+		if ( obj->GetPropertyAsInteger( wxT("include_advanced") ) )
+		{
+			pg2->Append( new wxPropertyCategory( _("Advanced Properties"), wxPG_LABEL ) );
+			// wxArrayStringProperty embeds a wxArrayString.
+			pg2->Append( new wxArrayStringProperty( _("Example of ArrayStringProperty"), wxT("ArrayStringProp") ) );
 
-            // Colour property with arbitrary colour.
-            pg2->Append( new wxColourProperty( _("My Colour 1"), wxPG_LABEL, wxColour( 242, 109, 0 ) ) );
+			// Image file property. Wildcard is auto-generated from available
+			// image handlers, so it is not set this time.
+			pg2->Append( new wxImageFileProperty( _("Example of ImageFileProperty"), wxT("ImageFileProp") ) );
 
-            // System colour property.
-            pg2->Append( new wxSystemColourProperty( _("My SysColour 1"), wxPG_LABEL, wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) ) );
+			// Font property has sub-properties.
+			pg2->Append( new wxFontProperty( _("Font"), wxPG_LABEL ) );
 
-            // System colour property with custom colour.
-            pg2->Append( new wxSystemColourProperty( _("My SysColour 2"), wxPG_LABEL, wxColour( 0, 200, 160 ) ) );
+			// Colour property with arbitrary colour.
+			pg2->Append( new wxColourProperty( _("My Colour 1"), wxPG_LABEL, wxColour( 242, 109, 0 ) ) );
 
-            // Cursor property
-            pg2->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
-        }*/
+			// System colour property.
+			pg2->Append( new wxSystemColourProperty( _("My SysColour 1"), wxPG_LABEL, wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) ) );
 
-        return pgman;
-    }
+			// System colour property with custom colour.
+			pg2->Append( new wxSystemColourProperty( _("My SysColour 2"), wxPG_LABEL, wxColour( 0, 200, 160 ) ) );
+
+			// Cursor property
+			pg2->Append( new wxCursorProperty( _("My Cursor"), wxPG_LABEL, wxCURSOR_ARROW ) );
+		}*/
+
+		return pgman;
+	}
 /*
-    void Cleanup( wxObject* )
-    {
-        // Prevent assert for missing event handler
-    }*/
-	
+	void Cleanup( wxObject* )
+	{
+		// Prevent assert for missing event handler
+	}*/
+
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxPropertyGridManager* pgm = wxDynamicCast( wxobject, wxPropertyGridManager);
@@ -1531,7 +1531,7 @@ public:
 			// very very strange
 			return;
 		}
-		
+
 		size_t count = GetManager()->GetChildCount( wxobject );
 		for ( size_t i = 0; i < count; ++i )
 		{
@@ -1540,7 +1540,7 @@ public:
 			if (childObj->GetClassName() == _("propGridPage"))
 			{
 				wxPropertyGridPage *page = pgm->AddPage( childObj->GetPropertyAsString( _("label") ), childObj->GetPropertyAsBitmap( _("bitmap") ) );
-				
+
 				for( size_t j = 0; j < childObj->GetChildCount(); ++j )
 				{
 					IObject* innerChildObj = childObj->GetChildPtr( j );
@@ -1558,7 +1558,7 @@ public:
 								prop->SetLabel( innerChildObj->GetPropertyAsString( _("label") ) );
 								prop->SetName( innerChildObj->GetPropertyAsString( _("label") ) );
 								page->Append( prop );
-								
+
 								if( innerChildObj->GetPropertyAsString( _("help") ) != wxEmptyString )
 								{
 									page->SetPropertyHelpString( prop, innerChildObj->GetPropertyAsString( _("help") ) );
@@ -1569,12 +1569,12 @@ public:
 				}
 			}
 		}
-		
+
 		if( count )
 		{
 			pgm->SelectPage( 0 );
 		}
-		
+
 		pgm->Update();
 	}
 };
@@ -1755,14 +1755,14 @@ public:
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
-			
+
 			wxObjectDataPtr<DataViewModel> model;
 			model = new DataViewModel;
 			dataViewCtrl->AssociateModel( model.get() );
-			
+
 		return dataViewCtrl;
 	}
-	
+
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxDataViewCtrl* list = wxDynamicCast( wxobject, wxDataViewCtrl);
@@ -1818,7 +1818,7 @@ public:
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
-			
+
 		return dataViewTreeCtrl;
 	}
 };
@@ -1833,10 +1833,10 @@ public:
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
-			
+
 		return dataViewListCtrl;
 	}
-	
+
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
 	{
 		wxDataViewListCtrl* list = wxDynamicCast( wxobject, wxDataViewListCtrl);
@@ -1971,21 +1971,21 @@ class RibbonBarComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonBar *rb = new wxRibbonBar((wxWindow*)parent, 
+		wxRibbonBar *rb = new wxRibbonBar((wxWindow*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))  );
 
-		if( obj->GetPropertyAsString( _("theme"))  == _("Default")) 
+		if( obj->GetPropertyAsString( _("theme"))  == _("Default"))
 				rb->SetArtProvider( new wxRibbonDefaultArtProvider );
-		else if( obj->GetPropertyAsString( _("theme"))  == _("Generic")) 
+		else if( obj->GetPropertyAsString( _("theme"))  == _("Generic"))
 				rb->SetArtProvider( new wxRibbonAUIArtProvider );
-		else if( obj->GetPropertyAsString( _("theme"))  == _("MSW") ) 
+		else if( obj->GetPropertyAsString( _("theme"))  == _("MSW") )
 				rb->SetArtProvider( new wxRibbonMSWArtProvider );
 
 		rb->PushEventHandler( new ComponentEvtHandler( rb, GetManager() ) );
-		
+
 		return rb;
 	}
 
@@ -1997,7 +1997,7 @@ class RibbonBarComponent : public ComponentBase
 			// very very strange
 			return;
 		}
-		
+
 		rb->Realize();
 	}
 };
@@ -2008,13 +2008,13 @@ void ComponentEvtHandler::OnRibbonBarPageChanged( wxRibbonBarEvent& event )
 	{
 		return;
 	}
-	
+
 	wxRibbonBar *rb = wxDynamicCast( event.GetEventObject(), wxRibbonBar );
 	if( rb == NULL )
 	{
 		return;
 	}
-	
+
 	int selPage = rb->GetActivePage();
 
 	size_t count = m_manager->GetChildCount( m_window );
@@ -2046,18 +2046,18 @@ class RibbonPageComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonPage *rbpage = new wxRibbonPage((wxRibbonBar*)parent, 
+		wxRibbonPage *rbpage = new wxRibbonPage((wxRibbonBar*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			0);
-			
+
 		if( obj->GetPropertyAsInteger(_("select") ) ) {
 			((wxRibbonBar*)parent)->SetActivePage(rbpage);
 		}
-			
+
 		//rbpage->PushEventHandler( new ComponentEvtHandler( rbpage, GetManager() ) );
-		
+
 		return rbpage;
 	}
 };
@@ -2066,33 +2066,33 @@ class RibbonPanelComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonPanel *rbp = new wxRibbonPanel((wxRibbonPage*)parent, 
+		wxRibbonPanel *rbp = new wxRibbonPanel((wxRibbonPage*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))  );
-			
+
 		//rbp->PushEventHandler( new ComponentEvtHandler( rbp, GetManager() ) );
 
 		return rbp;
 	}
 
 };
- 
+
 class RibbonButtonBarComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonButtonBar *rbb = new wxRibbonButtonBar((wxRibbonPanel*)parent, 
+		wxRibbonButtonBar *rbb = new wxRibbonButtonBar((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			0);
-			
+
 		//rbb->PushEventHandler( new ComponentEvtHandler( rbb, GetManager() ) );
-		
+
 		return rbb;
 	}
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
@@ -2114,7 +2114,7 @@ class RibbonButtonBarComponent : public ComponentBase
 				rb->AddButton(wxID_ANY,
 							childObj->GetPropertyAsString( _("label") ),
 							childObj->GetPropertyAsBitmap( _("bitmap") ),
-							childObj->GetPropertyAsString( _("help") ) );				
+							childObj->GetPropertyAsString( _("help") ) );
 			} else if (childObj->GetClassName() == wxT("ribbonDropdownButton"))
 			{
 				rb->AddDropdownButton(wxID_ANY,
@@ -2147,14 +2147,14 @@ class RibbonToolBarComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonToolBar *rbb = new wxRibbonToolBar((wxRibbonPanel*)parent, 
+		wxRibbonToolBar *rbb = new wxRibbonToolBar((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			0 );
-			
+
 		//rbb->PushEventHandler( new ComponentEvtHandler( rbb, GetManager() ) );
-		
+
 		return rbb;
 	}
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
@@ -2175,7 +2175,7 @@ class RibbonToolBarComponent : public ComponentBase
 			{
 				rb->AddTool(wxID_ANY,
 							childObj->GetPropertyAsBitmap( _("bitmap") ),
-							childObj->GetPropertyAsString( _("help") ) );				
+							childObj->GetPropertyAsString( _("help") ) );
 			} else if (wxT("ribbonDropdownTool") == childObj->GetClassName() )
 			{
 				rb->AddDropdownTool(wxID_ANY,
@@ -2206,14 +2206,14 @@ class RibbonGalleryComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxRibbonGallery *ribbonGallery = new wxRibbonGallery((wxRibbonPanel*)parent, 
+		wxRibbonGallery *ribbonGallery = new wxRibbonGallery((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			0);
-			
+
 		//ribbonGallery->PushEventHandler( new ComponentEvtHandler( ribbonGallery, GetManager() ) );
-		
+
 		return ribbonGallery;
 	}
 	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
@@ -2232,7 +2232,7 @@ class RibbonGalleryComponent : public ComponentBase
 			IObject* childObj = GetManager()->GetIObject( child );
 			if ( wxT("ribbonGalleryItem") == childObj->GetClassName() )
 			{
-				rg->Append(childObj->GetPropertyAsBitmap( _("bitmap") ), wxID_ANY );					
+				rg->Append(childObj->GetPropertyAsBitmap( _("bitmap") ), wxID_ANY );
 			}
 		}
 	}
@@ -2420,6 +2420,7 @@ ABSTRACT_COMPONENT("wxTimer", TimerComponent)
 // wxPropertyGrid
 WINDOW_COMPONENT("wxPropertyGrid", PropertyGridComponent)
 ABSTRACT_COMPONENT("propGridItem", PropertyGridItemComponent)
+MACRO(wxPG_DEFAULT_STYLE)
 MACRO(wxPG_AUTO_SORT)
 MACRO(wxPG_HIDE_CATEGORIES)
 MACRO(wxPG_ALPHABETIC_MODE)
@@ -2431,17 +2432,25 @@ MACRO(wxPG_STATIC_SPLITTER)
 MACRO(wxPG_STATIC_LAYOUT)
 MACRO(wxPG_LIMITED_EDITING)
 MACRO(wxPG_EX_INIT_NOCAT)
-MACRO(wxPG_DEFAULT_STYLE)
-MACRO(wxTAB_TRAVERSAL)
+MACRO(wxPG_EX_HELP_AS_TOOLTIPS)
+MACRO(wxPG_EX_NATIVE_DOUBLE_BUFFERING)
+MACRO(wxPG_EX_AUTO_UNSPECIFIED_VALUES)
+MACRO(wxPG_EX_WRITEONLY_BUILTIN_ATTRIBUTES)
+MACRO(wxPG_EX_MULTIPLE_SELECTION)
+MACRO(wxPG_EX_ENABLE_TLP_TRACKING)
 
 // wxPropertyGridManager
 WINDOW_COMPONENT("wxPropertyGridManager", PropertyGridManagerComponent)
 ABSTRACT_COMPONENT("propGridPage", PropertyGridPageComponent)
 MACRO(wxPG_EX_NO_FLAT_TOOLBAR)
 MACRO(wxPG_EX_MODE_BUTTONS)
+MACRO(wxPG_EX_HIDE_PAGE_BUTTONS)
+MACRO(wxPG_EX_NO_TOOLBAR_DIVIDER)
+MACRO(wxPG_EX_TOOLBAR_SEPARATOR)
 MACRO(wxPGMAN_DEFAULT_STYLE)
 MACRO(wxPG_DESCRIPTION)
 MACRO(wxPG_TOOLBAR)
+MACRO(wxPG_NO_INTERNAL_BORDER)
 
 // wxStyledTextCtrl
 WINDOW_COMPONENT("wxStyledTextCtrl", StyledTextComponent )
