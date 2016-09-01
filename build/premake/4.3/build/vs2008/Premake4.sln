@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Premake4", "Premake4.vcproj", "{D6ED3DE4-71C2-8735-234C-9D5262425A6B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|Win32 = Release|Win32
+		Debug|Win32 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6ED3DE4-71C2-8735-234C-9D5262425A6B}.Release|Win32.ActiveCfg = Release|Win32
+		{D6ED3DE4-71C2-8735-234C-9D5262425A6B}.Release|Win32.Build.0 = Release|Win32
+		{D6ED3DE4-71C2-8735-234C-9D5262425A6B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6ED3DE4-71C2-8735-234C-9D5262425A6B}.Debug|Win32.Build.0 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

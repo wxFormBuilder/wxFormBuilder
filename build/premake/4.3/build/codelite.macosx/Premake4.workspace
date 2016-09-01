@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeLite_Workspace Name="Premake4" Database="./Premake4.tags">
+  <Project Name="Premake4" Path="Premake4.project" Active="Yes" />
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Project Name="Premake4" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Project Name="Premake4" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release|Universal32" Selected="yes">
+      <Project Name="Premake4" ConfigName="Release|Universal32"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Debug|Universal32" Selected="yes">
+      <Project Name="Premake4" ConfigName="Debug|Universal32"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>

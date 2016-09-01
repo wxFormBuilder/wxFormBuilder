@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Premake4" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Release">
+				<Option output="../../bin/release/premake4.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Release" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-Os" />
+					<Add option="-DNDEBUG" />
+					<Add directory="../../src/host/lua-5.1.4/src" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+			<Target title="Debug">
+				<Option output="../../bin/debug/premake4.exe" prefix_auto="0" extension_auto="0" />
+				<Option object_output="obj/Debug" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-D_DEBUG" />
+					<Add directory="../../src/host/lua-5.1.4/src" />
+				</Compiler>
+				<Linker>
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="../../BUILD.txt">
+		</Unit>
+		<Unit filename="../../CHANGES.txt">
+		</Unit>
+		<Unit filename="../../LICENSE.txt">
+		</Unit>
+		<Unit filename="../../README.txt">
+		</Unit>
+		<Unit filename="../../premake4.lua">
+		</Unit>
+		<Unit filename="../../scripts/embed.lua">
+		</Unit>
+		<Unit filename="../../scripts/release.lua">
+		</Unit>
+		<Unit filename="../../src/_manifest.lua">
+		</Unit>
+		<Unit filename="../../src/_premake_main.lua">
+		</Unit>
+		<Unit filename="../../src/actions/clean/_clean.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codeblocks/_codeblocks.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codeblocks/codeblocks_cbp.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codeblocks/codeblocks_workspace.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codelite/_codelite.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codelite/codelite_project.lua">
+		</Unit>
+		<Unit filename="../../src/actions/codelite/codelite_workspace.lua">
+		</Unit>
+		<Unit filename="../../src/actions/example/_example.lua">
+		</Unit>
+		<Unit filename="../../src/actions/example/example_project.lua">
+		</Unit>
+		<Unit filename="../../src/actions/example/example_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/make/_make.lua">
+		</Unit>
+		<Unit filename="../../src/actions/make/make_cpp.lua">
+		</Unit>
+		<Unit filename="../../src/actions/make/make_csharp.lua">
+		</Unit>
+		<Unit filename="../../src/actions/make/make_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/_vstudio.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2002_csproj.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2002_csproj_user.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2002_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2003_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2005_csproj.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2005_csproj_user.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2005_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs200x_vcproj.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs2010_vcxproxj.lua">
+		</Unit>
+		<Unit filename="../../src/actions/vstudio/vs_generic_solution.lua">
+		</Unit>
+		<Unit filename="../../src/actions/xcode/_xcode.lua">
+		</Unit>
+		<Unit filename="../../src/actions/xcode/xcode_common.lua">
+		</Unit>
+		<Unit filename="../../src/actions/xcode/xcode_project.lua">
+		</Unit>
+		<Unit filename="../../src/base/action.lua">
+		</Unit>
+		<Unit filename="../../src/base/api.lua">
+		</Unit>
+		<Unit filename="../../src/base/cmdline.lua">
+		</Unit>
+		<Unit filename="../../src/base/configs.lua">
+		</Unit>
+		<Unit filename="../../src/base/globals.lua">
+		</Unit>
+		<Unit filename="../../src/base/help.lua">
+		</Unit>
+		<Unit filename="../../src/base/io.lua">
+		</Unit>
+		<Unit filename="../../src/base/option.lua">
+		</Unit>
+		<Unit filename="../../src/base/os.lua">
+		</Unit>
+		<Unit filename="../../src/base/path.lua">
+		</Unit>
+		<Unit filename="../../src/base/premake.lua">
+		</Unit>
+		<Unit filename="../../src/base/project.lua">
+		</Unit>
+		<Unit filename="../../src/base/solution.lua">
+		</Unit>
+		<Unit filename="../../src/base/string.lua">
+		</Unit>
+		<Unit filename="../../src/base/table.lua">
+		</Unit>
+		<Unit filename="../../src/base/tree.lua">
+		</Unit>
+		<Unit filename="../../src/base/validate.lua">
+		</Unit>
+		<Unit filename="../../src/tools/dotnet.lua">
+		</Unit>
+		<Unit filename="../../src/tools/gcc.lua">
+		</Unit>
+		<Unit filename="../../src/tools/msc.lua">
+		</Unit>
+		<Unit filename="../../src/tools/ow.lua">
+		</Unit>
+		<Unit filename="../../tests/pepperfish_profiler.lua">
+		</Unit>
+		<Unit filename="../../tests/premake4.lua">
+		</Unit>
+		<Unit filename="../../tests/test_dofile.lua">
+		</Unit>
+		<Unit filename="../../tests/test_gcc.lua">
+		</Unit>
+		<Unit filename="../../tests/test_gmake_cpp.lua">
+		</Unit>
+		<Unit filename="../../tests/test_gmake_cs.lua">
+		</Unit>
+		<Unit filename="../../tests/test_keywords.lua">
+		</Unit>
+		<Unit filename="../../tests/test_platforms.lua">
+		</Unit>
+		<Unit filename="../../tests/test_premake.lua">
+		</Unit>
+		<Unit filename="../../tests/test_project.lua">
+		</Unit>
+		<Unit filename="../../tests/test_stress.lua">
+		</Unit>
+		<Unit filename="../../tests/test_string.lua">
+		</Unit>
+		<Unit filename="../../tests/test_targets.lua">
+		</Unit>
+		<Unit filename="../../tests/test_vs2002_sln.lua">
+		</Unit>
+		<Unit filename="../../tests/test_vs2003_sln.lua">
+		</Unit>
+		<Unit filename="../../tests/test_vs2005_sln.lua">
+		</Unit>
+		<Unit filename="../../tests/test_vs2008_sln.lua">
+		</Unit>
+		<Unit filename="../../tests/test_vs2010_sln.lua">
+		</Unit>
+		<Unit filename="../../tests/testfx.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/test_clean.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/make/test_make_escaping.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/make/test_make_pch.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2005_csproj.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs200x_vcproj.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs200x_vcproj_linker.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2010_filters.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2010_flags.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2010_links.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2010_project_kinds.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/vstudio/test_vs2010_vcxproj.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/xcode/test_xcode_common.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/xcode/test_xcode_dependencies.lua">
+		</Unit>
+		<Unit filename="../../tests/actions/xcode/test_xcode_project.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_action.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_api.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_baking.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_config.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_os.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_path.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_table.lua">
+		</Unit>
+		<Unit filename="../../tests/base/test_tree.lua">
+		</Unit>
+		<Unit filename="../../tests/folder/ok.lua">
+		</Unit>
+		<Unit filename="../../src/host/premake.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lapi.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lauxlib.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lcode.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldebug.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldo.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lfunc.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lgc.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/llex.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/llimits.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lmem.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lobject.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lopcodes.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lparser.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lstate.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lstring.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ltable.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ltm.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lua.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/luaconf.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lualib.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lundump.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lvm.h">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lzio.h">
+		</Unit>
+		<Unit filename="../../src/host/os_chdir.c">
+		</Unit>
+		<Unit filename="../../src/host/os_copyfile.c">
+		</Unit>
+		<Unit filename="../../src/host/os_getcwd.c">
+		</Unit>
+		<Unit filename="../../src/host/os_isdir.c">
+		</Unit>
+		<Unit filename="../../src/host/os_isfile.c">
+		</Unit>
+		<Unit filename="../../src/host/os_match.c">
+		</Unit>
+		<Unit filename="../../src/host/os_mkdir.c">
+		</Unit>
+		<Unit filename="../../src/host/os_pathsearch.c">
+		</Unit>
+		<Unit filename="../../src/host/os_rmdir.c">
+		</Unit>
+		<Unit filename="../../src/host/os_uuid.c">
+		</Unit>
+		<Unit filename="../../src/host/path_isabsolute.c">
+		</Unit>
+		<Unit filename="../../src/host/premake.c">
+		</Unit>
+		<Unit filename="../../src/host/scripts.c">
+		</Unit>
+		<Unit filename="../../src/host/string_endswith.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lapi.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lauxlib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lbaselib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lcode.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldblib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldebug.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldo.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ldump.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lfunc.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lgc.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/linit.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/liolib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/llex.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lmathlib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lmem.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/loadlib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lobject.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lopcodes.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/loslib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lparser.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lstate.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lstring.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lstrlib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ltable.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ltablib.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/ltm.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lundump.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lvm.c">
+		</Unit>
+		<Unit filename="../../src/host/lua-5.1.4/src/lzio.c">
+		</Unit>
+		<Extensions />
+	</Project>
+</CodeBlocks_project_file>
+
