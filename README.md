@@ -47,6 +47,7 @@ WXFORMBUILDER INSTALL FROM SOURCE
 
 	```sh
 	cd wxFormBuilder
+	git submodule init
 	./create_build_files4.sh
 	```
 4. Build
