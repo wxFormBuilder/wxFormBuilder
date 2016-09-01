@@ -1,0 +1,3 @@
+[submodule "sdk/tinyxml"]
+	path = sdk/tinyxml
+	url = https://github.com/rjpcomputing/ticpp.git
