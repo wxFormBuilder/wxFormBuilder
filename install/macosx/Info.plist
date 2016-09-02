@@ -15,12 +15,12 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleVersion</key>
-	<string>3.0 RC4</string>
+	<string>3.5 RC2</string>
 	<key>CFBundleShortVersionString</key>
-	<string>3.0 RC4</string>
+	<string>3.5 RC2</string>
 	<key>CSResourcesFileMapped</key>
-	<true/>	
-	
+	<true/>
+
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -39,8 +39,8 @@
 			<key>LSTypeIsPackage</key>
 			<false/>
 		</dict>
-		
-		
+
+
 	</array>
 	<key>NSHighResolutionCapable</key>
     <true/>

@@ -1,9 +1,15 @@
+wxformbuilder (3.5.2-4rc2) stable; urgency=low
+
+  * Moved to GitHub project hosting.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Fri, 02 Sep 2016 10:58:36 -0400
+
 wxformbuilder (3.5.2-3rc2) stable; urgency=low
 
   * Fixed wxPropertyGrid styles.
 
  -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 19 May 2016 11:34:23 -0400
- 
+
 wxformbuilder (3.5.2-2rc2) stable; urgency=low
 
   * Fixed wxAuiToolbar styles.
@@ -27,7 +33,7 @@ wxformbuilder (3.5.01-1) stable; urgency=low
   * Sync to upstream 3.5.01.
 
  -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 05 May 2016 16:01:18 -0400
- 
+
 wxformbuilder (3.5.01-0ubuntu1~utopic1) utopic; urgency=low
 
   * Sync to upstream 3.5.01.
@@ -39,7 +45,7 @@ wxformbuilder (3.5.00-0ubuntu1~precise1) precise; urgency=low
   * Sync to upstream 3.5.00.
 
  -- Ryan Pusztai <rpusztai@gmail.com>  Fri, 06 Jun 2014 10:28:36 -0400
- 
+
 wxformbuilder (3.4.03-0ubuntu1~precise1) precise; urgency=low
 
   * Sync to upstream 3.4.03.
