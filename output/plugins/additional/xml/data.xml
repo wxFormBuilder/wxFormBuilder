@@ -132,7 +132,7 @@ Written by
 	<event name="OnGridLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
 	<event name="OnGridLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
 	<event name="OnGridLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
-	<event name="OnGridCellChange" class="wxGridEvent" help="The user changed the data in a cell. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridCellChange" class="wxGridEvent" help="The user changed the data in a cell. Processes a wxEVT_GRID_CELL_CHANGED." />
 	<event name="OnGridSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell. Processes a wxEVT_GRID_SELECT_CELL." />
 	<event name="OnGridEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
 	<event name="OnGridEditorShown" class="wxGridEvent" help="The editor for a cell was shown. Processes a wxEVT_GRID_EDITOR_SHOWN." />
@@ -144,7 +144,7 @@ Written by
 	<event name="OnGridCmdLabelRightClick" class="wxGridEvent" help="The user clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_CLICK." />
 	<event name="OnGridCmdLabelLeftDClick" class="wxGridEvent" help="The user double-clicked a label with the left mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_LEFT_DCLICK." />
 	<event name="OnGridCmdLabelRightDClick" class="wxGridEvent" help="The user double-clicked a label with the right mouse button; variant taking a window identifier. Processes a wxEVT_GRID_LABEL_RIGHT_DCLICK." />
-	<event name="OnGridCmdCellChange" class="wxGridEvent" help="The user changed the data in a cell; variant taking a window identifier. Processes a wxEVT_GRID_CELL_CHANGE." />
+	<event name="OnGridCmdCellChange" class="wxGridEvent" help="The user changed the data in a cell; variant taking a window identifier. Processes a wxEVT_GRID_CELL_CHANGED." />
 	<event name="OnGridCmdSelectCell" class="wxGridEvent" help="The user moved to, and selected a cell; variant taking a window identifier. Processes a wxEVT_GRID_SELECT_CELL." />
 	<event name="OnGridCmdEditorHidden" class="wxGridEvent" help="The editor for a cell was hidden; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_HIDDEN." />
 	<event name="OnGridCmdEditorShown" class="wxGridEvent" help="The editor for a cell was shown; variant taking a window identifier. Processes a wxEVT_GRID_EDITOR_SHOWN." />

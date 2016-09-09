@@ -33,7 +33,7 @@ Lua code generation written by
 	<template name="evt_connect_OnTreeItemGetTooltip">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnTreeStateImageClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
-  
+
 	<templates class="wxDataViewCtrl">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">
@@ -108,13 +108,13 @@ Lua code generation written by
 		<template name="evt_connect_OnDataViewListCtrlItemDropPossible">-- event #utbl$name:OnDataViewListCtrlItemDropPossible isn't currently supported by wxLua</template>
 		<template name="evt_connect_OnDataViewListCtrlItemDrop">-- event #utbl$name:OnDataViewListCtrlItemDrop isn't currently supported by wxLua</template>
 	</templates>
-	
+
 	<templates class="dataViewListColumn">
 		<template name="construction">
 			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
 		</template>
 	</templates>
-	
+
 	<templates class="dataViewColumn">
 		<template name="construction">
 			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
@@ -224,7 +224,7 @@ Lua code generation written by
 	<template name="evt_connect_OnGridLabelRightClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridLabelLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridLabelRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridSelectCell">#utbl$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridEditorHidden">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridEditorShown">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -236,7 +236,7 @@ Lua code generation written by
 	<template name="evt_connect_OnGridCmdLabelRightClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdLabelLeftDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdLabelRightDClick">#utbl$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnGridCmdCellChange">#utbl$name:Connect( wx.wxEVT_GRID_CELL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdSelectCell">#utbl$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdEditorHidden">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdEditorShown">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -249,7 +249,7 @@ Lua code generation written by
 	<template name="evt_connect_OnGridEditorCreated">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnGridCmdEditorCreated">#utbl$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
-  
+
   	<templates class="wxPropertyGrid">
 		<template name="construction">
 			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
@@ -263,13 +263,13 @@ Lua code generation written by
 			#utbl$name = wx.wxWindow( #utbl#wxparent $name )
 		</template>
 	</templates>
-	
+
 	<templates class="propGridItem">
 		<template name="construction">
 			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl
 		</template>
 	</templates>
-	
+
 	<templates class="propGridPage">
 		<template name="construction">
 			@# WARNING: wxLua code generation isn't supported for this widget yet. #nl

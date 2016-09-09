@@ -178,7 +178,7 @@ Written by
 		$name = #parent $name->Append${type}Column( $label );
 	</template>
   </templates>
-  
+
   <templates class="dataViewColumn">
 	<template name="declaration">wxDataViewColumn* $name;</template>
 	<template name="construction">
@@ -323,7 +323,7 @@ Written by
 	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
 	<template name="evt_connect_OnGridLabelRightDClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
-	<template name="evt_connect_OnGridCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGE, #handler, NULL, this );</template>
+	<template name="evt_connect_OnGridCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
 	<template name="evt_connect_OnGridSelectCell">$name->Connect( wxEVT_GRID_SELECT_CELL, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridEditorHidden">EVT_GRID_EDITOR_HIDDEN( #handler )</template>
@@ -347,7 +347,7 @@ Written by
 	<template name="evt_entry_OnGridCmdLabelRightDClick">EVT_GRID_CMD_LABEL_RIGHT_DCLICK( $id, #handler )</template>
 	<template name="evt_connect_OnGridCmdLabelRightDClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdCellChange">EVT_GRID_CMD_CELL_CHANGE( $id, #handler )</template>
-	<template name="evt_connect_OnGridCmdCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGE, #handler, NULL, this );</template>
+	<template name="evt_connect_OnGridCmdCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdSelectCell">EVT_GRID_CMD_SELECT_CELL( $id, #handler )</template>
 	<template name="evt_connect_OnGridCmdSelectCell">$name->Connect( wxEVT_GRID_SELECT_CELL, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridCmdEditorHidden">EVT_GRID_CMD_EDITOR_HIDDEN( $id, #handler )</template>
@@ -371,7 +371,7 @@ Written by
 	<template name="evt_entry_OnGridCmdEditorCreated">EVT_GRID_CMD_EDITOR_CREATED( $id, #handler )</template>
 	<template name="evt_connect_OnGridCmdEditorCreated">$name->Connect( wxEVT_GRID_EDITOR_CREATED, #handler, NULL, this );</template>
   </templates>
-  
+
 	<templates class="wxPropertyGrid">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">$name = new #class(#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @});</template>
@@ -408,7 +408,7 @@ Written by
 		<template name="evt_entry_OnPropertyGridChanged">EVT_PG_CHANGED( $id, #handler )</template>
 		<template name="evt_connect_OnPropertyGridChanged">$name->Connect( wxEVT_PG_CHANGED, #handler, NULL, this );</template>
 	</templates>
-	
+
 	<templates class="propGridItem">
 		<template name="declaration">wxPGProperty* $name;</template>
 		<template name="construction">
@@ -422,7 +422,7 @@ Written by
 			@}
 		</template>
 	</templates>
-	
+
 	<templates class="propGridPage">
 		<template name="declaration">wxPropertyGridPage* $name;</template>
 		<template name="construction">
