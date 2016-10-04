@@ -1,5 +1,6 @@
-WXFORMBUILDER INSTALL FROM REPOSITORIES
----------------------------------------
+# wxFormBuilder [![Build status](https://ci.appveyor.com/api/projects/status/yxpn19g0st7l9r8x?svg=true)](https://ci.appveyor.com/project/jhasse/wxformbuilder-461d5)
+
+## Install From Repositories
 
 0. Add PPA for wxWidgets v3.0 (Ubuntu 12.04-13.10)
 
@@ -24,8 +25,7 @@ WXFORMBUILDER INSTALL FROM REPOSITORIES
 	sudo apt-get install wxformbuilder
 	```
 
-WXFORMBUILDER INSTALL FROM SOURCE
----------------------------------
+## Install From Source
 
 0. Add PPA for wxWidgets v3.0 (Ubuntu 12.04-13.10)
 
@@ -63,5 +63,3 @@ WXFORMBUILDER INSTALL FROM SOURCE
 	cd ../../../output/bin/
 	./wxformbuilder
 	```
-
-
