@@ -133,13 +133,13 @@ function wx_config(options)
     if _OPTIONS["disable-shared"] then
         useStatic = "yes"
     end
-	
+
 -- Use wx-config
 	local useWXConfig = "no"
     if _OPTIONS["force-wx-config"] then
         useWXConfig = "yes"
     end
-	
+
     wx_config_Private( options.Root             or "",
 							options.Debug				or "",
 							options.Host				or "",
@@ -234,7 +234,7 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 				end
 				links { "wxregex" .. wxBuildType }
 			end
-			
+
 			if string.match(_ACTION, "vs(.*)$") then
 				-- link with MSVC support libraries
 				for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32", "Dbghelp"}) do
@@ -265,24 +265,24 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 		if _ACTION == "codelite" then
 			-- set the parameters to the current configuration
 			buildoptions {"$(shell " .. configCmd .." --cxxflags)"}
-			
+
 			if wxWithoutLibs == "no" then
 				linkoptions  {"$(shell " .. configCmd .." --libs " .. wxLibs .. ")"}
 			end
-			
+
 			if os.get() == "windows" then
 				resoptions  {"$(shell " .. configCmd .." --rcflags)"}
 			end
 		else
 			-- set the parameters to the current configuration
 			buildoptions {"`" .. configCmd .." --cxxflags`"}
-			
+
 			if wxWithoutLibs == "no" then
 				linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
 			end
-			
+
 			if os.get() == "windows" then
-				resoptions  {"`" .. configCmd .." --rcflags`"}
+				resoptions  {"`" .. configCmd .." --rcflags || " .. configCmd .." --rescomp | cut -d' ' -f2-`"}
 			end
 		end
     end
