@@ -69,6 +69,9 @@ Written by
       <option name="wxALIGN_RIGHT"      help="Align the text to the right."/>
       <option name="wxALIGN_CENTRE"     help="Center the text (horizontally)."/>
       <option name="wxST_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the text when SetLabel is called. If this style flag is given, the control will not change its size (this style is especially useful with controls which also have wxALIGN_RIGHT or CENTER style because otherwise they won't make sense any longer after a call to SetLabel)."/>
+      <option name="wxST_ELLIPSIZE_START" help="If the labeltext width exceeds the control width, replace the beginning of the label with an ellipsis; uses wxControl::Ellipsize."/>
+      <option name="wxST_ELLIPSIZE_MIDDLE" help="If the labeltext width exceeds the control width, replace the middle of the label with an ellipsis; uses wxControl::Ellipsize."/>
+      <option name="wxST_ELLIPSIZE_END" help="If the labeltext width exceeds the control width, replace the end of the label with an ellipsis; uses wxControl::Ellipsize."/>
     </property>
     <property name="label" type="wxString_i18n">MyLabel</property>
     <property name="wrap" type="int" help="Wraps the control's label so that each of its lines becomes at most this many pixels wide if possible (the lines are broken at words boundaries so it might not be the case if words are too long). If width is negative, no wrapping is done.">-1</property>
