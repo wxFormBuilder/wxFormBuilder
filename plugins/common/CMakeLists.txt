@@ -1,0 +1,1 @@
+add_wxformbuilder_plugin_target(common common.cpp)
