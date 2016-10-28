@@ -101,7 +101,7 @@ PHP code generation writen by
 			@{ @$this->Hide(); #nl @}
 
 			#ifnotnull $tooltip
-			@{ @$this->SetToolTipString( $tooltip ); #nl @}
+			@{ @$this->SetToolTip( $tooltip ); #nl @}
 			
 			#ifequal $aui_managed "1"
 			@{ 
@@ -234,7 +234,7 @@ PHP code generation writen by
 			@{ @$this->Hide(); #nl @}
 
 			#ifnotnull $tooltip
-			@{ @$this->SetToolTipString( $tooltip ); #nl @}
+			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
 			#ifnotnull $minimum_size
 			@{ @$this->SetMinSize( $minimum_size ); #nl @}
@@ -379,7 +379,7 @@ PHP code generation writen by
 			@{ @$this->Hide(); #nl @}
 
 			#ifnotnull $tooltip
-			@{ @$this->SetToolTipString( $tooltip ); #nl @}
+			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
 			#ifequal $aui_managed "1"
 			@{ 
@@ -514,7 +514,7 @@ PHP code generation writen by
 			@{ @$this->Hide(); #nl @}
 
 			#ifnotnull $tooltip
-			@{ @$this->SetToolTipString( $tooltip ); #nl @}
+			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
             @$this->m_pages = array(); #nl
 		</template>

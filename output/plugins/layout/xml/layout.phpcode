@@ -42,9 +42,9 @@ PHP code generation writen by
   </templates>
 
   <templates class="gbsizeritem">
-    <template name="window_add">@$#parent $name->Add( @$this->#child $name, wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
-    <template name="sizer_add">@$#parent $name->Add( #child $name, wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
-    <template name="spacer_add">@$#parent $name->AddSpacer( #child $width, #child $height, new wxGBPosition( $row, $column ), wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+    <template name="window_add">@$#parent $name->Add( @$this->#child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+    <template name="sizer_add">@$#parent $name->Add( #child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+    <template name="spacer_add">@$#parent $name->AddSpacer( #child $width, #child $height, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
   </templates>
 
   <templates class="wxBoxSizer">

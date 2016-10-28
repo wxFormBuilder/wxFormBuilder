@@ -1326,7 +1326,7 @@ void PHPCodeGenerator::GenDefines( PObjectBase project)
 	if ( it != macros.end() )
 	{
 		// The default macro is defined to wxID_ANY
-		m_source->WriteLn( wxT("ID_DEFAULT = wxID_ANY // Default") );
+		m_source->WriteLn( wxT("const ID_DEFAULT = wxID_ANY; // Default") );
 		macros.erase(it);
 	}
 

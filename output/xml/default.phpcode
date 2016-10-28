@@ -29,7 +29,7 @@
 			@{ @$this->$name->Hide(); #nl @}
 
 			#ifnotnull $tooltip
-			@{ @$this->$name->SetToolTipString( $tooltip ); #nl @}
+			@{ @$this->$name->SetToolTip( $tooltip ); #nl @}
 
 			#ifnotnull $context_help
 			@{ @$this->$name->SetHelpText( $context_help ); #nl @}

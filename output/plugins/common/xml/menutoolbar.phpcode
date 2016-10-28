@@ -277,7 +277,7 @@ PHP code generation writen by
     @{
 		#ifparentclassnotequal "wxAuiToolBar"
 		@{
-			@$this->$name = @$this->#parent $name->AddLabelTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar, None);
+			@$this->$name = @$this->#parent $name->AddTool( $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar);
 		@}
 		#ifparentclassequal "wxAuiToolBar"
 		@{
