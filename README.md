@@ -27,6 +27,27 @@
 
 ## Install From Source
 
+### Windows (MSYS2)
+
+Install [MSYS2](http://msys2.github.io/) and run the following inside a MinGW 32 bit shell:
+
+```sh
+pacman -S --needed mingw-w64-i686-wxWidgets git winpty make
+git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
+cd wxFormBuilder
+winpty cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
+ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
+ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
+ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
+ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
+cd build/3.0/gmake
+sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
+sed 's!-lbfd!-lbfd -lz!g' *.make -i
+make config=release
+```
+
+### Ubuntu Linux
+
 0. Add PPA for wxWidgets v3.0 (Ubuntu 12.04-13.10)
 
 	```sh
