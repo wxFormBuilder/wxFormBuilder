@@ -52,8 +52,6 @@ wxDataObject()
 
         #if defined( __WXMSW__ )
             printer.SetLineBreak( "\r\n" );
-        #elif defined( __WXMAC__ )
-            printer.SetLineBreak( "\r" );
         #else
             printer.SetLineBreak( "\n" );
         #endif
