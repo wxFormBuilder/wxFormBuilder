@@ -264,7 +264,7 @@ Python code generation written by
 		    @{ $name.SetExtraStyle( $extra_style ) @}
 		</template>
 		<template name="evt_connect_OnPropertyGridChanging">self.$name.Bind( pg.EVT_PG_CHANGING, #handler )</template>
-		<template name="evt_connect_OnPropertyGridChanged">self.$name.Bind( pg.EVT_PG_CHANGED, #handler, NULL, this )</template>
+		<template name="evt_connect_OnPropertyGridChanged">self.$name.Bind( pg.EVT_PG_CHANGED, #handler )</template>
 	</templates>
 
 	<templates class="wxPropertyGridManager">
