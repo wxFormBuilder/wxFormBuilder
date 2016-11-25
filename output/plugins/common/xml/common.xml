@@ -148,6 +148,8 @@ Written by
 	<event name="OnCombobox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_COMBOBOX_SELECTED event, when an item on the list is selected. Note that calling GetValue returns the new value of selection." />
 	<event name="OnText" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_UPDATED event, when the combobox text changes." />
 	<event name="OnTextEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_ENTER event, when <RETURN> is pressed in the combobox." />
+    <event name="OnComboboxDropdown" class="wxCommandEvent" help="Process a wxEVT_COMBOBOX_DROPDOWN event, which is generated when the list box part of the combo box is shown (drops down). Notice that this event is only supported by wxMSW, wxGTK with GTK+ 2.10 or later, and wxOSX/Cocoa." />
+    <event name="OnComboboxCloseup" class="wxCommandEvent" help="Process a wxEVT_COMBOBOX_CLOSEUP event, which is generated when the list box of the combo box disappears (closes up). This event is only generated for the same platforms as wxEVT_COMBOBOX_DROPDOWN above." />
   </objectinfo>
   
   <objectinfo class="wxBitmapComboBox" icon="combo_box.xpm" type="widget">

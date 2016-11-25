@@ -116,6 +116,10 @@ Written by
 	<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>
     <template name="evt_entry_OnTextEnter">EVT_TEXT_ENTER( $id, #handler )</template>
 	<template name="evt_connect_OnTextEnter">$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler, NULL, this );</template>
+    <template name="evt_entry_OnComboboxDropdown">EVT_COMBOBOX_DROPDOWN( $id, #handler )</template>
+	<template name="evt_connect_OnComboboxDropdown">$name->Connect( wxEVT_COMBOBOX_DROPDOWN, #handler, NULL, this );</template>
+    <template name="evt_entry_OnComboboxCloseup">EVT_COMBOBOX_CLOSEUP( $id, #handler )</template>
+	<template name="evt_connect_OnComboboxCloseup">$name->Connect( wxEVT_COMBOBOX_CLOSEUP, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxBitmapComboBox">
