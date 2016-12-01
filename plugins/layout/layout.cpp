@@ -29,6 +29,7 @@
 #include <ticpp.h>
 #include <wx/tokenzr.h>
 #include <wx/gbsizer.h>
+#include <wx/wrapsizer.h>
 #include <map>
 
 #ifdef __WX24__
@@ -198,6 +199,33 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxBoxSizer"));
+		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
+		return filter.GetXfbObject();
+	}
+};
+
+class WrapSizerComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject *obj, wxObject * /*parent*/)
+	{
+		wxWrapSizer *sizer = new wxWrapSizer(obj->GetPropertyAsInteger(_("orient")));
+		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
+		return sizer;
+	}
+
+	ticpp::Element* ExportToXrc(IObject *obj)
+	{
+		ObjectToXrcFilter xrc(obj, _("wxWrapSizer"));
+		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
+		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter(xrcObj, _("wxWrapSizer"));
 		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -743,6 +771,7 @@ ABSTRACT_COMPONENT("sizeritem",SizerItemComponent)
 ABSTRACT_COMPONENT("gbsizeritem",GBSizerItemComponent)
 
 SIZER_COMPONENT("wxBoxSizer",BoxSizerComponent)
+SIZER_COMPONENT("wxWrapSizer",WrapSizerComponent)
 SIZER_COMPONENT("wxStaticBoxSizer",StaticBoxSizerComponent)
 SIZER_COMPONENT("wxGridSizer",GridSizerComponent)
 SIZER_COMPONENT("wxFlexGridSizer",FlexGridSizerComponent)

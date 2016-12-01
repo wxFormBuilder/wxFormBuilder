@@ -51,6 +51,10 @@ PHP code generation writen by
     <template name="construction">@$$name = new wxBoxSizer( $orient ); #nl</template>
   </templates>
 
+  <templates class="wxWrapSizer">
+    <template name="construction">@$$name = new wxWrapSizer( $orient ); #nl</template>
+  </templates>
+
   <templates class="wxStaticBoxSizer">
     <template name="construction">@$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
 	<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler );</template>
