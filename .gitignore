@@ -1,0 +1,5 @@
+build/???/
+output/bin/
+output/lib*/
+output/share/
+sdk/lib/
