@@ -32,10 +32,10 @@
 Install [MSYS2](http://msys2.github.io/) and run the following inside a MinGW 32 bit shell:
 
 ```sh
-pacman -S --needed mingw-w64-i686-wxWidgets git winpty make
+pacman -S --needed mingw-w64-i686-wxWidgets git make mingw-w64-i686-binutils mingw-w64-i686-gcc
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
-winpty cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
+cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
 ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
 ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
 ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
