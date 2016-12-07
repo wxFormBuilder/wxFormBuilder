@@ -33,6 +33,7 @@
 
 #include "wxfbipc.h"
 #include <wx/filename.h>
+#include <memory>
 #include "utils/debug.h"
 
 bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )

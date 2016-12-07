@@ -42,7 +42,7 @@
 
 #include "wx/wx.h"
 #include <component.h>
-
+#include <memory>
 #include "utils/wxfbdefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -276,7 +276,7 @@ namespace ticpp
 	class Element;
 }
 
-class ObjectBase : public IObject, public boost::enable_shared_from_this<ObjectBase>
+class ObjectBase : public IObject, public std::enable_shared_from_this<ObjectBase>
 {
 	friend class wxFBDataObject;
 private:
