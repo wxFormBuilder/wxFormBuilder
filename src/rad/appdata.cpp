@@ -46,6 +46,7 @@
 #include <ticpp.h>
 #include <set>
 #include <iterator>
+#include <memory>
 #include <sstream>
 #include <algorithm>
 

@@ -33,6 +33,7 @@
 
 #include "wxfbipc.h"
 #include <wx/filename.h>
+#include <memory>
 #include "utils/debug.h"
 
 bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
@@ -92,7 +93,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		}
 	}
 
-    std::auto_ptr< wxSingleInstanceChecker > checker;
+    std::unique_ptr< wxSingleInstanceChecker > checker;
     {
         // Suspend logging, because error messages here are not useful
         #ifndef __WXFB_DEBUG__
@@ -106,7 +107,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		// This is the first instance of this project, so setup a server and save the single instance checker
 		if ( CreateServer( name ) )
 		{
-			m_checker = checker;
+			m_checker = std::move( checker );
 			return true;
 		}
 		else
@@ -135,10 +136,10 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		}
 
 		// Create the client
-		std::auto_ptr< AppClient > client( new AppClient );
+		std::unique_ptr< AppClient > client( new AppClient );
 
 		// Create the connection
-		std::auto_ptr< wxConnectionBase > connection;
+		std::unique_ptr< wxConnectionBase > connection;
 		#ifdef __WXMSW__
 			connection.reset( client->MakeConnection( wxT("localhost"), name, name ) );
 		#else
@@ -189,12 +190,12 @@ bool wxFBIPC::CreateServer( const wxString& name )
 	wxLogNull stopLogging;
 	#endif
 
-	std::auto_ptr< AppServer > server( new AppServer( name ) );
+	std::unique_ptr< AppServer > server( new AppServer( name ) );
 
 	#ifdef __WXMSW__
 		if ( server->Create( name ) )
 		{
-			m_server = server;
+			m_server = std::move( server );
 			return true;
 		}
 	#else
@@ -204,7 +205,7 @@ bool wxFBIPC::CreateServer( const wxString& name )
 			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
 			if( server->Create( nameWithPort ) )
 			{
-				m_server = server;
+				m_server = std::move( server );
 				return true;
 			}
 			else

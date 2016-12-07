@@ -29,6 +29,7 @@
 #include "utils/wxfbdefs.h"
 #include "model/database.h"
 #include "rad/cmdproc.h"
+#include <memory>
 #include <set>
 
 namespace ticpp
@@ -87,7 +88,7 @@ class ApplicationData
 		PwxFBManager m_manager;
 
 		// Prevent more than one instance of a project
-		boost::shared_ptr< wxFBIPC > m_ipc;
+		std::shared_ptr< wxFBIPC > m_ipc;
 
 
 		typedef std::vector< wxEvtHandler* > HandlerVector;
