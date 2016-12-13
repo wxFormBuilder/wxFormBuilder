@@ -6,7 +6,7 @@ Authors:
   Juan Antonio Ortega
   Ryan Mulder
   Ryan Pusztai
-  
+
 Copyright (C) 2005 José Antonio Hurtado
 
 The original source can always be found at:
@@ -33,9 +33,6 @@ Public License can be found in `/usr/share/common-licenses/GPL-2'.
 
 -------------------------------------------------------------------------------
 
-The source for a subset of boost is included as well and covered by the
-Boost Software License - Version 1.0 - August 17th, 2003
-
 Permission is hereby granted, free of charge, to any person or organization
 obtaining a copy of the software and accompanying documentation covered by
 this license (the "Software") to use, reproduce, display, distribute,
@@ -60,7 +57,7 @@ DEALINGS IN THE SOFTWARE.
 
 -------------------------------------------------------------------------------
 
-The source for the RSA Data Security, Inc. MD5 Message-Digest Algorithm is 
+The source for the RSA Data Security, Inc. MD5 Message-Digest Algorithm is
 also included, and is covered by the license below:
 
 C++/object oriented translation and modification of MD5.
@@ -68,15 +65,15 @@ C++/object oriented translation and modification of MD5.
 Version: 1.00 (28 Aug 95)
 Version: 1.02 (22 Sep 97)
 
- Translation and modification (c) 1995 by Mordechai T. Abzug 
+ Translation and modification (c) 1995 by Mordechai T. Abzug
  Thanks to Martin Cleaver for for making it happy on Windows NT and Solaris.
 
- This translation/ modification is provided "as is," without express or 
+ This translation/ modification is provided "as is," without express or
  implied warranty of any kind.
 
- The translator/ modifier does not claim (1) that MD5 will do what you think 
- it does; (2) that this translation/ modification is accurate; or (3) that 
- this software is "merchantible."  (Language for this disclaimer partially 
+ The translator/ modifier does not claim (1) that MD5 will do what you think
+ it does; (2) that this translation/ modification is accurate; or (3) that
+ this software is "merchantible."  (Language for this disclaimer partially
  copied from the disclaimer below).
 
 Based on:
@@ -121,12 +118,12 @@ are all covered by the wxWindows License:
 
                        WXWINDOWS LIBRARY LICENCE
      TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
-  
+
   This library is free software; you can redistribute it and/or modify it
   under the terms of the GNU Library General Public Licence as published by
   the Free Software Foundation; either version 2 of the Licence, or (at
   your option) any later version.
-  
+
   This library is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library
@@ -134,9 +131,9 @@ are all covered by the wxWindows License:
 
   You should have received a copy of the GNU Library General Public Licence
   along with this software, usually in a file named COPYING.LIB.  If not,
-  write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, 
+  write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
   Boston, MA 02110-1301, USA.
-  
+
   EXCEPTION NOTICE
 
   1. As a special exception, the copyright holders of this library give
@@ -159,33 +156,33 @@ are all covered by the wxWindows License:
   accordingly.
 
   4. If you write modifications of your own for this library, it is your
-  choice whether to permit this exception to apply to your modifications. 
+  choice whether to permit this exception to apply to your modifications.
   If you do not wish that, you must delete the exception notice from such
   code and/or adjust the licensing conditions notice accordingly.
 
 ----------------------------------------------------------------------
 
-The source for Scintilla is included as well, and is covered by the 
+The source for Scintilla is included as well, and is covered by the
 License for Scintilla and SciTE
 
 Copyright 1998-2003 by Neil Hodgson <neilh@scintilla.org>
 
-All Rights Reserved 
+All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
-provided that the above copyright notice appear in all copies and that 
-both that copyright notice and this permission notice appear in 
-supporting documentation. 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation.
 
-NEIL HODGSON DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS 
-SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY 
-AND FITNESS, IN NO EVENT SHALL NEIL HODGSON BE LIABLE FOR ANY 
-SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES 
-WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, 
-WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER 
-TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE 
-OR PERFORMANCE OF THIS SOFTWARE. 
+NEIL HODGSON DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS
+SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS, IN NO EVENT SHALL NEIL HODGSON BE LIABLE FOR ANY
+SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
+WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE
+OR PERFORMANCE OF THIS SOFTWARE.
 
 ----------------------------------------------------------------------
 

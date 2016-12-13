@@ -2,7 +2,7 @@
 --  Name:        wxformbuilder.lua
 --  Purpose:     Main application project
 --  Author:      Andrea Zanellato
---  Modified by: 
+--  Modified by:
 --  Created:     19/10/2011
 --  Copyright:   (c) 2011 wxFormBuilder Team
 --  Licence:     GNU General Public License Version 2
@@ -21,7 +21,7 @@ project "wxFormBuilder"
 	}
     includedirs
     {
-        "../../src", "../../src/boost",
+        "../../src",
         "../../sdk/tinyxml", "../../sdk/plugin_interface"
     }
 if wxVersion < "2.9" then
@@ -59,7 +59,7 @@ end
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
-	
+
 	if os.is( "linux" ) then
 		newoption
 		{
@@ -86,7 +86,7 @@ end
 			linkoptions( "-Wl,-rpath," .. rpath )
 		end
 	end
-	
+
     configuration "macosx"
         linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}
 

@@ -7,7 +7,7 @@
 Install [MSYS2](http://msys2.github.io/) and run the following inside a MinGW 32 bit shell:
 
 ```sh
-pacman -S --needed mingw-w64-i686-wxWidgets git make mingw-w64-i686-binutils mingw-w64-i686-gcc
+pacman -S --needed mingw-w64-i686-wxWidgets git make mingw-w64-i686-binutils mingw-w64-i686-gcc mingw-w64-i686-boost
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
 cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
@@ -33,7 +33,7 @@ cd ../../../output/
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt-get install libwxgtk3.0-0 libwxgtk3.0-dev libwxgtk-media3.0-dev
+sudo apt-get install libwxgtk3.0-0 libwxgtk3.0-dev libwxgtk-media3.0-dev libboost-dev
 ```
 
 Download and build:
