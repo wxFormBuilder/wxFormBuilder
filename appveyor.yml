@@ -5,7 +5,7 @@ install:
 - cmd: >-
     cinst -y InnoSetup
 
-    C:\msys64\usr\bin\bash -lc "pacman -S --needed --noconfirm mingw-w64-i686-wxWidgets"
+    C:\msys64\usr\bin\bash -lc "pacman -S --needed --noconfirm mingw-w64-i686-wxWidgets mingw-w64-i686-boost"
 build_script:
 - cmd: >-
     git submodule update --init
