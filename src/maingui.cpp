@@ -22,7 +22,6 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "splashscreen.h"
 #include "rad/mainframe.h"
 #include "rad/appdata.h"
 #include <wx/filename.h>
@@ -232,18 +231,6 @@ int MyApp::OnRun()
 
 	m_frame = NULL;
 
-	#ifndef __WXFB_DEBUG__
-	wxBitmap bitmap;
-	std::auto_ptr< cbSplashScreen > splash;
-	if ( !justGenerate )
-	{
-		if ( bitmap.LoadFile( dataDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "splash.png" ), wxBITMAP_TYPE_PNG ) )
-		{
-			splash = std::auto_ptr< cbSplashScreen >( new cbSplashScreen( bitmap, -1, 0, wxNewId() ) );
-		}
-	}
-	#endif
-
 	wxYield();
 
 	// Read size and position from config file
@@ -269,11 +256,6 @@ int MyApp::OnRun()
 	{
 		m_frame->Show( TRUE );
 		SetTopWindow( m_frame );
-
-		#ifndef __WXFB_DEBUG__
-		// turn off the splash screen
-		delete splash.release();
-		#endif
 
 		#ifdef __WXFB_DEBUG__
 			wxLogWindow* log = dynamic_cast< wxLogWindow* >( AppData()->GetDebugLogTarget() );
