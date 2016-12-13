@@ -538,7 +538,7 @@ void MenuEditor::OnMenuUp(wxCommandEvent& )
     while (prevIdent > curIdent)
         prevIdent = GetItemIdentation(--prev);
 
-	PObjectBase obj;
+    PObjectBase obj;
     wxString label, shortcut, id, name, help, kind;
     GetItem(sel, label, shortcut, id, name, help, kind, &obj);
 
