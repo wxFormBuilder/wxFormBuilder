@@ -1,5 +1,10 @@
 # wxFormBuilder [![Build status](https://ci.appveyor.com/api/projects/status/yxpn19g0st7l9r8x?svg=true)](https://ci.appveyor.com/project/jhasse/wxformbuilder-461d5)
 
+## Download Binaries
+
+### Windows
+* wxWidgets 3.0 32-bit [Download](https://ci.appveyor.com/api/projects/jhasse/wxformbuilder-461d5/artifacts/wxFormBuilder_win32.zip?branch=master) (last successful build)
+
 ## Install From Source
 
 ### Windows (MSYS2)
