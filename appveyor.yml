@@ -29,3 +29,7 @@ build_script:
 
 
     C:\msys64\usr\bin\bash -lc "cd '%cd%'/build/3.0/gmake && make config=release"
+
+    7z a -r wxFormBuilder_win32.zip %cd%\output\*.* C:\msys64\mingw32\bin\wx*.dll C:\msys64\mingw32\bin\libstdc++*.dll C:\msys64\mingw32\bin\libgcc*.dll C:\msys64\mingw32\bin\libintl*.dll C:\msys64\mingw32\bin\libexpat*.dll C:\msys64\mingw32\bin\libjpeg*.dll C:\msys64\mingw32\bin\libpng*.dll C:\msys64\mingw32\bin\libtiff*.dll C:\msys64\mingw32\bin\zlib*.dll C:\msys64\mingw32\bin\libwinpthread*.dll C:\msys64\mingw32\bin\libiconv*.dll C:\msys64\mingw32\bin\liblzma*.dll
+
+    appveyor PushArtifact wxFormBuilder_win32.zip
