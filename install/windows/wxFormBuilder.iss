@@ -9,7 +9,7 @@
 
 #define UNICODE 1
 
-#define MyAppVer "3.5.2"
+#define MyAppVer "3.6.0"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "Jose Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
@@ -28,7 +28,7 @@ DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
 #if defined UNICODE
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}-rc2
+OutputBaseFilename={#MyAppName}_v{#MyAppVer}
 #else
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
 #endif
