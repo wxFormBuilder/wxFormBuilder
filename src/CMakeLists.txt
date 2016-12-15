@@ -71,7 +71,11 @@ target_link_libraries(wxFormBuilder
 )
 
 if(WIN32)
-    target_link_libraries(wxFormBuilder Dbghelp)
+    if(MSVC)
+        target_link_libraries(wxFormBuilder Dbghelp)
+    else()
+        target_link_libraries(wxFormBuilder bfd iberty psapi imagehlp)
+    endif()
 endif()
 
 install(TARGETS wxFormBuilder
