@@ -7,6 +7,7 @@ macro(add_wxformbuilder_plugin_target plugin_name)
 
     add_library(${plugin_name} SHARED ${plugin_files})
     target_link_libraries(${plugin_name} wxfb-plugin-interface)
+    target_compile_definitions(${plugin_name} PRIVATE BUILD_DLL)
 
     add_custom_command(TARGET ${plugin_name} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/icons 
@@ -15,6 +16,6 @@ macro(add_wxformbuilder_plugin_target plugin_name)
         ${PROJECT_SOURCE_DIR}/output/share/wxformbuilder/plugins/${plugin_name}/xml
     )
 
-    install(TARGETS ${plugin_name} LIBRARY DESTINATION lib/wxformbuilder)
+    install(TARGETS ${plugin_name} LIBRARY DESTINATION lib/wxformbuilder RUNTIME DESTINATION lib/wxformbuilder)
     install(DIRECTORY icons xml DESTINATION share/wxformbuilder/plugins/${plugin_name} OPTIONAL)
 endmacro(add_wxformbuilder_plugin_target)

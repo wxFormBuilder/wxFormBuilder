@@ -1408,7 +1408,7 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 
 			// Create a clone of now-converted object tree, so it can be linked
 			// underneath the root element
-			std::auto_ptr< ticpp::Node > objectTree = root->Clone();
+			std::unique_ptr< ticpp::Node > objectTree = root->Clone();
 
 			// Clear the document to add the declatation and the root element
 			doc.Clear();
