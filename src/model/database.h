@@ -29,6 +29,7 @@
 #include <wx/dynlib.h>
 #include <set>
 #include <map>
+#include <memory>
 #include "model/types.h"
 #include "utils/wxfbdefs.h"
 
@@ -36,7 +37,7 @@ class ObjectDatabase;
 class ObjectTypeDictionary;
 class PropertyCategory;
 
-typedef boost::shared_ptr<ObjectDatabase> PObjectDatabase;
+typedef std::shared_ptr<ObjectDatabase> PObjectDatabase;
 
 namespace ticpp
 {

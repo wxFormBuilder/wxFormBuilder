@@ -35,8 +35,8 @@ class AppServer;
 class wxFBIPC
 {
 	private:
-		std::auto_ptr< wxSingleInstanceChecker > m_checker;
-		std::auto_ptr< AppServer > m_server;
+		std::unique_ptr< wxSingleInstanceChecker > m_checker;
+		std::unique_ptr< AppServer > m_server;
 		const int m_port;
 
 		bool CreateServer( const wxString& name );

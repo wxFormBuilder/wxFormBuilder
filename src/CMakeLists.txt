@@ -1,6 +1,5 @@
 set(wxFB_SRCS
     maingui.cpp
-    splashscreen.cpp
     md5/md5.cc
     dbg_stack_trace/stack.cpp
     rad/wxfbmanager.cpp
@@ -53,6 +52,10 @@ set(wxFB_SRCS
     model/database.cpp
 )
 
+if(WIN32)
+    list(APPEND wxFB_SRCS wxFormBuilder.rc)
+endif()
+
 add_executable(wxFormBuilder WIN32
     ${wxFB_SRCS}
 )
@@ -66,6 +69,32 @@ target_link_libraries(wxFormBuilder
     ticpp
     wxfb-plugin-interface
 )
+
+if(MINGW)
+    find_path(BINUTILS_BASE_INCLUDE_DIR binutils/bfd.h)
+    target_include_directories(wxFormBuilder
+        PRIVATE ${BINUTILS_BASE_INCLUDE_DIR}/binutils
+    )
+endif()
+
+if(WIN32)
+    if(MSVC)
+        target_link_libraries(wxFormBuilder Dbghelp)
+    else()
+        find_library(BFD_LIB NAMES binutils/libbfd.a libbfd.a)
+        find_library(IBERTY_LIB NAMES binutils/libiberty.a libiberty.a)
+        find_package(ZLIB REQUIRED)
+        find_package(Intl REQUIRED)
+
+        target_link_libraries(wxFormBuilder
+            ${BFD_LIB}
+            ${IBERTY_LIB}
+            ${Intl_LIBRARIES}
+            ${ZLIB_LIBRARIES}
+            psapi
+            imagehlp)
+    endif()
+endif()
 
 install(TARGETS wxFormBuilder
     RUNTIME DESTINATION bin
