@@ -70,11 +70,29 @@ target_link_libraries(wxFormBuilder
     wxfb-plugin-interface
 )
 
+if(MINGW)
+    find_path(BINUTILS_BASE_INCLUDE_DIR binutils/bfd.h)
+    target_include_directories(wxFormBuilder
+        PRIVATE ${BINUTILS_BASE_INCLUDE_DIR}/binutils
+    )
+endif()
+
 if(WIN32)
     if(MSVC)
         target_link_libraries(wxFormBuilder Dbghelp)
     else()
-        target_link_libraries(wxFormBuilder bfd iberty psapi imagehlp)
+        find_library(BFD_LIB NAMES binutils/libbfd.a libbfd.a)
+        find_library(IBERTY_LIB NAMES binutils/libiberty.a libiberty.a)
+        find_package(ZLIB REQUIRED)
+        find_package(Intl REQUIRED)
+
+        target_link_libraries(wxFormBuilder
+            ${BFD_LIB}
+            ${IBERTY_LIB}
+            ${Intl_LIBRARIES}
+            ${ZLIB_LIBRARIES}
+            psapi
+            imagehlp)
     endif()
 endif()
 
