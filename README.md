@@ -1,4 +1,4 @@
-# wxFormBuilder [![Build status](https://ci.appveyor.com/api/projects/status/yxpn19g0st7l9r8x?svg=true)](https://ci.appveyor.com/project/jhasse/wxformbuilder-461d5)
+# wxFormBuilder [![Build status](https://ci.appveyor.com/api/projects/status/yxpn19g0st7l9r8x?svg=true)](https://ci.appveyor.com/project/jhasse/wxformbuilder-461d5) [![Build Status](https://travis-ci.org/wxFormBuilder/wxFormBuilder.svg?branch=master)](https://travis-ci.org/wxFormBuilder/wxFormBuilder)
 
 ## Download Binaries
 

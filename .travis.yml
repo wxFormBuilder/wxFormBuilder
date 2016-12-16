@@ -1,0 +1,22 @@
+language: cpp
+sudo: required
+dist: trusty
+
+matrix:
+    include:
+        - compiler: gcc
+
+before_install:
+    - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
+    - sudo apt-get update -qq
+
+install:
+    - sudo apt-get install libwxgtk3.0-dev libwxgtk-media3.0-dev cmake
+    - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.9; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9"; fi
+
+script:
+    - mkdir build_cmake
+    - cd build_cmake
+    - cmake -G "Unix Makefiles" -D CMAKE_C_COMPILER=gcc-4.9 -D CMAKE_CXX_COMPILER=g++-4.9 ..
+    - make
