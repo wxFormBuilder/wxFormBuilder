@@ -34,6 +34,7 @@ if "%TOOLSET%"=="cmake" (
     call build\scripts\dl_wxwidgets.bat %WXVERSION% %WXCOMPILER%
     set WXWIN=%CD%\wxwidgets
 )
+set CONFIG=Release
 
 mkdir build_cmake
 pushd build_cmake
@@ -47,10 +48,29 @@ if ERRORLEVEL 1 goto error
 echo.
 echo --- Starting the build
 echo.
-cmake --build .
+cmake --build . --config %CONFIG%
 if ERRORLEVEL 1 goto error
 
+if "%BUILD_SETUP%"=="1" (
+    echo.
+    echo --- Packaging binaries
+    echo.
+    cpack -G ZIP -C %CONFIG%
+    if ERRORLEVEL 1 goto error
+    cpack -G WIX -C %CONFIG%
+    if ERRORLEVEL 1 goto error
+)
+
 popd
+
+if "%BUILD_SETUP%"=="1" (
+    :: Upload artifacts
+    move build_cmake\wxFormBuilder*.zip wxFormBuilder_win32.zip
+    appveyor PushArtifact wxFormBuilder_win32.zip
+    move build_cmake\wxFormBuilder*.msi wxFormBuilder_win32.msi
+    appveyor PushArtifact wxFormBuilder_win32.msi
+)
+
 goto :eof
 
 :mingw

@@ -2,12 +2,13 @@ version: 1.0.{build}
 
 environment:
   matrix:
-  - TOOLSET: cmake_msys
-  - GENERATOR: 'Visual Studio 12'
-    WXVERSION: '3.0.2'
-    WXCOMPILER: vc120
   - GENERATOR: 'Visual Studio 14'
     WXVERSION: '3.1.0'
     WXCOMPILER: vc140
+    BUILD_SETUP: 1
+  - GENERATOR: 'Visual Studio 12'
+    WXVERSION: '3.0.2'
+    WXCOMPILER: vc120
+  - TOOLSET: cmake_msys
 
 build_script: build\scripts\appveyor.bat
