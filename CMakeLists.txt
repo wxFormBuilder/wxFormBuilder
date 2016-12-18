@@ -6,6 +6,14 @@ set(CMAKE_CXX_STANDARD 11)
 find_package(wxWidgets 3.0.0 COMPONENTS gl aui adv html core net base xml stc richtext propgrid ribbon xrc REQUIRED)
 include(${wxWidgets_USE_FILE})
 
+set(CPACK_PACKAGE_VERSION_MAJOR 3)
+set(CPACK_PACKAGE_VERSION_MINOR 6)
+set(CPACK_PACKAGE_VERSION_PATCH 0)
+set(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/output/license.txt)
+set(CPACK_WIX_UPGRADE_GUID B5AAB525-34D5-4B12-B6F2-136C8ED890C9)
+
+include(CPack)
+
 if(MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 else()
