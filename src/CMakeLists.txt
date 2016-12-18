@@ -96,11 +96,45 @@ if(WIN32)
     endif()
 endif()
 
+if(CMAKE_GENERATOR MATCHES "^MSYS")
+    set(MINGW_BIN_DIR "C:/msys64/mingw32/bin")
+    set(MINGW_MODULES
+        libexpat
+        libgcc
+        libiconv
+        libintl
+        libjpeg
+        liblzma
+        libpng
+        libstdc++
+        libtiff
+        libwinpthread
+        wx
+        zlib)
+    foreach(mod IN LISTS MINGW_MODULES)
+        file(GLOB mods "${MINGW_BIN_DIR}/${mod}*.dll")
+        list(APPEND MINGW_FILES ${mods})
+    endforeach()
+    install(FILES ${MINGW_FILES} DESTINATION .)
+elseif(WIN32)
+    file(GLOB WXLIBS "${wxWidgets_LIB_DIR}/wx*.dll")
+    foreach(lib IN LISTS WXLIBS)
+        if(${lib} MATCHES "ud_*")
+            list(APPEND WXLIBS_DEBUG ${lib})
+        else()
+            list(APPEND WXLIBS_RELEASE ${lib})
+        endif()
+    endforeach()
+    
+    install(FILES ${WXLIBS_DEBUG} DESTINATION . CONFIGURATIONS Debug)
+    install(FILES ${WXLIBS_RELEASE} DESTINATION . CONFIGURATIONS Release)
+endif()
+
 install(TARGETS wxFormBuilder
-    RUNTIME DESTINATION bin
+    RUNTIME DESTINATION ${INSTALL_BIN_DIR}
 )
 
 install(DIRECTORY
     ${CMAKE_CURRENT_SOURCE_DIR}/../output/xml 
     ${CMAKE_CURRENT_SOURCE_DIR}/../output/resources
-    DESTINATION share/wxformbuilder)
+    DESTINATION ${INSTALL_SHARE_DIR})

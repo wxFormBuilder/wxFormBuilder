@@ -1,5 +1,8 @@
 build/???/
 output/bin/
+output/Debug/
+output/Release/
+output/plugins/
 output/lib*/
 output/share/
 output/*.exe

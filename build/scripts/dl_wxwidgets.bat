@@ -22,6 +22,11 @@ del hdr.7z
 curl -L -o dev.7z %BASE_URL%/wxMSW-%VERSION%_%COMPILER%_Dev.7z
 7z x dev.7z
 del dev.7z
+
+curl -L -o dll.7z %BASE_URL%/wxMSW-%VERSION%_%COMPILER%_ReleaseDLL.7z
+7z x dll.7z
+del dll.7z
+
 rem FindwxWidgets.cmake does not handle compiler specifc vc_ folders
 move lib\%COMPILER%_dll lib\vc_dll
 
