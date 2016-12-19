@@ -117,16 +117,11 @@ AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Abo
 
   htmlWin->LoadFile(wxFileName(AppData()->GetApplicationPath() + wxFILE_SEP_PATH + wxT("resources/about.html")));
 
-#ifdef __WXMAC__
-  // work around a wxMac bug
-  htmlWin->SetSize(400, 600);
+#if wxVERSION_NUMBER < 2900
+   htmlWin->SetSize(htmlWin->GetInternalRepresentation()->GetWidth(),
+                    htmlWin->GetInternalRepresentation()->GetHeight());
 #else
-    #if wxVERSION_NUMBER < 2900
-        htmlWin->SetSize(htmlWin->GetInternalRepresentation()->GetWidth(),
-                       htmlWin->GetInternalRepresentation()->GetHeight());
-    #else
-        htmlWin->SetMinSize( wxSize( 400, 600 ) );
-    #endif
+   htmlWin->SetMinSize( wxSize( 400, 600 ) );
 #endif
 
 
