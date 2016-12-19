@@ -11,15 +11,15 @@ macro(add_wxformbuilder_plugin_target plugin_name)
 
     add_custom_command(TARGET ${plugin_name} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/icons 
-        ${PROJECT_SOURCE_DIR}/output/${INSTALL_SHARE_DIR}/plugins/${plugin_name}/icons
+        $<TARGET_PROPERTY:wxFormBuilder,BINARY_DIR>/${INSTALL_SHARE_DIR}/plugins/${plugin_name}/icons
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/xml 
-        ${PROJECT_SOURCE_DIR}/output/${INSTALL_SHARE_DIR}/plugins/${plugin_name}/xml
+        $<TARGET_PROPERTY:wxFormBuilder,BINARY_DIR>/${INSTALL_SHARE_DIR}/plugins/${plugin_name}/xml
     )
 
     if(MSVC)
         set_target_properties(${plugin_name} PROPERTIES
             OUTPUT_NAME lib${plugin_name}
-            RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/output/${INSTALL_SHARE_DIR}/plugins/${plugin_name}$<0:_>
+            RUNTIME_OUTPUT_DIRECTORY $<TARGET_PROPERTY:wxFormBuilder,BINARY_DIR>/${INSTALL_SHARE_DIR}/plugins/${plugin_name}$<0:_>
             )
     endif()
 

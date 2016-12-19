@@ -60,6 +60,13 @@ add_executable(wxFormBuilder WIN32
     ${wxFB_SRCS}
 )
 
+add_custom_command(TARGET wxFormBuilder POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources
+    ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/xml
+    ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/xml
+)
+
 target_include_directories(wxFormBuilder
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
 )
@@ -135,6 +142,6 @@ install(TARGETS wxFormBuilder
 )
 
 install(DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/../output/xml 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../output/resources
+    ${CMAKE_SOURCE_DIR}/xml 
+    ${CMAKE_SOURCE_DIR}/resources
     DESTINATION ${INSTALL_SHARE_DIR})
