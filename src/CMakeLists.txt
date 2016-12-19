@@ -54,18 +54,46 @@ set(wxFB_SRCS
 
 if(WIN32)
     list(APPEND wxFB_SRCS wxFormBuilder.rc)
+elseif(APPLE)
+    set(wxFB_SRCS ${wxFB_SRCS} wxFormBuilder.icns)
+    set(MACOSX_BUNDLE_ICON_FILE wxFormBuilder.icns)
+    set_source_files_properties(wxFormBuilder.icns PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources)
+
+    file(GLOB XMLS ../xml/*)
+    list(APPEND wxFB_SRCS ${XMLS})
+    set_source_files_properties(${XMLS} PROPERTIES MACOSX_PACKAGE_LOCATION "SharedSupport/xml")
+    source_group("Resources\\xml" FILES ${XMLS})
+
+    file(GLOB RES LIST_DIRECTORIES false ../resources/*)
+    list(APPEND wxFB_SRCS ${RES})
+    set_source_files_properties(${RES} PROPERTIES MACOSX_PACKAGE_LOCATION "SharedSupport/resources")
+    source_group("Resources" FILES ${RES})
+
+    file(GLOB ICONS LIST_DIRECTORIES false ../resources/icons/*)
+    list(APPEND wxFB_SRCS ${ICONS})
+    set_source_files_properties(${ICONS} PROPERTIES MACOSX_PACKAGE_LOCATION "SharedSupport/resources/icons")
+    source_group("Resources\\Icons" FILES ${ICONS})
 endif()
 
-add_executable(wxFormBuilder WIN32
+add_executable(wxFormBuilder WIN32 MACOSX_BUNDLE
     ${wxFB_SRCS}
 )
 
-add_custom_command(TARGET wxFormBuilder POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources
-    ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/resources
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/xml
-    ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/xml
-)
+if(APPLE)
+    set_target_properties(wxFormBuilder PROPERTIES
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info.plist.in"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.rad"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${CPACK_PACKAGE_VERSION}"
+        )
+else()
+    add_custom_command(TARGET wxFormBuilder POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources
+        ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/resources
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/xml
+        ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/xml
+    )
+endif()
 
 target_include_directories(wxFormBuilder
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}
@@ -138,10 +166,25 @@ elseif(WIN32)
 endif()
 
 install(TARGETS wxFormBuilder
+    BUNDLE DESTINATION .
     RUNTIME DESTINATION ${INSTALL_BIN_DIR}
 )
 
-install(DIRECTORY
-    ${CMAKE_SOURCE_DIR}/xml 
-    ${CMAKE_SOURCE_DIR}/resources
-    DESTINATION ${INSTALL_SHARE_DIR})
+if(APPLE)
+    set(fixup_exe "\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app")
+    set(FB_PLUGINS common additional containers forms layout)
+
+    foreach(plugin IN LISTS FB_PLUGINS)
+        set(fixup_libs ${fixup_libs} ${fixup_exe}/Contents/PlugIns/${CMAKE_SHARED_LIBRARY_PREFIX}${plugin}${CMAKE_SHARED_LIBRARY_SUFFIX})
+    endforeach()
+
+    install(CODE "
+    include(\"BundleUtilities\")
+    fixup_bundle(\"${fixup_exe}\" \"${fixup_libs}\" \"\")
+    " ${COMPONENT})
+else()
+    install(DIRECTORY
+        ${CMAKE_SOURCE_DIR}/xml 
+        ${CMAKE_SOURCE_DIR}/resources
+        DESTINATION ${INSTALL_SHARE_DIR})
+endif()
