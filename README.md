@@ -38,7 +38,7 @@ cd ../../../output/
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt-get install libwxgtk3.0-0 libwxgtk3.0-dev libwxgtk-media3.0-dev libboost-dev
+sudo apt-get install libwxgtk3.0-dev libwxgtk-media3.0-dev libboost-dev
 ```
 
 Download and build:
