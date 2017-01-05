@@ -18,6 +18,7 @@ project "containers-components-plugin"
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
+    buildoptions        "-std=c++14"
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
 

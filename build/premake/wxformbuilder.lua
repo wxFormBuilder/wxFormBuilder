@@ -9,6 +9,7 @@
 -----------------------------------------------------------------------------
 project "wxFormBuilder"
     kind                    "WindowedApp"
+    buildoptions            "-std=c++14"
     files
     {
         "../../src/**.h", "../../src/**.hpp", "../../src/**.hh",

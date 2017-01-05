@@ -20,6 +20,7 @@ project "plugin-interface"
     flags               {"ExtraWarnings"}
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ( "-" .. wxVersion )
+    buildoptions        "-std=c++14"
 	
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
