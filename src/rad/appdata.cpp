@@ -1407,7 +1407,7 @@ bool ApplicationData::ConvertProject( const wxString& path, int fileMajor, int f
 
 			// Create a clone of now-converted object tree, so it can be linked
 			// underneath the root element
-			std::auto_ptr< ticpp::Node > objectTree = root->Clone();
+			std::unique_ptr<ticpp::Node> objectTree = root->Clone();
 
 			// Clear the document to add the declatation and the root element
 			doc.Clear();
@@ -1936,7 +1936,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			m_warnOnAdditionsUpdate = false;
 			wxLogWarning( _("Updated classes from wxAdditions. You must use the latest version of wxAdditions to continue.\nNote wxScintilla is now wxStyledListCtrl, wxTreeListCtrl is now wxadditions::wxTreeListCtrl, and wxTreeListCtrlColumn is now wxadditions::wxTreeListCtrlColumn") );
 		}
-		
+
 		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
 
 		static std::set< std::string > propertyRemovalWarnings;
@@ -1950,7 +1950,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 				std::stringstream ss;
 				std::ostream_iterator< std::string > out_it (ss, ", ");
 				std::copy( it->second.begin(), it->second.end(), out_it );
-				
+
 				wxLogMessage( _("Removed properties for class %s because they are no longer supported: %s"), objClass, ss.str() );
 				propertyRemovalWarnings.insert( objClass );
 			}
@@ -1977,7 +1977,7 @@ void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::se
 		}
 	}
 }
-	
+
 void ApplicationData::RemoveProperties( ticpp::Node* parent, const std::set< std::string >& names )
 {
 	ticpp::Iterator< ticpp::Element > prop( "property" );
@@ -1986,15 +1986,15 @@ void ApplicationData::RemoveProperties( ticpp::Node* parent, const std::set< std
 	{
 		ticpp::Element element = *prop;
 		++prop;
-		
+
 		std::string name;
 		element.GetAttribute( "name", &name );
-		
+
 		if ( names.find( name ) != names.end() )
 		{
 			parent->RemoveChild( &element );
 		}
-	}	
+	}
 }
 
 void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName )
@@ -2909,7 +2909,7 @@ ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_1
 		propertiesToRemove[ "Dialog" ].insert( "validator_style" );
 		propertiesToRemove[ "Dialog" ].insert( "validator_type" );
 		propertiesToRemove[ "Dialog" ].insert( "aui_name" );
-		
+
 		propertiesToRemove[ "Panel" ].insert( "BottomDockable" );
 		propertiesToRemove[ "Panel" ].insert( "LeftDockable" );
 		propertiesToRemove[ "Panel" ].insert( "RightDockable" );
@@ -2932,8 +2932,8 @@ ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_1
 		propertiesToRemove[ "Panel" ].insert( "show" );
 		propertiesToRemove[ "Panel" ].insert( "toolbar_pane" );
 		propertiesToRemove[ "Panel" ].insert( "validator_style" );
-		propertiesToRemove[ "Panel" ].insert( "validator_type" );		
-		
+		propertiesToRemove[ "Panel" ].insert( "validator_type" );
+
 		propertiesToRemove[ "wxStaticText" ].insert( "validator_style" );
 		propertiesToRemove[ "wxStaticText" ].insert( "validator_type" );
 		propertiesToRemove[ "CustomControl" ].insert( "validator_style" );
@@ -2941,18 +2941,18 @@ ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_1
 		propertiesToRemove[ "wxAuiNotebook" ].insert( "validator_style" );
 		propertiesToRemove[ "wxAuiNotebook" ].insert( "validator_type" );
 		propertiesToRemove[ "wxPanel" ].insert( "validator_style" );
-		propertiesToRemove[ "wxPanel" ].insert( "validator_type" );	
+		propertiesToRemove[ "wxPanel" ].insert( "validator_type" );
 		propertiesToRemove[ "wxToolBar" ].insert( "validator_style" );
-		propertiesToRemove[ "wxToolBar" ].insert( "validator_type" );	
+		propertiesToRemove[ "wxToolBar" ].insert( "validator_type" );
 		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "use_wxAddition" );
 		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "validator_style" );
 		propertiesToRemove[ "wxStyledTextCtrl" ].insert( "validator_type" );
 		propertiesToRemove[ "wxPropertyGridManager" ].insert( "use_wxAddition" );
 		propertiesToRemove[ "wxPropertyGridManager" ].insert( "validator_style" );
-		propertiesToRemove[ "wxPropertyGridManager" ].insert( "validator_type" );	
+		propertiesToRemove[ "wxPropertyGridManager" ].insert( "validator_type" );
 
 		propertiesToRemove[ "wxadditions::wxTreeListCtrl" ].insert( "validator_style" );
-		propertiesToRemove[ "wxadditions::wxTreeListCtrl" ].insert( "validator_type" );	
-	}	
+		propertiesToRemove[ "wxadditions::wxTreeListCtrl" ].insert( "validator_type" );
+	}
 	return propertiesToRemove;
 }
