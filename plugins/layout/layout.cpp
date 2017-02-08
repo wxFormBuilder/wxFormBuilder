@@ -210,7 +210,7 @@ class WrapSizerComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
-		wxWrapSizer *sizer = new wxWrapSizer(obj->GetPropertyAsInteger(_("orient")));
+		const auto sizer = new wxWrapSizer(obj->GetPropertyAsInteger(_("orient")));
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 		return sizer;
 	}
@@ -218,7 +218,10 @@ public:
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
 		ObjectToXrcFilter xrc(obj, _("wxWrapSizer"));
-		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize ) xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
+		if (obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize)
+		{
+			xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
+		}
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
@@ -227,7 +230,7 @@ public:
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxWrapSizer"));
 		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
-		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
 };
@@ -250,7 +253,7 @@ public:
 			obj->GetPropertyAsInteger(_("orient")));
 
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
-		
+
 		return sizer;
 	}
 
@@ -283,9 +286,9 @@ public:
 			obj->GetPropertyAsInteger(_("cols")),
 			obj->GetPropertyAsInteger(_("vgap")),
 			obj->GetPropertyAsInteger(_("hgap")));
-		
+
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
-		
+
 		return sizer;
 	}
 
@@ -327,7 +330,7 @@ public:
 
 		for (i=0; i < grows.GetCount() ; i++)
 			sizer->AddGrowableRow(grows[i]);
-			
+
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 		sizer->SetFlexibleDirection( obj->GetPropertyAsInteger(_("flexible_direction")) );
 		sizer->SetNonFlexibleGrowMode( (wxFlexSizerGrowMode )obj->GetPropertyAsInteger(_("non_flexible_grow_mode")) );
@@ -589,9 +592,9 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxStdDialogButtonSizer* sizer =  new wxStdDialogButtonSizer();
-		
+
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
-		
+
 		if ( obj->GetPropertyAsInteger( _("OK") ) )
 		{
 			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_OK ) );
@@ -624,7 +627,7 @@ public:
 		{
 			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_CONTEXT_HELP ) );
 		}
-		
+
 		sizer->Realize();
 		return sizer;
 	}
@@ -633,7 +636,7 @@ public:
 	{
 		ObjectToXrcFilter xrc(obj, _("wxStdDialogButtonSizer"));
 		ticpp::Element* sizer = xrc.GetXrcObject();
-		
+
 		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize )
 		{
 			xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
