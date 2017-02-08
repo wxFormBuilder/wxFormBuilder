@@ -76,6 +76,14 @@ Written by
       <option name="wxHORIZONTAL" 	help="Align items horizontally"/>wxVERTICAL</property>
   </objectinfo>
 
+  <objectinfo class="wxWrapSizer" icon="sizer.xpm" type="sizer">
+	<inherits class="sizer" />
+    <property name="name" type="text" hidden="1">wSizer</property>
+    <property name="orient" type="option">
+      <option name="wxVERTICAL" 	help="Align items vertically"/>
+      <option name="wxHORIZONTAL" 	help="Align items horizontally"/>wxHORIZONTAL</property>
+  </objectinfo>
+
   <objectinfo class="wxStaticBoxSizer" icon="staticbox_sizer.xpm" type="sizer">
  	<inherits class="sizer" />
     <property name="name" type="text" hidden="1">sbSizer</property>
