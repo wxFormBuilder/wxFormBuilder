@@ -297,8 +297,14 @@ Written by
   </templates>
 
   <templates class="CustomControl">
-    <template name="declaration">$declaration</template>
-    <template name="construction">$construction</template>
+    <template name="declaration">
+        #ifnotnull $declaration @{ $declaration @}
+        #ifnull $declaration @{ $class* $name; @}
+    </template>
+    <template name="construction">
+        #ifnotnull $construction @{ $construction @}
+        #ifnull $construction @{ $name = new $class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); @}
+    </template>
     <template name="settings">$settings</template>
 	<template name="include">$include</template>
   </templates>
