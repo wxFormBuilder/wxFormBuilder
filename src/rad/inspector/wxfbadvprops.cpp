@@ -61,8 +61,6 @@ void wxFBSizeProperty::RefreshChildren()
     const wxSize& size = wxSizeRefFromVariant( m_value );
 #endif
 
-	if( ! &size ) return;
-
 	Item(0)->SetValue( (long)size.x );
 	Item(1)->SetValue( (long)size.y );
 }
@@ -81,13 +79,12 @@ wxFBSizeProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant&
     wxSize& size = wxSizeRefFromVariant( thisValue );
 #endif
 
-	if( ! &size ) return
 #if wxVERSION_NUMBER < 2900
    ;
 #else
     wxVariant();
 #endif
-	
+
     int val = childValue.GetLong();
     switch ( childIndex )
     {
@@ -133,8 +130,6 @@ void wxFBPointProperty::RefreshChildren()
     const wxPoint& point = wxPointRefFromVariant( m_value );
 #endif
 
-	if( ! &point ) return;
-
     Item(0)->SetValue( (long)point.x );
     Item(1)->SetValue( (long)point.y );
 }
@@ -153,13 +148,12 @@ wxFBPointProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant
     wxPoint& point = wxPointRefFromVariant( thisValue );
 #endif
 
-	if( ! &point ) return
 #if wxVERSION_NUMBER < 2900
    ;
 #else
     wxVariant();
 #endif
-	
+
     int val = childValue.GetLong();
     switch ( childIndex )
     {
@@ -194,7 +188,7 @@ void wxFBBitmapProperty::GetChildValues( const wxString& parentValue, wxArrayStr
 	// some properties can contain value like "[-1;-1]" which must be modified due to use of ";" as a
 	// string separator
 	wxString values = parentValue;
-	
+
 	wxRegEx regex( wxT("\\[.+;.+\\]") );
 	if( regex.IsValid() )
 	{
@@ -207,7 +201,7 @@ void wxFBBitmapProperty::GetChildValues( const wxString& parentValue, wxArrayStr
 			regex.Replace( &values, sizeVal );
 		}
 	}
-	
+
 	childValues = wxStringTokenize( values, wxT(';'), wxTOKEN_RET_EMPTY_ALL );
 	for ( wxArrayString::iterator value = childValues.begin(); value != childValues.end(); ++value )
 	{
@@ -228,12 +222,12 @@ void wxFBBitmapProperty::CreateChildren()
 	wxString  propValue  = m_value.GetString();
 	wxVariant thisValue  = WXVARIANT( propValue );
 	wxVariant childValue;
-	int       childIndex = 0;	
+	int       childIndex = 0;
 	wxArrayString childVals;
 	GetChildValues( propValue, childVals );
 	wxString  source;
 	if(childVals.Count() > 0)
-	{    
+	{
 		source = childVals.Item(0);
 	}
 	else
@@ -487,7 +481,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
 	wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, wxT("") );
 #else
     wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices );
-#endif    
+#endif
     propArtId->SetHelpString(_("Choose a wxArtID unique identifier of the bitmap or enter a wxArtID for your custom wxArtProvider. IDs with prefix 'gtk-' are available under wxGTK only.") );
 
     return propArtId;
@@ -511,7 +505,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
 	wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, wxT("") );
 #else
     wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices );
-#endif    
+#endif
     propArtClient->SetHelpString(_("Choose a wxArtClient identifier of the client (i.e. who is asking for the bitmap) or enter a wxArtClient for your custom wxArtProvider.") );
 
     return propArtClient;
@@ -531,8 +525,8 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
                                   wxVariant& childValue ) const
 {
 	wxFBBitmapProperty* bp = (wxFBBitmapProperty*)this;
-	
-    wxString val = thisValue.GetString();	
+
+    wxString val = thisValue.GetString();
 	wxArrayString childVals;
 	GetChildValues( val, childVals );
 	wxString newVal = val;
@@ -565,12 +559,12 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						}
 						bp->AppendChild( bp->CreatePropertyFilePath() );
 					}
-					
+
 					if( childVals.GetCount() == 2 )
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
 					else if( childVals.GetCount() > 1 )
 						newVal = childVals.Item(0) + wxT("; ");
-					
+
                     break;
                 }
                 // 'Load From Resource'
@@ -587,14 +581,14 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 								GetGrid()->DeleteProperty( p );
 							}
 						}
-						bp->AppendChild( bp->CreatePropertyResourceName() );  
+						bp->AppendChild( bp->CreatePropertyResourceName() );
 					}
-					
+
 					if( childVals.GetCount() == 2)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
 					else if( childVals.GetCount() > 1 )
 						newVal = childVals.Item(0) + wxT("; ");
-						
+
                     break;
                 }
                 // 'Load From Icon Resource'
@@ -614,12 +608,12 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyResourceName() );
 						bp->AppendChild( bp->CreatePropertyIconSize() );
 					}
-					
+
 					if( childVals.GetCount() == 3)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; [") + childVals.Item(2) + wxT("]");
 					else if( childVals.GetCount() > 1 )
 						newVal = childVals.Item(0) + wxT("; ; []");
-					
+
                     break;
                 }
                 // 'Load From Art Provider'
@@ -639,7 +633,7 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
 						bp->AppendChild( bp->CreatePropertyArtId() );
 						bp->AppendChild( bp->CreatePropertyArtClient() );
 					}
-					
+
 					if( childVals.GetCount() == 3)
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; ") + childVals.Item(2);
 					else if( childVals.GetCount() > 1 )
@@ -677,9 +671,9 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
             break;
         }
     }
-	
+
 	bp->SetPrevSource(childValue.GetInteger());
-   
+
 	if ( newVal != val )
     {
         wxVariant ret = WXVARIANT( newVal );
@@ -712,7 +706,7 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 {
 	wxArrayString childVals;
 	GetChildValues( value, childVals );
-	
+
 	if( childVals[0].Contains( _("Load From File") ) || childVals[0].Contains( _("Load From Embedded File") ) )
 	{
 		if(childVals.Count() > 1)
@@ -745,7 +739,7 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 		{
 			Item(1)->SetValue( childVals[1]);
 		}
-		
+
 		if(childVals.Count() > 2)
 		{
 			Item(2)->SetValue( childVals[2]);
@@ -757,7 +751,7 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 		{
 			Item(1)->SetValue( childVals[1]);
 		}
-		
+
 		if(childVals.Count() > 2)
 		{
 			Item(2)->SetValue( childVals[2]);
@@ -789,10 +783,10 @@ wxString wxFBBitmapProperty::SetupImage( const wxString &imgPath )
 	if(!imgPath.IsEmpty())
 	{
 		wxFileName imgName = wxFileName( imgPath );
-		
+
 		// Allow user to specify any file path he needs (even if it seemingly doesn't exist)
 		if( !imgName.FileExists() ) return imgPath;
-		
+
 		wxString   res     = wxT("");
 		wxImage    img     = wxImage( imgPath );
 
@@ -1101,10 +1095,10 @@ bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(pri
             propgrid->EditorsValueWasModified();
 
 			wxFontContainer fcont( dlg.GetFontData().GetChosenFont() );
-	
+
             wxVariant variant = WXVARIANT( TypeConv::FontToString( fcont ) );
             SetValueInEvent( variant );
-			
+
             return true;
         }
     }
@@ -1116,10 +1110,10 @@ void wxFBFontProperty::RefreshChildren()
 #if wxVERSION_NUMBER < 2900
     if ( !GetCount() ) return;
 #endif
-	
+
 	wxString fstr = m_value.GetString();
 	wxFontContainer font = TypeConv::StringToFont( fstr );
-	
+
 	Item(0)->SetValue( font.m_pointSize );
 	Item(1)->SetValue( font.m_family );
 	Item(2)->SetValueFromString( font.m_faceName, wxPG_FULL_VALUE );
@@ -1181,9 +1175,9 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
     {
 		font.m_underlined = childValue.GetBool();
     }
-	
+
 	thisValue = WXVARIANT( TypeConv::FontToString( font ) );
-	
+
 #if wxVERSION_NUMBER >= 2900
 	return thisValue;
 #endif
