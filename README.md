@@ -2,8 +2,8 @@
 
 ## Download Binaries
 
-### Windows
-* wxWidgets 3.0 32-bit [Download](https://ci.appveyor.com/api/projects/jhasse/wxformbuilder-461d5/artifacts/wxFormBuilder_win32.zip?branch=master) (last successful build)
+* [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
+* [Last successful Windows build of the master branch](https://ci.appveyor.com/api/projects/jhasse/wxformbuilder-461d5/artifacts/wxFormBuilder_win32.zip?branch=master)
 
 ## Install From Source
 
