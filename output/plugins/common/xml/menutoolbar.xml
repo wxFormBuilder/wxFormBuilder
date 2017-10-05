@@ -27,7 +27,7 @@ Written by
     <property name="name" type="text">m_statusBar</property>
     <property name="fields" type="uint"  help="Number of fields in the statusbar.">1</property>
     <property name="style" type="bitlist">
-      <option name="wxST_SIZEGRIP"       help="On Windows, displays a gripper at right-hand side of the status bar." />wxST_SIZEGRIP</property>
+      <option name="wxSTB_SIZEGRIP"       help="On Windows, displays a gripper at right-hand side of the status bar." />wxSTB_SIZEGRIP</property>
   </objectinfo>
 
   <objectinfo class="wxMenuBar" icon="menubar.xpm" type="menubar" startgroup="1">

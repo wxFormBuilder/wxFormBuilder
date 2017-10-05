@@ -47,7 +47,7 @@
 class wxIndependentStatusBar : public wxStatusBar
 {
 public:
-	wxIndependentStatusBar( wxWindow *parent, wxWindowID id = wxID_ANY, long style = wxST_SIZEGRIP, const wxString& name = wxStatusBarNameStr )
+	wxIndependentStatusBar( wxWindow *parent, wxWindowID id = wxID_ANY, long style = wxSTB_SIZEGRIP, const wxString& name = wxStatusBarNameStr )
 	:
 	wxStatusBar( parent, id, style, name )
 	{
@@ -1767,7 +1767,7 @@ MACRO(wxRB_USE_CHECKBOX)
 #endif
 
 // wxStatusBar
-MACRO(wxST_SIZEGRIP)
+MACRO(wxSTB_SIZEGRIP)
 
 // wxMenuBar
 MACRO(wxMB_DOCKABLE)

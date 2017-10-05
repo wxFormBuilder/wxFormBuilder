@@ -60,7 +60,7 @@ MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxS
 	
 	this->SetMenuBar( m_menubar1 );
 	
-	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, ID_DEFAULT );
+	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, ID_DEFAULT );
 	m_toolBar1 = this->CreateToolBar( wxTB_HORIZONTAL, ID_DEFAULT ); 
 	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
 	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
