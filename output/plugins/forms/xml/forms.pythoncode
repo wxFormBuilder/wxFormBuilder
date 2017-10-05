@@ -109,7 +109,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTipString( $tooltip ) #nl @}
+			@{ self.SetToolTip( $tooltip ) #nl @}
 
 			#ifequal $aui_managed "1"
 			@{
@@ -235,7 +235,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTipString( $tooltip ) #nl @}
+			@{ self.SetToolTip( $tooltip ) #nl @}
 
 			#ifnotnull $minimum_size
 			@{ self.SetMinSize( $minimum_size ) #nl @}
@@ -373,7 +373,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTipString( $tooltip ) #nl @}
+			@{ self.SetToolTip( $tooltip ) #nl @}
 
 			#ifequal $aui_managed "1"
 			@{
@@ -502,7 +502,7 @@ Python code generation writen by
 			@{ self.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.SetToolTipString( $tooltip ) #nl @}
+			@{ self.SetToolTip( $tooltip ) #nl @}
 
             self.m_pages = [] #nl
 		</template>

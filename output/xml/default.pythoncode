@@ -32,7 +32,7 @@
 			@{ self.$name.Hide() #nl @}
 
 			#ifnotnull $tooltip
-			@{ self.$name.SetToolTipString( $tooltip ) #nl @}
+			@{ self.$name.SetToolTip( $tooltip ) #nl @}
 
 			#ifnotnull $context_help
 			@{ self.$name.SetHelpText( $context_help ) #nl @}
