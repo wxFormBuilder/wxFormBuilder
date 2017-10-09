@@ -1275,12 +1275,8 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		//get namespaces
 		wxString originalValue = nameVal;
 		int delimiter = nameVal.Find( wxT( "::" ) ) ;
-		if ( wxNOT_FOUND == delimiter )
-		{
-			// Got a subclass
-			subclasses->insert( wxT( "class " ) + nameVal + wxT( ";" ) );
-		}
-		else
+		wxString forwardDecl = wxT( "class " ) + nameVal + wxT( ";" );
+		if ( wxNOT_FOUND != delimiter )
 		{
 			wxString subClassPrefix, subClassSuffix;
 			do
@@ -1309,11 +1305,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 				return;
 			}
 
-			wxString subClassDeclar;
-			subClassDeclar += subClassPrefix + wxT( "class " ) + nameVal + wxT( ";" ) + subClassSuffix;
-
-			// Got a subclass
-			subclasses->insert( subClassDeclar );
+			forwardDecl = subClassPrefix + wxT( "class " ) + nameVal + wxT( ";" ) + subClassSuffix;
 		}
 
 		// Now get the header
@@ -1358,6 +1350,7 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 		else
 		{
+			subclasses->insert( forwardDecl );
 			sourceIncludes->insert( include );
 		}
 	}
