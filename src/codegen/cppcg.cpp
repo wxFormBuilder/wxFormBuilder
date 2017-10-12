@@ -589,7 +589,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		wxT( "// C++ code generated with wxFormBuilder (version " ) wxT( __DATE__ ) wxT( ")\n" )
 		wxT( "// http://www.wxformbuilder.org/\n" )
 		wxT( "//\n" )
-		wxT( "// PLEASE DO \"NOT\" EDIT THIS FILE!\n" )
+		wxT( "// PLEASE DO *NOT* EDIT THIS FILE!\n" )
 		wxT( "///////////////////////////////////////////////////////////////////////////\n" ) );
 
 	m_header->WriteLn( code );

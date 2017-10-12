@@ -477,7 +477,7 @@ bool PHPCodeGenerator::GenerateCode( PObjectBase project )
 		wxT(" * PHP code generated with wxFormBuilder (version ") wxT(__DATE__) wxT(")\n")
 		wxT(" * http://www.wxformbuilder.org/\n")
 		wxT(" *\n")
-		wxT(" * PLEASE DO \"NOT\" EDIT THIS FILE!\n")
+		wxT(" * PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT(" */\n") );
 
 	m_source->WriteLn( code );
