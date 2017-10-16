@@ -1589,7 +1589,7 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 void PythonTemplateParser::SetupModulePrefixes()
 {
 	// altered class names
-	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.calendar. );
+	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxRichTextCtrl, wx.richtext. );
 	ADD_PREDEFINED_PREFIX( wxHtmlWindow, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
@@ -1597,13 +1597,13 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.animate. );
 
 	// altered macros
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_MONTH_CHANGE, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_YEAR_CHANGE, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.calendar. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_NO_MONTH_CHANGE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_NO_YEAR_CHANGE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.adv. );
 
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.html. );
