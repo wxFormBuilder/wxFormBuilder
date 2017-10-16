@@ -461,7 +461,7 @@ Python code generation writen by
 			@{ $subclass/name @}
 
 			#ifnull $subclass/name
-			@{ wx.wizard.Wizard @}
+			@{ wx.adv.Wizard @}
 		</template>
 		<template name="cons_def">
 			def __init__( self, parent ):
@@ -471,18 +471,18 @@ Python code generation writen by
 			@{ $subclass/name.__init__@}
 
 			#ifnull $subclass/name
-			@{ wx.wizard.Wizard.__init__@}
+			@{ wx.adv.Wizard.__init__@}
 			( self, parent, id = $id, title = $title, bitmap = $bitmap, pos = $pos, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
 		</template>
 		<template name="include">
-            import wx.wizard
+            import wx.adv
         </template>
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
 
 			#ifnotnull $extra_style
-			@{ self.SetExtraStyle( wx.wizard.WIZARD_EX_HELPBUTTON ) #nl @}
+			@{ self.SetExtraStyle( wx.adv.WIZARD_EX_HELPBUTTON ) #nl @}
 
 			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
 
@@ -573,24 +573,24 @@ Python code generation writen by
 		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
 		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
 		<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
-		<template name="evt_connect_OnWizardPageChanged">self.Bind( wx.wizard.EVT_WIZARD_PAGE_CHANGED, #handler )</template>
-		<template name="evt_disconnect_OnWizardPageChanged">self.Unbind( wx.wizard.EVT_WIZARD_PAGE_CHANGED )</template>
-		<template name="evt_connect_OnWizardPageChanging">self.Bind( wx.wizard.EVT_WIZARD_PAGE_CHANGING, #handler )</template>
-		<template name="evt_disconnect_OnWizardPageChanging">self.Unbind( wx.wizard.EVT_WIZARD_PAGE_CHANGING )</template>
-		<template name="evt_connect_OnWizardPageShown">self.Bind( wx.wizard.EVT_WIZARD_PAGE_SHOWN, #handler )</template>
-		<template name="evt_disconnect_OnWizardPageShown">self.Unbind( wx.wizard.EVT_WIZARD_PAGE_SHOWN )</template>
-		<template name="evt_connect_OnWizardCancel">self.Bind( wx.wizard.EVT_WIZARD_CANCEL, #handler )</template>
-		<template name="evt_disconnect_OnWizardCancel">self.Unbind( wx.wizard.EVT_WIZARD_CANCEL )</template>
-		<template name="evt_connect_OnWizardHelp">self.Bind( wx.wizard.EVT_WIZARD_HELP, #handler )</template>
-		<template name="evt_disconnect_OnWizardHelp">self.Unbind( wx.wizard.EVT_WIZARD_HELP )</template>
-		<template name="evt_connect_OnWizardFinished">self.Bind( wx.wizard.EVT_WIZARD_FINISHED, #handler )</template>
-		<template name="evt_disconnect_OnWizardFinished">self.Unbind( wx.wizard.EVT_WIZARD_FINISHED )</template>
+		<template name="evt_connect_OnWizardPageChanged">self.Bind( wx.adv.EVT_WIZARD_PAGE_CHANGED, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageChanged">self.Unbind( wx.adv.EVT_WIZARD_PAGE_CHANGED )</template>
+		<template name="evt_connect_OnWizardPageChanging">self.Bind( wx.adv.EVT_WIZARD_PAGE_CHANGING, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageChanging">self.Unbind( wx.adv.EVT_WIZARD_PAGE_CHANGING )</template>
+		<template name="evt_connect_OnWizardPageShown">self.Bind( wx.adv.EVT_WIZARD_PAGE_SHOWN, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageShown">self.Unbind( wx.adv.EVT_WIZARD_PAGE_SHOWN )</template>
+		<template name="evt_connect_OnWizardCancel">self.Bind( wx.adv.EVT_WIZARD_CANCEL, #handler )</template>
+		<template name="evt_disconnect_OnWizardCancel">self.Unbind( wx.adv.EVT_WIZARD_CANCEL )</template>
+		<template name="evt_connect_OnWizardHelp">self.Bind( wx.adv.EVT_WIZARD_HELP, #handler )</template>
+		<template name="evt_disconnect_OnWizardHelp">self.Unbind( wx.adv.EVT_WIZARD_HELP )</template>
+		<template name="evt_connect_OnWizardFinished">self.Bind( wx.adv.EVT_WIZARD_FINISHED, #handler )</template>
+		<template name="evt_disconnect_OnWizardFinished">self.Unbind( wx.adv.EVT_WIZARD_FINISHED )</template>
 
 	</templates>
 
     <templates class="WizardPageSimple">
         <template name="construction">
-            self.$name = wx.wizard.WizardPageSimple( self #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
+            self.$name = wx.adv.WizardPageSimple( self #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
             self.add_page( self.$name ) #nl
         </template>
     </templates>

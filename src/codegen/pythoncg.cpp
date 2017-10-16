@@ -1589,21 +1589,21 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 void PythonTemplateParser::SetupModulePrefixes()
 {
 	// altered class names
-	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.calendar. );
+	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxRichTextCtrl, wx.richtext. );
 	ADD_PREDEFINED_PREFIX( wxHtmlWindow, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
-	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.animate. );
+	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.adv. );
 
 	// altered macros
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_MONTH_CHANGE, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_YEAR_CHANGE, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.calendar. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.calendar. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_NO_MONTH_CHANGE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_NO_YEAR_CHANGE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.adv. );
 
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.html. );
@@ -1648,8 +1648,8 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_MGR_LIVE_RESIZE, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_MGR_DEFAULT, wx.aui. );
 
-	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.animate. );
-	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.animate. );
+	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.adv. );
 
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_DEFAULT_STYLE, wx.lib.agw.ribbon. );
 	ADD_PREDEFINED_PREFIX( wxRIBBON_BAR_FOLDBAR_STYLE, wx.lib.agw.ribbon. );
