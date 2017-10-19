@@ -1212,6 +1212,10 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				std::string child_description;
 				elem_child->GetAttributeOrDefault( DESCRIPTION_TAG, &child_description, "" );
 				child.m_description = _WXSTR( child_description );
+				
+				std::string child_type;
+				elem_child->GetAttributeOrDefault( "type", &child_type, "wxString" );
+				child.m_type = ParsePropertyType( _WXSTR( child_type ) );
 
 				// Get default value
 				try

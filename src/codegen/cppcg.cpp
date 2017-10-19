@@ -1271,7 +1271,15 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 			// No name, so do nothing
 			return;
 		}
-
+		
+		//check if user wants to include the header or forward declare
+		bool forward_declare = true;
+		std::map< wxString, wxString >::iterator forward_declare_it = children.find( wxT( "forward_declare" ) );
+		if ( children.end() != forward_declare_it )
+		{
+			forward_declare = forward_declare_it->second == wxT( "forward_declare" );
+		}
+		
 		//get namespaces
 		wxString originalValue = nameVal;
 		int delimiter = nameVal.Find( wxT( "::" ) ) ;
@@ -1340,7 +1348,8 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 
 		wxString include = wxT( "#include \"" ) + headerVal + wxT( "\"" );
 		if ( pkg->GetPackageName() == wxT( "Forms" ) ||
-			 obj->GetChild( 1, wxT("menu") ) )
+			 obj->GetChild( 1, wxT("menu") ) ||
+			 !forward_declare )
 		{
 			std::vector< wxString >::iterator it = std::find( headerIncludes->begin(), headerIncludes->end(), include );
 			if ( headerIncludes->end() == it )

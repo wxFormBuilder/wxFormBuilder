@@ -81,6 +81,7 @@ public:
 	wxString m_name;
 	wxString m_defaultValue;
 	wxString m_description;
+	PropertyType m_type;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
