@@ -130,6 +130,7 @@
     <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
 		<child name="name" help="The name of the subclass."/>
 		<child name="header" help="For C++ Only. The header to be included for the subclass."/>
+		<child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
 	</property>
 	<category name="wxKeyEvent" type="interface">
 		<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
