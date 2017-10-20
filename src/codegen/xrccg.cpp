@@ -68,11 +68,11 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 		ticpp::Element* child = GetElement( project );
 		if ( child )
 		{
-            element.LinkEndChild( child );
-            delete child;
+			element.LinkEndChild( child );
+			delete child;
 		}
 	}
-	
+
 	// generate context menus as top-level menus
 	for( std::vector<ticpp::Element*>::iterator it = m_contextMenus.begin(); it != m_contextMenus.end(); ++it )
 	{
@@ -82,17 +82,17 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 
 	doc.LinkEndChild( &element );
 
-    TiXmlPrinter printer;
+	TiXmlPrinter printer;
 	printer.SetIndent( "\t" );
 
-    #if defined( __WXMSW__ )
-        printer.SetLineBreak( "\r\n" );
-    #else
-        printer.SetLineBreak( "\n" );
-    #endif
+	#if defined( __WXMSW__ )
+		printer.SetLineBreak( "\r\n" );
+	#else
+		printer.SetLineBreak( "\n" );
+	#endif
 
-    doc.Accept( &printer );
-    const std::string& xrcFile = printer.Str();
+	doc.Accept( &printer );
+	const std::string& xrcFile = printer.Str();
 
 	m_cw->Write( _WXSTR( xrcFile ) );
 
@@ -192,7 +192,7 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 						delete aux;
 					}
 				}
-				
+
 				m_contextMenus.push_back( element );
 				return NULL;
 			}
@@ -203,8 +203,8 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 			ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
 			if ( aux )
 			{
-			    element->LinkEndChild( aux );
-			    delete aux;
+				element->LinkEndChild( aux );
+				delete aux;
 			}
 		}
 	}
@@ -221,5 +221,3 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 
 	return element;
 }
-
-
