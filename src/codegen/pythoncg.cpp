@@ -1595,6 +1595,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxDatePickerCtrl, wx.adv. );
 
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );
@@ -1704,4 +1705,11 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxDV_VERT_RULES, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_VARIABLE_LINE_HEIGHT, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_NO_HEADER, wx.dataview. );
+
+	ADD_PREDEFINED_PREFIX( wxDP_SPIN, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxDP_DROPDOWN, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxDP_SHOWCENTURY, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxDP_ALLOWNONE, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxDP_DEFAULT, wx.adv. );
 }
+
