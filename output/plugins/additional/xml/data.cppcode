@@ -322,7 +322,7 @@ Written by
 	<template name="evt_connect_OnGridLabelLeftDClick">$name->Connect( wxEVT_GRID_LABEL_LEFT_DCLICK, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridLabelRightDClick">EVT_GRID_LABEL_RIGHT_DCLICK( #handler )</template>
 	<template name="evt_connect_OnGridLabelRightDClick">$name->Connect( wxEVT_GRID_LABEL_RIGHT_DCLICK, #handler, NULL, this );</template>
-	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGE( #handler )</template>
+	<template name="evt_entry_OnGridCellChange">EVT_GRID_CELL_CHANGED( #handler )</template>
 	<template name="evt_connect_OnGridCellChange">$name->Connect( wxEVT_GRID_CELL_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnGridSelectCell">EVT_GRID_SELECT_CELL( #handler )</template>
 	<template name="evt_connect_OnGridSelectCell">$name->Connect( wxEVT_GRID_SELECT_CELL, #handler, NULL, this );</template>

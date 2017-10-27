@@ -181,7 +181,7 @@ CommonPanel::CommonPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, in
 	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnScrollChanged ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellDClick ), NULL, this );
-	m_grid1->Connect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( CommonPanel::OnGridCellChanged ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_CHANGED, wxGridEventHandler( CommonPanel::OnGridCellChanged ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellRightClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellRightDClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_EDITOR_CREATED, wxGridEditorCreatedEventHandler( CommonPanel::OnGridEditorCreated ), NULL, this );

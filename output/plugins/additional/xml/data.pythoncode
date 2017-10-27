@@ -228,7 +228,7 @@ Python code generation written by
 	<template name="evt_connect_OnGridLabelRightClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_RIGHT_CLICK, #handler )</template>
 	<template name="evt_connect_OnGridLabelLeftDClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, #handler )</template>
 	<template name="evt_connect_OnGridLabelRightDClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_RIGHT_DCLICK, #handler )</template>
-	<template name="evt_connect_OnGridCellChange">self.$name.Bind( wx.grid.EVT_GRID_CELL_CHANGE, #handler )</template>
+	<template name="evt_connect_OnGridCellChange">self.$name.Bind( wx.grid.EVT_GRID_CELL_CHANGED, #handler )</template>
 	<template name="evt_connect_OnGridSelectCell">self.$name.Bind( wx.grid.EVT_GRID_SELECT_CELL, #handler )</template>
 	<template name="evt_connect_OnGridEditorHidden">self.$name.Bind( wx.grid.EVT_GRID_EDITOR_HIDDEN, #handler )</template>
 	<template name="evt_connect_OnGridEditorShown">self.$name.Bind( wx.grid.EVT_GRID_EDITOR_SHOWN, #handler )</template>
@@ -240,7 +240,7 @@ Python code generation written by
 	<template name="evt_connect_OnGridCmdLabelRightClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_RIGHT_CLICK, #handler )</template>
 	<template name="evt_connect_OnGridCmdLabelLeftDClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_LEFT_DCLICK, #handler )</template>
 	<template name="evt_connect_OnGridCmdLabelRightDClick">self.$name.Bind( wx.grid.EVT_GRID_LABEL_RIGHT_DCLICK, #handler )</template>
-	<template name="evt_connect_OnGridCmdCellChange">self.$name.Bind( wx.grid.EVT_GRID_CELL_CHANGE, #handler )</template>
+	<template name="evt_connect_OnGridCmdCellChange">self.$name.Bind( wx.grid.EVT_GRID_CELL_CHANGED, #handler )</template>
 	<template name="evt_connect_OnGridCmdSelectCell">self.$name.Bind( wx.grid.EVT_GRID_SELECT_CELL, #handler )</template>
 	<template name="evt_connect_OnGridCmdEditorHidden">self.$name.Bind( wx.grid.EVT_GRID_EDITOR_HIDDEN, #handler )</template>
 	<template name="evt_connect_OnGridCmdEditorShown">self.$name.Bind( wx.grid.EVT_GRID_EDITOR_SHOWN, #handler )</template>
