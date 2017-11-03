@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>org.wxformbuilder.wxFormBuilder.desktop</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <name>wxFormBuilder</name>
+  <summary>RAD tool for wxWidgets GUI design</summary>
+
+  <description>
+    <p>
+      wxFormBuilder is a visual development tool, but also allows including non-graphical
+      components. It can emit C++, Python, PHP, Lua and XRC code.
+    </p>
+  </description>
+
+  <url type="homepage">http://wxformbuilder.org</url>
+
+  <provides>
+    <binary>wxformbuilder</binary>
+  </provides>
+</component>
