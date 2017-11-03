@@ -1,7 +1,7 @@
 #!/bin/bash
 set -eux
 
-dnf install -y flatpak-builder
+dnf install -y flatpak-builder git
 flatpak remote-add --from gnome https://sdk.gnome.org/gnome.flatpakrepo
 flatpak install gnome org.freedesktop.Platform 1.6
 flatpak install gnome org.freedesktop.Sdk 1.6
