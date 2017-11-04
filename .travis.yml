@@ -11,6 +11,7 @@ matrix:
         directories:
           - install/linux/.flatpak-builder
     - os: osx
+      language: cpp
       script:
         - brew update
         - brew install wxmac boost dylibbundler
