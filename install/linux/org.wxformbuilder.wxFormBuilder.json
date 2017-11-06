@@ -50,6 +50,7 @@
 			"sources": [
 				{
 					"type": "git",
+					"branch": "HEAD",
 					"path": "../.."
 				}
 			]
