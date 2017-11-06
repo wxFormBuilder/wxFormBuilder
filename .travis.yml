@@ -6,11 +6,15 @@ matrix:
       services:
         - docker
       script:
+        - mkdir -p .cache
+        - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
         - docker run --privileged -v$PWD:/w -it fedora:26 /bin/sh -c "cd /w/install/linux && ./flatpak.sh"
       env: DEPLOY_FILE=install/linux/wxformbuilder.flatpak
-      # cache:
-      #   directories:
-      #     - install/linux/.flatpak-builder
+      before_cache:
+        - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar install/linux/.flatpak-builder/
+      cache:
+        directories:
+          - .cache
     - os: osx
       script:
         - brew update
