@@ -18,7 +18,7 @@ matrix:
     - os: osx
       script:
         - brew update
-        - brew upgrade boost
+        - brew outdated boost || brew upgrade boost
         - brew install wxmac boost dylibbundler
         - ./create_build_files4.sh --disable-mediactrl
         - make config=release -C build/3.0/gmake
