@@ -136,7 +136,7 @@ Python code generation written by
   </templates>
 
   <templates class="wxTreeListCtrlColumn">
-	  <template name="column_add">#parent $name.AppendColumn( $name, $width, $alignment, $flag )</template>
+	  <template name="column_add">self.#parent $name.AppendColumn( $name, $width, $alignment, $flag )</template>
   </templates>
 
   <templates class="wxCheckListBox">
