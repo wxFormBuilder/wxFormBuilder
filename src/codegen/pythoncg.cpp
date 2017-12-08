@@ -1705,6 +1705,13 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxDV_VERT_RULES, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_VARIABLE_LINE_HEIGHT, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_NO_HEADER, wx.dataview. );
+    
+    ADD_PREDEFINED_PREFIX( wxTL_SINGLE, wx.dataview. );
+	ADD_PREDEFINED_PREFIX( wxTL_MULTIPLE, wx.dataview. );
+	ADD_PREDEFINED_PREFIX( wxTL_CHECKBOX, wx.dataview. );
+	ADD_PREDEFINED_PREFIX( wxTL_3STATE, wx.dataview. );
+	ADD_PREDEFINED_PREFIX( wxTL_USER_3STATE, wx.dataview. );
+	ADD_PREDEFINED_PREFIX( wxTL_DEFAULT_STYLE, wx.dataview. );
 
 	ADD_PREDEFINED_PREFIX( wxDP_SPIN, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDP_DROPDOWN, wx.adv. );
