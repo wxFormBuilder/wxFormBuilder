@@ -20,7 +20,7 @@ ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
 ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
 ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
 ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
-cd build/3.0/gmake
+cd build/gmake
 sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
 sed 's!-lbfd!-lbfd -lz!g' *.make -i
 make config=release
@@ -47,7 +47,7 @@ Download and build:
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
 ./create_build_files4.sh
-cd build/3.0/gmake
+cd build/gmake
 make config=release
 ```
 
@@ -74,7 +74,7 @@ Download and build like for Linux (except that currently MediaCtrl needs to be d
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
 ./create_build_files4.sh --disable-mediactrl
-cd build/3.0/gmake
+cd build/gmake
 make config=release
 ```
 
