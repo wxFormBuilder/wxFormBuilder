@@ -22,7 +22,7 @@ matrix:
         - brew install wxmac boost dylibbundler
         - ./create_build_files4.sh --disable-mediactrl
         - make config=release -C build/3.0/gmake
-        - cd output && zip -r wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
+        - cd output && zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
       env: DEPLOY_FILE=output/wxFormBuilder_macOS.zip
 deploy:
   provider: releases
