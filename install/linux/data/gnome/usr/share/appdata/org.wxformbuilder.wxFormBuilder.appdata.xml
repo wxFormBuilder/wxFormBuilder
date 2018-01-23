@@ -18,4 +18,7 @@
   <provides>
     <binary>wxformbuilder</binary>
   </provides>
+  <releases>
+    <release version="3.6.2"/>
+  </releases>
 </component>
