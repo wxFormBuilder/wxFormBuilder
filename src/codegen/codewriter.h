@@ -37,6 +37,7 @@ private:
 	// Current indentation level in the file
 	int m_indent;
 	int m_cols;
+	bool m_indent_with_spaces;
 
 protected:
 	/// Write a wxString.
@@ -71,6 +72,9 @@ public:
 
 	/// Writes a text string into the code.
 	void Write( wxString code );
+
+	// Sets the option to indent with spaces
+	void SetIndentWithSpaces( bool on );
 
 	/// Deletes all the code previously written.
 	virtual void Clear() = 0;
