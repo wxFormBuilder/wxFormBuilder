@@ -45,7 +45,8 @@
 CodeWriter::CodeWriter()
 :
 m_indent( 0 ),
-m_cols( 0 )
+m_cols( 0 ),
+m_indent_with_spaces( false )
 {
 }
 
@@ -131,13 +132,18 @@ void CodeWriter::Write( wxString code )
 		// Inserting indents
 		for ( int i = 0; i < m_indent; i++ )
 		{
-			DoWrite( wxT("\t") );
+			DoWrite( m_indent_with_spaces ? wxT("    ") :  wxT("\t") );
 		}
 
 		m_cols = m_indent;
 	}
 
 	DoWrite( code );
+}
+
+void CodeWriter::SetIndentWithSpaces( bool on )
+{
+	m_indent_with_spaces = on;
 }
 
 TCCodeWriter::TCCodeWriter()

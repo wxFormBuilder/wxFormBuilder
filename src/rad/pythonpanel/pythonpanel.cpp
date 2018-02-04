@@ -295,6 +295,14 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 			return;
 		}
 	}
+
+	bool useSpaces = false;
+	PProperty pUseSpaces = project->GetProperty( wxT( "indent_with_spaces" ) );
+	if (pUseSpaces)
+	{
+		useSpaces = ( pUseSpaces->GetValueAsInteger() ? true : false );
+	}
+	m_pythonCW->SetIndentWithSpaces(useSpaces);
 	
 	// Generate code in the panel
 	if ( doPanel )
@@ -364,6 +372,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 			}
 
 			PCodeWriter python_cw( new FileCodeWriter( path + file + wxT( ".py" ), useMicrosoftBOM, useUtf8 ) );
+			python_cw->SetIndentWithSpaces( useSpaces );
 
 			codegen.SetSourceWriter( python_cw );
 			codegen.GenerateCode( project );
