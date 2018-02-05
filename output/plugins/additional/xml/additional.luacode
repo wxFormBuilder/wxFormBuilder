@@ -105,6 +105,11 @@ Lua code generation written by
 	<template name="evt_connect_OnDateChanged">#utbl$name:Connect( wx.wxEVT_DATE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
 
+  <templates class="wxTimePickerCtrl">
+	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnTimeChanged">#utbl$name:Connect( wx.wxEVT_TIME_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
   <templates class="wxCalendarCtrl">
     <template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
     <template name="include"/><!--import wx.calendar</template>-->
