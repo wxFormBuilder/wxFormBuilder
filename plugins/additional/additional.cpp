@@ -37,6 +37,7 @@
 #include <wx/scrolbar.h>
 #include <wx/checklst.h>
 #include <wx/datectrl.h>
+#include <wx/timectrl.h>
 #include <wx/grid.h>
 #include <wx/dirctrl.h>
 #ifdef USE_MEDIACTRL
@@ -218,6 +219,36 @@ public:
 		return filter.GetXfbObject();
 	}
 };
+
+class TimePickerCtrlComponent : public ComponentBase
+{
+public:
+	wxObject* Create( IObject *obj, wxObject *parent )
+	{
+		return new wxTimePickerCtrl( ( wxWindow * )parent, -1,
+									 wxDefaultDateTime,
+									 obj->GetPropertyAsPoint( _( "pos" ) ),
+									 obj->GetPropertyAsSize( _( "size" ) ),
+									 obj->GetPropertyAsInteger( _( "style" ) ) | obj->GetPropertyAsInteger( _( "window_style" ) ) );
+	}
+
+	ticpp::Element* ExportToXrc( IObject *obj )
+	{
+		ObjectToXrcFilter xrc( obj, _( "wxTimePickerCtrl" ), obj->GetPropertyAsString( _( "name" ) ) );
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter( xrcObj, _( "wxTimePickerCtrl" ) );
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+
+
 
 class RichTextCtrlComponent : public ComponentBase
 {
@@ -2315,8 +2346,9 @@ class RibbonGalleryItemComponent : public ComponentBase{};
 BEGIN_LIBRARY()
 
 WINDOW_COMPONENT("wxCalendarCtrl",CalendarCtrlComponent)
-WINDOW_COMPONENT("wxDatePickerCtrl", DatePickerCtrlComponent )
-WINDOW_COMPONENT("wxHtmlWindow",HtmlWindowComponent)
+WINDOW_COMPONENT("wxDatePickerCtrl",DatePickerCtrlComponent)
+WINDOW_COMPONENT("wxTimePickerCtrl",TimePickerCtrlComponent)
+WINDOW_COMPONENT("wxHtmlWindow", HtmlWindowComponent)
 WINDOW_COMPONENT("wxToggleButton",ToggleButtonComponent)
 WINDOW_COMPONENT("wxTreeCtrl",TreeCtrlComponent)
 WINDOW_COMPONENT("wxGrid",GridComponent)
@@ -2431,6 +2463,11 @@ MACRO(wxDP_DROPDOWN)
 MACRO(wxDP_SHOWCENTURY)
 MACRO(wxDP_ALLOWNONE)
 MACRO(wxDP_DEFAULT)
+
+
+// wxTimePickerCtrl
+MACRO( wxTP_DEFAULT )
+
 
 // wxHtmlWindow
 MACRO(wxHW_SCROLLBAR_NEVER)

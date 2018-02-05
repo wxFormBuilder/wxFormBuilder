@@ -106,6 +106,12 @@ Python code generation written by
 	<template name="evt_connect_OnDateChanged">self.$name.Bind( wx.adv.EVT_DATE_CHANGED, #handler )</template>
   </templates>
 
+  <templates class="wxTimePickerCtrl">
+	<template name="construction">self.$name = #class( #wxparent $name, $id, wx.DefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnTimeChanged">self.$name.Bind( wx.EVT_TIME_CHANGED, #handler )</template>
+  </templates>
+
+
   <templates class="wxCalendarCtrl">
     <template name="construction">self.$name = #class( #wxparent $name, $id, wx.DefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
 	<template name="include">import wx.adv</template>
