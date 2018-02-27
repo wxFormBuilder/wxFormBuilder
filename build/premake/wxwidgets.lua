@@ -61,7 +61,7 @@ wxVersion         = _OPTIONS["wx-version"]
 wxUnicodeSign     = "u"
 wxUseMediaCtrl    = true
 wxUseUnicode      = true
-wxMonolithic      = true
+wxMonolithic      = false
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
@@ -221,7 +221,9 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 				links { "wxmsw"..libVersion..wxBuildType }
 			else
 				links { "wxbase"..libVersion..wxBuildType } -- base lib
-				for i, lib in ipairs(string.explode(wxLibs, ",")) do
+				local libs = "net,xml,adv,core,html,gl,aui,propgrid,ribbon,richtext,stc,webview,xrc"
+				if wxUseMediaCtrl then libs = libs .. ",media" end
+				for i, lib in ipairs(string.explode(libs, ",")) do
 					local libPrefix = 'wxmsw'
 					if lib == "xml" or lib == "net" or lib == "odbc" then
 						libPrefix = 'wxbase'
