@@ -66,18 +66,18 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 [Files]
 #if defined UNICODE
 Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
-Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\wx*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libstdc++*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libgcc*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libintl*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libexpat*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libjpeg*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libpng*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libtiff*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\zlib*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libwinpthread*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\libiconv*.dll; DestDir: {app}
+Source: C:\msys32\mingw32\bin\liblzma*.dll; DestDir: {app}
 #else
 Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db, *.a
 #endif
