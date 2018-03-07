@@ -47,7 +47,7 @@ Download and build:
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
 ./create_build_files4.sh
-cd build/3.0/gmake
+cd build/3.1/gmake
 make config=release
 ```
 
