@@ -65,8 +65,8 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 #if defined UNICODE
-Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
-Source: C:\msys32\mingw32\bin\wx*.dll; DestDir: {app}
+Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw311ud_*, wxmsw311umd_*, Thumbs.db, *.a
+Source: C:\wxWidgets-3.1.1\lib\gcc_dll\wx*.dll; DestDir: {app}; Excludes: wxbase311ud_*, wxmsw311ud_*
 Source: C:\msys32\mingw32\bin\libstdc++*.dll; DestDir: {app}
 Source: C:\msys32\mingw32\bin\libgcc*.dll; DestDir: {app}
 Source: C:\msys32\mingw32\bin\libintl*.dll; DestDir: {app}
