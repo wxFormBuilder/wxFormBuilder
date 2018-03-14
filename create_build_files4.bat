@@ -6,7 +6,7 @@ CLS
 REM Set Defaults
 SET unicode=
 SET wxroot=%WXWIN%
-SET wxver=3.0
+SET wxver=3.1
 SET compiler=gcc
 SET compilerversion=
 SET usewxconfig=
