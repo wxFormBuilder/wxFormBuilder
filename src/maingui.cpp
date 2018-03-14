@@ -46,6 +46,8 @@
 
 #if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER < 3100
 #include <wx/xrc/xh_auinotbk.h>
+#elif wxVERSION_NUMBER >= 3100
+#include <wx/xrc/xh_aui.h>
 #endif
 
 // Abnormal Termination Handling
@@ -212,6 +214,8 @@ int MyApp::OnRun()
 	wxXmlResource::Get()->InitAllHandlers();
 	#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER < 3100
 	wxXmlResource::Get()->AddHandler(new wxAuiNotebookXmlHandler);
+	#elif wxVERSION_NUMBER >= 3100
+	wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
 	#endif
 
 	// Init AppData
