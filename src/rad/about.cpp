@@ -71,7 +71,7 @@ class HtmlWindow : public wxHtmlWindow
     }
 };
 
-AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("About..."),wxDefaultPosition,wxSize(485,470))//wxSize(308,248))
+AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("About..."))
 {
 #if 0
   wxBoxSizer *sizer2;
@@ -134,6 +134,7 @@ AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Abo
   mainSizer->Add(new wxButton(this, wxID_OK, wxT("OK")), 0, wxALIGN_CENTER | wxBOTTOM, 5);
 
   SetSizerAndFit(mainSizer);
+  Center();
 }
 
 void AboutDialog::OnButtonEvent (wxCommandEvent &)
