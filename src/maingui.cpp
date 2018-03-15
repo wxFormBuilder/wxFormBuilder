@@ -44,9 +44,9 @@
 #include "utils/typeconv.h"
 #include "model/objectbase.h"
 
-#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER < 3100
+#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER <= 3100
 #include <wx/xrc/xh_auinotbk.h>
-#elif wxVERSION_NUMBER >= 3100
+#elif wxVERSION_NUMBER > 3100
 #include <wx/xrc/xh_aui.h>
 #endif
 
@@ -212,9 +212,9 @@ int MyApp::OnRun()
 	// Init handlers
 	wxInitAllImageHandlers();
 	wxXmlResource::Get()->InitAllHandlers();
-	#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER < 3100
+	#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER <= 3100
 	wxXmlResource::Get()->AddHandler(new wxAuiNotebookXmlHandler);
-	#elif wxVERSION_NUMBER >= 3100
+	#elif wxVERSION_NUMBER > 3100
 	wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
 	#endif
 
