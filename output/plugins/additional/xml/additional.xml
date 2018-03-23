@@ -63,7 +63,7 @@ Written by
     <event name="OnRichTextContentInserted" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED event, generated when content has been inserted into the control. Valid event functions: GetPosition, GetRange." />
     <event name="OnRichTextContentDeleted" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED event, generated when content has been deleted from the control. Valid event functions: GetPosition, GetRange." />
 </objectinfo>
-  
+
 <objectinfo class="wxStyledTextCtrl" icon="scintilla.xpm" type="expanded_widget">
     <inherits class="wxWindow" />
     <inherits class="AUI" />
@@ -111,7 +111,7 @@ Written by
     <event name="OnSearchButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_SEARCH_BTN event, generated when the search button is clicked. Note that this does not initiate a search." />
     <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked." />
 </objectinfo>
-  
+
 <objectinfo class="wxColourPickerCtrl"  startgroup="1" icon="colourPickerIcon.xpm" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI" />
@@ -130,7 +130,7 @@ Written by
 <objectinfo class="wxFontPickerCtrl" icon="fontPicker.xpm" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI" />
-    <inherits class="Validator" />		
+    <inherits class="Validator" />
     <property name="name" type="text">m_fontPicker</property>
     <property name="style" type="bitlist">
         <option name="wxFNTP_DEFAULT_STYLE" help="The default style: wxFNTP_FONTDESC_AS_LABEL | wxFNTP_USEFONT_FOR_LABEL."/>
@@ -164,7 +164,7 @@ Written by
     </property>
     <property name="value" type="wxString"/>
     <property name="message" type="wxString_i18n">Select a file</property>
-    <property name="wildcard" type="wxString">*.*</property>
+    <property name="wildcard" type="wxString_i18n">*.*</property>
     <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
 </objectinfo>
 
@@ -279,7 +279,7 @@ Written by
         <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
 		<option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
 		wxSP_ARROW_KEYS
-	</property>        
+	</property>
     <event name="OnSpinCtrl" class="wxSpinEvent" help="Generated whenever the numeric value of the spinctrl is updated." />
     <event name="OnSpinCtrlText" class="wxCommandEvent" help="Generated whenever the user modifies the text in the edit part of the spin control directly." />
 	<event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
@@ -298,7 +298,7 @@ Written by
         <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
         <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
 		wxSP_ARROW_KEYS
-	</property>        
+	</property>
     <event name="OnSpinCtrlDouble" class="wxSpinDoubleEvent" help="Generated whenever the numeric value of the control is updated." />
 </objectinfo>
 
@@ -359,7 +359,7 @@ Written by
 </objectinfo>
 
 <objectinfo class="wxMediaCtrl" icon="media_ctrl.xpm" type="widget">
-    <inherits class="wxControl" />	
+    <inherits class="wxControl" />
     <inherits class="wxWindow" />
     <inherits class="AUI" />
     <property name="name" type="text">m_mediaCtrl</property>
@@ -368,7 +368,7 @@ Written by
     <property name="playback_rate" type="float" help="Sets the playback rate, or speed of the media, to that referred by dRate. 1.0 represents normal speed, while 2.0 represents twice the normal speed of the media, for example. Not supported on the GStreamer (Unix) backend.">1</property>
     <property name="volume" type="float" help="Sets the volume of the media from a 0.0 to 1.0 range to that referred by dVolume. 1.0 represents full volume, while 0.5 represents half (50 percent) volume, for example. Note that this may not be exact due to conversion and rounding errors, although setting the volume to full or none is always exact.">1</property>
     <property name="player_controls" type="option">
-        <option name="STEP" help="wxMEDIACTRLPLAYERCONTROLS_STEP, Step controls like fastfoward, step one frame etc. "/>		
+        <option name="STEP" help="wxMEDIACTRLPLAYERCONTROLS_STEP, Step controls like fastfoward, step one frame etc. "/>
         <option name="VOLUME" help="wxMEDIACTRLPLAYERCONTROLS_VOLUME, Volume controls like the speaker icon, volume slider, etc. "/>
         <option name="DEFAULT" help="wxMEDIACTRLPLAYERCONTROLS_DEFAULT, Default controls for the toolkit. Currently a typedef for wxMEDIACTRLPLAYERCONTROLS_STEP and wxMEDIACTRLPLAYERCONTROLS_VOLUME. "/>
         <option name="NONE" help="wxMEDIACTRLPLAYERCONTROLS_NONE, No controls. return wxMediaCtrl to it's default state. "/>
@@ -394,6 +394,6 @@ Written by
     <property name="oneshot" type="bool" help="Produce timer event just once.">0</property>
     <event name="OnTimer" class="wxTimerEvent" help="Process a wxEVT_TIMER event, when the timer ticks." />
 </objectinfo>
-  
+
 </package>
 
