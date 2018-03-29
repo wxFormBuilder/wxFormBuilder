@@ -747,10 +747,10 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 			Item(1)->SetValue( childVals[1]);
 		}
 
-		if(childVals.Count() > 2)
-		{
-			Item(2)->SetValue( childVals[2]);
-		}
+		//if(childVals.Count() > 2)
+		//{
+		//	Item(2)->SetValue( childVals[2]);
+		//}
 	}
 	else if( childVals[0].Contains( _("Load From Art Provider") ) )
 	{
