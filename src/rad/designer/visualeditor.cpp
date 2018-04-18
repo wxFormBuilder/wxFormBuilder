@@ -507,14 +507,12 @@ void VisualEditor::Create()
 				backSize.SetHeight( maxSize.GetHeight() );
 			}
 
-			// Modify size property to match
 			if ( size != backSize )
 			{
-				PProperty psize = m_form->GetProperty( wxT("size") );
-				if ( psize )
-				{
-					AppData()->ModifyProperty( psize, TypeConv::SizeToString( backSize ) );
-				}
+				// Since we could be called by VisualEditor::OnPropertyModified we mustn't trigger a
+				// modify event again. Creating a delayed event won't work either, as this would
+				// mess up the undo/redo stack. Therefore we just log about the invalid size:
+				LogDebug("size is NOT between of minimum_size and maximum_size");
 			}
 
 			// --- [2] Set the color of the form -------------------------------
