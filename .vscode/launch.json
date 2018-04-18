@@ -1,0 +1,13 @@
+{
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "lldb",
+				"request": "launch",
+				"name": "Launch",
+				"program": "${workspaceRoot}/output/bin/wxformbuilder-30",
+				"args": [],
+				"cwd": "${workspaceRoot}/output/bin"
+			}
+		]
+	}

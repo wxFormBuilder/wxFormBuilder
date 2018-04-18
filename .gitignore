@@ -9,3 +9,4 @@ sdk/lib/
 install/windows/source
 install/windows/*.exe
 .vscode/*.db
+/.vscode/*cache*/
