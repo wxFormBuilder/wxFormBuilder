@@ -1596,6 +1596,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDatePickerCtrl, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxHyperlinkCtrl, wx.adv. );
 
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );
@@ -1605,6 +1606,12 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx.adv. );
+
+    ADD_PREDEFINED_PREFIX( wxHL_ALIGN_CENTRE, wx.adv. );
+    ADD_PREDEFINED_PREFIX( wxHL_ALIGN_LEFT, wx.adv. );
+    ADD_PREDEFINED_PREFIX( wxHL_ALIGN_RIGHT, wx.adv. );
+    ADD_PREDEFINED_PREFIX( wxHL_CONTEXTMENU, wx.adv. );
+    ADD_PREDEFINED_PREFIX( wxHL_DEFAULT_STYLE, wx.adv. );
 
 	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.html. );
