@@ -49,7 +49,7 @@ Python code generation written by
   		@{ #nl self.$name.SetBitmapFocus( $focus ) @}
   		
   		#ifnotnull $hover
-  		@{ #nl self.$name.SetBitmapHover( $hover ) @}
+  		@{ #nl self.$name.SetBitmapCurrent( $hover ) @}
   	</template>
   </templates>
 

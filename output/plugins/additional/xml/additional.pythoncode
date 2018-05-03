@@ -199,7 +199,8 @@ Python code generation written by
     	#ifnotnull $visited_color
     	@{ #nl self.$name.SetVisitedColour( $visited_color ) @}
 	</template>
-	<template name="evt_connect_OnHyperlink">self.$name.Bind( wx.EVT_HYPERLINK, #handler )</template>
+	<template name="include">import wx.adv</template>
+	<template name="evt_connect_OnHyperlink">self.$name.Bind( wx.adv.EVT_HYPERLINK, #handler )</template>
   </templates>
 
   <templates class="wxGenericDirCtrl">
