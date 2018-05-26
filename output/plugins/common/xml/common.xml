@@ -74,6 +74,7 @@ Written by
       <option name="wxST_ELLIPSIZE_END" help="If the labeltext width exceeds the control width, replace the end of the label with an ellipsis; uses wxControl::Ellipsize."/>
     </property>
     <property name="label" type="wxString_i18n">MyLabel</property>
+    <property name="markup" type="bool" help="Simple markup can be used to apply different fonts or colours to different parts of the control label when supported. If markup is not supported by the control or platform, it is simply stripped and SetLabel() is used with the resulting string.&#x0A;Since 2.9.2.">0</property>
     <property name="wrap" type="int" help="Wraps the control's label so that each of its lines becomes at most this many pixels wide if possible (the lines are broken at words boundaries so it might not be the case if words are too long). If width is negative, no wrapping is done.">-1</property>
   </objectinfo>
 
@@ -151,7 +152,7 @@ Written by
     <event name="OnComboboxDropdown" class="wxCommandEvent" help="Process a wxEVT_COMBOBOX_DROPDOWN event, which is generated when the list box part of the combo box is shown (drops down). Notice that this event is only supported by wxMSW, wxGTK with GTK+ 2.10 or later, and wxOSX/Cocoa." />
     <event name="OnComboboxCloseup" class="wxCommandEvent" help="Process a wxEVT_COMBOBOX_CLOSEUP event, which is generated when the list box of the combo box disappears (closes up). This event is only generated for the same platforms as wxEVT_COMBOBOX_DROPDOWN above." />
   </objectinfo>
-  
+
   <objectinfo class="wxBitmapComboBox" icon="combo_box.xpm" type="widget">
     <inherits class="wxWindow" />
 	<inherits class="AUI" />

@@ -369,12 +369,20 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxStaticText* st = new wxStaticText((wxWindow *)parent,-1,
-			obj->GetPropertyAsString(_("label")),
+			wxEmptyString,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
+
+		wxString label = obj->GetPropertyAsString( _("label") );
+#if wxCHECK_VERSION( 2, 9, 2 )
+		if ( obj->GetPropertyAsInteger( _("markup") ) )
+			st->SetLabelMarkup( label );
+		else
+#endif
+			st->SetLabel( label );
 
 		return st;
 	}
@@ -385,6 +393,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxStaticText"), name);
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		xrc.AddProperty(_("wrap"),_("wrap"),XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
@@ -394,6 +403,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxStaticText"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		filter.AddProperty(_("wrap"),_("wrap"),XRC_TYPE_INTEGER);
 		return filter.GetXfbObject();
 	}

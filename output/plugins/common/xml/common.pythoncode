@@ -41,13 +41,13 @@ Python code generation written by
 	<template name="settings">
   		#ifnotnull $disabled
   		@{ #nl self.$name.SetBitmapDisabled( $disabled ) @}
-  		
+
   		#ifnotnull $selected
   		@{ #nl self.$name.SetBitmapSelected( $selected ) @}
-  		
+
   		#ifnotnull $focus
   		@{ #nl self.$name.SetBitmapFocus( $focus ) @}
-  		
+
   		#ifnotnull $hover
   		@{ #nl self.$name.SetBitmapCurrent( $hover ) @}
   	</template>
@@ -68,7 +68,8 @@ Python code generation written by
   </templates>
 
   <templates class="wxStaticText">
-	<template name="construction">self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="construction">self.$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="settings">#ifequal $markup "1" @{ self.$name.SetLabelMarkup( $label )@} #ifequal $markup "0" @{ self.$name.SetLabel( $label )@}</template>
   	<template name="settings">self.$name.Wrap( $wrap )</template>
   </templates>
 
@@ -97,7 +98,7 @@ Python code generation written by
 	<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
 	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
   </templates>
-  
+
   <templates class="wxBitmapComboBox">
 	<template name="construction">
 		self.$name = wx.combo.BitmapComboBox( #wxparent $name, $id, $value, $pos, $size, "", $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
@@ -205,7 +206,7 @@ Python code generation written by
 		#ifnotnull $choices
 		@{
 			$name #append Choices = [ $choices ] #nl
-			
+
 		@}
 		#ifnull $choices
 		@{
