@@ -29,6 +29,7 @@ PHP code generation written by
   <templates class="wxButton">
 	<template name="construction">
 		@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+	<template name="settings">#ifequal $markup "1" @{ @$this->$name->SetLabelMarkup( $label );@}</template>
 	<template name="settings">
     		#ifnotequal $default "0"
     		@{ @$this->$name->SetDefault(); @}</template>

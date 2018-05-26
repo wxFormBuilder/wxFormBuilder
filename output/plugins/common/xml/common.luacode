@@ -30,6 +30,7 @@ Lua code generation written by
 	<template name="construction">
 		#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
 	</template>
+	<template name="settings">#ifequal $markup "1" @{ #utbl$name:SetLabelMarkup( $label )@}</template>
 	<template name="settings">
     		#ifnotequal $default "0"
     		@{ #utbl$name:SetDefault() @}</template>

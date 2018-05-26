@@ -37,6 +37,7 @@ Written by
       <option name="wxNO_BORDER"    help="Creates a flat button. Windows and GTK+ only."/>
     </property>
     <property name="label" type="wxString_i18n">MyButton</property>
+    <property name="markup" type="bool" help="Simple markup can be used to apply different fonts or colours to different parts of the control label when supported. If markup is not supported by the control or platform, it is simply stripped and SetLabel() is used with the resulting string.&#x0A;Since 2.9.2.">0</property>
     <property name="default" type="bool">0</property>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked" />
   </objectinfo>

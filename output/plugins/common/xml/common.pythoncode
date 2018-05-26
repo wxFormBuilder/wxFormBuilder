@@ -29,6 +29,7 @@ Python code generation written by
   <templates class="wxButton">
 	<template name="construction">
 		self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="settings">#ifequal $markup "1" @{ self.$name.SetLabelMarkup( $label )@}</template>
 	<template name="settings">
     		#ifnotequal $default "0"
     		@{ self.$name.SetDefault() @}</template>

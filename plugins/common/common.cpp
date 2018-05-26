@@ -186,11 +186,17 @@ public:
 
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
+		wxString label = obj->GetPropertyAsString( _("label") );
 		wxButton* button = new wxButton((wxWindow*)parent,-1,
-			obj->GetPropertyAsString(_("label")),
+			label, // INFO: if use wxEmptyString then the button has an empty label forever
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+#if wxCHECK_VERSION( 2, 9, 2 )
+		if ( obj->GetPropertyAsInteger( _("markup") ) )
+			button->SetLabelMarkup( label );
+#endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
 		{
@@ -205,6 +211,7 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
@@ -214,6 +221,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
