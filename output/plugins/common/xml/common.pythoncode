@@ -68,8 +68,8 @@ Python code generation written by
   </templates>
 
   <templates class="wxStaticText">
-	<template name="construction">self.$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="settings">#ifequal $markup "1" @{ self.$name.SetLabelMarkup( $label )@} #ifequal $markup "0" @{ self.$name.SetLabel( $label )@}</template>
+	<template name="construction">self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="settings">#ifequal $markup "1" @{ self.$name.SetLabelMarkup( $label )@}</template>
   	<template name="settings">self.$name.Wrap( $wrap )</template>
   </templates>
 
