@@ -369,11 +369,11 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxString label = obj->GetPropertyAsString( _("label") );
-		wxStaticText* st = new wxStaticText( (wxWindow *)parent, -1,
+		wxStaticText* st = new wxStaticText((wxWindow *)parent, -1,
 			label,
-			obj->GetPropertyAsPoint( _("pos") ),
-			obj->GetPropertyAsSize( _("size") ),
-			obj->GetPropertyAsInteger( _("style") ) | obj->GetPropertyAsInteger( _("window_style") ) );
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
 
