@@ -187,11 +187,11 @@ public:
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
 		wxString label = obj->GetPropertyAsString( _("label") );
-		wxButton* button = new wxButton( (wxWindow*)parent, -1,
+		wxButton* button = new wxButton((wxWindow*)parent, -1,
 			label,
-			obj->GetPropertyAsPoint( _("pos") ),
-			obj->GetPropertyAsSize( _("size") ),
-			obj->GetPropertyAsInteger( _("style") ) | obj->GetPropertyAsInteger( _("window_style") ) );
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 #if wxCHECK_VERSION( 2, 9, 2 )
 		if ( obj->GetPropertyAsInteger( _("markup") ) )
