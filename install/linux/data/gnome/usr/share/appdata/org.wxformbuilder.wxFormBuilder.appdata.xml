@@ -20,5 +20,6 @@
   </provides>
   <releases>
     <release version="3.6.2" timestamp="1516697509"/>
+    <release version="3.7.0" timestamp="1527589991"/>
   </releases>
 </component>
