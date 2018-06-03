@@ -69,8 +69,12 @@ Python code generation written by
 
   <templates class="wxStaticText">
 	<template name="construction">self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="settings">#ifequal $markup "1" @{ self.$name.SetLabelMarkup( $label )@}</template>
-  	<template name="settings">self.$name.Wrap( $wrap )</template>
+	<template name="settings">
+		#ifequal $markup "1" @{
+			self.$name.SetLabelMarkup( $label ) #nl
+		@}
+		self.$name.Wrap( $wrap ) #nl
+	</template>
   </templates>
 
   <templates class="wxCheckBox">

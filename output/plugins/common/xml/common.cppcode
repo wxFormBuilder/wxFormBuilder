@@ -87,8 +87,11 @@ Written by
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/stattext.h&gt;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-    <template name="settings">#ifequal $markup "1" @{ $name->SetLabelMarkup( $label );@}</template>
-    <template name="settings">$name->Wrap( $wrap );</template>
+    <template name="settings">
+	    #ifequal $markup "1" @{
+		    $name->SetLabelMarkup( $label ); #nl
+	    @}
+	    $name->Wrap( $wrap ); #nl</template>
   </templates>
 
   <templates class="wxCheckBox">
