@@ -211,7 +211,6 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		xrc.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
@@ -221,7 +220,6 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
-		filter.AddProperty( _("markup"), _("markup"), XRC_TYPE_BOOL );
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
