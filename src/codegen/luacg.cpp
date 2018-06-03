@@ -861,6 +861,12 @@ wxString LuaCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent/*
 	else
 		_template.Replace(wxT("#utbl"), wxT(""));
 
+	PObjectBase parent = obj->GetNonSizerParent();
+	if ( parent && ( parent->GetClassName() == wxT( "wxCollapsiblePane" ) ) )
+	{
+		wxString parentTemplate = wxT( "#wxparent $name" );
+		_template.Replace( parentTemplate, parentTemplate + wxT( ":GetPane()" ) );
+	}
 
 	LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 	wxString code = parser.ParseTemplate();
@@ -1227,10 +1233,17 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
 
-				wxString _template =	wxT("#utbl#parent$name:SetSizer( #utbl$name ) #nl")
-										wxT("#utbl#parent$name:Layout()")
-										wxT("#ifnull #parent $size")
-										wxT("@{ #nl #utbl$name:Fit( #utbl#parent $name ) @}");
+				wxString _template;
+				wxString parentPostfix;
+				if ( obj->GetParent()->GetClassName() == wxT( "wxCollapsiblePane" ) )
+					parentPostfix = ":GetPane()";
+				else
+					parentPostfix = wxEmptyString;
+
+				_template = wxT( "#utbl#parent$name" ) + parentPostfix + wxT( ":SetSizer( #utbl$name ) #nl" )
+					    wxT( "#utbl#parent$name" ) + parentPostfix + wxT( ":Layout()" )
+					    wxT( "#ifnull #parent $size" )
+					    wxT( "@{ #nl #utbl$name:Fit( #utbl#parent $name" ) + parentPostfix + wxT( " ) @}" );
 
 				LuaTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 				wxString res  = parser.ParseTemplate();

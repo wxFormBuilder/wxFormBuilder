@@ -29,7 +29,13 @@ Lua code generation written by
 	<templates class="wxPanel">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
 	</templates>
-	
+
+	<templates class="wxCollapsiblePane">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{|$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="settings">#ifnotnull $collapsed @{ #utbl$name:Collapse( $collapsed ) #nl @}</template>
+		<template name="evt_connect_OnCollapsiblePaneChanged">#utbl$name:Connect( wx.wxEVT_COLLAPSIBLEPANE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
 	<templates class="wxSplitterWindow">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
 		<template name="settings">
@@ -61,7 +67,7 @@ Lua code generation written by
 				@{
 					function #utbl$name #append OnIdle( event ) #indent #nl
 						#utbl$name:SetSashPosition( $sashpos ) #nl
-						#utbl$name:Disconnect( wx.wxEVT_IDLE )#nl  #unindent #nl end 
+						#utbl$name:Disconnect( wx.wxEVT_IDLE )#nl  #unindent #nl end
 				@}
 			@}
 		</template>
@@ -71,7 +77,7 @@ Lua code generation written by
 		<template name="evt_connect_OnSplitterDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
-  
+
 	<templates class="wxNotebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
 		<template name="settings">
@@ -164,7 +170,7 @@ Lua code generation written by
 	<templates class="simplebookpage">
 		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child$name, $label, $select )</template>
 	</templates>
-	
+
 	<templates class="wxAuiNotebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>
 		<template name="include"/><!--import wx.aui</template>	-->
@@ -177,7 +183,7 @@ Lua code generation written by
 		<template name="evt_connect_OnAuiNotebookEndDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookDragMotion">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookAllowDND">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	</templates>                      
+	</templates>
 
 	<templates class="auinotebookpage">
 		<template name="page_add">#utbl#parent$name:AddPage( #utbl#child $name, $label, $select, $bitmap )</template>

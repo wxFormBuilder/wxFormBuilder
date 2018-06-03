@@ -31,7 +31,23 @@ Written by
 		<inherits class="AUI" />
 		<property name="name" type="text">m_panel</property>
 	</objectinfo>
-	
+
+	<objectinfo class="wxCollapsiblePane" icon="panel.xpm" type="container">
+		<inherits class="Common Events" />
+		<inherits class="wxWindow" />
+		<inherits class="AUI" />
+		<inherits class="Validator" />
+		<property name="name" type="text">m_collapsiblePane</property>
+		<property name="label" type="wxString_i18n">collapsible</property>
+		<property name="collapsed" type="bool">0</property>
+		<property name="style" type="bitlist">
+			<option name="wxCP_DEFAULT_STYLE"	help="The default style. It includes wxTAB_TRAVERSAL and wxBORDER_NONE." />
+			<option name="wxCP_NO_TLW_RESIZE"	help="By default wxCollapsiblePane resizes the top level window containing it when its own size changes. This allows to easily implement dialogs containing an optionally shown part, for example, and so is the default behaviour but can be inconvenient in some specific cases – use this flag to disable this automatic parent resizing then." />
+			wxCP_DEFAULT_STYLE
+		</property>
+		<event name="OnCollapsiblePaneChanged" class="wxCollapsiblePaneEvent" help="The user expanded or collapsed the collapsible pane." />
+	</objectinfo>
+
 	<objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter"  startgroup="1">
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
@@ -127,13 +143,13 @@ Written by
 		<event name="OnAuiNotebookDragMotion" class="wxAuiNotebookEvent" help=""/>
 		<event name="OnAuiNotebookAllowDND" class="wxAuiNotebookEvent" help="This event must be overridden to allow drag'n'drop among wxAuiNotebooks."/>
 	</objectinfo>
-    
+
 	<objectinfo class="auinotebookpage" icon="auinotebook.xpm" type="auinotebookpage">
 		<property name="label" type="wxString_i18n">a page</property>
 		<property name="bitmap" type="bitmap" help="Page Image"/>
 		<property name="select" type="bool" help="Select Page when Adding">0</property>
 	</objectinfo>
-	
+
 	<objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
