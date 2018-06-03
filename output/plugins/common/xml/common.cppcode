@@ -26,10 +26,13 @@ Written by
   <templates class="wxButton">
     <template name="declaration">#class* $name;</template>
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-    <template name="settings">#ifequal $markup "1" @{ $name->SetLabelMarkup( $label );@}</template>
     <template name="settings">
-    	#ifnotequal $default "0"
-    	@{ $name->SetDefault(); @}
+	    #ifequal $markup "1" @{
+		    $name->SetLabelMarkup( $label ); #nl
+	    @}
+	    #ifnotequal $default "0" @{
+		    $name->SetDefault(); #nl
+	    @}
     </template>
     <template name="include">@#include &lt;wx/button.h&gt;</template>
     <template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
