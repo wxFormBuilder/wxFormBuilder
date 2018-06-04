@@ -32,7 +32,7 @@ Written by
 		<property name="name" type="text">m_panel</property>
 	</objectinfo>
 
-	<objectinfo class="wxCollapsiblePane" icon="panel.xpm" type="container">
+	<objectinfo class="wxCollapsiblePane" icon="collpane.xpm" type="container">
 		<inherits class="Common Events" />
 		<inherits class="wxWindow" />
 		<inherits class="AUI" />
