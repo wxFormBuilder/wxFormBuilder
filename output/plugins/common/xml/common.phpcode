@@ -41,13 +41,13 @@ PHP code generation written by
 	<template name="settings">
   		#ifnotnull $disabled
   		@{ #nl @$this->$name->SetBitmapDisabled( $disabled ); @}
-  		
+
   		#ifnotnull $selected
   		@{ #nl @$this->$name->SetBitmapSelected( $selected ); @}
-  		
+
   		#ifnotnull $focus
   		@{ #nl @$this->$name->SetBitmapFocus( $focus ); @}
-  		
+
   		#ifnotnull $hover
   		@{ #nl @$this->$name->SetBitmapHover( $hover ); @}
   	</template>
@@ -69,7 +69,12 @@ PHP code generation written by
 
   <templates class="wxStaticText">
 	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-  	<template name="settings">@$this->$name->Wrap( $wrap );</template>
+	<template name="settings">
+		#ifequal $markup "1" @{
+			@$this->$name->SetLabelMarkup( $label ); #nl
+		@}
+		@$this->$name->Wrap( $wrap ); #nl
+	</template>
   </templates>
 
   <templates class="wxCheckBox">
@@ -97,7 +102,7 @@ PHP code generation written by
 	<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
 	<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
   </templates>
-  
+
   <templates class="wxBitmapComboBox">
 	<template name="construction">
 		@$this->$name = new wxBitmapComboBox( #wxparent $name, $id, $value, $pos, $size, "", $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
@@ -205,7 +210,7 @@ PHP code generation written by
 		#ifnotnull $choices
 		@{
 			@$$name #append Choices = array( $choices ); #nl
-			
+
 		@}
 		#ifnull $choices
 		@{

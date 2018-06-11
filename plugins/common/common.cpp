@@ -368,13 +368,19 @@ public:
 
 	wxObject* Create(IObject *obj, wxObject *parent)
 	{
-		wxStaticText* st = new wxStaticText((wxWindow *)parent,-1,
-			obj->GetPropertyAsString(_("label")),
+		wxString label = obj->GetPropertyAsString( _("label") );
+		wxStaticText* st = new wxStaticText((wxWindow *)parent, -1,
+			label,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
+
+#if wxCHECK_VERSION( 2, 9, 2 )
+		if ( obj->GetPropertyAsInteger( _("markup") ) )
+			st->SetLabelMarkup( label );
+#endif
 
 		return st;
 	}
