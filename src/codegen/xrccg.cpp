@@ -197,6 +197,21 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 				return NULL;
 			}
 		}
+		else if ( class_name == "wxCollapsiblePane" )
+		{
+			ticpp::Element *aux = new ticpp::Element( "object" );
+			aux->SetAttribute( "class", "panewindow" );
+
+			ticpp::Element *child = GetElement( obj->GetChild( 0 ), aux );
+
+			aux->LinkEndChild( child );
+			element->LinkEndChild( aux );
+
+			delete aux;
+			delete child;
+
+			return element;
+		}
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{

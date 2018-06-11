@@ -28,7 +28,16 @@ Written by
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );</template>
 		<template name="include">@#include &lt;wx/panel.h&gt;</template>
 	</templates>
-	
+
+	<templates class="wxCollapsiblePane">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="include">@#include &lt;wx/collpane.h&gt;</template>
+		<template name="settings">#ifnotnull $collapsed @{ $name->Collapse( $collapsed ); #nl @}</template>
+		<template name="evt_entry_OnCollapsiblePaneChanged">EVT_COLLAPSIBLEPANE_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnCollapsiblePaneChanged">$name->Connect( wxEVT_COLLAPSIBLEPANE_CHANGED, #handler, NULL, this );</template>
+	</templates>
+
 	<templates class="wxSplitterWindow">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
@@ -78,7 +87,7 @@ Written by
 		<template name="evt_connect_OnSplitterDClick">$name->Connect( wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, #handler, NULL, this );</template>
 	</templates>
 
-  
+
 	<templates class="wxNotebook">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
@@ -217,11 +226,11 @@ Written by
 	<templates class="simplebookpage">
 		<template name="page_add">#parent $name->AddPage( #child $name, $label, $select );</template>
 	</templates>
-	
+
 	<templates class="wxAuiNotebook">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} );</template>
-		<template name="include">@#include &lt;wx/aui/auibook.h&gt;</template>		
+		<template name="include">@#include &lt;wx/aui/auibook.h&gt;</template>
 		<template name="evt_entry_OnAuiNotebookPageClose">EVT_AUINOTEBOOK_PAGE_CLOSE( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookPageClosed">EVT_AUINOTEBOOK_PAGE_CLOSED( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookPageChanged">EVT_AUINOTEBOOK_PAGE_CHANGED( $id, #handler )</template>
@@ -240,7 +249,7 @@ Written by
 		<template name="evt_connect_OnAuiNotebookEndDrag">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookDragMotion">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookAllowDND">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, #handler, NULL, this );</template>
-	</templates>                      
+	</templates>
 
 	<templates class="auinotebookpage">
 		<template name="page_add">#parent $name->AddPage( #child $name, $label, $select, $bitmap );</template>

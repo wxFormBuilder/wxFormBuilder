@@ -273,6 +273,17 @@ wxString ObjectBase::GetIndentString(int indent)
 	return s;
 }
 
+PObjectBase ObjectBase::GetNonSizerParent ()
+{
+	PObjectBase current = GetThis();
+
+	while ( ( current = current->GetParent() ) &&
+		( current->GetObjectInfo()->IsSubclassOf( wxT( "sizeritem" ) ) ||
+		  current->GetObjectInfo()->IsSubclassOf( wxT( "sizer" ) ) ) )
+		;
+
+	return current;
+}
 
 PProperty ObjectBase::GetProperty (wxString name)
 {

@@ -30,6 +30,7 @@
 #include "utils/typeconv.h"
 #include "utils/debug.h"
 #include "menubar.h"
+#include "wx/collpane.h"
 #include "wx/statline.h"
 #include "rad/designer/resizablepanel.h"
 #include "rad/wxfbevent.h"
@@ -793,6 +794,13 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 	m_wxobjects.insert( wxObjectMap::value_type( createdObject, obj ) );
 	m_baseobjects.insert( ObjectBaseMap::value_type( obj.get(), createdObject ) );
 
+	// Access to collapsible pane
+	wxCollapsiblePane* collpane = wxDynamicCast( createdObject, wxCollapsiblePane );
+	if ( collpane != NULL ) {
+		createdWindow = collpane->GetPane();
+		createdObject = createdWindow;
+	}
+
 	// New wxparent for the window's children
 	wxWindow* new_wxparent = ( createdWindow ? createdWindow : wxparent );
 
@@ -803,7 +811,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 	}
 
 	comp->OnCreated( createdObject, wxparent );
-	
+
 	// If the created object is a sizer and the parent object is a window, set the sizer to the window
 	if (
 			( createdSizer != NULL && NULL != wxDynamicCast( parentObject, wxWindow ) )

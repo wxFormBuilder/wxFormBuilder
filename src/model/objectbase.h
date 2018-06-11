@@ -334,6 +334,8 @@ public:
 	/// Gets the parent object
 	PObjectBase GetParent () { return m_parent.lock(); }
 
+	PObjectBase GetNonSizerParent ();
+
 	/// Links the object to a parent
 	void SetParent(PObjectBase parent)  { m_parent = parent; }
 
@@ -467,7 +469,7 @@ public:
 	* Obtiene un hijo del objeto.
 	*/
 	PObjectBase GetChild (unsigned int idx);
-	
+
 	PObjectBase GetChild (unsigned int idx, const wxString& type);
 
 	/**
@@ -531,7 +533,7 @@ public:
 	wxArrayInt    GetPropertyAsArrayInt (const wxString& pname);
 	wxArrayString GetPropertyAsArrayString  (const wxString& pname);
 	wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName );
-	
+
 	IObject* GetChildPtr (unsigned int idx) { return GetChild(idx).get(); }
 };
 

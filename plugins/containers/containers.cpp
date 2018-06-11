@@ -31,7 +31,7 @@
 #include <wx/splitter.h>
 #include <wx/listctrl.h>
 
-// Includes notebook, listbook, choicebook, auibook
+// Includes collpane, notebook, listbook, choicebook, auibook
 #include "bookutils.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,6 +54,9 @@ public:
 	}
 
 protected:
+#ifdef wxUSE_COLLPANE
+	void OnCollapsiblePaneChanged( wxCollapsiblePaneEvent& event );
+#endif
 	void OnNotebookPageChanged( wxNotebookEvent& event );
 	void OnListbookPageChanged( wxListbookEvent& event );
 	void OnChoicebookPageChanged( wxChoicebookEvent& event );
@@ -119,6 +122,9 @@ protected:
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
+#ifdef wxUSE_COLLPANE
+	EVT_COLLAPSIBLEPANE_CHANGED( -1, ComponentEvtHandler::OnCollapsiblePaneChanged )
+#endif
 	EVT_NOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnNotebookPageChanged )
 	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
 	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
@@ -233,6 +239,60 @@ public:
 
 };
 
+#ifdef wxUSE_COLLPANE
+class CollapsiblePaneComponent : public ComponentBase
+{
+public:
+
+	wxObject* Create( IObject *obj, wxObject *parent )
+	{
+		wxCollapsiblePane* collpane = new wxCollapsiblePane( (wxWindow *)parent, -1,
+			obj->GetPropertyAsString( _("label") ),
+			obj->GetPropertyAsPoint( _("pos") ),
+			obj->GetPropertyAsSize( _("size") ),
+			obj->GetPropertyAsInteger( _("style") ) | obj->GetPropertyAsInteger( _("window_style") ) );
+
+		collpane->Collapse( obj->GetPropertyAsInteger( _("collapsed") ) );
+
+		collpane->PushEventHandler( new ComponentEvtHandler( collpane, GetManager() ) );
+
+		return collpane;
+	}
+
+	ticpp::Element* ExportToXrc( IObject *obj )
+	{
+		ObjectToXrcFilter xrc( obj, _("wxCollapsiblePane"), obj->GetPropertyAsString( _("name") ) );
+		xrc.AddWindowProperties();
+		xrc.AddProperty( _("label"), _("label"), XRC_TYPE_TEXT );
+		xrc.AddProperty( _("collapsed"), _("collapsed"), XRC_TYPE_BOOL );
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
+	{
+		XrcToXfbFilter filter( xrcObj, _("wxCollapsiblePane") );
+		filter.AddWindowProperties();
+		filter.AddProperty( _("label"), _("label"), XRC_TYPE_TEXT );
+		filter.AddProperty( _("collapsed"), _("collapsed"), XRC_TYPE_BOOL );
+		return filter.GetXfbObject();
+	}
+
+};
+
+void ComponentEvtHandler::OnCollapsiblePaneChanged( wxCollapsiblePaneEvent& event )
+{
+	wxCollapsiblePane* collpane = wxDynamicCast( m_window, wxCollapsiblePane );
+	if ( collpane != NULL )
+	{
+		wxString s = ( event.GetCollapsed() ) ? wxT("1") : wxT("0");
+		m_manager->ModifyProperty( collpane, _("collapsed"), s );
+		collpane->SetFocus();
+	}
+
+	event.Skip();
+}
+#endif // wxUSE_COLLPANE
+
 class SplitterWindowComponent : public ComponentBase
 {
 	wxObject* Create(IObject *obj, wxObject *parent)
@@ -252,7 +312,7 @@ class SplitterWindowComponent : public ComponentBase
 		}
 #if wxVERSION_NUMBER < 2900
 // From 2.9 docs: The sash size is platform-dependent because
-// it conforms to the current platform look-and-feel and cannot be changed. 
+// it conforms to the current platform look-and-feel and cannot be changed.
 		if ( !obj->IsNull( _("sashsize") ) )
 		{
 			splitter->SetSashSize( obj->GetPropertyAsInteger( _("sashsize") ) );
@@ -457,7 +517,7 @@ public:
     {
         XrcToXfbFilter filter(xrcObj, _("wxScrolledWindow"));
         filter.AddWindowProperties();
-		
+
 		ticpp::Element *scrollrate = xrcObj->FirstChildElement("scrollrate");
 		if( scrollrate ) {
 			wxString value( wxString( scrollrate->GetText().c_str(), wxConvUTF8 ) );
@@ -845,6 +905,10 @@ BEGIN_LIBRARY()
 
 WINDOW_COMPONENT("wxPanel",PanelComponent)
 
+#ifdef wxUSE_COLLPANE
+WINDOW_COMPONENT( "wxCollapsiblePane", CollapsiblePaneComponent )
+#endif
+
 WINDOW_COMPONENT("wxSplitterWindow",SplitterWindowComponent)
 ABSTRACT_COMPONENT("splitteritem",SplitterItemComponent)
 
@@ -864,6 +928,12 @@ ABSTRACT_COMPONENT("auinotebookpage", AuiNotebookPageComponent)
 
 WINDOW_COMPONENT("wxSimplebook", SimplebookComponent)
 ABSTRACT_COMPONENT("simplebookpage", SimplebookPageComponent)
+
+#ifdef wxUSE_COLLPANE
+// wxCollapsiblePane
+MACRO(wxCP_DEFAULT_STYLE)
+MACRO(wxCP_NO_TLW_RESIZE)
+#endif
 
 // wxSplitterWindow
 MACRO(wxSP_3D)
