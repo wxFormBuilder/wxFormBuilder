@@ -173,8 +173,7 @@ Written by
     </template>
     <template name="include">@#include &lt;wx/menu.h&gt;</template>
     <template name="evt_entry_OnMenuSelection">EVT_MENU( $id, #handler )</template>
-	<template name="evt_connect_OnMenuSelection">this->Connect( $name->GetId(), wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
-    <template name="evt_disconnect_OnMenuSelection">this->Disconnect( $id, wxEVT_COMMAND_MENU_SELECTED, #handler );</template>
+    <template name="evt_connect_OnMenuSelection">#parent $name->Bind(wxEVT_COMMAND_MENU_SELECTED, #handler, this, $name->GetId());</template>
     <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 	<template name="evt_connect_OnUpdateUI">this->Connect( $name->GetId(), wxEVT_UPDATE_UI, #handler );</template>
   	<template name="evt_disconnect_OnUpdateUI">this->Disconnect( $id, wxEVT_UPDATE_UI, #handler );</template>
@@ -231,7 +230,7 @@ Written by
     <template name="after_addchild">
 		$name->Realize();
 		#ifparenttypeequal "form"
-		@{			
+		@{
 		#ifequal #parent $aui_managed "1"
 		@{ #nl
 			m_mgr.AddPane( $name, wxAuiPaneInfo()
@@ -296,11 +295,11 @@ Written by
 	<template name="after_addchild">
 		$name->Realize();
 		#ifparenttypeequal "form"
-		@{			
+		@{
 		#ifequal #parent $aui_managed "1"
 		@{ #nl
 			m_mgr.AddPane( $name, wxAuiPaneInfo()#ifnotnull $aui_name
-			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
+			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption
 			@{.Caption( $caption )@}#ifequal $caption_visible "0"
 			@{.CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
 			@{.CloseButton( $close_button )@}#ifequal $maximize_button "1"
@@ -312,10 +311,10 @@ Written by
 			@{.Hide()@}#ifequal $moveable "0"
 			@{.Movable( $moveable )@}#ifnotnull $dock
 			@{.$dock()#ifequal $dock "Float"
-				@{.FloatingPosition( $pane_position )@}	
+				@{.FloatingPosition( $pane_position )@}
 			@}#ifnotnull $resize
 			@{.$resize()#ifequal $resize "Resizable"
-				@{.FloatingSize( $pane_size )@}	
+				@{.FloatingSize( $pane_size )@}
 			@}#ifequal $dock_fixed "1"
 			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
 			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
@@ -411,7 +410,7 @@ Written by
 	@}
     </template>
   </templates>
-  
+
   <templates class="wxInfoBar">
     <template name="declaration">#class* $name;</template>
     <template name="include">@#include &lt;wx/infobar.h&gt;</template>
@@ -421,5 +420,5 @@ Written by
 		$name->SetEffectDuration( $duration );
 	</template>
   </templates>
-  
+
 </codegen>
