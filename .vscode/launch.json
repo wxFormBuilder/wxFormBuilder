@@ -7,7 +7,8 @@
 				"name": "Launch",
 				"program": "${workspaceRoot}/output/bin/wxformbuilder-30",
 				"args": [],
-				"cwd": "${workspaceRoot}/output/bin"
+				"cwd": "${workspaceRoot}/output/bin",
+				"preLaunchTask": "build"
 			}
 		]
 	}
