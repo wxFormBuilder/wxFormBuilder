@@ -95,7 +95,7 @@ Written by
 	    #ifequal $markup "1" @{
 		    $name->SetLabelMarkup( $label ); #nl
 	    @}
-	    $name->Wrap( $wrap ); #nl</template>
+	    $name->Wrap( $wrap );</template>
   </templates>
 
   <templates class="wxCheckBox">
