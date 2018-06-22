@@ -85,11 +85,7 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	TiXmlPrinter printer;
 	printer.SetIndent( "\t" );
 
-	#if defined( __WXMSW__ )
-		printer.SetLineBreak( "\r\n" );
-	#else
-		printer.SetLineBreak( "\n" );
-	#endif
+	printer.SetLineBreak("\n");
 
 	doc.Accept( &printer );
 	const std::string& xrcFile = printer.Str();

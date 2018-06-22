@@ -50,11 +50,7 @@ wxDataObject()
 		TiXmlPrinter printer;
         printer.SetIndent( "\t" );
 
-        #if defined( __WXMSW__ )
-            printer.SetLineBreak( "\r\n" );
-        #else
-            printer.SetLineBreak( "\n" );
-        #endif
+		printer.SetLineBreak("\n");
 
         doc.Accept( &printer );
 		m_data = printer.Str();

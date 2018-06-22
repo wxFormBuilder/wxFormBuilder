@@ -91,11 +91,7 @@ void CodeWriter::WriteLn( wxString code, bool keepIndents )
 		}
 
 		Write( code );
-		#if defined( __WXMSW__ )
-			Write( wxT("\r\n") );
-		#else
-			Write( wxT("\n") );
-		#endif
+		Write(wxT("\n"));
 		m_cols = 0;
 	}
 }
