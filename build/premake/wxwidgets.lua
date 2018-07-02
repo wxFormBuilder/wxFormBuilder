@@ -61,7 +61,7 @@ wxVersion         = _OPTIONS["wx-version"]
 wxUnicodeSign     = "u"
 wxUseMediaCtrl    = true
 wxUseUnicode      = true
-wxMonolithic      = false
+wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
@@ -120,6 +120,11 @@ function wx_config(options)
 -- wxMediaCtrl
     if _OPTIONS["disable-mediactrl"] then
         wxUseMediaCtrl = false
+    end
+
+-- Use Monolithic
+    if _OPTIONS["disable-monolithic"] then
+        wxMonolithic = false
     end
 
 -- Unicode setup
