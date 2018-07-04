@@ -45,11 +45,7 @@
 #include <wx/fdrepdlg.h>
 #include <wx/config.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
 BEGIN_EVENT_TABLE ( PythonPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( PythonPanel::OnCodeGeneration )
@@ -91,15 +87,9 @@ PythonPanel::~PythonPanel()
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
-#if wxVERSION_NUMBER < 2900
-void PythonPanel::InitStyledTextCtrl( wxScintilla *stc )
-{
-    stc->SetLexer( wxSCI_LEX_PYTHON );
-#else
 void PythonPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_PYTHON );
-#endif
 	stc->SetKeyWords( 0, wxT( "and assert break class continue def del elif else \
 							   except exec finally for from global if import in \
 							   is lambda not or pass print raise return try while" ) );
@@ -111,20 +101,6 @@ void PythonPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
 #endif
 
-#if wxVERSION_NUMBER < 2900
-	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
-	stc->StyleClearAll();
-	stc->StyleSetBold( wxSCI_C_WORD, true );
-	stc->StyleSetForeground( wxSCI_C_WORD, *wxBLUE );
-	stc->StyleSetForeground( wxSCI_C_STRING, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_STRINGEOL, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENT, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINE, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_NUMBER, *wxBLUE );
-#else
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
     stc->StyleSetBold( wxSTC_C_WORD, true );
@@ -137,7 +113,6 @@ void PythonPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
     stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
-#endif
 	stc->SetUseTabs( true );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -303,7 +278,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 		useSpaces = ( pUseSpaces->GetValueAsInteger() ? true : false );
 	}
 	m_pythonCW->SetIndentWithSpaces(useSpaces);
-	
+
 	// Generate code in the panel
 	if ( doPanel )
 	{
@@ -319,11 +294,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 
 		Freeze();
 
-#if wxVERSION_NUMBER < 2900
-		wxScintilla* pythonEditor = m_pythonPanel->GetTextCtrl();
-#else
         wxStyledTextCtrl* pythonEditor = m_pythonPanel->GetTextCtrl();
-#endif
 		pythonEditor->SetReadOnly( false );
 		int pythonLine = pythonEditor->GetFirstVisibleLine() + pythonEditor->LinesOnScreen() - 1;
 		int pythonXOffset = pythonEditor->GetXOffset();

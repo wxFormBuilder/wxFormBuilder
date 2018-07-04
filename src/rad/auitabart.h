@@ -1,8 +1,6 @@
 #ifndef __AUITABART_H__
 #define __AUITABART_H__
 
-#if wxVERSION_NUMBER >= 2900
-
 #include <wx/aui/auibook.h>
 
 class AuiTabArt : public wxAuiGenericTabArt
@@ -20,7 +18,5 @@ public:
 		return wxAuiGenericTabArt::GetTabSize( dc, wnd, caption, bitmap, active, close_button_state, x_extent ) + wxSize( 0, 2 );
 	}
 };
-
-#endif
 
 #endif // __AUITABART_H__

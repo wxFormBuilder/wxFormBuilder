@@ -151,12 +151,6 @@ void VisualEditor::OnClickBackPanel( wxMouseEvent& event )
 		AppData()->SelectObject(m_form);
 	}
 	event.Skip();
-
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "event: %s" ), wxT("OnClickBackPanel") );
-#else
-		//LogDebug( "event: " + wxString("OnClickBackPanel") );
-#endif
 }
 
 void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
@@ -165,11 +159,7 @@ void VisualEditor::OnResizeBackPanel (wxCommandEvent &) //(wxSashEvent &event)
 	LogDebug("VisualEditor::OnResizeBackPanel [%d,%d,%d,%d]",rect.x,rect.y,rect.width, rect.height);
 	m_back->SetSize(rect.width,rect.height);
 	m_back->Layout();*/
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "event: %s" ), wxT("OnResizeBackPanel") );
-#else
-		LogDebug( "event: " + wxString("OnResizeBackPanel") );
-#endif
+	LogDebug( "event: " + wxString("OnResizeBackPanel") );
 
 	PObjectBase form (AppData()->GetSelectedForm());
 

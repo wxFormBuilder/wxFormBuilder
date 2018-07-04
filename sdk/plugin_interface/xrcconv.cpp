@@ -322,11 +322,7 @@ void ObjectToXrcFilter::LinkFont( const wxFontContainer &font, ticpp::Element *p
 			break;
 		default:
 		// wxWidgets 2.9.0 doesn't define "default" family
-#if wxVERSION_NUMBER < 2900
-			family.SetText( "default" );
-#else
 			skipFamily = true;
-#endif
 			break;
 	}
 	if( ! skipFamily ) propElement->LinkEndChild( &family );

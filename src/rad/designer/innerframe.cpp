@@ -60,9 +60,6 @@ public:
 
 	void OnPaint( wxPaintEvent &event );
 
-#if wxVERSION_NUMBER < 2900
-	void OnSize( wxSizeEvent &event );
-#endif
 	void OnLeftClick ( wxMouseEvent &event );
 	void SetTitle( const wxString &title ) { m_titleText = title; }
 	wxString GetTitle() { return m_titleText; }
@@ -74,9 +71,6 @@ public:
 BEGIN_EVENT_TABLE( wxInnerFrame::TitleBar, wxPanel )
     EVT_LEFT_DOWN( wxInnerFrame::TitleBar::OnLeftClick )
     EVT_PAINT( wxInnerFrame::TitleBar::OnPaint )
-#if wxVERSION_NUMBER < 2900
-    EVT_SIZE( wxInnerFrame::TitleBar::OnSize )
-#endif
 END_EVENT_TABLE()
 
 wxInnerFrame::TitleBar::TitleBar ( wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style )
@@ -111,16 +105,6 @@ void wxInnerFrame::TitleBar::OnLeftClick ( wxMouseEvent &event )
 	LogDebug("OnLeftClick");
 	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
-
-#if wxVERSION_NUMBER < 2900
-void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent& )
-{
-	LogDebug("OnSize");
-	wxClientDC dc( this );
-	wxBufferedDC bdc( &dc, GetClientSize() );
-	DrawTitleBar( bdc );
-}
-#endif
 
 void wxInnerFrame::TitleBar::OnPaint ( wxPaintEvent& )
 {
@@ -293,11 +277,7 @@ END_EVENT_TABLE()
 wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
                             const wxPoint &pos, const wxSize &size, long style )
 #ifdef __WXGTK__
-	#if wxVERSION_NUMBER < 2900
-		: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
-	#else
-		: wxPanel( parent, id, pos, size, wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE )
-	#endif
+	: wxPanel( parent, id, pos, size, wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE )
 #else
 	: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
 #endif

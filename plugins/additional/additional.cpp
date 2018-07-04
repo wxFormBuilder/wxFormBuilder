@@ -65,16 +65,14 @@
 #include <wx/treelist.h>
 #endif
 
-#if wxCHECK_VERSION( 2, 8, 0 )
-	#include <wx/richtext/richtextctrl.h>
-	#include "logo.xpm"
-	#include "smiley.xpm"
-	#include <wx/clrpicker.h>
-	#include <wx/fontpicker.h>
-	#include <wx/filepicker.h>
-	#include <wx/hyperlink.h>
-	#include <wx/srchctrl.h>
-#endif
+#include <wx/richtext/richtextctrl.h>
+#include "logo.xpm"
+#include "smiley.xpm"
+#include <wx/clrpicker.h>
+#include <wx/fontpicker.h>
+#include <wx/filepicker.h>
+#include <wx/hyperlink.h>
+#include <wx/srchctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -99,13 +97,11 @@ protected:
 	void OnGridClick( wxGridEvent& event );
 	void OnGridColSize( wxGridSizeEvent& event );
 	void OnGridRowSize( wxGridSizeEvent& event );
-	#if wxCHECK_VERSION( 2, 8, 0 )
-		void OnColourPickerColourChanged( wxColourPickerEvent& event );
-		void OnFontPickerFontChanged( wxFontPickerEvent& event );
-		void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
-		void OnDirPickerDirChanged( wxFileDirPickerEvent& event );
-		void OnText( wxCommandEvent& event );
-	#endif
+	void OnColourPickerColourChanged(wxColourPickerEvent& event);
+	void OnFontPickerFontChanged(wxFontPickerEvent& event);
+	void OnFilePickerFileChanged(wxFileDirPickerEvent& event);
+	void OnDirPickerDirChanged(wxFileDirPickerEvent& event);
+	void OnText(wxCommandEvent& event);
 	void OnGenericDirCtrlExpandItem( wxTreeEvent& event );
 #if wxVERSION_NUMBER >= 2904
 	// Enable folding for wxStyledTextCtrl
@@ -116,13 +112,11 @@ protected:
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
-	#if wxCHECK_VERSION( 2, 8, 0 )
-		EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
-		EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
-		EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
-		EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
-		EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
-	#endif
+	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
+	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
+	EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
+	EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
+	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
@@ -651,7 +645,6 @@ public:
 	}
 };
 
-#if wxCHECK_VERSION( 2, 9, 0 )
 class SpinCtrlDoubleComponent : public ComponentBase, public wxEvtHandler
 {
 public:
@@ -717,7 +710,6 @@ public:
 		return filter.GetXfbObject();
 	}
 };
-#endif
 
 class SpinButtonComponent : public ComponentBase
 {
@@ -946,7 +938,6 @@ void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& )
 	m_manager->ModifyProperty( m_window, _("row_sizes"), sizes, true );
 }
 
-#if wxCHECK_VERSION( 2, 8, 0 )
 class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
 public:
@@ -1252,8 +1243,6 @@ public:
 	}
 };
 
-#endif
-
 class GenericDirCtrlComponent : public ComponentBase
 {
 public:
@@ -1346,15 +1335,10 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject *obj)
 	{
-		#if wxVERSION_NUMBER < 2900
-		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
-		return xrc.GetXrcObject();
-		#else
 		ObjectToXrcFilter xrc(obj, _("wxSearchCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
-		#endif
 	}
 
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
@@ -2384,7 +2368,6 @@ WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
 WINDOW_COMPONENT("wxMediaCtrl",MediaCtrlComponent)
 #endif
 
-#if wxCHECK_VERSION( 2, 8, 0 )
 // wxRichTextCtrl
 WINDOW_COMPONENT( "wxRichTextCtrl", RichTextCtrlComponent )
 MACRO(wxTE_PROCESS_ENTER);
@@ -2442,11 +2425,7 @@ MACRO(wxTE_CENTER);
 MACRO(wxTE_RIGHT);
 MACRO(wxTE_CAPITALIZE);
 
-#endif
-
-#if wxCHECK_VERSION( 2, 9, 0 )
 WINDOW_COMPONENT("wxSpinCtrlDouble",SpinCtrlDoubleComponent)
-#endif
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)
@@ -2487,9 +2466,6 @@ MACRO(wxTR_ROW_LINES)
 MACRO(wxTR_HAS_VARIABLE_ROW_HEIGHT)
 MACRO(wxTR_SINGLE)
 MACRO(wxTR_MULTIPLE)
-#if wxVERSION_NUMBER < 2900
-MACRO(wxTR_EXTENDED)
-#endif
 MACRO(wxTR_DEFAULT_STYLE)
 
 // wxGrid
@@ -2514,13 +2490,8 @@ WINDOW_COMPONENT("wxGenericDirCtrl",GenericDirCtrlComponent)
 MACRO(wxDIRCTRL_DIR_ONLY)
 MACRO(wxDIRCTRL_3D_INTERNAL)
 MACRO(wxDIRCTRL_SELECT_FIRST)
-#if wxVERSION_NUMBER < 2900
-MACRO(wxDIRCTRL_SHOW_FILTERS)
-#endif
 MACRO(wxDIRCTRL_EDIT_LABELS)
-#if wxVERSION_NUMBER >=2900
 MACRO(wxDIRCTRL_MULTIPLE)
-#endif
 
 // wxTimer
 ABSTRACT_COMPONENT("wxTimer", TimerComponent)

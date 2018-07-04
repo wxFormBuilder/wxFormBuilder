@@ -33,11 +33,7 @@
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
 #include <fstream>
 #include <cstring>
@@ -148,20 +144,12 @@ m_tc( 0 )
 {
 }
 
-#if wxVERSION_NUMBER < 2900
-TCCodeWriter::TCCodeWriter( wxScintilla* tc )
-#else
 TCCodeWriter::TCCodeWriter( wxStyledTextCtrl* tc )
-#endif
 {
 	SetTextCtrl( tc );
 }
 
-#if wxVERSION_NUMBER < 2900
-void TCCodeWriter::SetTextCtrl( wxScintilla* tc )
-#else
 void TCCodeWriter::SetTextCtrl( wxStyledTextCtrl* tc )
-#endif
 {
 	m_tc = tc;
 }

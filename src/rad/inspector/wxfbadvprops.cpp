@@ -55,35 +55,17 @@ void wxFBSizeProperty::RefreshChildren()
 {
     if ( GetChildCount() < 2 ) return;
 
-#if wxVERSION_NUMBER < 2900
-    const wxSize& size = wxSizeFromVariant( m_value );
-#else
     const wxSize& size = wxSizeRefFromVariant( m_value );
-#endif
 
 	Item(0)->SetValue( (long)size.x );
 	Item(1)->SetValue( (long)size.y );
 }
 
-#if wxVERSION_NUMBER < 2900
-    void
-#else
-    wxVariant
-#endif
+wxVariant wxFBSizeProperty::ChildChanged(wxVariant& thisValue, const int childIndex,
+                                         wxVariant& childValue) const {
+	wxSize& size = wxSizeRefFromVariant( thisValue );
 
-wxFBSizeProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const
-{
-#if wxVERSION_NUMBER < 2900
-    wxSize& size = wxSizeFromVariant( thisValue );
-#else
-    wxSize& size = wxSizeRefFromVariant( thisValue );
-#endif
-
-#if wxVERSION_NUMBER < 2900
-   ;
-#else
     wxVariant();
-#endif
 
     int val = childValue.GetLong();
     switch ( childIndex )
@@ -96,11 +78,9 @@ wxFBSizeProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant&
         break;
     }
 
-#if wxVERSION_NUMBER >= 2900
     wxVariant newVariant;
     newVariant << size;
     return newVariant;
-#endif
 }
 
 // -----------------------------------------------------------------------
@@ -124,35 +104,17 @@ void wxFBPointProperty::RefreshChildren()
 {
     if ( GetChildCount() < 2 ) return;
 
-#if wxVERSION_NUMBER < 2900
-    const wxPoint& point = wxPointFromVariant( m_value );
-#else
     const wxPoint& point = wxPointRefFromVariant( m_value );
-#endif
 
     Item(0)->SetValue( (long)point.x );
     Item(1)->SetValue( (long)point.y );
 }
 
-#if wxVERSION_NUMBER < 2900
-    void
-#else
-    wxVariant
-#endif
+wxVariant wxFBPointProperty::ChildChanged(wxVariant& thisValue, const int childIndex,
+                                          wxVariant& childValue) const {
+	wxPoint& point = wxPointRefFromVariant( thisValue );
 
-wxFBPointProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const
-{
-#if wxVERSION_NUMBER < 2900
-    wxPoint& point = wxPointFromVariant( thisValue );
-#else
-    wxPoint& point = wxPointRefFromVariant( thisValue );
-#endif
-
-#if wxVERSION_NUMBER < 2900
-   ;
-#else
     wxVariant();
-#endif
 
     int val = childValue.GetLong();
     switch ( childIndex )
@@ -165,11 +127,9 @@ wxFBPointProperty::ChildChanged( wxVariant& thisValue, int childIndex, wxVariant
         break;
     }
 
-#if wxVERSION_NUMBER >= 2900
     wxVariant newVariant;
     newVariant << point;
     return newVariant;
-#endif
 }
 
 // -----------------------------------------------------------------------
@@ -484,11 +444,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
     artIdChoices.Add(wxT("gtk-zoom-in"));
     artIdChoices.Add(wxT("gtk-zoom-out"));
 
-#if wxVERSION_NUMBER < 2900
-	wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices, wxT("") );
-#else
     wxPGProperty *propArtId = new wxEditEnumProperty( wxT("id"), wxPG_LABEL, artIdChoices );
-#endif
     propArtId->SetHelpString(_("Choose a wxArtID unique identifier of the bitmap or enter a wxArtID for your custom wxArtProvider. IDs with prefix 'gtk-' are available under wxGTK only.") );
 
     return propArtId;
@@ -508,11 +464,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyArtClient()
     artClientChoices.Add(wxT("wxART_MESSAGE_BOX"));
     artClientChoices.Add(wxT("wxART_OTHER"));
 
-#if wxVERSION_NUMBER < 2900
-	wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices, wxT("") );
-#else
     wxPGProperty *propArtClient = new wxEditEnumProperty( wxT("client"), wxPG_LABEL, artClientChoices );
-#endif
     propArtClient->SetHelpString(_("Choose a wxArtClient identifier of the client (i.e. who is asking for the bitmap) or enter a wxArtClient for your custom wxArtProvider.") );
 
     return propArtClient;
@@ -522,15 +474,8 @@ wxFBBitmapProperty::~wxFBBitmapProperty()
 {
 }
 
-#if wxVERSION_NUMBER < 2900
-    void
-#else
-    wxVariant
-#endif
-wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
-                                  int        childIndex,
-                                  wxVariant& childValue ) const
-{
+wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int childIndex,
+                                           wxVariant& childValue) const {
 	wxFBBitmapProperty* bp = (wxFBBitmapProperty*)this;
 
     wxString val = thisValue.GetString();
@@ -686,27 +631,9 @@ wxFBBitmapProperty::ChildChanged( wxVariant& thisValue,
         wxVariant ret = WXVARIANT( newVal );
         bp->SetValue( ret );
 
-#if wxVERSION_NUMBER >= 2900
         return ret;
-#else
-        thisValue = ret;
-        wxLogDebug( wxT("wxFBBP::ChildChanged: thisValue:%s childIndex:%i childValue:%s (End)"),
-                        ret.GetString().c_str(), childIndex, childValue.GetString().c_str() );
-#endif
     }
-    else
-    {
-#if wxVERSION_NUMBER >= 2900
-
-#else
-        wxLogDebug( wxT("wxFBBP::ChildChanged: thisValue:%s childIndex:%i childValue:%s (End)"),
-                        thisValue.GetString().c_str(), childIndex, childValue.GetString().c_str() );
-#endif
-    }
-
-#if wxVERSION_NUMBER >= 2900
     return thisValue;
-#endif
 }
 
 void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
@@ -769,22 +696,7 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 void wxFBBitmapProperty::OnSetValue()
 {
 }
-#if wxVERSION_NUMBER < 2900
-wxString wxFBBitmapProperty::GetValueAsString( int argFlags ) const
-{
-//if wxVERSION_NUMBER < 2900
-    if(GetCount() == 0)
-	{
-		return m_value.GetString();
-	}
-    wxString text;
-    GenerateComposedValue(text, argFlags);
-    return text;
-//else
-//  return GenerateComposedValue();
-//endif
-}
-#endif
+
 wxString wxFBBitmapProperty::SetupImage( const wxString &imgPath )
 {
 	if(!imgPath.IsEmpty())
@@ -834,19 +746,10 @@ wxString wxFBBitmapProperty::SetupResource( const wxString &resName )
 // -----------------------------------------------------------------------
 #ifdef wxUSE_SLIDER
 
-#if wxVERSION_NUMBER < 2900
-// This macro also defines global wxPGEditor_Slider for storing
-// the singleton class instance.
-WX_PG_IMPLEMENT_EDITOR_CLASS( Slider, wxPGSliderEditor, wxPGEditor )
-#else
 wxIMPLEMENT_DYNAMIC_CLASS( wxPGSliderEditor, wxPGEditor )
-#endif
-// Destructor. It is useful to reset the global pointer in it.
+
 wxPGSliderEditor::~wxPGSliderEditor()
 {
-#if wxVERSION_NUMBER < 2900
-    wxPG_EDITOR( Slider ) = NULL;
-#endif
 }
 
 // Create controls and initialize event handling.
@@ -855,15 +758,9 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
                                                  const wxPoint&  pos,
                                                  const wxSize&   sz ) const
 {
-#if wxVERSION_NUMBER < 2900
-    wxCHECK_MSG( property->IsKindOf( WX_PG_CLASSINFO( wxFloatProperty ) ),
-                 NULL,
-                 wxT("Slider editor can only be used with wxFloatProperty or derivative.") );
-#else
     wxCHECK_MSG( property->IsKindOf( wxCLASSINFO( wxFloatProperty ) ),
                  NULL,
                  wxT("Slider editor can only be used with wxFloatProperty or derivative.") );
-#endif
 
     // Use two stage creation to allow cleaner display on wxMSW
     wxSlider* ctrl = new wxSlider();
@@ -893,11 +790,6 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
     // Connect all required events to grid's OnCustomEditorEvent
     // (all relevenat wxTextCtrl, wxComboBox and wxButton events are
     // already connected)
-#if wxVERSION_NUMBER < 2900
-    propgrid->Connect( sliderId, wxEVT_SCROLL_THUMBTRACK,
-                       (wxObjectEventFunction) (wxEventFunction) (wxCommandEventFunction)
-                       &wxPropertyGrid::OnCustomEditorEvent, NULL, propgrid );
-#endif
 
 #ifdef __WXMSW__
     ctrl->Show();
@@ -966,9 +858,7 @@ static const wxChar* gs_fp_es_family_labels[] = {
     wxT("Default"), wxT("Decorative"),
     wxT("Roman"), wxT("Script"),
     wxT("Swiss"), wxT("Modern"),
-#if wxCHECK_VERSION(2,8,0)
     wxT("Teletype"), wxT("Unknown"),
-#endif
     (const wxChar*) NULL
 };
 
@@ -976,9 +866,7 @@ static long gs_fp_es_family_values[] = {
     wxFONTFAMILY_DEFAULT, wxFONTFAMILY_DECORATIVE,
     wxFONTFAMILY_ROMAN, wxFONTFAMILY_SCRIPT,
     wxFONTFAMILY_SWISS, wxFONTFAMILY_MODERN,
-#if wxCHECK_VERSION(2,8,0)
     wxFONTFAMILY_TELETYPE, wxFONTFAMILY_UNKNOWN
-#endif
 };
 
 static const wxChar* gs_fp_es_style_labels[] = {
@@ -1023,11 +911,7 @@ wxFBFontProperty::wxFBFontProperty( const wxString& label, const wxString& name,
         wxFontEnumerator enumerator;
         enumerator.EnumerateFacenames();
 
-#if wxVERSION_NUMBER > 2600
         wxArrayString faceNames = enumerator.GetFacenames();
-#else
-        wxArrayString& faceNames = *enumerator.GetFacenames();
-#endif
 
         faceNames.Sort();
 		faceNames.Insert( wxEmptyString, 0 );
@@ -1086,10 +970,6 @@ bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(pri
     {
         // Update value from last minute changes
 
-#if wxVERSION_NUMBER < 2900
-        PrepareValueForDialogEditing(propgrid);
-#endif
-
         wxFontData data;
         wxFont font = TypeConv::StringToFont( m_value.GetString() );
 
@@ -1114,10 +994,6 @@ bool wxFBFontProperty::OnEvent( wxPropertyGrid* propgrid, wxWindow* WXUNUSED(pri
 
 void wxFBFontProperty::RefreshChildren()
 {
-#if wxVERSION_NUMBER < 2900
-    if ( !GetCount() ) return;
-#endif
-
 	wxString fstr = m_value.GetString();
 	wxFontContainer font = TypeConv::StringToFont( fstr );
 
@@ -1129,11 +1005,7 @@ void wxFBFontProperty::RefreshChildren()
 	Item(5)->SetValue( font.m_underlined );
 }
 
-#if wxVERSION_NUMBER < 2900
-    void
-#else
     wxVariant
-#endif
 wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childValue ) const
 {
 	wxFontContainer font = TypeConv::StringToFont( thisValue.GetString() );
@@ -1185,7 +1057,5 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
 
 	thisValue = WXVARIANT( TypeConv::FontToString( font ) );
 
-#if wxVERSION_NUMBER >= 2900
 	return thisValue;
-#endif
 }

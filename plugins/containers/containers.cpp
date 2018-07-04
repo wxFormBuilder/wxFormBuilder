@@ -185,7 +185,7 @@ private:
 };
 
 // Since wxGTK 2.8, wxNotebook has been sending page changed events in its destructor - this causes strange behavior
-#if defined( __WXGTK__ ) && wxCHECK_VERSION( 2, 8, 0 )
+#if defined( __WXGTK__ )
 	class wxCustomNotebook : public wxNotebook
 	{
 	public:
@@ -310,14 +310,6 @@ class SplitterWindowComponent : public ComponentBase
 			gravity = ( gravity > 1.0 ? 1.0 : gravity );
 			splitter->SetSashGravity( gravity );
 		}
-#if wxVERSION_NUMBER < 2900
-// From 2.9 docs: The sash size is platform-dependent because
-// it conforms to the current platform look-and-feel and cannot be changed.
-		if ( !obj->IsNull( _("sashsize") ) )
-		{
-			splitter->SetSashSize( obj->GetPropertyAsInteger( _("sashsize") ) );
-		}
-#endif
 		if ( !obj->IsNull( _("min_pane_size") ) )
 		{
 			int minPaneSize = obj->GetPropertyAsInteger( _("min_pane_size") );

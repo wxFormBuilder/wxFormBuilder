@@ -53,31 +53,18 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
 
     LogDebug( wxT("#### Plantillas ####") );
 
-#if wxVERSION_NUMBER < 2900
-    LogDebug((wxChar *)(code_info->GetTemplate( wxT("construction") ).c_str()));
-    LogDebug((wxChar *)(code_info->GetTemplate( wxT("declaration") ).c_str()));
-#else
     LogDebug( code_info->GetTemplate( wxT("construction") ) );
     LogDebug( code_info->GetTemplate( wxT("declaration") ) );
-#endif
     LogDebug( wxT("#### Código ####") );
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ), false, false, wxEmptyString );
 
-#if wxVERSION_NUMBER < 2900
-      LogDebug((wxChar *)parser.ParseTemplate().c_str());
-#else
       LogDebug( parser.ParseTemplate() );
-#endif
     }
     {
       CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ), false, false, wxEmptyString );
 
-#if wxVERSION_NUMBER < 2900
-      LogDebug((wxChar *)parser.ParseTemplate().c_str());
-#else
       LogDebug( parser.ParseTemplate() );
-#endif
     }
   }
   else if (event.GetKeyCode() == 'C')

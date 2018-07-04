@@ -44,11 +44,7 @@
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class wxFindDialogEvent;
 
@@ -63,11 +59,7 @@ private:
 	CodeEditor* m_phpPanel;
 	PTCCodeWriter m_phpCW;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	PHPPanel( wxWindow *parent, int id );

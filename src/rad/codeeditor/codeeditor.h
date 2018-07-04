@@ -28,36 +28,22 @@
 
 #include <wx/panel.h>
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-    class wxScintillaEvent;
-#else
-    class wxStyledTextCtrl;
-    class wxStyledTextEvent;
-#endif
+class wxStyledTextCtrl;
+class wxStyledTextEvent;
 
 class wxFindDialogEvent;
 
 class CodeEditor : public wxPanel
 {
 private:
-#if wxVERSION_NUMBER < 2900
-	wxScintilla* m_code;
-	void OnMarginClick( wxScintillaEvent& event );
-#else
     wxStyledTextCtrl* m_code;
     void OnMarginClick( wxStyledTextEvent& event );
-#endif
 	DECLARE_EVENT_TABLE()
 
 public:
 	CodeEditor( wxWindow *parent, int id );
 
-#if wxVERSION_NUMBER < 2900
-	wxScintilla* GetTextCtrl();
-#else
     wxStyledTextCtrl* GetTextCtrl();
-#endif
 
 	void OnFind( wxFindDialogEvent& event );
 };

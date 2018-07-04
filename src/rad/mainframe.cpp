@@ -54,10 +54,6 @@
 #include <rad/appdata.h>
 #include "model/objectbase.h"
 
-#if wxVERSION_NUMBER < 2900
-#include <wx/wxScintilla/wxscintilla.h>
-#endif
-
 #define ID_SAVE_PRJ      102
 #define ID_OPEN_PRJ      103
 #define ID_NEW_PRJ       104
@@ -1094,17 +1090,10 @@ void MainFrame::OnCopy( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Copy();
-    }
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Copy();
     }
-#endif
 	else
 	{
 		AppData()->CopyObject( AppData()->GetSelectedObject() );
@@ -1116,15 +1105,9 @@ void MainFrame::OnCut ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Cut();
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Cut();
-#endif
     }
 	else
 	{
@@ -1143,15 +1126,9 @@ void MainFrame::OnPaste ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Paste();
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Paste();
-#endif
     }
 	else
 	{

@@ -77,9 +77,7 @@ BEGIN_EVENT_TABLE(ObjectInspector, wxPanel)
 	EVT_FB_PROJECT_REFRESH( ObjectInspector::OnProjectRefresh )
 	EVT_FB_PROPERTY_MODIFIED( ObjectInspector::OnPropertyModified )
 	EVT_FB_EVENT_HANDLER_MODIFIED( ObjectInspector::OnEventHandlerModified )
-#if wxVERSION_NUMBER >= 2900
 	EVT_CHILD_FOCUS( ObjectInspector::OnChildFocus )
-#endif
 END_EVENT_TABLE()
 
 ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
@@ -109,12 +107,7 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 
 	// Register the slider editor
 #if wxUSE_SLIDER
-	#if wxVERSION_NUMBER < 2900
-		wxPGEditor* sliderEditor = new wxPGSliderEditor();
-		wxPropertyGrid::RegisterEditorClass( sliderEditor, wxT("Slider") );
-	#else
-		// TODO
-	#endif
+	// TODO
 #endif
 	m_pg = CreatePropertyGridManager(m_nb, WXFB_PROPERTY_GRID);
 	m_eg = CreatePropertyGridManager(m_nb, WXFB_EVENT_GRID);
@@ -532,7 +525,7 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 						{
 							THROW_WXFBEX( wxT("Invalid Child Property Type: ") << it->m_type );
 						}
-						
+
 						id->AppendChild( child );
 						m_pg->SetPropertyHelpString( child, it->m_description );
 					}
@@ -708,53 +701,6 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 {
 	wxPGProperty* propPtr = event.GetProperty();
 
-//    wxPGProperty       *parent  = propPtr->GetParent();
-//    wxFBBitmapProperty *bp = wxDynamicCast( parent, wxFBBitmapProperty );
-//
-//    // Handle the main bitmap property
-//    if ( bp )
-//    {
-//#if wxVERSION_NUMBER >= 2900
-//        // GetValue() returns wxVariant, but it is converted transparently to wxAny
-//        wxAny
-//#else
-//        wxVariant
-//#endif
-//        childValue = propPtr->GetValue();
-//
-//        // Also, handle the case where property value is unspecified
-//        if ( childValue.IsNull() )
-//            return;
-//
-//        // bp->GetValue() have no updated value...
-//        wxString bmpVal = bp->GetValueAsString( wxPG_FULL_VALUE );
-//
-//        // Handle changes in values, as needed
-//        wxVariant    thisValue  = WXVARIANT( bmpVal );
-//        unsigned int childIndex = propPtr->GetIndexInParent();
-//
-//wxLogDebug( wxT("OI::OnPGChanged: thisValue (AsString):%s"),  bp->GetValueAsString().c_str() );
-//wxLogDebug( wxT("OI::OnPGChanged: childValue (AsString):%s"), propPtr->GetValueAsString().c_str() );
-//wxLogDebug( wxT("OI::OnPGChanged: thisValue:%s childIndex:%i childValue:%s" ),
-//        thisValue.GetString().c_str(), childIndex, childValue.GetString().c_str() );
-//
-//        ObjInspectorPropertyMap::iterator itBmp = m_propMap.find( bp );
-//        PProperty bmpProp = itBmp->second;
-//
-//#if wxVERSION_NUMBER >= 2900
-//        wxVariant newVal =
-//#endif
-//        bp->ChildChanged( thisValue, propPtr->GetIndexInParent(), childValue );
-//
-//#if wxVERSION_NUMBER >= 2900
-//        AppData()->ModifyProperty( bmpProp, newVal.GetString() );
-//#else
-//        wxLogDebug( wxT("OI::OnPGChanged: Setting prop value to %s"), thisValue.GetString().c_str() );
-//        AppData()->ModifyProperty( bmpProp, thisValue.GetString() );
-//        wxLogDebug( wxT("OI::OnPGChanged: Changed prop value to %s"), bmpProp->GetValueAsString().c_str() );
-//#endif
-//    }
-
 	ObjInspectorPropertyMap::iterator it = m_propMap.find( propPtr );
 
 	if ( m_propMap.end() == it )
@@ -818,12 +764,8 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 			}
 			case PT_PARENT:
 			{
-#if wxVERSION_NUMBER >= 2900
 				wxVariant value = propPtr->GetValue();
 				ModifyProperty( prop, propPtr->ValueToString( value, wxPG_FULL_VALUE ));
-#else
-				ModifyProperty( prop, propPtr->GetValueAsString( wxPG_FULL_VALUE ) );
-#endif
 				break;
 			}
 			case PT_WXSTRING:
@@ -842,11 +784,7 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 					if( propobj->GetChildCount() )
 					{
 						wxMessageBox(_("You have to remove all child widgets first."));
-#if wxVERSION_NUMBER < 2900
-						m_pg->SetPropertyValueBool( propPtr, !m_pg->GetPropertyValueAsBool( propPtr )  );
-#else
 						m_pg->SetPropertyValue( propPtr, !m_pg->GetPropertyValueAsBool( propPtr )  );
-#endif
 					}
 					else
 						ModifyProperty( prop, m_pg->GetPropertyValueAsBool( propPtr ) ? wxT("1") : wxT("0") );
@@ -865,21 +803,13 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 			}
 			case PT_WXPOINT:
 			{
-#if wxVERSION_NUMBER < 2900
-				wxPoint point = wxPointFromVariant( event.GetPropertyValue () );
-#else
 				wxPoint point = wxPointRefFromVariant( event.GetPropertyValue () );
-#endif
 				ModifyProperty( prop, wxString::Format(  wxT("%i,%i"), point.x, point.y ) );
 				break;
 			}
 			case PT_WXSIZE:
 			{
-#if wxVERSION_NUMBER < 2900
-				wxSize size = wxSizeFromVariant( event.GetPropertyValue() );
-#else
 				wxSize size = wxSizeRefFromVariant( event.GetPropertyValue() );
-#endif
 				ModifyProperty( prop, wxString::Format( wxT("%i,%i"), size.GetWidth(), size.GetHeight() ) );
 				break;
 			}
@@ -926,18 +856,10 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 				// Handle changes in values, as needed
 				wxVariant thisValue  = WXVARIANT(bmpVal);
 
-#if wxVERSION_NUMBER >= 2900
 				wxVariant newVal =
 				propPtr->ChildChanged( thisValue, (int)event.GetProperty()->GetIndexInParent(), childValue );
-#else
-				propPtr->ChildChanged( thisValue, event.GetProperty()->GetIndexInParent(), childValue );
-#endif
 
-#if wxVERSION_NUMBER >= 2900
 				ModifyProperty( prop, newVal.GetString() );
-#else
-				ModifyProperty( prop, bmpVal);
-#endif
 
 				if( event.GetProperty()->GetIndexInParent() > 0 )
 				{
@@ -1195,11 +1117,7 @@ void ObjectInspector::OnPropertyGridDblClick(wxPropertyGridEvent& event)
 	PObjectBase obj = AppData()->GetSelectedObject();
 	if( obj )
 	{
-#if wxVERSION_NUMBER < 2900
-		wxString propName = event.GetPropertyPtr()->GetLabel();
-#else
 		wxString propName = event.GetProperty()->GetLabel();
-#endif
 		AutoGenerateId(obj, obj->GetProperty(propName), wxT("DblClk"));
 		m_pg->Refresh();
 	}
@@ -1210,22 +1128,13 @@ void ObjectInspector::OnEventGridDblClick(wxPropertyGridEvent& event)
 	wxPGProperty *pgProp = m_pg->GetPropertyByLabel( wxT("name") );
 	if ( !pgProp ) return;
 
-#if wxVERSION_NUMBER < 2900
-	wxPGProperty *p = event.GetPropertyPtr();
-	p->SetValueFromString( pgProp->GetDisplayedString() + event.GetPropertyLabel() );
-#else
 	wxPGProperty *p = event.GetProperty();
 	p->SetValueFromString( pgProp->GetDisplayedString() + event.GetProperty()->GetLabel() );
-#endif
 	ObjInspectorEventMap::iterator it = m_eventMap.find( p );
 	if ( it != m_eventMap.end() )
 	{
 		PEvent evt = it->second;
-#if wxVERSION_NUMBER < 2900
-		wxString handler = event.GetPropertyValueAsString();
-#else
 		wxString handler = p->GetValueAsString();
-#endif
 		handler.Trim();
 		handler.Trim( false );
 		AppData()->ModifyEventHandler( evt, handler );
@@ -1304,12 +1213,10 @@ void ObjectInspector::ModifyProperty( PProperty prop, const wxString& str )
 	AppData()->AddHandler( this->GetEventHandler() );
 }
 
-#if wxVERSION_NUMBER >= 2900
 void ObjectInspector::OnChildFocus( wxChildFocusEvent& event )
 {
 	// do nothing to avoid "scrollbar jump" if wx2.9 is used
 }
-#endif
 
 void ObjectInspector::OnPropertyGridItemSelected( wxPropertyGridEvent& event )
 {

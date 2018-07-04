@@ -762,11 +762,7 @@ void ApplicationData::CreateObject( wxString name )
 {
 	try
 	{
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT( "[ApplicationData::CreateObject] New %s" ), name.c_str() );
-#else
         LogDebug("[ApplicationData::CreateObject] New " + name );
-#endif
 		PObjectBase old_selected = GetSelectedObject();
 		PObjectBase parent = old_selected;
 		PObjectBase obj;
@@ -2431,11 +2427,7 @@ void ApplicationData::CheckProjectTree( PObjectBase obj )
 
 		if ( child->GetParent() != obj )
         {
-#if wxVERSION_NUMBER < 2900
-			wxLogError( wxString::Format( wxT( "Parent of object \'%s\' is wrong!" ), child->GetPropertyAsString( wxT( "name" ) ).c_str() ) );
-#else
 			wxLogError( wxString::Format("Parent of object \'" + child->GetPropertyAsString("name") + "\' is wrong!") );
-#endif
         }
 		CheckProjectTree( child );
 	}

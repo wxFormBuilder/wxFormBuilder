@@ -40,19 +40,7 @@
 
 #define ID_PALETTE_BUTTON 999
 
-#ifdef __WXGTK__
-	#if wxCHECK_VERSION( 2, 8, 0 )
-		#define DRAG_OPTION 0
-	#else
-		#ifdef USE_FLATNOTEBOOK
-			#define DRAG_OPTION wxFNB_NODRAG
-		#else
-			#define DRAG_OPTION 0
-		#endif
-	#endif
-#else
-	#define DRAG_OPTION 0
-#endif
+#define DRAG_OPTION 0
 
 wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 1000;
 
@@ -71,11 +59,7 @@ wxFbPalette::wxFbPalette( wxWindow *parent, int id )
 {
 }
 
-#if wxVERSION_NUMBER >= 2900
 void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxAuiToolBar *toolbar )
-#else
-void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxToolBar *toolbar )
-#endif
 {
 	unsigned int j = 0;
 	while ( j < pkg->GetObjectCount() )
@@ -87,11 +71,7 @@ void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxToolBar *toolbar )
 		}
 		if ( NULL == info->GetComponent() )
 		{
-#if wxVERSION_NUMBER < 2900
-			LogDebug( _( "Missing Component for Class \"%s\" of Package \"%s\"." ), info->GetClassName().c_str(), pkg->GetPackageName().c_str() );
-#else
 			LogDebug(_("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() + "\".") );
-#endif
 		}
 		else
 		{
@@ -156,41 +136,12 @@ void wxFbPalette::Create()
 		//panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
 
-#if wxVERSION_NUMBER >= 2900
 		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, -1, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
 		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
 		PopulateToolbar( pkg, toolbar );
 		m_tv.push_back( toolbar );
 
 		sizer->Add( toolbar, 1, wxEXPAND, 0 );
-#else
-		wxPanel *tbPanel = new wxPanel( panel, -1 );
-		//tbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-		wxBoxSizer *tbSizer = new wxBoxSizer( wxHORIZONTAL );
-
-		wxPanel *sbPanel = new wxPanel( panel, -1 );
-		//sbPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-		wxBoxSizer *sbSizer = new wxBoxSizer( wxHORIZONTAL );
-
-		wxToolBar *toolbar = new wxToolBar( tbPanel, -1, wxDefaultPosition, wxDefaultSize, wxTB_NODIVIDER | wxTB_FLAT );
-		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
-		//toolbar->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-		PopulateToolbar( pkg, toolbar );
-		m_tv.push_back( toolbar );
-
-		tbSizer->Add( toolbar, 1, wxEXPAND | wxALIGN_CENTER_VERTICAL );
-		tbPanel->SetSizer( tbSizer );
-
-		wxSpinButton *sb = new wxSpinButton( sbPanel, -1, wxDefaultPosition, wxDefaultSize, wxSP_HORIZONTAL );
-		sb->SetRange( 0, ( int )pkg->GetObjectCount() - 1 );
-		sb->SetValue( 0 );
-		m_posVector.push_back( 0 );
-		sbSizer->Add( sb, 0, wxEXPAND );//wxALL | wxALIGN_TOP, 0);
-		sbPanel->SetSizer( sbSizer );
-
-		sizer->Add( tbPanel, 1, wxEXPAND, 0 );
-		sizer->Add( sbPanel, 0, wxEXPAND, 0 );
-#endif
 
 		panel->SetAutoLayout( true );
 		panel->SetSizer( sizer );
@@ -229,45 +180,10 @@ void wxFbPalette::Create()
 
 void wxFbPalette::OnSpinUp( wxSpinEvent& )
 {
-#if wxVERSION_NUMBER < 2900
-	int page = m_notebook->GetSelection();
-	PObjectPackage pkg = AppData()->GetPackage( page );
-
-	if (( int )pkg->GetObjectCount() - m_posVector[page] - 1 <= 0 ) return;
-
-	m_posVector[page]++;
-	wxToolBar *toolbar = m_tv[page];
-	toolbar->DeleteToolByPos( 0 );
-	toolbar->Realize();
-#endif
 }
 
 void wxFbPalette::OnSpinDown( wxSpinEvent& )
 {
-#if wxVERSION_NUMBER < 2900
-	int page = m_notebook->GetSelection();
-	if ( m_posVector[page] <= 0 ) return;
-
-	m_posVector[page]--;
-	wxToolBar *toolbar = m_tv[page];
-	PObjectPackage pkg = AppData()->GetPackage( page );
-	wxString widget( pkg->GetObjectInfo( m_posVector[page] )->GetClassName() );
-	wxBitmap icon = pkg->GetObjectInfo( m_posVector[page] )->GetIconFile();
-
-	#ifdef __WXMAC__
-		wxBitmapButton* button = new wxBitmapButton( toolbar, nextId++, icon );
-		button->SetToolTip( widget );
-		toolbar->InsertControl( 0, button );
-	#else
-        #if wxVERSION_NUMBER < 2900
-            toolbar->InsertTool( 0, nextId++, icon, wxNullBitmap, false, NULL, widget, widget );
-        #else
-            toolbar->InsertTool( 0, nextId++, widget, icon );
-        #endif
-	#endif
-
-	toolbar->Realize();
-#endif
 }
 
 void wxFbPalette::OnButtonClick( wxCommandEvent &event )
@@ -281,11 +197,7 @@ void wxFbPalette::OnButtonClick( wxCommandEvent &event )
 	#else
 		for ( unsigned int i = 0; i < m_tv.size(); i++ )
 		{
-			#if wxVERSION_NUMBER >= 2900
 			if ( m_tv[i]->GetToolIndex( event.GetId() ) != wxNOT_FOUND )
-			#else
-			if ( m_tv[i]->FindById( event.GetId() ) )
-			#endif
 			{
 				wxString name = m_tv[i]->GetToolShortHelp( event.GetId() );
 				AppData()->CreateObject( name );

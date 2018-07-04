@@ -30,9 +30,6 @@
 #define __WXFBADVPROPS_H__
 
 #include <wx/propgrid/propgrid.h>
-#if wxVERSION_NUMBER < 2900
-#include <wx/propgrid/propdev.h>
-#endif
 #include <wx/propgrid/advprops.h>
 
 #include "fontcontainer.h"
@@ -50,11 +47,7 @@ public:
                       const wxSize&   value = wxSize() );
     virtual ~wxFBSizeProperty();
 
-#if wxVERSION_NUMBER < 2900
-    virtual void
-#else
     virtual wxVariant
-#endif
     ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
 
     virtual void RefreshChildren();
@@ -76,11 +69,7 @@ public:
                        const wxPoint&  value = wxPoint() );
     virtual ~wxFBPointProperty();
 
-#if wxVERSION_NUMBER < 2900
-    virtual void
-#else
     virtual wxVariant
-#endif
     ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
 
     virtual void RefreshChildren();
@@ -113,39 +102,26 @@ public:
 
     wxString SetupImage( const wxString &imgPath = wxEmptyString ) ;
     wxString SetupResource( const wxString &resName = wxEmptyString ) ;
-	
+
 	int prevSrc;
 	void SetPrevSource(int src){prevSrc = src;}
 
-#if wxVERSION_NUMBER < 2900
-    virtual void
-#else
     virtual wxVariant
-#endif
     ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
-	
+
     virtual void OnSetValue();
 	void CreateChildren();
 
 	void UpdateChildValues(const wxString& value);
-#if wxVERSION_NUMBER < 2900
-	wxString GetValueAsString( int argFlags =0 ) const;
-#endif
 protected:
 
 	void GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const;
 
-#if wxVERSION_NUMBER < 2900
-    static wxPGChoices m_ids;
-    static wxPGChoices m_clients;
-    wxPGChoices m_strings;
-#else
     static wxArrayString m_ids;
     static wxArrayString m_clients;
     wxArrayString m_strings;
-#endif
 
-	
+
 };
 
 // -----------------------------------------------------------------------
@@ -166,11 +142,7 @@ protected:
 
 class wxPGSliderEditor : public wxPGEditor
 {
-#if wxVERSION_NUMBER < 2900
-    WX_PG_DECLARE_EDITOR_CLASS( wxPGSliderEditor )
-#else
     wxDECLARE_DYNAMIC_CLASS( wxPGSliderEditor );
-#endif
 public:
     wxPGSliderEditor()
     :
@@ -179,15 +151,10 @@ public:
     }
 
     virtual ~wxPGSliderEditor();
-#if wxVERSION_NUMBER < 2900
-    // See below for short explanations of what these are supposed to do.
-    wxPG_DECLARE_CREATECONTROLS
-#else
     virtual wxPGWindowList CreateControls(wxPropertyGrid* propgrid,
                                           wxPGProperty* property,
                                           const wxPoint& pos,
                                           const wxSize& size) const;
-#endif
     virtual void UpdateControl( wxPGProperty* property, wxWindow* wnd ) const;
     virtual bool OnEvent( wxPropertyGrid* propgrid, wxPGProperty* property,
                           wxWindow* wnd, wxEvent& event ) const;
@@ -210,16 +177,12 @@ public:
 
     wxFBFontProperty( const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxFontContainer& value = *wxNORMAL_FONT);
     virtual ~wxFBFontProperty();
-	
-#if wxVERSION_NUMBER < 2900
-    virtual void
-#else
+
     virtual wxVariant
-#endif
     ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
 
     virtual void RefreshChildren();
-	
+
     virtual void OnSetValue();
     virtual wxString GetValueAsString( int argFlags = 0 ) const;
 

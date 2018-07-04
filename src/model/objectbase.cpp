@@ -321,11 +321,7 @@ PEvent ObjectBase::GetEvent (wxString name)
 	if ( it != m_events.end() )
 		return it->second;
 
-#if wxVERSION_NUMBER < 2900
-	LogDebug(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
-#else
     LogDebug("[ObjectBase::GetEvent] Event " + name + " not found!");
-#endif
 	return PEvent();
 }
 

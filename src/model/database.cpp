@@ -461,7 +461,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 	}
 	else if (	obj_type == wxT("notebook")			||
 				obj_type == wxT("flatnotebook")		||
-				obj_type == wxT("listbook")			||				
+				obj_type == wxT("listbook")			||
 				obj_type == wxT("simplebook")       ||
 				obj_type == wxT("choicebook")		||
 				obj_type == wxT("auinotebook")		||
@@ -697,11 +697,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							if ( !addedPackage.second )
 							{
 								addedPackage.first->second->AppendPackage( packageIt->second );
-#if wxVERSION_NUMBER < 2900
-								LogDebug( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
-#else
                                 LogDebug( "Merged plugins named \"" + packageIt->second->GetPackageName() + "\"" );
-#endif
 							}
 
 						}
@@ -759,9 +755,6 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
     wxString wxver = wxT("");
 
 #ifdef DEBUG
-    #if wxVERSION_NUMBER < 2900
-        wxver = wxT("d");
-    #endif
 	#ifdef APPEND_WXVERSION
 		wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
 	#endif
@@ -1212,7 +1205,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				std::string child_description;
 				elem_child->GetAttributeOrDefault( DESCRIPTION_TAG, &child_description, "" );
 				child.m_description = _WXSTR( child_description );
-				
+
 				std::string child_type;
 				elem_child->GetAttributeOrDefault( "type", &child_type, "wxString" );
 				child.m_type = ParsePropertyType( _WXSTR( child_type ) );
@@ -1382,13 +1375,6 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 {
 	wxString path = libfile;
 
-#if wxVERSION_NUMBER < 2900
-	// This will prevent loading debug libraries in release and vice versa
-	// That used to cause crashes when trying to debug
-	#ifdef __WXFB_DEBUG__
-//		path += wxT("d");
-	#endif
-#endif
 	// Find the GetComponentLibrary function - all plugins must implement this
 	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
 
@@ -1415,11 +1401,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		if (dlsym_error)
 		{
 			wxString error = wxString( dlsym_error, wxConvUTF8 );
-#if wxVERSION_NUMBER < 2900
-			THROW_WXFBEX( path << wxT(" is not a valid component library: ") << error )
-#else
             THROW_WXFBEX( path << " is not a valid component library: " << error )
-#endif
 			dlclose( handle );
 		}
 		else
@@ -1442,19 +1424,11 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 
 		if ( !(GetComponentLibrary && FreeComponentLibrary) )
 		{
-#if wxVERSION_NUMBER < 2900
-			THROW_WXFBEX( path << wxT(" is not a valid component library") )
-#else
             THROW_WXFBEX( path << " is not a valid component library" )
-#endif
 		}
 
 #endif
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
-#else
         LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
-#endif
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
 
@@ -1475,11 +1449,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		}
 		else
 		{
-#if wxVERSION_NUMBER < 2900
-			LogDebug( wxT("ObjectInfo for <%s> not found while loading library <%s>"), class_name.c_str(), path.c_str() );
-#else
             LogDebug("ObjectInfo for <" + class_name + "> not found while loading library <" + path + ">");
-#endif
 		}
 	}
 

@@ -262,9 +262,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	::wxSetWorkingDirectory( workingDir );
 
-	#if wxCHECK_VERSION( 2, 6, 3 )
 	res->Unload( wxT("memory:xrcpreview.xrc") );
-	#endif
 
 	wxMemoryFSHandler::RemoveFile( wxT("xrcpreview.xrc") );
 }

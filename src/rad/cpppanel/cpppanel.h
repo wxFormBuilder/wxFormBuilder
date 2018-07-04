@@ -32,11 +32,7 @@
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 #ifdef USE_FLATNOTEBOOK
 class wxFlatNotebook;
@@ -66,11 +62,7 @@ private:
 	wxAuiNotebook* m_notebook;
 #endif
 
-#if wxVERSION_NUMBER < 2900
-	void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	CppPanel( wxWindow *parent, int id );

@@ -36,11 +36,7 @@ class wxFBEvent;
 class wxFBPropertyEvent;
 class wxFBObjectEvent;
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
 class wxFindDialogEvent;
 
@@ -50,11 +46,7 @@ private:
 	CodeEditor* m_xrcPanel;
 	PTCCodeWriter m_cw;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	XrcPanel( wxWindow *parent, int id );

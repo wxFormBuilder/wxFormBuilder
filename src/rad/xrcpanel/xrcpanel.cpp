@@ -40,11 +40,7 @@
 
 #include <wx/fdrepdlg.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 #ifdef USE_FLATNOTEBOOK
 #include <wx/wxFlatNotebook/wxFlatNotebook.h>
 #else
@@ -88,15 +84,9 @@ XrcPanel::~XrcPanel()
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
-#if wxVERSION_NUMBER < 2900
-void XrcPanel::InitStyledTextCtrl( wxScintilla *stc )
-{
-    stc->SetLexer( wxSCI_LEX_XML );
-#else
 void XrcPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_XML );
-#endif
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
 	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
@@ -104,19 +94,11 @@ void XrcPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 #else
 	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
 #endif
-#if wxVERSION_NUMBER < 2900
-	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
-	stc->StyleClearAll();
-	stc->StyleSetForeground( wxSCI_H_DOUBLESTRING, *wxRED );
-	stc->StyleSetForeground( wxSCI_H_TAG, wxColour( 0, 0, 128 ) );
-	stc->StyleSetForeground( wxSCI_H_ATTRIBUTE, wxColour( 128, 0, 128 ) );
-#else
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
     stc->StyleSetForeground( wxSTC_H_DOUBLESTRING, *wxRED );
     stc->StyleSetForeground( wxSTC_H_TAG, wxColour( 0, 0, 128 ) );
     stc->StyleSetForeground( wxSTC_H_ATTRIBUTE, wxColour( 128, 0, 128 ) );
-#endif
 	stc->SetUseTabs( false );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -181,7 +163,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 	// Using the previously unused Id field in the event to carry a boolean
 	bool panelOnly = ( event.GetId() != 0 );
-	
+
 	// Generate code in the panel if the panel is active
 	bool doPanel = IsShown();
 
@@ -208,13 +190,9 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 	// Generate code in the panel if the panel is active
 	if ( IsShown() )
-	{		
+	{
 		Freeze();
-#if wxVERSION_NUMBER < 2900
-		wxScintilla* editor = m_xrcPanel->GetTextCtrl();
-#else
         wxStyledTextCtrl* editor = m_xrcPanel->GetTextCtrl();
-#endif
 		editor->SetReadOnly( false );
 		int line = editor->GetFirstVisibleLine() + editor->LinesOnScreen() - 1;
 		int xOffset = editor->GetXOffset();

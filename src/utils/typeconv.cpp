@@ -34,11 +34,6 @@
 #include "rad/appdata.h"
 #include <clocale>
 
-#if wxVERSION_NUMBER < 2900
-	#include <wx/propgrid/propgrid.h>
-	#include <wx/propgrid/propdev.h>
-#endif
-
 #include <wx/filesys.h>
 #include <wx/artprov.h>
 #include "rad/inspector/objinspect.h"
@@ -892,11 +887,7 @@ wxString TypeConv::ArrayStringToString(const wxArrayString &arrayStr)
 {
 	wxString result;
 
-#if wxVERSION_NUMBER < 2900
-	wxPropertyGrid::ArrayStringToString( result, arrayStr, wxT('"'), wxT('"'), 1 );
-#else
 	wxArrayStringProperty::ArrayStringToString( result, arrayStr, '"', 1 );
-#endif
 
 	return result;
 }
