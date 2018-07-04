@@ -38,7 +38,11 @@
 // -----------------------------------------------------------------------
 // wxFBSizeProperty
 // -----------------------------------------------------------------------
+#if wxCHECK_VERSION(3, 1, 0)
+wxPG_IMPLEMENT_PROPERTY_CLASS(wxFBSizeProperty, wxPGProperty, TextCtrl)
+#else
 WX_PG_IMPLEMENT_PROPERTY_CLASS( wxFBSizeProperty, wxPGProperty, wxSize, const wxSize&, TextCtrl )
+#endif
 
 wxFBSizeProperty::wxFBSizeProperty( const wxString& label,
                                     const wxString& name,
@@ -87,7 +91,11 @@ wxVariant wxFBSizeProperty::ChildChanged(wxVariant& thisValue, const int childIn
 // wxFBPointProperty
 // -----------------------------------------------------------------------
 
+#if wxCHECK_VERSION(3, 1, 0)
+wxPG_IMPLEMENT_PROPERTY_CLASS(wxFBPointProperty, wxPGProperty, TextCtrl)
+#else
 WX_PG_IMPLEMENT_PROPERTY_CLASS( wxFBPointProperty, wxPGProperty, wxPoint, const wxPoint&, TextCtrl )
+#endif
 
 wxFBPointProperty::wxFBPointProperty( const wxString& label,
                                       const wxString& name,
@@ -140,8 +148,12 @@ wxVariant wxFBPointProperty::ChildChanged(wxVariant& thisValue, const int childI
 //                                             wxPG_FILE_FILTER_INDEX attribute ID
 static wxString gs_imageInitialPath = wxEmptyString;
 
+#if wxCHECK_VERSION(3, 1, 0)
+wxPG_IMPLEMENT_PROPERTY_CLASS(wxFBBitmapProperty, wxPGProperty, TextCtrl)
+#else
 WX_PG_IMPLEMENT_PROPERTY_CLASS( wxFBBitmapProperty, wxPGProperty,
                                 wxString, const wxString&, TextCtrl )
+#endif
 
 void wxFBBitmapProperty::GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const
 {
@@ -895,8 +907,12 @@ static long gs_fp_es_weight_values[] = {
     wxBOLD
 };
 
+#if wxCHECK_VERSION(3, 1, 0)
+wxPG_IMPLEMENT_PROPERTY_CLASS(wxFBFontProperty, wxPGProperty, TextCtrlAndButton)
+#else
 WX_PG_IMPLEMENT_PROPERTY_CLASS(wxFBFontProperty,wxPGProperty,
                                wxFont,const wxFont&,TextCtrlAndButton)
+#endif
 
 
 wxFBFontProperty::wxFBFontProperty( const wxString& label, const wxString& name,
