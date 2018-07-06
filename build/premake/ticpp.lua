@@ -26,7 +26,7 @@ project "TiCPP"
         buildoptions    {"-fPIC"}
 
     configuration "vs*"
-        defines         {"_CRT_SECURE_NO_DEPRECATE"}
+        defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
 
     configuration "vs2008 or vs2010"
         -- multi-process building

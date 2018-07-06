@@ -33,7 +33,7 @@ configuration "not windows"
 
  -- Visual C++ 2005/2008
 configuration "vs*"
-    defines             {"_CRT_SECURE_NO_DEPRECATE"}
+    defines             {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
 
 configuration "Debug"
     targetname          ( CustomPrefix .. wxDebugSuffix .. "_plugin-interface" )
