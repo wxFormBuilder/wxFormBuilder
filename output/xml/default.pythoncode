@@ -49,6 +49,7 @@
 
 		<!-- wxKeyEvent -->
 		<template name="evt_connect_OnChar">self.$name.Bind( wx.EVT_CHAR, #handler )</template>
+		<template name="evt_connect_OnCharHook">self.$name.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
 		<template name="evt_connect_OnKeyDown">self.$name.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_connect_OnKeyUp">self.$name.Bind( wx.EVT_KEY_UP, #handler )</template>
 
@@ -66,6 +67,12 @@
 		<template name="evt_connect_OnRightDClick">self.$name.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
 		<template name="evt_connect_OnRightDown">self.$name.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
 		<template name="evt_connect_OnRightUp">self.$name.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_connect_OnAux1DClick">self.$name.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
+		<template name="evt_connect_OnAux1Down">self.$name.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
+		<template name="evt_connect_OnAux1Up">self.$name.Bind( wx.EVT_AUX1_UP, #handler )</template>
+		<template name="evt_connect_OnAux2DClick">self.$name.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
+		<template name="evt_connect_OnAux2Down">self.$name.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
+		<template name="evt_connect_OnAux2Up">self.$name.Bind( wx.EVT_AUX2_UP, #handler )</template>
 		<template name="evt_connect_OnMouseEvents">
 			self.$name.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
 			self.$name.Bind( wx.EVT_LEFT_UP, #handler ) #nl
@@ -73,10 +80,16 @@
 			self.$name.Bind( wx.EVT_MIDDLE_UP, #handler ) #nl
 			self.$name.Bind( wx.EVT_RIGHT_DOWN, #handler ) #nl
 			self.$name.Bind( wx.EVT_RIGHT_UP, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX1_DOWN, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX1_UP, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX2_DOWN, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX2_UP, #handler ) #nl
 			self.$name.Bind( wx.EVT_MOTION, #handler ) #nl
 			self.$name.Bind( wx.EVT_LEFT_DCLICK, #handler ) #nl
 			self.$name.Bind( wx.EVT_MIDDLE_DCLICK, #handler ) #nl
 			self.$name.Bind( wx.EVT_RIGHT_DCLICK, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX1_DCLICK, #handler ) #nl
+			self.$name.Bind( wx.EVT_AUX2_DCLICK, #handler ) #nl
 			self.$name.Bind( wx.EVT_LEAVE_WINDOW, #handler ) #nl
 			self.$name.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
 			self.$name.Bind( wx.EVT_MOUSEWHEEL, #handler )
@@ -85,7 +98,7 @@
 		<!-- wxFocusEvent -->
 		<template name="evt_connect_OnKillFocus">self.$name.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_connect_OnSetFocus">self.$name.Bind( wx.EVT_SET_FOCUS, #handler )</template>
-.
+
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">self.$name.Bind( wx.EVT_PAINT, #handler )</template>
 

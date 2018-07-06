@@ -81,6 +81,8 @@
 		<!-- wxKeyEvent -->
 		<template name="evt_entry_OnChar">@#error wxKeyEvent does not propogate, so wxEVT_CHAR from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnChar">$name->Connect( wxEVT_CHAR, #handler, NULL, this );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">$name->Connect( wxEVT_CHAR_HOOK, #handler, NULL, this );</template>
 		<template name="evt_entry_OnKeyDown">@#error wxKeyEvent does not propogate, so wxEVT_KEY_DOWN from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnKeyDown">$name->Connect( wxEVT_KEY_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnKeyUp">@#error wxKeyEvent does not propogate, so wxEVT_KEY_UP from $name can only be handled with Connect()</template>
@@ -113,6 +115,18 @@
 		<template name="evt_connect_OnRightDown">$name->Connect( wxEVT_RIGHT_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnRightUp">@#error wxMouseEvent does not propogate, so wxEVT_RIGHT_UP from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnRightUp">$name->Connect( wxEVT_RIGHT_UP, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux1DClick">@#error wxMouseEvent does not propogate, so wxEVT_AUX1_DCLICK from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux1DClick">$name->Connect( wxEVT_AUX1_DCLICK, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux1Down">@#error wxMouseEvent does not propogate, so wxEVT_AUX1_DOWN from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux1Down">$name->Connect( wxEVT_AUX1_DOWN, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux1Up">@#error wxMouseEvent does not propogate, so wxEVT_AUX1_UP from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux1Up">$name->Connect( wxEVT_AUX1_UP, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux2DClick">@#error wxMouseEvent does not propogate, so wxEVT_AUX2_DCLICK from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux2DClick">$name->Connect( wxEVT_AUX2_DCLICK, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux2Down">@#error wxMouseEvent does not propogate, so wxEVT_AUX2_DOWN from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux2Down">$name->Connect( wxEVT_AUX2_DOWN, #handler, NULL, this );</template>
+		<template name="evt_entry_OnAux2Up">@#error wxMouseEvent does not propogate, so wxEVT_AUX2_UP from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnAux2Up">$name->Connect( wxEVT_AUX2_UP, #handler, NULL, this );</template>
 		<template name="evt_entry_OnMouseEvents">@#error wxMouseEvent does not propogate, so Mouse Events from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnMouseEvents">
 			$name->Connect( wxEVT_LEFT_DOWN, #handler, NULL, this ); #nl
@@ -121,10 +135,16 @@
 			$name->Connect( wxEVT_MIDDLE_UP, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_RIGHT_DOWN, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_RIGHT_UP, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX1_DOWN, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX1_UP, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX2_DOWN, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX1_UP, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_MOTION, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_LEFT_DCLICK, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_MIDDLE_DCLICK, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_RIGHT_DCLICK, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX1_DCLICK, #handler, NULL, this ); #nl
+			$name->Connect( wxEVT_AUX2_DCLICK, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_LEAVE_WINDOW, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_ENTER_WINDOW, #handler, NULL, this ); #nl
 			$name->Connect( wxEVT_MOUSEWHEEL, #handler, NULL, this );

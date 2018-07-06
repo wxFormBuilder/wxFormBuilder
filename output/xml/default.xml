@@ -101,25 +101,28 @@
     <property name="bg" type="wxColour"         help="Sets the background colour of the window."/>
     <property name="window_name" type="wxString"help="The name of the window. This parameter is used to associate a name with the item, allowing the application user to set Motif resource values for individual windows."/>
     <property name="window_style" type="bitlist">
-      <option name="wxSIMPLE_BORDER"            help="Displays a thin border around the window. wxBORDER is the old name for this style."/>
-      <option name="wxDOUBLE_BORDER"            help="Displays a double border. Windows and Mac only."/>
-      <option name="wxSUNKEN_BORDER"            help="Displays a sunken border."/>
-      <option name="wxRAISED_BORDER"            help="Displays a raised border."/>
-      <option name="wxSTATIC_BORDER"            help="Displays a border suitable for a static control. Windows only."/>
-      <option name="wxNO_BORDER"                help="Displays no border, overriding the default border style for the window."/>
+      <option name="wxBORDER_DEFAULT"           help="The window class will decide the kind of border to show, if any."/>
+      <option name="wxBORDER_SIMPLE"            help="Displays a thin border around the window. wxSIMPLE_BORDER is the old name for this style."/>
+      <option name="wxBORDER_SUNKEN"            help="Displays a sunken border. wxSUNKEN_BORDER is the old name for this style."/>
+      <option name="wxBORDER_RAISED"            help="Displays a raised border. wxRAISED_BORDER is the old name for this style."/>
+      <option name="wxBORDER_STATIC"            help="Displays a border suitable for a static control. wxSTATIC_BORDER is the old name for this style. Windows only."/>
+      <option name="wxBORDER_THEME"             help="Displays a native border suitable for a control, on the current platform. On Windows XP or Vista, this will be a themed border; on most other platforms a sunken border will be used. For more information for themed borders on Windows, please see Themed borders on Windows."/>
+      <option name="wxBORDER_NONE"              help="Displays no border, overriding the default border style for the window. wxNO_BORDER is the old name for this style."/>
       <option name="wxTRANSPARENT_WINDOW"       help="The window is transparent, that is, it will not receive paint events. Windows only."/>
       <option name="wxTAB_TRAVERSAL"            help="Use this to enable tab traversal for non-dialog windows."/>
-      <option name="wxWANTS_CHARS"              help="Use this to indicate that the window wants to get all char/key events for all keys - even for keys like TAB or ENTER which are usually used for dialog navigation and which wouldn't be generated without this style. If you need to use this style in order to get the arrows or etc., but would still like to have normal keyboard navigation take place, you should create and send a wxNavigationKeyEvent in response to the key events for Tab and Shift-Tab."/>
-      <option name="wxVSCROLL"                  help="Use this style to enable a vertical scrollbar."/>
-      <option name="wxHSCROLL"                  help="Use this style to enable a horizontal scrollbar."/>
-      <option name="wxALWAYS_SHOW_SB"           help="If a window has scrollbars, disable them instead of hiding them when they are not needed (i.e. when the size of the window is big enough to not require the scrollbars to navigate it). This style is currently only implemented for wxMSW and wxUniversal and does nothing on the other platforms."/>
+      <option name="wxWANTS_CHARS"              help="Use this to indicate that the window wants to get all char/key events for all keys - even for keys like TAB or ENTER which are usually used for dialog navigation and which wouldn't be generated without this style. If you need to use this style in order to get the arrows or etc., but would still like to have normal keyboard navigation take place, you should call Navigate in response to the key events for Tab and Shift-Tab."/>
+      <option name="wxVSCROLL"                  help="Use this style to enable a vertical scrollbar. Notice that this style cannot be used with native controls which don't support scrollbars nor with top-level windows in most ports."/>
+      <option name="wxHSCROLL"                  help="Use this style to enable a horizontal scrollbar. The same limitations as for wxVSCROLL apply to this style."/>
+      <option name="wxALWAYS_SHOW_SB"           help="If a window has scrollbars, disable them instead of hiding them when they are not needed (i.e. when the size of the window is big enough to not require the scrollbars to navigate it). This style is currently implemented for wxMSW, wxGTK and wxUniversal and does nothing on the other platforms."/>
       <option name="wxCLIP_CHILDREN"            help="Use this style to eliminate flicker caused by the background being repainted, then children being painted over them. Windows only."/>
       <option name="wxFULL_REPAINT_ON_RESIZE"   help="Use this style to force a complete redraw of the window whenever it is resized instead of redrawing just the part of the window affected by resizing. Note that this was the behaviour by default before 2.5.1 release and that if you experience redraw problems with code which previously used to work you may want to try this. Currently this style applies on GTK+ 2 and Windows only, and full repainting is always done on other platforms."/>
+      <option name="wxNO_FULL_REPAINT_ON_RESIZE" help="On Windows, this style used to disable repainting the window completely when its size is changed. Since this behaviour is now the default, the style is now obsolete and no longer has an effect."/>
     </property>
     <property name="window_extra_style" type="bitlist">
       <option name="wxWS_EX_VALIDATE_RECURSIVELY"   help="By default, Validate/TransferDataTo/FromWindow() only work on direct children of the window (compatible behaviour). Set this flag to make them recursively descend into all subwindows." />
       <option name="wxWS_EX_BLOCK_EVENTS"           help="wxCommandEvents and the objects of the derived classes are forwarded to the parent window and so on recursively by default. Using this flag for the given window allows to block this propagation at this window, i.e. prevent the events from being propagated further upwards. Dialogs have this flag on by default." />
       <option name="wxWS_EX_TRANSIENT"              help="Don't use this window as an implicit parent for the other windows: this must be used with transient windows as otherwise there is the risk of creating a dialog/frame with this window as a parent which would lead to a crash if the parent is destroyed before the child." />
+      <option name="wxWS_EX_CONTEXTHELP"            help="Under Windows, puts a query button on the caption. When pressed, Windows will go into a context-sensitive help mode and wxWidgets will send a wxEVT_HELP event if the user clicked on an application window. This style cannot be used (because of the underlying native behaviour) together with wxMAXIMIZE_BOX or wxMINIMIZE_BOX, so these two styles are automatically turned off if this one is used."/>
       <option name="wxWS_EX_PROCESS_IDLE"           help="This window should always process idle events, even if the mode set by wxIdleEvent::SetMode is wxIDLE_PROCESS_SPECIFIED." />
       <option name="wxWS_EX_PROCESS_UI_UPDATES"     help="This window should always process UI update events, even if the mode set by wxUpdateUIEvent::SetMode is wxUPDATE_UI_PROCESS_SPECIFIED." />
     </property>
@@ -135,7 +138,8 @@
 	</property>
 	<category name="wxKeyEvent" type="interface">
 		<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
-		<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed)." />
+		<event name="OnCharHook" class="wxKeyEvent" help="Process a wxEVT_CHAR_HOOK event. Unlike all the other key events, this event is propagated upwards the window hierarchy which allows intercepting it in the parent window of the focused window to which it is sent initially (if there is no focused window, this event is sent to the wxApp global object). It is also generated before any other key events and so gives the parent window an opportunity to modify the keyboard handling of its children, e.g. it is used internally by wxWidgets in some ports to intercept pressing Esc key in any child of a dialog to close the dialog itself when it's pressed. By default, if this event is handled, i.e. the handler doesn't call wxEvent::Skip(), neither wxEVT_KEY_DOWN nor wxEVT_CHAR events will be generated (although wxEVT_KEY_UP still will be), i.e. it replaces the normal key events. However by calling the special DoAllowNextEvent() method you can handle wxEVT_CHAR_HOOK and still allow normal events generation. This is something that is rarely useful but can be required if you need to prevent a parent wxEVT_CHAR_HOOK handler from running without suppressing the normal key events. Finally notice that this event is not generated when the mouse is captured as it is considered that the window which has the capture should receive all the keyboard events too without allowing its parent wxTopLevelWindow to interfere with their processing."/>
+		<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed). If this event is handled and not skipped, wxEVT_CHAR will not be generated at all for this key press (but wxEVT_KEY_UP will be)."/>
 		<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
 	  </category>
 	  <category name="wxMouseEvent" type="interface">
@@ -153,6 +157,12 @@
 		<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
 		<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DOWN event." />
 		<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
+		<event name="OnAux1DClick" class="wxMouseEvent" help="Process a wxEVT_AUX1_DCLICK event."/>
+		<event name="OnAux1Down" class="wxMouseEvent" help="Process a wxEVT_AUX1_DOWN event."/>
+		<event name="OnAux1Up" class="wxMouseEvent" help="Process a wxEVT_AUX1_UP event."/>
+		<event name="OnAux2DClick" class="wxMouseEvent" help="Process a wxEVT_AUX2_DCLICK event."/>
+		<event name="OnAux2Down" class="wxMouseEvent" help="Process a wxEVT_AUX2_DOWN event."/>
+		<event name="OnAux2Up" class="wxMouseEvent" help="Process a wxEVT_AUX2_UP event."/>
 	  </category>
 	  <category name="wxFocusEvent" type="interface">
 		<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />

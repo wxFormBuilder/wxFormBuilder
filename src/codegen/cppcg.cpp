@@ -196,7 +196,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			else
 			{
-				result = "*wxNORMAL_FONT";
+				result = wxT("*wxNORMAL_FONT");
 			}
 			break;
 		}

@@ -86,7 +86,7 @@ Written by
     <property name="name" type="text">m_toggleBtn</property>
     <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
-    <event name="OnToggleButton" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBUTTON_SELECTED event, when the radiobutton is clicked." />
+    <event name="OnToggleButton" class="wxCommandEvent" help="Handles a wxEVT_TOGGLEBUTTON event."/>
 </objectinfo>
 
 <objectinfo class="wxSearchCtrl" icon="search.xpm" type="widget">
@@ -108,7 +108,7 @@ Written by
     <property name="cancel_button" type="bool" help="Shows or hides the cancel button.">0</property>
     <event name="OnText" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_UPDATED event, generated when the text changes. Notice that this event will always be sent when the text controls contents changes - whether this is due to user input or comes from the program itself (for example, if SetValue() is called)" />
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
-    <event name="OnSearchButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_SEARCH_BTN event, generated when the search button is clicked. Note that this does not initiate a search." />
+    <event name="OnSearchButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_SEARCH_BTN event, generated when the search button is clicked. Note that this does not initiate a search on its own, you need to perform the appropriate action in your event handler. You may use event.GetString() to retrieve the string to search for in the event handler code." />
     <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked." />
 </objectinfo>
 
@@ -159,7 +159,7 @@ Written by
         <option name="wxFLP_OVERWRITE_PROMPT" help="Can be combined with wxFLP_SAVE only: ask confirmation to the user before selecting a file."/>
         <option name="wxFLP_FILE_MUST_EXIST" help="Can be combined with wxFLP_OPEN only: the selected file must be an existing file."/>
         <option name="wxFLP_CHANGE_DIR" help="Change current working directory on each user file selection change."/>
-        <option name="wxFLP_SMALL" help="Use smaller version of the control with a small &quot;...&quot; button instead of the normal &quot;Browse&quot; one."/>
+        <option name="wxFLP_SMALL" help="Use smaller version of the control with a small &quot;...&quot; button instead of the normal &quot;Browse&quot; one. This flag is new since wxWidgets 2.9.3."/>
         wxFLP_DEFAULT_STYLE
     </property>
     <property name="value" type="wxString"/>
@@ -178,7 +178,7 @@ Written by
         <option name="wxDIRP_USE_TEXTCTRL" help="Creates a text control to the left of the picker button which is completely managed by the wxDirPickerCtrl and which can be used by the user to specify a path (see SetPath). The text control is automatically synchronized with button's value. Use functions defined in wxPickerBase to modify the text control."/>
         <option name="wxDIRP_DIR_MUST_EXIST" help="Creates a picker which allows to select only existing directories. wxGTK control always adds this flag internally as it does not support its absence."/>
         <option name="wxDIRP_CHANGE_DIR" help="Change current working directory on each user directory selection change."/>
-        <option name="wxDIRP_SMALL" help="Use smaller version of the control with a small &quot;...&quot; button instead of the normal &quot;Browse&quot; one."/>
+        <option name="wxDIRP_SMALL" help="Use smaller version of the control with a small &quot;...&quot; button instead of the normal &quot;Browse&quot; one. This flag is new since wxWidgets 2.9.3."/>
         wxDIRP_DEFAULT_STYLE
     </property>
     <property name="value" type="wxString"/>
@@ -192,11 +192,11 @@ Written by
     <inherits class="Validator" />
     <property name="name" type="text">m_datePicker</property>
     <property name="style" type="bitlist">
-        <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version." />
-        <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date." />
-        <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system." />
-        <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date." />
-        <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+      <option name="wxDP_SPIN"        help="Creates a control without a month calendar drop down but with spin-control-like arrows to change individual date components. This style is not supported by the generic version."/>
+      <option name="wxDP_DROPDOWN"    help="Creates a control with a month calendar drop-down part from which the user can select a date. This style is not supported in OSX/Cocoa native version."/>
+      <option name="wxDP_SHOWCENTURY" help="Forces display of the century in the default date format. Without this style the century could be displayed, or not, depending on the default date representation in the system. This style is not supported in OSX/Cocoa native version currently."/>
+      <option name="wxDP_ALLOWNONE"   help="With this style, the control allows the user to not enter any valid date at all. Without it - the default - the control always has some valid date. This style is not supported in OSX/Cocoa native version."/>
+      <option name="wxDP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and OSX/Cocoa and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
     <event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
 </objectinfo>
 
@@ -217,19 +217,24 @@ Written by
     <inherits class="Validator" />
     <property name="name" type="text">m_calendar</property>
     <property name="style" type="bitlist">
-        <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week." />
-        <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week." />
-        <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar." />
-        <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing." />
+        <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week (not in wxGTK)." />
+        <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week (not in wxGTK)." />
+        <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar (only generic)." />
+        <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing (deprecated, only generic)." />
         <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
-        <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months." />
-        <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls." />wxCAL_SHOW_HOLIDAYS</property>
+        <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months (only generic, always on for the native controls)." />
+        <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls (only generic)." />
+        <option name="wxCAL_SHOW_WEEK_NUMBERS"          help="Show week numbers on the left side of the calendar (not in generic)."/>
+        wxCAL_SHOW_HOLIDAYS
+    </property>
     <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
     <event name="OnCalendarSelChanged" class="wxCalendarEvent" help="The selected date changed." />
+    <event name="OnCalendarPageChanged" class="wxCalendarEvent" help="The selected month (and/or year) changed." />
     <event name="OnCalendarDay" class="wxCalendarEvent" help="The selected day changed." />
     <event name="OnCalendarMonth" class="wxCalendarEvent" help="The selected month changed." />
     <event name="OnCalendarYear" class="wxCalendarEvent" help="The selected year changed." />
-    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header." />
+    <event name="OnCalendarWeekDayClicked" class="wxCalendarEvent" help="User clicked on the week day header (only generic)." />
+    <event name="OnCalendarWeekClicked" class="wxCalendarEvent" help="User clicked on the week of the year number (only generic)." />
 </objectinfo>
 
 <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
@@ -278,6 +283,9 @@ Written by
         <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
         <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
 		<option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+		<option name="wxALIGN_LEFT"              help="Same as wxTE_LEFT for wxTextCtrl: the text is left aligned."/>
+		<option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTRE for wxTextCtrl: the text is centered."/>
+		<option name="wxALIGN_RIGHT"             help="Same as wxTE_RIGHT for wxTextCtrl: the text is right aligned (this is the default)."/>
 		wxSP_ARROW_KEYS
 	</property>
     <event name="OnSpinCtrl" class="wxSpinEvent" help="Generated whenever the numeric value of the spinctrl is updated." />
@@ -356,6 +364,8 @@ Written by
         <option name="wxDIRCTRL_MULTIPLE" help="Allows multiple files and folders to be selected simultaneously"/>
         wxDIRCTRL_3D_INTERNAL
     </property>
+    <event name="OnDirctrlSelectionChanged" class="wxCommandEvent" help="Selected directory has changed. Processes a wxEVT_DIRCTRL_SELECTIONCHANGED event type. Notice that this event is generated even for the changes done by the program itself and not only those done by the user. Available since wxWidgets 2.9.5."/>
+    <event name="OnDirctrlFileActivated" class="wxCommandEvent" help="The user activated a file by double-clicking or pressing Enter. Available since wxWidgets 2.9.5."/>
 </objectinfo>
 
 <objectinfo class="wxMediaCtrl" icon="media_ctrl.xpm" type="widget">

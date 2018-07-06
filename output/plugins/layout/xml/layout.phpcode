@@ -52,7 +52,7 @@ PHP code generation writen by
   </templates>
 
   <templates class="wxWrapSizer">
-    <template name="construction">@$$name = new wxWrapSizer( $orient ); #nl</template>
+    <template name="construction">@$$name = new wxWrapSizer( $orient, $flags ); #nl</template>
   </templates>
 
   <templates class="wxStaticBoxSizer">

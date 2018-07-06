@@ -27,7 +27,14 @@ Written by
     <property name="name" type="text">m_statusBar</property>
     <property name="fields" type="uint"  help="Number of fields in the statusbar.">1</property>
     <property name="style" type="bitlist">
-      <option name="wxSTB_SIZEGRIP"       help="On Windows, displays a gripper at right-hand side of the status bar." />wxSTB_SIZEGRIP</property>
+      <option name="wxSTB_SIZEGRIP"         help="Displays a gripper at the right-hand side of the status bar which can be used to resize the parent window."/>
+      <option name="wxSTB_SHOW_TIPS"        help="Displays tooltips for those panes whose status text has been ellipsized/truncated because the status text doesn't fit the pane width. Note that this style has effect only on wxGTK (with GTK+ >= 2.12) currently."/>
+      <option name="wxSTB_ELLIPSIZE_START"  help="Replace the beginning of the status texts with an ellipsis when the status text widths exceed the status bar pane's widths (uses wxControl::Ellipsize)."/>
+      <option name="wxSTB_ELLIPSIZE_MIDDLE" help="Replace the middle of the status texts with an ellipsis when the status text widths exceed the status bar pane's widths (uses wxControl::Ellipsize)."/>
+      <option name="wxSTB_ELLIPSIZE_END"    help="Replace the end of the status texts with an ellipsis when the status text widths exceed the status bar pane's widths (uses wxControl::Ellipsize)."/>
+      <option name="wxSTB_DEFAULT_STYLE"    help="The default style: includes wxSTB_SIZEGRIP|wxSTB_SHOW_TIPS|wxSTB_ELLIPSIZE_END|wxFULL_REPAINT_ON_RESIZE"/>
+      wxSTB_SIZEGRIP
+    </property>
   </objectinfo>
 
   <objectinfo class="wxMenuBar" icon="menubar.xpm" type="menubar" startgroup="1">
@@ -85,14 +92,20 @@ Written by
     <property name="style" type="bitlist">
       <option name="wxTB_FLAT"                help="Gives the toolbar a flat look (Windows and GTK only)." />
       <option name="wxTB_DOCKABLE"            help="Makes the toolbar floatable and dockable (GTK only)." />
-      <option name="wxTB_HORIZONTAL"          help="Specifies horizontal layout." />
+      <option name="wxTB_HORIZONTAL"          help="Specifies horizontal layout (default)." />
       <option name="wxTB_VERTICAL"            help="Specifies vertical layout." />
       <option name="wxTB_TEXT"                help="Shows the text in the toolbar buttons; by default only icons are shown." />
       <option name="wxTB_NOICONS"             help="Specifies no icons in the toolbar buttons; by default they are shown." />
       <option name="wxTB_NODIVIDER"           help="Specifies no divider (border) above the toolbar (Windows only)." />
       <option name="wxTB_NOALIGN"             help="Specifies no alignment with the parent window (Windows only, not very useful)." />
       <option name="wxTB_HORZ_LAYOUT"         help="Shows the text and the icons alongside, not vertically stacked (Windows and GTK 2 only). This style must be used with wxTB_TEXT." />
-      <option name="wxTB_HORZ_TEXT"           help="Combination of wxTB_HORZ_LAYOUT and wxTB_TEXT." />wxTB_HORIZONTAL</property>
+      <option name="wxTB_HORZ_TEXT"           help="Combination of wxTB_HORZ_LAYOUT and wxTB_TEXT." />
+      <option name="wxTB_NO_TOOLTIPS"         help="Don't show the short help tooltips for the tools when the mouse hovers over them." />
+      <option name="wxTB_BOTTOM"              help="Align the toolbar at the bottom of parent window." />
+      <option name="wxTB_RIGHT"               help="Align the toolbar at the right side of parent window." />
+      <option name="wxTB_DEFAULT_STYLE"       help="Combination of wxTB_HORIZONTAL and wxTB_FLAT. This style is new since wxWidgets 2.9.5." />
+      wxTB_HORIZONTAL
+    </property>
   </objectinfo>
 
  <objectinfo class="wxAuiToolBar" icon="auitoolbar.xpm" type="toolbar">
@@ -111,9 +124,11 @@ Written by
       <option name="wxAUI_TB_OVERFLOW" />
       <option name="wxAUI_TB_VERTICAL" help="Using this style forces the toolbar to be vertical and be only dockable to the left or right sides of the window whereas by default it can be horizontal or vertical and be docked anywhere" />
       <option name="wxAUI_TB_HORZ_LAYOUT" help="Analogous to wxAUI_TB_VERTICAL, but forces the toolbar to be horizontal" />
-      <option name="wxAUI_TB_PLAIN_BACKGROUND" help="Draw a plain background (based on parent) instead of the default gradient background." />
-      <option name="wxAUI_TB_HORZ_TEXT" help="Equivalent to wxAUI_TB_HORZ_LAYOUT | wxAUI_TB_TEXT" />
-      <option name="wxAUI_TB_DEFAULT_STYLE" />wxAUI_TB_HORZ_LAYOUT
+      <option name="wxAUI_TB_HORIZONTAL"        help="Analogous to wxAUI_TB_VERTICAL, but forces the toolbar to be horizontal."/>
+      <option name="wxAUI_TB_PLAIN_BACKGROUND"  help="Draw a plain background (based on parent) instead of the default gradient background."/>
+      <option name="wxAUI_TB_HORZ_TEXT"         help="Equivalent to wxAUI_TB_HORZ_LAYOUT | wxAUI_TB_TEXT"/>
+      <option name="wxAUI_TB_DEFAULT_STYLE"     help="The default is to have no styles."/>
+      wxAUI_TB_HORZ_LAYOUT
     </property>
     <property name="label_visible" type="bool">0</property>
     <property name="toolbar_label" type="text">label</property>

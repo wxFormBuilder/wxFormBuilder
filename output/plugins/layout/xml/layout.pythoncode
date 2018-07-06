@@ -52,7 +52,7 @@ Python code generation writen by
   </templates>
 
   <templates class="wxWrapSizer">
-    <template name="construction">$name = wx.WrapSizer( $orient ) #nl</template>
+		<template name="construction">$name = wx.WrapSizer( $orient, $flags ) #nl</template>
   </templates>
 
   <templates class="wxStaticBoxSizer">

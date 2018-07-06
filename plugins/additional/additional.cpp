@@ -256,11 +256,11 @@ public:
 															obj->GetPropertyAsSize(_("size")),
 															obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		wxFont textFont = wxFont(12, wxROMAN, wxNORMAL, wxNORMAL);
-		wxFont boldFont = wxFont(12, wxROMAN, wxNORMAL, wxBOLD);
-		wxFont italicFont = wxFont(12, wxROMAN, wxITALIC, wxNORMAL);
+		wxFont textFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+		wxFont boldFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+		wxFont italicFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL);
 
-		wxFont font(12, wxROMAN, wxNORMAL, wxNORMAL);
+		wxFont font(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
 		wxRichTextCtrl& r = *richText;
 		r.SetFont(font);
@@ -1734,7 +1734,7 @@ public:
 							   typename union unsigned using virtual void volatile wchar_t \
 							   while"));
 
-		wxFont font(10, wxMODERN, wxNORMAL, wxNORMAL);
+		wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 		if ( !obj->GetPropertyAsString(_("font")).empty() )
 		{
 			font = obj->GetPropertyAsFont(_("font"));
@@ -2435,6 +2435,7 @@ MACRO(wxCAL_NO_YEAR_CHANGE)
 MACRO(wxCAL_NO_MONTH_CHANGE)
 MACRO(wxCAL_SHOW_SURROUNDING_WEEKS)
 MACRO(wxCAL_SEQUENTIAL_MONTH_SELECTION)
+MACRO(wxCAL_SHOW_WEEK_NUMBERS)
 
 // wxDatePickerCtrl
 MACRO(wxDP_SPIN)

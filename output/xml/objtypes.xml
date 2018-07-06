@@ -252,7 +252,6 @@
     <childtype name="ribbonbuttonbar" nmax="1" />
     <childtype name="ribbontoolbar" nmax="1"  />
     <childtype name="ribbongallery" nmax="1" />
-	nmax="1"
   </objtype>
 
   <objtype name="ribbonbuttonbar" >

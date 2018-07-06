@@ -117,10 +117,12 @@ Python code generation written by
 	<template name="include">import wx.adv</template>
 	<template name="evt_connect_OnCalendar">self.$name.Bind( wx.adv.EVT_CALENDAR, #handler )</template>
 	<template name="evt_connect_OnCalendarSelChanged">self.$name.Bind( wx.adv.EVT_CALENDAR_SEL_CHANGED, #handler )</template>
+	<template name="evt_connect_OnCalendarPageChanged">self.$name.Bind( wx.adv.EVT_CALENDAR_PAGE_CHANGED, #handler )</template>
 	<template name="evt_connect_OnCalendarDay">self.$name.Bind( wx.adv.EVT_CALENDAR_DAY, #handler )</template>
 	<template name="evt_connect_OnCalendarMonth">self.$name.Bind( wx.adv.EVT_CALENDAR_MONTH, #handler )</template>
 	<template name="evt_connect_OnCalendarYear">self.$name.Bind( wx.adv.EVT_CALENDAR_YEAR, #handler )</template>
 	<template name="evt_connect_OnCalendarWeekDayClicked">self.$name.Bind( wx.adv.EVT_CALENDAR_WEEKDAY_CLICKED, #handler )</template>
+	<template name="evt_connect_OnCalendarWeekClicked">self.$name.Bind( wx.adv.EVT_CALENDAR_WEEK_CLICKED, #handler )</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -208,6 +210,8 @@ Python code generation written by
 	<template name="settings">
     	#nl self.$name.ShowHidden( $show_hidden )
 	</template>
+	<template name="evt_connect_OnDirctrlSelectionChanged">self.$name.Bind( wx.EVT_DIRCTRL_SELECTIONCHANGED, #handler )</template>
+	<template name="evt_connect_OnDirctrlFileActivated">self.$name.Bind( wx.EVT_DIRCTRL_FILEACTIVATED, #handler )</template>
   </templates>
 
   <templates class="wxSearchCtrl">

@@ -240,6 +240,12 @@ Written by
 		<template name="evt_entry_OnAuiNotebookEndDrag">EVT_AUINOTEBOOK_END_DRAG( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookDragMotion">EVT_AUINOTEBOOK_DRAG_MOTION( $id, #handler )</template>
 		<template name="evt_entry_OnAuiNotebookAllowDND">EVT_AUINOTEBOOK_ALLOW_DND( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookDragDone">EVT_AUINOTEBOOK_DRAG_DONE( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookTabMiddleDown">EVT_AUINOTEBOOK_TAB_MIDDLE_DOWN( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookTabMiddleUp">EVT_AUINOTEBOOK_TAB_MIDDLE_UP( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookTabRightDown">EVT_AUINOTEBOOK_TAB_RIGHT_DOWN( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookTabRightUp">EVT_AUINOTEBOOK_TAB_RIGHT_UP( $id, #handler )</template>
+		<template name="evt_entry_OnAuiNotebookBGDClick">EVT_AUINOTEBOOK_BG_DCLICK( $id, #handler )</template>
 		<template name="evt_connect_OnAuiNotebookPageClose">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookPageClosed">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSED, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookPageChanged">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, #handler, NULL, this );</template>
@@ -249,6 +255,12 @@ Written by
 		<template name="evt_connect_OnAuiNotebookEndDrag">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookDragMotion">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, #handler, NULL, this );</template>
 		<template name="evt_connect_OnAuiNotebookAllowDND">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookDragDone">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_DRAG_DONE, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleDown">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_DOWN, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleUp">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_IP, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookTabRightDown">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_DOWN, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookTabRightUp">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP, #handler, NULL, this );</template>
+		<template name="evt_connect_OnAuiNotebookBGDClick">$name->Connect( wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK, #handler, NULL, this );</template>
 	</templates>
 
 	<templates class="auinotebookpage">

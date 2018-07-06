@@ -33,6 +33,27 @@ Written by
 	    #ifnotequal $default "0" @{
 		    $name->SetDefault(); #nl
 	    @}
+
+			#ifnotnull $bitmap
+			@{ #nl $name->SetBitmap( $bitmap ); @}
+
+			#ifnotnull $disabled
+			@{ #nl $name->SetBitmapDisabled( $disabled ); @}
+
+			#ifnotnull $pressed
+			@{ #nl $name->SetBitmapPressed( $pressed ); @}
+
+			#ifnotnull $focus
+			@{ #nl $name->SetBitmapFocus( $focus ); @}
+
+			#ifnotnull $current
+			@{ #nl $name->SetBitmapCurrent( $current ); @}
+
+			#ifnotnull $position
+			@{ #nl $name->SetBitmapPosition( $position ); @}
+
+			#ifnotnull $margins
+			@{ #nl $name->SetBitmapMargins( $margins ); @}
     </template>
     <template name="include">@#include &lt;wx/button.h&gt;</template>
     <template name="evt_entry_OnButtonClick">EVT_BUTTON( $id, #handler )</template>
@@ -46,14 +67,21 @@ Written by
   	<template name="settings">
   		#ifnotnull $disabled
   		@{ #nl $name->SetBitmapDisabled( $disabled ); @}
-  		#ifnotnull $selected
-  		@{ #nl $name->SetBitmapSelected( $selected ); @}
+
+			#ifnotnull $pressed
+			@{ #nl $name->SetBitmapPressed( $pressed ); @}
 
   		#ifnotnull $focus
   		@{ #nl $name->SetBitmapFocus( $focus ); @}
 
-  		#ifnotnull $hover
-  		@{ #nl $name->SetBitmapHover( $hover ); @}
+			#ifnotnull $current
+			@{ #nl $name->SetBitmapCurrent( $current ); @}
+
+			#ifnotnull $position
+			@{ #nl $name->SetBitmapPosition( $position ); @}
+
+			#ifnotnull $margins
+			@{ #nl $name->SetBitmapMargins( $margins ); @}
   	</template>
   </templates>
 
@@ -365,6 +393,8 @@ Written by
 	<template name="evt_connect_OnCommandScrollThumbRelease">$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCommandScrollChanged">EVT_COMMAND_SCROLL_CHANGED( $id, #handler )</template>
 	<template name="evt_connect_OnCommandScrollChanged">$name->Connect( wxEVT_SCROLL_CHANGED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnSlider">EVT_SLIDER( $id, #handler )</template>
+	<template name="evt_connect_OnSlider">$name->Connect( wxEVT_SLIDER, #handler, NULL, this );</template>
   </templates>
 
 </codegen>

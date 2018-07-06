@@ -34,6 +34,18 @@ Written by
 		<template name="evt_connect_OnHibernate">this->Connect( wxEVT_HIBERNATE, #handler );</template>
 		<template name="evt_entry_OnIconize">EVT_ICONIZE( #handler )</template>
 		<template name="evt_connect_OnIconize">this->Connect( wxEVT_ICONIZE, #handler );</template>
+		<template name="evt_entry_OnMaximize">EVT_MAXIMIZE( #handler )</template>
+		<template name="evt_connect_OnMaximize">this->Connect( wxEVT_MAXIMIZE, #handler );</template>
+		<template name="evt_entry_OnMove">EVT_MOVE( #handler )</template>
+		<template name="evt_connect_OnMove">this->Connect( wxEVT_MOVE, #handler );</template>
+		<template name="evt_entry_OnMoving">EVT_MOVING( #handler )</template>
+		<template name="evt_connect_OnMoving">this->Connect( wxEVT_MOVING, #handler );</template>
+		<template name="evt_entry_OnMoveStart">EVT_MOVE_START( #handler )</template>
+		<template name="evt_connect_OnMoveStart">this->Connect( wxEVT_MOVE_START, #handler );</template>
+		<template name="evt_entry_OnMoveEnd">EVT_MOVE_END( #handler )</template>
+		<template name="evt_connect_OnMoveEnd">this->Connect( wxEVT_MOVE_END, #handler );</template>
+		<template name="evt_entry_OnShow">EVT_SHOW( #handler )</template>
+		<template name="evt_connect_OnShow">this->Connect( wxEVT_SHOW, #handler );</template>
 		<template name="evt_entry_OnIdle">EVT_IDLE( #handler )</template>
 		<template name="evt_connect_OnIdle">this->Connect( wxEVT_IDLE, #handler );</template>
 	</templates>
@@ -49,8 +61,8 @@ Written by
 		<template name="evt_connect_OnAuiPaneRestore">this->Connect( wxEVT_AUI_PANE_RESTORE, #handler );</template>
 		<template name="evt_entry_OnAuiRender">EVT_AUI_RENDER( #handler )</template>
 		<template name="evt_connect_OnAuiRender">this->Connect( wxEVT_AUI_RENDER, #handler );</template>
-		<template name="evt_entry_OnAuiFindManager">EVT_AUI_FIND_MANAGER( #handler )</template>
-		<template name="evt_connect_OnAuiFindManager">this->Connect( wxEVT_AUI_FIND_MANAGER, #handler );</template>
+		<template name="evt_entry_OnAuiPaneActivated">EVT_AUI_PANE_ACTIVATED( #handler )</template>
+		<template name="evt_connect_OnAuiPaneActivated">this->Connect( wxEVT_AUI_PANE_ACTIVATED, #handler );</template>
 	</templates>
   
 	<templates class="Frame">
@@ -133,6 +145,8 @@ Written by
 		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
 		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">$name->Connect( wxEVT_CHAR_HOOK, #handler );</template>
 		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
 		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
@@ -153,6 +167,18 @@ Written by
 		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
 		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
 		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
 		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
 		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
@@ -163,10 +189,16 @@ Written by
 			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			this->Connect( wxEVT_MOTION, #handler ); #nl
 			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -185,6 +217,7 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
 		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
 	</templates>
 
@@ -266,6 +299,8 @@ Written by
 		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
 		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">$name->Connect( wxEVT_CHAR_HOOK, #handler );</template>
 		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
 		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
@@ -286,6 +321,18 @@ Written by
 		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
 		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
 		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
 		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
 		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
@@ -296,10 +343,16 @@ Written by
 			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			this->Connect( wxEVT_MOTION, #handler ); #nl
 			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -318,6 +371,7 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
 		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
 	</templates>
 
@@ -401,6 +455,8 @@ Written by
 		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
 		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">$name->Connect( wxEVT_CHAR_HOOK, #handler );</template>
 		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
 		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
@@ -421,6 +477,18 @@ Written by
 		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
 		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
 		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
 		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
 		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
@@ -431,10 +499,16 @@ Written by
 			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			this->Connect( wxEVT_MOTION, #handler ); #nl
 			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -453,6 +527,7 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
 		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
 	</templates>
 
@@ -524,6 +599,8 @@ Written by
 		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
 		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">$name->Connect( wxEVT_CHAR_HOOK, #handler );</template>
 		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
 		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
@@ -544,6 +621,18 @@ Written by
 		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
 		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
 		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
 		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
 		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
@@ -554,10 +643,16 @@ Written by
 			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			this->Connect( wxEVT_MOTION, #handler ); #nl
 			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -576,6 +671,7 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
 		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
 		<template name="evt_entry_OnWizardPageChanged">EVT_WIZARD_PAGE_CHANGED( wxID_ANY, #handler )</template>
 		<template name="evt_connect_OnWizardPageChanged">this->Connect( wxID_ANY, wxEVT_WIZARD_PAGE_CHANGED, #handler );</template>

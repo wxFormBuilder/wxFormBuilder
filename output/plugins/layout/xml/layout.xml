@@ -76,12 +76,18 @@ Written by
       <option name="wxHORIZONTAL" 	help="Align items horizontally"/>wxVERTICAL</property>
   </objectinfo>
 
-  <objectinfo class="wxWrapSizer" icon="sizer.xpm" type="sizer">
+  <objectinfo class="wxWrapSizer" icon="wrap_sizer.xpm" type="sizer">
 	<inherits class="sizer" />
     <property name="name" type="text" hidden="1">wSizer</property>
     <property name="orient" type="option">
       <option name="wxVERTICAL" 	help="Align items vertically"/>
       <option name="wxHORIZONTAL" 	help="Align items horizontally"/>wxHORIZONTAL</property>
+    <property name="flags" type="bitlist">
+      <option name="wxEXTEND_LAST_ON_EACH_LINE" help="The last item on each line will use any remaining space on that line"/>
+      <option name="wxREMOVE_LEADING_SPACES"    help="Removes any spacer elements from the beginning of a row"/>
+      <option name="wxWRAPSIZER_DEFAULT_FLAGS"  help="A combination of wxEXTEND_LAST_ON_EACH_LINE and wxREMOVE_LEADING_SPACES"/>
+      wxWRAPSIZER_DEFAULT_FLAGS
+    </property>
   </objectinfo>
 
   <objectinfo class="wxStaticBoxSizer" icon="staticbox_sizer.xpm" type="sizer">

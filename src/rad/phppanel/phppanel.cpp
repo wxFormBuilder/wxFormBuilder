@@ -102,10 +102,10 @@ void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
-	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 	font.SetFaceName( wxT( "Monospace" ) );
 #else
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
