@@ -3,8 +3,13 @@ output/bin/
 output/lib*/
 output/share/
 output/*.exe
+output/**/*.iobj
+output/**/*.ipdb
+output/**/*.pdb
 output/plugins/**/*.a
 output/plugins/**/*.dll
+output/plugins/**/*.exp
+output/plugins/**/*.lib
 sdk/lib/
 install/windows/source
 install/windows/*.exe
