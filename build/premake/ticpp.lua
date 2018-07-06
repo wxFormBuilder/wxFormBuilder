@@ -14,11 +14,13 @@ project "TiCPP"
     files               {"../../sdk/tinyxml/*.cpp", "../../sdk/tinyxml/*.h"}
     excludes            {"xmltest.cpp"}
     defines             {"TIXML_USE_TICPP"}
-    buildoptions        "-std=c++14"
 	
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
+
+    configuration "not vs*"
+        buildoptions        "-std=c++14"
 
     configuration "not windows"
         buildoptions    {"-fPIC"}

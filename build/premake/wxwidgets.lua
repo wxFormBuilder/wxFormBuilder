@@ -26,10 +26,6 @@ newoption  {
     description =   "Whether to use wxMediaCtrl in wxMedia library"
 }
 newoption  {
-    trigger     =   "disable-unicode",
-    description =   "Whether to use Unicode or ANSI build (wxWidgets 2.8 only)"
-}
-newoption  {
     trigger     =   "disable-monolithic",
     description =   "Whether to use wxWidgets as monolithic DLL (MSW only)"
 }
@@ -129,9 +125,6 @@ function wx_config(options)
 
 -- Unicode setup
     local useUnicode = "yes"
-    if _OPTIONS["disable-unicode"] and wxVersion < "2.9" then
-        useUnicode = "no"
-    end
 
 -- Unicode static build
     local useStatic = "no"
@@ -161,11 +154,8 @@ function wx_config(options)
 end
 
 function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs, wxUseWXConfig)
-    -- some options are not allowed for newer version of wxWidgets
-    if wxVersion > "2.8" then -- alphabetical comparison may fail...
-        wxDebugSuffix   = ""
-        wxUnicode       = "yes"
-    end
+    wxDebugSuffix   = ""
+    wxUnicode       = "yes"
 
     -- the environment variable WXWIN override wxRoot parameter
     if os.getenv('WXWIN') then wxRoot = os.getenv('WXWIN') end

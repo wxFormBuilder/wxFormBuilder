@@ -19,13 +19,9 @@ solution "wxFormBuilder-Solution"
     local wxver         = string.gsub( wxVersion, '%.', '' )
     location            ( "../../build/" .. wxVersion .. "/" .. _ACTION )
     BuildDir            = solution().location
-	CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
-
-if wxVersion < "2.9" then
-    DebugSuffix         = "d-" .. wxver
-else
+    CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
     DebugSuffix         = "-" .. wxver
-end
+
     os.chdir( BuildDir )
 
 --if wxCompiler == "gcc" and os.is("windows") then
@@ -64,12 +60,6 @@ end
     dofile( scriptDir .. "/ticpp.lua" )
     dofile( scriptDir .. "/plugin-interface.lua" )
 
-if wxVersion < "2.9" then
-	dofile( scriptDir .. "/wxflatnotebook.lua" )
-    dofile( scriptDir .. "/wxpropgrid.lua" )
-    dofile( scriptDir .. "/wxscintilla.lua" )
-	dofile( scriptDir .. "/plugins/wxadditions-mini.lua" )
-end
     dofile( scriptDir .. "/plugins/additional.lua" )
     dofile( scriptDir .. "/plugins/common.lua" )
     dofile( scriptDir .. "/plugins/containers.lua" )

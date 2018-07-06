@@ -18,7 +18,6 @@ project "additional-components-plugin"
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
-    buildoptions        "-std=c++14"
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
 if wxUseMediaCtrl then
@@ -30,6 +29,9 @@ end
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
 	
+    configuration "not vs*"
+        buildoptions        "-std=c++14"
+
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
 
@@ -42,5 +44,7 @@ end
         wx_config       { Libs=libs, Debug="yes" }
 
     configuration "Release"
-        buildoptions    {"-fno-strict-aliasing"}
         wx_config       { Libs=libs }
+
+    configuration {"not vs*", "Release"}
+        buildoptions    {"-fno-strict-aliasing"}

@@ -9,7 +9,6 @@
 -----------------------------------------------------------------------------
 project "wxFormBuilder"
     kind                    "WindowedApp"
-    buildoptions            "-std=c++14"
     files
     {
         "../../src/**.h", "../../src/**.hpp", "../../src/**.hh",
@@ -25,37 +24,17 @@ project "wxFormBuilder"
         "../../src",
         "../../sdk/tinyxml", "../../sdk/plugin_interface"
     }
-if wxVersion < "2.9" then
-    includedirs
-    {
-        "../../src/controls/include",
-    }
-end
     defines                 {"NO_GCC_PRAGMA", "TIXML_USE_TICPP", "APPEND_WXVERSION"}
     flags                   {"ExtraWarnings"}
     libdirs                 {"../../sdk/lib"}
     links                   {"TiCPP", "plugin-interface"}
 
     local libs = ""
-if wxVersion < "2.9" then
-	defines					{"USE_FLATNOTEBOOK"}
-    links                   {"wxPropertyGrid", "wxScintilla", "wxFlatNotebook"}
-else
-    excludes
-    {
-        "../../src/controls/include/wx/propgrid/**.h",
-        "../../src/controls/include/wx/wxScintilla/**.h",
-        "../../src/controls/include/wx/wxFlatNotebook/**.h",
-        "../../src/controls/src/propgrid/**.cpp",
-        "../../src/controls/src/wxScintilla/**.cpp",
-        "../../src/controls/src/wxFlatNotebook/**.cpp"
-    }
 	if wxUseMediaCtrl then
 		libs	= "std,stc,richtext,propgrid,aui,ribbon,media"
 	else
 		libs	= "std,stc,richtext,propgrid,aui,ribbon"
 	end
-end
 
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
@@ -87,6 +66,9 @@ end
 			linkoptions( "-Wl,-rpath," .. rpath )
 		end
 	end
+
+    configuration "not vs*"
+        buildoptions        "-std=c++14"
 
     configuration "macosx"
         linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}
@@ -123,5 +105,7 @@ end
         wx_config           { Libs=libs, Debug="yes" }
 
     configuration "Release"
-        buildoptions        {"-fno-strict-aliasing"}
         wx_config           { Libs=libs }
+
+    configuration {"not vs*", "Release"}
+        buildoptions    {"-fno-strict-aliasing"}
