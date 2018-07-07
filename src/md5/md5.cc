@@ -120,11 +120,11 @@ void MD5::update(const uint8_t* input, uint32_t input_length) {
 
 void MD5::update(FILE *file){
 
-  unsigned char buffer[1024];
-  int len;
+  unsigned char fileBuffer[1024];
+  size_t len;
 
-  while ((len=fread(buffer, 1, 1024, file)))
-    update(buffer, len);
+  while ((len=fread(fileBuffer, 1, 1024, file)))
+    update(fileBuffer, len);
 
   fclose (file);
 
@@ -140,13 +140,13 @@ void MD5::update(FILE *file){
 
 void MD5::update(istream& stream){
 
-  unsigned char buffer[1024];
-  int len;
+  unsigned char streamBuffer[1024];
+  std::streamsize len;
 
   while (stream.good()){
-    stream.read((char*)buffer, 1024); // note that return value of read is unusable.
+    stream.read((char*)streamBuffer, 1024); // note that return value of read is unusable.
     len=stream.gcount();
-    update(buffer, len);
+    update(streamBuffer, static_cast<unsigned int>(len));
   }
 
 }
@@ -161,13 +161,13 @@ void MD5::update(istream& stream){
 
 void MD5::update(ifstream& stream){
 
-  unsigned char buffer[1024];
-  int len;
+  unsigned char streamBuffer[1024];
+  std::streamsize len;
 
   while (stream.good()){
-    stream.read((char*)buffer, 1024); // note that return value of read is unusable.
+    stream.read((char*)streamBuffer, 1024); // note that return value of read is unusable.
     len=stream.gcount();
-    update(buffer, len);
+    update(streamBuffer, static_cast<unsigned int>(len));
   }
 
 }

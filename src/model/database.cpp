@@ -317,16 +317,16 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			for (unsigned int i=0; !created && i < parentType->GetChildTypeCount(); i++)
 			{
 				PObjectType childType = parentType->GetChildType(i);
-				int max = childType->FindChildType(objType, aui);
+				int childMax = childType->FindChildType(objType, aui);
 
-				if (childType->IsItem() && max != 0)
+				if (childType->IsItem() && childMax != 0)
 				{
-					max = parentType->FindChildType(childType, aui);
+					childMax = parentType->FindChildType(childType, aui);
 
 					// si el tipo es un item y además el tipo del objeto a crear
 					// puede ser hijo del tipo del item vamos a intentar crear la
 					// instancia del item para crear el objeto como hijo de este
-					if (max < 0 || CountChildrenWithSameType(parent, childType) < max)
+					if (childMax < 0 || CountChildrenWithSameType(parent, childType) < childMax)
 					{
 						// No hay problemas para crear el item debajo de parent
 						PObjectBase item = NewObject(GetObjectInfo(childType->GetName()));
@@ -800,13 +800,13 @@ void ObjectDatabase::SetupPackage(const wxString& file,
 		ticpp::Element* elem_obj = root->FirstChildElement( OBJINFO_TAG, false );
 		while ( elem_obj )
 		{
-			std::string wxver;
-			elem_obj->GetAttributeOrDefault( WXVERSION_TAG, &wxver, "" );
-			if( wxver != "" )
+			std::string wxver_obj;
+			elem_obj->GetAttributeOrDefault(WXVERSION_TAG, &wxver_obj, "");
+			if (!wxver_obj.empty())
 			{
 				long wxversion = 0;
 				// skip widgets supported by higher wxWidgets version than used for the build
-				if( (! _WXSTR(wxver).ToLong( &wxversion ) ) || (wxversion > wxVERSION_NUMBER) )
+				if((!_WXSTR(wxver_obj).ToLong(&wxversion)) || (wxversion > wxVERSION_NUMBER))
 				{
 					elem_obj = elem_obj->NextSiblingElement( OBJINFO_TAG, false );
 					continue;

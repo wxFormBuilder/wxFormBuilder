@@ -55,9 +55,9 @@ It will take care of the conversion	and throwing the exception.
 #define THROW_WXFBEX( message )																								\
 	{																														\
 	wxString hopefullyThisNameWontConflictWithOtherVariables;																\
-	wxString file( __FILE__, wxConvUTF8 );																					\
-	file = file.substr( file.find_last_of( wxT("\\/") ) + 1 );																\
-	hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << file << wxT("@");							\
+	wxString hopefullyUniqueFile(__FILE__, wxConvUTF8);																		\
+	hopefullyUniqueFile = hopefullyUniqueFile.substr(hopefullyUniqueFile.find_last_of(wxT("\\/")) + 1);						\
+	hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << hopefullyUniqueFile << wxT("@");				\
 	hopefullyThisNameWontConflictWithOtherVariables << wxString::Format( wxT("%i"), __LINE__ ) << wxT(">");					\
 	throw wxFBException( hopefullyThisNameWontConflictWithOtherVariables );													\
 	}
