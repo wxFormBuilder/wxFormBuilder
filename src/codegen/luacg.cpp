@@ -1060,10 +1060,6 @@ void LuaCodeGenerator::AddUniqueIncludes( const wxString& include, std::vector< 
 		line.Trim( false );
 		line.Trim( true );
 
-
-			includes->push_back( line );
-			continue;
-
 		// If it is an include, it must be unique to be written
 		std::vector< wxString >::iterator it = std::find( includes->begin(), includes->end(), line );
 		if ( includes->end() == it )
