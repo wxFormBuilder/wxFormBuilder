@@ -48,6 +48,7 @@ documentation and/or software.
 #include "md5.hh"
 
 #include <assert.h>
+#include <cstring>
 #include <string>
 #include <iostream>
 
@@ -94,7 +95,7 @@ void MD5::update ( const uint1 *input, uint4 input_length) {
   // Transform as many times as possible.
   if (input_length >= buffer_space) { // ie. we have enough to fill the buffer
     // fill the rest of the buffer and transform
-    memcpy (buffer + buffer_index, input, buffer_space);
+		std::memcpy(buffer + buffer_index, input, buffer_space);
     transform (buffer);
 
     // now, transform each 64-byte piece of the input, bypassing the buffer
@@ -109,7 +110,7 @@ void MD5::update ( const uint1 *input, uint4 input_length) {
 
 
   // and here we do the buffering:
-  memcpy(buffer+buffer_index, input+input_index, input_length-input_index);
+	std::memcpy(buffer+buffer_index, input+input_index, input_length-input_index);
 }
 
 
@@ -210,7 +211,7 @@ void MD5::finalize (){
   encode (digest, state, 16);
 
   // Zeroize sensitive information
-  memset (buffer, 0, sizeof(*buffer));
+	std::memset(buffer, 0, sizeof(*buffer));
 
   finalized=1;
 
@@ -257,7 +258,7 @@ unsigned char *MD5::raw_digest(){
     return ( (unsigned char*) "");
   }
 
-  memcpy(s, digest, 16);
+	std::memcpy(s, digest, 16);
   return s;
 }
 
@@ -427,7 +428,7 @@ void MD5::transform (const uint1 block[64]){
   state[3] += d;
 
   // Zeroize sensitive information.
-  memset(reinterpret_cast<uint1*>(x), 0, sizeof(x));
+	std::memset(x, 0, sizeof(x));
 
 }
 
@@ -456,28 +457,6 @@ void MD5::decode (uint4 *output, const uint1 *input, uint4 len){
 }
 
 
-
-
-
-// Note: Replace "for loop" with standard memcpy if possible.
-void MD5::memcpy (uint1 *output, const uint1 *input, uint4 len){
-
-  unsigned int i;
-
-  for (i = 0; i < len; i++)
-    output[i] = input[i];
-}
-
-
-
-// Note: Replace "for loop" with standard memset if possible.
-void MD5::memset (uint1 *output, uint1 value, uint4 len){
-
-  unsigned int i;
-
-  for (i = 0; i < len; i++)
-    output[i] = value;
-}
 
 
 
