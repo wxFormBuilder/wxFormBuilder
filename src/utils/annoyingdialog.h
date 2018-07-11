@@ -9,6 +9,7 @@
 * Id: annoyingdialog.cpp 4204 2007-07-02 12:30:47Z mandrav
 * HeadURL: http://svn.berlios.de/svnroot/repos/codeblocks/trunk/src/sdk/annoyingdialog.cpp
 */
+#pragma once
 
 #include <wx/dialog.h>
 #include <wx/string.h>

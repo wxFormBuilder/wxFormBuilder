@@ -21,6 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+#pragma once
+
 #include "utils/wxfbdefs.h"
 
 class wxWindow;
