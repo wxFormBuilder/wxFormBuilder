@@ -201,9 +201,7 @@ FileCodeWriter::~FileCodeWriter()
 
 void FileCodeWriter::WriteBuffer()
 {
-	#ifdef __WXMSW__
-		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
-	#endif
+	const static unsigned char MICROSOFT_BOM[3] = { 0xEF, 0xBB, 0xBF };
 
 	// Compare buffer with existing file (if any) to determine if
 	// writing the file is necessary
@@ -218,12 +216,9 @@ void FileCodeWriter::WriteBuffer()
 		unsigned char* diskDigest = diskHash.raw_digest();
 
 		MD5 bufferHash;
-		#ifdef __WXMSW__
-			if ( m_useMicrosoftBOM )
-			{
-				bufferHash.update( microsoftBOM, 3 );
-			}
-		#endif
+		if (m_useMicrosoftBOM) {
+			bufferHash.update(MICROSOFT_BOM, 3);
+		}
 		const std::string& data = m_useUtf8 ? _STDSTR( m_buffer ) : _ANSISTR( m_buffer );
 
 		if (!m_useUtf8) buf = data;
@@ -250,12 +245,9 @@ void FileCodeWriter::WriteBuffer()
 			return;
 		}
 
-		#ifdef __WXMSW__
-		if ( m_useMicrosoftBOM )
-		{
-			file.Write( microsoftBOM, 3 );
+		if (m_useMicrosoftBOM) {
+			file.Write(MICROSOFT_BOM, 3);
 		}
-		#endif
 
 		if (!m_useUtf8)
             file.Write( buf.c_str(), buf.length() );
