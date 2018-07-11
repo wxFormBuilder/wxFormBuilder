@@ -48,11 +48,7 @@
 
 #include <wx/stc/stc.h>
 
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
 #include <wx/aui/auibook.h>
-#endif
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
@@ -70,43 +66,22 @@ END_EVENT_TABLE()
 CppPanel::CppPanel( wxWindow *parent, int id )
 :
 wxPanel( parent, id )
-#ifdef USE_FLATNOTEBOOK
-,m_icons( new wxFlatNotebookImageList )
-#endif
 {
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-#ifdef USE_FLATNOTEBOOK
-	long nbStyle;
-	wxConfigBase* config = wxConfigBase::Get();
-	config->Read( wxT("/mainframe/editor/cpp/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
-
-	m_notebook = new wxFlatNotebook( this, -1, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
-	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
-
-	// Set notebook icons
-	m_icons->Add( AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
-	m_icons->Add( AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
-	m_notebook->SetImageList( m_icons );
-#else
 	m_notebook = new wxAuiNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
 	m_notebook->SetArtProvider( new AuiTabArt() );
-#endif
 
 	m_cppPanel = new CodeEditor( m_notebook, -1 );
 	InitStyledTextCtrl( m_cppPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_cppPanel, wxT( "cpp" ), false, 0 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
-#endif
 
 	m_hPanel = new CodeEditor( m_notebook, -1 );
 	InitStyledTextCtrl( m_hPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_hPanel, wxT( "h" ), false, 1 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );
-#endif
 
 	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
 
@@ -123,11 +98,6 @@ wxPanel( parent, id )
 CppPanel::~CppPanel()
 {
 	AppData()->RemoveHandler( this->GetEventHandler() );
-#ifdef USE_FLATNOTEBOOK
-	delete m_icons;
-	wxConfigBase *config = wxConfigBase::Get();
-	config->Write( wxT("/mainframe/editor/cpp/notebook_style"), m_notebook->GetWindowStyleFlag() );
-#endif
 }
 
 void CppPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
@@ -176,11 +146,7 @@ void CppPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 
 void CppPanel::OnFind( wxFindDialogEvent& event )
 {
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebook* languageBook = wxDynamicCast( this->GetParent(), wxFlatNotebook );
-#else
 	wxAuiNotebook* languageBook = wxDynamicCast( this->GetParent(), wxAuiNotebook );
-#endif
 	if ( NULL == languageBook )
 	{
 		return;
@@ -198,11 +164,7 @@ void CppPanel::OnFind( wxFindDialogEvent& event )
 		return;
 	}
 
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebook* notebook = wxDynamicCast( m_cppPanel->GetParent(), wxFlatNotebook );
-#else
 	wxAuiNotebook* notebook = wxDynamicCast( m_cppPanel->GetParent(), wxAuiNotebook );
-#endif
 	if ( NULL == notebook )
 	{
 		return;

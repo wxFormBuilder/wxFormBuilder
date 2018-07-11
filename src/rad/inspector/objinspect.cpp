@@ -86,21 +86,8 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	AppData()->AddHandler( this->GetEventHandler() );
 	m_currentSel = PObjectBase();
 
-#ifdef USE_FLATNOTEBOOK
-	long nbStyle;
-	wxConfigBase* config = wxConfigBase::Get();
-	config->Read( wxT("/mainframe/objectInspector/notebook_style"), &nbStyle, wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG | wxFNB_DROPDOWN_TABS_LIST | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
-
-	m_nb = new wxFlatNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
-	m_nb->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
-
-	m_icons.Add( AppBitmaps::GetBitmap( wxT("properties"), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT("events"), 16 ) );
-	m_nb->SetImageList( &m_icons );
-#else
 	m_nb = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
 	m_nb->SetArtProvider( new AuiTabArt() );
-#endif
 
 	// The colour of property grid description looks ugly if we don't set this colour
 	m_nb->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_3DFACE));
@@ -115,10 +102,8 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	m_nb->AddPage( m_pg, _("Properties"), false, 0 );
 	m_nb->AddPage( m_eg, _("Events"),     false, 1 );
 
-#ifndef USE_FLATNOTEBOOK
 	m_nb->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT("properties"), 16 ) );
 	m_nb->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT("events"), 16 ) );
-#endif
 
 	wxBoxSizer* topSizer = new wxBoxSizer( wxVERTICAL );
 	topSizer->Add( m_nb, 1, wxALL | wxEXPAND, 0 );
@@ -139,9 +124,6 @@ void ObjectInspector::SavePosition()
 	// Save Layout
 	wxConfigBase* config = wxConfigBase::Get();
 	config->Write( wxT("/mainframe/objectInspector/DescBoxHeight" ), m_pg->GetDescBoxHeight() );
-#ifdef USE_FLATNOTEBOOK
-	config->Write( wxT("/mainframe/objectInspector/notebook_style"), m_nb->GetWindowStyleFlag() );
-#endif
 }
 
 void ObjectInspector::Create( bool force )

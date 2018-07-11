@@ -2291,11 +2291,7 @@ void ApplicationData::NewProject()
 
 void ApplicationData::GenerateCode( bool panelOnly, bool noDelayed )
 {
-#ifdef USE_FLATNOTEBOOK
-	NotifyCodeGeneration( panelOnly );
-#else
 	NotifyCodeGeneration( panelOnly, !noDelayed );
-#endif
 }
 
 void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString className, wxString path, wxString file )

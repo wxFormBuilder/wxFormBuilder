@@ -33,11 +33,7 @@
     #error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
 #endif
 
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
 #include <wx/aui/auibook.h>
-#endif
 
 #include <wx/propgrid/property.h>
 #include <wx/propgrid/manager.h>
@@ -70,12 +66,7 @@ private:
 	wxString m_strSelPropItem;
 	wxString m_pageName;
 
-#ifdef USE_FLATNOTEBOOK
-    wxFlatNotebook* m_nb;
-    wxFlatNotebookImageList m_icons;
-#else
 	wxAuiNotebook* m_nb;
-#endif
 
     wxPropertyGridManager* m_pg;
     wxPropertyGridManager* m_eg;

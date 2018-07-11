@@ -27,11 +27,7 @@
 #define __PALETTE__
 
 #include <wx/wx.h>
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
 #include <wx/aui/auibook.h>
-#endif
 #include <wx/spinbutt.h>
 #include <vector>
 #include <utils/wxfbdefs.h>
@@ -44,12 +40,7 @@ class wxFbPalette : public wxPanel
 {
  private:
   ToolbarVector m_tv;
-#ifdef USE_FLATNOTEBOOK
-  wxFlatNotebook *m_notebook;
-  wxFlatNotebookImageList m_icons;
-#else
   wxAuiNotebook *m_notebook;
-#endif
   static wxWindowID nextId;
   std::vector<int> m_posVector;
 

@@ -27,11 +27,7 @@
 #define __MAIN_FRAME__
 
 #include "wx/wx.h"
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
 #include <wx/aui/auibook.h>
-#endif
 #include "wx/splitter.h"
 #include <wx/fdrepdlg.h>
 
@@ -76,12 +72,7 @@ class MainFrame : public wxFrame
   wxString m_rightSplitterType;
 
   //wxFrameManager m_mgr;
-#ifdef USE_FLATNOTEBOOK
-  wxFlatNotebook *m_notebook;
-  wxFlatNotebookImageList m_icons;
-#else
   wxAuiNotebook *m_notebook;
-#endif
   wxFbPalette *m_palette;
   ObjectTree *m_objTree;
   ObjectInspector *m_objInsp;
@@ -157,11 +148,7 @@ class MainFrame : public wxFrame
   void OnGenInhertedClass(wxCommandEvent& e);
   void OnWindowSwap(wxCommandEvent& e);
 
-#ifdef USE_FLATNOTEBOOK
-  void OnFlatNotebookPageChanged( wxFlatNotebookEvent& event );
-#else
   void OnAuiNotebookPageChanged( wxAuiNotebookEvent& event );
-#endif
 
   void OnProjectLoaded( wxFBEvent& event );
   void OnProjectSaved( wxFBEvent& event );

@@ -33,9 +33,6 @@
 #include <wx/xrc/xmlres.h>
 #include <wx/clipbrd.h>
 #include <wx/msgout.h>
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#endif
 #include "utils/wxfbexception.h"
 #include <memory>
 #include "maingui.h"
@@ -329,9 +326,6 @@ bool MyApp::OnInit()
 int MyApp::OnExit()
 {
 	MacroDictionary::Destroy();
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebook::CleanUp();
-#endif
 	AppDataDestroy();
 
 	if( !wxTheClipboard->IsOpened() )
