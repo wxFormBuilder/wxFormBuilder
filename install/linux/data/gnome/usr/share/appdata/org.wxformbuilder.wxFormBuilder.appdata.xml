@@ -19,6 +19,7 @@
     <binary>wxformbuilder</binary>
   </provides>
   <releases>
+    <release version="3.8.0" timestamp="1531309238"/>
     <release version="3.7.0" timestamp="1527589991"/>
     <release version="3.6.2" timestamp="1516697509"/>
   </releases>

@@ -963,7 +963,7 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v3.7.0"),
+	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v3.8.0"),
 	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str()));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
