@@ -53,7 +53,7 @@ Written by
   <templates class="wxWrapSizer">
     <template name="declaration">wxWrapSizer* $name;</template>
     <template name="include">@#include &lt;wx/wrapsizer.h&gt;</template>
-    <template name="construction">$name = new wxWrapSizer( $orient ); #nl</template>
+    <template name="construction">$name = new wxWrapSizer( $orient, $flags ); #nl</template>
   </templates>
 
   <templates class="wxStaticBoxSizer">

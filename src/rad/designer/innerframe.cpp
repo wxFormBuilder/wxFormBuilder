@@ -198,7 +198,7 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 
 	int fontSize = 72 * txtHeight / ppi.GetHeight();
 
-	font.SetWeight( wxBOLD );
+	font.SetWeight(wxFONTWEIGHT_BOLD);
 	dc.SetTextForeground( *wxWHITE );
 
 	// text vertical adjustment
@@ -334,7 +334,7 @@ void wxInnerFrame::OnMouseMotion( wxMouseEvent& e )
 	if ( m_sizing != NONE )
 	{
 		wxScreenDC dc;
-		wxPen pen( *wxBLACK, 1, wxDOT );
+		wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
 
 		dc.SetPen( pen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
@@ -439,7 +439,7 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 		ReleaseMouse();
 
 		wxScreenDC dc;
-		wxPen pen( *wxBLACK, 1, wxDOT );
+		wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
 
 		dc.SetPen( pen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );

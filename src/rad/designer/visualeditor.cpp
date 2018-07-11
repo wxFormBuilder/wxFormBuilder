@@ -1402,7 +1402,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 		}*/
 		size = m_selSizer->GetSize();
 
-		wxPen bluePen( *wxBLUE, 1, wxSOLID );
+		wxPen bluePen(*wxBLUE, 1, wxPENSTYLE_SOLID);
 		dc.SetPen( bluePen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
 		PObjectBase sizerParent = object->FindNearAncestorByBaseClass( wxT("sizer") );
@@ -1446,7 +1446,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 
 		if ( shown )
 		{
-			wxPen redPen( *wxRED, 1, wxSOLID );
+			wxPen redPen(*wxRED, 1, wxPENSTYLE_SOLID);
 			dc.SetPen( redPen );
 			dc.SetBrush( *wxTRANSPARENT_BRUSH );
 			DrawRectangle( dc, point, size, object );

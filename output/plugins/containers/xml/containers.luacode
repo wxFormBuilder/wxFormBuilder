@@ -183,6 +183,12 @@ Lua code generation written by
 		<template name="evt_connect_OnAuiNotebookEndDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookDragMotion">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnAuiNotebookAllowDND">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookDragDone">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_DONE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleDown">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleUp">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabRightDown">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabRightUp">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookBGDClick">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
 	<templates class="auinotebookpage">

@@ -115,10 +115,12 @@ Lua code generation written by
     <template name="include"/><!--import wx.calendar</template>-->
 	<template name="evt_connect_OnCalendar">#utbl$name:Connect( wx.wxEVT_CALENDAR_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnCalendarSelChanged">#utbl$name:Connect( wx.wxEVT_CALENDAR_SEL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarPageChanged">#utbl$name:Connect( wx.wxEVT_CALENDAR_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnCalendarDay">#utbl$name:Connect( wx.wxEVT_CALENDAR_DAY_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnCalendarMonth">#utbl$name:Connect( wx.wxEVT_CALENDAR_MONTH_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnCalendarYear">#utbl$name:Connect( wx.wxEVT_CALENDAR_YEAR_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	<template name="evt_connect_OnCalendarWeekDayClicked">#utbl$name:Connect( wx.wxEVT_CALENDAR_WEEKDAY_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarWeekClicked">#utbl$name:Connect( wx.wxEVT_CALENDAR_WEEK_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -187,6 +189,8 @@ Lua code generation written by
 	<template name="settings">
     	#nl #utbl$name:ShowHidden( $show_hidden )
 	</template>
+	<template name="evt_connect_OnDirctrlSelectionChanged">#utbl$name:Connect( wx.wxEVT_DIRCTRL_SELECTIONCHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnDirctrlFileActivated">#utbl$name:Connect( wx.wxEVT_DIRCTRL_FILEACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
 
   <templates class="wxSearchCtrl">

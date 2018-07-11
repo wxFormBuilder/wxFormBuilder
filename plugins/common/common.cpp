@@ -203,6 +203,35 @@ public:
 			button->SetDefault();
 		}
 
+		if (!obj->IsNull(_("bitmap"))) {
+			button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
+		}
+
+		if (!obj->IsNull(_("disabled"))) {
+			button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
+		}
+
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
+		}
+
+		if (!obj->IsNull(_("focus"))) {
+			button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
+		}
+
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
+		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
 		return button;
 	}
 
@@ -212,6 +241,25 @@ public:
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		if (!obj->IsNull(_("disabled"))) {
+			xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("focus"))) {
+			xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		}
 		return xrc.GetXrcObject();
 	}
 
@@ -221,6 +269,13 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		return filter.GetXfbObject();
 	}
 };
@@ -247,9 +302,8 @@ public:
 			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
 		}
 
-		if ( !obj->IsNull( _("selected") ) )
-		{
-			button->SetBitmapSelected( obj->GetPropertyAsBitmap( _("selected") ) );
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
 		}
 
 		if ( !obj->IsNull( _("focus") ) )
@@ -257,10 +311,19 @@ public:
 			button->SetBitmapFocus( obj->GetPropertyAsBitmap( _("focus") ) );
 		}
 
-		if ( !obj->IsNull( _("hover") ) )
-		{
-			button->SetBitmapHover( obj->GetPropertyAsBitmap( _("hover") ) );
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
 		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
 		return button;
 	}
 
@@ -273,17 +336,21 @@ public:
 		{
 			xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
 		}
-		if ( !obj->IsNull( _("selected") ) )
-		{
-			xrc.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
 		}
 		if ( !obj->IsNull( _("focus") ) )
 		{
 			xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
 		}
-		if ( !obj->IsNull( _("hover") ) )
-		{
-			xrc.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		}
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
@@ -295,9 +362,11 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 		filter.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
-		filter.AddProperty(_("selected"),_("selected"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
 		filter.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
-		filter.AddProperty(_("hover"),_("hover"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
@@ -1704,7 +1773,11 @@ MACRO(wxBU_TOP)
 MACRO(wxBU_RIGHT)
 MACRO(wxBU_BOTTOM)
 MACRO(wxBU_EXACTFIT)
-MACRO(wxBU_AUTODRAW)
+MACRO(wxBU_NOTEXT)
+MACRO(wxLEFT)
+MACRO(wxRIGHT)
+MACRO(wxTOP)
+MACRO(wxBOTTOM)
 
 // wxStaticText
 MACRO(wxALIGN_LEFT)
@@ -1732,6 +1805,8 @@ MACRO(wxTE_PROCESS_TAB)
 MACRO(wxTE_RICH2)
 MACRO(wxTE_RIGHT)
 MACRO(wxTE_WORDWRAP)
+MACRO(wxTE_BESTWRAP)
+MACRO(wxTE_NO_VSCROLL)
 
 // wxStaticLine
 MACRO(wxLI_HORIZONTAL)
@@ -1762,6 +1837,7 @@ MACRO(wxLB_EXTENDED)
 MACRO(wxLB_HSCROLL)
 MACRO(wxLB_ALWAYS_SB)
 MACRO(wxLB_NEEDED_SB)
+MACRO(wxLB_NO_SB)
 MACRO(wxLB_SORT)
 
 // wxRadioBox
@@ -1774,9 +1850,11 @@ MACRO(wxRB_SINGLE)
 
 // wxStatusBar
 MACRO(wxSTB_SIZEGRIP)
-
-// wxMenuBar
-MACRO(wxMB_DOCKABLE)
+MACRO(wxSTB_SHOW_TIPS)
+MACRO(wxSTB_ELLIPSIZE_START)
+MACRO(wxSTB_ELLIPSIZE_MIDDLE)
+MACRO(wxSTB_ELLIPSIZE_END)
+MACRO(wxSTB_DEFAULT_STYLE)
 
 // wxMenuItem & wxTool
 MACRO(wxITEM_NORMAL)
@@ -1794,6 +1872,10 @@ MACRO(wxTB_NODIVIDER)
 MACRO(wxTB_NOALIGN)
 MACRO(wxTB_HORZ_LAYOUT)
 MACRO(wxTB_HORZ_TEXT)
+MACRO(wxTB_NO_TOOLTIPS)
+MACRO(wxTB_BOTTOM)
+MACRO(wxTB_RIGHT)
+MACRO(wxTB_DEFAULT_STYLE)
 
 // wxAuiToolBar
 MACRO(wxAUI_TB_TEXT)
@@ -1803,6 +1885,7 @@ MACRO(wxAUI_TB_GRIPPER)
 MACRO(wxAUI_TB_OVERFLOW)
 MACRO(wxAUI_TB_VERTICAL)
 MACRO(wxAUI_TB_HORZ_LAYOUT)
+MACRO(wxAUI_TB_HORIZONTAL)
 MACRO(wxAUI_TB_PLAIN_BACKGROUND)
 MACRO(wxAUI_TB_HORZ_TEXT)
 MACRO(wxAUI_TB_DEFAULT_STYLE)
@@ -1812,6 +1895,8 @@ MACRO(wxSL_AUTOTICKS)
 MACRO(wxSL_BOTTOM)
 MACRO(wxSL_HORIZONTAL)
 MACRO(wxSL_INVERSE)
+MACRO(wxSL_MIN_MAX_LABELS)
+MACRO(wxSL_VALUE_LABEL)
 MACRO(wxSL_LABELS)
 MACRO(wxSL_LEFT)
 MACRO(wxSL_RIGHT)

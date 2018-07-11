@@ -37,6 +37,18 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnHibernate">@$this->Disconnect( wxEVT_HIBERNATE );</template>
 		<template name="evt_connect_OnIconize">@$this->Connect( wxEVT_ICONIZE, #handler );</template>
 		<template name="evt_disconnect_OnIconize">@$this->Disconnect( wxEVT_ICONIZE );</template>
+		<template name="evt_connect_OnMaximize">@$this->Connect( wxEVT_MAXIMIZE, #handler );</template>
+		<template name="evt_disconnect_OnMaximize">@$this->Disconnect( wxEVT_MAXIMIZE );</template>
+		<template name="evt_connect_OnMove">@$this->Connect( wxEVT_MOVE, #handler );</template>
+		<template name="evt_disconnect_OnMove">@$this->Disconnect( wxEVT_MOVE );</template>
+		<template name="evt_connect_OnMoving">@$this->Connect( wxEVT_MOVING, #handler );</template>
+		<template name="evt_disconnect_OnMoving">@$this->Disconnect( wxEVT_MOVING );</template>
+		<template name="evt_connect_OnMoveStart">@$this->Connect( wxEVT_MOVE_START, #handler );</template>
+		<template name="evt_disconnect_OnMoveStart">@$this->Disconnect( wxEVT_MOVE_START );</template>
+		<template name="evt_connect_OnMoveEnd">@$this->Connect( wxEVT_MOVE_END, #handler );</template>
+		<template name="evt_disconnect_OnMoveEnd">@$this->Disconnect( wxEVT_MOVE_END );</template>
+		<template name="evt_connect_OnShow">@$this->Connect( wxEVT_SHOW, #handler );</template>
+		<template name="evt_disconnect_OnShow">@$this->Disconnect( wxEVT_SHOW );</template>
 		<template name="evt_connect_OnIdle">@$this->Connect( wxEVT_IDLE, #handler );</template>
 		<template name="evt_disconnect_OnIdle">@$this->Disconnect( wxEVT_IDLE );</template>
 	</templates>
@@ -50,10 +62,10 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnAuiPaneMaximize">@$this->Disconnect( wxEVT_AUI_PANE_MAXIMIZE );</template>
 		<template name="evt_connect_OnAuiPaneRestore">@$this->Connect( wxEVT_AUI_PANE_RESTORE, #handler );</template>
 		<template name="evt_disconnect_OnAuiPaneRestore">@$this->Disconnect( wxEVT_AUI_PANE_RESTORE );</template>
+		<template name="evt_connect_OnAuiPaneActivated">@$this->Connect( wxEVT_AUI_PANE_ACTIVATED, #handler );</template>
+		<template name="evt_disconnect_OnAuiPaneActivated">@$this->Disconnect( wxEVT_AUI_PANE_ACTIVATED );</template>
 		<template name="evt_connect_OnAuiRender">@$this->Connect( wxEVT_AUI_RENDER, #handler );</template>
 		<template name="evt_disconnect_OnAuiRender">@$this->Disconnect( wxEVT_AUI_RENDER );</template>
-		<template name="evt_connect_OnAuiFindManager">@$this->Connect( wxEVT_AUI_FIND_MANAGER, #handler );</template>
-		<template name="evt_disconnect_OnAuiFindManager">@$this->Disconnect( wxEVT_AUI_FIND_MANAGER );</template>
 	</templates>
   
 	<templates class="Frame">
@@ -123,6 +135,8 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnEnterWindow">@$this->Disconnect( wxEVT_ENTER_WINDOW );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
 		<template name="evt_disconnect_OnEraseBackground">@$this->Disconnect( wxEVT_ERASE_BACKGROUND );</template>
+		<template name="evt_connect_OnCharHook">@$this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_disconnect_OnCharHook">@$this->Disconnect( wxEVT_CHAR_HOOK );</template>
 		<template name="evt_connect_OnKeyDown">@$this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnKeyDown">@$this->Disconnect( wxEVT_KEY_DOWN );</template>
 		<template name="evt_connect_OnKeyUp">@$this->Connect( wxEVT_KEY_UP, #handler );</template>
@@ -143,6 +157,18 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">@$this->Disconnect( wxEVT_MIDDLE_DOWN );</template>
 		<template name="evt_connect_OnMiddleUp">@$this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
 		<template name="evt_disconnect_OnMiddleUp">@$this->Disconnect( wxEVT_MIDDLE_UP );</template>
+		<template name="evt_connect_OnAux1DClick">@$this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux1DClick">@$this->Disconnect( wxEVT_AUX1_DCLICK );</template>
+		<template name="evt_connect_OnAux1Down">@$this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux1Down">@$this->Disconnect( wxEVT_AUX1_DOWN );</template>
+		<template name="evt_connect_OnAux1Up">@$this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux1Up">@$this->Disconnect( wxEVT_AUX1_UP );</template>
+		<template name="evt_connect_OnAux2DClick">@$this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux2DClick">@$this->Disconnect( wxEVT_AUX2_DCLICK );</template>
+		<template name="evt_connect_OnAux2Down">@$this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux2Down">@$this->Disconnect( wxEVT_AUX2_DOWN );</template>
+		<template name="evt_connect_OnAux2Up">@$this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux2Up">@$this->Disconnect( wxEVT_AUX2_UP );</template>
 		<template name="evt_connect_OnMotion">@$this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_disconnect_OnMotion">@$this->Disconnect( wxEVT_MOTION );</template>
 		<template name="evt_connect_OnMouseEvents">@$this->Connect( wxEVT_MOUSE, #handler );</template>
@@ -153,10 +179,16 @@ PHP code generation writen by
 			@$this->Disconnect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOTION, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOUSEWHEEL, #handler );
@@ -168,10 +200,16 @@ PHP code generation writen by
 			@$this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Connect( wxEVT_MOTION, #handler ); #nl
 			@$this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -262,6 +300,8 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnEnterWindow">@$this->Disconnect( wxEVT_ENTER_WINDOW );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
 		<template name="evt_disconnect_OnEraseBackground">@$this->Disconnect( wxEVT_ERASE_BACKGROUND );</template>
+		<template name="evt_connect_OnCharHook">@$this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_disconnect_OnCharHook">@$this->Disconnect( wxEVT_CHAR_HOOK );</template>
 		<template name="evt_connect_OnKeyDown">@$this->Connect( wxEVT_KEY_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnKeyDown">@$this->Disconnect( wxEVT_KEY_DOWN );</template>
 		<template name="evt_connect_OnKeyUp">@$this->Connect( wxEVT_KEY_UP, #handler );</template>
@@ -282,6 +322,18 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">@$this->Disconnect( wxEVT_MIDDLE_DOWN );</template>
 		<template name="evt_connect_OnMiddleUp">@$this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
 		<template name="evt_disconnect_OnMiddleUp">@$this->Disconnect( wxEVT_MIDDLE_UP );</template>
+		<template name="evt_connect_OnAux1DClick">@$this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux1DClick">@$this->Disconnect( wxEVT_AUX1_DCLICK );</template>
+		<template name="evt_connect_OnAux1Down">@$this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux1Down">@$this->Disconnect( wxEVT_AUX1_DOWN );</template>
+		<template name="evt_connect_OnAux1Up">@$this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux1Up">@$this->Disconnect( wxEVT_AUX1_UP );</template>
+		<template name="evt_connect_OnAux2DClick">@$this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux2DClick">@$this->Disconnect( wxEVT_AUX2_DCLICK );</template>
+		<template name="evt_connect_OnAux2Down">@$this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux2Down">@$this->Disconnect( wxEVT_AUX2_DOWN );</template>
+		<template name="evt_connect_OnAux2Up">@$this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux2Up">@$this->Disconnect( wxEVT_AUX2_UP );</template>
 		<template name="evt_connect_OnMotion">@$this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_disconnect_OnMotion">@$this->Disconnect( wxEVT_MOTION );</template>
 		<template name="evt_connect_OnMouseEvents">@$this->Connect( wxEVT_MOUSE, #handler );</template>
@@ -292,10 +344,16 @@ PHP code generation writen by
 			@$this->Disconnect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOTION, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOUSEWHEEL, #handler );
@@ -307,10 +365,16 @@ PHP code generation writen by
 			@$this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Connect( wxEVT_MOTION, #handler ); #nl
 			@$this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -401,6 +465,8 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnChar">@$this->Disconnect( wxEVT_CHAR );</template>
 		<template name="evt_connect_OnEnterWindow">@$this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_disconnect_OnEnterWindow">@$this->Disconnect( wxEVT_ENTER_WINDOW );</template>
+		<template name="evt_connect_OnCharHook">@$this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_disconnect_OnCharHook">@$this->Disconnect( wxEVT_CHAR_HOOK );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
 		<template name="evt_disconnect_OnEraseBackground">@$this->Disconnect( wxEVT_ERASE_BACKGROUND );</template>
 		<template name="evt_connect_OnKeyDown">@$this->Connect( wxEVT_KEY_DOWN, #handler );</template>
@@ -423,8 +489,21 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">@$this->Disconnect( wxEVT_MIDDLE_DOWN );</template>
 		<template name="evt_connect_OnMiddleUp">@$this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
 		<template name="evt_disconnect_OnMiddleUp">@$this->Disconnect( wxEVT_MIDDLE_UP );</template>
+		<template name="evt_connect_OnAux1DClick">@$this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux1DClick">@$this->Disconnect( wxEVT_AUX1_DCLICK );</template>
+		<template name="evt_connect_OnAux1Down">@$this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux1Down">@$this->Disconnect( wxEVT_AUX1_DOWN );</template>
+		<template name="evt_connect_OnAux1Up">@$this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux1Up">@$this->Disconnect( wxEVT_AUX1_UP );</template>
+		<template name="evt_connect_OnAux2DClick">@$this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux2DClick">@$this->Disconnect( wxEVT_AUX2_DCLICK );</template>
+		<template name="evt_connect_OnAux2Down">@$this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux2Down">@$this->Disconnect( wxEVT_AUX2_DOWN );</template>
+		<template name="evt_connect_OnAux2Up">@$this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux2Up">@$this->Disconnect( wxEVT_AUX2_UP );</template>
 		<template name="evt_connect_OnMotion">@$this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_disconnect_OnMotion">@$this->Disconnect( wxEVT_MOTION );</template>
+		<template name="evt_connect_OnMouseEvents">@$this->Connect( wxEVT_MOUSE, #handler );</template>
 		<template name="evt_connect_OnMouseEvents">
 			@$this->Connect( wxEVT_LEFT_DOWN, #handler ); #nl
 			@$this->Connect( wxEVT_LEFT_UP, #handler ); #nl
@@ -432,10 +511,16 @@ PHP code generation writen by
 			@$this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Connect( wxEVT_MOTION, #handler ); #nl
 			@$this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_MOUSEWHEEL, #handler );
@@ -447,10 +532,16 @@ PHP code generation writen by
 			@$this->Disconnect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOTION, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOUSEWHEEL, #handler );
@@ -528,6 +619,8 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnChar">@$this->Disconnect( wxEVT_CHAR );</template>
 		<template name="evt_connect_OnEnterWindow">@$this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
 		<template name="evt_disconnect_OnEnterWindow">@$this->Disconnect( wxEVT_ENTER_WINDOW );</template>
+		<template name="evt_connect_OnCharHook">@$this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_disconnect_OnCharHook">@$this->Disconnect( wxEVT_CHAR_HOOK );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
 		<template name="evt_disconnect_OnEraseBackground">@$this->Disconnect( wxEVT_ERASE_BACKGROUND );</template>
 		<template name="evt_connect_OnKeyDown">@$this->Connect( wxEVT_KEY_DOWN, #handler );</template>
@@ -550,6 +643,18 @@ PHP code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">@$this->Disconnect( wxEVT_MIDDLE_DOWN );</template>
 		<template name="evt_connect_OnMiddleUp">@$this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
 		<template name="evt_disconnect_OnMiddleUp">@$this->Disconnect( wxEVT_MIDDLE_UP );</template>
+		<template name="evt_connect_OnAux1DClick">@$this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux1DClick">@$this->Disconnect( wxEVT_AUX1_DCLICK );</template>
+		<template name="evt_connect_OnAux1Down">@$this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux1Down">@$this->Disconnect( wxEVT_AUX1_DOWN );</template>
+		<template name="evt_connect_OnAux1Up">@$this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux1Up">@$this->Disconnect( wxEVT_AUX1_UP );</template>
+		<template name="evt_connect_OnAux2DClick">@$this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_disconnect_OnAux2DClick">@$this->Disconnect( wxEVT_AUX2_DCLICK );</template>
+		<template name="evt_connect_OnAux2Down">@$this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_disconnect_OnAux2Down">@$this->Disconnect( wxEVT_AUX2_DOWN );</template>
+		<template name="evt_connect_OnAux2Up">@$this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_disconnect_OnAux2Up">@$this->Disconnect( wxEVT_AUX2_UP );</template>
 		<template name="evt_connect_OnMotion">@$this->Connect( wxEVT_MOTION, #handler );</template>
 		<template name="evt_disconnect_OnMotion">@$this->Disconnect( wxEVT_MOTION );</template>
 		<template name="evt_connect_OnMouseEvents">
@@ -559,14 +664,21 @@ PHP code generation writen by
 			@$this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Connect( wxEVT_MOTION, #handler ); #nl
 			@$this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Connect( wxEVT_MOUSEWHEEL, #handler );
 		</template>
+		<template name="evt_connect_OnMouseEvents">@$this->Connect( wxEVT_MOUSE, #handler );</template>
 		<template name="evt_disconnect_OnMouseEvents">
 			@$this->Disconnect( wxEVT_LEFT_DOWN, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEFT_UP, #handler ); #nl
@@ -574,10 +686,16 @@ PHP code generation writen by
 			@$this->Disconnect( wxEVT_MIDDLE_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DOWN, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_UP, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DOWN, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_UP, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOTION, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEFT_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			@$this->Disconnect( wxEVT_AUX2_DCLICK, #handler ); #nl
 			@$this->Disconnect( wxEVT_LEAVE_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_ENTER_WINDOW, #handler ); #nl
 			@$this->Disconnect( wxEVT_MOUSEWHEEL, #handler );

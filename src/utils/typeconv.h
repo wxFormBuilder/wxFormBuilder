@@ -64,8 +64,9 @@ namespace TypeConv
 
 	wxFontContainer StringToFont( const wxString &str );
 	wxString FontToString( const wxFontContainer &font );
-
-	wxString FontFamilyToString( int family );
+	wxString FontFamilyToString(wxFontFamily family);
+	wxString FontStyleToString(wxFontStyle style);
+	wxString FontWeightToString(wxFontWeight weight);
 
 	wxColour StringToColour( const wxString &str );
 	wxSystemColour StringToSystemColour( const wxString& str );

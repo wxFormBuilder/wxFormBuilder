@@ -52,7 +52,7 @@ Lua code generation writen by
   </templates>
 
   <templates class="wxWrapSizer">
-    <template name="construction">#utbl$name = wx.wxWrapSizer( $orient ) #nl</template>
+		<template name="construction">#utbl$name = wx.wxWrapSizer( $orient, $flags ) #nl</template>
   </templates>
 
   <templates class="wxStaticBoxSizer">

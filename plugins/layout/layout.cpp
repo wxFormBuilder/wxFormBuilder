@@ -210,7 +210,8 @@ class WrapSizerComponent : public ComponentBase
 public:
 	wxObject* Create(IObject *obj, wxObject * /*parent*/)
 	{
-		const auto sizer = new wxWrapSizer(obj->GetPropertyAsInteger(_("orient")));
+		const auto sizer = new wxWrapSizer(obj->GetPropertyAsInteger(_("orient")),
+		                                   obj->GetPropertyAsInteger(_("flags")));
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 		return sizer;
 	}
@@ -223,6 +224,7 @@ public:
 			xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		}
 		xrc.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("flags"), _("flags"), XRC_TYPE_BITLIST);
 		return xrc.GetXrcObject();
 	}
 
@@ -231,6 +233,7 @@ public:
 		XrcToXfbFilter filter(xrcObj, _("wxWrapSizer"));
 		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("flags"), _("flags"), XRC_TYPE_BITLIST);
 		return filter.GetXfbObject();
 	}
 };
@@ -784,6 +787,11 @@ SIZER_COMPONENT("wxStdDialogButtonSizer",StdDialogButtonSizerComponent)
 // wxBoxSizer
 MACRO(wxHORIZONTAL)
 MACRO(wxVERTICAL)
+
+// wxWrapSizer
+MACRO(wxEXTEND_LAST_ON_EACH_LINE)
+MACRO(wxREMOVE_LEADING_SPACES)
+MACRO(wxWRAPSIZER_DEFAULT_FLAGS)
 
 // wxFlexGridSizer
 MACRO(wxBOTH)

@@ -160,6 +160,8 @@ Written by
 	<template name="evt_connect_OnCalendar">$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarSelChanged">EVT_CALENDAR_SEL_CHANGED( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarSelChanged">$name->Connect( wxEVT_CALENDAR_SEL_CHANGED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnCalendarPageChanged">EVT_CALENDAR_PAGE_CHANGED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarPageChanged">$name->Connect( wxEVT_CALENDAR_PAGE_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarDay">EVT_CALENDAR_DAY( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarDay">$name->Connect( wxEVT_CALENDAR_DAY_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarMonth">EVT_CALENDAR_MONTH( $id, #handler )</template>
@@ -168,6 +170,8 @@ Written by
 	<template name="evt_connect_OnCalendarYear">$name->Connect( wxEVT_CALENDAR_YEAR_CHANGED, #handler, NULL, this );</template>
 	<template name="evt_entry_OnCalendarWeekDayClicked">EVT_CALENDAR_WEEKDAY_CLICKED( $id, #handler )</template>
 	<template name="evt_connect_OnCalendarWeekDayClicked">$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler, NULL, this );</template>
+	<template name="evt_entry_OnCalendarWeekClicked">EVT_CALENDAR_WEEK_CLICKED( $id, #handler )</template>
+	<template name="evt_connect_OnCalendarWeekClicked">$name->Connect( wxEVT_CALENDAR_WEEK_CLICKED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxScrollBar">
@@ -293,6 +297,10 @@ Written by
     	#nl $name->ShowHidden( $show_hidden );
     </template>
     <template name="include">@#include &lt;wx/dirctrl.h&gt;</template>
+    <template name="evt_entry_OnDirctrlSelectionChanged">EVT_DIRCTRL_SELECTIONCHANGED( $id, #handler )</template>
+    <template name="evt_connect_OnDirctrlSelectionChanged">$name->Connect( wxEVT_DIRCTRL_SELECTIONCHANGED, #handler, NULL, this );</template>
+    <template name="evt_entry_OnDirctrlFileActivated">EVT_DIRCTRL_FILEACTIVATED( $id, #handler )</template>
+    <template name="evt_connect_OnDirctrlFileActivated">$name->Connect( wxEVT_DIRCTRL_FILEACTIVATED, #handler, NULL, this );</template>
   </templates>
 
   <templates class="wxSearchCtrl">

@@ -477,7 +477,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor( 13 )
+		m_fbpVerMinor(14)
 {
 	#ifdef __WXFB_DEBUG__
 	//wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -1953,7 +1953,192 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 			}
 		}
 	}
+
 	/* The file is now at least version 1.12 */
+	// TODO: Dont know where Version 1.13 comes from, so this is for Version 1.14
+	if (fileMajor < 1 || (1 == fileMajor && fileMinor < 14)) {
+		// Rename all wx*_BORDER-Styles to wxBORDER_*-Styles and remove wxDOUBLE_BORDER
+		oldProps.clear();
+		newProps.clear();
+		oldProps.insert("style");
+		oldProps.insert("window_style");
+		GetPropertiesToConvert(parent, oldProps, &newProps);
+
+		for (newProp = newProps.begin(); newProp != newProps.end(); ++newProp) {
+			wxString styles = _WXSTR((*newProp)->GetText(false));
+			if (!styles.empty()) {
+				if (TypeConv::FlagSet(wxT("wxSIMPLE_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSIMPLE_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_SIMPLE"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxDOUBLE_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxDOUBLE_BORDER"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxSUNKEN_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSUNKEN_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_SUNKEN"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxRAISED_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxRAISED_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_RAISED"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxSTATIC_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxSTATIC_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_STATIC"), styles);
+				}
+
+				if (TypeConv::FlagSet(wxT("wxNO_BORDER"), styles)) {
+					styles = TypeConv::ClearFlag(wxT("wxNO_BORDER"), styles);
+					styles = TypeConv::SetFlag(wxT("wxBORDER_NONE"), styles);
+				}
+
+				(*newProp)->SetText(_STDSTR(styles));
+			}
+		}
+
+		// wxBitmapButton: Remove wxBU_AUTODRAW and rename properties selected->pressed,
+		// hover->current
+		if ("wxBitmapButton" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxBU_AUTODRAW"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxBU_AUTODRAW"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("selected");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) { (*newProps.begin())->SetAttribute("name", "pressed"); }
+
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("hover");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) { (*newProps.begin())->SetAttribute("name", "current"); }
+		}
+
+		// wxStaticText: Rename wxALIGN_CENTRE -> wxALIGN_CENTER_HORIZONTAL
+		else if ("wxStaticText" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxALIGN_CENTRE"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxALIGN_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxALIGN_CENTER_HORIZONTAL"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxRadioBox: Remove wxRA_USE_CHECKBOX
+		else if ("wxRadioBox" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxRA_USE_CHECKBOX"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxRA_USE_CHECKBOX"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxRadioButton: Remove wxRB_USE_CHECKBOX
+		else if ("wxRadioButton" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxRB_USE_CHECKBOX"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxRB_USE_CHECKBOX"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxStatusBar: Rename wxST_SIZEGRIP -> wxSTB_SIZEGRIP
+		else if ("wxStatusBar" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxST_SIZEGRIP"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxST_SIZEGRIP"), styles);
+						styles = TypeConv::SetFlag(wxT("wxSTB_SIZEGRIP"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+
+		// wxMenuBar: Remove wxMB_DOCKABLE
+		else if ("wxMenuBar" == objClass) {
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty()) {
+				ticpp::Element* style = *newProps.begin();
+				wxString styles = _WXSTR(style->GetText(false));
+				if (!styles.empty()) {
+					if (TypeConv::FlagSet(wxT("wxMB_DOCKABLE"), styles)) {
+						styles = TypeConv::ClearFlag(wxT("wxMB_DOCKABLE"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+	}
+
+	/* The file is now at least version 1.14 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )

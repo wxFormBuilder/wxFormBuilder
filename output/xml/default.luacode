@@ -90,6 +90,7 @@
 
 		<!-- wxKeyEvent -->
 		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnCharHook">#utbl$name:Connect( wx.wxEVT_CHAR_HOOK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 
@@ -107,6 +108,12 @@
 		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux1DClick">#utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux1Down">#utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux1Up">#utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux2DClick">#utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux2Down">#utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnAux2Up">#utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnMouseEvents">
 			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
@@ -114,10 +121,16 @@
 			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
+			#utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end  )

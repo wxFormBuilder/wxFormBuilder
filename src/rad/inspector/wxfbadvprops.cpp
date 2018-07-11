@@ -889,9 +889,9 @@ static const wxChar* gs_fp_es_style_labels[] = {
 };
 
 static long gs_fp_es_style_values[] = {
-    wxNORMAL,
-    wxSLANT,
-    wxITALIC
+    wxFONTSTYLE_NORMAL,
+    wxFONTSTYLE_SLANT,
+    wxFONTSTYLE_ITALIC
 };
 
 static const wxChar* gs_fp_es_weight_labels[] = {
@@ -902,9 +902,9 @@ static const wxChar* gs_fp_es_weight_labels[] = {
 };
 
 static long gs_fp_es_weight_values[] = {
-    wxNORMAL,
-    wxLIGHT,
-    wxBOLD
+    wxFONTWEIGHT_NORMAL,
+    wxFONTWEIGHT_LIGHT,
+    wxFONTWEIGHT_BOLD
 };
 
 #if wxCHECK_VERSION(3, 1, 0)
@@ -1033,10 +1033,10 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
     else if ( ind == 1 )
     {
         int fam = childValue.GetLong();
-        if ( fam < wxDEFAULT ||
-             fam > wxTELETYPE )
-             fam = wxDEFAULT;
-		font.m_family = fam;
+		if (fam < wxFONTFAMILY_DEFAULT || fam > wxFONTFAMILY_TELETYPE) {
+			fam = wxFONTFAMILY_DEFAULT;
+		}
+		font.m_family = static_cast<wxFontFamily>(fam);
     }
     else if ( ind == 2 )
     {
@@ -1051,12 +1051,11 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
     else if ( ind == 3 )
     {
         int st = childValue.GetLong();
-        if ( st != wxFONTSTYLE_NORMAL &&
-             st != wxFONTSTYLE_SLANT &&
-             st != wxFONTSTYLE_ITALIC )
-             st = wxFONTWEIGHT_NORMAL;
-		font.m_style = st;
-    }
+		if (st != wxFONTSTYLE_NORMAL && st != wxFONTSTYLE_SLANT && st != wxFONTSTYLE_ITALIC) {
+			st = wxFONTSTYLE_NORMAL;
+		}
+		font.m_style = static_cast<wxFontStyle>(st);
+	}
     else if ( ind == 4 )
     {
         int wt = childValue.GetLong();
@@ -1064,7 +1063,7 @@ wxFBFontProperty::ChildChanged( wxVariant& thisValue, int ind, wxVariant& childV
              wt != wxFONTWEIGHT_LIGHT &&
              wt != wxFONTWEIGHT_BOLD )
              wt = wxFONTWEIGHT_NORMAL;
-		font.m_weight = wt;
+		font.m_weight = static_cast<wxFontWeight>(wt);
     }
     else if ( ind == 5 )
     {

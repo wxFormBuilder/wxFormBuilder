@@ -31,12 +31,32 @@ Lua code generation written by
 		#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
 	</template>
 	<template name="settings">
-		#ifequal $markup "1" @{
-			#utbl$name:SetLabelMarkup( $label ) #nl
-		@}
-		#ifnotequal $default "0" @{
-			#utbl$name:SetDefault() #nl
-		@}
+			#ifequal $markup "1"
+			@{ #utbl$name:SetLabelMarkup( $label ) @}
+
+			#ifnotequal $default "0"
+			@{ #nl #utbl$name:SetDefault() @}
+
+			#ifnotnull $bitmap
+			@{ #nl #utbl$name:SetBitmap( $bitmap ) @}
+
+			#ifnotnull $disabled
+			@{ #nl #utbl$name:SetBitmapDisabled( $disabled ) @}
+
+			#ifnotnull $pressed
+			@{ #nl #utbl$name:SetBitmapPressed( $pressed ) @}
+
+			#ifnotnull $focus
+			@{ #nl #utbl$name:SetBitmapFocus( $focus ) @}
+
+			#ifnotnull $current
+			@{ #nl #utbl$name:SetBitmapCurrent( $current ) @}
+
+			#ifnotnull $position
+			@{ #nl #utbl$name:SetBitmapPosition( $position ) @}
+
+			#ifnotnull $margins
+			@{ #nl #utbl$name:SetBitmapMargins( $margins ) @}
 	</template>
 	<template name="evt_connect_OnButtonClick">#utbl$name:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )
 	</template>
@@ -49,14 +69,20 @@ Lua code generation written by
   		#ifnotnull $disabled
   		@{ #nl #utbl$name:SetBitmapDisabled( $disabled ) @}
 
-  		#ifnotnull $selected
-  		@{ #nl #utbl$name:SetBitmapSelected( $selected ) @}
+			#ifnotnull $pressed
+			@{ #nl #utbl$name:SetBitmapPressed( $pressed ) @}
 
   		#ifnotnull $focus
   		@{ #nl #utbl$name:SetBitmapFocus( $focus ) @}
 
-  		#ifnotnull $hover
-  		@{ #nl #utbl$name:SetBitmapHover( $hover ) @}
+			#ifnotnull $current
+			@{ #nl #utbl$name:SetBitmapCurrent( $current ) @}
+
+			#ifnotnull $position
+			@{ #nl #utbl$name:SetBitmapPosition( $position ) @}
+
+			#ifnotnull $margins
+			@{ #nl #utbl$name:SetBitmapMargins( $margins ) @}
   	</template>
   </templates>
 
@@ -262,7 +288,7 @@ Lua code generation written by
 	<template name="evt_connect_OnCommandScrollThumbTrack">-- event #utbl$name:OnCommandScrollThumbTrack isn't currently supported by wxLua</template>
 	<template name="evt_connect_OnCommandScrollThumbRelease">-- event #utbl$name:OnCommandScrollThumbRelease isn't currently supported by wxLua</template>
 	<template name="evt_connect_OnCommandScrollChanged">-- event #utbl$name:OnCommandScrollChanged isn't currently supported by wxLua</template>
-
+	<template name="evt_connect_OnSlider">#utbl$name:Connect( wx.wxEVT_SLIDER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
 
 </codegen>

@@ -95,10 +95,10 @@ void PythonPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 							   is lambda not or pass print raise return try while" ) );
 
 #ifdef __WXGTK__
-	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 	font.SetFaceName( wxT( "Monospace" ) );
 #else
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
