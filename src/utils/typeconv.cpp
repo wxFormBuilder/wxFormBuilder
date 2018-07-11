@@ -522,7 +522,6 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 
 	if( children.Index( _("Load From Art Provider") ) == wxNOT_FOUND )
 	{
-		// "break;" was left out intentionally
 		long temp;
 		switch ( children.size() )
 		{
@@ -533,16 +532,20 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 					children[4].ToLong( &temp );
 					icoSize->SetHeight( temp );
 				}
+				wxFALLTHROUGH;
 			case 3:
 				if( children.size() > 3 )
 				{
 					children[3].ToLong( &temp );
 					icoSize->SetWidth( temp );
 				}
+				wxFALLTHROUGH;
 			case 2:
 				if( children.size() > 1 ) *image = children[1];
+				wxFALLTHROUGH;
 			case 1:
 				if( children.size() > 0 ) *source = children[0];
+				break;
 			default:
 				break;
 		}

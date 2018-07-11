@@ -640,6 +640,7 @@ void MenuEditor::OnUpdateMovers(wxUpdateUIEvent& e)
             break;
         case ID_MENUDOWN:
             e.Enable(GetSelectedItem() < m_menuList->GetItemCount() - 1);
+			break;
         default:
             break;
     }
