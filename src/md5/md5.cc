@@ -255,7 +255,8 @@ unsigned char *MD5::raw_digest(){
   if (!finalized){
     cerr << "MD5::raw_digest:  Can't get digest if you haven't "<<
       "finalized the digest!" <<endl;
-    return ( (unsigned char*) "");
+		std::memset(s, 0, 16);
+		return s;
   }
 
 	std::memcpy(s, digest, 16);
