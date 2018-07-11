@@ -222,7 +222,7 @@ void MD5::finalize (){
 
 MD5::MD5(FILE *file){
 
-  init();  // must be called be all constructors
+	init(); // must be called by all constructors
   update(file);
   finalize ();
 }
@@ -232,7 +232,7 @@ MD5::MD5(FILE *file){
 
 MD5::MD5(istream& stream){
 
-  init();  // must called by all constructors
+	init(); // must be called by all constructors
   update (stream);
   finalize();
 }
@@ -241,7 +241,7 @@ MD5::MD5(istream& stream){
 
 MD5::MD5(ifstream& stream){
 
-  init();  // must called by all constructors
+	init(); // must be called by all constructors
   update (stream);
   finalize();
 }
