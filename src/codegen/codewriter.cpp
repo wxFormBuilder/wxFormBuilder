@@ -37,6 +37,7 @@
 #include <wx/stc/stc.h>
 
 #include <cstring>
+#include <fstream>
 
 CodeWriter::CodeWriter()
 :

@@ -47,11 +47,8 @@ documentation and/or software.
 
 #include "md5.hh"
 
-#include <assert.h>
+#include <cassert>
 #include <cstring>
-#include <string>
-
-using namespace std;
 
 
 // MD5 simple initialization method
@@ -118,7 +115,7 @@ void MD5::update(FILE* file) {
 
 	assert(!finalized);
 
-	while ((len = fread(fileBuffer, 1, 1024, file)))
+	while ((len = std::fread(fileBuffer, 1, 1024, file)))
 		update(fileBuffer, static_cast<uint32_t>(len));
 }
 
@@ -130,7 +127,7 @@ void MD5::update(FILE* file) {
 // MD5 update for istreams.
 // Like update for files; see above.
 
-void MD5::update(istream& stream) {
+void MD5::update(std::istream& stream) {
 	char streamBuffer[1024];
 	std::streamsize len;
 
@@ -206,7 +203,7 @@ MD5::MD5(FILE* file) {
 
 
 
-MD5::MD5(istream& stream) {
+MD5::MD5(std::istream& stream) {
 	init(); // must be called by all constructors
 	update(stream);
 	finalize();
