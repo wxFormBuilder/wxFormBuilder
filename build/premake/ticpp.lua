@@ -14,17 +14,19 @@ project "TiCPP"
     files               {"../../sdk/tinyxml/*.cpp", "../../sdk/tinyxml/*.h"}
     excludes            {"xmltest.cpp"}
     defines             {"TIXML_USE_TICPP"}
-    buildoptions        "-std=c++14"
 	
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
 
+    configuration "not vs*"
+        buildoptions        "-std=c++14"
+
     configuration "not windows"
         buildoptions    {"-fPIC"}
 
     configuration "vs*"
-        defines         {"_CRT_SECURE_NO_DEPRECATE"}
+        defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
 
     configuration "vs2008 or vs2010"
         -- multi-process building

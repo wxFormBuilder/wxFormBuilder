@@ -4,7 +4,6 @@ REM Clear output
 CLS
 
 REM Set Defaults
-SET unicode=
 SET shared=
 SET monolithic=
 SET wxroot=%WXWIN%
@@ -23,7 +22,6 @@ IF [%1]==[--compiler]           GOTO Compiler
 IF [%1]==[--compiler-version]   GOTO CompilerVersion
 IF [%1]==[--architecture]       GOTO Architecture
 IF [%1]==[--disable-mediactrl]  GOTO Mediactrl
-IF [%1]==[--disable-unicode]    GOTO Unicode
 IF [%1]==[--disable-shared]     GOTO Shared
 IF [%1]==[--disable-monolithic] GOTO Monolithic
 IF [%1]==[--wx-root]            GOTO Root
@@ -48,11 +46,6 @@ ECHO                        Default: Unset (use System Default)
 ECHO.
 ECHO --disable-mediactrl    Disable wxMediaCtrl / wxMedia library
 ECHO                        Default: wxMediaCtrl enabled
-ECHO.
-ECHO --disable-unicode      Whether to use an Unicode or an ANSI build
-ECHO                        Ignored in wxWidgets 2.9 and later
-ECHO                        Example: --disable-unicode produces an ANSI build
-ECHO                        Default: Unicode build on all versions
 ECHO.
 ECHO --disable-shared       Disable usage of wxWidgets DLL and use Static Library
 ECHO                        Default: DLL enabled
@@ -106,11 +99,6 @@ SHIFT
 SHIFT
 GOTO Loop
 
-:Unicode
-SET unicode=%1
-SHIFT
-GOTO Loop
-
 :Shared
 SET shared=%1
 SHIFT
@@ -133,16 +121,16 @@ SHIFT
 GOTO Loop
 
 :Premake
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %unicode% %shared% %monolithic% %mediactrl% %usewxconfig% codelite
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codelite
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %unicode% %shared% %monolithic% %mediactrl% %usewxconfig% gmake
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% gmake
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %unicode% %shared% %monolithic% %mediactrl% %usewxconfig% codeblocks
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codeblocks
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %unicode% %shared% %monolithic% %mediactrl% %usewxconfig% vs2010
+build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% vs2010
 ECHO.
 
 ECHO Done generating all project files for wxFormBuilder.
