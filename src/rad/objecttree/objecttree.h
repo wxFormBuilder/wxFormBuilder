@@ -47,7 +47,6 @@ private:
    wxImageList *m_iconList;
    IconIndexMap m_iconIdx;
 
-   wxTextCtrl* m_txtSelected;
    wxTreeCtrl* m_tcObjects;
 
    wxTreeItemId m_draggedItem;

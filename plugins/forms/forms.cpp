@@ -37,15 +37,10 @@
 class ComponentEvtHandler : public wxEvtHandler
 {
 private:
-	wxWindow* m_window;
 	IManager* m_manager;
 
 public:
-	ComponentEvtHandler( wxWindow* win, IManager* manager )
-	:
-	m_window( win ),
-	m_manager( manager )
-	{
+	ComponentEvtHandler(IManager* manager) : m_manager(manager) {
 	}
 
 protected:
@@ -197,7 +192,7 @@ public:
 		if (!obj->IsNull(wxT("separation")))
 			tb->SetToolSeparation(obj->GetPropertyAsInteger(wxT("separation")));
 
-		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
+		tb->PushEventHandler(new ComponentEvtHandler(GetManager()));
 
 		return tb;
 	}

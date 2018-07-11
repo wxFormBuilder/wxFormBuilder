@@ -60,11 +60,6 @@ enum {
 class MainFrame : public wxFrame
 {
  private:
-  #ifdef __WXFB_DEBUG__
-  wxLog * m_old_log;
-  wxLogWindow * m_log;
-  #endif //__WXFB_DEBUG__
-
   wxSplitterWindow *m_leftSplitter;
   wxSplitterWindow *m_rightSplitter;
   int m_leftSplitterWidth;

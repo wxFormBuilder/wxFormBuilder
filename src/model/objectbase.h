@@ -96,7 +96,6 @@ private:
 	wxString       m_def_value;
 	POptionList  m_opt_list;
 	std::list< PropertyChild > m_children; // Only used for parent properties
-	bool m_hidden; // Juan. Determina si la propiedad aparece o no en XRC
 	wxString		m_description;
 	wxString		m_customEditor; // an optional custom editor for the property grid
 
