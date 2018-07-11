@@ -47,7 +47,7 @@ VObjEvtHandler::VObjEvtHandler(wxWindow *win, PObjectBase obj)
 {
 	m_window = win;
 	m_object = obj;
-};
+}
 
 void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 {
@@ -63,7 +63,7 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 			event.Skip();
 			return;
 		}
-		
+
 		if (AppData()->GetSelectedObject() != obj)
 		{
 			AppData()->SelectObject(obj);

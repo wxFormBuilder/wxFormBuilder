@@ -205,7 +205,7 @@ namespace XMLUtils
 			return;
 		}
 	}
-};
+}
 
 void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path )
 {

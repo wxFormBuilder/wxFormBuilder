@@ -26,10 +26,9 @@
 
 #include <wx/string.h>
 
-namespace ticpp
-{
-	class Document;
-};
+namespace ticpp {
+class Document;
+}
 
 class TiXmlDocument;
 class wxArrayString;
@@ -40,7 +39,7 @@ namespace StringUtils
 
   wxString GetSupportedEncodings( bool columnateWithTab = true, wxArrayString* array = NULL );
   wxFontEncoding GetEncodingFromUser( const wxString& message );
-};
+}
 
 namespace XMLUtils
 {

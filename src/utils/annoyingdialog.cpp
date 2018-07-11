@@ -177,4 +177,4 @@ int AnnoyingDialog::ShowModal()
     if(m_dontAnnoy)
         return m_defRet;
     return wxDialog::ShowModal();
-};
+}

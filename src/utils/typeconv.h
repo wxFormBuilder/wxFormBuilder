@@ -106,7 +106,7 @@ namespace TypeConv
 
 	double StringToFloat( const wxString& str );
 	wxString FloatToString( const double& val );
-};
+}
 
 
 // No me gusta nada tener que usar variables globales o singletons

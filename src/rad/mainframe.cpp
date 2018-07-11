@@ -359,7 +359,7 @@ m_findDialog( NULL )
 
 	m_notebook->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, wxAuiNotebookEventHandler( MainFrame::OnAuiNotebookPageChanged ), NULL, this );
 
-};
+}
 
 
 MainFrame::~MainFrame()
