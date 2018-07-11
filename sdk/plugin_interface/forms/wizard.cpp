@@ -24,8 +24,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "wizard.h"
 
-#include <wx/log.h>
-
 DEFINE_EVENT_TYPE(wxFB_EVT_WIZARD_PAGE_CHANGED)
 DEFINE_EVENT_TYPE(wxFB_EVT_WIZARD_PAGE_CHANGING)
 DEFINE_EVENT_TYPE(wxFB_EVT_WIZARD_CANCEL)
@@ -53,21 +51,19 @@ WizardPageSimple::WizardPageSimple( Wizard *parent )
 {
 }
 
-WizardPageSimple::~WizardPageSimple()
-{
-}
+WizardPageSimple::~WizardPageSimple() = default;
 
 Wizard::Wizard( wxWindow* parent, wxWindowID id,
                 const wxPoint& pos, const wxSize& size, long style )
 : wxPanel( parent, id, pos, size, style )
 {
-    m_page = NULL;
+	m_page = nullptr;
     m_bitmap = wxNullBitmap;
 
-    wxBoxSizer *windowSizer  = new wxBoxSizer( wxVERTICAL );
-    wxBoxSizer *mainColumn   = new wxBoxSizer( wxVERTICAL );
-    wxBoxSizer *buttonRow    = new wxBoxSizer( wxHORIZONTAL );
-    wxBoxSizer *backNextPair = new wxBoxSizer( wxHORIZONTAL );
+	const auto windowSizer = new wxBoxSizer(wxVERTICAL);
+	const auto mainColumn = new wxBoxSizer(wxVERTICAL);
+	const auto buttonRow = new wxBoxSizer(wxHORIZONTAL);
+	const auto backNextPair = new wxBoxSizer(wxHORIZONTAL);
     m_sizerBmpAndPage        = new wxBoxSizer( wxHORIZONTAL );
     m_sizerPage              = new wxBoxSizer( wxVERTICAL );
 
@@ -100,7 +96,7 @@ Wizard::Wizard( wxWindow* parent, wxWindowID id,
     mainColumn->Add( m_sizerBmpAndPage, 1, wxEXPAND );
     mainColumn->Add( 0, 5, 0, wxEXPAND );
     mainColumn->Add( new wxStaticLine( this ), 0, wxEXPAND | wxALL, 5 );
-    mainColumn->Add( 0, 5, 0, wxEXPAND ); 
+	mainColumn->Add(0, 5, 0, wxEXPAND);
     mainColumn->Add( buttonRow, 0, wxALIGN_RIGHT );
 
     windowSizer->Add( mainColumn, 1, wxALL|wxEXPAND, 5 );
@@ -109,10 +105,14 @@ Wizard::Wizard( wxWindow* parent, wxWindowID id,
     this->Layout();
     windowSizer->Fit( this );
 
-    m_btnHelp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnHelp ), NULL, this );
-    m_btnPrev->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnBackOrNext ), NULL, this );
-    m_btnNext->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnBackOrNext ), NULL, this );
-    m_btnCancel->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnCancel ), NULL, this );
+	m_btnHelp->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnHelp), nullptr,
+	                   this);
+	m_btnPrev->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnBackOrNext),
+	                   nullptr, this);
+	m_btnNext->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnBackOrNext),
+	                   nullptr, this);
+	m_btnCancel->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnCancel),
+	                     nullptr, this);
 
     this->Connect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGED, WizardEventHandler( Wizard::OnWizEvent ) );
     this->Connect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGING, WizardEventHandler( Wizard::OnWizEvent ) );
@@ -123,10 +123,14 @@ Wizard::Wizard( wxWindow* parent, wxWindowID id,
 
 Wizard::~Wizard()
 {
-    m_btnHelp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnHelp ), NULL, this );
-    m_btnPrev->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnBackOrNext ), NULL, this );
-    m_btnNext->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnBackOrNext ), NULL, this );
-    m_btnCancel->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( Wizard::OnCancel ), NULL, this );
+	m_btnHelp->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnHelp),
+	                      nullptr, this);
+	m_btnPrev->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnBackOrNext),
+	                      nullptr, this);
+	m_btnNext->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnBackOrNext),
+	                      nullptr, this);
+	m_btnCancel->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(Wizard::OnCancel),
+	                        nullptr, this);
 
     this->Disconnect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGED, WizardEventHandler( Wizard::OnWizEvent ) );
     this->Disconnect( wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGING, WizardEventHandler( Wizard::OnWizEvent ) );
@@ -136,7 +140,7 @@ Wizard::~Wizard()
 
     m_statbmp->SetBitmap( wxNullBitmap );
     m_bitmap = wxNullBitmap;
-    m_page = NULL;
+	m_page = nullptr;
     m_pages.Clear();
 }
 
@@ -144,8 +148,7 @@ void Wizard::OnHelp( wxCommandEvent& event )
 {
     // this function probably can never be called when we don't have an active
     // page, but a small extra check won't hurt
-    if( m_page != NULL )
-    {
+	if (m_page != nullptr) {
         // Create and send the help event to the specific page handler
         // event data contains the active page so that context-sensitive
         // help is possible
@@ -167,8 +170,9 @@ void Wizard::SetSelection( size_t pageIndex )
         m_btnPrev->Enable( hasPrev );   // enable 'back' button if a previous page exists,
 
         wxString label = hasNext ? _("&Next >") : _("&Finish");
-        if ( label != m_btnNext->GetLabel() )       // set the correct label on next button
-            m_btnNext->SetLabel( label );
+		if (label != m_btnNext->GetLabel()) { // set the correct label on next button
+			m_btnNext->SetLabel(label);
+		}
 
         m_btnNext->SetDefault();        // and as default one, user needs it ready to go on.
     }
@@ -209,9 +213,9 @@ void Wizard::OnWizEvent( WizardEvent& event )
 
         if ( eventType == wxFB_EVT_WIZARD_PAGE_CHANGED )
         {
-            for ( unsigned int i = 0; i < m_pages.GetCount(); i++ )
-                m_pages.Item( i )->Hide();
-
+			for (size_t i = 0; i < m_pages.GetCount(); ++i) {
+				m_pages.Item(i)->Hide();
+			}
             event.GetPage()->Show();
 
             Layout();
@@ -250,9 +254,9 @@ void Wizard::AddPage( WizardPageSimple* page )
 
     size_t pageCount = m_pages.GetCount();     // Internal page array count
 
-    for ( unsigned int i = 0; i < pageCount; i++ )
-        m_pages.Item( i )->Hide();
-
+	for (size_t i = 0; i < pageCount; ++i) {
+		m_pages.Item(i)->Hide();
+	}
     page->Show();
 
     m_sizerPage->Add( page, 1, wxEXPAND, 0 );  // insert it into the page sizer,

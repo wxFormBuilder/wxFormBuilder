@@ -25,22 +25,10 @@
 #ifndef __WXFB_WIZARD_H__
 #define __WXFB_WIZARD_H__
 
-#include <wx/intl.h>
-#include <wx/bitmap.h>
-#include <wx/event.h>
-#include <wx/image.h>
-#include <wx/icon.h>
-#include <wx/statbmp.h>
-#include <wx/string.h>
-#include <wx/gdicmn.h>
-#include <wx/font.h>
-#include <wx/colour.h>
-#include <wx/settings.h>
-#include <wx/sizer.h>
-#include <wx/statline.h>
 #include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/dynarray.h>
+#include <wx/sizer.h>
+#include <wx/statbmp.h>
+#include <wx/statline.h>
 #include <wx/wizard.h>
 
 class Wizard;
@@ -107,10 +95,8 @@ private:
 class WizardEvent : public wxNotifyEvent
 {
 public:
-    WizardEvent( wxEventType type = wxEVT_NULL,
-                 int id = wxID_ANY,
-                 bool direction = true,
-                 WizardPageSimple *page = NULL );
+	explicit WizardEvent(wxEventType type = wxEVT_NULL, int id = wxID_ANY, bool direction = true,
+	                     WizardPageSimple* page = nullptr);
 
     // for EVT_WXFB_WIZARD_PAGE_CHANGING, return true if we're going forward or
     // false otherwise and for EVT_WXFB_WIZARD_PAGE_CHANGED return true if we came
@@ -120,7 +106,9 @@ public:
 
     WizardPageSimple *GetPage() const { return m_page; }
 
-    virtual wxEvent *Clone() const { return new WizardEvent( *this ); }
+	wxEvent* Clone() const override {
+		return new WizardEvent(*this);
+	}
 
 private:
     bool              m_direction;
@@ -143,7 +131,7 @@ BEGIN_DECLARE_EVENT_TYPES()
 #endif
 END_DECLARE_EVENT_TYPES()
 
-typedef void ( wxEvtHandler::*WizardEventFunction )( WizardEvent& );
+using WizardEventFunction = void (wxEvtHandler::*)(WizardEvent&);
 
 #define WizardEventHandler( func ) \
     (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent( WizardEventFunction, &func )
