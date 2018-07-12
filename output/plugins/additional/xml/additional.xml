@@ -293,22 +293,29 @@ Written by
 	<event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)." />
 </objectinfo>
 
-<objectinfo class="wxSpinCtrlDouble" icon="spin_ctrl_double.xpm" type="widget">
-    <inherits class="wxWindow" />
-    <inherits class="AUI" />
+  <objectinfo class="wxSpinCtrlDouble" icon="spin_ctrl_double.xpm" type="widget">
+    <inherits class="wxWindow"/>
+    <inherits class="AUI"/>
     <property name="name" type="text">m_spinCtrlDouble</property>
     <property name="value" type="wxString"></property>
     <property name="min" type="float"     help="Minimal value.">0</property>
     <property name="max" type="float"     help="Maximal value.">100</property>
-	<property name="initial" type="float" help="Initial value.">0</property>
-	<property name="inc" type="float"     help="Increment value.">1</property>
+    <property name="initial" type="float" help="Initial value.">0</property>
+    <property name="inc" type="float"     help="Increment value.">1</property>
+    <property name="digits" type="uint"   help="The number of digits in the display.">0</property>
     <property name="style" type="bitlist">
-        <option name="wxSP_ARROW_KEYS"     help="The user can use arrow keys to change the value." />
-        <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
-		wxSP_ARROW_KEYS
-	</property>
+      <option name="wxSP_ARROW_KEYS"           help="The user can use arrow keys to change the value."/>
+      <option name="wxSP_WRAP"                 help="The value wraps at the minimum and maximum."/>
+      <option name="wxTE_PROCESS_ENTER"        help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
+      <option name="wxALIGN_LEFT"              help="Same as wxTE_LEFT for wxTextCtrl: the text is left aligned."/>
+      <option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTRE for wxTextCtrl: the text is centered."/>
+      <option name="wxALIGN_RIGHT"             help="Same as wxTE_RIGHT for wxTextCtrl: the text is right aligned (this is the default)."/>
+      wxSP_ARROW_KEYS
+    </property>
     <event name="OnSpinCtrlDouble" class="wxSpinDoubleEvent" help="Generated whenever the numeric value of the control is updated." />
-</objectinfo>
+    <event name="OnSpinCtrlText" class="wxCommandEvent" help="Generated whenever the user modifies the text in the edit part of the spin control directly."/>
+    <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)."/>
+  </objectinfo>
 
 <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
     <inherits class="wxWindow" />
