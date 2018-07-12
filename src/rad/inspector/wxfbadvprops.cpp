@@ -688,7 +688,12 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 
 		if(childVals.Count() > 2)
 		{
-			Item(2)->SetValue( childVals[2]);
+			// This child requires a wxSize as data type, not a wxString
+			// The string format of a wxSize doesn't match the display format,
+			// convert it like ObjectInspector does
+			wxString aux = childVals[2];
+			aux.Replace(wxT(";"), wxT(","));
+			Item(2)->SetValue(WXVARIANT(TypeConv::StringToSize(aux)));
 		}
 	}
 	else if( childVals[0].Contains( _("Load From Art Provider") ) )
