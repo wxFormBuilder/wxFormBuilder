@@ -133,15 +133,21 @@ Written by
 		</property>
 		<property name="tab_ctrl_height" type="int" help="Sets the tab height. By default, the tab control height is calculated by measuring the text height and bitmap sizes on the tab captions. Calling this method will override that calculation and set the tab control to the specified height parameter. A call to this method will override any call to SetUniformBitmapSize(). Specifying -1 as the height will return the control to its default auto-sizing behaviour.">-1</property>
 		<property name="uniform_bitmap_size" type="wxSize" help="SetUniformBitmapSize() ensures that all tabs will have the same height, even if some tabs don't have bitmaps. Passing wxDefaultSize to this function will instruct the control to use dynamic tab height, which is the default behaviour. Under the default behaviour, when a tab with a large bitmap is added, the tab control's height will automatically increase to accommodate the larger bitmap."/>
-		<event name="OnAuiNotebookPageClose" class="wxAuiNotebookEvent" help="The page is about to close." />
-		<event name="OnAuiNotebookPageClosed" class="wxAuiNotebookEvent" help="The page was closed." />
-		<event name="OnAuiNotebookPageChanged" class="wxAuiNotebookEvent" help="The page selection was changed."/>
-		<event name="OnAuiNotebookPageChanging" class="wxAuiNotebookEvent" help="The page selection is changing."/>
-		<event name="OnAuiNotebookButton" class="wxAuiNotebookEvent" help=""/>
-		<event name="OnAuiNotebookBeginDrag" class="wxAuiNotebookEvent" help=""/>
-		<event name="OnAuiNotebookEndDrag" class="wxAuiNotebookEvent" help=""/>
-		<event name="OnAuiNotebookDragMotion" class="wxAuiNotebookEvent" help=""/>
-		<event name="OnAuiNotebookAllowDND" class="wxAuiNotebookEvent" help="This event must be overridden to allow drag'n'drop among wxAuiNotebooks."/>
+		<event name="OnAuiNotebookPageClose" class="wxAuiNotebookEvent" help="A page is about to be closed. Processes a wxEVT_AUINOTEBOOK_PAGE_CLOSE event."/>
+		<event name="OnAuiNotebookPageClosed" class="wxAuiNotebookEvent" help="A page has been closed. Processes a wxEVT_AUINOTEBOOK_PAGE_CLOSED event."/>
+		<event name="OnAuiNotebookPageChanged" class="wxAuiNotebookEvent" help="The page selection was changed. Processes a wxEVT_AUINOTEBOOK_PAGE_CHANGED event."/>
+		<event name="OnAuiNotebookPageChanging" class="wxAuiNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_AUINOTEBOOK_PAGE_CHANGING event. This event can be vetoed."/>
+		<event name="OnAuiNotebookButton" class="wxAuiNotebookEvent" help="The window list button has been pressed. Processes a wxEVT_AUINOTEBOOK_BUTTON event."/>
+		<event name="OnAuiNotebookBeginDrag" class="wxAuiNotebookEvent" help="Dragging is about to begin. Processes a wxEVT_AUINOTEBOOK_BEGIN_DRAG event."/>
+		<event name="OnAuiNotebookEndDrag" class="wxAuiNotebookEvent" help="Dragging has ended. Processes a wxEVT_AUINOTEBOOK_END_DRAG event."/>
+		<event name="OnAuiNotebookDragMotion" class="wxAuiNotebookEvent" help="Emitted during a drag and drop operation. Processes a wxEVT_AUINOTEBOOK_DRAG_MOTION event."/>
+		<event name="OnAuiNotebookAllowDND" class="wxAuiNotebookEvent" help="Whether to allow a tab to be dropped. Processes a wxEVT_AUINOTEBOOK_ALLOW_DND event. This event must be specially allowed."/>
+		<event name="OnAuiNotebookDragDone" class="wxAuiNotebookEvent" help="Notify that the tab has been dragged. Processes a wxEVT_AUINOTEBOOK_DRAG_DONE event."/>
+		<event name="OnAuiNotebookTabMiddleDown" class="wxAuiNotebookEvent" help="The middle mouse button is pressed on a tab. Processes a wxEVT_AUINOTEBOOK_TAB_MIDDLE_DOWN event."/>
+		<event name="OnAuiNotebookTabMiddleUp" class="wxAuiNotebookEvent" help="The middle mouse button is released on a tab. Processes a wxEVT_AUINOTEBOOK_TAB_MIDDLE_UP event."/>
+		<event name="OnAuiNotebookTabRightDown" class="wxAuiNotebookEvent" help="The right mouse button is pressed on a tab. Processes a wxEVT_AUINOTEBOOK_TAB_RIGHT_DOWN event."/>
+		<event name="OnAuiNotebookTabRightUp" class="wxAuiNotebookEvent" help="The right mouse button is released on a tab. Processes a wxEVT_AUINOTEBOOK_TAB_RIGHT_UP event."/>
+		<event name="OnAuiNotebookBGDClick" class="wxAuiNotebookEvent" help="Double clicked on the tabs background area. Processes a wxEVT_AUINOTEBOOK_BG_DCLICK event."/>
 	</objectinfo>
 
 	<objectinfo class="auinotebookpage" icon="auinotebook.xpm" type="auinotebookpage">
