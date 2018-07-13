@@ -29,10 +29,10 @@
 #ifndef __WXFBADVPROPS_H__
 #define __WXFBADVPROPS_H__
 
+#include "fontcontainer.h"
+
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/advprops.h>
-
-#include "fontcontainer.h"
 
 // -----------------------------------------------------------------------
 // wxFBSizeProperty
@@ -47,10 +47,10 @@ public:
                       const wxSize&   value = wxSize() );
     virtual ~wxFBSizeProperty();
 
-    virtual wxVariant
-    ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
+	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                               wxVariant& childValue) const override;
 
-    virtual void RefreshChildren();
+	virtual void RefreshChildren() override;
 
 protected:
     void DoSetValue( const wxSize& value ) { m_value = WXVARIANT( value ); }
@@ -69,10 +69,10 @@ public:
                        const wxPoint&  value = wxPoint() );
     virtual ~wxFBPointProperty();
 
-    virtual wxVariant
-    ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
+	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                               wxVariant& childValue) const override;
 
-    virtual void RefreshChildren();
+	virtual void RefreshChildren() override;
 
 protected:
     void DoSetValue( const wxPoint& value ) { m_value = WXVARIANT( value ); }
@@ -106,10 +106,10 @@ public:
 	int prevSrc;
 	void SetPrevSource(int src){prevSrc = src;}
 
-    virtual wxVariant
-    ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
+	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                               wxVariant& childValue) const override;
 
-    virtual void OnSetValue();
+	virtual void OnSetValue() override;
 	void CreateChildren();
 
 	void UpdateChildValues(const wxString& value);
@@ -138,7 +138,6 @@ protected:
 // Registeration can also be performed in a constructor of a
 // property that is likely to require the editor in question.
 //
-#include <wx/slider.h>
 
 class wxPGSliderEditor : public wxPGEditor
 {
@@ -178,15 +177,15 @@ public:
     wxFBFontProperty( const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxFontContainer& value = *wxNORMAL_FONT);
     virtual ~wxFBFontProperty();
 
-    virtual wxVariant
-    ChildChanged( wxVariant& thisValue, int childIndex, wxVariant& childValue ) const;
+	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                               wxVariant& childValue) const override;
 
-    virtual void RefreshChildren();
+	virtual void RefreshChildren() override;
 
-    virtual void OnSetValue();
-    virtual wxString GetValueAsString( int argFlags = 0 ) const;
+	virtual void OnSetValue() override;
+	virtual wxString GetValueAsString(int argFlags = 0) const override;
 
-	virtual bool OnEvent( wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event );
+	virtual bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
 };
 
 #endif //__WXFBADVPROPS_H__
