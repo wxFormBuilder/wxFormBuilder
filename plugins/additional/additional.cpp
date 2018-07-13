@@ -660,6 +660,8 @@ public:
 			obj->GetPropertyAsFloat(_("initial")),
 			obj->GetPropertyAsFloat(_("inc")));
 
+		window->SetDigits(obj->GetPropertyAsInteger(_("digits")));
+
 		window->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinEventHandler( SpinCtrlDoubleComponent::OnSpin ), NULL, this );
 		return window;
 	}
@@ -694,6 +696,7 @@ public:
 		xrc.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
 		xrc.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+		xrc.AddProperty(_("digits"), _("digits"), XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
 
@@ -706,6 +709,7 @@ public:
 		filter.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+		filter.AddProperty(_("digits"), _("digits"), XRC_TYPE_INTEGER);
 
 		return filter.GetXfbObject();
 	}

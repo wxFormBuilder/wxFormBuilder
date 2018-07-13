@@ -177,10 +177,13 @@ Python code generation written by
 	<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
   </templates>
 
-  <templates class="wxSpinCtrlDouble">
-	<template name="construction">self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="evt_connect_OnSpinCtrlDouble">self.$name.Bind( wx.EVT_SPINCTRLDOUBLE, #handler )</template>
-  </templates>
+	<templates class="wxSpinCtrlDouble">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">self.$name.SetDigits( $digits )</template>
+		<template name="evt_connect_OnSpinCtrlDouble">self.$name.Bind( wx.EVT_SPINCTRLDOUBLE, #handler )</template>
+		<template name="evt_connect_OnSpinCtrlText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+		<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
+	</templates>
 
   <templates class="wxSpinButton">
 	<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
