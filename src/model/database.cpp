@@ -35,6 +35,7 @@
 #include <ticpp.h>
 #include <wx/config.h>
 #include <wx/dir.h>
+#include <wx/filename.h>
 #include <wx/stdpaths.h>
 #include <wx/tokenzr.h>
 
@@ -1474,7 +1475,6 @@ PropertyType ObjectDatabase::ParsePropertyType( wxString str )
 		result = it->second;
 	else
 	{
-		result = PT_ERROR;
 		THROW_WXFBEX( wxString::Format( wxT("Unknown property type \"%s\""), str.c_str() ) );
 	}
 
