@@ -364,8 +364,7 @@ void MyApp::MacOpenFile(const wxString &fileName)
 	class StackLogger : public wxStackWalker
 	{
 	protected:
-		void OnStackFrame( const wxStackFrame& frame )
-		{
+		void OnStackFrame(const wxStackFrame& frame) override {
 			// Build param string
 			wxString params;
 			size_t paramCount = frame.GetParamCount();
@@ -453,8 +452,7 @@ public:
         wxLog::Suspend();
     }
 
-    ~LoggingStackWalker()
-    {
+	~LoggingStackWalker() override {
         wxLogError( wxT("A Fatal Error Occurred. Click Details for a backtrace.") );
         wxLog::Resume();
         wxLog* logger = wxLog::GetActiveTarget();

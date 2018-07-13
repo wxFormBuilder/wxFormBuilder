@@ -40,10 +40,9 @@ none
 #define fbfSILENT true
 #define fbfMESSAGE false
 
-#include <set>
-#include <vector>
 #include "codegen.h"
-#include <wx/string.h>
+
+#include <set>
 
 /**
 * Parse the Lua templates.
@@ -54,10 +53,10 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
-	
+
 	std::map<wxString, wxString> m_predModulePrefix;
 	std::vector<wxString> m_strUserIDsVec;
-	
+
 	void SetupModulePrefixes();
 
 public:
@@ -65,10 +64,9 @@ public:
 	LuaTemplateParser( const LuaTemplateParser & that, wxString _template, std::vector<wxString> strUserIDsVec);
 
 	// overrides for Lua
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
@@ -134,7 +132,7 @@ private:
 	* helper function to find the event table entry template in the class or its base classes
 	*/
 	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName,  bool disconnect = false );
-	
+
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
@@ -182,7 +180,7 @@ private:
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
 	void GenConstruction( PObjectBase obj, bool is_widget, wxString &strClassName  );
-	
+
 	/**
 	* Makes the objects destructions.
 	*/

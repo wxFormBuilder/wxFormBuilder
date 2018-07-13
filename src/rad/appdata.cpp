@@ -68,8 +68,8 @@ class ExpandObjectCmd : public Command
 		bool m_expand;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ExpandObjectCmd( PObjectBase object, bool expand );
@@ -91,8 +91,8 @@ class InsertObjectCmd : public Command
 
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		InsertObjectCmd( ApplicationData *data, PObjectBase object, PObjectBase parent, int pos = -1 );
@@ -113,8 +113,8 @@ class RemoveObjectCmd : public Command
 		PObjectBase m_oldSelected;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		RemoveObjectCmd( ApplicationData *data, PObjectBase object );
@@ -132,8 +132,8 @@ class ModifyPropertyCmd : public Command
 		wxString m_oldValue, m_newValue;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ModifyPropertyCmd( PProperty prop, wxString value );
@@ -151,8 +151,8 @@ class ModifyEventHandlerCmd : public Command
 		wxString m_oldValue, m_newValue;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ModifyEventHandlerCmd( PEvent event, wxString value );
@@ -170,8 +170,8 @@ class ShiftChildCmd : public Command
 		int m_oldPos, m_newPos;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ShiftChildCmd( PObjectBase object, int pos );
@@ -196,8 +196,8 @@ class CutObjectCmd : public Command
 		PObjectBase m_oldSelected;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		CutObjectCmd( ApplicationData *data, PObjectBase object );
@@ -217,8 +217,8 @@ class ReparentObjectCmd : public Command
 		int m_oldPosition;
 
 	protected:
-		void DoExecute();
-		void DoRestore();
+		void DoExecute() override;
+		void DoRestore() override;
 
 	public:
 		ReparentObjectCmd ( PObjectBase sizeritem, PObjectBase sizer );

@@ -61,7 +61,7 @@ class HtmlWindow : public wxHtmlWindow
           wxExecute(cmd, wxEXEC_ASYNC);
     }
 
-	void OnLinkClicked(const wxHtmlLinkInfo& link) {
+	void OnLinkClicked(const wxHtmlLinkInfo& link) override {
 		::wxLaunchDefaultBrowser(link.GetHref());
 	}
 };

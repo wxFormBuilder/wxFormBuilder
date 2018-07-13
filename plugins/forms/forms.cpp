@@ -25,10 +25,8 @@
 //   Andrea Zanellato - zanellato.andrea@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include <component.h>
 #include <plugin.h>
 #include <xrcconv.h>
-#include <ticpp.h>
 
 #include <forms/wizard.h>
 #include <wx/aui/aui.h>
@@ -58,15 +56,13 @@ END_EVENT_TABLE()
 class FrameFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* /*obj*/, wxObject *parent)
-	{
+	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		panel->SetBackgroundColour(wxColour(50,50,50));
 		return panel;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, wxT("wxFrame"), obj->GetPropertyAsString(wxT("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
@@ -78,8 +74,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, wxT("Frame"));
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
@@ -92,21 +87,18 @@ public:
 class PanelFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* /*obj*/, wxObject *parent)
-	{
+	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		return panel;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, wxT("wxPanel"), obj->GetPropertyAsString(wxT("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, wxT("Panel"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -116,14 +108,12 @@ public:
 class DialogFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* /*obj*/, wxObject *parent)
-	{
+	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
 		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
 		return panel;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, wxT("wxDialog"), obj->GetPropertyAsString(wxT("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
@@ -134,8 +124,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, wxT("Dialog"));
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
@@ -147,23 +136,19 @@ public:
 class MenuBarFormComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject* /*parent*/)
-	{
+	wxObject* Create(IObject* obj, wxObject* /*parent*/) override {
 		wxMenuBar *mb = new wxMenuBar(obj->GetPropertyAsInteger(wxT("style")) |
 			obj->GetPropertyAsInteger(wxT("window_style")));
 		return mb;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, wxT("wxMenuBar"), obj->GetPropertyAsString(wxT("name")));
 		xrc.AddProperty(wxT("label"),wxT("label"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, wxT("MenuBar"));
 		filter.AddProperty(wxT("label"),wxT("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -173,8 +158,7 @@ public:
 class ToolBarFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxToolBar *tb = new wxToolBar((wxWindow*)parent, -1,
 			obj->GetPropertyAsPoint(wxT("pos")),
 			obj->GetPropertyAsSize(wxT("size")),
@@ -197,8 +181,7 @@ public:
 		return tb;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxToolBar* tb = wxDynamicCast( wxobject, wxToolBar );
 		if ( NULL == tb )
 		{
@@ -240,8 +223,7 @@ public:
 
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, wxT("wxToolBar"), obj->GetPropertyAsString(wxT("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(wxT("bitmapsize"), wxT("bitmapsize"), XRC_TYPE_SIZE);
@@ -251,8 +233,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, wxT("ToolBar"));
 		filter.AddWindowProperties();
 		filter.AddProperty(wxT("bitmapsize"), wxT("bitmapsize"), XRC_TYPE_SIZE);
@@ -284,7 +265,7 @@ void ComponentEvtHandler::OnTool( wxCommandEvent& event )
 class WizardFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject*, wxObject* parent) {
+	wxObject* Create(IObject*, wxObject* parent) override {
 		wxPanel *wizard = new wxPanel( (wxWindow *)parent );
 		return wizard;
 	}
@@ -293,8 +274,7 @@ public:
         wxLogDebug( wxT("Wizard OnSelected") );
     }
 
-	ticpp::Element* ExportToXrc( IObject *obj )
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc( obj, wxT("wxWizard"), obj->GetPropertyAsString( wxT("name") ) );
 		xrc.AddWindowProperties();
 		xrc.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT );
@@ -307,8 +287,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter( xrcObj, wxT("Wizard") );
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"),    wxT("title"),  XRC_TYPE_TEXT );
@@ -321,8 +300,7 @@ public:
 class WizardPageComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* /*obj*/, wxObject *parent)
-	{
+	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
 		WizardPageSimple *page = new WizardPageSimple( ( Wizard * )parent );
 		return page;
 	}
@@ -359,8 +337,7 @@ public:
 		}
 	}
 */
-	ticpp::Element* ExportToXrc( IObject *obj )
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
         ObjectToXrcFilter xrc( obj, wxT("wxWizardPageSimple"), obj->GetPropertyAsString( wxT("name") ) );
         xrc.AddWindowProperties();
 		if ( !obj->IsNull( wxT("bitmap") ) )
@@ -368,8 +345,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
         XrcToXfbFilter filter( xrcObj, wxT("WizardPageSimple") );
         filter.AddWindowProperties();
 		filter.AddProperty( wxT("bitmap"), wxT("bitmap"), XRC_TYPE_BITMAP );

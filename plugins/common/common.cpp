@@ -23,19 +23,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <component.h>
 #include <plugin.h>
-#include <xrcconv.h>
 #include <ticpp.h>
+#include <xrcconv.h>
 
-#include <wx/statline.h>
-#include <wx/listctrl.h>
-#include <wx/radiobox.h>
-#include <wx/bmpbuttn.h>
 #include <wx/animate.h>
 #include <wx/aui/auibar.h>
 #include <wx/bmpcbox.h>
-#include <wx/menu.h>
+#include <wx/listctrl.h>
+#include <wx/statline.h>
 #if wxVERSION_NUMBER >= 2901
 #include <wx/infobar.h>
 #endif
@@ -183,9 +179,7 @@ END_EVENT_TABLE()
 class ButtonComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxString label = obj->GetPropertyAsString( _("label") );
 		wxButton* button = new wxButton((wxWindow*)parent, -1,
 			label,
@@ -235,7 +229,7 @@ public:
 		return button;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -263,8 +257,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
@@ -283,9 +276,7 @@ public:
 class BitmapButtonComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxBitmapButton* button = new wxBitmapButton((wxWindow*)parent,-1,
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -327,7 +318,7 @@ public:
 		return button;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -356,8 +347,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxBitmapButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
@@ -376,9 +366,7 @@ public:
 class TextCtrlComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxTextCtrl* tc = new wxTextCtrl((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -395,7 +383,7 @@ public:
 		return tc;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxTextCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -405,8 +393,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxTextCtrl"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -440,9 +427,7 @@ void ComponentEvtHandler::OnText( wxCommandEvent& )
 class StaticTextComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxString label = obj->GetPropertyAsString( _("label") );
 		wxStaticText* st = new wxStaticText((wxWindow *)parent, -1,
 			label,
@@ -460,7 +445,7 @@ public:
 		return st;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		wxString name = obj->GetPropertyAsString(_("name"));
 		ObjectToXrcFilter xrc(obj, _("wxStaticText"), name);
@@ -470,8 +455,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxStaticText"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
@@ -483,8 +467,7 @@ public:
 class ComboBoxComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxComboBox *combo = new wxComboBox((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -506,7 +489,7 @@ public:
 		return combo;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxComboBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -515,8 +498,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxComboBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -528,8 +510,7 @@ public:
 class BitmapComboBoxComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxBitmapComboBox *bcombo = new wxBitmapComboBox((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -554,8 +535,7 @@ public:
 		return bcombo;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -563,8 +543,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxBitmapComboBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -576,8 +555,7 @@ public:
 class CheckBoxComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxCheckBox *res = new wxCheckBox((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -590,8 +568,7 @@ public:
 		return res;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxCheckBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
@@ -599,8 +576,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxCheckBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
@@ -624,8 +600,7 @@ void ComponentEvtHandler::OnChecked( wxCommandEvent& )
 class StaticBitmapComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		return new wxStaticBitmap((wxWindow *)parent,-1,
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -633,16 +608,14 @@ public:
 			obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxStaticBitmap"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty( _("bitmap"), _("bitmap"), XRC_TYPE_BITMAP );
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxStaticBitmap"));
 		filter.AddWindowProperties();
 	filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
@@ -657,23 +630,20 @@ class XpmStaticBitmapComponent : public StaticBitmapComponent
 class StaticLineComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		return new wxStaticLine((wxWindow *)parent,-1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxStaticLine"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxStaticLine"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -683,8 +653,7 @@ public:
 class ListCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxListCtrl *lc = new wxListCtrl((wxWindow*)parent, -1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -721,15 +690,13 @@ public:
 		return lc;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxListCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxListCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -739,8 +706,7 @@ public:
 class ListBoxComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxListBox *listbox = new wxListBox((wxWindow*)parent, -1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -756,7 +722,7 @@ public:
 		return listbox;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxListBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -764,8 +730,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxListBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("content"),_("choices"), XRC_TYPE_STRINGLIST);
@@ -776,8 +741,7 @@ public:
 class RadioBoxComponent : public ComponentBase, public wxEvtHandler
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
 		int count = choices.Count();
 		if ( 0 == count )
@@ -826,8 +790,7 @@ public:
 		}
 	}
 
-	void Cleanup( wxObject* obj )
-	{
+	void Cleanup(wxObject* obj) override {
 		wxRadioBox* window = dynamic_cast< wxRadioBox* >( obj );
 		if ( 0 != window )
 		{
@@ -836,8 +799,7 @@ public:
 		ComponentBase::Cleanup( obj );
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxRadioBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
@@ -847,8 +809,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxRadioBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
@@ -862,8 +823,7 @@ public:
 class RadioButtonComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRadioButton *rb = new wxRadioButton((wxWindow *)parent,-1,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -874,8 +834,7 @@ public:
 		return rb;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxRadioButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
@@ -883,8 +842,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxRadioButton"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
@@ -896,8 +854,7 @@ public:
 class StatusBarComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxStatusBar *sb = new wxIndependentStatusBar((wxWindow*)parent, -1,
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 		sb->SetFieldsCount(obj->GetPropertyAsInteger(_("fields")));
@@ -908,16 +865,14 @@ public:
 		return sb;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxStatusBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("fields"),_("fields"),XRC_TYPE_INTEGER);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxStatusBar"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("fields"),_("fields"),XRC_TYPE_INTEGER);
@@ -928,23 +883,19 @@ public:
 class MenuBarComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject* /*parent*/)
-	{
+	wxObject* Create(IObject* obj, wxObject* /*parent*/) override {
 		wxMenuBar *mb = new wxMenuBar(obj->GetPropertyAsInteger(_("style")) |
 			obj->GetPropertyAsInteger(_("window_style")));
 		return mb;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMenuBar"));
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -954,16 +905,13 @@ public:
 class MenuComponent : public ComponentBase
 {
 public:
-
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMenu"));
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -973,16 +921,13 @@ public:
 class SubMenuComponent : public ComponentBase
 {
  public:
-
-  ticpp::Element* ExportToXrc(IObject *obj)
-  {
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 	ObjectToXrcFilter xrc(obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
 	xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 	return xrc.GetXrcObject();
   }
 
-  ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-  {
+  ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 	XrcToXfbFilter filter(xrcObj, _("submenu"));
 	filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 	return filter.GetXfbObject();
@@ -993,7 +938,7 @@ class MenuItemComponent : public ComponentBase
 {
 public:
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxMenuItem"), obj->GetPropertyAsString(_("name")));
 		wxString shortcut = obj->GetPropertyAsString(_("shortcut"));
@@ -1026,8 +971,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMenuItem"));
 
 		try
@@ -1059,15 +1003,12 @@ public:
 class SeparatorComponent : public ComponentBase
 {
 public:
-
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("separator"));
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("separator"));
 		return filter.GetXfbObject();
 	}
@@ -1076,8 +1017,7 @@ public:
 class ToolBarComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxToolBar *tb = new wxToolBar((wxWindow*)parent, -1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -1100,8 +1040,7 @@ public:
 		return tb;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxToolBar* tb = wxDynamicCast( wxobject, wxToolBar );
 		if ( NULL == tb )
 		{
@@ -1143,8 +1082,7 @@ public:
 		tb->Realize();
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxToolBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
@@ -1154,8 +1092,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxToolBar"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
@@ -1292,8 +1229,7 @@ void AuiToolBar::OnTool( wxCommandEvent& event )
 class AuiToolBarComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		AuiToolBar *tb = new AuiToolBar((wxWindow*)parent, GetManager(), -1,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -1314,8 +1250,7 @@ public:
 		return tb;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		AuiToolBar* tb = wxDynamicCast( wxobject, AuiToolBar );
 		if ( NULL == tb )
 		{
@@ -1361,7 +1296,7 @@ public:
 		tb->Realize();
 	}
 /*
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxAuiToolBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -1407,7 +1342,7 @@ class ToolComponent : public ComponentBase
 {
 public:
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("tool"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
@@ -1427,8 +1362,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("tool"));
 		filter.AddProperty(_("longhelp"), _("statusbar"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
@@ -1469,14 +1403,12 @@ public:
 class ToolSeparatorComponent : public ComponentBase
 {
 public:
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc( obj, _("separator") );
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter( xrcObj, _("toolSeparator") );
 		return filter.GetXfbObject();
 	}
@@ -1485,8 +1417,7 @@ public:
 class ChoiceComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxArrayString choices = obj->GetPropertyAsArrayString(_("choices"));
 		wxString *strings = new wxString[choices.GetCount()];
 		for (unsigned int i=0; i < choices.GetCount(); i++)
@@ -1509,8 +1440,7 @@ public:
 		return choice;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
@@ -1518,8 +1448,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxChoice"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
@@ -1556,8 +1485,7 @@ void ComponentEvtHandler::OnComboBox( wxCommandEvent& )
 class SliderComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		return new wxSlider((wxWindow *)parent,-1,
 			obj->GetPropertyAsInteger(_("value")),
 			obj->GetPropertyAsInteger(_("minValue")),
@@ -1567,8 +1495,7 @@ public:
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")) | obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxSlider"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
@@ -1577,8 +1504,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxSlider"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
@@ -1592,8 +1518,7 @@ public:
 class GaugeComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxGauge *gauge = new wxGauge((wxWindow *)parent,-1,
 			obj->GetPropertyAsInteger(_("range")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1603,8 +1528,7 @@ public:
 		return gauge;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxGauge"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("range"), _("range"), XRC_TYPE_INTEGER);
@@ -1612,8 +1536,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxGauge"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("range"), _("range"), XRC_TYPE_INTEGER);
@@ -1626,8 +1549,7 @@ public:
 class AnimCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxAnimationCtrl* ac = new wxAnimationCtrl((wxWindow *)parent, wxID_ANY,
 			wxNullAnimation,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1657,16 +1579,14 @@ public:
 		return ac;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxAnimationCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("animation"),_("animation"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxAnimationCtrl"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("animation"),_("animation"),XRC_TYPE_TEXT);
@@ -1678,8 +1598,7 @@ public:
 class InfoBarComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxInfoBar* ib = new wxInfoBar((wxWindow *)parent);
 
 		ib->SetShowHideEffects( (wxShowEffect)obj->GetPropertyAsInteger(_("show_effect")),
@@ -1692,7 +1611,7 @@ public:
 		return ib;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
 

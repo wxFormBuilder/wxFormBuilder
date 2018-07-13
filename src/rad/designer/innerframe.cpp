@@ -23,9 +23,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "innerframe.h"
+
 #include "window_buttons.h"
+
 #include <wx/dcbuffer.h>
-#include <wx/settings.h>
 
 DEFINE_EVENT_TYPE( wxEVT_INNER_FRAME_RESIZED )
 
@@ -47,8 +48,7 @@ private:
 	long m_style;
 
 protected:
-	wxSize DoGetBestSize() const
-	{
+	wxSize DoGetBestSize() const override {
 		return wxSize( 100, 19 );
 	}
 
