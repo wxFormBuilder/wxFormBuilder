@@ -144,8 +144,7 @@ Wizard::~Wizard()
     m_pages.Clear();
 }
 
-void Wizard::OnHelp( wxCommandEvent& event )
-{
+void Wizard::OnHelp(wxCommandEvent&) {
     // this function probably can never be called when we don't have an active
     // page, but a small extra check won't hurt
 	if (m_page != nullptr) {
@@ -199,8 +198,7 @@ void Wizard::OnBackOrNext( wxCommandEvent& event )
     m_page->GetEventHandler()->ProcessEvent( eventChanged );
 }
 
-void Wizard::OnCancel( wxCommandEvent& event )
-{
+void Wizard::OnCancel(wxCommandEvent&) {
     WizardEvent eventCancel( wxFB_EVT_WIZARD_CANCEL, GetId(), false, m_page );
     GetEventHandler()->ProcessEvent( eventCancel );
 }

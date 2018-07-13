@@ -1195,8 +1195,7 @@ void ObjectInspector::ModifyProperty( PProperty prop, const wxString& str )
 	AppData()->AddHandler( this->GetEventHandler() );
 }
 
-void ObjectInspector::OnChildFocus( wxChildFocusEvent& event )
-{
+void ObjectInspector::OnChildFocus(wxChildFocusEvent&) {
 	// do nothing to avoid "scrollbar jump" if wx2.9 is used
 }
 

@@ -284,14 +284,12 @@ void ComponentEvtHandler::OnTool( wxCommandEvent& event )
 class WizardFormComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* obj, wxObject *parent)
-	{
+	wxObject* Create(IObject*, wxObject* parent) {
 		wxPanel *wizard = new wxPanel( (wxWindow *)parent );
 		return wizard;
 	}
 
-    void OnSelected( wxObject* wxobject, IManager* manager )
-	{
+	void OnSelected(wxObject*, IManager*) {
         wxLogDebug( wxT("Wizard OnSelected") );
     }
 

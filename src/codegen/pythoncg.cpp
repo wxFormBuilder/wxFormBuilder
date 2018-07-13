@@ -780,8 +780,10 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 	return code;
 }
 
-void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix)
-{
+void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
+                                              const wxString& classDecoration,
+                                              const EventVector& events,
+                                              const wxString& eventHandlerPostfix) {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{

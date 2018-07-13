@@ -1756,8 +1756,7 @@ void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
 	m_rightSplitter_sash_pos = event.GetSashPosition();
 }
 
-void MainFrame::OnWindowSwap(wxCommandEvent& e)
-{
+void MainFrame::OnWindowSwap(wxCommandEvent&) {
     wxWindow* win1 = m_rightSplitter->GetWindow1();
     wxWindow* win2 = m_rightSplitter->GetWindow2();
 

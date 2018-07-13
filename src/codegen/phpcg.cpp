@@ -767,8 +767,10 @@ wxString PHPCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent)
 	return code;
 }
 
-void PHPCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix)
-{
+void PHPCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
+                                           const wxString& classDecoration,
+                                           const EventVector& events,
+                                           const wxString& eventHandlerPostfix) {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{

@@ -584,8 +584,7 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 
 //////////////////////////////
 
-bool IncludeInPalette(wxString type)
-{
+bool IncludeInPalette(wxString /*type*/) {
 	return true;
 }
 
@@ -739,8 +738,13 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
     }
 }
 
-void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, PwxFBManager manager )
-{
+void ObjectDatabase::SetupPackage(const wxString& file,
+#ifdef __WXMSW__
+                                  const wxString& path,
+#else
+                                  const wxString& /*path*/,
+#endif
+                                  PwxFBManager manager) {
 	#ifdef __WXMSW__
 		wxString libPath = path;
 	#else

@@ -1277,8 +1277,7 @@ void VisualEditor::OnProjectRefresh( wxFBEvent &)
 	Create();
 }
 
-void VisualEditor::OnAuiScaner(wxTimerEvent& event)
-{
+void VisualEditor::OnAuiScaner(wxTimerEvent&) {
 	if( m_auimgr )
 	{
 		ScanPanes( m_back->GetFrameContentPanel() );

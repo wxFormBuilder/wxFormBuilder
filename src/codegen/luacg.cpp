@@ -894,8 +894,10 @@ wxString LuaCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent/*
 	return code;
 }
 
-void LuaCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix)
-{
+void LuaCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
+                                           const wxString& /*classDecoration*/,
+                                           const EventVector& events,
+                                           const wxString& /*eventHandlerPostfix*/) {
 	wxString strClassName = class_obj->GetClassName();
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )

@@ -1722,8 +1722,7 @@ void ComponentEvtHandler::OnButton( wxCommandEvent &event )
 	event.Skip();
 }
 
-void ComponentEvtHandler::OnTimer( wxTimerEvent &event )
-{
+void ComponentEvtHandler::OnTimer(wxTimerEvent&) {
 	wxInfoBar *ib = wxDynamicCast( m_window, wxInfoBar );
 	if( ib )
 	{

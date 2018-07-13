@@ -1810,24 +1810,24 @@ void ComponentEvtHandler::OnMarginClick( wxStyledTextEvent& event )
 class DataViewModel : public wxDataViewModel
 {
 public:
-	unsigned int GetChildren(const wxDataViewItem& item, wxDataViewItemArray& children) const {
+	unsigned int GetChildren(const wxDataViewItem&, wxDataViewItemArray& /*children*/) const {
 		return 0;
 	}
 	unsigned int GetColumnCount() const {
 		return 0;
 	}
-	wxString GetColumnType(unsigned int col) const {
+	wxString GetColumnType(unsigned int /*col*/) const {
 		return wxVariant("Dummy").GetType();
 	}
-	wxDataViewItem GetParent(const wxDataViewItem& item) const {
+	wxDataViewItem GetParent(const wxDataViewItem&) const {
 		return wxDataViewItem( NULL );
 	}
-	bool IsContainer(const wxDataViewItem& item) const {
+	bool IsContainer(const wxDataViewItem&) const {
 		return false;
 	}
-	void GetValue (wxVariant &variant, const wxDataViewItem &item, unsigned int col) const {
+	void GetValue(wxVariant&, const wxDataViewItem&, unsigned int /*col*/) const {
 	}
-	bool SetValue (const wxVariant &variant, const wxDataViewItem &item, unsigned int col) {
+	bool SetValue(const wxVariant&, const wxDataViewItem&, unsigned int /*col*/) {
 		return true;
 	}
 };
@@ -1980,8 +1980,7 @@ public:
 		return treeListCtrl;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) {
 		// initialize tree
 		wxTreeListCtrl* treeListCtrl = wxDynamicCast( wxobject, wxTreeListCtrl );
 		int colCount = treeListCtrl->GetColumnCount();
@@ -2048,9 +2047,7 @@ public:
 			obj->GetPropertyAsInteger( _("flag") ) );
 	}
 
-	void OnSelected( wxObject* wxobject )
-	{
-
+	void OnSelected(wxObject*) {
 	}
 };
 
