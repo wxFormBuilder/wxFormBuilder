@@ -24,7 +24,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "menueditor.h"
-#include "model/objectbase.h"
+
+#include "../model/objectbase.h"
 
 #define ID_DEFAULT -1 // Default
 #define ID_ADDMENUITEM 1000

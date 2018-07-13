@@ -23,7 +23,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "utils/wxfbdefs.h"
+#include "../../utils/wxfbdefs.h"
 
 class wxWindow;
 

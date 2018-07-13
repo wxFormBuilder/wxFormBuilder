@@ -23,14 +23,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "visualobj.h"
 #include "visualeditor.h"
 
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/genericpanel.h"
-#include "model/objectbase.h"
-#include <rad/appdata.h>
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
 
 using namespace TypeConv;
 

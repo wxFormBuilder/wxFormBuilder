@@ -27,12 +27,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "wxfbadvprops.h"
-#include "rad/appdata.h"
-#include "utils/typeconv.h"
 
-#include <wx/file.h>
-#include <wx/log.h>
-#include <wx/tokenzr.h>
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
+
 #include <wx/regex.h>
 
 // -----------------------------------------------------------------------

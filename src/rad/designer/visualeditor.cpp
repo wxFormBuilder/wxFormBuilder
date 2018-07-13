@@ -25,19 +25,15 @@
 
 #include "visualeditor.h"
 
-#include "visualeditor.h"
-#include "visualobj.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
+#include "../appdata.h"
+#include "../wxfbevent.h"
+#include "../wxfbmanager.h"
 #include "menubar.h"
-#include "wx/collpane.h"
-#include "wx/statline.h"
-#include "rad/designer/resizablepanel.h"
-#include "rad/wxfbevent.h"
-#include "rad/wxfbmanager.h"
-#include <rad/appdata.h>
-#include "utils/wxfbexception.h"
-#include "model/objectbase.h"
+
+#include <wx/collpane.h>
 
 #ifdef __WX24__
 #define wxFULL_REPAINT_ON_RESIZE 0

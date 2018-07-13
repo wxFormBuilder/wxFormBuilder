@@ -26,31 +26,21 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
-	#include <wx/wx.h>
-#endif
-
-#include <wx/propgrid/propgrid.h>
-#include <wx/propgrid/advprops.h>
-#include <wx/propgrid/manager.h>
-
 #include "objinspect.h"
+
 #include "wxfbadvprops.h"
 
-#include "model/objectbase.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "utils/wxfbexception.h"
+#include "../../utils/debug.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
 
-#include "rad/appdata.h"
-#include "rad/bitmaps.h"
-#include "rad/wxfbevent.h"
-#include "rad/auitabart.h"
+#include "../appdata.h"
+#include "../auitabart.h"
+#include "../bitmaps.h"
+#include "../wxfbevent.h"
 
-#include <wx/tokenzr.h>
 #include <wx/config.h>
+#include <wx/propgrid/propgrid.h>
 
 static int wxEVT_FB_PROP_BITMAP_CHANGED = wxNewEventType();
 

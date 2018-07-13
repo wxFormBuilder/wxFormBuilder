@@ -27,19 +27,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "pythoncg.h"
+
+#include "../model/objectbase.h"
+#include "../rad/appdata.h"
+#include "../utils/debug.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "model/database.h"
-#include "utils/wxfbexception.h"
 
 #include <algorithm>
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
-#include <wx/defs.h>
 
 PythonTemplateParser::PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
 :

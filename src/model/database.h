@@ -26,12 +26,11 @@
 #ifndef __OBJ_DATABASE__
 #define __OBJ_DATABASE__
 
-#include <wx/dynlib.h>
+#include "../utils/wxfbdefs.h"
+#include "types.h"
+
 #include <set>
-#include <map>
-#include <memory>
-#include "model/types.h"
-#include "utils/wxfbdefs.h"
+#include <wx/dynlib.h>
 
 class ObjectDatabase;
 class ObjectTypeDictionary;

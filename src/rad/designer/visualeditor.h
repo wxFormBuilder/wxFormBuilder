@@ -26,15 +26,9 @@
 #ifndef __VISUAL_EDITOR__
 #define __VISUAL_EDITOR__
 
-#include "plugin.h"
-#include "wx/wx.h"
-#include "utils/wxfbdefs.h"
-#include "rad/designer/visualobj.h"
-//#include "rad/designer/resizablepanel.h"
-#include <wx/sashwin.h>
-
 #include "innerframe.h"
-#include "wx/aui/aui.h"
+#include "visualobj.h"
+
 #include <forms/wizard.h>
 /**
  * Extends the wxInnerFrame to show the object highlight

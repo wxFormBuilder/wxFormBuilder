@@ -26,8 +26,9 @@
 #ifndef __WXFBEVENT__
 #define __WXFBEVENT__
 
+#include "../utils/wxfbdefs.h"
+
 #include <wx/event.h>
-#include "utils/wxfbdefs.h"
 
 class wxFBEvent : public wxEvent
 {

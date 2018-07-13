@@ -24,8 +24,9 @@
 #ifndef WXFBMANAGER
 #define WXFBMANAGER
 
+#include "../utils/wxfbdefs.h"
+
 #include <component.h>
-#include "utils/wxfbdefs.h"
 
 class VisualEditor;
 class ObjectBase;

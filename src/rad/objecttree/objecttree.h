@@ -26,8 +26,8 @@
 #ifndef __OBJECT_TREE__
 #define __OBJECT_TREE__
 
-#include "utils/wxfbdefs.h"
-#include "rad/customkeys.h"
+#include "../../utils/wxfbdefs.h"
+#include "../customkeys.h"
 
 #include <wx/treectrl.h>
 

@@ -29,16 +29,14 @@
 #ifndef __OBJ_INSPECT__
 #define __OBJ_INSPECT__
 
-#if !wxUSE_PROPGRID
-    #error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
-#endif
+#include "../../model/objectbase.h"
 
 #include <wx/aui/auibook.h>
-
-#include <wx/propgrid/property.h>
 #include <wx/propgrid/manager.h>
-#include "utils/wxfbdefs.h"
-#include "model/objectbase.h"
+
+#if !wxUSE_PROPGRID
+#error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
+#endif
 
 class wxFBEventHandlerEvent;
 class wxFBPropertyEvent;

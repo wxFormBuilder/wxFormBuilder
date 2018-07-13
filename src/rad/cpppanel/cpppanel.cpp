@@ -27,28 +27,23 @@
 
 #include "cpppanel.h"
 
-#include "rad/codeeditor/codeeditor.h"
-#include "rad/wxfbevent.h"
-#include "rad/bitmaps.h"
-#include "rad/appdata.h"
-#include "rad/auitabart.h"
-#include "utils/wxfbdefs.h"
+#include "../appdata.h"
+#include "../auitabart.h"
+#include "../bitmaps.h"
+#include "../codeeditor/codeeditor.h"
+#include "../wxfbevent.h"
 
-#include "utils/typeconv.h"
-#include "utils/encodingutils.h"
-#include "utils/wxfbexception.h"
+#include "../../utils/encodingutils.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
 
-#include "model/objectbase.h"
+#include "../../model/objectbase.h"
 
-#include "codegen/codewriter.h"
-#include "codegen/cppcg.h"
+#include "../../codegen/codewriter.h"
+#include "../../codegen/cppcg.h"
 
 #include <wx/fdrepdlg.h>
-#include <wx/config.h>
-
 #include <wx/stc/stc.h>
-
-#include <wx/aui/auibook.h>
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )

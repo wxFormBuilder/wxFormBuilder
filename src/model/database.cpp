@@ -23,22 +23,20 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "objectbase.h"
 #include "database.h"
-#include "rad/bitmaps.h"
-#include "utils/stringutils.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "utils/wxfbexception.h"
-#include "rad/appdata.h"
-#include <wx/filename.h>
-#include <wx/image.h>
-#include <wx/dir.h>
+
+#include "../rad/bitmaps.h"
+#include "../utils/debug.h"
+#include "../utils/stringutils.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
+#include "objectbase.h"
+
 #include <ticpp.h>
 #include <wx/config.h>
-#include <wx/tokenzr.h>
+#include <wx/dir.h>
 #include <wx/stdpaths.h>
-#include <wx/app.h>
+#include <wx/tokenzr.h>
 
 //#define DEBUG_PRINT(x) cout << x
 

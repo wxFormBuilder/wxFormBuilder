@@ -23,13 +23,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "model/types.h"
-#include <wx/tokenzr.h>
-#include "utils/stringutils.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
+#include "types.h"
 
-#include <cstdlib>
+#include "../utils/stringutils.h"
+
+#include <wx/tokenzr.h>
 
 ObjectType::ObjectType(wxString name, int id, bool hidden, bool item)
 {

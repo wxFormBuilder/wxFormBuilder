@@ -27,20 +27,18 @@
 
 #include "xrcpanel.h"
 
-#include "codegen/xrccg.h"
-#include "codegen/codewriter.h"
+#include "../../codegen/codewriter.h"
+#include "../../codegen/xrccg.h"
 
-#include "rad/codeeditor/codeeditor.h"
-#include "rad/bitmaps.h"
-#include "rad/wxfbevent.h"
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include "utils/wxfbexception.h"
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
+#include "../appdata.h"
+#include "../codeeditor/codeeditor.h"
+#include "../wxfbevent.h"
 
 #include <wx/fdrepdlg.h>
 
-#include <wx/stc/stc.h>
 #include <wx/aui/auibook.h>
 
 BEGIN_EVENT_TABLE( XrcPanel,  wxPanel )

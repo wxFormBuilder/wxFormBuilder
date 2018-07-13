@@ -24,11 +24,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrccg.h"
+
+#include "../model/objectbase.h"
+#include "../utils/typeconv.h"
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "model/objectbase.h"
-#include "model/xrcfilter.h"
 
 #include <ticpp.h>
 

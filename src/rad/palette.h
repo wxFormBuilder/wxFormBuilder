@@ -26,13 +26,11 @@
 #ifndef __PALETTE__
 #define __PALETTE__
 
-#include <wx/wx.h>
+#include "../model/database.h"
+
+#include <wx/aui/auibar.h>
 #include <wx/aui/auibook.h>
 #include <wx/spinbutt.h>
-#include <vector>
-#include <utils/wxfbdefs.h>
-#include <model/database.h>
-#include <wx/aui/auibar.h>
 
 typedef std::vector<wxAuiToolBar*> ToolbarVector;
 

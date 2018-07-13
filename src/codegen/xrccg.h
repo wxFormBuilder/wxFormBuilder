@@ -27,8 +27,6 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
-#include "utils/wxfbdefs.h"
-#include <vector>
 
 namespace ticpp
 {

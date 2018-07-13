@@ -22,12 +22,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "dataobject.h"
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include <ticpp.h>
-#include <string>
-#include "rad/appdata.h"
-#include <wx/utils.h>
+
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
 
 #include <ticpp.h>
 

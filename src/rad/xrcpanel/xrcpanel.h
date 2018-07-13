@@ -26,18 +26,15 @@
 #ifndef __XRC_PANEL__
 #define __XRC_PANEL__
 
-#include <wx/panel.h>
-
-#include "utils/wxfbdefs.h"
-
-class CodeEditor;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
+#include "../../utils/wxfbdefs.h"
 
 #include <wx/stc/stc.h>
+#include <wx/panel.h>
 
+class CodeEditor;
+class wxFBEvent;
+class wxFBObjectEvent;
+class wxFBPropertyEvent;
 class wxFindDialogEvent;
 
 class XrcPanel : public wxPanel

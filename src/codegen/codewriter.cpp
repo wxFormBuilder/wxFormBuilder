@@ -25,9 +25,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "codewriter.h"
-#include "md5/md5.hh"
-#include "utils/wxfbexception.h"
-#include "utils/typeconv.h"
+
+#include "../md5/md5.hh"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
 
 #include <wx/file.h>
 #include <wx/tokenzr.h>
@@ -35,7 +36,6 @@
 
 #include <wx/stc/stc.h>
 
-#include <fstream>
 #include <cstring>
 
 CodeWriter::CodeWriter()

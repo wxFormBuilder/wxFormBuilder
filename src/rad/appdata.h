@@ -26,8 +26,8 @@
 #ifndef __APP_DATA__
 #define __APP_DATA__
 
-#include "model/database.h"
-#include "rad/cmdproc.h"
+#include "../model/database.h"
+#include "cmdproc.h"
 
 namespace ticpp
 {

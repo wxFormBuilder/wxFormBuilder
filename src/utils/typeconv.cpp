@@ -24,19 +24,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "typeconv.h"
-#include <wx/tokenzr.h>
-#include "utils/stringutils.h"
-#include "utils/debug.h"
-#include "rad/bitmaps.h"
-#include <wx/filename.h>
-#include <string>
-#include <cstring>
-#include "rad/appdata.h"
-#include <clocale>
 
-#include <wx/filesys.h>
+#include "../rad/appdata.h"
+#include "../rad/bitmaps.h"
+#include "../rad/inspector/objinspect.h"
+
 #include <wx/artprov.h>
-#include "rad/inspector/objinspect.h"
+#include <wx/filesys.h>
 
 ////////////////////////////////////
 

@@ -33,10 +33,8 @@ the wxFormBuilder GUI code.
 @date	01/14/2007
 */
 
-
+#include "../../utils/wxfbdefs.h"
 #include "geninhertclass_gui.h"
-#include <vector>
-#include "utils/wxfbdefs.h"
 
 /** Holds the details of the class to generate. */
 class GenClassDetails

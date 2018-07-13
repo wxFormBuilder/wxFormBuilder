@@ -26,11 +26,7 @@
 #ifndef __TYPE_UTILS__
 #define __TYPE_UTILS__
 
-#include "wx/wx.h"
-#include <wx/string.h>
-#include <vector>
-#include <map>
-#include "model/types.h"
+#include "../model/types.h"
 #include "fontcontainer.h"
 
 // macros para la conversión entre wxString <-> wxString

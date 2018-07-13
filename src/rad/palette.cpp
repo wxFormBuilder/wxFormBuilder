@@ -24,15 +24,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "palette.h"
-#include "model/objectbase.h"
-#include "bitmaps.h"
-#include "utils/debug.h"
-#include "utils/wxfbdefs.h"
-#include "utils/typeconv.h"
-#include "rad/title.h"
-#include "wx/config.h"
-#include "rad/appdata.h"
-#include "rad/auitabart.h"
+
+#include "../model/objectbase.h"
+#include "../utils/debug.h"
+#include "appdata.h"
+#include "auitabart.h"
 
 #ifdef __WXMAC__
 	#include <wx/tooltip.h>

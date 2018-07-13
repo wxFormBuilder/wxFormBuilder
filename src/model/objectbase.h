@@ -33,8 +33,8 @@
 #ifndef __OBJ__
 #define __OBJ__
 
+#include "../utils/wxfbdefs.h"
 #include "types.h"
-#include "utils/wxfbdefs.h"
 
 #include <component.h>
 #include <list>

@@ -1,11 +1,10 @@
 #ifndef CODEPARSER_H_INCLUDED
 #define CODEPARSER_H_INCLUDED
 
+#include "../utils/debug.h"
+
 #include <wx/textfile.h>
-#include <wx/string.h>
-#include <wx/hashmap.h>
 #include <wx/msgdlg.h>
-#include "utils/debug.h"
 
 wxString RemoveWhiteSpace(wxString str);
 

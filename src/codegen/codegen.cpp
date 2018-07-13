@@ -24,13 +24,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "codegen.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "wx/wx.h"
+
+#include "../model/objectbase.h"
+#include "../rad/appdata.h"
+#include "../utils/wxfbexception.h"
+
 #include <wx/tokenzr.h>
-#include "rad/appdata.h"
-#include "model/objectbase.h"
-#include "utils/wxfbexception.h"
 
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
@@ -344,7 +343,7 @@ PObjectBase TemplateParser::GetWxParent()
 		if( wxparent.get() &&
 			wxparent->GetClassName() == wxT("wxStaticBoxSizer") &&
 			wxparent->GetProperty( "parent" )->GetValueAsInteger() == 0 ) wxparent = prev_wxparent;
-			
+
 		prev_wxparent = wxparent;
 	}
 

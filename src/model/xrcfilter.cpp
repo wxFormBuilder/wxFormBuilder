@@ -24,14 +24,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrcfilter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include <wx/filename.h>
-#include <wx/wfstream.h>
-#include <wx/txtstrm.h>
-#include <sstream>
-#include "model/objectbase.h"
-#include <ticpp.h>
+
+#include "../utils/debug.h"
+#include "../utils/typeconv.h"
+#include "objectbase.h"
 
 PObjectBase XrcLoader::GetProject( ticpp::Document* xrcDoc )
 {

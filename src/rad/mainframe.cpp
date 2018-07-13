@@ -25,34 +25,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "mainframe.h"
 
-#include "wx/config.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "rad/title.h"
-#include "rad/bitmaps.h"
-#include "rad/cpppanel/cpppanel.h"
-#include "rad/pythonpanel/pythonpanel.h"
-#include "rad/luapanel/luapanel.h"
-#include "rad/phppanel/phppanel.h"
-#include "rad/xrcpanel/xrcpanel.h"
-#include "rad/geninheritclass/geninhertclass.h"
-#include "rad/auitabart.h"
+#include "../model/xrcfilter.h"
+#include "../utils/stringutils.h"
+#include "../utils/wxfbexception.h"
+#include "about.h"
+#include "appdata.h"
+#include "auitabart.h"
+#include "bitmaps.h"
+#include "cpppanel/cpppanel.h"
+#include "designer/visualeditor.h"
+#include "geninheritclass/geninhertclass.h"
 #include "inspector/objinspect.h"
+#include "luapanel/luapanel.h"
 #include "objecttree/objecttree.h"
 #include "palette.h"
-#include "rad/designer/visualeditor.h"
-
-#include "model/xrcfilter.h"
-#include "rad/about.h"
-#include "rad/wxfbevent.h"
+#include "phppanel/phppanel.h"
+#include "pythonpanel/pythonpanel.h"
+#include "title.h"
+#include "wx/config.h"
+#include "wxfbevent.h"
 #include "wxfbmanager.h"
-#include "utils/wxfbexception.h"
-#include "utils/stringutils.h"
-#include "utils/wxfbdefs.h"
-#include <wx/filename.h>
-
-#include <rad/appdata.h>
-#include "model/objectbase.h"
+#include "xrcpanel/xrcpanel.h"
 
 #define ID_SAVE_PRJ      102
 #define ID_OPEN_PRJ      103

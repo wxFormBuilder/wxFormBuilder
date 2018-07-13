@@ -26,8 +26,8 @@
 #ifndef __XRC_FILTER__
 #define __XRC_FILTER__
 
-#include "utils/wxfbdefs.h"
-#include "model/database.h"
+#include "database.h"
+
 #include <ticpp.h>
 
 /**

@@ -24,13 +24,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "bitmaps.h"
-#include "tinyxml.h"
-#include <default.xpm>
-#include <wx/image.h>
-#include "utils/typeconv.h"
-#include "utils/stringutils.h"
-#include "utils/wxfbexception.h"
 
+#include "../utils/typeconv.h"
+#include "../utils/stringutils.h"
+#include "../utils/wxfbexception.h"
+
+#include <default.xpm>
 #include <ticpp.h>
 
 static std::map< wxString, wxBitmap > m_bitmaps;

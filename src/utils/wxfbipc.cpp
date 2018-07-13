@@ -21,20 +21,17 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
 #include "wxfbipc.h"
+
+#include "debug.h"
+
 #include <wx/filename.h>
-#include <memory>
-#include "utils/debug.h"
+#include <wx/wx.h>
 
 bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 {

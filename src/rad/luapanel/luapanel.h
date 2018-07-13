@@ -35,9 +35,9 @@
 #ifndef __LUA_PANEL__
 #define __LUA_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
