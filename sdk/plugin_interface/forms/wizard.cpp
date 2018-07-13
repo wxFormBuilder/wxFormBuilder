@@ -159,8 +159,7 @@ void Wizard::OnHelp(wxCommandEvent&) {
 void Wizard::SetSelection( size_t pageIndex )
 {
     size_t pageCount = m_pages.GetCount();          // Internal page array count
-    if ( pageIndex >= 0 && pageIndex < pageCount )  // Is it a valid index?
-    {
+	if (pageIndex < pageCount) {                    // Is it a valid index?
         bool hasPrev = pageIndex > 0;               // Has this page a previous one,
         bool hasNext = pageIndex < pageCount - 1;   // or another after it?
 
