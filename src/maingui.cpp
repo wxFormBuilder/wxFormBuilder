@@ -419,6 +419,8 @@ void MyApp::MacOpenFile(const wxString &fileName)
 	class StackLogger
 	{
 	public:
+		virtual ~StackLogger() = default;
+
 		void WalkFromException()
 		{
 			try
