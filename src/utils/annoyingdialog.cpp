@@ -10,15 +10,16 @@
 * HeadURL: http://svn.berlios.de/svnroot/repos/codeblocks/trunk/src/sdk/annoyingdialog.cpp
 */
 
+#include "annoyingdialog.h"
+
+#include <memory>
 #include <wx/button.h>
 #include <wx/checkbox.h>
-#include <wx/intl.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/statbmp.h>
 #include <wx/config.h>
 #include <wx/log.h>
-#include "annoyingdialog.h"
+#include <wx/sizer.h>
+#include <wx/statbmp.h>
+#include <wx/stattext.h>
 
 BEGIN_EVENT_TABLE(AnnoyingDialog, wxDialog)
     EVT_BUTTON(-1, AnnoyingDialog::OnButton)
@@ -44,7 +45,7 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
 		}
     }
 
-    wxBoxSizer *outerSizer = new wxBoxSizer( wxVERTICAL );
+	auto outerSizer = std::make_unique<wxBoxSizer>(wxVERTICAL);
 
     wxFlexGridSizer *mainArea = new wxFlexGridSizer(2, 0, 0);
     wxStaticBitmap *bitmap = new wxStaticBitmap(this, -1, wxArtProvider::GetBitmap(icon,  wxART_MESSAGE_BOX), wxDefaultPosition);
@@ -147,8 +148,8 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
     m_cb = new wxCheckBox(this, -1, _("Don't annoy me again!"), wxDefaultPosition, wxDefaultSize, 0);
     outerSizer->Add(m_cb, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT|wxBOTTOM, 5);
 
-    SetSizer( outerSizer );
-    outerSizer->SetSizeHints(this);
+	SetSizer(outerSizer.release());
+	GetSizer()->SetSizeHints(this);
 
     Centre();
 }
