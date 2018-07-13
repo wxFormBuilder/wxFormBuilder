@@ -283,6 +283,12 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
+#if wxCHECK_VERSION( 2, 9, 2 )
+		// To stay in sync what the generator templates do apply the markup label here as well
+		if (obj->GetPropertyAsInteger(_("markup")))
+			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
+#endif
+
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
 		{
 			button->SetDefault();

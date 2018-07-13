@@ -62,26 +62,7 @@ Python code generation written by
 
   <templates class="wxBitmapButton">
 	<template name="construction">
-		self.$name = #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
-	<template name="settings">
-  		#ifnotnull $disabled
-  		@{ #nl self.$name.SetBitmapDisabled( $disabled ) @}
-
-			#ifnotnull $pressed
-			@{ #nl self.$name.SetBitmapPressed( $pressed ) @}
-
-  		#ifnotnull $focus
-  		@{ #nl self.$name.SetBitmapFocus( $focus ) @}
-
-			#ifnotnull $current
-			@{ #nl self.$name.SetBitmapCurrent( $current ) @}
-
-			#ifnotnull $position
-			@{ #nl self.$name.SetBitmapPosition( $position ) @}
-
-			#ifnotnull $margins
-			@{ #nl self.$name.SetBitmapMargins( $margins ) @}
-  	</template>
+		self.$name = #class( #wxparent $name, $id, wx.NullBitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
   </templates>
 
   <templates class="wxTextCtrl">

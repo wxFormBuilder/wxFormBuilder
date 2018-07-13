@@ -62,27 +62,8 @@ Written by
 
   <templates class="wxBitmapButton">
     <template name="declaration">#class* $name;</template>
-    <template name="construction">$name = new #class( #wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+    <template name="construction">$name = new #class( #wxparent $name, $id, wxNullBitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="include">@#include &lt;wx/bmpbuttn.h&gt;</template>
-  	<template name="settings">
-  		#ifnotnull $disabled
-  		@{ #nl $name->SetBitmapDisabled( $disabled ); @}
-
-			#ifnotnull $pressed
-			@{ #nl $name->SetBitmapPressed( $pressed ); @}
-
-  		#ifnotnull $focus
-  		@{ #nl $name->SetBitmapFocus( $focus ); @}
-
-			#ifnotnull $current
-			@{ #nl $name->SetBitmapCurrent( $current ); @}
-
-			#ifnotnull $position
-			@{ #nl $name->SetBitmapPosition( $position ); @}
-
-			#ifnotnull $margins
-			@{ #nl $name->SetBitmapMargins( $margins ); @}
-  	</template>
   </templates>
 
   <templates class="wxTextCtrl">

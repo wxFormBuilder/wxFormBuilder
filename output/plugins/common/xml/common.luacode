@@ -64,26 +64,7 @@ Lua code generation written by
 
   <templates class="wxBitmapButton">
 	<template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, $bitmap, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-	<template name="settings">
-  		#ifnotnull $disabled
-  		@{ #nl #utbl$name:SetBitmapDisabled( $disabled ) @}
-
-			#ifnotnull $pressed
-			@{ #nl #utbl$name:SetBitmapPressed( $pressed ) @}
-
-  		#ifnotnull $focus
-  		@{ #nl #utbl$name:SetBitmapFocus( $focus ) @}
-
-			#ifnotnull $current
-			@{ #nl #utbl$name:SetBitmapCurrent( $current ) @}
-
-			#ifnotnull $position
-			@{ #nl #utbl$name:SetBitmapPosition( $position ) @}
-
-			#ifnotnull $margins
-			@{ #nl #utbl$name:SetBitmapMargins( $margins ) @}
-  	</template>
+		#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxNullBitmap, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
   </templates>
 
   <templates class="wxTextCtrl">
