@@ -27,7 +27,6 @@
 #define __OBJECT_TREE__
 
 #include "utils/wxfbdefs.h"
-#include <map>
 #include "rad/customkeys.h"
 
 #include <wx/treectrl.h>

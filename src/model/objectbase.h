@@ -33,17 +33,11 @@
 #ifndef __OBJ__
 #define __OBJ__
 
-#include <iostream>
-#include <wx/string.h>
-#include <list>
-
 #include "types.h"
-#include "ticpp.h"
-
-#include "wx/wx.h"
-#include <component.h>
-#include <memory>
 #include "utils/wxfbdefs.h"
+
+#include <component.h>
+#include <list>
 
 ///////////////////////////////////////////////////////////////////////////////
 

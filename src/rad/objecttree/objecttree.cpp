@@ -24,16 +24,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "objecttree.h"
-#include "rad/bitmaps.h"
-#include "utils/debug.h"
-#include <wx/imaglist.h>
-#include <wx/image.h>
-#include "rad/menueditor.h"
-#include "utils/typeconv.h"
-#include "rad/wxfbevent.h"
-#include <rad/appdata.h>
+
 #include "model/objectbase.h"
-#include <wx/utils.h>
+#include "rad/bitmaps.h"
+#include "rad/menueditor.h"
+#include "rad/wxfbevent.h"
+
+#include <rad/appdata.h>
+#include <wx/imaglist.h>
 
 BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
 	EVT_TREE_SEL_CHANGED( -1, ObjectTree::OnSelChanged )

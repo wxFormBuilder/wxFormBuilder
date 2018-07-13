@@ -24,39 +24,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "appdata.h"
+
 #include "bitmaps.h"
 #include "wxfbevent.h"
 #include "wxfbmanager.h"
 
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "utils/stringutils.h"
-#include "utils/wxfbipc.h"
-#include "utils/wxfbexception.h"
-#include "codegen/cppcg.h"
-#include "codegen/pythoncg.h"
-#include "codegen/phpcg.h"
-#include "codegen/luacg.h"
-#include "codegen/xrccg.h"
 #include "codegen/codewriter.h"
-#include "rad/xrcpreview/xrcpreview.h"
+#include "codegen/cppcg.h"
+#include "codegen/luacg.h"
+#include "codegen/phpcg.h"
+#include "codegen/pythoncg.h"
+#include "model/objectbase.h"
 #include "rad/dataobject/dataobject.h"
+#include "rad/xrcpreview/xrcpreview.h"
+#include "utils/stringutils.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+#include "utils/wxfbipc.h"
 
 #include <ticpp.h>
-#include <set>
-#include <iterator>
-#include <memory>
-#include <sstream>
-#include <algorithm>
 
-#include <wx/tokenzr.h>
-#include <wx/ffile.h>
-#include <wx/filename.h>
 #include <wx/clipbrd.h>
-#include <wx/fs_mem.h>
+#include <wx/ffile.h>
 #include <wx/fs_arc.h>
 #include <wx/fs_filter.h>
+#include <wx/fs_mem.h>
+#include <wx/tokenzr.h>
 
 using namespace TypeConv;
 

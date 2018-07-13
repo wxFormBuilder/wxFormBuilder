@@ -24,11 +24,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "objectbase.h"
-#include "wx/wx.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "utils/stringutils.h"
+
 #include "rad/appdata.h"
+#include "utils/debug.h"
+#include "utils/stringutils.h"
+#include "utils/typeconv.h"
+
 #include <ticpp.h>
 #include <wx/tokenzr.h>
 
