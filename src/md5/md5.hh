@@ -71,38 +71,33 @@ public:
 
 private:
 
-// first, some types:
-  typedef unsigned       int uint4; // assumes integer is 4 words long
-  typedef unsigned short int uint2; // assumes short integer is 2 words long
-  typedef unsigned      char uint1; // assumes char is 1 word long
-
 // next, the private data:
-  uint4 state[4];
-  uint4 count[2];     // number of *bits*, mod 2^64
-  uint1 buffer[64];   // input buffer
-  uint1 digest[16];
-  uint1 finalized;
+	uint32_t state[4];
+	uint32_t count[2];  // number of *bits*, mod 2^64
+	uint8_t buffer[64]; // input buffer
+	uint8_t digest[16];
+	uint8_t finalized;
 
-// last, the private methods, mostly static:
-  void init             ();               // called by all constructors
-  void transform        (const uint1 *buffer);  // does the real update work.  Note
-                                          // that length is implied to be 64.
+	// last, the private methods, mostly static:
+	void init();                           // called by all constructors
+	void transform(const uint8_t* buffer); // does the real update work.  Note
+	                                       // that length is implied to be 64.
 
-  static void encode    (uint1 *dest, uint4 *src, uint4 length);
-  static void decode    (uint4 *dest, const uint1 *src, uint4 length);
+	static void encode(uint8_t* dest, const uint32_t* src, uint32_t length);
+	static void decode(uint32_t* dest, const uint8_t* src, uint32_t length);
 
-  static inline uint4  rotate_left (uint4 x, uint4 n);
-  static inline uint4  F           (uint4 x, uint4 y, uint4 z);
-  static inline uint4  G           (uint4 x, uint4 y, uint4 z);
-  static inline uint4  H           (uint4 x, uint4 y, uint4 z);
-  static inline uint4  I           (uint4 x, uint4 y, uint4 z);
-  static inline void   FF  (uint4& a, uint4 b, uint4 c, uint4 d, uint4 x,
-			    uint4 s, uint4 ac);
-  static inline void   GG  (uint4& a, uint4 b, uint4 c, uint4 d, uint4 x,
-			    uint4 s, uint4 ac);
-  static inline void   HH  (uint4& a, uint4 b, uint4 c, uint4 d, uint4 x,
-			    uint4 s, uint4 ac);
-  static inline void   II  (uint4& a, uint4 b, uint4 c, uint4 d, uint4 x,
-			    uint4 s, uint4 ac);
+	static inline uint32_t rotate_left(uint32_t x, uint32_t n);
+	static inline uint32_t F(uint32_t x, uint32_t y, uint32_t z);
+	static inline uint32_t G(uint32_t x, uint32_t y, uint32_t z);
+	static inline uint32_t H(uint32_t x, uint32_t y, uint32_t z);
+	static inline uint32_t I(uint32_t x, uint32_t y, uint32_t z);
+	static inline void FF(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s,
+	                      uint32_t ac);
+	static inline void GG(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s,
+	                      uint32_t ac);
+	static inline void HH(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s,
+	                      uint32_t ac);
+	static inline void II(uint32_t& a, uint32_t b, uint32_t c, uint32_t d, uint32_t x, uint32_t s,
+	                      uint32_t ac);
 
 };
