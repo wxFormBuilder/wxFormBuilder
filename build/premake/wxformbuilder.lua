@@ -71,6 +71,7 @@ project "wxFormBuilder"
 
     configuration "vs*"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
+        buildoptions    {"/wd4003"}
 
     configuration "macosx"
         linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}
