@@ -55,8 +55,7 @@ end
 		-- 	 linkoptions {"-s"}
 		-- end
         defines         {"NDEBUG"}
-        -- flags           {"OptimizeSpeed"}
-        flags           {"ExtraWarnings"}
+        flags           {"Optimize", "ExtraWarnings"}
 
     configuration {"not vs*", "Debug"}
         flags           {"ExtraWarnings"}

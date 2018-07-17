@@ -28,10 +28,5 @@ project "TiCPP"
     configuration "vs*"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
 
-    configuration "vs2008 or vs2010"
-        -- multi-process building
-        flags           ("NoMinimalRebuild")
-        buildoptions    ("/MP")
-
     configuration "Debug"
         targetsuffix    "d"

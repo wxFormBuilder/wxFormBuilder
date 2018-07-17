@@ -175,8 +175,6 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
     if wxDebug == "yes" then
         defines         {"__WXDEBUG__"}
-    else
-        flags           {"Optimize"}
     end
 
     if wxStatic == "yes" then
