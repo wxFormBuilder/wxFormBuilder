@@ -56,6 +56,14 @@ end
 		-- end
         defines         {"NDEBUG"}
         -- flags           {"OptimizeSpeed"}
+        flags           {"ExtraWarnings"}
+
+    configuration {"not vs*", "Debug"}
+        flags           {"ExtraWarnings"}
+
+    configuration {"vs*", "Debug"}
+        -- This produces D9025 because without ExtraWarnings /W3 gets set
+        --buildoptions    {"/W4"}
 
     dofile( scriptDir .. "/ticpp.lua" )
     dofile( scriptDir .. "/plugin-interface.lua" )
