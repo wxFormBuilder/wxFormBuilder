@@ -62,7 +62,7 @@ PHP code generation written by
 
   <templates class="wxBitmapButton">
 	<template name="construction">
-		@$this->$name = new #class( #wxparent $name, $id, wxNullBitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		@$this->$name = new #class( #wxparent $name, $id, wxNullBitmap, $pos, $size, wxBU_AUTODRAW|$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
   </templates>
 
   <templates class="wxTextCtrl">

@@ -62,7 +62,7 @@ Python code generation written by
 
   <templates class="wxBitmapButton">
 	<template name="construction">
-		self.$name = #class( #wxparent $name, $id, wx.NullBitmap, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		self.$name = #class( #wxparent $name, $id, wx.NullBitmap, $pos, $size, wx.BU_AUTODRAW|$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
   </templates>
 
   <templates class="wxTextCtrl">
