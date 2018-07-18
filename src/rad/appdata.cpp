@@ -2221,6 +2221,7 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		oldProps.insert( newPropName );
 		GetPropertiesToConvert( parent, oldProps, &newProps );
 
+		std::unique_ptr<ticpp::Element> tmpProp;
 		if ( !newProps.empty() )
 		{
 			newProp = *newProps.begin();
@@ -2228,7 +2229,8 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		}
 		else
 		{
-			newProp = new ticpp::Element( "property" );
+			tmpProp = std::make_unique<ticpp::Element>("property");
+			newProp = tmpProp.get();
 			newProp->SetAttribute( "name", newPropName );
 		}
 
@@ -2244,7 +2246,6 @@ void ApplicationData::TransferOptionList( ticpp::Element* prop, std::set< wxStri
 		if ( newProps.empty() )
 		{
 			parent->InsertBeforeChild( prop, *newProp );
-			delete newProp;
 		}
 	}
 
