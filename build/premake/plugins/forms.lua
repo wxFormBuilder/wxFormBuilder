@@ -16,7 +16,6 @@ project "forms-components-plugin"
         "../../../sdk/tinyxml", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
-    flags               {"ExtraWarnings"}
     links               {"plugin-interface", "TiCPP"}
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"

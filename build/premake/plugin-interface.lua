@@ -17,7 +17,6 @@ project "plugin-interface"
     }
     includedirs         {"../../sdk/tinyxml"}
     targetdir           "../../sdk/lib"
-    flags               {"ExtraWarnings"}
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ( "-" .. wxVersion )
 	
