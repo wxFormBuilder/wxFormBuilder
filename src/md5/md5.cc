@@ -50,7 +50,6 @@ documentation and/or software.
 #include <assert.h>
 #include <cstring>
 #include <string>
-#include <iostream>
 
 using namespace std;
 
@@ -75,10 +74,7 @@ void MD5::update(const unsigned char* input, uint32_t input_length) {
 	uint32_t input_index, buffer_index;
 	uint32_t buffer_space; // how much space is left in buffer
 
-  if (finalized){  // so we can't update!
-    cerr << "MD5::update:  Can't update a finalized digest!" << endl;
-    return;
-  }
+	assert(!finalized);
 
   // Compute number of bytes mod 64
   buffer_index = (count[0] >> 3) & 0x3F;
@@ -123,11 +119,10 @@ void MD5::update(FILE *file){
   unsigned char fileBuffer[1024];
   size_t len;
 
+	assert(!finalized);
+
   while ((len=fread(fileBuffer, 1, 1024, file)))
     update(fileBuffer, static_cast<uint32_t>(len));
-
-  fclose (file);
-
 }
 
 
@@ -143,7 +138,9 @@ void MD5::update(istream& stream){
   char streamBuffer[1024];
   std::streamsize len;
 
-  while (stream.good()){
+	assert(!finalized);
+
+  while (stream) {
     stream.read(streamBuffer, 1024); // note that return value of read is unusable.
     len=stream.gcount();
     update(reinterpret_cast<unsigned char*>(streamBuffer), static_cast<uint32_t>(len));
@@ -170,10 +167,7 @@ void MD5::finalize (){
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
 
-  if (finalized){
-    cerr << "MD5::finalize:  Already finalized this digest!" << endl;
-    return;
-  }
+	assert(!finalized);
 
   // Save number of bits
   encode (bits, count, 8);
@@ -231,12 +225,7 @@ unsigned char *MD5::raw_digest(){
 
   unsigned char *s = new unsigned char[16];
 
-  if (!finalized){
-    cerr << "MD5::raw_digest:  Can't get digest if you haven't "<<
-      "finalized the digest!" <<endl;
-		std::memset(s, 0, 16);
-		return s;
-  }
+	assert(finalized);
 
 	std::memcpy(s, digest, 16);
   return s;
@@ -247,12 +236,7 @@ unsigned char *MD5::raw_digest(){
 char *MD5::hex_digest(){
   char *s= new char[33];
 
-  if (!finalized){
-    cerr << "MD5::hex_digest:  Can't get digest if you haven't "<<
-      "finalized the digest!" <<endl;
-	s[0]='\0';
-    return s;
-  }
+	assert(finalized);
 
   for (int i=0; i<16; i++)
     sprintf(s+i*2, "%02x", digest[i]);

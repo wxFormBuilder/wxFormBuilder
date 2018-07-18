@@ -42,7 +42,6 @@ documentation and/or software.
 
 #include <stdio.h>
 #include <fstream>
-#include <iostream>
 
 class MD5 {
 
