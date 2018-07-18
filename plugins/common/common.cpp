@@ -235,6 +235,7 @@ public:
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
 		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
 		if (!obj->IsNull(_("disabled"))) {
 			xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
@@ -262,6 +263,7 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("default"),_("default"),XRC_TYPE_BOOL);
+		filter.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
 		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
 		filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
 		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
@@ -282,6 +284,12 @@ public:
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+#if wxCHECK_VERSION( 2, 9, 2 )
+		// To stay in sync what the generator templates do apply the markup label here as well
+		if (obj->GetPropertyAsInteger(_("markup")))
+			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
+#endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
 		{
