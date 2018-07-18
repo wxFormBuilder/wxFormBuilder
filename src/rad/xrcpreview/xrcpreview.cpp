@@ -216,7 +216,6 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
         if ( wizpge )
         {
             wizard->RunWizard( wizpge );
-            window = wizard;
             wizard->Destroy();
             window = NULL;
         }
