@@ -817,7 +817,7 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
 void wxPGSliderEditor::UpdateControl( wxPGProperty* property, wxWindow* wnd ) const
 {
     wxSlider *ctrl = ( wxSlider* ) wnd;
-    wxASSERT( ctrl && ctrl->IsKindOf( CLASSINFO(wxSlider) ) );
+	assert(ctrl && ctrl->IsKindOf(CLASSINFO(wxSlider)));
 
     double val = property->GetValue().GetDouble();
     if ( val < 0 )
@@ -849,7 +849,7 @@ bool wxPGSliderEditor::OnEvent( wxPropertyGrid* WXUNUSED( propgrid ),
 bool wxPGSliderEditor::GetValueFromControl( wxVariant& variant, wxPGProperty* WXUNUSED( property ), wxWindow* wnd ) const
 {
     wxSlider* ctrl = ( wxSlider* ) wnd;
-    wxASSERT( ctrl && ctrl->IsKindOf( CLASSINFO( wxSlider ) ) );
+	assert(ctrl && ctrl->IsKindOf(CLASSINFO(wxSlider)));
 
     variant = WXVARIANT( (double)ctrl->GetValue() / (double)(m_max) );
 
