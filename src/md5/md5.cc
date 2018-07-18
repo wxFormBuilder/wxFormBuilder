@@ -221,7 +221,7 @@ MD5::MD5(istream& stream){
 
 
 
-unsigned char *MD5::raw_digest(){
+unsigned char* MD5::raw_digest() const {
 
   unsigned char *s = new unsigned char[16];
 
@@ -233,7 +233,7 @@ unsigned char *MD5::raw_digest(){
 
 
 
-char *MD5::hex_digest(){
+char* MD5::hex_digest() const {
   char *s= new char[33];
 
 	assert(finalized);
@@ -250,9 +250,10 @@ char *MD5::hex_digest(){
 
 
 
-ostream& operator<<(ostream &stream, MD5 context){
-
-  stream << context.hex_digest();
+std::ostream& operator<<(std::ostream &stream, const MD5& context) {
+	char* hex = context.hex_digest();
+	stream << hex;
+	delete[] hex;
   return stream;
 }
 

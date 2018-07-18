@@ -60,9 +60,9 @@ public:
   MD5              (FILE *file);            // digest file, close, finalize
 
 // methods to acquire finalized result
-  unsigned char    *raw_digest ();  // digest as a 16-byte binary array
-  char *            hex_digest ();  // digest as a 33-byte ascii-hex string
-  friend std::ostream&   operator<< (std::ostream&, MD5 context);
+  unsigned char*    raw_digest () const;  // digest as a 16-byte binary array
+  char*             hex_digest () const;  // digest as a 33-byte ascii-hex string
+  friend std::ostream& operator<<(std::ostream& stream, const MD5& context);
 
 
 
