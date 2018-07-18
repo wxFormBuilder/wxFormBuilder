@@ -80,7 +80,7 @@ wxPanel( parent, id )
 	m_code->SetProperty( wxT( "fold.html.preprocessor" ),	wxT( "1" ) );
 
     m_code->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
-	m_code->SetIndentationGuides( true );
+	m_code->SetIndentationGuides(1);
 
 	m_code->SetMarginWidth( 2, 0 );
 	sizer->Add( m_code, 1, wxEXPAND | wxALL );

@@ -138,8 +138,7 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 			// Dirty hack to prevent sizer generation directly under a wxFrame
 			// If there is a sizer, the size property of the wxFrame is ignored
 			// when loading the xrc file at runtime
-			if ( obj->GetPropertyAsInteger( _("xrc_skip_sizer") ) )
-			{
+			if (obj->GetPropertyAsInteger(_("xrc_skip_sizer")) != 0) {
 				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 				{
 					ticpp::Element* aux = NULL;

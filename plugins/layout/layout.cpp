@@ -569,37 +569,29 @@ public:
 
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 
-		if ( obj->GetPropertyAsInteger( _("OK") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_OK ) );
+		if (obj->GetPropertyAsInteger(_("OK")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_OK));
 		}
-		if ( obj->GetPropertyAsInteger( _("Yes") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_YES ) );
+		if (obj->GetPropertyAsInteger(_("Yes")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_YES));
 		}
-		if ( obj->GetPropertyAsInteger( _("Save") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_SAVE ) );
+		if (obj->GetPropertyAsInteger(_("Save")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_SAVE));
 		}
-		if ( obj->GetPropertyAsInteger( _("Apply") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_APPLY ) );
+		if (obj->GetPropertyAsInteger(_("Apply")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_APPLY));
 		}
-		if ( obj->GetPropertyAsInteger( _("No") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_NO ) );
+		if (obj->GetPropertyAsInteger(_("No")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_NO));
 		}
-		if ( obj->GetPropertyAsInteger( _("Cancel") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_CANCEL ) );
+		if (obj->GetPropertyAsInteger(_("Cancel")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_CANCEL));
 		}
-		if ( obj->GetPropertyAsInteger( _("Help") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_HELP ) );
+		if (obj->GetPropertyAsInteger(_("Help")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_HELP));
 		}
-		if ( obj->GetPropertyAsInteger( _("ContextHelp") ) )
-		{
-			sizer->AddButton( new wxButton( (wxWindow*)parent, wxID_CONTEXT_HELP ) );
+		if (obj->GetPropertyAsInteger(_("ContextHelp")) != 0) {
+			sizer->AddButton(new wxButton((wxWindow*)parent, wxID_CONTEXT_HELP));
 		}
 
 		sizer->Realize();
@@ -610,41 +602,32 @@ public:
 		ObjectToXrcFilter xrc(obj, _("wxStdDialogButtonSizer"));
 		ticpp::Element* sizer = xrc.GetXrcObject();
 
-		if( obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize )
-		{
+		if (obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize) {
 			xrc.AddProperty(_("minimum_size"), _("minsize"), XRC_TYPE_SIZE);
 		}
-		if ( obj->GetPropertyAsInteger( _("OK") ) )
-		{
-			AddXRCButton( sizer, "wxID_OK", "&OK" );
+		if (obj->GetPropertyAsInteger(_("OK")) != 0) {
+			AddXRCButton(sizer, "wxID_OK", "&OK");
 		}
-		if ( obj->GetPropertyAsInteger( _("Yes") ) )
-		{
-			AddXRCButton( sizer, "wxID_YES", "&Yes" );
+		if (obj->GetPropertyAsInteger(_("Yes")) != 0) {
+			AddXRCButton(sizer, "wxID_YES", "&Yes");
 		}
-		if ( obj->GetPropertyAsInteger( _("Save") ) )
-		{
-			AddXRCButton( sizer, "wxID_SAVE", "&Save" );
+		if (obj->GetPropertyAsInteger(_("Save")) != 0) {
+			AddXRCButton(sizer, "wxID_SAVE", "&Save");
 		}
-		if ( obj->GetPropertyAsInteger( _("Apply") ) )
-		{
-			AddXRCButton( sizer, "wxID_APPLY", "&Apply" );
+		if (obj->GetPropertyAsInteger(_("Apply")) != 0) {
+			AddXRCButton(sizer, "wxID_APPLY", "&Apply");
 		}
-		if ( obj->GetPropertyAsInteger( _("No") ) )
-		{
-			AddXRCButton( sizer, "wxID_NO", "&No" );
+		if (obj->GetPropertyAsInteger(_("No")) != 0) {
+			AddXRCButton(sizer, "wxID_NO", "&No");
 		}
-		if ( obj->GetPropertyAsInteger( _("Cancel") ) )
-		{
-			AddXRCButton( sizer, "wxID_CANCEL", "&Cancel" );
+		if (obj->GetPropertyAsInteger(_("Cancel")) != 0) {
+			AddXRCButton(sizer, "wxID_CANCEL", "&Cancel");
 		}
-		if ( obj->GetPropertyAsInteger( _("Help") ) )
-		{
-			AddXRCButton( sizer, "wxID_HELP", "&Help" );
+		if (obj->GetPropertyAsInteger(_("Help")) != 0) {
+			AddXRCButton(sizer, "wxID_HELP", "&Help");
 		}
-		if ( obj->GetPropertyAsInteger( _("ContextHelp") ) )
-		{
-			AddXRCButton( sizer, "wxID_CONTEXT_HELP", "" );
+		if (obj->GetPropertyAsInteger(_("ContextHelp")) != 0) {
+			AddXRCButton(sizer, "wxID_CONTEXT_HELP", "");
 		}
 
 		return sizer;

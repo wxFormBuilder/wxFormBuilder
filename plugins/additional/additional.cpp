@@ -1247,12 +1247,12 @@ public:
 
 		if ( !obj->IsNull( _("search_button") ) )
 		{
-			sc->ShowSearchButton( obj->GetPropertyAsInteger( _("search_button") ) );
+			sc->ShowSearchButton(obj->GetPropertyAsInteger(_("search_button")) != 0);
 		}
 
 		if ( !obj->IsNull( _("cancel_button") ) )
 		{
-			sc->ShowCancelButton( obj->GetPropertyAsInteger( _("cancel_button") ) );
+			sc->ShowCancelButton(obj->GetPropertyAsInteger(_("cancel_button")) != 0);
 		}
 
 		sc->PushEventHandler( new ComponentEvtHandler( sc, GetManager() ) );
@@ -1426,7 +1426,7 @@ public:
 			pgman->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
 		}
 
-		pgman->ShowHeader( obj->GetPropertyAsInteger( wxT("show_header") ) );
+		pgman->ShowHeader(obj->GetPropertyAsInteger(wxT("show_header")) != 0);
 
 		// Adding a page sets target page to the one added, so
 		// we don't have to call SetTargetPage if we are filling
@@ -1637,7 +1637,7 @@ public:
 		{
 			m_code->SetMarginWidth( 1, 0 );
 		}
-		m_code->SetIndentationGuides( ( 0 != obj->GetPropertyAsInteger( _("indentation_guides") ) ) );
+		m_code->SetIndentationGuides(obj->GetPropertyAsInteger(_("indentation_guides")));
 
 		m_code->SetMarginWidth( 2, 0 );
 
@@ -1678,7 +1678,7 @@ public:
 		m_code->SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
 		m_code->SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		m_code->SetViewEOL( ( 0 != obj->GetPropertyAsInteger( _("view_eol") ) ) );
-		m_code->SetViewWhiteSpace( ( 0 != obj->GetPropertyAsInteger( _("view_whitespace") ) ) );
+		m_code->SetViewWhiteSpace(obj->GetPropertyAsInteger(_("view_whitespace")));
 
 		m_code->SetCaretWidth(2);
 
@@ -2014,12 +2014,9 @@ void ComponentEvtHandler::OnRibbonBarPageChanged( wxRibbonBarEvent& event )
 		IObject*  iChild = m_manager->GetIObject( wxChild );
 		if ( iChild )
 		{
-			if ( (int)i == selPage && !iChild->GetPropertyAsInteger( _("select") ) )
-			{
+			if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
 				m_manager->ModifyProperty( wxChild, _("select"), wxT("1"), false );
-			}
-			else if ( (int)i != selPage && iChild->GetPropertyAsInteger( _("select") ) )
-			{
+			} else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
 				m_manager->ModifyProperty( wxChild, _("select"), wxT("0"), false );
 			}
 		}
@@ -2041,7 +2038,7 @@ class RibbonPageComponent : public ComponentBase
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			0);
 
-		if( obj->GetPropertyAsInteger(_("select") ) ) {
+		if (obj->GetPropertyAsInteger(_("select")) != 0) {
 			((wxRibbonBar*)parent)->SetActivePage(rbpage);
 		}
 

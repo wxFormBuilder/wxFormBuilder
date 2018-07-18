@@ -24,10 +24,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrcconv.h"
-#include "wx/wx.h"
 #include "wx/tokenzr.h"
 
-#include <string>
 #include <set>
 
 #include <ticpp.h>
@@ -418,9 +416,9 @@ void ObjectToXrcFilter::AddWindowProperties()
 	if ( !m_obj->IsNull( _( "focused" ) ) )
 		AddPropertyValue( _( "focused" ), _( "0" ) );
 
-	if ( !m_obj->IsNull( _( "hidden" ) ) && m_obj->GetPropertyAsInteger( _( "hidden" ) ) )
-		AddProperty( _( "hidden" ), _( "hidden" ), XRC_TYPE_BOOL );
-
+	if (!m_obj->IsNull(_("hidden")) && m_obj->GetPropertyAsInteger(_("hidden")) != 0) {
+		AddProperty(_("hidden"), _("hidden"), XRC_TYPE_BOOL);
+	}
 	if ( !m_obj->IsNull( _( "font" ) ) )
 		AddProperty( _( "font" ), _( "font" ), XRC_TYPE_FONT );
 

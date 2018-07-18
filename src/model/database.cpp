@@ -269,7 +269,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		bool aui = false;
 		if( parentType->GetName() == wxT("form") )
 		{
-			aui = parent->GetPropertyAsInteger(wxT("aui_managed"));
+			aui = parent->GetPropertyAsInteger(wxT("aui_managed")) != 0;
 		}
 
 		int max = parentType->FindChildType(objType, aui);

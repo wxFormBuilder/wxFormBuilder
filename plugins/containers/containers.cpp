@@ -239,7 +239,7 @@ public:
 			obj->GetPropertyAsSize( _("size") ),
 			obj->GetPropertyAsInteger( _("style") ) | obj->GetPropertyAsInteger( _("window_style") ) );
 
-		collpane->Collapse( obj->GetPropertyAsInteger( _("collapsed") ) );
+		collpane->Collapse(obj->GetPropertyAsInteger(_("collapsed")) != 0);
 
 		collpane->PushEventHandler( new ComponentEvtHandler( collpane, GetManager() ) );
 

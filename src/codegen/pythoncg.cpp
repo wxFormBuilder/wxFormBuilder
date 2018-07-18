@@ -1050,9 +1050,9 @@ void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 	if ( m_disconnectEvents && !events.empty() )
 	{
 		GenEvents( class_obj, events, true );
+	} else if (class_obj->GetPropertyAsInteger(wxT("aui_managed")) == 0) {
+		m_source->WriteLn(wxT("pass"));
 	}
-	else
-		if( !class_obj->GetPropertyAsInteger( wxT("aui_managed") ) ) m_source->WriteLn( wxT("pass") );
 
 	// destruct objects
 	GenDestruction( class_obj );

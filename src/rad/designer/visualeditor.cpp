@@ -257,8 +257,7 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 				if(inf.IsOk())
 				{
 					// scan position and docking mode
-					if( !obj->GetPropertyAsInteger( wxT("center_pane") ) )
-					{
+					if (obj->GetPropertyAsInteger(wxT("center_pane")) == 0) {
 						wxString dock;
 						if( inf.IsDocked())
 						{
@@ -371,7 +370,7 @@ void VisualEditor::ScanPanes( wxWindow* parent)
 					PProperty pshow = obj->GetProperty(wxT("show") );
 					if( obj->GetPropertyAsInteger( wxT("show") ) != (int) inf.IsShown() )
 					{
-						pshow->SetValue( inf.IsShown() );
+						pshow->SetValue(inf.IsShown() ? 1 : 0);
 						updateNeeded = true;
 					}
 
@@ -592,9 +591,8 @@ void VisualEditor::Create()
 				{
 					// Create the menubar later
 					menubar = child;
-				}
-				else if( !toolbar && (m_form->GetObjectTypeName() == wxT("toolbar_form")) )
-				{
+				} else if (toolbar == nullptr &&
+				           m_form->GetObjectTypeName() == wxT("toolbar_form")) {
 					Generate( m_form, m_back->GetFrameContentPanel(), m_back->GetFrameContentPanel() );
 
 					ObjectBaseMap::iterator it = m_baseobjects.find( m_form.get() );
@@ -898,7 +896,7 @@ void VisualEditor::SetupWindow( PObjectBase obj, wxWindow* window )
 	PProperty phidden = obj->GetProperty( wxT("hidden") );
 	if ( phidden )
 	{
-		window->Show( !phidden->GetValueAsInteger() );
+		window->Show(phidden->GetValueAsInteger() == 0);
 	}
 
 	// Tooltip
@@ -950,22 +948,26 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 	wxString name = obj->GetPropertyAsString( wxT("aui_name") );
 	if( name != wxT("") ) info.Name( name );
 
-	if( obj->GetPropertyAsInteger( wxT("center_pane") )) info.CenterPane();
-	if( obj->GetPropertyAsInteger( wxT("default_pane") )) info.DefaultPane();
+	if (obj->GetPropertyAsInteger(wxT("center_pane")) != 0) {
+		info.CenterPane();
+	}
+	if (obj->GetPropertyAsInteger(wxT("default_pane")) != 0) {
+		info.DefaultPane();
+	}
 
 	if( !obj->IsNull(wxT("caption"))) info.Caption(obj->GetPropertyAsString(wxT("caption")));
-	info.CaptionVisible( obj->GetPropertyAsInteger( wxT("caption_visible") ) );
-	info.CloseButton( obj->GetPropertyAsInteger( wxT("close_button") ) );
-	info.MaximizeButton( obj->GetPropertyAsInteger( wxT("maximize_button") ) );
-	info.MinimizeButton( obj->GetPropertyAsInteger( wxT("minimize_button") ) );
-	info.PinButton( obj->GetPropertyAsInteger( wxT("pin_button") ) );
-	info.PaneBorder( obj->GetPropertyAsInteger( wxT("pane_border") ) );
-	info.Gripper(obj->GetPropertyAsInteger( wxT("gripper") ));
+	info.CaptionVisible(obj->GetPropertyAsInteger(wxT("caption_visible")) != 0);
+	info.CloseButton(obj->GetPropertyAsInteger(wxT("close_button")) != 0);
+	info.MaximizeButton(obj->GetPropertyAsInteger(wxT("maximize_button")) != 0);
+	info.MinimizeButton(obj->GetPropertyAsInteger(wxT("minimize_button")) != 0);
+	info.PinButton(obj->GetPropertyAsInteger(wxT("pin_button")) != 0);
+	info.PaneBorder(obj->GetPropertyAsInteger(wxT("pane_border")) != 0);
+	info.Gripper(obj->GetPropertyAsInteger(wxT("gripper")) != 0);
 
-	info.BottomDockable( obj->GetPropertyAsInteger( wxT("BottomDockable") ) );
-	info.TopDockable( obj->GetPropertyAsInteger( wxT("TopDockable") ) );
-	info.LeftDockable( obj->GetPropertyAsInteger( wxT("LeftDockable") ) );
-	info.RightDockable( obj->GetPropertyAsInteger( wxT("RightDockable") ) );
+	info.BottomDockable(obj->GetPropertyAsInteger(wxT("BottomDockable")) != 0);
+	info.TopDockable(obj->GetPropertyAsInteger(wxT("TopDockable")) != 0);
+	info.LeftDockable(obj->GetPropertyAsInteger(wxT("LeftDockable")) != 0);
+	info.RightDockable(obj->GetPropertyAsInteger(wxT("RightDockable")) != 0);
 
 	if( !obj->IsNull(wxT("dock")) )
 	{
@@ -993,20 +995,24 @@ void VisualEditor::SetupAui( PObjectBase obj, wxWindow* window )
 		else info.Fixed();
 	}
 
-	info.DockFixed( obj->GetPropertyAsInteger( wxT("dock_fixed") ) );
-	info.Movable( obj->GetPropertyAsInteger( wxT("moveable") ));
-	info.Floatable(obj->GetPropertyAsInteger( wxT("floatable") ));
+	info.DockFixed(obj->GetPropertyAsInteger(wxT("dock_fixed")) != 0);
+	info.Movable(obj->GetPropertyAsInteger(wxT("moveable")) != 0);
+	info.Floatable(obj->GetPropertyAsInteger(wxT("floatable")) != 0);
 
 	if( !obj->GetProperty( wxT("pane_size" ) )->IsNull() ) info.FloatingSize( obj->GetPropertyAsSize( wxT("pane_size") ));
 	if( !obj->GetProperty( wxT("best_size" ) )->IsNull() ) info.BestSize( obj->GetPropertyAsSize( wxT("best_size") ) );
 	if( !obj->GetProperty( wxT("min_size" ) )->IsNull() ) info.MinSize( obj->GetPropertyAsSize( wxT("min_size") ) );
 	if( !obj->GetProperty( wxT("max_size" ) )->IsNull() ) info.MaxSize( obj->GetPropertyAsSize( wxT("max_size") ) );
 
-	if( obj->GetPropertyAsInteger( wxT("toolbar_pane") ) ) info.ToolbarPane();
+	if (obj->GetPropertyAsInteger(wxT("toolbar_pane")) != 0) {
+		info.ToolbarPane();
+	}
 	if( !obj->IsNull( wxT("aui_position") ) ) info.Position( obj->GetPropertyAsInteger( wxT("aui_position") ));
 	if( !obj->IsNull( wxT("aui_row") ) ) info.Row( obj->GetPropertyAsInteger( wxT("aui_row") ));
     if( !obj->IsNull( wxT("aui_layer") ) ) info.Layer( obj->GetPropertyAsInteger( wxT("aui_layer") ));
-	if( !obj->GetPropertyAsInteger( wxT("show") ) ) info.Hide();
+	if (obj->GetPropertyAsInteger(wxT("show")) == 0) {
+		info.Hide();
+	}
 
 	m_auimgr->AddPane( window, info );
 }
@@ -1513,8 +1519,8 @@ wxMenu* DesignerWindow::GetMenuFromObject(PObjectBase menu)
 
 			menuWidget->Append( item );
 
-			if ( item->GetKind() == wxITEM_CHECK && menuItem->GetPropertyAsInteger( wxT("checked") ) )
-			{
+			if (item->GetKind() == wxITEM_CHECK &&
+			    menuItem->GetPropertyAsInteger(wxT("checked")) != 0) {
 				item->Check( true );
 			}
 

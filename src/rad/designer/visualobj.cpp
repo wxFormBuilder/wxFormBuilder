@@ -93,8 +93,7 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 
 	if (obj)
 	{
-		if( obj->GetPropertyAsInteger( wxT("context_menu") ) )
-		{
+		if (obj->GetPropertyAsInteger(wxT("context_menu")) != 0) {
 			PObjectBase menu;
 
 			for( size_t i = 0; i < obj->GetChildCount(); i++ )

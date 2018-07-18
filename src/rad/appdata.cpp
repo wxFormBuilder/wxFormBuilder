@@ -2832,9 +2832,7 @@ void ApplicationData::ShowXrcPreview()
 	{
 		wxMessageBox( wxT( "Please select a form and try again." ), wxT( "XRC Preview" ), wxICON_ERROR );
 		return;
-	}
-	else if( form->GetPropertyAsInteger( wxT("aui_managed") ) )
-	{
+	} else if (form->GetPropertyAsInteger(wxT("aui_managed")) != 0) {
 		wxMessageBox( wxT( "XRC preview doesn't support AUI-managed frames." ), wxT( "XRC Preview" ), wxICON_ERROR );
 		return;
 	}

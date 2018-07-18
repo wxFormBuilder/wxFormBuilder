@@ -188,8 +188,9 @@ public:
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
 #if wxCHECK_VERSION( 2, 9, 2 )
-		if ( obj->GetPropertyAsInteger( _("markup") ) )
-			button->SetLabelMarkup( label );
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			button->SetLabelMarkup(label);
+		}
 #endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
@@ -287,8 +288,9 @@ public:
 
 #if wxCHECK_VERSION( 2, 9, 2 )
 		// To stay in sync what the generator templates do apply the markup label here as well
-		if (obj->GetPropertyAsInteger(_("markup")))
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
+		}
 #endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
@@ -446,8 +448,9 @@ public:
 		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
 
 #if wxCHECK_VERSION( 2, 9, 2 )
-		if ( obj->GetPropertyAsInteger( _("markup") ) )
-			st->SetLabelMarkup( label );
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			st->SetLabelMarkup(label);
+		}
 #endif
 
 		return st;
@@ -964,9 +967,10 @@ public:
 
 		int kind = obj->GetPropertyAsInteger(_("kind"));
 
-		if (obj->GetPropertyAsInteger(_("checked")) && (kind == wxITEM_RADIO || kind == wxITEM_CHECK))
+		if (obj->GetPropertyAsInteger(_("checked")) != 0 &&
+		    (kind == wxITEM_RADIO || kind == wxITEM_CHECK)) {
 			xrc.AddProperty(_("checked"), _("checked"), XRC_TYPE_BOOL);
-
+		}
 		if (obj->GetPropertyAsInteger(_("enabled")) == 0)
 			xrc.AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
 
@@ -1167,8 +1171,8 @@ wxMenu* AuiToolBar::GetMenuFromObject(IObject *menu)
 
 			menuWidget->Append( item );
 
-			if ( item->GetKind() == wxITEM_CHECK && menuItem->GetPropertyAsInteger( wxT("checked") ) )
-			{
+			if (item->GetKind() == wxITEM_CHECK &&
+			    menuItem->GetPropertyAsInteger(wxT("checked")) != 0) {
 				item->Check( true );
 			}
 
