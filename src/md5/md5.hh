@@ -50,14 +50,14 @@ public:
   MD5              ();  // simple initializer
   void  update     (const unsigned char* input, uint32_t input_length);
   void  update     (std::istream& stream);
-  void  update     (FILE *file);
+  void  update     (FILE* file);
   void  finalize   ();
 
 // constructors for special circumstances.  All these constructors finalize
 // the MD5 context.
   MD5              (const unsigned char* input, uint32_t input_length); // digest string, finalize
   MD5              (std::istream& stream);       // digest stream, finalize
-  MD5              (FILE *file);            // digest file, close, finalize
+  MD5              (FILE* file);            // digest file, close, finalize
 
 // methods to acquire finalized result
   unsigned char*    raw_digest () const;  // digest as a 16-byte binary array

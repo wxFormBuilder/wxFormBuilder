@@ -57,9 +57,7 @@ using namespace std;
 // MD5 simple initialization method
 
 MD5::MD5(){
-
-  init();
-
+	init();
 }
 
 
@@ -114,15 +112,14 @@ void MD5::update(const unsigned char* input, uint32_t input_length) {
 // MD5 update for files.
 // Like above, except that it works on files (and uses above as a primitive.)
 
-void MD5::update(FILE *file){
-
-  unsigned char fileBuffer[1024];
-  size_t len;
+void MD5::update(FILE* file) {
+	unsigned char fileBuffer[1024];
+	size_t len;
 
 	assert(!finalized);
 
-  while ((len=fread(fileBuffer, 1, 1024, file)))
-    update(fileBuffer, static_cast<uint32_t>(len));
+	while ((len = fread(fileBuffer, 1, 1024, file)))
+		update(fileBuffer, static_cast<uint32_t>(len));
 }
 
 
@@ -133,18 +130,17 @@ void MD5::update(FILE *file){
 // MD5 update for istreams.
 // Like update for files; see above.
 
-void MD5::update(istream& stream){
-
-  char streamBuffer[1024];
-  std::streamsize len;
+void MD5::update(istream& stream) {
+	char streamBuffer[1024];
+	std::streamsize len;
 
 	assert(!finalized);
 
-  while (stream) {
-    stream.read(streamBuffer, 1024); // note that return value of read is unusable.
-    len=stream.gcount();
-    update(reinterpret_cast<unsigned char*>(streamBuffer), static_cast<uint32_t>(len));
-  }
+	while (stream) {
+		stream.read(streamBuffer, 1024); // note that return value of read is unusable.
+		len = stream.gcount();
+		update(reinterpret_cast<unsigned char*>(streamBuffer), static_cast<uint32_t>(len));
+	}
 
 }
 
@@ -159,8 +155,8 @@ void MD5::update(istream& stream){
 
 void MD5::finalize (){
 
-  uint8_t bits[8];
-  uint32_t index, padLen;
+	uint8_t bits[8];
+	uint32_t index, padLen;
 	static uint8_t PADDING[64] = {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -187,14 +183,13 @@ void MD5::finalize (){
 	std::memset(buffer, 0, sizeof(*buffer));
 
   finalized=1;
-
 }
 
 
 
 
 MD5::MD5(const unsigned char* input, uint32_t input_length) {
-	init();  // must be called be all constructors
+	init(); // must be called by all constructors
 	update(input, input_length);
 	finalize();
 }
@@ -202,39 +197,37 @@ MD5::MD5(const unsigned char* input, uint32_t input_length) {
 
 
 
-MD5::MD5(FILE *file){
-
+MD5::MD5(FILE* file) {
 	init(); // must be called by all constructors
-  update(file);
-  finalize ();
+	update(file);
+	finalize();
 }
 
 
 
 
-MD5::MD5(istream& stream){
-
+MD5::MD5(istream& stream) {
 	init(); // must be called by all constructors
-  update (stream);
-  finalize();
+	update(stream);
+	finalize();
 }
 
 
 
 unsigned char* MD5::raw_digest() const {
-
-  unsigned char *s = new unsigned char[16];
+	unsigned char *s = new unsigned char[16];
 
 	assert(finalized);
 
 	std::memcpy(s, digest, 16);
-  return s;
+
+	return s;
 }
 
 
 
 char* MD5::hex_digest() const {
-  char *s= new char[33];
+	char *s= new char[33];
 
 	assert(finalized);
 
@@ -243,7 +236,7 @@ char* MD5::hex_digest() const {
 
   s[32]='\0';
 
-  return s;
+	return s;
 }
 
 
@@ -254,7 +247,8 @@ std::ostream& operator<<(std::ostream &stream, const MD5& context) {
 	char* hex = context.hex_digest();
 	stream << hex;
 	delete[] hex;
-  return stream;
+
+	return stream;
 }
 
 
