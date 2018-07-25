@@ -99,7 +99,6 @@ Written by
 			<option name="wxNB_FIXEDWIDTH"  help="All tabs will have same width. (Windows only)" />
 			<option name="wxNB_MULTILINE"   help="There can be several rows of tabs. (Windows only)" />
 			<option name="wxNB_NOPAGETHEME" help="Display a solid colour on notebook pages, and not a gradient, which can reduce performance. (Windows only)" />
-			<option name="wxNB_FLAT"        help="Show tabs in a flat style. (Windows only)" />
 		</property>
 		<event name="OnNotebookPageChanged" class="wxNotebookEvent" help="The page selection was changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED event." />
 		<event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed." />
