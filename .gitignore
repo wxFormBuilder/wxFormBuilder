@@ -2,7 +2,9 @@ build/???/
 output/bin/
 output/lib*/
 output/share/
+output/*.dll
 output/*.exe
+output/**/*.ilk
 output/**/*.iobj
 output/**/*.ipdb
 output/**/*.pdb
