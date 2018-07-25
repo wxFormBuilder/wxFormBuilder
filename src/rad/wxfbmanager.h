@@ -39,18 +39,19 @@ private:
 public:
 	wxFBManager();
 	void SetVisualEditor( VisualEditor* visualEdit );
-	size_t GetChildCount( wxObject* wxobject );
-	wxObject* GetChild( wxObject* wxobject, size_t childIndex );
-	wxObject* GetParent( wxObject* wxobject );
-	IObject* GetIParent( wxObject* wxobject );
-	IObject* GetIObject( wxObject* wxobject );
+	size_t GetChildCount(wxObject* wxobject) override;
+	wxObject* GetChild(wxObject* wxobject, size_t childIndex) override;
+	wxObject* GetParent(wxObject* wxobject) override;
+	IObject* GetIParent(wxObject* wxobject) override;
+	IObject* GetIObject(wxObject* wxobject) override;
 	wxObject* GetWxObject( PObjectBase obj );
-	wxNoObject* NewNoObject();
+	wxNoObject* NewNoObject() override;
 
-	void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true );
+	void ModifyProperty(wxObject* wxobject, wxString property, wxString value,
+	                    bool allowUndo = true) override;
 
 	// Returns true if selection changed, false if already selected
-	bool SelectObject( wxObject* wxobject );
+	bool SelectObject(wxObject* wxobject) override;
 };
 
 #endif //WXFBMANAGER

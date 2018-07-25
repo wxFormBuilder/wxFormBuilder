@@ -44,9 +44,9 @@ The value of all properties that are file or a directory paths must be absolute,
 #define fbfSILENT true
 #define fbfMESSAGE false
 
-#include <set>
 #include "codegen.h"
-#include <wx/string.h>
+
+#include <set>
 
 /**
 * Parse the PHP templates.
@@ -67,10 +67,9 @@ public:
 	PHPTemplateParser( const PHPTemplateParser & that, wxString _template );
 
 	// overrides for PHP
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
@@ -229,7 +228,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class
@@ -240,4 +239,4 @@ public:
 
 #endif //_PHP_CODE_GEN_
 
-#endif // header guard 
+#endif // header guard

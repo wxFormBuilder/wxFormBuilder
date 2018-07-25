@@ -76,7 +76,7 @@ class wxFBObjectEvent : public wxFBEvent
 public:
   wxFBObjectEvent(wxEventType commandType, PObjectBase object);
   wxFBObjectEvent( const wxFBObjectEvent& event );
-  wxEvent* Clone() const;
+	wxEvent* Clone() const override;
   PObjectBase GetFBObject() { return m_object; }
 
 private:

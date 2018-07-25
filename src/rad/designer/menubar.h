@@ -38,7 +38,7 @@ class Menubar : public wxPanel
         Menubar(wxWindow *parent, int id, const wxPoint& pos = wxDefaultPosition,
             const wxSize &size = wxDefaultSize,
             long style = 0, const wxString &name = wxT("fbmenubar"));
-        ~Menubar();
+	~Menubar() override;
         void AppendMenu(const wxString& name, wxMenu *menu);
         wxMenu* GetMenu(int i);
         int GetMenuCount();
