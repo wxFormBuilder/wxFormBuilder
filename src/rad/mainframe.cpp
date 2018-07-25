@@ -1003,12 +1003,11 @@ void MainFrame::UpdateFrame()
 
 void MainFrame::UpdateRecentProjects()
 {
-	int i, fi;
 	wxMenu *menuFile = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "File" ) ) );
 
 	// borramos los items del menu de los projectos recientes
 
-	for ( i = 0 ; i < 4 ; i++ )
+	for (int i = 0 ; i < 4 ; i++)
 	{
 		if ( menuFile->FindItem( ID_RECENT_0 + i ) )
 			menuFile->Destroy( ID_RECENT_0 + i );
@@ -1021,13 +1020,13 @@ void MainFrame::UpdateRecentProjects()
 	}
 
 	// remove empty filenames and 'compress' the rest
-    fi = 0;
-	for ( i = 0 ; i < 4 ; i++ )
+    int fi = 0;
+	for (int i = 0 ; i < 4 ; i++)
 	{
 	    if(!m_recentProjects[i].IsEmpty())
 	        m_recentProjects[fi++] = m_recentProjects[i];
 	}
-	for ( i = fi ; i < 4 ; i++ )
+	for (int i = fi ; i < 4 ; i++)
         m_recentProjects[i] = wxT("");
 
     if ( !m_recentProjects[0].IsEmpty() )

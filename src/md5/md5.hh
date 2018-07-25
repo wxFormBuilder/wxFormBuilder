@@ -40,32 +40,29 @@ documentation and/or software.
 */
 #pragma once
 
-#include <stdio.h>
-#include <fstream>
-#include <iostream>
+#include <cstdio>
+#include <istream>
 
 class MD5 {
 
 public:
-// methods for controlled operation:
+	// methods for controlled operation:
   MD5              ();  // simple initializer
-  void  update     (const unsigned char *input, unsigned int input_length);
+  void  update     (const unsigned char* input, uint32_t input_length);
   void  update     (std::istream& stream);
-  void  update     (FILE *file);
-  void  update     (std::ifstream& stream);
+  void  update     (std::FILE* file);
   void  finalize   ();
 
 // constructors for special circumstances.  All these constructors finalize
 // the MD5 context.
-  MD5              (unsigned char *string); // digest string, finalize
+  MD5              (const unsigned char* input, uint32_t input_length); // digest string, finalize
   MD5              (std::istream& stream);       // digest stream, finalize
-  MD5              (FILE *file);            // digest file, close, finalize
-  MD5              (std::ifstream& stream);      // digest stream, close, finalize
+  MD5              (std::FILE* file);            // digest file, close, finalize
 
 // methods to acquire finalized result
-  unsigned char    *raw_digest ();  // digest as a 16-byte binary array
-  char *            hex_digest ();  // digest as a 33-byte ascii-hex string
-  friend std::ostream&   operator<< (std::ostream&, MD5 context);
+  unsigned char*    raw_digest () const;  // digest as a 16-byte binary array
+  char*             hex_digest () const;  // digest as a 33-byte ascii-hex string
+  friend std::ostream& operator<<(std::ostream& stream, const MD5& context);
 
 
 
@@ -80,8 +77,8 @@ private:
 
 	// last, the private methods, mostly static:
 	void init();                           // called by all constructors
-	void transform(const uint8_t* buffer); // does the real update work.  Note
-	                                       // that length is implied to be 64.
+	void transform(const uint8_t buffer[64]); // does the real update work.  Note
+	                                          // that length is implied to be 64.
 
 	static void encode(uint8_t* dest, const uint32_t* src, uint32_t length);
 	static void decode(uint32_t* dest, const uint8_t* src, uint32_t length);

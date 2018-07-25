@@ -47,20 +47,14 @@ documentation and/or software.
 
 #include "md5.hh"
 
-#include <assert.h>
+#include <cassert>
 #include <cstring>
-#include <string>
-#include <iostream>
-
-using namespace std;
 
 
 // MD5 simple initialization method
 
 MD5::MD5(){
-
-  init();
-
+	init();
 }
 
 
@@ -70,15 +64,12 @@ MD5::MD5(){
 // operation, processing another message block, and updating the
 // context.
 
-void MD5::update(const uint8_t* input, uint32_t input_length) {
+void MD5::update(const unsigned char* input, uint32_t input_length) {
 
 	uint32_t input_index, buffer_index;
 	uint32_t buffer_space; // how much space is left in buffer
 
-  if (finalized){  // so we can't update!
-    cerr << "MD5::update:  Can't update a finalized digest!" << endl;
-    return;
-  }
+	assert(!finalized);
 
   // Compute number of bytes mod 64
   buffer_index = (count[0] >> 3) & 0x3F;
@@ -118,16 +109,14 @@ void MD5::update(const uint8_t* input, uint32_t input_length) {
 // MD5 update for files.
 // Like above, except that it works on files (and uses above as a primitive.)
 
-void MD5::update(FILE *file){
+void MD5::update(FILE* file) {
+	unsigned char fileBuffer[1024];
+	size_t len;
 
-  unsigned char buffer[1024];
-  int len;
+	assert(!finalized);
 
-  while ((len=fread(buffer, 1, 1024, file)))
-    update(buffer, len);
-
-  fclose (file);
-
+	while ((len = std::fread(fileBuffer, 1, 1024, file)))
+		update(fileBuffer, static_cast<uint32_t>(len));
 }
 
 
@@ -138,37 +127,17 @@ void MD5::update(FILE *file){
 // MD5 update for istreams.
 // Like update for files; see above.
 
-void MD5::update(istream& stream){
+void MD5::update(std::istream& stream) {
+	char streamBuffer[1024];
+	std::streamsize len;
 
-  unsigned char buffer[1024];
-  int len;
+	assert(!finalized);
 
-  while (stream.good()){
-    stream.read((char*)buffer, 1024); // note that return value of read is unusable.
-    len=stream.gcount();
-    update(buffer, len);
-  }
-
-}
-
-
-
-
-
-
-// MD5 update for ifstreams.
-// Like update for files; see above.
-
-void MD5::update(ifstream& stream){
-
-  unsigned char buffer[1024];
-  int len;
-
-  while (stream.good()){
-    stream.read((char*)buffer, 1024); // note that return value of read is unusable.
-    len=stream.gcount();
-    update(buffer, len);
-  }
+	while (stream) {
+		stream.read(streamBuffer, 1024); // note that return value of read is unusable.
+		len = stream.gcount();
+		update(reinterpret_cast<unsigned char*>(streamBuffer), static_cast<uint32_t>(len));
+	}
 
 }
 
@@ -183,18 +152,15 @@ void MD5::update(ifstream& stream){
 
 void MD5::finalize (){
 
-  unsigned char bits[8];
-  unsigned int index, padLen;
+	uint8_t bits[8];
+	uint32_t index, padLen;
 	static uint8_t PADDING[64] = {
     0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
     };
 
-  if (finalized){
-    cerr << "MD5::finalize:  Already finalized this digest!" << endl;
-    return;
-  }
+	assert(!finalized);
 
   // Save number of bits
   encode (bits, count, 8);
@@ -214,85 +180,72 @@ void MD5::finalize (){
 	std::memset(buffer, 0, sizeof(*buffer));
 
   finalized=1;
-
 }
 
 
 
 
-MD5::MD5(FILE *file){
-
+MD5::MD5(const unsigned char* input, uint32_t input_length) {
 	init(); // must be called by all constructors
-  update(file);
-  finalize ();
+	update(input, input_length);
+	finalize();
 }
 
 
 
 
-MD5::MD5(istream& stream){
-
+MD5::MD5(FILE* file) {
 	init(); // must be called by all constructors
-  update (stream);
-  finalize();
+	update(file);
+	finalize();
 }
 
 
 
-MD5::MD5(ifstream& stream){
 
+MD5::MD5(std::istream& stream) {
 	init(); // must be called by all constructors
-  update (stream);
-  finalize();
+	update(stream);
+	finalize();
 }
 
 
 
-unsigned char *MD5::raw_digest(){
+unsigned char* MD5::raw_digest() const {
+	unsigned char *s = new unsigned char[16];
 
-	uint8_t* s = new uint8_t[16];
-
-  if (!finalized){
-    cerr << "MD5::raw_digest:  Can't get digest if you haven't "<<
-      "finalized the digest!" <<endl;
-		std::memset(s, 0, 16);
-		return s;
-  }
+	assert(finalized);
 
 	std::memcpy(s, digest, 16);
-  return s;
+
+	return s;
 }
 
 
 
-char *MD5::hex_digest(){
+char* MD5::hex_digest() const {
+	char *s= new char[33];
 
-  int i;
-  char *s= new char[33];
+	assert(finalized);
 
-  if (!finalized){
-    cerr << "MD5::hex_digest:  Can't get digest if you haven't "<<
-      "finalized the digest!" <<endl;
-	s[0]='\0';
-    return s;
-  }
-
-  for (i=0; i<16; i++)
+  for (int i=0; i<16; i++)
     sprintf(s+i*2, "%02x", digest[i]);
 
   s[32]='\0';
 
-  return s;
+	return s;
 }
 
 
 
 
 
-ostream& operator<<(ostream &stream, MD5 context){
+std::ostream& operator<<(std::ostream &stream, const MD5& context) {
+	char* hex = context.hex_digest();
+	stream << hex;
+	delete[] hex;
 
-  stream << context.hex_digest();
-  return stream;
+	return stream;
 }
 
 
@@ -464,7 +417,7 @@ void MD5::decode(uint32_t* output, const uint8_t* input, uint32_t len) {
 
 // ROTATE_LEFT rotates x left n bits.
 
-inline unsigned int MD5::rotate_left(uint32_t x, uint32_t n) {
+inline uint32_t MD5::rotate_left(uint32_t x, uint32_t n) {
   return (x << n) | (x >> (32-n))  ;
 }
 
@@ -473,19 +426,19 @@ inline unsigned int MD5::rotate_left(uint32_t x, uint32_t n) {
 
 // F, G, H and I are basic MD5 functions.
 
-inline unsigned int MD5::F(uint32_t x, uint32_t y, uint32_t z) {
+inline uint32_t MD5::F(uint32_t x, uint32_t y, uint32_t z) {
   return (x & y) | (~x & z);
 }
 
-inline unsigned int MD5::G(uint32_t x, uint32_t y, uint32_t z) {
+inline uint32_t MD5::G(uint32_t x, uint32_t y, uint32_t z) {
   return (x & z) | (y & ~z);
 }
 
-inline unsigned int MD5::H(uint32_t x, uint32_t y, uint32_t z) {
+inline uint32_t MD5::H(uint32_t x, uint32_t y, uint32_t z) {
   return x ^ y ^ z;
 }
 
-inline unsigned int MD5::I(uint32_t x, uint32_t y, uint32_t z) {
+inline uint32_t MD5::I(uint32_t x, uint32_t y, uint32_t z) {
   return y ^ (x | ~z);
 }
 

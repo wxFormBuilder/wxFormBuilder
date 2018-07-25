@@ -37,6 +37,7 @@
 #include <wx/stc/stc.h>
 
 #include <cstring>
+#include <fstream>
 
 CodeWriter::CodeWriter()
 :
@@ -206,13 +207,13 @@ void FileCodeWriter::WriteBuffer()
 	// Compare buffer with existing file (if any) to determine if
 	// writing the file is necessary
 	bool shouldWrite = true;
-	std::ifstream file( m_filename.mb_str( wxConvFile ), std::ios::binary | std::ios::in );
+	std::ifstream fileIn(m_filename.mb_str(wxConvFile), std::ios::binary | std::ios::in);
 
 	std::string buf;
 
-	if ( file )
+	if (fileIn)
 	{
-		MD5 diskHash( file );
+		MD5 diskHash(fileIn);
 		unsigned char* diskDigest = diskHash.raw_digest();
 
 		MD5 bufferHash;
@@ -238,21 +239,22 @@ void FileCodeWriter::WriteBuffer()
 
 	if ( shouldWrite )
 	{
-		wxFile file;
-		if ( !file.Create( m_filename, true ) )
+		wxFile fileOut;
+		if (!fileOut.Create(m_filename, true))
 		{
 			wxLogError( _("Unable to create file: %s"), m_filename.c_str() );
 			return;
 		}
 
-		if (m_useMicrosoftBOM) {
-			file.Write(MICROSOFT_BOM, 3);
+		if (m_useMicrosoftBOM)
+		{
+			fileOut.Write(MICROSOFT_BOM, 3);
 		}
 
 		if (!m_useUtf8)
-            file.Write( buf.c_str(), buf.length() );
-        else
-            file.Write( m_buffer );
+			fileOut.Write(buf.c_str(), buf.length());
+		else
+			fileOut.Write(m_buffer);
 	}
 }
 
