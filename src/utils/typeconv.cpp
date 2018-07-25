@@ -32,6 +32,10 @@
 #include <wx/artprov.h>
 #include <wx/filesys.h>
 
+#ifndef wxFALLTHROUGH
+    #define wxFALLTHROUGH ((void)0)
+#endif
+
 ////////////////////////////////////
 
 // Assuming that the locale is constant throughout one execution,
