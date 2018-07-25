@@ -55,10 +55,6 @@ wxDataObject()
 	}
 }
 
-wxFBDataObject::~wxFBDataObject()
-{
-}
-
 void wxFBDataObject::GetAllFormats( wxDataFormat* formats, Direction dir ) const
 {
 	switch ( dir )

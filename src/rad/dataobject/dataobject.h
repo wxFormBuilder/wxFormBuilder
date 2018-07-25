@@ -37,13 +37,12 @@ private:
 
 public:
 	wxFBDataObject( PObjectBase obj = PObjectBase() );
-	~wxFBDataObject();
-	void GetAllFormats( wxDataFormat* formats, Direction dir = Get ) const;
-	bool GetDataHere( const wxDataFormat& format, void* buf ) const;
-	size_t GetDataSize(const wxDataFormat& format ) const;
-	size_t GetFormatCount( Direction dir = Get ) const;
-	wxDataFormat GetPreferredFormat( Direction dir = Get ) const;
-	bool SetData( const wxDataFormat& format, size_t len, const void *buf );
+	void GetAllFormats(wxDataFormat* formats, Direction dir = Get) const override;
+	bool GetDataHere(const wxDataFormat& format, void* buf) const override;
+	size_t GetDataSize(const wxDataFormat& format) const override;
+	size_t GetFormatCount(Direction dir = Get) const override;
+	wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
+	bool SetData(const wxDataFormat& format, size_t len, const void* buf) override;
 	PObjectBase GetObj();
 };
 
