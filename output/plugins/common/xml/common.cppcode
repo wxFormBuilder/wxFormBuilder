@@ -28,10 +28,10 @@ Written by
     <template name="construction">$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="settings">
 	    #ifequal $markup "1" @{
-		    $name->SetLabelMarkup( $label ); #nl
+		    $name->SetLabelMarkup( $label );
 	    @}
 	    #ifnotequal $default "0" @{
-		    $name->SetDefault(); #nl
+		    #nl $name->SetDefault();
 	    @}
 
 			#ifnotnull $bitmap
