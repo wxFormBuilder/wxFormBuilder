@@ -71,15 +71,15 @@ Written by
 		<property name="col_label_values" type="stringlist" help="List of column labels."></property>
 		<property name="col_label_horiz_alignment" type="option" help="Horizontal alignment of column label text.">
 			<option name="wxALIGN_LEFT" 	help="Align labels left."/>
-			<option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align labels centered."/>
 			<option name="wxALIGN_RIGHT" 	help="Align labels right."/>
-			wxALIGN_CENTRE
+			wxALIGN_CENTER
 		</property>
 		<property name="col_label_vert_alignment" type="option" help="Vertical alignment of column label text.">
 			<option name="wxALIGN_TOP" 	help="Align labels top."/>
-			<option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align labels centered."/>
 			<option name="wxALIGN_BOTTOM" 	help="Align labels bottom."/>
-			wxALIGN_CENTRE
+			wxALIGN_CENTER
 		</property>
 	</category>
 	<category name="Rows">
@@ -90,15 +90,15 @@ Written by
 		<property name="row_label_values" type="stringlist" help="List of row labels."></property>
 		<property name="row_label_horiz_alignment" type="option" help="Horizontal alignment of row label text.">
 			<option name="wxALIGN_LEFT" 	help="Align labels left."/>
-			<option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align labels centered."/>
 			<option name="wxALIGN_RIGHT" 	help="Align labels right."/>
-			wxALIGN_CENTRE
+			wxALIGN_CENTER
 		</property>
 		<property name="row_label_vert_alignment" type="option" help="Vertical alignment of row label text.">
 			<option name="wxALIGN_TOP" 	help="Align labels top."/>
-			<option name="wxALIGN_CENTRE" 	help="Align labels centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align labels centered."/>
 			<option name="wxALIGN_BOTTOM" 	help="Align labels bottom."/>
-			wxALIGN_CENTRE
+			wxALIGN_CENTER
 		</property>
 	</category>
 		<category name="Label Appearance">
@@ -112,13 +112,13 @@ Written by
 		<property name="cell_text" type="wxColour" help="Default cell text color."/>
 		<property name="cell_horiz_alignment" type="option" help="Default horizontal alignment of cell values.">
 			<option name="wxALIGN_LEFT" 	help="Align left."/>
-			<option name="wxALIGN_CENTRE" 	help="Align centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align centered."/>
 			<option name="wxALIGN_RIGHT" 	help="Align right."/>
 			wxALIGN_LEFT
 		</property>
 		<property name="cell_vert_alignment" type="option" help="Default vertical alignment of cell values.">
 			<option name="wxALIGN_TOP" 	help="Align top."/>
-			<option name="wxALIGN_CENTRE" 	help="Align centered."/>
+			<option name="wxALIGN_CENTER" 	help="Align centered."/>
 			<option name="wxALIGN_BOTTOM" 	help="Align bottom."/>
 			wxALIGN_TOP
 		</property>
