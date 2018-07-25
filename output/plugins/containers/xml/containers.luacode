@@ -42,22 +42,22 @@ Lua code generation written by
 			#ifnotnull $sashgravity
 			@{
 				#ifnotequal $sashgravity "0.0"
-			@{#utbl$name:SetSashGravity( $sashgravity ) #nl @}
+				@{ #utbl$name:SetSashGravity( $sashgravity ) #nl @}
 			@}
 			#ifnotnull $sashsize
 			@{
 				#ifnotequal $sashsize "-1"
-			@{	#utbl$name:SetSashSize( $sashsize ) #nl @}
+				@{ #utbl$name:SetSashSize( $sashsize ) #nl @}
 			@}
 			#ifnotnull $sashpos
 			@{
 				#ifnotequal $sashpos "-1"
-			@{	#utbl$name:Connect( wx.wxEVT_IDLE,#utbl$name #append OnIdle ) #nl @}
+				@{ #utbl$name:Connect( wx.wxEVT_IDLE,#utbl$name #append OnIdle ) #nl @}
 			@}
 			#ifnotnull $min_pane_size
 			@{
 				#ifnotequal $min_pane_size "0"
-			@{	#utbl$name:SetMinimumPaneSize( $min_pane_size ) #nl @}
+				@{ #utbl$name:SetMinimumPaneSize( $min_pane_size ) #nl @}
 			@}
 		</template>
 		<template name="generated_event_handlers">
@@ -76,7 +76,6 @@ Lua code generation written by
 		<template name="evt_connect_OnSplitterUnsplit">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_UNSPLIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_connect_OnSplitterDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
-
 
 	<templates class="wxNotebook">
 		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
@@ -197,10 +196,9 @@ Lua code generation written by
 
 	<templates class="wxScrolledWindow">
 		<template name="construction">
-			 #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ) #nl
-			 #utbl$name:SetScrollRate( $scroll_rate_x, $scroll_rate_y )
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ) #nl
+			#utbl$name:SetScrollRate( $scroll_rate_x, $scroll_rate_y )
 		</template>
 	</templates>
-
 
 </codegen>

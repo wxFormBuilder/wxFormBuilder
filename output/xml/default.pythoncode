@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="Python">
-  <templates class="Project">
-    	<template name="python_preamble">
+
+	<templates class="Project">
+		<template name="python_preamble">
 			#ifequal $encoding "UTF-8"
 			@{ @# -*- coding: utf-8 -*- @}
 		</template>
@@ -9,9 +10,10 @@
 			import wx #nl
 			import wx.xrc #nl
 		</template>
-    <template name="python_epilogue"/>
-  </templates>
-  <templates class="wxWindow">
+		<template name="python_epilogue"/>
+	</templates>
+
+	<templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ self.$name.SetExtraStyle( $window_extra_style ) #nl @}
@@ -62,8 +64,6 @@
 		<template name="evt_connect_OnMiddleDClick">self.$name.Bind( wx.EVT_MIDDLE_DCLICK, #handler )</template>
 		<template name="evt_connect_OnMiddleDown">self.$name.Bind( wx.EVT_MIDDLE_DOWN, #handler )</template>
 		<template name="evt_connect_OnMiddleUp">self.$name.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
-		<template name="evt_connect_OnMotion">self.$name.Bind( wx.EVT_MOTION, #handler )</template>
-		<template name="evt_connect_OnMouseWheel">self.$name.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
 		<template name="evt_connect_OnRightDClick">self.$name.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
 		<template name="evt_connect_OnRightDown">self.$name.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
 		<template name="evt_connect_OnRightUp">self.$name.Bind( wx.EVT_RIGHT_UP, #handler )</template>
@@ -73,6 +73,8 @@
 		<template name="evt_connect_OnAux2DClick">self.$name.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
 		<template name="evt_connect_OnAux2Down">self.$name.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
 		<template name="evt_connect_OnAux2Up">self.$name.Bind( wx.EVT_AUX2_UP, #handler )</template>
+		<template name="evt_connect_OnMotion">self.$name.Bind( wx.EVT_MOTION, #handler )</template>
+		<template name="evt_connect_OnMouseWheel">self.$name.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
 		<template name="evt_connect_OnMouseEvents">
 			self.$name.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
 			self.$name.Bind( wx.EVT_LEFT_UP, #handler ) #nl
@@ -113,79 +115,79 @@
 
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">self.$name.Bind( wx.EVT_UPDATE_UI, #handler )</template>
-  </templates>
-  
-  <templates class="Validator">
-  	<template name="include" />   
-	<template name="valvar_declaration" />
-	<template name="settings" />           
-  </templates>
-  
-  <templates class="AUI">
-	<template name="settings">
-		#ifparenttypeequal "form"
-		@{
-		#ifequal #parent $aui_managed "1"
-		@{ 
-		#iftypenotequal "toolbar"
-		@{ 
-			self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()
-			#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
-			#ifnotnull $caption @{.Caption( $caption )@}
-			#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
-			#ifequal $close_button "0" @{.CloseButton( $close_button )@}
-			#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
-			#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
-			#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
-			#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
-			#ifequal $gripper "1" @{.Gripper()@}
-			#ifequal $show "0" @{.Hide()@}
-			#ifequal $moveable "0" @{.Movable( $moveable )@}
-			#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
-			#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable"	@{.FloatingSize( $pane_size )@}@}
-			#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
-			#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
-			#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
-			#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
-			#ifequal $RightDockable "0"	@{.RightDockable( $RightDockable )@}
-			#ifequal $floatable "0"	@{.Floatable( $floatable )@}
-			#ifnotnull $aui_row	@{.Row( $aui_row )@}
-			#ifnotnull $aui_position @{.Position( $aui_position )@}
-			#ifnotnull $best_size @{.BestSize( $best_size )@}
-			#ifnotnull $min_size @{.MinSize( $min_size )@}
-			#ifnotnull $max_size @{.MaxSize( $max_size )@}
-			#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
-			#ifequal $center_pane "1" @{.CentrePane()@}
-			#ifequal $default_pane "1" @{.DefaultPane()@}
-			#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
-			) #nl				
-		@}
-		@}
-		@}
-	</template>
-  </templates>
-  
-  <templates class="wxTreeCtrlBase">
-	<template name="evt_connect_OnTreeBeginDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_DRAG, #handler )</template>
-	<template name="evt_connect_OnTreeBeginRDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_RDRAG, #handler )</template>
-	<template name="evt_connect_OnTreeEndDrag">self.$name.Bind( wx.EVT_TREE_END_DRAG, #handler )</template>
-	<template name="evt_connect_OnTreeBeginLabelEdit">self.$name.Bind( wx.EVT_TREE_BEGIN_LABEL_EDIT, #handler )</template>
-	<template name="evt_connect_OnTreeEndLabelEdit">self.$name.Bind( wx.EVT_TREE_END_LABEL_EDIT, #handler )</template>
-	<template name="evt_connect_OnTreeDeleteItem">self.$name.Bind( wx.EVT_TREE_DELETE_ITEM, #handler )</template>
-	<template name="evt_connect_OnTreeItemActivated">self.$name.Bind( wx.EVT_TREE_ITEM_ACTIVATED, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsed">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSED, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsing">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSING, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanded">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDED, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanding">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDING, #handler )</template>
-	<template name="evt_connect_OnTreeItemRightClick">self.$name.Bind( wx.EVT_TREE_ITEM_RIGHT_CLICK, #handler )</template>
-	<template name="evt_connect_OnTreeItemMiddleClick">self.$name.Bind( wx.EVT_TREE_ITEM_MIDDLE_CLICK, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanged">self.$name.Bind( wx.EVT_TREE_SEL_CHANGED, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanging">self.$name.Bind( wx.EVT_TREE_SEL_CHANGING, #handler )</template>
-	<template name="evt_connect_OnTreeKeyDown">self.$name.Bind( wx.EVT_TREE_KEY_DOWN, #handler )</template>
-	<template name="evt_connect_OnTreeItemMenu">self.$name.Bind( wx.EVT_TREE_ITEM_MENU, #handler )</template>
-  </templates>
-  
-  <templates class="UserClasses">
+	</templates>
+
+	<templates class="Validator">
+		<template name="include" />
+		<template name="valvar_declaration" />
+		<template name="settings" />
+	</templates>
+
+	<templates class="AUI">
+		<template name="settings">
+			#ifparenttypeequal "form"
+			@{
+			#ifequal #parent $aui_managed "1"
+			@{
+			#iftypenotequal "toolbar"
+			@{
+				self.m_mgr.AddPane( self.$name, wx.aui.AuiPaneInfo()
+				#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
+				#ifnotnull $caption @{.Caption( $caption )@}
+				#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
+				#ifequal $close_button "0" @{.CloseButton( $close_button )@}
+				#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
+				#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
+				#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
+				#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
+				#ifequal $gripper "1" @{.Gripper()@}
+				#ifequal $show "0" @{.Hide()@}
+				#ifequal $moveable "0" @{.Movable( $moveable )@}
+				#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
+				#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable"	@{.FloatingSize( $pane_size )@}@}
+				#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
+				#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
+				#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
+				#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
+				#ifequal $RightDockable "0"	@{.RightDockable( $RightDockable )@}
+				#ifequal $floatable "0"	@{.Floatable( $floatable )@}
+				#ifnotnull $aui_row	@{.Row( $aui_row )@}
+				#ifnotnull $aui_position @{.Position( $aui_position )@}
+				#ifnotnull $best_size @{.BestSize( $best_size )@}
+				#ifnotnull $min_size @{.MinSize( $min_size )@}
+				#ifnotnull $max_size @{.MaxSize( $max_size )@}
+				#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
+				#ifequal $center_pane "1" @{.CentrePane()@}
+				#ifequal $default_pane "1" @{.DefaultPane()@}
+				#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
+				) #nl
+			@}
+			@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxTreeCtrlBase">
+		<template name="evt_connect_OnTreeBeginDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_DRAG, #handler )</template>
+		<template name="evt_connect_OnTreeBeginRDrag">self.$name.Bind( wx.EVT_TREE_BEGIN_RDRAG, #handler )</template>
+		<template name="evt_connect_OnTreeEndDrag">self.$name.Bind( wx.EVT_TREE_END_DRAG, #handler )</template>
+		<template name="evt_connect_OnTreeBeginLabelEdit">self.$name.Bind( wx.EVT_TREE_BEGIN_LABEL_EDIT, #handler )</template>
+		<template name="evt_connect_OnTreeEndLabelEdit">self.$name.Bind( wx.EVT_TREE_END_LABEL_EDIT, #handler )</template>
+		<template name="evt_connect_OnTreeDeleteItem">self.$name.Bind( wx.EVT_TREE_DELETE_ITEM, #handler )</template>
+		<template name="evt_connect_OnTreeItemActivated">self.$name.Bind( wx.EVT_TREE_ITEM_ACTIVATED, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsed">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSED, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsing">self.$name.Bind( wx.EVT_TREE_ITEM_COLLAPSING, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanded">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDED, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanding">self.$name.Bind( wx.EVT_TREE_ITEM_EXPANDING, #handler )</template>
+		<template name="evt_connect_OnTreeItemRightClick">self.$name.Bind( wx.EVT_TREE_ITEM_RIGHT_CLICK, #handler )</template>
+		<template name="evt_connect_OnTreeItemMiddleClick">self.$name.Bind( wx.EVT_TREE_ITEM_MIDDLE_CLICK, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanged">self.$name.Bind( wx.EVT_TREE_SEL_CHANGED, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanging">self.$name.Bind( wx.EVT_TREE_SEL_CHANGING, #handler )</template>
+		<template name="evt_connect_OnTreeKeyDown">self.$name.Bind( wx.EVT_TREE_KEY_DOWN, #handler )</template>
+		<template name="evt_connect_OnTreeItemMenu">self.$name.Bind( wx.EVT_TREE_ITEM_MENU, #handler )</template>
+	</templates>
+
+	<templates class="UserClasses">
 		<template name="file_comment">
 			"""Subclass of $basename, which is generated by wxFormBuilder."""
 		</template>
@@ -213,5 +215,6 @@
 			def __init__( self, parent ): #indent #nl
 				$gen_file.$basename.__init__( self, parent ) #unindent #nl
 		</template>
-  </templates>
+	</templates>
+
 </codegen>

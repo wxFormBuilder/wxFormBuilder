@@ -23,162 +23,162 @@ Written by
 -->
 <package name="Ribbon" lib="libadditional" icon="ribbon_bar.xpm" desc="wxWidgets Ribbon">
 
-	<objectinfo class="wxRibbonBar" icon="ribbon_bar.xpm" type="ribbonbar" startgroup="0" wxversion="2904">
-		<inherits class="wxWindow" />
-		<inherits class="AUI" />
-		<property name="name" type="text">m_ribbonBar</property>
-		<property name="style" type="bitlist">
-			<option name="wxRIBBON_BAR_DEFAULT_STYLE" help="Defined as wxRIBBON_BAR_FLOW_HORIZONTAL | wxRIBBON_BAR_SHOW_PAGE_LABELS | wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS | wxRIBBON_BAR_SHOW_TOGGLE_BUTTON | wxRIBBON_BAR_SHOW_HELP_BUTTON." />
-			<option name="wxRIBBON_BAR_FOLDBAR_STYLE" help="Defined as wxRIBBON_BAR_FLOW_VERTICAL | wxRIBBON_BAR_SHOW_PAGE_ICONS | wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS | wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS." />
-			<option name="wxRIBBON_BAR_SHOW_PAGE_LABELS" help="Causes labels to be shown on the tabs in the ribbon bar." />
-			<option name="wxRIBBON_BAR_SHOW_PAGE_ICONS" help="Causes icons to be shown on the tabs in the ribbon bar." />
-			<option name="wxRIBBON_BAR_FLOW_HORIZONTAL" help="Causes panels within pages to stack horizontally." />
-			<option name="wxRIBBON_BAR_FLOW_VERTICAL" help="Causes panels within pages to stack vertically." />
-			<option name="wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS" help="Causes extension buttons to be shown on panels (where the panel has such a button)." />
-			<option name="wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS" help="Causes minimise buttons to be shown on panels (where the panel has such a button)." />
-			<option name="wxRIBBON_BAR_SHOW_TOGGLE_BUTTON" help="Causes a toggle button to appear on the ribbon bar at top-right corner." />
-			<option name="wxRIBBON_BAR_SHOW_HELP_BUTTON" help="Causes a help button to appear on the ribbon bar at the top-right corner." />
-			wxRIBBON_BAR_DEFAULT_STYLE
-		</property>
-		<property name = "theme" type="option" help="Select the RibbonBar theme.">
-			<option name="Default" help="Use Default theme."/>
-			<option name="Generic" help="Use Generic theme."/>
-			<option name="MSW" help="Use MSW theme."/>
-			Default
-		</property>
-		<event name="OnRibbonBarPageChanged" class="wxRibbonBarEvent" help="Triggered after the transition from one page being active to a different page being active." />
-		<event name="OnRibbonBarPageChanging" class="wxRibbonBarEvent" help="Triggered prior to the transition from one page being active to a different page being active, and can veto the change." />
-		<event name="OnRibbonBarTabMiddleDown" class="wxRibbonBarEvent" help="Triggered when the middle mouse button is pressed on a tab." />
-		<event name="OnRibbonBarTabMiddleUp" class="wxRibbonBarEvent" help="Triggered when the middle mouse button is released on a tab." />
-		<event name="OnRibbonBarTabRightDown" class="wxRibbonBarEvent" help="Triggered when the right mouse button is pressed on a tab." />
-		<event name="OnRibbonBarTabRightUp"	 class="wxRibbonBarEvent" help="Triggered when the right mouse button is released on a tab." />
-		<event name="OnRibbonBarTabLeftDClick" class="wxRibbonBarEvent" help="Triggered when the left mouse button is double clicked on a tab." />
-		<event name="OnRibbonBarToggled" class="wxRibbonBarEvent" help="Triggered when the button triggering the ribbon bar is clicked." />
-		<event name="OnRibbonBarHelpClick" class="wxRibbonBarEvent" help="Triggered when the help button is clicked." />
-	</objectinfo>
+  <objectinfo class="wxRibbonBar" icon="ribbon_bar.xpm" type="ribbonbar" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <inherits class="AUI"/>
+    <property name="name" type="text">m_ribbonBar</property>
+    <property name="style" type="bitlist">
+      <option name="wxRIBBON_BAR_DEFAULT_STYLE" help="Defined as wxRIBBON_BAR_FLOW_HORIZONTAL | wxRIBBON_BAR_SHOW_PAGE_LABELS | wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS | wxRIBBON_BAR_SHOW_TOGGLE_BUTTON | wxRIBBON_BAR_SHOW_HELP_BUTTON."/>
+      <option name="wxRIBBON_BAR_FOLDBAR_STYLE" help="Defined as wxRIBBON_BAR_FLOW_VERTICAL | wxRIBBON_BAR_SHOW_PAGE_ICONS | wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS | wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS."/>
+      <option name="wxRIBBON_BAR_SHOW_PAGE_LABELS" help="Causes labels to be shown on the tabs in the ribbon bar."/>
+      <option name="wxRIBBON_BAR_SHOW_PAGE_ICONS" help="Causes icons to be shown on the tabs in the ribbon bar."/>
+      <option name="wxRIBBON_BAR_FLOW_HORIZONTAL" help="Causes panels within pages to stack horizontally."/>
+      <option name="wxRIBBON_BAR_FLOW_VERTICAL" help="Causes panels within pages to stack vertically."/>
+      <option name="wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS" help="Causes extension buttons to be shown on panels (where the panel has such a button)."/>
+      <option name="wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS" help="Causes minimise buttons to be shown on panels (where the panel has such a button)."/>
+      <option name="wxRIBBON_BAR_SHOW_TOGGLE_BUTTON" help="Causes a toggle button to appear on the ribbon bar at top-right corner."/>
+      <option name="wxRIBBON_BAR_SHOW_HELP_BUTTON" help="Causes a help button to appear on the ribbon bar at the top-right corner."/>
+      wxRIBBON_BAR_DEFAULT_STYLE
+    </property>
+    <property name = "theme" type="option" help="Select the RibbonBar theme.">
+      <option name="Default" help="Use Default theme."/>
+      <option name="Generic" help="Use Generic theme."/>
+      <option name="MSW" help="Use MSW theme."/>
+      Default
+    </property>
+    <event name="OnRibbonBarPageChanged" class="wxRibbonBarEvent" help="Triggered after the transition from one page being active to a different page being active."/>
+    <event name="OnRibbonBarPageChanging" class="wxRibbonBarEvent" help="Triggered prior to the transition from one page being active to a different page being active, and can veto the change."/>
+    <event name="OnRibbonBarTabMiddleDown" class="wxRibbonBarEvent" help="Triggered when the middle mouse button is pressed on a tab."/>
+    <event name="OnRibbonBarTabMiddleUp" class="wxRibbonBarEvent" help="Triggered when the middle mouse button is released on a tab."/>
+    <event name="OnRibbonBarTabRightDown" class="wxRibbonBarEvent" help="Triggered when the right mouse button is pressed on a tab."/>
+    <event name="OnRibbonBarTabRightUp" class="wxRibbonBarEvent" help="Triggered when the right mouse button is released on a tab."/>
+    <event name="OnRibbonBarTabLeftDClick" class="wxRibbonBarEvent" help="Triggered when the left mouse button is double clicked on a tab."/>
+    <event name="OnRibbonBarToggled" class="wxRibbonBarEvent" help="Triggered when the button triggering the ribbon bar is clicked."/>
+    <event name="OnRibbonBarHelpClick" class="wxRibbonBarEvent" help="Triggered when the help button is clicked."/>
+  </objectinfo>
 
-	<objectinfo class="wxRibbonPage" icon="ribbon_page.xpm" type="ribbonpage" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonPage</property>
-		<property name="label" type="wxString_i18n">MyRibbonPage</property>
-		<property name="bitmap" type="bitmap" help="wxRibbonPage bitmap." />
-		<property name="select" type="bool" help="Select this ribbon page when adding.">0</property>
-	</objectinfo>
+  <objectinfo class="wxRibbonPage" icon="ribbon_page.xpm" type="ribbonpage" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonPage</property>
+    <property name="label" type="wxString_i18n">MyRibbonPage</property>
+    <property name="bitmap" type="bitmap" help="wxRibbonPage bitmap."/>
+    <property name="select" type="bool" help="Select this ribbon page when adding.">0</property>
+  </objectinfo>
 
-	<objectinfo class="wxRibbonPanel" icon="ribbon_panel.xpm" type="ribbonpanel" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonPanel</property>
-		<property name="label" type="wxString_i18n">MyRibbonPanel</property>
-		<property name="bitmap" type="bitmap" help="wxRibbonPanel bitmap." />
-		<property name="style" type="bitlist">
-			<option name="wxRIBBON_PANEL_DEFAULT_STYLE" help="Defined as no other flags set." />
-			<option name="wxRIBBON_PANEL_NO_AUTO_MINIMISE" help="Prevents the panel from automatically minimising to conserve screen space." />
-			<option name="wxRIBBON_PANEL_EXT_BUTTON" help="Causes an extension button to be shown in the panel's chrome (if the bar in which it is contained has wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS set). The behaviour of this button is application controlled, but typically will show an extended drop-down menu relating to the panel." />
-			<option name="wxRIBBON_PANEL_MINIMISE_BUTTON" help="Causes a (de)minimise button to be shown in the panel's chrome (if the bar in which it is contained has the wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS style set). This flag is typically combined with wxRIBBON_PANEL_NO_AUTO_MINIMISE to make a panel which the user always has manual control over when it minimises." />
-			<option name="wxRIBBON_PANEL_STRETCH" help="Stretches a single panel to fit the parent page." />
-			<option name="wxRIBBON_PANEL_FLEXIBLE" help="Allows the panel to size in both directions; currently only useful when a single wxRibbonToolBar is the child of the panel, particularly in vertical orientation where the number of rows is dependent on the amount of horizontal space available. Set the minimum and maximum toolbar rows to take full advantage of this wrapping behaviour." />
-			wxRIBBON_PANEL_DEFAULT_STYLE
-		</property>
-		<event name="OnRibbonPanelExtbuttonActivated" class="wxRibbonPanelEvent" help="Triggered when the user activate the panel extension button." />
-	</objectinfo>
+  <objectinfo class="wxRibbonPanel" icon="ribbon_panel.xpm" type="ribbonpanel" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonPanel</property>
+    <property name="label" type="wxString_i18n">MyRibbonPanel</property>
+    <property name="bitmap" type="bitmap" help="wxRibbonPanel bitmap."/>
+    <property name="style" type="bitlist">
+      <option name="wxRIBBON_PANEL_DEFAULT_STYLE" help="Defined as no other flags set."/>
+      <option name="wxRIBBON_PANEL_NO_AUTO_MINIMISE" help="Prevents the panel from automatically minimising to conserve screen space."/>
+      <option name="wxRIBBON_PANEL_EXT_BUTTON" help="Causes an extension button to be shown in the panel's chrome (if the bar in which it is contained has wxRIBBON_BAR_SHOW_PANEL_EXT_BUTTONS set). The behaviour of this button is application controlled, but typically will show an extended drop-down menu relating to the panel."/>
+      <option name="wxRIBBON_PANEL_MINIMISE_BUTTON" help="Causes a (de)minimise button to be shown in the panel's chrome (if the bar in which it is contained has the wxRIBBON_BAR_SHOW_PANEL_MINIMISE_BUTTONS style set). This flag is typically combined with wxRIBBON_PANEL_NO_AUTO_MINIMISE to make a panel which the user always has manual control over when it minimises."/>
+      <option name="wxRIBBON_PANEL_STRETCH" help="Stretches a single panel to fit the parent page."/>
+      <option name="wxRIBBON_PANEL_FLEXIBLE" help="Allows the panel to size in both directions; currently only useful when a single wxRibbonToolBar is the child of the panel, particularly in vertical orientation where the number of rows is dependent on the amount of horizontal space available. Set the minimum and maximum toolbar rows to take full advantage of this wrapping behaviour."/>
+      wxRIBBON_PANEL_DEFAULT_STYLE
+    </property>
+    <event name="OnRibbonPanelExtbuttonActivated" class="wxRibbonPanelEvent" help="Triggered when the user activate the panel extension button."/>
+  </objectinfo>
 
-	<objectinfo class="wxRibbonButtonBar" icon="ribbon_buttonbar.xpm" type="ribbonbuttonbar" startgroup="1" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonButtonBar</property>
-	</objectinfo>
+  <objectinfo class="wxRibbonButtonBar" icon="ribbon_buttonbar.xpm" type="ribbonbuttonbar" startgroup="1" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonButtonBar</property>
+  </objectinfo>
 
-	<objectinfo class="ribbonButton" icon="ribbon_button.xpm" type="ribbonbutton" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonButton</property>
-		<property name="label" type="wxString_i18n">MyRibbonButton</property>
-		<property name="bitmap" type="bitmap" help="ribbonButton bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonButton"/>
-		<event name="OnRibbonButtonClicked" class="wxRibbonButtonBarEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked." />
-	</objectinfo>
+  <objectinfo class="ribbonButton" icon="ribbon_button.xpm" type="ribbonbutton" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonButton</property>
+    <property name="label" type="wxString_i18n">MyRibbonButton</property>
+    <property name="bitmap" type="bitmap" help="ribbonButton bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonButton"/>
+    <event name="OnRibbonButtonClicked" class="wxRibbonButtonBarEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonDropdownButton" icon="ribbon_button_dropdown.xpm" type="ribbondropdownbutton" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonDropdownButton</property>
-		<property name="label" type="wxString_i18n">MyRibbonDropdownButton</property>
-		<property name="bitmap" type="bitmap"  help="ribbonDropdownButton bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonDropdownButton"/>
-		<event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)." />
-	</objectinfo>
+  <objectinfo class="ribbonDropdownButton" icon="ribbon_button_dropdown.xpm" type="ribbondropdownbutton" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonDropdownButton</property>
+    <property name="label" type="wxString_i18n">MyRibbonDropdownButton</property>
+    <property name="bitmap" type="bitmap" help="ribbonDropdownButton bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonDropdownButton"/>
+    <event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonHybridButton" icon="ribbon_button_hybrid.xpm" type="ribbonhybridbutton" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonHybridButton</property>
-		<property name="label" type="wxString_i18n">MyRibbonHybridButton</property>
-		<property name="bitmap" type="bitmap"  help="ribbonHybridButton bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonHybridButton"/>
-		<event name="OnRibbonButtonClicked" class="wxRibbonButtonBarEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked." />
-		<event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)." />
-	</objectinfo>
+  <objectinfo class="ribbonHybridButton" icon="ribbon_button_hybrid.xpm" type="ribbonhybridbutton" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonHybridButton</property>
+    <property name="label" type="wxString_i18n">MyRibbonHybridButton</property>
+    <property name="bitmap" type="bitmap" help="ribbonHybridButton bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonHybridButton"/>
+    <event name="OnRibbonButtonClicked" class="wxRibbonButtonBarEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked."/>
+    <event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonToggleButton" icon="ribbon_button_toggle.xpm" type="ribbontogglebutton" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonToggleButton</property>
-		<property name="label" type="wxString_i18n">MyRibbonToggleButton</property>
-		<property name="bitmap" type="bitmap"  help="ribbonToggleButton bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonToggleButton"/>
-		<event name="OnRibbonButtonClicked" class="wxCommandEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked." />
-	</objectinfo>
+  <objectinfo class="ribbonToggleButton" icon="ribbon_button_toggle.xpm" type="ribbontogglebutton" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonToggleButton</property>
+    <property name="label" type="wxString_i18n">MyRibbonToggleButton</property>
+    <property name="bitmap" type="bitmap" help="ribbonToggleButton bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonToggleButton"/>
+    <event name="OnRibbonButtonClicked" class="wxCommandEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked."/>
+  </objectinfo>
 
-	<objectinfo class="wxRibbonToolBar" icon="ribbon_buttonbar.xpm" type="ribbontoolbar" startgroup="1" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonToolBar</property>
-	</objectinfo>
+  <objectinfo class="wxRibbonToolBar" icon="ribbon_buttonbar.xpm" type="ribbontoolbar" startgroup="1" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonToolBar</property>
+  </objectinfo>
 
-	<objectinfo class="ribbonTool" icon="ribbon_button.xpm" type="ribbontool" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonTool</property>
-		<property name="label" type="wxString_i18n">MyRibbonTool</property>
-		<property name="bitmap" type="bitmap" help="ribbonTool bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonTool"/>
-		<event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked." />
-	</objectinfo>
+  <objectinfo class="ribbonTool" icon="ribbon_button.xpm" type="ribbontool" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonTool</property>
+    <property name="label" type="wxString_i18n">MyRibbonTool</property>
+    <property name="bitmap" type="bitmap" help="ribbonTool bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonTool"/>
+    <event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonDropdownTool" icon="ribbon_button_dropdown.xpm" type="ribbondropdowntool" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonDropdownTool</property>
-		<property name="label" type="wxString_i18n">MyRibbonDropdownTool</property>
-		<property name="bitmap" type="bitmap" help="ribbonDropdownTool bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonDropdownTool"/>
-		<event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)." />
-	</objectinfo>
+  <objectinfo class="ribbonDropdownTool" icon="ribbon_button_dropdown.xpm" type="ribbondropdowntool" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonDropdownTool</property>
+    <property name="label" type="wxString_i18n">MyRibbonDropdownTool</property>
+    <property name="bitmap" type="bitmap" help="ribbonDropdownTool bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonDropdownTool"/>
+    <event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonHybridTool" icon="ribbon_button_hybrid.xpm" type="ribbonhybridtool" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonHybridTool</property>
-		<property name="label" type="wxString_i18n">MyRibbonHybridTool</property>
-		<property name="bitmap" type="bitmap" help="ribbonHybridTool bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonHybridTool"/>
-		<event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked." />
-		<event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)." />
-	</objectinfo>
+  <objectinfo class="ribbonHybridTool" icon="ribbon_button_hybrid.xpm" type="ribbonhybridtool" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonHybridTool</property>
+    <property name="label" type="wxString_i18n">MyRibbonHybridTool</property>
+    <property name="bitmap" type="bitmap" help="ribbonHybridTool bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonHybridTool"/>
+    <event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked."/>
+    <event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonToggleTool" icon="ribbon_button_toggle.xpm" type="ribbontoggletool" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonToggleTool</property>
-		<property name="label" type="wxString_i18n">MyRibbonToggleTool</property>
-		<property name="bitmap" type="bitmap" help="ribbonToggleTool bitmap." />
-		<property name="help" type="wxString_i18n" help="ribbonToggleTool"/>
-		<event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked." />
-	</objectinfo>
+  <objectinfo class="ribbonToggleTool" icon="ribbon_button_toggle.xpm" type="ribbontoggletool" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonToggleTool</property>
+    <property name="label" type="wxString_i18n">MyRibbonToggleTool</property>
+    <property name="bitmap" type="bitmap" help="ribbonToggleTool bitmap."/>
+    <property name="help" type="wxString_i18n" help="ribbonToggleTool"/>
+    <event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked."/>
+  </objectinfo>
 
-	<objectinfo class="wxRibbonGallery" icon="ribbon_gallery.xpm" type="ribbongallery" startgroup="1" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonGallery</property>
-		<event name="OnRibbonGallerySelected" class="wxRibbonGalleryEvent" help="Triggered when the user selects an item from the gallery." />
-		<event name="OnRibbonGalleryClicked" class="wxRibbonGalleryEvent" help="Similar to EVT_RIBBONGALLERY_SELECTED but triggered every time a gallery item is clicked, even if it is already selected." />
-		<event name="OnRibbonGalleryHoverChanged" class="wxRibbonGalleryEvent" help="Triggered when the item being hovered over by the user changes. The item in the event will be the new item being hovered, or NULL if there is no longer an item being hovered." />
-		<event name="OnRibbonGalleryExtensionButtonPressed" class="wxCommandEvent" help="Triggered when the extension button of the gallery is pressed." />
-	</objectinfo>
+  <objectinfo class="wxRibbonGallery" icon="ribbon_gallery.xpm" type="ribbongallery" startgroup="1" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonGallery</property>
+    <event name="OnRibbonGallerySelected" class="wxRibbonGalleryEvent" help="Triggered when the user selects an item from the gallery."/>
+    <event name="OnRibbonGalleryClicked" class="wxRibbonGalleryEvent" help="Similar to EVT_RIBBONGALLERY_SELECTED but triggered every time a gallery item is clicked, even if it is already selected."/>
+    <event name="OnRibbonGalleryHoverChanged" class="wxRibbonGalleryEvent" help="Triggered when the item being hovered over by the user changes. The item in the event will be the new item being hovered, or NULL if there is no longer an item being hovered."/>
+    <event name="OnRibbonGalleryExtensionButtonPressed" class="wxCommandEvent" help="Triggered when the extension button of the gallery is pressed."/>
+  </objectinfo>
 
-	<objectinfo class="ribbonGalleryItem" icon="ribbon_button.xpm" type="ribbongalleryitem" startgroup="0" wxversion="2904" >
-		<inherits class="wxWindow" />
-		<property name="name" type="text">m_ribbonGalleryItem</property>
-		<property name="bitmap" type="bitmap" help="ribbonGalleryItem bitmap." />
-	</objectinfo>
+  <objectinfo class="ribbonGalleryItem" icon="ribbon_button.xpm" type="ribbongalleryitem" startgroup="0" wxversion="2904">
+    <inherits class="wxWindow"/>
+    <property name="name" type="text">m_ribbonGalleryItem</property>
+    <property name="bitmap" type="bitmap" help="ribbonGalleryItem bitmap."/>
+  </objectinfo>
 
 </package>

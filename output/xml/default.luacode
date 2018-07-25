@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="Lua">
-  <templates class="Project">
-    	<template name="lua_preamble">
+
+	<templates class="Project">
+		<template name="lua_preamble">
 		</template>
 		<template name="include">
 			-- Load the wxLua module, does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit #nl
 			package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;" #nl
 			require("wx") #nl
 		</template>
-    <template name="lua_epilogue">
-      #nl #nl --wx.wxGetApp():MainLoop()
-    </template>
-  </templates>
-  <templates class="wxWindow">
+		<template name="lua_epilogue">
+			#nl #nl --wx.wxGetApp():MainLoop()
+		</template>
+	</templates>
+
+	<templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ #utbl$name:SetExtraStyle( $window_extra_style ) #nl @}
@@ -79,7 +81,7 @@
 				#ifequal $center_pane "1" @{:CentrePane()@}
 				#ifequal $default_pane "1" @{:DefaultPane()@}
 				#ifequal $toolbar_pane "1" @{:ToolbarPane()@}
-				) #nl				
+				) #nl
 			@}
 			@}
 			@}
@@ -103,8 +105,6 @@
 		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
@@ -114,6 +114,8 @@
 		<template name="evt_connect_OnAux2DClick">#utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnAux2Down">#utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnAux2Up">#utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnMouseEvents">
 			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
 			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
@@ -139,7 +141,7 @@
 		<!-- wxFocusEvent -->
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-.
+
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 
@@ -154,29 +156,31 @@
 
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-  </templates>
-  <templates class="wxTreeCtrlBase">
-	<template name="evt_connect_OnTreeBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeBeginRDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeEndDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeBeginLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeEndLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeDeleteItem">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemActivated">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemCollapsed">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemCollapsing">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemExpanded">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemExpanding">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemMiddleClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeSelChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeSelChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeKeyDown">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemMenu">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-  </templates>
-  <templates class="UserClasses">
+	</templates>
+
+	<templates class="wxTreeCtrlBase">
+		<template name="evt_connect_OnTreeBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeBeginRDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeEndDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeBeginLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeEndLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeDeleteItem">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemActivated">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemCollapsed">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemCollapsing">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemExpanded">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemExpanding">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemMiddleClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeSelChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeSelChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeKeyDown">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnTreeItemMenu">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+	</templates>
+
+	<templates class="UserClasses">
 		<template name="file_comment">
-			 --Here you can extend functionality of $gen_file  module.
+			--Here you can extend functionality of $gen_file  module.
 		</template>
 		<template name="event_handler_comment">
 			@-- Handlers for $basename events.
@@ -202,5 +206,6 @@
 			def __init__( self, parent ): #indent #nl
 				$gen_file.$basename.__init__( self, parent ) #unindent #nl
 		</template>
-  </templates>
+	</templates>
+
 </codegen>

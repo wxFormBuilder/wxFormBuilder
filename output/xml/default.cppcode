@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="C++">
-  <templates class="Project">
-    <template name="header_preamble">
-		@#include &lt;wx/artprov.h&gt;
-		#nl @#include &lt;wx/xrc/xmlres.h&gt;
-		#ifnotequal $help_provider "none"
-		@{ #nl @#include &lt;wx/cshelp.h&gt; @}
-		
-		#ifnotequal $internationalize "0"
-		@{ #nl @#include &lt;wx/intl.h&gt; @}
-		
-    </template>
-    <template name="header_epilogue">
-        ///////////////////////////////////////////////////////////////////////////
-    </template>
-    <template name="cpp_preamble">
-	  #ifnotnull $precompiled_header
-	  @{
-		  $precompiled_header
-	  @}
-	</template>
-    <template name="cpp_epilogue">#ifnotequal $help_provider "none"
-		@{
-		// Using the construction of a static object to ensure that the help provider is set #nl
-		// wx Manages the most recent HelpProvider passed to ::Set, but not the previous ones #nl
-		// If ::Set gets called more than once, the previous one is returned and should be deleted #nl
-		class wxFBContextSensitiveHelpSetter #nl
-		{ #nl
-			public: #nl
-				wxFBContextSensitiveHelpSetter() #nl
+
+	<templates class="Project">
+		<template name="header_preamble">
+			@#include &lt;wx/artprov.h&gt;
+			#nl @#include &lt;wx/xrc/xmlres.h&gt;
+			#ifnotequal $help_provider "none"
+			@{ #nl @#include &lt;wx/cshelp.h&gt; @}
+
+			#ifnotequal $internationalize "0"
+			@{ #nl @#include &lt;wx/intl.h&gt; @}
+		</template>
+		<template name="header_epilogue">
+			///////////////////////////////////////////////////////////////////////////
+		</template>
+		<template name="cpp_preamble">
+			#ifnotnull $precompiled_header
+			@{
+				$precompiled_header
+			@}
+		</template>
+		<template name="cpp_epilogue">
+			#ifnotequal $help_provider "none"
+			@{
+				// Using the construction of a static object to ensure that the help provider is set #nl
+				// wx Manages the most recent HelpProvider passed to ::Set, but not the previous ones #nl
+				// If ::Set gets called more than once, the previous one is returned and should be deleted #nl
+				class wxFBContextSensitiveHelpSetter #nl
 				{ #nl
-					$help_provider* help = new wxSimpleHelpProvider(); #nl
-					wxHelpProvider* old = wxHelpProvider::Set( help  ); #nl
-					if (old != 0){ #nl
-						delete old; #nl
-					} #nl
-				} #nl
-		}; #nl
-		#nl
-		static wxFBContextSensitiveHelpSetter s_wxFBSetTheHelpProvider; #nl
-		@}///////////////////////////////////////////////////////////////////////////
-    </template>
-  </templates>
-  <templates class="wxWindow">
+					public: #nl
+						wxFBContextSensitiveHelpSetter() #nl
+						{ #nl
+							$help_provider* help = new wxSimpleHelpProvider(); #nl
+							wxHelpProvider* old = wxHelpProvider::Set( help  ); #nl
+							if (old != 0){ #nl
+								delete old; #nl
+							} #nl
+						} #nl
+				}; #nl
+				#nl
+				static wxFBContextSensitiveHelpSetter s_wxFBSetTheHelpProvider; #nl
+			@}
+			///////////////////////////////////////////////////////////////////////////
+		</template>
+	</templates>
+
+	<templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ $name->SetExtraStyle( $window_extra_style ); #nl @}
@@ -105,10 +108,6 @@
 		<template name="evt_connect_OnMiddleDown">$name->Connect( wxEVT_MIDDLE_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnMiddleUp">@#error wxMouseEvent does not propogate, so wxEVT_MIDDLE_UP from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnMiddleUp">$name->Connect( wxEVT_MIDDLE_UP, #handler, NULL, this );</template>
-		<template name="evt_entry_OnMotion">@#error wxMouseEvent does not propogate, so wxEVT_MOTION from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnMotion">$name->Connect( wxEVT_MOTION, #handler, NULL, this );</template>
-		<template name="evt_entry_OnMouseWheel">@#error wxMouseEvent does not propogate, so wxEVT_MOUSEWHEEL from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnMouseWheel">$name->Connect( wxEVT_MOUSEWHEEL, #handler, NULL, this );</template>
 		<template name="evt_entry_OnRightDClick">@#error wxMouseEvent does not propogate, so wxEVT_RIGHT_DCLICK from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnRightDClick">$name->Connect( wxEVT_RIGHT_DCLICK, #handler, NULL, this );</template>
 		<template name="evt_entry_OnRightDown">@#error wxMouseEvent does not propogate, so wxEVT_RIGHT_DOWN from $name can only be handled with Connect()</template>
@@ -127,6 +126,10 @@
 		<template name="evt_connect_OnAux2Down">$name->Connect( wxEVT_AUX2_DOWN, #handler, NULL, this );</template>
 		<template name="evt_entry_OnAux2Up">@#error wxMouseEvent does not propogate, so wxEVT_AUX2_UP from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnAux2Up">$name->Connect( wxEVT_AUX2_UP, #handler, NULL, this );</template>
+		<template name="evt_entry_OnMotion">@#error wxMouseEvent does not propogate, so wxEVT_MOTION from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnMotion">$name->Connect( wxEVT_MOTION, #handler, NULL, this );</template>
+		<template name="evt_entry_OnMouseWheel">@#error wxMouseEvent does not propogate, so wxEVT_MOUSEWHEEL from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnMouseWheel">$name->Connect( wxEVT_MOUSEWHEEL, #handler, NULL, this );</template>
 		<template name="evt_entry_OnMouseEvents">@#error wxMouseEvent does not propogate, so Mouse Events from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnMouseEvents">
 			$name->Connect( wxEVT_LEFT_DOWN, #handler, NULL, this ); #nl
@@ -175,110 +178,110 @@
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
 		<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
-  </templates>
-  
-  <templates class="AUI">
-	<template name="settings">
-		#ifparenttypeequal "form"
-		@{			
-		#ifequal #parent $aui_managed "1"
-		@{ 
-		#iftypenotequal "toolbar"
-		@{ 
-			m_mgr.AddPane( $name, wxAuiPaneInfo()
-			#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
-			#ifnotnull $caption @{.Caption( $caption )@}
-			#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
-			#ifequal $close_button "0" @{.CloseButton( $close_button )@}
-			#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
-			#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
-			#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
-			#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
-			#ifequal $gripper "1" @{.Gripper()@}
-			#ifequal $show "0" @{.Hide()@}
-			#ifequal $moveable "0" @{.Movable( $moveable )@}
-			#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
-			#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable" @{.FloatingSize( $pane_size )@}@}
-			#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
-			#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
-			#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
-			#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
-			#ifequal $RightDockable "0" @{.RightDockable( $RightDockable )@}
-			#ifequal $floatable "0"	@{.Floatable( $floatable )@}
-			#ifnotnull $aui_row	@{.Row( $aui_row )@}
-			#ifnotnull $aui_position @{.Position( $aui_position )@}
-			#ifnotnull $best_size @{.BestSize( $best_size )@}
-			#ifnotnull $min_size @{.MinSize( $min_size )@}
-			#ifnotnull $max_size @{.MaxSize( $max_size )@}
-			#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
-			#ifequal $center_pane "1" @{.CentrePane()@}
-			#ifequal $default_pane "1" @{.DefaultPane()@}
-			#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
-			); #nl
-		@}
-		@}
-		@}
-	</template>
-  </templates>
-  
-  <templates class="Validator">
-  	<template name="include">
-         #ifequal $validator_type "wxGenericValidator" @{ @#include &lt;wx/valgen.h&gt; #nl @}
-         #ifequal $validator_type "wxTextValidator" @{ @#include &lt;wx/valtext.h&gt; #nl @}   
-         #ifequal $validator_data_type "wxArrayInt" @{ @#include &lt;wx/dynarray.h&gt; #nl @}      
-	</template>
-	<template name="valvar_declaration">
-		#ifnotnull $validator_variable
-			 @{ #ifnotnull $validator_data_type
-			 @{ $validator_data_type@ $validator_variable; @} @}
-	</template>
-	<template name="settings">           
-		#ifnotnull $validator_variable
-					 @{ #ifnotnull $validator_data_type
-					 @{ #ifequal $validator_type "wxGenericValidator" @{ $name->SetValidator( $validator_type( &amp;$validator_variable ) ); #nl @} 
-						#ifequal $validator_type "wxTextValidator" @{ $name->SetValidator( $validator_type( $validator_style, &amp;$validator_variable ) ); #nl @}
-					 @} @}
-	</template>
-  </templates>
-  
-  <templates class="wxTreeCtrlBase">
-    <template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
-	<template name="evt_connect_OnTreeBeginDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_DRAG, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
-	<template name="evt_connect_OnTreeBeginRDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_RDRAG, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
-	<template name="evt_connect_OnTreeEndDrag">$name->Connect( wxEVT_COMMAND_TREE_END_DRAG, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_connect_OnTreeBeginLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
-	<template name="evt_connect_OnTreeEndLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_END_LABEL_EDIT, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
-	<template name="evt_connect_OnTreeDeleteItem">$name->Connect( wxEVT_COMMAND_TREE_DELETE_ITEM, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemActivated">$name->Connect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsed">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemCollapsing">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanded">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDED, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemExpanding">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDING, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemRightClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemMiddleClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanged">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
-	<template name="evt_connect_OnTreeSelChanging">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGING, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
-	<template name="evt_connect_OnTreeKeyDown">$name->Connect( wxEVT_COMMAND_TREE_KEY_DOWN, #handler, NULL, this );</template>
-	<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
-	<template name="evt_connect_OnTreeItemMenu">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, #handler, NULL, this );</template>
-  </templates>
-  
-  <templates class="UserClasses">
+	</templates>
+
+	<templates class="AUI">
+		<template name="settings">
+			#ifparenttypeequal "form"
+			@{
+			#ifequal #parent $aui_managed "1"
+			@{
+			#iftypenotequal "toolbar"
+			@{
+				m_mgr.AddPane( $name, wxAuiPaneInfo()
+				#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
+				#ifnotnull $caption @{.Caption( $caption )@}
+				#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
+				#ifequal $close_button "0" @{.CloseButton( $close_button )@}
+				#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
+				#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
+				#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
+				#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
+				#ifequal $gripper "1" @{.Gripper()@}
+				#ifequal $show "0" @{.Hide()@}
+				#ifequal $moveable "0" @{.Movable( $moveable )@}
+				#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
+				#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable" @{.FloatingSize( $pane_size )@}@}
+				#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
+				#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
+				#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
+				#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
+				#ifequal $RightDockable "0" @{.RightDockable( $RightDockable )@}
+				#ifequal $floatable "0"	@{.Floatable( $floatable )@}
+				#ifnotnull $aui_row	@{.Row( $aui_row )@}
+				#ifnotnull $aui_position @{.Position( $aui_position )@}
+				#ifnotnull $best_size @{.BestSize( $best_size )@}
+				#ifnotnull $min_size @{.MinSize( $min_size )@}
+				#ifnotnull $max_size @{.MaxSize( $max_size )@}
+				#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
+				#ifequal $center_pane "1" @{.CentrePane()@}
+				#ifequal $default_pane "1" @{.DefaultPane()@}
+				#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
+				); #nl
+			@}
+			@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="Validator">
+		<template name="include">
+			#ifequal $validator_type "wxGenericValidator" @{ @#include &lt;wx/valgen.h&gt; #nl @}
+			#ifequal $validator_type "wxTextValidator" @{ @#include &lt;wx/valtext.h&gt; #nl @}
+			#ifequal $validator_data_type "wxArrayInt" @{ @#include &lt;wx/dynarray.h&gt; #nl @}
+		</template>
+		<template name="valvar_declaration">
+			#ifnotnull $validator_variable
+				@{ #ifnotnull $validator_data_type
+				@{ $validator_data_type@ $validator_variable; @} @}
+		</template>
+		<template name="settings">
+			#ifnotnull $validator_variable
+				@{ #ifnotnull $validator_data_type
+				@{ #ifequal $validator_type "wxGenericValidator" @{ $name->SetValidator( $validator_type( &amp;$validator_variable ) ); #nl @}
+					#ifequal $validator_type "wxTextValidator" @{ $name->SetValidator( $validator_type( $validator_style, &amp;$validator_variable ) ); #nl @}
+				@} @}
+		</template>
+	</templates>
+
+	<templates class="wxTreeCtrlBase">
+		<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_DRAG, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginRDrag">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_RDRAG, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeEndDrag">$name->Connect( wxEVT_COMMAND_TREE_END_DRAG, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+		<template name="evt_connect_OnTreeEndLabelEdit">$name->Connect( wxEVT_COMMAND_TREE_END_LABEL_EDIT, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+		<template name="evt_connect_OnTreeDeleteItem">$name->Connect( wxEVT_COMMAND_TREE_DELETE_ITEM, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemActivated">$name->Connect( wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsed">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsing">$name->Connect( wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanded">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanding">$name->Connect( wxEVT_COMMAND_TREE_ITEM_EXPANDING, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemRightClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemMiddleClick">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanged">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanging">$name->Connect( wxEVT_COMMAND_TREE_SEL_CHANGING, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+		<template name="evt_connect_OnTreeKeyDown">$name->Connect( wxEVT_COMMAND_TREE_KEY_DOWN, #handler, NULL, this );</template>
+		<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemMenu">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, #handler, NULL, this );</template>
+	</templates>
+
+	<templates class="UserClasses">
 		<template name="header_comment">
 			/** #nl
 			@@file #nl
@@ -327,5 +330,6 @@
 		<template name="Wizard_cons_def">
 			$name::$name( wxWindow* parent ) #nl #append : #nl$basename( parent )
 		</template>
-  </templates>
+	</templates>
+
 </codegen>

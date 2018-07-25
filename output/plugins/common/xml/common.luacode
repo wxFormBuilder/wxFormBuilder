@@ -26,11 +26,11 @@ Lua code generation written by
 -->
 <codegen language="Lua">
 
-  <templates class="wxButton">
-	<template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-	</template>
-	<template name="settings">
+	<templates class="wxButton">
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">
 			#ifequal $markup "1"
 			@{ #utbl$name:SetLabelMarkup( $label ) @}
 
@@ -57,219 +57,220 @@ Lua code generation written by
 
 			#ifnotnull $margins
 			@{ #nl #utbl$name:SetBitmapMargins( $margins ) @}
-	</template>
-	<template name="evt_connect_OnButtonClick">#utbl$name:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )
-	</template>
-  </templates>
+		</template>
+		<template name="evt_connect_OnButtonClick">#utbl$name:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )
+		</template>
+	</templates>
 
-  <templates class="wxBitmapButton">
-	<template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxNullBitmap, $pos, $size, wx.wxBU_AUTODRAW + $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-  </templates>
+	<templates class="wxBitmapButton">
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxNullBitmap, $pos, $size, wx.wxBU_AUTODRAW + $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+	</templates>
 
-  <templates class="wxTextCtrl">
-	<template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-	</template>
-	<template name="settings">
-		#ifnotnull $maxlength
-		@{
-			#ifnotequal $maxlength "0"
-			@{ #utbl$name:SetMaxLength( $maxlength )  @}
-		@}
-	</template>
-	<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTextURL">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_URL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTextMaxLen">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_MAXLEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxTextCtrl">
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">
+			#ifnotnull $maxlength
+			@{
+				#ifnotequal $maxlength "0"
+				@{ #utbl$name:SetMaxLength( $maxlength )  @}
+			@}
+		</template>
+		<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextURL">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_URL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextMaxLen">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_MAXLEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxStaticText">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="settings">
-		#ifequal $markup "1" @{
-			#utbl$name:SetLabelMarkup( $label ) #nl
-		@}
-		#utbl$name:Wrap( $wrap ) #nl
-	</template>
-  </templates>
+	<templates class="wxStaticText">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">
+			#ifequal $markup "1"
+			@{ #utbl$name:SetLabelMarkup( $label ) #nl @}
 
-  <templates class="wxCheckBox">
-	<template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-	</template>
-        <template name="settings">#ifnotequal $checked "0" @{ #utbl$name:SetValue(True) @}</template>
-	<template name="evt_connect_OnCheckBox">#utbl$name:Connect( wx.wxEVT_COMMAND_CHECKBOX_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+			#utbl$name:Wrap( $wrap ) #nl
+		</template>
+	</templates>
 
-  <templates class="wxComboBox">
-	<template name="construction">
-		#ifnotnull $choices
-		@{
-			#utbl$name #append Choices = { $choices } #nl
-		@}
-		#ifnull $choices
-		@{
-			#utbl$name #append Choices = {} #nl
-		@}
-		#utbl$name = #class( #utbl#wxparent $name, $id, $value, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-	</template>
-	<template name="settings">#ifnotequal $selection "-1" @{#utbl$name:SetSelection( $selection )@}</template>
-	<template name="evt_connect_OnCombobox">#utbl$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxCheckBox">
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+			<template name="settings">#ifnotequal $checked "0" @{ #utbl$name:SetValue(True) @}</template>
+		<template name="evt_connect_OnCheckBox">#utbl$name:Connect( wx.wxEVT_COMMAND_CHECKBOX_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxBitmapComboBox">
-	<template name="construction">
-		#utbl$name = wx.wxBitmapComboBox( #utbl#wxparent $name, $id, $value, $pos, $size, {""}, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @})
-		#foreach $choices
-		@{ #utbl$name:Append( #pred, wx.wxBitmap(#pred)) @}
-	</template>
-	<template name="settings">#ifnotequal $selection "-1" @{#utbl$name:SetSelection( $selection )@}</template>
-	<template name="evt_connect_OnCombobox">#utbl$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="include"/><!--import wx.wxcombo</template>-->
-  </templates>
+	<templates class="wxComboBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				#utbl$name #append Choices = { $choices } #nl
+			@}
+			#ifnull $choices
+			@{
+				#utbl$name #append Choices = {} #nl
+			@}
+			#utbl$name = #class( #utbl#wxparent $name, $id, $value, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">#ifnotequal $selection "-1" @{#utbl$name:SetSelection( $selection )@}</template>
+		<template name="evt_connect_OnCombobox">#utbl$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxListBox">
-	<template name="construction">
-		#ifnotnull $choices
-		@{
-			#utbl$name #append Choices = { $choices } #nl
-		@}
-		#ifnull $choices
-		@{
-			#utbl$name #append Choices = {} #nl
-		@}
-		#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-    </template>
-	<template name="evt_connect_OnListBox">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListBoxDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxBitmapComboBox">
+		<template name="construction">
+			#utbl$name = wx.wxBitmapComboBox( #utbl#wxparent $name, $id, $value, $pos, $size, {""}, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @})
+			#foreach $choices
+			@{ #utbl$name:Append( #pred, wx.wxBitmap(#pred)) @}
+		</template>
+		<template name="settings">#ifnotequal $selection "-1" @{#utbl$name:SetSelection( $selection )@}</template>
+		<template name="evt_connect_OnCombobox">#utbl$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnText">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextEnter">#utbl$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="include"/><!--import wx.wxcombo</template>-->
+	</templates>
 
-  <templates class="wxRadioBox">
-	<template name="construction">
-        	#ifnotnull $choices
-		@{
-			#utbl$name #append Choices = { $choices } #nl
-			#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, #utbl$name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} ) #nl
-			#utbl$name:SetSelection( $selection )
-		@}
-		#ifnull $choices
-		@{
-			#utbl$name #append Choices = {} #nl
-			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxwxDefaultValidator, $window_name @} )
-		@}
-	</template>
-	<template name="evt_connect_OnRadioBox">#utbl$name:Connect( wx.wxEVT_COMMAND_RADIOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxListBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				#utbl$name #append Choices = { $choices } #nl
+			@}
+			#ifnull $choices
+			@{
+				#utbl$name #append Choices = {} #nl
+			@}
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+		<template name="evt_connect_OnListBox">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListBoxDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxRadioButton">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-	<template name="settings">
-    		#ifnotequal $value "0"
-    		@{ #utbl$name:SetValue( True ) @}
-	</template>
-	<template name="evt_connect_OnRadioButton">#utbl$name:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxRadioBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				#utbl$name #append Choices = { $choices } #nl
+				#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, #utbl$name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} ) #nl
+				#utbl$name:SetSelection( $selection )
+			@}
+			#ifnull $choices
+			@{
+				#utbl$name #append Choices = {} #nl
+				#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxwxDefaultValidator, $window_name @} )
+			@}
+		</template>
+		<template name="evt_connect_OnRadioBox">#utbl$name:Connect( wx.wxEVT_COMMAND_RADIOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxStaticBitmap">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
-  </templates>
+	<templates class="wxRadioButton">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="settings">
+				#ifnotequal $value "0"
+				@{ #utbl$name:SetValue( True ) @}
+		</template>
+		<template name="evt_connect_OnRadioButton">#utbl$name:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxAnimationCtrl">
-    <template name="construction">
-		#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxAnimation(), $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
-		#ifnotnull $animation
-		@{ #nl #utbl$name:LoadFile( $animation ) @}
-    </template>
-    <template name="settings">
-		#ifnotnull $inactive_bitmap
-		@{ #nl #utbl$name:SetInactiveBitmap( $inactive_bitmap ) @}
-		#ifequal $play "1"
-		@{ #nl #utbl$name:Play() @}
-    </template>
-    <template name="include"/><!--import wx.animate</template> -->
-  </templates>
+	<templates class="wxStaticBitmap">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+	</templates>
 
-  <templates class="wxStaticLine">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
-  </templates>
+	<templates class="wxAnimationCtrl">
+		<template name="construction">
+			#utbl$name = #class( #utbl#wxparent $name, $id, wx.wxAnimation(), $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
+			#ifnotnull $animation
+			@{ #nl #utbl$name:LoadFile( $animation ) @}
+		</template>
+		<template name="settings">
+			#ifnotnull $inactive_bitmap
+			@{ #nl #utbl$name:SetInactiveBitmap( $inactive_bitmap ) @}
+			#ifequal $play "1"
+			@{ #nl #utbl$name:Play() @}
+		</template>
+		<template name="include"/><!--import wx.animate</template> -->
+	</templates>
 
-  <templates class="wxListCtrl">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-	<template name="evt_connect_OnListBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListBeginRDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListBeginLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListEndLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListDeleteItem">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListDeleteAllItems">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemSelected">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemDeselected">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_DESELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemActivated">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemFocused">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_FOCUSED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemMiddleClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListItemRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListKeyDown">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListInsertItem">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_INSERT_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListColClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListColRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListColBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListColDragging">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_DRAGGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListColEndDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnListCacheHint">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_CACHE_HINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxStaticLine">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	</templates>
 
-  <templates class="wxChoice">
-	<template name="construction">
-		#ifnotnull $choices
-		@{
-			#utbl$name #append Choices = { $choices } #nl
+	<templates class="wxListCtrl">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="evt_connect_OnListBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListBeginRDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListBeginLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListEndLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListDeleteItem">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListDeleteAllItems">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemSelected">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemDeselected">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_DESELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemActivated">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemFocused">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_FOCUSED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemMiddleClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListItemRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListKeyDown">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListInsertItem">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_INSERT_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListColClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListColRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListColBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListColDragging">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_DRAGGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListColEndDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_COL_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListCacheHint">#utbl$name:Connect( wx.wxEVT_COMMAND_LIST_CACHE_HINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-		@}
-		#ifnull $choices
-		@{
-			#utbl$name #append Choices = {} #nl
-		@}
-		#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
-	</template>
-	<template name="settings">#utbl$name:SetSelection( $selection )</template>
-	<template name="evt_connect_OnChoice">#utbl$name:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxChoice">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				#utbl$name #append Choices = { $choices } #nl
 
-  <templates class="wxGauge">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-	<template name="settings">
-		#ifnotnull $value
-		@{ #utbl$name:SetValue( $value ) @}
-	</template>
-  </templates>
+			@}
+			#ifnull $choices
+			@{
+				#utbl$name #append Choices = {} #nl
+			@}
+			#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">#utbl$name:SetSelection( $selection )</template>
+		<template name="evt_connect_OnChoice">#utbl$name:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
-  <templates class="wxSlider">
-	<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
-	<template name="evt_connect_OnScroll">#utbl$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollTop">#utbl$name:Connect( wx.wxEVT_SCROLL_TOP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollBottom">#utbl$name:Connect( wx.wxEVT_SCROLL_BOTTOM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollLineUp">#utbl$name:Connect( wx.wxEVT_SCROLL_LINEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollLineDown">#utbl$name:Connect( wx.wxEVT_SCROLL_LINEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollPageUp">#utbl$name:Connect( wx.wxEVT_SCROLL_PAGEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollPageDown">#utbl$name:Connect( wx.wxEVT_SCROLL_PAGEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollThumbTrack">#utbl$name:Connect( wx.wxEVT_SCROLL_THUMBTRACK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollThumbRelease">#utbl$name:Connect( wx.wxEVT_SCROLL_THUMBRELEASE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnScrollChanged">#utbl$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-<template name="evt_connect_OnCommandScroll">-- event #utbl$name:OnCommandScroll isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollTop">-- event #utbl$name:OnCommandScrollTop isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollBottom">-- event #utbl$name:OnCommandScrollBottom isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollLineUp">-- event #utbl$name:OnCommandScrollLineUp isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollLineDown">-- event #utbl$name:OnCommandScrollLineDown isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollPageUp">-- event #utbl$name:OnCommandScrollPageUp isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollPageDown">-- event #utbl$name:OnCommandScrollPageDown isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollThumbTrack">-- event #utbl$name:OnCommandScrollThumbTrack isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollThumbRelease">-- event #utbl$name:OnCommandScrollThumbRelease isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnCommandScrollChanged">-- event #utbl$name:OnCommandScrollChanged isn't currently supported by wxLua</template>
-	<template name="evt_connect_OnSlider">#utbl$name:Connect( wx.wxEVT_SLIDER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-  </templates>
+	<templates class="wxGauge">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="settings">
+			#ifnotnull $value
+			@{ #utbl$name:SetValue( $value ) @}
+		</template>
+	</templates>
+
+	<templates class="wxSlider">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="evt_connect_OnScroll">#utbl$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollTop">#utbl$name:Connect( wx.wxEVT_SCROLL_TOP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollBottom">#utbl$name:Connect( wx.wxEVT_SCROLL_BOTTOM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollLineUp">#utbl$name:Connect( wx.wxEVT_SCROLL_LINEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollLineDown">#utbl$name:Connect( wx.wxEVT_SCROLL_LINEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollPageUp">#utbl$name:Connect( wx.wxEVT_SCROLL_PAGEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollPageDown">#utbl$name:Connect( wx.wxEVT_SCROLL_PAGEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollThumbTrack">#utbl$name:Connect( wx.wxEVT_SCROLL_THUMBTRACK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollThumbRelease">#utbl$name:Connect( wx.wxEVT_SCROLL_THUMBRELEASE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnScrollChanged">#utbl$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnCommandScroll">-- event #utbl$name:OnCommandScroll isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollTop">-- event #utbl$name:OnCommandScrollTop isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollBottom">-- event #utbl$name:OnCommandScrollBottom isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollLineUp">-- event #utbl$name:OnCommandScrollLineUp isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollLineDown">-- event #utbl$name:OnCommandScrollLineDown isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollPageUp">-- event #utbl$name:OnCommandScrollPageUp isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollPageDown">-- event #utbl$name:OnCommandScrollPageDown isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollThumbTrack">-- event #utbl$name:OnCommandScrollThumbTrack isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollThumbRelease">-- event #utbl$name:OnCommandScrollThumbRelease isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnCommandScrollChanged">-- event #utbl$name:OnCommandScrollChanged isn't currently supported by wxLua</template>
+		<template name="evt_connect_OnSlider">#utbl$name:Connect( wx.wxEVT_SLIDER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
 
 </codegen>

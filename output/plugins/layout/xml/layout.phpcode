@@ -26,147 +26,147 @@ PHP code generation writen by
 -->
 <codegen language="PHP">
 
-  <templates class="sizer">
-    <template name="settings">
-	  #ifnotnull $minimum_size
-	  @{ $name->SetMinSize( $minimum_size ); @}
-    </template>
-  </templates>
+	<templates class="sizer">
+		<template name="settings">
+			#ifnotnull $minimum_size
+			@{ $name->SetMinSize( $minimum_size ); @}
+		</template>
+	</templates>
 	
-  <templates class="spacer"/>
-  
-  <templates class="sizeritem">
-    <template name="window_add">@$#parent $name->Add( @$this->#child $name, $proportion, $flag, $border ); #nl</template>
-    <template name="sizer_add">@$#parent $name->Add( @$#child $name, $proportion, $flag, $border ); #nl</template>
-    <template name="spacer_add">@$#parent $name->Add( #child $width, #child $height, $proportion, $flag, $border, null ); #nl</template>
-  </templates>
+	<templates class="spacer"/>
 
-  <templates class="gbsizeritem">
-    <template name="window_add">@$#parent $name->Add( @$this->#child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
-    <template name="sizer_add">@$#parent $name->Add( #child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
-    <template name="spacer_add">@$#parent $name->Add( #child $width, #child $height, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
-  </templates>
+	<templates class="sizeritem">
+		<template name="window_add">@$#parent $name->Add( @$this->#child $name, $proportion, $flag, $border ); #nl</template>
+		<template name="sizer_add">@$#parent $name->Add( @$#child $name, $proportion, $flag, $border ); #nl</template>
+		<template name="spacer_add">@$#parent $name->Add( #child $width, #child $height, $proportion, $flag, $border, null ); #nl</template>
+	</templates>
 
-  <templates class="wxBoxSizer">
-    <template name="construction">@$$name = new wxBoxSizer( $orient ); #nl</template>
-  </templates>
+	<templates class="gbsizeritem">
+		<template name="window_add">@$#parent $name->Add( @$this->#child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+		<template name="sizer_add">@$#parent $name->Add( #child $name, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+		<template name="spacer_add">@$#parent $name->Add( #child $width, #child $height, new wxGBPosition( $row, $column ), new wxGBSpan( $rowspan, $colspan ), $flag, $border ); #nl</template>
+	</templates>
 
-  <templates class="wxWrapSizer">
-    <template name="construction">@$$name = new wxWrapSizer( $orient, $flags ); #nl</template>
-  </templates>
+	<templates class="wxBoxSizer">
+		<template name="construction">@$$name = new wxBoxSizer( $orient ); #nl</template>
+	</templates>
 
-  <templates class="wxStaticBoxSizer">
-    <template name="construction">@$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
+	<templates class="wxStaticBoxSizer">
+		<template name="construction">@$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
 		<template name="evt_connect_OnUpdateUI">$name->GetStaticBox()->Connect->( wxEVT_UPDATE_UI, #handler );</template>
-  </templates>
+	</templates>
 
-  <templates class="wxGridSizer">
-    <template name="construction">@$$name = new wxGridSizer( $rows, $cols, $vgap, $hgap ); #nl</template>
-  </templates>
+	<templates class="wxWrapSizer">
+		<template name="construction">@$$name = new wxWrapSizer( $orient, $flags ); #nl</template>
+	</templates>
 
-  <templates class="wxFlexGridSizer">
-    <template name="construction">@$$name = new wxFlexGridSizer( $rows, $cols, $vgap, $hgap );
-      #ifnotnull $growablecols
-      @{
-        #foreach $growablecols
-        @{ @$$name->AddGrowableCol( #pred ); @}
-      @}
+	<templates class="wxGridSizer">
+		<template name="construction">@$$name = new wxGridSizer( $rows, $cols, $vgap, $hgap ); #nl</template>
+	</templates>
 
-      #ifnotnull $growablerows
-      @{
-        #foreach $growablerows
-        @{ @$$name->AddGrowableRow( #pred ); @}
-      @}
-      #ifnotnull $flexible_direction
-      @{ #nl @$$name->SetFlexibleDirection( $flexible_direction ); @}
+	<templates class="wxFlexGridSizer">
+		<template name="construction">@$$name = new wxFlexGridSizer( $rows, $cols, $vgap, $hgap );
+			#ifnotnull $growablecols
+			@{
+				#foreach $growablecols
+				@{ @$$name->AddGrowableCol( #pred ); @}
+			@}
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl @$$name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
-       #nl
-    </template>
-  </templates>
+			#ifnotnull $growablerows
+			@{
+				#foreach $growablerows
+				@{ @$$name->AddGrowableRow( #pred ); @}
+			@}
+			#ifnotnull $flexible_direction
+			@{ #nl @$$name->SetFlexibleDirection( $flexible_direction ); @}
 
-  <templates class="wxGridBagSizer">
-    <template name="construction">@$$name = new wxGridBagSizer( $vgap, $hgap );
-      #ifnotnull $flexible_direction
-      @{ #nl @$$name->SetFlexibleDirection( $flexible_direction ); @}
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl @$$name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
+			#nl
+		</template>
+	</templates>
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl @$$name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
+	<templates class="wxGridBagSizer">
+		<template name="construction">@$$name = new wxGridBagSizer( $vgap, $hgap );
+			#ifnotnull $flexible_direction
+			@{ #nl @$$name->SetFlexibleDirection( $flexible_direction ); @}
 
-      #ifnotnull $empty_cell_size
-      @{ #nl @$$name->SetEmptyCellSize( $empty_cell_size ); @}
-       #nl
-	</template>
-	<template name="after_addchild">
-	  #ifnotnull $growablecols
-      @{ #foreach $growablecols @{ $name->AddGrowableCol( #pred ); @} @}
-      #ifnotnull $growablerows
-      @{ #foreach $growablerows @{ $name->AddGrowableRow( #pred ); @} @}
-	</template>
-  </templates>
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl @$$name->SetNonFlexibleGrowMode( $non_flexible_grow_mode ); @}
 
-  <templates class="wxStdDialogButtonSizer">
-    <template name="construction">@$$name = new wxStdDialogButtonSizer();
-		#ifequal $OK "1"
-		@{ 
-			#nl @$this->$name #append OK = new wxButton( #wxparent $name, wxID_OK );
-			#nl @$$name->AddButton( @$this->$name #append OK );
-		@}
+			#ifnotnull $empty_cell_size
+			@{ #nl @$$name->SetEmptyCellSize( $empty_cell_size ); @}
+			#nl
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $growablecols
+			@{ #foreach $growablecols @{ $name->AddGrowableCol( #pred ); @} @}
+			#ifnotnull $growablerows
+			@{ #foreach $growablerows @{ $name->AddGrowableRow( #pred ); @} @}
+		</template>
+	</templates>
 
-		#ifequal $Yes "1"
-		@{ 
-			#nl @$this->$name #append Yes = new wxButton( #wxparent $name, wxID_YES );
-			#nl @$$name->AddButton( @$this->$name #append Yes );
-		@}
+	<templates class="wxStdDialogButtonSizer">
+		<template name="construction">@$$name = new wxStdDialogButtonSizer();
+			#ifequal $OK "1"
+			@{
+				#nl @$this->$name #append OK = new wxButton( #wxparent $name, wxID_OK );
+				#nl @$$name->AddButton( @$this->$name #append OK );
+			@}
 
-		#ifequal $Save "1"
-		@{ 
-			#nl @$this->$name #append Save = new wxButton( #wxparent $name, wxID_SAVE );
-			#nl @$$name->AddButton( @$this->$name #append Save );
-		@}
+			#ifequal $Yes "1"
+			@{
+				#nl @$this->$name #append Yes = new wxButton( #wxparent $name, wxID_YES );
+				#nl @$$name->AddButton( @$this->$name #append Yes );
+			@}
 
-		#ifequal $Apply "1"
-		@{ 
-			#nl @$this->$name #append Apply = new wxButton( #wxparent $name, wxID_APPLY );
-			#nl @$$name->AddButton( @$this->$name #append Apply );
-		@}
+			#ifequal $Save "1"
+			@{
+				#nl @$this->$name #append Save = new wxButton( #wxparent $name, wxID_SAVE );
+				#nl @$$name->AddButton( @$this->$name #append Save );
+			@}
 
-		#ifequal $No "1"
-		@{ 
-			#nl @$this->$name #append No = new wxButton( #wxparent $name, wxID_NO );
-			#nl @$$name->AddButton( @$this->$name #append No );
-		@}
+			#ifequal $Apply "1"
+			@{
+				#nl @$this->$name #append Apply = new wxButton( #wxparent $name, wxID_APPLY );
+				#nl @$$name->AddButton( @$this->$name #append Apply );
+			@}
 
-		#ifequal $Cancel "1"
-		@{ 
-			#nl @$this->$name #append Cancel = new wxButton( #wxparent $name, wxID_CANCEL );
-			#nl @$$name->AddButton( @$this->$name #append Cancel );
-		@}
+			#ifequal $No "1"
+			@{
+				#nl @$this->$name #append No = new wxButton( #wxparent $name, wxID_NO );
+				#nl @$$name->AddButton( @$this->$name #append No );
+			@}
 
-		#ifequal $Help "1"
-		@{ 
-			#nl @$this->$name #append Help = new wxButton( #wxparent $name, wxID_HELP );
-			#nl @$$name->AddButton( @$this->$name #append Help );
-		@}
+			#ifequal $Cancel "1"
+			@{
+				#nl @$this->$name #append Cancel = new wxButton( #wxparent $name, wxID_CANCEL );
+				#nl @$$name->AddButton( @$this->$name #append Cancel );
+			@}
 
-		#ifequal $ContextHelp "1"
-		@{ 
-			#nl @$this->$name #append ContextHelp = new wxButton( #wxparent $name, wxID_CONTEXT_HELP );
-			#nl @$$name->AddButton( @$this->$name #append ContextHelp );
-		@}
+			#ifequal $Help "1"
+			@{
+				#nl @$this->$name #append Help = new wxButton( #wxparent $name, wxID_HELP );
+				#nl @$$name->AddButton( @$this->$name #append Help );
+			@}
 
-		 #nl @$$name->Realize();
-	</template>
-    <template name="evt_connect_OnOKButtonClick">@$this->$name #append OK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnYesButtonClick">@$this->$name #append Yes->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnSaveButtonClick">@$this->$name #append Save->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnApplyButtonClick">@$this->$name #append Apply->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnNoButtonClick">@$this->$name #append No->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnCancelButtonClick">@$this->$name #append Cancel->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnHelpButtonClick">@$this->$name #append Help->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-    <template name="evt_connect_OnContextHelpButtonClick">@$this->$name #append ContextHelp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
-  </templates>
+			#ifequal $ContextHelp "1"
+			@{
+				#nl @$this->$name #append ContextHelp = new wxButton( #wxparent $name, wxID_CONTEXT_HELP );
+				#nl @$$name->AddButton( @$this->$name #append ContextHelp );
+			@}
+
+			#nl @$$name->Realize();
+		</template>
+		<template name="evt_connect_OnOKButtonClick">@$this->$name #append OK->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnYesButtonClick">@$this->$name #append Yes->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnSaveButtonClick">@$this->$name #append Save->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnApplyButtonClick">@$this->$name #append Apply->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnNoButtonClick">@$this->$name #append No->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnCancelButtonClick">@$this->$name #append Cancel->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnHelpButtonClick">@$this->$name #append Help->Connect(  wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+		<template name="evt_connect_OnContextHelpButtonClick">@$this->$name #append ContextHelp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+	</templates>
 
 </codegen>
 

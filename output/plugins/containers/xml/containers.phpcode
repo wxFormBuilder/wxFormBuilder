@@ -42,17 +42,17 @@ PHP code generation written by
 			#ifnotnull $sashgravity
 			@{
 				#ifnotequal $sashgravity "0.0"
-			@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
+				@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
 			@}
 			#ifnotnull $sashsize
 			@{
 				#ifnotequal $sashsize "-1"
-			@{	@$this->$name->SetSashSize( $sashsize ); #nl @}
+				@{ @$this->$name->SetSashSize( $sashsize ); #nl @}
 			@}
 			#ifnotnull $min_pane_size
 			@{
 				#ifnotequal $min_pane_size "0"
-			@{	@$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
+				@{ @$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
 			@}
 			#ifnotnull $sashpos
 			@{
@@ -63,22 +63,22 @@ PHP code generation written by
 			#ifnotnull $sashgravity
 			@{
 				#ifnotequal $sashgravity "0.0"
-			@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
+				@{ @$this->$name->SetSashGravity( $sashgravity ); #nl @}
 			@}
 			#ifnotnull $sashsize
 			@{
 				#ifnotequal $sashsize "-1"
-			@{	@$this->$name->SetSashSize( $sashsize ); #nl @}
+				@{ @$this->$name->SetSashSize( $sashsize ); #nl @}
 			@}
 			#ifnotnull $sashpos
 			@{
 				#ifnotequal $sashpos "-1"
-			@{	@$this->$name->Connect( wxEVT_IDLE, array(@$this, "$name #append OnIdle") ); #nl @}
+				@{ @$this->$name->Connect( wxEVT_IDLE, array(@$this, "$name #append OnIdle") ); #nl @}
 			@}
 			#ifnotnull $min_pane_size
 			@{
 				#ifnotequal $min_pane_size "0"
-			@{	@$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
+				@{ @$this->$name->SetMinimumPaneSize( $min_pane_size ); #nl @}
 			@}
 		</template>
 		<template name="generated_event_handlers">
@@ -98,7 +98,6 @@ PHP code generation written by
 		<template name="evt_connect_OnSplitterUnsplit">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_UNSPLIT, #handler );</template>
 		<template name="evt_connect_OnSplitterDClick">@$this->$name->Connect( wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, #handler );</template>
 	</templates>
-
 
 	<templates class="wxNotebook">
 		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
@@ -221,10 +220,9 @@ PHP code generation written by
 
 	<templates class="wxScrolledWindow">
 		<template name="construction">
-			  @$this->$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ); #nl
-			  @$this->$name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );
+			@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ); #nl
+			@$this->$name->SetScrollRate( $scroll_rate_x, $scroll_rate_y );
 		</template>
 	</templates>
-
 
 </codegen>

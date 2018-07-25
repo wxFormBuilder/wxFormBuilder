@@ -31,7 +31,7 @@
   
   Note: the name of item type has to the same that the class associated to
         that item. wxFB needs to know the class name in order to create
-	the object automatically.
+        the object automatically.
   
   Items objects are not showed in the object tree, but the properties
   are showed attached with the inner object properties.
@@ -44,72 +44,72 @@
   frames managed by AUI only.
   -->
   <objtype name="project">
-    <childtype name="form" />
+    <childtype name="form"/>
     <childtype name="wizard"/>
-    <childtype name="menubar_form" />
-    <childtype name="toolbar_form" />
+    <childtype name="menubar_form"/>
+    <childtype name="toolbar_form"/>
   </objtype>
 
-  <objtype name="interface" />
+  <objtype name="interface"/>
 
   <objtype name="form">
-    <childtype name="sizer" nmax="1" aui_nmax="0" />
-	<childtype name="gbsizer" nmax="1" aui_nmax="0" />
-    <childtype name="menubar" nmax="1" aui_nmax="1" />
-    <childtype name="menu" nmax="1" aui_nmax="1" />
-    <childtype name="statusbar" nmax="1" aui_nmax="1" />
-    <childtype name="toolbar" nmax="1" />
-    <childtype name="widget" nmax="0" />
-    <childtype name="expanded_widget" nmax="0" />
-    <childtype name="container" nmax="0" />
-    <childtype name="notebook" nmax="0" />
-    <childtype name="auinotebook" nmax="0" />
-    <childtype name="flatnotebook" nmax="0" />
-    <childtype name="listbook" nmax="0" />
-    <childtype name="simplebook" nmax="0" />
-    <childtype name="choicebook" nmax="0" />
-    <childtype name="treelistctrl" nmax="0" />
-    <childtype name="splitter" nmax="0" />
-	<childtype name="nonvisual" />
-    <childtype name="ribbonbar" nmax="0" />
-    <childtype name="dataviewctrl" nmax="0" />
-    <childtype name="dataviewtreectrl" nmax="0" />
-    <childtype name="dataviewlistctrl" nmax="0" />
-    <childtype name="propgrid" nmax="0" />
-    <childtype name="propgridman" nmax="0" />
- </objtype>
+    <childtype name="sizer" nmax="1" aui_nmax="0"/>
+    <childtype name="gbsizer" nmax="1" aui_nmax="0"/>
+    <childtype name="menubar" nmax="1" aui_nmax="1"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
+    <childtype name="statusbar" nmax="1" aui_nmax="1"/>
+    <childtype name="toolbar" nmax="1"/>
+    <childtype name="widget" nmax="0"/>
+    <childtype name="expanded_widget" nmax="0"/>
+    <childtype name="container" nmax="0"/>
+    <childtype name="notebook" nmax="0"/>
+    <childtype name="auinotebook" nmax="0"/>
+    <childtype name="flatnotebook" nmax="0"/>
+    <childtype name="listbook" nmax="0"/>
+    <childtype name="simplebook" nmax="0"/>
+    <childtype name="choicebook" nmax="0"/>
+    <childtype name="treelistctrl" nmax="0"/>
+    <childtype name="splitter" nmax="0"/>
+    <childtype name="nonvisual"/>
+    <childtype name="ribbonbar" nmax="0"/>
+    <childtype name="dataviewctrl" nmax="0"/>
+    <childtype name="dataviewtreectrl" nmax="0"/>
+    <childtype name="dataviewlistctrl" nmax="0"/>
+    <childtype name="propgrid" nmax="0"/>
+    <childtype name="propgridman" nmax="0"/>
+  </objtype>
 
-    <objtype name="wizard">
-        <childtype name="wizardpagesimple"/>
-        <childtype name="menu" nmax="1" />
-    </objtype>
+  <objtype name="wizard">
+    <childtype name="wizardpagesimple"/>
+    <childtype name="menu" nmax="1"/>
+  </objtype>
 
-    <objtype name="wizardpagesimple">
-        <childtype name="sizer" nmax="1" />
-        <childtype name="gbsizer" nmax="1" />
-        <childtype name="menu" nmax="1" />
-    </objtype>
+  <objtype name="wizardpagesimple">
+    <childtype name="sizer" nmax="1"/>
+    <childtype name="gbsizer" nmax="1"/>
+    <childtype name="menu" nmax="1"/>
+  </objtype>
 
   <objtype name="menubar_form">
-    <childtype name="menu" />
+    <childtype name="menu"/>
   </objtype>
 
   <objtype name="toolbar_form">
-    <childtype name="tool" />
-    <childtype name="widget" />
-    <childtype name="expanded_widget" />
+    <childtype name="tool"/>
+    <childtype name="widget"/>
+    <childtype name="expanded_widget"/>
   </objtype>
 
   <objtype name="widget">
-	<childtype name="menu" nmax="1" aui_nmax="1"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
-  
+
   <objtype name="expanded_widget">
-	<childtype name="menu" nmax="1" aui_nmax="1"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
-  
+
   <objtype name="sizer">
-    <childtype name="sizeritem" />
+    <childtype name="sizeritem"/>
   </objtype>
 
   <objtype name="gbsizer">
@@ -117,202 +117,202 @@
   </objtype>
 
   <objtype name="container">
-    <childtype name="sizer" nmax="1" aui_nmax="1" />
-    <childtype name="gbsizer" nmax="1" aui_nmax="1" />
-    <childtype name="menu" nmax="1" aui_nmax="1" />
+    <childtype name="sizer" nmax="1" aui_nmax="1"/>
+    <childtype name="gbsizer" nmax="1" aui_nmax="1"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="sizeritem" item="1">
-    <childtype name="widget" nmax="1" aui_nmax="1" />
-    <childtype name="expanded_widget" nmax="1" aui_nmax="1" />
-    <childtype name="container" nmax="1" aui_nmax="1" />
-    <childtype name="sizer" nmax="1" aui_nmax="1" />
-    <childtype name="gbsizer" nmax="1" aui_nmax="1" />
-    <childtype name="notebook" nmax="1" aui_nmax="1" />
-    <childtype name="flatnotebook" nmax="1" aui_nmax="1" />
-    <childtype name="listbook" nmax="1" aui_nmax="1" />
-    <childtype name="simplebook" nmax="1" aui_nmax="1" />
-    <childtype name="choicebook" nmax="1" aui_nmax="1" />
-	<childtype name="auinotebook" nmax="1" aui_nmax="1" />
-    <childtype name="splitter" nmax="1" aui_nmax="1" />
-    <childtype name="toolbar" nmax="1" aui_nmax="1" />
-    <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
-    <childtype name="ribbonbar" nmax="1" />
-    <childtype name="dataviewctrl" nmax="1" />
-    <childtype name="dataviewlistctrl" nmax="1" />
-    <childtype name="dataviewtreectrl" nmax="1" />
-    <childtype name="propgrid" nmax="1" />
-    <childtype name="propgridman" nmax="1" />
+    <childtype name="widget" nmax="1" aui_nmax="1"/>
+    <childtype name="expanded_widget" nmax="1" aui_nmax="1"/>
+    <childtype name="container" nmax="1" aui_nmax="1"/>
+    <childtype name="sizer" nmax="1" aui_nmax="1"/>
+    <childtype name="gbsizer" nmax="1" aui_nmax="1"/>
+    <childtype name="notebook" nmax="1" aui_nmax="1"/>
+    <childtype name="flatnotebook" nmax="1" aui_nmax="1"/>
+    <childtype name="listbook" nmax="1" aui_nmax="1"/>
+    <childtype name="simplebook" nmax="1" aui_nmax="1"/>
+    <childtype name="choicebook" nmax="1" aui_nmax="1"/>
+    <childtype name="auinotebook" nmax="1" aui_nmax="1"/>
+    <childtype name="splitter" nmax="1" aui_nmax="1"/>
+    <childtype name="toolbar" nmax="1" aui_nmax="1"/>
+    <childtype name="treelistctrl" nmax="1" aui_nmax="1"/>
+    <childtype name="ribbonbar" nmax="1"/>
+    <childtype name="dataviewctrl" nmax="1"/>
+    <childtype name="dataviewlistctrl" nmax="1"/>
+    <childtype name="dataviewtreectrl" nmax="1"/>
+    <childtype name="propgrid" nmax="1"/>
+    <childtype name="propgridman" nmax="1"/>
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
-    <childtype name="widget" nmax="1" aui_nmax="1" />
-    <childtype name="expanded_widget" nmax="1" aui_nmax="1" />
-    <childtype name="container" nmax="1" aui_nmax="1" />
-    <childtype name="sizer" nmax="1" aui_nmax="1" />
-    <childtype name="gbsizer" nmax="1" aui_nmax="1" />
-    <childtype name="notebook" nmax="1" aui_nmax="1" />
-    <childtype name="flatnotebook" nmax="1" aui_nmax="1" />
-    <childtype name="listbook" nmax="1" aui_nmax="1" />
-    <childtype name="choicebook" nmax="1" aui_nmax="1" />
-    <childtype name="simplebook" nmax="1" aui_nmax="1" />
-	<childtype name="auinotebook" nmax="1" aui_nmax="1" />
-    <childtype name="splitter" nmax="1" aui_nmax="1" />
-    <childtype name="toolbar" nmax="1" aui_nmax="1" />
-    <childtype name="treelistctrl" nmax="1" aui_nmax="1" />
-    <childtype name="ribbonbar" nmax="1" />
-    <childtype name="dataviewctrl" nmax="1" />
-    <childtype name="dataviewlistctrl" nmax="1" />
-    <childtype name="dataviewtreectrl" nmax="1" />
-    <childtype name="propgrid" nmax="1" />
-    <childtype name="propgridman" nmax="1" />
+    <childtype name="widget" nmax="1" aui_nmax="1"/>
+    <childtype name="expanded_widget" nmax="1" aui_nmax="1"/>
+    <childtype name="container" nmax="1" aui_nmax="1"/>
+    <childtype name="sizer" nmax="1" aui_nmax="1"/>
+    <childtype name="gbsizer" nmax="1" aui_nmax="1"/>
+    <childtype name="notebook" nmax="1" aui_nmax="1"/>
+    <childtype name="flatnotebook" nmax="1" aui_nmax="1"/>
+    <childtype name="listbook" nmax="1" aui_nmax="1"/>
+    <childtype name="choicebook" nmax="1" aui_nmax="1"/>
+    <childtype name="simplebook" nmax="1" aui_nmax="1"/>
+    <childtype name="auinotebook" nmax="1" aui_nmax="1"/>
+    <childtype name="splitter" nmax="1" aui_nmax="1"/>
+    <childtype name="toolbar" nmax="1" aui_nmax="1"/>
+    <childtype name="treelistctrl" nmax="1" aui_nmax="1"/>
+    <childtype name="ribbonbar" nmax="1"/>
+    <childtype name="dataviewctrl" nmax="1"/>
+    <childtype name="dataviewlistctrl" nmax="1"/>
+    <childtype name="dataviewtreectrl" nmax="1"/>
+    <childtype name="propgrid" nmax="1"/>
+    <childtype name="propgridman" nmax="1"/>
   </objtype>
 
   <objtype name="splitter" >
-    <childtype name="splitteritem" nmax="2" aui_nmax="2" />
+    <childtype name="splitteritem" nmax="2" aui_nmax="2"/>
   </objtype>
 
   <objtype name="splitteritem" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="notebook" >
-    <childtype name="notebookpage" />
+    <childtype name="notebookpage"/>
   </objtype>
 
   <objtype name="notebookpage" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="flatnotebook" >
-    <childtype name="flatnotebookpage" />
+    <childtype name="flatnotebookpage"/>
   </objtype>
 
   <objtype name="flatnotebookpage" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="listbook" >
-    <childtype name="listbookpage" />
+    <childtype name="listbookpage"/>
   </objtype>
 
   <objtype name="listbookpage" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="choicebook" >
-    <childtype name="choicebookpage" />
+    <childtype name="choicebookpage"/>
   </objtype>
 
   <objtype name="choicebookpage" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="simplebook" >
-	<childtype name="simplebookpage" />
+    <childtype name="simplebookpage"/>
   </objtype>
 
   <objtype name="simplebookpage" item="1">
-	<childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="auinotebook" >
-    <childtype name="auinotebookpage" />
+    <childtype name="auinotebookpage"/>
   </objtype>
 
   <objtype name="auinotebookpage" item="1">
-    <childtype name="container" nmax="1" aui_nmax="1" />
+    <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
   
   <objtype name="menubar">
-    <childtype name="menu" />
+    <childtype name="menu"/>
   </objtype>
 
   <objtype name="menu">
-    <childtype name="menuitem" />
-    <childtype name="submenu" />
+    <childtype name="menuitem"/>
+    <childtype name="submenu"/>
   </objtype>
 
-  <objtype name="menuitem" />
+  <objtype name="menuitem"/>
 
   <objtype name="submenu">
-    <childtype name="menuitem" />
-    <childtype name="submenu" />
+    <childtype name="menuitem"/>
+    <childtype name="submenu"/>
   </objtype>
 
-  <objtype name="ribbonbar" >
-    <childtype name="ribbonpage" />
+  <objtype name="ribbonbar">
+    <childtype name="ribbonpage"/>
   </objtype>
 
-  <objtype name="ribbonpage" >
-    <childtype name="ribbonpanel" />
+  <objtype name="ribbonpage">
+    <childtype name="ribbonpanel"/>
   </objtype>
 
   <objtype name="ribbonpanel" >
-    <childtype name="ribbonbuttonbar" nmax="1" />
-    <childtype name="ribbontoolbar" nmax="1"  />
-    <childtype name="ribbongallery" nmax="1" />
+    <childtype name="ribbonbuttonbar" nmax="1"/>
+    <childtype name="ribbontoolbar" nmax="1"/>
+    <childtype name="ribbongallery" nmax="1"/>
   </objtype>
 
-  <objtype name="ribbonbuttonbar" >
-    <childtype name="ribbonbutton" />
-    <childtype name="ribbondropdownbutton" />
-    <childtype name="ribbonhybridbutton" />
-    <childtype name="ribbontogglebutton" />
+  <objtype name="ribbonbuttonbar">
+    <childtype name="ribbonbutton"/>
+    <childtype name="ribbondropdownbutton"/>
+    <childtype name="ribbonhybridbutton"/>
+    <childtype name="ribbontogglebutton"/>
   </objtype>
 
-  <objtype name="ribbonbutton" />
+  <objtype name="ribbonbutton"/>
 
-  <objtype name="ribbondropdownbutton" />
+  <objtype name="ribbondropdownbutton"/>
 
-  <objtype name="ribbonhybridbutton" />
+  <objtype name="ribbonhybridbutton"/>
 
-  <objtype name="ribbontogglebutton" />
+  <objtype name="ribbontogglebutton"/>
 
-  <objtype name="ribbontoolbar" >
-    <childtype name="ribbontool" />
-    <childtype name="ribbondropdowntool" />
-    <childtype name="ribbonhybridtool" />
-    <childtype name="ribbontoggletool" />
+  <objtype name="ribbontoolbar">
+    <childtype name="ribbontool"/>
+    <childtype name="ribbondropdowntool"/>
+    <childtype name="ribbonhybridtool"/>
+    <childtype name="ribbontoggletool"/>
   </objtype>
 
-  <objtype name="ribbontool" />
+  <objtype name="ribbontool"/>
 
-  <objtype name="ribbondropdowntool" />
+  <objtype name="ribbondropdowntool"/>
 
-  <objtype name="ribbonhybridtool" />
+  <objtype name="ribbonhybridtool"/>
 
-  <objtype name="ribbontoggletool" />
+  <objtype name="ribbontoggletool"/>
 
-  <objtype name="ribbongallery" >
-    <childtype name="ribbongalleryitem" />
+  <objtype name="ribbongallery">
+    <childtype name="ribbongalleryitem"/>
   </objtype>
 
-  <objtype name="ribbongalleryitem" />
+  <objtype name="ribbongalleryitem"/>
 
-  <objtype name="statusbar" />
+  <objtype name="statusbar"/>
 
   <objtype name="toolbar">
-    <childtype name="tool" />
-    <childtype name="widget" />
-    <childtype name="expanded_widget" />
+    <childtype name="tool"/>
+    <childtype name="widget"/>
+    <childtype name="expanded_widget"/>
   </objtype>
 
   <objtype name="tool">
-    <childtype name="menu" nmax="1" aui_nmax="1" />
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
 
   <objtype name="treelistctrl" >
-    <childtype name="treelistctrlcolumn" />
-	<childtype name="menu" nmax="1" aui_nmax="1"/>
+    <childtype name="treelistctrlcolumn"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
 
-  <objtype name="treelistctrlcolumn" />
-  
-  <objtype name="nonvisual" />
+  <objtype name="treelistctrlcolumn"/>
+
+  <objtype name="nonvisual"/>
 
   <objtype name="dataviewctrl">
-	<childtype name="dataviewcolumn" />
+    <childtype name="dataviewcolumn"/>
     <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
 
@@ -320,35 +320,35 @@
   </objtype>
 
   <objtype name="dataviewlistctrl" >
-    <childtype name="dataviewlistcolumn" />
-	<!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
+    <childtype name="dataviewlistcolumn"/>
+    <!-- <childtype name="menu" nmax="1" aui_nmax="1"/> -->
   </objtype>
-  
-  <objtype name="dataviewlistcolumn" />
-  
-  <objtype name="dataviewcolumn" />
-  
+
+  <objtype name="dataviewlistcolumn"/>
+
+  <objtype name="dataviewcolumn"/>
+
   <objtype name="propgrid">
-	<childtype name="menu" nmax="1" aui_nmax="1"/>
+    <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
-  
+
   <objtype name="propgridman">
     <childtype name="menu" nmax="1" aui_nmax="1"/>
   </objtype>
-  
-  <objtype name="propgriditem" />
-  <objtype name="propgridpage" />
-  
-  <objtype name="propgridman" >
-    <childtype name="propgridpage" />
+
+  <objtype name="propgriditem"/>
+  <objtype name="propgridpage"/>
+
+  <objtype name="propgridman">
+    <childtype name="propgridpage"/>
   </objtype>
 
-  <objtype name="propgridpage" >
-    <childtype name="propgriditem" />
+  <objtype name="propgridpage">
+    <childtype name="propgriditem"/>
   </objtype>
-  
-  <objtype name="propgrid" >
-    <childtype name="propgriditem" />
+
+  <objtype name="propgrid">
+    <childtype name="propgriditem"/>
   </objtype>
 
 </definitions>

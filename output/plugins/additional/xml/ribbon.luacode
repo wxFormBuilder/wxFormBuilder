@@ -25,7 +25,8 @@ Lua code generation written by
   Vratislav Zival
 -->
 <codegen language="Lua">
-  	<templates class="wxRibbonBar">
+
+	<templates class="wxRibbonBar">
 		<template name="construction">
 			#utbl$name = wx.RibbonBar( #utbl#wxparent $name, $id, $pos, $size, wxRIBBON_BAR_DEFAULT_STYLE)
 		</template>
@@ -56,7 +57,7 @@ Lua code generation written by
 		</template>
 		<template name="evt_connect_OnRibbonPanelExtbuttonActivated">-- event #utbl$name:OnRibbonPanelExtbuttonActivated isn't currently supported by wxLua</template>
 	</templates>
- 
+
 	<templates class="wxRibbonButtonBar">
 		<template name="construction">
 			#utbl$name = wx.RibbonBar( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );

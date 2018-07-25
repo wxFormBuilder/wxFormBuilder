@@ -26,153 +26,153 @@ PHP code generation written by
 -->
 <codegen language="PHP">
 
-  <templates class="wxHtmlWindow">
-    <template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="include" />
-	<template name="evt_connect_OnHtmlCellClicked">@$this->$name->Connect( wxEVT_COMMAND_HTML_CELL_CLICKED, #handler );</template>
-	<template name="evt_connect_OnHtmlCellHover">@$this->$name->Connect( wxEVT_COMMAND_HTML_CELL_HOVER, #handler );</template>
-	<template name="evt_connect_OnHtmlLinkClicked">@$this->$name->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, #handler );</template>
-  </templates>
+	<templates class="wxHtmlWindow">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="include" />
+		<template name="evt_connect_OnHtmlCellClicked">@$this->$name->Connect( wxEVT_COMMAND_HTML_CELL_CLICKED, #handler );</template>
+		<template name="evt_connect_OnHtmlCellHover">@$this->$name->Connect( wxEVT_COMMAND_HTML_CELL_HOVER, #handler );</template>
+		<template name="evt_connect_OnHtmlLinkClicked">@$this->$name->Connect( wxEVT_COMMAND_HTML_LINK_CLICKED, #handler );</template>
+	</templates>
 
-  <templates class="wxRichTextCtrl">
-    <template name="construction">@$this->$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="include" />
-	<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
-	<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
-	<template name="evt_connect_OnTextURL">@$this->$name->Connect( wxEVT_COMMAND_TEXT_URL, #handler );</template>
-	<template name="evt_connect_OnTextMaxLen">@$this->$name->Connect( wxEVT_COMMAND_TEXT_MAXLEN, #handler );</template>
-	<template name="evt_connect_OnRichTextCharacter">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CHARACTER, #handler );</template>
-	<template name="evt_connect_OnRichTextDelete">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_DELETE, #handler );</template>
-	<template name="evt_connect_OnRichTextReturn">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_RETURN, #handler );</template>
-	<template name="evt_connect_OnRichTextStyleChanged">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED, #handler );</template>
-	<template name="evt_connect_OnRichTextStyleSheetChanged">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED, #handler );</template>
-	<template name="evt_connect_OnRichTextStyleSheetReplacing">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING, #handler );</template>
-	<template name="evt_connect_OnRichTextStyleSheetReplaced">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED, #handler );</template>
-	<template name="evt_connect_OnRichTextContentInserted">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED, #handler );</template>
-	<template name="evt_connect_OnRichTextContentDeleted">$@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED, #handler );</template>
-  </templates>
+	<templates class="wxRichTextCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="include" />
+		<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
+		<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
+		<template name="evt_connect_OnTextURL">@$this->$name->Connect( wxEVT_COMMAND_TEXT_URL, #handler );</template>
+		<template name="evt_connect_OnTextMaxLen">@$this->$name->Connect( wxEVT_COMMAND_TEXT_MAXLEN, #handler );</template>
+		<template name="evt_connect_OnRichTextCharacter">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CHARACTER, #handler );</template>
+		<template name="evt_connect_OnRichTextDelete">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_DELETE, #handler );</template>
+		<template name="evt_connect_OnRichTextReturn">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_RETURN, #handler );</template>
+		<template name="evt_connect_OnRichTextStyleChanged">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnRichTextStyleSheetChanged">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED, #handler );</template>
+		<template name="evt_connect_OnRichTextStyleSheetReplacing">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING, #handler );</template>
+		<template name="evt_connect_OnRichTextStyleSheetReplaced">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED, #handler );</template>
+		<template name="evt_connect_OnRichTextContentInserted">@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED, #handler );</template>
+		<template name="evt_connect_OnRichTextContentDeleted">$@$this->$name->Connect( wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED, #handler );</template>
+	</templates>
 
-  <templates class="wxToggleButton">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="settings">#ifnotequal $value "0" @{ @$this->$name->SetValue( True ); @}</template>
-	<template name="evt_connect_OnToggleButton">@$this->$name->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, #handler ;)</template>
-  </templates>
+	<templates class="wxToggleButton">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="settings">#ifnotequal $value "0" @{ @$this->$name->SetValue( True ); @}</template>
+		<template name="evt_connect_OnToggleButton">@$this->$name->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, #handler ;)</template>
+	</templates>
 
-  <templates class="wxColourPickerCtrl">
-	<template name="construction">
-	   @$this->$name = new #class( #wxparent $name, $id,
-	   #ifnull $colour
-	   @{ wxBLACK, @}
-	   #ifnotnull $colour
-	   @{ $colour, @}
-	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-	</template>
-	<template name="evt_connect_OnColourChanged">@$this->$name->Connect( wxEVT_COMMAND_COLOURPICKER_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxColourPickerCtrl">
+		<template name="construction">
+			@$this->$name = new #class( #wxparent $name, $id,
+			#ifnull $colour
+			@{ wxBLACK, @}
+			#ifnotnull $colour
+			@{ $colour, @}
+			$pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+		</template>
+		<template name="evt_connect_OnColourChanged">@$this->$name->Connect( wxEVT_COMMAND_COLOURPICKER_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxFontPickerCtrl">
-	<template name="construction">
-	   @$this->$name = new #class( #wxparent $name, $id,
-	   #ifnull $value
-	   @{ wxNullFont, @}
-	   #ifnotnull $value
-	   @{ $value, @}
-	   $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-	</template>
-	<template name="settings">
-		#ifnotnull $max_point_size
-		@{ @$this->$name->SetMaxPointSize( $max_point_size ); @}
-	</template>
-	<template name="evt_connect_OnFontChanged">@$this->$name->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxFontPickerCtrl">
+		<template name="construction">
+			@$this->$name = new #class( #wxparent $name, $id,
+			#ifnull $value
+			@{ wxNullFont, @}
+			#ifnotnull $value
+			@{ $value, @}
+			$pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+		</template>
+		<template name="settings">
+			#ifnotnull $max_point_size
+			@{ @$this->$name->SetMaxPointSize( $max_point_size ); @}
+		</template>
+		<template name="evt_connect_OnFontChanged">@$this->$name->Connect( wxEVT_COMMAND_FONTPICKER_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxFilePickerCtrl">
-	<template name="construction">
-	   @$this->$name = new #class( #wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-	</template>
-	<template name="evt_connect_OnFileChanged">@$this->$name->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxFilePickerCtrl">
+		<template name="construction">
+			@$this->$name = new #class( #wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+		</template>
+		<template name="evt_connect_OnFileChanged">@$this->$name->Connect( wxEVT_COMMAND_FILEPICKER_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxDirPickerCtrl">
-	<template name="construction">
-	   @$this->$name = new #class( #wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
-	</template>
-	<template name="evt_connect_OnDirChanged">@$this->$name->Connect( wxEVT_COMMAND_DIRPICKER_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxDirPickerCtrl">
+		<template name="construction">
+			@$this->$name = new #class( #wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
+		</template>
+		<template name="evt_connect_OnDirChanged">@$this->$name->Connect( wxEVT_COMMAND_DIRPICKER_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxDatePickerCtrl">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="evt_connect_OnDateChanged">@$this->$name->Connect( wxEVT_DATE_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxDatePickerCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="evt_connect_OnDateChanged">@$this->$name->Connect( wxEVT_DATE_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxTimePickerCtrl">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="evt_connect_OnTimeChanged">@$this->$name->Connect( wxEVT_TIME_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxTimePickerCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="evt_connect_OnTimeChanged">@$this->$name->Connect( wxEVT_TIME_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxCalendarCtrl">
-    <template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="include" />
-	<template name="evt_connect_OnCalendar">@$this->$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler );</template>
-	<template name="evt_connect_OnCalendarSelChanged">@$this->$name->Connect( wxEVT_CALENDAR_SEL_CHANGED, #handler );</template>
-	<template name="evt_connect_OnCalendarPageChanged">@$this->$name->Connect( wxEVT_CALENDAR_PAGE_CHANGED, #handler );</template>
-	<template name="evt_connect_OnCalendarDay">@$this->$name->Connect( wxEVT_CALENDAR_DAY, #handler );</template>
-	<template name="evt_connect_OnCalendarMonth">@$this->$name->Connect( wxEVT_CALENDAR_MONTH_CHANGED, #handler );</template>
-	<template name="evt_connect_OnCalendarYear">@$this->$name->Connect( wxEVT_CALENDAR_YEAR_CHANGED, #handler );</template>
-	<template name="evt_connect_OnCalendarWeekDayClicked">@$this->$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler );</template>
-	<template name="evt_connect_OnCalendarWeekClicked">@$this->$name->Connect( wxEVT_CALENDAR_WEEK_CLICKED, #handler );</template>
-  </templates>
+	<templates class="wxCalendarCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id , wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="include" />
+		<template name="evt_connect_OnCalendar">@$this->$name->Connect( wxEVT_CALENDAR_DOUBLECLICKED, #handler );</template>
+		<template name="evt_connect_OnCalendarSelChanged">@$this->$name->Connect( wxEVT_CALENDAR_SEL_CHANGED, #handler );</template>
+		<template name="evt_connect_OnCalendarPageChanged">@$this->$name->Connect( wxEVT_CALENDAR_PAGE_CHANGED, #handler );</template>
+		<template name="evt_connect_OnCalendarDay">@$this->$name->Connect( wxEVT_CALENDAR_DAY, #handler );</template>
+		<template name="evt_connect_OnCalendarMonth">@$this->$name->Connect( wxEVT_CALENDAR_MONTH_CHANGED, #handler );</template>
+		<template name="evt_connect_OnCalendarYear">@$this->$name->Connect( wxEVT_CALENDAR_YEAR_CHANGED, #handler );</template>
+		<template name="evt_connect_OnCalendarWeekDayClicked">@$this->$name->Connect( wxEVT_CALENDAR_WEEKDAY_CLICKED, #handler );</template>
+		<template name="evt_connect_OnCalendarWeekClicked">@$this->$name->Connect( wxEVT_CALENDAR_WEEK_CLICKED, #handler );</template>
+	</templates>
 
-  <templates class="wxScrollBar">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="evt_connect_OnScroll">
-		@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );
-	</template>
-	<template name="evt_connect_OnScrollTop">@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler );</template>
-	<template name="evt_connect_OnScrollBottom">@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler );</template>
-	<template name="evt_connect_OnScrollLineUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
-	<template name="evt_connect_OnScrollLineDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
-	<template name="evt_connect_OnScrollPageUp">@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler );</template>
-	<template name="evt_connect_OnScrollPageDown">@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler );</template>
-	<template name="evt_connect_OnScrollThumbTrack">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
-	<template name="evt_connect_OnScrollThumbRelease">@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler );</template>
-	<template name="evt_connect_OnScrollChanged">@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );</template>
-	<template name="evt_connect_OnCommandScroll">
-		@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler ); #nl
-		@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );
-	</template>
-	<template name="evt_connect_OnCommandScrollTop">@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler );</template>
-	<template name="evt_connect_OnCommandScrollBottom">@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler );</template>
-	<template name="evt_connect_OnCommandScrollLineUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
-	<template name="evt_connect_OnCommandScrollLineDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
-	<template name="evt_connect_OnCommandScrollPageUp">@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler );</template>
-	<template name="evt_connect_OnCommandScrollPageDown">@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler );</template>
-	<template name="evt_connect_OnCommandScrollThumbTrack">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
-	<template name="evt_connect_OnCommandScrollThumbRelease">@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler );</template>
-	<template name="evt_connect_OnCommandScrollChanged">@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );</template>
-  </templates>
+	<templates class="wxScrollBar">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="evt_connect_OnScroll">
+			@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );
+		</template>
+		<template name="evt_connect_OnScrollTop">@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler );</template>
+		<template name="evt_connect_OnScrollBottom">@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler );</template>
+		<template name="evt_connect_OnScrollLineUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
+		<template name="evt_connect_OnScrollLineDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
+		<template name="evt_connect_OnScrollPageUp">@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler );</template>
+		<template name="evt_connect_OnScrollPageDown">@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler );</template>
+		<template name="evt_connect_OnScrollThumbTrack">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
+		<template name="evt_connect_OnScrollThumbRelease">@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler );</template>
+		<template name="evt_connect_OnScrollChanged">@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );</template>
+		<template name="evt_connect_OnCommandScroll">
+			@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler ); #nl
+			@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );
+		</template>
+		<template name="evt_connect_OnCommandScrollTop">@$this->$name->Connect( wxEVT_SCROLL_TOP, #handler );</template>
+		<template name="evt_connect_OnCommandScrollBottom">@$this->$name->Connect( wxEVT_SCROLL_BOTTOM, #handler );</template>
+		<template name="evt_connect_OnCommandScrollLineUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
+		<template name="evt_connect_OnCommandScrollLineDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
+		<template name="evt_connect_OnCommandScrollPageUp">@$this->$name->Connect( wxEVT_SCROLL_PAGEUP, #handler );</template>
+		<template name="evt_connect_OnCommandScrollPageDown">@$this->$name->Connect( wxEVT_SCROLL_PAGEDOWN, #handler );</template>
+		<template name="evt_connect_OnCommandScrollThumbTrack">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
+		<template name="evt_connect_OnCommandScrollThumbRelease">@$this->$name->Connect( wxEVT_SCROLL_THUMBRELEASE, #handler );</template>
+		<template name="evt_connect_OnCommandScrollChanged">@$this->$name->Connect( wxEVT_SCROLL_CHANGED, #handler );</template>
+	</templates>
 
-  <templates class="wxSpinCtrl">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="evt_connect_OnSpinCtrl">@$this->$name->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, #handler );</template>
-	<template name="evt_connect_OnSpinCtrlText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
-	<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
-  </templates>
+	<templates class="wxSpinCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="evt_connect_OnSpinCtrl">@$this->$name->Connect( wxEVT_COMMAND_SPINCTRL_UPDATED, #handler );</template>
+		<template name="evt_connect_OnSpinCtrlText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
+		<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
+	</templates>
 
 	<templates class="wxSpinCtrlDouble">
 		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} );</template>
@@ -182,85 +182,85 @@ PHP code generation written by
 		<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
 	</templates>
 
-  <templates class="wxSpinButton">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="evt_connect_OnSpin">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
-	<template name="evt_connect_OnSpinUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
-	<template name="evt_connect_OnSpinDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
-  </templates>
+	<templates class="wxSpinButton">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="evt_connect_OnSpin">@$this->$name->Connect( wxEVT_SCROLL_THUMBTRACK, #handler );</template>
+		<template name="evt_connect_OnSpinUp">@$this->$name->Connect( wxEVT_SCROLL_LINEUP, #handler );</template>
+		<template name="evt_connect_OnSpinDown">@$this->$name->Connect( wxEVT_SCROLL_LINEDOWN, #handler );</template>
+	</templates>
 
-  <templates class="wxHyperlinkCtrl">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="settings">
-    	#ifnotnull $hover_color
-    	@{ #nl @$this->$name->SetHoverColour( $hover_color ); @}
+	<templates class="wxHyperlinkCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="settings">
+			#ifnotnull $hover_color
+			@{ #nl @$this->$name->SetHoverColour( $hover_color ); @}
 
-    	#ifnotnull $normal_color
-    	@{ #nl @$this->$name->SetNormalColour( $normal_color ); @}
+			#ifnotnull $normal_color
+			@{ #nl @$this->$name->SetNormalColour( $normal_color ); @}
 
-    	#ifnotnull $visited_color
-    	@{ #nl @$this->$name->SetVisitedColour( $visited_color ); @}
-	</template>
-	<template name="evt_connect_OnHyperlink">@$this->$name->Connect( wxEVT_COMMAND_HYPERLINK, #handler );</template>
-  </templates>
+			#ifnotnull $visited_color
+			@{ #nl @$this->$name->SetVisitedColour( $visited_color ); @}
+		</template>
+		<template name="evt_connect_OnHyperlink">@$this->$name->Connect( wxEVT_COMMAND_HYPERLINK, #handler );</template>
+	</templates>
 
-  <templates class="wxGenericDirCtrl">
-	<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter #ifnotnull $window_name @{, $window_name @} );</template>
-	<template name="settings">
-    	#nl @$this->$name->ShowHidden( $show_hidden );
-	</template>
-	<template name="evt_connect_OnDirctrlSelectionChanged">@$this->$name->Connect( wxEVT_DIRCTRL_SELECTIONCHANGED, #handler );</template>
-	<template name="evt_connect_OnDirctrlFileActivated">@$this->$name->Connect( wxEVT_DIRCTRL_FILEACTIVATED, #handler );</template>
-  </templates>
+	<templates class="wxGenericDirCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter #ifnotnull $window_name @{, $window_name @} );</template>
+		<template name="settings">
+			#nl @$this->$name->ShowHidden( $show_hidden );
+		</template>
+		<template name="evt_connect_OnDirctrlSelectionChanged">@$this->$name->Connect( wxEVT_DIRCTRL_SELECTIONCHANGED, #handler );</template>
+		<template name="evt_connect_OnDirctrlFileActivated">@$this->$name->Connect( wxEVT_DIRCTRL_FILEACTIVATED, #handler );</template>
+	</templates>
 
-  <templates class="wxSearchCtrl">
-    <template name="construction">@$this->$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
-	<template name="settings">
-		@$this->$name->ShowSearchButton( $search_button );
-		#nl @$this->$name->ShowCancelButton( $cancel_button );
-	</template>
-	<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
-	<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
-	<template name="evt_connect_OnSearchButton">@$this->$name->Connect( wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, #handler );</template>
-	<template name="evt_connect_OnCancelButton">@$this->$name->Connect( wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, #handler );</template>
-  </templates>
+	<templates class="wxSearchCtrl">
+		<template name="construction">@$this->$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="settings">
+			@$this->$name->ShowSearchButton( $search_button );
+			#nl @$this->$name->ShowCancelButton( $cancel_button );
+		</template>
+		<template name="evt_connect_OnText">@$this->$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler );</template>
+		<template name="evt_connect_OnTextEnter">@$this->$name->Connect( wxEVT_COMMAND_TEXT_ENTER, #handler );</template>
+		<template name="evt_connect_OnSearchButton">@$this->$name->Connect( wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, #handler );</template>
+		<template name="evt_connect_OnCancelButton">@$this->$name->Connect( wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN, #handler );</template>
+	</templates>
 
-  <templates class="CustomControl">
-	<template name="construction">$construction</template>
-	<template name="settings">$settings</template>
-	<template name="include">$include</template>
-  </templates>
+	<templates class="CustomControl">
+		<template name="construction">$construction</template>
+		<template name="settings">$settings</template>
+		<template name="include">$include</template>
+	</templates>
 
-  <templates class="wxMediaCtrl">
-    <template name="construction">
-		@$this->$name = new wxMediaCtrl( #wxparent $name, $id, wxEmptyString, $pos, $size);
-		#ifnotnull $file
-		@{ #nl @$this->$name->Load( $file ); @}
-		#ifnotnull $playback_rate
-		@{#nl @$this->$name->SetPlaybackRate($playback_rate);@}
-		#ifnotnull $volume
-		@{#nl @$this->$name->SetVolume($volume);@}
-		#ifnotnull $player_controls
-		@{#nl @$this->$name->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_$player_controls);@}
-    </template>
-    <template name="settings">
-		#ifequal $play "1"
-		@{#nl @$this->$name->Play();@}
-    </template>	
-    <template name="include" />
-  </templates>
-  
-  <templates class="wxTimer">
-    <template name="construction">
-		@$this->$name = new #class(); #nl
-		@$this->$name->SetOwner( #wxparent $name, $id );
-	</template>
-    <template name="settings">
-		#ifequal $enabled "1"
-		@{ @$this->$name->Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
-	</template>
-	<template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
-  </templates>
+	<templates class="wxMediaCtrl">
+		<template name="construction">
+			@$this->$name = new wxMediaCtrl( #wxparent $name, $id, wxEmptyString, $pos, $size);
+			#ifnotnull $file
+			@{ #nl @$this->$name->Load( $file ); @}
+			#ifnotnull $playback_rate
+			@{#nl @$this->$name->SetPlaybackRate($playback_rate);@}
+			#ifnotnull $volume
+			@{#nl @$this->$name->SetVolume($volume);@}
+			#ifnotnull $player_controls
+			@{#nl @$this->$name->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_$player_controls);@}
+		</template>
+		<template name="settings">
+			#ifequal $play "1"
+			@{#nl @$this->$name->Play();@}
+		</template>
+		<template name="include" />
+	</templates>
+
+	<templates class="wxTimer">
+		<template name="construction">
+			@$this->$name = new #class(); #nl
+			@$this->$name->SetOwner( #wxparent $name, $id );
+		</template>
+		<template name="settings">
+			#ifequal $enabled "1"
+			@{ @$this->$name->Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
+		</template>
+		<template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
+	</templates>
 	
 	<templates class="wxStyledTextCtrl">
 		<template name="construction">
