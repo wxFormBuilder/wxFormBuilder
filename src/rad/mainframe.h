@@ -26,11 +26,11 @@
 #ifndef __MAIN_FRAME__
 #define __MAIN_FRAME__
 
-#include "wx/wx.h"
-#include <wx/aui/auibook.h>
 #include "wx/splitter.h"
-#include <wx/fdrepdlg.h>
+#include "wx/wx.h"
 
+#include <wx/aui/auibook.h>
+#include <wx/fdrepdlg.h>
 
 class wxFBEvent;
 class wxFBObjectEvent;
@@ -110,7 +110,7 @@ class MainFrame : public wxFrame
   DECLARE_EVENT_TABLE()
  public:
   MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
-  ~MainFrame();
+	~MainFrame() override;
   void RestorePosition(const wxString &name);
   void SavePosition(const wxString &name);
   void OnSaveProject(wxCommandEvent &event);

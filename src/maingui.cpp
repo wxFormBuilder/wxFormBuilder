@@ -342,10 +342,6 @@ int MyApp::OnExit()
 	return wxApp::OnExit();
 }
 
-MyApp::~MyApp()
-{
-}
-
 #ifdef __WXMAC__
 void MyApp::MacOpenFile(const wxString &fileName)
 {

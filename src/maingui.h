@@ -35,13 +35,12 @@ private:
   MainFrame *m_frame;
 
 public:
-  bool OnInit();
+	bool OnInit() override;
   #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
-  void OnFatalException();
+	void OnFatalException() override;
   #endif
-  int OnRun();
-  int OnExit();
-  ~MyApp();
+	int OnRun() override;
+	int OnExit() override;
 
   #ifdef __WXMAC__
   wxString m_mac_file_name;

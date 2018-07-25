@@ -35,10 +35,10 @@ The value of all properties that are file or a directory paths must be absolute,
 #ifndef _CPP_CODE_GEN_
 #define _CPP_CODE_GEN_
 
-#include <set>
 #include "codegen.h"
-#include <wx/string.h>
 #include "codeparser.h"
+
+#include <set>
 
 /**
 * Parse the C++ templates.
@@ -55,10 +55,9 @@ public:
 	CppTemplateParser( const CppTemplateParser & that, wxString _template );
 
 	// overrides for C++
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
@@ -201,7 +200,7 @@ private:
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
 	void GenConstruction( PObjectBase obj, bool is_widget );
-	
+
 	/**
 	* Makes the objects destructions.
 	*/
@@ -285,7 +284,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class

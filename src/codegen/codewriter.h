@@ -88,24 +88,24 @@ private:
 	wxStyledTextCtrl* m_tc;
 
 protected:
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	TCCodeWriter();
     TCCodeWriter( wxStyledTextCtrl *tc );
     void SetTextCtrl( wxStyledTextCtrl* tc );
-	void Clear();
+	void Clear() override;
 };
 
 class StringCodeWriter : public CodeWriter
 {
 protected:
 	wxString m_buffer;
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	StringCodeWriter();
-	void Clear();
+	void Clear() override;
 	wxString GetString();
 };
 
@@ -121,8 +121,8 @@ protected:
 
 public:
 	FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false, bool useUtf8 = true );
-	~FileCodeWriter();
-	void Clear();
+	~FileCodeWriter() override;
+	void Clear() override;
 };
 
 #endif //__CODE_WRITER__

@@ -60,7 +60,6 @@ private:
 
 public:
 	AppConnection(){}
-	~AppConnection(){}
 };
 
 // Server class, for listening to connection requests
@@ -78,7 +77,7 @@ class AppClient: public wxClient
 {
 public:
 	AppClient(){}
-	wxConnectionBase* OnMakeConnection();
+	wxConnectionBase* OnMakeConnection() override;
 };
 
 #endif //WXFBIPC_H

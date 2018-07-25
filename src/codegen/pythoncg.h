@@ -41,9 +41,9 @@ The value of all properties that are file or a directory paths must be absolute,
 #define fbfSILENT true
 #define fbfMESSAGE false
 
-#include <set>
 #include "codegen.h"
-#include <wx/string.h>
+
+#include <set>
 
 /**
 * Parse the Python templates.
@@ -54,9 +54,9 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
-	
+
 	std::map<wxString, wxString> m_predModulePrefix;
-	
+
 	void SetupModulePrefixes();
 
 public:
@@ -170,7 +170,7 @@ private:
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
 	void GenConstruction( PObjectBase obj, bool is_widget );
-	
+
 	/**
 	* Makes the objects destructions.
 	*/
@@ -226,7 +226,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class

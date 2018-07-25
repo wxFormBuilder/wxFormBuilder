@@ -302,8 +302,7 @@ public:
 	/// Constructor.
 	ObjectBase (wxString class_name);
 
-	/// Destructor.
-	virtual ~ObjectBase();
+	~ObjectBase() override;
 
 	/**
 	Sets whether the object is expanded in the object tree or not.
@@ -322,7 +321,9 @@ public:
 	*       Cada objeto tiene un nombre, el cual será el mismo que el usado
 	*       como clave en el registro de descriptores.
 	*/
-	wxString GetClassName () { return m_class;  }
+	wxString GetClassName() override {
+		return m_class;
+	}
 
 	/// Gets the parent object
 	PObjectBase GetParent () { return m_parent.lock(); }
@@ -468,7 +469,9 @@ public:
 	/**
 	* Obtiene el número de hijos del objeto.
 	*/
-	unsigned int  GetChildCount()    { return (unsigned int)m_children.size(); }
+	unsigned int GetChildCount() override {
+		return (unsigned int)m_children.size();
+	}
 
 	/**
 	* Comprueba si el tipo de objeto pasado es válido como hijo del objeto.
@@ -486,7 +489,9 @@ public:
 	*
 	* Deberá ser redefinida en cada clase derivada.
 	*/
-	wxString GetObjectTypeName() { return m_type; }
+	wxString GetObjectTypeName() override {
+		return m_type;
+	}
 	void SetObjectTypeName(wxString type) { m_type = type; }
 
 	/**
@@ -513,21 +518,24 @@ public:
 	/////////////////////////
 	// Implementación de la interfaz IObject para su uso dentro de los
 	// plugins
-	bool     IsNull (const wxString& pname);
-	int      GetPropertyAsInteger (const wxString& pname);
-	wxFontContainer   GetPropertyAsFont    (const wxString& pname);
-	wxColour GetPropertyAsColour  (const wxString& pname);
-	wxString GetPropertyAsString  (const wxString& pname);
-	wxPoint  GetPropertyAsPoint   (const wxString& pname);
-	wxSize   GetPropertyAsSize    (const wxString& pname);
-	wxBitmap GetPropertyAsBitmap  (const wxString& pname);
-	double	 GetPropertyAsFloat	  (const wxString& pname);
+	bool IsNull(const wxString& pname) override;
+	int GetPropertyAsInteger(const wxString& pname) override;
+	wxFontContainer GetPropertyAsFont(const wxString& pname) override;
+	wxColour GetPropertyAsColour(const wxString& pname) override;
+	wxString GetPropertyAsString(const wxString& pname) override;
+	wxPoint GetPropertyAsPoint(const wxString& pname) override;
+	wxSize GetPropertyAsSize(const wxString& pname) override;
+	wxBitmap GetPropertyAsBitmap(const wxString& pname) override;
+	double GetPropertyAsFloat(const wxString& pname) override;
 
-	wxArrayInt    GetPropertyAsArrayInt (const wxString& pname);
-	wxArrayString GetPropertyAsArrayString  (const wxString& pname);
-	wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName );
+	wxArrayInt GetPropertyAsArrayInt(const wxString& pname) override;
+	wxArrayString GetPropertyAsArrayString(const wxString& pname) override;
+	wxString GetChildFromParentProperty(const wxString& parentName,
+	                                    const wxString& childName) override;
 
-	IObject* GetChildPtr (unsigned int idx) { return GetChild(idx).get(); }
+	IObject* GetChildPtr(unsigned int idx) override {
+		return GetChild(idx).get();
+	}
 };
 
 ///////////////////////////////////////////////////////////////////////////////

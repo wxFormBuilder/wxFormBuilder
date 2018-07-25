@@ -45,12 +45,11 @@ public:
     wxFBSizeProperty( const wxString& label = wxPG_LABEL,
                       const wxString& name  = wxPG_LABEL,
                       const wxSize&   value = wxSize() );
-    virtual ~wxFBSizeProperty();
 
-	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                               wxVariant& childValue) const override;
+	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                       wxVariant& childValue) const override;
 
-	virtual void RefreshChildren() override;
+	void RefreshChildren() override;
 
 protected:
     void DoSetValue( const wxSize& value ) { m_value = WXVARIANT( value ); }
@@ -67,12 +66,12 @@ public:
     wxFBPointProperty( const wxString& label = wxPG_LABEL,
                        const wxString& name  = wxPG_LABEL,
                        const wxPoint&  value = wxPoint() );
-    virtual ~wxFBPointProperty();
+	~wxFBPointProperty() override;
 
-	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                               wxVariant& childValue) const override;
+	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                       wxVariant& childValue) const override;
 
-	virtual void RefreshChildren() override;
+	void RefreshChildren() override;
 
 protected:
     void DoSetValue( const wxPoint& value ) { m_value = WXVARIANT( value ); }
@@ -175,17 +174,17 @@ class wxFBFontProperty : public wxPGProperty
 public:
 
     wxFBFontProperty( const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxFontContainer& value = *wxNORMAL_FONT);
-    virtual ~wxFBFontProperty();
+	~wxFBFontProperty() override;
 
-	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                               wxVariant& childValue) const override;
+	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                       wxVariant& childValue) const override;
 
-	virtual void RefreshChildren() override;
+	void RefreshChildren() override;
 
-	virtual void OnSetValue() override;
-	virtual wxString GetValueAsString(int argFlags = 0) const override;
+	void OnSetValue() override;
+	wxString GetValueAsString(int argFlags = 0) const override;
 
-	virtual bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
+	bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
 };
 
 #endif //__WXFBADVPROPS_H__

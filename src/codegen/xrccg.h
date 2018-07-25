@@ -48,7 +48,7 @@ public:
 	void SetWriter( PCodeWriter cw );
 
 	/// Generates the XRC code for the project.
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 };
 
 

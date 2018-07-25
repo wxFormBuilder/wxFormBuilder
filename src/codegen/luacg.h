@@ -236,7 +236,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class
