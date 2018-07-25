@@ -51,8 +51,6 @@ wxFBSizeProperty::wxFBSizeProperty( const wxString& label,
     AddPrivateChild( new wxIntProperty( wxT("Height"), wxPG_LABEL, value.y ) );
 }
 
-wxFBSizeProperty::~wxFBSizeProperty() {}
-
 void wxFBSizeProperty::RefreshChildren()
 {
     if ( GetChildCount() < 2 ) return;
