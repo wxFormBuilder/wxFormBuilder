@@ -216,8 +216,10 @@ On OS X, this style is only implemented in the Cocoa build on OS X >= 10.5; it b
 		wxALIGN_LEFT
 	</property>
 	<property name="flag" type="bitlist">
-		<option name="wxCOL_RESIZABLE" help="Allow the user to resize the column."/>
-		<option name="wxCOL_SORTABLE" help="Allow the user to resort the control contents by clicking on this column."/>
+		<option name="wxCOL_RESIZABLE" help="Column can be resized (included in default flags)."/>
+		<option name="wxCOL_SORTABLE" help="Column can be clicked to toggle the sort order by its contents."/>
+    <option name="wxCOL_REORDERABLE" help="Column can be dragged to change its order (included in default)."/>
+    <option name="wxCOL_HIDDEN" help="Column is not shown at all."/>
 		wxCOL_RESIZABLE
 	</property>
 </objectinfo>
