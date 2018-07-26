@@ -1779,27 +1779,93 @@ public:
 			{
 				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
 				{
-					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
 				{
-					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendToggleColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
 				{
-					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendProgressColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
 				{
-					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendIconTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Date"))
 				{
-					list->AppendDateColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendDateColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Bitmap"))
 				{
-					list->AppendBitmapColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendBitmapColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 			}
 		}
@@ -1852,19 +1918,59 @@ public:
 			{
 				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
 				{
-					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
 				{
-					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendToggleColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
 				{
-					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendProgressColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
 				{
-					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendIconTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 			}
 		}
@@ -2440,6 +2546,28 @@ MACRO(wxDV_HORIZ_RULES)
 MACRO(wxDV_VERT_RULES)
 MACRO(wxDV_VARIABLE_LINE_HEIGHT)
 MACRO(wxDV_NO_HEADER)
+
+MACRO(wxDATAVIEW_CELL_INERT)
+MACRO(wxDATAVIEW_CELL_ACTIVATABLE)
+MACRO(wxDATAVIEW_CELL_EDITABLE)
+
+MACRO(wxDATAVIEW_COL_RESIZABLE)
+MACRO(wxDATAVIEW_COL_SORTABLE)
+MACRO(wxDATAVIEW_COL_REORDERABLE)
+MACRO(wxDATAVIEW_COL_HIDDEN)
+
+MACRO(wxELLIPSIZE_NONE)
+MACRO(wxELLIPSIZE_START)
+MACRO(wxELLIPSIZE_MIDDLE)
+MACRO(wxELLIPSIZE_END)
+
+MACRO(wxALIGN_LEFT)
+MACRO(wxALIGN_TOP)
+MACRO(wxALIGN_RIGHT)
+MACRO(wxALIGN_BOTTOM)
+MACRO(wxALIGN_CENTER)
+MACRO(wxALIGN_CENTER_HORIZONTAL)
+MACRO(wxALIGN_CENTER_VERTICAL)
 
 // wxRibbonBar
 MACRO(wxRIBBON_BAR_DEFAULT_STYLE)

@@ -339,6 +339,37 @@ On OS X, this style is only implemented in the Cocoa build on OS X >= 10.5; it b
 		<option name="IconText" help="Appends an icon-and-text column to the control and the store."/>
 		Text
 	</property>
+    <property name="mode" type="option">
+      <option name="wxDATAVIEW_CELL_INERT" help="The cell only displays information and cannot be manipulated or otherwise interacted with in any way."/>
+      <option name="wxDATAVIEW_CELL_ACTIVATABLE" help="Indicates that the cell can be activated by clicking it or using keyboard."/>
+      <option name="wxDATAVIEW_CELL_EDITABLE" help="Indicates that the user can edit the data in-place in an inline editor control that will show up when the user wants to edit the cell."/>
+      wxDATAVIEW_CELL_INERT
+    </property>
+    <property name="width" type="int">-1</property>
+    <property name="align" type="bitlist">
+      <option name="wxALIGN_LEFT" help="Align the item to the left."/>
+      <option name="wxALIGN_TOP" help="Align the item to the top."/>
+      <option name="wxALIGN_RIGHT" help="Align the item to the right."/>
+      <option name="wxALIGN_BOTTOM" help="Align the item to the bottom."/>
+      <option name="wxALIGN_CENTER" help="Align the item to the center."/>
+      <option name="wxALIGN_CENTER_HORIZONTAL" help="Align the item to the horizontal center."/>
+      <option name="wxALIGN_CENTER_VERTICAL" help="Align the item to the vertical."/>
+      wxALIGN_LEFT
+    </property>
+    <property name="flags" type="bitlist">
+      <option name="wxDATAVIEW_COL_RESIZABLE" help="Column can be resized."/>
+      <option name="wxDATAVIEW_COL_SORTABLE" help="Column can be clicked to toggle the sort order by its contents."/>
+      <option name="wxDATAVIEW_COL_REORDERABLE" help="Column can be dragged to change its order."/>
+      <option name="wxDATAVIEW_COL_HIDDEN" help="Column is not shown at all."/>
+      wxDATAVIEW_COL_RESIZABLE
+    </property>
+    <property name="ellipsize" type="option">
+      <option name=""/>
+      <option name="wxELLIPSIZE_NONE" help="Don't ellipsize the text at all."/>
+      <option name="wxELLIPSIZE_START" help="Put the ellipsis at the start of the string, if the string needs ellipsization."/>
+      <option name="wxELLIPSIZE_MIDDLE" help="Put the ellipsis in the middle of the string, if the string needs ellipsization."/>
+      <option name="wxELLIPSIZE_END" help="Put the ellipsis at the end of the string, if the string needs ellipsization."/>
+    </property>
 </objectinfo>
 
 <objectinfo class="dataViewListColumn" icon="dataviewlist_column.xpm" type="dataviewlistcolumn" wxversion="2904" >
@@ -351,6 +382,37 @@ On OS X, this style is only implemented in the Cocoa build on OS X >= 10.5; it b
 		<option name="IconText" help="Appends an icon-and-text column to the control and the store."/>
 		Text
 	</property>
+    <property name="mode" type="option">
+      <option name="wxDATAVIEW_CELL_INERT" help="The cell only displays information and cannot be manipulated or otherwise interacted with in any way."/>
+      <option name="wxDATAVIEW_CELL_ACTIVATABLE" help="Indicates that the cell can be activated by clicking it or using keyboard."/>
+      <option name="wxDATAVIEW_CELL_EDITABLE" help="Indicates that the user can edit the data in-place in an inline editor control that will show up when the user wants to edit the cell."/>
+      wxDATAVIEW_CELL_INERT
+    </property>
+    <property name="width" type="int">-1</property>
+    <property name="align" type="bitlist">
+      <option name="wxALIGN_LEFT" help="Align the item to the left."/>
+      <option name="wxALIGN_TOP" help="Align the item to the top."/>
+      <option name="wxALIGN_RIGHT" help="Align the item to the right."/>
+      <option name="wxALIGN_BOTTOM" help="Align the item to the bottom."/>
+      <option name="wxALIGN_CENTER" help="Align the item to the center."/>
+      <option name="wxALIGN_CENTER_HORIZONTAL" help="Align the item to the horizontal center."/>
+      <option name="wxALIGN_CENTER_VERTICAL" help="Align the item to the vertical."/>
+      wxALIGN_LEFT
+    </property>
+    <property name="flags" type="bitlist">
+      <option name="wxDATAVIEW_COL_RESIZABLE" help="Column can be resized."/>
+      <option name="wxDATAVIEW_COL_SORTABLE" help="Column can be clicked to toggle the sort order by its contents."/>
+      <option name="wxDATAVIEW_COL_REORDERABLE" help="Column can be dragged to change its order."/>
+      <option name="wxDATAVIEW_COL_HIDDEN" help="Column is not shown at all."/>
+      wxDATAVIEW_COL_RESIZABLE
+    </property>
+    <property name="ellipsize" type="option">
+      <option name=""/>
+      <option name="wxELLIPSIZE_NONE" help="Don't ellipsize the text at all."/>
+      <option name="wxELLIPSIZE_START" help="Put the ellipsis at the start of the string, if the string needs ellipsization."/>
+      <option name="wxELLIPSIZE_MIDDLE" help="Put the ellipsis in the middle of the string, if the string needs ellipsization."/>
+      <option name="wxELLIPSIZE_END" help="Put the ellipsis at the end of the string, if the string needs ellipsization."/>
+    </property>
 </objectinfo>
 
 <objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="propgrid" startgroup="1" wxversion="2904" >
