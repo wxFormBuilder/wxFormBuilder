@@ -181,7 +181,7 @@ class ButtonComponent : public ComponentBase
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxString label = obj->GetPropertyAsString( _("label") );
-		wxButton* button = new wxButton((wxWindow*)parent, -1,
+		wxButton* button = new wxButton((wxWindow*)parent, wxID_ANY,
 			label,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -280,7 +280,7 @@ class BitmapButtonComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxBitmapButton* button = new wxBitmapButton((wxWindow*)parent,-1,
+		wxBitmapButton* button = new wxBitmapButton((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -377,7 +377,7 @@ class TextCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxTextCtrl* tc = new wxTextCtrl((wxWindow *)parent,-1,
+		wxTextCtrl* tc = new wxTextCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -439,7 +439,7 @@ class StaticTextComponent : public ComponentBase
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxString label = obj->GetPropertyAsString( _("label") );
-		wxStaticText* st = new wxStaticText((wxWindow *)parent, -1,
+		wxStaticText* st = new wxStaticText((wxWindow *)parent, wxID_ANY,
 			label,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -479,7 +479,7 @@ class ComboBoxComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxComboBox *combo = new wxComboBox((wxWindow *)parent,-1,
+		wxComboBox *combo = new wxComboBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -522,7 +522,7 @@ class BitmapComboBoxComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxBitmapComboBox *bcombo = new wxBitmapComboBox((wxWindow *)parent,-1,
+		wxBitmapComboBox *bcombo = new wxBitmapComboBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -567,7 +567,7 @@ class CheckBoxComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxCheckBox *res = new wxCheckBox((wxWindow *)parent,-1,
+		wxCheckBox *res = new wxCheckBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -612,7 +612,7 @@ class StaticBitmapComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxStaticBitmap((wxWindow *)parent,-1,
+		return new wxStaticBitmap((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -642,7 +642,7 @@ class StaticLineComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxStaticLine((wxWindow *)parent,-1,
+		return new wxStaticLine((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -665,7 +665,7 @@ class ListCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxListCtrl *lc = new wxListCtrl((wxWindow*)parent, -1,
+		wxListCtrl *lc = new wxListCtrl((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			(obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))) & ~wxLC_VIRTUAL);
@@ -718,7 +718,7 @@ class ListBoxComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxListBox *listbox = new wxListBox((wxWindow*)parent, -1,
+		wxListBox *listbox = new wxListBox((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			0,
@@ -768,7 +768,7 @@ public:
 			majorDim = 1;
 		}
 
-		wxRadioBox *radiobox = new wxRadioBox((wxWindow*)parent, -1,
+		wxRadioBox *radiobox = new wxRadioBox((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -835,7 +835,7 @@ class RadioButtonComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxRadioButton *rb = new wxRadioButton((wxWindow *)parent,-1,
+		wxRadioButton *rb = new wxRadioButton((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -866,7 +866,7 @@ class StatusBarComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxStatusBar *sb = new wxIndependentStatusBar((wxWindow*)parent, -1,
+		wxStatusBar *sb = new wxIndependentStatusBar((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 		sb->SetFieldsCount(obj->GetPropertyAsInteger(_("fields")));
 
@@ -1030,7 +1030,7 @@ class ToolBarComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxToolBar *tb = new wxToolBar((wxWindow*)parent, -1,
+		wxToolBar *tb = new wxToolBar((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN | wxTB_NODIVIDER | wxNO_BORDER);
@@ -1242,7 +1242,7 @@ class AuiToolBarComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		AuiToolBar *tb = new AuiToolBar((wxWindow*)parent, GetManager(), -1,
+		AuiToolBar *tb = new AuiToolBar((wxWindow*)parent, GetManager(), wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) );// | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN | wxTB_NODIVIDER | wxNO_BORDER);
@@ -1435,7 +1435,7 @@ public:
 		for (unsigned int i=0; i < choices.GetCount(); i++)
 			strings[i] = choices[i];
 
-		wxChoice *choice = new wxChoice((wxWindow*)parent, -1,
+		wxChoice *choice = new wxChoice((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			(int)choices.Count(),
@@ -1498,7 +1498,7 @@ class SliderComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxSlider((wxWindow *)parent,-1,
+		return new wxSlider((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsInteger(_("value")),
 			obj->GetPropertyAsInteger(_("minValue")),
 			obj->GetPropertyAsInteger(_("maxValue")),
@@ -1531,7 +1531,7 @@ class GaugeComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxGauge *gauge = new wxGauge((wxWindow *)parent,-1,
+		wxGauge *gauge = new wxGauge((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsInteger(_("range")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),

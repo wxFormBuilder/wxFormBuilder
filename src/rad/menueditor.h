@@ -108,7 +108,7 @@ class MenuEditor : public wxDialog
   public:
 
     /** Constructor */
-    MenuEditor(wxWindow *parent, int id = -1);
+    MenuEditor(wxWindow *parent, int id = wxID_ANY);
 
     /** Rellena el wxListCtrl con los datos de "obj", que debe ser de tipo
     menubar */

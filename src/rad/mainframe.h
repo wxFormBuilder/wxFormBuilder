@@ -109,7 +109,7 @@ class MainFrame : public wxFrame
 
   DECLARE_EVENT_TABLE()
  public:
-  MainFrame(wxWindow *parent, int id = -1, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
+  MainFrame(wxWindow *parent, int id = wxID_ANY, int style = wxFB_DEFAULT_GUI, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 1000, 800 ) );
 	~MainFrame() override;
   void RestorePosition(const wxString &name);
   void SavePosition(const wxString &name);

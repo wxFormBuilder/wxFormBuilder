@@ -233,7 +233,7 @@ public:
 	}
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		m_count++;
-		wxStaticBox* box = new wxStaticBox((wxWindow *)parent, -1,
+		wxStaticBox* box = new wxStaticBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")));
 
 		wxStaticBoxSizer* sizer = new wxStaticBoxSizer(box,

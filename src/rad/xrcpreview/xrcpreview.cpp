@@ -222,7 +222,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 	}
 	else if ( className == wxT( "Panel" ) )
 	{
-		wxDialog* dialog = new wxDialog( wxTheApp->GetTopWindow(), -1, wxT( "Dialog" ), wxDefaultPosition,
+		wxDialog* dialog = new wxDialog( wxTheApp->GetTopWindow(), wxID_ANY, wxT( "Dialog" ), wxDefaultPosition,
 		                 wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
 		// Prevent events from propagating up to wxFB's frame
 		dialog->SetExtraStyle( wxWS_EX_BLOCK_EVENTS );

@@ -30,7 +30,7 @@ BEGIN_EVENT_TABLE(GenericWindow,wxPanel)
 END_EVENT_TABLE()
 
 GenericWindow::GenericWindow(wxWindow *parent)
-  : wxPanel (parent, -1,wxDefaultPosition,wxSize(30,30))
+  : wxPanel (parent, wxID_ANY,wxDefaultPosition,wxSize(30,30))
 {
 }
 

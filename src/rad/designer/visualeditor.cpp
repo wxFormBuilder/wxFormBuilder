@@ -39,11 +39,11 @@
 #define wxFULL_REPAINT_ON_RESIZE 0
 #endif
 
-static const int ID_TIMER_SCAN = wxNewId();
+static const int ID_TIMER_SCAN = wxWindow::NewControlId();
 
 BEGIN_EVENT_TABLE(VisualEditor,wxScrolledWindow)
-	//EVT_SASH_DRAGGED(-1, VisualEditor::OnResizeBackPanel)
-	//EVT_COMMAND(-1, wxEVT_PANEL_RESIZED, VisualEditor::OnResizeBackPanel)
+	//EVT_SASH_DRAGGED(wxID_ANY, VisualEditor::OnResizeBackPanel)
+	//EVT_COMMAND(wxID_ANY, wxEVT_PANEL_RESIZED, VisualEditor::OnResizeBackPanel)
 	EVT_INNER_FRAME_RESIZED(wxID_ANY, VisualEditor::OnResizeBackPanel)
 
 	EVT_FB_PROJECT_LOADED( VisualEditor::OnProjectLoaded )
@@ -61,7 +61,7 @@ END_EVENT_TABLE()
 
 VisualEditor::VisualEditor(wxWindow *parent)
 :
-wxScrolledWindow(parent,-1,wxDefaultPosition,wxDefaultSize,wxSUNKEN_BORDER),
+wxScrolledWindow(parent, wxID_ANY,wxDefaultPosition,wxDefaultSize,wxSUNKEN_BORDER),
 m_stopSelectedEvent( false ),
 m_stopModifiedEvent( false )
 {
@@ -1538,7 +1538,7 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 
 	if ( menubar )
 	{
-		mbWidget = new Menubar(contentPanel, -1);
+		mbWidget = new Menubar(contentPanel, wxID_ANY);
 		for ( unsigned int i = 0; i < menubar->GetChildCount(); i++ )
 		{
 			PObjectBase menu = menubar->GetChild( i );
@@ -1556,7 +1556,7 @@ void DesignerWindow::SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxW
 	if ( mbWidget )
 	{
 		dummySizer->Add(mbWidget, 0, wxEXPAND | wxTOP | wxBOTTOM, 0);
-		dummySizer->Add(new wxStaticLine(contentPanel, -1), 0, wxEXPAND | wxALL, 0);
+		dummySizer->Add(new wxStaticLine(contentPanel, wxID_ANY), 0, wxEXPAND | wxALL, 0);
 	}
 
 	wxSizer* contentSizer = dummySizer;

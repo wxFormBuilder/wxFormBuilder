@@ -49,11 +49,13 @@ class AboutDialog : public wxDialog
     wxStaticLine *window2;
     wxButton *m_button1;
     
-    DECLARE_EVENT_TABLE()
+	#if 0
+	DECLARE_EVENT_TABLE()
+	#endif
   
   public:
     
-    AboutDialog(wxWindow *parent, int id = -1);
+    AboutDialog(wxWindow *parent, int id = wxID_ANY);
     void OnButtonEvent (wxCommandEvent &event);
   
 };

@@ -59,7 +59,7 @@ XrcPanel::XrcPanel( wxWindow *parent, int id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_xrcPanel = new CodeEditor( this, -1 );
+	m_xrcPanel = new CodeEditor( this, wxID_ANY);
 	InitStyledTextCtrl( m_xrcPanel->GetTextCtrl() );
 
 	top_sizer->Add( m_xrcPanel, 1, wxEXPAND, 0 );

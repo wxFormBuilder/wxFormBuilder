@@ -34,20 +34,18 @@
 	#include <wx/tooltip.h>
 #endif
 
-#define ID_PALETTE_BUTTON 999
-
 #define DRAG_OPTION 0
 
-wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 1000;
+wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 3000;
 
 BEGIN_EVENT_TABLE( wxFbPalette, wxPanel )
 	#ifdef __WXMAC__
-		EVT_BUTTON( -1, wxFbPalette::OnButtonClick )
+		EVT_BUTTON(wxID_ANY, wxFbPalette::OnButtonClick)
 	#else
-		EVT_TOOL(-1, wxFbPalette::OnButtonClick)
+		EVT_TOOL(wxID_ANY, wxFbPalette::OnButtonClick)
 	#endif
-	EVT_SPIN_UP( -1, wxFbPalette::OnSpinUp )
-	EVT_SPIN_DOWN( -1, wxFbPalette::OnSpinDown )
+	EVT_SPIN_UP(wxID_ANY, wxFbPalette::OnSpinUp)
+	EVT_SPIN_DOWN(wxID_ANY, wxFbPalette::OnSpinDown)
 END_EVENT_TABLE()
 
 wxFbPalette::wxFbPalette( wxWindow *parent, int id )
@@ -107,11 +105,11 @@ void wxFbPalette::Create()
 		PObjectPackage pkg = AppData()->GetPackage( i );
 		wxString pkg_name = pkg->GetPackageName();
 
-		wxPanel *panel = new wxPanel( m_notebook, -1 );
+		wxPanel *panel = new wxPanel( m_notebook, wxID_ANY);
 		//panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 		wxBoxSizer *sizer = new wxBoxSizer( wxHORIZONTAL );
 
-		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, -1, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
+		wxAuiToolBar *toolbar = new wxAuiToolBar( panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER );
 		toolbar->SetToolBitmapSize( wxSize( 22, 22 ) );
 		PopulateToolbar( pkg, toolbar );
 		m_tv.push_back( toolbar );
