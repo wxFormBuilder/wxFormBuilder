@@ -242,10 +242,10 @@ PHP code generation writen by
 			@{ wxPanel @}
 		</template>
 		<template name="cons_def">
-			function __construct( @$parent=null ){
+			function __construct( @$parent=null, @$id=$id, @$pos=$pos, @$size=$size, @$style=$window_style, @$name=$window_name ){
 		</template>
 		<template name="cons_call">
-			parent::__construct( @$parent, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} );
+			parent::__construct( @$parent, @$id, @$pos, @$size, @$style, @$name );
 		</template>
 		<template name="destruction">
 			#ifequal $aui_managed "1"
