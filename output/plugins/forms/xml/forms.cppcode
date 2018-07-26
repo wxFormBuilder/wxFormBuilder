@@ -231,18 +231,18 @@ Written by
 			@{ public wxPanel @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, wxWindowID id = $id, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $window_style #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
+			$name( wxWindow* parent, wxWindowID id = $id, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $window_style, const wxString&amp; name = $window_name );
 			#ifequal $aui_managed "1"
 			@{ wxAuiManager m_mgr; #nl @}
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, wxWindowID id, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
+			$name::$name( wxWindow* parent, wxWindowID id, const wxPoint&amp; pos, const wxSize&amp; size, long style, const wxString&amp; name ) :
 
 			#ifnotnull $subclass/name
 			@{ $subclass/name @}
 
 			#ifnull $subclass/name
-			@{ wxPanel@}( parent, id, pos, size, style#ifnotnull $window_name @{, name@} )
+			@{ wxPanel@}( parent, id, pos, size, style, name )
 		</template>
 			<template name="destruction">
 			#ifequal $aui_managed "1"
