@@ -487,7 +487,10 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 						wxPGProperty* child = nullptr;
 						if( PT_BOOL == it->m_type )
 						{
-							child = new wxBoolProperty( it->m_name, wxPG_LABEL, value.IsEmpty() || (value == it->m_name) );
+							// Because the format of a composed wxPGProperty value is stored this needs to be converted
+							// true == "<property name>"
+							// false == "Not <property name>"
+							child = new wxBoolProperty(it->m_name, wxPG_LABEL, value == it->m_name);
 						}
 						else if( PT_WXSTRING == it->m_type )
 						{
@@ -736,8 +739,11 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 			}
 			case PT_PARENT:
 			{
-				wxVariant value = propPtr->GetValue();
-				ModifyProperty( prop, propPtr->ValueToString( value, wxPG_FULL_VALUE ));
+				// GenerateComposedValue() is the only method that does actually return a value,
+				// although the documentation claims the other methods just call this one,
+				// they return an empty value
+				const auto value = propPtr->GenerateComposedValue();
+				ModifyProperty(prop, value);
 				break;
 			}
 			case PT_WXSTRING:
