@@ -1214,22 +1214,25 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				child.m_type = ParsePropertyType( _WXSTR( child_type ) );
 
 				// Get default value
+				// Empty tags don't contain any child so this will throw in that case
+				std::string child_value;
 				try
 				{
 					ticpp::Node* lastChild = elem_child->LastChild();
 					ticpp::Text* text = lastChild->ToText();
-					child.m_defaultValue = _WXSTR( text->Value() );
-
-					// build parent default value
-					if ( children.size() > 0 )
-					{
-						def_value += "; ";
-					}
-					def_value += text->Value();
+					child_value = text->Value();
 				}
 				catch( ticpp::Exception& ){}
+				child.m_defaultValue = _WXSTR(child_value);
 
-				children.push_back( child );
+				// build parent default value
+				if (children.size() > 0)
+				{
+					def_value += "; ";
+				}
+				def_value += child_value;
+				
+				children.push_back(child);
 
 				elem_child = elem_child->NextSiblingElement( "child", false );
 			}

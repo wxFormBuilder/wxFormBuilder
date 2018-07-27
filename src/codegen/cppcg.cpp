@@ -1285,7 +1285,8 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		std::map< wxString, wxString >::iterator forward_declare_it = children.find( wxT( "forward_declare" ) );
 		if ( children.end() != forward_declare_it )
 		{
-			forward_declare = forward_declare_it->second == wxT( "forward_declare" );
+			// The value needs to be tested like ObjectInspector does
+			forward_declare = (forward_declare_it->second == forward_declare_it->first);
 		}
 
 		//get namespaces
