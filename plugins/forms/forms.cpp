@@ -181,6 +181,15 @@ public:
 		return tb;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxToolBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxToolBar* tb = wxDynamicCast( wxobject, wxToolBar );
 		if ( NULL == tb )

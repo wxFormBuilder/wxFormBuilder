@@ -393,6 +393,15 @@ public:
 		return tc;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxTextCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxTextCtrl"), obj->GetPropertyAsString(_("name")));
@@ -500,6 +509,15 @@ public:
 		return combo;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxComboBox);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxComboBox"), obj->GetPropertyAsString(_("name")));
@@ -546,6 +564,15 @@ public:
 		return bcombo;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxBitmapComboBox);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -577,6 +604,15 @@ public:
 		res->PushEventHandler( new ComponentEvtHandler( res, GetManager() ) );
 
 		return res;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxCheckBox);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -876,6 +912,17 @@ public:
 		return sb;
 	}
 
+	#ifndef __WXMSW__
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxStatusBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	#endif
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxStatusBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -1050,6 +1097,15 @@ public:
 		tb->PushEventHandler( new ComponentEvtHandler( tb, GetManager() ) );
 
 		return tb;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxToolBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
@@ -1452,6 +1508,15 @@ public:
 		return choice;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxChoice);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -1591,6 +1656,15 @@ public:
 		return ac;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxAnimationCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxAnimationCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -1621,6 +1695,15 @@ public:
 		ib->PushEventHandler( new ComponentEvtHandler( ib, GetManager() ) );
 
 		return ib;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxInfoBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject *obj) override
