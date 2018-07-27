@@ -1,0 +1,8 @@
+---
+Checks: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers'
+WarningsAsErrors: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers'
+CheckOptions:
+      - key:             readability-implicit-bool-conversion.AllowPointerConditions
+        value:           '1'
+      - key:             readability-implicit-bool-conversion.AllowIntegerConditions
+        value:           '1'
