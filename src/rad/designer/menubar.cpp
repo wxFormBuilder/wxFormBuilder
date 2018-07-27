@@ -36,7 +36,7 @@ Menubar::Menubar(wxWindow *parent, int id, const wxPoint& pos, const wxSize &siz
 {
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
     m_sizer = new wxBoxSizer(wxHORIZONTAL);
-    m_sizer->Add(new wxStaticText(this, -1, wxT(" ")), 0, wxRIGHT | wxLEFT, 0);
+    m_sizer->Add(new wxStaticText(this, wxID_ANY, wxT(" ")), 0, wxRIGHT | wxLEFT, 0);
     mainSizer->Add(m_sizer, 1, wxTOP | wxBOTTOM, 3);
     SetSizer(mainSizer);
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
@@ -68,7 +68,7 @@ Menubar::~Menubar()
 
 void Menubar::AppendMenu(const wxString& name, wxMenu *menu)
 {
-    wxStaticText *st = new wxStaticText(this, -1, name);
+    wxStaticText *st = new wxStaticText(this, wxID_ANY, name);
     st->PushEventHandler(new MenuEvtHandler(st, menu));
     m_sizer->Add(st, 0, wxALIGN_LEFT | wxRIGHT | wxLEFT, 5);
     Layout();

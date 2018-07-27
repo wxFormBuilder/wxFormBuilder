@@ -64,7 +64,7 @@ wxPanel( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_pythonPanel = new CodeEditor( this, -1 );
+	m_pythonPanel = new CodeEditor( this, wxID_ANY);
 	InitStyledTextCtrl( m_pythonPanel->GetTextCtrl() );
 
 	top_sizer->Add( m_pythonPanel, 1, wxEXPAND, 0 );

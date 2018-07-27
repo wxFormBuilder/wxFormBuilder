@@ -244,7 +244,7 @@ int MyApp::OnRun()
 
 	config->SetPath( wxT("/") );
 
-	m_frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
+	m_frame = new MainFrame( NULL ,wxID_ANY, (int)style, wxPoint( x, y ), wxSize( w, h ) );
 	if ( !justGenerate )
 	{
 		m_frame->Show( TRUE );

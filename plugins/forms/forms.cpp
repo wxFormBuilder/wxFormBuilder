@@ -57,7 +57,7 @@ class FrameFormComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
-		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
+		wxPanel *panel = new wxPanel((wxWindow *)parent, wxID_ANY);
 		panel->SetBackgroundColour(wxColour(50,50,50));
 		return panel;
 	}
@@ -88,7 +88,7 @@ class PanelFormComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
-		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
+		wxPanel *panel = new wxPanel((wxWindow *)parent, wxID_ANY);
 		return panel;
 	}
 
@@ -109,7 +109,7 @@ class DialogFormComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
-		wxPanel *panel = new wxPanel((wxWindow *)parent,-1);
+		wxPanel *panel = new wxPanel((wxWindow *)parent, wxID_ANY);
 		return panel;
 	}
 
@@ -159,7 +159,7 @@ class ToolBarFormComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxToolBar *tb = new wxToolBar((wxWindow*)parent, -1,
+		wxToolBar *tb = new wxToolBar((wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(wxT("pos")),
 			obj->GetPropertyAsSize(wxT("size")),
 			obj->GetPropertyAsInteger(wxT("style")) | obj->GetPropertyAsInteger(wxT("window_style")) | wxTB_NOALIGN | wxTB_NODIVIDER | wxNO_BORDER);

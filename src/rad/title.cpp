@@ -25,11 +25,11 @@
 
 #include "title.h"
 
-Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent,-1)
+Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent, wxID_ANY)
 {
   wxBoxSizer* sizer = new wxBoxSizer( wxVERTICAL );
 
-  wxStaticText *text = new wxStaticText(this,-1,title);//,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
+  wxStaticText *text = new wxStaticText(this, wxID_ANY,title);//,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
   SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT ) );
@@ -45,7 +45,7 @@ wxWindow * Title::CreateTitle (wxWindow *inner, const wxString &title)
 {
   wxWindow *parent = inner->GetParent();
 
-  wxPanel *container = new wxPanel(parent, -1);
+  wxPanel *container = new wxPanel(parent, wxID_ANY);
   Title *titleWin = new Title(container,title);
   inner->Reparent(container);
 

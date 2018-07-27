@@ -44,8 +44,10 @@
 
 static int wxEVT_FB_PROP_BITMAP_CHANGED = wxNewEventType();
 
-#define WXFB_PROPERTY_GRID 1000
-#define WXFB_EVENT_GRID    1001
+enum {
+	WXFB_PROPERTY_GRID = wxID_HIGHEST + 1000,
+	WXFB_EVENT_GRID,
+};
 
 // -----------------------------------------------------------------------
 // ObjectInspector

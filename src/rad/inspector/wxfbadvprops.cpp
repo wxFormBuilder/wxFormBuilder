@@ -789,10 +789,9 @@ wxPGWindowList wxPGSliderEditor::CreateControls( wxPropertyGrid* propgrid,
         else if ( v_d > 1 )
             v_d = 1;
     }
-    int sliderId = wxNewId();
 
     ctrl->Create( propgrid->GetPanel(),
-                  sliderId,
+                  wxID_ANY,
                   (int)(v_d * m_max),
                   0,
                   m_max,

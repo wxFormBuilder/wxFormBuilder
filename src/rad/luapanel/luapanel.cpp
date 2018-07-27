@@ -64,7 +64,7 @@ wxPanel( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_luaPanel = new CodeEditor( this, -1 );
+	m_luaPanel = new CodeEditor( this, wxID_ANY);
 	InitStyledTextCtrl( m_luaPanel->GetTextCtrl() );
 
 	top_sizer->Add( m_luaPanel, 1, wxEXPAND, 0 );

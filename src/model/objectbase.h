@@ -377,7 +377,7 @@ public:
 	*
 	* if (plabel && ppos && psize && pstyle)
 	* {
-	*   wxButton *button = new wxButton(parent,-1,
+	*   wxButton *button = new wxButton(parent,wxID_ANY,
 	*    plabel->GetValueAsString(),
 	*    ppos->GetValueAsPoint(),
 	*    psize->GetValueAsSize(),
@@ -396,7 +396,7 @@ public:
 	*
 	* try
 	* {
-	*   wxButton *button = new wxButton(parent,-1,
+	*   wxButton *button = new wxButton(parent,wxID_ANY,
 	*     obj->GetProperty("label")->GetValueAsString(),
 	*     obj->GetProperty("pos")->GetValueAsPoint(),
 	*     obj->GetProperty("size")->GetValueAsSize(),

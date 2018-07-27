@@ -120,15 +120,15 @@ protected:
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 #ifdef wxUSE_COLLPANE
-	EVT_COLLAPSIBLEPANE_CHANGED( -1, ComponentEvtHandler::OnCollapsiblePaneChanged )
+	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, ComponentEvtHandler::OnCollapsiblePaneChanged)
 #endif
-	EVT_NOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnNotebookPageChanged )
-	EVT_LISTBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnListbookPageChanged )
-	EVT_CHOICEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnChoicebookPageChanged )
-	EVT_AUINOTEBOOK_PAGE_CHANGED( -1, ComponentEvtHandler::OnAuiNotebookPageChanged )
-	EVT_AUINOTEBOOK_PAGE_CLOSE( -1, ComponentEvtHandler::OnAuiNotebookPageClosed )
-	EVT_AUINOTEBOOK_ALLOW_DND( -1, ComponentEvtHandler::OnAuiNotebookAllowDND )
-	EVT_SPLITTER_SASH_POS_CHANGED( -1, ComponentEvtHandler::OnSplitterSashChanged )
+	EVT_NOTEBOOK_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnNotebookPageChanged)
+	EVT_LISTBOOK_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnListbookPageChanged)
+	EVT_CHOICEBOOK_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnChoicebookPageChanged)
+	EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnAuiNotebookPageChanged)
+	EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, ComponentEvtHandler::OnAuiNotebookPageClosed)
+	EVT_AUINOTEBOOK_ALLOW_DND(wxID_ANY, ComponentEvtHandler::OnAuiNotebookAllowDND)
+	EVT_SPLITTER_SASH_POS_CHANGED(wxID_ANY, ComponentEvtHandler::OnSplitterSashChanged)
 END_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -207,7 +207,7 @@ class PanelComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxPanel* panel = new wxPanel((wxWindow *)parent,-1,
+		wxPanel* panel = new wxPanel((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -233,7 +233,7 @@ class CollapsiblePaneComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxCollapsiblePane* collpane = new wxCollapsiblePane( (wxWindow *)parent, -1,
+		wxCollapsiblePane* collpane = new wxCollapsiblePane( (wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString( _("label") ),
 			obj->GetPropertyAsPoint( _("pos") ),
 			obj->GetPropertyAsSize( _("size") ),
@@ -282,7 +282,7 @@ class SplitterWindowComponent : public ComponentBase
 {
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxCustomSplitterWindow *splitter =
-			new wxCustomSplitterWindow((wxWindow *)parent,-1,
+			new wxCustomSplitterWindow((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			(obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))) & ~wxSP_PERMIT_UNSPLIT );
@@ -462,7 +462,7 @@ class ScrolledWindowComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-        wxScrolledWindow *sw = new wxScrolledWindow((wxWindow *)parent, -1,
+        wxScrolledWindow *sw = new wxScrolledWindow((wxWindow *)parent, wxID_ANY,
             obj->GetPropertyAsPoint(_("pos")),
             obj->GetPropertyAsSize(_("size")),
             obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -500,7 +500,7 @@ class NotebookComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxNotebook* book = new wxCustomNotebook((wxWindow *)parent,-1,
+		wxNotebook* book = new wxCustomNotebook((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -567,7 +567,7 @@ class ListbookComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxListbook* book = new wxListbook((wxWindow *)parent,-1,
+		wxListbook* book = new wxListbook((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -648,7 +648,7 @@ class ChoicebookComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxChoicebook* book = new wxChoicebook((wxWindow *)parent,-1,
+		wxChoicebook* book = new wxChoicebook((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -708,7 +708,7 @@ class AuiNotebookComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxAuiNotebook* book = new wxAuiNotebook((wxWindow *)parent,-1,
+		wxAuiNotebook* book = new wxAuiNotebook((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -815,7 +815,7 @@ class SimplebookComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxSimplebook((wxWindow *)parent,-1,
+		return new wxSimplebook((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));

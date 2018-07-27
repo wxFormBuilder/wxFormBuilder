@@ -101,10 +101,10 @@ protected:
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
-	EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
-	EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
-	EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
-	EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
+	EVT_COLOURPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnColourPickerColourChanged)
+	EVT_FONTPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFontPickerFontChanged)
+	EVT_FILEPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFilePickerFileChanged)
+	EVT_DIRPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnDirPickerDirChanged)
 	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 
 	// Grid also seems to ignore clicks
@@ -115,8 +115,8 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
 
 #if wxVERSION_NUMBER >= 2904
-	EVT_STC_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
-	EVT_RIBBONBAR_PAGE_CHANGED( -1, ComponentEvtHandler::OnRibbonBarPageChanged )
+	EVT_STC_MARGINCLICK(wxID_ANY, ComponentEvtHandler::OnMarginClick)
+	EVT_RIBBONBAR_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnRibbonBarPageChanged)
 #endif
 END_EVENT_TABLE()
 
@@ -153,7 +153,7 @@ class CalendarCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxCalendarCtrl((wxWindow *)parent,-1,
+		return new wxCalendarCtrl((wxWindow *)parent, wxID_ANY,
 			wxDefaultDateTime,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -178,7 +178,7 @@ class DatePickerCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxDatePickerCtrl((wxWindow *)parent,-1,
+		return new wxDatePickerCtrl((wxWindow *)parent, wxID_ANY,
 			wxDefaultDateTime,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -202,7 +202,7 @@ class TimePickerCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxTimePickerCtrl( ( wxWindow * )parent, -1,
+		return new wxTimePickerCtrl( ( wxWindow * )parent, wxID_ANY,
 									 wxDefaultDateTime,
 									 obj->GetPropertyAsPoint( _( "pos" ) ),
 									 obj->GetPropertyAsSize( _( "size" ) ),
@@ -386,7 +386,7 @@ class HtmlWindowComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxHtmlWindow *hw = new wxHtmlWindow((wxWindow *)parent,-1,
+		wxHtmlWindow *hw = new wxHtmlWindow((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -420,7 +420,7 @@ class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxToggleButton* window = new wxToggleButton((wxWindow *)parent,-1,
+		wxToggleButton* window = new wxToggleButton((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -475,7 +475,7 @@ class TreeCtrlComponent : public ComponentBase
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		int style = obj->GetPropertyAsInteger(_("style"));
-		wxTreeCtrl *tc = new wxTreeCtrl((wxWindow *)parent,-1,
+		wxTreeCtrl *tc = new wxTreeCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			style | obj->GetPropertyAsInteger(_("window_style")));
@@ -513,7 +513,7 @@ class ScrollBarComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxScrollBar *sb = new wxScrollBar((wxWindow *)parent,-1,
+		wxScrollBar *sb = new wxScrollBar((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -552,7 +552,7 @@ public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		int max = obj->GetPropertyAsInteger(_("max"));
 		int min = obj->GetPropertyAsInteger(_("min"));
-		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent,-1,
+		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -611,7 +611,7 @@ class SpinCtrlDoubleComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxSpinCtrlDouble* window = new wxSpinCtrlDouble((wxWindow *)parent, -1,
+		wxSpinCtrlDouble* window = new wxSpinCtrlDouble((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -677,7 +677,7 @@ class SpinButtonComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		return new wxSpinButton((wxWindow *)parent,-1,
+		return new wxSpinButton((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -702,7 +702,7 @@ public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxArrayString choices (obj->GetPropertyAsArrayString(_("choices")));
 		wxCheckListBox *cl =
-			new wxCheckListBox((wxWindow *)parent,-1,
+			new wxCheckListBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			choices,
@@ -730,7 +730,7 @@ class GridComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxGrid *grid = new wxGrid((wxWindow *)parent,-1,
+		wxGrid *grid = new wxGrid((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
@@ -1125,7 +1125,7 @@ class HyperlinkComponent : public ComponentBase
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxHyperlinkCtrl* ctrl = new wxHyperlinkCtrl(
-			(wxWindow*)parent, -1,
+			(wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsString(_("url")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1226,7 +1226,7 @@ class CustomControlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
-		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
+		return new wxPanel((wxWindow *)parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -1353,7 +1353,7 @@ class PropertyGridComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent,-1,
+		wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent, wxID_ANY,
 												obj->GetPropertyAsPoint(wxT("pos")),
 												obj->GetPropertyAsSize(wxT("size")),
 												obj->GetPropertyAsInteger(wxT("style")) |
@@ -1415,7 +1415,7 @@ class PropertyGridManagerComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, -1,
+		wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, wxID_ANY,
 																obj->GetPropertyAsPoint(wxT("pos")),
 																obj->GetPropertyAsSize(wxT("size")),
 																obj->GetPropertyAsInteger(wxT("style")) |
@@ -1587,7 +1587,7 @@ class StyledTextComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxStyledTextCtrl* m_code = new wxStyledTextCtrl( 	(wxWindow *)parent, -1,
+		wxStyledTextCtrl* m_code = new wxStyledTextCtrl( 	(wxWindow *)parent, wxID_ANY,
 												obj->GetPropertyAsPoint(_("pos")),
 												obj->GetPropertyAsSize(_("size")),
 												obj->GetPropertyAsInteger(_("window_style")),
@@ -1881,7 +1881,7 @@ class wxcoreTreeListCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxTreeListCtrl* treeListCtrl = new wxTreeListCtrl( (wxWindow *)parent, -1,
+		wxTreeListCtrl* treeListCtrl = new wxTreeListCtrl( (wxWindow *)parent, wxID_ANY,
 				obj->GetPropertyAsPoint(_("pos")),
 				obj->GetPropertyAsSize(_("size")),
 				obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));

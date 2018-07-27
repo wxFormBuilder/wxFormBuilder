@@ -65,15 +65,15 @@ wxPanel( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_notebook = new wxAuiNotebook( this, -1, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
+	m_notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
 	m_notebook->SetArtProvider( new AuiTabArt() );
 
-	m_cppPanel = new CodeEditor( m_notebook, -1 );
+	m_cppPanel = new CodeEditor( m_notebook, wxID_ANY);
 	InitStyledTextCtrl( m_cppPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_cppPanel, wxT( "cpp" ), false, 0 );
 	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "cpp" ), 16 ) );
 
-	m_hPanel = new CodeEditor( m_notebook, -1 );
+	m_hPanel = new CodeEditor( m_notebook, wxID_ANY);
 	InitStyledTextCtrl( m_hPanel->GetTextCtrl() );
 	m_notebook->AddPage( m_hPanel, wxT( "h" ), false, 1 );
 	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "h" ), 16 ) );

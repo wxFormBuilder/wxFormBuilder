@@ -27,16 +27,18 @@
 
 #include "../model/objectbase.h"
 
-#define ID_DEFAULT -1 // Default
-#define ID_ADDMENUITEM 1000
-#define ID_ADDSEPARATOR 1001
-#define ID_MENUDOWN 1002
-#define ID_MENULEFT 1003
-#define ID_MENURIGHT 1004
-#define ID_MENUUP 1005
-#define ID_REMOVEMENUITEM 1006
-#define ID_LABEL 1007
-#define ID_MODIFYMENUITEM 1008
+enum
+{
+	ID_ADDMENUITEM = wxID_HIGHEST + 1,
+	ID_ADDSEPARATOR,
+	ID_MENUDOWN,
+	ID_MENULEFT,
+	ID_MENURIGHT,
+	ID_MENUUP,
+	ID_REMOVEMENUITEM,
+	ID_LABEL,
+	ID_MODIFYMENUITEM,
+};
 
 #define IDENTATION 4
 
@@ -50,9 +52,9 @@ BEGIN_EVENT_TABLE(MenuEditor, wxDialog)
     EVT_BUTTON(ID_MENURIGHT, MenuEditor::OnMenuRight)
     EVT_BUTTON(ID_MENUUP, MenuEditor::OnMenuUp)
     EVT_UPDATE_UI_RANGE(ID_MENUDOWN, ID_MENUUP, MenuEditor::OnUpdateMovers)
-    EVT_TEXT_ENTER(-1, MenuEditor::OnEnter)
+    EVT_TEXT_ENTER(wxID_ANY, MenuEditor::OnEnter)
     EVT_TEXT(ID_LABEL, MenuEditor::OnLabelChanged)
-    EVT_LIST_ITEM_ACTIVATED(-1, MenuEditor::OnItemActivated)
+    EVT_LIST_ITEM_ACTIVATED(wxID_ANY, MenuEditor::OnItemActivated)
 END_EVENT_TABLE()
 
 MenuEditor::MenuEditor(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Menu Editor"),wxDefaultPosition,wxDefaultSize)
@@ -61,7 +63,7 @@ MenuEditor::MenuEditor(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Menu 
   mainSizer = new wxBoxSizer(wxVERTICAL);
   wxBoxSizer *sizerTop;
   sizerTop = new wxBoxSizer(wxHORIZONTAL);
-  m_menuList = new wxListCtrl(this,ID_DEFAULT,wxDefaultPosition,wxDefaultSize,wxLC_REPORT | wxLC_SINGLE_SEL | wxSTATIC_BORDER);
+  m_menuList = new wxListCtrl(this,wxID_ANY,wxDefaultPosition,wxDefaultSize,wxLC_REPORT | wxLC_SINGLE_SEL | wxSTATIC_BORDER);
   m_menuList->InsertColumn(0, wxT("Label"), wxLIST_FORMAT_LEFT, 150);
   m_menuList->InsertColumn(1, wxT("Shortcut"), wxLIST_FORMAT_LEFT, 80);
   m_menuList->InsertColumn(2, wxT("Id"), wxLIST_FORMAT_LEFT, 80);
@@ -76,44 +78,44 @@ MenuEditor::MenuEditor(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Menu 
   m_menuList->SetMinSize( wxSize( width, -1 ) );
   sizerTop->Add(m_menuList, 1, wxALL|wxEXPAND, 5);
   wxStaticBoxSizer *sizer1;
-  sizer1 = new wxStaticBoxSizer(new wxStaticBox(this, -1, wxT("Menu item")), wxVERTICAL);
+  sizer1 = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Menu item")), wxVERTICAL);
 	const auto sizer11 = new wxFlexGridSizer(2, 0, 0);
   sizer11->AddGrowableCol(1);
 
   wxStaticText *m_stLabel;
-  m_stLabel = new wxStaticText(this,ID_DEFAULT,wxT("Label"),wxDefaultPosition,wxDefaultSize,0);
+  m_stLabel = new wxStaticText(this,wxID_ANY,wxT("Label"),wxDefaultPosition,wxDefaultSize,0);
   sizer11->Add(m_stLabel, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
   m_tcLabel = new wxTextCtrl(this,ID_LABEL,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
   sizer11->Add(m_tcLabel, 0, wxALL | wxEXPAND, 5);
 
   wxStaticText *m_stShortcut;
-  m_stShortcut = new wxStaticText(this,ID_DEFAULT,wxT("Shortcut"),wxDefaultPosition,wxDefaultSize,0);
+  m_stShortcut = new wxStaticText(this,wxID_ANY,wxT("Shortcut"),wxDefaultPosition,wxDefaultSize,0);
   sizer11->Add(m_stShortcut, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
   m_tcShortcut = new wxTextCtrl(this,ID_LABEL,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
   sizer11->Add(m_tcShortcut, 0, wxALL | wxEXPAND, 5);
 
   wxStaticText *m_stId;
-  m_stId = new wxStaticText(this,ID_DEFAULT,wxT("Id"),wxDefaultPosition,wxDefaultSize,0);
+  m_stId = new wxStaticText(this,wxID_ANY,wxT("Id"),wxDefaultPosition,wxDefaultSize,0);
   sizer11->Add(m_stId, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  m_tcId = new wxTextCtrl(this,ID_DEFAULT,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
+  m_tcId = new wxTextCtrl(this,wxID_ANY,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
   sizer11->Add(m_tcId, 0, wxALL | wxEXPAND, 5);
 
   wxStaticText *m_stName;
-  m_stName = new wxStaticText(this,ID_DEFAULT,wxT("Name"),wxDefaultPosition,wxDefaultSize,0);
+  m_stName = new wxStaticText(this,wxID_ANY,wxT("Name"),wxDefaultPosition,wxDefaultSize,0);
   sizer11->Add(m_stName, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  m_tcName = new wxTextCtrl(this,ID_DEFAULT,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
+  m_tcName = new wxTextCtrl(this,wxID_ANY,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
   sizer11->Add(m_tcName, 0, wxALL | wxEXPAND, 5);
 
   wxStaticText *m_stHelpString;
-  m_stHelpString = new wxStaticText(this,ID_DEFAULT,wxT("Help String"),wxDefaultPosition,wxDefaultSize,0);
+  m_stHelpString = new wxStaticText(this,wxID_ANY,wxT("Help String"),wxDefaultPosition,wxDefaultSize,0);
   sizer11->Add(m_stHelpString, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5);
-  m_tcHelpString = new wxTextCtrl(this,ID_DEFAULT,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
+  m_tcHelpString = new wxTextCtrl(this,wxID_ANY,wxT(""),wxDefaultPosition,wxDefaultSize,wxTE_PROCESS_ENTER);
   sizer11->Add(m_tcHelpString, 0, wxALL | wxEXPAND, 5);
 
   sizer1->Add(sizer11, 0, wxALL | wxEXPAND, 0);
 
   wxString choices[] = {wxT("Normal"), wxT("Check"), wxT("Radio")};
-  m_rbItemKind = new wxRadioBox(this, -1, wxT("Kind"), wxDefaultPosition, wxDefaultSize,
+  m_rbItemKind = new wxRadioBox(this, wxID_ANY, wxT("Kind"), wxDefaultPosition, wxDefaultSize,
     3, choices, 1, wxRA_SPECIFY_ROWS);
   sizer1->Add(m_rbItemKind, 0, wxALL | wxEXPAND, 5);
 

@@ -286,8 +286,8 @@ wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
 	m_curX = m_curY = -1;
 	m_resizeBorder = 10;
 
-	m_titleBar = new TitleBar( this, -1, wxDefaultPosition, wxDefaultSize, style );
-	m_frameContent = new wxPanel( this, -1, wxDefaultPosition, wxDefaultSize );
+	m_titleBar = new TitleBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, style );
+	m_frameContent = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
 
 	// Use spacers to create a 1 pixel border on left and top of content panel - this is for drawing the selection box
 	// Use borders to create a 2 pixel border on right and bottom - this is so the back panel can catch mouse events for resizing
