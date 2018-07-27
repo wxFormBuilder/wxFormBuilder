@@ -230,7 +230,7 @@ Python code generation writen by
 			@{ wx.Panel @}
 		</template>
 		<template name="cons_def">
-			def __init__( self, parent ):
+			def __init__( self, parent, id = $id, pos = $pos, size = $size, style = $window_style, name = $window_name ):
 		</template>
 		<template name="cons_call">
 			#ifnotnull $subclass/name
@@ -238,7 +238,7 @@ Python code generation writen by
 
 			#ifnull $subclass/name
 			@{ wx.Panel.__init__@}
-			( self, parent, id = $id, pos = $pos, size = $size, style = $window_style #ifnotnull $window_name @{, name = $window_name @} )
+			( self, parent, id = id, pos = pos, size = size, style = style, name = name )
 		</template>
 		<template name="destruction">
 			#ifequal $aui_managed "1"
