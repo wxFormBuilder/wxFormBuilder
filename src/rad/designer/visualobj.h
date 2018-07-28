@@ -30,6 +30,8 @@
 
 #include <wx/wx.h>
 
+class DesignerWindow;
+
 /**
  * Processes events from visual objects.
  */
@@ -38,14 +40,13 @@ class VObjEvtHandler : public wxEvtHandler
  private:
    WPObjectBase m_object;
    wxWindow *m_window;
-
-   VObjEvtHandler() {};
+	DesignerWindow* m_designer;
 
  protected:
   DECLARE_EVENT_TABLE()
 
  public:
-   VObjEvtHandler(wxWindow *win, PObjectBase obj);
+	VObjEvtHandler(DesignerWindow* designer, wxWindow* win, PObjectBase obj);
    void OnLeftClick(wxMouseEvent &event);
    void OnRightClick(wxMouseEvent &event);
    void OnPaint(wxPaintEvent &event);

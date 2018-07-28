@@ -42,6 +42,7 @@ class DesignerWindow : public wxInnerFrame
    wxObject *m_selItem;
    WPObjectBase m_selObj;
    wxWindow *m_actPanel;
+	bool m_highlightOnIdle;
 
    void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object);
 
@@ -54,9 +55,10 @@ class DesignerWindow : public wxInnerFrame
       DECLARE_EVENT_TABLE()
 
       wxWindow *m_window;
+		DesignerWindow* m_designer;
 
      public:
-       HighlightPaintHandler(wxWindow *win);
+		HighlightPaintHandler(DesignerWindow* designer, wxWindow *win);
        void OnPaint(wxPaintEvent &event);
    };
 
@@ -79,8 +81,9 @@ class DesignerWindow : public wxInnerFrame
    wxWindow* GetActivePanel() { return m_actPanel; }
    static wxMenu* GetMenuFromObject(PObjectBase menu);
    void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar, wxWindow *auipanel);
-   void HighlightSelection(wxDC& dc);
+	void HighlightSelection(wxDC& dc, bool highlightOnIdle = false);
    void OnPaint(wxPaintEvent &event);
+   void OnIdle(wxIdleEvent& event);
 };
 
 class wxFBEvent;
