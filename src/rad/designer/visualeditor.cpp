@@ -1294,7 +1294,8 @@ END_EVENT_TABLE()
 
 DesignerWindow::DesignerWindow( wxWindow *parent, int id, const wxPoint& pos, const wxSize &size, long style, const wxString & /*name*/ )
 :
-wxInnerFrame(parent, id, pos, size, style)
+wxInnerFrame(parent, id, pos, size, style),
+m_highlightOnIdle(false)
 {
 	ShowTitleBar(false);
 	SetGrid( 10, 10 );
@@ -1304,6 +1305,8 @@ wxInnerFrame(parent, id, pos, size, style)
 	SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_BTNFACE ) );
 
 	GetFrameContentPanel()->PushEventHandler(new HighlightPaintHandler(this, GetFrameContentPanel()));
+
+	Bind(wxEVT_IDLE, &DesignerWindow::OnIdle, this);
 }
 
 DesignerWindow::~DesignerWindow()
@@ -1327,10 +1330,25 @@ void DesignerWindow::OnPaint(wxPaintEvent &event)
 	{
 		wxPoint origin = GetFrameContentPanel()->GetPosition();
 		dc.SetDeviceOrigin( origin.x, origin.y );
-		HighlightSelection( dc );
+		HighlightSelection(dc, true);
 	}
 
 	event.Skip();
+}
+
+void DesignerWindow::OnIdle(wxIdleEvent& /*event*/)
+{
+	if (!m_highlightOnIdle)
+	{
+		return;
+	}
+	m_highlightOnIdle = false;
+
+	if (m_actPanel)
+	{
+		wxClientDC dc(m_actPanel);
+		HighlightSelection(dc, false);
+	}
 }
 
 void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object )
@@ -1356,7 +1374,7 @@ void DesignerWindow::DrawRectangle( wxDC& dc, const wxPoint& point, const wxSize
 						size.y + topBorder + bottomBorder );
 }
 
-void DesignerWindow::HighlightSelection( wxDC& dc )
+void DesignerWindow::HighlightSelection(wxDC& dc, bool highlightOnIdle)
 {
 	// do not highlight if AUI is used in floating mode
 	VisualEditor *editor = wxDynamicCast( GetParent(), VisualEditor );
@@ -1457,6 +1475,11 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 			dc.SetBrush( *wxTRANSPARENT_BRUSH );
 			DrawRectangle( dc, point, size, object );
 		}
+	}
+
+	if (highlightOnIdle)
+	{
+		m_highlightOnIdle = true;
 	}
 }
 
@@ -1629,7 +1652,7 @@ void DesignerWindow::HighlightPaintHandler::OnPaint(wxPaintEvent &event)
 
 	if (m_designer->GetActivePanel() == m_window)
 	{
-		m_designer->HighlightSelection(dc);
+		m_designer->HighlightSelection(dc, true);
 	}
 
 	event.Skip();
