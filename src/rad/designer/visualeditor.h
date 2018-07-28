@@ -54,9 +54,10 @@ class DesignerWindow : public wxInnerFrame
       DECLARE_EVENT_TABLE()
 
       wxWindow *m_window;
+		DesignerWindow* m_designer;
 
      public:
-       HighlightPaintHandler(wxWindow *win);
+		HighlightPaintHandler(DesignerWindow* designer, wxWindow *win);
        void OnPaint(wxPaintEvent &event);
    };
 

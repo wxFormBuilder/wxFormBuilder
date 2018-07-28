@@ -23,11 +23,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "visualeditor.h"
+#include "visualobj.h"
 
 #include "../../model/objectbase.h"
 #include "../../utils/typeconv.h"
 #include "../appdata.h"
+#include "visualeditor.h"
 
 using namespace TypeConv;
 
@@ -40,8 +41,8 @@ BEGIN_EVENT_TABLE( VObjEvtHandler, wxEvtHandler )
 	EVT_SET_CURSOR( VObjEvtHandler::OnSetCursor )
 END_EVENT_TABLE()
 
-VObjEvtHandler::VObjEvtHandler(wxWindow *win, PObjectBase obj)
-{
+VObjEvtHandler::VObjEvtHandler(DesignerWindow* designer, wxWindow* win, PObjectBase obj) {
+	m_designer = designer;
 	m_window = win;
 	m_object = obj;
 }
@@ -118,18 +119,13 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 
 void VObjEvtHandler::OnPaint(wxPaintEvent &event)
 {
-/*	PObjectBase wo = boost::shared_dynamic_cast<ObjectBase>(m_object.lock());
-	if (wo->IsContainer())
-	{ TODO: what this check is for? */
-		wxWindow *aux = m_window;
-		while (!aux->IsKindOf(CLASSINFO(DesignerWindow))) aux = aux->GetParent();
-		DesignerWindow *dsgnWin = (DesignerWindow*) aux;
-		if (dsgnWin->GetActivePanel() == m_window)
-		{
-			wxPaintDC dc(m_window);
-			dsgnWin->HighlightSelection(dc);
-		}
-/*	}*/
+	wxPaintDC dc(m_window);
+
+	if (m_designer->GetActivePanel() == m_window)
+	{
+		m_designer->HighlightSelection(dc);
+	}
+
 	event.Skip();
 }
 
