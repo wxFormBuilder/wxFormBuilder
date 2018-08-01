@@ -175,14 +175,18 @@ Written by
   <templates class="dataViewListColumn">
 	<template name="declaration">wxDataViewColumn* $name;</template>
 	<template name="construction">
-		$name = #parent $name->Append${type}Column( $label );
+		$name = #parent $name->Append${type}Column( $label, $mode, $width, static_cast&lt;wxAlignment&gt;($align), $flags );
+			#ifnotnull $ellipsize
+			@{ #nl $name->GetRenderer()->EnableEllipsize( $ellipsize ); @}
 	</template>
   </templates>
 
   <templates class="dataViewColumn">
 	<template name="declaration">wxDataViewColumn* $name;</template>
 	<template name="construction">
-		$name = #parent $name->Append${type}Column( $label, $model_column );
+		$name = #parent $name->Append${type}Column( $label, $model_column, $mode, $width, static_cast&lt;wxAlignment&gt;($align), $flags );
+			#ifnotnull $ellipsize
+			@{ #nl $name->GetRenderer()->EnableEllipsize( $ellipsize ); @}
 	</template>
   </templates>
 
