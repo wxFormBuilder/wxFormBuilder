@@ -30,6 +30,8 @@
 #include "appdata.h"
 #include "auitabart.h"
 
+#include <wx/config.h>
+
 #ifdef __WXMAC__
 	#include <wx/tooltip.h>
 #endif
@@ -87,11 +89,28 @@ void wxFbPalette::PopulateToolbar( PObjectPackage pkg, wxAuiToolBar *toolbar )
 	}
 }
 
+void wxFbPalette::SavePosition()
+{
+	auto* config = wxConfigBase::Get();
+	wxString pageOrder;
+
+	for (size_t i = 0; i < m_notebook->GetPageCount(); ++i)
+	{
+		if (!pageOrder.empty())
+		{
+			pageOrder.append(wxT(","));
+		}
+		pageOrder.append(m_notebook->GetPageText(i));
+	}
+
+	config->Write(wxT("/palette/pageOrder"), pageOrder);
+}
+
 void wxFbPalette::Create()
 {
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_notebook = new wxAuiNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_SCROLL_BUTTONS );
+	m_notebook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_TAB_MOVE);
 	m_notebook->SetArtProvider( new AuiTabArt() );
 
 	unsigned int pkg_count = AppData()->GetPackageCount();
