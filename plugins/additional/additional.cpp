@@ -834,6 +834,15 @@ public:
 		return grid;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxGrid);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxGrid"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -954,6 +963,15 @@ public:
 		return colourpicker;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxColourPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxColourPickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("colour"),_("value"),XRC_TYPE_COLOUR);
@@ -999,6 +1017,15 @@ public:
 
 		picker->PushEventHandler( new ComponentEvtHandler( picker, GetManager() ) );
 		return picker;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxFontPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -1048,6 +1075,15 @@ public:
 		return picker;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxFilePickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxFilePickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -1092,6 +1128,15 @@ public:
 
 		picker->PushEventHandler( new ComponentEvtHandler( picker, GetManager() ) );
 		return picker;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxDirPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -1197,6 +1242,15 @@ public:
 		return ctrl;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxGenericDirCtrl);
+		if (window)
+		{
+			window->GetTreeCtrl()->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxGenericDirCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("defaultfolder"),_("defaultfolder"),XRC_TYPE_TEXT);
@@ -1258,6 +1312,15 @@ public:
 		sc->PushEventHandler( new ComponentEvtHandler( sc, GetManager() ) );
 
 		return sc;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxSearchCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -1327,6 +1390,15 @@ public:
 		mc->PushEventHandler( new ComponentEvtHandler( mc, GetManager() ) );
 
 		return mc;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxMediaCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -1699,6 +1771,15 @@ public:
 		m_code->PushEventHandler( new ComponentEvtHandler( m_code, GetManager() ) );
 
 		return m_code;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxStyledTextCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 };
 
@@ -2086,6 +2167,15 @@ class RibbonBarComponent : public ComponentBase
 		return rb;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonBar* rb = wxDynamicCast( wxobject, wxRibbonBar );
 		if ( NULL == rb )
@@ -2152,6 +2242,17 @@ class RibbonPageComponent : public ComponentBase
 
 		return rbpage;
 	}
+
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonPage);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
 };
 
 class RibbonPanelComponent : public ComponentBase
@@ -2170,6 +2271,16 @@ class RibbonPanelComponent : public ComponentBase
 		return rbp;
 	}
 
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonPanel);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
 };
 
 class RibbonButtonBarComponent : public ComponentBase
@@ -2185,6 +2296,18 @@ class RibbonButtonBarComponent : public ComponentBase
 
 		return rbb;
 	}
+
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonButtonBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonButtonBar* rb = wxDynamicCast( wxobject, wxRibbonButtonBar );
 		if ( NULL == rb )
@@ -2245,6 +2368,18 @@ class RibbonToolBarComponent : public ComponentBase
 
 		return rbb;
 	}
+
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonToolBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonToolBar* rb = wxDynamicCast( wxobject, wxRibbonToolBar );
 		if ( NULL == rb )
@@ -2302,6 +2437,18 @@ class RibbonGalleryComponent : public ComponentBase
 
 		return ribbonGallery;
 	}
+
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonGallery);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonGallery* rg = wxDynamicCast( wxobject, wxRibbonGallery );
 		if ( NULL == rg )

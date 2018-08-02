@@ -246,6 +246,15 @@ public:
 		return collpane;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxCollapsiblePane);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc( obj, _("wxCollapsiblePane"), obj->GetPropertyAsString( _("name") ) );
 		xrc.AddWindowProperties();
@@ -310,6 +319,21 @@ class SplitterWindowComponent : public ComponentBase
 		splitter->Connect( wxEVT_IDLE, wxIdleEventHandler( wxCustomSplitterWindow::OnIdle ) );
 
 		return splitter;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		// The derived class doesn't implement wxWidgets RTTI so cast to its base class
+		auto* window = wxDynamicCast(obj, wxSplitterWindow);
+		if (window)
+		{
+			// Because of possible error conditions the handler might not have been pushed
+			auto* compHandler = dynamic_cast<ComponentEvtHandler*>(window->GetEventHandler());
+			if (compHandler)
+			{
+				window->PopEventHandler(true);
+			}
+		}
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
@@ -512,6 +536,15 @@ public:
 		return book;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxNotebook);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxNotebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -579,6 +612,15 @@ public:
 		return book;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxListbook);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	
 // Small icon style not supported by GTK
 #ifndef  __WXGTK__
 	void OnCreated(wxObject* wxobject, wxWindow* wxparent) override {
@@ -658,6 +700,15 @@ public:
 		return book;
 	}
 
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxChoicebook);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxChoicebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -719,6 +770,15 @@ public:
 		book->PushEventHandler( new ComponentEvtHandler( book, GetManager() ) );
 
 		return book;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxAuiNotebook);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 
 #if wxVERSION_NUMBER >= 2905

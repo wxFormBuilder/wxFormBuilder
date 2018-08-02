@@ -406,6 +406,8 @@ void VisualEditor::ClearWizard()
 
 void VisualEditor::ClearComponents( wxWindow* parent )
 {
+	// Individual wxWindow's of composite components made of wxWindow's will be found here as well and won't have an associated ObjectBase,
+	// prevent the error log messages
     wxLogNull stopTheLogging;
     const wxWindowList& children = parent->GetChildren();
     for ( wxWindowList::const_reverse_iterator child = children.rbegin(); child != children.rend(); ++child )
@@ -732,6 +734,8 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 	wxObject* createdObject = comp->Create( obj.get(), wxparent );
 	wxWindow* createdWindow = NULL;
 	wxSizer*  createdSizer  = NULL;
+	wxWindow* vobjWindow = nullptr;
+	wxEvtHandler* vobjHandler = nullptr;
 
 	switch ( comp->GetComponentType() )
 	{
@@ -743,8 +747,10 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 			}
 			SetupWindow( obj, createdWindow );
 
-			// Push event handler in order to respond to Paint and Mouse events
-			createdWindow->PushEventHandler( new VObjEvtHandler( createdWindow, obj ) );
+			// The event handler must be pushed after OnCreated() because that might push its own event handlers, so record it here only
+			// Because wxCollapsiblePane replaces createdWindow the target for the event handler must be recorded as well
+			vobjWindow = createdWindow;
+			vobjHandler = new VObjEvtHandler(createdWindow, obj);
 			break;
 
 		case COMPONENT_TYPE_SIZER:
@@ -795,6 +801,12 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 	}
 
 	comp->OnCreated( createdObject, wxparent );
+
+	// Now push the event handler so that it will be the last one in the chain
+	if (vobjWindow && vobjHandler)
+	{
+		vobjWindow->PushEventHandler(vobjHandler);
+	}
 
 	// If the created object is a sizer and the parent object is a window, set the sizer to the window
 	if (
