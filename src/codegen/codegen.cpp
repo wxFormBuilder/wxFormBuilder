@@ -340,10 +340,10 @@ PObjectBase TemplateParser::GetWxParent()
 			}
 		}
 
-		if( wxparent.get() &&
-			wxparent->GetClassName() == wxT("wxStaticBoxSizer") &&
-			wxparent->GetProperty( "parent" )->GetValueAsInteger() == 0 ) wxparent = prev_wxparent;
-
+		if (wxparent && wxparent->GetClassName() == wxT("wxStaticBoxSizer") &&
+		    wxparent->GetProperty("parent")->GetValueAsInteger() == 0) {
+			wxparent = prev_wxparent;
+		}
 		prev_wxparent = wxparent;
 	}
 

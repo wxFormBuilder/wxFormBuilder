@@ -102,7 +102,6 @@ private:
 	// Current indentation level in the file
 	int m_indent;
 
-protected:
 	typedef enum {
 		TOK_ERROR,
 		TOK_MACRO,
