@@ -423,6 +423,7 @@ void MainFrame::RestorePosition( const wxString &name )
 void MainFrame::SavePosition( const wxString &name )
 {
 	m_objInsp->SavePosition();
+	m_palette->SavePosition();
 
 	wxConfigBase *config = wxConfigBase::Get();
 	bool isIconized = IsIconized();

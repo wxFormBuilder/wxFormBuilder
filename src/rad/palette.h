@@ -50,6 +50,8 @@ class wxFbPalette : public wxPanel
   wxFbPalette(wxWindow *parent,int id);
   ~wxFbPalette();
 
+	void SavePosition();
+
   /**
    * Crea la paleta, previamente se ha debido configurar el objeto
    * DataObservable.
