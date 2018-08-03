@@ -227,5 +227,3 @@ void wxFbPalette::OnButtonClick( wxCommandEvent &event )
 		}
 	#endif
 }
-
-wxFbPalette::~wxFbPalette() = default;

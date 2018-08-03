@@ -48,7 +48,6 @@ class wxFbPalette : public wxPanel
 
  public:
   wxFbPalette(wxWindow *parent,int id);
-  ~wxFbPalette();
 
 	void SavePosition();
 
