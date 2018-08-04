@@ -562,10 +562,14 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		PObjectBase child = project->GetChild( i );
 
+		// Preprocess to find arrays
+		ArrayItems arrays;
+		FindArrayObjects(child, arrays, true);
+
 		EventVector events;
 		FindEventHandlers( child, events );
 		//GenClassDeclaration( child, useEnum, classDecoration, events, eventHandlerPrefix, eventHandlerPostfix );
-		GenClassDeclaration( child, false, wxT(""), events, eventHandlerPostfix );
+		GenClassDeclaration(child, false, wxT(""), events, eventHandlerPostfix, arrays);
 	}
 
 	code = GetCode( project, wxT("python_epilogue") );
@@ -784,10 +788,87 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 	return code;
 }
 
+wxString PythonCodeGenerator::GetConstruction(PObjectBase obj, bool silent, ArrayItems& arrays)
+{
+	// Get the name
+	const auto& propName = obj->GetProperty(wxT("name"));
+	if (!propName)
+	{
+		// Object has no name, just get its code
+		return GetCode(obj, wxT("construction"), silent);
+	}
+
+	// Object has a name, check if its an array
+	const auto& name = propName->GetValue();
+	wxString baseName;
+	ArrayItem unused;
+	if (!ParseArrayName(name, baseName, unused))
+	{
+		// Object is not an array, just get its code
+		return GetCode(obj, wxT("construction"), silent);
+	}
+
+	// Object is an array, check if it needs to be declared
+	auto& item = arrays[baseName];
+	if (item.isDeclared)
+	{
+		// Object is already declared, just get its code
+		return GetCode(obj, wxT("construction"), silent);
+	}
+
+	// Array needs to be declared
+	wxString code;
+
+	// Array declaration
+	// Base array
+	code.append(wxT("self."));
+	code.append(baseName);
+	code.append(wxT(" = {}\n"));
+
+	// Need to fill all dimensions up to the last
+	if (item.maxIndex.size() > 1)
+	{
+		std::vector<wxString> stackCurrent;
+		std::vector<wxString> stackNext;
+
+		stackCurrent.push_back(baseName);
+		for (size_t dimension = 0; dimension < item.maxIndex.size() - 1; ++dimension)
+		{
+			const auto size = item.maxIndex[dimension] + 1;
+
+			stackNext.reserve(stackCurrent.size() * size);
+			for (const auto& array : stackCurrent)
+			{
+				for (size_t index = 0; index < size; ++index)
+				{
+					const auto targetName = wxString::Format(wxT("%s[%u]"), array, static_cast<unsigned int>(index));
+
+					code.append(wxT("self."));
+					code.append(targetName);
+					code.append(wxT(" = {}\n"));
+
+					stackNext.push_back(targetName);
+				}
+			}
+			stackCurrent.swap(stackNext);
+			stackNext.clear();
+		}
+	}
+
+	// Get the Code
+	code.append(GetCode(obj, wxT("construction"), silent));
+
+	// Mark the array as declared
+	item.isDeclared = true;
+
+	return code;
+}
+
 void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
                                               const wxString& classDecoration,
                                               const EventVector& events,
-                                              const wxString& eventHandlerPostfix) {
+                                              const wxString& eventHandlerPostfix,
+                                              ArrayItems& arrays) {
 	PProperty propName = class_obj->GetProperty( wxT("name") );
 	if ( !propName )
 	{
@@ -812,7 +893,7 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 	m_source->Indent();
 
 	// The constructor is also included within public
-	GenConstructor( class_obj, events );
+	GenConstructor(class_obj, events, arrays);
 	GenDestructor( class_obj, events );
 
 	m_source->WriteLn( wxT("") );
@@ -999,7 +1080,7 @@ void PythonCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectIn
 	}
 }
 
-void PythonCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector &events )
+void PythonCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector& events, ArrayItems& arrays)
 {
 	m_source->WriteLn();
 	// generate function definition
@@ -1017,7 +1098,7 @@ void PythonCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVect
 
 	for ( unsigned int i = 0; i < class_obj->GetChildCount(); i++ )
 	{
-		GenConstruction( class_obj->GetChild( i ), true );
+		GenConstruction(class_obj->GetChild(i), true, arrays);
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT("after_addchild") );
@@ -1065,14 +1146,14 @@ void PythonCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 	m_source->Unindent();
 }
 
-void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
+void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays)
 {
 	wxString type = obj->GetObjectTypeName();
 	PObjectInfo info = obj->GetObjectInfo();
 
 	if ( ObjectDatabase::HasCppProperties( type ) )
 	{
-		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
+		m_source->WriteLn(GetConstruction(obj, false, arrays));
 
 		GenSettings( obj->GetObjectInfo(), obj );
 
@@ -1081,7 +1162,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
 			PObjectBase child = obj->GetChild( i );
-			GenConstruction( child, isWidget );
+			GenConstruction(child, isWidget, arrays);
 
 			if ( type == wxT("toolbar") )
 			{
@@ -1191,7 +1272,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 	{
 		// The child must be added to the sizer having in mind the
 		// child object type (there are 3 different routines)
-		GenConstruction( obj->GetChild(0), false );
+		GenConstruction(obj->GetChild(0), false, arrays);
 
 		PObjectInfo childInfo = obj->GetChild(0)->GetObjectInfo();
 		wxString temp_name;
@@ -1223,7 +1304,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				type == wxT("auinotebookpage")
 			)
 	{
-		GenConstruction( obj->GetChild( 0 ), false );
+		GenConstruction(obj->GetChild(0), false, arrays);
 		m_source->WriteLn( GetCode( obj, wxT("page_add") ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 	}
@@ -1249,20 +1330,20 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget )
 				if ( _("Load From Icon Resource") == source && wxDefaultSize == toolsize )
 				{
 					prop->SetValue( wxString::Format( wxT("%s; %s [%i; %i]"), path.c_str(), source.c_str(), toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
-					m_source->WriteLn( GetCode( obj, wxT("construction") ) );
+					m_source->WriteLn(GetConstruction(obj, false, arrays));
 					prop->SetValue( oldVal );
 					return;
 				}
 			}
 		}
-		m_source->WriteLn( GetCode( obj, wxT("construction") ) );
+		m_source->WriteLn(GetConstruction(obj, false, arrays));
 	}
 	else
 	{
 		// Generate the children
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			GenConstruction( obj->GetChild( i ), false );
+			GenConstruction(obj->GetChild(i), false, arrays);
 		}
 	}
 }
