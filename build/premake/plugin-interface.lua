@@ -15,11 +15,11 @@ project "plugin-interface"
         "../../sdk/plugin_interface/**.cpp",
         "../../sdk/plugin_interface/**.fbp"
     }
-    includedirs         {"../../sdk/tinyxml"}
+    includedirs         {"../../subprojects/tinyxml"}
     targetdir           "../../sdk/lib"
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ( "-" .. wxVersion )
-	
+
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end

@@ -11,10 +11,10 @@ project "TiCPP"
     kind                "StaticLib"
     targetname          "ticpp"
     targetdir           "../../sdk/lib"
-    files               {"../../sdk/tinyxml/*.cpp", "../../sdk/tinyxml/*.h"}
+    files               {"../../subprojects/tinyxml/*.cpp", "../../subprojects/tinyxml/*.h"}
     excludes            {"xmltest.cpp"}
     defines             {"TIXML_USE_TICPP"}
-	
+
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end

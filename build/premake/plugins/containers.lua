@@ -2,7 +2,7 @@
 --  Name:        containers.lua
 --  Purpose:     Container controls plugin project build script.
 --  Author:      Andrea Zanellato
---  Modified by: 
+--  Modified by:
 --  Created:     21/10/2011
 --  Copyright:   (c) 2011 wxFormBuilder Team
 --  Licence:     GNU General Public License Version 2
@@ -13,7 +13,7 @@ project "containers-components-plugin"
     files               {"../../../plugins/containers/containers.cpp"}
     includedirs
     {
-        "../../../sdk/tinyxml", "../../../sdk/plugin_interface"
+        "../../../subprojects/tinyxml", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     links               {"plugin-interface", "TiCPP"}

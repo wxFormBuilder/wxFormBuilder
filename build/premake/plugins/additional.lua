@@ -2,7 +2,7 @@
 --  Name:        additional.lua
 --  Purpose:     Additional controls plugin project build script.
 --  Author:      Andrea Zanellato
---  Modified by: 
+--  Modified by:
 --  Created:     21/10/2011
 --  Copyright:   (c) 2011 wxFormBuilder Team
 --  Licence:     GNU General Public License Version 2
@@ -13,7 +13,7 @@ project "additional-components-plugin"
     files               {"../../../plugins/additional/additional.cpp"}
     includedirs
     {
-        "../../../sdk/tinyxml", "../../../sdk/plugin_interface"
+        "../../../subprojects/tinyxml", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     links               {"plugin-interface", "TiCPP"}
@@ -27,7 +27,7 @@ end
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
-	
+
     configuration "not vs*"
         buildoptions        "-std=c++14"
 

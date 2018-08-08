@@ -2,7 +2,7 @@
 --  Name:        layout.lua
 --  Purpose:     Layout controls plugin project build script.
 --  Author:      Andrea Zanellato
---  Modified by: 
+--  Modified by:
 --  Created:     21/10/2011
 --  Copyright:   (c) 2011 wxFormBuilder Team
 --  Licence:     GNU General Public License Version 2
@@ -13,13 +13,13 @@ project "layout-components-plugin"
     files               {"../../../plugins/layout/layout.cpp"}
     includedirs
     {
-        "../../../sdk/tinyxml", "../../../sdk/plugin_interface"
+        "../../../subprojects/tinyxml", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     links               {"plugin-interface", "TiCPP"}
-	
+
 	local libs = "std,richtext,propgrid,stc,ribbon,aui"
-	
+
 	if wxArchitecture then
 		buildoptions	{"-arch " .. wxArchitecture}
 	end
