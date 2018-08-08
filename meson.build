@@ -25,20 +25,12 @@ endif
 if get_option('buildtype') == 'release'
 	add_project_arguments('-DNDEBUG', language : 'cpp')
 endif
-add_project_arguments('-DTIXML_USE_TICPP', language : 'cpp')
 
 wx_dep = dependency('wxwidgets', version : '>=3.0.3',
                     modules : ['std', 'stc', 'propgrid', 'aui', 'ribbon', 'richtext'])
 
 inc = include_directories(['sdk/plugin_interface'])
-ticpp_dep = declare_dependency(include_directories : include_directories('sdk/tinyxml'),
-	link_with : static_library('ticpp', [
-			'sdk/tinyxml/ticpp.cpp',
-			'sdk/tinyxml/tinystr.cpp',
-			'sdk/tinyxml/tinyxml.cpp',
-			'sdk/tinyxml/tinyxmlerror.cpp',
-			'sdk/tinyxml/tinyxmlparser.cpp',
-		]))
+ticpp_dep = subproject('ticpp').get_variable('ticpp_dep')
 
 plugin_interface = static_library('plugin_interface', [
 		'sdk/plugin_interface/xrcconv.cpp',
