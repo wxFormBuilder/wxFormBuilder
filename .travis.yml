@@ -19,7 +19,7 @@ matrix:
       script:
         - brew update
         - brew outdated boost || brew upgrade boost
-        - brew install boost dylibbundler gmake
+        - brew install boost dylibbundler make
         - travis_wait 30 brew install wxmac --devel
         - ./create_build_files4.sh
         - make config=release -C build/3.1/gmake

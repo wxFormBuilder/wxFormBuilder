@@ -55,7 +55,7 @@ ninja -C _build install
 Pre-requisites for macOS can be installed via [Homebrew](https://brew.sh/):
 
 ```sh
-brew install wxmac boost dylibbundler gmake
+brew install wxmac boost dylibbundler make
 ```
 
 Note: Building with Xcode currently does not work without issues (see [issue #247](https://github.com/wxFormBuilder/wxFormBuilder/issues/247)). Therefore it is recommended to build with GNU make like as described below:
