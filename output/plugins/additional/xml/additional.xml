@@ -99,7 +99,7 @@ Written by
         <option name="wxTE_PROCESS_TAB"   help="The control will receive wxEVT_CHAR events for TAB pressed - normally, TAB is used for passing to the next control in a dialog instead. For the control created with this style, you can still use Ctrl-Enter to pass to the next control from the keyboard."/>
         <option name="wxTE_NOHIDESEL"     help="By default, the Windows text control doesn't show the selection when it doesn't have focus - use this style to force it to always show it. It doesn't do anything under other platforms."/>
         <option name="wxTE_LEFT"          help="The text in the control will be left-justified (default)."/>
-        <option name="wxTE_CENTRE"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
+        <option name="wxTE_CENTER"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
         <option name="wxTE_RIGHT"         help="The text in the control will be right-justified (currently wxMSW and wxGTK2 only)."/>
         <option name="wxTE_CAPITALIZE"    help="On PocketPC and Smartphone, causes the first letter to be capitalized."/>
     </property>
@@ -284,7 +284,7 @@ Written by
         <option name="wxSP_WRAP"           help="The value wraps at the minimum and maximum." />
 		<option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
 		<option name="wxALIGN_LEFT"              help="Same as wxTE_LEFT for wxTextCtrl: the text is left aligned."/>
-		<option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTRE for wxTextCtrl: the text is centered."/>
+		<option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTER for wxTextCtrl: the text is centered."/>
 		<option name="wxALIGN_RIGHT"             help="Same as wxTE_RIGHT for wxTextCtrl: the text is right aligned (this is the default)."/>
 		wxSP_ARROW_KEYS
 	</property>
@@ -308,7 +308,7 @@ Written by
       <option name="wxSP_WRAP"                 help="The value wraps at the minimum and maximum."/>
       <option name="wxTE_PROCESS_ENTER"        help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
       <option name="wxALIGN_LEFT"              help="Same as wxTE_LEFT for wxTextCtrl: the text is left aligned."/>
-      <option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTRE for wxTextCtrl: the text is centered."/>
+      <option name="wxALIGN_CENTER_HORIZONTAL" help="Same as wxTE_CENTER for wxTextCtrl: the text is centered."/>
       <option name="wxALIGN_RIGHT"             help="Same as wxTE_RIGHT for wxTextCtrl: the text is right aligned (this is the default)."/>
       wxSP_ARROW_KEYS
     </property>

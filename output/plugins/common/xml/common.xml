@@ -77,7 +77,7 @@ Written by
       <option name="wxALIGN_LEFT"       help="Align the text to the left."/>
       <option name="wxALIGN_RIGHT"      help="Align the text to the right."/>
       <option name="wxALIGN_CENTER_HORIZONTAL" help="Center the text (horizontally)."/>
-      <option name="wxST_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the text when SetLabel() is called. If this style flag is given, the control will not change its size (this style is especially useful with controls which also have the wxALIGN_RIGHT or the wxALIGN_CENTRE_HORIZONTAL style because otherwise they won't make sense any longer after a call to SetLabel())."/>
+      <option name="wxST_NO_AUTORESIZE" help="By default, the control will adjust its size to exactly fit to the size of the text when SetLabel() is called. If this style flag is given, the control will not change its size (this style is especially useful with controls which also have the wxALIGN_RIGHT or the wxALIGN_CENTER_HORIZONTAL style because otherwise they won't make sense any longer after a call to SetLabel())."/>
       <option name="wxST_ELLIPSIZE_START" help="If the labeltext width exceeds the control width, replace the beginning of the label with an ellipsis; uses wxControl::Ellipsize."/>
       <option name="wxST_ELLIPSIZE_MIDDLE" help="If the label text width exceeds the control width, replace the middle of the label with an ellipsis; uses wxControl::Ellipsize."/>
       <option name="wxST_ELLIPSIZE_END" help="If the label text width exceeds the control width, replace the end of the label with an ellipsis; uses wxControl::Ellipsize."/>
@@ -105,7 +105,7 @@ Written by
       <option name="wxHSCROLL"          help="A horizontal scrollbar will be created and used, so that text won't be wrapped. No effect under wxGTK1."/>
       <option name="wxTE_NO_VSCROLL"    help="For multiline controls only: vertical scrollbar will never be created. This limits the amount of text which can be entered into the control to what can be displayed in it under MSW but not under GTK2. Currently not implemented for the other platforms."/>
       <option name="wxTE_LEFT"          help="The text in the control will be left-justified (default)."/>
-      <option name="wxTE_CENTRE"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
+      <option name="wxTE_CENTER"        help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
       <option name="wxTE_RIGHT"         help="The text in the control will be right-justified (currently wxMSW and wxGTK2 only)."/>
       <option name="wxTE_DONTWRAP"      help="Same as wxHSCROLL style: don't wrap at all, show horizontal scrollbar instead."/>
       <option name="wxTE_CHARWRAP"      help="Wrap the lines too long to be shown entirely at any position (wxUniv and wxGTK2 only)."/>

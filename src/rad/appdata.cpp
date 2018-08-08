@@ -470,7 +470,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
-		m_fbpVerMinor(14)
+		m_fbpVerMinor(15)
 {
 	#ifdef __WXFB_DEBUG__
 	//wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -2132,6 +2132,86 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at least version 1.14 */
+	if (fileMajor < 1 || (1 == fileMajor && fileMinor < 15))
+	{
+		// Rename wxTE_CENTRE -> wxTE_CENTER
+		if ("wxTextCtrl" == objClass || "wxSearchCtrl" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty())
+			{
+				auto* style = *newProps.begin();
+				auto styles = _WXSTR(style->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxTE_CENTRE"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxTE_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxTE_CENTER"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+		// Rename wxALIGN_CENTRE -> wxALIGN_CENTER
+		else if ("wxGrid" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("col_label_horiz_alignment");
+			oldProps.insert("col_label_vert_alignment");
+			oldProps.insert("row_label_horiz_alignment");
+			oldProps.insert("row_label_vert_alignment");
+			oldProps.insert("cell_horiz_alignment");
+			oldProps.insert("cell_vert_alignment");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			for (newProp = newProps.begin(); newProp != newProps.end(); ++newProp)
+			{
+				auto styles = _WXSTR((*newProp)->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxALIGN_CENTRE"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxALIGN_CENTRE"), styles);
+						styles = TypeConv::SetFlag(wxT("wxALIGN_CENTER"), styles);
+					}
+
+					(*newProp)->SetText(_STDSTR(styles));
+				}
+			}
+		}
+		// wxNotebook: Remove wxNB_FLAT
+		else if ("wxNotebook" == objClass)
+		{
+			oldProps.clear();
+			newProps.clear();
+			oldProps.insert("style");
+			GetPropertiesToConvert(parent, oldProps, &newProps);
+
+			if (!newProps.empty())
+			{
+				auto* style = *newProps.begin();
+				auto styles = _WXSTR(style->GetText(false));
+				if (!styles.empty())
+				{
+					if (TypeConv::FlagSet(wxT("wxNB_FLAT"), styles))
+					{
+						styles = TypeConv::ClearFlag(wxT("wxNB_FLAT"), styles);
+					}
+
+					style->SetText(_STDSTR(styles));
+				}
+			}
+		}
+	}
+
+	/* The file is now at least version 1.15 */
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
