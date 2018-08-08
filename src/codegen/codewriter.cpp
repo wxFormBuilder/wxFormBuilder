@@ -87,6 +87,7 @@ void CodeWriter::WriteLn( wxString code, bool keepIndents )
 			m_cols = m_indent;
 		}
 
+		code.Trim();
 		Write( code );
 		Write(wxT("\n"));
 		m_cols = 0;
@@ -125,7 +126,9 @@ void CodeWriter::Write( wxString code )
 		// Inserting indents
 		for ( int i = 0; i < m_indent; i++ )
 		{
-			DoWrite( m_indent_with_spaces ? wxT("    ") :  wxT("\t") );
+			if (!code.IsEmpty()) {
+				DoWrite(m_indent_with_spaces ? wxT("    ") : wxT("\t"));
+			}
 		}
 
 		m_cols = m_indent;
