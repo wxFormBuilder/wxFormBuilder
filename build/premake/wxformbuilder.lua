@@ -22,7 +22,7 @@ project "wxFormBuilder"
     includedirs
     {
         "../../src",
-        "../../subprojects/tinyxml", "../../sdk/plugin_interface"
+        "../../subprojects/ticpp", "../../sdk/plugin_interface"
     }
     defines                 {"NO_GCC_PRAGMA", "TIXML_USE_TICPP", "APPEND_WXVERSION"}
     libdirs                 {"../../sdk/lib"}

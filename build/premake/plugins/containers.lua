@@ -13,7 +13,7 @@ project "containers-components-plugin"
     files               {"../../../plugins/containers/containers.cpp"}
     includedirs
     {
-        "../../../subprojects/tinyxml", "../../../sdk/plugin_interface"
+        "../../../subprojects/ticpp", "../../../sdk/plugin_interface"
     }
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     links               {"plugin-interface", "TiCPP"}

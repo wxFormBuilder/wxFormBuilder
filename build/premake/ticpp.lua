@@ -11,7 +11,7 @@ project "TiCPP"
     kind                "StaticLib"
     targetname          "ticpp"
     targetdir           "../../sdk/lib"
-    files               {"../../subprojects/tinyxml/*.cpp", "../../subprojects/tinyxml/*.h"}
+    files               {"../../subprojects/ticpp/*.cpp", "../../subprojects/ticpp/*.h"}
     excludes            {"xmltest.cpp"}
     defines             {"TIXML_USE_TICPP"}
 
