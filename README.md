@@ -39,24 +39,15 @@ cd ../../../output/
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt-get install libwxgtk3.0-dev libwxgtk-media3.0-dev libboost-dev
+sudo apt install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
 ```
 
-Download and build:
+Build and run:
 
 ```sh
-git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
-cd wxFormBuilder
-./create_build_files4.sh
-cd build/3.0/gmake
-make config=release
-```
-
-Run:
-
-```sh
-cd ../../../output/bin/
-./wxformbuilder
+meson _build --prefix $PWD/_install
+ninja -C _build install
+./_install/bin/wxformbuilder
 ```
 
 ### macOS
