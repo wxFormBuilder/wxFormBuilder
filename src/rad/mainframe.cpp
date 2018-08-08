@@ -70,14 +70,14 @@ enum
 	ID_RECENT_2, //
 	ID_RECENT_3, //
 	ID_RECENT_SEP,
-	
+
 	ID_ALIGN_LEFT,
 	ID_ALIGN_CENTER_H,
 	ID_ALIGN_RIGHT,
 	ID_ALIGN_TOP,
 	ID_ALIGN_CENTER_V,
 	ID_ALIGN_BOTTOM,
-	
+
 	ID_BORDER_LEFT,
 	ID_BORDER_RIGHT,
 	ID_BORDER_TOP,
@@ -85,19 +85,19 @@ enum
 	ID_EDITOR_FNB,
 	ID_MOVE_LEFT,
 	ID_MOVE_RIGHT,
-	
+
 	ID_PREVIEW_XRC,
 	ID_GEN_INHERIT_CLS,
 
 	// The preference dialog must use wxID_PREFERENCES for wxMAC
 	//ID_SETTINGS_GLOBAL, // For the future preference dialogs
 	ID_SETTINGS_PROJ, // For the future preference dialogs
-	
+
 	ID_FIND,
-	
+
 	ID_CLIPBOARD_COPY,
 	ID_CLIPBOARD_PASTE,
-	
+
 	//added by tyysoft to define the swap button ID.
 	ID_WINDOW_SWAP,
 };
@@ -960,7 +960,7 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v3.8.0"),
+	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v3.8.1"),
 	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str()));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
