@@ -103,18 +103,15 @@ void VisualEditor::DeleteAbstractObjects()
 		}
 		else
 		{
-			//TODO: fix wxStaticBox later...
-			/*if( wxStaticBoxSizer* staticBoxSizer = dynamic_cast< wxStaticBoxSizer* >( it->first ) )
+			// Delete push'd visual object event handlers
+			if (auto* staticBoxSizer = wxDynamicCast(it->first, wxStaticBoxSizer))
 			{
-				if( wxWindow* window = staticBoxSizer->GetStaticBox() )
-					window->PopEventHandler( true );
-			}*/
-            // Delete push'd visual object event handlers
-            wxWindow* window = dynamic_cast< wxWindow* > ( it->first );
-            if ( window != 0 )
-            {
-                window->PopEventHandler( true );
-            }
+				staticBoxSizer->GetStaticBox()->PopEventHandler(true);
+			}
+			else if (auto* window = wxDynamicCast(it->first, wxWindow))
+			{
+				window->PopEventHandler(true);
+			}
 		}
 	}
 }
@@ -770,10 +767,14 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a sizer component, but this is not a wxSizer!"), obj->GetClassName().c_str() ) );
 			}
 			SetupSizer( obj, createdSizer );
-			// Push event handler in order to respond to Paint and Mouse events
-			//TODO: fix wxStaticBox later...
-			/*if( createdWindow )
-				createdWindow->PushEventHandler( new VObjEvtHandler( createdWindow, obj ) );*/
+
+			if (createdWindow)
+			{
+				// The event handler must be pushed after OnCreated() because that might push its own event handlers, so record it here only
+				// Because wxCollapsiblePane replaces createdWindow the target for the event handler must be recorded as well
+				vobjWindow = createdWindow;
+				vobjHandler = new VObjEvtHandler(createdWindow, obj);
+			}
 			break;
 		}
 		default:
@@ -1188,14 +1189,14 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 			break;
 		}
 
-		//TODO: fix wxStaticBox later...
-		/*ObjectBaseMap::iterator it = m_baseobjects.find( nextParent.get() );
-		if ( m_baseobjects.end() != it )
+		it = m_baseobjects.find(nextParent.get());
+		if (m_baseobjects.end() != it)
 		{
-			wxObject* parentObj = it->second;
-			if( wxDynamicCast( parentObj, wxStaticBoxSizer ))
+			if (wxDynamicCast(it->second, wxStaticBoxSizer))
+			{
 				break;
-		}*/
+			}
+		}
 
 		nextParent = nextParent->GetParent();
 	}
@@ -1211,13 +1212,14 @@ void VisualEditor::OnObjectSelected( wxFBObjectEvent &event )
 		}
 		else
 		{
-			//TODO: fix wxStaticBox later...
-			/*if( wxStaticBoxSizer *sizer = wxDynamicCast( it->second, wxStaticBoxSizer ))
+			if (auto* sizer = wxDynamicCast(it->second, wxStaticBoxSizer))
 			{
 				selPanel = sizer->GetStaticBox();
 			}
-			else*/
-				selPanel = wxDynamicCast( it->second, wxWindow );
+			else
+			{
+				selPanel = wxDynamicCast(it->second, wxWindow);
+			}
 		}
 	}
 	else
@@ -1397,8 +1399,7 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 			scrolwin->FitInside();
 		}
 		wxPoint point = m_selSizer->GetPosition();
-		//TODO: fix wxStaticBox later...
-		/*if( wxStaticBoxSizer *sbSizer = wxDynamicCast(m_selSizer, wxStaticBoxSizer) )
+		if (auto* sbSizer = wxDynamicCast(m_selSizer, wxStaticBoxSizer))
 		{
 			// In case of wxStaticBoxSizer, m_actPanel is not a parent window
 			// of the sizer (m_actPanel==sbSizer->GetStaticBox()).
@@ -1411,8 +1412,8 @@ void DesignerWindow::HighlightSelection( wxDC& dc )
 			// (at least in MSW build, wxWidgets 3.0.1).
 			// We convert its StaticBox origin (StaticBox is a window) since origins
 			// of wxStaticBoxSizer and its StaticBox are the same point.
-			point = m_actPanel->ScreenToClient( sbSizer->GetStaticBox()->GetScreenPosition() );
-		}*/
+			point = m_actPanel->ScreenToClient(sbSizer->GetStaticBox()->GetScreenPosition());
+		}
 		size = m_selSizer->GetSize();
 
 		wxPen bluePen(*wxBLUE, 1, wxPENSTYLE_SOLID);
