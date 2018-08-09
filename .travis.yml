@@ -19,9 +19,9 @@ matrix:
       script:
         - brew update
         - brew outdated boost || brew upgrade boost
-        - brew install boost dylibbundler
-        - travis_wait 30 brew install wxmac --devel
-        - ./create_build_files4.sh --disable-mediactrl
+        - brew install boost dylibbundler make
+        - travis_wait 40 brew install wxmac --devel
+        - ./create_build_files4.sh
         - make config=release -C build/3.1/gmake
         - cd output && zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
       env: DEPLOY_FILE=output/wxFormBuilder_macOS.zip
