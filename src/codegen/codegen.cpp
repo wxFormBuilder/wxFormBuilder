@@ -406,14 +406,16 @@ bool TemplateParser::ParseForm()
 
 void TemplateParser::ParseLuaTable()
 {
-	PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
-	PProperty propNs= project->GetProperty( wxT( "ui_table" ) );
-	if ( propNs )
+	const auto& project = AppData()->GetProjectData();
+	const auto& table = project->GetProperty(wxT("ui_table"));
+	if (table)
 	{
-		wxString strTableName = propNs->GetValueAsString();
-		if(strTableName.length() <= 0)
+		auto strTableName = table->GetValueAsString();
+		if (strTableName.empty())
+		{
 			strTableName = wxT("UI");
-		m_out <<strTableName + wxT(".");
+		}
+		m_out << strTableName << wxT(".");
 	}
 }
 
