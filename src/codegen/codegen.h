@@ -35,6 +35,9 @@
 #include "../model/types.h"
 #include "../utils/wxfbdefs.h"
 
+#include <map>
+#include <vector>
+
 #include <wx/sstream.h>
 
 /**
@@ -274,6 +277,28 @@ protected:
 
 public:
 	/**
+	* Describes the properties and state of an array item
+	*/
+	struct ArrayItem
+	{
+		/**
+		* Maximum used index for each array dimension
+		*/
+		std::vector<size_t> maxIndex;
+		/**
+		* State if the code generator has already declared this array
+		*/
+		bool isDeclared = false;
+	};
+	/**
+	* Lookup map of array items
+	*
+	* key = basename of the array
+	* value = properties and state of the array
+	*/
+	typedef std::map<wxString, ArrayItem> ArrayItems;
+
+	/**
 	* Virtual destructor.
 	*/
 	virtual ~CodeGenerator() {};
@@ -281,6 +306,19 @@ public:
 	* Generate the code of the project
 	*/
 	virtual bool GenerateCode( PObjectBase project ) = 0;
+
+	/**
+	* Stores all discovered arrays for the given object and its child objects.
+	*/
+	void FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool skipRoot = false);
+
+	/**
+	* Parses a name and determines if it is an array.
+	*
+	* Returns true if it is an array and extracts the basename and the indexes of the dimensions.
+	* Returns false if it is not.
+	*/
+	bool ParseArrayName(const wxString& name, wxString& baseName, ArrayItem& item);
 };
 
 
