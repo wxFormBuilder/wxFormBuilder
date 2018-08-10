@@ -575,6 +575,13 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	if ( useEnumProperty && useEnumProperty->GetValueAsInteger() )
 		useEnum = true;
 
+	m_useArrayEnum = false;
+	const auto& useArrayEnumProperty = project->GetProperty(wxT("use_array_enum"));
+	if (useArrayEnumProperty && useArrayEnumProperty->GetValueAsInteger())
+	{
+		m_useArrayEnum = true;
+	}
+
 	m_i18n = false;
 	PProperty i18nProperty = project->GetProperty( wxT( "internationalize" ) );
 	if ( i18nProperty && i18nProperty->GetValueAsInteger() )
@@ -765,14 +772,18 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		PObjectBase child = project->GetChild( i );
 
+		// Preprocess to find arrays
+		ArrayItems arrays;
+		FindArrayObjects(child, arrays, true);
+
 		EventVector events;
 		FindEventHandlers( child, events );
-		GenClassDeclaration( child, useEnum, classDecoration, events );
+		GenClassDeclaration(child, useEnum, classDecoration, events, arrays);
 		if ( !m_useConnect )
 		{
 			GenEvents( child, events );
 		}
-		GenConstructor( child, events );
+		GenConstructor(child, events, arrays);
 		GenDestructor( child, events );
 	}
 
@@ -959,7 +970,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const
 	}
 }
 
-void CppCodeGenerator::GenAttributeDeclaration( PObjectBase obj, Permission perm )
+void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm, ArrayItems& arrays)
 {
 	wxString typeName = obj->GetObjectTypeName();
 	if ( ObjectDatabase::HasCppProperties( typeName ) )
@@ -970,8 +981,7 @@ void CppCodeGenerator::GenAttributeDeclaration( PObjectBase obj, Permission perm
 				( perm == P_PROTECTED && perm_str == wxT( "protected" ) ) ||
 				( perm == P_PRIVATE && perm_str == wxT( "private" ) ) )
 		{
-			// Generate the declaration
-			wxString code = GetCode( obj, wxT( "declaration" ) );
+			const auto& code = GetDeclaration(obj, arrays, perm != P_PRIVATE && m_useArrayEnum);
 			if ( !code.empty() )
 				m_header->WriteLn( code );
 		}
@@ -982,7 +992,7 @@ void CppCodeGenerator::GenAttributeDeclaration( PObjectBase obj, Permission perm
 	{
 		PObjectBase child = obj->GetChild( i );
 
-		GenAttributeDeclaration( child, perm );
+		GenAttributeDeclaration(child, perm, arrays);
 	}
 }
 void CppCodeGenerator::GenValidatorVariables( PObjectBase obj )
@@ -1093,7 +1103,83 @@ wxString CppCodeGenerator::GetCode( PObjectBase obj, wxString name )
 	return code;
 }
 
-void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events )
+wxString CppCodeGenerator::GetDeclaration(PObjectBase obj, ArrayItems& arrays, bool useEnum)
+{
+	// Get the name
+	const auto& propName = obj->GetProperty(wxT("name"));
+	if (!propName)
+	{
+		// Object has no name, just get its code
+		return GetCode(obj, wxT("declaration"));
+	}
+
+	// Object has a name, check if its an array
+	const auto& name = propName->GetValue();
+	wxString baseName;
+	ArrayItem unused;
+	if (!ParseArrayName(name, baseName, unused))
+	{
+		// Object is not an array, just get its code
+		return GetCode(obj, wxT("declaration"));
+	}
+
+	// Object is an array, check if it needs to be declared
+	auto& item = arrays[baseName];
+	if (item.isDeclared)
+	{
+		// Object is already declared, return empty result
+		return wxEmptyString;
+	}
+
+	// Array needs to be declared
+	wxString code;
+
+	if (useEnum)
+	{
+		// Generate enum value with element count of the array dimensions
+		const auto enumBaseName = baseName.Upper();
+		if (item.maxIndex.size() == 1)
+		{
+			// Without dimension index
+			code.append(wxString::Format(wxT("enum { %s_SIZE = %u };\n"), enumBaseName, static_cast<unsigned int>(item.maxIndex[0] + 1)));
+		}
+		else
+		{
+			// With dimension index
+			code.append(wxT("enum { "));
+			for (size_t i = 0; i < item.maxIndex.size(); ++i)
+			{
+				if (i > 0)
+				{
+					code.append(wxT(", "));
+				}
+				code.append(wxString::Format(wxT("%s_%u_SIZE = %u"), enumBaseName, static_cast<unsigned int>(i), static_cast<unsigned int>(item.maxIndex[i] + 1)));
+			}
+			code.append(wxT(" };\n"));
+		}
+	}
+
+	// Construct proper name for declaration
+	auto targetName = baseName;
+	for (const auto& index : item.maxIndex)
+	{
+		targetName.append(wxString::Format(wxT("[%u]"), static_cast<unsigned int>(index + 1)));
+	}
+
+	// Set declaration name
+	propName->SetValue(targetName);
+	// Get the Code
+	code.append(GetCode(obj, wxT("declaration")));
+	// Restore the name
+	propName->SetValue(name);
+
+	// Mark the array as declared
+	item.isDeclared = true;
+
+	return code;
+}
+
+void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, ArrayItems& arrays)
 {
 	PProperty propName = class_obj->GetProperty( wxT( "name" ) );
 	if ( !propName )
@@ -1127,7 +1213,7 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 	// private
 	m_header->WriteLn( wxT( "private:" ) );
 	m_header->Indent();
-	GenAttributeDeclaration( class_obj, P_PRIVATE );
+	GenAttributeDeclaration(class_obj, P_PRIVATE, arrays);
 
 	if ( !m_useConnect )
 	{
@@ -1144,7 +1230,7 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 	if ( use_enum )
 		GenEnumIds( class_obj );
 
-	GenAttributeDeclaration( class_obj, P_PROTECTED );
+	GenAttributeDeclaration(class_obj, P_PROTECTED, arrays);
 
 	wxString eventHandlerKind;
 	wxString eventHandlerPrefix;
@@ -1180,7 +1266,7 @@ void CppCodeGenerator::GenClassDeclaration( PObjectBase class_obj, bool use_enum
 	// public
 	m_header->WriteLn( wxT( "public:" ) );
 	m_header->Indent();
-	GenAttributeDeclaration( class_obj, P_PUBLIC );
+	GenAttributeDeclaration(class_obj, P_PUBLIC, arrays);
 
 	// Validators' variables
 	GenValidatorVariables( class_obj );
@@ -1493,7 +1579,7 @@ void CppCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectInfo 
 	}
 }
 
-void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector &events )
+void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &events, ArrayItems& arrays)
 {
 	m_source->WriteLn();
 	m_source->WriteLn( GetCode( class_obj, wxT( "cons_def" ) ) );
@@ -1508,7 +1594,7 @@ void CppCodeGenerator::GenConstructor( PObjectBase class_obj, const EventVector 
 
 	for ( unsigned int i = 0; i < class_obj->GetChildCount(); i++ )
 	{
-		GenConstruction( class_obj->GetChild( i ), true );
+		GenConstruction(class_obj->GetChild(i), true, arrays);
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT( "after_addchild" ) );
@@ -1560,7 +1646,7 @@ void CppCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVector &
 	m_source->WriteLn( wxT( "}" ) );
 }
 
-void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
+void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays)
 {
 	wxString type = obj->GetObjectTypeName();
 	PObjectInfo info = obj->GetObjectInfo();
@@ -1573,7 +1659,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		wxString perm_str = obj->GetProperty( wxT( "permission" ) )->GetValue();
 		if ( perm_str == wxT( "none" ) )
 		{
-			const wxString& decl = GetCode( obj, wxT( "declaration" ) );
+			const auto& decl = GetDeclaration(obj, arrays, false);
 			if ( !decl.empty() )
 			{
 				m_source->WriteLn( decl );
@@ -1589,7 +1675,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
 			PObjectBase child = obj->GetChild( i );
-			GenConstruction( child, isWidget );
+			GenConstruction(child, isWidget, arrays);
 
 			if ( type == wxT( "toolbar" ) )
 			{
@@ -1698,7 +1784,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 	{
 		// The child must be added to the sizer having in mind the
 		// child object type (there are 3 different routines)
-		GenConstruction( obj->GetChild( 0 ), false );
+		GenConstruction(obj->GetChild(0), false, arrays);
 
 		PObjectInfo childInfo = obj->GetChild( 0 )->GetObjectInfo();
 		wxString temp_name;
@@ -1731,7 +1817,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 			  type == wxT(" wizardpagesimple" )
 			)
 	{
-		GenConstruction( obj->GetChild( 0 ), false );
+		GenConstruction(obj->GetChild(0), false, arrays);
 		m_source->WriteLn( GetCode( obj, wxT( "page_add" ) ) );
 		GenSettings( obj->GetObjectInfo(), obj );
 	}
@@ -1770,7 +1856,7 @@ void CppCodeGenerator::GenConstruction( PObjectBase obj, bool is_widget )
 		// Generate the children
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 		{
-			GenConstruction( obj->GetChild( i ), false );
+			GenConstruction(obj->GetChild(i), false, arrays);
 		}
 	}
 }
