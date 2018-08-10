@@ -47,6 +47,7 @@ The value of all properties that are file or a directory paths must be absolute,
 #include "codegen.h"
 
 #include <set>
+#include <vector>
 
 /**
 * Parse the PHP templates.
@@ -57,10 +58,6 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
-
-	std::map<wxString, wxString> m_predModulePrefix;
-
-	void SetupModulePrefixes();
 
 public:
 	PHPTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath );
@@ -225,7 +222,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.

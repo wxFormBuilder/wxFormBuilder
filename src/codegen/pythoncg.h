@@ -43,7 +43,9 @@ The value of all properties that are file or a directory paths must be absolute,
 
 #include "codegen.h"
 
+#include <map>
 #include <set>
+#include <vector>
 
 /**
 * Parse the Python templates.
@@ -222,7 +224,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.

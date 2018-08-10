@@ -47,6 +47,9 @@ m_indent( 0 )
 {
 }
 
+TemplateParser::~TemplateParser() = default;
+
+
 TemplateParser::Token TemplateParser::GetNextToken()
 {
 	// There are 3 special characters
@@ -191,7 +194,7 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 	// property names used in templates may be encapsulated by curly brackets (e.g. ${name}) so they
     // can be surrounded by the template content without any white spaces now.
 	bool foundLeftCurlyBracket = false;
-	bool saveChild = ( NULL != child );
+	bool saveChild = (!!child);
 
 	if (!m_in.Eof())
 	{
@@ -244,7 +247,7 @@ bool TemplateParser::ParseProperty()
 	wxString propname = ParsePropertyName( &childName );
 
 	PProperty property = m_obj->GetProperty(propname);
-	if ( NULL == property.get() )
+	if (!property)
 	{
 		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname.c_str(), m_obj->GetClassName().c_str() );
 		return true;
@@ -519,7 +522,7 @@ bool TemplateParser::ParseForEach()
 
 PProperty TemplateParser::GetProperty( wxString* childName )
 {
-	PProperty property( (Property*)NULL );
+	PProperty property;
 
 	// Check for #wxparent, #parent, or #child
 	if ( GetNextToken() == TOK_MACRO )
@@ -987,7 +990,7 @@ wxString TemplateParser::ParseTemplate()
                 ParseText();
                 break;
             default:
-                return wxT("");
+                return wxEmptyString;
             }
         }
     }
@@ -1066,16 +1069,20 @@ wxString TemplateParser::ExtractInnerTemplate()
 
 bool TemplateParser::ParsePred()
 {
-	if (m_pred != wxT("") )
+	if (!m_pred.empty())
+	{
 		m_out << m_pred;
+	}
 
 	return true;
 }
 
 bool TemplateParser::ParseNPred()
 {
-	if (m_npred != wxT("") )
+	if (!m_npred.empty())
+	{
 		m_out << m_npred;
+	}
 
 	return true;
 }
@@ -1177,6 +1184,9 @@ bool TemplateParser::IsEqual(const wxString& value, const wxString& set)
 }
 
 
+
+
+CodeGenerator::~CodeGenerator() = default;
 
 
 void CodeGenerator::FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool skipRoot)

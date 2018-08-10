@@ -73,7 +73,7 @@ wxString PythonTemplateParser::RootWxParentToCode()
 PTemplateParser PythonTemplateParser::CreateParser( const TemplateParser* oldparser, wxString _template )
 {
 	const PythonTemplateParser* pythonOldParser = dynamic_cast< const PythonTemplateParser* >( oldparser );
-	if ( pythonOldParser != NULL )
+	if (pythonOldParser)
 	{
 		PTemplateParser newparser( new PythonTemplateParser( *pythonOldParser, _template ) );
 		return newparser;
@@ -532,7 +532,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	if ( !headerIncludes.empty() )
 	{
-		m_source->WriteLn( wxT("") );
+		m_source->WriteLn(wxEmptyString);
 	}
 
 	// Write internationalization support
@@ -540,7 +540,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		m_source->WriteLn( wxT("import gettext") );
 		m_source->WriteLn( wxT("_ = gettext.gettext") );
-		m_source->WriteLn( wxT("") );
+		m_source->WriteLn(wxEmptyString);
 	}
 
 	// Generating "defines" for macros
@@ -569,7 +569,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 		EventVector events;
 		FindEventHandlers( child, events );
 		//GenClassDeclaration( child, useEnum, classDecoration, events, eventHandlerPrefix, eventHandlerPostfix );
-		GenClassDeclaration(child, false, wxT(""), events, eventHandlerPostfix, arrays);
+		GenClassDeclaration(child, false, wxEmptyString, events, eventHandlerPostfix, arrays);
 	}
 
 	code = GetCode( project, wxT("python_epilogue") );
@@ -652,7 +652,7 @@ bool PythonCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 	PCodeInfo code_info = obj_info->GetCodeInfo( wxT("Python") );
 	if ( code_info )
 	{
-		_template = code_info->GetTemplate( wxString::Format( wxT("evt_%s%s"), disconnect ? wxT("dis") : wxT(""), templateName.c_str() ) );
+		_template = code_info->GetTemplate(wxString::Format(wxT("evt_%s%s"), disconnect ? wxT("dis") : wxEmptyString, templateName.c_str()));
 		if ( disconnect && _template.empty() )
 		{
 			_template = code_info->GetTemplate( wxT("evt_") + templateName );
@@ -770,7 +770,7 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 				name.c_str(), obj->GetClassName().c_str() ) );
 			wxLogError(msg);
 		}
-		return wxT("");
+		return wxEmptyString;
 	}
 
 	_template = code_info->GetTemplate(name);
@@ -896,14 +896,14 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 	GenConstructor(class_obj, events, arrays);
 	GenDestructor( class_obj, events );
 
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn(wxEmptyString);
 
 	// event handlers
 	GenVirtualEventHandlers(events, eventHandlerPostfix);
 	GetGenEventHandlers( class_obj );
 
 	m_source->Unindent();
-	m_source->WriteLn( wxT("") );
+	m_source->WriteLn(wxEmptyString);
 }
 
 void PythonCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes )
@@ -1454,7 +1454,10 @@ void PythonCodeGenerator::GenDefines( PObjectBase project)
 		m_source->WriteLn( wxString::Format( wxT("%s = %i"), it->c_str(), id ) );
 		id++;
 	}
-	if( !macros.empty() ) m_source->WriteLn( wxT("") );
+	if (!macros.empty())
+	{
+		m_source->WriteLn(wxEmptyString);
+	}
 }
 
 void PythonCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
@@ -1528,13 +1531,18 @@ void PythonCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, 
 
 void PythonCodeGenerator::UseRelativePath(bool relative, wxString basePath)
 {
-	bool result;
 	m_useRelativePath = relative;
 
 	if (m_useRelativePath)
 	{
-		result = wxFileName::DirExists( basePath );
-		m_basePath = ( result ? basePath : wxT("") );
+		if (wxFileName::DirExists(basePath))
+		{
+			m_basePath = basePath;
+		}
+		else
+		{
+			m_basePath = wxEmptyString;
+		}
 	}
 }
 /*

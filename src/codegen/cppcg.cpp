@@ -67,7 +67,7 @@ wxString CppTemplateParser::RootWxParentToCode()
 PTemplateParser CppTemplateParser::CreateParser( const TemplateParser* oldparser, wxString _template )
 {
 	const CppTemplateParser* cppOldParser = dynamic_cast< const CppTemplateParser* >( oldparser );
-	if ( cppOldParser != NULL )
+	if (cppOldParser)
 	{
 		PTemplateParser newparser( new CppTemplateParser( *cppOldParser, _template ) );
 		return newparser;
@@ -539,7 +539,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	}
 	else
 	{
-		m_header->WriteLn(wxT(""));
+		m_header->WriteLn(wxEmptyString);
 	}
 
 	m_header->Unindent();
@@ -617,7 +617,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	m_header->WriteLn(wxT("#pragma once"));
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 
 	code = GetCode( project, wxT( "header_preamble" ) );
 	if ( !code.empty() )
@@ -640,7 +640,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	if ( !subclasses.empty() )
 	{
-		m_header->WriteLn( wxT( "" ) );
+		m_header->WriteLn(wxEmptyString);
 	}
 
 	// Generating in the .h header file those include from components dependencies.
@@ -655,7 +655,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	}
 	if ( !headerIncludes.empty() )
 	{
-		m_header->WriteLn( wxT( "" ) );
+		m_header->WriteLn(wxEmptyString);
 	}
 
 	// class decoration
@@ -884,7 +884,7 @@ bool CppCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 	PCodeInfo code_info = obj_info->GetCodeInfo( wxT( "C++" ) );
 	if ( code_info )
 	{
-		_template = code_info->GetTemplate( wxString::Format( wxT( "evt_%s%s" ), disconnect ? wxT( "dis" ) : wxT( "" ), templateName.c_str() ) );
+		_template = code_info->GetTemplate(wxString::Format(wxT("evt_%s%s"), disconnect ? wxT("dis") : wxEmptyString, templateName.c_str()));
 		if ( disconnect && _template.empty() )
 		{
 			_template = code_info->GetTemplate( wxT( "evt_" ) + templateName );
@@ -1085,7 +1085,7 @@ wxString CppCodeGenerator::GetCode( PObjectBase obj, wxString name )
 		wxString msg( wxString::Format( wxT( "Missing \"%s\" template for \"%s\" class. Review your XML object description" ),
 										name.c_str(), obj->GetClassName().c_str() ) );
 		wxLogError( msg );
-		return wxT( "" );
+		return wxEmptyString;
 	}
 
 	_template = code_info->GetTemplate( name );
@@ -1221,7 +1221,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	}
 
 	m_header->Unindent();
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 
 	// protected
 	m_header->WriteLn( wxT( "protected:" ) );
@@ -1249,7 +1249,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	}
 	else if ( 0 == eventHandlerKind.compare( wxT( "decl" ) ) )
 	{
-		eventHandlerPrefix = wxT( "" );
+		eventHandlerPrefix = wxEmptyString;
 		eventHandlerPostfix = wxT( ";" );
 	}
 	else // Default: impl_virtual
@@ -1261,7 +1261,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	GenVirtualEventHandlers( events, eventHandlerPrefix, eventHandlerPostfix );
 
 	m_header->Unindent();
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 
 	// public
 	m_header->WriteLn( wxT( "public:" ) );
@@ -1270,7 +1270,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	// Validators' variables
 	GenValidatorVariables( class_obj );
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 
 	// The constructor is also included within public
 	m_header->WriteLn( GetCode( class_obj, wxT( "cons_decl" ) ) );
@@ -1280,11 +1280,11 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	GetGenEventHandlers( class_obj );
 	m_header->Unindent();
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 
 	m_header->Unindent();
 	m_header->WriteLn( wxT( "};" ) );
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 }
 
 void CppCodeGenerator::GenEnumIds( PObjectBase class_obj )
@@ -1935,7 +1935,7 @@ void CppCodeGenerator::GenDefines( PObjectBase project )
 		id++;
 	}
 
-	m_header->WriteLn( wxT( "" ) );
+	m_header->WriteLn(wxEmptyString);
 }
 
 void CppCodeGenerator::GenSettings( PObjectInfo info, PObjectBase obj )
@@ -2122,13 +2122,18 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<w
 
 void CppCodeGenerator::UseRelativePath( bool relative, wxString basePath )
 {
-	bool result;
 	m_useRelativePath = relative;
 
-	if ( m_useRelativePath )
+	if (m_useRelativePath)
 	{
-		result = wxFileName::DirExists( basePath );
-		m_basePath = ( result ? basePath : wxT( "" ) );
+		if (wxFileName::DirExists(basePath))
+		{
+			m_basePath = basePath;
+		}
+		else
+		{
+			m_basePath = wxEmptyString;
+		}
 	}
 }
 /*

@@ -42,7 +42,9 @@ none
 
 #include "codegen.h"
 
+#include <map>
 #include <set>
+#include <vector>
 
 /**
 * Parse the Lua templates.
@@ -100,7 +102,7 @@ private:
 	/**
 	* Given an object and the name for a template, obtains the code.
 	*/
-	wxString GetCode( PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxT(""));
+	wxString GetCode(PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxEmptyString);
 
 	/**
 	* Gets the construction fragment for the specified object.
@@ -233,7 +235,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.

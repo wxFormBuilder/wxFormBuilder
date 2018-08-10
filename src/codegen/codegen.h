@@ -144,7 +144,7 @@ private:
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
 
-	wxString ParsePropertyName( wxString* child = NULL );
+	wxString ParsePropertyName(wxString* child = nullptr);
 	/**
 	* This routine extracts the source code from a template enclosed between
 	* the #begin and #end macros, having in mind that they can be nested
@@ -189,7 +189,7 @@ private:
 	bool ParseIfTypeNotEqual();
 	void ParseLuaTable();
 
-	PProperty GetProperty( wxString* childName = NULL );
+	PProperty GetProperty(wxString* childName = nullptr);
 	PObjectBase GetWxParent();
 	PProperty GetRelatedProperty( PObjectBase relative );
 
@@ -227,7 +227,7 @@ public:
 	*/
 	virtual PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template ) = 0;
 
-	virtual ~TemplateParser() {};
+	virtual ~TemplateParser();
 
 	/**
 	* Returns the code for a "wxWindow *parent" root attribute' name.
@@ -301,7 +301,7 @@ public:
 	/**
 	* Virtual destructor.
 	*/
-	virtual ~CodeGenerator() {};
+	virtual ~CodeGenerator();
 	/**
 	* Generate the code of the project
 	*/
