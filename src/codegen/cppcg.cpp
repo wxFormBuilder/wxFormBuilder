@@ -306,6 +306,10 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT( "wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
+			else if (source == _("Load From XRC"))
+			{
+				result << wxT("wxXmlResource::Get()->LoadBitmap( wxT(\"") << path << wxT("\") )");
+			}
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
@@ -2020,6 +2024,12 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<w
 				inc << wxT( "#include \"" ) << includePath << wxT( "\"" );
 				embedset.insert( inc );
 			}
+			// NOTE: This is currently not necessary because the default code already contains this header.
+			//       Because the unique include filtering is not global this cannot be enabled without creating a duplicate entry.
+			//else if (source == _("Load From XRC"))
+			//{
+			//	embedset.insert(wxT("#include <wx/xrc/xmlres.h>"));
+			//}
 		}
 	}
 
