@@ -499,99 +499,106 @@ wxFBBitmapProperty::~wxFBBitmapProperty()
 }
 
 wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int childIndex,
-                                           wxVariant& childValue) const {
-	wxFBBitmapProperty* bp = (wxFBBitmapProperty*)this;
+                                           wxVariant& childValue) const
+{
+	auto* bp = const_cast<wxFBBitmapProperty*>(this);
 
-    wxString val = thisValue.GetString();
+	const auto val = thisValue.GetString();
 	wxArrayString childVals;
-	GetChildValues( val, childVals );
-	wxString newVal = val;
+	GetChildValues(val, childVals);
+	auto newVal = val;
 
-    // Find the appropriate new state
-    switch ( childIndex )
-    {
-        // source
-        case 0:
-        {
-			unsigned int count = GetChildCount();
+	// Find the appropriate new state
+	switch (childIndex)
+	{
+		// source
+		case 0:
+		{
+			const auto count = GetChildCount();
 
-            // childValue.GetInteger() returns the chosen item index
-            switch ( childValue.GetInteger() )
-            {
-                // 'Load From File' and 'Load From Embedded File'
-                case 0:
-                case 1:
-                {
-					if( prevSrc != 0 && prevSrc!= 1 )
+			// childValue.GetInteger() returns the chosen item index
+			switch (childValue.GetInteger())
+			{
+				// 'Load From File' and 'Load From Embedded File'
+				case 0:
+				case 1:
+				{
+					if (prevSrc != 0 && prevSrc!= 1)
 					{
-					    for ( unsigned int i = 1; i<count ;i++ )
+						for (unsigned int i = 1; i < count ; ++i)
 						{
-							wxPGProperty *p = Item(i) ;
-							if ( p )
+							if (auto* p = Item(i))
 							{
-								wxLogDebug( wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str() );
-								GetGrid()->DeleteProperty( p );
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								GetGrid()->DeleteProperty(p);
 							}
 						}
-						bp->AppendChild( bp->CreatePropertyFilePath() );
+						bp->AppendChild(bp->CreatePropertyFilePath());
 					}
 
-					if( childVals.GetCount() == 2 )
+					if (childVals.GetCount() == 2)
+					{
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
-					else if( childVals.GetCount() > 1 )
-						newVal = childVals.Item(0) + wxT("; ");
-
-                    break;
-                }
-                // 'Load From Resource'
-                case 2:
-                {
-					if( prevSrc != 2 )
+					}
+					else if (childVals.GetCount() > 0)
 					{
-						for ( unsigned int i = 1; i<count ;i++ )
+						newVal = childVals.Item(0) + wxT("; ");
+					}
+					break;
+				}
+				// 'Load From Resource'
+				case 2:
+				{
+					if (prevSrc != 2)
+					{
+						for (unsigned int i = 1; i < count ; ++i)
 						{
-							wxPGProperty *p = Item(i) ;
-							if ( p )
+							if (auto* p = Item(i))
 							{
-								wxLogDebug( wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str() );
-								GetGrid()->DeleteProperty( p );
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								GetGrid()->DeleteProperty(p);
 							}
 						}
-						bp->AppendChild( bp->CreatePropertyResourceName() );
+						bp->AppendChild(bp->CreatePropertyResourceName());
 					}
 
-					if( childVals.GetCount() == 2)
+					if (childVals.GetCount() == 2)
+					{
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
-					else if( childVals.GetCount() > 1 )
-						newVal = childVals.Item(0) + wxT("; ");
-
-                    break;
-                }
-                // 'Load From Icon Resource'
-                case 3:
-                {
-					if( prevSrc != 3 )
+					}
+					else if (childVals.GetCount() > 0)
 					{
-						for ( unsigned int i = 1; i<count ;i++ )
+						newVal = childVals.Item(0) + wxT("; ");
+					}
+					break;
+				}
+				// 'Load From Icon Resource'
+				case 3:
+				{
+					if (prevSrc != 3)
+					{
+						for (unsigned int i = 1; i < count ; ++i)
 						{
-							wxPGProperty *p = Item(i) ;
-							if ( p )
+							if (auto* p = Item(i))
 							{
-								wxLogDebug( wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str() );
-								GetGrid()->DeleteProperty( p );
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								GetGrid()->DeleteProperty(p);
 							}
 						}
-						bp->AppendChild( bp->CreatePropertyResourceName() );
-						bp->AppendChild( bp->CreatePropertyIconSize() );
+						bp->AppendChild(bp->CreatePropertyResourceName());
+						bp->AppendChild(bp->CreatePropertyIconSize());
 					}
 
-					if( childVals.GetCount() == 3)
+					if (childVals.GetCount() == 3)
+					{
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; [") + childVals.Item(2) + wxT("]");
-					else if( childVals.GetCount() > 1 )
+					}
+					else if (childVals.GetCount() > 0)
+					{
 						newVal = childVals.Item(0) + wxT("; ; []");
-
-                    break;
-                }
+					}
+					break;
+				}
 				// 'Load From XRC'
 				case 4:
 				{
@@ -620,31 +627,34 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 				}
 				// 'Load From Art Provider'
 				case 5:
-                {
+				{
 					if (prevSrc != 5)
 					{
-						for ( unsigned int i = 1; i<count ;i++ )
+						for (unsigned int i = 1; i < count ; ++i)
 						{
-							wxPGProperty *p = Item(i) ;
-							if ( p )
+							if (auto* p = Item(i))
 							{
-								wxLogDebug( wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str() );
-								GetGrid()->DeleteProperty( p );
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								GetGrid()->DeleteProperty(p);
 							}
 						}
-						bp->AppendChild( bp->CreatePropertyArtId() );
-						bp->AppendChild( bp->CreatePropertyArtClient() );
+						bp->AppendChild(bp->CreatePropertyArtId());
+						bp->AppendChild(bp->CreatePropertyArtClient());
 					}
 
-					if( childVals.GetCount() == 3)
+					if (childVals.GetCount() == 3)
+					{
 						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1) + wxT("; ") + childVals.Item(2);
-					else if( childVals.GetCount() > 1 )
+					}
+					else if (childVals.GetCount() > 0)
+					{
 						newVal = childVals.Item(0) + wxT("; ; ");
-                    break;
-                }
-            }
-            break;
-        }
+					}
+					break;
+				}
+			}
+			break;
+		}
 
         // file_path || id || resource_name || xrc_name
         case 1:
