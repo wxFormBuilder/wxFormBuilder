@@ -219,9 +219,13 @@ void wxFBBitmapProperty::CreateChildren()
 	{
 		childIndex = 3;
 	}
-	else if ( source == wxString(_("Load From Art Provider") ) )
+	else if (source == wxString(_("Load From XRC")))
 	{
 		childIndex = 4;
+	}
+	else if (source == wxString(_("Load From Art Provider")))
+	{
+		childIndex = 5;
 	}
 
 	childValue = WXVARIANT( childIndex );
@@ -240,6 +244,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
     sourceChoices.Add(_("Load From Embedded File") );
     sourceChoices.Add(_("Load From Resource") );
     sourceChoices.Add(_("Load From Icon Resource") );
+	sourceChoices.Add(_("Load From XRC"));
     sourceChoices.Add(_("Load From Art Provider") );
 
     wxPGProperty *srcProp = new wxEnumProperty( wxT("source"), wxPG_LABEL, sourceChoices, sourceIndex );
@@ -251,6 +256,8 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
                             wxString(_("Windows Only. Load the image from a BITMAP resource in a .rc file\n\n") ) +
                             wxString(_("Load From Icon Resource:\n") ) +
                             wxString(_("Windows Only. Load the image from a ICON resource in a .rc file\n\n") ) +
+							wxString(_("Load From XRC:\n")) +
+							wxString(_("Load the image from XRC ressources. The XRC ressources must be initialized by the application code.\n\n")) +
                             wxString(_("Load From Art Provider:\n") ) +
                             wxString(_("Query registered providers for bitmap with given ID.\n\n") ) );
     AppendChild( srcProp );
@@ -289,6 +296,15 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertyIconSize()
     propIcoSize->SetHelpString(_("The size of the icon to use from a ICON resource with multiple icons in it.") );
 
     return propIcoSize;
+}
+
+wxPGProperty* wxFBBitmapProperty::CreatePropertyXrcName()
+{
+	// Create 'xrc_name' property ('Load From XRC' only)
+	auto* propXRCName = new wxStringProperty(wxT("xrc_name"), wxPG_LABEL);
+	propXRCName->SetHelpString(_("Name of the item in the XRC ressources."));
+
+	return propXRCName;
 }
 
 wxPGProperty *wxFBBitmapProperty::CreatePropertyArtId()
@@ -576,10 +592,36 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 
                     break;
                 }
-                // 'Load From Art Provider'
-                case 4:
+				// 'Load From XRC'
+				case 4:
+				{
+					if (prevSrc != 4)
+					{
+						for (unsigned int i = 1; i < count; ++i)
+						{
+							if (auto* p = Item(i))
+							{
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								GetGrid()->DeleteProperty(p);
+							}
+						}
+						bp->AppendChild(bp->CreatePropertyXrcName());
+					}
+
+					if (childVals.GetCount() == 2)
+					{
+						newVal = childVals.Item(0) + wxT("; ") + childVals.Item(1);
+					}
+					else if (childVals.GetCount() > 0)
+					{
+						newVal = childVals.Item(0) + wxT("; ");
+					}
+					break;
+				}
+				// 'Load From Art Provider'
+				case 5:
                 {
-					if( prevSrc != 4 )
+					if (prevSrc != 5)
 					{
 						for ( unsigned int i = 1; i<count ;i++ )
 						{
@@ -604,7 +646,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
             break;
         }
 
-        // file_path || id || resource_name
+        // file_path || id || resource_name || xrc_name
         case 1:
         {
             if ( (Item(0)->GetValueAsString() == _("Load From File")) || (Item(0)->GetValueAsString() == _("Load From Embedded File")) )
@@ -690,6 +732,13 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
 			wxString aux = childVals[2];
 			aux.Replace(wxT(";"), wxT(","));
 			Item(2)->SetValue(WXVARIANT(TypeConv::StringToSize(aux)));
+		}
+	}
+	else if (childVals[0].Contains(_("Load From XRC")))
+	{
+		if (childVals.Count() > 1)
+		{
+			Item(1)->SetValue(childVals[1]);
 		}
 	}
 	else if( childVals[0].Contains( _("Load From Art Provider") ) )

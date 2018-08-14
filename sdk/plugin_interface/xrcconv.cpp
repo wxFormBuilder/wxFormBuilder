@@ -220,7 +220,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 					break;
 				}
 
-				if ( bitmapProp.StartsWith( _("Load From File") ) || bitmapProp.StartsWith( _("Load From Embedded File") ) )
+				if (bitmapProp.StartsWith(_("Load From File")) || bitmapProp.StartsWith(_("Load From Embedded File")) || bitmapProp.StartsWith(_("Load From XRC")))
 				{
 					LinkText( filename.Trim().Trim(false), &propElement );
 				}
