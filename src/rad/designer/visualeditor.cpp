@@ -97,12 +97,8 @@ void VisualEditor::DeleteAbstractObjects()
 	{
 	    // The abstract objects are stored as wxNoObject*'s
 		wxNoObject* noobject = dynamic_cast< wxNoObject* >( it->first );
-		if ( noobject != 0 )
-		{
-		    delete noobject;
-		}
-		else
-		{
+		delete noobject;
+		if (noobject == nullptr) {
 			// Delete push'd visual object event handlers
 			if (auto* staticBoxSizer = wxDynamicCast(it->first, wxStaticBoxSizer))
 			{

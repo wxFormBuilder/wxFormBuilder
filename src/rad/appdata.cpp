@@ -449,8 +449,7 @@ ApplicationData* ApplicationData::Get( const wxString &rootdir )
 void ApplicationData::Destroy()
 
 {
-	if ( s_instance )
-		delete s_instance;
+	delete s_instance;
 
 	s_instance = NULL;
 }
