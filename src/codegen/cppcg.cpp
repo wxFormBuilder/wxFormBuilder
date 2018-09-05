@@ -609,12 +609,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		file = wxT( "noname" );
 	}
 
-	wxString guardMacro;
-	wxFileName::SplitPath( file, 0, &guardMacro, 0 );
-	guardMacro.Replace( wxT( " " ), wxT( "_" ) );
-	guardMacro.MakeUpper();
-	m_header->WriteLn( wxT( "#ifndef __" ) + guardMacro + wxT( "_H__" ) );
-	m_header->WriteLn( wxT( "#define __" ) + guardMacro + wxT( "_H__" ) );
+	m_header->WriteLn(wxT("#pragma once"));
 	m_header->WriteLn( wxT( "" ) );
 
 	code = GetCode( project, wxT( "header_preamble" ) );
@@ -791,8 +786,6 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		}
 		m_header->WriteLn( wxEmptyString );
 	}
-
-	m_header->WriteLn( wxT( "#endif //__" ) + guardMacro + wxT( "_H__" ) );
 
 	return true;
 }
