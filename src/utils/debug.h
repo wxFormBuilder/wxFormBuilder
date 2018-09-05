@@ -26,9 +26,9 @@
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
 
+#ifdef __WXFB_DEBUG__
 #include <wx/string.h>
 #include <wx/log.h>
-#ifdef __WXFB_DEBUG__
 
 #define LogDebug(...) \
 	{											\
