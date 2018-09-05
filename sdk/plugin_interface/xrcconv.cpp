@@ -410,9 +410,9 @@ void ObjectToXrcFilter::AddWindowProperties()
 	if ( !m_obj->IsNull( _( "fg" ) ) )
 		AddProperty( _( "fg" ), _( "fg" ), XRC_TYPE_COLOUR );
 
-	if ( !m_obj->IsNull( _( "enabled" ) ) && !m_obj->GetPropertyAsInteger( _( "enabled" ) ) )
-		AddProperty( _( "enabled" ), _( "enabled" ), XRC_TYPE_BOOL );
-
+	if (!m_obj->IsNull(_("enabled")) && m_obj->GetPropertyAsInteger(_("enabled")) == 0) {
+		AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
+	}
 	if ( !m_obj->IsNull( _( "focused" ) ) )
 		AddPropertyValue( _( "focused" ), _( "0" ) );
 
