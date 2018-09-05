@@ -23,12 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __ENC_UTILS_H__
-#define __ENC_UTILS_H__
+#pragma once
+
 #include <wx/string.h>
 
-
-void UTF8ToAnsi(const wxString &filename);
-
-
-#endif //__ENC_UTILS_H__
+void UTF8ToAnsi(const wxString& filename);

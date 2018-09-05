@@ -21,22 +21,17 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __DATA_OBJECT__
-#define __DATA_OBJECT__
+#pragma once
 
 #include "../../utils/wxfbdefs.h"
 
 #include <wx/dnd.h>
 
-#define wxFBDataObjectFormat wxDataFormat( wxT("wxFormBuilderDataFormat") )
+#define wxFBDataObjectFormat wxDataFormat(wxT("wxFormBuilderDataFormat"))
 
-class wxFBDataObject : public wxDataObject
-{
-private:
-	std::string m_data;
-
+class wxFBDataObject : public wxDataObject {
 public:
-	wxFBDataObject( PObjectBase obj = PObjectBase() );
+	wxFBDataObject(PObjectBase obj = PObjectBase());
 	void GetAllFormats(wxDataFormat* formats, Direction dir = Get) const override;
 	bool GetDataHere(const wxDataFormat& format, void* buf) const override;
 	size_t GetDataSize(const wxDataFormat& format) const override;
@@ -44,6 +39,7 @@ public:
 	wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
 	bool SetData(const wxDataFormat& format, size_t len, const void* buf) override;
 	PObjectBase GetObj();
-};
 
-#endif //__DATA_OBJECT__
+private:
+	std::string m_data;
+};

@@ -27,43 +27,36 @@
 
 #include <wx/wfstream.h>
 
-void UTF8ToAnsi(const wxString &filename)
-{
-  wxString temp_filename = filename + wxT(".tmp");
+void UTF8ToAnsi(const wxString& filename) {
+	wxString temp_filename = filename + wxT(".tmp");
 
-  ::wxCopyFile(filename,temp_filename);
-  ::wxRemoveFile(filename);
+	::wxCopyFile(filename, temp_filename);
+	::wxRemoveFile(filename);
 
-  {
-    wxFileInputStream input(temp_filename);
-    wxFileOutputStream output(filename);
+	{
+		wxFileInputStream input(temp_filename);
+		wxFileOutputStream output(filename);
 
-    if (input.IsOk() && output.IsOk())
-    {
-      while (!input.Eof())
-      {
-        unsigned char c;
+		if (input.IsOk() && output.IsOk()) {
+			while (!input.Eof()) {
+				unsigned char c;
 
-        input.Read(&c,1);
+				input.Read(&c, 1);
 
-        if (input.LastRead() != 1)
-          break;
+				if (input.LastRead() != 1) break;
 
-        if (c == 0xC2 || c == 0xC3)
-        {
-          unsigned char aux = c;
-          input.Read(&c,1);
-          if (input.LastRead() != 1)
-            break;
+				if (c == 0xC2 || c == 0xC3) {
+					unsigned char aux = c;
+					input.Read(&c, 1);
+					if (input.LastRead() != 1) break;
 
-          if (aux == 0xC3)
-            c += 64;
-        }
+					if (aux == 0xC3) c += 64;
+				}
 
-        output.Write(&c,1);
-      }
-    }
-  }
+				output.Write(&c, 1);
+			}
+		}
+	}
 
-  ::wxRemoveFile(temp_filename);
+	::wxRemoveFile(temp_filename);
 }
