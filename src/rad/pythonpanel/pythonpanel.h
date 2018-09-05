@@ -60,7 +60,7 @@ private:
 
 public:
 	PythonPanel( wxWindow *parent, int id );
-	~PythonPanel();
+	~PythonPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

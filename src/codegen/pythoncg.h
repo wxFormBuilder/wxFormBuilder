@@ -64,10 +64,9 @@ public:
 	PythonTemplateParser( const PythonTemplateParser & that, wxString _template );
 
 	// overrides for Python
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**

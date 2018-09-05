@@ -90,7 +90,7 @@ public:
                         const wxString& name  = wxPG_LABEL,
                         const wxString& value = wxString() );
 
-    virtual ~wxFBBitmapProperty();
+	~wxFBBitmapProperty() override;
 
     wxPGProperty *CreatePropertySource( int sourceIndex = 0 );
     wxPGProperty *CreatePropertyFilePath() ;
@@ -105,10 +105,10 @@ public:
 	int prevSrc;
 	void SetPrevSource(int src){prevSrc = src;}
 
-	virtual wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                               wxVariant& childValue) const override;
+	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
+	                       wxVariant& childValue) const override;
 
-	virtual void OnSetValue() override;
+	void OnSetValue() override;
 	void CreateChildren();
 
 	void UpdateChildValues(const wxString& value);
@@ -148,16 +148,15 @@ public:
     {
     }
 
-    virtual ~wxPGSliderEditor();
-    virtual wxPGWindowList CreateControls(wxPropertyGrid* propgrid,
-                                          wxPGProperty* property,
-                                          const wxPoint& pos,
-                                          const wxSize& size) const;
-    virtual void UpdateControl( wxPGProperty* property, wxWindow* wnd ) const;
-    virtual bool OnEvent( wxPropertyGrid* propgrid, wxPGProperty* property,
-                          wxWindow* wnd, wxEvent& event ) const;
-    virtual bool GetValueFromControl( wxVariant& variant, wxPGProperty* property, wxWindow* ctrl ) const;
-    virtual void SetValueToUnspecified( wxPGProperty* property, wxWindow* ctrl ) const;
+	~wxPGSliderEditor() override;
+	wxPGWindowList CreateControls(wxPropertyGrid* propgrid, wxPGProperty* property,
+	                              const wxPoint& pos, const wxSize& size) const override;
+	void UpdateControl(wxPGProperty* property, wxWindow* wnd) const override;
+	bool OnEvent(wxPropertyGrid* propgrid, wxPGProperty* property, wxWindow* wnd,
+	             wxEvent& event) const override;
+	bool GetValueFromControl(wxVariant& variant, wxPGProperty* property,
+	                         wxWindow* ctrl) const override;
+	void SetValueToUnspecified(wxPGProperty* property, wxWindow* ctrl) const override;
 
 private:
     int m_max;

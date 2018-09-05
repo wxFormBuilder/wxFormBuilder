@@ -56,7 +56,7 @@ private:
 
 public:
 	CppPanel( wxWindow *parent, int id );
-	~CppPanel();
+	~CppPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

@@ -63,7 +63,7 @@ private:
 
 public:
 	PHPPanel( wxWindow *parent, int id );
-	~PHPPanel();
+	~PHPPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

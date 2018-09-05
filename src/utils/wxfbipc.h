@@ -69,7 +69,7 @@ public:
 	const wxString m_name;
 
 	AppServer( const wxString& name ) : m_name( name ){}
-	wxConnectionBase* OnAcceptConnection( const wxString& topic );
+	wxConnectionBase* OnAcceptConnection(const wxString& topic) override;
 };
 
 // Client class, to be used by subsequent instances in OnInit

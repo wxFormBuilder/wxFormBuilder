@@ -154,7 +154,7 @@ private:
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
-    ~ObjectInspector();
+	~ObjectInspector() override;
 
     void OnObjectSelected( wxFBObjectEvent& event );
     void OnProjectRefresh( wxFBEvent& event );

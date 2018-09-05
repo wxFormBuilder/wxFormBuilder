@@ -60,7 +60,7 @@ private:
 
 public:
 	LuaPanel( wxWindow *parent, int id );
-	~LuaPanel();
+	~LuaPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

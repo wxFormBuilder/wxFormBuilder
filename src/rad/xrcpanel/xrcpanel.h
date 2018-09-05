@@ -47,7 +47,7 @@ private:
 
 public:
 	XrcPanel( wxWindow *parent, int id );
-	~XrcPanel();
+	~XrcPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );
