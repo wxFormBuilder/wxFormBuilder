@@ -24,9 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "encodingutils.h"
-#include <stdarg.h>
 
-#include "wx/wx.h"
 #include <wx/wfstream.h>
 
 void UTF8ToAnsi(const wxString &filename)
