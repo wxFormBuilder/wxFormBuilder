@@ -29,12 +29,8 @@
 
 #include <ticpp.h>
 
-wxFBDataObject::wxFBDataObject( PObjectBase obj )
-:
-wxDataObject()
-{
-	if ( obj )
-	{
+wxFBDataObject::wxFBDataObject(PObjectBase obj) {
+	if (obj) {
 		// create xml representation of ObjectBase
 		ticpp::Element element;
 		obj->SerializeObject( &element );

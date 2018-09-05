@@ -572,9 +572,7 @@ BEGIN_EVENT_TABLE(ItemPopupMenu,wxMenu)
 	EVT_UPDATE_UI(wxID_ANY, ItemPopupMenu::OnUpdateEvent)
 END_EVENT_TABLE()
 
-ItemPopupMenu::ItemPopupMenu(PObjectBase obj)
-: wxMenu(), m_object(obj)
-{
+ItemPopupMenu::ItemPopupMenu(PObjectBase obj) : m_object(obj) {
 	Append(MENU_CUT,        wxT("Cut\tCtrl+X"));
 	Append(MENU_COPY,       wxT("Copy\tCtrl+C"));
 	Append(MENU_PASTE,      wxT("Paste\tCtrl+V"));

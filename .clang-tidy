@@ -1,5 +1,5 @@
 ---
-Checks: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer'
+Checks: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,readability-redundant-member-init'
 WarningsAsErrors: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer'
 CheckOptions:
       - key:             readability-implicit-bool-conversion.AllowPointerConditions

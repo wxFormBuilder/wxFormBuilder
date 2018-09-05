@@ -449,12 +449,9 @@ void MyApp::MacOpenFile(const wxString &fileName)
 class LoggingStackWalker : public StackLogger
 {
 public:
-    LoggingStackWalker()
-    :
-    StackLogger()
-    {
-        wxLog::Suspend();
-    }
+	LoggingStackWalker() {
+		wxLog::Suspend();
+	}
 
 	~LoggingStackWalker() override {
         wxLogError( wxT("A Fatal Error Occurred. Click Details for a backtrace.") );

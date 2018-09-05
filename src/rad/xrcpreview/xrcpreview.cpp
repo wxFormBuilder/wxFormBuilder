@@ -44,11 +44,7 @@ private:
 	wxWindow* m_window;
 
 public:
-	XrcPreviewPopupMenu( wxWindow* window )
-	:
-	wxMenu(),
-	m_window( window )
-	{
+	XrcPreviewPopupMenu(wxWindow* window) : m_window(window) {
 		Append( MENU_DELETE, wxT("Close Preview") );
 	}
 

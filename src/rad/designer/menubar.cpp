@@ -24,11 +24,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "menubar.h"
-#include "wx/debug.h"
 
-Menubar::Menubar() : wxPanel()
-{
-    m_sizer = NULL;
+Menubar::Menubar() {
+	m_sizer = nullptr;
 }
 
 Menubar::Menubar(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
