@@ -309,6 +309,11 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
+			else if (source == _("Load From XRC"))
+			{
+				// NOTE: The module wx.xrc is part of the default code template
+				result << wxT("wx.xrc.XmlResource.Get().LoadBitmap( u\"") << path << wxT("\" )");
+			}
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );

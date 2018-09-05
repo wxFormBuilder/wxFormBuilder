@@ -302,6 +302,11 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 					result.Printf( wxT("new wxIcon( \"%s\", wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
+			else if (source == _("Load From XRC"))
+			{
+				// This requires that the global wxXmlResource object is set
+				result << wxT("wxXmlResource::Get()->LoadBitmap( \"") << path << wxT("\" )");
+			}
 			else if ( source == _("Load From Art Provider") )
 			{
 				wxString rid = path.BeforeFirst( wxT(':') );
