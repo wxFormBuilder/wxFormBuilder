@@ -24,25 +24,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "stringutils.h"
+
 #include "typeconv.h"
-#include <sstream>
-#include <ticpp.h>
 #include "wxfbexception.h"
 
+#include <ticpp.h>
 #include <wx/ffile.h>
 #include <wx/fontmap.h>
-#include <wx/choicdlg.h>
-#include <wx/arrstr.h>
-#include <wx/filefn.h>
 
-wxString StringUtils::IntToStr(int num)
-{
-  //wxString stream;
-  //stream << num;
-  //return stream;
-  wxString result;
-  result.Printf(wxT("%d"),num);
-  return result;
+wxString StringUtils::IntToStr(const int num) {
+	wxString result;
+	result.Printf(wxT("%d"), num);
+	return result;
 }
 
 wxString StringUtils::GetSupportedEncodings( bool columnateWithTab, wxArrayString* array )
@@ -381,9 +374,10 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 		}
 
 		// declStart and declEnd are both valid, replace that section with a new declaration
-		contents.replace( declStart, declEnd - declStart + 2,
-                            wxString::Format( wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>"),
-                            version, standalone ) );
+		contents.replace(
+		    declStart, declEnd - declStart + 2,
+		    wxString::Format(wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>"),
+		                     version, standalone));
 	}
 
 	// Remove the old file
