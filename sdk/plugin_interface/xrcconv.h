@@ -23,7 +23,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "wx/wx.h"
 #include "component.h"
 
 #define XRC_TYPE_TEXT    0
@@ -147,5 +146,3 @@ class XrcToXfbFilter
 
   ticpp::Element *GetXrcProperty(const wxString &name);
 };
-
-

@@ -12,6 +12,5 @@ SortIncludes: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
 SpaceBeforeParens: ControlStatements
 SpacesInContainerLiterals: true
-AllowShortBlocksOnASingleLine: true
 Cpp11BracedListStyle: false
 IndentCaseLabels: true

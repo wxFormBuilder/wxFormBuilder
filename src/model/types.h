@@ -23,15 +23,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TYPES__
-#define __TYPES__
+#pragma once
 
-#include <vector>
-#include <wx/string.h>
 #include <map>
 #include <memory>
-
-#include "wx/wx.h"
+#include <vector>
+#include <wx/wx.h>
 
 class ObjectType;
 
@@ -213,6 +210,3 @@ public:
 	void SetList(wxString str);
 	wxString ToString();
 };
-
-
-#endif // __TYPES__

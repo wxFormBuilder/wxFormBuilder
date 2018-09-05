@@ -23,11 +23,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __PLUGIN_H__
-#define __PLUGIN_H__
+#pragma once
 
 #include "component.h"
-#include "wx/wx.h"
+
 #include <vector>
 #include <map>
 
@@ -241,5 +240,3 @@ public:
 		return m_type;
 	}
 };
-
-#endif // __PLUGIN_H__

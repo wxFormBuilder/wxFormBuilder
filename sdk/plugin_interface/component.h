@@ -23,13 +23,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __COMPONENT_H__
-#define __COMPONENT_H__
+#pragma once
 
 
 #include "wx/wx.h"
-#include <wx/dynarray.h>
-#include <wx/string.h>
 #include "fontcontainer.h"
 
 #define COMPONENT_TYPE_ABSTRACT 0
@@ -264,5 +261,3 @@ extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary( IManager* manager ) 
 
 #define ABSTRACT_COMPONENT( name, class ) \
   _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_ABSTRACT )
-
-#endif //__COMPONENT_H__

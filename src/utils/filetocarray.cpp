@@ -1,17 +1,15 @@
+#include "filetocarray.h"
+
 #include "../rad/appdata.h"
 #include "../model/objectbase.h"
 #include "../codegen/codewriter.h"
 #include "../codegen/cppcg.h"
 #include "typeconv.h"
 #include "wxfbexception.h"
-#include "filetocarray.h"
 
-#include <wx/log.h>
 #include <wx/filename.h>
-#include <wx/image.h>
 
 #include <fstream>
-#include <iterator>
 
 #define CASE_BITMAP_TYPE( x )	\
 	case x:						\
