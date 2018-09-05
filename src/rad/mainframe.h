@@ -23,8 +23,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __MAIN_FRAME__
-#define __MAIN_FRAME__
+#pragma once
 
 #include "wx/splitter.h"
 #include "wx/wx.h"
@@ -46,6 +45,8 @@ class ObjectTree;
 class ObjectInspector;
 class wxFbPalette;
 class VisualEditor;
+
+const char* const VERSION = "3.8.1";
 
 /**
  * wxFormBuilder GUI styles.
@@ -176,6 +177,3 @@ class MainFrame : public wxFrame
 
   bool SaveWarning();
   };
-
-
-#endif //__MAIN_FRAME__
