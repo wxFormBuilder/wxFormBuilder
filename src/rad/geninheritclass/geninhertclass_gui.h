@@ -75,7 +75,7 @@ class GenInheritedClassDlgBase : public wxDialog
 	
 	public:
 		GenInheritedClassDlgBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Generate Inherited Class"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
-		~GenInheritedClassDlgBase();
+		~GenInheritedClassDlgBase() override;
 	
 };
 
