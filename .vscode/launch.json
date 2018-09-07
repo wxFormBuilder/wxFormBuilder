@@ -2,12 +2,20 @@
 		"version": "0.2.0",
 		"configurations": [
 			{
+				"type": "gdb",
+				"request": "launch",
+				"name": "Launch Program",
+				"target": "./wxformbuilder",
+				"cwd": "${workspaceRoot}/_install/bin",
+				"valuesFormatting": "prettyPrinters"
+			},
+			{
 				"type": "lldb",
 				"request": "launch",
 				"name": "Launch",
-				"program": "${workspaceRoot}/output/bin/wxformbuilder-30",
+				"program": "${workspaceRoot}/_install/bin/wxformbuilder",
 				"args": [],
-				"cwd": "${workspaceRoot}/output/bin",
+				"cwd": "${workspaceRoot}/_install/bin",
 				"preLaunchTask": "build"
 			}
 		]

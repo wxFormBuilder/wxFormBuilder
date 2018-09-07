@@ -17,3 +17,6 @@ install/windows/source
 install/windows/*.exe
 .vscode/*.db
 /.vscode/*cache*/
+/_build/
+/_install/
+/compile_commands.json

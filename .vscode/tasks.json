@@ -6,10 +6,27 @@
 			"type": "shell",
 			"command": "/bin/bash",
 			"args": [
-				"-c", "clear && make config=debug -j$(nproc)"
+				"-lc",
+				"clear && cd \"\"${workspaceRoot}\"\" && ([ -f _build/build.ninja ] || meson _build) && ninja -C _build install"
 			],
-			"options": {
-				"cwd": "build/3.0/gmake"
+			"problemMatcher": {
+				"owner": "cpp",
+				"fileLocation": [
+					"relative",
+					"${workspaceRoot}/build"
+				],
+				"pattern": {
+					"regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|fatal error):\\s+(.*)$",
+					"file": 1,
+					"line": 2,
+					"column": 3,
+					"severity": 4,
+					"message": 5
+				}
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
 			}
 		}
 	]
