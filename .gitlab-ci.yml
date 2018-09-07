@@ -3,7 +3,7 @@ clang:
   stage: build
   script:
     - dnf install -qy meson clang wxGTK3-devel clang-tools-extra python3-PyYAML
-    - script -qfec "meson build --werror" # script to emulate a interactive terminal for colored output
+    - script -qfec "meson build" # script to emulate a interactive terminal for colored output
     - cd build
     - script -qfec "ninja"
     - sed -i s/-pipe// compile_commands.json # https://github.com/mesonbuild/meson/issues/2383#issuecomment-334621153
