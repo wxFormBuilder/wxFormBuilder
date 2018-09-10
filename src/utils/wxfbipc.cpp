@@ -82,8 +82,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	#endif
 
 	// Check to see if I already have a server with this name - if so, no need to make another!
-	if ( m_server.get() )
-	{
+	if (m_server) {
 		if ( m_server->m_name == name )
 		{
 			return true;
@@ -125,8 +124,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		// so temporarily drop the server if there is one
 		bool hadServer = false;
 		wxString oldName;
-		if ( m_server.get() != NULL )
-		{
+		if (m_server) {
 			oldName = m_server->m_name;
 			m_server.reset();
 			hadServer = true;
@@ -145,8 +143,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 			{
                 wxString sPort = wxString::Format( "%i", i );
                 connection.reset( client->MakeConnection( "localhost", sPort, name ) );
-				if ( NULL != connection.get() )
-				{
+				if (connection) {
 					connected = true;
 					wxChar* pid = (wxChar*)connection->Request( wxT("PID"), NULL );
 					if ( NULL != pid )

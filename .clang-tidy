@@ -1,6 +1,6 @@
 ---
-Checks: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,readability-redundant-member-init'
-WarningsAsErrors: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,clang-analyzer-core.CallAndMessage'
+Checks: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,readability-redundant-member-init,google-readability-redundant-smartptr-get'
+WarningsAsErrors: 'modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,clang-analyzer-core.CallAndMessage,google-readability-redundant-smartptr-get'
 CheckOptions:
       - key:             readability-implicit-bool-conversion.AllowPointerConditions
         value:           '1'
