@@ -42,6 +42,12 @@ Pre-requisites for Ubuntu:
 sudo apt install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
 ```
 
+Pre-requisites for Arch Linux:
+
+```sh
+sudo pacman -Syu --needed meson wxgtk2
+```
+
 Build and run:
 
 ```sh
