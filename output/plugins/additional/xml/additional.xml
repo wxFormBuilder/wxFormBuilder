@@ -206,7 +206,7 @@ Written by
     <inherits class="Validator" />
     <property name="name" type="text">m_timePicker</property>
     <property name="style" type="bitlist">
-        <option name="wxTP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxDP_DEFAULT</property>
+        <option name="wxTP_DEFAULT"     help="Creates a control with the style that is best supported for the current platform (currently wxDP_SPIN under Windows and wxDP_DROPDOWN elsewhere)." />wxTP_DEFAULT</property>
     <event name="OnTimeChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control." />
 </objectinfo>
 
