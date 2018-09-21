@@ -58,6 +58,8 @@ Written by
 			<option name="wxSP_3DBORDER"            help="Synonym for wxSP_BORDER." />
 			<option name="wxSP_BORDER"              help="Draws a standard border." />
 			<option name="wxSP_NOBORDER"            help="No border (default)." />
+      <option name="wxSP_NOSASH" help="Sets the sash to be invisible, even when the window is split. This prevents the user to resize the windows."/>
+      <option name="wxSP_THIN_SASH" help="Draws a thin sash."/>
 			<option name="wxSP_NO_XP_THEME"         help="Under Windows XP, switches off the attempt to draw the splitter using Windows XP theming, so the borders and sash will take on the pre-XP look." />
 			<option name="wxSP_PERMIT_UNSPLIT"      help="Always allow to unsplit, even with the minimum pane size other than zero. Note: The designer prevents un-splitting." />
 			<option name="wxSP_LIVE_UPDATE"         help="Don't draw XOR line but resize the child windows immediately." />wxSP_3D</property>
