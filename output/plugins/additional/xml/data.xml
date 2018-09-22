@@ -104,7 +104,7 @@ Written by
 		<category name="Label Appearance">
 		<property name="label_bg" type="wxColour" help="Background color for row and column labels."/>
 		<property name="label_font" type="wxFont" help="Font for row and column labels."/>
-		<property name="label_text" type="wxColour" help="Colour for row and column label text."/>z
+		<property name="label_text" type="wxColour" help="Colour for row and column label text."/>
 	</category>
 	<category name="Cell Defaults">
 		<property name="cell_bg" type="wxColour" help="Default cell background color."/>
