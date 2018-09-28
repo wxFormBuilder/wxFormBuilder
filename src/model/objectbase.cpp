@@ -564,9 +564,13 @@ void ObjectBase::SerializeObject( ticpp::Element* serializedElement )
 	for ( unsigned int i = 0; i < GetEventCount(); i++ )
 	{
 		PEvent event = GetEvent( i );
+		const std::string callback(event->GetValue().ToUTF8());
+		if (callback.empty()) {
+			continue; // skip, because there's no event attached (see issue #467)
+		}
 		ticpp::Element event_element( "event" );
 		event_element.SetAttribute( "name", _STDSTR( event->GetName() ) );
-		event_element.SetText( _STDSTR( event->GetValue() ) );
+		event_element.SetText(callback);
 		element.LinkEndChild( &event_element );
 	}
 
