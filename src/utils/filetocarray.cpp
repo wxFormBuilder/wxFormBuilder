@@ -148,7 +148,7 @@ wxString FileToCArray::Generate( const wxString& sourcePath )
 	arrayCodeWriter->WriteLn( wxT("static wxBitmap bmp( image );") );
 	arrayCodeWriter->WriteLn( wxT("return bmp;") );
 	arrayCodeWriter->Unindent();
-	arrayCodeWriter->WriteLn( wxT("};") );
+	arrayCodeWriter->WriteLn( wxT("}") );
 	arrayCodeWriter->WriteLn();
 
 	arrayCodeWriter->WriteLn();
