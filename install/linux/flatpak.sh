@@ -3,8 +3,8 @@ set -eux
 
 dnf upgrade -y
 dnf install -y flatpak-builder git wget
-flatpak remote-add --from gnome https://sdk.gnome.org/gnome.flatpakrepo
-flatpak install -y gnome org.freedesktop.Platform 1.6
-flatpak install -y gnome org.freedesktop.Sdk 1.6
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install -y flathub org.freedesktop.Platform 18.08
+flatpak install -y flathub org.freedesktop.Sdk 18.08
 flatpak-builder --repo=repo ./build org.wxformbuilder.wxFormBuilder.json
 flatpak build-bundle repo wxformbuilder.flatpak org.wxformbuilder.wxFormBuilder
