@@ -20,8 +20,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.0/wxWidgets-3.1.0.tar.bz2",
-					"sha256": "e082460fb6bf14b7dd6e8ac142598d1d3d0b08a7b5ba402fdbf8711da7e66da8"
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxWidgets-3.1.1.tar.bz2",
+					"sha256": "c925dfe17e8f8b09eb7ea9bfdcfcc13696a3e14e92750effd839f5e10726159e"
 				}
 			],
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
