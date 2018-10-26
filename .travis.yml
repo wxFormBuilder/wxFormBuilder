@@ -20,7 +20,8 @@ matrix:
         - brew update
         - brew outdated boost || brew upgrade boost
         - brew install boost dylibbundler make
-        - travis_wait 40 brew install wxmac --devel
+        - brew tap cdalvaro/tap
+        - travis_wait 40 brew install cdalvaro/tap/wxmac
         - ./create_build_files4.sh
         - make config=release -C build/3.1/gmake
         - cd output && zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
