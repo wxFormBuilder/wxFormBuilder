@@ -16,8 +16,6 @@ build_script:
 
     C:\msys64\usr\bin\bash -lc "ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h"
 
-    C:\msys64\usr\bin\bash -lc "ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h"
-
     C:\msys64\usr\bin\bash -lc "ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h"
 
     C:\msys64\usr\bin\bash -lc "ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a"
