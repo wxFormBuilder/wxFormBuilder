@@ -605,32 +605,33 @@ void MenuEditor::OnEnter(wxCommandEvent& )
   AddNewItem();
 }
 
-void MenuEditor::OnLabelChanged(wxCommandEvent& )
-{
-  wxString label = m_tcLabel->GetValue();
-  wxString id, name;
-  bool nextUpper = false;
-  if (!label.IsEmpty()) id = wxT("ID_");
-  int tabPos = label.Find(wxT("\\t"));
-  if (tabPos >= 0) label = label.Left(tabPos);
+void MenuEditor::OnLabelChanged(wxCommandEvent&) {
+	wxString label = m_tcLabel->GetValue();
+	wxString id, name;
+	bool nextUpper = false;
+	if (!label.IsEmpty()) {
+		id = wxT("ID_");
+	}
+	int tabPos = label.Find(wxT("\\t"));
+	if (tabPos >= 0) {
+		label = label.Left(tabPos);
+	}
 
-  for (size_t i = 0; i < label.Len(); i++)
-  {
-    if (isalnum(label[i]))
-    {
-      name += (nextUpper ? toupper(label[i]) : tolower(label[i]));
-      nextUpper = false;
-      id += toupper(label[i]);
-    }
-    else if (label[i] == wxChar(' '))
-    {
-      nextUpper = true;
-      id += wxT("_");
-    }
-  }
-  if (name.Len() > 0 && isdigit(name[0])) name = wxT("n") + name;
-  m_tcId->SetValue(id);
-  m_tcName->SetValue(name);
+	for (size_t i = 0; i < label.Len(); i++) {
+		if (isalnum(label[i]) != 0) {
+			name += (nextUpper ? toupper(label[i]) : tolower(label[i]));
+			nextUpper = false;
+			id += toupper(label[i]);
+		} else if (label[i] == wxChar(' ')) {
+			nextUpper = true;
+			id += wxT("_");
+		}
+	}
+	if (name.Len() > 0 && isdigit(name[0]) != 0) {
+		name = wxT("n") + name;
+	}
+	m_tcId->SetValue(id);
+	m_tcName->SetValue(name);
 }
 
 void MenuEditor::OnUpdateMovers(wxUpdateUIEvent& e)
