@@ -3125,8 +3125,7 @@ wxString ApplicationData::GetEmbeddedFilesOutputPath()
 	return GetPathProperty( wxT("embedded_files_path") );
 }
 
-ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_12( void ) const
-{
+ApplicationData::PropertiesToRemove& ApplicationData::GetPropertiesToRemove_v1_12() const {
 	static PropertiesToRemove propertiesToRemove;
 	if( propertiesToRemove.empty() )
 	{

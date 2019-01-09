@@ -225,7 +225,7 @@ class ApplicationData
 		#endif
 
 		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
-		PropertiesToRemove& GetPropertiesToRemove_v1_12( void ) const;
+		PropertiesToRemove& GetPropertiesToRemove_v1_12() const;
 
 	public:
 
