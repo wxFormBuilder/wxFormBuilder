@@ -60,6 +60,7 @@
 		  <option name="handler_name" help="Pass event handler name to Unbind() function."/>source_name
 		</property>
 		<property name="indent_with_spaces" type="bool" help="For Python only.&#x0A;Use 4-spaces for indentation instead of tabs" />
+		<property name="image_path_wrapper_function_name" type="text" help="For Python only.&#x0A;Wrap image paths into a function with this name.&#x0A;Useful for freezing the application." />
 	</category>
 	<category name="PHP Properties">
 		<property name="skip_php_events" type="bool" help="For PHP Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>

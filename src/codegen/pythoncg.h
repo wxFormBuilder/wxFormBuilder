@@ -54,6 +54,7 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
+	wxString m_imagePathWrapperFunctionName;
 
 	std::map<wxString, wxString> m_predModulePrefix;
 
@@ -67,6 +68,9 @@ public:
 	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
 	wxString RootWxParentToCode() override;
 	wxString ValueToCode(PropertyType type, wxString value) override;
+
+	// Parameterized setters
+	void SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName );
 };
 
 /**
@@ -80,6 +84,7 @@ private:
 	bool m_useRelativePath;
 	bool m_i18n;
 	wxString m_basePath;
+	wxString m_imagePathWrapperFunctionName;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
 	wxString m_disconnecMode;
@@ -190,6 +195,7 @@ private:
 	void GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines );
 
     void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenImagePathWrapperFunction();
 
 public:
 	/**
@@ -221,6 +227,16 @@ public:
 	* Set the First ID used during Code Generation.
 	*/
 	void SetFirstID( const unsigned int id ){ m_firstID = id; }
+
+	/**
+	 * Configures the function name, image paths should be wrapped
+	 * into when generating python code.
+	 * 
+	 * When set to a non-empty string, this will generate a default
+	 * implementation of the method in each class, that just returns
+	 * the unmodified path string.
+	 */
+	void SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName );
 
 	/**
 	* Generate the project's code

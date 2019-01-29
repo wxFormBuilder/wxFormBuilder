@@ -292,7 +292,18 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
-				result << wxT("wx.Bitmap( u\"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT("\", wx.BITMAP_TYPE_ANY )");
+				result << wxT("wx.Bitmap( ");
+				if ( !m_imagePathWrapperFunctionName.empty() )
+				{
+					result << wxT( "self." ) << m_imagePathWrapperFunctionName << wxT( "( ");
+				}
+				result << wxT( "u\"") << PythonCodeGenerator::ConvertPythonString( file ) << wxT( "\"" );
+				if ( !m_imagePathWrapperFunctionName.empty() )
+				{
+					result << wxT( " )");
+				}
+				result << wxT( ", wx.BITMAP_TYPE_ANY )");
+
 			}
 			else if ( source == _("Load From Resource") )
 			{
@@ -352,6 +363,12 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 	}
 
 	return result;
+}
+
+// Parameterized setters
+void PythonTemplateParser::SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName )
+{
+	m_imagePathWrapperFunctionName = imagePathWrapperFunctionName;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -752,6 +769,20 @@ void PythonCodeGenerator::GenDefinedEventHandlers( PObjectInfo info, PObjectBase
 	}
 }
 
+void PythonCodeGenerator::GenImagePathWrapperFunction()
+{
+	if ( !m_imagePathWrapperFunctionName.empty() )
+	{
+		m_source->WriteLn( wxT( "# Virtual image path resolution method. Override this in your derived class." ) );
+		wxString decl = wxT( "def " ) + m_imagePathWrapperFunctionName + wxT("( self, bitmap_path ):");
+		m_source->WriteLn( decl );
+		m_source->Indent();
+		m_source->WriteLn( wxT("return bitmap_path") );
+		m_source->WriteLn( wxT("") );
+		m_source->Unindent();
+	}
+}
+
 
 wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent)
 {
@@ -779,6 +810,7 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 	}
 
 	PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+	parser.SetImagePathWrapperFunctionName( m_imagePathWrapperFunctionName );
 	wxString code = parser.ParseTemplate();
 
 	return code;
@@ -820,6 +852,9 @@ void PythonCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 	// event handlers
 	GenVirtualEventHandlers(events, eventHandlerPostfix);
 	GetGenEventHandlers( class_obj );
+
+	// Bitmap wrapper code
+	GenImagePathWrapperFunction();
 
 	m_source->Unindent();
 	m_source->WriteLn( wxT("") );
@@ -1456,6 +1491,7 @@ void PythonCodeGenerator::UseRelativePath(bool relative, wxString basePath)
 		m_basePath = ( result ? basePath : wxT("") );
 	}
 }
+
 /*
 wxString CppCodeGenerator::ConvertToRelativePath(wxString path, wxString basePath)
 {
@@ -1468,6 +1504,11 @@ auxPath = _STDSTR(filename.GetFullPath());
 }
 return auxPath;
 }*/
+
+void PythonCodeGenerator::SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName )
+{
+	m_imagePathWrapperFunctionName = imagePathWrapperFunctionName;
+}
 
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert( wxT(#x) )
 #define ADD_PREDEFINED_PREFIX(k, v) m_predModulePrefix[ wxT(#k) ] = wxT(#v)
