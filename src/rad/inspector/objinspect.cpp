@@ -492,7 +492,12 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 							// Because the format of a composed wxPGProperty value is stored this needs to be converted
 							// true == "<property name>"
 							// false == "Not <property name>"
-							child = new wxBoolProperty(it->m_name, wxPG_LABEL, value == it->m_name);
+							// TODO: The subclass property is currently the only one using this child type,
+							//       because the only instance using this property, the c++ code generator,
+							//       interprets a missing value as true and currently no project file update
+							//       adds this value if it is missing, here a missing value also needs to be
+							//       interpreted as true
+							child = new wxBoolProperty(it->m_name, wxPG_LABEL, value.empty() || value == it->m_name);
 						}
 						else if( PT_WXSTRING == it->m_type )
 						{
