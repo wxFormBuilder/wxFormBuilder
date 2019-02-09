@@ -1323,19 +1323,21 @@ void CppCodeGenerator::GenSubclassSets( PObjectBase obj, std::set< wxString >* s
 		}
 
 		// Now get the header
-		std::map< wxString, wxString >::iterator header;
-		header = children.find( wxT( "header" ) );
-
-		if ( children.end() == header )
+		wxString headerVal;
+		auto header = children.find(wxT("header"));
+		if (children.end() != header)
 		{
-			// No header, so do nothing
-			return;
+			headerVal = header->second;
 		}
 
-		wxString headerVal = header->second;
-		if ( headerVal.empty() )
+		if (headerVal.empty())
 		{
-			// No header, so do nothing
+			// No header, do a forward declare if requested, otherwise do nothing
+			if (forward_declare)
+			{
+				subclasses->insert(forwardDecl);
+			}
+
 			return;
 		}
 
