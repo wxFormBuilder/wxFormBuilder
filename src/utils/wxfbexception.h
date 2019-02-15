@@ -37,7 +37,7 @@ public:
 	m_what(what)
 	{}
 
-	virtual ~wxFBException() throw() {}
+	virtual ~wxFBException() = default;
 
 	virtual const wxChar* what() const throw()
 	{

@@ -58,8 +58,7 @@ public:
 	/// Constructor.
 	CodeWriter();
 
-	/// Destructor.
-	virtual ~CodeWriter();
+	virtual ~CodeWriter() = default;
 
 	/// Increment the indent.
 	void Indent();

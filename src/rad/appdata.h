@@ -230,6 +230,10 @@ class ApplicationData
 	public:
 
 		~ApplicationData();
+		ApplicationData(const ApplicationData&) = delete;
+		ApplicationData& operator=(const ApplicationData&) = delete;
+		ApplicationData(ApplicationData&&) = delete;
+		ApplicationData& operator=(ApplicationData&&) = delete;
 
 		#ifdef __WXFB_DEBUG__
 		wxLog* GetDebugLogTarget(){ return m_debugLogTarget; }

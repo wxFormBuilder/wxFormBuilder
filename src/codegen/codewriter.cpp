@@ -47,10 +47,6 @@ m_indent_with_spaces( false )
 {
 }
 
-CodeWriter::~CodeWriter()
-{
-}
-
 int CodeWriter::GetIndentSize()
 {
 	return 1;

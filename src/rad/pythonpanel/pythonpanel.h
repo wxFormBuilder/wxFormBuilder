@@ -61,6 +61,10 @@ private:
 public:
 	PythonPanel( wxWindow *parent, int id );
 	~PythonPanel() override;
+	PythonPanel(const PythonPanel&) = delete;
+	PythonPanel& operator=(const PythonPanel&) = delete;
+	PythonPanel(PythonPanel&&) = delete;
+	PythonPanel& operator=(PythonPanel&&) = delete;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );
