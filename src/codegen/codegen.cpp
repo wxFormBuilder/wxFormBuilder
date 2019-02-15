@@ -194,7 +194,7 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 	// property names used in templates may be encapsulated by curly brackets (e.g. ${name}) so they
     // can be surrounded by the template content without any white spaces now.
 	bool foundLeftCurlyBracket = false;
-	bool saveChild = (!!child);
+	bool saveChild = (child != nullptr);
 
 	if (!m_in.Eof())
 	{

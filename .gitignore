@@ -20,3 +20,4 @@ install/windows/*.exe
 /_build/
 /_install/
 /compile_commands.json
+/.ccls-cache/
