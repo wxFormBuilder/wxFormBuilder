@@ -276,11 +276,19 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 	}
 	m_pythonCW->SetIndentWithSpaces(useSpaces);
 
+	wxString imagePathWrapperFunctionName;
+	PProperty pImagePathWrapperFunctionName = project->GetProperty( wxT( "image_path_wrapper_function_name" ) );
+	if (pImagePathWrapperFunctionName)
+	{
+		imagePathWrapperFunctionName = pImagePathWrapperFunctionName->GetValueAsString();
+	}
+
 	// Generate code in the panel
 	if ( doPanel )
 	{
 		PythonCodeGenerator codegen;
 		codegen.UseRelativePath( useRelativePath, path );
+		codegen.SetImagePathWrapperFunctionName( imagePathWrapperFunctionName );
 
 		if ( pFirstID )
 		{
@@ -314,6 +322,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 		{
 			PythonCodeGenerator codegen;
 			codegen.UseRelativePath( useRelativePath, path );
+			codegen.SetImagePathWrapperFunctionName( imagePathWrapperFunctionName );
 
 			if ( pFirstID )
 			{
