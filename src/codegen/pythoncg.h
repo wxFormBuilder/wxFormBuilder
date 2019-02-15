@@ -43,7 +43,9 @@ The value of all properties that are file or a directory paths must be absolute,
 
 #include "codegen.h"
 
+#include <map>
 #include <set>
+#include <vector>
 
 /**
 * Parse the Python templates.
@@ -97,6 +99,13 @@ private:
 	wxString GetCode( PObjectBase obj, wxString name, bool silent = false);
 
 	/**
+	* Gets the construction fragment for the specified object.
+	*
+	* This method encapsulates the adjustments that need to be made for array declarations.
+	*/
+	wxString GetConstruction(PObjectBase obj, bool silent, ArrayItems& arrays);
+
+	/**
 	* Stores the project's objects classes set, for generating the includes.
 	*/
 	void FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set );
@@ -115,7 +124,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix, ArrayItems& arrays);
 
 	/**
 	* Generates the event table.
@@ -157,7 +166,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor( PObjectBase class_obj, const EventVector &events );
+	void GenConstructor(PObjectBase class_obj, const EventVector& events, ArrayItems& arrays);
 
 	/**
 	* Generates the destructor for a class
@@ -168,7 +177,7 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget );
+	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
 
 	/**
 	* Makes the objects destructions.
@@ -215,7 +224,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.

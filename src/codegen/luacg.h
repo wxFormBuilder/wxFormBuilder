@@ -42,7 +42,9 @@ none
 
 #include "codegen.h"
 
+#include <map>
 #include <set>
+#include <vector>
 
 /**
 * Parse the Lua templates.
@@ -100,7 +102,14 @@ private:
 	/**
 	* Given an object and the name for a template, obtains the code.
 	*/
-	wxString GetCode( PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxT(""));
+	wxString GetCode(PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxEmptyString);
+
+	/**
+	* Gets the construction fragment for the specified object.
+	*
+	* This method encapsulates the adjustments that need to be made for array declarations.
+	*/
+	wxString GetConstruction(PObjectBase obj, bool silent, wxString strSelf, ArrayItems& arrays);
 
 	/**
 	* Stores the project's objects classes set, for generating the includes.
@@ -121,7 +130,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix, ArrayItems& arrays);
 
 	/**
 	* Generates the event table.
@@ -168,7 +177,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor( PObjectBase class_obj, const EventVector &events, wxString &strClassName );
+	void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays);
 
 	/**
 	* Generates the destructor for a class
@@ -179,7 +188,7 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget, wxString &strClassName  );
+	void GenConstruction(PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
 
 	/**
 	* Makes the objects destructions.
@@ -226,7 +235,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.

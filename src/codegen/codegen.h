@@ -35,6 +35,9 @@
 #include "../model/types.h"
 #include "../utils/wxfbdefs.h"
 
+#include <map>
+#include <vector>
+
 #include <wx/sstream.h>
 
 /**
@@ -141,7 +144,7 @@ private:
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
 
-	wxString ParsePropertyName( wxString* child = NULL );
+	wxString ParsePropertyName(wxString* child = nullptr);
 	/**
 	* This routine extracts the source code from a template enclosed between
 	* the #begin and #end macros, having in mind that they can be nested
@@ -186,7 +189,7 @@ private:
 	bool ParseIfTypeNotEqual();
 	void ParseLuaTable();
 
-	PProperty GetProperty( wxString* childName = NULL );
+	PProperty GetProperty(wxString* childName = nullptr);
 	PObjectBase GetWxParent();
 	PProperty GetRelatedProperty( PObjectBase relative );
 
@@ -224,7 +227,7 @@ public:
 	*/
 	virtual PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template ) = 0;
 
-	virtual ~TemplateParser() {};
+	virtual ~TemplateParser();
 
 	/**
 	* Returns the code for a "wxWindow *parent" root attribute' name.
@@ -274,13 +277,48 @@ protected:
 
 public:
 	/**
+	* Describes the properties and state of an array item
+	*/
+	struct ArrayItem
+	{
+		/**
+		* Maximum used index for each array dimension
+		*/
+		std::vector<size_t> maxIndex;
+		/**
+		* State if the code generator has already declared this array
+		*/
+		bool isDeclared = false;
+	};
+	/**
+	* Lookup map of array items
+	*
+	* key = basename of the array
+	* value = properties and state of the array
+	*/
+	typedef std::map<wxString, ArrayItem> ArrayItems;
+
+	/**
 	* Virtual destructor.
 	*/
-	virtual ~CodeGenerator() {};
+	virtual ~CodeGenerator();
 	/**
 	* Generate the code of the project
 	*/
 	virtual bool GenerateCode( PObjectBase project ) = 0;
+
+	/**
+	* Stores all discovered arrays for the given object and its child objects.
+	*/
+	void FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool skipRoot = false);
+
+	/**
+	* Parses a name and determines if it is an array.
+	*
+	* Returns true if it is an array and extracts the basename and the indexes of the dimensions.
+	* Returns false if it is not.
+	*/
+	bool ParseArrayName(const wxString& name, wxString& baseName, ArrayItem& item);
 };
 
 

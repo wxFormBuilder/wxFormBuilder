@@ -47,6 +47,9 @@ m_indent( 0 )
 {
 }
 
+TemplateParser::~TemplateParser() = default;
+
+
 TemplateParser::Token TemplateParser::GetNextToken()
 {
 	// There are 3 special characters
@@ -191,7 +194,7 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 	// property names used in templates may be encapsulated by curly brackets (e.g. ${name}) so they
     // can be surrounded by the template content without any white spaces now.
 	bool foundLeftCurlyBracket = false;
-	bool saveChild = ( NULL != child );
+	bool saveChild = (!!child);
 
 	if (!m_in.Eof())
 	{
@@ -244,7 +247,7 @@ bool TemplateParser::ParseProperty()
 	wxString propname = ParsePropertyName( &childName );
 
 	PProperty property = m_obj->GetProperty(propname);
-	if ( NULL == property.get() )
+	if (!property)
 	{
 		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname.c_str(), m_obj->GetClassName().c_str() );
 		return true;
@@ -406,14 +409,16 @@ bool TemplateParser::ParseForm()
 
 void TemplateParser::ParseLuaTable()
 {
-	PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
-	PProperty propNs= project->GetProperty( wxT( "ui_table" ) );
-	if ( propNs )
+	const auto& project = AppData()->GetProjectData();
+	const auto& table = project->GetProperty(wxT("ui_table"));
+	if (table)
 	{
-		wxString strTableName = propNs->GetValueAsString();
-		if(strTableName.length() <= 0)
+		auto strTableName = table->GetValueAsString();
+		if (strTableName.empty())
+		{
 			strTableName = wxT("UI");
-		m_out <<strTableName + wxT(".");
+		}
+		m_out << strTableName << wxT(".");
 	}
 }
 
@@ -517,7 +522,7 @@ bool TemplateParser::ParseForEach()
 
 PProperty TemplateParser::GetProperty( wxString* childName )
 {
-	PProperty property( (Property*)NULL );
+	PProperty property;
 
 	// Check for #wxparent, #parent, or #child
 	if ( GetNextToken() == TOK_MACRO )
@@ -985,7 +990,7 @@ wxString TemplateParser::ParseTemplate()
                 ParseText();
                 break;
             default:
-                return wxT("");
+                return wxEmptyString;
             }
         }
     }
@@ -1064,16 +1069,20 @@ wxString TemplateParser::ExtractInnerTemplate()
 
 bool TemplateParser::ParsePred()
 {
-	if (m_pred != wxT("") )
+	if (!m_pred.empty())
+	{
 		m_out << m_pred;
+	}
 
 	return true;
 }
 
 bool TemplateParser::ParseNPred()
 {
-	if (m_npred != wxT("") )
+	if (!m_npred.empty())
+	{
 		m_out << m_npred;
+	}
 
 	return true;
 }
@@ -1090,6 +1099,28 @@ bool TemplateParser::ParseNewLine()
 void TemplateParser::ParseAppend()
 {
 	ignore_whitespaces();
+	//NOTE: This macro is usually used to attach some postfix to a name to create another unique name.
+	//      If the name contains array brackets the resulting name is not a valid identifier.
+	//      You cannot simply replace all brackets, depending on how many times #append is used in a template
+	//      there might be preceeding brackets that need to be preserved. Here we assume #append is used directly
+	//      after an array name to attach something to it, we have to search for the last delimiter or start of line
+	//      and replace all brackets after this one, not before.
+	if (!m_out.empty() && m_out.GetChar(m_out.size() - 1) == wxT(']'))
+	{
+		auto pos = m_out.find_last_of(wxT(" \t\r\n.>"));
+		if (pos == wxString::npos)
+		{
+			pos = 0;
+		}
+		else
+		{
+			++pos;
+		}
+		for (pos = m_out.find_first_of(wxT("[]"), pos); pos != wxString::npos; pos = m_out.find_first_of(wxT("[]"), pos + 1))
+		{
+			m_out[pos] = wxT('_');
+		}
+	}
 }
 
 void TemplateParser::ParseClass()
@@ -1151,3 +1182,81 @@ bool TemplateParser::IsEqual(const wxString& value, const wxString& set)
 
 	return contains;
 }
+
+
+
+
+CodeGenerator::~CodeGenerator() = default;
+
+
+void CodeGenerator::FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool skipRoot)
+{
+	if (!skipRoot)
+	{
+		const auto& propName = obj->GetProperty(wxT("name"));
+		if (propName)
+		{
+			const auto& name = propName->GetValue();
+			wxString baseName;
+			ArrayItem item;
+			if (ParseArrayName(name, baseName, item))
+			{
+				auto& baseItem = arrays[baseName];
+				for (size_t i = 0; i < item.maxIndex.size(); ++i)
+				{
+					if (i < baseItem.maxIndex.size())
+					{
+						if (baseItem.maxIndex[i] < item.maxIndex[i])
+						{
+							baseItem.maxIndex[i] = item.maxIndex[i];
+						}
+					}
+					else
+					{
+						baseItem.maxIndex.push_back(item.maxIndex[i]);
+					}
+				}
+			}
+		}
+	}
+
+	for (unsigned int i = 0; i < obj->GetChildCount(); ++i)
+	{
+		FindArrayObjects(obj->GetChild(i), arrays, false);
+	}
+}
+
+bool CodeGenerator::ParseArrayName(const wxString& name, wxString& baseName, ArrayItem& item)
+{
+	bool isArray = false;
+
+	auto indexStart = name.find_first_of(wxT('['));
+	while (indexStart != wxString::npos)
+	{
+		const auto indexEnd = name.find_first_of(wxT(']'), indexStart + 1);
+		if (indexEnd == wxString::npos)
+		{
+			break;
+		}
+
+		unsigned long indexValue;
+		if (!name.substr(indexStart + 1, indexEnd - indexStart - 1).ToULong(&indexValue))
+		{
+			return false;
+		}
+
+		if (!isArray)
+		{
+			baseName = name.substr(0, indexStart);
+			item.maxIndex.clear();
+
+			isArray = true;
+		}
+		item.maxIndex.push_back(indexValue);
+
+		indexStart = name.find_first_of(wxT('['), indexEnd + 1);
+	}
+
+	return isArray;
+}
+

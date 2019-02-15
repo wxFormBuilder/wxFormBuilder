@@ -39,6 +39,7 @@ The value of all properties that are file or a directory paths must be absolute,
 #include "codeparser.h"
 
 #include <set>
+#include <vector>
 
 /**
 * Parse the C++ templates.
@@ -79,6 +80,7 @@ private:
 	PCodeWriter m_source;
 
 	bool m_useRelativePath;
+	bool m_useArrayEnum;
 	bool m_i18n;
 	wxString m_basePath;
 	unsigned int m_firstID;
@@ -96,6 +98,13 @@ private:
 	* Given an object and the name for a template, obtains the code.
 	*/
 	wxString GetCode( PObjectBase obj, wxString name);
+
+	/**
+	* Gets the declaration fragment for the specified object.
+	*
+	* This method encapsulates the adjustments that need to be made for array declarations.
+	*/
+	wxString GetDeclaration(PObjectBase obj, ArrayItems& arrays, bool useEnum);
 
 	/**
 	* Stores the project's objects classes set, for generating the includes.
@@ -121,7 +130,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, ArrayItems& arrays);
 
 	/**
 	* Generates the event table.
@@ -136,7 +145,7 @@ private:
 	/**
 	* Recursive function for the attributes declaration, used inside GenClassDeclaration.
 	*/
-	void GenAttributeDeclaration( PObjectBase obj, Permission perm);
+	void GenAttributeDeclaration(PObjectBase obj, Permission perm, ArrayItems& arrays);
 
 	/**
 	* Recursive function for the validators' variables declaration, used inside GenClassDeclaration.
@@ -188,7 +197,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor( PObjectBase class_obj, const EventVector &events );
+	void GenConstructor(PObjectBase class_obj, const EventVector &events, ArrayItems& arrays);
 
 	/**
 	* Generates the destructor for a class
@@ -199,7 +208,7 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget );
+	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
 
 	/**
 	* Makes the objects destructions.
@@ -274,7 +283,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.
