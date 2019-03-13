@@ -121,7 +121,7 @@ protected:
 public:
 	FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false, bool useUtf8 = true );
 	~FileCodeWriter() override;
-	void Clear() override;
+	void Clear() final;
 };
 
 #endif //__CODE_WRITER__
