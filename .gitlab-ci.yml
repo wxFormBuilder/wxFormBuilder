@@ -3,15 +3,12 @@ clang:
   stage: build
   script:
     - dnf install -qy meson clang wxGTK3-devel clang-tools-extra python3-PyYAML git
+    - export CC=clang
+    - export CXX=clang++
+    - export TERM=xterm # Otherwise some tools won't display colored output
     - script -qfec "meson build" # script to emulate a interactive terminal for colored output
     - cd build
     - script -qfec "ninja"
     - sed -i s/-pipe// compile_commands.json # https://github.com/mesonbuild/meson/issues/2383#issuecomment-334621153
     - script -qfec "python3 /usr/share/clang/run-clang-tidy.py -header-filter=src/ 2>/dev/null" | sed s_$PWD/__
     - '! grep -Fq "error:" typescript' # run-clang-tidy.py doesn't fail on errors
-  variables:
-    CC: clang
-    CXX: clang++
-
-variables:
-  TERM: xterm # Otherwise some tools won't display colored output
