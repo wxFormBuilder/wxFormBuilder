@@ -288,8 +288,8 @@ protected:
 	static const int INDENT;  // size of indent
 	wxString GetIndentString(int indent); // obtiene la cadena con el indentado
 
-	ObjectBaseVector& GetChildren()     { return m_children; };
-	PropertyMap&      GetProperties()   { return m_properties; };
+	ObjectBaseVector& GetChildren()     { return m_children; }
+	PropertyMap&      GetProperties()   { return m_properties; }
 
 	// Crea un elemento del objeto
 	void SerializeObject( ticpp::Element* serializedElement );
@@ -497,8 +497,8 @@ public:
 	/**
 	* Devuelve el descriptor del objeto.
 	*/
-	PObjectInfo GetObjectInfo() { return m_info; };
-	void SetObjectInfo(PObjectInfo info) { m_info = info; };
+	PObjectInfo GetObjectInfo() { return m_info; }
+	void SetObjectInfo(PObjectInfo info) { m_info = info; }
 
 	/**
 	* Devuelve la profundidad  del objeto en el arbol.
@@ -567,7 +567,7 @@ public:
 	*/
 	ObjectInfo(wxString class_name, PObjectType type, WPObjectPackage package, bool startGroup = false );
 
-	virtual ~ObjectInfo() {};
+	virtual ~ObjectInfo() = default;
 
 	PPropertyCategory GetCategory(){ return m_category; }
 
@@ -654,10 +654,10 @@ public:
 	void GetBaseClasses(std::vector<PObjectInfo> &classes, bool inherited = true);
 	unsigned int GetBaseClassCount(bool inherited = true);
 
-	void SetIconFile(wxBitmap icon) { m_icon = icon; };
+	void SetIconFile(wxBitmap icon) { m_icon = icon; }
 	wxBitmap GetIconFile() { return m_icon; }
 
-	void SetSmallIconFile(wxBitmap icon) { m_smallIcon = icon; };
+	void SetSmallIconFile(wxBitmap icon) { m_smallIcon = icon; }
 	wxBitmap GetSmallIconFile() { return m_smallIcon; }
 
 	void AddCodeInfo(wxString lang, PCodeInfo codeinfo);
@@ -670,8 +670,8 @@ public:
 	/**
 	* Le asigna un componente a la clase.
 	*/
-	void SetComponent(IComponent *c) { m_component = c; };
-	IComponent* GetComponent() { return m_component; };
+	void SetComponent(IComponent *c) { m_component = c; }
+	IComponent* GetComponent() { return m_component; }
 
 private:
 	wxString m_class;         // nombre de la clase (tipo de objeto)

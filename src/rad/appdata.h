@@ -374,7 +374,7 @@ class ApplicationData
 		const int m_fbpVerMinor;
 
 		/** Path to the fbp file that is opened. */
-		const wxString &GetProjectPath() { return m_projectPath; };
+		const wxString &GetProjectPath() { return m_projectPath; }
 
 
 		/**
@@ -387,11 +387,11 @@ class ApplicationData
 		*/
 		wxString GetEmbeddedFilesOutputPath();
 
-		void SetProjectPath( const wxString &path ) { m_projectPath = path; };
+		void SetProjectPath( const wxString &path ) { m_projectPath = path; }
 
-		const wxString &GetApplicationPath() { return m_rootDir; };
+		const wxString &GetApplicationPath() { return m_rootDir; }
 
-		void SetApplicationPath( const wxString &path ) { m_rootDir = path; };
+		void SetApplicationPath( const wxString &path ) { m_rootDir = path; }
 
 		// Allow a single instance check from outsid the AppData class
 		bool VerifySingleInstance( const wxString& file, bool switchTo = true );

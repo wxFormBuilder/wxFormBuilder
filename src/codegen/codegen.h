@@ -249,7 +249,7 @@ public:
 	/**
 	* Set the string for the #pred and #npred macros
 	*/
-	void SetPredefined( wxString pred, wxString npred ) { m_pred = pred; m_npred = npred; };
+	void SetPredefined( wxString pred, wxString npred ) { m_pred = pred; m_npred = npred; }
 };
 
 /**

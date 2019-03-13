@@ -89,7 +89,7 @@ public:
   void OnProjectRefresh ( wxFBEvent &event);
   void OnKeyDown ( wxTreeEvent &event);
 
-  void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); };
+  void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); }
 };
 
 /**

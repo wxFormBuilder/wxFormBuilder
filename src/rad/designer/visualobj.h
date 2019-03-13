@@ -39,7 +39,7 @@ class VObjEvtHandler : public wxEvtHandler
    WPObjectBase m_object;
    wxWindow *m_window;
 
-   VObjEvtHandler() {};
+   VObjEvtHandler() = default;
 
  protected:
   DECLARE_EVENT_TABLE()

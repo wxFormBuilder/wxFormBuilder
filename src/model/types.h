@@ -200,11 +200,11 @@ public:
 	unsigned int GetSize()
 	{
 		return (unsigned int)m_ints.size();
-	};
+	}
 	int GetValue(unsigned int idx)
 	{
 		return m_ints[idx];
-	};
+	}
 	void Add(int value);
 	void DeleteList();
 	void SetList(wxString str);

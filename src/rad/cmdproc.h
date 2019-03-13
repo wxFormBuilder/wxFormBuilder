@@ -75,7 +75,7 @@ class Command
 
  public:
   Command();
-  virtual ~Command() {};
+  virtual ~Command() = default;
 
   void Execute();
   void Restore();

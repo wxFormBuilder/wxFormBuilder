@@ -66,7 +66,7 @@ class ObjectPackage
   /**
    * Incluye en el paquete la información de un objeto.
    */
-  void Add(PObjectInfo obj) { m_objs.push_back(obj); };
+  void Add(PObjectInfo obj) { m_objs.push_back(obj); }
 
   /**
    * Obtiene el nombre del paquete.

@@ -13,6 +13,7 @@ add_project_arguments(cxx.get_supported_arguments([
 	'-Wduplicated-branches',
 	'-Wno-overloaded-virtual',
 	'-Wtautological-compare',
+	'-Wextra-semi',
 	'-Wno-inconsistent-missing-override',
 	'-Wno-ignored-qualifiers',
 	'-Wno-unused-parameter',
