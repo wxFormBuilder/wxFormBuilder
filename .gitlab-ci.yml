@@ -1,8 +1,8 @@
 clang:
-  image: fedora:28
+  image: fedora:29
   stage: build
   script:
-    - dnf install -qy meson clang wxGTK3-devel clang-tools-extra python3-PyYAML
+    - dnf install -qy meson clang wxGTK3-devel clang-tools-extra python3-PyYAML git
     - script -qfec "meson build" # script to emulate a interactive terminal for colored output
     - cd build
     - script -qfec "ninja"
@@ -14,5 +14,4 @@ clang:
     CXX: clang++
 
 variables:
-  GIT_SUBMODULE_STRATEGY: recursive
   TERM: xterm # Otherwise some tools won't display colored output
