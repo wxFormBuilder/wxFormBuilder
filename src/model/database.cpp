@@ -300,7 +300,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		{
 			bool create = true;
 
-			// comprobamos el número de instancias
+			// we check the number of instances
 			if (max > 0 && CountChildrenWithSameType(parent, objType) >= max)
 				create = false;
 
@@ -1211,7 +1211,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 					def_value += "; ";
 				}
 				def_value += child_value;
-				
+
 				children.push_back(child);
 
 				elem_child = elem_child->NextSiblingElement( "child", false );
