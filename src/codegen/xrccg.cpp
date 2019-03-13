@@ -172,23 +172,23 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 		}
 		else if( class_name == "wxMenu" )
 		{
-			// Do not generate context menus assigned to forms or widgets
-			std::string parent_name = parent->GetAttribute( "class" );
-			if( (parent_name != "wxMenuBar") && (parent_name != "wxMenu") )
-			{
-				// insert context menu into vector for delayed processing (context menus will be generated as top-level menus)
-				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-				{
-					ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
-					if ( aux )
-					{
-						element->LinkEndChild( aux );
-						delete aux;
+			if (parent) {
+				// Do not generate context menus assigned to forms or widgets
+				std::string parent_name = parent->GetAttribute("class");
+				if ((parent_name != "wxMenuBar") && (parent_name != "wxMenu")) {
+					// insert context menu into vector for delayed processing (context menus will be
+					// generated as top-level menus)
+					for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+						ticpp::Element* aux = GetElement(obj->GetChild(i), element);
+						if (aux) {
+							element->LinkEndChild(aux);
+							delete aux;
+						}
 					}
-				}
 
-				m_contextMenus.push_back( element );
-				return NULL;
+					m_contextMenus.push_back(element);
+					return nullptr;
+				}
 			}
 		}
 		else if ( class_name == "wxCollapsiblePane" )
