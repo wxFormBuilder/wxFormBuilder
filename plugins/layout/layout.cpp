@@ -302,17 +302,14 @@ class FlexGridSizerBase : public ComponentBase
 public:
 	void AddProperties( IObject* obj, wxFlexGridSizer* sizer )
 	{
-		wxArrayInt gcols, grows;
-		gcols = obj->GetPropertyAsArrayInt(_("growablecols"));
-		grows = obj->GetPropertyAsArrayInt(_("growablerows"));
-
-		unsigned int i;
-		for (i=0; i < gcols.GetCount() ; i++)
-			sizer->AddGrowableCol(gcols[i]);
-
-		for (i=0; i < grows.GetCount() ; i++)
-			sizer->AddGrowableRow(grows[i]);
-
+		for (const auto& col : obj->GetPropertyAsVectorIntPair(_("growablecols")))
+		{
+			sizer->AddGrowableCol(col.first, col.second);
+		}
+		for (const auto& row : obj->GetPropertyAsVectorIntPair(_("growablerows")))
+		{
+			sizer->AddGrowableRow(row.first, row.second);
+		}
 		sizer->SetMinSize( obj->GetPropertyAsSize(_("minimum_size")) );
 		sizer->SetFlexibleDirection( obj->GetPropertyAsInteger(_("flexible_direction")) );
 		sizer->SetNonFlexibleGrowMode( (wxFlexSizerGrowMode )obj->GetPropertyAsInteger(_("non_flexible_grow_mode")) );
