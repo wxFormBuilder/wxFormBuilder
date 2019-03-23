@@ -425,8 +425,6 @@ public:
 			obj->GetPropertyAsInteger(_("vgap")),
 			obj->GetPropertyAsInteger(_("hgap")));
 
-		AddProperties( obj, sizer );
-
 		if ( !obj->IsNull( _("empty_cell_size") ) )
 		{
 			sizer->SetEmptyCellSize( obj->GetPropertyAsSize( _("empty_cell_size") ) );
@@ -512,6 +510,8 @@ public:
 			GetManager()->ModifyProperty( it->first, _("row"), wxString::Format( wxT("%i"), position.GetRow() ), false );
 			GetManager()->ModifyProperty( it->first, _("column"), wxString::Format( wxT("%i"), column ), false );
 		}
+
+		AddProperties(manager->GetIObject(wxobject), sizer);
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
