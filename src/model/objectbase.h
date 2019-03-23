@@ -530,6 +530,7 @@ public:
 
 	wxArrayInt GetPropertyAsArrayInt(const wxString& pname) override;
 	wxArrayString GetPropertyAsArrayString(const wxString& pname) override;
+	std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& pname) override;
 	wxString GetChildFromParentProperty(const wxString& parentName,
 	                                    const wxString& childName) override;
 

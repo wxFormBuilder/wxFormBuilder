@@ -26,6 +26,9 @@
 #pragma once
 
 
+#include <vector>
+#include <utility>
+
 #include "wx/wx.h"
 #include "fontcontainer.h"
 
@@ -72,6 +75,7 @@ class IObject
   virtual wxBitmap GetPropertyAsBitmap  (const wxString& pname) = 0;
   virtual wxArrayInt GetPropertyAsArrayInt(const wxString& pname) = 0;
   virtual wxArrayString GetPropertyAsArrayString(const wxString& pname) = 0;
+  virtual std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& pname) = 0;
   virtual double GetPropertyAsFloat(const wxString& pname) = 0;
   virtual wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName ) = 0;
   virtual wxString GetClassName() = 0;
