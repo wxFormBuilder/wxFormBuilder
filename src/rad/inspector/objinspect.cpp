@@ -291,9 +291,9 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 			}
 		}
 	}
-	else if (type == PT_INTLIST || type == PT_UINTLIST)
+	else if (type == PT_INTLIST || type == PT_UINTLIST || type == PT_INTPAIRLIST || type == PT_UINTPAIRLIST)
 	{
-		result = new wxStringProperty( name, wxPG_LABEL, IntList( prop->GetValueAsString(), type == PT_UINTLIST ).ToString() );
+		result = new wxStringProperty(name, wxPG_LABEL, IntList(prop->GetValueAsString(), type == PT_UINTLIST, (PT_INTPAIRLIST == type || PT_UINTPAIRLIST == type)).ToString(true));
 	}
 	else if (type == PT_OPTION || type == PT_EDIT_OPTION)
 	{
@@ -822,9 +822,11 @@ void ObjectInspector::OnPropertyGridChanged( wxPropertyGridEvent& event )
 			}
 			case PT_INTLIST:
 			case PT_UINTLIST:
+			case PT_INTPAIRLIST:
+			case PT_UINTPAIRLIST:
 			{
-				IntList il( event.GetPropertyValue(), PT_UINTLIST == prop->GetType() );
-				ModifyProperty( prop, il.ToString() );
+				IntList il(event.GetPropertyValue(), PT_UINTLIST == prop->GetType(), (PT_INTPAIRLIST == prop->GetType() || PT_UINTPAIRLIST == prop->GetType()));
+				ModifyProperty(prop, il.ToString(true));
 				break;
 			}
 			case PT_BITMAP:

@@ -486,7 +486,7 @@ bool TemplateParser::ParseForEach()
 		// The template will be generated nesting as many times as
 		// tokens were found in the property value.
 
-		if (property->GetType() == PT_INTLIST || property->GetType() == PT_UINTLIST)
+		if (property->GetType() == PT_INTLIST || property->GetType() == PT_UINTLIST || property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST)
 		{
 			// For doing that we will use wxStringTokenizer class from wxWidgets
 			wxStringTokenizer tkz( propvalue, wxT(","));
@@ -497,6 +497,8 @@ bool TemplateParser::ParseForEach()
 				token = tkz.GetNextToken();
 				token.Trim(true);
 				token.Trim(false);
+				// Pair values get interpreted as adjacent parameters, all supported languages use comma as parameter separator
+				token.Replace(wxT(":"), wxT(", "));
 
 				// Parsing the internal template
 				{
