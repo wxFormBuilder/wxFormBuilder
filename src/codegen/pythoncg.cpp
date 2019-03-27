@@ -1746,6 +1746,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
 	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDatePickerCtrl, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxTimePickerCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxHyperlinkCtrl, wx.adv. );
 
 	// altered macros
@@ -1875,5 +1876,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxDP_SHOWCENTURY, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDP_ALLOWNONE, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxDP_DEFAULT, wx.adv. );
+
+	ADD_PREDEFINED_PREFIX( wxTP_DEFAULT, wx.adv. );
 }
 
