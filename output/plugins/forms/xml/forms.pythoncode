@@ -97,7 +97,7 @@ Python code generation writen by
 			@{import wx.aui @}
 		</template>
 		<template name="settings">
-			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+			self.SetSizeHintsSz( $minimum_size, $maximum_size ) #nl
 
 			#ifnotnull $window_extra_style
 			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
@@ -401,7 +401,7 @@ Python code generation writen by
 			#ifequal $aui_managed "1"
 			@{import wx.aui @}</template>
 		<template name="settings">
-			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+			self.SetSizeHintsSz( $minimum_size, $maximum_size ) #nl
 
 			#ifnotnull $window_extra_style
 			@{ self.SetExtraStyle( self.GetExtraStyle() | $window_extra_style ) #nl @}
@@ -556,7 +556,7 @@ Python code generation writen by
 			#ifnotnull $extra_style
 			@{ self.SetExtraStyle( wx.adv.WIZARD_EX_HELPBUTTON ) #nl @}
 
-			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+			self.SetSizeHintsSz( $minimum_size, $maximum_size ) #nl
 
 			#ifnotnull $font
 			@{ self.SetFont( $font ) #nl @}
