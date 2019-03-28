@@ -1264,7 +1264,7 @@ void LuaCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector& 
 
 	wxString self("self.");
 	GenEvents( class_obj, events, strClassName );
-	m_source->WriteLn("return " + controlName);
+	m_source->WriteLn("return self." + controlName);
 	m_source->Unindent();
 	m_source->WriteLn("end");
 }
