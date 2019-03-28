@@ -131,7 +131,7 @@ Lua code generation writen by
 		</template>
 		<template name="after_addchild">
 		  #ifequal $aui_managed "1"
-			@{ #nl #utbl$name .m_mgr:Update() @} 
+			@{ #nl #utbl$name.m_mgr:Update() @} 
 			#ifnotnull $center
 			@{ #nl #utbl$name:Centre( $center ) @}
 		</template>

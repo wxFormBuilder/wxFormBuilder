@@ -4,11 +4,15 @@
     	<template name="lua_preamble">
 		</template>
 		<template name="include">
-			-- Load the wxLua module, does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit #nl
-			package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;" #nl
-			require("wx") #nl
+			-- Uncomment the next line to add paths for Lua to locate the wxLua native module #nl
+			-- package.cpath = package.cpath..";./?.dll;./?.so;../lib/?.so;../lib/vc_dll/?.dll;../lib/bcc_dll/?.dll;../lib/mingw_dll/?.dll;" #nl #nl
+			#nl
+			-- load the wxLua module, does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit #nl
+			#nl require("wx") #nl #nl
+			#nl local Object = function() return { __index = self }	end #nl #nl
 		</template>
     <template name="lua_epilogue">
+	  #nl #nl return ui
       #nl #nl --wx.wxGetApp():MainLoop()
     </template>
   </templates>
@@ -50,7 +54,7 @@
 			@{ 
 			#iftypeequal "widget || container || notebook || auinotebook || flatnotebook || listbook || choicebook || treelistctrl || splitter"
 			@{
-				#utbl#wxparent $name.m_mgr:AddPane( #utbl$name, wxaui.wxAuiPaneInfo()
+				#utbl#wxparent$name.m_mgr:AddPane( #utbl$name, wxaui.wxAuiPaneInfo()
 				#ifnotnull $aui_name @{:Name( $aui_name )@}:$docking()
 				#ifnotnull $caption @{:Caption( $caption )@}
 				#ifequal $caption_visible "0" @{:CaptionVisible( $caption_visible )@}

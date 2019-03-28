@@ -199,7 +199,7 @@ Lua code generation written by
   <templates class="wxAuiToolBar">
 	<template name="include"></template>
 	<template name="construction">
-		#utbl$name = wx.wxAuiToolBar( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+		#utbl$name = wxaui.wxAuiToolBar( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
 
 		#ifnotnull $bitmapsize @{ #nl #utbl$name:SetToolBitmapSize( $bitmapsize ) @}
 
