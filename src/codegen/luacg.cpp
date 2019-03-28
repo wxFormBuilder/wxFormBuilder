@@ -1362,8 +1362,8 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
 				else
 					parentPostfix = wxEmptyString;
 
-				_template = wxT( " self.#parent$name" ) + parentPostfix + wxT( ":SetSizer( .self$name ) #nl" )
-					    wxT( "self.#parent$name" ) + parentPostfix + wxT( ":Layout()" )
+				_template = wxT( " self.#parent$name" ) + parentPostfix + wxT( ":SetSizer( self.$name ) #nl" )
+					    wxT( " self.#parent$name" ) + parentPostfix + wxT( ":Layout()" )
 					    wxT( "#ifnull #parent $size" )
 					    wxT( "@{ #nl self.$name:Fit( self.#parent $name" ) + parentPostfix + wxT( " ) @}" );
 
