@@ -100,6 +100,11 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 			result = value + wxT(".GetStaticBox()");
 			break;
 		}
+	case PT_WXPARENT_CP:
+	{
+		result = value + wxT(".GetPane()");
+		break;
+	}
 	case PT_WXSTRING:
 	case PT_FILE:
 	case PT_PATH:
@@ -806,13 +811,6 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 
 	_template = code_info->GetTemplate(name);
 
-	PObjectBase parent = obj->GetNonSizerParent();
-	if ( parent && ( parent->GetClassName() == wxT( "wxCollapsiblePane" ) ) )
-	{
-		wxString parentTemplate = wxT( "#wxparent $name" );
-		_template.Replace( parentTemplate, parentTemplate + wxT( ".GetPane()" ) );
-	}
-
 	PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 	parser.SetImagePathWrapperFunctionName( m_imagePathWrapperFunctionName );
 	wxString code = parser.ParseTemplate();
@@ -1221,17 +1219,10 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
 
-				wxString _template;
-				wxString parentPostfix;
-				if ( obj->GetParent()->GetClassName() == wxT( "wxCollapsiblePane" ) )
-					parentPostfix = ".GetPane()";
-				else
-					parentPostfix = wxEmptyString;
-
-				_template = wxT( "#wxparent $name" ) + parentPostfix + wxT( ".SetSizer( $name ) #nl" )
-					    wxT( "#wxparent $name" ) + parentPostfix + wxT( ".Layout()" )
-					    wxT( "#ifnull #parent $size" )
-					    wxT( "@{ #nl $name.Fit( #wxparent $name" ) + parentPostfix + wxT( " ) @}" );
+				wxString _template = wxT("#wxparent $name.SetSizer( $name ) #nl")
+					wxT("#wxparent $name.Layout()")
+					wxT("#ifnull #parent $size")
+					wxT("@{ #nl $name.Fit( #wxparent $name ) @}");
 
 				PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
 				m_source->WriteLn(parser.ParseTemplate());

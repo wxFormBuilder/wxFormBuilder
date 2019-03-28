@@ -361,11 +361,18 @@ bool TemplateParser::ParseWxParent()
 	{
 		PProperty property = GetRelatedProperty( wxparent );
 		//m_out << PropertyToCode(property);
-		if (wxparent->GetClassName() == wxT("wxStaticBoxSizer"))
+		const auto& classname = wxparent->GetClassName();
+		if (classname == wxT("wxStaticBoxSizer"))
 		{
 			// We got a wxStaticBoxSizer as parent, use the special PT_WXPARENT_SB type to
 			// generate code to get its static box
             m_out << ValueToCode(PT_WXPARENT_SB, property->GetValue());
+		}
+		else if (classname == wxT("wxCollapsiblePane"))
+		{
+			// We got a wxCollapsiblePane as parent, use the special PT_WXPARENT_CP type to
+			// generate code to get its pane
+			m_out << ValueToCode(PT_WXPARENT_CP, property->GetValue());
 		}
 		else
 		{
