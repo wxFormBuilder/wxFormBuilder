@@ -171,7 +171,7 @@ void CCodeParser::ParseSourceFunctions(wxString code) {
 		}
 		func->SetHeading(heading);
 
-		m_functions[RemoveWhiteSpace(heading)] = func;
+		m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
 
 		// find the opening brackets of the function
 		func->SetContents(ParseBrackets(code, functionStart));
@@ -239,7 +239,7 @@ wxString CodeParser::GetFunctionDocumentation(wxString function) {
 	wxString contents = wxT("");
 	Function* func;
 
-	m_functionIter = m_functions.find(function);
+	m_functionIter = m_functions.find(std::string(function.ToUTF8()));
 	if (m_functionIter != m_functions.end()) {
 		func = m_functionIter->second;
 		contents = func->GetDocumentation();
@@ -251,7 +251,7 @@ wxString CodeParser::GetFunctionContents(wxString function) {
 	wxString contents = wxT("");
 	Function* func;
 
-	m_functionIter = m_functions.find(RemoveWhiteSpace(function));
+	m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(function).ToUTF8()));
 	if (m_functionIter != m_functions.end()) {
 		func = m_functionIter->second;
 		contents = func->GetContents();
