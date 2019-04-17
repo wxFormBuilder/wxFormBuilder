@@ -27,6 +27,7 @@
 
 #include <map>
 #include <memory>
+#include <utility>
 #include <vector>
 #include <wx/wx.h>
 
@@ -138,6 +139,8 @@ typedef enum
 	PT_BITLIST,
 	PT_INTLIST,
 	PT_UINTLIST,
+	PT_INTPAIRLIST,
+	PT_UINTPAIRLIST,
 	PT_OPTION,
 	PT_MACRO,
 	PT_WXSTRING,
@@ -185,29 +188,31 @@ typedef enum
 class IntList
 {
 private:
-	typedef std::vector<int> IntVector;
-	IntVector m_ints;
+	std::vector<std::pair<int, int>> m_ints;
 	bool m_abs;
+	bool m_pairs;
 
 public:
-	IntList( bool absolute_value = false )
-		:
-		m_abs( absolute_value )
-	{
-	}
+	explicit IntList(bool absolute_value = false, bool pair_value = false);
+	explicit IntList(const wxString& value, bool absolute_value = false, bool pair_value = false);
 
-	IntList(wxString value, bool absolute_value = false );
-
-	unsigned int GetSize()
+	unsigned int GetSize() const
 	{
-		return (unsigned int)m_ints.size();
+		return static_cast<unsigned int>(m_ints.size());
 	}
-	int GetValue(unsigned int idx)
+	int GetValue(unsigned int idx) const
+	{
+		return m_ints[idx].first;
+	}
+	std::pair<int, int> GetPair(unsigned int idx) const
 	{
 		return m_ints[idx];
 	}
+
 	void Add(int value);
+	void Add(int first, int second);
 	void DeleteList();
-	void SetList(wxString str);
-	wxString ToString();
+	void SetList(const wxString& str);
+
+	wxString ToString(bool skip_zero_second = false);
 };

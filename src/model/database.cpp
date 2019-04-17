@@ -1480,6 +1480,8 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("bitlist"),		PT_BITLIST		);
 	PT( wxT("intlist"),		PT_INTLIST		);
 	PT( wxT("uintlist"),	PT_UINTLIST		);
+	PT(wxT("intpairlist"), PT_INTPAIRLIST);
+	PT(wxT("uintpairlist"), PT_UINTPAIRLIST);
 	PT( wxT("option"),		PT_OPTION		);
 	PT( wxT("macro"),		PT_MACRO		);
 	PT( wxT("path"),		PT_PATH			);

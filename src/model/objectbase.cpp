@@ -725,7 +725,7 @@ wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& pname)
 	PProperty property = GetProperty( pname );
 	if (property)
 	{
-		IntList il( property->GetValue(), property->GetType() == PT_UINTLIST );
+		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
 		for (unsigned int i=0; i < il.GetSize() ; i++)
 			array.Add(il.GetValue(i));
 	}
@@ -740,6 +740,24 @@ wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
 		return property->GetValueAsArrayString();
 	else
 		return wxArrayString();
+}
+
+std::vector<std::pair<int, int>> ObjectBase::GetPropertyAsVectorIntPair(const wxString& pname)
+{
+	std::vector<std::pair<int, int>> result;
+	
+	auto property = GetProperty(pname);
+	if (property)
+	{
+		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
+		result.reserve(il.GetSize());
+		for (unsigned int i = 0; i < il.GetSize(); ++i)
+		{
+			result.emplace_back(il.GetPair(i));
+		}
+	}
+
+	return result;
 }
 
 wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, const wxString& childName )
