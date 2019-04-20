@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation writen by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+  <templates class="wxWindow">
+	<template name="toolbar_add">#parent $name:AddControl( $name )</template>
+  </templates>
+
+  <templates class="wxStatusBar">
+	<template name="construction">$name = #parent $name:CreateStatusBar( $fields, $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} )</template>
+  </templates>
+
+  <templates class="wxMenuBar">
+	<template name="construction">$name = #class( $style #ifnotnull $window_style @{ |$window_style @} )</template>
+	<template name="after_addchild">#parent $name:SetMenuBar( $name )</template>
+  </templates>
+
+  <templates class="wxMenu">
+	<template name="construction">$name = #class()</template>
+		<template name="after_addchild">
+		#ifnotnull #parent $context_menu
+		@{ #ifequal #parent $context_menu "1"
+		@{
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
+				@{ #parent $name:Connect( wx.wxEVT_RIGHT_DOWN, #parent $name #append OnContextMenu ) @}
+			#ifparenttypeequal "form || wizard"
+				@{ #parent$name:Connect( wx.wxEVT_RIGHT_DOWN, #parent $name #append OnContextMenu ) @}
+			#ifparenttypeequal "tool"
+				@{ #parent$name:Connect( wx.aui.EVT_AUITOOLBAR_TOOL_DROPDOWN, #parent $name #append OnDropDownMenu ) @}
+		@}@}
+		#ifparenttypeequal "menubar"
+		@{
+			#parent $name:Append( $name, $label )
+		@}
+		#ifparenttypeequal "menubar_form"
+		@{
+			#parent$name:Append( $name, $label )
+		@}
+	</template>
+	<template name="generated_event_handlers">
+		#ifnotnull #parent $context_menu
+		@{ #ifequal #parent $context_menu "1"
+		@{
+			#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
+			@{
+				function #parent $name #append OnContextMenu(  event ) #indent #nl
+				#parent $name:PopupMenu( $name, event:GetPosition() ) #nl #unindent #nl end
+			@}
+			#ifparenttypeequal "form || wizard"
+			@{
+				function #parent $name #append OnContextMenu(  event ) #indent #nl
+				#parent$name:PopupMenu( $name, event:GetPosition() ) #nl #unindent #nl end
+			@}
+			#ifparenttypeequal "tool"
+			@{
+				function #parent $name #append OnDropDownMenu( event ) #indent #nl
+				if event.IsDropDownClicked() == True  then #indent #nl
+					#wxparent $name:SetToolSticky( event:GetId(), True ) #nl
+					local rect = #wxparent $name:GetRect( event:GetId() ) #nl
+					local pt = #wxparent$name:ScreenToClient( #wxparent $name:ClientToScreen( rect:GetBottomLeft() ) ); #nl
+					#wxparent $name:PopupMenu( #wxparent$name, pt ) #nl
+					#wxparent $name:SetToolSticky( event:GetId(), False ) #nl #unindent end #unindent #nl end
+			@}
+		@}@}
+	</template>
+  </templates>
+
+  <templates class="submenu">
+	<template name="construction">$name = wx.wxMenu()</template>
+	<template name="after_addchild">#parent $name:Append(wx.wxID_ANY,  $label, $name)</template>
+  </templates>
+
+  <templates class="wxMenuItem">
+	<template name="construction">
+        $name = #class( #parent $name, $id, $label #ifnotnull $shortcut @{ .."\t" .. $shortcut @}, $help, $kind )</template>
+    <template name="settings">
+		#ifnotnull $bitmap
+		@{
+			$name:SetBitmap( $bitmap ) #nl
+		@}
+		#parent $name:Append( $name ) #nl
+		#ifequal $enabled "0"
+			@{ $name:Enable( $enabled ) #nl @}
+		#ifequal $kind "wxITEM_CHECK"
+		@{
+			#ifequal $checked "1"
+			@{ $name:Check( $checked ) #nl @}
+		@}
+		#ifequal $kind "wxITEM_RADIO"
+		@{
+			#ifequal $checked "1"
+			@{ $name:Check( $checked ) #nl @}
+		@}
+    </template>
+	<template name="evt_connect_OnMenuSelection">#wxparent $name:Connect( $id ,wx.wxEVT_COMMAND_MENU_SELECTED , function(event)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnMenuSelection">#wxparent $name:Disconnect($id , wx.wxEVT_COMMAND_MENU_SELECTED )</template>
+	<template name="evt_connect_OnUpdateUI">#wxparent $name:Connect( $id ,wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  	<template name="evt_disconnect_OnUpdateUI">#wxparent $name:Disconnect($id , wx.wxEVT_UPDATE_UI )</template>
+  </templates>
+
+  <templates class="separator">
+	<template name="construction">#parent $name:AppendSeparator() #nl</template>
+  </templates>
+
+  <templates class="wxToolBar">
+	<template name="construction">
+                 #ifparenttypeequal "form"
+                 @{
+			$name = #parent $name:CreateToolBar( $style #ifnotnull $window_style @{ |$window_style @}, $id #ifnotnull $window_name @{, $window_name @} )
+                 @}
+                 #ifparenttypeequal "sizeritem"
+                 @{
+			$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+                 @}
+                 #ifparenttypeequal "gbsizeritem"
+                 @{
+			$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+                 @}
+		#ifnotnull $bitmapsize @{ #nl $name:SetToolBitmapSize( $bitmapsize ) @}
+
+		#ifnotnull $separation
+		@{
+		  #ifnotequal $separation "5"
+		  @{ #nl $name:SetToolSeparation( $separation ) @}
+		@}
+
+		#ifnotnull $margins    @{ #nl $name:SetMargins( $margins ) @}
+
+		#ifnotnull $packing
+		@{
+			#ifnotequal $packing "1"
+			@{ #nl $name:SetToolPacking( $packing ) @}
+		@}</template>
+	<template name="after_addchild">
+		$name:Realize()
+		#ifparenttypeequal "form"
+		@{
+		#ifequal #parent $aui_managed "1"
+		@{ #nl
+			#parent$name.m_mgr:AddPane( $name, wxaui.wxAuiPaneInfo()#ifnotnull $aui_name
+			@{:Name( $aui_name )@}:$docking()#ifnotnull $caption 
+			@{:Caption( $caption )@}#ifequal $caption_visible "0"
+			@{:CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
+			@{:CloseButton( $close_button )@}#ifequal $maximize_button "1"
+			@{:MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
+			@{:MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
+			@{:PinButton( $pin_button )@}#ifequal $pane_border "0"
+			@{:PaneBorder( $pane_border )@}#ifequal $gripper "1"
+			@{:Gripper()@}#ifequal $show "0"
+			@{:Hide()@}#ifequal $moveable "0"
+			@{:Movable( $moveable )@}#ifnotnull $dock
+			@{:$dock()#ifequal $dock "Float"
+				@{:FloatingPosition( $pane_position )@}	
+			@}#ifnotnull $resize
+			@{:$resize()#ifequal $resize "Resizable"
+				@{:FloatingSize( $pane_size )@}	
+			@}#ifequal $dock_fixed "1"
+			@{:Fixed( $dock_fixed )@}#ifequal $BottomDockable "0"
+			@{:BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
+			@{:TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
+			@{:LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
+			@{:RightDockable( $RightDockable )@}#ifequal $floatable "0"
+			@{:Floatable( $floatable )@}#ifnotnull $aui_row
+			@{:Row( $aui_row )@}#ifnotnull $aui_position
+			@{:Position( $aui_position )@}#ifnotnull $aui_layer
+			@{:Layer( $aui_layer )@}#ifequal $center_pane "1"
+			@{:CentrePane()@}#ifequal $default_pane "1"
+			@{:DefaultPane()@}#ifequal $toolbar_pane "1"
+			@{:ToolbarPane()@}
+			)				
+		@}
+		@}
+	</template>
+  </templates>
+
+  <templates class="wxAuiToolBar">
+	<template name="include"></template>
+	<template name="construction">
+		$name = wx.wxAuiToolBar( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+
+		#ifnotnull $bitmapsize @{ #nl $name:SetToolBitmapSize( $bitmapsize ) @}
+
+		#ifnotnull $separation
+		@{
+		  #ifnotequal $separation "5"
+		  @{ #nl $name:SetToolSeparation( $separation ) @}
+		@}
+
+		#ifnotnull $margins    @{ #nl $name:SetMargins( $margins ) @}
+
+		#ifnotnull $packing
+		@{
+			#ifnotequal $packing "1"
+			@{ #nl $name:SetToolPacking( $packing ) @}
+		@}</template>
+	<template name="after_addchild">
+		$name:Realize()
+		#ifparenttypeequal "form"
+		@{
+		#ifequal #parent $aui_managed "1"
+		@{ #nl
+			$name:m_mgr.AddPane( $name, wx.aui.AuiPaneInfo()#ifnotnull $aui_name
+			@{.Name( $aui_name )@}.$docking()#ifnotnull $caption 
+			@{.Caption( $caption )@}#ifequal $caption_visible "0"
+			@{.CaptionVisible( $caption_visible )@}#ifequal $close_button "0"
+			@{.CloseButton( $close_button )@}#ifequal $maximize_button "1"
+			@{.MaximizeButton( $maximize_button )@}#ifequal $minimize_button "1"
+			@{.MinimizeButton( $minimize_button )@}#ifequal $pin_button "1"
+			@{.PinButton( $pin_button )@}#ifequal $pane_border "0"
+			@{.PaneBorder( $pane_border )@}#ifequal $gripper "1"
+			@{.Gripper()@}#ifequal $show "0"
+			@{.Hide()@}#ifequal $moveable "0"
+			@{.Movable( $moveable )@}#ifnotnull $dock
+			@{.$dock()#ifequal $dock "Float"
+				@{.FloatingPosition( $pane_position )@}	
+			@}#ifnotnull $resize
+			@{.$resize()#ifequal $resize "Resizable"
+				@{.FloatingSize( $pane_size )@}	
+			@}#ifequal $dock_fixed "1"
+			@{.DockFixed( $dock_fixed )@}#ifequal $BottomDockable "0"
+			@{.BottomDockable( $BottomDockable )@}#ifequal $TopDockable "0"
+			@{.TopDockable( $TopDockable )@}#ifequal $LeftDockable "0"
+			@{.LeftDockable( $LeftDockable )@}#ifequal $RightDockable "0"
+			@{.RightDockable( $RightDockable )@}#ifequal $floatable "0"
+			@{.Floatable( $floatable )@}#ifnotnull $aui_row
+			@{.Row( $aui_row )@}#ifnotnull $aui_position
+			@{.Position( $aui_position )@}#ifnotnull $aui_layer
+			@{.Layer( $aui_layer )@}#ifequal $center_pane "1"
+			@{.CentrePane()@}#ifequal $default_pane "1"
+			@{.DefaultPane()@}#ifequal $toolbar_pane "1"
+			@{.ToolbarPane()@}
+			)		
+		@}
+		@}
+		</template>
+  </templates>
+
+  <templates class="tool">
+	<template name="construction">
+	#ifparenttypeequal "toolbar"
+	@{
+		#ifparentclassnotequal "wxAuiToolBar"
+		@{
+			$name = #parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar)
+		@}
+		#ifparentclassequal "wxAuiToolBar"
+		@{
+			#ifequal #parent $use_explicit_ids "1"
+			@{
+				#parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar) #nl
+				$name = #parent $name:FindTool( $id );
+			@}
+			#ifequal #parent $use_explicit_ids "0"
+			@{
+				$name = #parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar)
+			@}
+			#ifequal $context_menu "1"
+			@{
+				#nl #parent $name:SetToolDropDown( $name:GetId(), True )
+				#nl
+			@}
+		@}
+	@}
+	#ifparenttypeequal "toolbar_form"
+	@{
+		$name = #parent $name:AddTool( $id, $label, $bitmap, wx.wxNullBitmap, $kind, $tooltip, $statusbar )
+	@}
+	</template>
+	<template name="evt_connect_OnToolClicked">#parent $name:Connect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_disconnect_OnToolClicked">#parent $name:Disconnect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED )</template>
+	<template name="evt_connect_OnMenuSelection">#parent $name:Connect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnMenuSelection">#parent $name:Disconnect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_CLICKED)</template>
+	<template name="evt_connect_OnToolRClicked">#parent $name:Connect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_RCLICKED, function(event)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnToolRClicked">#parent $name:Disconnect( $name:GetId() , wx.wxEVT_COMMAND_TOOL_RCLICKED)</template>
+	<template name="evt_connect_OnToolEnter">#parent $name:Connect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_ENTER, function(vent)#nl --implements  #handler#nl #skip #nl end)</template>
+	<template name="evt_disconnect_OnToolEnter">#parent $name:Disconnect( $name:GetId(), wx.wxEVT_COMMAND_TOOL_ENTER )</template>
+	<template name="evt_connect_OnUpdateUI">#parent $name:Connect( $name:GetId(), wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_disconnect_OnUpdateUI">#parent $name:Disconnect( $name:GetId(), wx.wxEVT_UPDATE_UI)</template>
+  </templates>
+
+  <templates class="toolSeparator">
+    <template name="construction">#parent $name:AddSeparator()</template>
+  </templates>
+  
+  	<templates class="wxInfoBar">
+		<template name="construction">
+			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			$name = wx.wxWindow( #wxparent $name )
+		</template>
+	</templates>
+	
+</codegen>

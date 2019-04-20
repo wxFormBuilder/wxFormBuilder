@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation writen by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+
+	<templates class="wxPanel">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+	</templates>
+
+	<templates class="wxCollapsiblePane">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{|$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
+		<template name="settings">#ifnotnull $collapsed @{ #utbl$name:Collapse( $collapsed ) #nl @}</template>
+		<template name="evt_connect_OnCollapsiblePaneChanged">#utbl$name:Connect( wx.wxEVT_COLLAPSIBLEPANE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="wxSplitterWindow">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">
+			#ifnotnull $sashgravity
+			@{
+				#ifnotequal $sashgravity "0.0"
+			@{#utbl$name:SetSashGravity( $sashgravity ) #nl @}
+			@}
+			#ifnotnull $sashsize
+			@{
+				#ifnotequal $sashsize "-1"
+			@{	#utbl$name:SetSashSize( $sashsize ) #nl @}
+			@}
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+			@{	#utbl$name:Connect( wx.wxEVT_IDLE,#utbl$name #append OnIdle ) #nl @}
+			@}
+			#ifnotnull $min_pane_size
+			@{
+				#ifnotequal $min_pane_size "0"
+			@{	#utbl$name:SetMinimumPaneSize( $min_pane_size ) #nl @}
+			@}
+		</template>
+		<template name="generated_event_handlers">
+			#ifnotnull $sashpos
+			@{
+				#ifnotequal $sashpos "-1"
+				@{
+					function #utbl$name #append OnIdle( event ) #indent #nl
+						#utbl$name:SetSashPosition( $sashpos ) #nl
+						#utbl$name:Disconnect( wx.wxEVT_IDLE )#nl  #unindent #nl end
+				@}
+			@}
+		</template>
+		<template name="evt_connect_OnSplitterSashPosChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterSashPosChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_SASH_POS_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterUnsplit">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_UNSPLIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSplitterDClick">#utbl$name:Connect( wx.wxEVT_COMMAND_SPLITTER_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+
+	<templates class="wxNotebook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{
+				#utbl$name #append ImageSize = $bitmapsize #nl
+				#utbl$name #append Index = 0 #nl
+				#utbl$name #append Images = wx.wxImageList(#utbl$name #append ImageSize.GetWidth(),#utbl$name #append ImageSize.GetHeight() ) #nl
+				#utbl$name:AssignImageList(#utbl$name #append Images )
+			@}
+		</template>
+		<template name="evt_connect_OnNotebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnNotebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="notebookpage">
+		<template name="page_add">#utbl#parent $name:AddPage(#utbl#child$name, $label, $select )</template>
+		<template name="settings">
+			#ifnotnull #parent $bitmapsize
+			@{
+				#ifnotnull $bitmap
+				@{
+					#utbl#parent $name #append Bitmap = $bitmap #nl
+					if ( #utbl#parent $name #append Bitmap.Ok() ): #indent #nl
+						#utbl#parent$name #append Images.Add( #parent#utbl$name #append Bitmap ) #nl
+						#utbl#parent$name:SetPageImage( #parent#utbl$name #append Index, #parent#utbl$name #append Index ) #nl
+						#utbl#parent$name #append Index += 1 #unindent #nl
+				@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxListbook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{
+				#utbl$name #append ImageSize = $bitmapsize #nl
+				#utbl$name #append Index = 0 #nl
+				#utbl$name #append Images = wx.wxImageList(#utbl$name #append ImageSize:GetWidth(),#utbl$name #append ImageSize:GetHeight() ) #nl
+				#utbl$name:SetImageList(#utbl$name #append Images )
+			@}
+		</template>
+		<!-- <template name="after_addchild">
+			#ifnull $bitmapsize
+			@{
+				$name #append ListView =#utbl$name:GetListView() #nl
+				$name #append Flags =#utbl$name #append ListView.GetWindowStyleFlag() #nl
+				$name #append Flags = (#utbl$name #append Flags &amp; ~wx.LC_ICON ) | wx.LC_SMALL_ICON #nl
+				$name #append ListView.SetWindowStyleFlag(#utbl$name #append Flags ) #nl
+			@}
+		</template> -->
+		<template name="evt_connect_OnListbookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnListbookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="listbookpage">
+		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child $name, $label, $select )</template>
+		<template name="settings">
+			#ifnotnull #parent $bitmapsize
+			@{
+				#ifnotnull $bitmap
+				@{
+					#utbl#parent $name #append Bitmap = $bitmap #nl
+					if ( #utbl#parent $name #append Bitmap.Ok() ) then #indent #nl
+						#utbl#parent $name #append Images:Add( #utbl#parent $name #append Bitmap ) #nl
+						#utbl#parent $name:SetPageImage( #utbl#parent $name #append Index, #parent#utbl$name #append Index ) #nl
+						#utbl#parent $name #append Index += 1 #unindent #nl end
+				@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxChoicebook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="evt_connect_OnChoicebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnChoicebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="choicebookpage">
+		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child$name, $label, $select )</template>
+	</templates>
+
+	<templates class="wxSimplebook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="evt_connect_OnSimplebookPageChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSimplebookPageChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="simplebookpage">
+		<template name="page_add">#utbl#parent $name:AddPage( #utbl#child$name, $label, $select )</template>
+	</templates>
+
+	<templates class="wxAuiNotebook">
+		<template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )</template>
+		<template name="include"/><!--import wx.aui</template>	-->
+		<template name="evt_connect_OnAuiNotebookPageClose">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageClosed">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageChanged">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookPageChanging">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookButton">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BUTTON, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookBeginDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookEndDrag">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookDragMotion">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookAllowDND">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_ALLOW_DND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookDragDone">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_DRAG_DONE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleDown">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabMiddleUp">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabRightDown">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookTabRightUp">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnAuiNotebookBGDClick">#utbl$name:Connect( wxaui.wxEVT_COMMAND_AUINOTEBOOK_BG_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+	<templates class="auinotebookpage">
+		<template name="page_add">#utbl#parent$name:AddPage( #utbl#child $name, $label, $select, $bitmap )</template>
+	</templates>
+
+	<templates class="wxScrolledWindow">
+		<template name="construction">
+			 #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} ) #nl
+			 #utbl$name:SetScrollRate( $scroll_rate_x, $scroll_rate_y )
+		</template>
+	</templates>
+
+
+</codegen>

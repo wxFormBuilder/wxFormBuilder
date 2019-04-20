@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation writen by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+
+  <templates class="wxHtmlWindow">
+    <template name="construction">$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="evt_connect_OnHtmlCellClicked">-- event $name:OnHtmlCellClicked isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnHtmlCellHover">-- event $name:OnHtmlCellHover isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnHtmlLinkClicked">-- event $name:OnHtmlLinkClicked isn't currently supported by wx in Erlang</template>
+  </templates>
+
+  <templates class="wxRichTextCtrl">
+    <template name="construction">-- unsupported control #nl --$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnText">-- event $name:OnText isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnTextEnter">-- event $name:OnTextEnter isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnTextURL">-- event $name:OnTextURL isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnTextMaxLen">-- event $name:OnTextMaxLen isn't currently supported by wx in Erlang</template>ate>
+	<template name="evt_connect_OnRichTextCharacter">-- event $name:OnRichTextCharacter isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextDelete">-- event $name:OnRichTextDelete isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextReturn">-- event $name:OnRichTextReturn isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextStyleChanged">-- event $name:OnRichTextStyleChanged isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextStyleSheetChanged">-- event $name:OnRichTextStyleSheetChanged isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextStyleSheetReplacing">-- event $name:OnRichTextStyleSheetReplacing isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextStyleSheetReplaced">-- event $name:OnRichTextStyleSheetReplaced isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextContentInserted">-- event $name:OnRichTextContentInserted isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnRichTextContentDeleted">-- event $name:OnRichTextContentDeleted isn't currently supported by wx in Erlang</template>
+  </templates>
+
+  <templates class="wxToggleButton">
+	<template name="construction">$name = #class( #wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="settings">#ifnotequal $value "0" @{ $name:SetValue( True ) @}</template>
+	<template name="evt_connect_OnToggleButton">$name:Connect( wx.wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxColourPickerCtrl">
+	<template name="construction">
+	   $name = #class( #wxparent $name, $id,
+	   #ifnull $colour
+	   @{ wx.wxBLACK, @}
+	   #ifnotnull $colour
+	   @{ $colour, @}
+	   $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+	</template>
+	<template name="evt_connect_OnColourChanged">$name:Connect( wx.wxEVT_COMMAND_COLOURPICKER_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxFontPickerCtrl">
+	<template name="construction">
+	   $name = #class( #wxparent $name, $id,
+	   #ifnull $value
+	   @{ wx.wxNullFont, @}
+	   #ifnotnull $value
+	   @{ $value, @}
+	   $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+	</template>
+	<template name="settings">
+		#ifnotnull $max_point_size
+		@{ $name:SetMaxPointSize( $max_point_size ) @}
+	</template>
+	<template name="evt_connect_OnFontChanged">$name:Connect( wx.wxEVT_COMMAND_FONTPICKER_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxFilePickerCtrl">
+	<template name="construction">
+	   $name = #class( #wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+	</template>
+	<template name="evt_connect_OnFileChanged">$name:Connect( wx.wxEVT_COMMAND_FILEPICKER_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxDirPickerCtrl">
+	<template name="construction">
+	   $name = #class( #wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+	</template>
+	<template name="evt_connect_OnDirChanged">$name:Connect( wx.wxEVT_COMMAND_DIRPICKER_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxDatePickerCtrl">
+	<template name="construction">$name = #class( #wxparent $name, $id, wx.wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnDateChanged">$name:Connect( wx.wxEVT_DATE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxTimePickerCtrl">
+	<template name="construction">$name = #class( #wxparent $name, $id, wx.wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_connect_OnTimeChanged">$name:Connect( wx.wxEVT_TIME_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxCalendarCtrl">
+    <template name="construction">$name = #class( #wxparent $name, $id, wx.wxDefaultDateTime, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="evt_connect_OnCalendar">$name:Connect( wx.wxEVT_CALENDAR_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarSelChanged">$name:Connect( wx.wxEVT_CALENDAR_SEL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarPageChanged">$name:Connect( wx.wxEVT_CALENDAR_PAGE_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarDay">$name:Connect( wx.wxEVT_CALENDAR_DAY_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarMonth">$name:Connect( wx.wxEVT_CALENDAR_MONTH_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarYear">$name:Connect( wx.wxEVT_CALENDAR_YEAR_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarWeekDayClicked">$name:Connect( wx.wxEVT_CALENDAR_WEEKDAY_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCalendarWeekClicked">$name:Connect( wx.wxEVT_CALENDAR_WEEK_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxScrollBar">
+	<template name="construction">$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="evt_entry_OnScroll">$name:Connect( wx.wxEVT_SCROLL( function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScroll">$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollTop">$name:Connect( wx.wxEVT_SCROLL_TOP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollBottom">$name:Connect( wx.wxEVT_SCROLL_BOTTOM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollLineUp">$name:Connect( wx.wxEVT_SCROLL_LINEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollLineDown">$name:Connect( wx.wxEVT_SCROLL_LINEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollPageUp">$name:Connect( wx.wxEVT_SCROLL_PAGEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollPageDown">$name:Connect( wx.wxEVT_SCROLL_PAGEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollThumbTrack">$name:Connect( wx.wxEVT_SCROLL_THUMBTRACK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollThumbRelease">$name:Connect( wx.wxEVT_SCROLL_THUMBRELEASE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollChanged">$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+
+	<template name="evt_connect_OnCommandScroll">-- event $name:OnCommandScroll isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollTop">-- event $name:OnCommandScrollTop isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollBottom">-- event $name:OnCommandScrollBottom isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollLineUp">-- event $name:OnCommandScrollLineUp isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollLineDown">-- event $name:OnCommandScrollLineDown isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollPageUp">-- event $name:OnCommandScrollPageUp isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollPageDown">-- event $name:OnCommandScrollPageDown isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollThumbTrack">-- event $name:OnCommandScrollThumbTrack isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollThumbRelease">-- event $name:OnCommandScrollThumbRelease isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollChanged">-- event $name:OnCommandScrollChanged isn't currently supported by wx in Erlang</template>
+  </templates>
+
+  <templates class="wxSpinCtrl">
+	<template name="construction">$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @}, $min, $max, $initial #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="evt_connect_OnSpinCtrl">$name:Connect( wx.wxEVT_COMMAND_SPINCTRL_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnSpinCtrlText">$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextEnter">$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+	<templates class="wxSpinCtrlDouble">
+		<template name="construction">$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">$name:SetDigits( $digits )</template>
+		<template name="evt_connect_OnSpinCtrlDouble">$name:Connect( wx.wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSpinCtrlText">$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTextEnter">$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+  <templates class="wxSpinButton">
+	<template name="construction">$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="evt_connect_OnSpin">$name:Connect( wx.wxEVT_SCROLL_THUMBTRACK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnSpinUp">$name:Connect( wx.wxEVT_SCROLL_LINEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnSpinDown">$name:Connect( wx.wxEVT_SCROLL_LINEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxHyperlinkCtrl">
+	<template name="construction">$name = #class( #wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="settings">
+    	#ifnotnull $hover_color
+    	@{ #nl $name:SetHoverColour( $hover_color ) @}
+
+    	#ifnotnull $normal_color
+    	@{ #nl $name:SetNormalColour( $normal_color ) @}
+
+    	#ifnotnull $visited_color
+    	@{ #nl $name:SetVisitedColour( $visited_color ) @}
+	</template>
+	<template name="evt_connect_OnHyperlink">$name:Connect( wx.wxEVT_COMMAND_HYPERLINK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxGenericDirCtrl">
+	<template name="construction">$name = #class( #wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ +$window_style@}, $filter, $defaultfilter #ifnotnull $window_name @{, $window_name @} )</template>
+	<template name="settings">
+    	#nl $name:ShowHidden( $show_hidden )
+	</template>
+	<template name="evt_connect_OnDirctrlSelectionChanged">$name:Connect( wx.wxEVT_DIRCTRL_SELECTIONCHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnDirctrlFileActivated">$name:Connect( wx.wxEVT_DIRCTRL_FILEACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxSearchCtrl">
+    <template name="construction">$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+	<template name="settings">
+		$name:ShowSearchButton( $search_button )
+		#nl $name:ShowCancelButton( $cancel_button )
+	</template>
+	<template name="evt_connect_OnText">-- event $name:OnText isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnTextEnter">-- event $name:OnTextEnter isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnSearchButton">-- event $name:OnSearchButton isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCancelButton">-- event $name:OnCancelButton isn't currently supported by wx in Erlang</template>
+  </templates>
+
+  <templates class="CustomControl">
+	<template name="construction">$construction</template>
+	<template name="settings">$settings</template>
+	<template name="include">$include</template>
+  </templates>
+
+  <templates class="wxMediaCtrl">
+    <template name="construction">
+		$name = wx.wxMediaCtrl( #wxparent $name, $id, "", $pos, $size)
+		#ifnotnull $file
+		@{ #nl $name:Load( $file ) @}
+		#ifnotnull $playback_rate
+		  @{#nl@}
+		#ifnotnull $volume
+		@{#nl $name:SetVolume($volume)@}
+		#ifnotnull $player_controls
+		@{#nl $name:ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_$player_controls)@}
+    </template>
+    <template name="settings">
+		#ifequal $play "1"
+		@{#nl $name:Play()@}
+    </template>	
+</templates>
+
+<templates class="wxTimer">
+    <template name="construction">
+		$name = wx.wxTimer(#wxparent $name, $id) #nl
+	</template>
+    <template name="settings">
+		#ifequal $enabled "1"
+		@{ $name:Start( $period #ifequal $oneshot "1" @{, true@} ) #nl @}
+	</template>
+	<template name="evt_connect_OnTimer">$name:Connect( wx.wxEVT_TIMER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+  
+ 	<templates class="wxStyledTextCtrl">
+		<template name="construction">
+			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			$name = wx.wxWindow( #wxparent $name )
+		</template>
+	</templates>
+
+</codegen>
