@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation writen by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+  	<templates class="wxRibbonBar">
+		<template name="construction">
+			$name = RibbonBar( #wxparent $name, $id, $pos, $size, wxRIBBON_BAR_DEFAULT_STYLE)
+		</template>
+		<template name="evt_connect_OnRibbonBarPageChanged">-- event $name:OnRibbonBarPageChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarPageChanging">-- event $name:BarPageChanging isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleDown">-- event $name:OnRibbonBarTabMiddleDown isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleUp">-- event $name:OnRibbonBarTabMiddleUp isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarTabRightDown">-- event $name:OnRibbonBarTabRightDown isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarTabRightUp">-- event $name:OnRibbonBarTabRightUp isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarTabLeftDClick">-- event $name:OnRibbonBarTabLeftDClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarToggled">-- event $name:OnRibbonBarToggled isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonBarHelpClick">-- event $name:OnRibbonBarHelpClick isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="wxRibbonPage">
+		<template name="construction">
+			$name = RibbonPage( #wxparent $name, $id, $label , $bitmap , $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+		<template name="settings">
+			#ifequal $select "1"
+			@{ #wxparent $name:SetActivePage( $name ) @}
+		</template>
+	</templates>
+
+	<templates class="wxRibbonPanel">
+		<template name="construction">
+			$name = RibbonBar( #wxparent $name, $id, $label , $bitmap , $pos, $size,  $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+		<template name="evt_connect_OnRibbonPanelExtbuttonActivated">-- event $name:OnRibbonPanelExtbuttonActivated isn't currently supported by wx in Erlang</template>
+	</templates>
+ 
+	<templates class="wxRibbonButtonBar">
+		<template name="construction">
+			$name = RibbonBar( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+	</templates>
+
+	<templates class="ribbonButton">
+		<template name="evt_connect_OnRibbonButtonClicked">-- event $name:OnRibbonButtonClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonDropdownButton">
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">-- event $name:OnRibbonButtonDropdownClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonHybridButton">
+		<template name="evt_connect_OnRibbonButtonClicked">-- event $name:OnRibbonButtonClicked isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">-- event $name:OnRibbonButtonDropdownClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonToggleButton">
+		<template name="evt_connect_OnRibbonButtonClicked">-- event $name:OnRibbonButtonClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="wxRibbonToolBar">
+		<template name="construction">
+			$name = RibbonBar( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+	</templates>
+
+	<templates class="ribbonTool">
+		<template name="evt_connect_OnRibbonToolClicked">-- event $name:OnRibbonToolClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonDropdownTool">
+		<template name="evt_connect_OnRibbonToolDropdownClicked">-- event $name:OnRibbonToolDropdownClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonHybridTool">
+		<template name="evt_connect_OnRibbonToolClicked">-- event $name:OnRibbonToolClicked isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonToolDropdownClicked">-- event $name:OnRibbonToolDropdownClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="ribbonToggleTool">
+		<template name="evt_connect_OnRibbonToolClicked">-- event $name:OnRibbonToolClicked isn't currently supported by wx in Erlang</template>
+	</templates>
+
+	<templates class="wxRibbonGallery">
+		<template name="construction">
+			$name = RibbonGallery( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+		<template name="evt_connect_OnRibbonGallerySelected">-- event $name:OnRibbonGallerySelected isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonGalleryClicked">-- event $name:OnRibbonGalleryClicked isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonGalleryHoverChanged">-- event $name:OnRibbonGalleryHoverChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnRibbonGalleryExtensionButtonPressed">-- event $name:GalleryExtensionButtonPressed isn't currently supported by wx in Erlang</template>
+	</templates>
+
+</codegen>

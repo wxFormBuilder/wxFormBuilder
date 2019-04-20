@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation writen by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+
+  <templates class="wxButton">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, [{label, $label }, {pos, $pos }, {size, $size }, {style, $style }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+	<template name="settings">
+			#ifequal $markup "1"
+			@{ #nl %% #class:setLabelMarkup(name, label) is not supported by Erlang @}
+
+			#ifnotequal $default "0"
+			@{ #nl #class:setDefault($name) @}
+
+			#ifnotnull $bitmap
+			@{ #nl %% #class:setBitmap(bitmap) is not supported by Erlang @}
+
+			#ifnotnull $disabled
+			@{ #nl %% #class:setBitmapDisabled(disabled) is not supported by Erlang @}
+
+			#ifnotnull $pressed
+			@{ #nl %% #class:setBitmapPressed(pressed) is not supported by Erlang @}
+
+			#ifnotnull $focus
+			@{ #nl %% #class:setBitmapFocus(name,focus) is not supported by Erlang @}
+
+			#ifnotnull $current
+			@{ #nl %% #class:setBitmapCurrent(name,current) is not supported by Erlang @}
+
+			#ifnotnull $position
+			@{ #nl %% #class:setBitmapPosition(name,position) is not supported by Erlang @}
+
+			#ifnotnull $margins
+			@{ #nl %% #class:setBitmapMargins(name,margins) is not supported by Erlang @}
+	</template>
+	<template name="evt_connect_OnButtonClick">$name:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )
+	</template>
+  </templates>
+
+  <templates class="wxBitmapButton">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, wxNullBitmap, [{pos, $pos }, {size,$size }, {style, wxBU_AUTODRAW + $style }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+  </templates>
+
+  <templates class="wxTextCtrl">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, [{value, $value }, {pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+	<template name="settings">
+		#ifnotnull $maxlength
+		@{
+			#ifnotequal $maxlength "0"
+			@{ wxTextCtrl:setMaxLength($name, $maxlength),  @}
+		@}
+	</template>
+	<template name="evt_connect_OnText">$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextEnter">$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextURL">$name:Connect( wx.wxEVT_COMMAND_TEXT_URL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextMaxLen">$name:Connect( wx.wxEVT_COMMAND_TEXT_MAXLEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxStaticText">
+	<template name="construction">
+		#ifnull $style
+	    	@{ $name = #class:new(#wxparent $name, $id, $label, [{pos, $pos }, {size, $size } #ifnotnull $window_style @{ , {style, $window_style } @}]), @}
+		#ifnotnull $style
+	    	@{ $name = #class:new(#wxparent $name, $id, $label, [{pos, $pos }, {size, $size }, {style, $style @{#ifnotnull $window_style @{ + $window_style @} }]), @}
+    </template>
+	<template name="settings">
+		#ifequal $markup "1"
+		@{ %% #class:setLabelMarkup is not supported by Erlang @}
+	    #ifnotequal $wrap "-1"
+		@{ #class:wrap($name,$wrap), @}
+	</template>
+  </templates>
+
+  <templates class="wxCheckBox">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, $label, [{pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+    <template name="settings">#ifnotequal $checked "0"
+        @{ #nl wxCheckBox:setValue($name, true) @}
+    </template>
+	<template name="evt_connect_OnCheckBox">$name:Connect( wx.wxEVT_COMMAND_CHECKBOX_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxComboBox">
+	<template name="construction">
+		#ifnotnull $choices
+		@{
+			$name #append Choices = [ $choices ] #nl
+		@}
+		#ifnull $choices
+		@{
+			$name #append Choices = [] #nl
+		@}
+		$name = #class:new(#wxparent $name, $id, [{value, $value }, {pos, $pos }, {size, $size }, {choices, #append Choices }, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+	<template name="settings">
+	    #ifnotequal $selection "-1"
+	    @{wxComboBox:setSelection($name,$selection)@}
+    </template>
+	<template name="evt_connect_OnCombobox">$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnText">$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextEnter">$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxBitmapComboBox">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, [{value, $value }, {pos, $pos }, {size, $size }, {choices, [] }, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+		#foreach $choices
+		@{ wxBitmapComboBox:append($name, #pred, wxBitmap:new()) @}
+	</template>
+	<template name="settings">#ifnotequal $selection "-1" @{$name:SetSelection( $selection )@}</template>
+	<template name="evt_connect_OnCombobox">$name:Connect( wx.wxEVT_COMMAND_COMBOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnText">$name:Connect( wx.wxEVT_COMMAND_TEXT_UPDATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTextEnter">$name:Connect( wx.wxEVT_COMMAND_TEXT_ENTER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="include"/><!--import wx.wxcombo</template>-->
+  </templates>
+
+  <templates class="wxListBox">
+	<template name="construction">
+		#ifnotnull $choices
+		@{
+			$name #append Choices = [$choices] #nl
+		@}
+		#ifnull $choices
+		@{
+			$name #append Choices = [] #nl
+		@}
+		$name = #class:new(#wxparent $name, $id, [{pos, $pos }, {size, $size }, {choice, $name #append Choices}, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+    </template>
+	<template name="evt_connect_OnListBox">$name:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListBoxDClick">$name:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxRadioBox">
+	<template name="construction">
+		#ifnotnull $choices
+		@{
+			$name #append Choices = [$choices] #nl
+		@}
+		#ifnull $choices
+		@{
+			$name #append Choices = [] #nl
+		@}
+		$name = #class:new(#wxparent $name, $id, $label, $pos, $size, $name #append Choices, [{majorDim, $majorDimension }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	    #ifnotequal $selection "-1"
+	    @{ #nl wxRadioBox:setSelection($name, $selection), @}
+	</template>
+	<template name="evt_connect_OnRadioBox">$name:Connect( wx.wxEVT_COMMAND_RADIOBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxRadioButton">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, $label, [{pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{ + $window_style @} }]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+	<template name="settings">
+		#ifnotequal $value "0"
+		@{ wxRadioButton:setValue($name, true) @}
+	</template>
+	<template name="evt_connect_OnRadioButton">$name:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxStaticBitmap">
+	<template name="construction">
+		$name = #class:new(#wxparent $name, $id, $bitmap, [{pos, $pos }, {size, $size } #ifnotnull $window_style @{, {style, $window_style @} )]),
+	</template>
+  </templates>
+
+  <templates class="wxAnimationCtrl">
+    <template name="construction">
+		$name = #class:new(#wxparent $name, $id, wxAnimation:new(), [{pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+		#ifnotnull $animation
+		@{ #nl wxAnimationCtrl:loadFile($name, $animation) @}
+    </template>
+    <template name="settings">
+		#ifnotnull $inactive_bitmap
+		@{ #nl wxAnimationCtrl:setInactiveBitmap($name, $inactive_bitmap) @}
+		#ifequal $play "1"
+		@{ #nl wxAnimationCtrl:play($name) @}
+    </template>
+  </templates>
+
+  <templates class="wxStaticLine">
+	<template name="construction">
+        $name = #class:new(#wxparent $name, [{id, $id }, {pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+  	</template>
+  </templates>
+
+  <templates class="wxListCtrl">
+	<template name="construction">
+        $name = #class:new(#wxparent $name, [{winid, $id }, {pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+        #ifnotequal $validator_type "wxDefaultValidator"
+        @{ %% Validator is not implemented for Erlang code generator @}
+    </template>
+	<template name="evt_connect_OnListBeginDrag">$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListBeginRDrag">$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListBeginLabelEdit">$name:Connect( wx.wxEVT_COMMAND_LIST_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListEndLabelEdit">$name:Connect( wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListDeleteItem">$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListDeleteAllItems">$name:Connect( wx.wxEVT_COMMAND_LIST_DELETE_ALL_ITEMS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemSelected">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemDeselected">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_DESELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemActivated">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemFocused">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_FOCUSED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemMiddleClick">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListItemRightClick">$name:Connect( wx.wxEVT_COMMAND_LIST_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListKeyDown">$name:Connect( wx.wxEVT_COMMAND_LIST_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListInsertItem">$name:Connect( wx.wxEVT_COMMAND_LIST_INSERT_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListColClick">$name:Connect( wx.wxEVT_COMMAND_LIST_COL_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListColRightClick">$name:Connect( wx.wxEVT_COMMAND_LIST_COL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListColBeginDrag">$name:Connect( wx.wxEVT_COMMAND_LIST_COL_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListColDragging">$name:Connect( wx.wxEVT_COMMAND_LIST_COL_DRAGGING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListColEndDrag">$name:Connect( wx.wxEVT_COMMAND_LIST_COL_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnListCacheHint">$name:Connect( wx.wxEVT_COMMAND_LIST_CACHE_HINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxChoice">
+	<template name="construction">
+        #ifnotnull $choices
+        @{ $name #append Choices = [$choices], #nl @}
+        #ifnull $choices
+        @{ $name #append Choices = [], #nl @}
+        $name = #class:new(#wxparent $name, $id, [{pos, $pos }, {size, $size }, {choices, $name #append Choices }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+        #ifnotequal $validator_type "wxDefaultValidator"
+        @{ %% Validator is not implemented for Erlang code generator @}
+	</template>
+	<template name="settings">wxChoice:setSelection($name, $selection)</template>
+	<template name="evt_connect_OnChoice">$name:Connect( wx. wxEVT_COMMAND_CHOICE_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+  <templates class="wxGauge">
+	<template name="construction">
+	    $name = #class:new(#wxparent $name, $id, $range, [{pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+        #ifnotequal $validator_type "wxDefaultValidator"
+        @{ %% Validator is not implemented for Erlang code generator @}
+    </template>
+	<template name="settings">
+		#ifnotnull $value
+		@{ wxGauge:setValue($name, $value), @}
+	</template>
+  </templates>
+
+  <templates class="wxSlider">
+	<template name="construction">
+	    $name = #class:new(#wxparent $name, $id, $value, $minValue, $maxValue, [{pos, $pos }, {size, $size }, {style, $style #ifnotnull $window_style @{+$window_style @} }]),
+        #ifnotequal $validator_type "wxDefaultValidator"
+        @{ %% Validator is not implemented for Erlang code generator @}
+    </template>
+	<template name="evt_connect_OnScroll">$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollTop">$name:Connect( wx.wxEVT_SCROLL_TOP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollBottom">$name:Connect( wx.wxEVT_SCROLL_BOTTOM, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollLineUp">$name:Connect( wx.wxEVT_SCROLL_LINEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollLineDown">$name:Connect( wx.wxEVT_SCROLL_LINEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollPageUp">$name:Connect( wx.wxEVT_SCROLL_PAGEUP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollPageDown">$name:Connect( wx.wxEVT_SCROLL_PAGEDOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollThumbTrack">$name:Connect( wx.wxEVT_SCROLL_THUMBTRACK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollThumbRelease">$name:Connect( wx.wxEVT_SCROLL_THUMBRELEASE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnScrollChanged">$name:Connect( wx.wxEVT_SCROLL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+    <template name="evt_connect_OnCommandScroll">-- event $name:OnCommandScroll isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollTop">-- event $name:OnCommandScrollTop isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollBottom">-- event $name:OnCommandScrollBottom isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollLineUp">-- event $name:OnCommandScrollLineUp isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollLineDown">-- event $name:OnCommandScrollLineDown isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollPageUp">-- event $name:OnCommandScrollPageUp isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollPageDown">-- event $name:OnCommandScrollPageDown isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollThumbTrack">-- event $name:OnCommandScrollThumbTrack isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollThumbRelease">-- event $name:OnCommandScrollThumbRelease isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnCommandScrollChanged">-- event $name:OnCommandScrollChanged isn't currently supported by wx in Erlang</template>
+	<template name="evt_connect_OnSlider">$name:Connect( wx.wxEVT_SLIDER, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+  </templates>
+
+</codegen>

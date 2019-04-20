@@ -14,6 +14,7 @@
       <option name="PHP" help="Generate PHP Code"/>
       <option name="XRC" help="Generate XRC Code"/>
       <option name="Lua" help="Generate Lua Code"/>
+      <option name="Erlang" help="Generate Erlang Code"/>
       C++
     </property>
     <property name="internationalize" type="bool" help="For C++ Only.&#x0A;Generate strings with _() macro instead of wxT() macro. This allows for translation.">0</property>
@@ -69,6 +70,12 @@
         source_name
       </property>
     </category>
+    <category name="Erlang Properties">
+      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the widows's creation function">create</property>
+      <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
+      <property name="lower_identifier" type="bool" help="For Erlang Only.&#x0A;Forces the entire name of the identifiers to lowercase.">1</property>
+      <property name="skip_erlang_events" type="bool" help="For Erlang Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+    </category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
     <property name="permission" type="option" hidden="1">
@@ -85,6 +92,7 @@
     <property name="user_cpp_code" type="text"/>
     <property name="user_python_code" type="text"/>
     <property name="user_lua_code" type="text"/>
+    <property name="user_erlang_code" type="text" />
     <!--property name="insertion_mode" type="option">
       <option name="prepend"/>
       <option name="insert"/>
@@ -142,6 +150,7 @@
       -->
       <child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
     </property>
+    <property name="generate_export" type="bool" help="For Erlang Only. Will add the creation function to an export declaration.">1</property>
     <category name="wxKeyEvent" type="interface">
       <event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event."/>
       <event name="OnCharHook" class="wxKeyEvent" help="Process a wxEVT_CHAR_HOOK event. Unlike all the other key events, this event is propagated upwards the window hierarchy which allows intercepting it in the parent window of the focused window to which it is sent initially (if there is no focused window, this event is sent to the wxApp global object). It is also generated before any other key events and so gives the parent window an opportunity to modify the keyboard handling of its children, e.g. it is used internally by wxWidgets in some ports to intercept pressing Esc key in any child of a dialog to close the dialog itself when it's pressed. By default, if this event is handled, i.e. the handler doesn't call wxEvent::Skip(), neither wxEVT_KEY_DOWN nor wxEVT_CHAR events will be generated (although wxEVT_KEY_UP still will be), i.e. it replaces the normal key events. However by calling the special DoAllowNextEvent() method you can handle wxEVT_CHAR_HOOK and still allow normal events generation. This is something that is rarely useful but can be required if you need to prevent a parent wxEVT_CHAR_HOOK handler from running without suppressing the normal key events. Finally notice that this event is not generated when the mouse is captured as it is considered that the window which has the capture should receive all the keyboard events too without allowing its parent wxTopLevelWindow to interfere with their processing."/>
