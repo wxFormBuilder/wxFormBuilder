@@ -269,9 +269,64 @@ Python code generation written by
 
 	<templates class="wxStyledTextCtrl">
 		<template name="construction">
-			@# WARNING: wxPython code generation isn't supported for this widget yet. #nl
-			self.$name = wx.Window( #wxparent $name )
+			self.$name = wx.stc.StyledTextCtrl(#wxparent $name, $id,  $pos, $size, $window_style)
+			#nl self.$name.SetUseTabs  ( $use_tabs )
+			#nl self.$name.SetTabWidth ( $tab_width )
+			#nl self.$name.SetIndent   ( $tab_width )
+			#nl self.$name.SetTabIndents( $tab_indents )
+			#nl self.$name.SetBackSpaceUnIndents( $backspace_unindents )
+			#nl self.$name.SetViewEOL( $view_eol )
+			#nl self.$name.SetViewWhiteSpace( $view_whitespace )
+			#nl self.$name.SetMarginWidth( 2, 0 )
+			#nl self.$name.SetIndentationGuides( $indentation_guides )
+			#ifequal $folding "1"
+			@{
+				#nl self.$name.SetMarginType  ( 1, wx.stc.STC_MARGIN_SYMBOL )
+				#nl self.$name.SetMarginMask  ( 1, wx.stc.STC_MASK_FOLDERS )
+				#nl self.$name.SetMarginWidth ( 1, 16)
+				#nl self.$name.SetMarginSensitive( 1, True )
+				#nl self.$name.SetProperty       ( "fold", "1" )
+				#nl self.$name.SetFoldFlags      ( wx.stc.STC_FOLDFLAG_LINEBEFORE_CONTRACTED | wx.stc.STC_FOLDFLAG_LINEAFTER_CONTRACTED );
+			@}
+			#ifnotequal $folding "1"
+			@{
+				#nl self.$name.SetMarginWidth( 1, 0 )
+			@}
+			#ifequal $line_numbers "1"
+			@{
+				#nl self.$name.SetMarginType( 0, wx.stc.STC_MARGIN_NUMBER );
+				#nl self.$name.SetMarginWidth( 0, self.$name.TextWidth( wx.stc.STC_STYLE_LINENUMBER, "_99999" ) )
+			@}
+			#ifnotequal $line_numbers "1"
+			@{
+				#nl self.$name.SetMarginWidth ( 0, 0 )
+			@}
+			#ifnotnull $font
+			@{
+				#nl self.font = $font
+				#nl self.$name.StyleSetFont( wx.stc.STC_STYLE_DEFAULT, self.font )
+			@}
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDER, wx.stc.STC_MARK_BOXPLUS )
+			#nl self.$name.MarkerSetBackground( wx.stc.STC_MARKNUM_FOLDER, wx.BLACK)
+			#nl self.$name.MarkerSetForeground( wx.stc.STC_MARKNUM_FOLDER, wx.WHITE)
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDEROPEN, wx.stc.STC_MARK_BOXMINUS )
+			#nl self.$name.MarkerSetBackground( wx.stc.STC_MARKNUM_FOLDEROPEN, wx.BLACK )
+			#nl self.$name.MarkerSetForeground( wx.stc.STC_MARKNUM_FOLDEROPEN, wx.WHITE )
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERSUB, wx.stc.STC_MARK_EMPTY )
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDEREND, wx.stc.STC_MARK_BOXPLUS )
+			#nl self.$name.MarkerSetBackground( wx.stc.STC_MARKNUM_FOLDEREND, wx.BLACK )
+			#nl self.$name.MarkerSetForeground( wx.stc.STC_MARKNUM_FOLDEREND, wx.WHITE )
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.stc.STC_MARK_BOXMINUS )
+			#nl self.$name.MarkerSetBackground( wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.BLACK)
+			#nl self.$name.MarkerSetForeground( wx.stc.STC_MARKNUM_FOLDEROPENMID, wx.WHITE)
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_EMPTY )
+			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERTAIL, wx.stc.STC_MARK_EMPTY )
+			#nl self.$name.SetSelBackground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT ) )
+			#nl self.$name.SetSelForeground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
+			<!-- @# WARNING: wxPython code generation isn't supported for this widget yet. #nl
+		    self.$name = wx.Window( #wxparent $name )-->			
 		</template>
+		<template name="include">import wx.stc</template>
 	</templates>
 
 </codegen>

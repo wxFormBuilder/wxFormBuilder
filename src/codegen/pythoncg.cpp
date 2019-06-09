@@ -24,6 +24,9 @@
 // Python code generation writen by
 //   Michal Bližňak - michal.bliznak@gmail.com
 //
+//   Jacobo Costas Costas
+//         -> bug in PT_WXPARENT_CP
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "pythoncg.h"
@@ -102,7 +105,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_WXPARENT_CP:
 	{
-		result = value + wxT(".GetPane()");
+		result = wxT("self.")  + value + wxT(".GetPane()");
 		break;
 	}
 	case PT_WXSTRING:
