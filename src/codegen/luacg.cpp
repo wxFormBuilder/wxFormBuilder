@@ -105,7 +105,7 @@ wxString LuaTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_WXPARENT_CP:
 	{
-		result = value + wxT(":GetPane()");
+		result = wxT("NS.") + value + wxT(":GetPane()");
 		break;
 	}
 	case PT_WXSTRING:
