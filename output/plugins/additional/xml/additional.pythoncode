@@ -322,9 +322,7 @@ Python code generation written by
 			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_EMPTY )
 			#nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERTAIL, wx.stc.STC_MARK_EMPTY )
 			#nl self.$name.SetSelBackground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT ) )
-			#nl self.$name.SetSelForeground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
-			<!-- @# WARNING: wxPython code generation isn't supported for this widget yet. #nl
-		    self.$name = wx.Window( #wxparent $name )-->			
+			#nl self.$name.SetSelForeground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT ) )		
 		</template>
 		<template name="include">import wx.stc</template>
 	</templates>
