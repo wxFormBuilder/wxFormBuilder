@@ -102,7 +102,7 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_WXPARENT_CP:
 	{
-		result = value + wxT(".GetPane()");
+		result = wxT("self.") + value + wxT(".GetPane()");
 		break;
 	}
 	case PT_WXSTRING:

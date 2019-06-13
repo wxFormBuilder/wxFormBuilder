@@ -99,7 +99,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_WXPARENT_CP:
 	{
-		result = wxT("$") + value + wxT("->GetPane()");
+		result = wxT("$this->") + value + wxT("->GetPane()");
 		break;
 	}
 	case PT_WXSTRING:
