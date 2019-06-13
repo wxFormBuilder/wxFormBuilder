@@ -50,6 +50,8 @@ sudo pacman -Syu --needed meson wxgtk2
 Build and run:
 
 ```sh
+git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
+cd wxFormBuilder
 meson _build --prefix $PWD/_install
 ninja -C _build install
 ./_install/bin/wxformbuilder
