@@ -404,7 +404,8 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 	}
 	else if ( type == PT_PARENT )
 	{
-		result = new wxPGProperty( name, wxPG_LABEL );
+		result = new wxStringProperty( name, wxPG_LABEL );
+		result->ChangeFlag(wxPG_PROP_READONLY, true);
 
 		/*wxPGProperty* parent = new wxPGProperty( name, wxPG_LABEL );
 		parent->SetValueFromString( prop->GetValueAsString(), wxPG_FULL_VALUE );
