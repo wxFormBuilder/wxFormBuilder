@@ -57,7 +57,7 @@ PHP code generation writen by
 
   <templates class="wxStaticBoxSizer">
     <template name="construction">@$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
-	<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler );</template>
+		<template name="evt_connect_OnUpdateUI">$name->GetStaticBox()->Connect->( wxEVT_UPDATE_UI, #handler );</template>
   </templates>
 
   <templates class="wxGridSizer">
