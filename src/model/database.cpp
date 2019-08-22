@@ -228,6 +228,19 @@ int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent,PObjectType typ
 	return count;
 }
 
+int ObjectDatabase::CountChildrenWithTypes(PObjectBase parent,const std::set<wxString> &types)
+{
+	unsigned int count = 0;
+	unsigned int numChildren = parent->GetChildCount();
+	for (unsigned int i=0; i < numChildren ; i++)
+	{
+		if (types.find(parent->GetChild(i)->GetObjectInfo()->GetObjectType()->GetName()) != types.end())
+			count++;
+	}
+
+	return count;
+}
+
 /**
 * Crea una instancia de classname por debajo de parent.
 * La función realiza la comprobación de tipos para crear el objeto:
@@ -257,7 +270,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 	}
 
 	PObjectType objType = objInfo->GetObjectType();
-
+    
 	if (parent)
 	{
 		// Comprobamos si el tipo es válido
@@ -301,9 +314,23 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			bool create = true;
 
 			// we check the number of instances
-			if (max > 0 && CountChildrenWithSameType(parent, objType) >= max)
-				create = false;
+			int count;
+			if (objType->GetName() == wxT("sizer") || classname == "wxGridBagSizer")
+			{
+				std::set<wxString> types;
+				types.insert(wxT("sizer"));
+				types.insert(wxT("gbsizer"));
+				count = CountChildrenWithTypes(parent, types);
+			}
+			else 
+			{
+				count = CountChildrenWithSameType(parent, objType);
+			}
+			
 
+			if (max > 0 && count >= max)
+				create = false;
+				
 			if (create)
 				object = NewObject(objInfo);
 		}
