@@ -197,6 +197,7 @@ class ObjectDatabase
   PObjectType GetObjectType(wxString name);
 
   int CountChildrenWithSameType(PObjectBase parent,PObjectType type);
+  int CountChildrenWithSameType(PObjectBase parent, const std::set<PObjectType>& types);
 
   void SetDefaultLayoutProperties(PObjectBase obj);
 

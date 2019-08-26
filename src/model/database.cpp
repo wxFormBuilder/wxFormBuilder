@@ -228,6 +228,19 @@ int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent,PObjectType typ
 	return count;
 }
 
+int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent, const std::set<PObjectType>& types)
+{
+	unsigned int count = 0;
+	unsigned int numChildren = parent->GetChildCount();
+	for (unsigned int i = 0; i < numChildren; ++i)
+	{
+		if (types.find(parent->GetChild(i)->GetObjectInfo()->GetObjectType()) != types.end())
+			++count;
+	}
+
+	return count;
+}
+
 /**
 * Crea una instancia de classname por debajo de parent.
 * La función realiza la comprobación de tipos para crear el objeto:
@@ -301,7 +314,17 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			bool create = true;
 
 			// we check the number of instances
-			if (max > 0 && CountChildrenWithSameType(parent, objType) >= max)
+			int count;
+			if (objType == GetObjectType(wxT("sizer")) || objType == GetObjectType(wxT("gbsizer")))
+			{
+				count = CountChildrenWithSameType(parent, { GetObjectType(wxT("sizer")), GetObjectType(wxT("gbsizer")) });
+			}
+			else 
+			{
+				count = CountChildrenWithSameType(parent, objType);
+			}
+			
+			if (max > 0 && count >= max)
 				create = false;
 
 			if (create)
