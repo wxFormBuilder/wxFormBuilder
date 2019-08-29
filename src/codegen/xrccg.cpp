@@ -46,7 +46,7 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	doc.LinkEndChild( &decl );
 
 	ticpp::Element element( "resource" );
-	element.SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
+	element.SetAttribute("xmlns", "http://www.wxwidgets.org/wxxrc");
 	element.SetAttribute("version", "2.5.3.0");
 
 	// If project is not actually a "Project", generate it
