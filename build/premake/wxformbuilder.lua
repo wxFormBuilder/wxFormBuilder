@@ -67,11 +67,11 @@ project "wxFormBuilder"
 	end
 
     configuration "not vs*"
-        buildoptions        "-std=c++14"
+        buildoptions        "-std=c++17"
 
     configuration "vs*"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
-        buildoptions    {"/wd4003"}
+        buildoptions    {"/std:c++17", "/wd4003"}
 
     configuration "macosx"
         linkoptions         {"-Wl,-L../../../output/lib/wxformbuilder"}

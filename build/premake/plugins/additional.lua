@@ -29,7 +29,10 @@ end
 	end
 
     configuration "not vs*"
-        buildoptions        "-std=c++14"
+        buildoptions        "-std=c++17"
+
+    configuration "vs*"
+        buildoptions        "/std:c++17"
 
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"

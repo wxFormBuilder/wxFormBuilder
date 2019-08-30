@@ -25,14 +25,14 @@ project "plugin-interface"
 	end
 
     configuration "not vs*"
-        buildoptions        "-std=c++14"
+        buildoptions        "-std=c++17"
+
+configuration "vs*"
+    defines             {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
+    buildoptions        "/std:c++17"
 
 configuration "not windows"
     buildoptions {"-fPIC"}
-
- -- Visual C++ 2005/2008
-configuration "vs*"
-    defines             {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
 
 configuration "Debug"
     targetname          ( CustomPrefix .. wxDebugSuffix .. "_plugin-interface" )
