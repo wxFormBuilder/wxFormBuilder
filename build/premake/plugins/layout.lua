@@ -18,17 +18,17 @@ project "layout-components-plugin"
     defines             {"BUILD_DLL", "TIXML_USE_TICPP"}
     links               {"plugin-interface", "TiCPP"}
 
-	local libs = "std,richtext,propgrid,stc,ribbon,aui"
+    local libs = "std,richtext,propgrid,stc,ribbon,aui"
 
-	if wxArchitecture then
-		buildoptions	{"-arch " .. wxArchitecture}
-	end
+    if wxArchitecture then
+        buildoptions    {"-arch " .. wxArchitecture}
+    end
 
     configuration "not vs*"
-        buildoptions        "-std=c++17"
+        buildoptions    "-std=c++17"
 
     configuration "vs*"
-        buildoptions        "/std:c++17"
+        buildoptions    "/std:c++17"
 
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
@@ -38,11 +38,11 @@ project "layout-components-plugin"
         targetdir       "../../../output/plugins/layout"
 
     configuration "Debug"
-        targetsuffix    ( DebugSuffix )
-        wx_config       { Debug="yes", Libs=libs }
+        targetsuffix    (DebugSuffix)
+        wx_config       {Debug="yes", Libs=libs}
 
     configuration "Release"
-        wx_config       { Libs=libs }
+        wx_config       {Libs=libs}
 
     configuration {"not vs*", "Release"}
         buildoptions    {"-fno-strict-aliasing"}

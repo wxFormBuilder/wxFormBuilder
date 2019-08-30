@@ -19,20 +19,20 @@ project "additional-components-plugin"
     links               {"plugin-interface", "TiCPP"}
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
-if wxUseMediaCtrl then
-    defines             {"USE_MEDIACTRL"}
-    libs                = libs .. ",media"
-end
+    if wxUseMediaCtrl then
+        defines         {"USE_MEDIACTRL"}
+        libs            = libs .. ",media"
+    end
 
-	if wxArchitecture then
-		buildoptions	{"-arch " .. wxArchitecture}
-	end
+    if wxArchitecture then
+        buildoptions    {"-arch " .. wxArchitecture}
+    end
 
     configuration "not vs*"
-        buildoptions        "-std=c++17"
+        buildoptions    "-std=c++17"
 
     configuration "vs*"
-        buildoptions        "/std:c++17"
+        buildoptions    "/std:c++17"
 
     configuration "not windows"
         targetdir       "../../../output/lib/wxformbuilder"
@@ -42,11 +42,11 @@ end
         targetdir       "../../../output/plugins/additional"
 
     configuration "Debug"
-        targetsuffix    ( DebugSuffix )
-        wx_config       { Libs=libs, Debug="yes" }
+        targetsuffix    (DebugSuffix)
+        wx_config       {Libs=libs, Debug="yes"}
 
     configuration "Release"
-        wx_config       { Libs=libs }
+        wx_config       {Libs=libs}
 
     configuration {"not vs*", "Release"}
         buildoptions    {"-fno-strict-aliasing"}

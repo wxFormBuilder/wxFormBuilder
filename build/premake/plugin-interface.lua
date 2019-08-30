@@ -18,29 +18,29 @@ project "plugin-interface"
     includedirs         {"../../subprojects/ticpp"}
     targetdir           "../../sdk/lib"
     defines             {"TIXML_USE_TICPP"}
-    targetsuffix        ( "-" .. wxVersion )
+    targetsuffix        ("-" .. wxVersion)
 
-	if wxArchitecture then
-		buildoptions	{"-arch " .. wxArchitecture}
-	end
+    if wxArchitecture then
+        buildoptions    {"-arch " .. wxArchitecture}
+    end
 
     configuration "not vs*"
-        buildoptions        "-std=c++17"
+        buildoptions    "-std=c++17"
 
-configuration "vs*"
-    defines             {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
-    buildoptions        "/std:c++17"
+    configuration "vs*"
+        defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
+        buildoptions    "/std:c++17"
 
-configuration "not windows"
-    buildoptions {"-fPIC"}
+    configuration "not windows"
+        buildoptions    {"-fPIC"}
 
-configuration "Debug"
-    targetname          ( CustomPrefix .. wxDebugSuffix .. "_plugin-interface" )
-    wx_config           { Debug="yes", WithoutLibs="yes" }
+    configuration "Debug"
+        targetname      (CustomPrefix .. wxDebugSuffix .. "_plugin-interface")
+        wx_config       {Debug="yes", WithoutLibs="yes"}
 
-configuration "Release"
-    targetname          ( CustomPrefix .. "_plugin-interface" )
-    wx_config           { WithoutLibs="yes" }
+    configuration "Release"
+        targetname      (CustomPrefix .. "_plugin-interface")
+        wx_config       {WithoutLibs="yes"}
 
     configuration {"not vs*", "Release"}
         buildoptions    {"-fno-strict-aliasing"}
