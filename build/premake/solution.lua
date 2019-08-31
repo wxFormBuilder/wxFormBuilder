@@ -14,24 +14,25 @@ solution "wxFormBuilder-Solution"
 
     local scriptDir     = os.getcwd()
 
-    dofile( scriptDir .. "/wxwidgets.lua" )
+    dofile(scriptDir .. "/wxwidgets.lua")
 
-    local wxver         = string.gsub( wxVersion, '%.', '' )
-    location            ( "../../build/" .. wxVersion .. "/" .. _ACTION )
+    local wxver         = string.gsub(wxVersion, '%.', '')
+    location            ("../../build/" .. wxVersion .. "/" .. _ACTION)
     BuildDir            = solution().location
     CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
     DebugSuffix         = "-" .. wxver
 
-    os.chdir( BuildDir )
+    os.chdir(BuildDir)
 
---if wxCompiler == "gcc" and os.is("windows") then
---  flags               {"NoImportLib"}
---end
+    --if wxCompiler == "gcc" and os.is("windows") then
+    --    flags           {"NoImportLib"}
+    --end
 
-if wxUseUnicode then
-    flags               {"Unicode"}
-    defines             {"UNICODE", "_UNICODE"}
-end
+    if wxUseUnicode then
+        flags           {"Unicode"}
+        defines         {"UNICODE", "_UNICODE"}
+    end
+
     configuration "windows"
         defines         {"WIN32", "_WINDOWS"}
 
@@ -39,21 +40,20 @@ end
         -- adding symbols so that premake does not include the "Wl,x"
         -- flags, as these flags make clang linking fail
         -- see http://industriousone.com/topic/how-remove-flags-ldflags
-        flags { "Symbols" }
-        buildoptions { "-Wno-overloaded-virtual" }
+        flags           {"Symbols"}
+        buildoptions    {"-Wno-overloaded-virtual"}
 
     configuration "Debug"
         defines         {"DEBUG", "_DEBUG"}
         flags           {"Symbols"}
-
-		if wxCompiler == "gcc" then
-			buildoptions    {"-O0"}
-		end
+        if wxCompiler == "gcc" then
+            buildoptions{"-O0"}
+        end
 
     configuration "Release"
-		-- if wxCompiler == "gcc" then
-		-- 	 linkoptions {"-s"}
-		-- end
+        --if wxCompiler == "gcc" then
+        --    linkoptions {"-s"}
+        --end
         defines         {"NDEBUG"}
         flags           {"Optimize", "ExtraWarnings"}
 
@@ -64,14 +64,13 @@ end
         -- This produces D9025 because without ExtraWarnings /W3 gets set
         --buildoptions    {"/W4"}
 
-    dofile( scriptDir .. "/ticpp.lua" )
-    dofile( scriptDir .. "/plugin-interface.lua" )
+    dofile(scriptDir .. "/ticpp.lua")
+    dofile(scriptDir .. "/plugin-interface.lua")
 
-    dofile( scriptDir .. "/plugins/additional.lua" )
-    dofile( scriptDir .. "/plugins/common.lua" )
-    dofile( scriptDir .. "/plugins/containers.lua" )
-    dofile( scriptDir .. "/plugins/forms.lua" )
-    dofile( scriptDir .. "/plugins/layout.lua" )
-    dofile( scriptDir .. "/wxformbuilder.lua" )
-    dofile( scriptDir .. "/utilities.lua" )
-
+    dofile(scriptDir .. "/plugins/additional.lua")
+    dofile(scriptDir .. "/plugins/common.lua")
+    dofile(scriptDir .. "/plugins/containers.lua")
+    dofile(scriptDir .. "/plugins/forms.lua")
+    dofile(scriptDir .. "/plugins/layout.lua")
+    dofile(scriptDir .. "/wxformbuilder.lua")
+    dofile(scriptDir .. "/utilities.lua")
