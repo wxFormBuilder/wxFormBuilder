@@ -108,11 +108,11 @@
 		<!-- wxSizeEvent -->
 		<template name="evt_connect_OnSize">self.$name.Bind( wx.EVT_SIZE, #handler )</template>
 
-		<!-- wxUpdateUIEvent -->
-		<template name="evt_connect_OnUpdateUI">self.$name.Bind( wx.EVT_UPDATE_UI, #handler )</template>
-		
 		<!-- wxMoveEvent -->
 		<template name="evt_connect_OnMove">self.$name.Bind( wx.EVT_MOVE, #handler )</template>
+
+		<!-- wxUpdateUIEvent -->
+		<template name="evt_connect_OnUpdateUI">self.$name.Bind( wx.EVT_UPDATE_UI, #handler )</template>
   </templates>
   
   <templates class="Validator">

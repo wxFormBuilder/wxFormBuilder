@@ -178,8 +178,8 @@
 		<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
 		<event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
 		<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
-		<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
 		<event name="OnMove" class="wxMoveEvent" help="Process a wxEVT_MOVE event, which is generated when a window is moved. Not generated in wxGTK" />
+		<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
 	  </category>
   </objectinfo>
   

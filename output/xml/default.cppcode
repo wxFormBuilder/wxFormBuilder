@@ -168,13 +168,13 @@
 		<template name="evt_entry_OnSize">@#error wxSizeEvent does not propogate, so wxEVT_SIZE from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnSize">$name->Connect( wxEVT_SIZE, #handler, NULL, this );</template>
 
-		<!-- wxUpdateUIEvent -->
-		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
-		<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
-		
 		<!-- wxMoveEvent -->
 		<template name="evt_entry_OnMove">@#error wxMoveEvent does not propogate, so wxEVT_MOVE from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnMove">$name->Connect( wxEVT_MOVE, #handler, NULL, this );</template>
+
+		<!-- wxUpdateUIEvent -->
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">$name->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
   </templates>
   
   <templates class="AUI">

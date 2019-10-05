@@ -149,11 +149,11 @@
 		<!-- wxSizeEvent -->
 		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 
+		<!-- wxMoveEvent -->
+		<template name="evt_connect_OnMove">#utbl$name:Connect( wx.wxEVT_MOVE, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		
-		<!-- wxSizeEvent -->
-		<template name="evt_connect_OnMove">#utbl$name:Connect( wx.wxEVT_MOVE, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
   </templates>
   <templates class="wxTreeCtrlBase">
 	<template name="evt_connect_OnTreeBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
