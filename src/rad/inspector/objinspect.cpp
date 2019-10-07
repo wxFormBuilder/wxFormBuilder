@@ -251,7 +251,6 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 	else if (type == PT_TEXT)
 	{
 		result = new wxLongStringProperty( name, wxPG_LABEL, prop->GetValueAsString() );
-		result->ChangeFlag( wxPG_PROP_NO_ESCAPE, true );
 	}
 	else if (type == PT_BOOL)
 	{
