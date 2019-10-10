@@ -217,14 +217,14 @@ Written by
     <inherits class="Validator" />
     <property name="name" type="text">m_calendar</property>
     <property name="style" type="bitlist">
-        <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week (not in wxGTK)." />
-        <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week (not in wxGTK)." />
-        <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar (only generic)." />
-        <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing (deprecated, only generic)." />
-        <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing." />
-        <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months (only generic, always on for the native controls)." />
-        <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls (only generic)." />
-        <option name="wxCAL_SHOW_WEEK_NUMBERS"          help="Show week numbers on the left side of the calendar (not in generic)."/>
+        <option name="wxCAL_SUNDAY_FIRST"               help="Show Sunday as the first day in the week (not in wxGTK)" />
+        <option name="wxCAL_MONDAY_FIRST"               help="Show Monday as the first day in the week (not in wxGTK)" />
+        <option name="wxCAL_SHOW_HOLIDAYS"              help="Highlight holidays in the calendar (only generic)" />
+        <option name="wxCAL_NO_YEAR_CHANGE"             help="Disable the year changing (deprecated, only generic)" />
+        <option name="wxCAL_NO_MONTH_CHANGE"            help="Disable the month (and, implicitly, the year) changing" />
+        <option name="wxCAL_SHOW_SURROUNDING_WEEKS"     help="Show the neighbouring weeks in the previous and next months (only generic, always on for the native controls)" />
+        <option name="wxCAL_SEQUENTIAL_MONTH_SELECTION" help="Use alternative, more compact, style for the month and year selection controls (only generic)" />
+        <option name="wxCAL_SHOW_WEEK_NUMBERS"          help="Show week numbers on the left side of the calendar (not in generic)"/>
         wxCAL_SHOW_HOLIDAYS
     </property>
     <event name="OnCalendar" class="wxCalendarEvent" help="A day was double clicked in the calendar." />
