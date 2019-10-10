@@ -721,7 +721,7 @@ Lua code generation writen by
 			(wx.NULL, $id, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, $window_name @} )
 		</template>
 		<template name="settings">
-			#ifnotnull $bitmapsize @{$name:SetToolBitmapSize( $bitmapsize ) #nl @}
+			#ifnotnull $bitmapsize @{ #utbl$name:SetToolBitmapSize( $bitmapsize ) #nl @}
 
 			#ifnotnull $separation
 			@{
