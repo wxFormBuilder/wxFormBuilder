@@ -26,7 +26,7 @@ sed 's!-lbfd!-lbfd -lz!g' *.make -i
 make config=release
 ```
 
-Run:
+Run (you may also need copy several .dll into output dir from mingw32\bin):
 
 ```sh
 cd ../../../output/
