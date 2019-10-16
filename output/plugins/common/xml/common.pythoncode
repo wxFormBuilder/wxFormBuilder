@@ -117,7 +117,7 @@ Python code generation written by
 
   <templates class="wxBitmapComboBox">
 	<template name="construction">
-		self.$name = wx.adv.BitmapComboBox( #wxparent $name, $id, $value, $pos, $size, [], $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		self.$name = #class( #wxparent $name, $id, $value, $pos, $size, [], $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
 		#foreach $choices
 		@{ self.$name.Append( #pred.partition(":")[2], wx.Image.ConvertToBitmap(wx.Image(#pred.partition(":")[0]))); @}
 	</template>

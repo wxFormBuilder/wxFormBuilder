@@ -38,7 +38,7 @@ Python code generation written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">import wx.dataview</template>
 	<template name="construction">
-		self.$name = wx.dataview.DataViewCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
+		self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
 	</template>
 	<template name="evt_connect_OnDataViewCtrlSelectionChanged">self.$name.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
 	<template name="evt_connect_OnDataViewCtrlItemActivated">self.$name.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
@@ -64,7 +64,7 @@ Python code generation written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">import wx.dataview</template>
 	<template name="construction">
-		self.$name = wx.dataview.DataViewTreeCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} ) 
+		self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} ) 
 	</template>
 	<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">self.$name.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
 	<template name="evt_connect_OnDataViewTreeCtrlItemActivated">self.$name.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
@@ -90,7 +90,7 @@ Python code generation written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">import wx.dataview</template>
 	<template name="construction">
-		self.$name = wx.dataview.DataViewListCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
+		self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
 	</template>
 	<template name="evt_connect_OnDataViewListCtrlSelectionChanged">self.$name.Bind( wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, #handler, id = $id )</template>
 	<template name="evt_connect_OnDataViewListCtrlItemActivated">self.$name.Bind( wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, #handler, id = $id )</template>
@@ -132,7 +132,7 @@ Python code generation written by
 	<template name="declaration">#class* $name;</template>
 	<template name="include">import wx.dataview</template>
 	<template name="construction">
-        self.$name = wx.dataview.TreeListCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+        self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
     </template>
 	<template name="evt_connect_OnTreelistSelectionChanged">self.$name.Bind( wx.dataview.EVT_TREELIST_SELECTION_CHANGED, #handler )</template>
 	<template name="evt_connect_OnTreelistItemExpanding">self.$name.Bind( wx.dataview.EVT_TREELIST_ITEM_EXPANDING, #handler )</template>
