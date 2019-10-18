@@ -26,147 +26,147 @@ Python code generation writen by
 -->
 <codegen language="Python">
 
-  <templates class="sizer">
-    <template name="settings">
-	  #ifnotnull $minimum_size
-	  @{ $name.SetMinSize( $minimum_size ) @}
-    </template>
-  </templates>
+	<templates class="sizer">
+		<template name="settings">
+			#ifnotnull $minimum_size
+			@{ $name.SetMinSize( $minimum_size ) @}
+		</template>
+	</templates>
 	
-  <templates class="spacer"/>
-  
-  <templates class="sizeritem">
-    <template name="window_add">#parent $name.Add( self.#child $name, $proportion, $flag, $border ) #nl</template>
-    <template name="sizer_add">#parent $name.Add( #child $name, $proportion, $flag, $border ) #nl</template>
-    <template name="spacer_add">#parent $name.Add( ( #child $width, #child $height), $proportion, $flag, $border ) #nl</template>
-  </templates>
+	<templates class="spacer"/>
 
-  <templates class="gbsizeritem">
-    <template name="window_add">#parent $name.Add( self.#child $name, wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
-    <template name="sizer_add">#parent $name.Add( #child $name, wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
-    <template name="spacer_add">#parent $name.Add( ( #child $width, #child $height ), wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
-  </templates>
+	<templates class="sizeritem">
+		<template name="window_add">#parent $name.Add( self.#child $name, $proportion, $flag, $border ) #nl</template>
+		<template name="sizer_add">#parent $name.Add( #child $name, $proportion, $flag, $border ) #nl</template>
+		<template name="spacer_add">#parent $name.Add( ( #child $width, #child $height), $proportion, $flag, $border ) #nl</template>
+	</templates>
 
-  <templates class="wxBoxSizer">
-    <template name="construction">$name = wx.BoxSizer( $orient ) #nl</template>
-  </templates>
+	<templates class="gbsizeritem">
+		<template name="window_add">#parent $name.Add( self.#child $name, wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+		<template name="sizer_add">#parent $name.Add( #child $name, wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+		<template name="spacer_add">#parent $name.Add( ( #child $width, #child $height ), wx.GBPosition( $row, $column ), wx.GBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+	</templates>
 
-  <templates class="wxWrapSizer">
-		<template name="construction">$name = wx.WrapSizer( $orient, $flags ) #nl</template>
-  </templates>
+	<templates class="wxBoxSizer">
+		<template name="construction">$name = wx.BoxSizer( $orient ) #nl</template>
+	</templates>
 
-  <templates class="wxStaticBoxSizer">
-    <template name="construction">$name = wx.StaticBoxSizer( wx.StaticBox( #wxparent $name, $id, $label ), $orient ) #nl</template>
+	<templates class="wxStaticBoxSizer">
+		<template name="construction">$name = wx.StaticBoxSizer( wx.StaticBox( #wxparent $name, $id, $label ), $orient ) #nl</template>
 		<template name="evt_connect_OnUpdateUI">$name.GetStaticBox().Bind( wx.EVT_UPDATE_UI, #handler )</template>
-  </templates>
+	</templates>
 
-  <templates class="wxGridSizer">
-    <template name="construction">$name = wx.GridSizer( $rows, $cols, $vgap, $hgap ) #nl</template>
-  </templates>
+	<templates class="wxWrapSizer">
+		<template name="construction">$name = wx.WrapSizer( $orient, $flags ) #nl</template>
+	</templates>
 
-  <templates class="wxFlexGridSizer">
-    <template name="construction">$name = wx.FlexGridSizer( $rows, $cols, $vgap, $hgap )
-      #ifnotnull $growablecols
-      @{
-        #foreach $growablecols
-        @{ $name.AddGrowableCol( #pred ) @}
-      @}
+	<templates class="wxGridSizer">
+		<template name="construction">$name = wx.GridSizer( $rows, $cols, $vgap, $hgap ) #nl</template>
+	</templates>
 
-      #ifnotnull $growablerows
-      @{
-        #foreach $growablerows
-        @{ $name.AddGrowableRow( #pred ) @}
-      @}
-      #ifnotnull $flexible_direction
-      @{ #nl $name.SetFlexibleDirection( $flexible_direction ) @}
+	<templates class="wxFlexGridSizer">
+		<template name="construction">$name = wx.FlexGridSizer( $rows, $cols, $vgap, $hgap )
+			#ifnotnull $growablecols
+			@{
+				#foreach $growablecols
+				@{ $name.AddGrowableCol( #pred ) @}
+			@}
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl $name.SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
-       #nl
-    </template>
-  </templates>
+			#ifnotnull $growablerows
+			@{
+				#foreach $growablerows
+				@{ $name.AddGrowableRow( #pred ) @}
+			@}
+			#ifnotnull $flexible_direction
+			@{ #nl $name.SetFlexibleDirection( $flexible_direction ) @}
 
-  <templates class="wxGridBagSizer">
-    <template name="construction">$name = wx.GridBagSizer( $vgap, $hgap )
-      #ifnotnull $flexible_direction
-      @{ #nl $name.SetFlexibleDirection( $flexible_direction ) @}
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl $name.SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
+			#nl
+		</template>
+	</templates>
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl $name.SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
+	<templates class="wxGridBagSizer">
+		<template name="construction">$name = wx.GridBagSizer( $vgap, $hgap )
+			#ifnotnull $flexible_direction
+			@{ #nl $name.SetFlexibleDirection( $flexible_direction ) @}
 
-      #ifnotnull $empty_cell_size
-      @{ #nl $name.SetEmptyCellSize( $empty_cell_size ) @}
-       #nl
-	</template>
-	<template name="after_addchild">
-	  #ifnotnull $growablecols
-      @{ #foreach $growablecols @{ $name.AddGrowableCol( #pred ) @} @}
-      #ifnotnull $growablerows
-      @{ #foreach $growablerows @{ $name.AddGrowableRow( #pred ) @} @}
-	</template>
-  </templates>
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl $name.SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
 
-  <templates class="wxStdDialogButtonSizer">
-    <template name="construction">$name = wx.StdDialogButtonSizer()
-		#ifequal $OK "1"
-		@{ 
-			#nl self.$name #append OK = wx.Button( #wxparent $name, wx.ID_OK )
-			#nl $name.AddButton( self.$name #append OK ) 
-		@}
+			#ifnotnull $empty_cell_size
+			@{ #nl $name.SetEmptyCellSize( $empty_cell_size ) @}
+			#nl
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $growablecols
+			@{ #foreach $growablecols @{ $name.AddGrowableCol( #pred ) @} @}
+			#ifnotnull $growablerows
+			@{ #foreach $growablerows @{ $name.AddGrowableRow( #pred ) @} @}
+		</template>
+	</templates>
 
-		#ifequal $Yes "1"
-		@{ 
-			#nl self.$name #append Yes = wx.Button( #wxparent $name, wx.ID_YES )
-			#nl $name.AddButton( self.$name #append Yes )
-		@}
+	<templates class="wxStdDialogButtonSizer">
+		<template name="construction">$name = wx.StdDialogButtonSizer()
+			#ifequal $OK "1"
+			@{
+				#nl self.$name #append OK = wx.Button( #wxparent $name, wx.ID_OK )
+				#nl $name.AddButton( self.$name #append OK )
+			@}
 
-		#ifequal $Save "1"
-		@{ 
-			#nl self.$name #append Save = wx.Button( #wxparent $name, wx.ID_SAVE )
-			#nl $name.AddButton( self.$name #append Save )
-		@}
+			#ifequal $Yes "1"
+			@{
+				#nl self.$name #append Yes = wx.Button( #wxparent $name, wx.ID_YES )
+				#nl $name.AddButton( self.$name #append Yes )
+			@}
 
-		#ifequal $Apply "1"
-		@{ 
-			#nl self.$name #append Apply = wx.Button( #wxparent $name, wx.ID_APPLY )
-			#nl $name.AddButton( self.$name #append Apply )
-		@}
+			#ifequal $Save "1"
+			@{
+				#nl self.$name #append Save = wx.Button( #wxparent $name, wx.ID_SAVE )
+				#nl $name.AddButton( self.$name #append Save )
+			@}
 
-		#ifequal $No "1"
-		@{ 
-			#nl self.$name #append No = wx.Button( #wxparent $name, wx.ID_NO )
-			#nl $name.AddButton( self.$name #append No )
-		@}
+			#ifequal $Apply "1"
+			@{
+				#nl self.$name #append Apply = wx.Button( #wxparent $name, wx.ID_APPLY )
+				#nl $name.AddButton( self.$name #append Apply )
+			@}
 
-		#ifequal $Cancel "1"
-		@{ 
-			#nl self.$name #append Cancel = wx.Button( #wxparent $name, wx.ID_CANCEL )
-			#nl $name.AddButton( self.$name #append Cancel ) 
-		@}
+			#ifequal $No "1"
+			@{
+				#nl self.$name #append No = wx.Button( #wxparent $name, wx.ID_NO )
+				#nl $name.AddButton( self.$name #append No )
+			@}
 
-		#ifequal $Help "1"
-		@{ 
-			#nl self.$name #append Help = wx.Button( #wxparent $name, wx.ID_HELP )
-			#nl $name.AddButton( self.$name #append Help )
-		@}
+			#ifequal $Cancel "1"
+			@{
+				#nl self.$name #append Cancel = wx.Button( #wxparent $name, wx.ID_CANCEL )
+				#nl $name.AddButton( self.$name #append Cancel )
+			@}
 
-		#ifequal $ContextHelp "1"
-		@{ 
-			#nl self.$name #append ContextHelp = wx.Button( #wxparent $name, wx.ID_CONTEXT_HELP )
-			#nl $name.AddButton( self.$name #append ContextHelp ) 
-		@}
+			#ifequal $Help "1"
+			@{
+				#nl self.$name #append Help = wx.Button( #wxparent $name, wx.ID_HELP )
+				#nl $name.AddButton( self.$name #append Help )
+			@}
 
-		 #nl $name.Realize();
-	</template>
-    <template name="evt_connect_OnOKButtonClick">self.$name #append OK.Bind( wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnYesButtonClick">self.$name #append Yes.Bind(  wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnSaveButtonClick">self.$name #append Save.Bind(  wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnApplyButtonClick">self.$name #append Apply.Bind(  wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnNoButtonClick">self.$name #append No.Bind( wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnCancelButtonClick">self.$name #append Cancel.Bind(  wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnHelpButtonClick">self.$name #append Help.Bind(  wx.EVT_BUTTON, #handler )</template>
-    <template name="evt_connect_OnContextHelpButtonClick">self.$name #append ContextHelp.Bind( wx.EVT_BUTTON, #handler )</template>
-  </templates>
+			#ifequal $ContextHelp "1"
+			@{
+				#nl self.$name #append ContextHelp = wx.Button( #wxparent $name, wx.ID_CONTEXT_HELP )
+				#nl $name.AddButton( self.$name #append ContextHelp )
+			@}
+
+			#nl $name.Realize();
+		</template>
+		<template name="evt_connect_OnOKButtonClick">self.$name #append OK.Bind( wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnYesButtonClick">self.$name #append Yes.Bind(  wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnSaveButtonClick">self.$name #append Save.Bind(  wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnApplyButtonClick">self.$name #append Apply.Bind(  wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnNoButtonClick">self.$name #append No.Bind( wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnCancelButtonClick">self.$name #append Cancel.Bind(  wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnHelpButtonClick">self.$name #append Help.Bind(  wx.EVT_BUTTON, #handler )</template>
+		<template name="evt_connect_OnContextHelpButtonClick">self.$name #append ContextHelp.Bind( wx.EVT_BUTTON, #handler )</template>
+	</templates>
 
 </codegen>
 

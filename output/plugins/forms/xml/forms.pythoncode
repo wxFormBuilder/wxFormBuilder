@@ -132,25 +132,21 @@ Python code generation writen by
 			@}
 		</template>
 		<template name="after_addchild">
-		  #ifequal $aui_managed "1"
+			#ifequal $aui_managed "1"
 			@{ #nl self.m_mgr.Update() @}
 			#ifnotnull $center
 			@{ #nl self.Centre( $center ) @}
 		</template>
 		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
 		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
-		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
-		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
-		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
-		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
 		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
 		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
 		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
 		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
-		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
-		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
 		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
@@ -165,6 +161,12 @@ Python code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
 		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
 		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
 		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
 		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
@@ -179,6 +181,8 @@ Python code generation writen by
 		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
 		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
 		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
 		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
 		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
 		<!--<template name="evt_connect_OnMouseEvents">
@@ -202,18 +206,14 @@ Python code generation writen by
 			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
 			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
 		</template>-->
-		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
-		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
-		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
-		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
-		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
-		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
-		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
-		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
-		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
-		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
 		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
 		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
@@ -291,18 +291,14 @@ Python code generation writen by
 		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
 		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
 		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
-		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
-		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
 		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
-		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
-		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
 		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
 		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
-		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
-		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
 		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
@@ -317,6 +313,12 @@ Python code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
 		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
 		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
 		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
 		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
@@ -331,6 +333,8 @@ Python code generation writen by
 		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
 		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
 		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
 		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
 		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
 		<!--<template name="evt_connect_OnMouseEvents">
@@ -354,18 +358,14 @@ Python code generation writen by
 			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
 			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
 		</template>-->
-		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
-		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
-		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
-		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
-		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
-		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
-		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
-		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
-		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
-		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
 		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
 		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
@@ -445,18 +445,14 @@ Python code generation writen by
 		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
 		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
 		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
-		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
-		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
 		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
-		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
-		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
 		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
 		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
-		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
-		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
 		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
@@ -471,6 +467,12 @@ Python code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
 		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
 		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
 		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
 		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
@@ -485,6 +487,8 @@ Python code generation writen by
 		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
 		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
 		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
 		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
 		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
 		<!--<template name="evt_connect_OnMouseEvents">
@@ -508,18 +512,14 @@ Python code generation writen by
 			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
 			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
 		</template>-->
-		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
-		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
-		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
-		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
-		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
-		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
-		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
-		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
-		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
-		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
 		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
 		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
@@ -547,8 +547,8 @@ Python code generation writen by
 			( self, parent, id = $id, title = $title, bitmap = $bitmap, pos = $pos, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
 		</template>
 		<template name="include">
-            import wx.adv
-        </template>
+			import wx.adv
+		</template>
 		<template name="settings">
 			#ifnotnull $window_extra_style
 			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
@@ -576,7 +576,7 @@ Python code generation writen by
 			#ifnotnull $tooltip
 			@{ self.SetToolTip( $tooltip ) #nl @}
 
-            self.m_pages = [] #nl
+			self.m_pages = [] #nl
 		</template>
 		<template name="after_addchild">
 			#ifnotnull $center
@@ -586,18 +586,14 @@ Python code generation writen by
 		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
 		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
 		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
-		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
-		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
-		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
-		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
 		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
 		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
 		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
 		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
 		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
-		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
-		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
 		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
 		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
@@ -612,6 +608,12 @@ Python code generation writen by
 		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
 		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
 		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
 		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
 		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
@@ -626,6 +628,8 @@ Python code generation writen by
 		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
 		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
 		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
 		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
 		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
 		<!--<template name="evt_connect_OnMouseEvents">
@@ -649,18 +653,14 @@ Python code generation writen by
 			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
 			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
 		</template>-->
-		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
-		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
-		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
-		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
-		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
-		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
-		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
-		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
-		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
-		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
 		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
 		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
 		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
 		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
@@ -677,15 +677,14 @@ Python code generation writen by
 		<template name="evt_disconnect_OnWizardHelp">self.Unbind( wx.adv.EVT_WIZARD_HELP )</template>
 		<template name="evt_connect_OnWizardFinished">self.Bind( wx.adv.EVT_WIZARD_FINISHED, #handler )</template>
 		<template name="evt_disconnect_OnWizardFinished">self.Unbind( wx.adv.EVT_WIZARD_FINISHED )</template>
-
 	</templates>
 
-    <templates class="WizardPageSimple">
-        <template name="construction">
-            self.$name = wx.adv.WizardPageSimple( self #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
-            self.add_page( self.$name ) #nl
-        </template>
-    </templates>
+	<templates class="WizardPageSimple">
+		<template name="construction">
+			self.$name = wx.adv.WizardPageSimple( self #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
+			self.add_page( self.$name ) #nl
+		</template>
+	</templates>
 
 	<templates class="MenuBar">
 		<template name="base">
@@ -728,7 +727,8 @@ Python code generation writen by
 			( self, parent, id = $id, pos = $pos, size = $size, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
 		</template>
 		<template name="settings">
-			#ifnotnull $bitmapsize @{self.SetToolBitmapSize( $bitmapsize ) #nl @}
+			#ifnotnull $bitmapsize
+			@{ self.SetToolBitmapSize( $bitmapsize ) #nl @}
 
 			#ifnotnull $separation
 			@{
@@ -744,8 +744,8 @@ Python code generation writen by
 				#ifnotequal $packing "1"
 				@{ self.SetToolPacking( $packing ) #nl @}
 			@}
-    		</template>
-    		<template name="after_addchild">#nl self.Realize()</template>
+		</template>
+		<template name="after_addchild">#nl self.Realize()</template>
 	</templates>
 
 </codegen>
