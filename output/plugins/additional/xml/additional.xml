@@ -81,14 +81,21 @@ Written by
     <property name="tab_width" type="text" help="The number of spaces per tab character.">4</property>
   </objectinfo>
 
-  <objectinfo class="wxToggleButton" startgroup="1" icon="toggle_button.xpm" type="widget">
+
+  <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
+    <inherits class="wxAnyButton"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
     <property name="name" type="text">m_toggleBtn</property>
-    <property name="label" type="wxString_i18n">Toggle me!</property>
     <property name="value" type="bool">0</property>
     <event name="OnToggleButton" class="wxCommandEvent" help="Handles a wxEVT_TOGGLEBUTTON event."/>
+  </objectinfo>
+
+  <objectinfo class="wxBitmapToggleButton" icon="bitmap_toggle_button.xpm" type="widget">
+    <inherits class="wxToggleButton">
+      <property name="name">m_bmToggleBtn</property>
+    </inherits>
   </objectinfo>
 
   <objectinfo class="wxSearchCtrl" icon="search.xpm" type="widget">

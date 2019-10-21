@@ -416,19 +416,54 @@ public:
 
 
 
-class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
+class ToggleButtonComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
-		wxToggleButton* window = new wxToggleButton((wxWindow *)parent, wxID_ANY,
-			obj->GetPropertyAsString(_("label")),
+		wxString label = obj->GetPropertyAsString( _("label") );
+		wxToggleButton* button = new wxToggleButton((wxWindow *)parent, wxID_ANY,
+			label,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
-			obj->GetPropertyAsInteger(_("window_style")));
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		window->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
-		window->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
-		return window;
+#if wxCHECK_VERSION( 2, 9, 2 )
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			button->SetLabelMarkup(label);
+		}
+#endif
+
+		if (!obj->IsNull(_("bitmap"))) {
+			button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
+		}
+
+		if (!obj->IsNull(_("disabled"))) {
+			button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
+		}
+
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
+		}
+
+		if (!obj->IsNull(_("focus"))) {
+			button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
+		}
+
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
+		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
+		button->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+		return button;
 	}
 
 	void OnToggle( wxCommandEvent& event )
@@ -443,19 +478,31 @@ public:
 		}
 	}
 
-	void Cleanup(wxObject* obj) override {
-		wxToggleButton* window = dynamic_cast< wxToggleButton* >( obj );
-		if ( 0 != window )
-		{
-			window->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
-		}
-		ComponentBase::Cleanup( obj );
-	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxToggleButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		xrc.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
+		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		if (!obj->IsNull(_("disabled"))) {
+			xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("focus"))) {
+			xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		}
 		xrc.AddProperty(_("value"),_("checked"), XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
@@ -463,7 +510,119 @@ public:
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxToggleButton"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
+		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("checked"),_("value"), XRC_TYPE_BOOL);
+		return filter.GetXfbObject();
+	}
+};
+
+class BitmapToggleButtonComponent : public ComponentBase, public wxEvtHandler
+{
+public:
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxBitmapToggleButton* button = new wxBitmapToggleButton((wxWindow *)parent, wxID_ANY,
+			obj->GetPropertyAsBitmap(_("bitmap")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+#if wxCHECK_VERSION( 2, 9, 2 )
+		// To stay in sync what the generator templates do apply the markup label here as well
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
+		}
+#endif
+
+		if ( !obj->IsNull( _("disabled") ) )
+		{
+			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
+		}
+
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
+		}
+
+		if ( !obj->IsNull( _("focus") ) )
+		{
+			button->SetBitmapFocus( obj->GetPropertyAsBitmap( _("focus") ) );
+		}
+
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
+		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
+		button->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+
+		return button;
+	}
+
+	void OnToggle( wxCommandEvent& event )
+	{
+		wxBitmapToggleButton* window = dynamic_cast< wxBitmapToggleButton* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%i"), window->GetValue() ? 1 : 0 );
+			GetManager()->ModifyProperty( window, _("value"), value );
+			window->SetFocus();
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc(obj, _("wxBitmapToggleButton"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		if ( !obj->IsNull( _("disabled") ) )
+		{
+			xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		}
+		if ( !obj->IsNull( _("focus") ) )
+		{
+			xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		}
+		xrc.AddProperty(_("value"),_("checked"), XRC_TYPE_BOOL);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter(xrcObj, _("wxBitmapToggleButton"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("checked"),_("value"), XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
@@ -2483,6 +2642,7 @@ WINDOW_COMPONENT("wxDatePickerCtrl",DatePickerCtrlComponent)
 WINDOW_COMPONENT("wxTimePickerCtrl",TimePickerCtrlComponent)
 WINDOW_COMPONENT("wxHtmlWindow", HtmlWindowComponent)
 WINDOW_COMPONENT("wxToggleButton",ToggleButtonComponent)
+WINDOW_COMPONENT("wxBitmapToggleButton",BitmapToggleButtonComponent)
 WINDOW_COMPONENT("wxTreeCtrl",TreeCtrlComponent)
 WINDOW_COMPONENT("wxGrid",GridComponent)
 WINDOW_COMPONENT("wxScrollBar",ScrollBarComponent)
