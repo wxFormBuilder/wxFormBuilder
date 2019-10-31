@@ -81,8 +81,7 @@ Written by
     <property name="tab_width" type="text" help="The number of spaces per tab character.">4</property>
   </objectinfo>
 
-
-  <objectinfo class="wxToggleButton" icon="toggle_button.xpm" type="widget">
+  <objectinfo class="wxToggleButton" startgroup="1" icon="toggle_button.xpm" type="widget">
     <inherits class="wxAnyButton"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>

@@ -416,7 +416,7 @@ public:
 
 
 
-class ToggleButtonComponent : public ComponentBase
+class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
@@ -462,7 +462,8 @@ public:
 			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
 		}
 
-		button->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+		button->SetValue((obj->GetPropertyAsInteger(_("value")) != 0));
+		button->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
 		return button;
 	}
 
@@ -541,7 +542,7 @@ public:
 		}
 #endif
 
-		if ( !obj->IsNull( _("disabled") ) )
+		if (!obj->IsNull(_("disabled")))
 		{
 			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
 		}
@@ -550,7 +551,7 @@ public:
 			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
 		}
 
-		if ( !obj->IsNull( _("focus") ) )
+		if (!obj->IsNull(_("focus")))
 		{
 			button->SetBitmapFocus( obj->GetPropertyAsBitmap( _("focus") ) );
 		}
@@ -569,11 +570,12 @@ public:
 		}
 
 		button->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+		button->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
 
 		return button;
 	}
 
-	void OnToggle( wxCommandEvent& event )
+	void OnToggle(wxCommandEvent& event)
 	{
 		wxBitmapToggleButton* window = dynamic_cast< wxBitmapToggleButton* >( event.GetEventObject() );
 		if ( 0 != window )

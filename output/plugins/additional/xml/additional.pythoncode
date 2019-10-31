@@ -57,7 +57,7 @@ Python code generation written by
 		<template name="settings">#ifnotequal $value "0" @{ self.$name.SetValue( True ) @}</template>
 		<template name="evt_connect_OnToggleButton">self.$name.Bind( wx.EVT_TOGGLEBUTTON, #handler )</template>
 	</templates>
-	
+
 	<templates class="wxBitmapToggleButton">
 		<template name="construction">self.$name = #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
 	</templates>

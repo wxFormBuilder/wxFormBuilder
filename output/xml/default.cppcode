@@ -283,7 +283,7 @@
 
 	<templates class="wxAnyButton">
 		<template name="settings">
-			#ifequal $markup "1" @{ $name->SetLabelMarkup( $label );  @}
+			#ifequal $markup "1" @{ $name->SetLabelMarkup( $label ); @}
 			#ifnotnull $bitmap @{ #nl $name->SetBitmap( $bitmap ); @}
 			#ifnotnull $disabled @{ #nl $name->SetBitmapDisabled( $disabled ); @}
 			#ifnotnull $pressed @{ #nl $name->SetBitmapPressed( $pressed ); @}

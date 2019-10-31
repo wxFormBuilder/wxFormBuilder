@@ -30,7 +30,7 @@ Lua code generation written by
 		<template name="construction">
 			#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
 		</template>
-		<template name="settings"> #ifnotequal $default "0" @{ #nl #utbl$name:SetDefault() @} </template>
+		<template name="settings">#ifnotequal $default "0" @{ #nl #utbl$name:SetDefault() @}</template>
 		<template name="evt_connect_OnButtonClick">#utbl$name:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )
 		</template>
 	</templates>

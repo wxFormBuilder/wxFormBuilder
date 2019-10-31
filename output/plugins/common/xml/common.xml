@@ -30,13 +30,13 @@ Written by
     <inherits class="Validator"/>
     <property name="name" type="text">m_button</property>
     <property name="style" type="bitlist">
-      <option name="wxBU_LEFT"      help="Left-justifies the label. Windows and GTK+ only."/>
-      <option name="wxBU_TOP"       help="Aligns the label to the top of the button. Windows and GTK+ only."/>
-      <option name="wxBU_RIGHT"     help="Right-justifies the bitmap label. Windows and GTK+ only."/>
-      <option name="wxBU_BOTTOM"    help="Aligns the label to the bottom of the button. Windows and GTK+ only."/>
-      <option name="wxBU_EXACTFIT"  help="By default, all buttons are made of at least the standard button size, even if their contents is small enough to fit into a smaller size. This is done for consistency as most platforms use buttons of the same size in the native dialogs, but can be overridden by specifying this flag. If it is given, the button will be made just big enough for its contents. Notice that under MSW the button will still have at least the standard height, even with this style, if it has a non-empty label."/>
-      <option name="wxBU_NOTEXT"    help="Disables the display of the text label in the button even if it has one or its id is one of the standard stock ids with an associated label: without using this style a button which is only supposed to show a bitmap but uses a standard id would display a label too."/>
-      <option name="wxBORDER_NONE"  help="Creates a button without border. This is currently implemented in MSW, GTK2 and OSX/Cocoa and OSX/Carbon ports but in the latter only applies to buttons with bitmaps and using bitmap of one of the standard sizes only, namely 128*128, 48*48, 24*24 or 16*16. In all the other cases wxBORDER_NONE is ignored under OSX/Carbon (these restrictions don't exist in OSX/Cocoa however)."/>
+      <option name="wxBU_LEFT" help="Left-justifies the label. Windows and GTK+ only."/>
+      <option name="wxBU_TOP" help="Aligns the label to the top of the button. Windows and GTK+ only."/>
+      <option name="wxBU_RIGHT" help="Right-justifies the bitmap label. Windows and GTK+ only."/>
+      <option name="wxBU_BOTTOM" help="Aligns the label to the bottom of the button. Windows and GTK+ only."/>
+      <option name="wxBU_EXACTFIT" help="By default, all buttons are made of at least the standard button size, even if their contents is small enough to fit into a smaller size. This is done for consistency as most platforms use buttons of the same size in the native dialogs, but can be overridden by specifying this flag. If it is given, the button will be made just big enough for its contents. Notice that under MSW the button will still have at least the standard height, even with this style, if it has a non-empty label."/>
+      <option name="wxBU_NOTEXT" help="Disables the display of the text label in the button even if it has one or its id is one of the standard stock ids with an associated label: without using this style a button which is only supposed to show a bitmap but uses a standard id would display a label too."/>
+      <option name="wxBORDER_NONE" help="Creates a button without border. This is currently implemented in MSW, GTK2 and OSX/Cocoa and OSX/Carbon ports but in the latter only applies to buttons with bitmaps and using bitmap of one of the standard sizes only, namely 128*128, 48*48, 24*24 or 16*16. In all the other cases wxBORDER_NONE is ignored under OSX/Carbon (these restrictions don't exist in OSX/Cocoa however)."/>
     </property>
     <property name="default" type="bool">0</property>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked"/>

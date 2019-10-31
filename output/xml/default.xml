@@ -213,9 +213,9 @@
     <property name="current" type="bitmap" help="Bitmap shown when the mouse is over the button (but it is not pressed). Notice that if hover bitmap is not specified but the current platform UI uses hover images for the buttons (such as Windows XP or GTK+), then the focus bitmap is used for hover state as well. This makes it possible to set focus bitmap only to get reasonably good behaviour on all platforms."/>
     <property name="position" type="option">
       <option name=""/>
-      <option name="wxLEFT"   help="Positions the bitmap at the left"/>
-      <option name="wxRIGHT"  help="Positions the bitmap at the right"/>
-      <option name="wxTOP"    help="Positions the bitmap at the top"/>
+      <option name="wxLEFT" help="Positions the bitmap at the left"/>
+      <option name="wxRIGHT" help="Positions the bitmap at the right"/>
+      <option name="wxTOP" help="Positions the bitmap at the top"/>
       <option name="wxBOTTOM" help="Positions the bitmap at the bottom"/>
     </property>
     <property name="margins" type="wxSize" help="The margins between the bitmap and the text of the button. This is currently only implemented under MSW. If it is not specified, default margin is used around the bitmap."/>
