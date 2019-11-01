@@ -281,6 +281,19 @@
 		<template name="evt_connect_OnTreeItemMenu">$name->Connect( wxEVT_COMMAND_TREE_ITEM_MENU, #handler, NULL, this );</template>
 	</templates>
 
+	<templates class="wxAnyButton">
+		<template name="settings">
+			#ifequal $markup "1" @{ $name->SetLabelMarkup( $label ); @}
+			#ifnotnull $bitmap @{ #nl $name->SetBitmap( $bitmap ); @}
+			#ifnotnull $disabled @{ #nl $name->SetBitmapDisabled( $disabled ); @}
+			#ifnotnull $pressed @{ #nl $name->SetBitmapPressed( $pressed ); @}
+			#ifnotnull $focus @{ #nl $name->SetBitmapFocus( $focus ); @}
+			#ifnotnull $current @{ #nl $name->SetBitmapCurrent( $current ); @}
+			#ifnotnull $position @{ #nl $name->SetBitmapPosition( $position ); @}
+			#ifnotnull $margins @{ #nl $name->SetBitmapMargins( $margins ); @}
+		</template>
+	</templates>
+
 	<templates class="UserClasses">
 		<template name="header_comment">
 			/** #nl

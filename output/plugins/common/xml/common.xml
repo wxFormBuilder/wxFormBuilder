@@ -24,6 +24,7 @@ Written by
 <package name="Common" lib="libcommon" icon="button16x16.xpm" desc="wxWidgets common controls">
 
   <objectinfo class="wxButton" icon="button.xpm" type="widget">
+    <inherits class="wxAnyButton"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -37,22 +38,7 @@ Written by
       <option name="wxBU_NOTEXT" help="Disables the display of the text label in the button even if it has one or its id is one of the standard stock ids with an associated label: without using this style a button which is only supposed to show a bitmap but uses a standard id would display a label too."/>
       <option name="wxBORDER_NONE" help="Creates a button without border. This is currently implemented in MSW, GTK2 and OSX/Cocoa and OSX/Carbon ports but in the latter only applies to buttons with bitmaps and using bitmap of one of the standard sizes only, namely 128*128, 48*48, 24*24 or 16*16. In all the other cases wxBORDER_NONE is ignored under OSX/Carbon (these restrictions don't exist in OSX/Cocoa however)."/>
     </property>
-    <property name="label" type="wxString_i18n">MyButton</property>
-    <property name="markup" type="bool" help="Simple markup can be used to apply different fonts or colours to different parts of the control label when supported. If markup is not supported by the control or platform, it is simply stripped and SetLabel() is used with the resulting string.&#x0A;Since 2.9.2.">0</property>
     <property name="default" type="bool">0</property>
-    <property name="bitmap" type="bitmap" help="This is the bitmap shown in the default state, it must be always valid while all the other bitmaps are optional and don't have to be set."/>
-    <property name="disabled" type="bitmap" help="Bitmap shown when the button is disabled."/>
-    <property name="pressed" type="bitmap" help="Bitmap shown when the button is pushed (e.g. while the user keeps the mouse button pressed on it)."/>
-    <property name="focus" type="bitmap" help="Bitmap shown when the button has keyboard focus but is not pressed."/>
-    <property name="current" type="bitmap" help="Bitmap shown when the mouse is over the button (but it is not pressed). Notice that if hover bitmap is not specified but the current platform UI uses hover images for the buttons (such as Windows XP or GTK+), then the focus bitmap is used for hover state as well. This makes it possible to set focus bitmap only to get reasonably good behaviour on all platforms."/>
-    <property name="position" type="option">
-      <option name=""/>
-      <option name="wxLEFT" help="Positions the bitmap at the left"/>
-      <option name="wxRIGHT" help="Positions the bitmap at the right"/>
-      <option name="wxTOP" help="Positions the bitmap at the top"/>
-      <option name="wxBOTTOM" help="Positions the bitmap at the bottom"/>
-    </property>
-    <property name="margins" type="wxSize" help="The margins between the bitmap and the text of the button. This is currently only implemented under MSW. If it is not specified, default margin is used around the bitmap."/>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked"/>
   </objectinfo>
 

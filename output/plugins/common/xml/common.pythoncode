@@ -30,34 +30,7 @@ Python code generation written by
 		<template name="construction">
 			self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
 		</template>
-		<template name="settings">
-			#ifequal $markup "1"
-			@{ self.$name.SetLabelMarkup( $label ) @}
-
-			#ifnotequal $default "0"
-			@{ #nl self.$name.SetDefault() @}
-
-			#ifnotnull $bitmap
-			@{ #nl self.$name.SetBitmap( $bitmap ) @}
-
-			#ifnotnull $disabled
-			@{ #nl self.$name.SetBitmapDisabled( $disabled ) @}
-
-			#ifnotnull $pressed
-			@{ #nl self.$name.SetBitmapPressed( $pressed ) @}
-
-			#ifnotnull $focus
-			@{ #nl self.$name.SetBitmapFocus( $focus ) @}
-
-			#ifnotnull $current
-			@{ #nl self.$name.SetBitmapCurrent( $current ) @}
-
-			#ifnotnull $position
-			@{ #nl self.$name.SetBitmapPosition( $position ) @}
-
-			#ifnotnull $margins
-			@{ #nl self.$name.SetBitmapMargins( $margins ) @}
-		</template>
+		<template name="settings">#ifnotequal $default "0" @{ #nl self.$name.SetDefault() @}</template>
 		<template name="evt_connect_OnButtonClick">self.$name.Bind( wx.EVT_BUTTON, #handler )</template>
 	</templates>
 

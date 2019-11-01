@@ -178,6 +178,19 @@
 		<template name="evt_connect_OnTreeItemMenu">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 	</templates>
 
+	<templates class="wxAnyButton">
+		<template name="settings">
+			#ifequal $markup "1" @{ #utbl$name:SetLabelMarkup( $label ) @}
+			#ifnotnull $bitmap @{ #nl #utbl$name:SetBitmap( $bitmap ) @}
+			#ifnotnull $disabled @{ #nl #utbl$name:SetBitmapDisabled( $disabled ) @}
+			#ifnotnull $pressed @{ #nl #utbl$name:SetBitmapPressed( $pressed ) @}
+			#ifnotnull $focus @{ #nl #utbl$name:SetBitmapFocus( $focus ) @}
+			#ifnotnull $current @{ #nl #utbl$name:SetBitmapCurrent( $current ) @}
+			#ifnotnull $position @{ #nl #utbl$name:SetBitmapPosition( $position ) @}
+			#ifnotnull $margins @{ #nl #utbl$name:SetBitmapMargins( $margins ) @}
+		</template>
+	</templates>
+
 	<templates class="UserClasses">
 		<template name="file_comment">
 			--Here you can extend functionality of $gen_file  module.

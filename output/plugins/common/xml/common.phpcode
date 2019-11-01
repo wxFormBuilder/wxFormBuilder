@@ -30,34 +30,7 @@ PHP code generation written by
 		<template name="construction">
 			@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
 		</template>
-		<template name="settings">
-			#ifequal $markup "1"
-			@{ @$this->$name->SetLabelMarkup( $label ); @}
-
-			#ifnotequal $default "0"
-			@{ #nl @$this->$name->SetDefault(); @}
-
-			#ifnotnull $bitmap
-			@{ #nl @$this->$name->SetBitmap( $bitmap ); @}
-
-			#ifnotnull $disabled
-			@{ #nl @$this->$name->SetBitmapDisabled( $disabled ); @}
-
-			#ifnotnull $pressed
-			@{ #nl @$this->$name->SetBitmapSelected( $pressed ); @}
-
-			#ifnotnull $focus
-			@{ #nl @$this->$name->SetBitmapFocus( $focus ); @}
-
-			#ifnotnull $current
-			@{ #nl @$this->$name->SetBitmapCurrent( $current ); @}
-
-			#ifnotnull $position
-			@{ #nl @$this->$name->SetBitmapPosition( $position ); @}
-
-			#ifnotnull $margins
-			@{ #nl @$this->$name->SetBitmapMargins( $margins ); @}
-		</template>
+		<template name="settings">#ifnotequal $default "0" @{ #nl @$this->$name->SetDefault(); @}</template>
 		<template name="evt_connect_OnButtonClick">@$this->$name->Connect( wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
 	</templates>
 
