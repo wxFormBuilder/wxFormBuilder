@@ -82,6 +82,10 @@ void CodeWriter::WriteLn( wxString code, bool keepIndents )
 		{
 			m_cols = m_indent;
 		}
+		else
+		{
+			code.Trim(false);
+		}
 
 		code.Trim();
 		Write( code );
