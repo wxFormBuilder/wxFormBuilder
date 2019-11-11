@@ -597,13 +597,15 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 
 	m_header->Clear();
 	m_source->Clear();
-	wxString code (
-		wxT( "///////////////////////////////////////////////////////////////////////////\n" )
-		wxT( "// C++ code generated with wxFormBuilder (version " ) wxT( __DATE__ ) wxT( ")\n" )
-		wxT( "// http://www.wxformbuilder.org/\n" )
-		wxT( "//\n" )
-		wxT( "// PLEASE DO *NOT* EDIT THIS FILE!\n" )
-		wxT( "///////////////////////////////////////////////////////////////////////////\n" ) );
+	wxString code = wxString::Format(
+		wxT("///////////////////////////////////////////////////////////////////////////\n")
+		wxT("// C++ code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
+		wxT("// http://www.wxformbuilder.org/\n")
+		wxT("//\n")
+		wxT("// PLEASE DO *NOT* EDIT THIS FILE!\n")
+		wxT("///////////////////////////////////////////////////////////////////////////\n"),
+		VERSION, REVISION
+	);
 
 	m_header->WriteLn( code );
 	m_source->WriteLn( code );

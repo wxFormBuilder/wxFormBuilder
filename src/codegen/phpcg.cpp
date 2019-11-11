@@ -462,13 +462,15 @@ bool PHPCodeGenerator::GenerateCode( PObjectBase project )
 		m_source->WriteLn( wxEmptyString );
 	}
 
-	code = (
+	code = wxString::Format(
 		wxT("/*\n")
-		wxT(" * PHP code generated with wxFormBuilder (version ") wxT(__DATE__) wxT(")\n")
+		wxT(" * PHP code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
 		wxT(" * http://www.wxformbuilder.org/\n")
 		wxT(" *\n")
 		wxT(" * PLEASE DO *NOT* EDIT THIS FILE!\n")
-		wxT(" */\n") );
+		wxT(" */\n"),
+		VERSION, REVISION
+	);
 
 	m_source->WriteLn( code );
 
