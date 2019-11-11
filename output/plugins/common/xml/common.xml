@@ -39,6 +39,7 @@ Written by
       <option name="wxBORDER_NONE" help="Creates a button without border. This is currently implemented in MSW, GTK2 and OSX/Cocoa and OSX/Carbon ports but in the latter only applies to buttons with bitmaps and using bitmap of one of the standard sizes only, namely 128*128, 48*48, 24*24 or 16*16. In all the other cases wxBORDER_NONE is ignored under OSX/Carbon (these restrictions don't exist in OSX/Cocoa however)."/>
     </property>
     <property name="default" type="bool">0</property>
+    <property name="auth_needed" type="bool" help="Sets whether an authentication needed symbol should be displayed on the button. This method doesn't do anything if the platform is not Windows Vista or newer.">0</property>
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked"/>
   </objectinfo>
 
