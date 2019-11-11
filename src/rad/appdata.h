@@ -50,6 +50,9 @@ class wxFBIPC;
 #define AppDataInit()	      (ApplicationData::Initialize())
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
+const char* const VERSION = "3.9.0";
+const char* const REVISION = "";
+
 // This class is a singleton class.
 
 class ApplicationData

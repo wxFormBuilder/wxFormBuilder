@@ -960,8 +960,8 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v%s"),
-	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), VERSION));
+	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v%s%s"),
+	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), VERSION, REVISION));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries

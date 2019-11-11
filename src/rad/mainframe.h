@@ -46,8 +46,6 @@ class ObjectInspector;
 class wxFbPalette;
 class VisualEditor;
 
-const char* const VERSION = "3.9.0";
-
 /**
  * wxFormBuilder GUI styles.
  */
