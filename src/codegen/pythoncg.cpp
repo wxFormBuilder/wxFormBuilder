@@ -40,12 +40,13 @@
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
 
-PythonTemplateParser::PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath )
+PythonTemplateParser::PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath, wxString imagePathWrapperFunctionName )
 :
 TemplateParser(obj,_template),
 m_i18n( useI18N ),
 m_useRelativePath( useRelativePath ),
-m_basePath( basePath )
+m_basePath( basePath ),
+m_imagePathWrapperFunctionName ( imagePathWrapperFunctionName )
 {
 	if ( !wxFileName::DirExists( m_basePath ) )
 	{
@@ -60,7 +61,8 @@ PythonTemplateParser::PythonTemplateParser( const PythonTemplateParser & that, w
 TemplateParser( that, _template ),
 m_i18n( that.m_i18n ),
 m_useRelativePath( that.m_useRelativePath ),
-m_basePath( that.m_basePath )
+m_basePath( that.m_basePath ),
+m_imagePathWrapperFunctionName( that.m_imagePathWrapperFunctionName )
 {
 	SetupModulePrefixes();
 }
@@ -368,12 +370,6 @@ wxString PythonTemplateParser::ValueToCode( PropertyType type, wxString value )
 	}
 
 	return result;
-}
-
-// Parameterized setters
-void PythonTemplateParser::SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName )
-{
-	m_imagePathWrapperFunctionName = imagePathWrapperFunctionName;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -693,7 +689,7 @@ bool PythonCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 			else
 				_template.Replace( wxT("#handler"), wxT("self.") + handlerName );
 
-			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 			m_source->WriteLn( parser.ParseTemplate() );
 			return true;
 		}
@@ -762,7 +758,7 @@ void PythonCodeGenerator::GenDefinedEventHandlers( PObjectInfo info, PObjectBase
 		wxString _template = code_info->GetTemplate( wxT("generated_event_handlers") );
 		if ( !_template.empty() )
 		{
-			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 			wxString code = parser.ParseTemplate();
 
 			if ( !code.empty() )
@@ -813,8 +809,7 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 
 	_template = code_info->GetTemplate(name);
 
-	PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
-	parser.SetImagePathWrapperFunctionName( m_imagePathWrapperFunctionName );
+	PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 	wxString code = parser.ParseTemplate();
 
 	return code;
@@ -1022,7 +1017,7 @@ void PythonCodeGenerator::GenObjectIncludes( PObjectBase project, std::vector< w
 	PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT("Python") );
 	if (code_info)
 	{
-		PythonTemplateParser parser( project, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath );
+		PythonTemplateParser parser( project, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
@@ -1060,7 +1055,7 @@ void PythonCodeGenerator::GenBaseIncludes( PObjectInfo info, PObjectBase obj, st
 	PCodeInfo code_info = info->GetCodeInfo( wxT("Python") );
 	if ( code_info )
 	{
-		PythonTemplateParser parser( obj, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath );
+		PythonTemplateParser parser( obj, code_info->GetTemplate( wxT("include") ), m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 		wxString include = parser.ParseTemplate();
 		if ( !include.empty() )
 		{
@@ -1226,7 +1221,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
 					wxT("#ifnull #parent $size")
 					wxT("@{ #nl $name.Fit( #wxparent $name ) @}");
 
-				PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+				PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 				m_source->WriteLn(parser.ParseTemplate());
 			}
 		}
@@ -1241,7 +1236,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
 					wxString _template = wxT("self.$name.Initialize( ");
 					_template = _template + wxT("self.") + sub1->GetProperty( wxT("name") )->GetValue() + wxT(" )");
 
-					PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+					PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 					m_source->WriteLn(parser.ParseTemplate());
 					break;
 				}
@@ -1264,7 +1259,7 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
 					_template = _template + wxT("self.") + sub1->GetProperty( wxT("name") )->GetValue() +
 						wxT(", self.") + sub2->GetProperty( wxT("name") )->GetValue() + wxT(", $sashpos )");
 
-					PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+					PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 					m_source->WriteLn(parser.ParseTemplate());
 					break;
 				}
@@ -1387,7 +1382,7 @@ void PythonCodeGenerator::GenDestruction( PObjectBase obj )
 
 		if ( !_template.empty() )
 		{
-			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+			PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 			wxString code = parser.ParseTemplate();
 			if ( !code.empty() )
 			{
@@ -1502,7 +1497,7 @@ void PythonCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
 
 	if ( !_template.empty() )
 	{
-		PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 		wxString code = parser.ParseTemplate();
 		if ( !code.empty() )
 		{
@@ -1539,7 +1534,7 @@ void PythonCodeGenerator::GetAddToolbarCode( PObjectInfo info, PObjectBase obj, 
 
 	if ( !_template.empty() )
 	{
-		PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath );
+		PythonTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName );
 		wxString code = parser.ParseTemplate();
 		if ( !code.empty() )
 		{
