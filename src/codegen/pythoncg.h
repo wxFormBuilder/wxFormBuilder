@@ -63,16 +63,13 @@ private:
 	void SetupModulePrefixes();
 
 public:
-	PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath );
+	PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath, wxString imagePathWrapperFunctionName );
 	PythonTemplateParser( const PythonTemplateParser & that, wxString _template );
 
 	// overrides for Python
 	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
 	wxString RootWxParentToCode() override;
 	wxString ValueToCode(PropertyType type, wxString value) override;
-
-	// Parameterized setters
-	void SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName );
 };
 
 /**
@@ -240,7 +237,7 @@ public:
 	/**
 	 * Configures the function name, image paths should be wrapped
 	 * into when generating python code.
-	 * 
+	 *
 	 * When set to a non-empty string, this will generate a default
 	 * implementation of the method in each class, that just returns
 	 * the unmodified path string.
