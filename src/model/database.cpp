@@ -1167,11 +1167,18 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		std::string def_value;
 		try
 		{
-			ticpp::Node* lastChild = elem_prop->LastChild();
-			ticpp::Text* text = lastChild->ToText();
-			def_value = text->Value();
+			ticpp::Node* lastChild = elem_prop->LastChild(false);
+			if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
+			{
+				ticpp::Text* text = lastChild->ToText();
+				wxASSERT(text);
+				def_value = text->Value();
+			}
 		}
-		catch( ticpp::Exception& ){}
+		catch( ticpp::Exception& ex)
+		{
+			wxLogDebug( ex.what() );
+		}
 
 		// if the property is a "bitlist" then parse all of the options
 		POptionList opt_list;
@@ -1221,11 +1228,18 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				std::string child_value;
 				try
 				{
-					ticpp::Node* lastChild = elem_child->LastChild();
-					ticpp::Text* text = lastChild->ToText();
-					child_value = text->Value();
+					ticpp::Node* lastChild = elem_child->LastChild(false);
+					if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
+					{
+						ticpp::Text* text = lastChild->ToText();
+						wxASSERT(text);
+						child_value = text->Value();
+					}
 				}
-				catch( ticpp::Exception& ){}
+				catch( ticpp::Exception& ex)
+				{
+					wxLogDebug( ex.what() );
+				}
 				child.m_defaultValue = _WXSTR(child_value);
 
 				// build parent default value
@@ -1305,11 +1319,18 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 		std::string def_value;
 		try
 		{
-			ticpp::Node* lastChild = elem_evt->LastChild();
-			ticpp::Text* text = lastChild->ToText();
-			def_value = text->Value();
+			ticpp::Node* lastChild = elem_evt->LastChild(false);
+			if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
+			{
+				ticpp::Text* text = lastChild->ToText();
+				wxASSERT(text);
+				def_value = text->Value();
+			}
 		}
-		catch( ticpp::Exception& ){}
+		catch( ticpp::Exception& ex)
+		{
+			wxLogDebug( ex.what() );
+		}
 
 		// create an instance of EventInfo
 		PEventInfo evt_info(
