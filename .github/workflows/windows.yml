@@ -28,13 +28,13 @@ jobs:
       run: msys2do ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
     - name: Workaround
       shell: cmd
-      run: msys2do bash -c "ls && cd build/3.0/gmake && ls -la && sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i"
+      run: msys2do bash -c "ls && cd build/3.0/gmake && sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i"
     - name: Add -lz
       shell: cmd
       run: msys2do bash -c "ls && cd build/3.0/gmake && sed 's!-lbfd!-lbfd -lz!g' *.make -i"
     - name: Build
       shell: cmd
-      run: msys2do bash -c "cd build/3.0/gmake && make config=release"
+      run: msys2do bash -c "ls && cd build/3.0/gmake && make config=release"
     - name: Package
       run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* C:\msys64\mingw32\bin\libgcc*.dll C:\msys64\mingw32\bin\libstdc++*.dll C:\msys64\mingw32\bin\libwinpthread*.dll C:\msys64\mingw32\bin\libintl*.dll C:\msys64\mingw32\bin\libiconv*.dll C:\msys64\mingw32\bin\wx*.dll C:\msys64\mingw32\bin\libexpat*.dll C:\msys64\mingw32\bin\libjpeg*.dll C:\msys64\mingw32\bin\libpng*.dll C:\msys64\mingw32\bin\libtiff*.dll C:\msys64\mingw32\bin\zlib*.dll C:\msys64\mingw32\bin\libzstd*.dll C:\msys64\mingw32\bin\liblzma*.dll
     - name: Install InnoSetup
