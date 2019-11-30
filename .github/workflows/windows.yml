@@ -15,6 +15,7 @@ jobs:
     - name: Install dependencies
       run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-wxWidgets mingw-w64-i686-boost
     - name: Create build files
+      shell: cmd
       run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
     - name: Build
       run: |
