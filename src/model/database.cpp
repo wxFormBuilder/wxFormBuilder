@@ -1175,9 +1175,9 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				def_value = text->Value();
 			}
 		}
-		catch( ticpp::Exception& ex)
+		catch (ticpp::Exception& ex)
 		{
-			wxLogDebug( ex.what() );
+			wxLogDebug(ex.what());
 		}
 
 		// if the property is a "bitlist" then parse all of the options
@@ -1236,9 +1236,9 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 						child_value = text->Value();
 					}
 				}
-				catch( ticpp::Exception& ex)
+				catch (ticpp::Exception& ex)
 				{
-					wxLogDebug( ex.what() );
+					wxLogDebug(ex.what());
 				}
 				child.m_defaultValue = _WXSTR(child_value);
 
@@ -1327,9 +1327,9 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 				def_value = text->Value();
 			}
 		}
-		catch( ticpp::Exception& ex)
+		catch (ticpp::Exception& ex)
 		{
-			wxLogDebug( ex.what() );
+			wxLogDebug(ex.what());
 		}
 
 		// create an instance of EventInfo
