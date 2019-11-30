@@ -102,11 +102,11 @@ public:
 		m_manager = manager;
 	}
 
-	void SetPtrData(int index, void* ptr)
+	void SetObject(int index, wxObject* pObject)
 	{
-		m_aObjects[index] = ptr;
+		m_aObjects[index] = pObject;
 	}
-	void* GetPtrData(int index)
+	wxObject* GetObject(int index)
 	{
 		return m_aObjects[index];
 	}
@@ -122,7 +122,7 @@ protected:
 	DECLARE_EVENT_TABLE()
 
 private:
-	std::unordered_map<int, void*> m_aObjects;
+	std::unordered_map<int, wxObject*> m_aObjects;
 };
 
 BEGIN_EVENT_TABLE( AuiToolBar, wxAuiToolBar )
@@ -1275,9 +1275,9 @@ void AuiToolBar::OnDropDownMenu( wxAuiToolBarEvent& event )
 
 		if ( item && item->HasDropDown() )
 		{
-			wxObject* wxobject = (wxObject*) GetPtrData(item->GetUserData());
+			wxObject* wxobject = GetObject(item->GetUserData());
 
-			if ( NULL != wxobject )
+			if (wxobject)
 			{
 				m_manager->SelectObject( wxobject );
 			}
@@ -1315,9 +1315,9 @@ void AuiToolBar::OnTool( wxCommandEvent& event )
 	wxAuiToolBarItem* item = tb->FindTool(event.GetId());
 	if (item)
 	{
-		wxObject* wxobject = (wxObject*) GetPtrData(item->GetUserData());
+		wxObject* wxobject = GetObject(item->GetUserData());
 
-		if (NULL != wxobject)
+		if (wxobject)
 		{
 			m_manager->SelectObject(wxobject);
 		}
@@ -1374,7 +1374,7 @@ public:
 				wxAuiToolBarItem* itm = tb->FindToolByIndex( i );
 				wxASSERT(itm);
 				itm->SetUserData(i);
-				tb->SetPtrData(i, child);
+				tb->SetObject(i, child);
 				if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 1 && !itm->HasDropDown() )
 					tb->SetToolDropDown( itm->GetId(), true );
 				else if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 0 && itm->HasDropDown() )
