@@ -13,6 +13,7 @@ jobs:
       with:
         msystem: MINGW32
         path-type: inherit
+        update: true
     - name: Install dependencies
       run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-boost
     - name: Create build files
@@ -28,10 +29,10 @@ jobs:
       run: msys2do ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
     - name: Workaround
       shell: cmd
-      run: msys2do "cd build/3.0/gmake && sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i"
+      run: msys2do "ls && cd build/3.0/gmake && sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i"
     - name: Add -lz
       shell: cmd
-      run: msys2do "cd build/3.0/gmake && sed 's!-lbfd!-lbfd -lz!g' *.make -i"
+      run: msys2do "ls && cd build/3.0/gmake && sed 's!-lbfd!-lbfd -lz!g' *.make -i"
     - name: Build
       shell: cmd
       run: msys2do "cd build/3.0/gmake && make config=release"
