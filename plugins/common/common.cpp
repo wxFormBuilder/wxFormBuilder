@@ -23,6 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include  <unordered_map>
+
 #include <plugin.h>
 #include <ticpp.h>
 #include <xrcconv.h>
@@ -100,6 +102,15 @@ public:
 		m_manager = manager;
 	}
 
+	void SetObject(int index, wxObject* pObject)
+	{
+		m_aObjects[index] = pObject;
+	}
+	wxObject* GetObject(int index)
+	{
+		return m_aObjects[index];
+	}
+
 protected:
 	IManager* m_manager;
 
@@ -109,6 +120,9 @@ protected:
 	void OnTool( wxCommandEvent& event );
 
 	DECLARE_EVENT_TABLE()
+
+private:
+	std::unordered_map<int, wxObject*> m_aObjects;
 };
 
 BEGIN_EVENT_TABLE( AuiToolBar, wxAuiToolBar )
@@ -1261,9 +1275,9 @@ void AuiToolBar::OnDropDownMenu( wxAuiToolBarEvent& event )
 
 		if ( item && item->HasDropDown() )
 		{
-			wxObject* wxobject = (wxObject*) item->GetUserData();
+			wxObject* wxobject = GetObject(item->GetUserData());
 
-			if ( NULL != wxobject )
+			if (wxobject)
 			{
 				m_manager->SelectObject( wxobject );
 			}
@@ -1298,11 +1312,15 @@ void AuiToolBar::OnTool( wxCommandEvent& event )
 		return;
 	}
 
-	wxObject* wxobject = (wxObject*) tb->FindTool( event.GetId() )->GetUserData();
-
-	if ( NULL != wxobject )
+	wxAuiToolBarItem* item = tb->FindTool(event.GetId());
+	if (item)
 	{
-		m_manager->SelectObject( wxobject );
+		wxObject* wxobject = GetObject(item->GetUserData());
+
+		if (wxobject)
+		{
+			m_manager->SelectObject(wxobject);
+		}
 	}
 }
 
@@ -1354,7 +1372,9 @@ public:
 								child
 							);
 				wxAuiToolBarItem* itm = tb->FindToolByIndex( i );
-				itm->SetUserData( (long) child );
+				wxASSERT(itm);
+				itm->SetUserData(i);
+				tb->SetObject(i, child);
 				if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 1 && !itm->HasDropDown() )
 					tb->SetToolDropDown( itm->GetId(), true );
 				else if ( childObj->GetPropertyAsInteger(_("context_menu") ) == 0 && itm->HasDropDown() )
