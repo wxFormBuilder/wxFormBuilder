@@ -26,7 +26,7 @@ jobs:
       run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* d:\a\_temp\msys\msys64\mingw32\bin\libgcc*.dll d:\a\_temp\msys\msys64\mingw32\bin\libstdc++*.dll d:\a\_temp\msys\msys64\mingw32\bin\libwinpthread*.dll d:\a\_temp\msys\msys64\mingw32\bin\libintl*.dll d:\a\_temp\msys\msys64\mingw32\bin\libiconv*.dll d:\a\_temp\msys\msys64\mingw32\bin\wx*.dll d:\a\_temp\msys\msys64\mingw32\bin\libexpat*.dll d:\a\_temp\msys\msys64\mingw32\bin\libjpeg*.dll d:\a\_temp\msys\msys64\mingw32\bin\libpng*.dll d:\a\_temp\msys\msys64\mingw32\bin\libtiff*.dll d:\a\_temp\msys\msys64\mingw32\bin\zlib*.dll d:\a\_temp\msys\msys64\mingw32\bin\libzstd*.dll d:\a\_temp\msys\msys64\mingw32\bin\liblzma*.dll
     - name: Create installer
       shell: cmd
-      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" wxFormBuilder.iss'
+      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
