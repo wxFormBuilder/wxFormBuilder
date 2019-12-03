@@ -26,7 +26,10 @@ jobs:
       run: msys2do ./.github/workflows/msys2.sh
     - name: Package
       shell: cmd
-      run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* C:\msys64\mingw32\bin\libgcc*.dll C:\msys64\mingw32\bin\libstdc++*.dll C:\msys64\mingw32\bin\libwinpthread*.dll C:\msys64\mingw32\bin\libintl*.dll C:\msys64\mingw32\bin\libiconv*.dll C:\msys64\mingw32\bin\wx*.dll C:\msys64\mingw32\bin\libexpat*.dll C:\msys64\mingw32\bin\libjpeg*.dll C:\msys64\mingw32\bin\libpng*.dll C:\msys64\mingw32\bin\libtiff*.dll C:\msys64\mingw32\bin\zlib*.dll C:\msys64\mingw32\bin\libzstd*.dll C:\msys64\mingw32\bin\liblzma*.dll
+      run: |
+        7z a -r wxFormBuilder_win32.zip %cd%\output\*.* C:\msys64\mingw32\bin\libgcc*.dll C:\msys64\mingw32\bin\libstdc++*.dll C:\msys64\mingw32\bin\libwinpthread*.dll C:\msys64\mingw32\bin\libintl*.dll C:\msys64\mingw32\bin\libiconv*.dll C:\msys64\mingw32\bin\wx*.dll C:\msys64\mingw32\bin\libexpat*.dll C:\msys64\mingw32\bin\libjpeg*.dll C:\msys64\mingw32\bin\libpng*.dll C:\msys64\mingw32\bin\libtiff*.dll C:\msys64\mingw32\bin\zlib*.dll C:\msys64\mingw32\bin\libzstd*.dll C:\msys64\mingw32\bin\liblzma*.dll
+        cd install/windows
+        create_source_package.bat
     - name: Create installer
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
