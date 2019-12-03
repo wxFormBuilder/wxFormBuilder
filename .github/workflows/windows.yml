@@ -22,6 +22,7 @@ jobs:
     - name: Build
       run: msys2do ./.github/workflows/msys2.sh
     - name: Package
+      shell: cmd
       run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* d:\a\_temp\msys\msys64\mingw32\bin\libgcc*.dll d:\a\_temp\msys\msys64\mingw32\bin\libstdc++*.dll d:\a\_temp\msys\msys64\mingw32\bin\libwinpthread*.dll d:\a\_temp\msys\msys64\mingw32\bin\libintl*.dll d:\a\_temp\msys\msys64\mingw32\bin\libiconv*.dll d:\a\_temp\msys\msys64\mingw32\bin\wx*.dll d:\a\_temp\msys\msys64\mingw32\bin\libexpat*.dll d:\a\_temp\msys\msys64\mingw32\bin\libjpeg*.dll d:\a\_temp\msys\msys64\mingw32\bin\libpng*.dll d:\a\_temp\msys\msys64\mingw32\bin\libtiff*.dll d:\a\_temp\msys\msys64\mingw32\bin\zlib*.dll d:\a\_temp\msys\msys64\mingw32\bin\libzstd*.dll d:\a\_temp\msys\msys64\mingw32\bin\liblzma*.dll
     - name: Install InnoSetup
       run: cinst -y InnoSetup
