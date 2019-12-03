@@ -37,4 +37,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: Windows
-        path: install\windows\wxFormBuilder*.exe
+        path: install\windows\wxFormBuilder_v3.9.0.exe
