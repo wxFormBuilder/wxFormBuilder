@@ -9,11 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
     - uses: numworks/setup-msys2@v1
       with:
         msystem: MINGW32
-        path-type: inherit
-        update: true
     - name: Install dependencies
       run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-boost make
     - name: Create build files
