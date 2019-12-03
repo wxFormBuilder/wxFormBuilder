@@ -27,6 +27,7 @@ jobs:
     - name: Install InnoSetup
       run: cinst -y InnoSetup
     - name: Create installer
+      shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 5\\ISCC.exe" wxFormBuilder.iss'
     - name: Upload artifact
       uses: actions/upload-artifact@v1
