@@ -51,7 +51,7 @@ InfoAfterFile=..\..\output\Changelog.txt
 LicenseFile=..\..\output\license.txt
 #if defined UNICODE
 ;MinVersion=0,4.0.1381sp6
-MinVersion=0,5.0
+MinVersion=0,6.0
 #endif
 
 ; -- Pre-Build Step
