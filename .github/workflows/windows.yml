@@ -15,6 +15,7 @@ jobs:
       with:
         msystem: MINGW32
     - name: Create symbolic link for MSYS2
+      shell: cmd
       run: mklink /D c:\msys64 d:\a\_temp\msys\msys64
     - name: Install dependencies
       run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-boost make
