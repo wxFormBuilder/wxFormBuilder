@@ -14,6 +14,8 @@ jobs:
     - uses: numworks/setup-msys2@v1
       with:
         msystem: MINGW32
+    - name: Create symbolic link for MSYS2
+      run: mklink /D c:\msys64 d:\a\_temp\msys\msys64
     - name: Install dependencies
       run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-boost make
     - name: Create build files
@@ -23,7 +25,7 @@ jobs:
       run: msys2do ./.github/workflows/msys2.sh
     - name: Package
       shell: cmd
-      run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* d:\a\_temp\msys\msys64\mingw32\bin\libgcc*.dll d:\a\_temp\msys\msys64\mingw32\bin\libstdc++*.dll d:\a\_temp\msys\msys64\mingw32\bin\libwinpthread*.dll d:\a\_temp\msys\msys64\mingw32\bin\libintl*.dll d:\a\_temp\msys\msys64\mingw32\bin\libiconv*.dll d:\a\_temp\msys\msys64\mingw32\bin\wx*.dll d:\a\_temp\msys\msys64\mingw32\bin\libexpat*.dll d:\a\_temp\msys\msys64\mingw32\bin\libjpeg*.dll d:\a\_temp\msys\msys64\mingw32\bin\libpng*.dll d:\a\_temp\msys\msys64\mingw32\bin\libtiff*.dll d:\a\_temp\msys\msys64\mingw32\bin\zlib*.dll d:\a\_temp\msys\msys64\mingw32\bin\libzstd*.dll d:\a\_temp\msys\msys64\mingw32\bin\liblzma*.dll
+      run: 7z a -r wxFormBuilder_win32.zip %cd%\output\*.* C:\msys64\mingw32\bin\libgcc*.dll C:\msys64\mingw32\bin\libstdc++*.dll C:\msys64\mingw32\bin\libwinpthread*.dll C:\msys64\mingw32\bin\libintl*.dll C:\msys64\mingw32\bin\libiconv*.dll C:\msys64\mingw32\bin\wx*.dll C:\msys64\mingw32\bin\libexpat*.dll C:\msys64\mingw32\bin\libjpeg*.dll C:\msys64\mingw32\bin\libpng*.dll C:\msys64\mingw32\bin\libtiff*.dll C:\msys64\mingw32\bin\zlib*.dll C:\msys64\mingw32\bin\libzstd*.dll C:\msys64\mingw32\bin\liblzma*.dll
     - name: Create installer
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
