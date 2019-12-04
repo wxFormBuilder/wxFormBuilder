@@ -64,13 +64,14 @@ solution "wxFormBuilder-Solution"
         -- This produces D9025 because without ExtraWarnings /W3 gets set
         --buildoptions    {"/W4"}
 
-    dofile(scriptDir .. "/ticpp.lua")
+    dofile(scriptDir .. "/utilities.lua")
+
+    dofile(scriptDir .. "/wxformbuilder.lua")
     dofile(scriptDir .. "/plugin-interface.lua")
+    dofile(scriptDir .. "/ticpp.lua")
 
     dofile(scriptDir .. "/plugins/additional.lua")
     dofile(scriptDir .. "/plugins/common.lua")
     dofile(scriptDir .. "/plugins/containers.lua")
     dofile(scriptDir .. "/plugins/forms.lua")
     dofile(scriptDir .. "/plugins/layout.lua")
-    dofile(scriptDir .. "/wxformbuilder.lua")
-    dofile(scriptDir .. "/utilities.lua")
