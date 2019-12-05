@@ -1,0 +1,39 @@
+name: Windows
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: true
+    - uses: numworks/setup-msys2@v1
+      with:
+        msystem: MINGW32
+    - name: Create symbolic link for MSYS2
+      shell: cmd
+      run: mklink /D c:\msys64 d:\a\_temp\msys\msys64
+    - name: Install dependencies
+      run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-boost make
+    - name: Create build files
+      shell: cmd
+      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
+    - name: Build
+      run: msys2do ./.github/workflows/msys2.sh
+    - name: Create source package
+      shell: cmd
+      run: |
+        cd install/windows
+        create_source_package.bat
+    - name: Create installer
+      shell: cmd
+      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: Windows
+        path: install\windows\wxFormBuilder_v3.9.0.exe
