@@ -154,7 +154,6 @@ function wx_config(options)
 end
 
 function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs, wxUseWXConfig)
-    wxDebugSuffix   = ""
     wxUnicode       = "yes"
 
     -- the environment variable WXWIN override wxRoot parameter
@@ -175,6 +174,9 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
     if wxDebug == "yes" then
         defines         {"__WXDEBUG__"}
+        wxDebugSuffix   = "d"
+    else
+        wxDebugSuffix   = ""
     end
 
     if wxStatic == "yes" then
