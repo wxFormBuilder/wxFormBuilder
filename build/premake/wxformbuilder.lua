@@ -103,9 +103,9 @@ project "wxFormBuilder"
         end
 
     configuration "Debug"
+        wx_config       {Libs=libs, Debug="yes"}
         defines         {"__WXFB_DEBUG__"}
         targetsuffix    (DebugSuffix)
-        wx_config       {Libs=libs, Debug="yes"}
 
     configuration "Release"
         wx_config       {Libs=libs}
