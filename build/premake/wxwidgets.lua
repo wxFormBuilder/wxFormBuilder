@@ -61,6 +61,8 @@ wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
+if _OPTIONS["disable-mediactrl"] then wxUseMediaCtrl = false end
+if _OPTIONS["disable-monolithic"] then wxMonolithic = false end
 
 if wxCompiler == "mingw64" then
 	if not ( "x86_64" == wxArchitecture ) then
@@ -111,16 +113,6 @@ function wx_config(options)
     end
     if wrongParam then
         print("valid options are : '" .. table.concat(allowedWxOptions, "', '").."'")
-    end
-
--- wxMediaCtrl
-    if _OPTIONS["disable-mediactrl"] then
-        wxUseMediaCtrl = false
-    end
-
--- Use Monolithic
-    if _OPTIONS["disable-monolithic"] then
-        wxMonolithic = false
     end
 
 -- Unicode setup
