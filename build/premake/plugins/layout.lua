@@ -38,8 +38,8 @@ project "layout-components-plugin"
         targetdir       "../../../output/plugins/layout"
 
     configuration "Debug"
-        targetsuffix    (DebugSuffix)
         wx_config       {Debug="yes", Libs=libs}
+        targetsuffix    (DebugSuffix)
 
     configuration "Release"
         wx_config       {Libs=libs}

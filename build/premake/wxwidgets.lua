@@ -61,6 +61,8 @@ wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
+if _OPTIONS["disable-mediactrl"] then wxUseMediaCtrl = false end
+if _OPTIONS["disable-monolithic"] then wxMonolithic = false end
 
 if wxCompiler == "mingw64" then
 	if not ( "x86_64" == wxArchitecture ) then
@@ -113,16 +115,6 @@ function wx_config(options)
         print("valid options are : '" .. table.concat(allowedWxOptions, "', '").."'")
     end
 
--- wxMediaCtrl
-    if _OPTIONS["disable-mediactrl"] then
-        wxUseMediaCtrl = false
-    end
-
--- Use Monolithic
-    if _OPTIONS["disable-monolithic"] then
-        wxMonolithic = false
-    end
-
 -- Unicode setup
     local useUnicode = "yes"
 
@@ -154,7 +146,6 @@ function wx_config(options)
 end
 
 function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs, wxUseWXConfig)
-    wxDebugSuffix   = ""
     wxUnicode       = "yes"
 
     -- the environment variable WXWIN override wxRoot parameter
@@ -175,6 +166,9 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
     if wxDebug == "yes" then
         defines         {"__WXDEBUG__"}
+        wxDebugSuffix   = "d"
+    else
+        wxDebugSuffix   = ""
     end
 
     if wxStatic == "yes" then

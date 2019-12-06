@@ -38,8 +38,8 @@ project "forms-components-plugin"
         targetdir       "../../../output/plugins/forms"
 
     configuration "Debug"
-        targetsuffix    (DebugSuffix)
         wx_config       {Debug="yes", Libs=libs}
+        targetsuffix    (DebugSuffix)
 
     configuration "Release"
         wx_config       {Libs=libs}
