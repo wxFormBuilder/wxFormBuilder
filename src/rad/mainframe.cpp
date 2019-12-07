@@ -965,8 +965,13 @@ void MainFrame::UpdateFrame()
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
-	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
 	wxToolBar* toolbar = GetToolBar();
+
+	wxMenu* menuFile = GetMenuBar()->GetMenu(GetMenuBar()->FindMenu(_("File")));
+	menuFile->Enable(ID_SAVE_PRJ, AppData()->IsModified());
+	toolbar->EnableTool(ID_SAVE_PRJ, AppData()->IsModified());
+
+	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
 
 	bool redo = AppData()->CanRedo();
 	menuEdit->Enable( ID_REDO, redo );
