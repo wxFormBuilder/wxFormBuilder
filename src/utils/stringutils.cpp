@@ -179,22 +179,15 @@ namespace XMLUtils
 		else
 		{
 			// Ask user to all wxFB to convert the file to UTF-8 and add the XML declaration
-			wxString msg = wxString::Format( _("This xml file has specified encoding %s. wxFormBuilder only works with UTF-8.\n"),
-							wxFontMapper::GetEncodingDescription( encoding ).c_str() );
-			msg 		+= _("Would you like wxFormBuilder to backup the file and convert it to UTF-8\?\n\n");
-			msg			+= _("Path: ");
-			msg			+= path;
+			wxString msg = wxString::Format(_("This xml file has specified encoding: %s.\n\n"),
+			      wxFontMapper::GetEncodingDescription(encoding).c_str());
+			msg += _("wxFormBuilder may not correctly display strings unless the encoding is UTF-8.\n\n");
+			msg += _("Do you wish to continue?\n");
 			if ( wxNO == wxMessageBox( msg, _("Not UTF-8"), wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT, wxTheApp->GetTopWindow() ) )
 			{
 				// User declined, give up
 				THROW_WXFBEX( _("Wrong Encoding for XML File: ") << path );
 			}
-
-			// User accepted, convert the file
-			ConvertAndChangeDeclaration( path, version, standalone, encoding );
-
-			// Reload
-			LoadXMLFile( doc, condenseWhiteSpace, path );
 			return;
 		}
 	}
