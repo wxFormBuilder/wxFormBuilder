@@ -73,9 +73,6 @@ project "wxFormBuilder"
         defines         {"_CRT_SECURE_NO_DEPRECATE", "_CRT_SECURE_NO_WARNINGS"}
         buildoptions    {"/std:c++17", "/wd4003"}
 
-    configuration "macosx"
-        linkoptions     {"-Wl,-L../../../output/lib/wxformbuilder"}
-
     configuration {"macosx", "Debug"}
         postbuildcommands{"sh ../../../install/macosx/postbuild.sh -c debug"}
 
@@ -84,14 +81,12 @@ project "wxFormBuilder"
 
     configuration "not windows"
         excludes        {"../../src/*.rc"}
-        libdirs         {"../../output/lib/wxformbuilder"}
         targetdir       "../../output/bin"
         targetname      "wxformbuilder"
         links           {"dl"}
 
     configuration "windows"
         files           {"../../src/*.rc"}
-        libdirs         {"../../output"}
         targetdir       "../../output"
         flags           {"Symbols", "WinMain"}
         if wxCompiler == "gcc" then
