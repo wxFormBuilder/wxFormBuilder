@@ -18,8 +18,7 @@ matrix:
     - os: osx
       script:
         - brew update
-        - brew outdated boost || brew upgrade boost
-        - brew install boost dylibbundler make
+        - brew install dylibbundler make
         - brew tap cdalvaro/tap
         - travis_wait 40 brew install cdalvaro/tap/wxmac
         - ./create_build_files4.sh
