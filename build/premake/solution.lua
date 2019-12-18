@@ -66,7 +66,6 @@ solution "wxFormBuilder-Solution"
 
     dofile(scriptDir .. "/utilities.lua")
 
-    dofile(scriptDir .. "/wxformbuilder.lua")
     dofile(scriptDir .. "/plugin-interface.lua")
     dofile(scriptDir .. "/ticpp.lua")
 
@@ -75,3 +74,11 @@ solution "wxFormBuilder-Solution"
     dofile(scriptDir .. "/plugins/containers.lua")
     dofile(scriptDir .. "/plugins/forms.lua")
     dofile(scriptDir .. "/plugins/layout.lua")
+
+    -- The MacOS postbuild commands require that the plugins are already compiled,
+    -- with PreMake 4.x it is not possible to define a build order dependency for
+    -- libraries without linking to them.
+    -- Processing the wxformbuilder script after the plugin scripts results in a Makefile
+    -- that does process wxformbuilder after the plugin projects without defining a dependency between them.
+    -- This will break when using parallel builds because of the missing dependencies.
+    dofile(scriptDir .. "/wxformbuilder.lua")
