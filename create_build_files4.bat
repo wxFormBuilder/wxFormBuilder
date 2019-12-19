@@ -121,16 +121,16 @@ SHIFT
 GOTO Loop
 
 :Premake
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codelite
+build\premake\4.3\bin\release\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codelite
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% gmake
+build\premake\4.3\bin\release\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% gmake
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codeblocks
+build\premake\4.3\bin\release\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% codeblocks
 ECHO.
 
-build\premake\windows\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% vs2010
+build\premake\4.3\bin\release\premake4.exe --file=build/premake/solution.lua --wx-root=%wxroot% --wx-version=%wxver% --compiler=%compiler% %compilerversion% %architecture% %shared% %monolithic% %mediactrl% %usewxconfig% vs2010
 ECHO.
 
 ECHO Done generating all project files for wxFormBuilder.

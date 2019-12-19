@@ -27,6 +27,9 @@ project "wxFormBuilder"
     defines             {"NO_GCC_PRAGMA", "TIXML_USE_TICPP", "APPEND_WXVERSION"}
     libdirs             {"../../sdk/lib"}
     links               {"TiCPP", "plugin-interface"}
+    if (dependson ~= nil) then
+        dependson       {"additional-components-plugin", "common-components-plugin", "containers-components-plugin", "forms-components-plugin", "layout-components-plugin"}
+    end
 
     local libs = ""
     if wxUseMediaCtrl then

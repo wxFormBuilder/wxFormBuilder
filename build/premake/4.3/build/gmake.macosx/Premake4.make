@@ -28,7 +28,7 @@ ifeq ($(config),release)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -Os -mmacosx-version-min=10.1
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Wl,-x -lstdc++-static -mmacosx-version-min=10.1 -rdynamic
+  LDFLAGS   += -Wl,-x -mmacosx-version-min=10.1 -rdynamic
   LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
@@ -50,7 +50,7 @@ ifeq ($(config),debug)
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
   CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -g -mmacosx-version-min=10.1
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -lstdc++-static -mmacosx-version-min=10.1 -rdynamic
+  LDFLAGS   += -mmacosx-version-min=10.1 -rdynamic
   LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 

@@ -11,6 +11,9 @@
 solution "wxFormBuilder-Solution"
     language "C++"
     configurations      {"Debug", "Release"}
+    if (startproject ~= nil) then
+        startproject    "wxFormBuilder"
+    end
 
     local scriptDir     = os.getcwd()
 
@@ -29,7 +32,11 @@ solution "wxFormBuilder-Solution"
     --end
 
     if wxUseUnicode then
-        flags           {"Unicode"}
+        -- The Unicode flag got removed in Premake 5.x but is still required for Premake 4.x,
+        -- use the presence of the workspace function to detect if running under Premake 5.x
+        if (workspace == nil) then
+            flags       {"Unicode"}
+        end
         defines         {"UNICODE", "_UNICODE"}
     end
 

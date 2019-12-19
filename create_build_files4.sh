@@ -67,19 +67,18 @@ unamestr=$(uname)
 if ( [ "$isbsd" -gt "0" ] ); then
     platform="bsd"
 elif [ "$unamestr" = "Linux" ]; then
-    platform="linux"
+    platform="unix"
 elif [ "$unamestr" = "Darwin" ]; then
     platform="macosx"
 fi
 
 # Build premake
-cd build
-make CONFIG=Release -C./premake/$platform
+make config=release -C ./build/premake/4.3/build/gmake.$platform
 
-./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch codeblocks
-./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
-./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
+./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch codeblocks
+./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
+./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
 if [ "$platform" = "macosx" ]; then
-   ./premake/$platform/bin/release/premake4 --file=./premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode3
+   ./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode3
 fi
 
