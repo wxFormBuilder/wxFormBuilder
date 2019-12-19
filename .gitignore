@@ -1,4 +1,5 @@
 build/???/
+build/premake/5.0/bin/
 output/bin/
 output/lib*/
 output/share/
