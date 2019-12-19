@@ -44,7 +44,7 @@ public:
 
   #ifdef __WXMAC__
   wxString m_mac_file_name;
-  void MacOpenFile(const wxString &fileName);
+  void MacOpenFile(const wxString &fileName) override;
   #endif
 };
 
