@@ -21,14 +21,14 @@ endif
 
 ifeq ($(config),release)
   OBJDIR     = obj/Release
-  TARGETDIR  = bin/release
+  TARGETDIR  = ../../bin/release
   TARGET     = $(TARGETDIR)/premake4
-  DEFINES   += -DNDEBUG -DLUA_USE_MACOSX
-  INCLUDES  += -I../4.3/src/host/lua-5.1.4/src
+  DEFINES   += -DNDEBUG
+  INCLUDES  += -I../../src/host/lua-5.1.4/src
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -Os -mmacosx-version-min=10.1
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -Os
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -Wl,-x -mmacosx-version-min=10.1 -rdynamic
+  LDFLAGS   += -s -rdynamic
   LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
@@ -43,14 +43,14 @@ endif
 
 ifeq ($(config),debug)
   OBJDIR     = obj/Debug
-  TARGETDIR  = bin/debug
+  TARGETDIR  = ../../bin/debug
   TARGET     = $(TARGETDIR)/premake4
-  DEFINES   += -D_DEBUG -DLUA_USE_MACOSX
-  INCLUDES  += -I../4.3/src/host/lua-5.1.4/src
+  DEFINES   += -D_DEBUG
+  INCLUDES  += -I../../src/host/lua-5.1.4/src
   CPPFLAGS  += -MMD -MP $(DEFINES) $(INCLUDES)
-  CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -g -mmacosx-version-min=10.1
+  CFLAGS    += $(CPPFLAGS) $(ARCH) -Wall -g
   CXXFLAGS  += $(CFLAGS) 
-  LDFLAGS   += -mmacosx-version-min=10.1 -rdynamic
+  LDFLAGS   += -rdynamic
   LIBS      += 
   RESFLAGS  += $(DEFINES) $(INCLUDES) 
   LDDEPS    += 
@@ -165,133 +165,133 @@ $(GCH): $(PCH)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
 endif
 
-$(OBJDIR)/scripts.o: ../4.3/src/host/scripts.c
+$(OBJDIR)/scripts.o: ../../src/host/scripts.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_match.o: ../4.3/src/host/os_match.c
+$(OBJDIR)/os_match.o: ../../src/host/os_match.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_uuid.o: ../4.3/src/host/os_uuid.c
+$(OBJDIR)/os_uuid.o: ../../src/host/os_uuid.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_chdir.o: ../4.3/src/host/os_chdir.c
+$(OBJDIR)/os_chdir.o: ../../src/host/os_chdir.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_pathsearch.o: ../4.3/src/host/os_pathsearch.c
+$(OBJDIR)/os_pathsearch.o: ../../src/host/os_pathsearch.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_isfile.o: ../4.3/src/host/os_isfile.c
+$(OBJDIR)/os_isfile.o: ../../src/host/os_isfile.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/path_isabsolute.o: ../4.3/src/host/path_isabsolute.c
+$(OBJDIR)/path_isabsolute.o: ../../src/host/path_isabsolute.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_rmdir.o: ../4.3/src/host/os_rmdir.c
+$(OBJDIR)/os_rmdir.o: ../../src/host/os_rmdir.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_copyfile.o: ../4.3/src/host/os_copyfile.c
+$(OBJDIR)/os_copyfile.o: ../../src/host/os_copyfile.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_isdir.o: ../4.3/src/host/os_isdir.c
+$(OBJDIR)/os_isdir.o: ../../src/host/os_isdir.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/string_endswith.o: ../4.3/src/host/string_endswith.c
+$(OBJDIR)/string_endswith.o: ../../src/host/string_endswith.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_mkdir.o: ../4.3/src/host/os_mkdir.c
+$(OBJDIR)/os_mkdir.o: ../../src/host/os_mkdir.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/premake.o: ../4.3/src/host/premake.c
+$(OBJDIR)/premake.o: ../../src/host/premake.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/os_getcwd.o: ../4.3/src/host/os_getcwd.c
+$(OBJDIR)/os_getcwd.o: ../../src/host/os_getcwd.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lauxlib.o: ../4.3/src/host/lua-5.1.4/src/lauxlib.c
+$(OBJDIR)/lauxlib.o: ../../src/host/lua-5.1.4/src/lauxlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lobject.o: ../4.3/src/host/lua-5.1.4/src/lobject.c
+$(OBJDIR)/lobject.o: ../../src/host/lua-5.1.4/src/lobject.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lcode.o: ../4.3/src/host/lua-5.1.4/src/lcode.c
+$(OBJDIR)/lcode.o: ../../src/host/lua-5.1.4/src/lcode.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ltm.o: ../4.3/src/host/lua-5.1.4/src/ltm.c
+$(OBJDIR)/ltm.o: ../../src/host/lua-5.1.4/src/ltm.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/loadlib.o: ../4.3/src/host/lua-5.1.4/src/loadlib.c
+$(OBJDIR)/loadlib.o: ../../src/host/lua-5.1.4/src/loadlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lgc.o: ../4.3/src/host/lua-5.1.4/src/lgc.c
+$(OBJDIR)/lgc.o: ../../src/host/lua-5.1.4/src/lgc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/llex.o: ../4.3/src/host/lua-5.1.4/src/llex.c
+$(OBJDIR)/llex.o: ../../src/host/lua-5.1.4/src/llex.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ldebug.o: ../4.3/src/host/lua-5.1.4/src/ldebug.c
+$(OBJDIR)/ldebug.o: ../../src/host/lua-5.1.4/src/ldebug.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lstrlib.o: ../4.3/src/host/lua-5.1.4/src/lstrlib.c
+$(OBJDIR)/lstrlib.o: ../../src/host/lua-5.1.4/src/lstrlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ldump.o: ../4.3/src/host/lua-5.1.4/src/ldump.c
+$(OBJDIR)/ldump.o: ../../src/host/lua-5.1.4/src/ldump.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lparser.o: ../4.3/src/host/lua-5.1.4/src/lparser.c
+$(OBJDIR)/lparser.o: ../../src/host/lua-5.1.4/src/lparser.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lfunc.o: ../4.3/src/host/lua-5.1.4/src/lfunc.c
+$(OBJDIR)/lfunc.o: ../../src/host/lua-5.1.4/src/lfunc.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lzio.o: ../4.3/src/host/lua-5.1.4/src/lzio.c
+$(OBJDIR)/lzio.o: ../../src/host/lua-5.1.4/src/lzio.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lstate.o: ../4.3/src/host/lua-5.1.4/src/lstate.c
+$(OBJDIR)/lstate.o: ../../src/host/lua-5.1.4/src/lstate.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lmem.o: ../4.3/src/host/lua-5.1.4/src/lmem.c
+$(OBJDIR)/lmem.o: ../../src/host/lua-5.1.4/src/lmem.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lmathlib.o: ../4.3/src/host/lua-5.1.4/src/lmathlib.c
+$(OBJDIR)/lmathlib.o: ../../src/host/lua-5.1.4/src/lmathlib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ltable.o: ../4.3/src/host/lua-5.1.4/src/ltable.c
+$(OBJDIR)/ltable.o: ../../src/host/lua-5.1.4/src/ltable.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/linit.o: ../4.3/src/host/lua-5.1.4/src/linit.c
+$(OBJDIR)/linit.o: ../../src/host/lua-5.1.4/src/linit.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lundump.o: ../4.3/src/host/lua-5.1.4/src/lundump.c
+$(OBJDIR)/lundump.o: ../../src/host/lua-5.1.4/src/lundump.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lvm.o: ../4.3/src/host/lua-5.1.4/src/lvm.c
+$(OBJDIR)/lvm.o: ../../src/host/lua-5.1.4/src/lvm.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lbaselib.o: ../4.3/src/host/lua-5.1.4/src/lbaselib.c
+$(OBJDIR)/lbaselib.o: ../../src/host/lua-5.1.4/src/lbaselib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ltablib.o: ../4.3/src/host/lua-5.1.4/src/ltablib.c
+$(OBJDIR)/ltablib.o: ../../src/host/lua-5.1.4/src/ltablib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ldo.o: ../4.3/src/host/lua-5.1.4/src/ldo.c
+$(OBJDIR)/ldo.o: ../../src/host/lua-5.1.4/src/ldo.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lapi.o: ../4.3/src/host/lua-5.1.4/src/lapi.c
+$(OBJDIR)/lapi.o: ../../src/host/lua-5.1.4/src/lapi.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/loslib.o: ../4.3/src/host/lua-5.1.4/src/loslib.c
+$(OBJDIR)/loslib.o: ../../src/host/lua-5.1.4/src/loslib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lopcodes.o: ../4.3/src/host/lua-5.1.4/src/lopcodes.c
+$(OBJDIR)/lopcodes.o: ../../src/host/lua-5.1.4/src/lopcodes.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/lstring.o: ../4.3/src/host/lua-5.1.4/src/lstring.c
+$(OBJDIR)/lstring.o: ../../src/host/lua-5.1.4/src/lstring.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/liolib.o: ../4.3/src/host/lua-5.1.4/src/liolib.c
+$(OBJDIR)/liolib.o: ../../src/host/lua-5.1.4/src/liolib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
-$(OBJDIR)/ldblib.o: ../4.3/src/host/lua-5.1.4/src/ldblib.c
+$(OBJDIR)/ldblib.o: ../../src/host/lua-5.1.4/src/ldblib.c
 	@echo $(notdir $<)
 	$(SILENT) $(CC) $(CFLAGS) -o $@ -c $<
 

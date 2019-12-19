@@ -13,7 +13,7 @@ PROJECTS := Premake4
 all: $(PROJECTS)
 
 Premake4: 
-	@echo ==== Building Premake4 ====
+	@echo "==== Building Premake4 ($(config)) ===="
 	@${MAKE} --no-print-directory -C . -f Premake4.make
 
 clean:
