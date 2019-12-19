@@ -12,35 +12,35 @@ wxpath=`wx-config --prefix`
 for args in "$@"
 do
     haveroot=`expr "${args}" : '--wx-root=.*'`
-	havearch=`expr "${args}" : '--architecture=.*'`
-	haverpath=`expr "${args}" : '--rpath=.*'`
+    havearch=`expr "${args}" : '--architecture=.*'`
+    haverpath=`expr "${args}" : '--rpath=.*'`
     if ( [ ${args} = "--help" ] || [ ${args} = "-h" ] ); then
-			echo "Available options:"
-			echo
-			echo "--disable-mediactrl       Disable wxMediaCtrl / wxMedia library."
-			echo
-			echo "--disable-shared          Use static wxWidgets build instead of shared libraries."
-			echo
-			echo "--wx-root                 Specify the wxWidgets build path,"
-			echo "                          useful for wxWidgets builds not installed"
-			echo "                          in your system (alternate/custom builds)"
-			echo "                          Example: --wx-root=/home/devel/wx/3.0/buildgtk"
-			echo "                          Current: $wxpath"
-			echo
-			echo "--architecture            Specify build architecture (e.g. --architecture=i386)."
-			echo "--rpath                   Specify a rpath  (e.g. --rpath=/usr/lib/wxformbuilder)."
-			echo
-			exit
+        echo "Available options:"
+        echo
+        echo "--disable-mediactrl       Disable wxMediaCtrl / wxMedia library."
+        echo
+        echo "--disable-shared          Use static wxWidgets build instead of shared libraries."
+        echo
+        echo "--wx-root                 Specify the wxWidgets build path,"
+        echo "                          useful for wxWidgets builds not installed"
+        echo "                          in your system (alternate/custom builds)"
+        echo "                          Example: --wx-root=/home/devel/wx/3.0/buildgtk"
+        echo "                          Current: $wxpath"
+        echo
+        echo "--architecture            Specify build architecture (e.g. --architecture=i386)."
+        echo "--rpath                   Specify a rpath  (e.g. --rpath=/usr/lib/wxformbuilder)."
+        echo
+        exit
     elif [ ${args} = "--disable-mediactrl" ]; then
         mediactrl="--disable-mediactrl"
         continue
-	elif [ ${args} = "--disable-shared" ]; then
+    elif [ ${args} = "--disable-shared" ]; then
         shared="--disable-shared"
         continue
     elif ( [ "$haveroot" -gt "0" ] ); then
         wxroot=${args}
         continue
-	elif ( [ "$havearch" -gt "0" ] ); then
+    elif ( [ "$havearch" -gt "0" ] ); then
         arch=${args}
         continue
     elif ( [ "$haverpath" -gt "0" ] ); then
