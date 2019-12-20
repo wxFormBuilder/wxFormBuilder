@@ -1,0 +1,10 @@
+*.bat eol=crlf
+*.cmd eol=crlf
+*.iss eol=crlf
+*.sln eol=crlf
+*.vcproj eol=crlf
+*.vcxproj eol=crlf
+
+*.sh eol=lf
+*.make eol=lf
+Makefile eol=lf
