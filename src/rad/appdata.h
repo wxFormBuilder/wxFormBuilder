@@ -31,6 +31,7 @@
 
 namespace ticpp
 {
+class Document;
 
 class Node;
 
@@ -274,7 +275,8 @@ class ApplicationData
 		@param fileMinor The minor revision of the file
 		@return true if successful, false otherwise
 		*/
-		bool ConvertProject( const wxString& path, int fileMajor, int fileMinor );
+
+		bool ConvertProject(ticpp::Document& doc, const wxString& path, int fileMajor, int fileMinor);
 
 		/**
 		Recursive function used to convert the object tree in the project file to the latest version.
