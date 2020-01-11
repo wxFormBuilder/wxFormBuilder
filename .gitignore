@@ -1,7 +1,6 @@
 build/???/
-build/premake/?.?/bin/
-build/premake/?.?/gmake.unix/
-build/premake/?.?/build/
+build/premake/4.3/bin/
+build/premake/5.0/bin/
 output/bin/
 output/lib*/
 output/share/
@@ -25,10 +24,13 @@ install/windows/*.exe
 /_install/
 /compile_commands.json
 /.ccls-cache/
-CMakeFiles
-src/CMakeFiles
-cmake_install.cmake
-CPackConfig.cmake
-CPackSourceConfig.cmake
-CMakeCache.txt
 
+# CMake
+CMakeFiles
+cmake_install.cmake
+/CPackConfig.cmake
+/CPackSourceConfig.cmake
+/CMakeCache.txt
+/install_manifest.txt
+plugins/*/*.so
+/sdk/plugin_interface/libwxfb-plugin-interface.a
