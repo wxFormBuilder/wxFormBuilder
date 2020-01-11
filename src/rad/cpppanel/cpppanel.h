@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,24 +26,15 @@
 #ifndef __CPP_PANEL__
 #define __CPP_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
-#ifdef USE_FLATNOTEBOOK
-class wxFlatNotebook;
-class wxFlatNotebookImageList;
-#else
 class wxAuiNotebook;
-#endif
 
 class wxFindDialogEvent;
 
@@ -59,22 +50,13 @@ private:
 	CodeEditor* m_hPanel;
 	PTCCodeWriter m_hCW;
 	PTCCodeWriter m_cppCW;
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebookImageList* m_icons;
-	wxFlatNotebook* m_notebook;
-#else
 	wxAuiNotebook* m_notebook;
-#endif
 
-#if wxVERSION_NUMBER < 2900
-	void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	CppPanel( wxWindow *parent, int id );
-	~CppPanel();
+	~CppPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

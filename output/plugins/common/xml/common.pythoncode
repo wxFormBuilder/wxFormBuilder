@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Python code generation written by
+  Michal Bližňák - michal.bliznak@gmail.com
+-->
+<codegen language="Python">
+
+	<templates class="wxButton">
+		<template name="construction">
+			self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">
+			#ifnotequal $default "0" @{ #nl self.$name.SetDefault() @}
+			#ifnotequal $auth_needed "0" @{ #nl self.$name.SetAuthNeeded() @}
+		</template>
+		<template name="evt_connect_OnButtonClick">self.$name.Bind( wx.EVT_BUTTON, #handler )</template>
+	</templates>
+
+	<templates class="wxBitmapButton">
+		<template name="construction">
+			self.$name = #class( #wxparent $name, $id, wx.NullBitmap, $pos, $size, wx.BU_AUTODRAW|$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+	</templates>
+
+	<templates class="wxTextCtrl">
+		<template name="construction">
+			self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">
+			#ifnotnull $maxlength
+			@{ self.$name.SetMaxLength( $maxlength ) @}
+		</template>
+		<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+		<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
+		<template name="evt_connect_OnTextURL">self.$name.Bind( wx.EVT_TEXT_URL, #handler )</template>
+		<template name="evt_connect_OnTextMaxLen">self.$name.Bind( wx.EVT_TEXT_MAXLEN, #handler )</template>
+	</templates>
+
+	<templates class="wxStaticText">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+		<template name="settings">
+			#ifequal $markup "1"
+			@{ self.$name.SetLabelMarkup( $label ) #nl @}
+
+			self.$name.Wrap( $wrap ) #nl
+		</template>
+	</templates>
+
+	<templates class="wxCheckBox">
+		<template name="construction">
+			self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+			<template name="settings">#ifnotequal $checked "0" @{ self.$name.SetValue(True) @}</template>
+		<template name="evt_connect_OnCheckBox">self.$name.Bind( wx.EVT_CHECKBOX, #handler )</template>
+	</templates>
+
+	<templates class="wxComboBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				$name #append Choices = [ $choices ] #nl
+			@}
+			#ifnull $choices
+			@{
+				$name #append Choices = [] #nl
+			@}
+			self.$name = #class( #wxparent $name, $id, $value, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection( $selection )@}</template>
+		<template name="evt_connect_OnCombobox">self.$name.Bind( wx.EVT_COMBOBOX, #handler )</template>
+		<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+		<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
+	</templates>
+
+	<templates class="wxBitmapComboBox">
+		<template name="construction">
+			self.$name = wx.adv.BitmapComboBox( #wxparent $name, $id, $value, $pos, $size, "", $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+			#foreach $choices
+			@{ self.$name.Append( #pred.partition(":")[2], wx.Image.ConvertToBitmap(wx.Image(#pred.partition(":")[0]))); @}
+		</template>
+		<template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection( $selection )@}</template>
+		<template name="evt_connect_OnCombobox">self.$name.Bind( wx.EVT_COMBOBOX, #handler )</template>
+		<template name="evt_connect_OnText">self.$name.Bind( wx.EVT_TEXT, #handler )</template>
+		<template name="evt_connect_OnTextEnter">self.$name.Bind( wx.EVT_TEXT_ENTER, #handler )</template>
+		<template name="include">import wx.adv</template>
+	</templates>
+
+	<templates class="wxListBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				$name #append Choices = [ $choices ] #nl
+			@}
+			#ifnull $choices
+			@{
+				$name #append Choices = [] #nl
+			@}
+			self.$name = #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="evt_connect_OnListBox">self.$name.Bind( wx.EVT_LISTBOX, #handler )</template>
+		<template name="evt_connect_OnListBoxDClick">self.$name.Bind( wx.EVT_LISTBOX_DCLICK, #handler )</template>
+	</templates>
+
+	<templates class="wxRadioBox">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				$name #append Choices = [ $choices ] #nl
+				self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} ) #nl
+				self.$name.SetSelection( $selection )
+			@}
+			#ifnull $choices
+			@{
+				$name #append Choices = [] #nl
+				self.$name = #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+			@}
+		</template>
+		<template name="evt_connect_OnRadioBox">self.$name.Bind( wx.EVT_RADIOBOX, #handler )</template>
+	</templates>
+
+	<templates class="wxRadioButton">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		<template name="settings">
+			#ifnotequal $value "0"
+			@{ self.$name.SetValue( True ) @}
+		</template>
+		<template name="evt_connect_OnRadioButton">self.$name.Bind( wx.EVT_RADIOBUTTON, #handler )</template>
+	</templates>
+
+	<templates class="wxStaticBitmap">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $bitmap, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
+	</templates>
+
+	<templates class="wxAnimationCtrl">
+		<template name="construction">
+			self.$name = #class( #wxparent $name, $id, wx.adv.NullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )
+			#ifnotnull $animation
+			@{ #nl self.$name.LoadFile( $animation ) @}
+		</template>
+		<template name="settings">
+			#ifnotnull $inactive_bitmap
+			@{ #nl self.$name.SetInactiveBitmap( $inactive_bitmap ) @}
+			#ifequal $play "1"
+			@{ #nl self.$name.Play() @}
+		</template>
+		<template name="include">import wx.adv</template>
+	</templates>
+
+	<templates class="wxStaticLine">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
+	</templates>
+
+	<templates class="wxListCtrl">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		<template name="evt_connect_OnListBeginDrag">self.$name.Bind( wx.EVT_LIST_BEGIN_DRAG, #handler )</template>
+		<template name="evt_connect_OnListBeginRDrag">self.$name.Bind( wx.EVT_LIST_BEGIN_RDRAG, #handler )</template>
+		<template name="evt_connect_OnListBeginLabelEdit">self.$name.Bind( wx.EVT_LIST_BEGIN_LABEL_EDIT, #handler )</template>
+		<template name="evt_connect_OnListEndLabelEdit">self.$name.Bind( wx.EVT_LIST_END_LABEL_EDIT, #handler )</template>
+		<template name="evt_connect_OnListDeleteItem">self.$name.Bind( wx.EVT_LIST_DELETE_ITEM, #handler )</template>
+		<template name="evt_connect_OnListDeleteAllItems">self.$name.Bind( wx.EVT_DELETE_ALL_ITEMS, #handler )</template>
+		<template name="evt_connect_OnListItemSelected">self.$name.Bind( wx.EVT_LIST_ITEM_SELECTED, #handler )</template>
+		<template name="evt_connect_OnListItemDeselected">self.$name.Bind( wx.EVT_LIST_ITEM_DESELECTED, #handler )</template>
+		<template name="evt_connect_OnListItemActivated">self.$name.Bind( wx.EVT_LIST_ITEM_ACTIVATED, #handler )</template>
+		<template name="evt_connect_OnListItemFocused">self.$name.Bind( wx.EVT_LIST_ITEM_FOCUSED, #handler )</template>
+		<template name="evt_connect_OnListItemMiddleClick">self.$name.Bind( wx.EVT_LIST_ITEM_MIDDLE_CLICK, #handler )</template>
+		<template name="evt_connect_OnListItemRightClick">self.$name.Bind( wx.EVT_LIST_ITEM_RIGHT_CLICK, #handler )</template>
+		<template name="evt_connect_OnListKeyDown">self.$name.Bind( wx.EVT_LIST_KEY_DOWN, #handler )</template>
+		<template name="evt_connect_OnListInsertItem">self.$name.Bind( wx.EVT_LIST_INSERT_ITEM, #handler )</template>
+		<template name="evt_connect_OnListColClick">self.$name.Bind( wx.EVT_LIST_COL_CLICK, #handler )</template>
+		<template name="evt_connect_OnListColRightClick">self.$name.Bind( wx.EVT_LIST_COL_RIGHT_CLICK, #handler )</template>
+		<template name="evt_connect_OnListColBeginDrag">self.$name.Bind( wx.EVT_LIST_COL_BEGIN_DRAG, #handler )</template>
+		<template name="evt_connect_OnListColDragging">self.$name.Bind( wx.EVT_LIST_COL_DRAGGING, #handler )</template>
+		<template name="evt_connect_OnListColEndDrag">self.$name.Bind( wx.EVT_LIST_COL_END_DRAG, #handler )</template>
+		<template name="evt_connect_OnListCacheHint">self.$name.Bind( wx.EVT_LIST_CACHE_HINT, #handler )</template>
+	</templates>
+
+	<templates class="wxChoice">
+		<template name="construction">
+			#ifnotnull $choices
+			@{
+				$name #append Choices = [ $choices ] #nl
+			@}
+			#ifnull $choices
+			@{
+				$name #append Choices = [] #nl
+			@}
+			self.$name = #class( #wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+		</template>
+		<template name="settings">self.$name.SetSelection( $selection )</template>
+		<template name="evt_connect_OnChoice">self.$name.Bind( wx.EVT_CHOICE, #handler )</template>
+	</templates>
+
+	<templates class="wxGauge">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		<template name="settings">
+			#ifnotnull $value
+			@{ self.$name.SetValue( $value ) @}
+		</template>
+	</templates>
+
+	<templates class="wxSlider">
+		<template name="construction">self.$name = #class( #wxparent $name, $id, $value, $minValue, $maxValue, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )</template>
+		<template name="evt_connect_OnScroll">self.$name.Bind( wx.EVT_SCROLL, #handler )</template>
+		<template name="evt_connect_OnScrollTop">self.$name.Bind( wx.EVT_SCROLL_TOP, #handler )</template>
+		<template name="evt_connect_OnScrollBottom">self.$name.Bind( wx.EVT_SCROLL_BOTTOM, #handler )</template>
+		<template name="evt_connect_OnScrollLineUp">self.$name.Bind( wx.EVT_SCROLL_LINEUP, #handler )</template>
+		<template name="evt_connect_OnScrollLineDown">self.$name.Bind( wx.EVT_SCROLL_LINEDOWN, #handler )</template>
+		<template name="evt_connect_OnScrollPageUp">self.$name.Bind( wx.EVT_SCROLL_PAGEUP, #handler )</template>
+		<template name="evt_connect_OnScrollPageDown">self.$name.Bind( wx.EVT_SCROLL_PAGEDOWN, #handler )</template>
+		<template name="evt_connect_OnScrollThumbTrack">self.$name.Bind( wx.EVT_SCROLL_THUMBTRACK, #handler )</template>
+		<template name="evt_connect_OnScrollThumbRelease">self.$name.Bind( wx.EVT_SCROLL_THUMBRELEASE, #handler )</template>
+		<template name="evt_connect_OnScrollChanged">self.$name.Bind( wx.EVT_SCROLL_CHANGED, #handler )</template>
+		<template name="evt_connect_OnCommandScroll">self.$name.Bind( wx.EVT_COMMAND_SCROLL, #handler )</template>
+		<template name="evt_connect_OnCommandScrollTop">self.$name.Bind( wx.EVT_COMMAND_SCROLL_TOP, #handler )</template>
+		<template name="evt_connect_OnCommandScrollBottom">self.$name.Bind( wx.EVT_COMMAND_SCROLL_BOTTOM, #handler )</template>
+		<template name="evt_connect_OnCommandScrollLineUp">self.$name.Bind( wx.EVT_COMMAND_SCROLL_LINEUP, #handler )</template>
+		<template name="evt_connect_OnCommandScrollLineDown">$self.$name.Bind( wx.EVT_COMMAND_SCROLL_LINEDOWN, #handler )</template>
+		<template name="evt_connect_OnCommandScrollPageUp">self.$name.Bind( wx.EVT_COMMAND_SCROLL_PAGEUP, #handler )</template>
+		<template name="evt_connect_OnCommandScrollPageDown">self.$name.Bind( wx.EVT_COMMAND_SCROLL_PAGEDOWN, #handler )</template>
+		<template name="evt_connect_OnCommandScrollThumbTrack">self.$name.Bind( wx.EVT_COMMAND_SCROLL_THUMBTRACK, #handler )</template>
+		<template name="evt_connect_OnCommandScrollThumbRelease">self.$name.Bind( wx.EVT_COMMAND_SCROLL_THUMBRELEASE, #handler )</template>
+		<template name="evt_connect_OnCommandScrollChanged">self.$name.Bind( wx.EVT_COMMAND_SCROLL_CHANGED, #handler )</template>
+		<template name="evt_connect_OnSlider">self.$name.Bind( wx.EVT_SLIDER, #handler )</template>
+	</templates>
+
+</codegen>

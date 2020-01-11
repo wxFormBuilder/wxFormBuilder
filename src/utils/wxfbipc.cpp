@@ -15,26 +15,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
 #pragma hdrstop
 #endif
 
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
 #include "wxfbipc.h"
+
+#include "debug.h"
+
 #include <wx/filename.h>
-#include <memory>
-#include "utils/debug.h"
+#include <wx/wx.h>
 
 bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 {
@@ -85,15 +82,14 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	#endif
 
 	// Check to see if I already have a server with this name - if so, no need to make another!
-	if ( m_server.get() )
-	{
+	if (m_server) {
 		if ( m_server->m_name == name )
 		{
 			return true;
 		}
 	}
 
-    std::unique_ptr< wxSingleInstanceChecker > checker;
+	std::unique_ptr<wxSingleInstanceChecker> checker;
     {
         // Suspend logging, because error messages here are not useful
         #ifndef __WXFB_DEBUG__
@@ -107,7 +103,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		// This is the first instance of this project, so setup a server and save the single instance checker
 		if ( CreateServer( name ) )
 		{
-			m_checker = std::move( checker );
+			m_checker = std::move(checker);
 			return true;
 		}
 		else
@@ -128,33 +124,26 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 		// so temporarily drop the server if there is one
 		bool hadServer = false;
 		wxString oldName;
-		if ( m_server.get() != NULL )
-		{
+		if (m_server) {
 			oldName = m_server->m_name;
 			m_server.reset();
 			hadServer = true;
 		}
 
 		// Create the client
-		std::unique_ptr< AppClient > client( new AppClient );
+		std::unique_ptr<AppClient> client(new AppClient);
 
 		// Create the connection
-		std::unique_ptr< wxConnectionBase > connection;
+		std::unique_ptr<wxConnectionBase> connection;
 		#ifdef __WXMSW__
 			connection.reset( client->MakeConnection( wxT("localhost"), name, name ) );
 		#else
 			bool connected = false;
 			for ( int i = m_port; i < m_port + 20; ++i )
 			{
-            #if wxVERSION_NUMBER < 2900
-				wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
-				connection.reset( client->MakeConnection( wxT("127.0.0.1"), nameWithPort, name ) );
-            #else
                 wxString sPort = wxString::Format( "%i", i );
                 connection.reset( client->MakeConnection( "localhost", sPort, name ) );
-            #endif
-				if ( NULL != connection.get() )
-				{
+				if (connection) {
 					connected = true;
 					wxChar* pid = (wxChar*)connection->Request( wxT("PID"), NULL );
 					if ( NULL != pid )
@@ -190,12 +179,12 @@ bool wxFBIPC::CreateServer( const wxString& name )
 	wxLogNull stopLogging;
 	#endif
 
-	std::unique_ptr< AppServer > server( new AppServer( name ) );
+	auto server = std::make_unique<AppServer>(name);
 
 	#ifdef __WXMSW__
 		if ( server->Create( name ) )
 		{
-			m_server = std::move( server );
+			m_server = std::move(server);
 			return true;
 		}
 	#else
@@ -205,16 +194,12 @@ bool wxFBIPC::CreateServer( const wxString& name )
 			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
 			if( server->Create( nameWithPort ) )
 			{
-				m_server = std::move( server );
+				m_server = std::move(server);
 				return true;
 			}
 			else
 			{
-#if wxVERSION_NUMBER < 2900
-				LogDebug( wxT("Server Creation Failed. %s"), nameWithPort.c_str() );
-#else
 				LogDebug( "Server Creation Failed. " + nameWithPort );
-#endif
 			}
 		}
 	}
@@ -258,27 +243,3 @@ wxConnectionBase* AppClient::OnMakeConnection()
 {
 	return new AppConnection;
 }
-
-#if wxVERSION_NUMBER < 2900
-wxChar* AppConnection::OnRequest( const wxString& /*topic*/, const wxString& /*item*/, int* size, wxIPCFormat /*format*/ )
-{
-	unsigned long pid = ::wxGetProcessId();
-	if ( 0 == pid )
-	{
-		if ( NULL != size )
-		{
-			*size = 0;
-		}
-		return NULL;
-	}
-	else
-	{
-		int length = m_data.Printf( wxT("%lu"), pid );
-		if ( NULL != size )
-		{
-			*size = (length + 1) * sizeof(wxChar);
-		}
-		return const_cast< wxChar* >( m_data.c_str() );
-	}
-}
-#endif

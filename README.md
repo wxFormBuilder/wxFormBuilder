@@ -1,12 +1,8 @@
-# wxFormBuilder [![Build status](https://ci.appveyor.com/api/projects/status/yxpn19g0st7l9r8x?svg=true)](https://ci.appveyor.com/project/jhasse/wxformbuilder-461d5) [![Build Status](https://travis-ci.org/wxFormBuilder/wxFormBuilder.svg?branch=master)](https://travis-ci.org/wxFormBuilder/wxFormBuilder)
+# wxFormBuilder [![Build Status](https://travis-ci.org/wxFormBuilder/wxFormBuilder.svg?branch=master)](https://travis-ci.org/wxFormBuilder/wxFormBuilder)
 
 ## Download Binaries
 
-### Windows
-* wxWidgets 3.1.0 32-bit:
-  [ZIP](https://ci.appveyor.com/api/projects/wxFormBuilder/wxformbuilder/artifacts/wxFormBuilder_win32.zip?branch=master)
-  or [Setup](https://ci.appveyor.com/api/projects/wxFormBuilder/wxformbuilder/artifacts/wxFormBuilder_win32.msi?branch=master)
-  (last successful build)
+* [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
 
 ## Install From Source
 
@@ -20,6 +16,8 @@ git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
 cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
 ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
+ln -s /mingw32/include/binutils/bfd_stdint.h /mingw32/include/bfd_stdint.h
+ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h
 ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
 ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
 ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
@@ -41,10 +39,34 @@ cd ../../../output/
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt-get install libwxgtk3.0-0 libwxgtk3.0-dev libwxgtk-media3.0-dev libboost-dev
+sudo apt install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
 ```
 
-Download and build:
+Pre-requisites for Arch Linux:
+
+```sh
+sudo pacman -Syu --needed meson wxgtk2
+```
+
+Build and run:
+
+```sh
+git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
+cd wxFormBuilder
+meson _build --prefix $PWD/_install
+ninja -C _build install
+./_install/bin/wxformbuilder
+```
+
+### macOS
+
+Pre-requisites for macOS can be installed via [Homebrew](https://brew.sh/):
+
+```sh
+brew install wxmac boost dylibbundler make
+```
+
+Note: Building with Xcode currently does not work without issues (see [issue #247](https://github.com/wxFormBuilder/wxFormBuilder/issues/247)). Therefore it is recommended to build with GNU make like as described below:
 
 ```sh
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
@@ -57,6 +79,6 @@ make config=release
 Run:
 
 ```sh
-cd ../../../output/bin/
-./wxformbuilder
+cd ../../../output/
+open wxFormBuilder.app
 ```

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -40,10 +40,11 @@ none
 #define fbfSILENT true
 #define fbfMESSAGE false
 
+#include "codegen.h"
+
+#include <map>
 #include <set>
 #include <vector>
-#include "codegen.h"
-#include <wx/string.h>
 
 /**
 * Parse the Lua templates.
@@ -54,10 +55,10 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
-	
+
 	std::map<wxString, wxString> m_predModulePrefix;
 	std::vector<wxString> m_strUserIDsVec;
-	
+
 	void SetupModulePrefixes();
 
 public:
@@ -65,10 +66,9 @@ public:
 	LuaTemplateParser( const LuaTemplateParser & that, wxString _template, std::vector<wxString> strUserIDsVec);
 
 	// overrides for Lua
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
@@ -102,7 +102,14 @@ private:
 	/**
 	* Given an object and the name for a template, obtains the code.
 	*/
-	wxString GetCode( PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxT(""));
+	wxString GetCode(PObjectBase obj, wxString name, bool silent = false, wxString strSelf = wxEmptyString);
+
+	/**
+	* Gets the construction fragment for the specified object.
+	*
+	* This method encapsulates the adjustments that need to be made for array declarations.
+	*/
+	wxString GetConstruction(PObjectBase obj, bool silent, wxString strSelf, ArrayItems& arrays);
 
 	/**
 	* Stores the project's objects classes set, for generating the includes.
@@ -123,7 +130,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix, ArrayItems& arrays);
 
 	/**
 	* Generates the event table.
@@ -134,7 +141,7 @@ private:
 	* helper function to find the event table entry template in the class or its base classes
 	*/
 	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName,  bool disconnect = false );
-	
+
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
@@ -170,7 +177,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor( PObjectBase class_obj, const EventVector &events, wxString &strClassName );
+	void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays);
 
 	/**
 	* Generates the destructor for a class
@@ -181,8 +188,8 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget, wxString &strClassName  );
-	
+	void GenConstruction(PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
+
 	/**
 	* Makes the objects destructions.
 	*/
@@ -228,7 +235,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.
@@ -238,7 +245,7 @@ public:
 	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class

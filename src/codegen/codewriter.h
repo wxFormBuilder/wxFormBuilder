@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -37,6 +37,7 @@ private:
 	// Current indentation level in the file
 	int m_indent;
 	int m_cols;
+	bool m_indent_with_spaces;
 
 protected:
 	/// Write a wxString.
@@ -57,8 +58,7 @@ public:
 	/// Constructor.
 	CodeWriter();
 
-	/// Destructor.
-	virtual ~CodeWriter();
+	virtual ~CodeWriter() = default;
 
 	/// Increment the indent.
 	void Indent();
@@ -72,50 +72,39 @@ public:
 	/// Writes a text string into the code.
 	void Write( wxString code );
 
+	// Sets the option to indent with spaces
+	void SetIndentWithSpaces( bool on );
+
 	/// Deletes all the code previously written.
 	virtual void Clear() = 0;
 };
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class TCCodeWriter : public CodeWriter
 {
 private:
-
-#if wxVERSION_NUMBER < 2900
-    wxScintilla *m_tc;
-#else
-    wxStyledTextCtrl *m_tc;
-#endif
+	wxStyledTextCtrl* m_tc;
 
 protected:
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	TCCodeWriter();
-#if wxVERSION_NUMBER < 2900
-    TCCodeWriter( wxScintilla *tc );
-    void SetTextCtrl( wxScintilla* tc );
-#else
     TCCodeWriter( wxStyledTextCtrl *tc );
     void SetTextCtrl( wxStyledTextCtrl* tc );
-#endif
-	void Clear();
+	void Clear() override;
 };
 
 class StringCodeWriter : public CodeWriter
 {
 protected:
 	wxString m_buffer;
-	void DoWrite( wxString code );
+	void DoWrite(wxString code) override;
 
 public:
 	StringCodeWriter();
-	void Clear();
+	void Clear() override;
 	wxString GetString();
 };
 
@@ -131,8 +120,8 @@ protected:
 
 public:
 	FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false, bool useUtf8 = true );
-	~FileCodeWriter();
-	void Clear();
+	~FileCodeWriter() override;
+	void Clear() final;
 };
 
 #endif //__CODE_WRITER__

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,40 +23,32 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <component.h>
+#include "logo.xpm"
+#include "smiley.xpm"
+
 #include <plugin.h>
-#include <xrcconv.h>
 #include <ticpp.h>
+#include <xrcconv.h>
 
 #include <wx/calctrl.h>
+#include <wx/datectrl.h>
+#include <wx/dirctrl.h>
+#include <wx/grid.h>
 #include <wx/html/htmlwin.h>
-#include <wx/treectrl.h>
-#include <wx/spinbutt.h>
 #include <wx/spinctrl.h>
 #include <wx/tglbtn.h>
-#include <wx/scrolbar.h>
-#include <wx/checklst.h>
-#include <wx/datectrl.h>
-#include <wx/grid.h>
-#include <wx/dirctrl.h>
+#include <wx/timectrl.h>
 #ifdef USE_MEDIACTRL
 #include <wx/mediactrl.h>
 #endif
 #if wxVERSION_NUMBER >= 2904
 // wxPropertyGrid
-#include <wx/propgrid/propgrid.h>
-#include <wx/propgrid/advprops.h>
 #include <wx/propgrid/manager.h>
 // wxStyledTextCtrl
 #include <wx/stc/stc.h>
 // wxDataViewCtrl
 #include <wx/dataview.h>
 // wxRibbonBar
-#include <wx/ribbon/bar.h>
-#include <wx/ribbon/control.h>
-#include <wx/ribbon/art.h>
-#include <wx/ribbon/page.h>
-#include <wx/ribbon/panel.h>
 #include <wx/ribbon/buttonbar.h>
 #include <wx/ribbon/toolbar.h>
 #include <wx/ribbon/gallery.h>
@@ -64,16 +56,12 @@
 #include <wx/treelist.h>
 #endif
 
-#if wxCHECK_VERSION( 2, 8, 0 )
-	#include <wx/richtext/richtextctrl.h>
-	#include "logo.xpm"
-	#include "smiley.xpm"
-	#include <wx/clrpicker.h>
-	#include <wx/fontpicker.h>
-	#include <wx/filepicker.h>
-	#include <wx/hyperlink.h>
-	#include <wx/srchctrl.h>
-#endif
+#include <wx/clrpicker.h>
+#include <wx/filepicker.h>
+#include <wx/fontpicker.h>
+#include <wx/hyperlink.h>
+#include <wx/richtext/richtextctrl.h>
+#include <wx/srchctrl.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -98,13 +86,11 @@ protected:
 	void OnGridClick( wxGridEvent& event );
 	void OnGridColSize( wxGridSizeEvent& event );
 	void OnGridRowSize( wxGridSizeEvent& event );
-	#if wxCHECK_VERSION( 2, 8, 0 )
-		void OnColourPickerColourChanged( wxColourPickerEvent& event );
-		void OnFontPickerFontChanged( wxFontPickerEvent& event );
-		void OnFilePickerFileChanged( wxFileDirPickerEvent& event );
-		void OnDirPickerDirChanged( wxFileDirPickerEvent& event );
-		void OnText( wxCommandEvent& event );
-	#endif
+	void OnColourPickerColourChanged(wxColourPickerEvent& event);
+	void OnFontPickerFontChanged(wxFontPickerEvent& event);
+	void OnFilePickerFileChanged(wxFileDirPickerEvent& event);
+	void OnDirPickerDirChanged(wxFileDirPickerEvent& event);
+	void OnText(wxCommandEvent& event);
 	void OnGenericDirCtrlExpandItem( wxTreeEvent& event );
 #if wxVERSION_NUMBER >= 2904
 	// Enable folding for wxStyledTextCtrl
@@ -115,13 +101,11 @@ protected:
 };
 
 BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
-	#if wxCHECK_VERSION( 2, 8, 0 )
-		EVT_COLOURPICKER_CHANGED( -1, ComponentEvtHandler::OnColourPickerColourChanged )
-		EVT_FONTPICKER_CHANGED( -1, ComponentEvtHandler::OnFontPickerFontChanged )
-		EVT_FILEPICKER_CHANGED( -1, ComponentEvtHandler::OnFilePickerFileChanged )
-		EVT_DIRPICKER_CHANGED( -1, ComponentEvtHandler::OnDirPickerDirChanged )
-		EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
-	#endif
+	EVT_COLOURPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnColourPickerColourChanged)
+	EVT_FONTPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFontPickerFontChanged)
+	EVT_FILEPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFilePickerFileChanged)
+	EVT_DIRPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnDirPickerDirChanged)
+	EVT_TEXT( wxID_ANY, ComponentEvtHandler::OnText )
 
 	// Grid also seems to ignore clicks
 	EVT_GRID_CELL_LEFT_CLICK( ComponentEvtHandler::OnGridClick )
@@ -131,8 +115,8 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
 
 #if wxVERSION_NUMBER >= 2904
-	EVT_STC_MARGINCLICK( -1, ComponentEvtHandler::OnMarginClick )
-	EVT_RIBBONBAR_PAGE_CHANGED( -1, ComponentEvtHandler::OnRibbonBarPageChanged )
+	EVT_STC_MARGINCLICK(wxID_ANY, ComponentEvtHandler::OnMarginClick)
+	EVT_RIBBONBAR_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnRibbonBarPageChanged)
 #endif
 END_EVENT_TABLE()
 
@@ -168,24 +152,22 @@ END_EVENT_TABLE()
 class CalendarCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		return new wxCalendarCtrl((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		return new wxCalendarCtrl((wxWindow *)parent, wxID_ANY,
 			wxDefaultDateTime,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxCalendarCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxCalendarCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -195,35 +177,58 @@ public:
 class DatePickerCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		return new wxDatePickerCtrl((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		return new wxDatePickerCtrl((wxWindow *)parent, wxID_ANY,
 			wxDefaultDateTime,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxDatePickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxDatePickerCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
 	}
 };
 
+class TimePickerCtrlComponent : public ComponentBase
+{
+public:
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		return new wxTimePickerCtrl( ( wxWindow * )parent, wxID_ANY,
+									 wxDefaultDateTime,
+									 obj->GetPropertyAsPoint( _( "pos" ) ),
+									 obj->GetPropertyAsSize( _( "size" ) ),
+									 obj->GetPropertyAsInteger( _( "style" ) ) | obj->GetPropertyAsInteger( _( "window_style" ) ) );
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc( obj, _( "wxTimePickerCtrl" ), obj->GetPropertyAsString( _( "name" ) ) );
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter( xrcObj, _( "wxTimePickerCtrl" ) );
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
+};
+
+
+
+
 class RichTextCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRichTextCtrl* richText = new wxRichTextCtrl( 	(wxWindow*)parent,
 															wxID_ANY,
 															wxEmptyString,
@@ -231,11 +236,11 @@ public:
 															obj->GetPropertyAsSize(_("size")),
 															obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		wxFont textFont = wxFont(12, wxROMAN, wxNORMAL, wxNORMAL);
-		wxFont boldFont = wxFont(12, wxROMAN, wxNORMAL, wxBOLD);
-		wxFont italicFont = wxFont(12, wxROMAN, wxITALIC, wxNORMAL);
+		wxFont textFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+		wxFont boldFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
+		wxFont italicFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_NORMAL);
 
-		wxFont font(12, wxROMAN, wxNORMAL, wxNORMAL);
+		wxFont font(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
 		wxRichTextCtrl& r = *richText;
 		r.SetFont(font);
@@ -364,15 +369,13 @@ public:
 		return richText;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
 		//xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxRichTextCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -382,9 +385,8 @@ public:
 class HtmlWindowComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxHtmlWindow *hw = new wxHtmlWindow((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxHtmlWindow *hw = new wxHtmlWindow((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -398,15 +400,14 @@ public:
 		return hw;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	ticpp::Element* ExportToXrc(IObject *obj) override
 	{
 		ObjectToXrcFilter xrc(obj, _("wxHtmlWindow"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxHtmlWindow"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -418,17 +419,52 @@ public:
 class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxToggleButton* window = new wxToggleButton((wxWindow *)parent,-1,
-			obj->GetPropertyAsString(_("label")),
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxString label = obj->GetPropertyAsString( _("label") );
+		wxToggleButton* button = new wxToggleButton((wxWindow *)parent, wxID_ANY,
+			label,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
-			obj->GetPropertyAsInteger(_("window_style")));
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-		window->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
-		window->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
-		return window;
+#if wxCHECK_VERSION( 2, 9, 2 )
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			button->SetLabelMarkup(label);
+		}
+#endif
+
+		if (!obj->IsNull(_("bitmap"))) {
+			button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
+		}
+
+		if (!obj->IsNull(_("disabled"))) {
+			button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
+		}
+
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
+		}
+
+		if (!obj->IsNull(_("focus"))) {
+			button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
+		}
+
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
+		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
+		button->SetValue((obj->GetPropertyAsInteger(_("value")) != 0));
+		button->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
+		return button;
 	}
 
 	void OnToggle( wxCommandEvent& event )
@@ -443,30 +479,152 @@ public:
 		}
 	}
 
-	void Cleanup( wxObject* obj )
-	{
-		wxToggleButton* window = dynamic_cast< wxToggleButton* >( obj );
-		if ( 0 != window )
-		{
-			window->Disconnect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
-		}
-		ComponentBase::Cleanup( obj );
-	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxToggleButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
-		xrc.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
+		xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		if (!obj->IsNull(_("disabled"))) {
+			xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("focus"))) {
+			xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		}
 		xrc.AddProperty(_("value"),_("checked"), XRC_TYPE_BOOL);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxToggleButton"));
 		filter.AddWindowProperties();
-		filter.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
+		filter.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
+		filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("checked"),_("value"), XRC_TYPE_BOOL);
+		return filter.GetXfbObject();
+	}
+};
+
+class BitmapToggleButtonComponent : public ComponentBase, public wxEvtHandler
+{
+public:
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxBitmapToggleButton* button = new wxBitmapToggleButton((wxWindow *)parent, wxID_ANY,
+			obj->GetPropertyAsBitmap(_("bitmap")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+#if wxCHECK_VERSION( 2, 9, 2 )
+		// To stay in sync what the generator templates do apply the markup label here as well
+		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
+			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
+		}
+#endif
+
+		if (!obj->IsNull(_("disabled")))
+		{
+			button->SetBitmapDisabled( obj->GetPropertyAsBitmap( _("disabled") ) );
+		}
+
+		if (!obj->IsNull(_("pressed"))) {
+			button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
+		}
+
+		if (!obj->IsNull(_("focus")))
+		{
+			button->SetBitmapFocus( obj->GetPropertyAsBitmap( _("focus") ) );
+		}
+
+		if (!obj->IsNull(_("current"))) {
+			button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
+		}
+
+		if (!obj->IsNull(_("position"))) {
+			button->SetBitmapPosition(
+			    static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
+		}
+
+		if (!obj->IsNull(_("margins"))) {
+			button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
+		}
+
+		button->SetValue( ( obj->GetPropertyAsInteger(_("value")) != 0 ) );
+		button->Connect( wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, wxCommandEventHandler( ToggleButtonComponent::OnToggle ), NULL, this );
+
+		return button;
+	}
+
+	void OnToggle(wxCommandEvent& event)
+	{
+		wxBitmapToggleButton* window = dynamic_cast< wxBitmapToggleButton* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%i"), window->GetValue() ? 1 : 0 );
+			GetManager()->ModifyProperty( window, _("value"), value );
+			window->SetFocus();
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc(obj, _("wxBitmapToggleButton"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		if ( !obj->IsNull( _("disabled") ) )
+		{
+			xrc.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("pressed"))) {
+			xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		}
+		if ( !obj->IsNull( _("focus") ) )
+		{
+			xrc.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("current"))) {
+			xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		}
+		if (!obj->IsNull(_("position"))) {
+			xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		}
+		if (!obj->IsNull(_("margins"))) {
+			xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+		}
+		xrc.AddProperty(_("value"),_("checked"), XRC_TYPE_BOOL);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter(xrcObj, _("wxBitmapToggleButton"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("disabled"),_("disabled"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("focus"),_("focus"),XRC_TYPE_BITMAP);
+		filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+		filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("checked"),_("value"), XRC_TYPE_BOOL);
 		return filter.GetXfbObject();
 	}
@@ -476,10 +634,9 @@ public:
 class TreeCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		int style = obj->GetPropertyAsInteger(_("style"));
-		wxTreeCtrl *tc = new wxTreeCtrl((wxWindow *)parent,-1,
+		wxTreeCtrl *tc = new wxTreeCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			style | obj->GetPropertyAsInteger(_("window_style")));
@@ -500,15 +657,13 @@ public:
 		return tc;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxTreeCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxTreeCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -518,9 +673,8 @@ public:
 class ScrollBarComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxScrollBar *sb = new wxScrollBar((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxScrollBar *sb = new wxScrollBar((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -532,8 +686,7 @@ public:
 		return sb;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxScrollBar"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
@@ -543,8 +696,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxScrollBar"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
@@ -558,11 +710,10 @@ public:
 class SpinCtrlComponent : public ComponentBase, public wxEvtHandler
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		int max = obj->GetPropertyAsInteger(_("max"));
 		int min = obj->GetPropertyAsInteger(_("min"));
-		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent,-1,
+		wxSpinCtrl* window = new wxSpinCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
@@ -587,8 +738,7 @@ public:
 		}
 	}
 
-	void Cleanup( wxObject* obj )
-	{
+	void Cleanup(wxObject* obj) override {
 		wxSpinCtrl* window = dynamic_cast< wxSpinCtrl* >( obj );
 		if ( 0 != window )
 		{
@@ -597,8 +747,7 @@ public:
 		ComponentBase::Cleanup( obj );
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxSpinCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("initial"),_("value"), XRC_TYPE_TEXT);
@@ -607,8 +756,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxSpinCtrl"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"), XRC_TYPE_TEXT);
@@ -620,26 +768,89 @@ public:
 	}
 };
 
+class SpinCtrlDoubleComponent : public ComponentBase, public wxEvtHandler
+{
+public:
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxSpinCtrlDouble* window = new wxSpinCtrlDouble((wxWindow *)parent, wxID_ANY,
+			obj->GetPropertyAsString(_("value")),
+			obj->GetPropertyAsPoint(_("pos")),
+			obj->GetPropertyAsSize(_("size")),
+			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")),
+			obj->GetPropertyAsFloat(_("min")),
+			obj->GetPropertyAsFloat(_("max")),
+			obj->GetPropertyAsFloat(_("initial")),
+			obj->GetPropertyAsFloat(_("inc")));
+
+		window->SetDigits(obj->GetPropertyAsInteger(_("digits")));
+
+		window->Connect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinEventHandler( SpinCtrlDoubleComponent::OnSpin ), NULL, this );
+		return window;
+	}
+
+	void OnSpin( wxSpinEvent& event )
+	{
+		wxSpinCtrlDouble* window = dynamic_cast< wxSpinCtrlDouble* >( event.GetEventObject() );
+		if ( 0 != window )
+		{
+			wxString value;
+			value.Printf( wxT("%f"), window->GetValue() );
+			GetManager()->ModifyProperty( window, _("initial"), value );
+			window->SetFocus();
+		}
+	}
+
+	void Cleanup(wxObject* obj) override {
+		wxSpinCtrlDouble* window = dynamic_cast< wxSpinCtrlDouble* >( obj );
+		if ( 0 != window )
+		{
+			window->Disconnect( wxEVT_COMMAND_SPINCTRLDOUBLE_UPDATED, wxSpinEventHandler( SpinCtrlDoubleComponent::OnSpin ), NULL, this );
+		}
+		ComponentBase::Cleanup( obj );
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc(obj, _("wxSpinCtrlDouble"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("initial"),_("value"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
+		xrc.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+		xrc.AddProperty(_("digits"), _("digits"), XRC_TYPE_INTEGER);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter(xrcObj, _("wxSpinCtrl"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("value"),_("value"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("value"),_("initial"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("min"),_("min"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("max"),_("max"), XRC_TYPE_INTEGER);
+		filter.AddProperty(_("inc"),_("inc"), XRC_TYPE_FLOAT);
+		filter.AddProperty(_("digits"), _("digits"), XRC_TYPE_INTEGER);
+
+		return filter.GetXfbObject();
+	}
+};
+
 class SpinButtonComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		return new wxSpinButton((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		return new wxSpinButton((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxSpinButton"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxSpinButton"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -649,12 +860,10 @@ public:
 class CheckListBoxComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxArrayString choices (obj->GetPropertyAsArrayString(_("choices")));
 		wxCheckListBox *cl =
-			new wxCheckListBox((wxWindow *)parent,-1,
+			new wxCheckListBox((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			choices,
@@ -663,16 +872,14 @@ public:
 		return cl;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxCheckListBox"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxCheckListBox"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
@@ -683,10 +890,8 @@ public:
 class GridComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxGrid *grid = new wxGrid((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxGrid *grid = new wxGrid((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
@@ -790,15 +995,22 @@ public:
 		return grid;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxGrid);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxGrid"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxGrid"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -847,7 +1059,6 @@ void ComponentEvtHandler::OnGridRowSize( wxGridSizeEvent& )
 	m_manager->ModifyProperty( m_window, _("row_sizes"), sizes, true );
 }
 
-#if wxCHECK_VERSION( 2, 8, 0 )
 class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
 public:
@@ -864,8 +1075,7 @@ public:
 		}
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxPickerBase* picker = dynamic_cast< wxPickerBase* >( wxobject );
 		if ( picker != 0 )
 		{
@@ -879,8 +1089,7 @@ public:
 		}
 	}
 
-	void Cleanup( wxObject* obj )
-	{
+	void Cleanup(wxObject* obj) override {
 		wxPickerBase* picker = dynamic_cast< wxPickerBase* >( obj );
 		if ( picker != 0 )
 		{
@@ -901,8 +1110,7 @@ class ColourPickerComponent : public PickerComponentBase
 private:
 
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxColourPickerCtrl* colourpicker = new wxColourPickerCtrl(
 			(wxWindow*)parent,
 			obj->GetPropertyAsInteger(_("id")),
@@ -916,16 +1124,23 @@ public:
 		return colourpicker;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxColourPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxColourPickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("colour"),_("value"),XRC_TYPE_COLOUR);
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxColourPickerCtrl"));
 		filter.AddProperty(_("value"),_("colour"),XRC_TYPE_COLOUR);
 		filter.AddWindowProperties();
@@ -946,8 +1161,7 @@ void ComponentEvtHandler::OnColourPickerColourChanged( wxColourPickerEvent& )
 class FontPickerComponent : public PickerComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxFontPickerCtrl* picker = new wxFontPickerCtrl(
 			(wxWindow*)parent,
 			obj->GetPropertyAsInteger(_("id")),
@@ -966,8 +1180,16 @@ public:
 		return picker;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxFontPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxFontPickerCtrl"), obj->GetPropertyAsString(_("name")));
 		if ( !obj->IsNull( _("value") ) )
 		{
@@ -977,8 +1199,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxFontPickerCtrl"));
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
 		filter.AddWindowProperties();
@@ -999,8 +1220,7 @@ void ComponentEvtHandler::OnFontPickerFontChanged( wxFontPickerEvent& )
 class FilePickerComponent : public PickerComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxFilePickerCtrl* picker = new wxFilePickerCtrl(
 			(wxWindow*)parent,
 			obj->GetPropertyAsInteger(_("id")),
@@ -1016,8 +1236,16 @@ public:
 		return picker;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxFilePickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxFilePickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
@@ -1026,8 +1254,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxFilePickerCtrl"));
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
 		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
@@ -1049,8 +1276,7 @@ void ComponentEvtHandler::OnFilePickerFileChanged( wxFileDirPickerEvent& )
 class DirPickerComponent : public PickerComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxDirPickerCtrl* picker = new wxDirPickerCtrl(
 			(wxWindow*)parent,
 			obj->GetPropertyAsInteger(_("id")),
@@ -1065,8 +1291,16 @@ public:
 		return picker;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxDirPickerCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxDirPickerCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
@@ -1074,8 +1308,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxDirPickerCtrl"));
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
 		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
@@ -1096,10 +1329,9 @@ void ComponentEvtHandler::OnDirPickerDirChanged( wxFileDirPickerEvent& )
 class HyperlinkComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxHyperlinkCtrl* ctrl = new wxHyperlinkCtrl(
-			(wxWindow*)parent, -1,
+			(wxWindow*)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsString(_("url")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1123,8 +1355,7 @@ public:
 		return ctrl;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxHyperlinkCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		xrc.AddPropertyValue(_("url"), obj->GetPropertyAsString(_("url")));
@@ -1132,8 +1363,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxHyperlinkCtrl"));
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 
@@ -1153,13 +1383,10 @@ public:
 	}
 };
 
-#endif
-
 class GenericDirCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxGenericDirCtrl* ctrl = new wxGenericDirCtrl(
 			(wxWindow*)parent,
 			wxID_ANY,
@@ -1176,8 +1403,16 @@ public:
 		return ctrl;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxGenericDirCtrl);
+		if (window)
+		{
+			window->GetTreeCtrl()->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxGenericDirCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddProperty(_("defaultfolder"),_("defaultfolder"),XRC_TYPE_TEXT);
 		xrc.AddProperty(_("filter"),_("filter"),XRC_TYPE_TEXT);
@@ -1186,8 +1421,7 @@ public:
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxGenericDirCtrl"));
 		filter.AddProperty(_("defaultfolder"),_("defaultfolder"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("filter"),_("filter"),XRC_TYPE_TEXT);
@@ -1206,13 +1440,11 @@ void GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick( wxMouseEvent& event )
 class CustomControlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject* /*obj*/, wxObject *parent)
-	{
-		return new wxPanel((wxWindow *)parent, -1, wxDefaultPosition, wxDefaultSize, 0 );
+	wxObject* Create(IObject* /*obj*/, wxObject* parent) override {
+		return new wxPanel((wxWindow *)parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
-	{
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, obj->GetPropertyAsString(_("class")), obj->GetPropertyAsString(_("name")));
 		return xrc.GetXrcObject();
 	}
@@ -1221,9 +1453,7 @@ public:
 class SearchCtrlComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxSearchCtrl* sc = new wxSearchCtrl((wxWindow *)parent, wxID_ANY,
 			obj->GetPropertyAsString(_("value")),
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1232,12 +1462,12 @@ public:
 
 		if ( !obj->IsNull( _("search_button") ) )
 		{
-			sc->ShowSearchButton( obj->GetPropertyAsInteger( _("search_button") ) );
+			sc->ShowSearchButton(obj->GetPropertyAsInteger(_("search_button")) != 0);
 		}
 
 		if ( !obj->IsNull( _("cancel_button") ) )
 		{
-			sc->ShowCancelButton( obj->GetPropertyAsInteger( _("cancel_button") ) );
+			sc->ShowCancelButton(obj->GetPropertyAsInteger(_("cancel_button")) != 0);
 		}
 
 		sc->PushEventHandler( new ComponentEvtHandler( sc, GetManager() ) );
@@ -1245,21 +1475,23 @@ public:
 		return sc;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
-		#if wxVERSION_NUMBER < 2900
-		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
-		return xrc.GetXrcObject();
-		#else
+		auto* window = wxDynamicCast(obj, wxSearchCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxSearchCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		xrc.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
-		#endif
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxSearchCtrl"));
 		filter.AddWindowProperties();
 		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
@@ -1285,8 +1517,7 @@ void ComponentEvtHandler::OnText( wxCommandEvent& event)
 class MediaCtrlComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxMediaCtrl* mc = new wxMediaCtrl((wxWindow *)parent, wxID_ANY, wxT(""),obj->GetPropertyAsPoint(_("pos")),
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -1322,15 +1553,22 @@ public:
 		return mc;
 	}
 
-	ticpp::Element* ExportToXrc(IObject *obj)
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxMediaCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxMediaCtrl"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
 	}
 
-	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
-	{
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMediaCtrl"));
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
@@ -1347,9 +1585,8 @@ public:
 class PropertyGridComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent,-1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxPropertyGrid* pg = new wxPropertyGrid((wxWindow *)parent, wxID_ANY,
 												obj->GetPropertyAsPoint(wxT("pos")),
 												obj->GetPropertyAsSize(wxT("size")),
 												obj->GetPropertyAsInteger(wxT("style")) |
@@ -1368,8 +1605,7 @@ public:
 		// Prevent assert for missing event handler
 	}*/
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxPropertyGrid* pg = wxDynamicCast( wxobject, wxPropertyGrid);
 		if ( NULL == pg )
 		{
@@ -1411,9 +1647,8 @@ public:
 class PropertyGridManagerComponent : public ComponentBase
 {
 public:
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, -1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxPropertyGridManager* pgman = new wxPropertyGridManager((wxWindow *)parent, wxID_ANY,
 																obj->GetPropertyAsPoint(wxT("pos")),
 																obj->GetPropertyAsSize(wxT("size")),
 																obj->GetPropertyAsInteger(wxT("style")) |
@@ -1424,7 +1659,7 @@ public:
 			pgman->SetExtraStyle( obj->GetPropertyAsInteger( wxT("extra_style") ) );
 		}
 
-		pgman->ShowHeader( obj->GetPropertyAsInteger( wxT("show_header") ) );
+		pgman->ShowHeader(obj->GetPropertyAsInteger(wxT("show_header")) != 0);
 
 		// Adding a page sets target page to the one added, so
 		// we don't have to call SetTargetPage if we are filling
@@ -1523,8 +1758,7 @@ public:
 		// Prevent assert for missing event handler
 	}*/
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxPropertyGridManager* pgm = wxDynamicCast( wxobject, wxPropertyGridManager);
 		if ( NULL == pgm )
 		{
@@ -1585,9 +1819,8 @@ class PropertyGridPageComponent : public ComponentBase{};
 class StyledTextComponent : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
-	{
-		wxStyledTextCtrl* m_code = new wxStyledTextCtrl( 	(wxWindow *)parent, -1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxStyledTextCtrl* m_code = new wxStyledTextCtrl( 	(wxWindow *)parent, wxID_ANY,
 												obj->GetPropertyAsPoint(_("pos")),
 												obj->GetPropertyAsSize(_("size")),
 												obj->GetPropertyAsInteger(_("window_style")),
@@ -1637,7 +1870,7 @@ public:
 		{
 			m_code->SetMarginWidth( 1, 0 );
 		}
-		m_code->SetIndentationGuides( ( 0 != obj->GetPropertyAsInteger( _("indentation_guides") ) ) );
+		m_code->SetIndentationGuides(obj->GetPropertyAsInteger(_("indentation_guides")));
 
 		m_code->SetMarginWidth( 2, 0 );
 
@@ -1651,7 +1884,7 @@ public:
 							   typename union unsigned using virtual void volatile wchar_t \
 							   while"));
 
-		wxFont font(10, wxMODERN, wxNORMAL, wxNORMAL);
+		wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 		if ( !obj->GetPropertyAsString(_("font")).empty() )
 		{
 			font = obj->GetPropertyAsFont(_("font"));
@@ -1678,7 +1911,7 @@ public:
 		m_code->SetSelBackground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHT));
 		m_code->SetSelForeground(true, wxSystemSettings::GetColour(wxSYS_COLOUR_HIGHLIGHTTEXT));
 		m_code->SetViewEOL( ( 0 != obj->GetPropertyAsInteger( _("view_eol") ) ) );
-		m_code->SetViewWhiteSpace( ( 0 != obj->GetPropertyAsInteger( _("view_whitespace") ) ) );
+		m_code->SetViewWhiteSpace(obj->GetPropertyAsInteger(_("view_whitespace")));
 
 		m_code->SetCaretWidth(2);
 
@@ -1699,6 +1932,15 @@ public:
 		m_code->PushEventHandler( new ComponentEvtHandler( m_code, GetManager() ) );
 
 		return m_code;
+	}
+
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxStyledTextCtrl);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
 	}
 };
 
@@ -1723,24 +1965,25 @@ void ComponentEvtHandler::OnMarginClick( wxStyledTextEvent& event )
 class DataViewModel : public wxDataViewModel
 {
 public:
-	unsigned int GetChildren(const wxDataViewItem& item, wxDataViewItemArray& children) const {
+	unsigned int GetChildren(const wxDataViewItem&,
+	                         wxDataViewItemArray& /*children*/) const override {
 		return 0;
 	}
-	unsigned int GetColumnCount() const {
+	unsigned int GetColumnCount() const override {
 		return 0;
 	}
-	wxString GetColumnType(unsigned int col) const {
+	wxString GetColumnType(unsigned int /*col*/) const override {
 		return wxVariant("Dummy").GetType();
 	}
-	wxDataViewItem GetParent(const wxDataViewItem& item) const {
+	wxDataViewItem GetParent(const wxDataViewItem&) const override {
 		return wxDataViewItem( NULL );
 	}
-	bool IsContainer(const wxDataViewItem& item) const {
+	bool IsContainer(const wxDataViewItem&) const override {
 		return false;
 	}
-	void GetValue (wxVariant &variant, const wxDataViewItem &item, unsigned int col) const {
+	void GetValue(wxVariant&, const wxDataViewItem&, unsigned int /*col*/) const override {
 	}
-	bool SetValue (const wxVariant &variant, const wxDataViewItem &item, unsigned int col) {
+	bool SetValue(const wxVariant&, const wxDataViewItem&, unsigned int /*col*/) override {
 		return true;
 	}
 };
@@ -1748,8 +1991,7 @@ public:
 class DataViewCtrl : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxDataViewCtrl* dataViewCtrl = new wxDataViewCtrl((wxWindow *)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1763,8 +2005,7 @@ public:
 		return dataViewCtrl;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxDataViewCtrl* list = wxDynamicCast( wxobject, wxDataViewCtrl);
 		if ( NULL == list )
 		{
@@ -1780,27 +2021,93 @@ public:
 			{
 				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
 				{
-					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
 				{
-					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendToggleColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
 				{
-					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendProgressColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
 				{
-					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendIconTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Date"))
 				{
-					list->AppendDateColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendDateColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Bitmap"))
 				{
-					list->AppendBitmapColumn(childObj->GetPropertyAsString( _("label")), childObj->GetPropertyAsInteger( _("model_column")));
+					auto* col = list->AppendBitmapColumn(
+						childObj->GetPropertyAsString(_("label")),
+						childObj->GetPropertyAsInteger(_("model_column")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 			}
 		}
@@ -1811,7 +2118,7 @@ public:
 class DataViewTreeCtrl : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
+	wxObject* Create( IObject* obj, wxObject* parent ) override
 	{
 		wxDataViewTreeCtrl* dataViewTreeCtrl = new wxDataViewTreeCtrl((wxWindow *)parent,
 			wxID_ANY,
@@ -1826,8 +2133,7 @@ public:
 class DataViewListCtrl : public ComponentBase
 {
 public:
-	wxObject* Create( IObject* obj, wxObject* parent )
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxDataViewListCtrl* dataViewListCtrl = new wxDataViewListCtrl((wxWindow *)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1837,7 +2143,7 @@ public:
 		return dataViewListCtrl;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ ) override
 	{
 		wxDataViewListCtrl* list = wxDynamicCast( wxobject, wxDataViewListCtrl);
 		if ( NULL == list )
@@ -1854,19 +2160,59 @@ public:
 			{
 				if (childObj->GetPropertyAsString( _("type")) == _("Text"))
 				{
-					list->AppendTextColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Toggle"))
 				{
-					list->AppendToggleColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendToggleColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("Progress"))
 				{
-					list->AppendProgressColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendProgressColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 				else if (childObj->GetPropertyAsString( _("type")) == _("IconText"))
 				{
-					list->AppendIconTextColumn(childObj->GetPropertyAsString( _("label")));
+					auto* col = list->AppendIconTextColumn(
+						childObj->GetPropertyAsString(_("label")),
+						static_cast<wxDataViewCellMode>(childObj->GetPropertyAsInteger(_("mode"))),
+						childObj->GetPropertyAsInteger(_("width")),
+						static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
+						childObj->GetPropertyAsInteger(_("flags"))
+					);
+					if (!childObj->IsNull(_("ellipsize")))
+					{
+						col->GetRenderer()->EnableEllipsize(static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
+					}
 				}
 			}
 		}
@@ -1882,10 +2228,8 @@ class DataViewColumn : public ComponentBase{};
 class wxcoreTreeListCtrlComponent : public ComponentBase
 {
 public:
-
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
-		wxTreeListCtrl* treeListCtrl = new wxTreeListCtrl( (wxWindow *)parent, -1,
+	wxObject* Create(IObject* obj, wxObject* parent) override {
+		wxTreeListCtrl* treeListCtrl = new wxTreeListCtrl( (wxWindow *)parent, wxID_ANY,
 				obj->GetPropertyAsPoint(_("pos")),
 				obj->GetPropertyAsSize(_("size")),
 				obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
@@ -1893,8 +2237,7 @@ public:
 		return treeListCtrl;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		// initialize tree
 		wxTreeListCtrl* treeListCtrl = wxDynamicCast( wxobject, wxTreeListCtrl );
 		int colCount = treeListCtrl->GetColumnCount();
@@ -1944,8 +2287,7 @@ public:
 class wxcoreTreeListCtrlColumnComponent : public ComponentBase
 {
 public:
-	void OnCreated( wxObject* wxobject, wxWindow* wxparent )
-	{
+	void OnCreated(wxObject* wxobject, wxWindow* wxparent) override {
 		IObject* obj = GetManager()->GetIObject( wxobject );
 		wxTreeListCtrl* treeList = wxDynamicCast( wxparent, wxTreeListCtrl );
 
@@ -1961,16 +2303,13 @@ public:
 			obj->GetPropertyAsInteger( _("flag") ) );
 	}
 
-	void OnSelected( wxObject* wxobject )
-	{
-
+	void OnSelected(wxObject*) override {
 	}
 };
 
 class RibbonBarComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonBar *rb = new wxRibbonBar((wxWindow*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -1989,8 +2328,16 @@ class RibbonBarComponent : public ComponentBase
 		return rb;
 	}
 
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxRibbonBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonBar* rb = wxDynamicCast( wxobject, wxRibbonBar );
 		if ( NULL == rb )
 		{
@@ -2024,12 +2371,9 @@ void ComponentEvtHandler::OnRibbonBarPageChanged( wxRibbonBarEvent& event )
 		IObject*  iChild = m_manager->GetIObject( wxChild );
 		if ( iChild )
 		{
-			if ( (int)i == selPage && !iChild->GetPropertyAsInteger( _("select") ) )
-			{
+			if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
 				m_manager->ModifyProperty( wxChild, _("select"), wxT("1"), false );
-			}
-			else if ( (int)i != selPage && iChild->GetPropertyAsInteger( _("select") ) )
-			{
+			} else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
 				m_manager->ModifyProperty( wxChild, _("select"), wxT("0"), false );
 			}
 		}
@@ -2044,15 +2388,14 @@ void ComponentEvtHandler::OnRibbonBarPageChanged( wxRibbonBarEvent& event )
 
 class RibbonPageComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonPage *rbpage = new wxRibbonPage((wxRibbonBar*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
 			obj->GetPropertyAsBitmap(_("bitmap")),
 			0);
 
-		if( obj->GetPropertyAsInteger(_("select") ) ) {
+		if (obj->GetPropertyAsInteger(_("select")) != 0) {
 			((wxRibbonBar*)parent)->SetActivePage(rbpage);
 		}
 
@@ -2060,12 +2403,22 @@ class RibbonPageComponent : public ComponentBase
 
 		return rbpage;
 	}
+
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonPage);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
 };
 
 class RibbonPanelComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonPanel *rbp = new wxRibbonPanel((wxRibbonPage*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsString(_("label")),
@@ -2079,12 +2432,21 @@ class RibbonPanelComponent : public ComponentBase
 		return rbp;
 	}
 
+	/*
+	void Cleanup(wxObject* obj) override
+	{
+		auto* window = wxDynamicCast(obj, wxRibbonPanel);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
 };
 
 class RibbonButtonBarComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonButtonBar *rbb = new wxRibbonButtonBar((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -2095,8 +2457,19 @@ class RibbonButtonBarComponent : public ComponentBase
 
 		return rbb;
 	}
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+
+	/*
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxRibbonButtonBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonButtonBar* rb = wxDynamicCast( wxobject, wxRibbonButtonBar );
 		if ( NULL == rb )
 		{
@@ -2145,8 +2518,7 @@ class RibbonToggleButtonComponent : public ComponentBase{};
 
 class RibbonToolBarComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonToolBar *rbb = new wxRibbonToolBar((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -2157,8 +2529,19 @@ class RibbonToolBarComponent : public ComponentBase
 
 		return rbb;
 	}
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+
+	/*
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxRibbonToolBar);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonToolBar* rb = wxDynamicCast( wxobject, wxRibbonToolBar );
 		if ( NULL == rb )
 		{
@@ -2204,8 +2587,7 @@ class RibbonToggleToolComponent : public ComponentBase{};
 
 class RibbonGalleryComponent : public ComponentBase
 {
-	wxObject* Create(IObject *obj, wxObject *parent)
-	{
+	wxObject* Create(IObject* obj, wxObject* parent) override {
 		wxRibbonGallery *ribbonGallery = new wxRibbonGallery((wxRibbonPanel*)parent,
 			wxID_ANY,
 			obj->GetPropertyAsPoint(_("pos")),
@@ -2216,8 +2598,19 @@ class RibbonGalleryComponent : public ComponentBase
 
 		return ribbonGallery;
 	}
-	void OnCreated( wxObject* wxobject, wxWindow* /*wxparent*/ )
+
+	/*
+	void Cleanup(wxObject* obj) override
 	{
+		auto* window = wxDynamicCast(obj, wxRibbonGallery);
+		if (window)
+		{
+			window->PopEventHandler(true);
+		}
+	}
+	*/
+
+	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
 		wxRibbonGallery* rg = wxDynamicCast( wxobject, wxRibbonGallery );
 		if ( NULL == rg )
 		{
@@ -2247,9 +2640,11 @@ class RibbonGalleryItemComponent : public ComponentBase{};
 BEGIN_LIBRARY()
 
 WINDOW_COMPONENT("wxCalendarCtrl",CalendarCtrlComponent)
-WINDOW_COMPONENT("wxDatePickerCtrl", DatePickerCtrlComponent )
-WINDOW_COMPONENT("wxHtmlWindow",HtmlWindowComponent)
+WINDOW_COMPONENT("wxDatePickerCtrl",DatePickerCtrlComponent)
+WINDOW_COMPONENT("wxTimePickerCtrl",TimePickerCtrlComponent)
+WINDOW_COMPONENT("wxHtmlWindow", HtmlWindowComponent)
 WINDOW_COMPONENT("wxToggleButton",ToggleButtonComponent)
+WINDOW_COMPONENT("wxBitmapToggleButton",BitmapToggleButtonComponent)
 WINDOW_COMPONENT("wxTreeCtrl",TreeCtrlComponent)
 WINDOW_COMPONENT("wxGrid",GridComponent)
 WINDOW_COMPONENT("wxScrollBar",ScrollBarComponent)
@@ -2284,7 +2679,6 @@ WINDOW_COMPONENT("wxCheckListBox",CheckListBoxComponent)
 WINDOW_COMPONENT("wxMediaCtrl",MediaCtrlComponent)
 #endif
 
-#if wxCHECK_VERSION( 2, 8, 0 )
 // wxRichTextCtrl
 WINDOW_COMPONENT( "wxRichTextCtrl", RichTextCtrlComponent )
 MACRO(wxTE_PROCESS_ENTER);
@@ -2342,7 +2736,7 @@ MACRO(wxTE_CENTER);
 MACRO(wxTE_RIGHT);
 MACRO(wxTE_CAPITALIZE);
 
-#endif
+WINDOW_COMPONENT("wxSpinCtrlDouble",SpinCtrlDoubleComponent)
 
 // wxCalendarCtrl
 MACRO(wxCAL_SUNDAY_FIRST)
@@ -2352,6 +2746,7 @@ MACRO(wxCAL_NO_YEAR_CHANGE)
 MACRO(wxCAL_NO_MONTH_CHANGE)
 MACRO(wxCAL_SHOW_SURROUNDING_WEEKS)
 MACRO(wxCAL_SEQUENTIAL_MONTH_SELECTION)
+MACRO(wxCAL_SHOW_WEEK_NUMBERS)
 
 // wxDatePickerCtrl
 MACRO(wxDP_SPIN)
@@ -2359,6 +2754,11 @@ MACRO(wxDP_DROPDOWN)
 MACRO(wxDP_SHOWCENTURY)
 MACRO(wxDP_ALLOWNONE)
 MACRO(wxDP_DEFAULT)
+
+
+// wxTimePickerCtrl
+MACRO( wxTP_DEFAULT )
+
 
 // wxHtmlWindow
 MACRO(wxHW_SCROLLBAR_NEVER)
@@ -2378,14 +2778,11 @@ MACRO(wxTR_ROW_LINES)
 MACRO(wxTR_HAS_VARIABLE_ROW_HEIGHT)
 MACRO(wxTR_SINGLE)
 MACRO(wxTR_MULTIPLE)
-#if wxVERSION_NUMBER < 2900
-MACRO(wxTR_EXTENDED)
-#endif
 MACRO(wxTR_DEFAULT_STYLE)
 
 // wxGrid
 MACRO(wxALIGN_LEFT)
-MACRO(wxALIGN_CENTRE)
+MACRO(wxALIGN_CENTER)
 MACRO(wxALIGN_RIGHT)
 MACRO(wxALIGN_TOP)
 MACRO(wxALIGN_BOTTOM)
@@ -2405,13 +2802,8 @@ WINDOW_COMPONENT("wxGenericDirCtrl",GenericDirCtrlComponent)
 MACRO(wxDIRCTRL_DIR_ONLY)
 MACRO(wxDIRCTRL_3D_INTERNAL)
 MACRO(wxDIRCTRL_SELECT_FIRST)
-#if wxVERSION_NUMBER < 2900
-MACRO(wxDIRCTRL_SHOW_FILTERS)
-#endif
 MACRO(wxDIRCTRL_EDIT_LABELS)
-#if wxVERSION_NUMBER >=2900
 MACRO(wxDIRCTRL_MULTIPLE)
-#endif
 
 // wxTimer
 ABSTRACT_COMPONENT("wxTimer", TimerComponent)
@@ -2464,6 +2856,28 @@ MACRO(wxDV_VERT_RULES)
 MACRO(wxDV_VARIABLE_LINE_HEIGHT)
 MACRO(wxDV_NO_HEADER)
 
+MACRO(wxDATAVIEW_CELL_INERT)
+MACRO(wxDATAVIEW_CELL_ACTIVATABLE)
+MACRO(wxDATAVIEW_CELL_EDITABLE)
+
+MACRO(wxDATAVIEW_COL_RESIZABLE)
+MACRO(wxDATAVIEW_COL_SORTABLE)
+MACRO(wxDATAVIEW_COL_REORDERABLE)
+MACRO(wxDATAVIEW_COL_HIDDEN)
+
+MACRO(wxELLIPSIZE_NONE)
+MACRO(wxELLIPSIZE_START)
+MACRO(wxELLIPSIZE_MIDDLE)
+MACRO(wxELLIPSIZE_END)
+
+MACRO(wxALIGN_LEFT)
+MACRO(wxALIGN_TOP)
+MACRO(wxALIGN_RIGHT)
+MACRO(wxALIGN_BOTTOM)
+MACRO(wxALIGN_CENTER)
+MACRO(wxALIGN_CENTER_HORIZONTAL)
+MACRO(wxALIGN_CENTER_VERTICAL)
+
 // wxRibbonBar
 MACRO(wxRIBBON_BAR_DEFAULT_STYLE)
 MACRO(wxRIBBON_BAR_FOLDBAR_STYLE)
@@ -2498,6 +2912,8 @@ MACRO(wxTR_DEFAULT_STYLE)
 ABSTRACT_COMPONENT( "wxTreeListCtrlColumn", wxcoreTreeListCtrlColumnComponent )
 MACRO(wxCOL_RESIZABLE)
 MACRO(wxCOL_SORTABLE)
+MACRO(wxCOL_REORDERABLE)
+MACRO(wxCOL_HIDDEN)
 
 END_LIBRARY()
 

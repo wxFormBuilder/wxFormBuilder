@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Andrea Zanellato - zanellato.andrea@gmail.com
@@ -25,22 +25,10 @@
 #ifndef __WXFB_WIZARD_H__
 #define __WXFB_WIZARD_H__
 
-#include <wx/intl.h>
-#include <wx/bitmap.h>
-#include <wx/event.h>
-#include <wx/image.h>
-#include <wx/icon.h>
-#include <wx/statbmp.h>
-#include <wx/string.h>
-#include <wx/gdicmn.h>
-#include <wx/font.h>
-#include <wx/colour.h>
-#include <wx/settings.h>
-#include <wx/sizer.h>
-#include <wx/statline.h>
 #include <wx/button.h>
-#include <wx/panel.h>
-#include <wx/dynarray.h>
+#include <wx/sizer.h>
+#include <wx/statbmp.h>
+#include <wx/statline.h>
 #include <wx/wizard.h>
 
 class Wizard;
@@ -49,14 +37,14 @@ class WizardEvent;
 
 WX_DEFINE_ARRAY_PTR( WizardPageSimple*, WizardPages );
 
-class WizardPageSimple : public wxPanel 
+class WizardPageSimple : public wxPanel
 {
 public:
     WizardPageSimple( Wizard *parent );
     ~WizardPageSimple();
 };
 
-class Wizard : public wxPanel 
+class Wizard : public wxPanel
 {
 public:
     Wizard( wxWindow *parent, wxWindowID id = wxID_ANY,
@@ -107,10 +95,8 @@ private:
 class WizardEvent : public wxNotifyEvent
 {
 public:
-    WizardEvent( wxEventType type = wxEVT_NULL,
-                 int id = wxID_ANY,
-                 bool direction = true,
-                 WizardPageSimple *page = NULL );
+	explicit WizardEvent(wxEventType type = wxEVT_NULL, int id = wxID_ANY, bool direction = true,
+	                     WizardPageSimple* page = nullptr);
 
     // for EVT_WXFB_WIZARD_PAGE_CHANGING, return true if we're going forward or
     // false otherwise and for EVT_WXFB_WIZARD_PAGE_CHANGED return true if we came
@@ -120,7 +106,9 @@ public:
 
     WizardPageSimple *GetPage() const { return m_page; }
 
-    virtual wxEvent *Clone() const { return new WizardEvent( *this ); }
+	wxEvent* Clone() const override {
+		return new WizardEvent(*this);
+	}
 
 private:
     bool              m_direction;
@@ -133,17 +121,17 @@ private:
 #define wxFBDLLIMPEXP
 
 BEGIN_DECLARE_EVENT_TYPES()
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_CHANGED, 900 );
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_CHANGING, 901 );
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_CANCEL, 902 );
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_HELP, 903 );
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_FINISHED, 904 );
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_CHANGED, 900)
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_CHANGING, 901)
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_CANCEL, 902)
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_HELP, 903)
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_FINISHED, 904)
 #if wxABI_VERSION >= 20811
-    DECLARE_EXPORTED_EVENT_TYPE( wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_SHOWN, 905 );
+    DECLARE_EXPORTED_EVENT_TYPE(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_SHOWN, 905)
 #endif
 END_DECLARE_EVENT_TYPES()
 
-typedef void ( wxEvtHandler::*WizardEventFunction )( WizardEvent& );
+using WizardEventFunction = void (wxEvtHandler::*)(WizardEvent&);
 
 #define WizardEventHandler( func ) \
     (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent( WizardEventFunction, &func )

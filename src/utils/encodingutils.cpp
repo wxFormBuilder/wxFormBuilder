@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,48 +24,39 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "encodingutils.h"
-#include <stdarg.h>
 
-#include "wx/wx.h"
 #include <wx/wfstream.h>
 
-void UTF8ToAnsi(const wxString &filename)
-{
-  wxString temp_filename = filename + wxT(".tmp");
+void UTF8ToAnsi(const wxString& filename) {
+	wxString temp_filename = filename + wxT(".tmp");
 
-  ::wxCopyFile(filename,temp_filename);
-  ::wxRemoveFile(filename);
+	::wxCopyFile(filename, temp_filename);
+	::wxRemoveFile(filename);
 
-  {
-    wxFileInputStream input(temp_filename);
-    wxFileOutputStream output(filename);
+	{
+		wxFileInputStream input(temp_filename);
+		wxFileOutputStream output(filename);
 
-    if (input.IsOk() && output.IsOk())
-    {
-      while (!input.Eof())
-      {
-        unsigned char c;
+		if (input.IsOk() && output.IsOk()) {
+			while (!input.Eof()) {
+				unsigned char c;
 
-        input.Read(&c,1);
+				input.Read(&c, 1);
 
-        if (input.LastRead() != 1)
-          break;
+				if (input.LastRead() != 1) break;
 
-        if (c == 0xC2 || c == 0xC3)
-        {
-          unsigned char aux = c;
-          input.Read(&c,1);
-          if (input.LastRead() != 1)
-            break;
+				if (c == 0xC2 || c == 0xC3) {
+					unsigned char aux = c;
+					input.Read(&c, 1);
+					if (input.LastRead() != 1) break;
 
-          if (aux == 0xC3)
-            c += 64;
-        }
+					if (aux == 0xC3) c += 64;
+				}
 
-        output.Write(&c,1);
-      }
-    }
-  }
+				output.Write(&c, 1);
+			}
+		}
+	}
 
-  ::wxRemoveFile(temp_filename);
+	::wxRemoveFile(temp_filename);
 }

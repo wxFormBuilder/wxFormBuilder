@@ -10,24 +10,25 @@
 * HeadURL: http://svn.berlios.de/svnroot/repos/codeblocks/trunk/src/sdk/annoyingdialog.cpp
 */
 
-#include <wx/button.h>
-#include <wx/checkbox.h>
-#include <wx/intl.h>
-#include <wx/sizer.h>
-#include <wx/stattext.h>
-#include <wx/statbmp.h>
-#include <wx/config.h>
-#include <wx/log.h>
 #include "annoyingdialog.h"
 
+#include <memory>
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/config.h>
+#include <wx/log.h>
+#include <wx/sizer.h>
+#include <wx/statbmp.h>
+#include <wx/stattext.h>
+
 BEGIN_EVENT_TABLE(AnnoyingDialog, wxDialog)
-    EVT_BUTTON(-1, AnnoyingDialog::OnButton)
+    EVT_BUTTON(wxID_ANY, AnnoyingDialog::OnButton)
 END_EVENT_TABLE()
 
 AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message, const wxArtID icon,
                                dStyle style, int defaultReturn, bool /*separate*/,
                                const wxString& b1, const wxString& b2, const wxString& b3)
-        : wxDialog(NULL, -1, caption, wxDefaultPosition, wxDefaultSize, wxCAPTION),
+        : wxDialog(NULL, wxID_ANY, caption, wxDefaultPosition, wxDefaultSize, wxCAPTION),
         m_cb(0),
         m_dontAnnoy(false),
         m_defRet(defaultReturn)
@@ -44,21 +45,21 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
 		}
     }
 
-    wxBoxSizer *outerSizer = new wxBoxSizer( wxVERTICAL );
+	auto outerSizer = std::make_unique<wxBoxSizer>(wxVERTICAL);
 
     wxFlexGridSizer *mainArea = new wxFlexGridSizer(2, 0, 0);
-    wxStaticBitmap *bitmap = new wxStaticBitmap(this, -1, wxArtProvider::GetBitmap(icon,  wxART_MESSAGE_BOX), wxDefaultPosition);
+    wxStaticBitmap *bitmap = new wxStaticBitmap(this, wxID_ANY, wxArtProvider::GetBitmap(icon,  wxART_MESSAGE_BOX), wxDefaultPosition);
     mainArea->Add(bitmap, 0, wxALL, 5);
 
-    wxStaticText *txt = new wxStaticText(this, -1, message, wxDefaultPosition, wxDefaultSize, 0);
+    wxStaticText *txt = new wxStaticText(this, wxID_ANY, message, wxDefaultPosition, wxDefaultSize, 0);
     mainArea->Add( txt, 0, wxALIGN_CENTER|wxALL, 5 );
 
     mainArea->Add( 1, 1, 0, wxGROW|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxTOP, 5 );
 
     int numButtons = 0;
-    int id1 = -1;
-    int id2 = -1;
-    int id3 = -1;
+    int id1 = wxID_ANY;
+    int id2 = wxID_ANY;
+    int id3 = wxID_ANY;
     wxString bTxt1;
     wxString bTxt2;
     wxString bTxt3;
@@ -144,11 +145,11 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
     outerSizer->Add( mainArea, 0, wxALIGN_CENTER|wxALL, 5);
     outerSizer->Add( buttonSizer, 0, wxALIGN_CENTER);
 
-    m_cb = new wxCheckBox(this, -1, _("Don't annoy me again!"), wxDefaultPosition, wxDefaultSize, 0);
+    m_cb = new wxCheckBox(this, wxID_ANY, _("Don't annoy me again!"), wxDefaultPosition, wxDefaultSize, 0);
     outerSizer->Add(m_cb, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT|wxBOTTOM, 5);
 
-    SetSizer( outerSizer );
-    outerSizer->SetSizeHints(this);
+	SetSizer(outerSizer.release());
+	GetSizer()->SetSizeHints(this);
 
     Centre();
 }
@@ -177,4 +178,4 @@ int AnnoyingDialog::ShowModal()
     if(m_dontAnnoy)
         return m_defRet;
     return wxDialog::ShowModal();
-};
+}

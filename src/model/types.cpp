@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,13 +23,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "model/types.h"
-#include <wx/tokenzr.h>
-#include "utils/stringutils.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
+#include "types.h"
 
-#include <cstdlib>
+#include "../utils/stringutils.h"
+
+#include <wx/tokenzr.h>
 
 ObjectType::ObjectType(wxString name, int id, bool hidden, bool item)
 {
@@ -98,50 +96,84 @@ PObjectType ObjectType::GetChildType(unsigned int idx)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-IntList::IntList(wxString value, bool absolute_value )
-	:
-	m_abs( absolute_value )
+IntList::IntList(bool absolute_value, bool pair_value)
+	: m_abs(absolute_value)
+	, m_pairs(pair_value)
+{
+}
+
+IntList::IntList(const wxString& value, bool absolute_value, bool pair_value)
+	: IntList(absolute_value, pair_value)
 {
 	SetList(value);
 }
 
+
 void IntList::Add(int value)
 {
-	m_ints.push_back( m_abs ? std::abs(value) : value );
+	Add(value, 0);
+}
+
+void IntList::Add(int first, int second)
+{
+	if (m_abs)
+	{
+		m_ints.emplace_back(std::abs(first), (m_pairs ? std::abs(second) : 0));
+	}
+	else
+	{
+		m_ints.emplace_back(first, (m_pairs ? second : 0));
+	}
 }
 
 void IntList::DeleteList()
 {
-	m_ints.erase(m_ints.begin(), m_ints.end());
+	m_ints.clear();
 }
 
-void IntList::SetList(wxString str)
+void IntList::SetList(const wxString& str)
 {
 	DeleteList();
+
 	wxStringTokenizer tkz(str, wxT(","));
+	m_ints.reserve(tkz.CountTokens());
 	while (tkz.HasMoreTokens())
 	{
-		long value;
-		wxString token;
-		token = tkz.GetNextToken();
-		token.Trim(true);
-		token.Trim(false);
+		wxString secondToken;
+		wxString firstToken = tkz.GetNextToken().BeforeFirst(wxT(':'), &secondToken);
+		firstToken.Trim(true);
+		firstToken.Trim(false);
+		secondToken.Trim(true);
+		secondToken.Trim(false);
 
-		if (token.ToLong(&value))
-			Add((int)value);
+		long first;
+		long second = 0;
+		if (firstToken.ToLong(&first) && (!m_pairs || secondToken.empty() || secondToken.ToLong(&second)))
+		{
+			Add(static_cast<int>(first), static_cast<int>(second));
+		}
 	}
 }
 
-wxString IntList::ToString()
+
+wxString IntList::ToString(bool skip_zero_second)
 {
 	wxString result;
+	// Reserve some space to avoid many reallocations, assume one digit numbers
+	result.reserve(m_pairs ? m_ints.size() * 3 : m_ints.size() * 2);
 
-	if (m_ints.size() > 0)
+	for (const auto& entry : m_ints)
 	{
-		result = StringUtils::IntToStr(m_ints[0]);
+		if (!result.empty()) {
+			result.append(wxT(","));
+		}
 
-		for (unsigned int i=1; i< m_ints.size() ; i++)
-			result = result + wxT(",") + StringUtils::IntToStr(m_ints[i]);
+		result.append(StringUtils::IntToStr(entry.first));
+		if (m_pairs && !(skip_zero_second && entry.second == 0))
+		{
+			result.append(wxT(":"));
+			result.append(StringUtils::IntToStr(entry.second));
+		}
 	}
 
 	return result;

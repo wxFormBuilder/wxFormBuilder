@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+-->
+<codegen language="C++">
+
+	<templates class="wxRibbonBar">
+		<template name="declaration">#class* $name;</template>
+		<template name="construction">
+			$name = new #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/control.h&gt; #nl
+			@#include &lt;wx/ribbon/art.h&gt; #nl
+			@#include &lt;wx/ribbon/bar.h&gt;
+		</template>
+		<template name="after_addchild">
+			$name->Realize();
+		</template>
+		<template name="settings">
+			#ifequal $theme "Default"
+			@{ $name->SetArtProvider(new wxRibbonDefaultArtProvider); @}
+			#ifequal $theme "Generic"
+			@{ $name->SetArtProvider(new wxRibbonAUIArtProvider); @}
+			#ifequal $theme "MSW"
+			@{ $name->SetArtProvider(new wxRibbonMSWArtProvider); @}
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonBarPageChanged">EVT_RIBBONBAR_PAGE_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarPageChanged">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED, #handler );</template>
+		<template name="evt_entry_OnRibbonBarPageChanging">EVT_RIBBONBAR_PAGE_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarPageChanging">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGING, #handler );</template>
+		<template name="evt_entry_OnRibbonBarTabMiddleDown">EVT_RIBBONBAR_TAB_MIDDLE_DOWN( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleDown">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TAB_MIDDLE_DOWN, #handler );</template>
+		<template name="evt_entry_OnRibbonBarTabMiddleUp">EVT_RIBBONBAR_TAB_MIDDLE_UP( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarTabMiddleUp">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TAB_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnRibbonBarTabRightDown">EVT_RIBBONBAR_TAB_RIGHT_DOWN( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarTabRightDown">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TAB_RIGHT_DOWN, #handler );</template>
+		<template name="evt_entry_OnRibbonBarTabRightUp">EVT_RIBBONBAR_TAB_RIGHT_UP( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarTabRightUp">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TAB_RIGHT_UP, #handler );</template>
+		<template name="evt_entry_OnRibbonBarTabLeftDClick">EVT_RIBBONBAR_TAB_LEFT_DCLICK( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarTabLeftDClick">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TAB_LEFT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnRibbonBarToggled">EVT_RIBBONBAR_TOGGLED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarToggled">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_TOGGLED, #handler );</template>
+		<template name="evt_entry_OnRibbonBarHelpClick">EVT_RIBBONBAR_HELP_CLICK( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonBarHelpClick">this->Connect( $id, wxEVT_COMMAND_RIBBONBAR_HELP_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="wxRibbonPage">
+		<template name="declaration">wxRibbonPage* $name;</template>		
+		<template name="construction">
+			$name = new #class( #parent $name,  $id, $label , $bitmap , 0 );
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/page.h&gt;
+		</template>
+		<template name="settings">
+			#ifequal $select "1"
+			@{ #parent $name->SetActivePage( $name ); @}
+		</template>
+	</templates>
+
+	<templates class="wxRibbonPanel">
+		<template name="declaration">wxRibbonPanel* $name;</template>		
+		<template name="construction">
+			$name = new #class( #parent $name,  $id, $label , $bitmap , $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/panel.h&gt;
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonPanelExtbuttonActivated">EVT_RIBBONPANEL_EXTBUTTON_ACTIVATED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonPanelExtbuttonActivated">this->Connect( $id, wxEVT_COMMAND_RIBBONPANEL_EXTBUTTON_ACTIVATED, #handler );</template>
+	</templates>
+
+	<templates class="wxRibbonButtonBar">
+		<template name="declaration">wxRibbonButtonBar* $name;</template>
+		<template name="construction">
+			$name = new #class( #parent $name,  $id, $pos, $size, 0 );
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/buttonbar.h&gt;
+		</template>
+	</templates>
+
+	<templates class="ribbonButton">
+		<template name="construction">
+			#parent $name->AddButton( $id, $label, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonButtonClicked">EVT_RIBBONBUTTONBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonButtonClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonDropdownButton">
+		<template name="construction">
+			#parent $name->AddDropdownButton( $id, $label, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonButtonDropdownClicked">EVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONBUTTON_DROPDOWN_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonHybridButton">
+		<template name="construction">
+			#parent $name->AddHybridButton( $id, $label, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonButtonClicked">EVT_RIBBONBUTTONBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonButtonClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, #handler );</template>
+		<template name="evt_entry_OnRibbonButtonDropdownClicked">EVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonButtonDropdownClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONBUTTON_DROPDOWN_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonToggleButton">
+		<template name="construction">
+			#parent $name->AddToggleButton( $id, $label, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonButtonClicked">EVT_RIBBONBUTTONBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonButtonClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONBUTTON_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="wxRibbonToolBar">
+		<template name="declaration">wxRibbonToolBar* $name;</template>		
+		<template name="construction">
+			$name = new #class( #parent $name,  $id, $pos, $size, 0 );
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/toolbar.h&gt;
+		</template>
+	</templates>
+
+	<templates class="ribbonTool">
+		<template name="construction">
+			#parent $name->AddTool( $id, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonToolClicked">EVT_RIBBONTOOLBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonToolClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONTOOL_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonDropdownTool">
+		<template name="construction">
+			#parent $name->AddDropdownTool( $id, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonToolDropdownClicked">EVT_RIBBONTOOLBAR_DROPDOWN_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonToolDropdownClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonHybridTool">
+		<template name="construction">
+			#parent $name->AddHybridTool( $id, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonToolClicked">EVT_RIBBONTOOLBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonToolClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONTOOL_CLICKED, #handler );</template>
+		<template name="evt_entry_OnRibbonToolDropdownClicked">EVT_RIBBONTOOLBAR_DROPDOWN_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonToolDropdownClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonToggleTool">
+		<template name="construction">
+			#parent $name->AddToggleTool( $id, $bitmap, $help);
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonToolClicked">EVT_RIBBONTOOLBAR_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonToolClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONTOOL_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="wxRibbonGallery">
+		<template name="declaration">wxRibbonGallery* $name;</template>		
+		<template name="construction">
+			$name = new #class( #parent $name, $id, $pos, $size, 0);
+		</template>
+		<template name="include">
+			@#include &lt;wx/ribbon/gallery.h&gt;
+		</template>
+		<template name="generated_event_handlers"></template>
+		<template name="evt_entry_OnRibbonGallerySelected">EVT_RIBBONGALLERY_SELECTED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonGallerySelected">this->Connect( $id, wxEVT_COMMAND_RIBBONGALLERY_SELECTED, #handler );</template>
+		<template name="evt_entry_OnRibbonGalleryClicked">EVT_RIBBONGALLERY_CLICKED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonGalleryClicked">this->Connect( $id, wxEVT_COMMAND_RIBBONGALLERY_CLICKED, #handler );</template>
+		<template name="evt_entry_OnRibbonGalleryHoverChanged">EVT_RIBBONGALLERY_HOVER_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonGalleryHoverChanged">this->Connect( $id, wxEVT_COMMAND_RIBBONGALLERY_HOVER_CHANGED, #handler );</template>
+		<template name="evt_entry_OnRibbonGalleryExtensionButtonPressed">EVT_BUTTON( $id, #handler )</template>
+		<template name="evt_connect_OnRibbonGalleryExtensionButtonPressed">this->Connect( $id, wxEVT_COMMAND_BUTTON_CLICKED, #handler );</template>
+	</templates>
+
+	<templates class="ribbonGalleryItem">
+		<template name="construction">
+			#parent $name->Append( $bitmap, $id);
+		</template>
+	</templates>
+
+</codegen>

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
@@ -35,8 +35,8 @@ class AppServer;
 class wxFBIPC
 {
 	private:
-		std::unique_ptr< wxSingleInstanceChecker > m_checker;
-		std::unique_ptr< AppServer > m_server;
+		std::unique_ptr<wxSingleInstanceChecker> m_checker;
+		std::unique_ptr<AppServer> m_server;
 		const int m_port;
 
 		bool CreateServer( const wxString& name );
@@ -60,11 +60,6 @@ private:
 
 public:
 	AppConnection(){}
-	~AppConnection(){}
-
-#if wxVERSION_NUMBER < 2900
-	wxChar* OnRequest( const wxString& topic, const wxString& item, int* size, wxIPCFormat format );
-#endif
 };
 
 // Server class, for listening to connection requests
@@ -74,7 +69,7 @@ public:
 	const wxString m_name;
 
 	AppServer( const wxString& name ) : m_name( name ){}
-	wxConnectionBase* OnAcceptConnection( const wxString& topic );
+	wxConnectionBase* OnAcceptConnection(const wxString& topic) override;
 };
 
 // Client class, to be used by subsequent instances in OnInit
@@ -82,7 +77,7 @@ class AppClient: public wxClient
 {
 public:
 	AppClient(){}
-	wxConnectionBase* OnMakeConnection();
+	wxConnectionBase* OnMakeConnection() override;
 };
 
 #endif //WXFBIPC_H

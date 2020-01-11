@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
@@ -26,9 +26,10 @@
 
 #include <component.h>
 #include <default.xpm>
-#include <wx/image.h>
-#include <wx/imaglist.h>
-#include <wx/notebook.h>
+#include <vector>
+#ifdef wxUSE_COLLPANE
+#include <wx/collpane.h>
+#endif
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
 #include <wx/simplebook.h>

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
@@ -23,28 +23,25 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <wx/log.h>
 
-class wxLogString : public wxLog
-{
-private:
-    wxString m_str;
-
+class wxLogString : public wxLog {
 public:
-    wxLogString(){}
+	wxLogString() {
+	}
 
-    void DoLogString( const wxChar* str, time_t t )
-	{
+	void DoLogString(const wxChar* str, time_t t) {
 		m_str += str;
 		m_str += wxT("\n");
 	}
 
-    void FlushStr( wxString& str )
-    {
-    	str = m_str;
-    	m_str.clear();
+	void FlushStr(wxString& str) {
+		str = m_str;
+		m_str.clear();
 	}
 
-    wxString GetStr() const
-    {
-    	return m_str;
+	wxString GetStr() const {
+		return m_str;
 	}
+
+private:
+	wxString m_str;
 };

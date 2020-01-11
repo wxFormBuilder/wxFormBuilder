@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Lua code generation writen by
+  Vratislav Zival
+-->
+<codegen language="Lua">
+
+	<templates class="sizer">
+		<template name="settings">
+			#ifnotnull $minimum_size
+			@{ #utbl$name:SetMinSize( $minimum_size ) @}
+		</template>
+	</templates>
+
+	<templates class="spacer"/>
+
+	<templates class="sizeritem">
+		<template name="window_add">#utbl#parent $name:Add( #utbl#child $name, $proportion, $flag, $border ) #nl</template>
+		<template name="sizer_add">#utbl#parent $name:Add( #utbl#child $name, $proportion, $flag, $border ) #nl</template>
+		<template name="spacer_add">#utbl#parent $name:Add( #child $width, #child $height, $proportion, $flag, $border ) #nl</template>
+	</templates>
+
+	<templates class="gbsizeritem">
+		<template name="window_add">#utbl#parent $name:Add( #utbl#child $name, wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+		<template name="sizer_add">#utbl#parent $name:Add( #utbl#child $name, wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+		<template name="spacer_add">#utbl#parent $name:Add( #child $width, #child $height , wx.wxGBPosition( $row, $column ), wx.wxGBSpan( $rowspan, $colspan ), $flag, $border ) #nl</template>
+	</templates>
+
+	<templates class="wxBoxSizer">
+		<template name="construction">#utbl$name = wx.wxBoxSizer( $orient ) #nl</template>
+	</templates>
+
+	<templates class="wxStaticBoxSizer">
+		<template name="construction">#utbl$name = wx.wxStaticBoxSizer( wx.wxStaticBox( #utbl#parentname, $id, $label ), $orient ) #nl</template>
+		<template name="evt_connect_OnUpdateUI">-- event #utbl$name:evt_connect_OnUpdateUI isn't currently supported by wxLua</template>
+	</templates>
+
+	<templates class="wxWrapSizer">
+		<template name="construction">#utbl$name = wx.wxWrapSizer( $orient, $flags ) #nl</template>
+	</templates>
+
+	<templates class="wxGridSizer">
+		<template name="construction">#utbl$name = wx.wxGridSizer( $rows, $cols, $vgap, $hgap ) #nl</template>
+	</templates>
+
+	<templates class="wxFlexGridSizer">
+		<template name="construction">#utbl$name = wx.wxFlexGridSizer( $rows, $cols, $vgap, $hgap )
+			#ifnotnull $growablecols
+			@{
+				#foreach $growablecols
+				@{ #utbl$name:AddGrowableCol( #pred ) @}
+			@}
+
+			#ifnotnull $growablerows
+			@{
+				#foreach $growablerows
+				@{ #utbl$name:AddGrowableRow( #pred ) @}
+			@}
+			#ifnotnull $flexible_direction
+			@{ #nl #utbl$name:SetFlexibleDirection( $flexible_direction ) @}
+
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl #utbl$name:SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
+			#nl
+		</template>
+	</templates>
+
+	<templates class="wxGridBagSizer">
+		<template name="construction">#utbl$name = wx.wxGridBagSizer( $vgap, $hgap )
+			#ifnotnull $flexible_direction
+			@{ #nl #utbl$name:SetFlexibleDirection( $flexible_direction ) @}
+
+			#ifnotnull $non_flexible_grow_mode
+			@{ #nl #utbl$name:SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
+
+			#ifnotnull $empty_cell_size
+			@{ #nl #utbl$name:SetEmptyCellSize( $empty_cell_size ) @}
+			#nl
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $growablecols
+			@{ #foreach $growablecols @{ #utbl$name:AddGrowableCol( #pred ) @} @}
+			#ifnotnull $growablerows
+			@{ #foreach $growablerows @{ #utbl$name:AddGrowableRow( #pred ) @} @}
+		</template>
+	</templates>
+
+	<templates class="wxStdDialogButtonSizer">
+		<template name="construction">#utbl$name = wx.wxStdDialogButtonSizer()
+			#ifequal $OK "1"
+			@{
+				#nl #utbl$name #append OK = wx.wxButton( #utbl#parentname, wx.wxID_OK, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append OK )
+			@}
+
+			#ifequal $Yes "1"
+			@{
+				#nl #utbl$name #append Yes = wx.wxButton( #utbl#parentname, wx.wxID_YES, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append Yes )
+			@}
+
+			#ifequal $Save "1"
+			@{
+				#nl #utbl$name #append Save = wx.wxButton( #utbl#parentname, wx.wxID_SAVE, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append Save )
+			@}
+
+			#ifequal $Apply "1"
+			@{
+				#nl #utbl$name #append Apply = wx.wxButton( #utbl#parentname, wx.wxID_APPLY, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append Apply )
+			@}
+
+			#ifequal $No "1"
+			@{
+				#nl #utbl$name #append No = wx.wxButton( #utbl#parentname, wx.wxID_NO, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append No )
+			@}
+
+			#ifequal $Cancel "1"
+			@{
+				#nl #utbl$name #append Cancel = wx.wxButton( #utbl#parentname, wx.wxID_CANCEL, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append Cancel )
+			@}
+
+			#ifequal $Help "1"
+			@{
+				#nl #utbl$name #append Help = wx.wxButton( #utbl#parentname, wx.wxID_HELP, "" )
+				#nl #utbl$name:AddButton( #utbl$name #append Help )
+			@}
+
+			#ifequal $ContextHelp "1"
+			@{
+				#nl #utbl$name #append ContextHelp = wx.wxContextHelpButton( #utbl#parentname, wx.wxID_CONTEXT_HELP )
+				#nl #utbl$name:AddButton( #utbl$name #append ContextHelp )
+			@}
+
+			#nl #utbl$name:Realize();
+		</template>
+		<template name="evt_connect_OnOKButtonClick">#utbl$name #append OK:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnYesButtonClick">#utbl$name #append Yes:Connect(  wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnSaveButtonClick">#utbl$name #append Save:Connect(  wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnApplyButtonClick">#utbl$name #append Apply:Connect(  wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnNoButtonClick">#utbl$name #append No:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnCancelButtonClick">#utbl$name #append Cancel:Connect(  wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnHelpButtonClick">#utbl$name #append Help:Connect(  wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnContextHelpButtonClick">#utbl$name #append ContextHelp:Connect( wx.wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	</templates>
+
+</codegen>
+

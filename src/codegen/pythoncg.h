@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -41,9 +41,11 @@ The value of all properties that are file or a directory paths must be absolute,
 #define fbfSILENT true
 #define fbfMESSAGE false
 
-#include <set>
 #include "codegen.h"
-#include <wx/string.h>
+
+#include <map>
+#include <set>
+#include <vector>
 
 /**
 * Parse the Python templates.
@@ -54,20 +56,20 @@ private:
 	bool m_i18n;
 	bool m_useRelativePath;
 	wxString m_basePath;
-	
+	wxString m_imagePathWrapperFunctionName;
+
 	std::map<wxString, wxString> m_predModulePrefix;
-	
+
 	void SetupModulePrefixes();
 
 public:
-	PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath );
+	PythonTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath, wxString imagePathWrapperFunctionName );
 	PythonTemplateParser( const PythonTemplateParser & that, wxString _template );
 
 	// overrides for Python
-	PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template );
-	wxString RootWxParentToCode();
-	wxString ValueToCode( PropertyType type, wxString value);
-
+	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+	wxString RootWxParentToCode() override;
+	wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
@@ -81,6 +83,7 @@ private:
 	bool m_useRelativePath;
 	bool m_i18n;
 	wxString m_basePath;
+	wxString m_imagePathWrapperFunctionName;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
 	wxString m_disconnecMode;
@@ -96,6 +99,13 @@ private:
 	* Given an object and the name for a template, obtains the code.
 	*/
 	wxString GetCode( PObjectBase obj, wxString name, bool silent = false);
+
+	/**
+	* Gets the construction fragment for the specified object.
+	*
+	* This method encapsulates the adjustments that need to be made for array declarations.
+	*/
+	wxString GetConstruction(PObjectBase obj, bool silent, ArrayItems& arrays);
 
 	/**
 	* Stores the project's objects classes set, for generating the includes.
@@ -116,7 +126,7 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix, ArrayItems& arrays);
 
 	/**
 	* Generates the event table.
@@ -158,7 +168,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor( PObjectBase class_obj, const EventVector &events );
+	void GenConstructor(PObjectBase class_obj, const EventVector& events, ArrayItems& arrays);
 
 	/**
 	* Generates the destructor for a class
@@ -169,8 +179,8 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction( PObjectBase obj, bool is_widget );
-	
+	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
+
 	/**
 	* Makes the objects destructions.
 	*/
@@ -191,6 +201,7 @@ private:
 	void GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines );
 
     void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPostfix );
+	void GenImagePathWrapperFunction();
 
 public:
 	/**
@@ -216,7 +227,7 @@ public:
 	* @note path is generated with the separators, '/', since on Windows
 	*		the compilers interpret path correctly.
 	*/
-	void UseRelativePath( bool relative = false, wxString basePath = wxString() );
+	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
 	/**
 	* Set the First ID used during Code Generation.
@@ -224,9 +235,19 @@ public:
 	void SetFirstID( const unsigned int id ){ m_firstID = id; }
 
 	/**
+	 * Configures the function name, image paths should be wrapped
+	 * into when generating python code.
+	 *
+	 * When set to a non-empty string, this will generate a default
+	 * implementation of the method in each class, that just returns
+	 * the unmodified path string.
+	 */
+	void SetImagePathWrapperFunctionName( wxString imagePathWrapperFunctionName );
+
+	/**
 	* Generate the project's code
 	*/
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 
 	/**
 	* Generate an inherited class

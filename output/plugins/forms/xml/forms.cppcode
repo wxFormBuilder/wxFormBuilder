@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+-->
+<codegen language="C++">
+
+	<templates class="wxTopLevelWindow">
+		<template name="evt_entry_OnActivate">EVT_ACTIVATE( #handler )</template>
+		<template name="evt_connect_OnActivate">this->Connect( wxEVT_ACTIVATE, #handler );</template>
+		<template name="evt_entry_OnActivateApp">EVT_ACTIVATE_APP( #handler )</template>
+		<template name="evt_connect_OnActivateApp">this->Connect( wxEVT_ACTIVATE_APP, #handler );</template>
+		<template name="evt_entry_OnClose">EVT_CLOSE( #handler )</template>
+		<template name="evt_connect_OnClose">this->Connect( wxEVT_CLOSE_WINDOW, #handler );</template>
+		<template name="evt_entry_OnHibernate">EVT_HIBERNATE( #handler )</template>
+		<template name="evt_connect_OnHibernate">this->Connect( wxEVT_HIBERNATE, #handler );</template>
+		<template name="evt_entry_OnIconize">EVT_ICONIZE( #handler )</template>
+		<template name="evt_connect_OnIconize">this->Connect( wxEVT_ICONIZE, #handler );</template>
+		<template name="evt_entry_OnMaximize">EVT_MAXIMIZE( #handler )</template>
+		<template name="evt_connect_OnMaximize">this->Connect( wxEVT_MAXIMIZE, #handler );</template>
+		<template name="evt_entry_OnMove">EVT_MOVE( #handler )</template>
+		<template name="evt_connect_OnMove">this->Connect( wxEVT_MOVE, #handler );</template>
+		<template name="evt_entry_OnMoving">EVT_MOVING( #handler )</template>
+		<template name="evt_connect_OnMoving">this->Connect( wxEVT_MOVING, #handler );</template>
+		<template name="evt_entry_OnMoveStart">EVT_MOVE_START( #handler )</template>
+		<template name="evt_connect_OnMoveStart">this->Connect( wxEVT_MOVE_START, #handler );</template>
+		<template name="evt_entry_OnMoveEnd">EVT_MOVE_END( #handler )</template>
+		<template name="evt_connect_OnMoveEnd">this->Connect( wxEVT_MOVE_END, #handler );</template>
+		<template name="evt_entry_OnShow">EVT_SHOW( #handler )</template>
+		<template name="evt_connect_OnShow">this->Connect( wxEVT_SHOW, #handler );</template>
+		<template name="evt_entry_OnIdle">EVT_IDLE( #handler )</template>
+		<template name="evt_connect_OnIdle">this->Connect( wxEVT_IDLE, #handler );</template>
+	</templates>
+
+	<templates class="AUI Events">
+		<template name="evt_entry_OnAuiPaneButton">EVT_AUI_PANE_BUTTON( #handler )</template>
+		<template name="evt_connect_OnAuiPaneButton">this->Connect( wxEVT_AUI_PANE_BUTTON, #handler );</template>
+		<template name="evt_entry_OnAuiPaneClose">EVT_AUI_PANE_CLOSE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneClose">this->Connect( wxEVT_AUI_PANE_CLOSE, #handler );</template>
+		<template name="evt_entry_OnAuiPaneMaximize">EVT_AUI_PANE_MAXIMIZE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneMaximize">this->Connect( wxEVT_AUI_PANE_MAXIMIZE, #handler );</template>
+		<template name="evt_entry_OnAuiPaneRestore">EVT_AUI_PANE_RESTORE( #handler )</template>
+		<template name="evt_connect_OnAuiPaneRestore">this->Connect( wxEVT_AUI_PANE_RESTORE, #handler );</template>
+		<template name="evt_entry_OnAuiPaneActivated">EVT_AUI_PANE_ACTIVATED( #handler )</template>
+		<template name="evt_connect_OnAuiPaneActivated">this->Connect( wxEVT_AUI_PANE_ACTIVATED, #handler );</template>
+		<template name="evt_entry_OnAuiRender">EVT_AUI_RENDER( #handler )</template>
+		<template name="evt_connect_OnAuiRender">this->Connect( wxEVT_AUI_RENDER, #handler );</template>
+	</templates>
+
+	<templates class="Frame">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxFrame @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
+
+			#ifequal $aui_managed "1"
+			@{ wxAuiManager m_mgr;#nl @}
+			
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wxFrame@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ m_mgr.UnInit(); #nl @}
+		</template>
+		<template name="include">
+			@#include &lt;wx/frame.h&gt; #nl
+			#ifequal $aui_managed "1"
+			@{ @#include &lt;wx/aui/aui.h&gt; @}
+		</template>
+		<template name="settings">
+			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
+			
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $extra_style
+			@{ this->SetExtraStyle( $extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+			
+			#ifequal $aui_managed "1"
+			@{ m_mgr.SetManagedWindow(this); #nl
+				#ifnotnull $aui_manager_style
+				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl m_mgr.Update();@}
+			
+			#ifnotnull $center
+			@{ #nl this->Centre( $center ); @}
+		</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
+		<template name="evt_connect_OnChar">this->Connect( wxEVT_CHAR, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
+		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
+		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
+		<template name="evt_connect_OnKeyUp">this->Connect( wxEVT_KEY_UP, #handler );</template>
+		<template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
+		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
+		<template name="evt_connect_OnLeaveWindow">this->Connect( wxEVT_LEAVE_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
+		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
+		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
+		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
+		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
+		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnRightDClick">this->Connect( wxEVT_RIGHT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>
+		<template name="evt_connect_OnRightDown">this->Connect( wxEVT_RIGHT_DOWN, #handler );</template>
+		<template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template>
+		<template name="evt_connect_OnRightUp">this->Connect( wxEVT_RIGHT_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
+		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
+		<template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>
+		<template name="evt_connect_OnMouseWheel">this->Connect( wxEVT_MOUSEWHEEL, #handler );</template>
+		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
+		<template name="evt_connect_OnMouseEvents">
+			this->Connect( wxEVT_LEFT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_LEFT_UP, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DOWN, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
+			this->Connect( wxEVT_MOTION, #handler ); #nl
+			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_MOUSEWHEEL, #handler );
+		</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
+		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
+		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
+		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
+	</templates>
+
+	<templates class="Panel">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxPanel @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, wxWindowID id = $id, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $window_style, const wxString&amp; name = $window_name );
+			#ifequal $aui_managed "1"
+			@{ wxAuiManager m_mgr; #nl @}
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, wxWindowID id, const wxPoint&amp; pos, const wxSize&amp; size, long style, const wxString&amp; name ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wxPanel@}( parent, id, pos, size, style, name )
+		</template>
+			<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ m_mgr.UnInit(); #nl @}
+		</template>
+		<template name="include">
+			@#include &lt;wx/panel.h&gt;#nl
+			#ifequal $aui_managed "1"
+			@{ @#include &lt;wx/aui/aui.h&gt; @}
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotnull $minimum_size
+			@{ this->SetMinSize( $minimum_size ); #nl @}
+			
+			#ifnotnull $maximum_size
+			@{ this->SetMaxSize( $maximum_size ); #nl @}
+
+			#ifequal $aui_managed "1"
+			@{ m_mgr.SetManagedWindow(this); #nl 
+				#ifnotnull $aui_manager_style
+				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl m_mgr.Update();@}
+		</template>
+		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
+		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
+		<template name="evt_connect_OnChar">this->Connect( wxEVT_CHAR, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
+		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
+		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
+		<template name="evt_connect_OnKeyUp">this->Connect( wxEVT_KEY_UP, #handler );</template>
+		<template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
+		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
+		<template name="evt_connect_OnLeaveWindow">this->Connect( wxEVT_LEAVE_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
+		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
+		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
+		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
+		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
+		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnRightDClick">this->Connect( wxEVT_RIGHT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>
+		<template name="evt_connect_OnRightDown">this->Connect( wxEVT_RIGHT_DOWN, #handler );</template>
+		<template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template>
+		<template name="evt_connect_OnRightUp">this->Connect( wxEVT_RIGHT_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
+		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
+		<template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>
+		<template name="evt_connect_OnMouseWheel">this->Connect( wxEVT_MOUSEWHEEL, #handler );</template>
+		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
+		<template name="evt_connect_OnMouseEvents">
+			this->Connect( wxEVT_LEFT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_LEFT_UP, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DOWN, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
+			this->Connect( wxEVT_MOTION, #handler ); #nl
+			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_MOUSEWHEEL, #handler );
+		</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
+		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
+		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
+		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
+	</templates>
+
+	<templates class="Dialog">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxDialog @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
+			#ifequal $aui_managed "1"
+			@{ wxAuiManager m_mgr; #nl @}
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wxDialog@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
+		</template>
+			<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ m_mgr.UnInit(); #nl @}
+		</template>
+		<template name="include">
+			@#include &lt;wx/dialog.h&gt;#nl
+			#ifequal $aui_managed "1"
+			@{ @#include &lt;wx/aui/aui.h&gt; @}
+		</template>
+		<template name="settings">
+			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
+			
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( this->GetExtraStyle() | $window_extra_style ); #nl @}
+
+			#ifnotnull $extra_style
+			@{ this->SetExtraStyle( $extra_style ); #nl @}
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifequal $aui_managed "1"
+			@{ m_mgr.SetManagedWindow(this); #nl 
+				#ifnotnull $aui_manager_style
+				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl m_mgr.Update();@}
+			
+			#ifnotnull $center
+			@{ #nl this->Centre( $center ); @}
+		</template>
+		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
+		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
+		<template name="evt_connect_OnChar">this->Connect( wxEVT_CHAR, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
+		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
+		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
+		<template name="evt_connect_OnKeyUp">this->Connect( wxEVT_KEY_UP, #handler );</template>
+		<template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
+		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
+		<template name="evt_connect_OnLeaveWindow">this->Connect( wxEVT_LEAVE_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
+		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
+		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
+		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
+		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
+		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnRightDClick">this->Connect( wxEVT_RIGHT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>
+		<template name="evt_connect_OnRightDown">this->Connect( wxEVT_RIGHT_DOWN, #handler );</template>
+		<template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template>
+		<template name="evt_connect_OnRightUp">this->Connect( wxEVT_RIGHT_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
+		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
+		<template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>
+		<template name="evt_connect_OnMouseWheel">this->Connect( wxEVT_MOUSEWHEEL, #handler );</template>
+		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
+		<template name="evt_connect_OnMouseEvents">
+			this->Connect( wxEVT_LEFT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_LEFT_UP, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DOWN, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
+			this->Connect( wxEVT_MOTION, #handler ); #nl
+			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_MOUSEWHEEL, #handler );
+		</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
+		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
+		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
+		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
+	</templates>
+
+	<templates class="Wizard">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxWizard @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxBitmap&amp; bitmap = $bitmap, const wxPoint&amp; pos = $pos, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
+			WizardPages m_pages;
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxBitmap&amp; bitmap, const wxPoint&amp; pos, long style#ifnotnull $window_name @{, const wxString&amp; name@} )
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+		</template>
+		<template name="destruction">
+			m_pages.Clear();
+		</template>
+		<template name="include">
+			@#include &lt;wx/wizard.h&gt;#nl
+			@#include &lt;wx/dynarray.h&gt;#nl
+			@WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages ); #nl
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ this->SetExtraStyle( $window_extra_style ); #nl @}
+
+			#ifnotnull $extra_style
+			@{ this->SetExtraStyle( $extra_style ); #nl @}
+
+			this->Create( parent, id, title, bitmap, pos, style ); #nl
+
+			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
+
+			#ifnotnull $font
+			@{ this->SetFont( $font ); #nl @}
+
+			#ifnotnull $fg
+			@{ this->SetForegroundColour( $fg ); #nl @}
+
+			#ifnotnull $bg
+			@{ this->SetBackgroundColour( $bg ); #nl @}
+
+			#ifequal $enabled "0"
+			@{ this->Enable( $enabled ); #nl @}
+
+			#ifequal $hidden "1"
+			@{ this->Hide(); #nl @}
+
+			#ifnotnull $tooltip
+			@{ this->SetToolTip( $tooltip ); #nl @}
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $center
+			@{ #nl this->Centre( $center ); #nl @}
+		</template>
+		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
+		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
+		<template name="evt_entry_OnChar">EVT_CHAR( #handler )</template>
+		<template name="evt_connect_OnChar">this->Connect( wxEVT_CHAR, #handler );</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">this->Connect( wxEVT_CHAR_HOOK, #handler );</template>
+		<template name="evt_entry_OnKeyDown">EVT_KEY_DOWN( #handler )</template>
+		<template name="evt_connect_OnKeyDown">this->Connect( wxEVT_KEY_DOWN, #handler );</template>
+		<template name="evt_entry_OnKeyUp">EVT_KEY_UP( #handler )</template>
+		<template name="evt_connect_OnKeyUp">this->Connect( wxEVT_KEY_UP, #handler );</template>
+		<template name="evt_entry_OnEnterWindow">EVT_ENTER_WINDOW( #handler )</template>
+		<template name="evt_connect_OnEnterWindow">this->Connect( wxEVT_ENTER_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeaveWindow">EVT_LEAVE_WINDOW( #handler )</template>
+		<template name="evt_connect_OnLeaveWindow">this->Connect( wxEVT_LEAVE_WINDOW, #handler );</template>
+		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
+		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
+		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
+		<template name="evt_connect_OnMiddleDown">this->Connect( wxEVT_MIDDLE_DOWN, #handler );</template>
+		<template name="evt_entry_OnMiddleUp">EVT_MIDDLE_UP( #handler )</template>
+		<template name="evt_connect_OnMiddleUp">this->Connect( wxEVT_MIDDLE_UP, #handler );</template>
+		<template name="evt_entry_OnRightDClick">EVT_RIGHT_DCLICK( #handler )</template>
+		<template name="evt_connect_OnRightDClick">this->Connect( wxEVT_RIGHT_DCLICK, #handler );</template>
+		<template name="evt_entry_OnRightDown">EVT_RIGHT_DOWN( #handler )</template>
+		<template name="evt_connect_OnRightDown">this->Connect( wxEVT_RIGHT_DOWN, #handler );</template>
+		<template name="evt_entry_OnRightUp">EVT_RIGHT_UP( #handler )</template>
+		<template name="evt_connect_OnRightUp">this->Connect( wxEVT_RIGHT_UP, #handler );</template>
+		<template name="evt_entry_OnAux1DClick">EVT_AUX1_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux1DClick">this->Connect( wxEVT_AUX1_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux1Down">EVT_AUX1_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux1Down">this->Connect( wxEVT_AUX1_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux1Up">EVT_AUX1_UP( #handler )</template>
+		<template name="evt_connect_OnAux1Up">this->Connect( wxEVT_AUX1_UP, #handler );</template>
+		<template name="evt_entry_OnAux2DClick">EVT_AUX2_DCLICK( #handler )</template>
+		<template name="evt_connect_OnAux2DClick">this->Connect( wxEVT_AUX2_DCLICK, #handler );</template>
+		<template name="evt_entry_OnAux2Down">EVT_AUX2_DOWN( #handler )</template>
+		<template name="evt_connect_OnAux2Down">this->Connect( wxEVT_AUX2_DOWN, #handler );</template>
+		<template name="evt_entry_OnAux2Up">EVT_AUX2_UP( #handler )</template>
+		<template name="evt_connect_OnAux2Up">this->Connect( wxEVT_AUX2_UP, #handler );</template>
+		<template name="evt_entry_OnMotion">EVT_MOTION( #handler )</template>
+		<template name="evt_connect_OnMotion">this->Connect( wxEVT_MOTION, #handler );</template>
+		<template name="evt_entry_OnMouseWheel">EVT_MOUSEWHEEL( #handler )</template>
+		<template name="evt_connect_OnMouseWheel">this->Connect( wxEVT_MOUSEWHEEL, #handler );</template>
+		<template name="evt_entry_OnMouseEvents">EVT_MOUSE_EVENTS( #handler )</template>
+		<template name="evt_connect_OnMouseEvents">
+			this->Connect( wxEVT_LEFT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_LEFT_UP, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DOWN, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_UP, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DOWN, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX1_UP, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DOWN, #handler ); #nl
+			this->Connect( wxEVT_AUX2_UP, #handler ); #nl
+			this->Connect( wxEVT_MOTION, #handler ); #nl
+			this->Connect( wxEVT_LEFT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_MIDDLE_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_RIGHT_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX1_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_AUX2_DCLICK, #handler ); #nl
+			this->Connect( wxEVT_LEAVE_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_ENTER_WINDOW, #handler ); #nl
+			this->Connect( wxEVT_MOUSEWHEEL, #handler );
+		</template>
+		<template name="evt_entry_OnSetFocus">EVT_SET_FOCUS( #handler )</template>
+		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
+		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
+		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
+		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
+		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
+		<template name="evt_connect_OnEraseBackground">this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
+		<template name="evt_entry_OnSize">EVT_SIZE( #handler )</template>
+		<template name="evt_connect_OnSize">this->Connect( wxEVT_SIZE, #handler );</template>
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">this->Connect( wxEVT_UPDATE_UI, #handler );</template>
+		<template name="evt_entry_OnWizardPageChanged">EVT_WIZARD_PAGE_CHANGED( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardPageChanged">this->Connect( wxID_ANY, wxEVT_WIZARD_PAGE_CHANGED, #handler );</template>
+		<template name="evt_entry_OnWizardPageChanging">EVT_WIZARD_PAGE_CHANGING( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardPageChanging">this->Connect( wxID_ANY, wxEVT_WIZARD_PAGE_CHANGING, #handler );</template>
+		<template name="evt_entry_OnWizardPageShown">xEVT_WIZARD_PAGE_SHOWN( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardPageShown">this->Connect( wxID_ANY, wxEVT_WIZARD_PAGE_SHOWN, #handler );</template>
+		<template name="evt_entry_OnWizardCancel">EVT_WIZARD_CANCEL( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardCancel">this->Connect( wxID_ANY, wxEVT_WIZARD_CANCEL, #handler );</template>
+		<template name="evt_entry_OnWizardHelp">EVT_WIZARD_HELP( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardHelp">this->Connect( wxID_ANY, wxEVT_WIZARD_HELP, #handler );</template>
+		<template name="evt_entry_OnWizardFinished">EVT_WIZARD_FINISHED( wxID_ANY, #handler )</template>
+		<template name="evt_connect_OnWizardFinished">this->Connect( wxID_ANY, wxEVT_WIZARD_FINISHED, #handler );</template>
+	</templates>
+
+	<templates class="WizardPageSimple">
+		<template name="construction">
+			wxWizardPageSimple* $name = new wxWizardPageSimple( #wxparent $name #ifnotnull $bitmap @{ , NULL, NULL, $bitmap @} ); #nl
+			m_pages.Add( $name ); #nl
+		</template>
+	</templates>
+
+	<templates class="MenuBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxMenuBar @}
+		</template>
+		<template name="cons_decl">
+			$name( long style = $window_style );
+		</template>
+		<template name="cons_def">
+			$name::$name( long style ) : 
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wxMenuBar@}( style )
+		</template>
+		<template name="include">@#include &lt;wx/menu.h&gt;</template>
+	</templates>
+
+	<templates class="ToolBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ public $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ public wxToolBar @}
+		</template>
+		<template name="cons_decl">
+			$name( wxWindow* parent, wxWindowID id = $id, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $window_style #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
+		</template>
+		<template name="cons_def">
+			$name::$name( wxWindow* parent, wxWindowID id, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
+
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wxToolBar@}( parent, id, pos, size, style#ifnotnull $window_name @{, name@} )
+		</template>
+		<template name="include">@#include &lt;wx/toolbar.h&gt;</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{ SetToolBitmapSize( $bitmapsize ); #nl @}
+
+			#ifnotnull $separation
+			@{
+				#ifnotequal $separation "5"
+				@{ SetToolSeparation( $separation ); #nl @}
+			@}
+
+			#ifnotnull $margins
+			@{ SetMargins( $margins ); #nl @}
+
+			#ifnotnull $packing
+			@{
+				#ifnotequal $packing "1"
+				@{ SetToolPacking( $packing ); #nl @}
+			@}
+		</template>
+		<template name="after_addchild">#nl Realize();</template>
+	</templates>
+
+</codegen>

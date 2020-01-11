@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,9 +26,8 @@
 #ifndef __OBJECT_TREE__
 #define __OBJECT_TREE__
 
-#include "utils/wxfbdefs.h"
-#include <map>
-#include "rad/customkeys.h"
+#include "../../utils/wxfbdefs.h"
+#include "../customkeys.h"
 
 #include <wx/treectrl.h>
 
@@ -47,7 +46,6 @@ private:
    wxImageList *m_iconList;
    IconIndexMap m_iconIdx;
 
-   wxTextCtrl* m_txtSelected;
    wxTreeCtrl* m_tcObjects;
 
    wxTreeItemId m_draggedItem;
@@ -72,7 +70,7 @@ private:
 
 public:
   ObjectTree(wxWindow *parent, int id);
-  ~ObjectTree();
+	~ObjectTree() override;
   void Create();
 
   void OnSelChanged(wxTreeEvent &event);
@@ -91,7 +89,7 @@ public:
   void OnProjectRefresh ( wxFBEvent &event);
   void OnKeyDown ( wxTreeEvent &event);
 
-  void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); };
+  void AddCustomKeysHandler(CustomKeysEvtHandler *h) { m_tcObjects->PushEventHandler(h); }
 };
 
 /**

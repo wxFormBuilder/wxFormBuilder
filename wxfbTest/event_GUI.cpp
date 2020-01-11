@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // C++ code generated with wxFormBuilder (version Sep  5 2007)
 // http://www.wxformbuilder.org/
@@ -181,7 +181,7 @@ CommonPanel::CommonPanel( wxWindow* parent, int id, wxPoint pos, wxSize size, in
 	m_slider1->Connect( wxEVT_SCROLL_CHANGED, wxScrollEventHandler( CommonPanel::OnScrollChanged ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_LEFT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellDClick ), NULL, this );
-	m_grid1->Connect( wxEVT_GRID_CELL_CHANGE, wxGridEventHandler( CommonPanel::OnGridCellChanged ), NULL, this );
+	m_grid1->Connect( wxEVT_GRID_CELL_CHANGED, wxGridEventHandler( CommonPanel::OnGridCellChanged ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler( CommonPanel::OnGridCellRightClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_CELL_RIGHT_DCLICK, wxGridEventHandler( CommonPanel::OnGridCellRightDClick ), NULL, this );
 	m_grid1->Connect( wxEVT_GRID_EDITOR_CREATED, wxGridEditorCreatedEventHandler( CommonPanel::OnGridEditorCreated ), NULL, this );

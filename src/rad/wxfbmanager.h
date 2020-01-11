@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
@@ -24,8 +24,9 @@
 #ifndef WXFBMANAGER
 #define WXFBMANAGER
 
+#include "../utils/wxfbdefs.h"
+
 #include <component.h>
-#include "utils/wxfbdefs.h"
 
 class VisualEditor;
 class ObjectBase;
@@ -38,18 +39,19 @@ private:
 public:
 	wxFBManager();
 	void SetVisualEditor( VisualEditor* visualEdit );
-	size_t GetChildCount( wxObject* wxobject );
-	wxObject* GetChild( wxObject* wxobject, size_t childIndex );
-	wxObject* GetParent( wxObject* wxobject );
-	IObject* GetIParent( wxObject* wxobject );
-	IObject* GetIObject( wxObject* wxobject );
+	size_t GetChildCount(wxObject* wxobject) override;
+	wxObject* GetChild(wxObject* wxobject, size_t childIndex) override;
+	wxObject* GetParent(wxObject* wxobject) override;
+	IObject* GetIParent(wxObject* wxobject) override;
+	IObject* GetIObject(wxObject* wxobject) override;
 	wxObject* GetWxObject( PObjectBase obj );
-	wxNoObject* NewNoObject();
+	wxNoObject* NewNoObject() override;
 
-	void ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo = true );
+	void ModifyProperty(wxObject* wxobject, wxString property, wxString value,
+	                    bool allowUndo = true) override;
 
 	// Returns true if selection changed, false if already selected
-	bool SelectObject( wxObject* wxobject );
+	bool SelectObject(wxObject* wxobject) override;
 };
 
 #endif //WXFBMANAGER

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,23 +24,21 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "objecttree.h"
-#include "rad/bitmaps.h"
-#include "utils/debug.h"
+
+#include "../../model/objectbase.h"
+#include "../appdata.h"
+#include "../bitmaps.h"
+#include "../menueditor.h"
+#include "../wxfbevent.h"
+
 #include <wx/imaglist.h>
-#include <wx/image.h>
-#include "rad/menueditor.h"
-#include "utils/typeconv.h"
-#include "rad/wxfbevent.h"
-#include <rad/appdata.h>
-#include "model/objectbase.h"
-#include <wx/utils.h>
 
 BEGIN_EVENT_TABLE( ObjectTree, wxPanel )
-	EVT_TREE_SEL_CHANGED( -1, ObjectTree::OnSelChanged )
-	EVT_TREE_ITEM_RIGHT_CLICK( -1, ObjectTree::OnRightClick )
-	EVT_TREE_BEGIN_DRAG( -1, ObjectTree::OnBeginDrag )
-	EVT_TREE_END_DRAG( -1, ObjectTree::OnEndDrag )
-	EVT_TREE_KEY_DOWN(-1, ObjectTree::OnKeyDown )
+	EVT_TREE_SEL_CHANGED(wxID_ANY, ObjectTree::OnSelChanged)
+	EVT_TREE_ITEM_RIGHT_CLICK(wxID_ANY, ObjectTree::OnRightClick)
+	EVT_TREE_BEGIN_DRAG(wxID_ANY, ObjectTree::OnBeginDrag)
+	EVT_TREE_END_DRAG(wxID_ANY, ObjectTree::OnEndDrag)
+	EVT_TREE_KEY_DOWN(wxID_ANY, ObjectTree::OnKeyDown)
 
 	EVT_FB_PROJECT_LOADED( ObjectTree::OnProjectLoaded )
 	EVT_FB_PROJECT_SAVED( ObjectTree::OnProjectSaved )
@@ -56,7 +54,7 @@ ObjectTree::ObjectTree( wxWindow *parent, int id )
 wxPanel( parent, id )
 {
 	AppData()->AddHandler( this->GetEventHandler() );
-	m_tcObjects = new wxTreeCtrl(this, -1, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxTR_LINES_AT_ROOT|wxTR_DEFAULT_STYLE|wxSIMPLE_BORDER);
+	m_tcObjects = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_HAS_BUTTONS|wxTR_LINES_AT_ROOT|wxTR_DEFAULT_STYLE|wxSIMPLE_BORDER);
 
 	wxBoxSizer* sizer_1 = new wxBoxSizer(wxVERTICAL);
     sizer_1->Add(m_tcObjects, 1, wxEXPAND, 0);
@@ -555,26 +553,26 @@ ObjectTreeItemData::ObjectTreeItemData(PObjectBase obj) : m_object(obj)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define MENU_MOVE_UP    100
-#define MENU_MOVE_DOWN  101
-#define MENU_MOVE_RIGHT 102
-#define MENU_MOVE_LEFT  103
-#define MENU_CUT        104
-#define MENU_PASTE      105
-#define MENU_EDIT_MENUS 106
-#define MENU_COPY       107
-#define MENU_MOVE_NEW_BOXSIZER   108
-#define MENU_DELETE 109
+enum {
+	MENU_MOVE_UP = wxID_HIGHEST + 2000,
+	MENU_MOVE_DOWN,
+	MENU_MOVE_RIGHT,
+	MENU_MOVE_LEFT,
+	MENU_CUT,
+	MENU_PASTE,
+	MENU_EDIT_MENUS,
+	MENU_COPY,
+	MENU_MOVE_NEW_BOXSIZER,
+	MENU_DELETE,
+};
 
 
 BEGIN_EVENT_TABLE(ItemPopupMenu,wxMenu)
-	EVT_MENU(-1, ItemPopupMenu::OnMenuEvent)
-	EVT_UPDATE_UI(-1, ItemPopupMenu::OnUpdateEvent)
+	EVT_MENU(wxID_ANY, ItemPopupMenu::OnMenuEvent)
+	EVT_UPDATE_UI(wxID_ANY, ItemPopupMenu::OnUpdateEvent)
 END_EVENT_TABLE()
 
-ItemPopupMenu::ItemPopupMenu(PObjectBase obj)
-: wxMenu(), m_object(obj)
-{
+ItemPopupMenu::ItemPopupMenu(PObjectBase obj) : m_object(obj) {
 	Append(MENU_CUT,        wxT("Cut\tCtrl+X"));
 	Append(MENU_COPY,       wxT("Copy\tCtrl+C"));
 	Append(MENU_PASTE,      wxT("Paste\tCtrl+V"));

@@ -18,7 +18,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -38,17 +38,13 @@
 #ifndef __PHP_PANEL__
 #define __PHP_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class wxFindDialogEvent;
 
@@ -63,15 +59,11 @@ private:
 	CodeEditor* m_phpPanel;
 	PTCCodeWriter m_phpCW;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	PHPPanel( wxWindow *parent, int id );
-	~PHPPanel();
+	~PHPPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,21 +23,16 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __WXFB__BITMAPS_H__
-#define __WXFB__BITMAPS_H__
+#pragma once
 
-#define ICON_SIZE 22
-#define TOOL_SIZE 22
-#define SMALL_ICON_SIZE 14
+const int ICON_SIZE = 22;
+const int TOOL_SIZE = 22;
+const int SMALL_ICON_SIZE = 14;
 
-#include "wx/wx.h"
-#include <map>
+#include <wx/wx.h>
 
-class AppBitmaps
-{
+class AppBitmaps {
 public:
-	static wxBitmap GetBitmap( wxString iconname, unsigned int size = 0 );
-	static void LoadBitmaps( wxString filepath, wxString iconpath );
+	static wxBitmap GetBitmap(wxString iconname, unsigned int size = 0);
+	static void LoadBitmaps(wxString filepath, wxString iconpath);
 };
-
-#endif //__WXFB__BITMAPS_H__

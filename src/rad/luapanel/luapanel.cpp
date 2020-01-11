@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -27,29 +27,22 @@
 
 #include "luapanel.h"
 
-#include "rad/codeeditor/codeeditor.h"
-#include "rad/wxfbevent.h"
-#include "rad/bitmaps.h"
-#include "rad/appdata.h"
-#include "utils/wxfbdefs.h"
+#include "../appdata.h"
+#include "../codeeditor/codeeditor.h"
+#include "../wxfbevent.h"
 
-#include "utils/typeconv.h"
-#include "utils/encodingutils.h"
-#include "utils/wxfbexception.h"
+#include "../../utils/encodingutils.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
 
-#include "model/objectbase.h"
+#include "../../model/objectbase.h"
 
-#include "codegen/codewriter.h"
-#include "codegen/luacg.h"
+#include "../../codegen/codewriter.h"
+#include "../../codegen/luacg.h"
 
 #include <wx/fdrepdlg.h>
-#include <wx/config.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
 BEGIN_EVENT_TABLE ( LuaPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( LuaPanel::OnCodeGeneration )
@@ -71,7 +64,7 @@ wxPanel( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_luaPanel = new CodeEditor( this, -1 );
+	m_luaPanel = new CodeEditor( this, wxID_ANY);
 	InitStyledTextCtrl( m_luaPanel->GetTextCtrl() );
 
 	top_sizer->Add( m_luaPanel, 1, wxEXPAND, 0 );
@@ -91,40 +84,20 @@ LuaPanel::~LuaPanel()
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 
-#if wxVERSION_NUMBER < 2900
-void LuaPanel::InitStyledTextCtrl( wxScintilla *stc )
-{
-    stc->SetLexer( wxSCI_LEX_LUA );
-#else
 void LuaPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_LUA );
-#endif
 	stc->SetKeyWords( 0, wxT( "and assert break class continue def del elif else \
 							   except exec finally for from global if import in \
 							   is lambda not or pass print raise return try while" ) );
 
 #ifdef __WXGTK__
-	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 	font.SetFaceName( wxT( "Monospace" ) );
 #else
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
-#if wxVERSION_NUMBER < 2900
-	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
-	stc->StyleClearAll();
-	stc->StyleSetBold( wxSCI_C_WORD, true );
-	stc->StyleSetForeground( wxSCI_C_WORD, *wxBLUE );
-	stc->StyleSetForeground( wxSCI_C_STRING, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_STRINGEOL, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENT, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINE, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_NUMBER, *wxBLUE );
-#else
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
     stc->StyleSetBold( wxSTC_C_WORD, true );
@@ -137,7 +110,6 @@ void LuaPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
     stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
-#endif
 	stc->SetUseTabs( true );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -294,7 +266,7 @@ void LuaPanel::OnCodeGeneration( wxFBEvent& event )
 			return;
 		}
 	}
-	
+
 	// Generate code in the panel
 	if ( doPanel )
 	{
@@ -310,11 +282,7 @@ void LuaPanel::OnCodeGeneration( wxFBEvent& event )
 
 		Freeze();
 
-#if wxVERSION_NUMBER < 2900
-		wxScintilla* luaEditor = m_luaPanel->GetTextCtrl();
-#else
         wxStyledTextCtrl* luaEditor = m_luaPanel->GetTextCtrl();
-#endif
 		luaEditor->SetReadOnly( false );
 		int luaLine = luaEditor->GetFirstVisibleLine() + luaEditor->LinesOnScreen() - 1;
 		int luaXOffset = luaEditor->GetXOffset();

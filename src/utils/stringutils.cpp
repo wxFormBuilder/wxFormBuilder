@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,25 +24,18 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "stringutils.h"
+
 #include "typeconv.h"
-#include <sstream>
-#include <ticpp.h>
 #include "wxfbexception.h"
 
+#include <ticpp.h>
 #include <wx/ffile.h>
 #include <wx/fontmap.h>
-#include <wx/choicdlg.h>
-#include <wx/arrstr.h>
-#include <wx/filefn.h>
 
-wxString StringUtils::IntToStr(int num)
-{
-  //wxString stream;
-  //stream << num;
-  //return stream;
-  wxString result;
-  result.Printf(wxT("%d"),num);
-  return result;
+wxString StringUtils::IntToStr(const int num) {
+	wxString result;
+	result.Printf(wxT("%d"), num);
+	return result;
 }
 
 wxString StringUtils::GetSupportedEncodings( bool columnateWithTab, wxArrayString* array )
@@ -205,7 +198,7 @@ namespace XMLUtils
 			return;
 		}
 	}
-};
+}
 
 void XMLUtils::LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path )
 {
@@ -381,13 +374,10 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 		}
 
 		// declStart and declEnd are both valid, replace that section with a new declaration
-		contents.replace( declStart, declEnd - declStart + 2,
-                            wxString::Format( wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>"),
-        #if wxVERSION_NUMBER < 2900
-                            version.c_str(), standalone.c_str() ).c_str() );
-        #else
-                            version, standalone ) );
-        #endif
+		contents.replace(
+		    declStart, declEnd - declStart + 2,
+		    wxString::Format(wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>"),
+		                     version, standalone));
 	}
 
 	// Remove the old file

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,22 +23,19 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "objectbase.h"
 #include "database.h"
-#include "rad/bitmaps.h"
-#include "utils/stringutils.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "utils/wxfbexception.h"
-#include "rad/appdata.h"
-#include <wx/filename.h>
-#include <wx/image.h>
-#include <wx/dir.h>
+
+#include "../rad/bitmaps.h"
+#include "../utils/debug.h"
+#include "../utils/stringutils.h"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
+#include "objectbase.h"
+
 #include <ticpp.h>
-#include <wx/config.h>
-#include <wx/tokenzr.h>
+#include <wx/dir.h>
+#include <wx/filename.h>
 #include <wx/stdpaths.h>
-#include <wx/app.h>
 
 //#define DEBUG_PRINT(x) cout << x
 
@@ -231,6 +228,19 @@ int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent,PObjectType typ
 	return count;
 }
 
+int ObjectDatabase::CountChildrenWithSameType(PObjectBase parent, const std::set<PObjectType>& types)
+{
+	unsigned int count = 0;
+	unsigned int numChildren = parent->GetChildCount();
+	for (unsigned int i = 0; i < numChildren; ++i)
+	{
+		if (types.find(parent->GetChild(i)->GetObjectInfo()->GetObjectType()) != types.end())
+			++count;
+	}
+
+	return count;
+}
+
 /**
 * Crea una instancia de classname por debajo de parent.
 * La función realiza la comprobación de tipos para crear el objeto:
@@ -270,7 +280,7 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		bool aui = false;
 		if( parentType->GetName() == wxT("form") )
 		{
-			aui = parent->GetPropertyAsInteger(wxT("aui_managed"));
+			aui = parent->GetPropertyAsInteger(wxT("aui_managed")) != 0;
 		}
 
 		int max = parentType->FindChildType(objType, aui);
@@ -303,8 +313,18 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 		{
 			bool create = true;
 
-			// comprobamos el número de instancias
-			if (max > 0 && CountChildrenWithSameType(parent, objType) >= max)
+			// we check the number of instances
+			int count;
+			if (objType == GetObjectType(wxT("sizer")) || objType == GetObjectType(wxT("gbsizer")))
+			{
+				count = CountChildrenWithSameType(parent, { GetObjectType(wxT("sizer")), GetObjectType(wxT("gbsizer")) });
+			}
+			else 
+			{
+				count = CountChildrenWithSameType(parent, objType);
+			}
+			
+			if (max > 0 && count >= max)
 				create = false;
 
 			if (create)
@@ -318,16 +338,16 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			for (unsigned int i=0; !created && i < parentType->GetChildTypeCount(); i++)
 			{
 				PObjectType childType = parentType->GetChildType(i);
-				int max = childType->FindChildType(objType, aui);
+				int childMax = childType->FindChildType(objType, aui);
 
-				if (childType->IsItem() && max != 0)
+				if (childType->IsItem() && childMax != 0)
 				{
-					max = parentType->FindChildType(childType, aui);
+					childMax = parentType->FindChildType(childType, aui);
 
 					// si el tipo es un item y además el tipo del objeto a crear
 					// puede ser hijo del tipo del item vamos a intentar crear la
 					// instancia del item para crear el objeto como hijo de este
-					if (max < 0 || CountChildrenWithSameType(parent, childType) < max)
+					if (childMax < 0 || CountChildrenWithSameType(parent, childType) < childMax)
 					{
 						// No hay problemas para crear el item debajo de parent
 						PObjectBase item = NewObject(GetObjectInfo(childType->GetName()));
@@ -461,7 +481,7 @@ void ObjectDatabase::SetDefaultLayoutProperties(PObjectBase sizeritem)
 	}
 	else if (	obj_type == wxT("notebook")			||
 				obj_type == wxT("flatnotebook")		||
-				obj_type == wxT("listbook")			||				
+				obj_type == wxT("listbook")			||
 				obj_type == wxT("simplebook")       ||
 				obj_type == wxT("choicebook")		||
 				obj_type == wxT("auinotebook")		||
@@ -584,8 +604,7 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 
 //////////////////////////////
 
-bool IncludeInPalette(wxString type)
-{
+bool IncludeInPalette(wxString /*type*/) {
 	return true;
 }
 
@@ -697,11 +716,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 							if ( !addedPackage.second )
 							{
 								addedPackage.first->second->AppendPackage( packageIt->second );
-#if wxVERSION_NUMBER < 2900
-								LogDebug( _("Merged plugins named \"%s\""), packageIt->second->GetPackageName().c_str() );
-#else
                                 LogDebug( "Merged plugins named \"" + packageIt->second->GetPackageName() + "\"" );
-#endif
 							}
 
 						}
@@ -717,34 +732,21 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
         moreDirectories = pluginsDir.GetNext( &pluginDirName );
     }
 
-    // Get previous plugin order
-	wxConfigBase* config = wxConfigBase::Get();
-	wxString pages = config->Read( wxT("/palette/pageOrder"), wxT("Common,Additional,Data,Containers,Menu/Toolbar,Layout,Forms,Ribbon") );
-
-	// Add packages to the vector in the correct order
-	wxStringTokenizer packageList( pages, wxT(",") );
-	while ( packageList.HasMoreTokens() )
+	// Add packages to final data structure
+	m_pkgs.reserve(packages.size());
+	for (auto& package : packages)
 	{
-		wxString packageName = packageList.GetNextToken();
-		PackageMap::iterator packageIt = packages.find( packageName );
-		if ( packages.end() == packageIt )
-		{
-			// Plugin missing - move on
-			continue;
-		}
-		m_pkgs.push_back( packageIt->second );
-		packages.erase( packageIt );
+		m_pkgs.push_back(package.second);
 	}
-
-    // If any packages remain in the map, they are new plugins and must still be added
-    for ( PackageMap::iterator packageIt = packages.begin(); packageIt != packages.end(); ++packageIt )
-    {
-    	m_pkgs.push_back( packageIt->second );
-    }
 }
 
-void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, PwxFBManager manager )
-{
+void ObjectDatabase::SetupPackage(const wxString& file,
+#ifdef __WXMSW__
+                                  const wxString& path,
+#else
+                                  const wxString& /*path*/,
+#endif
+                                  PwxFBManager manager) {
 	#ifdef __WXMSW__
 		wxString libPath = path;
 	#else
@@ -759,9 +761,6 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
     wxString wxver = wxT("");
 
 #ifdef DEBUG
-    #if wxVERSION_NUMBER < 2900
-        wxver = wxT("d");
-    #endif
 	#ifdef APPEND_WXVERSION
 		wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
 	#endif
@@ -804,13 +803,13 @@ void ObjectDatabase::SetupPackage( const wxString& file, const wxString& path, P
 		ticpp::Element* elem_obj = root->FirstChildElement( OBJINFO_TAG, false );
 		while ( elem_obj )
 		{
-			std::string wxver;
-			elem_obj->GetAttributeOrDefault( WXVERSION_TAG, &wxver, "" );
-			if( wxver != "" )
+			std::string wxver_obj;
+			elem_obj->GetAttributeOrDefault(WXVERSION_TAG, &wxver_obj, "");
+			if (!wxver_obj.empty())
 			{
 				long wxversion = 0;
 				// skip widgets supported by higher wxWidgets version than used for the build
-				if( (! _WXSTR(wxver).ToLong( &wxversion ) ) || (wxversion > wxVERSION_NUMBER) )
+				if((!_WXSTR(wxver_obj).ToLong(&wxversion)) || (wxversion > wxVERSION_NUMBER))
 				{
 					elem_obj = elem_obj->NextSiblingElement( OBJINFO_TAG, false );
 					continue;
@@ -1168,11 +1167,18 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		std::string def_value;
 		try
 		{
-			ticpp::Node* lastChild = elem_prop->LastChild();
-			ticpp::Text* text = lastChild->ToText();
-			def_value = text->Value();
+			ticpp::Node* lastChild = elem_prop->LastChild(false);
+			if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
+			{
+				ticpp::Text* text = lastChild->ToText();
+				wxASSERT(text);
+				def_value = text->Value();
+			}
 		}
-		catch( ticpp::Exception& ){}
+		catch (ticpp::Exception& ex)
+		{
+			wxLogDebug(ex.what());
+		}
 
 		// if the property is a "bitlist" then parse all of the options
 		POptionList opt_list;
@@ -1213,23 +1219,37 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 				elem_child->GetAttributeOrDefault( DESCRIPTION_TAG, &child_description, "" );
 				child.m_description = _WXSTR( child_description );
 
+				std::string child_type;
+				elem_child->GetAttributeOrDefault( "type", &child_type, "wxString" );
+				child.m_type = ParsePropertyType( _WXSTR( child_type ) );
+
 				// Get default value
+				// Empty tags don't contain any child so this will throw in that case
+				std::string child_value;
 				try
 				{
-					ticpp::Node* lastChild = elem_child->LastChild();
-					ticpp::Text* text = lastChild->ToText();
-					child.m_defaultValue = _WXSTR( text->Value() );
-
-					// build parent default value
-					if ( children.size() > 0 )
+					ticpp::Node* lastChild = elem_child->LastChild(false);
+					if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
 					{
-						def_value += "; ";
+						ticpp::Text* text = lastChild->ToText();
+						wxASSERT(text);
+						child_value = text->Value();
 					}
-					def_value += text->Value();
 				}
-				catch( ticpp::Exception& ){}
+				catch (ticpp::Exception& ex)
+				{
+					wxLogDebug(ex.what());
+				}
+				child.m_defaultValue = _WXSTR(child_value);
 
-				children.push_back( child );
+				// build parent default value
+				if (children.size() > 0)
+				{
+					def_value += "; ";
+				}
+				def_value += child_value;
+
+				children.push_back(child);
 
 				elem_child = elem_child->NextSiblingElement( "child", false );
 			}
@@ -1299,11 +1319,18 @@ void ObjectDatabase::ParseEvents( ticpp::Element* elem_obj, PObjectInfo obj_info
 		std::string def_value;
 		try
 		{
-			ticpp::Node* lastChild = elem_evt->LastChild();
-			ticpp::Text* text = lastChild->ToText();
-			def_value = text->Value();
+			ticpp::Node* lastChild = elem_evt->LastChild(false);
+			if (lastChild && lastChild->Type() == TiXmlNode::TEXT)
+			{
+				ticpp::Text* text = lastChild->ToText();
+				wxASSERT(text);
+				def_value = text->Value();
+			}
 		}
-		catch( ticpp::Exception& ){}
+		catch (ticpp::Exception& ex)
+		{
+			wxLogDebug(ex.what());
+		}
 
 		// create an instance of EventInfo
 		PEventInfo evt_info(
@@ -1378,13 +1405,6 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 {
 	wxString path = libfile;
 
-#if wxVERSION_NUMBER < 2900
-	// This will prevent loading debug libraries in release and vice versa
-	// That used to cause crashes when trying to debug
-	#ifdef __WXFB_DEBUG__
-//		path += wxT("d");
-	#endif
-#endif
 	// Find the GetComponentLibrary function - all plugins must implement this
 	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
 
@@ -1411,11 +1431,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		if (dlsym_error)
 		{
 			wxString error = wxString( dlsym_error, wxConvUTF8 );
-#if wxVERSION_NUMBER < 2900
-			THROW_WXFBEX( path << wxT(" is not a valid component library: ") << error )
-#else
             THROW_WXFBEX( path << " is not a valid component library: " << error )
-#endif
 			dlclose( handle );
 		}
 		else
@@ -1438,19 +1454,11 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 
 		if ( !(GetComponentLibrary && FreeComponentLibrary) )
 		{
-#if wxVERSION_NUMBER < 2900
-			THROW_WXFBEX( path << wxT(" is not a valid component library") )
-#else
             THROW_WXFBEX( path << " is not a valid component library" )
-#endif
 		}
 
 #endif
-#if wxVERSION_NUMBER < 2900
-		LogDebug( wxT("[Database::ImportComponentLibrary] Importing %s library"), path.c_str() );
-#else
         LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
-#endif
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
 
@@ -1471,11 +1479,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		}
 		else
 		{
-#if wxVERSION_NUMBER < 2900
-			LogDebug( wxT("ObjectInfo for <%s> not found while loading library <%s>"), class_name.c_str(), path.c_str() );
-#else
             LogDebug("ObjectInfo for <" + class_name + "> not found while loading library <" + path + ">");
-#endif
 		}
 	}
 
@@ -1498,7 +1502,6 @@ PropertyType ObjectDatabase::ParsePropertyType( wxString str )
 		result = it->second;
 	else
 	{
-		result = PT_ERROR;
 		THROW_WXFBEX( wxString::Format( wxT("Unknown property type \"%s\""), str.c_str() ) );
 	}
 
@@ -1521,6 +1524,8 @@ void ObjectDatabase::InitPropertyTypes()
 	PT( wxT("bitlist"),		PT_BITLIST		);
 	PT( wxT("intlist"),		PT_INTLIST		);
 	PT( wxT("uintlist"),	PT_UINTLIST		);
+	PT(wxT("intpairlist"), PT_INTPAIRLIST);
+	PT(wxT("uintpairlist"), PT_UINTPAIRLIST);
 	PT( wxT("option"),		PT_OPTION		);
 	PT( wxT("macro"),		PT_MACRO		);
 	PT( wxT("path"),		PT_PATH			);

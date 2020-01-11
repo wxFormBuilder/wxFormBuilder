@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,14 +23,11 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "visualobj.h"
 #include "visualeditor.h"
 
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "rad/genericpanel.h"
-#include "model/objectbase.h"
-#include <rad/appdata.h>
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
 
 using namespace TypeConv;
 
@@ -47,7 +44,7 @@ VObjEvtHandler::VObjEvtHandler(wxWindow *win, PObjectBase obj)
 {
 	m_window = win;
 	m_object = obj;
-};
+}
 
 void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 {
@@ -63,7 +60,7 @@ void VObjEvtHandler::OnLeftClick(wxMouseEvent &event)
 			event.Skip();
 			return;
 		}
-		
+
 		if (AppData()->GetSelectedObject() != obj)
 		{
 			AppData()->SelectObject(obj);
@@ -96,8 +93,7 @@ void VObjEvtHandler::OnRightClick(wxMouseEvent &event)
 
 	if (obj)
 	{
-		if( obj->GetPropertyAsInteger( wxT("context_menu") ) )
-		{
+		if (obj->GetPropertyAsInteger(wxT("context_menu")) != 0) {
 			PObjectBase menu;
 
 			for( size_t i = 0; i < obj->GetChildCount(); i++ )

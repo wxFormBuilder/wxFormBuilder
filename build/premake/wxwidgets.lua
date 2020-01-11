@@ -26,10 +26,6 @@ newoption  {
     description =   "Whether to use wxMediaCtrl in wxMedia library"
 }
 newoption  {
-    trigger     =   "disable-unicode",
-    description =   "Whether to use Unicode or ANSI build (wxWidgets 2.8 only)"
-}
-newoption  {
     trigger     =   "disable-monolithic",
     description =   "Whether to use wxWidgets as monolithic DLL (MSW only)"
 }
@@ -65,14 +61,16 @@ wxMonolithic      = true
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
+if _OPTIONS["disable-mediactrl"] then wxUseMediaCtrl = false end
+if _OPTIONS["disable-monolithic"] then wxMonolithic = false end
 
 if wxCompiler == "mingw64" then
-	if not ( "x86_64" == wxArchitecture ) then
-		buildoptions( "-m32" )
-		linkoptions( "-m32" )
-		resoptions( "-F pe-i386" )
-	end
-	wxCompiler = "gcc"
+    if not ( "x86_64" == wxArchitecture ) then
+        buildoptions( "-m32" )
+        linkoptions( "-m32" )
+        resoptions( "-F pe-i386" )
+    end
+    wxCompiler = "gcc"
 end
 
 if os.is("windows") then
@@ -117,16 +115,8 @@ function wx_config(options)
         print("valid options are : '" .. table.concat(allowedWxOptions, "', '").."'")
     end
 
--- wxMediaCtrl
-    if _OPTIONS["disable-mediactrl"] then
-        wxUseMediaCtrl = false
-    end
-
 -- Unicode setup
     local useUnicode = "yes"
-    if _OPTIONS["disable-unicode"] and wxVersion < "2.9" then
-        useUnicode = "no"
-    end
 
 -- Unicode static build
     local useStatic = "no"
@@ -135,32 +125,28 @@ function wx_config(options)
     end
 
 -- Use wx-config
-	local useWXConfig = "no"
+    local useWXConfig = "no"
     if _OPTIONS["force-wx-config"] then
         useWXConfig = "yes"
     end
 
-    wx_config_Private( options.Root             or "",
-							options.Debug				or "",
-							options.Host				or "",
-							options.Version			or wxVersion,
-							options.Static			or useStatic,
-							options.Unicode			or useUnicode,
-							options.Universal			or "",
-							options.Libs				or "",
-							options.WindowsCompiler	or wxCompiler,
-							options.CompilerVersion	or wxCompilerVersion,
-							options.WithoutLibs		or "no",
-							options.UseWXConfig		or useWXConfig
+    wx_config_Private(options.Root or "",
+                      options.Debug or "",
+                      options.Host or "",
+                      options.Version or wxVersion,
+                      options.Static or useStatic,
+                      options.Unicode or useUnicode,
+                      options.Universal or "",
+                      options.Libs or "",
+                      options.WindowsCompiler or wxCompiler,
+                      options.CompilerVersion or wxCompilerVersion,
+                      options.WithoutLibs or "no",
+                      options.UseWXConfig or useWXConfig
                      )
 end
 
 function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnicode, wxUniversal, wxLibs, wxCompiler, wxCompilerVersion, wxWithoutLibs, wxUseWXConfig)
-    -- some options are not allowed for newer version of wxWidgets
-    if wxVersion > "2.8" then -- alphabetical comparison may fail...
-        wxDebugSuffix   = ""
-        wxUnicode       = "yes"
-    end
+    wxUnicode       = "yes"
 
     -- the environment variable WXWIN override wxRoot parameter
     if os.getenv('WXWIN') then wxRoot = os.getenv('WXWIN') end
@@ -180,8 +166,9 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 
     if wxDebug == "yes" then
         defines         {"__WXDEBUG__"}
+        wxDebugSuffix   = "d"
     else
-        flags           {"Optimize"}
+        wxDebugSuffix   = ""
     end
 
     if wxStatic == "yes" then
@@ -211,37 +198,39 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
             path.join(wxRoot, "include")
             }
 
-		if wxWithoutLibs == "no" then
-			-- common library path
-			libdirs { wxLibPath }
+        if wxWithoutLibs == "no" then
+            -- common library path
+            libdirs { wxLibPath }
 
-			-- add the libs
-			libVersion = string.gsub(wxVersion, '%.', '') -- remove dot from version
-			if wxMonolithic then
-				links { "wxmsw"..libVersion..wxBuildType }
-			else
-				links { "wxbase"..libVersion..wxBuildType } -- base lib
-				for i, lib in ipairs(string.explode(wxLibs, ",")) do
-					local libPrefix = 'wxmsw'
-					if lib == "xml" or lib == "net" or lib == "odbc" then
-						libPrefix = 'wxbase'
-					end
-					links { libPrefix..libVersion..wxBuildType..'_'..lib}
-				end
-				-- link with support libraries
-				for i, lib in ipairs({"wxjpeg", "wxpng", "wxzlib", "wxtiff", "wxexpat"}) do
-					links { lib..wxDebugSuffix }
-				end
-				links { "wxregex" .. wxBuildType }
-			end
+            -- add the libs
+            libVersion = string.gsub(wxVersion, '%.', '') -- remove dot from version
+            if wxMonolithic then
+                links { "wxmsw"..libVersion..wxBuildType }
+            else
+                links { "wxbase"..libVersion..wxBuildType } -- base lib
+                local libs = "net,xml,adv,core,html,gl,aui,propgrid,ribbon,richtext,stc,webview,xrc"
+                if wxUseMediaCtrl then libs = libs .. ",media" end
+                for i, lib in ipairs(string.explode(libs, ",")) do
+                    local libPrefix = 'wxmsw'
+                    if lib == "xml" or lib == "net" or lib == "odbc" then
+                        libPrefix = 'wxbase'
+                    end
+                    links { libPrefix..libVersion..wxBuildType..'_'..lib}
+                end
+                -- link with support libraries
+                for i, lib in ipairs({"wxjpeg", "wxpng", "wxzlib", "wxtiff", "wxexpat"}) do
+                    links { lib..wxDebugSuffix }
+                end
+                links { "wxregex" .. wxBuildType }
+            end
 
-			if string.match(_ACTION, "vs(.*)$") then
-				-- link with MSVC support libraries
-				for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32", "Dbghelp"}) do
-					links { lib }
-				end
-			end
-		end
+            if string.match(_ACTION, "vs(.*)$") then
+                -- link with MSVC support libraries
+                for i, lib in ipairs({"comctl32", "rpcrt4", "winmm", "advapi32", "wsock32", "Dbghelp"}) do
+                    links { lib }
+                end
+            end
+        end
     end
 
     -- use wx-config to figure out build parameters
@@ -262,29 +251,29 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
         if wxHost ~= "" then configCmd = configCmd .. " --host=" .. wxHost end
 --      if wxVersion ~= "" then configCmd = configCmd .. " --version=" .. wxVersion end
 
-		if _ACTION == "codelite" then
-			-- set the parameters to the current configuration
-			buildoptions {"$(shell " .. configCmd .." --cxxflags)"}
+        if _ACTION == "codelite" then
+            -- set the parameters to the current configuration
+            buildoptions {"$(shell " .. configCmd .." --cxxflags)"}
 
-			if wxWithoutLibs == "no" then
-				linkoptions  {"$(shell " .. configCmd .." --libs " .. wxLibs .. ")"}
-			end
+            if wxWithoutLibs == "no" then
+                linkoptions  {"$(shell " .. configCmd .." --libs " .. wxLibs .. ")"}
+            end
 
-			if os.get() == "windows" then
-				resoptions  {"$(shell " .. configCmd .." --rcflags)"}
-			end
-		else
-			-- set the parameters to the current configuration
-			buildoptions {"`" .. configCmd .." --cxxflags`"}
+            if os.get() == "windows" then
+                resoptions  {"$(shell " .. configCmd .." --rcflags)"}
+            end
+        else
+            -- set the parameters to the current configuration
+            buildoptions {"`" .. configCmd .." --cxxflags`"}
 
-			if wxWithoutLibs == "no" then
-				linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
-			end
+            if wxWithoutLibs == "no" then
+                linkoptions  {"`" .. configCmd .." --libs " .. wxLibs .. "`"}
+            end
 
-			if os.get() == "windows" then
-				resoptions  {"`" .. configCmd .." --rcflags || " .. configCmd .." --rescomp | cut -d' ' -f2-`"}
-			end
-		end
+            if os.get() == "windows" then
+                resoptions  {"`" .. configCmd .." --rcflags || " .. configCmd .." --rescomp | cut -d' ' -f2-`"}
+            end
+        end
     end
 
 -- BUG: here, using any configuration() function will reset the current filter
@@ -314,10 +303,10 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
 --~             wxCompiler = _OPTIONS.cc
 --~             print("seen option '--cc=" .. _OPTIONS["cc"] .. "' overriding default cc='vc'")
 --~         end
-		if wxUseWXConfig == "no" then
-			wx_config_for_windows(wxCompiler, wxCompilerVersion)
-		else
-			wx_config_for_posix()
-		end
+        if wxUseWXConfig == "no" then
+            wx_config_for_windows(wxCompiler, wxCompilerVersion)
+        else
+            wx_config_for_posix()
+        end
     end
 end

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
@@ -37,7 +37,7 @@ public:
 	m_what(what)
 	{}
 
-	virtual ~wxFBException() throw() {}
+	virtual ~wxFBException() = default;
 
 	virtual const wxChar* what() const throw()
 	{
@@ -55,9 +55,9 @@ It will take care of the conversion	and throwing the exception.
 #define THROW_WXFBEX( message )																								\
 	{																														\
 	wxString hopefullyThisNameWontConflictWithOtherVariables;																\
-	wxString file( __FILE__, wxConvUTF8 );																					\
-	file = file.substr( file.find_last_of( wxT("\\/") ) + 1 );																\
-	hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << file << wxT("@");							\
+	wxString hopefullyUniqueFile(__FILE__, wxConvUTF8);																		\
+	hopefullyUniqueFile = hopefullyUniqueFile.substr(hopefullyUniqueFile.find_last_of(wxT("\\/")) + 1);						\
+	hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << hopefullyUniqueFile << wxT("@");				\
 	hopefullyThisNameWontConflictWithOtherVariables << wxString::Format( wxT("%i"), __LINE__ ) << wxT(">");					\
 	throw wxFBException( hopefullyThisNameWontConflictWithOtherVariables );													\
 	}

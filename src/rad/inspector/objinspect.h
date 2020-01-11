@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -29,22 +29,14 @@
 #ifndef __OBJ_INSPECT__
 #define __OBJ_INSPECT__
 
-#if wxVERSION_NUMBER >= 2900 && !wxUSE_PROPGRID
-    #error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
-#endif
+#include "../../model/objectbase.h"
 
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#else
 #include <wx/aui/auibook.h>
-#endif
-
-#if wxVERSION_NUMBER >= 2900
-    #include <wx/propgrid/property.h>
-#endif
 #include <wx/propgrid/manager.h>
-#include "utils/wxfbdefs.h"
-#include "model/objectbase.h"
+
+#if !wxUSE_PROPGRID
+#error "wxUSE_PROPGRID must be set to 1 in your wxWidgets library."
+#endif
 
 class wxFBEventHandlerEvent;
 class wxFBPropertyEvent;
@@ -67,17 +59,12 @@ private:
     ObjInspectorEventMap m_eventMap;
 
     PObjectBase m_currentSel;
-	
+
 	//save the current selected property
 	wxString m_strSelPropItem;
 	wxString m_pageName;
 
-#ifdef USE_FLATNOTEBOOK
-    wxFlatNotebook* m_nb;
-    wxFlatNotebookImageList m_icons;
-#else
 	wxAuiNotebook* m_nb;
-#endif
 
     wxPropertyGridManager* m_pg;
     wxPropertyGridManager* m_eg;
@@ -158,18 +145,16 @@ private:
 	void OnPropertyGridItemSelected( wxPropertyGridEvent& event );
     void OnReCreateGrid( wxCommandEvent& event );
 	void OnBitmapPropertyChanged( wxCommandEvent& event );
-	
+
 	void RestoreLastSelectedPropItem();
-	
+
 	void ModifyProperty( PProperty prop, const wxString& str );
-	
-#if wxVERSION_NUMBER >= 2900
+
 	void OnChildFocus( wxChildFocusEvent& event );
-#endif
 
 public:
     ObjectInspector(wxWindow *parent, int id, int style = wxFB_OI_DEFAULT_STYLE);
-    ~ObjectInspector();
+	~ObjectInspector() override;
 
     void OnObjectSelected( wxFBObjectEvent& event );
     void OnProjectRefresh( wxFBEvent& event );

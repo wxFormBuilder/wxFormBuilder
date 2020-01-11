@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -25,12 +25,9 @@
 
 #ifndef __MENUEDITOR__
 #define __MENUEDITOR__
-#include <wx/wx.h>
-#include <wx/button.h>
+#include "../model/database.h"
+
 #include <wx/listctrl.h>
-#include <vector>
-#include "utils/wxfbdefs.h"
-#include "model/database.h"
 
 /**
  * Class MenuEditor
@@ -111,7 +108,7 @@ class MenuEditor : public wxDialog
   public:
 
     /** Constructor */
-    MenuEditor(wxWindow *parent, int id = -1);
+    MenuEditor(wxWindow *parent, int id = wxID_ANY);
 
     /** Rellena el wxListCtrl con los datos de "obj", que debe ser de tipo
     menubar */

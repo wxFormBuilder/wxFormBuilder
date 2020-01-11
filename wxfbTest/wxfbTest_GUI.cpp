@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // C++ code generated with wxFormBuilder (version May  4 2007)
 // http://www.wxformbuilder.org/
@@ -60,7 +60,7 @@ MainFrame::MainFrame( wxWindow* parent, int id, wxString title, wxPoint pos, wxS
 	
 	this->SetMenuBar( m_menubar1 );
 	
-	m_statusBar1 = this->CreateStatusBar( 1, wxST_SIZEGRIP, ID_DEFAULT );
+	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, ID_DEFAULT );
 	m_toolBar1 = this->CreateToolBar( wxTB_HORIZONTAL, ID_DEFAULT ); 
 	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( copy_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );
 	m_toolBar1->AddTool( ID_DEFAULT, wxT("tool"), wxBitmap( cut_xpm ), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString );

@@ -60,7 +60,7 @@ elseif(APPLE)
     set_source_files_properties(wxFormBuilder.icns PROPERTIES
         MACOSX_PACKAGE_LOCATION Resources)
 
-    file(GLOB XMLS ../xml/*)
+    file(GLOB XMLS ../output/xml/*)
     list(APPEND wxFB_SRCS ${XMLS})
     set_source_files_properties(${XMLS} PROPERTIES MACOSX_PACKAGE_LOCATION "SharedSupport/xml")
     source_group("Resources\\xml" FILES ${XMLS})
@@ -86,13 +86,6 @@ if(APPLE)
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.rad"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${CPACK_PACKAGE_VERSION}"
         )
-else()
-    add_custom_command(TARGET wxFormBuilder POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources
-        ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/resources
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/xml
-        ${CMAKE_CURRENT_BINARY_DIR}/${INSTALL_SHARE_DIR}/xml
-    )
 endif()
 
 target_include_directories(wxFormBuilder
@@ -184,7 +177,7 @@ if(APPLE)
     " ${COMPONENT})
 else()
     install(DIRECTORY
-        ${CMAKE_SOURCE_DIR}/xml 
-        ${CMAKE_SOURCE_DIR}/resources
+        ${CMAKE_SOURCE_DIR}/output/xml
+        ${CMAKE_SOURCE_DIR}/output/resources
         DESTINATION ${INSTALL_SHARE_DIR})
 endif()

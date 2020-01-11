@@ -11,31 +11,35 @@
 solution "wxFormBuilder-Solution"
     language "C++"
     configurations      {"Debug", "Release"}
+    if (startproject ~= nil) then
+        startproject    "wxFormBuilder"
+    end
 
     local scriptDir     = os.getcwd()
 
-    dofile( scriptDir .. "/wxwidgets.lua" )
+    dofile(scriptDir .. "/wxwidgets.lua")
 
-    local wxver         = string.gsub( wxVersion, '%.', '' )
-    location            ( "../../build/" .. wxVersion .. "/" .. _ACTION )
+    local wxver         = string.gsub(wxVersion, '%.', '')
+    location            ("../../build/" .. wxVersion .. "/" .. _ACTION)
     BuildDir            = solution().location
-	CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
-
-if wxVersion < "2.9" then
-    DebugSuffix         = "d-" .. wxver
-else
+    CustomPrefix        = "wx_" .. wxTarget .. wxUnicodeSign
     DebugSuffix         = "-" .. wxver
-end
-    os.chdir( BuildDir )
 
---if wxCompiler == "gcc" and os.is("windows") then
---  flags               {"NoImportLib"}
---end
+    os.chdir(BuildDir)
 
-if wxUseUnicode then
-    flags               {"Unicode"}
-    defines             {"UNICODE", "_UNICODE"}
-end
+    --if wxCompiler == "gcc" and os.is("windows") then
+    --    flags           {"NoImportLib"}
+    --end
+
+    if wxUseUnicode then
+        -- The Unicode flag got removed in Premake 5.x but is still required for Premake 4.x,
+        -- use the presence of the workspace function to detect if running under Premake 5.x
+        if (workspace == nil) then
+            flags       {"Unicode"}
+        end
+        defines         {"UNICODE", "_UNICODE"}
+    end
+
     configuration "windows"
         defines         {"WIN32", "_WINDOWS"}
 
@@ -43,38 +47,45 @@ end
         -- adding symbols so that premake does not include the "Wl,x"
         -- flags, as these flags make clang linking fail
         -- see http://industriousone.com/topic/how-remove-flags-ldflags
-        flags { "Symbols" }
-        buildoptions { "-Wno-overloaded-virtual" }
+        flags           {"Symbols"}
+        buildoptions    {"-Wno-overloaded-virtual"}
 
     configuration "Debug"
         defines         {"DEBUG", "_DEBUG"}
         flags           {"Symbols"}
-
-		if wxCompiler == "gcc" then
-			buildoptions    {"-O0"}
-		end
+        if wxCompiler == "gcc" then
+            buildoptions{"-O0"}
+        end
 
     configuration "Release"
-		-- if wxCompiler == "gcc" then
-		-- 	 linkoptions {"-s"}
-		-- end
+        --if wxCompiler == "gcc" then
+        --    linkoptions {"-s"}
+        --end
         defines         {"NDEBUG"}
-        -- flags           {"OptimizeSpeed"}
+        flags           {"Optimize", "ExtraWarnings"}
 
-    dofile( scriptDir .. "/ticpp.lua" )
-    dofile( scriptDir .. "/plugin-interface.lua" )
+    configuration {"not vs*", "Debug"}
+        flags           {"ExtraWarnings"}
 
-if wxVersion < "2.9" then
-	dofile( scriptDir .. "/wxflatnotebook.lua" )
-    dofile( scriptDir .. "/wxpropgrid.lua" )
-    dofile( scriptDir .. "/wxscintilla.lua" )
-	dofile( scriptDir .. "/plugins/wxadditions-mini.lua" )
-end
-    dofile( scriptDir .. "/plugins/additional.lua" )
-    dofile( scriptDir .. "/plugins/common.lua" )
-    dofile( scriptDir .. "/plugins/containers.lua" )
-    dofile( scriptDir .. "/plugins/forms.lua" )
-    dofile( scriptDir .. "/plugins/layout.lua" )
-    dofile( scriptDir .. "/wxformbuilder.lua" )
-    dofile( scriptDir .. "/utilities.lua" )
+    configuration {"vs*", "Debug"}
+        -- This produces D9025 because without ExtraWarnings /W3 gets set
+        --buildoptions    {"/W4"}
 
+    dofile(scriptDir .. "/utilities.lua")
+
+    dofile(scriptDir .. "/plugin-interface.lua")
+    dofile(scriptDir .. "/ticpp.lua")
+
+    dofile(scriptDir .. "/plugins/additional.lua")
+    dofile(scriptDir .. "/plugins/common.lua")
+    dofile(scriptDir .. "/plugins/containers.lua")
+    dofile(scriptDir .. "/plugins/forms.lua")
+    dofile(scriptDir .. "/plugins/layout.lua")
+
+    -- The MacOS postbuild commands require that the plugins are already compiled,
+    -- with PreMake 4.x it is not possible to define a build order dependency for
+    -- libraries without linking to them.
+    -- Processing the wxformbuilder script after the plugin scripts results in a Makefile
+    -- that does process wxformbuilder after the plugin projects without defining a dependency between them.
+    -- This will break when using parallel builds because of the missing dependencies.
+    dofile(scriptDir .. "/wxformbuilder.lua")

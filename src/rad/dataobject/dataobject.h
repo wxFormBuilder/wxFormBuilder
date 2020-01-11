@@ -15,37 +15,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __DATA_OBJECT__
-#define __DATA_OBJECT__
+#pragma once
 
-#include <string>
-#include <wx/dataobj.h>
+#include "../../utils/wxfbdefs.h"
+
 #include <wx/dnd.h>
-#include "utils/wxfbdefs.h"
 
-#define wxFBDataObjectFormat wxDataFormat( wxT("wxFormBuilderDataFormat") )
+#define wxFBDataObjectFormat wxDataFormat(wxT("wxFormBuilderDataFormat"))
 
-class wxFBDataObject : public wxDataObject
-{
+class wxFBDataObject : public wxDataObject {
+public:
+	wxFBDataObject(PObjectBase obj = PObjectBase());
+	void GetAllFormats(wxDataFormat* formats, Direction dir = Get) const override;
+	bool GetDataHere(const wxDataFormat& format, void* buf) const override;
+	size_t GetDataSize(const wxDataFormat& format) const override;
+	size_t GetFormatCount(Direction dir = Get) const override;
+	wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
+	bool SetData(const wxDataFormat& format, size_t len, const void* buf) override;
+	PObjectBase GetObj();
+
 private:
 	std::string m_data;
-
-public:
-	wxFBDataObject( PObjectBase obj = PObjectBase() );
-	~wxFBDataObject();
-	void GetAllFormats( wxDataFormat* formats, Direction dir = Get ) const;
-	bool GetDataHere( const wxDataFormat& format, void* buf ) const;
-	size_t GetDataSize(const wxDataFormat& format ) const;
-	size_t GetFormatCount( Direction dir = Get ) const;
-	wxDataFormat GetPreferredFormat( Direction dir = Get ) const;
-	bool SetData( const wxDataFormat& format, size_t len, const void *buf );
-	PObjectBase GetObj();
 };
-
-#endif //__DATA_OBJECT__

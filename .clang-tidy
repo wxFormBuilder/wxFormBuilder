@@ -1,0 +1,8 @@
+---
+Checks:           'readability-redundant-string-cstr,modernize-use-override,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,modernize-redundant-void-arg,google-readability-redundant-smartptr-get,hicpp-move-const-arg,readability-redundant-member-init'
+WarningsAsErrors: 'readability-redundant-string-cstr,readability-implicit-bool-conversion,modernize-deprecated-headers,readability-delete-null-pointer,modernize-redundant-void-arg,google-readability-redundant-smartptr-get,hicpp-move-const-arg,clang-analyzer-core.CallAndMessage'
+CheckOptions:
+      - key:             readability-implicit-bool-conversion.AllowPointerConditions
+        value:           '1'
+      - key:             readability-implicit-bool-conversion.AllowIntegerConditions
+        value:           '1'

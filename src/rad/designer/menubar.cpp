@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,11 +24,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "menubar.h"
-#include "wx/debug.h"
 
-Menubar::Menubar() : wxPanel()
-{
-    m_sizer = NULL;
+Menubar::Menubar() {
+	m_sizer = nullptr;
 }
 
 Menubar::Menubar(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size,
@@ -36,7 +34,7 @@ Menubar::Menubar(wxWindow *parent, int id, const wxPoint& pos, const wxSize &siz
 {
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
     m_sizer = new wxBoxSizer(wxHORIZONTAL);
-    m_sizer->Add(new wxStaticText(this, -1, wxT(" ")), 0, wxRIGHT | wxLEFT, 0);
+    m_sizer->Add(new wxStaticText(this, wxID_ANY, wxT(" ")), 0, wxRIGHT | wxLEFT, 0);
     mainSizer->Add(m_sizer, 1, wxTOP | wxBOTTOM, 3);
     SetSizer(mainSizer);
     SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNFACE));
@@ -68,7 +66,7 @@ Menubar::~Menubar()
 
 void Menubar::AppendMenu(const wxString& name, wxMenu *menu)
 {
-    wxStaticText *st = new wxStaticText(this, -1, name);
+    wxStaticText *st = new wxStaticText(this, wxID_ANY, name);
     st->PushEventHandler(new MenuEvtHandler(st, menu));
     m_sizer->Add(st, 0, wxALIGN_LEFT | wxRIGHT | wxLEFT, 5);
     Layout();

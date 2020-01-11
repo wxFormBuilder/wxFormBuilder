@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,13 +23,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __COMPONENT_H__
-#define __COMPONENT_H__
+#pragma once
 
+
+#include <vector>
+#include <utility>
 
 #include "wx/wx.h"
-#include <wx/dynarray.h>
-#include <wx/string.h>
 #include "fontcontainer.h"
 
 #define COMPONENT_TYPE_ABSTRACT 0
@@ -75,6 +75,7 @@ class IObject
   virtual wxBitmap GetPropertyAsBitmap  (const wxString& pname) = 0;
   virtual wxArrayInt GetPropertyAsArrayInt(const wxString& pname) = 0;
   virtual wxArrayString GetPropertyAsArrayString(const wxString& pname) = 0;
+  virtual std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& pname) = 0;
   virtual double GetPropertyAsFloat(const wxString& pname) = 0;
   virtual wxString GetChildFromParentProperty( const wxString& parentName, const wxString& childName ) = 0;
   virtual wxString GetClassName() = 0;
@@ -264,5 +265,3 @@ extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary( IManager* manager ) 
 
 #define ABSTRACT_COMPONENT( name, class ) \
   _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_ABSTRACT )
-
-#endif //__COMPONENT_H__

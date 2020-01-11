@@ -1,17 +1,15 @@
+#include "filetocarray.h"
+
 #include "../rad/appdata.h"
 #include "../model/objectbase.h"
 #include "../codegen/codewriter.h"
 #include "../codegen/cppcg.h"
 #include "typeconv.h"
 #include "wxfbexception.h"
-#include "filetocarray.h"
 
-#include <wx/log.h>
 #include <wx/filename.h>
-#include <wx/image.h>
 
 #include <fstream>
-#include <iterator>
 
 #define CASE_BITMAP_TYPE( x )	\
 	case x:						\
@@ -150,7 +148,7 @@ wxString FileToCArray::Generate( const wxString& sourcePath )
 	arrayCodeWriter->WriteLn( wxT("static wxBitmap bmp( image );") );
 	arrayCodeWriter->WriteLn( wxT("return bmp;") );
 	arrayCodeWriter->Unindent();
-	arrayCodeWriter->WriteLn( wxT("};") );
+	arrayCodeWriter->WriteLn( wxT("}") );
 	arrayCodeWriter->WriteLn();
 
 	arrayCodeWriter->WriteLn();

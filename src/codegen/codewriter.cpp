@@ -16,7 +16,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -25,31 +25,25 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "codewriter.h"
-#include "md5/md5.hh"
-#include "utils/wxfbexception.h"
-#include "utils/typeconv.h"
+
+#include "../md5/md5.hh"
+#include "../utils/typeconv.h"
+#include "../utils/wxfbexception.h"
 
 #include <wx/file.h>
 #include <wx/tokenzr.h>
 #include <wx/regex.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
-#include <fstream>
 #include <cstring>
+#include <fstream>
 
 CodeWriter::CodeWriter()
 :
 m_indent( 0 ),
-m_cols( 0 )
-{
-}
-
-CodeWriter::~CodeWriter()
+m_cols( 0 ),
+m_indent_with_spaces( false )
 {
 }
 
@@ -88,13 +82,14 @@ void CodeWriter::WriteLn( wxString code, bool keepIndents )
 		{
 			m_cols = m_indent;
 		}
+		else
+		{
+			code.Trim(false);
+		}
 
+		code.Trim();
 		Write( code );
-		#if defined( __WXMSW__ )
-			Write( wxT("\r\n") );
-		#else
-			Write( wxT("\n") );
-		#endif
+		Write(wxT("\n"));
 		m_cols = 0;
 	}
 }
@@ -131,7 +126,9 @@ void CodeWriter::Write( wxString code )
 		// Inserting indents
 		for ( int i = 0; i < m_indent; i++ )
 		{
-			DoWrite( wxT("\t") );
+			if (!code.IsEmpty()) {
+				DoWrite(m_indent_with_spaces ? wxT("    ") : wxT("\t"));
+			}
 		}
 
 		m_cols = m_indent;
@@ -140,26 +137,23 @@ void CodeWriter::Write( wxString code )
 	DoWrite( code );
 }
 
+void CodeWriter::SetIndentWithSpaces( bool on )
+{
+	m_indent_with_spaces = on;
+}
+
 TCCodeWriter::TCCodeWriter()
 :
 m_tc( 0 )
 {
 }
 
-#if wxVERSION_NUMBER < 2900
-TCCodeWriter::TCCodeWriter( wxScintilla* tc )
-#else
 TCCodeWriter::TCCodeWriter( wxStyledTextCtrl* tc )
-#endif
 {
 	SetTextCtrl( tc );
 }
 
-#if wxVERSION_NUMBER < 2900
-void TCCodeWriter::SetTextCtrl( wxScintilla* tc )
-#else
 void TCCodeWriter::SetTextCtrl( wxStyledTextCtrl* tc )
-#endif
 {
 	m_tc = tc;
 }
@@ -211,29 +205,24 @@ FileCodeWriter::~FileCodeWriter()
 
 void FileCodeWriter::WriteBuffer()
 {
-	#ifdef __WXMSW__
-		unsigned char microsoftBOM[3] = { 0xEF, 0xBB, 0xBF };
-	#endif
+	const static unsigned char MICROSOFT_BOM[3] = { 0xEF, 0xBB, 0xBF };
 
 	// Compare buffer with existing file (if any) to determine if
 	// writing the file is necessary
 	bool shouldWrite = true;
-	std::ifstream file( m_filename.mb_str( wxConvFile ), std::ios::binary | std::ios::in );
+	std::ifstream fileIn(m_filename.mb_str(wxConvFile), std::ios::binary | std::ios::in);
 
 	std::string buf;
 
-	if ( file )
+	if (fileIn)
 	{
-		MD5 diskHash( file );
+		MD5 diskHash(fileIn);
 		unsigned char* diskDigest = diskHash.raw_digest();
 
 		MD5 bufferHash;
-		#ifdef __WXMSW__
-			if ( m_useMicrosoftBOM )
-			{
-				bufferHash.update( microsoftBOM, 3 );
-			}
-		#endif
+		if (m_useMicrosoftBOM) {
+			bufferHash.update(MICROSOFT_BOM, 3);
+		}
 		const std::string& data = m_useUtf8 ? _STDSTR( m_buffer ) : _ANSISTR( m_buffer );
 
 		if (!m_useUtf8) buf = data;
@@ -253,24 +242,22 @@ void FileCodeWriter::WriteBuffer()
 
 	if ( shouldWrite )
 	{
-		wxFile file;
-		if ( !file.Create( m_filename, true ) )
+		wxFile fileOut;
+		if (!fileOut.Create(m_filename, true))
 		{
 			wxLogError( _("Unable to create file: %s"), m_filename.c_str() );
 			return;
 		}
 
-		#ifdef __WXMSW__
-		if ( m_useMicrosoftBOM )
+		if (m_useMicrosoftBOM)
 		{
-			file.Write( microsoftBOM, 3 );
+			fileOut.Write(MICROSOFT_BOM, 3);
 		}
-		#endif
 
 		if (!m_useUtf8)
-            file.Write( buf.c_str(), buf.length() );
-        else
-            file.Write( m_buffer );
+			fileOut.Write(buf.c_str(), buf.length());
+		else
+			fileOut.Write(m_buffer);
 	}
 }
 

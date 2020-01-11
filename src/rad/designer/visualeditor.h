@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,15 +26,9 @@
 #ifndef __VISUAL_EDITOR__
 #define __VISUAL_EDITOR__
 
-#include "plugin.h"
-#include "wx/wx.h"
-#include "utils/wxfbdefs.h"
-#include "rad/designer/visualobj.h"
-//#include "rad/designer/resizablepanel.h"
-#include <wx/sashwin.h>
-
 #include "innerframe.h"
-#include "wx/aui/aui.h"
+#include "visualobj.h"
+
 #include <forms/wizard.h>
 /**
  * Extends the wxInnerFrame to show the object highlight
@@ -73,7 +67,7 @@ class DesignerWindow : public wxInnerFrame
  public:
    DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size = wxDefaultSize,
      long style = 0, const wxString &name = wxT("designer_win"));
-   ~DesignerWindow();
+	~DesignerWindow() override;
    void SetGrid(int x, int y);
    void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
    void SetSelectedItem(wxObject *item) { m_selItem = item; }
@@ -137,7 +131,7 @@ class VisualEditor : public wxScrolledWindow
 
  public:
   VisualEditor(wxWindow *parent);
-  ~VisualEditor();
+	~VisualEditor() override;
   void OnResizeBackPanel (wxCommandEvent &event);
   void OnClickBackPanel( wxMouseEvent& event );
   void PreventOnSelected( bool prevent = true );

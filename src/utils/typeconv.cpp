@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,24 +24,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "typeconv.h"
-#include <wx/tokenzr.h>
-#include "utils/stringutils.h"
-#include "utils/debug.h"
-#include "rad/bitmaps.h"
-#include <wx/filename.h>
-#include <string>
-#include <cstring>
-#include "rad/appdata.h"
-#include <clocale>
 
-#if wxVERSION_NUMBER < 2900
-	#include <wx/propgrid/propgrid.h>
-	#include <wx/propgrid/propdev.h>
-#endif
+#include "../rad/appdata.h"
+#include "../rad/bitmaps.h"
+#include "../rad/inspector/objinspect.h"
 
-#include <wx/filesys.h>
 #include <wx/artprov.h>
-#include "rad/inspector/objinspect.h"
+#include <wx/filesys.h>
 
 ////////////////////////////////////
 
@@ -285,23 +274,27 @@ wxFontContainer TypeConv::StringToFont (const wxString &str)
 		font.SetFaceName( faceName );
 	}
 
-	if ( tkz.HasMoreTokens() )
-	{
+	if (tkz.HasMoreTokens()) {
 		long l_style;
 		wxString s_style = tkz.GetNextToken();
-		if ( s_style.ToLong( &l_style ) )
-		{
-			font.SetStyle( (int)l_style );
+		if (s_style.ToLong(&l_style)) {
+			if (l_style >= wxFONTSTYLE_NORMAL && l_style < wxFONTSTYLE_MAX) {
+				font.SetStyle(static_cast<wxFontStyle>(l_style));
+			} else {
+				font.SetStyle(wxFONTSTYLE_NORMAL);
+			}
 		}
 	}
 
-	if ( tkz.HasMoreTokens() )
-	{
+	if (tkz.HasMoreTokens()) {
 		long l_weight;
 		wxString s_weight = tkz.GetNextToken();
-		if ( s_weight.ToLong( &l_weight ) )
-		{
-			font.SetWeight( (int)l_weight );
+		if (s_weight.ToLong(&l_weight)) {
+			if (l_weight >= wxFONTWEIGHT_NORMAL && l_weight < wxFONTWEIGHT_MAX) {
+				font.SetWeight(static_cast<wxFontWeight>(l_weight));
+			} else {
+				font.SetWeight(wxFONTWEIGHT_NORMAL);
+			}
 		}
 	}
 
@@ -315,13 +308,15 @@ wxFontContainer TypeConv::StringToFont (const wxString &str)
 		}
 	}
 
-	if ( tkz.HasMoreTokens() )
-	{
+	if (tkz.HasMoreTokens()) {
 		long l_family;
 		wxString s_family = tkz.GetNextToken();
-		if ( s_family.ToLong( &l_family ) )
-		{
-			font.SetFamily( (int)l_family );
+		if (s_family.ToLong(&l_family)) {
+			if (l_family >= wxFONTFAMILY_DEFAULT && l_family < wxFONTFAMILY_MAX) {
+				font.SetFamily(static_cast<wxFontFamily>(l_family));
+			} else {
+				font.SetFamily(wxFONTFAMILY_DEFAULT);
+			}
 		}
 	}
 
@@ -344,29 +339,70 @@ wxString TypeConv::FontToString (const wxFontContainer &font)
 	return wxString::Format( wxT("%s,%d,%d,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize(), font.GetFamily(), font.GetUnderlined() ? 1 : 0 );
 }
 
-std::map< int, wxString > MakeFontFamilyMap()
-{
-#define MAKE_FAMILY_MAP_ITEM(X) families[X] = #X;
-	std::map< int, wxString > families;
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_DEFAULT);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_DECORATIVE);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_ROMAN);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_SCRIPT);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_SWISS);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_MODERN);
-	MAKE_FAMILY_MAP_ITEM(wxFONTFAMILY_TELETYPE);
-	return families;
+wxString TypeConv::FontFamilyToString(wxFontFamily family) {
+	wxString result;
+
+	switch (family) {
+		case wxFONTFAMILY_DECORATIVE:
+			result = wxT("wxFONTFAMILY_DECORATIVE");
+			break;
+		case wxFONTFAMILY_ROMAN:
+			result = wxT("wxFONTFAMILY_ROMAN");
+			break;
+		case wxFONTFAMILY_SCRIPT:
+			result = wxT("wxFONTFAMILY_SCRIPT");
+			break;
+		case wxFONTFAMILY_SWISS:
+			result = wxT("wxFONTFAMILY_SWISS");
+			break;
+		case wxFONTFAMILY_MODERN:
+			result = wxT("wxFONTFAMILY_MODERN");
+			break;
+		case wxFONTFAMILY_TELETYPE:
+			result = wxT("wxFONTFAMILY_TELETYPE");
+			break;
+		default:
+			result = wxT("wxFONTFAMILY_DEFAULT");
+			break;
+	}
+
+	return result;
 }
 
-wxString TypeConv::FontFamilyToString( const int family )
-{
-	static const std::map< int, wxString > s_families = MakeFontFamilyMap();
-	std::map< int, wxString >::const_iterator item = s_families.find( family );
-	if ( item != s_families.end() )
-	{
-		return item->second;
+wxString TypeConv::FontStyleToString(wxFontStyle style) {
+	wxString result;
+
+	switch (style) {
+		case wxFONTSTYLE_ITALIC:
+			result = wxT("wxFONTSTYLE_ITALIC");
+			break;
+		case wxFONTSTYLE_SLANT:
+			result = wxT("wxFONTSTYLE_SLANT");
+			break;
+		default:
+			result = wxT("wxFONTSTYLE_NORMAL");
+			break;
 	}
-	return "wxFONTFAMILY_UNKNOWN";
+
+	return result;
+}
+
+wxString TypeConv::FontWeightToString(wxFontWeight weight) {
+	wxString result;
+
+	switch (weight) {
+		case wxFONTWEIGHT_LIGHT:
+			result = wxT("wxFONTWEIGHT_LIGHT");
+			break;
+		case wxFONTWEIGHT_BOLD:
+			result = wxT("wxFONTWEIGHT_BOLD");
+			break;
+		default:
+			result = wxT("wxFONTWEIGHT_NORMAL");
+			break;
+	}
+
+	return result;
 }
 
 wxBitmap TypeConv::StringToBitmap( const wxString& filename )
@@ -480,7 +516,6 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 
 	if( children.Index( _("Load From Art Provider") ) == wxNOT_FOUND )
 	{
-		// "break;" was left out intentionally
 		long temp;
 		switch ( children.size() )
 		{
@@ -491,16 +526,20 @@ void TypeConv::ParseBitmapWithResource( const wxString& value, wxString* image, 
 					children[4].ToLong( &temp );
 					icoSize->SetHeight( temp );
 				}
+				wxFALLTHROUGH;
 			case 3:
 				if( children.size() > 3 )
 				{
 					children[3].ToLong( &temp );
 					icoSize->SetWidth( temp );
 				}
+				wxFALLTHROUGH;
 			case 2:
 				if( children.size() > 1 ) *image = children[1];
+				wxFALLTHROUGH;
 			case 1:
 				if( children.size() > 0 ) *source = children[0];
+				break;
 			default:
 				break;
 		}
@@ -892,11 +931,7 @@ wxString TypeConv::ArrayStringToString(const wxArrayString &arrayStr)
 {
 	wxString result;
 
-#if wxVERSION_NUMBER < 2900
-	wxPropertyGrid::ArrayStringToString( result, arrayStr, wxT('"'), wxT('"'), 1 );
-#else
 	wxArrayStringProperty::ArrayStringToString( result, arrayStr, '"', 1 );
-#endif
 
 	return result;
 }

@@ -16,7 +16,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -25,90 +25,82 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "mainframe.h"
 
-#include "wx/config.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "rad/title.h"
-#include "rad/bitmaps.h"
-#include "rad/cpppanel/cpppanel.h"
-#include "rad/pythonpanel/pythonpanel.h"
-#include "rad/luapanel/luapanel.h"
-#include "rad/phppanel/phppanel.h"
-#include "rad/xrcpanel/xrcpanel.h"
-#include "rad/geninheritclass/geninhertclass.h"
-#include "rad/auitabart.h"
+#include "../model/xrcfilter.h"
+#include "../utils/stringutils.h"
+#include "../utils/wxfbexception.h"
+#include "about.h"
+#include "appdata.h"
+#include "auitabart.h"
+#include "bitmaps.h"
+#include "cpppanel/cpppanel.h"
+#include "designer/visualeditor.h"
+#include "geninheritclass/geninhertclass.h"
 #include "inspector/objinspect.h"
+#include "luapanel/luapanel.h"
 #include "objecttree/objecttree.h"
 #include "palette.h"
-#include "rad/designer/visualeditor.h"
-
-#include "model/xrcfilter.h"
-#include "rad/about.h"
-#include "rad/wxfbevent.h"
+#include "phppanel/phppanel.h"
+#include "pythonpanel/pythonpanel.h"
+#include "title.h"
+#include "wx/config.h"
+#include "wxfbevent.h"
 #include "wxfbmanager.h"
-#include "utils/wxfbexception.h"
-#include "utils/stringutils.h"
-#include "utils/wxfbdefs.h"
-#include <wx/filename.h>
+#include "xrcpanel/xrcpanel.h"
 
-#include <rad/appdata.h>
-#include "model/objectbase.h"
+enum
+{
+	ID_SAVE_PRJ = wxID_HIGHEST + 1,
+	ID_OPEN_PRJ,
+	ID_NEW_PRJ,
+	ID_GENERATE_CODE,
+	ID_IMPORT_XRC,
+	ID_UNDO,
+	ID_REDO,
+	ID_SAVE_AS_PRJ,
+	ID_CUT,
+	ID_DELETE,
+	ID_COPY,
+	ID_PASTE,
+	ID_EXPAND,
+	ID_STRETCH,
+	ID_MOVE_UP,
+	ID_MOVE_DOWN,
+	ID_RECENT_0, // Tienen que tener ids consecutivos
+	ID_RECENT_1, // ID_RECENT_n+1 == ID_RECENT_n + 1
+	ID_RECENT_2, //
+	ID_RECENT_3, //
+	ID_RECENT_SEP,
 
-#if wxVERSION_NUMBER < 2900
-#include <wx/wxScintilla/wxscintilla.h>
-#endif
+	ID_ALIGN_LEFT,
+	ID_ALIGN_CENTER_H,
+	ID_ALIGN_RIGHT,
+	ID_ALIGN_TOP,
+	ID_ALIGN_CENTER_V,
+	ID_ALIGN_BOTTOM,
 
-#define ID_SAVE_PRJ      102
-#define ID_OPEN_PRJ      103
-#define ID_NEW_PRJ       104
-#define ID_GENERATE_CODE 105
-#define ID_IMPORT_XRC    106
-#define ID_UNDO          107
-#define ID_REDO          108
-#define ID_SAVE_AS_PRJ   109
-#define ID_CUT           110
-#define ID_DELETE        111
-#define ID_COPY          112
-#define ID_PASTE         113
-#define ID_EXPAND        114
-#define ID_STRETCH       115
-#define ID_MOVE_UP       116
-#define ID_MOVE_DOWN     117
-#define ID_RECENT_0      118 // Tienen que tener ids consecutivos
-#define ID_RECENT_1      119 // ID_RECENT_n+1 == ID_RECENT_n + 1
-#define ID_RECENT_2      120 //
-#define ID_RECENT_3      121 //
-#define ID_RECENT_SEP    122
+	ID_BORDER_LEFT,
+	ID_BORDER_RIGHT,
+	ID_BORDER_TOP,
+	ID_BORDER_BOTTOM,
+	ID_EDITOR_FNB,
+	ID_MOVE_LEFT,
+	ID_MOVE_RIGHT,
 
-#define ID_ALIGN_LEFT     123
-#define ID_ALIGN_CENTER_H 124
-#define ID_ALIGN_RIGHT    125
-#define ID_ALIGN_TOP      126
-#define ID_ALIGN_CENTER_V 127
-#define ID_ALIGN_BOTTOM   128
+	ID_PREVIEW_XRC,
+	ID_GEN_INHERIT_CLS,
 
-#define ID_BORDER_LEFT    129
-#define ID_BORDER_RIGHT   130
-#define ID_BORDER_TOP     131
-#define ID_BORDER_BOTTOM  132
-#define ID_EDITOR_FNB	  133
-#define ID_MOVE_LEFT	  134
-#define ID_MOVE_RIGHT     135
+	// The preference dialog must use wxID_PREFERENCES for wxMAC
+	//ID_SETTINGS_GLOBAL, // For the future preference dialogs
+	ID_SETTINGS_PROJ, // For the future preference dialogs
 
-#define ID_PREVIEW_XRC     136
-#define ID_GEN_INHERIT_CLS 137
+	ID_FIND,
 
-// The preference dialog must use wxID_PREFERENCES for wxMAC
-//#define ID_SETTINGS_GLOBAL 138	// For the future preference dialogs
-#define ID_SETTINGS_PROJ   139	// For the future preference dialogs
+	ID_CLIPBOARD_COPY,
+	ID_CLIPBOARD_PASTE,
 
-#define ID_FIND 142
-
-#define ID_CLIPBOARD_COPY 143
-#define ID_CLIPBOARD_PASTE 144
-
-//added by tyysoft to define the swap button ID.
-#define ID_WINDOW_SWAP 200
+	//added by tyysoft to define the swap button ID.
+	ID_WINDOW_SWAP,
+};
 
 #define STATUS_FIELD_OBJECT 2
 #define STATUS_FIELD_PATH 1
@@ -361,23 +353,14 @@ m_findDialog( NULL )
 	// So splitter windows can be restored correctly
 	Connect( wxEVT_IDLE, wxIdleEventHandler( MainFrame::OnIdle ) );
 
-	// So we don't respond to a FlatNoteBookPageChanged event during construction
-#ifdef USE_FLATNOTEBOOK
-	m_notebook->Connect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
-#else
 	m_notebook->Connect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, wxAuiNotebookEventHandler( MainFrame::OnAuiNotebookPageChanged ), NULL, this );
-#endif
 
-};
+}
 
 
 MainFrame::~MainFrame()
 {
-#ifdef USE_FLATNOTEBOOK
-	m_notebook->Disconnect( wxEVT_COMMAND_FLATNOTEBOOK_PAGE_CHANGED, wxFlatNotebookEventHandler( MainFrame::OnFlatNotebookPageChanged ), 0, this );
-#else
 	m_notebook->Disconnect( wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, wxAuiNotebookEventHandler( MainFrame::OnAuiNotebookPageChanged ), NULL, this );
-#endif
 
 #ifdef __WXMAC__
     // work around problem on wxMac
@@ -440,6 +423,7 @@ void MainFrame::RestorePosition( const wxString &name )
 void MainFrame::SavePosition( const wxString &name )
 {
 	m_objInsp->SavePosition();
+	m_palette->SavePosition();
 
 	wxConfigBase *config = wxConfigBase::Get();
 	bool isIconized = IsIconized();
@@ -505,9 +489,6 @@ void MainFrame::SavePosition( const wxString &name )
 	}
 
 	config->SetPath( wxT( ".." ) );
-#ifdef USE_FLATNOTEBOOK
-	config->Write( wxT("/mainframe/editor/notebook_style"), m_notebook->GetWindowStyleFlag() );
-#endif
 }
 
 void MainFrame::OnSaveProject( wxCommandEvent &event )
@@ -979,12 +960,18 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle( wxString::Format( wxT("%s%s - wxFormBuilder v3.6.0"), AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str() ) );
+	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v%s%s"),
+	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), VERSION, REVISION));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
-	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
 	wxToolBar* toolbar = GetToolBar();
+
+	wxMenu* menuFile = GetMenuBar()->GetMenu(GetMenuBar()->FindMenu(_("File")));
+	menuFile->Enable(ID_SAVE_PRJ, AppData()->IsModified());
+	toolbar->EnableTool(ID_SAVE_PRJ, AppData()->IsModified());
+
+	wxMenu* menuEdit = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "Edit" ) ) );
 
 	bool redo = AppData()->CanRedo();
 	menuEdit->Enable( ID_REDO, redo );
@@ -1025,12 +1012,11 @@ void MainFrame::UpdateFrame()
 
 void MainFrame::UpdateRecentProjects()
 {
-	int i, fi;
 	wxMenu *menuFile = GetMenuBar()->GetMenu( GetMenuBar()->FindMenu( wxT( "File" ) ) );
 
 	// borramos los items del menu de los projectos recientes
 
-	for ( i = 0 ; i < 4 ; i++ )
+	for (int i = 0 ; i < 4 ; i++)
 	{
 		if ( menuFile->FindItem( ID_RECENT_0 + i ) )
 			menuFile->Destroy( ID_RECENT_0 + i );
@@ -1043,13 +1029,13 @@ void MainFrame::UpdateRecentProjects()
 	}
 
 	// remove empty filenames and 'compress' the rest
-    fi = 0;
-	for ( i = 0 ; i < 4 ; i++ )
+    int fi = 0;
+	for (int i = 0 ; i < 4 ; i++)
 	{
 	    if(!m_recentProjects[i].IsEmpty())
 	        m_recentProjects[fi++] = m_recentProjects[i];
 	}
-	for ( i = fi ; i < 4 ; i++ )
+	for (int i = fi ; i < 4 ; i++)
         m_recentProjects[i] = wxT("");
 
     if ( !m_recentProjects[0].IsEmpty() )
@@ -1093,17 +1079,10 @@ void MainFrame::OnCopy( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Copy();
-    }
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Copy();
     }
-#endif
 	else
 	{
 		AppData()->CopyObject( AppData()->GetSelectedObject() );
@@ -1115,15 +1094,9 @@ void MainFrame::OnCut ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Cut();
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Cut();
-#endif
     }
 	else
 	{
@@ -1142,15 +1115,9 @@ void MainFrame::OnPaste ( wxCommandEvent &)
 {
 	wxWindow *focusedWindow = wxWindow::FindFocus();
 
-#if wxVERSION_NUMBER < 2900
-    if ( focusedWindow != NULL && focusedWindow->IsKindOf( CLASSINFO( wxScintilla ) ) )
-    {
-        ( ( wxScintilla* )focusedWindow )->Paste();
-#else
     if ( focusedWindow != NULL && focusedWindow->IsKindOf( wxCLASSINFO( wxStyledTextCtrl ) ) )
     {
         ( ( wxStyledTextCtrl* )focusedWindow )->Paste();
-#endif
     }
 	else
 	{
@@ -1350,11 +1317,7 @@ bool MainFrame::SaveWarning()
 	return ( result != wxCANCEL );
 }
 
-#ifdef USE_FLATNOTEBOOK
-void MainFrame::OnFlatNotebookPageChanged( wxFlatNotebookEvent& event )
-#else
 void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
-#endif
 {
 	UpdateFrame();
 
@@ -1625,64 +1588,34 @@ wxToolBar * MainFrame::CreateFBToolBar()
 
 wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 {
-#ifdef USE_FLATNOTEBOOK
-	long nbStyle;
-	wxConfigBase* config = wxConfigBase::Get();
-	config->Read( wxT("/mainframe/editor/notebook_style"), &nbStyle, wxFNB_BOTTOM | wxFNB_NO_X_BUTTON | wxFNB_NO_NAV_BUTTONS | wxFNB_NODRAG  | wxFNB_FF2 | wxFNB_CUSTOM_DLG );
-
-	m_notebook = new wxFlatNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, FNB_STYLE_OVERRIDES( nbStyle ) );
-	m_notebook->SetCustomizeOptions( wxFNB_CUSTOM_TAB_LOOK | wxFNB_CUSTOM_ORIENTATION | wxFNB_CUSTOM_LOCAL_DRAG );
-
-	// Set notebook icons
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "python" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
-	m_icons.Add( AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
-	m_notebook->SetImageList( &m_icons );
-#else
 	m_notebook = new wxAuiNotebook( parent, ID_EDITOR_FNB, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP );
 	m_notebook->SetArtProvider( new AuiTabArt() );
-#endif
 
 	m_visualEdit = new VisualEditor( m_notebook );
 	AppData()->GetManager()->SetVisualEditor( m_visualEdit );
 
 	m_notebook->AddPage( m_visualEdit, wxT( "Designer" ), false, 0 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
-#endif
 
-	m_cpp = new CppPanel( m_notebook, -1 );
+	m_cpp = new CppPanel( m_notebook, wxID_ANY);
 	m_notebook->AddPage( m_cpp, wxT( "C++" ), false, 1 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
-#endif
 
-	m_python = new PythonPanel( m_notebook, -1 );
+	m_python = new PythonPanel( m_notebook, wxID_ANY);
 	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 2, AppBitmaps::GetBitmap( wxT( "python" ), 16 ) );
-#endif
 
-	m_php = new PHPPanel( m_notebook, -1 );
+	m_php = new PHPPanel( m_notebook, wxID_ANY);
 	m_notebook->AddPage( m_php, wxT( "PHP" ), false, 3 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 3, AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
-#endif
 
-	m_lua = new LuaPanel(m_notebook, -1);
+	m_lua = new LuaPanel(m_notebook, wxID_ANY);
 	m_notebook->AddPage(m_lua,wxT( "Lua" ), false, 4 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
-#endif
 
-	m_xrc = new XrcPanel( m_notebook, -1 );
+	m_xrc = new XrcPanel( m_notebook, wxID_ANY);
 	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 5 );
-#ifndef USE_FLATNOTEBOOK
 	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
-#endif
 
 	return m_notebook;
 }
@@ -1691,7 +1624,7 @@ wxWindow * MainFrame::CreateComponentPalette ( wxWindow *parent )
 {
 	// la paleta de componentes, no es un observador propiamente dicho, ya
 	// que no responde ante los eventos de la aplicación
-	m_palette = new wxFbPalette( parent, -1 );
+	m_palette = new wxFbPalette( parent, wxID_ANY);
 	m_palette->Create();
 	//m_palette->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
 
@@ -1700,7 +1633,7 @@ wxWindow * MainFrame::CreateComponentPalette ( wxWindow *parent )
 
 wxWindow * MainFrame::CreateObjectTree( wxWindow *parent )
 {
-	m_objTree = new ObjectTree( parent, -1 );
+	m_objTree = new ObjectTree( parent, wxID_ANY);
 	m_objTree->Create();
 
 	return m_objTree;
@@ -1710,7 +1643,7 @@ wxWindow * MainFrame::CreateObjectInspector( wxWindow *parent )
 {
 	//TO-DO: make object inspector style selectable.
 	int style = ( m_style == wxFB_CLASSIC_GUI ? wxFB_OI_MULTIPAGE_STYLE : wxFB_OI_SINGLE_PAGE_STYLE );
-	m_objInsp = new ObjectInspector( parent, -1, style );
+	m_objInsp = new ObjectInspector( parent, wxID_ANY, style );
 	return m_objInsp;
 }
 
@@ -1722,7 +1655,7 @@ void MainFrame::CreateWideGui()
 	wxWindow *objectTree = Title::CreateTitle( CreateObjectTree( m_leftSplitter ), wxT( "Object Tree" ) );
 
 	// panel1 contains Palette and splitter2 (m_rightSplitter)
-	wxPanel *panel1 = new wxPanel( m_leftSplitter, -1 );
+	wxPanel *panel1 = new wxPanel( m_leftSplitter, wxID_ANY);
 
 	wxWindow *palette = Title::CreateTitle( CreateComponentPalette( panel1 ), wxT( "Component Palette" ) );
 	m_rightSplitter   =  new wxSplitterWindow( panel1, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
@@ -1764,14 +1697,14 @@ void MainFrame::CreateWideGui()
 void MainFrame::CreateClassicGui()
 {
 	// Give ID to left splitter
-	//m_leftSplitter = new wxSplitterWindow( this, -1, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
+	//m_leftSplitter = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
 	m_leftSplitter = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
 	m_rightSplitter =  new wxSplitterWindow( m_leftSplitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_LIVE_UPDATE );
 	wxWindow *objectTree      = Title::CreateTitle( CreateObjectTree( m_rightSplitter ), wxT( "Object Tree" ) );
 	wxWindow *objectInspector = Title::CreateTitle( CreateObjectInspector( m_rightSplitter ), wxT( "Object Properties" ) );
 
 	// panel1 contains palette and designer
-	wxPanel *panel1 = new wxPanel( m_leftSplitter, -1 );
+	wxPanel *panel1 = new wxPanel( m_leftSplitter, wxID_ANY);
 
 	wxWindow *palette = Title::CreateTitle( CreateComponentPalette( panel1 ), wxT( "Component Palette" ) );
 	wxWindow *designer = Title::CreateTitle( CreateDesignerWindow( panel1 ), wxT( "Editor" ) );
@@ -1824,8 +1757,7 @@ void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
 	m_rightSplitter_sash_pos = event.GetSashPosition();
 }
 
-void MainFrame::OnWindowSwap(wxCommandEvent& e)
-{
+void MainFrame::OnWindowSwap(wxCommandEvent&) {
     wxWindow* win1 = m_rightSplitter->GetWindow1();
     wxWindow* win2 = m_rightSplitter->GetWindow2();
 

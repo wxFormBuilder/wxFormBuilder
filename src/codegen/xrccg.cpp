@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,11 +24,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrccg.h"
+
+#include "../model/objectbase.h"
+#include "../utils/typeconv.h"
 #include "codewriter.h"
-#include "utils/typeconv.h"
-#include "utils/debug.h"
-#include "model/objectbase.h"
-#include "model/xrcfilter.h"
 
 #include <ticpp.h>
 
@@ -47,8 +46,8 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 	doc.LinkEndChild( &decl );
 
 	ticpp::Element element( "resource" );
-	element.SetAttribute( "xmlns", "http://www.wxwindows.org/wxxrc" );
-	element.SetAttribute( "version", "2.3.0.1" );
+	element.SetAttribute("xmlns", "http://www.wxwidgets.org/wxxrc");
+	element.SetAttribute("version", "2.5.3.0");
 
 	// If project is not actually a "Project", generate it
 	if ( project->GetClassName() == wxT("Project") )
@@ -68,11 +67,11 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 		ticpp::Element* child = GetElement( project );
 		if ( child )
 		{
-            element.LinkEndChild( child );
-            delete child;
+			element.LinkEndChild( child );
+			delete child;
 		}
 	}
-	
+
 	// generate context menus as top-level menus
 	for( std::vector<ticpp::Element*>::iterator it = m_contextMenus.begin(); it != m_contextMenus.end(); ++it )
 	{
@@ -82,17 +81,13 @@ bool XrcCodeGenerator::GenerateCode( PObjectBase project )
 
 	doc.LinkEndChild( &element );
 
-    TiXmlPrinter printer;
+	TiXmlPrinter printer;
 	printer.SetIndent( "\t" );
 
-    #if defined( __WXMSW__ )
-        printer.SetLineBreak( "\r\n" );
-    #else
-        printer.SetLineBreak( "\n" );
-    #endif
+	printer.SetLineBreak("\n");
 
-    doc.Accept( &printer );
-    const std::string& xrcFile = printer.Str();
+	doc.Accept( &printer );
+	const std::string& xrcFile = printer.Str();
 
 	m_cw->Write( _WXSTR( xrcFile ) );
 
@@ -143,8 +138,7 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 			// Dirty hack to prevent sizer generation directly under a wxFrame
 			// If there is a sizer, the size property of the wxFrame is ignored
 			// when loading the xrc file at runtime
-			if ( obj->GetPropertyAsInteger( _("xrc_skip_sizer") ) )
-			{
+			if (obj->GetPropertyAsInteger(_("xrc_skip_sizer")) != 0) {
 				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
 				{
 					ticpp::Element* aux = NULL;
@@ -178,24 +172,39 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 		}
 		else if( class_name == "wxMenu" )
 		{
-			// Do not generate context menus assigned to forms or widgets
-			std::string parent_name = parent->GetAttribute( "class" );
-			if( (parent_name != "wxMenuBar") && (parent_name != "wxMenu") )
-			{
-				// insert context menu into vector for delayed processing (context menus will be generated as top-level menus)
-				for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-				{
-					ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
-					if ( aux )
-					{
-						element->LinkEndChild( aux );
-						delete aux;
+			if (parent) {
+				// Do not generate context menus assigned to forms or widgets
+				std::string parent_name = parent->GetAttribute("class");
+				if ((parent_name != "wxMenuBar") && (parent_name != "wxMenu")) {
+					// insert context menu into vector for delayed processing (context menus will be
+					// generated as top-level menus)
+					for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+						ticpp::Element* aux = GetElement(obj->GetChild(i), element);
+						if (aux) {
+							element->LinkEndChild(aux);
+							delete aux;
+						}
 					}
+
+					m_contextMenus.push_back(element);
+					return nullptr;
 				}
-				
-				m_contextMenus.push_back( element );
-				return NULL;
 			}
+		}
+		else if ( class_name == "wxCollapsiblePane" )
+		{
+			ticpp::Element *aux = new ticpp::Element( "object" );
+			aux->SetAttribute( "class", "panewindow" );
+
+			ticpp::Element *child = GetElement( obj->GetChild( 0 ), aux );
+
+			aux->LinkEndChild( child );
+			element->LinkEndChild( aux );
+
+			delete aux;
+			delete child;
+
+			return element;
 		}
 
 		for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
@@ -203,8 +212,8 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 			ticpp::Element *aux = GetElement( obj->GetChild( i ), element );
 			if ( aux )
 			{
-			    element->LinkEndChild( aux );
-			    delete aux;
+				element->LinkEndChild( aux );
+				delete aux;
 			}
 		}
 	}
@@ -221,5 +230,3 @@ ticpp::Element* XrcCodeGenerator::GetElement( PObjectBase obj, ticpp::Element* p
 
 	return element;
 }
-
-

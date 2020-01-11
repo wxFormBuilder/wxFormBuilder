@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,11 +24,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "objectbase.h"
-#include "wx/wx.h"
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "utils/stringutils.h"
-#include "rad/appdata.h"
+
+#include "../rad/appdata.h"
+#include "../utils/debug.h"
+#include "../utils/stringutils.h"
+#include "../utils/typeconv.h"
+
 #include <ticpp.h>
 #include <wx/tokenzr.h>
 
@@ -273,6 +274,17 @@ wxString ObjectBase::GetIndentString(int indent)
 	return s;
 }
 
+PObjectBase ObjectBase::GetNonSizerParent ()
+{
+	PObjectBase current = GetThis();
+
+	while ( ( current = current->GetParent() ) &&
+		( current->GetObjectInfo()->IsSubclassOf( wxT( "sizeritem" ) ) ||
+		  current->GetObjectInfo()->IsSubclassOf( wxT( "sizer" ) ) ) )
+		;
+
+	return current;
+}
 
 PProperty ObjectBase::GetProperty (wxString name)
 {
@@ -310,11 +322,7 @@ PEvent ObjectBase::GetEvent (wxString name)
 	if ( it != m_events.end() )
 		return it->second;
 
-#if wxVERSION_NUMBER < 2900
-	LogDebug(wxT("[ObjectBase::GetEvent] Event %s not found!"),name.c_str());
-#else
     LogDebug("[ObjectBase::GetEvent] Event " + name + " not found!");
-#endif
 	return PEvent();
 }
 
@@ -422,7 +430,8 @@ bool ObjectBase::ChildTypeOk (PObjectType type)
 	// check allowed child count
 	if( GetObjectInfo()->GetObjectType()->GetName() == wxT("form") )
 	{
-		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, this->GetPropertyAsInteger(wxT("aui_managed")));
+		nmax = GetObjectInfo()->GetObjectType()->FindChildType(
+		    type, this->GetPropertyAsInteger(wxT("aui_managed")) != 0);
 	}
 	else
 		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, false);
@@ -555,9 +564,13 @@ void ObjectBase::SerializeObject( ticpp::Element* serializedElement )
 	for ( unsigned int i = 0; i < GetEventCount(); i++ )
 	{
 		PEvent event = GetEvent( i );
+		const std::string callback(event->GetValue().ToUTF8());
+		if (callback.empty()) {
+			continue; // skip, because there's no event attached (see issue #467)
+		}
 		ticpp::Element event_element( "event" );
 		event_element.SetAttribute( "name", _STDSTR( event->GetName() ) );
-		event_element.SetText( _STDSTR( event->GetValue() ) );
+		event_element.SetText(callback);
 		element.LinkEndChild( &event_element );
 	}
 
@@ -712,7 +725,7 @@ wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& pname)
 	PProperty property = GetProperty( pname );
 	if (property)
 	{
-		IntList il( property->GetValue(), property->GetType() == PT_UINTLIST );
+		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
 		for (unsigned int i=0; i < il.GetSize() ; i++)
 			array.Add(il.GetValue(i));
 	}
@@ -727,6 +740,24 @@ wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
 		return property->GetValueAsArrayString();
 	else
 		return wxArrayString();
+}
+
+std::vector<std::pair<int, int>> ObjectBase::GetPropertyAsVectorIntPair(const wxString& pname)
+{
+	std::vector<std::pair<int, int>> result;
+	
+	auto property = GetProperty(pname);
+	if (property)
+	{
+		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
+		result.reserve(il.GetSize());
+		for (unsigned int i = 0; i < il.GetSize(); ++i)
+		{
+			result.emplace_back(il.GetPair(i));
+		}
+	}
+
+	return result;
 }
 
 wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, const wxString& childName )

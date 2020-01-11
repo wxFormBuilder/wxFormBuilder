@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,22 +26,15 @@
 #ifndef __XRC_PANEL__
 #define __XRC_PANEL__
 
+#include "../../utils/wxfbdefs.h"
+
+#include <wx/stc/stc.h>
 #include <wx/panel.h>
 
-#include "utils/wxfbdefs.h"
-
 class CodeEditor;
-
 class wxFBEvent;
-class wxFBPropertyEvent;
 class wxFBObjectEvent;
-
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
-
+class wxFBPropertyEvent;
 class wxFindDialogEvent;
 
 class XrcPanel : public wxPanel
@@ -50,15 +43,11 @@ private:
 	CodeEditor* m_xrcPanel;
 	PTCCodeWriter m_cw;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	XrcPanel( wxWindow *parent, int id );
-	~XrcPanel();
+	~XrcPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

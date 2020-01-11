@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -35,17 +35,13 @@
 #ifndef __LUA_PANEL__
 #define __LUA_PANEL__
 
-#include <wx/panel.h>
+#include "../../utils/wxfbdefs.h"
 
-#include "utils/wxfbdefs.h"
+#include <wx/panel.h>
 
 class CodeEditor;
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-#else
-    class wxStyledTextCtrl;
-#endif
+class wxStyledTextCtrl;
 
 class wxFindDialogEvent;
 
@@ -60,15 +56,11 @@ private:
 	CodeEditor* m_luaPanel;
 	PTCCodeWriter m_luaCW;
 
-#if wxVERSION_NUMBER < 2900
-    void InitStyledTextCtrl( wxScintilla* stc );
-#else
     void InitStyledTextCtrl( wxStyledTextCtrl* stc );
-#endif
 
 public:
 	LuaPanel( wxWindow *parent, int id );
-	~LuaPanel();
+	~LuaPanel() override;
 
 	void OnPropertyModified( wxFBPropertyEvent& event );
 	void OnProjectRefresh( wxFBEvent& event );

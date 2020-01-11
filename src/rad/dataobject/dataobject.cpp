@@ -15,28 +15,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "dataobject.h"
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include <ticpp.h>
-#include <string>
-#include "rad/appdata.h"
-#include <wx/utils.h>
+
+#include "../../model/objectbase.h"
+#include "../../utils/typeconv.h"
+#include "../appdata.h"
 
 #include <ticpp.h>
 
-wxFBDataObject::wxFBDataObject( PObjectBase obj )
-:
-wxDataObject()
-{
-	if ( obj )
-	{
+wxFBDataObject::wxFBDataObject(PObjectBase obj) {
+	if (obj) {
 		// create xml representation of ObjectBase
 		ticpp::Element element;
 		obj->SerializeObject( &element );
@@ -50,19 +44,11 @@ wxDataObject()
 		TiXmlPrinter printer;
         printer.SetIndent( "\t" );
 
-        #if defined( __WXMSW__ )
-            printer.SetLineBreak( "\r\n" );
-        #else
-            printer.SetLineBreak( "\n" );
-        #endif
+		printer.SetLineBreak("\n");
 
         doc.Accept( &printer );
 		m_data = printer.Str();
 	}
-}
-
-wxFBDataObject::~wxFBDataObject()
-{
 }
 
 void wxFBDataObject::GetAllFormats( wxDataFormat* formats, Direction dir ) const

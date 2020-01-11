@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -24,10 +24,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "xrcconv.h"
-#include "wx/wx.h"
 #include "wx/tokenzr.h"
 
-#include <string>
 #include <set>
 
 #include <ticpp.h>
@@ -222,7 +220,7 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 					break;
 				}
 
-				if ( bitmapProp.StartsWith( _("Load From File") ) || bitmapProp.StartsWith( _("Load From Embedded File") ) )
+				if (bitmapProp.StartsWith(_("Load From File")) || bitmapProp.StartsWith(_("Load From Embedded File")) || bitmapProp.StartsWith(_("Load From XRC")))
 				{
 					LinkText( filename.Trim().Trim(false), &propElement );
 				}
@@ -230,13 +228,13 @@ void ObjectToXrcFilter::AddProperty( const wxString &objPropName,
 				{
 					propElement.SetAttribute( "stock_id", filename.BeforeFirst( wxT(';') ).Trim().Trim(false).mb_str( wxConvUTF8 ) );
 					propElement.SetAttribute( "stock_client", filename.AfterFirst( wxT(';') ).Trim().Trim(false).mb_str( wxConvUTF8 ) );
-					
+
 					LinkText( wxT("undefined.png"), &propElement );
 				}
 			}
 			break;
 	}
-	
+
 	m_xrcObj->LinkEndChild( &propElement );
 }
 
@@ -322,11 +320,7 @@ void ObjectToXrcFilter::LinkFont( const wxFontContainer &font, ticpp::Element *p
 			break;
 		default:
 		// wxWidgets 2.9.0 doesn't define "default" family
-#if wxVERSION_NUMBER < 2900
-			family.SetText( "default" );
-#else
 			skipFamily = true;
-#endif
 			break;
 	}
 	if( ! skipFamily ) propElement->LinkEndChild( &family );
@@ -416,15 +410,15 @@ void ObjectToXrcFilter::AddWindowProperties()
 	if ( !m_obj->IsNull( _( "fg" ) ) )
 		AddProperty( _( "fg" ), _( "fg" ), XRC_TYPE_COLOUR );
 
-	if ( !m_obj->IsNull( _( "enabled" ) ) && !m_obj->GetPropertyAsInteger( _( "enabled" ) ) )
-		AddProperty( _( "enabled" ), _( "enabled" ), XRC_TYPE_BOOL );
-
+	if (!m_obj->IsNull(_("enabled")) && m_obj->GetPropertyAsInteger(_("enabled")) == 0) {
+		AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
+	}
 	if ( !m_obj->IsNull( _( "focused" ) ) )
 		AddPropertyValue( _( "focused" ), _( "0" ) );
 
-	if ( !m_obj->IsNull( _( "hidden" ) ) && m_obj->GetPropertyAsInteger( _( "hidden" ) ) )
-		AddProperty( _( "hidden" ), _( "hidden" ), XRC_TYPE_BOOL );
-
+	if (!m_obj->IsNull(_("hidden")) && m_obj->GetPropertyAsInteger(_("hidden")) != 0) {
+		AddProperty(_("hidden"), _("hidden"), XRC_TYPE_BOOL);
+	}
 	if ( !m_obj->IsNull( _( "font" ) ) )
 		AddProperty( _( "font" ), _( "font" ), XRC_TYPE_FONT );
 
@@ -439,7 +433,7 @@ void ObjectToXrcFilter::AddWindowProperties()
 			m_xrcObj->SetAttribute( "subclass", subclass.mb_str( wxConvUTF8 ) );
 		}
 	}
-};
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -570,12 +564,14 @@ void XrcToXfbFilter::AddStyleProperty()
 
 		// FIXME: We should avoid hardcoding these things
 		std::set< wxString > windowStyles;
-		windowStyles.insert( wxT( "wxSIMPLE_BORDER" ) );
-		windowStyles.insert( wxT( "wxDOUBLE_BORDER" ) );
-		windowStyles.insert( wxT( "wxSUNKEN_BORDER" ) );
-		windowStyles.insert( wxT( "wxRAISED_BORDER" ) );
-		windowStyles.insert( wxT( "wxSTATIC_BORDER" ) );
-		windowStyles.insert( wxT( "wxNO_BORDER" ) );
+		windowStyles.insert(wxT("wxBORDER_DEFAULT"));
+		windowStyles.insert(wxT("wxBORDER_SIMPLE"));
+		windowStyles.insert(wxT("wxBORDER_DOUBLE"));
+		windowStyles.insert(wxT("wxBORDER_SUNKEN"));
+		windowStyles.insert(wxT("wxBORDER_RAISED"));
+		windowStyles.insert(wxT("wxBORDER_STATIC"));
+		windowStyles.insert(wxT("wxBORDER_THEME"));
+		windowStyles.insert(wxT("wxBORDER_NONE"));
 		windowStyles.insert( wxT( "wxTRANSPARENT_WINDOW" ) );
 		windowStyles.insert( wxT( "wxTAB_TRAVERSAL" ) );
 		windowStyles.insert( wxT( "wxWANTS_CHARS" ) );
@@ -584,6 +580,7 @@ void XrcToXfbFilter::AddStyleProperty()
 		windowStyles.insert( wxT( "wxALWAYS_SHOW_SB" ) );
 		windowStyles.insert( wxT( "wxCLIP_CHILDREN" ) );
 		windowStyles.insert( wxT( "wxFULL_REPAINT_ON_RESIZE" ) );
+		windowStyles.insert(wxT("wxNO_FULL_REPAINT_ON_RESIZE"));
 
 		wxString style, windowStyle;
 		wxStringTokenizer tkz( bitlist, wxT( " |" ) );
@@ -634,6 +631,7 @@ void XrcToXfbFilter::AddExtraStyleProperty()
 		windowStyles.insert( wxT( "wxWS_EX_VALIDATE_RECURSIVELY" ) );
 		windowStyles.insert( wxT( "wxWS_EX_BLOCK_EVENTS" ) );
 		windowStyles.insert( wxT( "wxWS_EX_TRANSIENT" ) );
+		windowStyles.insert(wxT("wxWS_EX_CONTEXTHELP"));
 		windowStyles.insert( wxT( "wxWS_EX_PROCESS_IDLE" ) );
 		windowStyles.insert( wxT( "wxWS_EX_PROCESS_UI_UPDATES" ) );
 
@@ -797,23 +795,23 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			wxString family_str( element->GetText().c_str(), wxConvUTF8 );
 
 			if ( family_str == _( "decorative" ) )
-				font.SetFamily( wxDECORATIVE );
+				font.SetFamily(wxFONTFAMILY_DECORATIVE);
 			else if ( family_str == _( "roman" ) )
-				font.SetFamily( wxROMAN );
+				font.SetFamily(wxFONTFAMILY_ROMAN);
 			else if ( family_str == _( "swiss" ) )
-				font.SetFamily( wxSWISS );
+				font.SetFamily(wxFONTFAMILY_SWISS);
 			else if ( family_str == _( "script" ) )
-				font.SetFamily( wxSCRIPT );
+				font.SetFamily(wxFONTFAMILY_SCRIPT);
 			else if ( family_str == _( "modern" ) )
-				font.SetFamily( wxMODERN );
+				font.SetFamily(wxFONTFAMILY_MODERN);
 			else if ( family_str == _( "teletype" ) )
-				font.SetFamily( wxTELETYPE );
+				font.SetFamily(wxFONTFAMILY_TELETYPE);
 			else
-				font.SetFamily( wxDEFAULT );
+				font.SetFamily(wxFONTFAMILY_DEFAULT);
 		}
 		catch( ticpp::Exception& )
 		{
-			font.SetFamily( wxDEFAULT );
+			font.SetFamily(wxFONTFAMILY_DEFAULT);
 		}
 
 		// the style
@@ -823,15 +821,15 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			wxString style_str( element->GetText().c_str(), wxConvUTF8 );
 
 			if ( style_str == _( "slant" ) )
-				font.SetStyle( wxSLANT );
+				font.SetStyle(wxFONTSTYLE_SLANT);
 			else if ( style_str == _( "italic" ) )
-				font.SetStyle( wxITALIC );
+				font.SetStyle(wxFONTSTYLE_ITALIC);
 			else
-				font.SetStyle( wxNORMAL );
+				font.SetStyle(wxFONTSTYLE_NORMAL);
 		}
 		catch( ticpp::Exception& )
 		{
-			font.SetStyle( wxNORMAL );
+			font.SetStyle(wxFONTSTYLE_NORMAL);
 		}
 
 
@@ -842,15 +840,15 @@ void XrcToXfbFilter::ImportFontProperty( const wxString &xrcPropName, ticpp::Ele
 			wxString weight_str( element->GetText().c_str(), wxConvUTF8 );
 
 			if ( weight_str == _( "light" ) )
-				font.SetWeight( wxLIGHT );
+				font.SetWeight(wxFONTWEIGHT_LIGHT);
 			else if ( weight_str == _( "bold" ) )
-				font.SetWeight( wxBOLD );
+				font.SetWeight(wxFONTWEIGHT_BOLD);
 			else
-				font.SetWeight( wxNORMAL );
+				font.SetWeight(wxFONTWEIGHT_NORMAL);
 		}
 		catch( ticpp::Exception& )
 		{
-			font.SetWeight( wxNORMAL );
+			font.SetWeight(wxFONTWEIGHT_NORMAL);
 		}
 
 		// underlined
@@ -899,10 +897,10 @@ void XrcToXfbFilter::ImportBitmapProperty( const wxString &xrcPropName, ticpp::E
 	try
 	{
 		ticpp::Element *xrcProperty = m_xrcObj->FirstChildElement( xrcPropName.mb_str( wxConvUTF8 ) );
-		
+
 		if( (xrcProperty->GetAttribute( "stock_id" ) != "") && (xrcProperty->GetAttribute( "stock_client" ) != "") )
 		{
-			// read wxArtProvider-based bitmap  			
+			// read wxArtProvider-based bitmap
 			wxString res = _("Load From Art Provider");
 			res += wxT(";");
 			res += wxString( xrcProperty->GetAttribute( "stock_id" ).c_str(), wxConvUTF8 );
@@ -1020,4 +1018,4 @@ void XrcToXfbFilter::AddWindowProperties()
 		propElement.SetText( subclass );
 		m_xfbObj->LinkEndChild( &propElement );
 	}
-};
+}

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -27,29 +27,22 @@
 
 #include "phppanel.h"
 
-#include "rad/codeeditor/codeeditor.h"
-#include "rad/wxfbevent.h"
-#include "rad/bitmaps.h"
-#include "rad/appdata.h"
-#include "utils/wxfbdefs.h"
+#include "../appdata.h"
+#include "../codeeditor/codeeditor.h"
+#include "../wxfbevent.h"
 
-#include "utils/typeconv.h"
-#include "utils/encodingutils.h"
-#include "utils/wxfbexception.h"
+#include "../../utils/encodingutils.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
 
-#include "model/objectbase.h"
+#include "../../model/objectbase.h"
 
-#include "codegen/codewriter.h"
-#include "codegen/phpcg.h"
+#include "../../codegen/codewriter.h"
+#include "../../codegen/phpcg.h"
 
 #include <wx/fdrepdlg.h>
-#include <wx/config.h>
 
-#if wxVERSION_NUMBER < 2900
-    #include <wx/wxScintilla/wxscintilla.h>
-#else
-    #include <wx/stc/stc.h>
-#endif
+#include <wx/stc/stc.h>
 
 BEGIN_EVENT_TABLE ( PHPPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( PHPPanel::OnCodeGeneration )
@@ -71,7 +64,7 @@ wxPanel( parent, id )
 	AppData()->AddHandler( this->GetEventHandler() );
 	wxBoxSizer *top_sizer = new wxBoxSizer( wxVERTICAL );
 
-	m_phpPanel = new CodeEditor( this, -1 );
+	m_phpPanel = new CodeEditor( this, wxID_ANY);
 	InitStyledTextCtrl( m_phpPanel->GetTextCtrl() );
 
 	top_sizer->Add( m_phpPanel, 1, wxEXPAND, 0 );
@@ -90,15 +83,9 @@ PHPPanel::~PHPPanel()
 	//delete m_icons;
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
-#if wxVERSION_NUMBER < 2900
-void PHPPanel::InitStyledTextCtrl( wxScintilla *stc )
-{
-	stc->SetLexer( wxSCI_LEX_CPP );
-#else
 void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_CPP );
-#endif
 	stc->SetKeyWords( 0, wxT( "php abstract and array as break case catch cfunction \
                                class clone const continue declare default do \
                                else elseif enddeclare endfor endforeach \
@@ -112,26 +99,12 @@ void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
-	wxFont font( 8, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(8, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 	font.SetFaceName( wxT( "Monospace" ) );
 #else
-	wxFont font( 10, wxMODERN, wxNORMAL, wxNORMAL );
+	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
-#if wxVERSION_NUMBER < 2900
-	stc->StyleSetFont( wxSCI_STYLE_DEFAULT, font );
-	stc->StyleClearAll();
-	stc->StyleSetBold( wxSCI_C_WORD, true );
-	stc->StyleSetForeground( wxSCI_C_WORD, *wxBLUE );
-	stc->StyleSetForeground( wxSCI_C_STRING, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_STRINGEOL, *wxRED );
-	stc->StyleSetForeground( wxSCI_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENT, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINE, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
-	stc->StyleSetForeground( wxSCI_C_NUMBER, *wxBLUE );
-#else
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
     stc->StyleSetBold( wxSTC_C_WORD, true );
@@ -144,7 +117,6 @@ void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
     stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
     stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
-#endif
 	stc->SetUseTabs( true );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -318,11 +290,7 @@ void PHPPanel::OnCodeGeneration( wxFBEvent& event )
 
 		Freeze();
 
-#if wxVERSION_NUMBER < 2900
-		wxScintilla* phpEditor = m_phpPanel->GetTextCtrl();
-#else
         wxStyledTextCtrl* phpEditor = m_phpPanel->GetTextCtrl();
-#endif
 		phpEditor->SetReadOnly( false );
 		int phpLine = phpEditor->GetFirstVisibleLine() + phpEditor->LinesOnScreen() - 1;
 		int phpXOffset = phpEditor->GetXOffset();

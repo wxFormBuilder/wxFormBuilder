@@ -14,7 +14,7 @@
 #*
 #* You should have received a copy of the GNU General Public License
 #* along with this program; if not, write to the Free Software
-#* Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #*
 #*****************************************************************************
 
@@ -33,7 +33,8 @@ FILES="-x $PROJECT_ROOT/output/wxFormBuilder.app/Contents/MacOS/wxformbuilder \
 -x $PLUG_IN_PATH/libadditional.dylib \
 -x $PLUG_IN_PATH/libcommon.dylib \
 -x $PLUG_IN_PATH/libcontainers.dylib \
--x $PLUG_IN_PATH/liblayout.dylib"
+-x $PLUG_IN_PATH/liblayout.dylib \
+-x $PLUG_IN_PATH/libforms.dylib"
 
 # these are 'old' contributions that were merged into the main 
 # wxWidgets repo after 2.9
@@ -51,3 +52,15 @@ if [ -f "$PLUG_IN_PATH/libwxadditions-mini.dylib" ]; then
 fi
 
 dylibbundler -od -b -d $PROJECT_ROOT/output/wxFormBuilder.app/Contents/libs/ $FILES
+
+#Work around the likely bug in dylibbundler leading in copying two exemplars of the same dylib with different names instead of creating symlinks or changing the dependency name in the depending binaries
+pushd $PROJECT_ROOT/output/wxFormBuilder.app/Contents/libs/
+wx_version="$(wx-config --version|cut -c1-3)"
+for lib in $(ls libwx_*.dylib); do
+  lib_basename="${lib%%\-*}"
+  if [[ "${lib}" != "${lib_basename}-${wx_version}.dylib" ]] && [ -f "${lib_basename}-${wx_version}.dylib" ]; then
+    rm -f "${lib_basename}-${wx_version}.dylib"
+    ln -sf "${lib}" "${lib_basename}-${wx_version}.dylib"
+  fi
+done
+popd > /dev/null

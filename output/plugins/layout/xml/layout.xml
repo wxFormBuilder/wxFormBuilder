@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+-->
+<package name="Layout" lib="liblayout" icon="sizer16x16.xpm" desc="wxWidgets sizer layouts">
+
+  <objectinfo class="sizer" icon="sizer.xpm" type="interface">
+    <property name="minimum_size" type="wxSize" help="Give the sizer a minimal size. Normally, the sizer will calculate its minimal size based purely on how much space its children need. After setting the minimal size, 'GetMinSize' will return either the minimal size as requested by its children or the minimal size set here, depending on which is bigger."/>
+  </objectinfo>
+
+  <objectinfo class="sizeritembase" smallIcon="sizer.xpm" type="interface">
+    <property name="border" type="uint" help="Determines the border width, if the flag parameter is set to include any border flag.">5</property>
+    <property name="flag" type="bitlist">
+      <option name="wxALL" help="Enable all borders"/>
+      <option name="wxLEFT" help="Enable the left border"/>
+      <option name="wxRIGHT" help="Enable the right border"/>
+      <option name="wxTOP" help="Enable the top border"/>
+      <option name="wxBOTTOM" help="Enable the bottom border"/>
+      <option name="wxEXPAND" help="The item will be expanded to fill the space assigned to the item."/>
+      <option name="wxSHAPED" help="The item will be expanded as much as possible while also maintaining its aspect ratio."/>
+      <option name="wxFIXED_MINSIZE" help="Normally wxSizers will use GetAdjustedBestSize to determine what the minimal size of window items should be, and will use that size to calculate the layout. This allows layouts to adjust when an item changes and its best size becomes different. If you would rather have a window item stay the size it started with then use wxFIXED_MINSIZE."/>
+      <option name="wxRESERVE_SPACE_EVEN_IF_HIDDEN" help="Normally wxSizers don't allocate space for hidden windows or other items. This flag overrides this behaviour so that sufficient space is allocated for the window even if it isn't visible. This makes it possible to dynamically show and hide controls without resizing parent dialog, for example. (Available since 2.8.8.)"/>
+      <option name="wxALIGN_LEFT" help="Align the item to the left of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_TOP" help="Align the item to the top of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_RIGHT" help="Align the item to the right of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_BOTTOM" help="Align the item to the bottom of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_CENTER" help="Align the item to the center of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_CENTER_HORIZONTAL" help="Align the item to the horizontal center of the space allotted to it by the sizer, adjusted for the border if any."/>
+      <option name="wxALIGN_CENTER_VERTICAL" help="Align the item to the vertical center of the space allotted to it by the sizer, adjusted for the border if any."/>
+      wxALL
+    </property>
+  </objectinfo>
+
+  <objectinfo class="sizeritem" smallIcon="sizer.xpm" type="sizeritem">
+    <inherits class="sizeritembase"/>
+    <property name="proportion" type="uint" help="How much this control will stretch in proportion to the other controls in the same sizer. Set to 0 to prevent stretching.">0</property>
+  </objectinfo>
+
+  <objectinfo class="gbsizeritem" smallIcon="sizer.xpm" type="gbsizeritem">
+    <inherits class="sizeritembase"/>
+    <property name="row" type="uint" help="Row for the item.">0</property>
+    <property name="column" type="int" help="Column for the item.">-1</property>
+    <property name="rowspan" type="uint" help="The number of rows that the item spans.">1</property>
+    <property name="colspan" type="uint" help="The number of columns that the item spans.">1</property>
+  </objectinfo>
+
+  <objectinfo class="wxBoxSizer" icon="sizer.xpm" type="sizer">
+    <inherits class="sizer"/>
+    <property name="name" type="text" hidden="1">bSizer</property>
+    <property name="orient" type="option">
+      <option name="wxVERTICAL" help="Align items vertically"/>
+      <option name="wxHORIZONTAL" help="Align items horizontally"/>
+      wxVERTICAL
+    </property>
+  </objectinfo>
+
+  <objectinfo class="wxStaticBoxSizer" icon="staticbox_sizer.xpm" type="sizer">
+    <inherits class="sizer"/>
+    <property name="name" type="text" hidden="1">sbSizer</property>
+    <property name="orient" type="option">
+      <option name="wxVERTICAL" help="Align items vertically"/>
+      <option name="wxHORIZONTAL" help="Align items horizontally"/>
+      wxVERTICAL
+    </property>
+    <property name="label" type="wxString_i18n">label</property>
+    <property name="id" type="macro">wxID_ANY</property>
+    <property name="parent" type="bool" help="Use encapsulated wxStaticBox as a parent of managed children (recommended for wxWidgets 2.9.1 and later).">1</property>
+    <event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event."/>
+  </objectinfo>
+
+  <objectinfo class="wxWrapSizer" icon="wrap_sizer.xpm" type="sizer">
+    <inherits class="sizer"/>
+    <property name="name" type="text" hidden="1">wSizer</property>
+    <property name="orient" type="option">
+      <option name="wxVERTICAL" help="Align items vertically"/>
+      <option name="wxHORIZONTAL" help="Align items horizontally"/>
+      wxHORIZONTAL
+    </property>
+    <property name="flags" type="bitlist">
+      <option name="wxEXTEND_LAST_ON_EACH_LINE" help="The last item on each line will use any remaining space on that line"/>
+      <option name="wxREMOVE_LEADING_SPACES" help="Removes any spacer elements from the beginning of a row"/>
+      <option name="wxWRAPSIZER_DEFAULT_FLAGS" help="A combination of wxEXTEND_LAST_ON_EACH_LINE and wxREMOVE_LEADING_SPACES"/>
+      wxWRAPSIZER_DEFAULT_FLAGS
+    </property>
+  </objectinfo>
+
+  <objectinfo class="wxGridSizer" icon="grid_sizer.xpm" type="sizer">
+    <inherits class="sizer"/>
+    <property name="name" type="text" hidden="1">gSizer</property>
+    <property name="rows" type="uint" help="Number of Rows. '0' tells wxWidgets to calculate the number of rows required to hold the supplied items. If you choose to fix the row number, set the 'cols' figure to zero instead.">0</property>
+    <property name="cols" type="uint" help="Number of Columns">2</property>
+    <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
+    <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
+  </objectinfo>
+
+  <objectinfo class="flexgridsizerbase" icon="flex_grid_sizer.xpm" type="interface">
+    <property name="vgap" type="uint" help="The vertical gap (in pixels) between the cells in the sizer.">0</property>
+    <property name="hgap" type="uint" help="The horizontal gap (in pixels) between cells in the sizer.">0</property>
+    <property name="growablerows" type="uintpairlist" help="Comma separated list of row indices (starting from zero, optional proportion appended after a colon) that should be grown if there is extra space available to the sizer."/>
+    <property name="growablecols" type="uintpairlist" help="Comma separated list of column indices (starting from zero, optional proportion appended after a colon) that should be grown if there is extra space available to the sizer."/>
+    <property name="flexible_direction" type="option" help="Since wxWidgets 2.5.0, wxFlexGridSizer can size items equally in one direction but unequally ('flexibly') in the other">
+      <option name="wxVERTICAL" help="Rows are flexibly sized."/>
+      <option name="wxHORIZONTAL" help="Columns are flexibly sized."/>
+      <option name="wxBOTH" help="Both rows and columns are flexibly sized (this is the default value)."/>
+      wxBOTH
+    </property>
+    <property name="non_flexible_grow_mode" type="option" help="If the sizer is only flexible in one direction (this can be changed using 'flexible_direction'), it needs to be decided how the sizer should grow in the other ('non flexible') direction in order to fill the available space.">
+      <option name="wxFLEX_GROWMODE_NONE" help="Sizer doesn't grow in the non flexible direction."/>
+      <option name="wxFLEX_GROWMODE_SPECIFIED" help="Sizer honors growable columns/rows set with AddGrowableCol and AddGrowableRow. In this case equal sizing applies to minimum sizes of columns or rows (this is the default value)."/>
+      <option name="wxFLEX_GROWMODE_ALL" help="Sizer equally stretches all columns or rows in the non flexible direction, whether they are growable or not in the flexible direction."/>
+      wxFLEX_GROWMODE_SPECIFIED
+    </property>
+  </objectinfo>
+
+  <objectinfo class="wxFlexGridSizer" icon="flex_grid_sizer.xpm" type="sizer">
+    <inherits class="sizer"/>
+    <inherits class="flexgridsizerbase"/>
+    <property name="name" type="text" hidden="1">fgSizer</property>
+    <property name="rows" type="uint" help="Number of Rows. '0' tells wxWidgets to calculate the number of rows required to hold the supplied items. If you choose to fix the row number, set the 'cols' figure to zero instead.">0</property>
+    <property name="cols" type="uint" help="Number of Columns">2</property>
+  </objectinfo>
+
+  <objectinfo class="wxGridBagSizer" icon="grid_bag_sizer.xpm" type="gbsizer">
+    <inherits class="sizer"/>
+    <inherits class="flexgridsizerbase"/>
+    <property name="name" type="text" hidden="1">gbSizer</property>
+    <property name="empty_cell_size" type="wxSize" help="The size used for cells in the grid with no item."/>
+  </objectinfo>
+
+  <objectinfo class="wxStdDialogButtonSizer" icon="stddialogbuttonsizer.xpm" type="widget">
+    <inherits class="sizer"/>
+    <property name="name" type="text">m_sdbSizer</property>
+    <property name="OK" type="bool" help="Include the 'OK' button">1</property>
+    <property name="Yes" type="bool" help="Include the 'Yes' button">0</property>
+    <property name="Save" type="bool" help="Include the 'Save' button">0</property>
+    <property name="Apply" type="bool" help="Include the 'Apply' button">0</property>
+    <property name="No" type="bool" help="Include the 'No' button">0</property>
+    <property name="Cancel" type="bool" help="Include the 'Cancel' button">1</property>
+    <property name="Help" type="bool" help="Include the 'Help' button">0</property>
+    <property name="ContextHelp" type="bool" help="Include the 'ContextHelp' button">0</property>
+    <event name="OnOKButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_OK, when the button is clicked"/>
+    <event name="OnYesButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_YES, when the button is clicked"/>
+    <event name="OnSaveButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_SAVE, when the button is clicked"/>
+    <event name="OnApplyButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_APPLY, when the button is clicked"/>
+    <event name="OnNoButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_NO, when the button is clicked"/>
+    <event name="OnCancelButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_CANCEL, when the button is clicked"/>
+    <event name="OnHelpButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_HELP, when the button is clicked"/>
+    <event name="OnContextHelpButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, for the ID wxID_CONTEXT_HELP, when the button is clicked"/>
+  </objectinfo>
+
+  <objectinfo class="spacer" icon="spacer.xpm" type="widget">
+    <property name="width" type="uint" help="The width of the spacer">0</property>
+    <property name="height" type="uint" help="The height of the spacer">0</property>
+  </objectinfo>
+
+</package>

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,8 +26,9 @@
 #ifndef __WXFBEVENT__
 #define __WXFBEVENT__
 
+#include "../utils/wxfbdefs.h"
+
 #include <wx/event.h>
-#include "utils/wxfbdefs.h"
 
 class wxFBEvent : public wxEvent
 {
@@ -37,7 +38,7 @@ class wxFBEvent : public wxEvent
 	public:
 		wxFBEvent( wxEventType commandType = wxEVT_NULL );
 		wxFBEvent( const wxFBEvent& event );
-		virtual ~wxFBEvent();
+	~wxFBEvent() override;
 
 		wxString GetEventName();
 
@@ -45,7 +46,7 @@ class wxFBEvent : public wxEvent
 		wxString GetString();
 
 		// required for sending with wxPostEvent()
-		wxEvent* Clone() const;
+	wxEvent* Clone() const override;
 };
 
 class wxFBPropertyEvent : public wxFBEvent
@@ -53,7 +54,7 @@ class wxFBPropertyEvent : public wxFBEvent
 public:
   wxFBPropertyEvent(wxEventType commandType, PProperty property);
   wxFBPropertyEvent( const wxFBPropertyEvent& event );
-  wxEvent* Clone() const;
+	wxEvent* Clone() const override;
   PProperty GetFBProperty() { return m_property; }
 private:
   PProperty m_property;
@@ -64,7 +65,7 @@ class wxFBEventHandlerEvent : public wxFBEvent
 public:
   wxFBEventHandlerEvent (wxEventType commandType, PEvent event);
   wxFBEventHandlerEvent( const wxFBEventHandlerEvent& event );
-  wxEvent* Clone() const;
+	wxEvent* Clone() const override;
   PEvent GetFBEventHandler() { return m_event; }
 private:
   PEvent m_event;
@@ -75,7 +76,7 @@ class wxFBObjectEvent : public wxFBEvent
 public:
   wxFBObjectEvent(wxEventType commandType, PObjectBase object);
   wxFBObjectEvent( const wxFBObjectEvent& event );
-  wxEvent* Clone() const;
+	wxEvent* Clone() const override;
   PObjectBase GetFBObject() { return m_object; }
 
 private:

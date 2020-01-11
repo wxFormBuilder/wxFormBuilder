@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -28,36 +28,22 @@
 
 #include <wx/panel.h>
 
-#if wxVERSION_NUMBER < 2900
-    class wxScintilla;
-    class wxScintillaEvent;
-#else
-    class wxStyledTextCtrl;
-    class wxStyledTextEvent;
-#endif
+class wxStyledTextCtrl;
+class wxStyledTextEvent;
 
 class wxFindDialogEvent;
 
 class CodeEditor : public wxPanel
 {
 private:
-#if wxVERSION_NUMBER < 2900
-	wxScintilla* m_code;
-	void OnMarginClick( wxScintillaEvent& event );
-#else
     wxStyledTextCtrl* m_code;
     void OnMarginClick( wxStyledTextEvent& event );
-#endif
 	DECLARE_EVENT_TABLE()
 
 public:
 	CodeEditor( wxWindow *parent, int id );
 
-#if wxVERSION_NUMBER < 2900
-	wxScintilla* GetTextCtrl();
-#else
     wxStyledTextCtrl* GetTextCtrl();
-#endif
 
 	void OnFind( wxFindDialogEvent& event );
 };

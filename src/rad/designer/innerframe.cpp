@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,9 +23,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "innerframe.h"
+
 #include "window_buttons.h"
+
 #include <wx/dcbuffer.h>
-#include <wx/settings.h>
 
 DEFINE_EVENT_TYPE( wxEVT_INNER_FRAME_RESIZED )
 
@@ -47,8 +48,7 @@ private:
 	long m_style;
 
 protected:
-	wxSize DoGetBestSize() const
-	{
+	wxSize DoGetBestSize() const override {
 		return wxSize( 100, 19 );
 	}
 
@@ -60,9 +60,6 @@ public:
 
 	void OnPaint( wxPaintEvent &event );
 
-#if wxVERSION_NUMBER < 2900
-	void OnSize( wxSizeEvent &event );
-#endif
 	void OnLeftClick ( wxMouseEvent &event );
 	void SetTitle( const wxString &title ) { m_titleText = title; }
 	wxString GetTitle() { return m_titleText; }
@@ -74,9 +71,6 @@ public:
 BEGIN_EVENT_TABLE( wxInnerFrame::TitleBar, wxPanel )
     EVT_LEFT_DOWN( wxInnerFrame::TitleBar::OnLeftClick )
     EVT_PAINT( wxInnerFrame::TitleBar::OnPaint )
-#if wxVERSION_NUMBER < 2900
-    EVT_SIZE( wxInnerFrame::TitleBar::OnSize )
-#endif
 END_EVENT_TABLE()
 
 wxInnerFrame::TitleBar::TitleBar ( wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long style )
@@ -111,16 +105,6 @@ void wxInnerFrame::TitleBar::OnLeftClick ( wxMouseEvent &event )
 	LogDebug("OnLeftClick");
 	GetParent()->GetEventHandler()->ProcessEvent( event );
 }
-
-#if wxVERSION_NUMBER < 2900
-void wxInnerFrame::TitleBar::OnSize ( wxSizeEvent& )
-{
-	LogDebug("OnSize");
-	wxClientDC dc( this );
-	wxBufferedDC bdc( &dc, GetClientSize() );
-	DrawTitleBar( bdc );
-}
-#endif
 
 void wxInnerFrame::TitleBar::OnPaint ( wxPaintEvent& )
 {
@@ -214,7 +198,7 @@ void wxInnerFrame::TitleBar::DrawTitleBar( wxDC &dc )
 
 	int fontSize = 72 * txtHeight / ppi.GetHeight();
 
-	font.SetWeight( wxBOLD );
+	font.SetWeight(wxFONTWEIGHT_BOLD);
 	dc.SetTextForeground( *wxWHITE );
 
 	// text vertical adjustment
@@ -293,11 +277,7 @@ END_EVENT_TABLE()
 wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
                             const wxPoint &pos, const wxSize &size, long style )
 #ifdef __WXGTK__
-	#if wxVERSION_NUMBER < 2900
-		: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
-	#else
-		: wxPanel( parent, id, pos, size, wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE )
-	#endif
+	: wxPanel( parent, id, pos, size, wxNO_BORDER | wxFULL_REPAINT_ON_RESIZE )
 #else
 	: wxPanel( parent, id, pos, size, wxRAISED_BORDER | wxFULL_REPAINT_ON_RESIZE )
 #endif
@@ -306,8 +286,8 @@ wxInnerFrame::wxInnerFrame( wxWindow *parent, wxWindowID id,
 	m_curX = m_curY = -1;
 	m_resizeBorder = 10;
 
-	m_titleBar = new TitleBar( this, -1, wxDefaultPosition, wxDefaultSize, style );
-	m_frameContent = new wxPanel( this, -1, wxDefaultPosition, wxDefaultSize );
+	m_titleBar = new TitleBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, style );
+	m_frameContent = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
 
 	// Use spacers to create a 1 pixel border on left and top of content panel - this is for drawing the selection box
 	// Use borders to create a 2 pixel border on right and bottom - this is so the back panel can catch mouse events for resizing
@@ -354,7 +334,7 @@ void wxInnerFrame::OnMouseMotion( wxMouseEvent& e )
 	if ( m_sizing != NONE )
 	{
 		wxScreenDC dc;
-		wxPen pen( *wxBLACK, 1, wxDOT );
+		wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
 
 		dc.SetPen( pen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );
@@ -459,7 +439,7 @@ void wxInnerFrame::OnLeftUp( wxMouseEvent& )
 		ReleaseMouse();
 
 		wxScreenDC dc;
-		wxPen pen( *wxBLACK, 1, wxDOT );
+		wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
 
 		dc.SetPen( pen );
 		dc.SetBrush( *wxTRANSPARENT_BRUSH );

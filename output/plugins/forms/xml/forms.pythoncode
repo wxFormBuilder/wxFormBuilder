@@ -1,0 +1,751 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Python code generation writen by
+  Michal Bližňák - michal.bliznak@gmail.com
+-->
+<codegen language="Python">
+
+	<templates class="wxTopLevelWindow">
+		<template name="evt_connect_OnActivate">self.Bind( wx.EVT_ACTIVATE, #handler )</template>
+		<template name="evt_disconnect_OnActivate">self.Unbind( wx.EVT_ACTIVATE )</template>
+		<template name="evt_connect_OnActivateApp">self.Bind( wx.EVT_ACTIVATE_APP, #handler )</template>
+		<template name="evt_disconnect_OnActivateApp">self.Unbind( wx.EVT_ACTIVATE_APP )</template>
+		<template name="evt_connect_OnClose">self.Bind( wx.EVT_CLOSE, #handler )</template>
+		<template name="evt_disconnect_OnClose">self.Unbind( wx.EVT_CLOSE )</template>
+		<template name="evt_connect_OnHibernate">self.Bind( wx.EVT_HIBERNATE, #handler )</template>
+		<template name="evt_disconnect_OnHibernate">self.Unbind( wx.EVT_HIBERNATE )</template>
+		<template name="evt_connect_OnIconize">self.Bind( wx.EVT_ICONIZE, #handler )</template>
+		<template name="evt_disconnect_OnIconize">self.Unbind( wx.EVT_ICONIZE )</template>
+		<template name="evt_connect_OnMaximize">self.Bind( wx.EVT_MAXIMIZE, #handler )</template>
+		<template name="evt_disconnect_OnMaximize">self.Unbind( wx.EVT_MAXIMIZE )</template>
+		<template name="evt_connect_OnMove">self.Bind( wx.EVT_MOVE, #handler )</template>
+		<template name="evt_disconnect_OnMove">self.Unbind( wx.EVT_MOVE )</template>
+		<template name="evt_connect_OnMoving">self.Bind( wx.EVT_MOVING, #handler )</template>
+		<template name="evt_disconnect_OnMoving">self.Unbind( wx.EVT_MOVING )</template>
+		<template name="evt_connect_OnMoveStart">self.Bind( wx.EVT_MOVE_START, #handler )</template>
+		<template name="evt_disconnect_OnMoveStart">self.Unbind( wx.EVT_MOVE_START )</template>
+		<template name="evt_connect_OnMoveEnd">self.Bind( wx.EVT_MOVE_END, #handler )</template>
+		<template name="evt_disconnect_OnMoveEnd">self.Unbind( wx.EVT_MOVE_END )</template>
+		<template name="evt_connect_OnShow">self.Bind( wx.EVT_SHOW, #handler )</template>
+		<template name="evt_disconnect_OnShow">self.Unbind( wx.EVT_SHOW )</template>
+		<template name="evt_connect_OnIdle">self.Bind( wx.EVT_IDLE, #handler )</template>
+		<template name="evt_disconnect_OnIdle">self.Unbind( wx.EVT_IDLE )</template>
+	</templates>
+
+	<templates class="AUI Events">
+		<template name="evt_connect_OnAuiPaneButton">self.Bind( wx.aui.EVT_AUI_PANE_BUTTON, #handler )</template>
+		<template name="evt_disconnect_OnAuiPaneButton">self.Unbind( wx.aui.EVT_AUI_PANE_BUTTON )</template>
+		<template name="evt_connect_OnAuiPaneClose">self.Bind( wx.aui.EVT_AUI_PANE_CLOSE, #handler )</template>
+		<template name="evt_disconnect_OnAuiPaneClose">self.Unbind( wx.aui.EVT_AUI_PANE_CLOSE )</template>
+		<template name="evt_connect_OnAuiPaneMaximize">self.Bind( wx.aui.EVT_AUI_PANE_MAXIMIZE, #handler )</template>
+		<template name="evt_disconnect_OnAuiPaneMaximize">self.Unbind( wx.aui.EVT_AUI_PANE_MAXIMIZE )</template>
+		<template name="evt_connect_OnAuiPaneRestore">self.Bind( wx.aui.EVT_AUI_PANE_RESTORE, #handler )</template>
+		<template name="evt_disconnect_OnAuiPaneRestore">self.Unbind( wx.aui.EVT_AUI_PANE_RESTORE )</template>
+		<template name="evt_connect_OnAuiPaneActivated">self.Bind( wx.aui.EVT_AUI_PANE_ACTIVATED, #handler )</template>
+		<template name="evt_disconnect_OnAuiPaneActivated">self.Unbind( wx.aui.EVT_AUI_PANE_ACTIVATED )</template>
+		<template name="evt_connect_OnAuiRender">self.Bind( wx.aui.EVT_AUI_RENDER, #handler )</template>
+		<template name="evt_disconnect_OnAuiRender">self.Unbind( wx.aui.EVT_AUI_RENDER )</template>
+	</templates>
+
+	<templates class="Frame">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.Frame @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.Frame.__init__@}
+			( self, parent, id = $id, title = $title, pos = $pos, size = $size, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ self.m_mgr.UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			@{import wx.aui @}
+		</template>
+		<template name="settings">
+			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+
+			#ifnotnull $window_extra_style
+			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ self.SetExtraStyle( $extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ self.SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ self.SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ self.SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ self.Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ self.Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifequal $aui_managed "1"
+			@{
+				self.m_mgr = wx.aui.AuiManager() #nl
+				self.m_mgr.SetManagedWindow( self ) #nl
+				#ifnotnull $aui_manager_style
+				@{ self.m_mgr.SetFlags($aui_manager_style) #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl self.m_mgr.Update() @}
+			#ifnotnull $center
+			@{ #nl self.Centre( $center ) @}
+		</template>
+		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
+		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
+		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
+		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
+		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
+		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnLeftDClick">self.Unbind( wx.EVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">self.Bind( wx.EVT_LEFT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnLeftDown">self.Unbind( wx.EVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">self.Bind( wx.EVT_LEFT_UP, #handler )</template>
+		<template name="evt_disconnect_OnLeftUp">self.Unbind( wx.EVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">self.Bind( wx.EVT_MIDDLE_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDClick">self.Unbind( wx.EVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">self.Bind( wx.EVT_MIDDLE_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
+		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
+		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux1Down">self.Unbind( wx.EVT_AUX1_DOWN )</template>
+		<template name="evt_connect_OnAux1Up">self.Bind( wx.EVT_AUX1_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux1Up">self.Unbind( wx.EVT_AUX1_UP )</template>
+		<template name="evt_connect_OnAux2DClick">self.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux2DClick">self.Unbind( wx.EVT_AUX2_DCLICK )</template>
+		<template name="evt_connect_OnAux2Down">self.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux2Down">self.Unbind( wx.EVT_AUX2_DOWN )</template>
+		<template name="evt_connect_OnAux2Up">self.Bind( wx.EVT_AUX2_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
+		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
+		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
+		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			self.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_UP, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_UP, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_UP, #handler ) #nl
+			self.Bind( wx.EVT_MOTION, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_LEAVE_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
+		</template>-->
+		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
+		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
+		<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
+	</templates>
+
+	<templates class="Panel">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.Panel @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent, id = $id, pos = $pos, size = $size, style = $window_style, name = $window_name ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.Panel.__init__@}
+			( self, parent, id = id, pos = pos, size = size, style = style, name = name )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ self.m_mgr.UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			@{import wx.aui @}</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ self.SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ self.SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ self.SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ self.Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ self.Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifnotnull $minimum_size
+			@{ self.SetMinSize( $minimum_size ) #nl @}
+
+			#ifnotnull $maximum_size
+			@{ self.SetMaxSize( $maximum_size ) #nl @}
+
+			#ifequal $aui_managed "1"
+			@{
+				self.m_mgr = wx.aui.AuiManager() #nl
+				self.m_mgr.SetManagedWindow( self ) #nl
+				#ifnotnull $aui_manager_style
+				@{ self.m_mgr.SetFlags($aui_manager_style) #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl self.m_mgr.Update() @}
+		</template>
+		<template name="evt_connect_OnInitDialog">self.Bind( wx.EVT_INIT_DIALOG, #handler )</template>
+		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
+		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
+		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
+		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
+		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
+		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnLeftDClick">self.Unbind( wx.EVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">self.Bind( wx.EVT_LEFT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnLeftDown">self.Unbind( wx.EVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">self.Bind( wx.EVT_LEFT_UP, #handler )</template>
+		<template name="evt_disconnect_OnLeftUp">self.Unbind( wx.EVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">self.Bind( wx.EVT_MIDDLE_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDClick">self.Unbind( wx.EVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">self.Bind( wx.EVT_MIDDLE_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
+		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
+		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux1Down">self.Unbind( wx.EVT_AUX1_DOWN )</template>
+		<template name="evt_connect_OnAux1Up">self.Bind( wx.EVT_AUX1_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux1Up">self.Unbind( wx.EVT_AUX1_UP )</template>
+		<template name="evt_connect_OnAux2DClick">self.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux2DClick">self.Unbind( wx.EVT_AUX2_DCLICK )</template>
+		<template name="evt_connect_OnAux2Down">self.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux2Down">self.Unbind( wx.EVT_AUX2_DOWN )</template>
+		<template name="evt_connect_OnAux2Up">self.Bind( wx.EVT_AUX2_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
+		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
+		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
+		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			self.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_UP, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_UP, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_UP, #handler ) #nl
+			self.Bind( wx.EVT_MOTION, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_LEAVE_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
+		</template>-->
+		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
+		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
+		<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
+	</templates>
+
+
+	<templates class="Dialog">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.Dialog @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.Dialog.__init__@}
+			( self, parent, id = $id, title = $title, pos = $pos, size = $size, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
+		</template>
+		<template name="destruction">
+			#ifequal $aui_managed "1"
+			@{ self.m_mgr.UnInit() #nl @}
+		</template>
+		<template name="include">
+			#ifequal $aui_managed "1"
+			@{import wx.aui @}</template>
+		<template name="settings">
+			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+
+			#ifnotnull $window_extra_style
+			@{ self.SetExtraStyle( self.GetExtraStyle() | $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ self.SetExtraStyle( $extra_style ) #nl @}
+
+			#ifnotnull $font
+			@{ self.SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ self.SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ self.SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ self.Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ self.Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifequal $aui_managed "1"
+			@{
+				self.m_mgr = wx.aui.AuiManager() #nl
+				self.m_mgr.SetManagedWindow( self ) #nl
+				#ifnotnull $aui_manager_style
+				@{ self.m_mgr.SetFlags($aui_manager_style) #nl @}
+			@}
+		</template>
+		<template name="after_addchild">
+			#ifequal $aui_managed "1"
+			@{ #nl self.m_mgr.Update() @}
+			#ifnotnull $center
+			@{ #nl self.Centre( $center ) @}
+		</template>
+		<template name="evt_connect_OnInitDialog">self.Bind( wx.EVT_INIT_DIALOG, #handler )</template>
+		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
+		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
+		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
+		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
+		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
+		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnLeftDClick">self.Unbind( wx.EVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">self.Bind( wx.EVT_LEFT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnLeftDown">self.Unbind( wx.EVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">self.Bind( wx.EVT_LEFT_UP, #handler )</template>
+		<template name="evt_disconnect_OnLeftUp">self.Unbind( wx.EVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">self.Bind( wx.EVT_MIDDLE_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDClick">self.Unbind( wx.EVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">self.Bind( wx.EVT_MIDDLE_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
+		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
+		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux1Down">self.Unbind( wx.EVT_AUX1_DOWN )</template>
+		<template name="evt_connect_OnAux1Up">self.Bind( wx.EVT_AUX1_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux1Up">self.Unbind( wx.EVT_AUX1_UP )</template>
+		<template name="evt_connect_OnAux2DClick">self.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux2DClick">self.Unbind( wx.EVT_AUX2_DCLICK )</template>
+		<template name="evt_connect_OnAux2Down">self.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux2Down">self.Unbind( wx.EVT_AUX2_DOWN )</template>
+		<template name="evt_connect_OnAux2Up">self.Bind( wx.EVT_AUX2_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
+		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
+		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
+		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			self.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_UP, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_UP, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_UP, #handler ) #nl
+			self.Bind( wx.EVT_MOTION, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_LEAVE_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
+		</template>-->
+		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
+		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
+		<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
+	</templates>
+
+	<templates class="Wizard">
+		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.adv.Wizard @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.adv.Wizard.__init__@}
+			( self, parent, id = $id, title = $title, bitmap = $bitmap, pos = $pos, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
+		</template>
+		<template name="include">
+			import wx.adv
+		</template>
+		<template name="settings">
+			#ifnotnull $window_extra_style
+			@{ self.SetExtraStyle( $window_extra_style ) #nl @}
+
+			#ifnotnull $extra_style
+			@{ self.SetExtraStyle( wx.adv.WIZARD_EX_HELPBUTTON ) #nl @}
+
+			self.SetSizeHints( $minimum_size, $maximum_size ) #nl
+
+			#ifnotnull $font
+			@{ self.SetFont( $font ) #nl @}
+
+			#ifnotnull $fg
+			@{ self.SetForegroundColour( $fg ) #nl @}
+
+			#ifnotnull $bg
+			@{ self.SetBackgroundColour( $bg ) #nl @}
+
+			#ifequal $enabled "0"
+			@{ self.Enable( $enabled ) #nl @}
+
+			#ifequal $hidden "1"
+			@{ self.Hide() #nl @}
+
+			#ifnotnull $tooltip
+			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			self.m_pages = [] #nl
+		</template>
+		<template name="after_addchild">
+			#ifnotnull $center
+			@{ self.Centre( $center ) #nl @}
+		</template>
+		<template name="evt_connect_OnInitDialog">self.Bind( wx.EVT_INIT_DIALOG, #handler )</template>
+		<template name="evt_disconnect_OnInitDialog">self.Unbind( wx.EVT_INIT_DIALOG )</template>
+		<template name="evt_connect_OnChar">self.Bind( wx.EVT_CHAR, #handler )</template>
+		<template name="evt_disconnect_OnChar">self.Unbind( wx.EVT_CHAR )</template>
+		<template name="evt_connect_OnCharHook">self.Bind( wx.EVT_CHAR_HOOK, #handler )</template>
+		<template name="evt_disconnect_OnCharHook">self.Unbind( wx.EVT_CHAR_HOOK )</template>
+		<template name="evt_connect_OnKeyDown">self.Bind( wx.EVT_KEY_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnKeyDown">self.Unbind( wx.EVT_KEY_DOWN )</template>
+		<template name="evt_connect_OnKeyUp">self.Bind( wx.EVT_KEY_UP, #handler )</template>
+		<template name="evt_disconnect_OnKeyUp">self.Unbind( wx.EVT_KEY_UP )</template>
+		<template name="evt_connect_OnEnterWindow">self.Bind( wx.EVT_ENTER_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnEnterWindow">self.Unbind( wx.EVT_ENTER_WINDOW )</template>
+		<template name="evt_connect_OnLeaveWindow">self.Bind( wx.EVT_LEAVE_WINDOW, #handler )</template>
+		<template name="evt_disconnect_OnLeaveWindow">self.Unbind( wx.EVT_LEAVE_WINDOW )</template>
+		<template name="evt_connect_OnLeftDClick">self.Bind( wx.EVT_LEFT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnLeftDClick">self.Unbind( wx.EVT_LEFT_DCLICK )</template>
+		<template name="evt_connect_OnLeftDown">self.Bind( wx.EVT_LEFT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnLeftDown">self.Unbind( wx.EVT_LEFT_DOWN )</template>
+		<template name="evt_connect_OnLeftUp">self.Bind( wx.EVT_LEFT_UP, #handler )</template>
+		<template name="evt_disconnect_OnLeftUp">self.Unbind( wx.EVT_LEFT_UP )</template>
+		<template name="evt_connect_OnMiddleDClick">self.Bind( wx.EVT_MIDDLE_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDClick">self.Unbind( wx.EVT_MIDDLE_DCLICK )</template>
+		<template name="evt_connect_OnMiddleDown">self.Bind( wx.EVT_MIDDLE_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnMiddleDown">self.Unbind( wx.EVT_MIDDLE_DOWN )</template>
+		<template name="evt_connect_OnMiddleUp">self.Bind( wx.EVT_MIDDLE_UP, #handler )</template>
+		<template name="evt_disconnect_OnMiddleUp">self.Unbind( wx.EVT_MIDDLE_UP )</template>
+		<template name="evt_connect_OnRightDClick">self.Bind( wx.EVT_RIGHT_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnRightDClick">self.Unbind( wx.EVT_RIGHT_DCLICK )</template>
+		<template name="evt_connect_OnRightDown">self.Bind( wx.EVT_RIGHT_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnRightDown">self.Unbind( wx.EVT_RIGHT_DOWN )</template>
+		<template name="evt_connect_OnRightUp">self.Bind( wx.EVT_RIGHT_UP, #handler )</template>
+		<template name="evt_disconnect_OnRightUp">self.Unbind( wx.EVT_RIGHT_UP )</template>
+		<template name="evt_connect_OnAux1DClick">self.Bind( wx.EVT_AUX1_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux1DClick">self.Unbind( wx.EVT_AUX1_DCLICK )</template>
+		<template name="evt_connect_OnAux1Down">self.Bind( wx.EVT_AUX1_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux1Down">self.Unbind( wx.EVT_AUX1_DOWN )</template>
+		<template name="evt_connect_OnAux1Up">self.Bind( wx.EVT_AUX1_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux1Up">self.Unbind( wx.EVT_AUX1_UP )</template>
+		<template name="evt_connect_OnAux2DClick">self.Bind( wx.EVT_AUX2_DCLICK, #handler )</template>
+		<template name="evt_disconnect_OnAux2DClick">self.Unbind( wx.EVT_AUX2_DCLICK )</template>
+		<template name="evt_connect_OnAux2Down">self.Bind( wx.EVT_AUX2_DOWN, #handler )</template>
+		<template name="evt_disconnect_OnAux2Down">self.Unbind( wx.EVT_AUX2_DOWN )</template>
+		<template name="evt_connect_OnAux2Up">self.Bind( wx.EVT_AUX2_UP, #handler )</template>
+		<template name="evt_disconnect_OnAux2Up">self.Unbind( wx.EVT_AUX2_UP )</template>
+		<template name="evt_connect_OnMotion">self.Bind( wx.EVT_MOTION, #handler )</template>
+		<template name="evt_disconnect_OnMotion">self.Unbind( wx.EVT_MOTION )</template>
+		<template name="evt_connect_OnMouseWheel">self.Bind( wx.EVT_MOUSEWHEEL, #handler )</template>
+		<template name="evt_disconnect_OnMouseWheel">self.Unbind( wx.EVT_MOUSEWHEEL )</template>
+		<template name="evt_connect_OnMouseEvents">self.Bind( wx.EVT_MOUSE, #handler )</template>
+		<template name="evt_disconnect_OnMouseEvents">self.Unbind( wx.EVT_MOUSE )</template>
+		<!--<template name="evt_connect_OnMouseEvents">
+			self.Bind( wx.EVT_LEFT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_UP, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_UP, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_UP, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DOWN, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_UP, #handler ) #nl
+			self.Bind( wx.EVT_MOTION, #handler ) #nl
+			self.Bind( wx.EVT_LEFT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_MIDDLE_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_RIGHT_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX1_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_AUX2_DCLICK, #handler ) #nl
+			self.Bind( wx.EVT_LEAVE_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_ENTER_WINDOW, #handler ) #nl
+			self.Bind( wx.EVT_MOUSEWHEEL, #handler )
+		</template>-->
+		<template name="evt_connect_OnSetFocus">self.Bind( wx.EVT_SET_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
+		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
+		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
+		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
+		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
+		<template name="evt_disconnect_OnEraseBackground">self.Unbind( wx.EVT_ERASE_BACKGROUND )</template>
+		<template name="evt_connect_OnSize">self.Bind( wx.EVT_SIZE, #handler )</template>
+		<template name="evt_disconnect_OnSize">self.Unbind( wx.EVT_SIZE )</template>
+		<template name="evt_connect_OnUpdateUI">self.Bind( wx.EVT_UPDATE_UI, #handler )</template>
+		<template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
+		<template name="evt_connect_OnWizardPageChanged">self.Bind( wx.adv.EVT_WIZARD_PAGE_CHANGED, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageChanged">self.Unbind( wx.adv.EVT_WIZARD_PAGE_CHANGED )</template>
+		<template name="evt_connect_OnWizardPageChanging">self.Bind( wx.adv.EVT_WIZARD_PAGE_CHANGING, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageChanging">self.Unbind( wx.adv.EVT_WIZARD_PAGE_CHANGING )</template>
+		<template name="evt_connect_OnWizardPageShown">self.Bind( wx.adv.EVT_WIZARD_PAGE_SHOWN, #handler )</template>
+		<template name="evt_disconnect_OnWizardPageShown">self.Unbind( wx.adv.EVT_WIZARD_PAGE_SHOWN )</template>
+		<template name="evt_connect_OnWizardCancel">self.Bind( wx.adv.EVT_WIZARD_CANCEL, #handler )</template>
+		<template name="evt_disconnect_OnWizardCancel">self.Unbind( wx.adv.EVT_WIZARD_CANCEL )</template>
+		<template name="evt_connect_OnWizardHelp">self.Bind( wx.adv.EVT_WIZARD_HELP, #handler )</template>
+		<template name="evt_disconnect_OnWizardHelp">self.Unbind( wx.adv.EVT_WIZARD_HELP )</template>
+		<template name="evt_connect_OnWizardFinished">self.Bind( wx.adv.EVT_WIZARD_FINISHED, #handler )</template>
+		<template name="evt_disconnect_OnWizardFinished">self.Unbind( wx.adv.EVT_WIZARD_FINISHED )</template>
+	</templates>
+
+	<templates class="WizardPageSimple">
+		<template name="construction">
+			self.$name = wx.adv.WizardPageSimple( self #ifnotnull $bitmap @{ , None, None, $bitmap @} ) #nl
+			self.add_page( self.$name ) #nl
+		</template>
+	</templates>
+
+	<templates class="MenuBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.MenuBar @}
+		</template>
+		<template name="cons_def">
+			def __init__( self ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.MenuBar.__init__@}
+			( self, style = $window_style )
+		</template>
+	</templates>
+
+	<templates class="ToolBar">
+		<template name="base">
+			#ifnotnull $subclass/name
+			@{ $subclass/name @}
+
+			#ifnull $subclass/name
+			@{ wx.ToolBar @}
+		</template>
+		<template name="cons_def">
+			def __init__( self, parent ):
+		</template>
+		<template name="cons_call">
+			#ifnotnull $subclass/name
+			@{ $subclass/name.__init__@}
+
+			#ifnull $subclass/name
+			@{ wx.ToolBar.__init__@}
+			( self, parent, id = $id, pos = $pos, size = $size, style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name = $window_name @} )
+		</template>
+		<template name="settings">
+			#ifnotnull $bitmapsize
+			@{ self.SetToolBitmapSize( $bitmapsize ) #nl @}
+
+			#ifnotnull $separation
+			@{
+				#ifnotequal $separation "5"
+				@{ self.SetToolSeparation( $separation ) #nl @}
+			@}
+
+			#ifnotnull $margins
+			@{ self.SetMargins( $margins ) #nl @}
+
+			#ifnotnull $packing
+			@{
+				#ifnotequal $packing "1"
+				@{ self.SetToolPacking( $packing ) #nl @}
+			@}
+		</template>
+		<template name="after_addchild">#nl self.Realize()</template>
+	</templates>
+
+</codegen>

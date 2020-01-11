@@ -9,9 +9,9 @@
 * Id: annoyingdialog.cpp 4204 2007-07-02 12:30:47Z mandrav
 * HeadURL: http://svn.berlios.de/svnroot/repos/codeblocks/trunk/src/sdk/annoyingdialog.cpp
 */
+#pragma once
 
 #include <wx/dialog.h>
-#include <wx/string.h>
 #include <wx/artprov.h>
 
 class wxCheckBox;
@@ -39,8 +39,8 @@ class AnnoyingDialog : public wxDialog
         AnnoyingDialog(const wxString& caption, const wxString& message, const wxArtID icon = wxART_INFORMATION,
                        dStyle style = YES_NO, int defaultReturn = wxID_YES, bool separate = true,
                        const wxString& b1 = wxEmptyString, const wxString& b2 = wxEmptyString, const wxString& b3 = wxEmptyString);
-        virtual ~AnnoyingDialog(){}
-        virtual int ShowModal();
+
+	int ShowModal() override;
     private:
         void OnButton( wxCommandEvent& event );
         wxCheckBox* m_cb;

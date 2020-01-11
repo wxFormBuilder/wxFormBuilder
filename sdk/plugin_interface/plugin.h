@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,11 +23,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __PLUGIN_H__
-#define __PLUGIN_H__
+#pragma once
 
 #include "component.h"
-#include "wx/wx.h"
+
 #include <vector>
 #include <map>
 
@@ -62,7 +61,7 @@ class ComponentLibrary : public IComponentLibrary
   SynMap m_synMap;
 
  public:
-  virtual ~ComponentLibrary()
+  ~ComponentLibrary() override
   {
 	std::vector< AComponent >::reverse_iterator component;
 	for ( component = m_components.rbegin(); component != m_components.rend(); ++component )
@@ -71,7 +70,7 @@ class ComponentLibrary : public IComponentLibrary
 	}
   }
 
-  void RegisterComponent( const wxString& text, IComponent* c )
+  void RegisterComponent(const wxString& text, IComponent* c) override
   {
     AComponent comp;
     comp.component = c;
@@ -80,7 +79,7 @@ class ComponentLibrary : public IComponentLibrary
     m_components.push_back(comp);
   }
 
-  void RegisterMacro(const wxString &text, const int value)
+  void RegisterMacro(const wxString& text, const int value) override
   {
     AMacro macro;
     macro.name = text;
@@ -89,7 +88,7 @@ class ComponentLibrary : public IComponentLibrary
     m_macros.push_back(macro);
   }
 
-  void RegisterMacroSynonymous(const wxString &syn, const wxString &name)
+  void RegisterMacroSynonymous(const wxString& syn, const wxString& name) override
   {
     /*ASynonymous asyn;
     asyn.name = name;
@@ -99,14 +98,14 @@ class ComponentLibrary : public IComponentLibrary
     m_synMap.insert(SynMap::value_type(syn, name));
   }
 
-  IComponent* GetComponent(unsigned int idx)
+  IComponent* GetComponent(unsigned int idx) override
   {
     if (idx < m_components.size())
       return m_components[idx].component;
     return NULL;
   }
 
-  wxString GetComponentName(unsigned int idx)
+  wxString GetComponentName(unsigned int idx) override
   {
     if (idx < m_components.size())
       return m_components[idx].name;
@@ -114,7 +113,7 @@ class ComponentLibrary : public IComponentLibrary
     return wxString();
   }
 
-  wxString GetMacroName(unsigned int idx)
+  wxString GetMacroName(unsigned int idx) override
   {
     if (idx < m_macros.size())
       return m_macros[idx].name;
@@ -122,7 +121,7 @@ class ComponentLibrary : public IComponentLibrary
     return wxString();
   }
 
-  int GetMacroValue(unsigned int idx)
+  int GetMacroValue(unsigned int idx) override
   {
     if (idx < m_macros.size())
       return m_macros[idx].value;
@@ -130,7 +129,7 @@ class ComponentLibrary : public IComponentLibrary
     return 0;
   }
 
-  /*wxString GetMacroSynonymous(unsigned int idx)
+  /*wxString GetMacroSynonymous(unsigned int idx) override
   {
     if (idx < m_synonymous.size())
       return m_synonymous[idx].syn;
@@ -138,7 +137,7 @@ class ComponentLibrary : public IComponentLibrary
     return wxString();
   }
 
-  wxString GetSynonymousName(unsigned int idx)
+  wxString GetSynonymousName(unsigned int idx) override
   {
     if (idx < m_synonymous.size())
       return m_synonymous[idx].name;
@@ -146,7 +145,7 @@ class ComponentLibrary : public IComponentLibrary
     return wxString();
   }*/
 
-  bool FindSynonymous(const wxString& syn, wxString& trans)
+  bool FindSynonymous(const wxString& syn, wxString& trans) override
   {
     bool found = false;
     SynMap::iterator it = m_synMap.find(syn);
@@ -159,17 +158,17 @@ class ComponentLibrary : public IComponentLibrary
     return found;
   }
 
-  unsigned int GetMacroCount()
+  unsigned int GetMacroCount() override
   {
     return (unsigned int)m_macros.size();
   }
 
-  unsigned int GetComponentCount()
+  unsigned int GetComponentCount() override
   {
     return (unsigned int)m_components.size();
   }
 
-  /*unsigned int GetSynonymousCount()
+  /*unsigned int GetSynonymousCount() override
   {
     return m_synonymous.size();
   }*/
@@ -206,47 +205,38 @@ public:
 		return m_manager;
 	}
 
-	wxObject* Create( IObject* /*obj*/, wxObject* /*parent*/ )
+	wxObject* Create(IObject* /*obj*/, wxObject* /*parent*/) override
 	{
 		return m_manager->NewNoObject(); /* Even components which are not visible must be unique in the map */
 	}
 
-    void Cleanup( wxObject* obj )
-    {
-        wxWindow* window = dynamic_cast< wxWindow* >( obj );
-        if ( window != 0 )
-        {
-            if ( window->GetEventHandler() != window )
-            {
-                window->PopEventHandler( true );
-            }
-        }
-    }
-
-	void OnCreated( wxObject* /*wxobject*/, wxWindow* /*wxparent*/ )
+	void Cleanup(wxObject* /*obj*/) override
 	{
 
 	}
 
-	void OnSelected( wxObject* /*wxobject*/ )
+	void OnCreated(wxObject* /*wxobject*/, wxWindow* /*wxparent*/) override
 	{
 
 	}
 
-	ticpp::Element* ExportToXrc(IObject* /*obj*/)
+	void OnSelected(wxObject* /*wxobject*/) override
+	{
+
+	}
+
+	ticpp::Element* ExportToXrc(IObject* /*obj*/) override
 	{
 		return NULL;
 	}
 
-	ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/)
+	ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/) override
 	{
 		return NULL;
 	}
 
-	int GetComponentType()
+	int GetComponentType() override
 	{
 		return m_type;
 	}
 };
-
-#endif // __PLUGIN_H__

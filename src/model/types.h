@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -23,15 +23,13 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TYPES__
-#define __TYPES__
+#pragma once
 
-#include <vector>
-#include <wx/string.h>
 #include <map>
 #include <memory>
-
-#include "wx/wx.h"
+#include <utility>
+#include <vector>
+#include <wx/wx.h>
 
 class ObjectType;
 
@@ -141,6 +139,8 @@ typedef enum
 	PT_BITLIST,
 	PT_INTLIST,
 	PT_UINTLIST,
+	PT_INTPAIRLIST,
+	PT_UINTPAIRLIST,
 	PT_OPTION,
 	PT_MACRO,
 	PT_WXSTRING,
@@ -150,6 +150,7 @@ typedef enum
 	PT_WXCOLOUR,
 	PT_WXPARENT,
 	PT_WXPARENT_SB,
+	PT_WXPARENT_CP,
 	PT_PATH,
 	PT_FILE,
 	PT_BITMAP,
@@ -187,32 +188,31 @@ typedef enum
 class IntList
 {
 private:
-	typedef std::vector<int> IntVector;
-	IntVector m_ints;
+	std::vector<std::pair<int, int>> m_ints;
 	bool m_abs;
+	bool m_pairs;
 
 public:
-	IntList( bool absolute_value = false )
-		:
-		m_abs( absolute_value )
+	explicit IntList(bool absolute_value = false, bool pair_value = false);
+	explicit IntList(const wxString& value, bool absolute_value = false, bool pair_value = false);
+
+	unsigned int GetSize() const
 	{
+		return static_cast<unsigned int>(m_ints.size());
 	}
-
-	IntList(wxString value, bool absolute_value = false );
-
-	unsigned int GetSize()
+	int GetValue(unsigned int idx) const
 	{
-		return (unsigned int)m_ints.size();
-	};
-	int GetValue(unsigned int idx)
+		return m_ints[idx].first;
+	}
+	std::pair<int, int> GetPair(unsigned int idx) const
 	{
 		return m_ints[idx];
-	};
+	}
+
 	void Add(int value);
+	void Add(int first, int second);
 	void DeleteList();
-	void SetList(wxString str);
-	wxString ToString();
+	void SetList(const wxString& str);
+
+	wxString ToString(bool skip_zero_second = false);
 };
-
-
-#endif // __TYPES__

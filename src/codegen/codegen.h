@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -32,10 +32,13 @@
 #ifndef __CODEGEN__
 #define __CODEGEN__
 
-#include <wx/sstream.h>
+#include "../model/types.h"
+#include "../utils/wxfbdefs.h"
+
 #include <map>
-#include "utils/wxfbdefs.h"
-#include "model/types.h"
+#include <vector>
+
+#include <wx/sstream.h>
 
 /**
 * Template notes
@@ -102,7 +105,6 @@ private:
 	// Current indentation level in the file
 	int m_indent;
 
-protected:
 	typedef enum {
 		TOK_ERROR,
 		TOK_MACRO,
@@ -142,7 +144,7 @@ protected:
 	Ident SearchIdent(wxString ident);
 	Ident ParseIdent();
 
-	wxString ParsePropertyName( wxString* child = NULL );
+	wxString ParsePropertyName(wxString* child = nullptr);
 	/**
 	* This routine extracts the source code from a template enclosed between
 	* the #begin and #end macros, having in mind that they can be nested
@@ -187,7 +189,7 @@ protected:
 	bool ParseIfTypeNotEqual();
 	void ParseLuaTable();
 
-	PProperty GetProperty( wxString* childName = NULL );
+	PProperty GetProperty(wxString* childName = nullptr);
 	PObjectBase GetWxParent();
 	PProperty GetRelatedProperty( PObjectBase relative );
 
@@ -225,7 +227,7 @@ public:
 	*/
 	virtual PTemplateParser CreateParser( const TemplateParser* oldparser, wxString _template ) = 0;
 
-	virtual ~TemplateParser() {};
+	virtual ~TemplateParser();
 
 	/**
 	* Returns the code for a "wxWindow *parent" root attribute' name.
@@ -247,7 +249,7 @@ public:
 	/**
 	* Set the string for the #pred and #npred macros
 	*/
-	void SetPredefined( wxString pred, wxString npred ) { m_pred = pred; m_npred = npred; };
+	void SetPredefined( wxString pred, wxString npred ) { m_pred = pred; m_npred = npred; }
 };
 
 /**
@@ -275,13 +277,48 @@ protected:
 
 public:
 	/**
+	* Describes the properties and state of an array item
+	*/
+	struct ArrayItem
+	{
+		/**
+		* Maximum used index for each array dimension
+		*/
+		std::vector<size_t> maxIndex;
+		/**
+		* State if the code generator has already declared this array
+		*/
+		bool isDeclared = false;
+	};
+	/**
+	* Lookup map of array items
+	*
+	* key = basename of the array
+	* value = properties and state of the array
+	*/
+	typedef std::map<wxString, ArrayItem> ArrayItems;
+
+	/**
 	* Virtual destructor.
 	*/
-	virtual ~CodeGenerator() {};
+	virtual ~CodeGenerator();
 	/**
 	* Generate the code of the project
 	*/
 	virtual bool GenerateCode( PObjectBase project ) = 0;
+
+	/**
+	* Stores all discovered arrays for the given object and its child objects.
+	*/
+	void FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool skipRoot = false);
+
+	/**
+	* Parses a name and determines if it is an array.
+	*
+	* Returns true if it is an array and extracts the basename and the indexes of the dimensions.
+	* Returns false if it is not.
+	*/
+	bool ParseArrayName(const wxString& name, wxString& baseName, ArrayItem& item);
 };
 
 

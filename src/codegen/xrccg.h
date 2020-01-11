@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -27,8 +27,6 @@
 #define _XRC_CODE_GEN_
 
 #include "codegen.h"
-#include "utils/wxfbdefs.h"
-#include <vector>
 
 namespace ticpp
 {
@@ -50,7 +48,7 @@ public:
 	void SetWriter( PCodeWriter cw );
 
 	/// Generates the XRC code for the project.
-	bool GenerateCode( PObjectBase project );
+	bool GenerateCode(PObjectBase project) override;
 };
 
 

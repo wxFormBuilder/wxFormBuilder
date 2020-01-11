@@ -15,23 +15,24 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "rad/xrcpreview/xrcpreview.h"
-#include "model/objectbase.h"
-#include "codegen/xrccg.h"
-#include "codegen/codewriter.h"
-#include "utils/annoyingdialog.h"
-#include "utils/wxfbexception.h"
-#include "utils/typeconv.h"
+#include "xrcpreview.h"
+
+#include "../../codegen/codewriter.h"
+#include "../../codegen/xrccg.h"
+#include "../../model/objectbase.h"
+#include "../../utils/annoyingdialog.h"
+#include "../../utils/typeconv.h"
+#include "../../utils/wxfbexception.h"
 
 #include <wx/fs_mem.h>
-#include <wx/xrc/xmlres.h>
 #include <wx/wizard.h>
+#include <wx/xrc/xmlres.h>
 
 #define MENU_DELETE 109
 
@@ -43,11 +44,7 @@ private:
 	wxWindow* m_window;
 
 public:
-	XrcPreviewPopupMenu( wxWindow* window )
-	:
-	wxMenu(),
-	m_window( window )
-	{
+	XrcPreviewPopupMenu(wxWindow* window) : m_window(window) {
 		Append( MENU_DELETE, wxT("Close Preview") );
 	}
 
@@ -215,14 +212,13 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
         if ( wizpge )
         {
             wizard->RunWizard( wizpge );
-            window = wizard;
             wizard->Destroy();
             window = NULL;
         }
 	}
 	else if ( className == wxT( "Panel" ) )
 	{
-		wxDialog* dialog = new wxDialog( wxTheApp->GetTopWindow(), -1, wxT( "Dialog" ), wxDefaultPosition,
+		wxDialog* dialog = new wxDialog( wxTheApp->GetTopWindow(), wxID_ANY, wxT( "Dialog" ), wxDefaultPosition,
 		                 wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER );
 		// Prevent events from propagating up to wxFB's frame
 		dialog->SetExtraStyle( wxWS_EX_BLOCK_EVENTS );
@@ -262,9 +258,7 @@ void XRCPreview::Show( PObjectBase form, const wxString& projectPath )
 
 	::wxSetWorkingDirectory( workingDir );
 
-	#if wxCHECK_VERSION( 2, 6, 3 )
 	res->Unload( wxT("memory:xrcpreview.xrc") );
-	#endif
 
 	wxMemoryFSHandler::RemoveFile( wxT("xrcpreview.xrc") );
 }

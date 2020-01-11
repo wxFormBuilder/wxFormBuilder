@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,12 +26,11 @@
 #ifndef __OBJ_DATABASE__
 #define __OBJ_DATABASE__
 
-#include <wx/dynlib.h>
+#include "../utils/wxfbdefs.h"
+#include "types.h"
+
 #include <set>
-#include <map>
-#include <memory>
-#include "model/types.h"
-#include "utils/wxfbdefs.h"
+#include <wx/dynlib.h>
 
 class ObjectDatabase;
 class ObjectTypeDictionary;
@@ -67,7 +66,7 @@ class ObjectPackage
   /**
    * Incluye en el paquete la información de un objeto.
    */
-  void Add(PObjectInfo obj) { m_objs.push_back(obj); };
+  void Add(PObjectInfo obj) { m_objs.push_back(obj); }
 
   /**
    * Obtiene el nombre del paquete.
@@ -198,6 +197,7 @@ class ObjectDatabase
   PObjectType GetObjectType(wxString name);
 
   int CountChildrenWithSameType(PObjectBase parent,PObjectType type);
+  int CountChildrenWithSameType(PObjectBase parent, const std::set<PObjectType>& types);
 
   void SetDefaultLayoutProperties(PObjectBase obj);
 

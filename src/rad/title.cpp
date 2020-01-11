@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -25,15 +25,16 @@
 
 #include "title.h"
 
-Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent,-1)
+Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent, wxID_ANY)
 {
   wxBoxSizer* sizer = new wxBoxSizer( wxVERTICAL );
 
-  wxStaticText *text = new wxStaticText(this,-1,title);//,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
+  wxStaticText *text = new wxStaticText(this, wxID_ANY,title);//,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
   SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
   text->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT ) );
-  text->SetFont(wxFont(8, wxSWISS, wxNORMAL, wxBOLD, 0, wxT("")));
+	text->SetFont(
+	  wxFont(8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxString()));
 
   sizer->Add(text,0,wxALL | wxEXPAND,2);
   SetSizer(sizer);
@@ -44,7 +45,7 @@ wxWindow * Title::CreateTitle (wxWindow *inner, const wxString &title)
 {
   wxWindow *parent = inner->GetParent();
 
-  wxPanel *container = new wxPanel(parent, -1);
+  wxPanel *container = new wxPanel(parent, wxID_ANY);
   Title *titleWin = new Title(container,title);
   inner->Reparent(container);
 

@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -32,23 +32,19 @@ class MainFrame;
 class MyApp : public wxApp
 {
 private:
-  wxLog * m_old_log;
-  wxLogWindow * m_log;
-
   MainFrame *m_frame;
-  
+
 public:
-  bool OnInit();
+	bool OnInit() override;
   #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
-  void OnFatalException();
+	void OnFatalException() override;
   #endif
-  int OnRun();
-  int OnExit();
-  ~MyApp();
-  
+	int OnRun() override;
+	int OnExit() override;
+
   #ifdef __WXMAC__
   wxString m_mac_file_name;
-  void MacOpenFile(const wxString &fileName);
+  void MacOpenFile(const wxString &fileName) override;
   #endif
 };
 

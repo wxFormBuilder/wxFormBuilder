@@ -15,45 +15,36 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "rad/mainframe.h"
+#include "maingui.h"
+
+#include "model/objectbase.h"
 #include "rad/appdata.h"
-#include <wx/filename.h>
-#include <wx/image.h>
-#include <wx/sysopt.h>
+#include "rad/mainframe.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+
+#include <wx/clipbrd.h>
 #include <wx/cmdline.h>
 #include <wx/config.h>
 #include <wx/stdpaths.h>
-#include <wx/xrc/xmlres.h>
-#include <wx/clipbrd.h>
-#include <wx/msgout.h>
-#ifdef USE_FLATNOTEBOOK
-#include <wx/wxFlatNotebook/wxFlatNotebook.h>
-#endif
-#include "utils/wxfbexception.h"
-#include <memory>
-#include "maingui.h"
+#include <wx/sysopt.h>
 
-#include "utils/debug.h"
-#include "utils/typeconv.h"
-#include "model/objectbase.h"
-
-#if wxVERSION_NUMBER >= 3101
-#include <wx/xrc/xh_aui.h>
-#elif wxVERSION_NUMBER >= 2905
+#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER <= 3100
 #include <wx/xrc/xh_auinotbk.h>
+#elif wxVERSION_NUMBER > 3100
+#include <wx/xrc/xh_aui.h>
 #endif
 
 // Abnormal Termination Handling
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 	#include <wx/stackwalk.h>
-	#include <wx/utils.h>
 #elif defined(_WIN32) && defined(__MINGW32__)
 	#include "dbg_stack_trace/stack.hpp"
 	#include <sstream>
@@ -74,20 +65,19 @@
 
 void LogStack();
 
-static const wxCmdLineEntryDesc s_cmdLineDesc[] =
-{
-#if wxVERSION_NUMBER < 2900
-	{ wxCMD_LINE_SWITCH, wxT("g"), wxT("generate"),	wxT("Generate code from passed file.") },
-	{ wxCMD_LINE_OPTION, wxT("l"), wxT("language"),	wxT("Override the code_generation property from the passed file and generate the passed languages. Separate multiple languages with commas.") },
-	{ wxCMD_LINE_SWITCH, wxT("h"), wxT("help"),		wxT("Show this help message."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP  },
-	{ wxCMD_LINE_PARAM, NULL, NULL,	wxT("File to open."), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-#else
-    { wxCMD_LINE_SWITCH, "g", "generate", "Generate code from passed file." },
-    { wxCMD_LINE_OPTION, "l", "language", "Override the code_generation property from the passed file and generate the passed languages. Separate multiple languages with commas." },
-    { wxCMD_LINE_SWITCH, "h", "help",     "Show this help message.", wxCMD_LINE_VAL_STRING, wxCMD_LINE_OPTION_HELP  },
-    { wxCMD_LINE_PARAM, NULL, NULL,	      "File to open.", wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
-#endif
-	{ wxCMD_LINE_NONE }
+static const wxCmdLineEntryDesc s_cmdLineDesc[] = {
+	{ wxCMD_LINE_SWITCH, "g", "generate", "Generate code from passed file.", wxCMD_LINE_VAL_STRING,
+	  0 },
+	{ wxCMD_LINE_OPTION, "l", "language",
+	  "Override the code_generation property from the passed file and generate the passed "
+	  "languages. Separate multiple languages with commas.",
+	  wxCMD_LINE_VAL_STRING, 0 },
+	{ wxCMD_LINE_SWITCH, "h", "help", "Show this help message.", wxCMD_LINE_VAL_STRING,
+	  wxCMD_LINE_OPTION_HELP },
+	{ wxCMD_LINE_SWITCH, "v", "version", "Print version information.", wxCMD_LINE_VAL_STRING, 0 },
+	{ wxCMD_LINE_PARAM, nullptr, nullptr, "File to open.", wxCMD_LINE_VAL_STRING,
+	  wxCMD_LINE_PARAM_OPTIONAL },
+	{ wxCMD_LINE_NONE, nullptr, nullptr, nullptr, wxCMD_LINE_VAL_NONE, 0 }
 };
 
 IMPLEMENT_APP( MyApp )
@@ -129,6 +119,11 @@ int MyApp::OnRun()
 	if ( 0 != parser.Parse() )
 	{
 		return 1;
+	}
+
+	if (parser.Found("v")) {
+		std::cout << "wxFormBuilder " << VERSION << std::endl;
+		return EXIT_SUCCESS;
 	}
 
 	// Get project to load
@@ -212,10 +207,10 @@ int MyApp::OnRun()
 	// Init handlers
 	wxInitAllImageHandlers();
 	wxXmlResource::Get()->InitAllHandlers();
-	#if wxVERSION_NUMBER >= 3101
-	wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
-	#elif wxVERSION_NUMBER >= 2905
+	#if wxVERSION_NUMBER >= 2905 && wxVERSION_NUMBER <= 3100
 	wxXmlResource::Get()->AddHandler(new wxAuiNotebookXmlHandler);
+	#elif wxVERSION_NUMBER > 3100
+	wxXmlResource::Get()->AddHandler(new wxAuiXmlHandler);
 	#endif
 
 	// Init AppData
@@ -255,7 +250,7 @@ int MyApp::OnRun()
 
 	config->SetPath( wxT("/") );
 
-	m_frame = new MainFrame( NULL ,-1, (int)style, wxPoint( x, y ), wxSize( w, h ) );
+	m_frame = new MainFrame( NULL ,wxID_ANY, (int)style, wxPoint( x, y ), wxSize( w, h ) );
 	if ( !justGenerate )
 	{
 		m_frame->Show( TRUE );
@@ -336,9 +331,6 @@ bool MyApp::OnInit()
 int MyApp::OnExit()
 {
 	MacroDictionary::Destroy();
-#ifdef USE_FLATNOTEBOOK
-	wxFlatNotebook::CleanUp();
-#endif
 	AppDataDestroy();
 
 	if( !wxTheClipboard->IsOpened() )
@@ -354,10 +346,6 @@ int MyApp::OnExit()
     wxTheClipboard->Close();
 
 	return wxApp::OnExit();
-}
-
-MyApp::~MyApp()
-{
 }
 
 #ifdef __WXMAC__
@@ -378,8 +366,7 @@ void MyApp::MacOpenFile(const wxString &fileName)
 	class StackLogger : public wxStackWalker
 	{
 	protected:
-		void OnStackFrame( const wxStackFrame& frame )
-		{
+		void OnStackFrame(const wxStackFrame& frame) override {
 			// Build param string
 			wxString params;
 			size_t paramCount = frame.GetParamCount();
@@ -434,6 +421,8 @@ void MyApp::MacOpenFile(const wxString &fileName)
 	class StackLogger
 	{
 	public:
+		virtual ~StackLogger() = default;
+
 		void WalkFromException()
 		{
 			try
@@ -460,15 +449,11 @@ void MyApp::MacOpenFile(const wxString &fileName)
 class LoggingStackWalker : public StackLogger
 {
 public:
-    LoggingStackWalker()
-    :
-    StackLogger()
-    {
-        wxLog::Suspend();
-    }
+	LoggingStackWalker() {
+		wxLog::Suspend();
+	}
 
-    ~LoggingStackWalker()
-    {
+	~LoggingStackWalker() override {
         wxLogError( wxT("A Fatal Error Occurred. Click Details for a backtrace.") );
         wxLog::Resume();
         wxLog* logger = wxLog::GetActiveTarget();

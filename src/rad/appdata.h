@@ -15,7 +15,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 // Written by
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
@@ -26,11 +26,8 @@
 #ifndef __APP_DATA__
 #define __APP_DATA__
 
-#include "utils/wxfbdefs.h"
-#include "model/database.h"
-#include "rad/cmdproc.h"
-#include <memory>
-#include <set>
+#include "../model/database.h"
+#include "cmdproc.h"
 
 namespace ticpp
 {
@@ -52,6 +49,9 @@ class wxFBIPC;
 #define AppDataCreate(path) (ApplicationData::Get(path))
 #define AppDataInit()	      (ApplicationData::Initialize())
 #define AppDataDestroy()  	(ApplicationData::Destroy())
+
+const char* const VERSION = "3.9.0";
+const char* const REVISION = "";
 
 // This class is a singleton class.
 
@@ -228,11 +228,15 @@ class ApplicationData
 		#endif
 
 		typedef std::map< std::string, std::set< std::string > > PropertiesToRemove;
-		PropertiesToRemove& GetPropertiesToRemove_v1_12( void ) const;
+		PropertiesToRemove& GetPropertiesToRemove_v1_12() const;
 
 	public:
 
 		~ApplicationData();
+		ApplicationData(const ApplicationData&) = delete;
+		ApplicationData& operator=(const ApplicationData&) = delete;
+		ApplicationData(ApplicationData&&) = delete;
+		ApplicationData& operator=(ApplicationData&&) = delete;
 
 		#ifdef __WXFB_DEBUG__
 		wxLog* GetDebugLogTarget(){ return m_debugLogTarget; }
@@ -373,7 +377,7 @@ class ApplicationData
 		const int m_fbpVerMinor;
 
 		/** Path to the fbp file that is opened. */
-		const wxString &GetProjectPath() { return m_projectPath; };
+		const wxString &GetProjectPath() { return m_projectPath; }
 
 
 		/**
@@ -386,11 +390,11 @@ class ApplicationData
 		*/
 		wxString GetEmbeddedFilesOutputPath();
 
-		void SetProjectPath( const wxString &path ) { m_projectPath = path; };
+		void SetProjectPath( const wxString &path ) { m_projectPath = path; }
 
-		const wxString &GetApplicationPath() { return m_rootDir; };
+		const wxString &GetApplicationPath() { return m_rootDir; }
 
-		void SetApplicationPath( const wxString &path ) { m_rootDir = path; };
+		void SetApplicationPath( const wxString &path ) { m_rootDir = path; }
 
 		// Allow a single instance check from outsid the AppData class
 		bool VerifySingleInstance( const wxString& file, bool switchTo = true );
