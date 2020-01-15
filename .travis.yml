@@ -1,36 +1,16 @@
 language: cpp
-matrix:
+os: linux
+jobs:
   include:
-    - os: linux
-      sudo: required
-      services:
-        - docker
-      script:
-        - mkdir -p .cache
-        - "tar --xattrs --xattrs-include=* -xf .cache/cache.tar || true"
-        - docker run --privileged -v$PWD:/w -it fedora:28 /bin/sh -c "cd /w/install/linux && ./flatpak.sh"
-      env: DEPLOY_FILE=install/linux/wxformbuilder.flatpak
-      before_cache:
-        - tar --xattrs --xattrs-include=* -cpf .cache/cache.tar install/linux/.flatpak-builder/
-      cache:
-        directories:
-          - .cache
-    - os: osx
-      script:
-        - brew update
-        - brew install dylibbundler make
-        - brew tap cdalvaro/tap
-        - travis_wait 40 brew install cdalvaro/tap/wxmac
-        - ./create_build_files4.sh
-        - make config=release -C build/3.1/gmake
-        - cd output && zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app && ls && cd -
-      env: DEPLOY_FILE=output/wxFormBuilder_macOS.zip
-deploy:
-  provider: releases
-  api_key:
-    secure: kSPdJIFeEwb+/q8qbmf6zlH+X3MUxAEAuqirQLjL0m0Xs6dFYHLWj8ONsxmFQD1MMUwgV9K7SWpqTKv1I9ruG5MwLKov79LZaNHWpTSKhnJU+yxDFmkvmc2/ZKHQHwrB8q1wHGcw9X8XKGMmwTJfPZzGJHOcJ6P7mZ6Ovjhfpby0AM9+zK8QVEndC9xY+MBJ5KIBEzsK4lLGqB2CYsTALOSqKqZmOiVE6bQ/EtfLsW3ze2gke1tKkl3wWYvRWhAdZ7IV2h4dkm2JheDnmkM6f0EOw16g5sL6FaKU3Nlf5UeZgyNk2DpYdWKuwdULD9XY6LiZ3HzzqEyFH6oMmLchIhlWztlHIS/7iaNRUjuqZIMgY1fEkeNOWLWNhLciKMs3fhO4RVpDh5oWnzrCKYzlRywAwnB9LcSM4wxgPuwAEvE+17aLCYcQJ3i8aDdPFr9yMSq/WNpY4kIu1l4wlw37UBsGGHBnFoZ/glMGdP8Kp213WH//v1Nb/v86rPvaAM45zr9zmZGfG2LcJnDnBCoJKep6DJbAeux4hmt2A/QWzWcowPjeWGD+Nu9jWTI6vWNa+D6/nBscFS7ijzioR2dW6Fq8NjvA41Kv6KX0S6W6l6tnAGcgiOkhmK+i44/54OM815clfBiDPsI4K0IWOjE8D8MfXmOBwcWcmnHivGqmFyA=
-  file_glob: true
-  file: ${DEPLOY_FILE}
-  on:
-    tags: true
-  skip_cleanup: true
+    - dist: bionic
+      addons:
+        apt:
+          packages:
+            - libwxgtk3.0-dev
+            - g++-8
+            - cmake
+      install: export CXX="g++-8" CC="gcc-8"
+      before_script: cmake .
+      script: make
+
+
