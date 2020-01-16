@@ -1,1 +1,2 @@
 add_wxformbuilder_plugin_target(additional additional.cpp)
+target_compile_definitions(additional PRIVATE -DUSE_MEDIACTRL)

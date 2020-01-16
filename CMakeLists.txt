@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(wxWidgets 3.0.0 COMPONENTS gl aui adv html core net base xml stc richtext propgrid ribbon xrc REQUIRED)
+find_package(wxWidgets 3.0 REQUIRED gl aui adv html core net base xml stc richtext propgrid ribbon xrc media)
 include(${wxWidgets_USE_FILE})
 
 set(CPACK_PACKAGE_VERSION_MAJOR 3)
