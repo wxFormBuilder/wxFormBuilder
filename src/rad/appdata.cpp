@@ -2391,8 +2391,9 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		PProperty fileProp = obj->GetProperty( wxT( "file" ) );
 		PProperty genfileProp = obj->GetProperty( wxT( "gen_file" ) );
 		PProperty typeProp = obj->GetProperty( wxT( "type" ) );
+		PProperty pchProp = obj->GetProperty(wxT("precompiled_header"));
 
-		if ( !( baseNameProp && nameProp && fileProp && typeProp && genfileProp ) )
+		if (!(baseNameProp && nameProp && fileProp && typeProp && genfileProp && pchProp))
 		{
 			wxLogWarning( wxT("Missing Property") );
 			return;
@@ -2425,6 +2426,12 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		fileProp->SetValue( inherFile.GetName() );
 		genfileProp->SetValue( genFile.GetFullPath() );
 		typeProp->SetValue( form->GetClassName() );
+
+        auto property = project->GetProperty(wxT("precompiled_header"));
+        if (property)
+        {
+            pchProp->SetValue(property->GetValue());
+        }
 
 		// Determine if Microsoft BOM should be used
 		bool useMicrosoftBOM = false;

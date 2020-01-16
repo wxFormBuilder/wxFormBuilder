@@ -227,6 +227,9 @@
     <property name="file" type="text"/>
     <property name="gen_file" type="text"/>
     <property name="type" type="text"/>
+    <category name="C++ Properties">
+      <property name="precompiled_header" type="text"/>
+    </category>
   </objectinfo>
 
   <objectinfo class="AUI" type="interface">
