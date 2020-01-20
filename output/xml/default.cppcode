@@ -305,7 +305,13 @@
 			// Handlers for $basename events.
 		</template>
 		<template name="header_include">@#include &quot;$gen_file.h&quot;</template>
-		<template name="source_include">@#include &quot;$file.h&quot;</template>
+		<template name="source_include">
+			#ifnotnull $precompiled_header
+			@{
+				$precompiled_header #nl
+			@}
+			@#include &quot;$file.h&quot;
+		</template>
 		<template name="class_decl">
 			/** Implementing $basename */ #nl
 			class $name : public $basename
