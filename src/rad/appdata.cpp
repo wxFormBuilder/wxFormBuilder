@@ -2427,10 +2427,10 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 		genfileProp->SetValue( genFile.GetFullPath() );
 		typeProp->SetValue( form->GetClassName() );
 
-        auto property = project->GetProperty(wxT("precompiled_header"));
-        if (property)
+        auto pchValue = project->GetProperty(wxT("precompiled_header"));
+        if (pchValue)
         {
-            pchProp->SetValue(property->GetValue());
+            pchProp->SetValue(pchValue->GetValue());
         }
 
 		// Determine if Microsoft BOM should be used
