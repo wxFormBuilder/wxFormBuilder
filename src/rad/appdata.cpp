@@ -1326,11 +1326,16 @@ bool ApplicationData::LoadProject( const wxString &file, bool justGenerate )
 			}
 
 			wxMessageBox(
-			    _("This project is using an older file format. It will be converted in memory while loading it.\n\n"
-			      "Caution! If you save the project, it will be overwritten with the newer file format."),
+			    _("This project file is using an older file format, it will be updated during loading.\n\n"
+			      "WARNING: Saving the project will update the format of the project file on disk!"),
 			    _("Older file format"));
 
-			if (!ConvertProject(doc, file, fbpVerMajor, fbpVerMinor))
+			if (ConvertProject(doc, file, fbpVerMajor, fbpVerMinor))
+			{
+				// Document has changed -- reacquire the root node
+				root = doc.FirstChildElement();
+			}
+			else
 			{
 				wxLogError(wxT("Unable to convert project"));
 				return false;
@@ -1377,7 +1382,6 @@ bool ApplicationData::ConvertProject(ticpp::Document& doc, const wxString& path,
 {
 	try
 	{
-		ticpp::Document doc;
 		XMLUtils::LoadXMLFile( doc, false, path );
 
 		ticpp::Element* root = doc.FirstChildElement();
