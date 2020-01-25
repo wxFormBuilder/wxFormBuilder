@@ -44,7 +44,8 @@ wxString Function::GetFunction() {
 // CodeParser
 //---------------------------------------------------
 
-void CCodeParser::ParseCFiles(wxString className) {
+void CCodeParser::ParseFiles(wxString className) {
+
 	m_className = className;
 	wxTextFile headerFile(m_hFile);
 	wxTextFile sourceFile(m_cFile);
@@ -81,69 +82,104 @@ void CCodeParser::ParseCFiles(wxString className) {
 	}
 
 	// parse the file contents
-	ParseCCode(header, source);
+	ParseCode(header, source);
 }
 
-void CCodeParser::ParseCCode(wxString header, wxString source) {
-	ParseCInclude(header);
-	ParseCClass(header);
+void CCodeParser::ParseCode(wxString header, wxString source) {
+	ParseHInclude(header);
+	ParseHClass(header);
 
-	ParseSourceFunctions(source);
+	ParseCFunctions(source);
+}
+
+void CCodeParser::ParseHInclude(wxString code) {
+	int userIncludeEnd;
+	m_userInclude_H = wxT("");
+
+	// find the begining of the user include
+
+	int userIncludeStart = code.Find(wxT("//// end generated include. Place User Code Below"));
+	if (userIncludeStart != wxNOT_FOUND) 
+	{
+
+		userIncludeStart = code.find(wxT('\n'), userIncludeStart);
+		if (userIncludeStart != wxNOT_FOUND) 
+		{
+			// find the end of the user include
+			userIncludeEnd = code.find(wxT("\n/** Implementing "), userIncludeStart);
+
+			if (userIncludeEnd != wxNOT_FOUND) 
+			{
+				userIncludeStart++;
+				m_userInclude_H = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
+			}
+		}
+	}
 }
 
 void CCodeParser::ParseCInclude(wxString code) {
 	int userIncludeEnd;
-	m_userInclude = wxT("");
+	m_userInclude_CPP = wxT("");
 
 	// find the begining of the user include
-	int userIncludeStart = code.Find(wxT("//// end generated include"));
-	if (userIncludeStart != wxNOT_FOUND) {
-		userIncludeStart = code.find(wxT('\n'), userIncludeStart);
-		if (userIncludeStart != wxNOT_FOUND) {
-			// find the end of the user include
-			userIncludeEnd = code.find(wxT("\n/** Implementing "), userIncludeStart);
 
-			if (userIncludeEnd != wxNOT_FOUND) {
-				userIncludeStart++;
-				m_userInclude = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
+	int userIncludeStart = code.Find(wxT("//// end generated include. Place User Code Below"));
+	if (userIncludeStart != wxNOT_FOUND) 
+	{
+		userIncludeStart = code.find(wxT('\n'), userIncludeStart);
+		if (userIncludeStart != wxNOT_FOUND) 
+		{
+			// find the end of the user include
+			wxString Str = m_className + wxT("::");
+			userIncludeEnd = code.find(Str, userIncludeStart);
+			if (userIncludeEnd != wxNOT_FOUND) 
+			{
+				userIncludeEnd = code.rfind(wxT('\n'), userIncludeEnd);
+				if (userIncludeEnd != wxNOT_FOUND) 
+				{
+					userIncludeStart++;
+					m_userInclude_CPP = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
+				}
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseCClass(wxString code) {
+void CCodeParser::ParseHClass(wxString code) {
 	int startClass = code.Find(wxT("class ") + m_className);
 	if (startClass != wxNOT_FOUND) {
 		code = ParseBrackets(code, startClass);
 		if (startClass != wxNOT_FOUND) {
-			ParseCUserMembers(code);
+			ParseHUserMembers(code);
 		}
 	}
 }
 
-void CCodeParser::ParseCUserMembers(wxString code) {
-	m_userMemebers = wxT("");
-	int userMembersStart = code.Find(wxT("//// end generated class members"));
+void CCodeParser::ParseHUserMembers(wxString code) {
+	m_userMembers_CPP = wxT("");
+	int userMembersStart = code.Find(wxT("//// end generated class members. Place User Code Below"));
 	if (userMembersStart != wxNOT_FOUND) {
 		userMembersStart = code.find('\n', userMembersStart);
 		if (userMembersStart == wxNOT_FOUND) {
-			m_userMemebers = wxT("");
+			m_userMembers_CPP = wxT("");
 		} else {
 			userMembersStart++;
 			if (userMembersStart < (int)code.Len()) {
-				m_userMemebers = code.Mid(userMembersStart);
+				m_userMembers_CPP = code.Mid(userMembersStart);
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseSourceFunctions(wxString code) {
+void CCodeParser::ParseCFunctions(wxString code) {
 	int functionStart = 0;
 	int functionEnd = 0;
 	int previousFunctionEnd = 0;
 	wxString funcName, funcArg;
 	Function* func;
 	wxString Str, R;
+
+	ParseCInclude(code);
 
 	int loop = 0;
 	while (1) {
@@ -152,8 +188,8 @@ void CCodeParser::ParseSourceFunctions(wxString code) {
 		functionStart = code.find(Str, previousFunctionEnd);
 		if (functionStart == wxNOT_FOUND) {
 			// Get the last bit of remaining code after the last function in the file
-			m_trailingCode = code.Mid(previousFunctionEnd);
-			m_trailingCode.RemoveLast();
+			m_trailingCode_CPP = code.Mid(previousFunctionEnd);
+			m_trailingCode_CPP.RemoveLast();
 			return;
 		}
 		// found a function now creat a new function class
@@ -171,7 +207,8 @@ void CCodeParser::ParseSourceFunctions(wxString code) {
 		}
 		func->SetHeading(heading);
 
-		m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
+		AddFunction(heading, func);
+		//m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
 
 		// find the opening brackets of the function
 		func->SetContents(ParseBrackets(code, functionStart));
@@ -239,7 +276,7 @@ wxString CodeParser::GetFunctionDocumentation(wxString function) {
 	wxString contents = wxT("");
 	Function* func;
 
-	m_functionIter = m_functions.find(std::string(function.ToUTF8()));
+	m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(function).ToUTF8()));
 	if (m_functionIter != m_functions.end()) {
 		func = m_functionIter->second;
 		contents = func->GetDocumentation();
@@ -260,6 +297,24 @@ wxString CodeParser::GetFunctionContents(wxString function) {
 	}
 	return contents;
 }
+
+
+wxString CodeParser::GetAllFunctions() {
+	wxString functions;	
+	int index = 0;
+
+	while(index < m_functionList.GetCount())
+	{
+		m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(m_functionList[index]).ToUTF8()));
+		if (m_functionIter != m_functions.end()) {
+			functions += m_functionIter->second->GetFunction();
+			m_functions.erase(m_functionIter);
+		}
+		index++;
+	}
+	return functions;
+}
+
 
 wxString CodeParser::GetRemainingFunctions() {
 	wxString functions;
