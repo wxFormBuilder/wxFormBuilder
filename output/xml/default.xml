@@ -6,6 +6,8 @@
     <property name="path" type="path" help="The path to generated files">.</property>
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
     <property name="file" type="text" help="The filenames for generated files"/>
+    <property name="base_suffix" type="text" help="Identifier to append to base class defenition"/>
+    <property name="prepend_project_name" type="bool" help="Append project name to inherited class name"/>
     <property name="relative_path" type="bool" help="Use relative paths for external files ( e.g. image files )">1</property>
     <property name="first_id" type="text" help="All GUI controls have an interger ID, this is the value for the first control, each additional control with increment by 1.">1000</property>
     <property name="code_generation" type="bitlist">

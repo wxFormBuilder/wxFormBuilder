@@ -23,6 +23,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 #include "geninhertclass.h"
+#include "../../utils/debug.h"
 
 #include "../../model/objectbase.h"
 
@@ -36,8 +37,23 @@ GenInheritedClassDlgBase( parent )
 	for ( unsigned int i = 0; i < project->GetChildCount(); ++i )
 	{
 		PObjectBase child = project->GetChild( i );
+		wxString tmp;
 		const wxString& formName = child->GetPropertyAsString( _("name") );
-		const wxString& name = projectName + formName;
+		if(project->GetPropertyAsInteger( _( "prepend_project_name" ) ) != 0)
+		{
+				tmp << projectName;
+		}
+		tmp << formName;
+
+		wxString classSuffix = project->GetPropertyAsString( _( "base_suffix" ) );
+		int index = tmp.find(classSuffix);
+		if(index + classSuffix.length() == tmp.length())
+		{
+			tmp = tmp.Left(index);
+		}
+		
+
+		const wxString& name = tmp;
 		m_classDetails.push_back( GenClassDetails( child, name, name ) );
 
 		// Add the forms to the listctrl.

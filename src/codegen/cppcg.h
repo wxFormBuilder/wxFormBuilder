@@ -37,6 +37,7 @@ The value of all properties that are file or a directory paths must be absolute,
 
 #include "codegen.h"
 #include "codeparser.h"
+#include "../utils/debug.h"
 
 #include <set>
 #include <vector>

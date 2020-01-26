@@ -44,8 +44,7 @@ wxString Function::GetFunction() {
 // CodeParser
 //---------------------------------------------------
 
-void CCodeParser::ParseFiles(wxString className) {
-
+void CCodeParser::ParseCFiles(wxString className) {
 	m_className = className;
 	wxTextFile headerFile(m_hFile);
 	wxTextFile sourceFile(m_cFile);
@@ -82,104 +81,69 @@ void CCodeParser::ParseFiles(wxString className) {
 	}
 
 	// parse the file contents
-	ParseCode(header, source);
+	ParseCCode(header, source);
 }
 
-void CCodeParser::ParseCode(wxString header, wxString source) {
-	ParseHInclude(header);
-	ParseHClass(header);
+void CCodeParser::ParseCCode(wxString header, wxString source) {
+	ParseCInclude(header);
+	ParseCClass(header);
 
-	ParseCFunctions(source);
-}
-
-void CCodeParser::ParseHInclude(wxString code) {
-	int userIncludeEnd;
-	m_userInclude_H = wxT("");
-
-	// find the begining of the user include
-
-	int userIncludeStart = code.Find(wxT("//// end generated include. Place User Code Below"));
-	if (userIncludeStart != wxNOT_FOUND) 
-	{
-
-		userIncludeStart = code.find(wxT('\n'), userIncludeStart);
-		if (userIncludeStart != wxNOT_FOUND) 
-		{
-			// find the end of the user include
-			userIncludeEnd = code.find(wxT("\n/** Implementing "), userIncludeStart);
-
-			if (userIncludeEnd != wxNOT_FOUND) 
-			{
-				userIncludeStart++;
-				m_userInclude_H = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
-			}
-		}
-	}
+	ParseSourceFunctions(source);
 }
 
 void CCodeParser::ParseCInclude(wxString code) {
 	int userIncludeEnd;
-	m_userInclude_CPP = wxT("");
+	m_userInclude = wxT("");
 
 	// find the begining of the user include
-
-	int userIncludeStart = code.Find(wxT("//// end generated include. Place User Code Below"));
-	if (userIncludeStart != wxNOT_FOUND) 
-	{
+	int userIncludeStart = code.Find(wxT("//// end generated include"));
+	if (userIncludeStart != wxNOT_FOUND) {
 		userIncludeStart = code.find(wxT('\n'), userIncludeStart);
-		if (userIncludeStart != wxNOT_FOUND) 
-		{
+		if (userIncludeStart != wxNOT_FOUND) {
 			// find the end of the user include
-			wxString Str = m_className + wxT("::");
-			userIncludeEnd = code.find(Str, userIncludeStart);
-			if (userIncludeEnd != wxNOT_FOUND) 
-			{
-				userIncludeEnd = code.rfind(wxT('\n'), userIncludeEnd);
-				if (userIncludeEnd != wxNOT_FOUND) 
-				{
-					userIncludeStart++;
-					m_userInclude_CPP = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
-				}
+			userIncludeEnd = code.find(wxT("\n/** Implementing "), userIncludeStart);
+
+			if (userIncludeEnd != wxNOT_FOUND) {
+				userIncludeStart++;
+				m_userInclude = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseHClass(wxString code) {
+void CCodeParser::ParseCClass(wxString code) {
 	int startClass = code.Find(wxT("class ") + m_className);
 	if (startClass != wxNOT_FOUND) {
 		code = ParseBrackets(code, startClass);
 		if (startClass != wxNOT_FOUND) {
-			ParseHUserMembers(code);
+			ParseCUserMembers(code);
 		}
 	}
 }
 
-void CCodeParser::ParseHUserMembers(wxString code) {
-	m_userMembers_CPP = wxT("");
-	int userMembersStart = code.Find(wxT("//// end generated class members. Place User Code Below"));
+void CCodeParser::ParseCUserMembers(wxString code) {
+	m_userMemebers = wxT("");
+	int userMembersStart = code.Find(wxT("//// end generated class members"));
 	if (userMembersStart != wxNOT_FOUND) {
 		userMembersStart = code.find('\n', userMembersStart);
 		if (userMembersStart == wxNOT_FOUND) {
-			m_userMembers_CPP = wxT("");
+			m_userMemebers = wxT("");
 		} else {
 			userMembersStart++;
 			if (userMembersStart < (int)code.Len()) {
-				m_userMembers_CPP = code.Mid(userMembersStart);
+				m_userMemebers = code.Mid(userMembersStart);
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseCFunctions(wxString code) {
+void CCodeParser::ParseSourceFunctions(wxString code) {
 	int functionStart = 0;
 	int functionEnd = 0;
 	int previousFunctionEnd = 0;
 	wxString funcName, funcArg;
 	Function* func;
 	wxString Str, R;
-
-	ParseCInclude(code);
 
 	int loop = 0;
 	while (1) {
@@ -188,8 +152,8 @@ void CCodeParser::ParseCFunctions(wxString code) {
 		functionStart = code.find(Str, previousFunctionEnd);
 		if (functionStart == wxNOT_FOUND) {
 			// Get the last bit of remaining code after the last function in the file
-			m_trailingCode_CPP = code.Mid(previousFunctionEnd);
-			m_trailingCode_CPP.RemoveLast();
+			m_trailingCode = code.Mid(previousFunctionEnd);
+			m_trailingCode.RemoveLast();
 			return;
 		}
 		// found a function now creat a new function class
@@ -207,8 +171,7 @@ void CCodeParser::ParseCFunctions(wxString code) {
 		}
 		func->SetHeading(heading);
 
-		AddFunction(heading, func);
-		//m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
+		m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
 
 		// find the opening brackets of the function
 		func->SetContents(ParseBrackets(code, functionStart));
@@ -276,7 +239,7 @@ wxString CodeParser::GetFunctionDocumentation(wxString function) {
 	wxString contents = wxT("");
 	Function* func;
 
-	m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(function).ToUTF8()));
+	m_functionIter = m_functions.find(std::string(function.ToUTF8()));
 	if (m_functionIter != m_functions.end()) {
 		func = m_functionIter->second;
 		contents = func->GetDocumentation();
@@ -297,24 +260,6 @@ wxString CodeParser::GetFunctionContents(wxString function) {
 	}
 	return contents;
 }
-
-
-wxString CodeParser::GetAllFunctions() {
-	wxString functions;	
-	int index = 0;
-
-	while(index < m_functionList.GetCount())
-	{
-		m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(m_functionList[index]).ToUTF8()));
-		if (m_functionIter != m_functions.end()) {
-			functions += m_functionIter->second->GetFunction();
-			m_functions.erase(m_functionIter);
-		}
-		index++;
-	}
-	return functions;
-}
-
 
 wxString CodeParser::GetRemainingFunctions() {
 	wxString functions;
