@@ -278,7 +278,7 @@ Python code generation writen by
 		@{
 			#ifparentclassnotequal "wxAuiToolBar"
 			@{
-				self.$name = self.#parent $name.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
+				self.$name = self.#parent $name.AddTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
 			@}
 			#ifparentclassequal "wxAuiToolBar"
 			@{
@@ -300,7 +300,7 @@ Python code generation writen by
 		@}
 		#ifparenttypeequal "toolbar_form"
 		@{
-			self.$name = self.AddLabelTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
+			self.$name = self.AddTool( $id, $label, $bitmap, wx.NullBitmap, $kind, $tooltip, $statusbar, None )
 		@}
 		</template>
 		<template name="evt_connect_OnToolClicked">self.Bind( wx.EVT_TOOL, #handler, id = self.$name.GetId() )</template>
