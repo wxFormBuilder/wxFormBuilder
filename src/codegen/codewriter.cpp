@@ -31,23 +31,23 @@
 #include "../utils/wxfbexception.h"
 
 #include <wx/file.h>
-#include <wx/tokenzr.h>
 #include <wx/regex.h>
-
+#include <wx/tokenzr.h>
 #include <wx/stc/stc.h>
 
 #include <cstring>
 #include <fstream>
 
+
 CodeWriter::CodeWriter()
 :
-m_indent( 0 ),
-m_cols( 0 ),
-m_indent_with_spaces( false )
+m_indent(0),
+m_isLineWriting(false),
+m_indent_with_spaces(false)
 {
 }
 
-int CodeWriter::GetIndentSize()
+int CodeWriter::GetIndentSize() const
 {
 	return 1;
 }
@@ -67,74 +67,73 @@ void CodeWriter::Unindent()
 	}
 }
 
-void CodeWriter::WriteLn( wxString code, bool keepIndents )
+bool CodeWriter::IsSingleLine(const wxString& code) const
 {
-	// It will not be allowed newlines (carry return) inside "code"
-	// If there was anyone, then FixWrite gets the string and breaks it
-	// in different lines, inserting them one after another using WriteLn
-	if ( !StringOk( code ) )
+	return (code.find(wxT("\n")) == wxString::npos);
+}
+
+void CodeWriter::ProcessLine(wxString line, bool rawIndents)
+{
+	static const wxRegEx reIndent = wxRegEx(wxT("%TAB%\\s*"), wxRE_ADVANCED);
+
+	// Cleanup whitespace
+	if (!rawIndents)
 	{
-		FixWrite( code, keepIndents);
+		line.Trim(false);
+	}
+	line.Trim();
+	// Remove and count indentations defined in code templates by #indent and #unindent macros to use own indentation mode
+	auto templateIndents = reIndent.Replace(&line, wxT(""));
+	if (templateIndents < 0)
+	{
+		templateIndents = 0;
+	}
+
+	m_indent += templateIndents;
+	Write(line, rawIndents);
+	m_indent -= templateIndents;
+	// To prevent trailing whitespace in case the line was empty write the newline as-is
+	Write(wxT("\n"), true);
+	m_isLineWriting = false;
+}
+
+void CodeWriter::WriteLn(const wxString& code, bool rawIndents)
+{
+	if (!IsSingleLine(code))
+	{
+		wxStringTokenizer tkz(code, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
+		while (tkz.HasMoreTokens())
+		{
+			ProcessLine(tkz.GetNextToken(), rawIndents);
+		}
 	}
 	else
 	{
-		if(keepIndents)
-		{
-			m_cols = m_indent;
-		}
-		else
-		{
-			code.Trim(false);
-		}
-
-		code.Trim();
-		Write( code );
-		Write(wxT("\n"));
-		m_cols = 0;
+		ProcessLine(code, rawIndents);
 	}
 }
 
-bool CodeWriter::StringOk( wxString s )
+void CodeWriter::Write(const wxString& code, bool rawIndents)
 {
-	return ( s.find( wxT("\n"), 0 ) == wxString::npos );
-}
-
-void CodeWriter::FixWrite( wxString s , bool keepIndents)
-{
-	wxRegEx reIndent( wxT("%TAB%\\s*"), wxRE_ADVANCED );
-	wxStringTokenizer tkz( s, wxT("\n"), wxTOKEN_RET_EMPTY_ALL );
-
-	while ( tkz.HasMoreTokens() )
+	// Early abort to not produce lines with trailing whitespace
+	if (code.empty())
 	{
-		wxString line = tkz.GetNextToken();
-		if(!keepIndents)
-		{
-			line.Trim( false );
-		}
-		line.Trim( true );
-		// replace indentations defined in code templates by #indent and #unindent macros...
-		reIndent.Replace( &line, wxT("\t") );
-		WriteLn( line, keepIndents );
-
+		return;
 	}
-}
 
-void CodeWriter::Write( wxString code )
-{
-	if ( m_cols == 0 )
+	if (!m_isLineWriting)
 	{
-		// Inserting indents
-		for ( int i = 0; i < m_indent; i++ )
+		if (!rawIndents)
 		{
-			if (!code.IsEmpty()) {
+			for (int i = 0; i < m_indent; ++i)
+			{
 				DoWrite(m_indent_with_spaces ? wxT("    ") : wxT("\t"));
 			}
 		}
-
-		m_cols = m_indent;
+		m_isLineWriting = true;
 	}
 
-	DoWrite( code );
+	DoWrite(code);
 }
 
 void CodeWriter::SetIndentWithSpaces( bool on )
@@ -148,20 +147,20 @@ m_tc( 0 )
 {
 }
 
-TCCodeWriter::TCCodeWriter( wxStyledTextCtrl* tc )
+TCCodeWriter::TCCodeWriter(wxStyledTextCtrl* tc)
 {
-	SetTextCtrl( tc );
+	SetTextCtrl(tc);
 }
 
-void TCCodeWriter::SetTextCtrl( wxStyledTextCtrl* tc )
+void TCCodeWriter::SetTextCtrl(wxStyledTextCtrl* tc)
 {
 	m_tc = tc;
 }
 
-void TCCodeWriter::DoWrite( wxString code )
+void TCCodeWriter::DoWrite(const wxString& code)
 {
-	if ( m_tc )
-		m_tc->AddText( code );
+	if (m_tc)
+		m_tc->AddText(code);
 }
 
 void TCCodeWriter::Clear()
@@ -174,7 +173,7 @@ StringCodeWriter::StringCodeWriter()
 {
 }
 
-void StringCodeWriter::DoWrite( wxString code )
+void StringCodeWriter::DoWrite(const wxString& code)
 {
 	m_buffer += code;
 }
@@ -184,16 +183,16 @@ void StringCodeWriter::Clear()
 	m_buffer.clear();
 }
 
-wxString StringCodeWriter::GetString()
+const wxString& StringCodeWriter::GetString() const
 {
 	return m_buffer;
 }
 
-FileCodeWriter::FileCodeWriter( const wxString &file, bool useMicrosoftBOM, bool useUtf8 )
+FileCodeWriter::FileCodeWriter(const wxString& file, bool useMicrosoftBOM, bool useUtf8)
 :
-m_filename( file ),
-m_useMicrosoftBOM( useMicrosoftBOM ),
-m_useUtf8( useUtf8 )
+m_filename(file),
+m_useMicrosoftBOM(useMicrosoftBOM),
+m_useUtf8(useUtf8)
 {
 	Clear();
 }
