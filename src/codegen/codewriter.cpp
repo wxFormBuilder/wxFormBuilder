@@ -204,14 +204,14 @@ FileCodeWriter::~FileCodeWriter()
 
 void FileCodeWriter::WriteBuffer()
 {
-	const static unsigned char MICROSOFT_BOM[3] = { 0xEF, 0xBB, 0xBF };
+	static const unsigned char MICROSOFT_BOM[3] = { 0xEF, 0xBB, 0xBF };
+
+	const std::string& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
 
 	// Compare buffer with existing file (if any) to determine if
 	// writing the file is necessary
 	bool shouldWrite = true;
 	std::ifstream fileIn(m_filename.mb_str(wxConvFile), std::ios::binary | std::ios::in);
-
-	std::string buf;
 
 	if (fileIn)
 	{
@@ -219,27 +219,21 @@ void FileCodeWriter::WriteBuffer()
 		unsigned char* diskDigest = diskHash.raw_digest();
 
 		MD5 bufferHash;
-		if (m_useMicrosoftBOM) {
+		if (m_useUtf8 && m_useMicrosoftBOM)
+		{
 			bufferHash.update(MICROSOFT_BOM, 3);
 		}
-		const std::string& data = m_useUtf8 ? _STDSTR( m_buffer ) : _ANSISTR( m_buffer );
-
-		if (!m_useUtf8) buf = data;
-
-		bufferHash.update( reinterpret_cast< const unsigned char* >( data.c_str() ), data.size() );
-
+		bufferHash.update(reinterpret_cast<const unsigned char*>(data.c_str()), data.size());
 		bufferHash.finalize();
-
 		unsigned char* bufferDigest = bufferHash.raw_digest();
 
-		shouldWrite = ( 0 != std::memcmp( diskDigest, bufferDigest, 16 ) );
+		shouldWrite = (0 != std::memcmp(diskDigest, bufferDigest, 16));
 
-		delete [] diskDigest;
-
-		delete [] bufferDigest;
+		delete[] diskDigest;
+		delete[] bufferDigest;
 	}
 
-	if ( shouldWrite )
+	if (shouldWrite)
 	{
 		wxFile fileOut;
 		if (!fileOut.Create(m_filename, true))
@@ -248,15 +242,11 @@ void FileCodeWriter::WriteBuffer()
 			return;
 		}
 
-		if (m_useMicrosoftBOM)
+		if (m_useUtf8 && m_useMicrosoftBOM)
 		{
 			fileOut.Write(MICROSOFT_BOM, 3);
 		}
-
-		if (!m_useUtf8)
-			fileOut.Write(buf.c_str(), buf.length());
-		else
-			fileOut.Write(m_buffer);
+		fileOut.Write(data.c_str(), data.length());
 	}
 }
 
