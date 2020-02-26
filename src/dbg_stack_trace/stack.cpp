@@ -300,9 +300,9 @@ namespace
 
                 if (func.empty())
                 {
-                    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) // 64-bit
+                    #if defined(__amd64__) || defined(__x86_64__) // 64-bit
                         DWORD64 displacement = 0; // dummy variable
-                    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86) // 32-bit
+                    #elif defined(__i386__) || defined(_X86_) // 32-bit
                         DWORD displacement = 0; // dummy variable
                     #endif
 
