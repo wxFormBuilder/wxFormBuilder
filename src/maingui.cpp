@@ -86,8 +86,9 @@ int MyApp::OnRun()
 {
 	// Abnormal Termination Handling
 	#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
-            ::wxHandleFatalExceptions( true );
+		::wxHandleFatalExceptions( true );
 	#elif defined(_WIN32) && defined(__MINGW32__)
+<<<<<<< HEAD
             // Structured Exception handlers are stored in a linked list at FS:[0] for 32-bit and GS:[0] for 64-bit
             // https://github.com/wine-mirror/wine/blob/1aff1e6a370ee8c0213a0fd4b220d121da8527aa/include/winternl.h#L347
             // THIS MUST BE A LOCAL VARIABLE - windows won't use an object outside of the thread's stack frame
@@ -101,6 +102,21 @@ int MyApp::OnRun()
                 asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
                 asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
             #endif
+=======
+        // Structured Exception handlers are stored in a linked list at FS:[0] for 32-bit and GS:[0] for 64-bit
+        // https://github.com/wine-mirror/wine/blob/1aff1e6a370ee8c0213a0fd4b220d121da8527aa/include/winternl.h#L347
+        // THIS MUST BE A LOCAL VARIABLE - windows won't use an object outside of the thread's stack frame
+        EXCEPTION_REGISTRATION ex;
+        ex.handler = StructuredExceptionHandler;
+
+        #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) // 64-bit
+            asm volatile ("movq %%gs:0, %0" : "=r" (ex.prev));
+            asm volatile ("movq %0, %%gs:0" : : "r" (&ex));
+        #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86) // 32-bit
+            asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
+            asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
+        #endif
+>>>>>>> parent of cbd62300... Update the indentation formatting.
 	#endif
 
 	// Using a space so the initial 'w' will not be capitalized in wxLogGUI dialogs
