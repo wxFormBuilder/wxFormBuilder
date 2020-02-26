@@ -94,10 +94,10 @@ int MyApp::OnRun()
             EXCEPTION_REGISTRATION ex;
             ex.handler = StructuredExceptionHandler;
 
-            #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) // 64-bit
+            #if defined(__amd64__) || defined(__x86_64__) // 64-bit
                 asm volatile ("movq %%gs:0, %0" : "=r" (ex.prev));
                 asm volatile ("movq %0, %%gs:0" : : "r" (&ex));
-            #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86) // 32-bit
+            #elif defined(__i386__) || defined(_X86_) // 32-bit
                 asm volatile ("movl %%fs:0, %0" : "=r" (ex.prev));
                 asm volatile ("movl %0, %%fs:0" : : "r" (&ex));
             #endif
