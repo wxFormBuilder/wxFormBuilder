@@ -83,7 +83,7 @@ SHIFT
 GOTO Loop
 
 :Architecture
-SET architecture=%2
+SET architecture=--architecture=%2
 SHIFT
 SHIFT
 GOTO Loop
