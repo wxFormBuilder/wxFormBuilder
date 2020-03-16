@@ -528,11 +528,20 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			{
 				// Most common classes will be showed with a slightly different colour.
 				if (name == wxT("wxWindow"))
+				{
 					m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 				else if (name == wxT("AUI"))
+				{
 					m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
+				{
 					m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find( propName );
@@ -606,11 +615,20 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			{
 				// Most common classes will be showed with a slightly different colour.
 				if (name == wxT("wxWindow"))
+				{
 					m_eg->SetPropertyBackgroundColour( id, wxColour( 255, 255, 205 ) ); // Yellow
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 				else if (name == wxT("AUI Events"))
+				{
 					m_eg->SetPropertyBackgroundColour( id, wxColour(240,240,255) ); // light blue
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
+				{
 					m_eg->SetPropertyBackgroundColour( id, wxColour( 220, 255, 255 ) ); // Cyan
+					m_pg->SetPropertyTextColour(id, *wxBLACK);
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find(eventName);
