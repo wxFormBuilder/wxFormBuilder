@@ -17,7 +17,19 @@ solution "wxFormBuilder-Solution"
 
     local scriptDir     = os.getcwd()
 
+    -- The wxWidgets Configuration-Script parses the corresponding command line flags
+    -- for the architecture, its configuration function works only for one architecture
+    -- hence only one platform can be specified.
+    -- Don't specify the platform if none is specified to prevent the creation
+    -- of tagged configuration names.
     dofile(scriptDir .. "/wxwidgets.lua")
+    if platforms then
+        if (wxArchitecture == "x86_64") then
+            platforms   {"Win64"}
+        elseif (wxArchitecture == "x86") then
+            platforms   {"Win32"}
+        end
+    end
 
     local wxver         = string.gsub(wxVersion, '%.', '')
     location            ("../../build/" .. wxVersion .. "/" .. _ACTION)
