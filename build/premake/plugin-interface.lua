@@ -20,10 +20,6 @@ project "plugin-interface"
     defines             {"TIXML_USE_TICPP"}
     targetsuffix        ("-" .. wxVersion)
 
-    if wxArchitecture then
-        buildoptions    {"-arch " .. wxArchitecture}
-    end
-
     configuration "not vs*"
         buildoptions    "-std=c++17"
 
