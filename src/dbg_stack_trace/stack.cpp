@@ -253,11 +253,18 @@ namespace
         	context = *fromContext;
         }
 
-        frame.AddrPC.Offset = context.Eip;
+        #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) // 64-bit
+            frame.AddrPC.Offset = context.Rip;
+            frame.AddrStack.Offset = context.Rsp;
+            frame.AddrFrame.Offset = context.Rbp;
+        #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86) // 32-bit
+            frame.AddrPC.Offset = context.Eip;
+            frame.AddrStack.Offset = context.Esp;
+            frame.AddrFrame.Offset = context.Ebp;
+        #endif
+
         frame.AddrPC.Mode = AddrModeFlat;
-        frame.AddrStack.Offset = context.Esp;
         frame.AddrStack.Mode = AddrModeFlat;
-        frame.AddrFrame.Offset = context.Ebp;
         frame.AddrFrame.Mode = AddrModeFlat;
 
         HANDLE process = GetCurrentProcess();
@@ -283,7 +290,12 @@ namespace
             symbol->SizeOfStruct = (sizeof *symbol) + 255;
             symbol->MaxNameLength = 254;
 
-            DWORD module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
+            #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) // 64-bit
+                DWORD64 module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
+            #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86) // 32-bit
+                DWORD module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
+            #endif
+
             std::string module_name = "[unknown module]";
             if(   module_base && GetModuleFileNameA(reinterpret_cast<HINSTANCE>(module_base), module_name_raw, MAX_PATH))
                 module_name = module_name_raw;
@@ -293,12 +305,22 @@ namespace
 
                 if (func.empty())
                 {
-                    DWORD displacement = 0; // dummy variable
+                    #if defined(__amd64__) || defined(__x86_64__) // 64-bit
+                        DWORD64 displacement = 0; // dummy variable
+                    #elif defined(__i386__) || defined(_X86_) // 32-bit
+                        DWORD displacement = 0; // dummy variable
+                    #endif
+
                     BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
                     func = got_symbol ? symbol->Name : "[unknown function]";
                 }
             #else
-                DWORD displacement = 0; // dummy variable
+                #if defined(_M_AMD64) // 64-bit
+                    DWORD64 displacement = 0; // dummy variable
+                #elif defined(_M_IX86) // 32-bit
+                    DWORD displacement = 0; // dummy variable
+                #endif
+
                 BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
                 std::string func = got_symbol ? symbol->Name : "[unknown function]";
             #endif
