@@ -69,11 +69,14 @@ m_stopModifiedEvent( false )
 
 	AppData()->AddHandler( this->GetEventHandler() );
 
-	#ifdef __WXMSW__
-		SetOwnBackgroundColour(wxColour(150,150,150));
-	#else
-		SetOwnBackgroundColour(wxColour(192,192,192));
-	#endif
+	if (!AppData()->IsDarkMode())
+	{
+		SetOwnBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_APPWORKSPACE).ChangeLightness(80));
+	}
+	else
+	{
+		SetOwnBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_APPWORKSPACE).ChangeLightness(120));
+	}
 
 	SetScrollRate(5, 5);
 

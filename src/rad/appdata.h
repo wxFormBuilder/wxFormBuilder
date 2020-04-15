@@ -69,6 +69,8 @@ class ApplicationData
 
 		bool m_warnOnAdditionsUpdate;	// flag to warn on additions update / class renames
 
+		bool m_darkMode;
+
 		PObjectDatabase m_objDb;  // Base de datos de objetos
 
 		PObjectBase m_project;    // Proyecto
@@ -356,6 +358,9 @@ class ApplicationData
 		bool CanPasteObjectFromClipboard();
 		bool CanCopyObject();
 		bool IsModified();
+
+		void SetDarkMode(bool darkMode);
+		bool IsDarkMode() const;
 
 		PObjectPackage GetPackage( unsigned int idx )
 		{ return m_objDb->GetPackage( idx );}

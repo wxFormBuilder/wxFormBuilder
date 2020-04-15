@@ -104,18 +104,35 @@ void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
+	stc->StyleSetForeground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+	stc->StyleSetBackground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
     stc->StyleSetBold( wxSTC_C_WORD, true );
-    stc->StyleSetForeground( wxSTC_C_WORD, *wxBLUE );
-    stc->StyleSetForeground( wxSTC_C_STRING, *wxRED );
-    stc->StyleSetForeground( wxSTC_C_STRINGEOL, *wxRED );
-    stc->StyleSetForeground( wxSTC_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENT, wxColour( 0, 128, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTLINE, wxColour( 0, 128, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 0, 128, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
+	if (!AppData()->IsDarkMode())
+	{
+		stc->StyleSetForeground(wxSTC_C_WORD, *wxBLUE);
+		stc->StyleSetForeground(wxSTC_C_STRING, *wxRED);
+		stc->StyleSetForeground(wxSTC_C_STRINGEOL, *wxRED);
+		stc->StyleSetForeground(wxSTC_C_PREPROCESSOR, wxColour(49, 106, 197));
+		stc->StyleSetForeground(wxSTC_C_COMMENT, wxColour(0, 128, 0));
+		stc->StyleSetForeground(wxSTC_C_COMMENTLINE, wxColour(0, 128, 0 ));
+		stc->StyleSetForeground(wxSTC_C_COMMENTDOC, wxColour(0, 128, 0 ));
+		stc->StyleSetForeground(wxSTC_C_COMMENTLINEDOC, wxColour(0, 128, 0));
+		stc->StyleSetForeground(wxSTC_C_NUMBER, *wxBLUE);
+	}
+	else
+	{
+		stc->StyleSetForeground(wxSTC_C_WORD, wxColour(221, 40, 103));
+		stc->StyleSetForeground(wxSTC_C_STRING, wxColour(23, 198, 163));
+		stc->StyleSetForeground(wxSTC_C_STRINGEOL, wxColour(23, 198, 163));
+		stc->StyleSetForeground(wxSTC_C_PREPROCESSOR, wxColour(204, 129, 186));
+		stc->StyleSetForeground(wxSTC_C_COMMENT, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_C_COMMENTLINE, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_C_COMMENTDOC, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_C_COMMENTLINEDOC, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_C_NUMBER, wxColour(104, 151, 187));
+	}
 	stc->SetUseTabs( true );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -124,6 +141,7 @@ void PHPPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	stc->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
 	stc->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
 
+	stc->SetCaretForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	stc->SetCaretWidth( 2 );
 	stc->SetReadOnly( true );
 }
