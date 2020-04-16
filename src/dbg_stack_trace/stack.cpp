@@ -133,10 +133,27 @@ namespace
 
                 if (!data.func.empty()) return; // already found it
 
-                if (!(bfd_get_section_flags(abfd, sec) & SEC_ALLOC)) return;
+                auto flags =
+                #ifdef bfd_get_section_flags
+                    bfd_get_section_flags(abfd, sec);
+                #else
+                    bfd_section_flags(sec);
+                #endif
+                if (!(flags & SEC_ALLOC)) return;
 
-                bfd_vma vma = bfd_get_section_vma(abfd, sec);
-                if (data.counter < vma || vma + bfd_get_section_size(sec) <= data.counter) return;
+                auto vma =
+                #ifdef bfd_get_section_vma
+                    bfd_get_section_vma(abfd, sec);
+                #else
+                    bfd_section_vma(sec);
+                #endif
+                auto size =
+                #ifdef bfd_get_section_size
+                    bfd_get_section_size(sec);
+                #else
+                    bfd_section_size(sec);
+                #endif
+                if (data.counter < vma || vma + size <= data.counter) return;
 
                 const char *func = 0;
                 const char *file = 0;
