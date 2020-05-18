@@ -78,6 +78,7 @@ Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}
+Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}
 #else
 Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db, *.a
 #endif
