@@ -38,10 +38,6 @@ project "wxFormBuilder"
         libs            = "std,stc,richtext,propgrid,aui,ribbon"
     end
 
-    if wxArchitecture then
-        buildoptions    {"-arch " .. wxArchitecture}
-    end
-
     if os.is("linux") then
         newoption
         {

@@ -88,11 +88,22 @@ void XrcPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 #else
 	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
+	stc->StyleSetForeground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+	stc->StyleSetBackground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
-    stc->StyleSetForeground( wxSTC_H_DOUBLESTRING, *wxRED );
-    stc->StyleSetForeground( wxSTC_H_TAG, wxColour( 0, 0, 128 ) );
-    stc->StyleSetForeground( wxSTC_H_ATTRIBUTE, wxColour( 128, 0, 128 ) );
+	if (!AppData()->IsDarkMode())
+	{
+		stc->StyleSetForeground(wxSTC_H_DOUBLESTRING, *wxRED);
+		stc->StyleSetForeground(wxSTC_H_TAG, wxColour(0, 0, 128));
+		stc->StyleSetForeground(wxSTC_H_ATTRIBUTE, wxColour(128, 0, 128));
+	}
+	else
+	{
+		stc->StyleSetForeground(wxSTC_H_DOUBLESTRING, wxColour(23, 198, 163));
+		stc->StyleSetForeground(wxSTC_H_TAG, wxColour(18, 144, 195));
+		stc->StyleSetForeground(wxSTC_H_ATTRIBUTE, wxColour(221, 40, 103));
+	}
 	stc->SetUseTabs( false );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -101,6 +112,7 @@ void XrcPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	stc->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
 	stc->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
 
+	stc->SetCaretForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	stc->SetCaretWidth( 2 );
 	stc->SetReadOnly( true );
 }

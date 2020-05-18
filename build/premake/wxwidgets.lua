@@ -188,7 +188,8 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
         end
 
         local wxLibPath = path.join(wxRoot, "lib")
-        wxLibPath = path.join(wxLibPath, wxCompiler .. wxCompilerVersion .. "_" .. iif(wxStatic == 'yes', 'lib', 'dll'))
+        -- This requires the directory layout of official wxWidgets releases
+        wxLibPath = path.join(wxLibPath, wxCompiler .. wxCompilerVersion .. iif(wxArchitecture == "x86_64", "_x64", "") .. "_" .. iif(wxStatic == 'yes', 'lib', 'dll'))
         -- common defines
         defines{ "__WXMSW__" }
 

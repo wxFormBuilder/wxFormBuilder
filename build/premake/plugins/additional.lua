@@ -24,10 +24,6 @@ project "additional-components-plugin"
         libs            = libs .. ",media"
     end
 
-    if wxArchitecture then
-        buildoptions    {"-arch " .. wxArchitecture}
-    end
-
     configuration "not vs*"
         buildoptions    "-std=c++17"
 
