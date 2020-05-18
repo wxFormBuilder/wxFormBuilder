@@ -527,12 +527,24 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
 			{
 				// Most common classes will be showed with a slightly different colour.
-				if (name == wxT("wxWindow"))
-					m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
-				else if (name == wxT("AUI"))
-					m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
-				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
-					m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				if (!AppData()->IsDarkMode())
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				}
+				else
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(127,127,51)); // dark yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(76,76,153)); // dark blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(51,127,127)); // dark cyan
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find( propName );
@@ -605,12 +617,24 @@ void ObjectInspector::AddItems( const wxString& name, PObjectBase obj,
 			if (m_style != wxFB_OI_MULTIPAGE_STYLE)
 			{
 				// Most common classes will be showed with a slightly different colour.
-				if (name == wxT("wxWindow"))
-					m_eg->SetPropertyBackgroundColour( id, wxColour( 255, 255, 205 ) ); // Yellow
-				else if (name == wxT("AUI Events"))
-					m_eg->SetPropertyBackgroundColour( id, wxColour(240,240,255) ); // light blue
-				else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase") )
-					m_eg->SetPropertyBackgroundColour( id, wxColour( 220, 255, 255 ) ); // Cyan
+				if (!AppData()->IsDarkMode())
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(255,255,205)); // yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(240,240,255)); // light blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(220,255,255)); // cyan
+				}
+				else
+				{
+					if (name == wxT("wxWindow"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(127,127,51)); // dark yellow
+					else if (name == wxT("AUI"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(76,76,153)); // dark blue
+					else if (name == wxT("sizeritem") || name == wxT("gbsizeritem") || name == wxT("sizeritembase"))
+						m_pg->SetPropertyBackgroundColour(id,wxColour(51,127,127)); // dark cyan
+				}
 			}
 
 			ExpandMap::iterator it = m_isExpanded.find(eventName);

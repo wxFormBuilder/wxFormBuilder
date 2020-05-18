@@ -20,10 +20,6 @@ project "containers-components-plugin"
 
     local libs = "std,richtext,propgrid,stc,ribbon,aui"
 
-    if wxArchitecture then
-        buildoptions    {"-arch " .. wxArchitecture}
-    end
-
     configuration "not vs*"
         buildoptions    "-std=c++17"
 

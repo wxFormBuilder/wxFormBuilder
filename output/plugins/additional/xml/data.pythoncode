@@ -269,7 +269,7 @@ Python code generation written by
 		</template>
 		<template name="settings">
 			#ifnotnull $extra_style
-			@{ $name.SetExtraStyle( $extra_style ) @}
+			@{ self.$name.SetExtraStyle( $extra_style ) @}
 		</template>
 		<template name="evt_connect_OnPropertyGridChanging">self.$name.Bind( pg.EVT_PG_CHANGING, #handler )</template>
 		<template name="evt_connect_OnPropertyGridChanged">self.$name.Bind( pg.EVT_PG_CHANGED, #handler )</template>
@@ -296,7 +296,7 @@ Python code generation written by
 			@{
 				self.$name = self.#parent $name.Append( pg.${type}Property( $label, $label ) )
 				#ifnotnull $help
-				@{ #nl self.#parent $name.SetPropertyHelpString( $name, $help ) @}
+				@{ #nl self.#parent $name.SetPropertyHelpString( self.$name, $help ) @}
 			@}
 		</template>
 	</templates>

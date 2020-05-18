@@ -15,10 +15,6 @@ project "TiCPP"
     excludes            {"xmltest.cpp"}
     defines             {"TIXML_USE_TICPP"}
 
-    if wxArchitecture then
-        buildoptions    {"-arch " .. wxArchitecture}
-    end
-
     configuration "not vs*"
         buildoptions    "-std=c++17"
 
