@@ -34,30 +34,40 @@ Because, in some cases the target is a file, sometimes a TextCtrl, and sometimes
 class CodeWriter
 {
 private:
-	// Current indentation level in the file
+	/// Current indentation level in the file
 	int m_indent;
-	int m_cols;
+	/// Flag if line writing is in progress
+	bool m_isLineWriting;
 	bool m_indent_with_spaces;
 
 protected:
 	/// Write a wxString.
-	virtual void DoWrite( wxString code ) = 0;
+	virtual void DoWrite(const wxString& code) = 0;
 
 	/// Returns the size of the indentation - was useful when using spaces, now it is 1 because using tabs.
-	virtual int GetIndentSize();
+	virtual int GetIndentSize() const;
 
-	/// Verifies that the wxString does not contain carraige return characters.
-	bool StringOk( wxString s );
+	/**
+	 * @param code Code fragment
+	 *
+	 * @return True, if code doesn't contain any newline character
+	 */
+	bool IsSingleLine(const wxString& code) const;
 
-	/** Divides a badly formed string (including carriage returns) in simple
-	columns, inserting them one after another and taking indent into account.
-	*/
-	void FixWrite( wxString s, bool keepIndents = false);
+	/**
+	 * Outputs a single line
+	 *
+	 * Performs whitespace cleanup and indentation processing
+	 * including the special markers of the TemplateParser.
+	 *
+	 * @param line Single line, must not contain newlines
+	 * @param rawIndents If true, keep leading indenting whitespace and don't apply own indenting
+	 */
+	void ProcessLine(wxString line, bool rawIndents);
 
 public:
 	/// Constructor.
 	CodeWriter();
-
 	virtual ~CodeWriter() = default;
 
 	/// Increment the indent.
@@ -66,11 +76,30 @@ public:
 	/// Decrement the indent.
 	void Unindent();
 
-	/// Write a line of code.
-	void WriteLn( wxString code = wxEmptyString, bool keepIndents = false );
+	/**
+	 * Write a block of code with trailing newline
+	 *
+	 * This is a general purpose method to output the input properly formatted.
+	 * Cleans up whitespace and applies template indentation processing.
+	 *
+	 * @param code Block of code
+	 * @param rawIndents If true, keep leading indenting whitespace and don't apply own indenting
+	 */
+	void WriteLn(const wxString& code = wxEmptyString, bool rawIndents = false);
 
-	/// Writes a text string into the code.
-	void Write( wxString code );
+	/**
+	 * Write a fragment of code without trailing newline
+	 *
+	 * This method is not intended for general purpose output but only to output preformatted input.
+	 * No whitespace cleanup and no template indentation processing is performed!
+	 *
+	 * The initial call of this method initiates the output process, it can be called multiple times
+	 * to continue the output process, but it must be terminated with a call to WriteLn(const wxString&, bool).
+	 *
+	 * @param code Block of code
+	 * @param rawIndents If true, keep leading indenting whitespace and don't apply own indenting
+	 */
+	void Write(const wxString& code, bool rawIndents = false);
 
 	// Sets the option to indent with spaces
 	void SetIndentWithSpaces( bool on );
@@ -87,12 +116,13 @@ private:
 	wxStyledTextCtrl* m_tc;
 
 protected:
-	void DoWrite(wxString code) override;
+	void DoWrite(const wxString& code) override;
 
 public:
 	TCCodeWriter();
-    TCCodeWriter( wxStyledTextCtrl *tc );
-    void SetTextCtrl( wxStyledTextCtrl* tc );
+	TCCodeWriter(wxStyledTextCtrl* tc);
+
+	void SetTextCtrl(wxStyledTextCtrl* tc);
 	void Clear() override;
 };
 
@@ -100,12 +130,15 @@ class StringCodeWriter : public CodeWriter
 {
 protected:
 	wxString m_buffer;
-	void DoWrite(wxString code) override;
+
+protected:
+	void DoWrite(const wxString& code) override;
 
 public:
 	StringCodeWriter();
+
 	void Clear() override;
-	wxString GetString();
+	const wxString& GetString() const;
 };
 
 class FileCodeWriter : public StringCodeWriter
@@ -119,8 +152,9 @@ protected:
 	void WriteBuffer();
 
 public:
-	FileCodeWriter( const wxString &file, bool useMicrosoftBOM = false, bool useUtf8 = true );
+	FileCodeWriter(const wxString& file, bool useMicrosoftBOM = false, bool useUtf8 = true);
 	~FileCodeWriter() override;
+
 	void Clear() final;
 };
 

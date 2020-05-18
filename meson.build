@@ -86,7 +86,6 @@ executable('wxformbuilder', [
 		'src/rad/xrcpanel/xrcpanel.cpp',
 		'src/rad/xrcpreview/xrcpreview.cpp',
 		'src/utils/annoyingdialog.cpp',
-		'src/utils/encodingutils.cpp',
 		'src/utils/filetocarray.cpp',
 		'src/utils/stringutils.cpp',
 		'src/utils/typeconv.cpp',

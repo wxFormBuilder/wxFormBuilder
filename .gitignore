@@ -1,6 +1,6 @@
 build/???/
-build/premake/4.3/bin/
-build/premake/5.0/bin/
+build/premake/**/bin/
+build/premake/**/obj/
 output/bin/
 output/lib*/
 output/share/

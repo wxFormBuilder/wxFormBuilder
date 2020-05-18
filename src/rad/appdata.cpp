@@ -459,6 +459,13 @@ void ApplicationData::Initialize()
 {
 	ApplicationData* appData = ApplicationData::Get();
 	appData->LoadApp();
+
+	// Use the color of a dominant text to determine if dark mode should be used.
+	// TODO: Depending on the used theme it is not clear which color that is,
+	//       using the window text has given the best results so far.
+	const auto col = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+	const auto lightness = (col.Red() * 299 + col.Green() * 587 + col.Blue() * 114) / 1000;
+	appData->SetDarkMode(lightness > 127);
 }
 
 ApplicationData::ApplicationData( const wxString &rootdir )
@@ -466,6 +473,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_rootDir( rootdir ),
 		m_modFlag( false ),
 		m_warnOnAdditionsUpdate( true ),
+		m_darkMode(false),
 		m_objDb( new ObjectDatabase() ),
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
@@ -2946,8 +2954,17 @@ bool ApplicationData::IsModified()
 	return m_modFlag;
 }
 
-void ApplicationData::Execute( PCommand cmd )
+void ApplicationData::SetDarkMode(bool darkMode)
 {
+	m_darkMode = darkMode;
+}
+
+bool ApplicationData::IsDarkMode() const
+{
+	return m_darkMode;
+}
+
+void ApplicationData::Execute(PCommand cmd) {
 	m_modFlag = true;
 	m_cmdProc.Execute( cmd );
 }
