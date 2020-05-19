@@ -425,9 +425,9 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 		return;
 	}
 
-	m_inheritedCodeParser.ParseFiles(userClasses->GetPropertyAsString( _("name") ));
+	wxString className = userClasses->GetPropertyAsString( _("name") );
+	m_inheritedCodeParser.ParseFiles(className);
 
-	//(FileCodeWriter*)m_header->
 	wxString type = userClasses->GetPropertyAsString( wxT("type") );
 	wxString userCode;
 
@@ -447,7 +447,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	m_header->WriteLn( wxEmptyString );
 	m_header->WriteLn( wxT("//// end generated include. Place User Code Below") );
 
-	m_header->WriteLn( m_inheritedCodeParser.GetUserHIncludes() );
+	m_header->WriteLn( m_inheritedCodeParser.GetUserHeaderFilePreProc() );
 	if ( !userCode.IsEmpty() )
 	{
 		m_header->WriteLn( userCode );
@@ -465,21 +465,28 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxEmptyString );
 	m_source->WriteLn( wxT("//// end generated include. Place User Code Below"));
-	m_source->WriteLn( m_inheritedCodeParser.GetUserCIncludes(), true);
+	m_source->WriteLn( m_inheritedCodeParser.GetUserSourceFilePreProc(), true);
 
 	code = GetCode( userClasses, type + wxT("_cons_def") );
 	m_source->WriteLn( code );
 	m_source->WriteLn( wxT("{") );
-	userCode = m_inheritedCodeParser.GetFunctionContents( code );
-	if ( !userCode.IsEmpty() )
+
+	CppFunction* function = m_inheritedCodeParser.GetFunction(code);
+	if(function)
 	{
-		m_source->WriteLn( userCode, true );
+		
+		userCode = function->GetContents();
+		m_inheritedCodeParser.DeleteFunction(function);
+		function = NULL;
+		m_source->WriteLn( userCode, true);
 	}
 	else
 	{
+		userCode.Clear();
 		m_source->WriteLn( wxEmptyString );
 	}
-	m_source->WriteLn( wxT("}") );
+
+	m_source->WriteLn( wxT("}"), true, false );
 
 	// Do events in both files
 	EventVector events;
@@ -492,7 +499,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 		code = GetCode( userClasses, wxT("event_handler_comment") );
 		m_header->WriteLn( code );
 
-		wxString className = userClasses->GetPropertyAsString( _( "name") );
+		wxString functionHeading, functionContents;
 		std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
 		{
@@ -503,29 +510,19 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 				prototype = wxString::Format( wxT("%s( %s& event )"), event->GetValue().c_str(), event->GetEventInfo()->GetEventClassName().c_str() );
 				m_header->WriteLn( wxString::Format( wxT("void %s;"), prototype.c_str() ) );
 
-				Function* func = m_inheritedCodeParser.GetNextFunction(wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str()));
+				functionHeading = wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str());
 
-				if(func)
+				CppFunction* function = m_inheritedCodeParser.GetFunction(functionHeading);
+
+				if(!function)
 				{
+					function = new CppFunction();
+					function->SetHeading(functionHeading);
+					functionContents = wxString::Format(wxT("\t// TODO: Implement %s"), event->GetValue().c_str());
+					function->SetContents( functionContents);
 
-					func->SetHeading(wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ));
-					func->SetContents(wxString::Format( wxT("\t// TODO: Implement %s"), event->GetValue().c_str() ));
-
-					//m_source->WriteLn( wxString::Format( wxT("void %s::%s"), className.c_str(), prototype.c_str() ) );
-					/*
-					m_source->WriteLn( wxT("{") );
-					userCode = m_inheritedCodeParser.GetFunctionContents(  event->GetValue() );
-					if ( !userCode.IsEmpty() )
-					{
-						m_source->WriteLn( userCode, true);
-					}
-					else
-					{
-						m_source->Indent();
-						m_source->WriteLn( wxString::Format( wxT("// TODO: Implement %s"), event->GetValue().c_str() ), true );
-						m_source->Unindent();
-					}
-					m_source->WriteLn( wxT("}") );*/
+					m_inheritedCodeParser.AddFunction(function);
+					
 					generatedHandlers.insert( event->GetValue() );
 				}
 			}
@@ -543,7 +540,7 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	m_header->WriteLn( code );
 	m_header->Unindent();
 	m_header->WriteLn( wxT("//// end generated class members. Place User Code Below") );
-	userCode = m_inheritedCodeParser.GetUserMembers();
+	userCode = m_inheritedCodeParser.GetUserHeaderFileMembers();
 	if ( !userCode.IsEmpty() )
 	{
 		m_header->WriteLn( userCode, true);
@@ -561,16 +558,15 @@ void CppCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 	m_header->WriteLn( code );
 
 	userCode = m_inheritedCodeParser.GetAllFunctions();
-	//userCode = m_inheritedCodeParser.GetRemainingFunctions();
 
 	if ( !userCode.IsEmpty() )
 	{
-		m_source->WriteLn( userCode, true );
+		m_source->WriteLn( userCode, true, false );
 	}
 	userCode = m_inheritedCodeParser.GetTrailingCode();
 	if ( !userCode.IsEmpty() )
 	{
-		m_source->WriteLn( userCode, true );
+		m_source->WriteLn( userCode, true, false );
 	}
 }
 

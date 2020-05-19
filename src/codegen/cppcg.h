@@ -74,7 +74,7 @@ private:
 		P_PUBLIC
 	} Permission;
 
-	CCodeParser m_inheritedCodeParser;
+	CppCodeParser m_inheritedCodeParser;
 
 	PCodeWriter m_header;
 	PCodeWriter m_source;
@@ -273,7 +273,7 @@ public:
 	*/
 	void ParseFiles(wxString headerFile, wxString sourceFile)
 	{
-		m_inheritedCodeParser = CCodeParser(headerFile, sourceFile);
+		m_inheritedCodeParser = CppCodeParser(headerFile, sourceFile);
 	}
 
 	/**

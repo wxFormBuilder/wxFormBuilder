@@ -1,6 +1,6 @@
 #include "codeparser.h"
 
-wxString RemoveWhiteSpace(wxString str) {
+wxString RemoveWhiteSpace(wxString &str) {
 	size_t index = 0;
 	while (index < str.Len()) {
 		if (str.GetChar(index) == ' ' || str.GetChar(index) == '\t' || str.GetChar(index) == '\n') {
@@ -12,11 +12,11 @@ wxString RemoveWhiteSpace(wxString str) {
 	return str;
 }
 
-void Function::SetHeading(wxString heading) {
+void CppFunction::SetHeading(wxString &heading) {
 	m_functionHeading = heading;
 }
 
-void Function::SetContents(wxString contents) {
+void CppFunction::SetContents(wxString &contents) {
 	if (contents.Left(1) == '\n') {
 		contents.Remove(0, 1);
 	}
@@ -26,7 +26,7 @@ void Function::SetContents(wxString contents) {
 	m_functionContents = contents;
 }
 
-wxString Function::GetFunction() {
+wxString CppFunction::GetFunction() {
 	wxString Str;
 
 	Str << wxT("\n");
@@ -40,15 +40,19 @@ wxString Function::GetFunction() {
 	return Str;
 }
 
+ArrayCppFunction::ArrayCppFunction()
+: ArrayCppFunctionBase()
+{}
+
 //---------------------------------------------------
 // CodeParser
 //---------------------------------------------------
 
-void CCodeParser::ParseFiles(wxString className) {
+void CppCodeParser::ParseFiles(wxString &className) {
 
 	m_className = className;
-	wxTextFile headerFile(m_hFile);
-	wxTextFile sourceFile(m_cFile);
+	wxTextFile headerFile(m_headerFileName);
+	wxTextFile sourceFile(m_sourceFileName);
 
 	wxString header;
 	wxString source;
@@ -85,16 +89,16 @@ void CCodeParser::ParseFiles(wxString className) {
 	ParseCode(header, source);
 }
 
-void CCodeParser::ParseCode(wxString header, wxString source) {
-	ParseHInclude(header);
-	ParseHClass(header);
+void CppCodeParser::ParseCode(wxString &header, wxString &source) {
+	ParseHeaderFilePreProc(header);
+	ParseHeaderFileClass(header);
 
-	ParseCFunctions(source);
+	ParseSourceFileFunctions(source);
 }
 
-void CCodeParser::ParseHInclude(wxString code) {
+void CppCodeParser::ParseHeaderFilePreProc(wxString &code) {
 	int userIncludeEnd;
-	m_userInclude_H = wxT("");
+	m_userIncludeFilePreProc.Clear();
 
 	// find the begining of the user include
 
@@ -111,15 +115,15 @@ void CCodeParser::ParseHInclude(wxString code) {
 			if (userIncludeEnd != wxNOT_FOUND) 
 			{
 				userIncludeStart++;
-				m_userInclude_H = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
+				m_userIncludeFilePreProc = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseCInclude(wxString code) {
+void CppCodeParser::ParseSourceFilePreProc(wxString &code) {
 	int userIncludeEnd;
-	m_userInclude_CPP = wxT("");
+	m_userSourceFilePreProc.Clear();
 
 	// find the begining of the user include
 
@@ -138,99 +142,101 @@ void CCodeParser::ParseCInclude(wxString code) {
 				if (userIncludeEnd != wxNOT_FOUND) 
 				{
 					userIncludeStart++;
-					m_userInclude_CPP = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
+					m_userSourceFilePreProc = code.substr(userIncludeStart, userIncludeEnd - userIncludeStart);
 				}
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseHClass(wxString code) {
+void CppCodeParser::ParseHeaderFileClass(wxString &code) {
 	int startClass = code.Find(wxT("class ") + m_className);
 	if (startClass != wxNOT_FOUND) {
 		code = ParseBrackets(code, startClass);
 		if (startClass != wxNOT_FOUND) {
-			ParseHUserMembers(code);
+			ParseHeaderFileUserMembers(code);
 		}
 	}
 }
 
-void CCodeParser::ParseHUserMembers(wxString code) {
-	m_userMembers_CPP = wxT("");
+void CppCodeParser::ParseHeaderFileUserMembers(wxString &code) {
+	m_userHeaderFileMembers = wxT("");
 	int userMembersStart = code.Find(wxT("//// end generated class members. Place User Code Below"));
 	if (userMembersStart != wxNOT_FOUND) {
 		userMembersStart = code.find('\n', userMembersStart);
 		if (userMembersStart == wxNOT_FOUND) {
-			m_userMembers_CPP = wxT("");
+			m_userHeaderFileMembers = wxT("");
 		} else {
 			userMembersStart++;
 			if (userMembersStart < (int)code.Len()) {
-				m_userMembers_CPP = code.Mid(userMembersStart);
+				m_userHeaderFileMembers = code.Mid(userMembersStart);
 			}
 		}
 	}
 }
 
-void CCodeParser::ParseCFunctions(wxString code) {
+void CppCodeParser::ParseSourceFileFunctions(wxString &code) {
 	int functionStart = 0;
 	int functionEnd = 0;
 	int previousFunctionEnd = 0;
 	wxString funcName, funcArg;
-	Function* func;
+	CppFunction* function;
 	wxString Str, R;
 
-	ParseCInclude(code);
+	ParseSourceFilePreProc(code);
 
-	int loop = 0;
-	while (1) {
+	wxString codeSection;
+	while (functionStart != wxNOT_FOUND) {
 		// find the begining of the function name
 		Str = m_className + wxT("::");
 		functionStart = code.find(Str, previousFunctionEnd);
 		if (functionStart == wxNOT_FOUND) {
 			// Get the last bit of remaining code after the last function in the file
-			m_trailingCode_CPP = code.Mid(previousFunctionEnd);
-			m_trailingCode_CPP.RemoveLast();
+			if(code.GetChar(previousFunctionEnd) == '\n')
+				{previousFunctionEnd++;}
+			m_userSourceFileTrailing = code.Mid(previousFunctionEnd);
+			m_userSourceFileTrailing.RemoveLast();
 			return;
 		}
 		// found a function now creat a new function class
-		func = new Function();
+		function = new CppFunction();
 
 		// find the begining of the line on which the function name resides
 		functionStart = code.rfind('\n', functionStart);
-		func->SetDocumentation(code.Mid(previousFunctionEnd, functionStart - previousFunctionEnd));
+		codeSection = code.Mid(previousFunctionEnd, functionStart - previousFunctionEnd);
+		function->SetDocumentation(codeSection);
 		functionStart++;
 
 		functionEnd = code.find('{', functionStart);
-		wxString heading = code.Mid(functionStart, functionEnd - functionStart);
-		if (heading.Right(1) == '\n') {
-			heading.RemoveLast();
+		codeSection = code.Mid(functionStart, functionEnd - functionStart);
+		if (codeSection.Right(1) == '\n') {
+			codeSection.RemoveLast();
 		}
-		func->SetHeading(heading);
+		function->SetHeading(codeSection);
 
-		AddFunction(heading, func);
-		//m_functions[std::string(RemoveWhiteSpace(heading).ToUTF8())] = func;
+		AddFunction(function);
 
 		// find the opening brackets of the function
-		func->SetContents(ParseBrackets(code, functionStart));
-		if (functionStart != wxNOT_FOUND) {
-			functionEnd = functionStart;
-		} else {
+		codeSection = ParseBrackets(code, functionStart);
+
+		if (functionStart == wxNOT_FOUND) {
 			wxMessageBox(wxT("Brackets Missing in Source File!"));
 			code.insert(functionEnd + 1,
 			            wxT("//The Following Block is missing a closing bracket\n//and has been "
 			                "set aside by wxFormbuilder\n"));
-			func->SetContents(wxT(""));
+
+			codeSection.Clear();
 		}
+		else {
+			functionEnd = functionStart;
+		}  
+		function->SetContents(codeSection);
 
 		previousFunctionEnd = functionEnd;
-		if (loop == 100) {
-			return;
-		}
-		loop++;
 	}
 }
 
-wxString CCodeParser::ParseBrackets(wxString code, int& functionStart) {
+wxString CppCodeParser::ParseBrackets(wxString &code, int &functionStart) {
 	int openingBrackets = 0;
 	int closingBrackets = 0;
 	int index = 0;
@@ -268,60 +274,45 @@ wxString CCodeParser::ParseBrackets(wxString code, int& functionStart) {
 		wxMessageBox(wxT("no brackets found"));
 	}
 	Str = code.Mid(functionStart, functionLength);
+	if(code.GetChar((functionStart + functionLength)-1) == '\n')
+		{Str.RemoveLast();}
 	functionStart = functionStart + functionLength + 1;
 	return Str;
 }
 
-wxString CodeParser::GetFunctionDocumentation(wxString function) {
-	wxString contents = wxT("");
-	Function* func;
+wxString CppCodeParser::GetFunctionDocumentation(wxString &functionHeading) {
+	wxString code = wxT("");
+	CppFunction* function;
 
-	m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(function).ToUTF8()));
-	if (m_functionIter != m_functions.end()) {
-		func = m_functionIter->second;
-		contents = func->GetDocumentation();
+	function = GetFunction(functionHeading);
+	if(function)
+	{
+		code = function->GetDocumentation();
 	}
-	return contents;
+	return code;
 }
 
-wxString CodeParser::GetFunctionContents(wxString function) {
-	wxString contents = wxT("");
-	Function* func;
+wxString CppCodeParser::GetFunctionContents(wxString &functionHeading) {
+	wxString code = wxT("");
+	CppFunction* function;
 
-	m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(function).ToUTF8()));
-	if (m_functionIter != m_functions.end()) {
-		func = m_functionIter->second;
-		contents = func->GetContents();
-		m_functions.erase(m_functionIter);
-		delete func;
+	function = GetFunction(functionHeading);
+	if(function)
+	{
+		code = function->GetContents();
 	}
-	return contents;
+	return code;
 }
 
 
-wxString CodeParser::GetAllFunctions() {
-	wxString functions;	
+wxString CppCodeParser::GetAllFunctions() {
+	wxString code;	
 	int index = 0;
 
 	while(index < m_functionList.GetCount())
 	{
-		m_functionIter = m_functions.find(std::string(RemoveWhiteSpace(m_functionList[index]).ToUTF8()));
-		if (m_functionIter != m_functions.end()) {
-			functions += m_functionIter->second->GetFunction();
-			m_functions.erase(m_functionIter);
-		}
+		code += m_functionList.Item(index)->GetFunction();
 		index++;
 	}
-	return functions;
-}
-
-
-wxString CodeParser::GetRemainingFunctions() {
-	wxString functions;
-	m_functionIter = m_functions.begin();
-	while (m_functionIter != m_functions.end()) {
-		functions += m_functionIter->second->GetFunction();
-		m_functionIter++;
-	}
-	return functions;
+	return code;
 }
