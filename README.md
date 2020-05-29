@@ -6,7 +6,16 @@
 3. [Install from source](#Install-From-Source)
 
 ## What is wxformbuilder about
+wxformbuilder is a tool that help you make userinterface with wxwidget in a visual way. It can be very useful if you are visual which make you not good when it come to coding graphical user interface directly into code. 
 
+Here are screenshot of wxformbuilder:
+
+![Main gui layour](https://i.imgur.com/51QrKyH.png)
+Main gui layout
+![C++ code generation](https://i.imgur.com/EYt2a9e.png)
+C++ code generation
+![Python code generation](https://i.imgur.com/ILLVPel.png)
+Python code generation
 ## Download Binaries
 
 * [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
