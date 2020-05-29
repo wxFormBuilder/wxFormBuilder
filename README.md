@@ -1,9 +1,12 @@
 # wxFormBuilder [![Build Status](https://travis-ci.org/wxFormBuilder/wxFormBuilder.svg?branch=master)](https://travis-ci.org/wxFormBuilder/wxFormBuilder)
 
 ## Table of content:
-1. [Screenshot and description of the program](Screenshot-and-description-of-the program)
-2. [Download Binaries](Download\ Binaries)
-3. [Install from source](Install-From-Source)
+1. [What is wxformbuilder about](#What-is-wxformbuilder-about)
+2. [Download Binaries](#Download\ Binaries)
+3. [Install from source](#Install-From-Source)
+
+## What is wxformbuilder about
+
 ## Download Binaries
 
 * [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
