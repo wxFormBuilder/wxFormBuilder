@@ -16,6 +16,13 @@ Main gui layout
 C++ code generation
 ![Python code generation](https://i.imgur.com/ILLVPel.png)
 Python code generation
+
+wxFormBuilder feature:
+* Visual design of wxWidgets dialogs, frames, panels, toolbars and menubars
+* Source code generation for C++, Python, PHP, Lua and XRC
+* Support for AUI-managed frames
+* Support for wxWidgets 3.0 widgets (wxRibbonBar, wxPropertyGrid, wxDataViewCtrl, ...)
+
 ## Download Binaries
 
 * [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
