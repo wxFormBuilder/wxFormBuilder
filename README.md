@@ -2,7 +2,7 @@
 
 ## Table of content:
 1. [What is wxformbuilder about](#What-is-wxformbuilder-about)
-2. [Download Binaries](#Download\ Binaries)
+2. [Download Binaries](#Download-Binaries)
 3. [Install from source](#Install-From-Source)
 
 ## What is wxFormBuilder about
