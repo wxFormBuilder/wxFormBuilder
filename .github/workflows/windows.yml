@@ -11,19 +11,19 @@ jobs:
     - uses: actions/checkout@v1
       with:
         submodules: true
-    - uses: numworks/setup-msys2@v1
+    - uses: eine/setup-msys2@v1
       with:
         msystem: MINGW32
-    - name: Create symbolic link for MSYS2
-      shell: cmd
-      run: mklink /D c:\msys64 d:\a\_temp\msys\msys64
-    - name: Install dependencies
-      run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make
+        release: false
+        update: false
+        cache: false
+        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make'
     - name: Create build files
       shell: cmd
       run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
     - name: Build
-      run: msys2do ./.github/workflows/msys2.sh
+      shell: msys2 {0}
+      run: ./.github/workflows/msys2.sh
     - name: Create source package
       shell: cmd
       run: |
