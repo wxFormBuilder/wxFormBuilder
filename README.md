@@ -39,7 +39,7 @@ cd ../../../output/
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt install libwxgtk3.0-dev libwxgtk-media3.0-dev meson
+sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev meson
 ```
 
 Pre-requisites for Arch Linux:
