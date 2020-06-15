@@ -53,7 +53,7 @@ Build and run:
 ```sh
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
-meson _build --prefix $PWD/_install
+meson _build --prefix $PWD/_install --buildtype=release
 ninja -C _build install
 ./_install/bin/wxformbuilder
 ```
