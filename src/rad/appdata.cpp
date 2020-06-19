@@ -2213,6 +2213,19 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 	}
 
 	/* The file is now at least version 1.15 */
+	if (fileMajor < 1 || (fileMajor == 1 && fileMinor < 16))
+	{
+		static bool showRemovalWarnings = true;
+		if (objClass == "wxMenuBar")
+		{
+			RemoveProperties(parent, std::set<std::string>{"label"});
+			if (showRemovalWarnings)
+			{
+				wxLogMessage(_("Removed property label for class wxMenuBar because it is no longer used"));
+				showRemovalWarnings = false;
+			}
+		}
+	}
 }
 
 void ApplicationData::GetPropertiesToConvert( ticpp::Node* parent, const std::set< std::string >& names, std::set< ticpp::Element* >* properties )
