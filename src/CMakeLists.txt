@@ -79,6 +79,8 @@ endif()
 add_executable(wxFormBuilder WIN32 MACOSX_BUNDLE
     ${wxFB_SRCS}
 )
+target_compile_features(wxFormBuilder PUBLIC cxx_std_17)
+
 
 if(APPLE)
     set_target_properties(wxFormBuilder PROPERTIES
