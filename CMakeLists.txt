@@ -39,7 +39,6 @@ set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION ${INSTALL_BIN_DIR})
 include(InstallRequiredSystemLibraries)
 
 include_directories(sdk/ticpp)
-include_directories(src)
 add_definitions(-DTIXML_USE_TICPP)
 add_subdirectory(src)
 add_subdirectory(subprojects/ticpp)
