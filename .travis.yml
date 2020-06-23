@@ -11,7 +11,7 @@ jobs:
             - g++-8
             - cmake
       install: export CXX="g++-8" CC="gcc-8"
-      before_script: cmake .
-      script: make
+      before_script: cmake -B_build -H.
+      script: cmake --build _build
 
 
