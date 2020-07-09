@@ -37,7 +37,7 @@ Written by
 
 	<templates class="wxRichTextCtrl">
 		<template name="declaration">#class* $name;</template>
-		<template name="construction">$name = new #class( #wxparent $name, $id, wxEmptyString, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
+		<template name="construction">$name = new #class( #wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
 		<template name="include">@#include &lt;wx/richtext/richtextctrl.h&gt;</template>
 		<template name="evt_entry_OnText">EVT_TEXT( $id, #handler )</template>
 		<template name="evt_connect_OnText">$name->Connect( wxEVT_COMMAND_TEXT_UPDATED, #handler, NULL, this );</template>

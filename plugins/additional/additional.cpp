@@ -229,12 +229,20 @@ class RichTextCtrlComponent : public ComponentBase
 {
 public:
 	wxObject* Create(IObject* obj, wxObject* parent) override {
+
+		wxString text = obj->GetPropertyAsString(_("value"));
+
 		wxRichTextCtrl* richText = new wxRichTextCtrl( 	(wxWindow*)parent,
 															wxID_ANY,
-															wxEmptyString,
+															text,
 															obj->GetPropertyAsPoint(_("pos")),
 															obj->GetPropertyAsSize(_("size")),
 															obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+		if (!text.empty())
+		{
+			return richText;
+		}
 
 		wxFont textFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 		wxFont boldFont = wxFont(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
@@ -370,14 +378,16 @@ public:
 	}
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
-		ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
-		//xrc.AddWindowProperties();
+		ObjectToXrcFilter xrc(obj, _("wxRichTextCtrl"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		xrc.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxRichTextCtrl"));
 		filter.AddWindowProperties();
+		filter.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
 };
