@@ -65,7 +65,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 #if defined UNICODE
-Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
+Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
 Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}
@@ -82,7 +82,7 @@ Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}
 #else
 Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db, *.a
 #endif
-Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Components: main\srccode
+Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: output\lib64; Components: main\srccode
 
 [InstallDelete]
 ; Cleanup debug dlls.
