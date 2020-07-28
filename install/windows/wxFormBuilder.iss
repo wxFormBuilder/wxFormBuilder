@@ -66,8 +66,35 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 
 [Files]
-Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a; Components: main
+#define RootDir "..\..\output"
+#define PluginsBaseDir "plugins"
+
+#define FindHandle
+#define FindResult
+
+#sub ProcessFoundPlugin
+  #define FileName FindGetFileName(FindHandle)
+  #if FileName != "." && FileName != ".."
+    #define PluginsSourceDir AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + FileName
+    #define PluginsDestDir AddBackslash(PluginsBaseDir) + FileName
+    Source: {#PluginsSourceDir}\lib{#FileName}.dll; DestDir: {app}\{#PluginsDestDir}; Flags: ignoreversion; Components: main
+    Source: {#PluginsSourceDir}\icons\*; DestDir: {app}\{#PluginsDestDir}\icons; Flags: recursesubdirs createallsubdirs; Components: main
+    Source: {#PluginsSourceDir}\xml\*; DestDir: {app}\{#PluginsDestDir}\xml; Flags: recursesubdirs createallsubdirs; Components: main
+  #endif
+#endsub
+
+Source: {#RootDir}\Changelog.txt; DestDir: {app}; Components: main
+Source: {#RootDir}\license.txt; DestDir: {app}; Components: main
+Source: {#RootDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#RootDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
+Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main
+#for {FindHandle = FindResult = FindFirst(AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
+#if FindHandle
+  #expr FindClose(FindHandle)
+#endif
+
 Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}; Components: main
+
 Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}; Components: runtime
@@ -101,8 +128,5 @@ Root: HKCR; SubKey: {#MyAppName}.Project\Shell\Open\Command; ValueType: string; 
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
 
-[InstallDelete]
-; Cleanup debug dlls.
-Name: {app}\plugins\additional\libadditionald.dll; Type: files
-Name: {app}\plugins\common\libcommond.dll; Type: files
-Name: {app}\plugins\layout\liblayoutd.dll; Type: files
+; Debug output of preprocessor up to current line, at end == complete file
+;#expr SaveToFile("preprocessed.iss")
