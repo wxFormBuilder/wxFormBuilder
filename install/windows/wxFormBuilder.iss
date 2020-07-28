@@ -96,10 +96,6 @@ Root: HKCR; SubKey: .fbp; ValueType: string; ValueData: {#MyAppName}.Project; Fl
 Root: HKCR; SubKey: {#MyAppName}.Project\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\{#MyAppExeName}; Flags: uninsdeletekey
 Root: HKCR; SubKey: {#MyAppName}.Project; ValueType: string; ValueData: {#MyAppName} Project File; Flags: uninsdeletekey
 Root: HKCR; SubKey: {#MyAppName}.Project\Shell\Open\Command; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue
-Root: HKCU; SubKey: Software\wxformbuilder\mainframe\editor; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
-Root: HKCU; SubKey: Software\wxformbuilder\mainframe\editor\cpp; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
-Root: HKCU; SubKey: Software\wxformbuilder\mainframe\objectInspector; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
-Root: HKCU; SubKey: Software\wxformbuilder\palette; ValueType: none; ValueName: notebook_style; Flags: deletevalue; Check: ShouldResetLayout
 
 [Code]
 // -- Version checking functions
@@ -204,18 +200,6 @@ begin
 	end;
 end;
 
-function ShouldResetLayout(): boolean;
-var
-	wxFormBuilderVersion: String;
-begin
-	wxFormBuilderVersion:= GetInstalledVersion('{#MyAppName}');
-
-	if CompareText( wxFormBuilderVersion, '3.0.44' ) <= 0 then begin
-		result := true;
-	end else begin
-		result := false;
-	end;
-end;
 // -- END -- Version checking
 
 
