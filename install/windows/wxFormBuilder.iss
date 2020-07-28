@@ -44,9 +44,6 @@ InfoAfterFile=..\..\output\Changelog.txt
 LicenseFile=..\..\output\license.txt
 MinVersion=0,6.0
 
-; -- Pre-Build Step
-#expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
-
 [Messages]
 BeveledLabel={#MyAppName} v{#MyAppVer}
 
@@ -68,7 +65,6 @@ Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}
-Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: output\lib64; Components: main\srccode
 
 [InstallDelete]
 ; Cleanup debug dlls.
@@ -87,7 +83,6 @@ Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; F
 
 [Components]
 Name: main; Description: wxFormBuilder (required); Flags: fixed dontinheritcheck checkablealone; Types: custom compact full
-Name: main\srccode; Description: SourceCode; Types: custom; Flags: dontinheritcheck checkablealone disablenouninstallwarning
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#MyAppExeName}; ValueType: string; ValueData: {app}\{#MyAppExeName}; Flags: uninsdeletekey
