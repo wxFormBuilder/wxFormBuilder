@@ -8,11 +8,28 @@
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-#define MyAppVer "3.9.0"
+; MyAppVer gets parsed from source file
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "Jose Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
+
+
+#define protected FileHandle
+#define protected FileLine
+
+#sub ProcessVersionLine
+  #define private FileLine = FileRead(FileHandle)
+  #if Pos("VERSION = """, FileLine) > 0
+    #define private temp Copy(FileLine, Pos("""", FileLine) + 1)
+    #define public MyAppVer Copy(temp, 1, RPos("""", temp) - 1)
+  #endif
+#endsub
+
+#for {FileHandle = FileOpen("..\..\src\rad\appdata.cpp"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
+#if FileHandle
+  #expr FileClose(FileHandle)
+#endif
 
 
 [Setup]
@@ -66,17 +83,17 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 
 [Files]
-#define RootDir "..\..\output"
-#define PluginsBaseDir "plugins"
+#define protected RootDir "..\..\output"
+#define protected PluginsBaseDir "plugins"
 
-#define FindHandle
-#define FindResult
+#define protected FindHandle
+#define protected FindResult
 
 #sub ProcessFoundPlugin
-  #define FileName FindGetFileName(FindHandle)
+  #define private FileName FindGetFileName(FindHandle)
   #if FileName != "." && FileName != ".."
-    #define PluginsSourceDir AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + FileName
-    #define PluginsDestDir AddBackslash(PluginsBaseDir) + FileName
+    #define private PluginsSourceDir AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + FileName
+    #define private PluginsDestDir AddBackslash(PluginsBaseDir) + FileName
     Source: {#PluginsSourceDir}\lib{#FileName}.dll; DestDir: {app}\{#PluginsDestDir}; Flags: ignoreversion; Components: main
     Source: {#PluginsSourceDir}\icons\*; DestDir: {app}\{#PluginsDestDir}\icons; Flags: recursesubdirs createallsubdirs; Components: main
     Source: {#PluginsSourceDir}\xml\*; DestDir: {app}\{#PluginsDestDir}\xml; Flags: recursesubdirs createallsubdirs; Components: main
