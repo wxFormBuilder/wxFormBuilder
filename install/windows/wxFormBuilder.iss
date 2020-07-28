@@ -24,7 +24,7 @@ DefaultDirName={commonpf}\{#MyAppName}
 DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}
+OutputBaseFilename={#MyAppName}-{#MyAppVer}
 Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
@@ -45,7 +45,7 @@ LicenseFile=..\..\output\license.txt
 MinVersion=0,6.0
 
 [Messages]
-BeveledLabel={#MyAppName} v{#MyAppVer}
+BeveledLabel={#MyAppName} {#MyAppVer}
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
