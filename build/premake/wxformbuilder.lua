@@ -89,10 +89,7 @@ project "wxFormBuilder"
         targetdir       "../../output"
         flags           {"WinMain"}
         if wxCompiler == "gcc" then
-            links       {"bfd", "iberty", "psapi", "imagehlp"}
-            if not (wxCompilerName == "mingw64") then
-                links   {"intl"}
-            end
+            links       {"bfd", "iberty", "psapi", "imagehlp", "intl", "z"}
         end
 
     configuration "Debug"

@@ -35,7 +35,6 @@ jobs:
       run: |
         cd build/3.0/gmake
         sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
-        sed 's!-lbfd!-lbfd -lz!g' *.make -i
     - name: Build
       shell: msys2 {0}
       run: |
