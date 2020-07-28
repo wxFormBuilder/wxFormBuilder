@@ -51,20 +51,20 @@ BeveledLabel={#MyAppName} {#MyAppVer}
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Files]
-Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
-Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}
-Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}
+Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a; Components: main
+Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}; Components: main
+Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}; Components: runtime
 
 [InstallDelete]
 ; Cleanup debug dlls.
@@ -82,7 +82,8 @@ Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: deskto
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
 
 [Components]
-Name: main; Description: wxFormBuilder (required); Flags: fixed dontinheritcheck checkablealone; Types: custom compact full
+Name: main; Description: wxFormBuilder (required); Types: custom compact full; Flags: fixed checkablealone
+Name: runtime; Description: Compiler Runtime (required); Types: custom compact full; Flags: fixed checkablealone
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#MyAppExeName}; ValueType: string; ValueData: {app}\{#MyAppExeName}; Flags: uninsdeletekey
