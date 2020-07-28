@@ -7,8 +7,6 @@
 ; License:     wxWindows license
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-#define UNICODE 1
-
 #define MyAppVer "3.9.0"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "Jose Antonio Hurtado"
@@ -27,11 +25,7 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
-#if defined UNICODE
 OutputBaseFilename={#MyAppName}_v{#MyAppVer}
-#else
-OutputBaseFilename={#MyAppName}_v{#MyAppVer}-9xME
-#endif
 Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
@@ -49,10 +43,7 @@ VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
 InfoAfterFile=..\..\output\Changelog.txt
 LicenseFile=..\..\output\license.txt
-#if defined UNICODE
-;MinVersion=0,4.0.1381sp6
 MinVersion=0,6.0
-#endif
 
 ; -- Pre-Build Step
 #expr Exec( "create_source_package.bat", NULL, NULL, 1, SW_SHOWMINIMIZED )
@@ -64,7 +55,6 @@ BeveledLabel={#MyAppName} v{#MyAppVer}
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 
 [Files]
-#if defined UNICODE
 Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a
 Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}
@@ -79,9 +69,6 @@ Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}
 Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}
-#else
-Source: files9x\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, *d.exe, *d.dll, wxmsw28ud_*, wxmsw28umd_*, Thumbs.db, *.a
-#endif
 Source: source\*; DestDir: {app}\source; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: output\lib64; Components: main\srccode
 
 [InstallDelete]
