@@ -7,11 +7,13 @@
 ; License:     wxWindows license
 ;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
 #define MyAppVer "3.9.0"
 #define MyAppName "wxFormBuilder"
 #define MyAppPublisher "Jose Antonio Hurtado"
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
+
 
 [Setup]
 AppName={#MyAppName}
@@ -44,11 +46,24 @@ InfoAfterFile=..\..\output\Changelog.txt
 LicenseFile=..\..\output\license.txt
 MinVersion=0,6.0
 
+
 [Messages]
 BeveledLabel={#MyAppName} {#MyAppVer}
 
+
+[Types]
+Name: "full"; Description: "Full installation"
+Name: "custom"; Description: "Custom installation"; Flags: iscustom
+
+
+[Components]
+Name: main; Description: wxFormBuilder (required); Types: full custom; Flags: fixed checkablealone
+Name: runtime; Description: Compiler Runtime (required); Types: full custom; Flags: fixed checkablealone
+
+
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+
 
 [Files]
 Source: ..\..\output\*; DestDir: {app}; Flags: ignoreversion recursesubdirs createallsubdirs; Excludes: .svn\*, lib64, *d.exe, *d.dll, wxmsw30ud_*, wxmsw30umd_*, Thumbs.db, *.a; Components: main
@@ -66,11 +81,6 @@ Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}; Components: runtime
 
-[InstallDelete]
-; Cleanup debug dlls.
-Name: {app}\plugins\additional\libadditionald.dll; Type: files
-Name: {app}\plugins\common\libcommond.dll; Type: files
-Name: {app}\plugins\layout\liblayoutd.dll; Type: files
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
@@ -78,12 +88,6 @@ Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
 Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
 
-[Run]
-Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
-
-[Components]
-Name: main; Description: wxFormBuilder (required); Types: custom compact full; Flags: fixed checkablealone
-Name: runtime; Description: Compiler Runtime (required); Types: custom compact full; Flags: fixed checkablealone
 
 [Registry]
 Root: HKLM; Subkey: SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\{#MyAppExeName}; ValueType: string; ValueData: {app}\{#MyAppExeName}; Flags: uninsdeletekey
@@ -91,3 +95,14 @@ Root: HKCR; SubKey: .fbp; ValueType: string; ValueData: {#MyAppName}.Project; Fl
 Root: HKCR; SubKey: {#MyAppName}.Project\DefaultIcon; ValueType: string; ValueName: ; ValueData: {app}\{#MyAppExeName}; Flags: uninsdeletekey
 Root: HKCR; SubKey: {#MyAppName}.Project; ValueType: string; ValueData: {#MyAppName} Project File; Flags: uninsdeletekey
 Root: HKCR; SubKey: {#MyAppName}.Project\Shell\Open\Command; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletevalue
+
+
+[Run]
+Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
+
+
+[InstallDelete]
+; Cleanup debug dlls.
+Name: {app}\plugins\additional\libadditionald.dll; Type: files
+Name: {app}\plugins\common\libcommond.dll; Type: files
+Name: {app}\plugins\layout\liblayoutd.dll; Type: files
