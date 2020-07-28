@@ -76,7 +76,7 @@ Name: {app}\plugins\layout\liblayoutd.dll; Type: files
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}
 ;Name: {group}\{#MyAppName} Help; Filename: {app}\{#MyAppName}.hlp
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}
-Name: {userdesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
+Name: {autodesktop}\{#MyAppName}; Filename: {app}\{#MyAppExeName}; Tasks: desktopicon
 
 [Run]
 Filename: {app}\{#MyAppExeName}; Description: {cm:LaunchProgram,{#MyAppName}}; Flags: nowait postinstall skipifsilent
