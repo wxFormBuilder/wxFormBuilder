@@ -8,15 +8,14 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: eine/setup-msys2@v1
+    - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW32
         release: false
         update: false
-        cache: false
         install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make'
     - name: Patch MSYS2
       shell: msys2 {0}
@@ -51,7 +50,7 @@ jobs:
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
     - name: Upload artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Windows
         path: install\windows\wxFormBuilder_v3.9.0.exe
