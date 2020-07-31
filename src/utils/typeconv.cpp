@@ -246,7 +246,10 @@ int TypeConv::GetMacroValue(const wxString &str)
 	int value = 0;
 
 	PMacroDictionary dic = MacroDictionary::GetInstance();
-	dic->SearchMacro( str, &value );
+	if (!dic->SearchMacro(str, &value))
+	{
+		value = StringToInt(str);
+	}
 
 	return value;
 }
