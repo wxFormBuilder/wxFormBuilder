@@ -924,12 +924,16 @@ public:
 
 		// Label Properties
 		grid->SetColLabelAlignment( obj->GetPropertyAsInteger( _("col_label_horiz_alignment") ), obj->GetPropertyAsInteger( _("col_label_vert_alignment") ) );
-		grid->SetColLabelSize( obj->GetPropertyAsInteger( _("col_label_size") ) );
 
 		wxArrayString columnLabels = obj->GetPropertyAsArrayString( _("col_label_values") );
 		for ( int i = 0; i < (int)columnLabels.size() && i < grid->GetNumberCols(); ++i )
 		{
 			grid->SetColLabelValue( i, columnLabels[i] );
+		}
+
+		if ( !obj->IsNull( _("col_label_size") ) )
+		{
+			grid->SetColLabelSize( obj->GetPropertyAsInteger( _("col_label_size") ) );
 		}
 
 		wxArrayInt columnSizes = obj->GetPropertyAsArrayInt( _("column_sizes") );
@@ -939,12 +943,16 @@ public:
 		}
 
 		grid->SetRowLabelAlignment( obj->GetPropertyAsInteger( _("row_label_horiz_alignment") ), obj->GetPropertyAsInteger( _("row_label_vert_alignment") ) );
-		grid->SetRowLabelSize( obj->GetPropertyAsInteger( _("row_label_size") ) );
 
 		wxArrayString rowLabels = obj->GetPropertyAsArrayString( _("row_label_values") );
 		for ( int i = 0; i < (int)rowLabels.size() && i < grid->GetNumberRows(); ++i )
 		{
 			grid->SetRowLabelValue( i, rowLabels[i] );
+		}
+
+		if ( !obj->IsNull( _("row_label_size") ) )
+		{
+			grid->SetRowLabelSize( obj->GetPropertyAsInteger( _("row_label_size") ) );
 		}
 
 		wxArrayInt rowSizes = obj->GetPropertyAsArrayInt( _("row_sizes") );
@@ -2796,6 +2804,7 @@ MACRO(wxALIGN_CENTER)
 MACRO(wxALIGN_RIGHT)
 MACRO(wxALIGN_TOP)
 MACRO(wxALIGN_BOTTOM)
+MACRO(wxGRID_AUTOSIZE)
 
 // wxScrollBar
 MACRO(wxSB_HORIZONTAL)

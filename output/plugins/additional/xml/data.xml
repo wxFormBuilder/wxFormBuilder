@@ -69,7 +69,9 @@ Written by
       <property name="autosize_cols" type="bool" help="Automatically sizes all columns to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
       <property name="drag_col_move" type="bool" help="Allow moving columns by dragging.">0</property>
       <property name="drag_col_size" type="bool" help="Allow sizing columns by dragging.">1</property>
-      <property name="col_label_size" type="uint" help="Height of column labels">30</property>
+      <property name="col_label_size" type="editoption" help="Height of column labels">
+        <option name="wxGRID_AUTOSIZE" help="If height equals to wxGRID_AUTOSIZE then height is calculated automatically so that no label is truncated. Note that this could be slow for a large table."/>
+      </property>
       <property name="col_label_values" type="stringlist" help="List of column labels."></property>
       <property name="col_label_horiz_alignment" type="option" help="Horizontal alignment of column label text.">
         <option name="wxALIGN_LEFT" help="Align labels left."/>
@@ -88,7 +90,9 @@ Written by
       <property name="row_sizes" type="uintlist" help="Comma separated list of row sizes. Note: wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large."/>
       <property name="autosize_rows" type="bool" help="Automatically sizes all rows to fit their contents. wxGrid sets up arrays to store individual row and column sizes when non-default sizes are used. The memory requirements for this could become prohibitive if your grid is very large.">0</property>
       <property name="drag_row_size" type="bool" help="Allow sizing rows by dragging.">1</property>
-      <property name="row_label_size" type="uint" help="Width of row labels">80</property>
+      <property name="row_label_size" type="editoption" help="Width of row labels">
+        <option name="wxGRID_AUTOSIZE" help="If height equals to wxGRID_AUTOSIZE then width is calculated automatically so that no label is truncated. Note that this could be slow for a large table."/>
+      </property>
       <property name="row_label_values" type="stringlist" help="List of row labels."></property>
       <property name="row_label_horiz_alignment" type="option" help="Horizontal alignment of row label text.">
         <option name="wxALIGN_LEFT" help="Align labels left."/>
