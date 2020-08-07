@@ -1796,6 +1796,8 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxAUI_MGR_LIVE_RESIZE, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxAUI_MGR_DEFAULT, wx.aui. );
 
+	ADD_PREDEFINED_PREFIX( wxGRID_AUTOSIZE, wx.grid. );
+
 	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx.adv. );
 
@@ -1844,14 +1846,14 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxPG_TOOLBAR, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPGMAN_DEFAULT_STYLE, wx.propgrid. );
 	ADD_PREDEFINED_PREFIX( wxPG_NO_INTERNAL_BORDER, wx.propgrid. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_CELL_ACTIVATABLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_CELL_INERT, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_COL_HIDDEN, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_COL_REORDERABLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_COL_RESIZABLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDATAVIEW_COL_SORTABLE, wx.dataview. );
-	
+
 	ADD_PREDEFINED_PREFIX( wxDV_SINGLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_MULTIPLE, wx.dataview. );
 	ADD_PREDEFINED_PREFIX( wxDV_ROW_LINES, wx.dataview. );
@@ -1875,4 +1877,3 @@ void PythonTemplateParser::SetupModulePrefixes()
 
 	ADD_PREDEFINED_PREFIX( wxTP_DEFAULT, wx.adv. );
 }
-

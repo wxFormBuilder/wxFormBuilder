@@ -87,13 +87,9 @@ project "wxFormBuilder"
     configuration "windows"
         files           {"../../src/*.rc"}
         targetdir       "../../output"
-        flags           {"Symbols", "WinMain"}
+        flags           {"WinMain"}
         if wxCompiler == "gcc" then
-            buildoptions{"-gstabs"}
-            links       {"bfd", "iberty", "psapi", "imagehlp"}
-            if not (wxCompilerName == "mingw64") then
-                links   {"intl"}
-            end
+            links       {"bfd", "iberty", "psapi", "imagehlp", "intl", "z"}
         end
 
     configuration "Debug"

@@ -175,9 +175,12 @@ PHP code generation written by
 			@}
 			#nl @$this->$name->EnableDragColMove( $drag_col_move );
 			#nl @$this->$name->EnableDragColSize( $drag_col_size );
-			#nl @$this->$name->SetColLabelSize( $col_label_size );
 			#foreach $col_label_values
 			@{ @$this->$name->SetColLabelValue( #npred, #pred ); @}
+			#ifnotnull $col_label_size
+			@{
+				#nl @$this->$name->SetColLabelSize( $col_label_size );
+			@}
 			#nl @$this->$name->SetColLabelAlignment( $col_label_horiz_alignment, $col_label_vert_alignment );
 			#nl
 			#nl @# Rows
@@ -188,9 +191,12 @@ PHP code generation written by
 				#nl @$this->$name->AutoSizeRows();
 			@}
 			#nl @$this->$name->EnableDragRowSize( $drag_row_size );
-			#nl @$this->$name->SetRowLabelSize( $row_label_size );
 			#foreach $row_label_values
 			@{ @$this->$name->SetRowLabelValue( #npred, #pred ); @}
+			#ifnotnull $row_label_size
+			@{
+				#nl @$this->$name->SetRowLabelSize( $row_label_size );
+			@}
 			#nl @$this->$name->SetRowLabelAlignment( $row_label_horiz_alignment, $row_label_vert_alignment );
 			#nl
 			#nl @# Label Appearance

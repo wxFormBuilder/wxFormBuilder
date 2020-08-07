@@ -129,7 +129,7 @@ int MyApp::OnRun()
 	}
 
 	if (parser.Found("v")) {
-		std::cout << "wxFormBuilder " << VERSION << std::endl;
+		std::cout << "wxFormBuilder " << VERSION << REVISION << std::endl;
 		return EXIT_SUCCESS;
 	}
 

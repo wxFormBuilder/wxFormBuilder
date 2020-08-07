@@ -975,13 +975,11 @@ public:
 
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
-		xrc.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxMenuBar"));
-		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
 };

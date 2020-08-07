@@ -8,32 +8,43 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: numworks/setup-msys2@v1
+    - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW32
-    - name: Create symbolic link for MSYS2
-      shell: cmd
-      run: mklink /D c:\msys64 d:\a\_temp\msys\msys64
-    - name: Install dependencies
-      run: msys2do pacman -S --needed --noconfirm mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make
+        release: false
+        update: false
+        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make'
+    - name: Patch MSYS2
+      shell: msys2 {0}
+      run: |
+        ln -s /mingw32/include/binutils/ansidecl.h /mingw32/include/ansidecl.h
+        ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
+        ln -s /mingw32/include/binutils/bfd_stdint.h /mingw32/include/bfd_stdint.h
+        ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h
+        ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
+        ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
+        ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
     - name: Create build files
       shell: cmd
       run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
-    - name: Build
-      run: msys2do ./.github/workflows/msys2.sh
-    - name: Create source package
-      shell: cmd
+    - name: Patch build files
+      shell: msys2 {0}
       run: |
-        cd install/windows
-        create_source_package.bat
+        cd build/3.0/gmake
+        sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
+    - name: Build
+      shell: msys2 {0}
+      run: |
+        cd build/3.0/gmake
+        make config=release
     - name: Create installer
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
     - name: Upload artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v2
       with:
         name: Windows
-        path: install\windows\wxFormBuilder_v3.9.0.exe
+        path: install\windows\wxFormBuilder-*.exe
