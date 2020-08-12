@@ -87,7 +87,7 @@ private:
 	bool m_disconnectEvents;
 	wxString m_disconnecMode;
 	wxString m_strEventHandlerPostfix;
-private:
+	wxString m_strUITable;
 
 	/**
 	* Predefined macros won't generate defines.
@@ -130,8 +130,9 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
-                             ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
+//	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
+//	                         ArrayItems& arrays);
+//// micheus                            ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
 
 	/**
 	* Generates the event table.
@@ -168,6 +169,7 @@ private:
 	/**
 	* Generate a set of all window creation function to forward declare in export session.
 	*/
+//	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes );
 	void GenExportSets( PObjectBase obj, std::set< wxString >* subclasses );
     void GenExport( std::set< wxString > exports, const wxString& createPrefixg, unsigned int createParent );
 
@@ -176,7 +178,6 @@ private:
     */
     wxString ClassToCreateFun( wxString objname, wxString createPrefix );
     wxString MakeErlangIdentifier( wxString idname, unsigned int lowerIdentifier );
-
 	/**
 	* Generates the '#define' section for macros.
 	*/
@@ -185,7 +186,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-	void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent);
+    void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent);
 
 	/**
 	* Generates the destructor for a class
@@ -254,6 +255,11 @@ public:
 	* Generate the project's code
 	*/
 	bool GenerateCode(PObjectBase project) override;
+
+	/**
+	* Generate an inherited class
+	*/
+	void GenerateInheritedClass( PObjectBase userClasses, PObjectBase form,const wxString & genFileFullPath );
 };
 
 

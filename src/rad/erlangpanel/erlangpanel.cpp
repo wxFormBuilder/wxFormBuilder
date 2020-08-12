@@ -32,7 +32,6 @@
 #include "../codeeditor/codeeditor.h"
 #include "../wxfbevent.h"
 
-#include "../../utils/encodingutils.h"
 #include "../../utils/typeconv.h"
 #include "../../utils/wxfbexception.h"
 
@@ -352,12 +351,6 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 			codegen.SetSourceWriter( erlang_cw);
 			codegen.GenerateCode( project );
 			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
-
-			// check if we have to convert to ANSI encoding
-			if (project->GetPropertyAsString(wxT("encoding")) == wxT("ANSI"))
-			{
-				UTF8ToAnsi(path + file + wxT( ".erl" ));
-			}
 		}
 		catch ( wxFBException& ex )
 		{

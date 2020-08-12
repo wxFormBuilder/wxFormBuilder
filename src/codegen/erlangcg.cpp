@@ -52,6 +52,8 @@ m_strUserIDsVec(strUserIDsVec)
 	{
 		m_basePath.clear();
 	}
+
+//	SetupModulePrefixes();
 }
 
 ErlangTemplateParser::ErlangTemplateParser( const ErlangTemplateParser & that, wxString _template, std::vector<wxString> strUserIDsVec )
@@ -62,6 +64,7 @@ m_useRelativePath( that.m_useRelativePath ),
 m_basePath( that.m_basePath ),
 m_strUserIDsVec(strUserIDsVec)
 {
+//	SetupModulePrefixes();
 }
 
 wxString ErlangTemplateParser::RootWxParentToCode()
@@ -172,6 +175,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 			}
 			wxString bit, res, pref;
 			wxStringTokenizer bits( result, wxT("|"), wxTOKEN_STRTOK );
+
 			while( bits.HasMoreTokens() )
 			{
 				bit = bits.GetNextToken();
@@ -416,6 +420,88 @@ wxString ErlangCodeGenerator::ConvertErlangString( wxString text )
 	return result;
 }
 
+void ErlangCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectBase form,const  wxString & genFileFullPath)
+{
+	if (!userClasses)
+	{
+		wxLogError(wxT("There is no object to generate inherited class"));
+		return;
+	}
+
+	if ( wxT("UserClasses") != userClasses->GetClassName() )
+	{
+		wxLogError(wxT("This not a UserClasses object"));
+		return;
+	}
+/* micheus
+	// Start file
+	wxString code = GetCode( userClasses, wxT("file_comment") );
+	m_source->WriteLn( code );
+
+	wxString fullGenPath = genFileFullPath;
+	fullGenPath.Replace(wxT("\\"), wxT("\\\\"));
+
+	code = wxT("package.path = \"") + fullGenPath + wxT(".Erlang\"");
+	m_source->WriteLn( code );
+
+	code = GetCode( userClasses, wxT("source_include") );
+	m_source->WriteLn( code );
+	m_source->WriteLn( wxEmptyString );
+
+
+			EventVector events;
+			FindEventHandlers( form, events );
+
+
+			if ( events.size() > 0 )
+			{
+				code = GetCode( userClasses, wxT("event_handler_comment") );
+				m_source->WriteLn( code );
+				m_source->WriteLn( wxEmptyString );
+
+				std::set<wxString> generatedHandlers;
+				wxString eventsGroupID ;
+				wxString strPrevClassName;
+				for ( size_t i = 0; i < events.size(); i++ )
+				{
+					PEvent event = events[i];
+
+					wxString handlerName = event->GetValue();
+					wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName().c_str() );
+
+					PObjectBase obj = event->GetObject();
+					PObjectInfo obj_info = obj->GetObjectInfo();
+
+					wxString strClassName;
+					code = GenEventEntryForInheritedClass(obj, obj_info, templateName, handlerName, strClassName);
+
+					bool bAddCaption = false;
+					PProperty propName = obj->GetProperty( wxT("name") );
+					if (propName)
+					{
+						strClassName = propName->GetValue();
+						if(strPrevClassName != strClassName){
+							strPrevClassName = strClassName;
+							bAddCaption = true;
+							eventsGroupID = wxString::Format( wxT("-- %s (%s) event handlers: "), strClassName.c_str(), obj->GetClassName().c_str());
+						}
+					}
+
+					if(code.length() > 0){
+						if(bAddCaption)
+							m_source->WriteLn(eventsGroupID);
+
+						m_source->WriteLn( code);
+						m_source->WriteLn();
+					}
+				}
+				m_source->WriteLn( wxEmptyString );
+				m_source->WriteLn( wxEmptyString );
+			}
+*/
+	m_source->Unindent();
+}
+
 wxString ErlangCodeGenerator::GenEventEntryForInheritedClass( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName )
 {
 	wxString code;
@@ -518,11 +604,12 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		file = wxT("noname");
 	}
+/* micheus
 	else
 	{
 		file = MakeErlangIdentifier( file, lowerIdentifier->GetValueAsInteger() );
 	}
-
+*/
 	// Write the module header
 	wxString module = wxString::Format( wxT("-module(%s)."), file );
     m_source->WriteLn( module );
@@ -536,8 +623,6 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 	// Generating  includes
 	std::vector< wxString > headerIncludes;
-	std::set< wxString > templates;
-	GenIncludes(project, &headerIncludes, &templates );
 
 	// Write the include lines
 	std::vector<wxString>::iterator include_it;
@@ -589,7 +674,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 		EventVector events;
 		FindEventHandlers( child, events );
-		GenClassDeclaration(child, false, wxEmptyString, events, m_strEventHandlerPostfix, arrays, Prefix, Parent);
+//		GenClassDeclaration(child, false, wxEmptyString, events, m_strEventHandlerPostfix, arrays, Prefix, Parent);
 	}
 
 	code = GetCode( project, wxT("erlang_epilogue") );
@@ -878,10 +963,11 @@ wxString ErlangCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxSt
 	return code;
 }
 
-void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
-                                           const wxString& /*classDecoration*/,
+/*
+void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool / *use_enum* /,
+                                           const wxString& / *classDecoration* /,
                                            const EventVector& events,
-                                           const wxString& /*eventHandlerPostfix*/,
+                                           const wxString& / *eventHandlerPostfix* /,
                                            ArrayItems& arrays,
                                            const wxString& createPrefix, unsigned int createParent ) {
 	wxString strClassName = class_obj->GetClassName();
@@ -902,8 +988,8 @@ void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 
 	GetGenEventHandlers( class_obj );
 	GenConstructor(class_obj, events, strName, arrays, createPrefix, createParent);
-
 }
+*/
 
 void ErlangCodeGenerator::GenExportSets( PObjectBase obj, std::set< wxString >* exports )
 {
