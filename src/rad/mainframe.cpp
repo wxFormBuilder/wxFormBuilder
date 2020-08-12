@@ -1638,8 +1638,8 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 5 );
 	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 
-	m_erlang = new ErlangPanel(m_notebook, wxID_ANY);
-	m_notebook->AddPage(m_erlang,wxT( "Erlang" ), false, 6 );
+	m_erlang = new ErlangPanel( m_notebook, wxID_ANY);
+	m_notebook->AddPage( m_erlang, wxT( "Erlang" ), false, 6 );
 	m_notebook->SetPageBitmap( 6, AppBitmaps::GetBitmap( wxT( "erlang" ), 16 ) );
 
 	return m_notebook;
