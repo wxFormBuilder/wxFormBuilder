@@ -245,6 +245,8 @@ Written by
     <event name="OnListColDragging" class="wxListEvent" help="The divider between columns is being dragged."/>
     <event name="OnListColEndDrag" class="wxListEvent" help="A column has been resized by the user."/>
     <event name="OnListCacheHint" class="wxListEvent" help="Prepare cache for a virtual list control."/>
+    <event name="OnListItemChecked" class="wxListEvent" help="The item has been checked."/>
+    <event name="OnListItemUnchecked" class="wxListEvent" help="The item has been unchecked."/>
   </objectinfo>
 
   <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
