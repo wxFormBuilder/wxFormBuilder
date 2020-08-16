@@ -42,6 +42,7 @@ The value of all properties that are file or a directory paths must be absolute,
 #define fbfMESSAGE false
 
 #include "codegen.h"
+#include "codewriter.h"
 
 #include <map>
 #include <set>
@@ -83,11 +84,12 @@ private:
 	bool m_useRelativePath;
 	bool m_i18n;
 	wxString m_basePath;
+	wxString m_rootWxParent;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
 	wxString m_disconnecMode;
 	wxString m_strEventHandlerPostfix;
-	wxString m_strUITable;
+//	wxString m_strUITable;
 
 	/**
 	* Predefined macros won't generate defines.
@@ -130,9 +132,8 @@ private:
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-//	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
-//	                         ArrayItems& arrays);
-//// micheus                            ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
+	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
+                             ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
 
 	/**
 	* Generates the event table.
@@ -147,7 +148,7 @@ private:
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
-	wxString GenEventEntryForInheritedClass( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName);
+//	wxString GenEventEntryForInheritedClass( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName);
 
 	/**
 	* Generates the generated_event_handlers template
@@ -169,7 +170,6 @@ private:
 	/**
 	* Generate a set of all window creation function to forward declare in export session.
 	*/
-//	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes );
 	void GenExportSets( PObjectBase obj, std::set< wxString >* subclasses );
     void GenExport( std::set< wxString > exports, const wxString& createPrefixg, unsigned int createParent );
 
@@ -197,7 +197,7 @@ private:
 	* Makes the objects construction, setting up the objects' and Layout properties.
 	* The algorithm is simmilar to that used in the designer preview generation.
 	*/
-	void GenConstruction(PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
+	void GenConstruction(PObjectBase base_obj, PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
 
 	/**
 	* Makes the objects destructions.
@@ -255,11 +255,6 @@ public:
 	* Generate the project's code
 	*/
 	bool GenerateCode(PObjectBase project) override;
-
-	/**
-	* Generate an inherited class
-	*/
-	void GenerateInheritedClass( PObjectBase userClasses, PObjectBase form,const wxString & genFileFullPath );
 };
 
 

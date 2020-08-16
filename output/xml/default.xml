@@ -74,7 +74,7 @@
       <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the widows's creation function">create</property>
       <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
       <property name="lower_identifier" type="bool" help="For Erlang Only.&#x0A;Forces the entire name of the identifiers to lowercase.">1</property>
-      <property name="skip_erlang_events" type="bool" help="For Erlang Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+      <property name="callback_events" type="bool" help="For Erlang Only.&#x0A;Sets the callback function to handle the event otherwise events will be sent as messages.&#x0A;* A event name is required anyway.">0</property>
     </category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">

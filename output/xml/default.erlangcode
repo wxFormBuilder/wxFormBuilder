@@ -1,202 +1,279 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <codegen language="Erlang">
-  <templates class="Project">
+    <templates class="Project">
     	<template name="erlang_preamble">
 		</template>
 		<template name="export">
 		</template>
 		<template name="include">
-			include_lib("wx/include/wx.hrl"). #nl
+			-include_lib("wx/include/wx.hrl"). #nl
 		</template>
 		<template name="erlang_epilogue">
 		</template>
-  </templates>
-  <templates class="wxWindow">
+    </templates>
+    <templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
-			@{ #utbl$name:SetExtraStyle( $window_extra_style ) #nl @}
+			@{ #class:setExtraStyle($name $window_extra_style), #nl @}
 
 			#ifnotnull $font
-			@{ #utbl$name:SetFont( $font ) #nl @}
+			@{ #class:setFont($name, $font), #nl @}
 
 			#ifnotnull $fg
-			@{ #utbl$name:SetForegroundColour( $fg ) #nl @}
+			@{ #class:SetForegroundColour($name, $fg), #nl @}
 
 			#ifnotnull $bg
-			@{ #utbl$name:SetBackgroundColour( $bg ) #nl @}
+			@{ #class:setBackgroundColour($name, $bg), #nl @}
 
 			#ifequal $enabled "0"
-			@{ #utbl$name:Enable( $enabled ) #nl @}
+			@{ #class:enable($name, $enabled), #nl @}
 
 			#ifequal $hidden "1"
-			@{ #utbl$name:Hide() #nl @}
+			@{ #class:hide($name), #nl @}
 
 			#ifnotnull $tooltip
-			@{ #utbl$name:SetToolTip( $tooltip ) #nl @}
+			@{ #class:setToolTip($name, $tooltip), #nl @}
 
 			#ifnotnull $context_help
-			@{ #utbl$name:SetHelpText( $context_help ) #nl @}
+			@{ #class:setHelpText($name, $context_help), #nl @}
 
 			#ifnotnull $minimum_size
-			@{ #utbl$name:SetMinSize( $minimum_size ) #nl @}
+			@{ #class:setMinSize($name, $minimum_size), #nl @}
 
 			#ifnotnull $maximum_size
-			@{ #utbl$name:SetMaxSize( $maximum_size ) #nl @}
-
-			#ifparenttypeequal "form"
-			@{
-			#ifequal #parent $aui_managed "1"
-			@{ 
-			#iftypeequal "widget || container || notebook || auinotebook || flatnotebook || listbook || choicebook || treelistctrl || splitter"
-			@{
-				#utbl#wxparent $name.m_mgr:AddPane( #utbl$name, wxaui.wxAuiPaneInfo()
-				#ifnotnull $aui_name @{:Name( $aui_name )@}:$docking()
-				#ifnotnull $caption @{:Caption( $caption )@}
-				#ifequal $caption_visible "0" @{:CaptionVisible( $caption_visible )@}
-				#ifequal $close_button "0" @{:CloseButton( $close_button )@}
-				#ifequal $maximize_button "1" @{:MaximizeButton( $maximize_button )@}
-				#ifequal $minimize_button "1" @{:MinimizeButton( $minimize_button )@}
-				#ifequal $pin_button "1" @{:PinButton( $pin_button )@}
-				#ifequal $pane_border "0" @{:PaneBorder( $pane_border )@}
-				#ifequal $gripper "1" @{:Gripper()@}
-				#ifequal $show "0" @{:Hide()@}
-				#ifequal $moveable "0" @{:Movable( $moveable )@}
-				#ifnotnull $dock @{:$dock()#ifequal $dock "Float" @{:FloatingPosition( $pane_position )@}@}
-				#ifnotnull $resize @{:$resize()#ifequal $resize "Resizable"	@{:FloatingSize( $pane_size )@}@}
-				#ifequal $dock_fixed "1" @{:Fixed( $dock_fixed )@}
-				#ifequal $BottomDockable "0" @{:BottomDockable( $BottomDockable )@}
-				#ifequal $TopDockable "0" @{:TopDockable( $TopDockable )@}
-				#ifequal $LeftDockable "0" @{:LeftDockable( $LeftDockable )@}
-				#ifequal $RightDockable "0"	@{:RightDockable( $RightDockable )@}
-				#ifequal $floatable "0"	@{:Floatable( $floatable )@}
-				#ifnotnull $aui_row	@{:Row( $aui_row )@}
-				#ifnotnull $aui_position @{:Position( $aui_position )@}
-				#ifnotnull $best_size @{:BestSize( $best_size )@}
-				#ifnotnull $min_size @{:MinSize( $min_size )@}
-				#ifnotnull $max_size @{:MaxSize( $max_size )@}
-				#ifnotnull $aui_layer @{:Layer( $aui_layer )@}
-				#ifequal $center_pane "1" @{:CentrePane()@}
-				#ifequal $default_pane "1" @{:DefaultPane()@}
-				#ifequal $toolbar_pane "1" @{:ToolbarPane()@}
-				) #nl				
-			@}
-			@}
-			@}
+			@{ #class:setMaxSize($name, $maximum_size), #nl @}
 
 			#ifparenttypeequal "toolbar_form"
-			@{ #utbl#wxparent $name:AddControl( #utbl$name ) @}
+			@{ wxToolBar:addControl(#wxparent, $name), @}
 		</template>
 
 		<!-- wxKeyEvent -->
-		<template name="evt_connect_OnChar">#utbl$name:Connect( wx.wxEVT_CHAR, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnCharHook">#utbl$name:Connect( wx.wxEVT_CHAR_HOOK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnKeyDown">#utbl$name:Connect( wx.wxEVT_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnKeyUp">#utbl$name:Connect( wx.wxEVT_KEY_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_entry_OnChar">@#error wxKeyEvent does not propogate, so wxEVT_CHAR from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
+		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
+		<template name="evt_entry_OnKeyDown">@#error wxKeyEvent does not propogate, so wxEVT_KEY_DOWN from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
+		<template name="evt_entry_OnKeyUp">@#error wxKeyEvent does not propogate, so wxEVT_KEY_UP from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
 
 		<!-- wxMouseEvent -->
-		<template name="evt_connect_OnEnterWindow">#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnLeaveWindow">#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMiddleDown">#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMiddleUp">#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMotion">#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnMouseWheel">#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnRightDClick">#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnRightDown">#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnRightUp">#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux1DClick">#utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux1Down">#utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux1Up">#utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux2DClick">#utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux2Down">#utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnAux2Up">#utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
+		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
+		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
+		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
+		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
+		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
+		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
 		<template name="evt_connect_OnMouseEvents">
-			#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end  ) #nl
-			#utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end  )
+			#class:connect($name, wxEVT_LEFT_DOWN, #option), #nl
+			#class:connect($name, wxEVT_LEFT_UP, #option), #nl
+			#class:connect($name, wxEVT_MIDDLE_DOWN, #option), #nl
+			#class:connect($name, wxEVT_MIDDLE_UP, #option), #nl
+			#class:connect($name, wxEVT_RIGHT_DOWN, #option), #nl
+			#class:connect($name, wxEVT_RIGHT_UP, #option), #nl
+			#class:connect($name, wxEVT_AUX1_DOWN, #option), #nl
+			#class:connect($name, wxEVT_AUX1_UP, #option), #nl
+			#class:connect($name, wxEVT_AUX2_DOWN, #option), #nl
+			#class:connect($name, wxEVT_AUX1_UP, #option), #nl
+			#class:connect($name, wxEVT_MOTION, #option), #nl
+			#class:connect($name, wxEVT_LEFT_DCLICK, #option), #nl
+			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option), #nl
+			#class:connect($name, wxEVT_RIGHT_DCLICK, #option), #nl
+			#class:connect($name, wxEVT_AUX1_DCLICK, #option), #nl
+			#class:connect($name, wxEVT_AUX2_DCLICK, #option), #nl
+			#class:connect($name, wxEVT_LEAVE_WINDOW, #option), #nl
+			#class:connect($name, wxEVT_ENTER_WINDOW, #option), #nl
+			#class:connect($name, wxEVT_MOUSEWHEEL, #option),
 		</template>
 
 		<!-- wxFocusEvent -->
-		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-.
+		<template name="evt_entry_OnKillFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
+		<template name="evt_entry_OnSetFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
+
 		<!-- wxPaintEvent -->
-		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_entry_OnPaint">@#error wxPaintEvent does not propogate, so wxEVT_PAINT from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
 
 		<!-- wxEraseEvent -->
-		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_entry_OnEraseBackground">@#error wxEraseEvent does not propogate, so wxEVT_ERASE_BACKGROUND from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
 
 		<!-- wxSizeEvent -->
-		<template name="evt_connect_OnSize">#utbl$name:Connect( wx.wxEVT_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+		<template name="evt_entry_OnSize">@#error wxSizeEvent does not propogate, so wxEVT_SIZE from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
+
+		<!-- wxMoveEvent -->
+		<template name="evt_entry_OnMove">@#error wxMoveEvent does not propogate, so wxEVT_MOVE from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnMove">#class:connect($name, wxEVT_MOVE, #option),</template>
 
 		<!-- wxUpdateUIEvent -->
-		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-  </templates>
-  <templates class="wxTreeCtrlBase">
-	<template name="evt_connect_OnTreeBeginDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeBeginRDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_RDRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeEndDrag">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_DRAG, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeBeginLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeEndLabelEdit">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_END_LABEL_EDIT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeDeleteItem">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_DELETE_ITEM, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemActivated">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemCollapsed">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemCollapsing">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemExpanded">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemExpanding">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemRightClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemMiddleClick">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeSelChanged">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeSelChanging">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGING, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeKeyDown">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_KEY_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-	<template name="evt_connect_OnTreeItemMenu">#utbl$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-  </templates>
-  <templates class="UserClasses">
-		<template name="file_comment">
-			 --Here you can extend functionality of $gen_file  module.
+		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
+    </templates>
+
+	<templates class="AUI">
+		<template name="settings">
+			#ifparenttypeequal "form"
+			@{
+			#ifequal #parent $aui_managed "1"
+			@{
+			#iftypenotequal "toolbar"
+			@{
+				m_mgr.AddPane( $name, wxAuiPaneInfo()
+				#ifnotnull $aui_name @{.Name( $aui_name )@}.$docking()
+				#ifnotnull $caption @{.Caption( $caption )@}
+				#ifequal $caption_visible "0" @{.CaptionVisible( $caption_visible )@}
+				#ifequal $close_button "0" @{.CloseButton( $close_button )@}
+				#ifequal $maximize_button "1" @{.MaximizeButton( $maximize_button )@}
+				#ifequal $minimize_button "1" @{.MinimizeButton( $minimize_button )@}
+				#ifequal $pin_button "1" @{.PinButton( $pin_button )@}
+				#ifequal $pane_border "0" @{.PaneBorder( $pane_border )@}
+				#ifequal $gripper "1" @{.Gripper()@}
+				#ifequal $show "0" @{.Hide()@}
+				#ifequal $moveable "0" @{.Movable( $moveable )@}
+				#ifnotnull $dock @{.$dock()#ifequal $dock "Float" @{.FloatingPosition( $pane_position )@}@}
+				#ifnotnull $resize @{.$resize()#ifequal $resize "Resizable" @{.FloatingSize( $pane_size )@}@}
+				#ifequal $dock_fixed "1" @{.DockFixed( $dock_fixed )@}
+				#ifequal $BottomDockable "0" @{.BottomDockable( $BottomDockable )@}
+				#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
+				#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
+				#ifequal $RightDockable "0" @{.RightDockable( $RightDockable )@}
+				#ifequal $floatable "0"	@{.Floatable( $floatable )@}
+				#ifnotnull $aui_row	@{.Row( $aui_row )@}
+				#ifnotnull $aui_position @{.Position( $aui_position )@}
+				#ifnotnull $best_size @{.BestSize( $best_size )@}
+				#ifnotnull $min_size @{.MinSize( $min_size )@}
+				#ifnotnull $max_size @{.MaxSize( $max_size )@}
+				#ifnotnull $aui_layer @{.Layer( $aui_layer )@}
+				#ifequal $center_pane "1" @{.CentrePane()@}
+				#ifequal $default_pane "1" @{.DefaultPane()@}
+				#ifequal $toolbar_pane "1" @{.ToolbarPane()@}
+				); #nl
+			@}
+			@}
+			@}
+		</template>
+	</templates>
+
+	<templates class="wxTreeCtrlBase">
+		<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginDrag">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_DRAG, #option),</template>
+		<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginRDrag">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_RDRAG, #option),</template>
+		<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
+		<template name="evt_connect_OnTreeEndDrag">#class:connect($name, wxEVT_COMMAND_TREE_END_DRAG, #option),</template>
+		<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
+		<template name="evt_connect_OnTreeBeginLabelEdit">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #option),</template>
+		<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
+		<template name="evt_connect_OnTreeEndLabelEdit">#class:connect($name, wxEVT_COMMAND_TREE_END_LABEL_EDIT, #option),</template>
+		<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
+		<template name="evt_connect_OnTreeDeleteItem">#class:connect($name, wxEVT_COMMAND_TREE_DELETE_ITEM, #option),</template>
+		<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemActivated">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #option),</template>
+		<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsed">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #option),</template>
+		<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemCollapsing">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #option),</template>
+		<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanded">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_EXPANDED, #option),</template>
+		<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemExpanding">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_EXPANDING, #option),</template>
+		<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemRightClick">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #option),</template>
+		<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemMiddleClick">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #option),</template>
+		<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanged">#class:connect($name, wxEVT_COMMAND_TREE_SEL_CHANGED, #option),</template>
+		<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
+		<template name="evt_connect_OnTreeSelChanging">#class:connect($name, wxEVT_COMMAND_TREE_SEL_CHANGING, #option),</template>
+		<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
+		<template name="evt_connect_OnTreeKeyDown">#class:connect($name, wxEVT_COMMAND_TREE_KEY_DOWN, #option),</template>
+		<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
+		<template name="evt_connect_OnTreeItemMenu">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_MENU, #option),</template>
+	</templates>
+
+	<templates class="wxAnyButton">
+		<template name="settings">
+			#ifequal $markup "1" @{ $name->SetLabelMarkup( $label ); @}
+			#ifnotnull $bitmap @{ #nl $name->SetBitmap( $bitmap ); @}
+			#ifnotnull $disabled @{ #nl $name->SetBitmapDisabled( $disabled ); @}
+			#ifnotnull $pressed @{ #nl $name->SetBitmapPressed( $pressed ); @}
+			#ifnotnull $focus @{ #nl $name->SetBitmapFocus( $focus ); @}
+			#ifnotnull $current @{ #nl $name->SetBitmapCurrent( $current ); @}
+			#ifnotnull $position @{ #nl $name->SetBitmapPosition( $position ); @}
+			#ifnotnull $margins @{ #nl $name->SetBitmapMargins( $margins ); @}
+		</template>
+	</templates>
+
+	<templates class="UserClasses">
+		<template name="header_comment">
+			/** #nl
+			@@file #nl
+			Subclass of $basename, which is generated by wxFormBuilder. #nl
+			*/
 		</template>
 		<template name="event_handler_comment">
-			@-- Handlers for $basename events.
+			// Handlers for $basename events.
 		</template>
-		<template name="source_include"> #nl require ("$gen_file")</template>
+		<template name="header_include">@#include &quot;$gen_file.h&quot;</template>
+		<template name="source_include">
+			#ifnotnull $precompiled_header
+			@{
+				$precompiled_header #nl
+			@}
+			@#include &quot;$file.h&quot;
+		</template>
 		<template name="class_decl">
-			@# Implementing $basename #nl
-			class #utbl$name( $gen_file.$basename ):
+			/** Implementing $basename */ #nl
+			class $name : public $basename
+		</template>
+		<template name="guard_macro_open">
+			@#ifndef __$file #append __ #nl
+			@#define __$file #append __
+		</template>
+		<template name="guard_macro_close">@#endif // __$file #append __</template>
+		<template name="Frame_cons_decl">
+			/** Constructor */ #nl
+			$name( wxWindow* parent );
 		</template>
 		<template name="Frame_cons_def">
-			def __init__( self, parent ): #indent #nl
-				$gen_file.$basename.__init__( self, parent ) #unindent #nl
+			$name::$name( wxWindow* parent ) #nl #append : #nl$basename( parent )
+		</template>
+		<template name="Panel_cons_decl">
+			/** Constructor */ #nl
+			$name( wxWindow* parent );
 		</template>
 		<template name="Panel_cons_def">
-			def __init__( self, parent ): #indent #nl
-				$gen_file.$basename.__init__( self, parent ) #unindent #nl
+			$name::$name( wxWindow* parent ) #nl #append : #nl$basename( parent )
+		</template>
+		<template name="Dialog_cons_decl">
+			/** Constructor */ #nl
+			$name( wxWindow* parent );
 		</template>
 		<template name="Dialog_cons_def">
-			def __init__( self, parent ): #indent #nl
-				$gen_file.$basename.__init__( self, parent ) #unindent #nl
+			$name::$name( wxWindow* parent ) #nl #append : #nl$basename( parent )
+		</template>
+		<template name="Wizard_cons_decl">
+			/** Constructor */ #nl
+			$name( wxWindow* parent );
 		</template>
 		<template name="Wizard_cons_def">
-			def __init__( self, parent ): #indent #nl
-				$gen_file.$basename.__init__( self, parent ) #unindent #nl
+			$name::$name( wxWindow* parent ) #nl #append : #nl$basename( parent )
 		</template>
-  </templates>
+	</templates>
 </codegen>
