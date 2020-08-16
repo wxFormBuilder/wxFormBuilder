@@ -29,39 +29,84 @@ Erlang code generation writen by
   <templates class="sizer">
     <template name="settings">
 	  #ifnotnull $minimum_size
-	  @{ $name:setMinSize( $minimum_size ) @}
+	  @{ #class:setMinSize($name, $minimum_size), @}
     </template>
   </templates>
 	
   <templates class="spacer"/>
   
   <templates class="sizeritem">
-    <template name="window_add">wxSizer:add(#parent $name, #child $name, -1, -1, [{proportion, $proportion }, {flag, $flag }, {border, $border }]),</template>
-    <template name="sizer_add">wxSizer:add(#parent $name, #child $name, [{proportion, $proportion }, {flag, $flag }, {border, $border }]), #nl</template>
+    <template name="window_add">
+    	wxSizer:add(#parent $name, #child $name, [#ifnotequal $proportion "0"
+												  @{{proportion, $proportion }, @}
+												  #ifnotnull $flag
+												  @{#ifnotequal $flag "wxALL"
+													@{{flag, $flag }, @}@}
+												  #ifnotequal $border "0"
+												  @{{border, $border }@}]),
+    </template>
+    <template name="sizer_add">
+    	wxSizer:add(#parent $name, #child $name, [#ifnotequal $proportion "0"
+												  @{{proportion, $proportion }, @}
+												  #ifnotnull $flag
+												  @{#ifnotequal $flag "wxALL"
+													@{{flag, $flag }, @}@}
+												  #ifnotequal $border "0"
+												  @{{border, $border }@}]),
+    </template>
     <template name="spacer_add">
         #ifequal #child $width "0"
-        @{
-            #ifnotequal #child $height "0"
-            @{ wxSizer:addSpacer(#parent $name, #child $height), @}
-        @}
+        @{#ifnotequal #child $height "0"
+          @{ wxSizer:addSpacer(#parent $name, #child $height), @} @}
         #ifnotequal #child $width "0"
-        @{
-            #ifequal #child $height "0"
-            @{ wxSizer:addSpacer(#parent $name, #child $width), @}
-            #ifnotequal #child $height "0"
-            @{ wxSizer:add(#parent $name, #child $width, #child $height), @}
-        @}
+        @{#ifequal #child $height "0"
+		  @{ wxSizer:addSpacer(#parent $name, #child $width), @}
+		  #ifnotequal #child $height "0"
+		  @{ wxSizer:add(#parent $name, #child $width, #child $height), @} @}
     </template>
   </templates>
 
   <templates class="gbsizeritem">
-    <template name="window_add">wxGridBagSizer:add(#parent $name, -1, -1, {$row, $column }, [{span { $rowspan, $colspan }}, {flag, $flag }, {border, $border }]),</template>
-    <template name="sizer_add">wxGridBagSizer:add(#parent $name, -1, -1, {$row, $column }, [{span { $rowspan, $colspan }}, {flag, $flag }, {border, $border }]), #nl</template>
-    <template name="spacer_add">wxGridBagSizer:add(#parent $name, #child $width, #child $height , {$row, $column }, [{span { $rowspan, $colspan }}, {flag, $flag }, {border, $border }]),</template>
+    <template name="window_add">
+    	wxGridBagSizer:add(#parent $name, #child $name, {$row, $column }, [#ifnotequal $rowspan "1"
+																		   @{#ifnotequal $colspan "1"
+																			 @{{span, {$rowspan, $colspan }}, @} @}
+																		   #ifequal $rowspan "1"
+																		   @{#ifnotequal $colspan "1"
+																			 @{{span, {$rowspan, $colspan }}, @} @}
+																		   #ifnotequal $flag "wxALL"
+																		   @{{flag, $flag }, @}
+																		   #ifnotequal $border "0"
+																		   @{{border, $border }@}]),
+	</template>
+    <template name="sizer_add">
+    	wxGridBagSizer:add(#parent $name, #child $name, {$row, $column }, [#ifnotequal $rowspan "1"
+																		   @{#ifnotequal $colspan "1"
+																			 @{{span, {$rowspan, $colspan }}, @} @}
+																		   #ifequal $rowspan "1"
+																		   @{#ifnotequal $colspan "1"
+																			 @{{span, {$rowspan, $colspan }}, @} @}
+																		   #ifnotequal $flag "wxALL"
+																		   @{{flag, $flag }, @}
+																		   #ifnotequal $border "0"
+																		   @{{border, $border }@}]),
+	</template>
+    <template name="spacer_add">
+    	wxGridBagSizer:add(#parent $name, #child $width, #child $height , {$row, $column }, [#ifnotequal $rowspan "1"
+																							 @{#ifnotequal $colspan "1"
+																							   @{{span, {$rowspan, $colspan }}, @} @}
+																							 #ifequal $rowspan "1"
+																							 @{#ifnotequal $colspan "1"
+																							   @{{span, {$rowspan, $colspan }}, @} @}
+																							 #ifnotequal $flag "wxALL"
+																							 @{{flag, $flag }, @}
+																						     #ifnotequal $border "0"
+																						     @{{border, $border }@}]),
+	</template>
   </templates>
 
   <templates class="wxBoxSizer">
-    <template name="construction">$name = #class:new($orient),</template>
+    <template name="construction"> $name = #class:new($orient),</template>
   </templates>
 
   <templates class="wxWrapSizer">
@@ -70,127 +115,170 @@ Erlang code generation writen by
 
   <templates class="wxStaticBoxSizer">
     <template name="construction">
-        #ifnotnull $id
-        @{ $name = #class:new($orient, wxStaticBox:new(#wxparent $name, $id, $label)), @}
-        #ifnull $id
-        @{ $name = #class:new($orient, #wxparent $name, [{label, $label }]), @}
+        $name = #class:new($orient, #wxparent $name, [{label, $label }]),
     </template>
     <template name="evt_connect_OnUpdateUI">%% event $name:evt_connect_OnUpdateUI isn't currently supported by wx in Erlang</template>
   </templates>
 
   <templates class="wxGridSizer">
-    <template name="construction">$name = #class:new($rows, $cols, $vgap, $hgap),</template>
+    <template name="construction">
+    	#ifequal $rows "0"
+	 	@{
+    	  #ifequal $vgap "0"
+    	  @{
+    	  	#ifequal $hgap "0"
+	 		@{ $name = #class:new($cols), @}
+    	  	#ifnotequal $hgap "0"
+	 		@{ $name = #class:new($cols, [{hgap, $hgap }]), @}
+	 	  @}
+    	  #ifnotequal $vgap "0"
+    	  @{
+    	  	#ifequal $hgap "0"
+	 		@{ $name = #class:new($cols, [{vgap, $vgap }]), @}
+    	  	#ifnotequal $hgap "0"
+	 		@{ $name = #class:new($cols, [{vgap, $vgap }, {hgap, $hgap }]), @}
+	 	  @}
+		@}
+    	#ifnotequal $rows "0"
+    	@{ $name = #class:new($rows, $cols, $vgap, $hgap), @}
+	</template>
   </templates>
 
   <templates class="wxFlexGridSizer">
-    <template name="construction">$name = #class:new($rows, $cols, $vgap, $hgap),
-      #ifnotnull $growablecols
-      @{
-        #foreach $growablecols
-        @{ #class:addGrowableCol($name, #pred), @}
-      @}
+    <template name="construction">
+		#nl
+		#ifequal $rows "0"
+		@{
+		  #ifequal $vgap "0"
+		  @{
+			#ifequal $hgap "0"
+			@{ $name = #class:new($cols), @}
+			#ifnotequal $hgap "0"
+			@{ $name = #class:new($cols, [{hgap, $hgap }]), @}
+		  @}
+		  #ifnotequal $vgap "0"
+		  @{
+			#ifequal $hgap "0"
+			@{ $name = #class:new($cols, [{vgap, $vgap }]), @}
+			#ifnotequal $hgap "0"
+			@{ $name = #class:new($cols, [{vgap, $vgap }, {hgap, $hgap }]), @}
+		  @}
+		@}
+		#ifnotequal $rows "0"
+		@{ $name = #class:new($rows, $cols, $vgap, $hgap), @}
 
-      #ifnotnull $growablerows
-      @{
-        #foreach $growablerows
-        @{ #class:addGrowableRow($name, #pred), @}
-      @}
-      #ifnotnull $flexible_direction
-      @{ #nl #class:setFlexibleDirection($name, $flexible_direction), @}
+		#ifnotnull $growablecols
+		@{  #nl
+			#foreach $growablecols
+			@{ #class:addGrowableCol($name, #pred), @}
+		@}
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl #class:setNonFlexibleGrowMode($name, $non_flexible_grow_mode), @}
+		#ifnotnull $growablerows
+		@{  #nl
+			#foreach $growablerows
+			@{ #class:addGrowableRow($name, #pred), @}
+		@}
+		#ifnotnull $flexible_direction
+		@{ #nl #class:setFlexibleDirection($name, $flexible_direction), @}
+
+		#ifnotnull $non_flexible_grow_mode
+		@{ #nl #class:setNonFlexibleGrowMode($name, $non_flexible_grow_mode), @}
     </template>
   </templates>
 
   <templates class="wxGridBagSizer">
-    <template name="construction">$name = wxGridBagSizer:new([{vgap, $vgap }, {hgap, $hgap }]),
-      #ifnotnull $flexible_direction
-      @{ #nl %% wxGridBagSizer:setFlexibleDirection is not supported by Erlang
-		#nl %% wxGridBagSizer:setFlexibleDirection($name, $flexible_direction), @}
+    <template name="construction">
+    	#nl
+		#ifequal $vgap "0"
+		@{
+		  #ifequal $hgap "0"
+		  @{ $name = #class:new(), @}
+		  #ifnotequal $hgap "0"
+		  @{ $name = #class:new([{hgap, $hgap }]), @}
+		@}
+		#ifnotequal $vgap "0"
+		@{
+		  #ifequal $hgap "0"
+		  @{ $name = #class:new([{vgap, $vgap }]), @}
+		  #ifnotequal $hgap "0"
+		  @{ $name = #class:new([{vgap, $vgap }, {hgap, $hgap }]), @}
+		@}
 
-      #ifnotnull $non_flexible_grow_mode
-      @{ #nl %% wxGridBagSizer:setNonFlexibleGrowMode is not supported by Erlang
-		#nl %% wxGridBagSizer:setNonFlexibleGrowMode($name, $non_flexible_grow_mode), @}
+		#ifnotnull $flexible_direction
+		@{ #nl #class:setFlexibleDirection($name, $flexible_direction), @}
 
-      #ifnotnull $empty_cell_size
-      @{ #nl %% wxGridBagSizer:setEmptyCellSize is not supported by Erlang
-		#nl %% wxGridBagSizer:setEmptyCellSize($name, $empty_cell_size), @}
+		#ifnotnull $non_flexible_grow_mode
+		@{ #nl #class:setNonFlexibleGrowMode($name, $non_flexible_grow_mode), @}
+
+		#ifnotnull $empty_cell_size
+		@{ #nl #class:setEmptyCellSize($name, $empty_cell_size), @}
 	</template>
 	<template name="after_addchild">
 	  #ifnotnull $growablecols
       @{ #foreach $growablecols
-        @{ #nl %% wxGridBagSizer:addGrowableCol is not supported by Erlang
-		 #nl %%wxGridBagSizer:addGrowableCol($name, #pred), @}
+        @{ #class:addGrowableCol($name, #pred), @}
       @}
       #ifnotnull $growablerows
       @{ #foreach $growablerows
-        @{ #nl %% wxGridBagSizer:addGrowableRow is not supported by Erlang
-		 #nl %% wxGridBagSizer:addGrowableRow($name, #pred) @},
+        @{ #class:addGrowableRow($name, #pred), @},
       @}
 	</template>
   </templates>
 
   <templates class="wxStdDialogButtonSizer">
-    <template name="construction">$name = #class:new(),
+    <template name="construction">
+    	$name = #class:new(),
 		#ifequal $OK "1"
 		@{ 
-			#nl $name #append OK = wxButton:new(#parentname, wxID_OK),
-			#nl #class:addButton($name, #append OK),
+		  #nl $name #append _OK = wxButton:new(#wxparent $name, ?wxID_OK),
+		  #nl #class:addButton($name, $name #append _OK),
 		@}
-
 		#ifequal $Yes "1"
 		@{ 
-			#nl $name #append Yes = wxButton:new(#parentname, wxID_YES),
-			#nl #class:addButton($name, #append Yes),
+		  #nl $name #append _Yes = wxButton:new(#wxparent $name, ?wxID_YES),
+		  #nl #class:addButton($name, $name #append _Yes),
 		@}
-
 		#ifequal $Save "1"
 		@{ 
-			#nl $name #append Save = wxButton:new(#parentname, wxID_SAVE),
-			#nl wxStdDialogButtonSizer:addButton($name, #append Save),
+		  #nl $name #append _Save = wxButton:new(#wxparent $name, ?wxID_SAVE),
+		  #nl wxStdDialogButtonSizer:addButton($name, $name #append _Save),
 		@}
-
 		#ifequal $Apply "1"
 		@{ 
-			#nl $name #append Apply = wxButton:new(#parentname, wxID_APPLY),
-			#nl wxStdDialogButtonSizer:addButton($name, #append Apply),
+		  #nl $name #append _Apply = wxButton:new(#wxparent $name, ?wxID_APPLY),
+		  #nl wxStdDialogButtonSizer:addButton($name, $name #append _Apply),
 		@}
-
 		#ifequal $No "1"
 		@{ 
-			#nl $name #append No = wxButton:new(#parentname, wxID_NO),
-			#nl wxStdDialogButtonSizer:addButton($name, #append No),
+		  #nl $name #append _No = wxButton:new(#wxparent $name, ?wxID_NO),
+		  #nl wxStdDialogButtonSizer:addButton($name, $name #append _No),
 		@}
-
 		#ifequal $Cancel "1"
 		@{ 
-			#nl $name #append Cancel = wxButton:new(#parentname, wxID_CANCEL),
-			#nl wxStdDialogButtonSizer:addButton($name, #append Cancel),
+		  #nl $name #append _Cancel = wxButton:new(#wxparent $name, ?wxID_CANCEL),
+		  #nl wxStdDialogButtonSizer:addButton($name, $name #append _Cancel),
 		@}
-
 		#ifequal $Help "1"
 		@{ 
-			#nl $name #append Help = wxButton:new(#parentname, wxID_HELP),
-			#nl wxStdDialogButtonSizer:addButton($name, #append Help),
+		  #nl $name #append _Help = wxButton:new(#wxparent $name, ?wxID_HELP),
+		  #nl wxStdDialogButtonSizer:addButton($name, $name #append _Help),
 		@}
-
 		#ifequal $ContextHelp "1"
-		@{ #nl %% wxContextHelpButton is not supported by Erlang
-		 #nl %% $name #append ContextHelp = wxContextHelpButton:new(#parentname, wxID_CONTEXT_HELP),
-		 #nl %% wxStdDialogButtonSizer:addButton($name, #append ContextHelp),
-		@} -->
-
-		#nl wxStdDialogButtonSizer:realize($name);
+		@{
+          #nl %% wxContextHelpButton is not supported by Erlang
+		  #nl %% $name #append _CtxHelp = wxContextHelpButton:new(#wxparent $name, ?wxID_CONTEXT_HELP),
+		  #nl %% wxStdDialogButtonSizer:addButton($name, $name #append _CtxHelp),
+		@}
+		#nl wxStdDialogButtonSizer:realize($name),
 	</template>
-    <template name="evt_connect_OnOKButtonClick">$name #append OK:Connect( wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnYesButtonClick">$name #append Yes:Connect(  wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnSaveButtonClick">$name #append Save:Connect(  wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnApplyButtonClick">$name #append Apply:Connect(  wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnNoButtonClick">$name #append No:Connect( wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnCancelButtonClick">$name #append Cancel:Connect(  wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnHelpButtonClick">$name #append Help:Connect(  wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
-    <template name="evt_connect_OnContextHelpButtonClick">$name #append ContextHelp:Connect( wxEVT_COMMAND_BUTTON_CLICKED, function(event)#nl %%implements  #handler#nl #skip #nl end )</template>
+    <template name="evt_connect_OnOKButtonClick">$name #append OK:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnYesButtonClick">$name #append Yes:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnSaveButtonClick">$name #append Save:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnApplyButtonClick">$name #append Apply:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnNoButtonClick">$name #append No:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnCancelButtonClick">$name #append Cancel:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnHelpButtonClick">$name #append Help:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
+    <template name="evt_connect_OnContextHelpButtonClick">$name #append ContextHelp:Connect(wxEVT_COMMAND_BUTTON_CLICKED, #option),</template>
   </templates>
 
 </codegen>

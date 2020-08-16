@@ -80,30 +80,14 @@ wxPanel( parent, id )
 
 ErlangPanel::~ErlangPanel()
 {
-	//delete m_icons;
 	AppData()->RemoveHandler( this->GetEventHandler() );
 }
 void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_ERLANG );
-	stc->SetKeyWords( 0, wxT( "abs after after and andalso arity atom atom_to_list band begin \
-                              big binary binary binary_to_float binary_to_integer binary_to_list \
-                              binary_to_list binary_to_term bit_size bits bitstring bitstring \
-                              bnot bool boolean bor bsl bsr bxor byte byte_size bytes case \
-                              catch char cond delete div do element end error export export_type \
-                              false float float_to_binary float_to_list for fun function get hd \
-                              identifier if import int integer integer_to_binary integer_to_list \
-                              iodata iolist is_atom is_binary is_bitstring is_boolean is_float \
-                              is_function is_integer is_list is_map is_number is_pid is_port \
-                              is_record is_reference is_tuple length let list list_to_atom \
-                              list_to_binary list_to_float list_to_integer list_to_tuple little \
-                              long map_size maybe_improper_list mfa module native neg_integer \
-                              nil no_return node non_neg_integer none nonempty_list \
-                              nonempty_string not number of or orelse pid port pos_integer put \
-                              receive record reference rem round self send short signed size \
-                              spec string struct term term_to_binary this throw timeout tl true \
-                              trunc try tuple tuple_size tuple_to_list type unsigned utf16 utf32 \
-                              utf8 when while xor" ) );
+	stc->SetKeyWords( 0, wxT( "and andalso band bnot bor bxor case end \
+	                          export false fun function if import include_lib \
+	                          module none not of or orelse true try xor" ) );
 
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
@@ -113,20 +97,27 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
+    // wxSTC's reference: https://docs.wxwidgets.org/3.0.0/stc_8h.html
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
-    stc->StyleSetBold( wxSTC_C_WORD, true );		// Strings
-    stc->StyleSetBold( wxSTC_C_COMMENTDOC, true );	// Numbers
-    stc->StyleSetForeground( wxSTC_C_WORD, *wxBLUE );
-    stc->StyleSetForeground( wxSTC_C_STRING, *wxRED );
-    stc->StyleSetForeground( wxSTC_C_STRINGEOL, *wxRED );
-    stc->StyleSetForeground( wxSTC_C_PREPROCESSOR, wxColour( 49, 106, 197 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENT, wxColour( 0, 192, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTLINE, wxColour( 0, 0, 128 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTDOC, wxColour( 0, 128, 0 ) );
-    stc->StyleSetForeground( wxSTC_C_COMMENTLINEDOC, wxColour( 128, 128, 128 ) );
-    stc->StyleSetForeground( wxSTC_C_NUMBER, *wxBLUE );
-	stc->SetUseTabs( true );
+//    stc->StyleSetBold( wxSTC_ERLANG_STRING, true );
+    stc->StyleSetBold( wxSTC_ERLANG_NUMBER, true );
+//    stc->StyleSetBold( wxSTC_ERLANG_VARIABLE, true );
+    stc->StyleSetBold( wxSTC_ERLANG_KEYWORD, true );
+
+    stc->StyleSetForeground( wxSTC_ERLANG_STRING, *wxRED );
+    stc->StyleSetForeground( wxSTC_ERLANG_NUMBER, *wxBLUE );
+    stc->StyleSetForeground( wxSTC_ERLANG_VARIABLE, wxColour( 0, 0, 128 ) );
+//    stc->StyleSetForeground( wxSTC_ERLANG_KEYWORD, *wxRED );
+//    stc->StyleSetForeground( wxSTC_ERLANG_OPERATOR, *wxRED );
+//    stc->StyleSetForeground( wxSTC_ERLANG_PREPROC, wxColour( 49, 106, 197 ) );
+    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT, *wxRED );
+    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 128, 128, 128) );
+    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_MODULE, wxColour( 128, 128, 128) );
+    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_DOC, wxColour( 128, 128, 128) );
+
+
+	stc->SetUseTabs( false );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
 	stc->SetBackSpaceUnIndents( true );

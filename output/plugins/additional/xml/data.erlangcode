@@ -28,261 +28,306 @@ Erlang code generation writen by
 
   <templates class="wxTreeCtrl">
     <template name="construction">
-    	$name = #class:new(#wxparent $name, [{id,$id }, {pos, $pos }, {size, $size }, {style, $style } #ifnotnull $window_name @{, {validator, ?wxDefaultValidator} @} ),
+        $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                             @{{id, $id }, @}
+                                             #ifnotnull $pos
+                                             @{{pos, $pos }, @}
+                                             #ifnotnull $size
+                                             @{{size, $size }, @}
+                                             #ifnotnull $style
+                                             @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+                                             #ifnull $style
+                                             @{ #ifnotnull $window_style
+                                                @{{style, $window_style } @}@}]),
     	#ifnotnull $window_style
-    	@{ #nl wxTreeCtrl:setWindowStyle($name, $window_style), @}
+    	@{ wxTreeCtrl:setWindowStyle($name, $window_style), @}
 	</template>
-	<template name="evt_connect_OnTreeGetInfo">$name:Connect( wx.wxEVT_COMMAND_TREE_GET_INFO, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTreeSetInfo">$name:Connect( wx.wxEVT_COMMAND_TREE_SET_INFO, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTreeItemGetTooltip">$name:Connect( wx.wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnTreeStateImageClick">$name:Connect( wx.wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnTreeGetInfo">#class:connect($name, wxEVT_COMMAND_TREE_GET_INFO, #option),</template>
+	<template name="evt_connect_OnTreeSetInfo">#class:connect($name, wxEVT_COMMAND_TREE_SET_INFO, #option),</template>
+	<template name="evt_connect_OnTreeItemGetTooltip">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_GETTOOLTIP, #option),</template>
+	<template name="evt_connect_OnTreeStateImageClick">#class:connect($name, wxEVT_COMMAND_TREE_STATE_IMAGE_CLICK, #option),</template>
   </templates>
 
 	<templates class="wxDataViewCtrl">
 		<template name="construction">
-			$name = #class:new( #wxparent $name, [{id,$id }, {pos, $pos }, {size, $size }]),
+			$name = #class:new( #wxparent $name, [#ifnotnull $id
+                                                   @{{id, $id }, @}
+                                                   #ifnotnull $pos
+                                                   @{{pos, $pos }, @}
+                                                   #ifnotnull $size
+                                                   @{{size, $size }@}]),
     		#ifnotnull $window_style
-    		@{ #nl wxDataViewCtrl:setWindowStyle($name, $window_style), @}
+    		@{ wxDataViewCtrl:setWindowStyle($name, $window_style), @}
 		</template>
-		<template name="evt_connect_OnDataViewCtrlSelectionChanged">-- event $name:OnDataViewCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemActivated">-- event $name:OnDataViewCtrlItemActivated isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemStartEditing">-- event $name:OnDataViewCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemEditingStarted">-- event $name:OnDataViewCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemEditingDone">-- event $name:OnDataViewCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemCollapsing">-- event $name:OnDataViewCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemCollapsed">-- event $name:OnDataViewCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemExpanding">-- event $name:OnDataViewCtrlItemExpanding isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemExpanded">-- event $name:OnDataViewCtrlItemExpanded isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemValueChanged">-- event $name:OnDataViewCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemContextMenu">-- event $name:OnDataViewCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlColumnHeaderClick">-- event $name:OnDataViewCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick">-- event $name:OnDataViewCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlColumnSorted">-- event $name:OnDataViewCtrlColumnSortedisn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlColumnReordered">-- event $name:OnDataViewCtrlColumnReordered isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemBeginDrag">-- event $name:OnDataViewCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemDropPossible">-- event $name:OnDataViewCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewCtrlItemDrop">-- event $name:OnDataViewCtrlItemDrop isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlSelectionChanged"> %% event $name:OnDataViewCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemActivated"> %% event $name:OnDataViewCtrlItemActivated isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemStartEditing"> %% event $name:OnDataViewCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemEditingStarted"> %% event $name:OnDataViewCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemEditingDone"> %% event $name:OnDataViewCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemCollapsing"> %% event $name:OnDataViewCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemCollapsed"> %% event $name:OnDataViewCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemExpanding"> %% event $name:OnDataViewCtrlItemExpanding isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemExpanded"> %% event $name:OnDataViewCtrlItemExpanded isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemValueChanged"> %% event $name:OnDataViewCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemContextMenu"> %% event $name:OnDataViewCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlColumnHeaderClick"> %% event $name:OnDataViewCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlColumnHeaderRightClick"> %% event $name:OnDataViewCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlColumnSorted"> %% event $name:OnDataViewCtrlColumnSortedisn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlColumnReordered"> %% event $name:OnDataViewCtrlColumnReordered isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemBeginDrag"> %% event $name:OnDataViewCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemDropPossible"> %% event $name:OnDataViewCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewCtrlItemDrop"> %% event $name:OnDataViewCtrlItemDrop isn't currently supported by wx in Erlang</template>
 	</templates>
 
 	<templates class="wxDataViewTreeCtrl">
 		<template name="construction">
-			$name = #class:new( #wxparent $name, [{id,$id }, {pos, $pos }, {size, $size }]),
+			$name = #class:new( #wxparent $name, [#ifnotnull $id
+                                                   @{{id, $id }, @}
+                                                   #ifnotnull $pos
+                                                   @{{pos, $pos }, @}
+                                                   #ifnotnull $size
+                                                   @{{size, $size }@}]),
     		#ifnotnull $window_style
-    		@{ #nl wxDataViewTreeCtrl:setWindowStyle($name, $window_style), @}
+    		@{ wxDataViewTreeCtrl:setWindowStyle($name, $window_style), @}
 		</template>
-		<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged">-- event $name:OnDataViewTreeCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemActivated">-- event $name:OnDataViewTreeCtrlItemActivated isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing">-- event $name:OnDataViewTreeCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted">-- event $name:OnDataViewTreeCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone">-- event $name:OnDataViewTreeCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing">-- event $name:OnDataViewTreeCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed">-- event $name:OnDataViewTreeCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemExpanding">-- event $name:OnDataViewTreeCtrlItemExpanding isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemExpanded">-- event $name:OnDataViewTreeCtrlItemExpanded isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged">-- event $name:OnDataViewTreeCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu">-- event $name:OnDataViewTreeCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick">-- event $name:OnDataViewTreeCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick">-- event $name:OnDataViewTreeCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlColumnSorted">-- event $name:OnDataViewTreeCtrlColumnSortedisn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlColumnReordered">-- event $name:OnDataViewTreeCtrlColumnReordered isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag">-- event $name:OnDataViewTreeCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible">-- event $name:OnDataViewTreeCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewTreeCtrlItemDrop">-- event $name:OnDataViewTreeCtrlItemDrop isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlSelectionChanged"> %% event $name:OnDataViewTreeCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemActivated"> %% event $name:OnDataViewTreeCtrlItemActivated isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemStartEditing"> %% event $name:OnDataViewTreeCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemEditingStarted"> %% event $name:OnDataViewTreeCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemEditingDone"> %% event $name:OnDataViewTreeCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsing"> %% event $name:OnDataViewTreeCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemCollapsed"> %% event $name:OnDataViewTreeCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemExpanding"> %% event $name:OnDataViewTreeCtrlItemExpanding isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemExpanded"> %% event $name:OnDataViewTreeCtrlItemExpanded isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemValueChanged"> %% event $name:OnDataViewTreeCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemContextMenu"> %% event $name:OnDataViewTreeCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderClick"> %% event $name:OnDataViewTreeCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnHeaderRightClick"> %% event $name:OnDataViewTreeCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnSorted"> %% event $name:OnDataViewTreeCtrlColumnSortedisn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlColumnReordered"> %% event $name:OnDataViewTreeCtrlColumnReordered isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemBeginDrag"> %% event $name:OnDataViewTreeCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemDropPossible"> %% event $name:OnDataViewTreeCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewTreeCtrlItemDrop"> %% event $name:OnDataViewTreeCtrlItemDrop isn't currently supported by wx in Erlang</template>
 	</templates>
 
 	<templates class="wxDataViewListCtrl">
 		<template name="construction">
-			$name = #class( #wxparent $name, [{id,$id }, {pos, $pos }, {size, $size }]),
+			$name = #class:new( #wxparent $name, [#ifnotnull $id
+                                                   @{{id, $id }, @}
+                                                   #ifnotnull $pos
+                                                   @{{pos, $pos }, @}
+                                                   #ifnotnull $size
+                                                   @{{size, $size }@}]),
     		#ifnotnull $window_style
-    		@{ #nl wxDataViewListCtrl:setWindowStyle($name, $window_style), @}
+    		@{ wxDataViewListCtrl:setWindowStyle($name, $window_style), @}
 		</template>
-		<template name="evt_connect_OnDataViewListCtrlSelectionChanged">-- event $name:OnDataViewListCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemActivated">-- event $name:OnDataViewListCtrlItemActivated isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemStartEditing">-- event $name:OnDataViewListCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemEditingStarted">-- event $name:OnDataViewListCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemEditingDone">-- event $name:OnDataViewListCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemCollapsing">-- event $name:OnDataViewListCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemCollapsed">-- event $name:OnDataViewListCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemExpanding">-- event $name:OnDataViewListCtrlItemExpanding isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemExpanded">-- event $name:OnDataViewListCtrlItemExpanded isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemValueChanged">-- event $name:OnDataViewListCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemContextMenu">-- event $name:OnDataViewListCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick">-- event $name:OnDataViewListCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick">-- event $name:OnDataViewListCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlColumnSorted">-- event $name:OnDataViewListCtrlColumnSortedisn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlColumnReordered">-- event $name:OnDataViewListCtrlColumnReordered isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemBeginDrag">-- event $name:OnDataViewListCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemDropPossible">-- event $name:OnDataViewListCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
-		<template name="evt_connect_OnDataViewListCtrlItemDrop">-- event $name:OnDataViewListCtrlItemDrop isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlSelectionChanged"> %% event $name:OnDataViewListCtrlSelectionChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemActivated"> %% event $name:OnDataViewListCtrlItemActivated isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemStartEditing"> %% event $name:OnDataViewListCtrlItemStartEditing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemEditingStarted"> %% event $name:OnDataViewListCtrlItemEditingStarted isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemEditingDone"> %% event $name:OnDataViewListCtrlItemEditingDone isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemCollapsing"> %% event $name:OnDataViewListCtrlItemCollapsing isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemCollapsed"> %% event $name:OnDataViewListCtrlItemCollapsed isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemExpanding"> %% event $name:OnDataViewListCtrlItemExpanding isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemExpanded"> %% event $name:OnDataViewListCtrlItemExpanded isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemValueChanged"> %% event $name:OnDataViewListCtrlItemValueChanged isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemContextMenu"> %% event $name:OnDataViewListCtrlItemContextMenu isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnHeaderClick"> %% event $name:OnDataViewListCtrlColumnHeaderClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnHeaderRightClick"> %% event $name:OnDataViewListCtrlColumnHeaderRightClick isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnSorted"> %% event $name:OnDataViewListCtrlColumnSortedisn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlColumnReordered"> %% event $name:OnDataViewListCtrlColumnReordered isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemBeginDrag"> %% event $name:OnDataViewListCtrlItemBeginDrag isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemDropPossible"> %% event $name:OnDataViewListCtrlItemDropPossible isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnDataViewListCtrlItemDrop"> %% event $name:OnDataViewListCtrlItemDrop isn't currently supported by wx in Erlang</template>
 	</templates>
 
 	<templates class="dataViewListColumn">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
 		</template>
 	</templates>
 
 	<templates class="wxDataViewColumn">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
 		</template>
 	</templates>
 
 	<templates class="wxTreeListCtrl">
 		<template name="construction">
-			$name = #class:new(#wxparent $name, [{id,$id }, {pos, $pos }, {size, $size }, {style, $style } #ifnotnull $window_name @{, {validator, ?wxDefaultValidator} @} ),
+            $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                                 @{{id, $id }, @}
+                                                 #ifnotnull $pos
+                                                 @{{pos, $pos }, @}
+                                                 #ifnotnull $size
+                                                 @{{size, $size }, @}
+                                                 #ifnotnull $style
+                                                 @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                 #ifnull $style
+                                                 @{ #ifnotnull $window_style
+                                                    @{{style, $window_style } @}@}]),
 			#ifnotnull $window_style
-			@{ #nl wxTreeCtrl:setWindowStyle($name, $window_style), @}
+			@{ wxTreeCtrl:setWindowStyle($name, $window_style), @}
 		</template>
-		<template name="evt_connect_OnTreelistSelectionChanged">$name:Connect( wx.wxEVT_TREELIST_SELECTION_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistItemExpanding">$name:Connect( wx.wxEVT_TREELIST_ITEM_EXPANDING, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistItemExpanded">$name:Connect( wx.wxEVT_TREELIST_ITEM_EXPANDED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistItemChecked">$name:Connect( wx.wxEVT_TREELIST_ITEM_CHECKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistItemActivated">$name:Connect( wx.wxEVT_TREELIST_ITEM_ACTIVATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistItemContextMenu">$name:Connect( wx.wxEVT_TREELIST_ITEM_CONTEXT_MENU, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-		<template name="evt_connect_OnTreelistColumnSorted">$name:Connect( wx.wxEVT_TREELIST_COLUMN_SORTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_connect_OnTreelistSelectionChanged">#class:connect($name, wxEVT_TREELIST_SELECTION_CHANGED, #option),</template>
+		<template name="evt_connect_OnTreelistItemExpanding">#class:connect($name, wxEVT_TREELIST_ITEM_EXPANDING, #option),</template>
+		<template name="evt_connect_OnTreelistItemExpanded">#class:connect($name, wxEVT_TREELIST_ITEM_EXPANDED, #option),</template>
+		<template name="evt_connect_OnTreelistItemChecked">#class:connect($name, wxEVT_TREELIST_ITEM_CHECKED, #option),</template>
+		<template name="evt_connect_OnTreelistItemActivated">#class:connect($name, wxEVT_TREELIST_ITEM_ACTIVATED, #option),</template>
+		<template name="evt_connect_OnTreelistItemContextMenu">#class:connect($name, wxEVT_TREELIST_ITEM_CONTEXT_MENU, #option),</template>
+		<template name="evt_connect_OnTreelistColumnSorted">#class:connect($name, wxEVT_TREELIST_COLUMN_SORTED, #option),</template>
 	</templates>
 
 	<templates class="wxTreeListCtrlColumn">
-		<template name="column_add">wxTreeListCtrlColumn:appendColumn(#parent $name, $width, $alignment, $flag )</template>
+		<template name="column_add">wxTreeListCtrlColumn:appendColumn(#parent $name, $width, $alignment, $flag)</template>
 	</templates>
 
   <templates class="wxCheckListBox">
 	<template name="construction">
-		$name #append Choices = {$choices} #nl
-		$name = #class:new(#wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+        #ifnotnull $choices
+        @{ $name #append _Opts = [$choices], #nl @}
+        $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+		                                          @{{pos, $pos }, @}
+		                                          #ifnotnull $size
+		                                          @{{size, $size }, @}
+		                                          #ifnotnull $choices
+		                                          @{{choices, $name #append _Opts}, @}
+		                                          #ifnotnull $style
+		                                          @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+		                                          #ifnull $style
+		                                          @{ #ifnotnull $window_style
+		                                             @{{style, $window_style } @}@}]),
+	 	#ifnotequal $validator_type "wxDefaultValidator"
+	 	@{ %% Validator is not implemented for Erlang code generator @}
 	</template>
-	<template name="evt_connect_OnCheckListBoxToggled">$name:Connect( wx.wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnCheckListBox">$name:Connect( wx.wxEVT_COMMAND_LISTBOX_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnCheckListBoxDClick">$name:Connect( wx.wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="evt_connect_OnCheckListBoxToggled">#class:connect($name, wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, #option),</template>
+	<template name="evt_connect_OnCheckListBox">#class:connect($name, wxEVT_COMMAND_LISTBOX_SELECTED, #option),</template>
+	<template name="evt_connect_OnCheckListBoxDClick">#class:connect($name, wxEVT_COMMAND_LISTBOX_DOUBLECLICKED, #option),</template>
   </templates>
 
   <templates class="wxGrid">
-	<template name="construction">$name = #class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @} )</template>
-	<template name="settings">
-    	#nl @-- Grid
-    	#nl $name:CreateGrid( $rows, $cols )
-		#nl $name:EnableEditing( $editing )
-		#nl $name:EnableGridLines( $grid_lines )
-		#ifnotnull $grid_line_color
-		@{
-			#nl $name:SetGridLineColour( $grid_line_color )
-		@}
-		#nl $name:EnableDragGridSize( $drag_grid_size )
-		#nl $name:SetMargins( $margin_width, $margin_height )
-		#nl
-		#nl @-- Columns
-		#foreach $column_sizes
-		@{ $name:SetColSize( #npred, #pred ) @}
-		#ifnotequal $autosize_cols "0"
-		@{
-			#nl $name:AutoSizeColumns()
-		@}
-		#nl $name:EnableDragColSize( $drag_col_size )
-		#nl $name:SetColLabelSize( $col_label_size )
-		#foreach $col_label_values
-		@{ $name:SetColLabelValue( #npred, #pred ) @}
-		#nl $name:SetColLabelAlignment( $col_label_horiz_alignment, $col_label_vert_alignment )
-		#nl
-		#nl @-- Rows
-		#foreach $row_sizes
-		@{ $name:SetRowSize( #npred, #pred ) @}
-		#ifnotequal $autosize_rows "0"
-		@{
-			#nl $name:AutoSizeRows()
-		@}
-		#nl $name:EnableDragRowSize( $drag_row_size )
-		#nl $name:SetRowLabelSize( $row_label_size )
-		#foreach $row_label_values
-		@{ $name:SetRowLabelValue( #npred, #pred ) @}
-		#nl $name:SetRowLabelAlignment( $row_label_horiz_alignment, $row_label_vert_alignment )
-		#nl
-		#nl @-- Label Appearance
-		#ifnotnull $label_bg
-		@{
-			#nl $name:SetLabelBackgroundColour( $label_bg )
-		@}
-		#ifnotnull $label_font
-		@{
-			#nl $name:SetLabelFont( $label_font )
-		@}
-		#ifnotnull $label_text
-		@{
-			#nl $name:SetLabelTextColour( $label_text )
-		@}
-		#nl
-		#nl @-- Cell Defaults
-		#ifnotnull $cell_bg
-		@{
-			#nl $name:SetDefaultCellBackgroundColour( $cell_bg )
-		@}
-		#ifnotnull $cell_text
-		@{
-			#nl $name:SetDefaultCellTextColour( $cell_text )
-		@}
-		#ifnotnull $cell_font
-		@{
-			#nl $name:SetDefaultCellFont( $cell_font )
-		@}
-		#nl $name:SetDefaultCellAlignment( $cell_horiz_alignment, $cell_vert_alignment )
+	<template name="construction">
+        $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+                                                  @{{pos, $pos }, @}
+                                                  #ifnotnull $size
+                                                  @{{size, $size }, @}
+                                                  #ifnotnull $window_style
+                                                  @{{style, $window_style }@}]),
     </template>
-	<template name="evt_connect_OnGridCellLeftClick">$name:Connect( wx.wxEVT_GRID_CELL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCellRightClick">$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCellLeftDClick">$name:Connect( wx.wxEVT_GRID_CELL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCellRightDClick">$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridLabelLeftClick">$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridLabelRightClick">$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridLabelLeftDClick">$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridLabelRightDClick">$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCellChange">$name:Connect( wx.wxEVT_GRID_CELL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridSelectCell">$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridEditorHidden">$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridEditorShown">$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellLeftClick">$name:Connect( wx.wxEVT_GRID_CELL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellRightClick">$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellLeftDClick">$name:Connect( wx.wxEVT_GRID_CELL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellRightDClick">$name:Connect( wx.wxEVT_GRID_CELL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdLabelLeftClick">$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdLabelRightClick">$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_CLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdLabelLeftDClick">$name:Connect( wx.wxEVT_GRID_LABEL_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdLabelRightDClick">$name:Connect( wx.wxEVT_GRID_LABEL_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdCellChange">$name:Connect( wx.wxEVT_GRID_CELL_CHANGED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdSelectCell">$name:Connect( wx.wxEVT_GRID_SELECT_CELL, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdEditorHidden">$name:Connect( wx.wxEVT_GRID_EDITOR_HIDDEN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdEditorShown">$name:Connect( wx.wxEVT_GRID_EDITOR_SHOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridColSize">$name:Connect( wx.wxEVT_GRID_COL_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridRowSize">$name:Connect( wx.wxEVT_GRID_ROW_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdColSize">$name:Connect( wx.wxEVT_GRID_COL_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdRowSize">$name:Connect( wx.wxEVT_GRID_ROW_SIZE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridRangeSelect">$name:Connect( wx.wxEVT_GRID_RANGE_SELECT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdRangeSelect">$name:Connect( wx.wxEVT_GRID_RANGE_SELECT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridEditorCreated">$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
-	<template name="evt_connect_OnGridCmdEditorCreated">$name:Connect( wx.wxEVT_GRID_EDITOR_CREATED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+	<template name="settings">
+    	#class:createGrid($name, $rows, $cols, [{selmode, ?wxGridSelectCells}]),
+    	#ifnotequal $editing "1"
+		@{ #nl #class:enableEditing($name, $editing), @}
+    	#ifnotequal $grid_lines "1"
+		@{ #nl #class:enableGridLines($name, $grid_lines), @}
+		#ifnotnull $grid_line_color
+		@{ #nl #class:setGridLineColour($name, $grid_line_color), @}
+    	#ifnotequal $drag_grid_size "0"
+		@{ #nl #class:enableDragGridSize($name, $drag_grid_size), @}
+    	#ifequal $margin_width "0"
+    	@{ #ifnotequal $margin_height "0"
+		   @{ #nl #class:setMargins($name, $margin_width, $margin_height), @} @}
+    	#ifnotequal $margin_width "0"
+		@{ #nl #class:setMargins($name, $margin_width, $margin_height), @}
+
+		#foreach $column_sizes
+		@{ #class:setColSize($name, #npred, #pred), @}
+		#ifnotequal $autosize_cols "0"
+		@{ #nl #class:autoSizeColumns($name), @}
+    	#ifnotequal $drag_col_move "0"
+		@{ #nl %% #class:enableDragColMove($name, $drag_col_move) is not supported by Erlang @}
+    	#ifnotequal $drag_col_size "1"
+		@{ #nl #class:enableDragColSize($name, $drag_col_size), @}
+    	#ifnotequal $col_label_size "1"
+		@{ #nl #class:setColLabelSize($name, $col_label_size), @}
+		#foreach $col_label_values
+		@{ #class:setColLabelValue($name, #npred, #pred), @}
+		#nl #class:setColLabelAlignment($name, $col_label_horiz_alignment, $col_label_vert_alignment )
+
+		#foreach $row_sizes
+		@{ #class:setRowSize($name, #npred, #pred), @}
+		#ifnotequal $autosize_rows "0"
+		@{ #nl #class:autoSizeRows($name), @}
+		#ifnotequal $drag_row_size "1"
+		@{ #nl #class:enableDragRowSize($name, $drag_row_size), @}
+		#ifnotequal $row_label_size "wxGRID_AUTOSIZE"
+		@{ #nl #class:setRowLabelSize($name, $row_label_size), @}
+		#foreach $row_label_values
+		@{ #class:setRowLabelValue($name, #npred, #pred), @}
+		#nl #class:setRowLabelAlignment($name, $row_label_horiz_alignment, $row_label_vert_alignment),
+
+		#ifnotnull $label_bg
+		@{ #nl #class:setLabelBackgroundColour($name, $label_bg), @}
+		#ifnotnull $label_font
+		@{ #nl #class:setLabelFont($name, $label_font), @}
+		#ifnotnull $label_text
+		@{ #nl #class:setLabelTextColour($name, $label_text), @}
+
+		#ifnotnull $cell_bg
+		@{ #nl #class:setDefaultCellBackgroundColour($name, $cell_bg), @}
+		#ifnotnull $cell_text
+		@{ #nl #class:setDefaultCellTextColour($name, $cell_text), @}
+		#ifnotnull $cell_font
+		@{ #nl #class:setDefaultCellFont($name, $cell_font), @}
+		#nl #class:setDefaultCellAlignment($name, $cell_horiz_alignment, $cell_vert_alignment)
+    </template>
+	<template name="evt_connect_OnGridCellLeftClick">#class:connect($name, wxEVT_GRID_CELL_LEFT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCellRightClick">#class:connect($name, wxEVT_GRID_CELL_RIGHT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCellLeftDClick">#class:connect($name, wxEVT_GRID_CELL_LEFT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCellRightDClick">#class:connect($name, wxEVT_GRID_CELL_RIGHT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridLabelLeftClick">#class:connect($name, wxEVT_GRID_LABEL_LEFT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridLabelRightClick">#class:connect($name, wxEVT_GRID_LABEL_RIGHT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridLabelLeftDClick">#class:connect($name, wxEVT_GRID_LABEL_LEFT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridLabelRightDClick">#class:connect($name, wxEVT_GRID_LABEL_RIGHT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCellChange">#class:connect($name, wxEVT_GRID_CELL_CHANGED, #option),</template>
+	<template name="evt_connect_OnGridSelectCell">#class:connect($name, wxEVT_GRID_SELECT_CELL, #option),</template>
+	<template name="evt_connect_OnGridEditorHidden">#class:connect($name, wxEVT_GRID_EDITOR_HIDDEN, #option),</template>
+	<template name="evt_connect_OnGridEditorShown">#class:connect($name, wxEVT_GRID_EDITOR_SHOWN, #option),</template>
+	<template name="evt_connect_OnGridCmdCellLeftClick">#class:connect($name, wxEVT_GRID_CELL_LEFT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdCellRightClick">#class:connect($name, wxEVT_GRID_CELL_RIGHT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdCellLeftDClick">#class:connect($name, wxEVT_GRID_CELL_LEFT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdCellRightDClick">#class:connect($name, wxEVT_GRID_CELL_RIGHT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdLabelLeftClick">#class:connect($name, wxEVT_GRID_LABEL_LEFT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdLabelRightClick">#class:connect($name, wxEVT_GRID_LABEL_RIGHT_CLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdLabelLeftDClick">#class:connect($name, wxEVT_GRID_LABEL_LEFT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdLabelRightDClick">#class:connect($name, wxEVT_GRID_LABEL_RIGHT_DCLICK, #option),</template>
+	<template name="evt_connect_OnGridCmdCellChange">#class:connect($name, wxEVT_GRID_CELL_CHANGED, #option),</template>
+	<template name="evt_connect_OnGridCmdSelectCell">#class:connect($name, wxEVT_GRID_SELECT_CELL, #option),</template>
+	<template name="evt_connect_OnGridCmdEditorHidden">#class:connect($name, wxEVT_GRID_EDITOR_HIDDEN, #option),</template>
+	<template name="evt_connect_OnGridCmdEditorShown">#class:connect($name, wxEVT_GRID_EDITOR_SHOWN, #option),</template>
+	<template name="evt_connect_OnGridColSize">#class:connect($name, wxEVT_GRID_COL_SIZE, #option),</template>
+	<template name="evt_connect_OnGridRowSize">#class:connect($name, wxEVT_GRID_ROW_SIZE, #option),</template>
+	<template name="evt_connect_OnGridCmdColSize">#class:connect($name, wxEVT_GRID_COL_SIZE, #option),</template>
+	<template name="evt_connect_OnGridCmdRowSize">#class:connect($name, wxEVT_GRID_ROW_SIZE, #option),</template>
+	<template name="evt_connect_OnGridRangeSelect">#class:connect($name, wxEVT_GRID_RANGE_SELECT, #option),</template>
+	<template name="evt_connect_OnGridCmdRangeSelect">#class:connect($name, wxEVT_GRID_RANGE_SELECT, #option),</template>
+	<template name="evt_connect_OnGridEditorCreated">#class:connect($name, wxEVT_GRID_EDITOR_CREATED, #option),</template>
+	<template name="evt_connect_OnGridCmdEditorCreated">#class:connect($name, wxEVT_GRID_EDITOR_CREATED, #option),</template>
   </templates>
 
   	<templates class="wxPropertyGrid">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
-			$name = wx.wxWindow( #wxparent $name )
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
+			$name = wxWindow( #wxparent $name )
 		</template>
 	</templates>
 
 	<templates class="wxPropertyGridManager">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
-			$name = wx.wxWindow( #wxparent $name )
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
+			$name = wxWindow( #wxparent $name )
 		</template>
 	</templates>
 
 	<templates class="propGridItem">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
 		</template>
 	</templates>
 
 	<templates class="propGridPage">
 		<template name="construction">
-			@# WARNING: wx in Erlang code generation isn't supported for this widget yet. #nl
+			@ %% WARNING: wx in Erlang code generation isn't supported for this widget yet.
 		</template>
 	</templates>
 
