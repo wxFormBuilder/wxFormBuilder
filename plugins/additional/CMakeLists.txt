@@ -1,19 +1,10 @@
-add_library(additional SHARED additional.cpp)
+set(PLUGIN_NAME "additional")
 
-target_link_libraries(additional
+add_library(${PLUGIN_NAME} SHARED additional.cpp)
+
+target_link_libraries(${PLUGIN_NAME}
     ticpp
     wxfb-plugin-interface
 )
 
-if(MSYS)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libadditional${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}/plugins/additional/
-    )
-elseif(UNIX)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libadditional${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}
-    )
-endif()
-    
+install_plugin(${PLUGIN_NAME})

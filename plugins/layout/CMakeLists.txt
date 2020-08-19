@@ -1,18 +1,10 @@
-add_library(layout SHARED layout.cpp)
+set(PLUGIN_NAME "layout")
 
-target_link_libraries(layout
+add_library(${PLUGIN_NAME} SHARED layout.cpp)
+
+target_link_libraries(${PLUGIN_NAME}
     ticpp
     wxfb-plugin-interface
 )
 
-if(MSYS)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/liblayout${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}/plugins/layout/
-    )
-elseif(UNIX)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/liblayout${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}
-    )
-endif()
+install_plugin(${PLUGIN_NAME})

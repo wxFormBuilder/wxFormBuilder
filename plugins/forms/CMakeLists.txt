@@ -1,18 +1,10 @@
-add_library(forms SHARED forms.cpp)
+set(PLUGIN_NAME "forms")
 
-target_link_libraries(forms
+add_library(${PLUGIN_NAME} SHARED forms.cpp)
+
+target_link_libraries(${PLUGIN_NAME}
     ticpp
     wxfb-plugin-interface
 )
 
-if(MSYS)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libforms${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}/plugins/forms/
-    )
-elseif(UNIX)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libforms${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}
-    )
-endif()
+install_plugin(${PLUGIN_NAME})

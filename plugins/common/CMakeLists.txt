@@ -1,18 +1,10 @@
-add_library(common SHARED common.cpp)
+set(PLUGIN_NAME "common")
 
-target_link_libraries(common
+add_library(${PLUGIN_NAME} SHARED common.cpp)
+
+target_link_libraries(${PLUGIN_NAME}
     ticpp
     wxfb-plugin-interface
 )
 
-if(MSYS)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libcommon${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}/plugins/common/
-    )
-elseif(UNIX)
-    install(FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/libcommon${CMAKE_SHARED_LIBRARY_SUFFIX}
-        DESTINATION ${INSTALL_LIB_DIR}
-    )
-endif()
+install_plugin(${PLUGIN_NAME})
