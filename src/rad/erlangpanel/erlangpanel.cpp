@@ -71,7 +71,6 @@ wxPanel( parent, id )
 
 	SetSizer( top_sizer );
 	SetAutoLayout( true );
-	//top_sizer->SetSizeHints( this );
 	top_sizer->Fit( this );
 	top_sizer->Layout();
 
@@ -85,9 +84,9 @@ ErlangPanel::~ErlangPanel()
 void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_ERLANG );
-	stc->SetKeyWords( 0, wxT( "and andalso band bnot bor bxor case end \
-	                          export false fun function if import include_lib \
-	                          module none not of or orelse true try xor" ) );
+	stc->SetKeyWords( 0, wxT( "and andalso band bnot bor bxor callback case create end \
+	                          export false fun function if import include_lib module \
+	                          none new not of ok or orelse true try undefined xor" ) );
 
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
@@ -97,26 +96,43 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	wxFont font(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 #endif
 
-    // wxSTC's reference: https://docs.wxwidgets.org/3.0.0/stc_8h.html
+	stc->StyleSetForeground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
+	stc->StyleSetBackground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
-//    stc->StyleSetBold( wxSTC_ERLANG_STRING, true );
-    stc->StyleSetBold( wxSTC_ERLANG_NUMBER, true );
-//    stc->StyleSetBold( wxSTC_ERLANG_VARIABLE, true );
     stc->StyleSetBold( wxSTC_ERLANG_KEYWORD, true );
-
-    stc->StyleSetForeground( wxSTC_ERLANG_STRING, *wxRED );
-    stc->StyleSetForeground( wxSTC_ERLANG_NUMBER, *wxBLUE );
-    stc->StyleSetForeground( wxSTC_ERLANG_VARIABLE, wxColour( 0, 0, 128 ) );
-//    stc->StyleSetForeground( wxSTC_ERLANG_KEYWORD, *wxRED );
-//    stc->StyleSetForeground( wxSTC_ERLANG_OPERATOR, *wxRED );
-//    stc->StyleSetForeground( wxSTC_ERLANG_PREPROC, wxColour( 49, 106, 197 ) );
-    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT, *wxRED );
-    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 128, 128, 128) );
-    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_MODULE, wxColour( 128, 128, 128) );
-    stc->StyleSetForeground( wxSTC_ERLANG_COMMENT_DOC, wxColour( 128, 128, 128) );
-
-
+    stc->StyleSetBold( wxSTC_ERLANG_NUMBER, true );
+    //stc->StyleSetBold( wxSTC_ERLANG_ATOM, true );
+    stc->StyleSetBold( wxSTC_ERLANG_PREPROC, true );
+    //stc->StyleSetBold( wxSTC_ERLANG_FUNCTION_NAME, true );
+    //stc->StyleSetBold( wxSTC_ERLANG_MACRO, true );  // ?wxAAAAAAA
+    // wxSTC's reference: https://docs.wxwidgets.org/3.0.0/stc_8h.html
+	if (!AppData()->IsDarkMode())
+	{
+		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour( 192, 0, 128));
+		stc->StyleSetForeground(wxSTC_ERLANG_STRING, *wxRED);
+ 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, *wxBLUE);
+ 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour(0, 128, 0));
+		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour(49, 106, 197));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour( 128, 128, 128));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour( 128, 128, 128));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 128, 128, 128));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour( 128, 128, 128));
+		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour(0, 0, 128) );
+	}
+	else
+	{
+		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour(221, 40, 103));
+		stc->StyleSetForeground(wxSTC_ERLANG_STRING, wxColour(23, 198, 163));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, wxColour( 0, 0, 186));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour(0, 192, 0));
+		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour(204, 129, 186));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour(98, 98, 98));
+		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour(104, 151, 187));
+	}
 	stc->SetUseTabs( false );
 	stc->SetTabWidth( 4 );
 	stc->SetTabIndents( true );
@@ -125,6 +141,7 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	stc->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
 	stc->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
 
+	stc->SetCaretForeground(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT));
 	stc->SetCaretWidth( 2 );
 	stc->SetReadOnly( true );
 }

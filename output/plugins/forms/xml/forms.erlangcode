@@ -27,45 +27,45 @@ Erlang code generation writen by
 <codegen language="Erlang">
 
 	<templates class="wxTopLevelWindow">
-		<template name="evt_connect_OnActivate">#class:connect($name, wxEVT_ACTIVATE, #option),</template>
-		<template name="evt_disconnect_OnActivate">$name:Disconnect(wxEVT_ACTIVATE),</template>
-		<template name="evt_connect_OnActivateApp">#class:connect($name, wxEVT_ACTIVATE_APP, #option),</template>
-		<template name="evt_disconnect_OnActivateApp">$name:Disconnect(wxEVT_ACTIVATE_APP),</template>
-		<template name="evt_connect_OnClose">#class:connect($name, wxEVT_CLOSE_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnClose">$name:Disconnect(wxEVT_CLOSE_WINDOW),</template>
-		<template name="evt_connect_OnHibernate">#class:connect($name, wxEVT_HIBERNATE, #option),</template>
-		<template name="evt_disconnect_OnHibernate">$name:Disconnect(wxEVT_HIBERNATE),</template>
-		<template name="evt_connect_OnIconize">#class:connect($name, wxEVT_ICONIZE, #option),</template>
-		<template name="evt_disconnect_OnIconize">$name:Disconnect(wxEVT_ICONIZE),</template>
-		<template name="evt_connect_OnMaximize">#class:connect($name, wxEVT_MAXIMIZE, #option),</template>
-		<template name="evt_disconnect_OnMaximize">$name:Disconnect(wxEVT_MAXIMIZE),</template>
-		<template name="evt_connect_OnMove">#class:connect($name, wxEVT_MOVE, #option),</template>
-		<template name="evt_disconnect_OnMove">$name:Disconnect(wxEVT_MOVE),</template>
-		<template name="evt_connect_OnMoving">#class:connect($name, wxEVT_MOVING, #option),</template>
-		<template name="evt_disconnect_OnMoving">$name:Disconnect(wxEVT_MOVING),</template>
-		<template name="evt_connect_OnMoveStart">#class:connect($name, wxEVT_MOVE_START, #option),</template>
-		<template name="evt_disconnect_OnMoveStart">$name:Disconnect(wxEVT_MOVE_START),</template>
-		<template name="evt_connect_OnMoveEnd">#class:connect($name, wxEVT_MOVE_END, #option),</template>
-		<template name="evt_disconnect_OnMoveEnd">$name:Disconnect(wxEVT_MOVE_END),</template>
-		<template name="evt_connect_OnShow">#class:connect($name, wxEVT_SHOW, #option),</template>
-		<template name="evt_disconnect_OnShow">$name:Disconnect(wxEVT_SHOW),</template>
-		<template name="evt_connect_OnIdle">#class:connect($name, wxEVT_IDLE, #option),</template>
-		<template name="evt_disconnect_OnIdle">$name:Disconnect(wxEVT_IDLE),</template>
+		<template name="evt_connect_OnActivate">#class:connect($name, activate, #option),</template>
+		<template name="evt_disconnect_OnActivate">#class:disconnect($name, activate, #option),</template>
+		<template name="evt_connect_OnActivateApp">#class:connect($name, activate_app, #option),</template>
+		<template name="evt_disconnect_OnActivateApp">#class:disconnect($name, activate_app, #option),</template>
+		<template name="evt_connect_OnClose">#class:connect($name, close_window, #option),</template>
+		<template name="evt_disconnect_OnClose">#class:disconnect($name, close_window, #option),</template>
+		<template name="evt_connect_OnHibernate">#class:connect($name, hibernate, #option),</template>
+		<template name="evt_disconnect_OnHibernate">#class:disconnect($name, hibernate, #option),</template>
+		<template name="evt_connect_OnIconize">#class:connect($name, iconize, #option),</template>
+		<template name="evt_disconnect_OnIconize">#class:disconnect($name, iconize, #option),</template>
+		<template name="evt_connect_OnMaximize">#class:connect($name, maximize, #option),</template>
+		<template name="evt_disconnect_OnMaximize">#class:disconnect($name, maximize, #option),</template>
+		<template name="evt_connect_OnMove">#class:connect($name, move, #option),</template>
+		<template name="evt_disconnect_OnMove">#class:disconnect($name, move, #option),</template>
+		<template name="evt_connect_OnMoving">%% event #class:wxEVT_MOVING isn't currently supportedby Erlang</template>
+		<template name="evt_disconnect_OnMoving">%% event #class:wxEVT_MOVING isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMoveStart">%% event #class:wxEVT_MOVE_START isn't currently supportedby Erlang</template>
+		<template name="evt_disconnect_OnMoveStart">%% event #class:wxEVT_MOVE_START isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMoveEnd">%% event #class:wxEVT_MOVE_END isn't currently supportedby Erlang</template>
+		<template name="evt_disconnect_OnMoveEnd">%% event #class:wxEVT_MOVE_END isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnShow">#class:connect($name, show, #option),</template>
+		<template name="evt_disconnect_OnShow">#class:disconnect($name, show, #option),</template>
+		<template name="evt_connect_OnIdle">#class:connect($name, idle, #option),</template>
+		<template name="evt_disconnect_OnIdle">#class:disconnect($name, idle, #option),</template>
 	</templates>
   
 	<templates class="AUI Events">
-		<template name="evt_connect_OnAuiPaneButton">#class:connect($name, wxaui.wxEVT_AUI_PANE_BUTTON, #option),</template>
-		<template name="evt_disconnect_OnAuiPaneButton">$name:Disconnect( wxaui.wxEVT_AUI_PANE_BUTTON),</template>
-		<template name="evt_connect_OnAuiPaneClose">#class:connect($name, wxaui.wxEVT_AUI_PANE_CLOSE, #option),</template>
-		<template name="evt_disconnect_OnAuiPaneClose">$name:Disconnect( wxaui.wxEVT_AUI_PANE_CLOSE),</template>
-		<template name="evt_connect_OnAuiPaneMaximize">#class:connect($name, wxaui.wxEVT_AUI_PANE_MAXIMIZE, #option),</template>
-		<template name="evt_disconnect_OnAuiPaneMaximize">$name:Disconnect( wxaui.wxEVT_AUI_PANE_MAXIMIZE),</template>
-		<template name="evt_connect_OnAuiPaneRestore">#class:connect($name, wxaui.wxEVT_AUI_PANE_RESTORE, #option),</template>
-		<template name="evt_disconnect_OnAuiPaneRestore">$name:Disconnect( wxaui.wxEVT_AUI_PANE_RESTORE),</template>
-		<template name="evt_connect_OnAuiPaneActivated">#class:connect($name, wxaui.wxEVT_AUI_PANE_ACTIVATED, #option),</template>
-		<template name="evt_disconnect_OnAuiPaneActivated">$name:Disconnect( wxaui.wxEVT_AUI_PANE_ACTIVATED),</template>
-		<template name="evt_connect_OnAuiRender">#class:connect($name, wxaui.wxEVT_AUI_RENDER, #option),</template>
-		<template name="evt_disconnect_OnAuiRender">$name:Disconnect( wxaui.wxEVT_AUI_RENDER),</template>
+		<template name="evt_connect_OnAuiPaneButton">#class:connect($name, aui_pane_button, #option),</template>
+		<template name="evt_disconnect_OnAuiPaneButton">#class:connect($name, aui_pane_button, #option),</template>
+		<template name="evt_connect_OnAuiPaneClose">#class:connect($name, aui_pane_close, #option),</template>
+		<template name="evt_disconnect_OnAuiPaneClose">#class:connect($name, aui_pane_close, #option),</template>
+		<template name="evt_connect_OnAuiPaneMaximize">#class:connect($name, aui_pane_maximize, #option),</template>
+		<template name="evt_disconnect_OnAuiPaneMaximize">#class:connect($name, aui_pane_maximize, #option),</template>
+		<template name="evt_connect_OnAuiPaneRestore">#class:connect($name, aui_pane_restore, #option),</template>
+		<template name="evt_disconnect_OnAuiPaneRestore">#class:connect($name, aui_pane_restore, #option),</template>
+		<template name="evt_connect_OnAuiPaneActivated">#class:connect($name, aui_pane_activated, #option),</template>
+		<template name="evt_disconnect_OnAuiPaneActivated">#class:connect($name, aui_pane_activated, #option),</template>
+		<template name="evt_connect_OnAuiRender">#class:connect($name, aui_render, #option),</template>
+		<template name="evt_disconnect_OnAuiRender">#class:connect($name, aui_render, #option),</template>
 	</templates>
 	
 	<templates class="Frame">
@@ -74,14 +74,14 @@ Erlang code generation writen by
 		</template>
 		<template name="cons_call">
 			wxFrame:new(wx:null(), $id, $title, [#ifnotnull $pos
-												 @{{pos, $pos }, @}
+												 @{{pos,$pos }, @}
 												 #ifnotnull $size
-												 @{{size, $size }, @}
+												 @{{size,$size }, @}
 												 #ifnotnull $style
-												 @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+												 @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
 												 #ifnull $style
 												 @{ #ifnotnull $window_style
-													@{{style, $window_style } @}@}]),
+													@{{style,$window_style } @}@}]),
 		</template>
 		<template name="destruction">
 			#ifequal $aui_managed "1"
@@ -92,13 +92,19 @@ Erlang code generation writen by
 			<!--@{import wxaui @ -->
 		</template>
 		<template name="settings">
-			wxWindow:setSizeHints($name, $minimum_size, $maximum_size),
+		    <!-- recommended by the wxWidgets documentation not to use "setSizeHints"
+			#ifnotnull $minimum_size
+			@{ #class:setMinSize($name, $minimum_size), #nl @}
 
-			#ifnotnull $window_extra_style
-			@{ wxWindow:setExtraStyle($name, $window_extra_style), #nl @}
+			#ifnotnull $maximum_size
+			@{ #class:setMaxSize($name, $maximum_size), #nl @}
 
 			#ifnotnull $extra_style
 			@{ wxWindow:setExtraStyle($name, $extra_style), #nl @}
+
+<!-- already defined on default.erlangcode
+			#ifnotnull $window_extra_style
+			@{ wxWindow:setExtraStyle($name, $window_extra_style), #nl @}
 
 			#ifnotnull $font
 			@{ wxWindow:setFont($name, $font), #nl @}
@@ -109,20 +115,17 @@ Erlang code generation writen by
 			#ifnotnull $bg
 			@{ wxWindow:setBackgroundColour($name, $bg), #nl @}
 
-			#ifequal $enabled "0"
-			@{ wxWindow:enable($name, $enabled), #nl @}
-
 			#ifequal $hidden "1"
 			@{ wxWindow:hide($name), #nl @}
 
 			#ifnotnull $tooltip
 			@{ wxWindow:setToolTip($name, $tooltip), #nl @}
-			
+-->
 			#ifequal $aui_managed "1"
 			@{ 
-				 $name.m_mgr = wxAuiManager:new([{managed_wnd, $name }
+				 $name.m_mgr = wxAuiManager:new([{managed_wnd,$name }
 				                @{ ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
-				                    , {flags, $aui_manager_style } @}
+				                    , {flags,$aui_manager_style } @}
                                 ]), #nl
 			@}
 		</template>
@@ -132,87 +135,56 @@ Erlang code generation writen by
 		  #ifnotnull $center
 			@{ wxWindow:centre($name, [{dir, $center }]), @}
 		</template>
-		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
-		<template name="evt_disconnect_OnChar">$name:Disconnect(wxEVT_CHAR),</template>
-		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect(wxEVT_ENTER_WINDOW),</template>
-		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
-		<template name="evt_disconnect_OnCharHook">$name:Disconnect(wxEVT_CHAR_HOOK),</template>
-		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
-		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect(wxEVT_ERASE_BACKGROUND),</template>
-		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
-		<template name="evt_disconnect_OnKeyDown">$name:Disconnect(wxEVT_KEY_DOWN),</template>
-		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
-		<template name="evt_disconnect_OnKeyUp">$name:Disconnect(wxEVT_KEY_UP),</template>
-		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnKillFocus">$name:Disconnect(wxEVT_KILL_FOCUS),</template>
-		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect(wxEVT_LEAVE_WINDOW),</template>
-		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect(wxEVT_LEFT_DCLICK),</template>
-		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>  
-		<template name="evt_disconnect_OnLeftDown">$name:Disconnect(wxEVT_LEFT_DOWN),</template>
-		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>  
-		<template name="evt_disconnect_OnLeftUp">$name:Disconnect(wxEVT_LEFT_UP),</template>
-		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect(wxEVT_MIDDLE_DCLICK),</template>
-		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
-		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect(wxEVT_MIDDLE_DOWN),</template>
-		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
-		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect(wxEVT_MIDDLE_UP),</template>
-		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux1DClick">$name:Disconnect(wxEVT_AUX1_DCLICK),</template>
-		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux1Down">$name:Disconnect(wxEVT_AUX1_DOWN),</template>
-		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
-		<template name="evt_disconnect_OnAux1Up">$name:Disconnect(wxEVT_AUX1_UP),</template>
-		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux2DClick">$name:Disconnect(wxEVT_AUX2_DCLICK),</template>
-		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux2Down">$name:Disconnect(wxEVT_AUX2_DOWN),</template>
-		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
-		<template name="evt_disconnect_OnAux2Up">$name:Disconnect(wxEVT_AUX2_UP),</template>
-		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
-		<template name="evt_disconnect_OnMotion">$name:Disconnect(wxEVT_MOTION),</template>
-		<template name="evt_connect_OnMouseEvents">#class:connect($name, wxEVT_MOUSE, #option),</template>
-		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect(wxEVT_MOUSE),</template>
-		<!--<template name="evt_connect_OnMouseEvents">
-			#class:connect($name, wxEVT_LEFT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOTION, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEAVE_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_ENTER_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOUSEWHEEL, #option),#nl
-		</template>-->
-		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
-		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect(wxEVT_MOUSEWHEEL),</template>
-		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
-		<template name="evt_disconnect_OnPaint">$name:Disconnect(wxEVT_PAINT),</template>
-		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnRightDClick">$name:Disconnect(wxEVT_RIGHT_DCLICK),</template>
-		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
-		<template name="evt_disconnect_OnRightDown">$name:Disconnect(wxEVT_RIGHT_DOWN),</template>
-		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
-		<template name="evt_disconnect_OnRightUp">$name:Disconnect(wxEVT_RIGHT_UP),</template>
-		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnSetFocus">$name:Disconnect(wxEVT_SET_FOCUS),</template>
-		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
-		<template name="evt_disconnect_OnSize">$name:Disconnect(wxEVT_SIZE),</template>
-		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
-		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect(wxEVT_UPDATE_UI),</template>
+		<template name="evt_connect_OnChar">#class:connect($name, char, #option),</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, char_hook, #option),</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, key_down, #option),</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, key_up, #option),</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, enter_window, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, leave_window, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, left_dclick, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, left_down, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, left_up, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, middle_dclick, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, middle_down, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, middle_up, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, right_dclick, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, right_down, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, right_up, #option),</template>
+		<template name="evt_connect_OnAux1DClick">%% event #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Down">%% event #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Up">%% event #class:wxEVT_AUX1_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2DClick">%% event #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Down">%% event #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Up">%% event #class:wxEVT_AUX2_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, motion, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, mousewheel, #option),</template>
+		<template name="evt_connect_OnMouseEvents">
+			#class:connect($name, left_down, #option), #nl
+			#class:connect($name, left_up, #option), #nl
+			#class:connect($name, middle_down, #option), #nl
+			#class:connect($name, middle_up, #option), #nl
+			#class:connect($name, right_down, #option), #nl
+			#class:connect($name, right_up, #option), #nl
+			%% #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX1_UP isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_UP isn't currently supportedby Erlang #nl
+			#class:connect($name, motion, #option), #nl
+			#class:connect($name, left_dclick, #option), #nl
+			#class:connect($name, middle_dclick, #option), #nl
+			#class:connect($name, right_dclick, #option), #nl
+			%% #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang #nl
+			#class:connect($name, leave_window, #option), #nl
+			#class:connect($name, enter_window, #option), #nl
+			#class:connect($name, mousewheel, #option), #nl
+		</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, set_focus, #option),</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, kill_focus, #option),</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, paint, #option),</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, erase_background, #option),</template>
+		<template name="evt_connect_OnSize">#class:connect($name, size, #option),</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, update_ui, #option),</template>
 	</templates>
 
 	<templates class="Panel">
@@ -221,22 +193,23 @@ Erlang code generation writen by
 		</template>
 		<template name="cons_call">
 			wxPanel:new(wx:null(), [#ifnotnull $id
-									@{{winid, $id }, @}
+									@{{winid,$id }, @}
 									#ifnotnull $pos
-									@{{pos, $pos }, @}
+									@{{pos,$pos }, @}
 									#ifnotnull $size
-									@{{size, $size }, @}
+									@{{size,$size }, @}
 									#ifnotnull $style
-									@{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+									@{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
 									#ifnull $style
 									@{ #ifnotnull $window_style
-									   @{{style, $window_style } @}@}]),
+									   @{{style,$window_style } @}@}]),
 		</template>
 		<template name="destruction">
 			#ifequal $aui_managed "1"
 			@{ wxAuiManager:unInit($name.m_mgr), #nl @}
 		</template>
 		<template name="settings">
+<!-- already defined on "default.erlangcode" for the class wxWindow
 			#ifnotnull $window_extra_style
 			@{ wxWindow:setExtraStyle($name, $window_extra_style), #nl @}
 
@@ -250,7 +223,7 @@ Erlang code generation writen by
 			@{ wxWindow:setBackgroundColour($name, $bg), #nl @}
 
 			#ifequal $enabled "0"
-			@{ wxWindow:enable($name, $enabled), #nl @}
+			@{ wxWindow:enable($name, [{enable,$enabled }]), #nl @}
 
 			#ifequal $hidden "1"
 			@{ wxWindow:hide($name), #nl @}
@@ -263,7 +236,7 @@ Erlang code generation writen by
 			
 			#ifnotnull $maximum_size
 			@{ wxWindow:setMaxSize($name, $maximum_size), #nl @}
-
+-->
 			#ifequal $aui_managed "1"
 			@{
 				 $name.m_mgr = wxAuiManager:new([{managed_wnd, $name }
@@ -276,89 +249,57 @@ Erlang code generation writen by
 		  #ifequal $aui_managed "1"
 			@{ wxAuiManager:update($name.m_mgr), @}
 		</template>
-		<template name="evt_connect_OnInitDialog">#class:connect($name, wxEVT_INIT_DIALOG, #option),</template>
-		<template name="evt_disconnect_OnInitDialog">$name:Disconnect(wxEVT_INIT_DIALOG),</template>
-		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
-		<template name="evt_disconnect_OnChar">$name:Disconnect(wxEVT_CHAR),</template>
-		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect(wxEVT_ENTER_WINDOW),</template>
-		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
-		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect(wxEVT_ERASE_BACKGROUND),</template>
-		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
-		<template name="evt_disconnect_OnCharHook">$name:Disconnect(wxEVT_CHAR_HOOK),</template>
-		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
-		<template name="evt_disconnect_OnKeyDown">$name:Disconnect(wxEVT_KEY_DOWN),</template>
-		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
-		<template name="evt_disconnect_OnKeyUp">$name:Disconnect(wxEVT_KEY_UP),</template>
-		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnKillFocus">$name:Disconnect(wxEVT_KILL_FOCUS),</template>
-		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect(wxEVT_LEAVE_WINDOW),</template>
-		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect(wxEVT_LEFT_DCLICK),</template>
-		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>  
-		<template name="evt_disconnect_OnLeftDown">$name:Disconnect(wxEVT_LEFT_DOWN),</template>
-		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>  
-		<template name="evt_disconnect_OnLeftUp">$name:Disconnect(wxEVT_LEFT_UP),</template>
-		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect(wxEVT_MIDDLE_DCLICK),</template>
-		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
-		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect(wxEVT_MIDDLE_DOWN),</template>
-		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
-		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect(wxEVT_MIDDLE_UP),</template>
-		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux1DClick">$name:Disconnect(wxEVT_AUX1_DCLICK),</template>
-		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux1Down">$name:Disconnect(wxEVT_AUX1_DOWN),</template>
-		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
-		<template name="evt_disconnect_OnAux1Up">$name:Disconnect(wxEVT_AUX1_UP),</template>
-		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux2DClick">$name:Disconnect(wxEVT_AUX2_DCLICK),</template>
-		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux2Down">$name:Disconnect(wxEVT_AUX2_DOWN),</template>
-		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
-		<template name="evt_disconnect_OnAux2Up">$name:Disconnect(wxEVT_AUX2_UP),</template>
-		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
-		<template name="evt_disconnect_OnMotion">$name:Disconnect(wxEVT_MOTION),</template>
-		<template name="evt_connect_OnMouseEvents">#class:connect($name, wxEVT_MOUSE, #option),</template>
-		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect(wxEVT_MOUSE),</template>
-		<!--<template name="evt_connect_OnMouseEvents">
-			#class:connect($name, wxEVT_LEFT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOTION, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEAVE_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_ENTER_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOUSEWHEEL, #option),#nl
-		</template>-->
-		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
-		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect(wxEVT_MOUSEWHEEL),</template>
-		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
-		<template name="evt_disconnect_OnPaint">$name:Disconnect(wxEVT_PAINT),</template>
-		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnRightDClick">$name:Disconnect(wxEVT_RIGHT_DCLICK),</template>
-		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
-		<template name="evt_disconnect_OnRightDown">$name:Disconnect(wxEVT_RIGHT_DOWN),</template>
-		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
-		<template name="evt_disconnect_OnRightUp">$name:Disconnect(wxEVT_RIGHT_UP),</template>
-		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnSetFocus">$name:Disconnect(wxEVT_SET_FOCUS),</template>
-		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
-		<template name="evt_disconnect_OnSize">$name:Disconnect(wxEVT_SIZE),</template>
-		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
-		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect(wxEVT_UPDATE_UI),</template>
+		<template name="evt_connect_OnInitDialog">#class:connect($name, init_dialog, #option),</template>
+		<template name="evt_connect_OnChar">#class:connect($name, char, #option),</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, char_hook, #option),</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, key_down, #option),</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, key_up, #option),</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, enter_window, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, leave_window, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, left_dclick, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, left_down, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, left_up, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, middle_dclick, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, middle_down, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, middle_up, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, right_dclick, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, right_down, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, right_up, #option),</template>
+		<template name="evt_connect_OnAux1DClick">%% event #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Down">%% event #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Up">%% event #class:wxEVT_AUX1_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2DClick">%% event #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Down">%% event #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Up">%% event #class:wxEVT_AUX2_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, motion, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, mousewheel, #option),</template>
+		<template name="evt_connect_OnMouseEvents">
+			#class:connect($name, left_down, #option), #nl
+			#class:connect($name, left_up, #option), #nl
+			#class:connect($name, middle_down, #option), #nl
+			#class:connect($name, middle_up, #option), #nl
+			#class:connect($name, right_down, #option), #nl
+			#class:connect($name, right_up, #option), #nl
+			%% #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX1_UP isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_UP isn't currently supportedby Erlang #nl
+			#class:connect($name, motion, #option), #nl
+			#class:connect($name, left_dclick, #option), #nl
+			#class:connect($name, middle_dclick, #option), #nl
+			#class:connect($name, right_dclick, #option), #nl
+			%% #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang #nl
+			#class:connect($name, leave_window, #option), #nl
+			#class:connect($name, enter_window, #option), #nl
+			#class:connect($name, mousewheel, #option), #nl
+		</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, set_focus, #option),</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, kill_focus, #option),</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, paint, #option),</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, erase_background, #option),</template>
+		<template name="evt_connect_OnSize">#class:connect($name, size, #option),</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, update_ui, #option),</template>
 	</templates>
 
 
@@ -368,27 +309,33 @@ Erlang code generation writen by
 		</template>
 		<template name="cons_call">
 			wxDialog:new(wx:null(), $id, $title, [#ifnotnull $pos
-												  @{{pos, $pos }, @}
+												  @{{pos,$pos }, @}
 												  #ifnotnull $size
-												  @{{size, $size }, @}
+												  @{{size,$size }, @}
 												  #ifnotnull $style
-												  @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+												  @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
 												  #ifnull $style
 												  @{ #ifnotnull $window_style
-													 @{{style, $window_style } @}@}]),
+													 @{{style,$window_style } @}@}]),
 		</template>
 		<template name="destruction">
 			#ifequal $aui_managed "1"
 			@{ wxAuiManager:unInit($name.m_mgr), #nl @}
 		</template>
 		<template name="settings">
-			wxWindow:setSizeHints($name, $minimum_size, $maximum_size), #nl
-			
-			#ifnotnull $window_extra_style
-			@{ wxWindow:setExtraStyle($name, wxWindow:getExtraStyle($name) + $window_extra_style), #nl @}
+		    <!-- recommended by the wxWidgets documentation not to use "setSizeHints"
+			#ifnotnull $minimum_size
+			@{ #class:setMinSize($name, $minimum_size), #nl @}
+
+			#ifnotnull $maximum_size
+			@{ #class:setMaxSize($name, $maximum_size), #nl @}
 
 			#ifnotnull $extra_style
 			@{ wxWindow:setExtraStyle($name, $extra_style), #nl @}
+
+<!-- already defined on "default.erlangcode" for the class wxWindow
+			#ifnotnull $window_extra_style
+			@{ wxWindow:setExtraStyle($name, wxWindow:getExtraStyle($name) + $window_extra_style), #nl @}
 
 			#ifnotnull $font
 			@{ wxWindow:setFont($name, $font), #nl @}
@@ -400,19 +347,19 @@ Erlang code generation writen by
 			@{ wxWindow:setBackgroundColour($name, $bg), #nl @}
 
 			#ifequal $enabled "0"
-			@{ wxWindow:enable($name, $enabled), #nl @}
+			@{ wxWindow:enable($name, [{enable,$enabled }]), #nl @}
 
 			#ifequal $hidden "1"
 			@{ wxWindow:hide($name), #nl @}
 
 			#ifnotnull $tooltip
 			@{ wxWindow:setToolTip($name, $tooltip), #nl @}
-
+-->
 			#ifequal $aui_managed "1"
 			@{ 
-				 $name.m_mgr = wxAuiManager:new([{managed_wnd, $name }
+				 $name.m_mgr = wxAuiManager:new([{managed_wnd,$name }
 				                @{ ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
-				                    , {flags, $aui_manager_style } @}
+				                    , {flags,$aui_manager_style } @}
                                 ]), #nl
 			@}
 		</template>
@@ -420,116 +367,92 @@ Erlang code generation writen by
 		  #ifequal $aui_managed "1"
 			@{ wxAuiManager:update($name.m_mgr), @}
 		  #ifnotnull $center
-			@{ wxWindow:centre($name, [{dir, $center }]), @}
+			@{ wxWindow:centre($name, [{dir,$center }]), @}
 		</template>
-		<template name="evt_connect_OnInitDialog">#class:connect($name, wxEVT_INIT_DIALOG, #option),</template>
-		<template name="evt_disconnect_OnInitDialog">$name:Disconnect(wxEVT_INIT_DIALOG),</template>
-		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
-		<template name="evt_disconnect_OnChar">$name:Disconnect(wxEVT_CHAR),</template>
-		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect(wxEVT_ENTER_WINDOW),</template>
-		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
-		<template name="evt_disconnect_OnCharHook">$name:Disconnect(wxEVT_CHAR_HOOK),</template>
-		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
-		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect(wxEVT_ERASE_BACKGROUND),</template>
-		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
-		<template name="evt_disconnect_OnKeyDown">$name:Disconnect(wxEVT_KEY_DOWN),</template>
-		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
-		<template name="evt_disconnect_OnKeyUp">$name:Disconnect(wxEVT_KEY_UP),</template>
-		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnKillFocus">$name:Disconnect(wxEVT_KILL_FOCUS),</template>
-		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect(wxEVT_LEAVE_WINDOW),</template>
-		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect(wxEVT_LEFT_DCLICK),</template>
-		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>  
-		<template name="evt_disconnect_OnLeftDown">$name:Disconnect(wxEVT_LEFT_DOWN),</template>
-		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>  
-		<template name="evt_disconnect_OnLeftUp">$name:Disconnect(wxEVT_LEFT_UP),</template>
-		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect(wxEVT_MIDDLE_DCLICK),</template>
-		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
-		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect(wxEVT_MIDDLE_DOWN),</template>
-		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
-		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect(wxEVT_MIDDLE_UP),</template>
-		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux1DClick">$name:Disconnect(wxEVT_AUX1_DCLICK),</template>
-		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux1Down">$name:Disconnect(wxEVT_AUX1_DOWN),</template>
-		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
-		<template name="evt_disconnect_OnAux1Up">$name:Disconnect(wxEVT_AUX1_UP),</template>
-		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux2DClick">$name:Disconnect(wxEVT_AUX2_DCLICK),</template>
-		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux2Down">$name:Disconnect(wxEVT_AUX2_DOWN),</template>
-		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
-		<template name="evt_disconnect_OnAux2Up">$name:Disconnect(wxEVT_AUX2_UP),</template>
-		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
-		<template name="evt_disconnect_OnMotion">$name:Disconnect(wxEVT_MOTION),</template>
-		<template name="evt_connect_OnMouseEvents">#class:connect($name, wxEVT_MOUSE, #option),</template>
-		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect(wxEVT_MOUSE),</template>
-		<!--<template name="evt_connect_OnMouseEvents">
-			#class:connect($name, wxEVT_LEFT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOTION, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEAVE_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_ENTER_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOUSEWHEEL, #option),#nl
-		</template>-->
-		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
-		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect(wxEVT_MOUSEWHEEL),</template>
-		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
-		<template name="evt_disconnect_OnPaint">$name:Disconnect(wxEVT_PAINT),</template>
-		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnRightDClick">$name:Disconnect(wxEVT_RIGHT_DCLICK),</template>
-		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
-		<template name="evt_disconnect_OnRightDown">$name:Disconnect(wxEVT_RIGHT_DOWN),</template>
-		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
-		<template name="evt_disconnect_OnRightUp">$name:Disconnect(wxEVT_RIGHT_UP),</template>
-		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnSetFocus">$name:Disconnect(wxEVT_SET_FOCUS),</template>
-		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
-		<template name="evt_disconnect_OnSize">$name:Disconnect(wxEVT_SIZE),</template>
-		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
-		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect(wxEVT_UPDATE_UI),</template>
+		<template name="evt_connect_OnInitDialog">#class:connect($name, init_dialog, #option),</template>
+		<template name="evt_connect_OnChar">#class:connect($name, char, #option),</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, char_hook, #option),</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, key_down, #option),</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, key_up, #option),</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, enter_window, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, leave_window, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, left_dclick, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, left_down, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, left_up, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, middle_dclick, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, middle_down, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, middle_up, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, right_dclick, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, right_down, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, right_up, #option),</template>
+		<template name="evt_connect_OnAux1DClick">%% event #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Down">%% event #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Up">%% event #class:wxEVT_AUX1_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2DClick">%% event #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Down">%% event #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Up">%% event #class:wxEVT_AUX2_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, motion, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, mousewheel, #option),</template>
+		<template name="evt_connect_OnMouseEvents">
+			#class:connect($name, left_down, #option), #nl
+			#class:connect($name, left_up, #option), #nl
+			#class:connect($name, middle_down, #option), #nl
+			#class:connect($name, middle_up, #option), #nl
+			#class:connect($name, right_down, #option), #nl
+			#class:connect($name, right_up, #option), #nl
+			%% #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX1_UP isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_UP isn't currently supportedby Erlang #nl
+			#class:connect($name, motion, #option), #nl
+			#class:connect($name, left_dclick, #option), #nl
+			#class:connect($name, middle_dclick, #option), #nl
+			#class:connect($name, right_dclick, #option), #nl
+			%% #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang #nl
+			#class:connect($name, leave_window, #option), #nl
+			#class:connect($name, enter_window, #option), #nl
+			#class:connect($name, mousewheel, #option), #nl
+		</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, set_focus, #option),</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, kill_focus, #option),</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, paint, #option),</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, erase_background, #option),</template>
+		<template name="evt_connect_OnSize">#class:connect($name, size, #option),</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, update_ui, #option),</template>
 	</templates>
 
 	<templates class="Wizard">
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
 		<template name="base"> wxWizard
+            <!--
+                #class and all its sub controls are not supported by Erlang
+                when implemented, it should be removed from the
+                unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+            -->
 		</template>
 		<template name="cons_call">
 			wxWizard:new(wx:null(), $id, $title, $bitmap, [#ifnotnull $pos
-														   @{{pos, $pos }, @}
+														   @{{pos,$pos }, @}
 														   #ifnotnull $size
-														   @{{size, $size }, @}
+														   @{{size,$size }, @}
 														   #ifnotnull $style
-														   @{{style, $style #ifnotnull $window_style @{ | $window_style @}}@}
+														   @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
 														   #ifnull $style
 														   @{ #ifnotnull $window_style
-														      @{{style, $window_style } @}@}]),
+														      @{{style,$window_style } @}@}]),
 		</template>
 		<template name="settings">
+			#ifequal $maximum_size "?wxDefaultSize"
+			@{ wxWindow:setSizeHints($name, $minimum_size), #nl @}
+			#ifnotequal $maximum_size "?wxDefaultSize"
+			@{ wxWindow:setSizeHints($name, $minimum_size, [{maxSize,$maximum_size }]), #nl @}
+
 			#ifnotnull $window_extra_style
 			@{ wxWindow:setExtraStyle($name, $window_extra_style), #nl @}
 
 			#ifnotnull $extra_style
 			@{ wxWindow:setExtraStyle($name, ?WIZARD_EX_HELPBUTTON), #nl @}
-
-			wxWindow:setSizeHints($name, $minimum_size, $maximum_size), #nl
 
 			#ifnotnull $font
 			@{ wxWindow:setFont($name, $font), #nl @}
@@ -541,7 +464,7 @@ Erlang code generation writen by
 			@{ wxWindow:setBackgroundColour($name, $bg), #nl @}
 
 			#ifequal $enabled "0"
-			@{ wxWindow:enable($name, $enabled), #nl @}
+			@{ wxWindow:enable($name, [{enable,$enabled }]), #nl @}
 
 			#ifequal $hidden "1"
 			@{ wxWindow:hide($name), #nl @}
@@ -553,103 +476,65 @@ Erlang code generation writen by
 		</template>
 		<template name="after_addchild">
 		  #ifnotnull $center
-			@{ wxWindow:centre($name, [{dir, $center }]), @}
+			@{ wxWindow:centre($name, [{dir,$center }]), @}
 		</template>
-		<template name="evt_connect_OnInitDialog">#class:connect($name, wxEVT_INIT_DIALOG, #option),</template>
-		<template name="evt_disconnect_OnInitDialog">$name:Disconnect(wxEVT_INIT_DIALOG),</template>
-		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
-		<template name="evt_disconnect_OnChar">$name:Disconnect(wxEVT_CHAR),</template>
-		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnEnterWindow">$name:Disconnect(wxEVT_ENTER_WINDOW),</template>
-		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
-		<template name="evt_disconnect_OnEraseBackground">$name:Disconnect(wxEVT_ERASE_BACKGROUND),</template>
-		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
-		<template name="evt_disconnect_OnCharHook">$name:Disconnect(wxEVT_CHAR_HOOK),</template>
-		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
-		<template name="evt_disconnect_OnKeyDown">$name:Disconnect(wxEVT_KEY_DOWN),</template>
-		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
-		<template name="evt_disconnect_OnKeyUp">$name:Disconnect(wxEVT_KEY_UP),</template>
-		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnKillFocus">$name:Disconnect(wxEVT_KILL_FOCUS),</template>
-		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
-		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect(wxEVT_LEAVE_WINDOW),</template>
-		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect(wxEVT_LEFT_DCLICK),</template>
-		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>  
-		<template name="evt_disconnect_OnLeftDown">$name:Disconnect(wxEVT_LEFT_DOWN),</template>
-		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>  
-		<template name="evt_disconnect_OnLeftUp">$name:Disconnect(wxEVT_LEFT_UP),</template>
-		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect(wxEVT_MIDDLE_DCLICK),</template>
-		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
-		<template name="evt_disconnect_OnMiddleDown">$name:Disconnect(wxEVT_MIDDLE_DOWN),</template>
-		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
-		<template name="evt_disconnect_OnMiddleUp">$name:Disconnect(wxEVT_MIDDLE_UP),</template>
-		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux1DClick">$name:Disconnect(wxEVT_AUX1_DCLICK),</template>
-		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux1Down">$name:Disconnect(wxEVT_AUX1_DOWN),</template>
-		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
-		<template name="evt_disconnect_OnAux1Up">$name:Disconnect(wxEVT_AUX1_UP),</template>
-		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnAux2DClick">$name:Disconnect(wxEVT_AUX2_DCLICK),</template>
-		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
-		<template name="evt_disconnect_OnAux2Down">$name:Disconnect(wxEVT_AUX2_DOWN),</template>
-		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
-		<template name="evt_disconnect_OnAux2Up">$name:Disconnect(wxEVT_AUX2_UP),</template>
-		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
-		<template name="evt_disconnect_OnMotion">$name:Disconnect(wxEVT_MOTION),</template>
-		<template name="evt_connect_OnMouseEvents">#class:connect($name, wxEVT_MOUSE, #option),</template>
-		<template name="evt_disconnect_OnMouseEvents">$name:Disconnect(wxEVT_MOUSE),</template>
-		<!--<template name="evt_connect_OnMouseEvents">
-			#class:connect($name, wxEVT_LEFT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DOWN, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_UP, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOTION, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEFT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_RIGHT_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX1_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_AUX2_DCLICK, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_LEAVE_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_ENTER_WINDOW, #option),#nl #skip #nl end), #nl
-			#class:connect($name, wxEVT_MOUSEWHEEL, #option),#nl
-		</template>-->
-		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
-		<template name="evt_disconnect_OnMouseWheel">$name:Disconnect(wxEVT_MOUSEWHEEL),</template>
-		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
-		<template name="evt_disconnect_OnPaint">$name:Disconnect(wxEVT_PAINT),</template>
-		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
-		<template name="evt_disconnect_OnRightDClick">$name:Disconnect(wxEVT_RIGHT_DCLICK),</template>
-		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
-		<template name="evt_disconnect_OnRightDown">$name:Disconnect(wxEVT_RIGHT_DOWN),</template>
-		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
-		<template name="evt_disconnect_OnRightUp">$name:Disconnect(wxEVT_RIGHT_UP),</template>
-		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
-		<template name="evt_disconnect_OnSetFocus">$name:Disconnect(wxEVT_SET_FOCUS),</template>
-		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
-		<template name="evt_disconnect_OnSize">$name:Disconnect(wxEVT_SIZE),</template>
-		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
-		<template name="evt_disconnect_OnUpdateUI">$name:Disconnect(wxEVT_UPDATE_UI),</template>
-		<template name="evt_connect_OnWizardPageChanged">#class:connect($name, wxEVT_WIZARD_PAGE_CHANGED, #option),</template>
-		<template name="evt_disconnect_OnWizardPageChanged">$name:Disconnect(wxEVT_WIZARD_PAGE_CHANGED),</template>
-		<template name="evt_connect_OnWizardPageChanging">#class:connect($name, wxEVT_WIZARD_PAGE_CHANGING, #option),</template>
-		<template name="evt_disconnect_OnWizardPageChanging">$name:Disconnect(wxEVT_WIZARD_PAGE_CHANGING),</template>
-		<template name="evt_connect_OnWizardPageShown">#class:connect($name, wxEVT_WIZARD_PAGE_SHOWN, #option),</template>
-		<template name="evt_disconnect_OnWizardPageShown">$name:Disconnect(wxEVT_WIZARD_PAGE_SHOWN),</template>
-		<template name="evt_connect_OnWizardCancel">#class:connect($name, wxEVT_WIZARD_CANCEL, #option),</template>
-		<template name="evt_disconnect_OnWizardCancel">$name:Disconnect(wxEVT_WIZARD_CANCEL),</template>
-		<template name="evt_connect_OnWizardHelp">#class:connect($name, wxEVT_WIZARD_HELP, #option),</template>
-		<template name="evt_disconnect_OnWizardHelp">$name:Disconnect(wxEVT_WIZARD_HELP),</template>
-		<template name="evt_connect_OnWizardFinished">#class:connect($name, wxEVT_WIZARD_FINISHED, #option),</template>
-		<template name="evt_disconnect_OnWizardFinished">$name:Disconnect(wxEVT_WIZARD_FINISHED),</template>
+		<template name="evt_connect_OnInitDialog">#class:connect($name, init_dialog, #option),</template>
+		<template name="evt_connect_OnChar">#class:connect($name, char, #option),</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, char_hook, #option),</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, key_down, #option),</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, key_up, #option),</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, enter_window, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, leave_window, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, left_dclick, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, left_down, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, left_up, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, middle_dclick, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, middle_down, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, middle_up, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, right_dclick, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, right_down, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, right_up, #option),</template>
+		<template name="evt_connect_OnAux1DClick">%% event #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Down">%% event #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux1Up">%% event #class:wxEVT_AUX1_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2DClick">%% event #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Down">%% event #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnAux2Up">%% event #class:wxEVT_AUX2_UP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, motion, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, mousewheel, #option),</template>
+		<template name="evt_connect_OnMouseEvents">
+			#class:connect($name, left_down, #option), #nl
+			#class:connect($name, left_up, #option), #nl
+			#class:connect($name, middle_down, #option), #nl
+			#class:connect($name, middle_up, #option), #nl
+			#class:connect($name, right_down, #option), #nl
+			#class:connect($name, right_up, #option), #nl
+			%% #class:wxEVT_AUX1_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX1_UP isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DOWN isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_UP isn't currently supportedby Erlang #nl
+			#class:connect($name, motion, #option), #nl
+			#class:connect($name, left_dclick, #option), #nl
+			#class:connect($name, middle_dclick, #option), #nl
+			#class:connect($name, right_dclick, #option), #nl
+			%% #class:wxEVT_AUX1_DCLICK isn't currently supportedby Erlang #nl
+			%% #class:wxEVT_AUX2_DCLICK isn't currently supportedby Erlang #nl
+			#class:connect($name, leave_window, #option), #nl
+			#class:connect($name, enter_window, #option), #nl
+			#class:connect($name, mousewheel, #option), #nl
+		</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, set_focus, #option),</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, kill_focus, #option),</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, paint, #option),</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, erase_background, #option),</template>
+		<template name="evt_connect_OnSize">#class:connect($name, size, #option),</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, update_ui, #option),</template>
+		<template name="evt_connect_OnWizardPageChanged">%% event #class:wxEVT_WIZARD_PAGE_CHANGED isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnWizardPageChanging">%% event #class:wxEVT_WIZARD_PAGE_CHANGING isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnWizardPageShown">%% event #class:wxEVT_WIZARD_PAGE_SHOWN isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnWizardCancel">%% event #class:wxEVT_WIZARD_CANCEL isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnWizardHelp">%% event #class:wxEVT_WIZARD_HELP isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnWizardFinished">%% event #class:wxEVT_WIZARD_FINISHED isn't currently supportedby Erlang</template>
 	</templates>
 
     <templates class="WizardPageSimple">

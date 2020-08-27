@@ -36,6 +36,7 @@
 #include "codewriter.h"
 
 #include <algorithm>
+#include <time.h>
 
 #include <wx/filename.h>
 #include <wx/tokenzr.h>
@@ -77,7 +78,7 @@ wxString ErlangTemplateParser::RootWxParentToCode()
     else
     {
         // in heppening, the code needs to be reviewed - usually, in *.erlangcode files, we may
-        // need to use #parent instead of #wxparent
+        // need to use #parent instead of #wxparent. Anyway, there is a replace code to try fix it.
     	return "this()";
     }
 }
@@ -100,12 +101,6 @@ PTemplateParser ErlangTemplateParser::CreateParser( const TemplateParser* oldpar
 wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 {
 	wxString result;
-/*
-    if(value.Find("myFrame2") != -1)
-    {
-	    wxLogWarning( wxString::Format(wxT("%s: %u"), value.c_str(), type ));
-    }
-*/
 	switch ( type )
 	{
 	case PT_WXPARENT:	// variable as parameter of a function
@@ -198,7 +193,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 			while( bits.HasMoreTokens() )
 			{
 				bit = bits.GetNextToken();
-				res += pref + wxT("?") + bit;
+				res += pref + wxT("?") + bit.Trim(false);
 				pref = wxT(" bor ");
 			}
 			result = res;
@@ -241,7 +236,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 				wxFont font = fontContainer.GetFont();
 
 				const int pointSize = fontContainer.GetPointSize();
-                wxString options = wxString::Format("[{underlined, %s}, {face, %s}]",
+                wxString options = wxString::Format("[{underlined,%s}, {face,%s}]",
                                                     (fontContainer.GetUnderlined() ? "true" : "false"),
                                                     (fontContainer.m_faceName.empty() ? "\"\"" : ("\"" + fontContainer.m_faceName + "\"")));
                 wxString strGetPoint;
@@ -282,12 +277,12 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 				else
 				{
 					wxColour colour = TypeConv::StringToColour( value );
-					result = wxString::Format( wxT("{%i, %i, %i}"), colour.Red(), colour.Green(), colour.Blue() );
+					result = wxString::Format( wxT("{%i,%i,%i}"), colour.Red(), colour.Green(), colour.Blue() );
 				}
 			}
 			else
 			{
-				result = wxT("{0, 0, 0}");
+				result = wxT("{0,0,0}");
 			}
 			break;
 		}
@@ -328,11 +323,11 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
-				result << wxT("wxBitmap:new(\"") << ErlangCodeGenerator::ConvertErlangString(file) << wxT("\", [{type, ?wxBITMAP_TYPE_ANY}])");
+				result << wxT("wxBitmap:new(\"") << ErlangCodeGenerator::ConvertErlangString(file) << wxT("\", [{type,?wxBITMAP_TYPE_ANY}])");
 			}
 			else if ( source == _("Load From Resource") )
 			{
-				result << wxT("wxBitmap:new(\"") << path << wxT("\", [{type, ?wxBITMAP_TYPE_RESOURCE}])");
+				result << wxT("wxBitmap:new(\"") << path << wxT("\", [{type,?wxBITMAP_TYPE_RESOURCE}])");
 			}
 			else if ( source == _("Load From Icon Resource") )
 			{
@@ -342,7 +337,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 				}
 				else
 				{
-					result.Printf( wxT("wxIcon:new(\"%s\", [{type, ?wxBITMAP_TYPE_ICO_RESOURCE}, {desiredWidth, %i}, {desiredHeight, %i}])"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight());
+					result.Printf( wxT("wxIcon:new(\"%s\", [{type,?wxBITMAP_TYPE_ICO_RESOURCE}, {desiredWidth,%i}, {desiredHeight,%i}])"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight());
                 }
 			}
 			else if (source == _("Load From XRC"))
@@ -361,7 +356,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 				wxString cid = path.AfterFirst( wxT(':') );
 
-				result = wxT("wxArtProvider:getBitmap(") + rid + wxT(", [{client, ") +  cid + wxT("}])");
+				result = wxT("wxArtProvider:getBitmap(") + rid + wxT(", [{client,") +  cid + wxT("}])");
 			}
 			break;
 		}
@@ -376,7 +371,7 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 			for ( size_t i = 1; i < array.Count(); i++ )
 			{
-				result << wxT(", ") << ValueToCode( PT_WXSTRING_I18N, array[i] );
+				result << wxT(",") << ValueToCode( PT_WXSTRING_I18N, array[i] );
 			}
 			break;
 		}
@@ -397,35 +392,45 @@ ErlangCodeGenerator::ErlangCodeGenerator()
 	m_firstID = 1000;
 
 	//this classes aren't wrapped by wx in Erlang - make exception
-	m_strUnsupportedClasses.push_back(wxT("wxWrapSizer"));
-	m_strUnsupportedClasses.push_back(wxT("wxTreeListCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxBitmapComboBox"));
+    // Common tab {file: common.erlangcode}
 	m_strUnsupportedClasses.push_back(wxT("wxAnimationCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxBitmapComboBox"));
+    // Aditional tab {file: aditional.erlangcode}
+	m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxSearchCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxTimePickerCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxSpinCtrlDouble"));
 	m_strUnsupportedClasses.push_back(wxT("wxHyperlinkCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxSearchCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxTimer"));
 	m_strUnsupportedClasses.push_back(wxT("CustomControl"));
 	m_strUnsupportedClasses.push_back(wxT("wxMediaCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxTimer"));
+    // Data tab {file: data.erlangcode}
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewTreeCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewListCtrl"));
+	m_strUnsupportedClasses.push_back(wxT("dataViewListColumn"));
+	m_strUnsupportedClasses.push_back(wxT("wxDataViewColumn"));
+	m_strUnsupportedClasses.push_back(wxT("wxTreeListCtrl"));
 	m_strUnsupportedClasses.push_back(wxT("wxDataViewColumn"));
 	m_strUnsupportedClasses.push_back(wxT("dataViewListCtrlColumn"));
 	m_strUnsupportedClasses.push_back(wxT("wxPropertyGrid"));
 	m_strUnsupportedClasses.push_back(wxT("wxPropertyGridManager"));
 	m_strUnsupportedClasses.push_back(wxT("propGridItem"));
 	m_strUnsupportedClasses.push_back(wxT("propGridPage"));
+    // Containers tab {file: containers.erlangcode}
 	m_strUnsupportedClasses.push_back(wxT("wxCollapsiblePane"));
 	m_strUnsupportedClasses.push_back(wxT("wxSimplebook"));
+    // Menu/Toolbar tab {file: menutoolbar.erlangcode}
+	m_strUnsupportedClasses.push_back(wxT("wxInfoBar"));
+	m_strUnsupportedClasses.push_back(wxT("wxAuiToolBar"));
+    // Layout tab {file: layout.erlangcode}
+	m_strUnsupportedClasses.push_back(wxT("wxWrapSizer"));
+    // Forms tab {file: forms.erlangcode}
 	m_strUnsupportedClasses.push_back(wxT("wxWizard"));
 	m_strUnsupportedClasses.push_back(wxT("wxWizardPageSimple"));
+    // Ribbon tab {file: ribbon.erlangcode}
 	m_strUnsupportedClasses.push_back(wxT("wxRibbonBar"));
-	m_strUnsupportedClasses.push_back(wxT("wxInfoBar"));
 
-	m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxAuiToolBar"));
-	m_strUnsupportedClasses.push_back(wxT("wxDataViewCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxDataViewListCtrl"));
-	m_strUnsupportedClasses.push_back(wxT("wxDataViewTreeCtrl"));
 }
 
 wxString ErlangCodeGenerator::ConvertErlangString( wxString text )
@@ -514,27 +519,6 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 	m_source->Clear();
 
-	// Insert Erlang preamble
-
-	wxString code = GetCode( project, wxT("erlang_preamble") );
-	if ( !code.empty() )
-	{
-		m_source->WriteLn( code );
-		m_source->WriteLn( wxEmptyString );
-	}
-
-    // For some reason the use of format with 'code' to add the version/revision was causing
-    // the code visualization to raise a error. Concatenating them worked.
-	wxString version = wxString::Format(wxT("%s%s"), VERSION, REVISION);
-	code = wxT("\%\%\% --------------------------------------------------------------------------\n")
-           wxT("\%\%\%  Erlang code generated with wxFormBuilder (version ") + version + wxT(" ") wxT(__DATE__) wxT(")\n")
-           wxT("\%\%\%  http://www.wxformbuilder.org/\n")
-           wxT("\%\%\%\n")
-           wxT("\%\%\%  PLEASE DO *NOT* EDIT THIS FILE!\n")
-           wxT("\%\%\% --------------------------------------------------------------------------\n\n");
-
-	m_source->WriteLn( code );
-
 	PProperty propFile = project->GetProperty( wxT("file") );
 	if (!propFile)
 	{
@@ -563,6 +547,16 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		return false;
 	}
 
+    // For some reason the use of format with 'code' to add the version/revision was causing
+    // the code visualization to raise a error. Concatenating them worked.
+	wxString version = wxString::Format(wxT("%s%s"), VERSION, REVISION);
+	wxString code = wxT("%% --------------------------------------------------------------------------\n")
+                    wxT("%%  Erlang code generated with wxFormBuilder (version ") + version + wxT(" ") wxT(__DATE__) wxT(")\n")
+                    wxT("%%  http://www.wxformbuilder.org/\n")
+                    wxT("%% --------------------------------------------------------------------------\n");
+
+	m_source->WriteLn( code );
+
 	wxString Prefix = createPrefix->GetValue();
 	unsigned int Parent = createParent->GetValueAsInteger();
 	wxString file = propFile->GetValue();
@@ -575,16 +569,43 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		file = MakeErlangIdentifier( file, lowerIdentifier->GetValueAsInteger() );
 	}
 
+	// Insert Erlang preamble
+	wxString tempName = wxT("%%\n%% ") + wxString::Format( wxT("%s.erl"), file ) + wxT("\n%%");
+    m_source->WriteLn( tempName );
+    PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT("Erlang") );
+    code = code_info->GetTemplate( wxT("erlang_preamble") );
+	if ( !code.empty() )
+	{
+        PProperty propCopyRight = project->GetProperty( wxT("copyright") );
+	    if (propCopyRight)
+	    {
+	        time_t theTime = time(NULL);
+            struct tm *aTime = localtime(&theTime);
+	        int year = aTime->tm_year + 1900;
+            tempName = wxString::Format("%s  %i" , propCopyRight->GetValueAsString(), year);
+    	    code.Replace( wxT("#copyright"), tempName );
+    	}
+        ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+        code = parser.ParseTemplate();
+
+		m_source->WriteLn( code );
+		m_source->WriteLn( wxEmptyString );
+	}
+
 	// Write the module header
-	wxString module = wxString::Format( wxT("-module(%s)."), file );
-    m_source->WriteLn( module );
+	tempName = wxString::Format( wxT("-module(%s)."), file );
+    m_source->WriteLn( tempName );
     m_source->WriteLn();
 
 	// Generate the exports sets
-	std::set< wxString > exports;
-	GenExportSets( project, &exports );
-	// Write the forward declaration lines
-    GenExport( exports, Prefix, Parent );
+	PProperty genExport = project->GetProperty( wxT("generate_export") );
+	if ( genExport && genExport->GetValueAsInteger() )
+	{
+        std::set< wxString > exports;
+        GenExportSets( project, &exports );
+        // Write the forward declaration lines
+        GenExport( exports, Prefix, Parent );
+	}
 
 	// Generating  includes
 	std::vector< wxString > headerIncludes;
@@ -863,6 +884,16 @@ wxString ErlangCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
     if(pos != -1) {
         code.Replace(wxT(", ]"), wxT("]"));
     }
+    // handling malformed strings after the template be processed (for events)
+    pos = code.Find(wxT("|[]"));
+    if(pos != -1) {
+        code.Replace(wxT("|[]"), wxT(""));
+    }
+    // after the previous filter, it can left a list concatenation - we replace it
+    pos = code.Find(wxT("]|["));
+    if(pos != -1) {
+        code.Replace(wxT("]|["), wxT(","));
+    }
     // concatenated flags in template get the space char in its front removed
     pos = code.Find(wxT("| "));
     if(pos != -1) {
@@ -875,6 +906,10 @@ wxString ErlangCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
     pos = code.Find(wxT(",]"));
     if(pos != -1) {
         code.Replace(wxT(",]"), wxT("]"));
+    }
+    pos = code.Find(wxT("this()"));
+    if(pos != -1) {
+        code.Replace( wxT("this()"), m_rootWxParent );
     }
 	return code;
 }
@@ -956,19 +991,11 @@ void ErlangCodeGenerator::GenExportSets( PObjectBase obj, std::set< wxString >* 
 	    PObjectBase child = obj->GetChild( i );
 	    if ( child )
 	    {
-			// check if user wants to export the window's creation function
-            PProperty generate_export = child->GetProperty( wxT("generate_export") );
-            if ( generate_export && generate_export->GetValueAsInteger() )
+            PProperty name = child->GetProperty( wxT("name") );
+            wxString headerVal = name->GetValueAsString();
+            if ( !headerVal.empty() )
             {
-                if (child->GetPropertyAsInteger(_("export_create")) != 0)
-                {
-                    PProperty name = child->GetProperty( wxT("name") );
-                    wxString headerVal = name->GetValueAsString();
-                    if ( !headerVal.empty() )
-                    {
-                        exports->insert(headerVal);
-                    }
-                }
+                exports->insert(headerVal);
             }
 	    }
 	}
@@ -1271,10 +1298,9 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
                 wxString  _template = wxT("wxWindow:setSizer(#wxparent $name, $name),#nl ")
-                                wxT("#class:layout(#wxparent $name), ")
+                                wxT("#class:layout($name), ")
                                 wxT("#ifnull #parent $size")
                                 wxT("@{ #nl wxSizer:fit($name, #wxparent $name), @} ");
-
 				ErlangTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 				wxString res  = parser.ParseTemplate();
 
@@ -1289,9 +1315,8 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
                     // and then we "link" it to the Parent window
                     if ( pType == wxT("project") )
                     {
-                        wxString pName = obj->GetParent()->GetPropertyAsString( _("name") );
                         // the 'this()' came from RootWxParentToCode()
-				        res.Replace(wxT("this()"), pName);
+				        res.Replace( wxT("this()"), m_rootWxParent );
                     }
                 }
 				m_source->WriteLn(res);
@@ -1393,8 +1418,9 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 
         wxString temp_code = GetCode( obj, temp_name );
         if ( !temp_code.empty() )
+        {
             m_source->WriteLn( temp_code );
-
+        }
 	}
 	else if (	type == wxT("notebookpage")		||
 				type == wxT("flatnotebookpage")	||
@@ -1584,7 +1610,7 @@ void ErlangCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxStrin
 //		wxString strRootCode = parser.RootWxParentToCode();
 		wxString strRootCode = m_rootWxParent;
 		if(code.Find(strRootCode) != -1){
-				code.Replace(strRootCode, strClassName);
+            code.Replace(strRootCode, strClassName);
 		}
 
 		if ( !code.empty() )
@@ -1791,62 +1817,3 @@ void ErlangCodeGenerator::SetupPredefinedMacros()
 	ADD_PREDEFINED_MACRO(wxID_HIGHEST);
 
 }
-
-
-//#define ADD_PREDEFINED_PREFIX(k, v) m_predModulePrefix[ wxT(#k) ] = wxT(#v)
-/*
-void ErlangTemplateParser::SetupModulePrefixes()
-{
-	// altered class names
-	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.wx );
-	ADD_PREDEFINED_PREFIX( wxRichTextCtrl, wx.wx );
-	ADD_PREDEFINED_PREFIX( wxHtmlWindow, wx.wx );
-	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wxaui.wx );
-	ADD_PREDEFINED_PREFIX( wxGrid, wx.wx );
-	ADD_PREDEFINED_PREFIX( wxAnimationCtrl, wx.wx );
-
-	// altered macros
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.);
-	ADD_PREDEFINED_PREFIX( wxCAL_MONDAY_FIRST, wx.);
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_MONTH_CHANGE, wx.);
-	ADD_PREDEFINED_PREFIX( wxCAL_NO_YEAR_CHANGE, wx.);
-	ADD_PREDEFINED_PREFIX( wxCAL_SEQUENTIAL_MONTH_SELECTION, wx. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_SURROUNDING_WEEKS, wx. );
-	ADD_PREDEFINED_PREFIX( wxCAL_SUNDAY_FIRST, wx. );
-
-	ADD_PREDEFINED_PREFIX( wxHW_DEFAULT_STYLE, wx. );
-	ADD_PREDEFINED_PREFIX( wxHW_NO_SELECTION, wx.);
-	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_AUTO, wx.);
-	ADD_PREDEFINED_PREFIX( wxHW_SCROLLBAR_NEVER, wx. );
-
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_BOTTOM, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_BUTTON, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_ON_ACTIVE_TAB, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_CLOSE_ON_ALL_TABS, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_DEFAULT_STYLE, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_LEFT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_MIDDLE_CLICK_CLOSE, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_RIGHT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_SCROLL_BUTTONS, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_EXTERNAL_MOVE, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_FIXED_WIDTH, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_MOVE, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_TAB_SPLIT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_TOP, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_NB_WINDOWLIST_BUTTON, wxaui. );
-
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_TEXT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_TOOLTIPS, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_NO_AUTORESIZE, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_GRIPPER, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_OVERFLOW, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_VERTICAL, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_LAYOUT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_HORZ_TEXT, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_PLAIN_BACKGROUND, wxaui. );
-	ADD_PREDEFINED_PREFIX( wxAUI_TB_DEFAULT_STYLE, wxaui. );
-
-	ADD_PREDEFINED_PREFIX( wxAC_DEFAULT_STYLE, wx. );
-	ADD_PREDEFINED_PREFIX( wxAC_NO_AUTORESIZE, wx. );
-}
-*/

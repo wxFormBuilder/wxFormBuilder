@@ -149,7 +149,6 @@ bool TemplateParser::ParseMacro()
 		ParseIfTypeNotEqual();
 		break;
 	case ID_UTBL:
-		wxLogError( wxT("ID_UTBL - calling ParseLuaTable()"));
 		ParseLuaTable();
 		break;
 	default:

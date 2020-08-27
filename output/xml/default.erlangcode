@@ -2,6 +2,21 @@
 <codegen language="Erlang">
     <templates class="Project">
     	<template name="erlang_preamble">
+            %% #nl
+            %%  Copyright #copyright. All Rights Reserved. #nl
+            %% #nl
+            %%  Licensed under the Apache License, Version 2.0 (the "License"); #nl
+            %%  you may not use this file except in compliance with the License. #nl
+            %%  You may obtain a copy of the License at #nl
+            %% #nl
+            %%     http://www.apache.org/licenses/LICENSE-2.0 #nl
+            %% #nl
+            %%  Unless required by applicable law or agreed to in writing, software #nl
+            %%  distributed under the License is distributed on an "AS IS" BASIS, #nl
+            %%  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #nl
+            %%  See the License for the specific language governing permissions and #nl
+            %%  limitations under the License. #nl
+            %% #nl
 		</template>
 		<template name="export">
 		</template>
@@ -14,7 +29,7 @@
     <templates class="wxWindow">
 		<template name="settings">
 			#ifnotnull $window_extra_style
-			@{ #class:setExtraStyle($name $window_extra_style), #nl @}
+			@{ #class:setExtraStyle($name, $window_extra_style), #nl @}
 
 			#ifnotnull $font
 			@{ #class:setFont($name, $font), #nl @}
@@ -26,7 +41,7 @@
 			@{ #class:setBackgroundColour($name, $bg), #nl @}
 
 			#ifequal $enabled "0"
-			@{ #class:enable($name, $enabled), #nl @}
+			@{ #class:enable($name, [{enable,$enabled }]), #nl @}
 
 			#ifequal $hidden "1"
 			@{ #class:hide($name), #nl @}
@@ -37,93 +52,83 @@
 			#ifnotnull $context_help
 			@{ #class:setHelpText($name, $context_help), #nl @}
 
-			#ifnotnull $minimum_size
-			@{ #class:setMinSize($name, $minimum_size), #nl @}
-
+			#ifnull $maximum_size
+			@{ #ifnotnull $minimum_size
+			   @{ wxWindow:setSizeHints($name, $minimum_size), #nl @}
+            @}
 			#ifnotnull $maximum_size
-			@{ #class:setMaxSize($name, $maximum_size), #nl @}
+			@{ wxWindow:setSizeHints($name, $minimum_size, [{maxSize,$maximum_size }]), #nl @}
 
 			#ifparenttypeequal "toolbar_form"
 			@{ wxToolBar:addControl(#wxparent, $name), @}
 		</template>
 
 		<!-- wxKeyEvent -->
-		<template name="evt_entry_OnChar">@#error wxKeyEvent does not propogate, so wxEVT_CHAR from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnChar">#class:connect($name, wxEVT_CHAR, #option),</template>
-		<template name="evt_entry_OnCharHook">EVT_CHAR_HOOK( #handler )</template>
-		<template name="evt_connect_OnCharHook">#class:connect($name, wxEVT_CHAR_HOOK, #option),</template>
-		<template name="evt_entry_OnKeyDown">@#error wxKeyEvent does not propogate, so wxEVT_KEY_DOWN from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnKeyDown">#class:connect($name, wxEVT_KEY_DOWN, #option),</template>
-		<template name="evt_entry_OnKeyUp">@#error wxKeyEvent does not propogate, so wxEVT_KEY_UP from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnKeyUp">#class:connect($name, wxEVT_KEY_UP, #option),</template>
+		<template name="evt_connect_OnChar">#class:connect($name, char, #option),</template>
+		<template name="evt_connect_OnCharHook">#class:connect($name, char_hook, #option),</template>
+		<template name="evt_connect_OnKeyDown">#class:connect($name, key_down, #option),</template>
+		<template name="evt_connect_OnKeyUp">#class:connect($name, key_up, #option),</template>
 
 		<!-- wxMouseEvent -->
-		<template name="evt_connect_OnEnterWindow">#class:connect($name, wxEVT_ENTER_WINDOW, #option),</template>
-		<template name="evt_connect_OnLeaveWindow">#class:connect($name, wxEVT_LEAVE_WINDOW, #option),</template>
-		<template name="evt_connect_OnLeftDClick">#class:connect($name, wxEVT_LEFT_DCLICK, #option),</template>
-		<template name="evt_connect_OnLeftDown">#class:connect($name, wxEVT_LEFT_DOWN, #option),</template>
-		<template name="evt_connect_OnLeftUp">#class:connect($name, wxEVT_LEFT_UP, #option),</template>
-		<template name="evt_connect_OnMiddleDClick">#class:connect($name, wxEVT_MIDDLE_DCLICK, #option),</template>
-		<template name="evt_connect_OnMiddleDown">#class:connect($name, wxEVT_MIDDLE_DOWN, #option),</template>
-		<template name="evt_connect_OnMiddleUp">#class:connect($name, wxEVT_MIDDLE_UP, #option),</template>
-		<template name="evt_connect_OnRightDClick">#class:connect($name, wxEVT_RIGHT_DCLICK, #option),</template>
-		<template name="evt_connect_OnRightDown">#class:connect($name, wxEVT_RIGHT_DOWN, #option),</template>
-		<template name="evt_connect_OnRightUp">#class:connect($name, wxEVT_RIGHT_UP, #option),</template>
-		<template name="evt_connect_OnAux1DClick">#class:connect($name, wxEVT_AUX1_DCLICK, #option),</template>
-		<template name="evt_connect_OnAux1Down">#class:connect($name, wxEVT_AUX1_DOWN, #option),</template>
-		<template name="evt_connect_OnAux1Up">#class:connect($name, wxEVT_AUX1_UP, #option),</template>
-		<template name="evt_connect_OnAux2DClick">#class:connect($name, wxEVT_AUX2_DCLICK, #option),</template>
-		<template name="evt_connect_OnAux2Down">#class:connect($name, wxEVT_AUX2_DOWN, #option),</template>
-		<template name="evt_connect_OnAux2Up">#class:connect($name, wxEVT_AUX2_UP, #option),</template>
-		<template name="evt_connect_OnMotion">#class:connect($name, wxEVT_MOTION, #option),</template>
-		<template name="evt_connect_OnMouseWheel">#class:connect($name, wxEVT_MOUSEWHEEL, #option),</template>
+		<template name="evt_connect_OnEnterWindow">#class:connect($name, enter_window, #option),</template>
+		<template name="evt_connect_OnLeaveWindow">#class:connect($name, leave_window, #option),</template>
+		<template name="evt_connect_OnLeftDClick">#class:connect($name, left_dclick, #option),</template>
+		<template name="evt_connect_OnLeftDown">#class:connect($name, left_down, #option),</template>
+		<template name="evt_connect_OnLeftUp">#class:connect($name, left_up, #option),</template>
+		<template name="evt_connect_OnMiddleDClick">#class:connect($name, middle_dclick, #option),</template>
+		<template name="evt_connect_OnMiddleDown">#class:connect($name, middle_down, #option),</template>
+		<template name="evt_connect_OnMiddleUp">#class:connect($name, middle_up, #option),</template>
+		<template name="evt_connect_OnRightDClick">#class:connect($name, right_dclick, #option),</template>
+		<template name="evt_connect_OnRightDown">#class:connect($name, right_down, #option),</template>
+		<template name="evt_connect_OnRightUp">#class:connect($name, right_up, #option),</template>
+		<template name="evt_connect_OnAux1DClick">%%  event #class:wxEVT_AUX1_DCLICK isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnAux1Down">%%  event #class:wxEVT_AUX1_DOWN isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnAux1Up">%%  event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnAux2DClick">%%  event #class:wxEVT_AUX2_DCLICK isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnAux2Down">%%  event #class:wxEVT_AUX2_DOWN isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnAux2Up">%%  event #class:wxEVT_AUX2_UP isn't currently supported by wx in Erlang</template>
+		<template name="evt_connect_OnMotion">#class:connect($name, motion, #option),</template>
+		<template name="evt_connect_OnMouseWheel">#class:connect($name, mousewheel, #option),</template>
 		<template name="evt_connect_OnMouseEvents">
-			#class:connect($name, wxEVT_LEFT_DOWN, #option), #nl
-			#class:connect($name, wxEVT_LEFT_UP, #option), #nl
-			#class:connect($name, wxEVT_MIDDLE_DOWN, #option), #nl
-			#class:connect($name, wxEVT_MIDDLE_UP, #option), #nl
-			#class:connect($name, wxEVT_RIGHT_DOWN, #option), #nl
-			#class:connect($name, wxEVT_RIGHT_UP, #option), #nl
-			#class:connect($name, wxEVT_AUX1_DOWN, #option), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option), #nl
-			#class:connect($name, wxEVT_AUX2_DOWN, #option), #nl
-			#class:connect($name, wxEVT_AUX1_UP, #option), #nl
-			#class:connect($name, wxEVT_MOTION, #option), #nl
-			#class:connect($name, wxEVT_LEFT_DCLICK, #option), #nl
-			#class:connect($name, wxEVT_MIDDLE_DCLICK, #option), #nl
-			#class:connect($name, wxEVT_RIGHT_DCLICK, #option), #nl
-			#class:connect($name, wxEVT_AUX1_DCLICK, #option), #nl
-			#class:connect($name, wxEVT_AUX2_DCLICK, #option), #nl
-			#class:connect($name, wxEVT_LEAVE_WINDOW, #option), #nl
-			#class:connect($name, wxEVT_ENTER_WINDOW, #option), #nl
-			#class:connect($name, wxEVT_MOUSEWHEEL, #option),
+			#class:connect($name, left_down, #option), #nl
+			#class:connect($name, left_up, #option), #nl
+			#class:connect($name, middle_down, #option), #nl
+			#class:connect($name, middle_up, #option), #nl
+			#class:connect($name, right_down, #option), #nl
+			#class:connect($name, right_up, #option), #nl
+			%%  event #class:wxEVT_AUX1_DOWN isn't currently supported by wx in Erlang #nl
+			%%  event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang #nl
+			%%  event #class:wxEVT_AUX2_DOWN isn't currently supported by wx in Erlang #nl
+			%%  event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang #nl
+			#class:connect($name, motion, #option), #nl
+			#class:connect($name, left_dclick, #option), #nl
+			#class:connect($name, middle_dclick, #option), #nl
+			#class:connect($name, right_dclick, #option), #nl
+			%%  event #class:wxEVT_AUX1_DCLICK isn't currently supported by wx in Erlang #nl
+			%%  event #class:wxEVT_AUX2_DCLICK isn't currently supported by wx in Erlang #nl
+			#class:connect($name, leave_window, #option), #nl
+			#class:connect($name, enter_window, #option), #nl
+			#class:connect($name, mousewheel, #option),
 		</template>
 
 		<!-- wxFocusEvent -->
-		<template name="evt_entry_OnKillFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnKillFocus">#class:connect($name, wxEVT_KILL_FOCUS, #option),</template>
-		<template name="evt_entry_OnSetFocus">@#error wxFocusEvent does not propogate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnSetFocus">#class:connect($name, wxEVT_SET_FOCUS, #option),</template>
+		<template name="evt_connect_OnKillFocus">#class:connect($name, kill_focus, #option),</template>
+		<template name="evt_connect_OnSetFocus">#class:connect($name, set_focus , #option),</template>
 
 		<!-- wxPaintEvent -->
-		<template name="evt_entry_OnPaint">@#error wxPaintEvent does not propogate, so wxEVT_PAINT from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnPaint">#class:connect($name, wxEVT_PAINT, #option),</template>
+		<template name="evt_connect_OnPaint">#class:connect($name, paint, #option),</template>
 
 		<!-- wxEraseEvent -->
-		<template name="evt_entry_OnEraseBackground">@#error wxEraseEvent does not propogate, so wxEVT_ERASE_BACKGROUND from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnEraseBackground">#class:connect($name, wxEVT_ERASE_BACKGROUND, #option),</template>
+		<template name="evt_connect_OnEraseBackground">#class:connect($name, erase_background, #option),</template>
 
 		<!-- wxSizeEvent -->
-		<template name="evt_entry_OnSize">@#error wxSizeEvent does not propogate, so wxEVT_SIZE from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnSize">#class:connect($name, wxEVT_SIZE, #option),</template>
+		<template name="evt_connect_OnSize">#class:connect($name, size, #option),</template>
 
 		<!-- wxMoveEvent -->
-		<template name="evt_entry_OnMove">@#error wxMoveEvent does not propogate, so wxEVT_MOVE from $name can only be handled with Connect()</template>
-		<template name="evt_connect_OnMove">#class:connect($name, wxEVT_MOVE, #option),</template>
+		<template name="evt_connect_OnMove">#class:connect($name, move, #option),</template>
 
 		<!-- wxUpdateUIEvent -->
-		<template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
-		<template name="evt_connect_OnUpdateUI">#class:connect($name, wxEVT_UPDATE_UI, #option),</template>
+		<template name="evt_connect_OnUpdateUI">#class:connect($name, update_ui, #option),</template>
     </templates>
 
 	<templates class="AUI">
@@ -171,40 +176,23 @@
 	</templates>
 
 	<templates class="wxTreeCtrlBase">
-		<template name="evt_entry_OnTreeBeginDrag">EVT_TREE_BEGIN_DRAG( $id, #handler )</template>
-		<template name="evt_connect_OnTreeBeginDrag">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_DRAG, #option),</template>
-		<template name="evt_entry_OnTreeBeginRDrag">EVT_TREE_BEGIN_RDRAG( $id, #handler )</template>
-		<template name="evt_connect_OnTreeBeginRDrag">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_RDRAG, #option),</template>
-		<template name="evt_entry_OnTreeEndDrag">EVT_TREE_END_DRAG( $id, #handler )</template>
-		<template name="evt_connect_OnTreeEndDrag">#class:connect($name, wxEVT_COMMAND_TREE_END_DRAG, #option),</template>
-		<template name="evt_entry_OnTreeBeginLabelEdit">EVT_TREE_BEGIN_LABEL_EDIT( $id, #handler )</template>
-		<template name="evt_connect_OnTreeBeginLabelEdit">#class:connect($name, wxEVT_COMMAND_TREE_BEGIN_LABEL_EDIT, #option),</template>
-		<template name="evt_entry_OnTreeEndLabelEdit">EVT_TREE_END_LABEL_EDIT( $id, #handler )</template>
-		<template name="evt_connect_OnTreeEndLabelEdit">#class:connect($name, wxEVT_COMMAND_TREE_END_LABEL_EDIT, #option),</template>
-		<template name="evt_entry_OnTreeDeleteItem">EVT_TREE_DELETE_ITEM( $id, #handler )</template>
-		<template name="evt_connect_OnTreeDeleteItem">#class:connect($name, wxEVT_COMMAND_TREE_DELETE_ITEM, #option),</template>
-		<template name="evt_entry_OnTreeItemActivated">EVT_TREE_ITEM_ACTIVATED( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemActivated">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_ACTIVATED, #option),</template>
-		<template name="evt_entry_OnTreeItemCollapsed">EVT_TREE_ITEM_COLLAPSED( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemCollapsed">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_COLLAPSED, #option),</template>
-		<template name="evt_entry_OnTreeItemCollapsing">EVT_TREE_ITEM_COLLAPSING( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemCollapsing">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_COLLAPSING, #option),</template>
-		<template name="evt_entry_OnTreeItemExpanded">EVT_TREE_ITEM_EXPANDED( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemExpanded">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_EXPANDED, #option),</template>
-		<template name="evt_entry_OnTreeItemExpanding">EVT_TREE_ITEM_EXPANDING( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemExpanding">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_EXPANDING, #option),</template>
-		<template name="evt_entry_OnTreeItemRightClick">EVT_TREE_ITEM_RIGHT_CLICK( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemRightClick">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_RIGHT_CLICK, #option),</template>
-		<template name="evt_entry_OnTreeItemMiddleClick">EVT_TREE_ITEM_MIDDLE_CLICK( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemMiddleClick">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_MIDDLE_CLICK, #option),</template>
-		<template name="evt_entry_OnTreeSelChanged">EVT_TREE_SEL_CHANGED( $id, #handler )</template>
-		<template name="evt_connect_OnTreeSelChanged">#class:connect($name, wxEVT_COMMAND_TREE_SEL_CHANGED, #option),</template>
-		<template name="evt_entry_OnTreeSelChanging">EVT_TREE_SEL_CHANGING( $id, #handler )</template>
-		<template name="evt_connect_OnTreeSelChanging">#class:connect($name, wxEVT_COMMAND_TREE_SEL_CHANGING, #option),</template>
-		<template name="evt_entry_OnTreeKeyDown">EVT_TREE_KEY_DOWN( $id, #handler )</template>
-		<template name="evt_connect_OnTreeKeyDown">#class:connect($name, wxEVT_COMMAND_TREE_KEY_DOWN, #option),</template>
-		<template name="evt_entry_OnTreeItemMenu">EVT_TREE_ITEM_MENU( $id, #handler )</template>
-		<template name="evt_connect_OnTreeItemMenu">#class:connect($name, wxEVT_COMMAND_TREE_ITEM_MENU, #option),</template>
+		<template name="evt_connect_OnTreeBeginDrag">#class:connect($name, command_tree_begin_drag, #option),</template>
+		<template name="evt_connect_OnTreeBeginRDrag">#class:connect($name, command_tree_begin_rdrag, #option),</template>
+		<template name="evt_connect_OnTreeEndDrag">#class:connect($name, command_tree_end_drag, #option),</template>
+		<template name="evt_connect_OnTreeBeginLabelEdit">#class:connect($name, command_tree_begin_label_edit, #option),</template>
+		<template name="evt_connect_OnTreeEndLabelEdit">#class:connect($name, command_tree_end_label_edit, #option),</template>
+		<template name="evt_connect_OnTreeDeleteItem">#class:connect($name, command_tree_delete_ite, #option),</template>
+		<template name="evt_connect_OnTreeItemActivated">#class:connect($name, command_tree_item_activated, #option),</template>
+		<template name="evt_connect_OnTreeItemCollapsed">#class:connect($name, command_tree_item_collapsed, #option),</template>
+		<template name="evt_connect_OnTreeItemCollapsing">#class:connect($name, command_tree_item_collapsing, #option),</template>
+		<template name="evt_connect_OnTreeItemExpanded">#class:connect($name, command_tree_item_expanded, #option),</template>
+		<template name="evt_connect_OnTreeItemExpanding">#class:connect($name, command_tree_item_expanding, #option),</template>
+		<template name="evt_connect_OnTreeItemRightClick">#class:connect($name, command_tree_item_right_click, #option),</template>
+		<template name="evt_connect_OnTreeItemMiddleClick">#class:connect($name, command_tree_item_middle_click, #option),</template>
+		<template name="evt_connect_OnTreeSelChanged">#class:connect($name, command_tree_sel_changed, #option),</template>
+		<template name="evt_connect_OnTreeSelChanging">#class:connect($name, command_tree_sel_changing, #option),</template>
+		<template name="evt_connect_OnTreeKeyDown">#class:connect($name, command_tree_key_down, #option),</template>
+		<template name="evt_connect_OnTreeItemMenu">#class:connect($name, command_tree_item_menu, #option),</template>
 	</templates>
 
 	<templates class="wxAnyButton">
