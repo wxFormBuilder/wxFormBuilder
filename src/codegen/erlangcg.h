@@ -89,7 +89,6 @@ private:
 	bool m_disconnectEvents;
 	wxString m_disconnecMode;
 	wxString m_strEventHandlerPostfix;
-//	wxString m_strUITable;
 
 	/**
 	* Predefined macros won't generate defines.
