@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 
-Erlang code generation writen by
+Erlang code generation written by
   Micheus Vieira - micheus@gmail.com
 -->
 <codegen language="Erlang">
@@ -51,7 +51,7 @@ Erlang code generation writen by
 	<templates class="wxDataViewCtrl">
 		<template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -88,7 +88,7 @@ Erlang code generation writen by
 	<templates class="wxDataViewTreeCtrl">
 		<template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -125,7 +125,7 @@ Erlang code generation writen by
 	<templates class="wxDataViewListCtrl">
 		<template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -174,7 +174,7 @@ Erlang code generation writen by
 	<templates class="wxTreeListCtrl">
 		<template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -238,13 +238,15 @@ Erlang code generation writen by
                                                   @{{style,$window_style }@}]),
     </template>
 	<template name="settings">
-    	#class:createGrid($name, $rows, $cols, [{selmode, ?wxGridSelectCells}]),
+    	#class:createGrid($name, $rows, $cols, [{selmode,?wxGrid_wxGridSelectCells}]),
     	#ifnotequal $editing "1"
 		@{ #nl #class:enableEditing($name, $editing), @}
     	#ifnotequal $grid_lines "1"
 		@{ #nl #class:enableGridLines($name, $grid_lines), @}
 		#ifnotnull $grid_line_color
-		@{ #nl #class:setGridLineColour($name, $grid_line_color), @}
+		@{
+			#nl #class:setGridLineColour($name, $grid_line_color),
+		@}
     	#ifnotequal $drag_grid_size "0"
 		@{ #nl #class:enableDragGridSize($name, $drag_grid_size), @}
     	#ifequal $margin_width "0"
@@ -252,46 +254,71 @@ Erlang code generation writen by
 		   @{ #nl #class:setMargins($name, $margin_width, $margin_height), @} @}
     	#ifnotequal $margin_width "0"
 		@{ #nl #class:setMargins($name, $margin_width, $margin_height), @}
-
+		#nl %% Columns
 		#foreach $column_sizes
 		@{ #class:setColSize($name, #npred, #pred), @}
 		#ifnotequal $autosize_cols "0"
-		@{ #nl #class:autoSizeColumns($name), @}
+		@{
+			#nl #class:autoSizeColumns($name),
+		@}
     	#ifnotequal $drag_col_move "0"
-		@{ #nl %% #class:enableDragColMove($name, $drag_col_move) is not supported by Erlang @}
+		@{ #nl %% #class:enableDragColMove($name, $drag_col_move) isn't currently supported by Erlang @}
     	#ifnotequal $drag_col_size "1"
 		@{ #nl #class:enableDragColSize($name, $drag_col_size), @}
-    	#ifnotequal $col_label_size "1"
-		@{ #nl #class:setColLabelSize($name, $col_label_size), @}
 		#foreach $col_label_values
 		@{ #class:setColLabelValue($name, #npred, #pred), @}
-		#nl #class:setColLabelAlignment($name, $col_label_horiz_alignment, $col_label_vert_alignment )
-
+		#ifnotnull $col_label_size
+		@{
+			#nl #class:setColLabelSize($name, $col_label_size),
+		@}
+		<!-- this alignment settings if for the fixed left cells -->
+		#nl #class:setColLabelAlignment($name, $col_label_horiz_alignment, $col_label_vert_alignment)
+		#nl %% Rows
 		#foreach $row_sizes
 		@{ #class:setRowSize($name, #npred, #pred), @}
 		#ifnotequal $autosize_rows "0"
-		@{ #nl #class:autoSizeRows($name), @}
+		@{
+			#nl #class:autoSizeRows($name),
+		@}
 		#ifnotequal $drag_row_size "1"
-		@{ #nl #class:enableDragRowSize($name, $drag_row_size), @}
-		#ifnotequal $row_label_size "wxGRID_AUTOSIZE"
-		@{ #nl #class:setRowLabelSize($name, $row_label_size), @}
+		@{
+			#nl #class:enableDragRowSize($name, $drag_row_size),
+		@}
 		#foreach $row_label_values
 		@{ #class:setRowLabelValue($name, #npred, #pred), @}
+		#ifnotnull $row_label_size
+		@{
+			#nl #class:setRowLabelSize($name, $row_label_size),
+		@}
+		<!-- this alignment settings if for the fixed top cells -->
 		#nl #class:setRowLabelAlignment($name, $row_label_horiz_alignment, $row_label_vert_alignment),
-
+		<!-- #nl %% Label Appearance -->
 		#ifnotnull $label_bg
-		@{ #nl #class:setLabelBackgroundColour($name, $label_bg), @}
+		@{
+			#nl #class:setLabelBackgroundColour($name, $label_bg),
+		@}
 		#ifnotnull $label_font
-		@{ #nl #class:setLabelFont($name, $label_font), @}
+		@{
+			#nl #class:setLabelFont($name, $label_font),
+		@}
 		#ifnotnull $label_text
-		@{ #nl #class:setLabelTextColour($name, $label_text), @}
-
+		@{
+			#nl #class:setLabelTextColour($name, $label_text),
+		@}
+		<!-- #nl %% Cell Defaults -->
 		#ifnotnull $cell_bg
-		@{ #nl #class:setDefaultCellBackgroundColour($name, $cell_bg), @}
+		@{
+			#nl #class:setDefaultCellBackgroundColour($name, $cell_bg),
+		@}
 		#ifnotnull $cell_text
-		@{ #nl #class:setDefaultCellTextColour($name, $cell_text), @}
+		@{
+			#nl #class:setDefaultCellTextColour($name, $cell_text),
+		@}
 		#ifnotnull $cell_font
-		@{ #nl #class:setDefaultCellFont($name, $cell_font), @}
+		@{
+			#nl #class:setDefaultCellFont($name, $cell_font),
+		@}
+		<!-- this alignment settings if for the value cells -->
 		#nl #class:setDefaultCellAlignment($name, $cell_horiz_alignment, $cell_vert_alignment)
     </template>
     <template name="evt_connect_OnGridCellLeftClick">#class:connect($name, grid_cell_left_click, #option),</template>
