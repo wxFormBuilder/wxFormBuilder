@@ -540,7 +540,7 @@ Erlang code generation writen by
     <templates class="WizardPageSimple">
         <template name="construction">
             $name  = wxWizardPageSimple:new(#wxparent $name #ifnotnull $bitmap @{, none, none, $bitmap @}), #nl
-            %% WizardPageSimple is not supported by Erlang #nl
+            %% WizardPageSimple isn't currently supported by Erlang #nl
             %% add_page($name),
         </template>
     </templates>

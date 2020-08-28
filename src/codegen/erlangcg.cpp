@@ -553,6 +553,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	wxString code = wxT("%% --------------------------------------------------------------------------\n")
                     wxT("%%  Erlang code generated with wxFormBuilder (version ") + version + wxT(" ") wxT(__DATE__) wxT(")\n")
                     wxT("%%  http://www.wxformbuilder.org/\n")
+                    wxT("%%  This file is changed by wxFormBuilder on saving. PLEASE DO *NOT* EDIT IT!\n")
                     wxT("%% --------------------------------------------------------------------------\n");
 
 	m_source->WriteLn( code );
@@ -1258,7 +1259,7 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 		std::vector<wxString>::iterator itr;
 		if(m_strUnsupportedClasses.end() != (itr = std::find(m_strUnsupportedClasses.begin(),m_strUnsupportedClasses.end(),strClass)))
 		{
-			m_source->WriteLn(wxT("%% Instance ") + strName + wxT(" of Control ") + *itr + wxT(" you try to use isn't unfortunately wrapped by wx in Erlang."));
+			m_source->WriteLn(wxT("%% Instance ") + strName + wxT(" of Control ") + *itr + wxT(" you are trying to use isn't wrapped by wxErlang."));
 			m_source->WriteLn(wxT("%% Please try to use another control"));
 			m_strUnsupportedInstances.push_back(strName);
 			return;

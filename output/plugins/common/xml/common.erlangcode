@@ -39,10 +39,10 @@ Erlang code generation writen by
         </template>
         <template name="settings">
             #ifnotequal $default "0"
-            @{ #class:setDefault($name) @}
+            @{ #class:setDefault($name), @}
 
             #ifequal $auth_needed "1"
-            @{ %% #class:setAuthNeeded($name) is not supported by Erlang @}
+            @{ %% #class:setAuthNeeded($name) isn't currently supported by Erlang @}
 
             #ifnotequal $validator_type "wxDefaultValidator"
             @{ %% Validator is not implemented for Erlang code generator @}
@@ -61,10 +61,10 @@ Erlang code generation writen by
         </template>
         <template name="settings">
             #ifnotequal $default "0"
-            @{ #class:setDefault($name) @}
+            @{ #class:setDefault($name), @}
 
             #ifequal $auth_needed "1"
-            @{ %% #class:setAuthNeeded($name) is not supported by Erlang @}
+            @{ %% #class:setAuthNeeded($name) isn't currently supported by Erlang @}
 
             #ifnotequal $validator_type "wxDefaultValidator"
             @{ %% Validator is not implemented for Erlang code generator @}
@@ -104,7 +104,11 @@ Erlang code generation writen by
             #ifnotnull $maxlength
             @{
                 #ifnotequal $maxlength "0"
-                @{ wxTextCtrl:setMaxLength($name, $maxlength), @}
+                @{
+                    %% ** You may need to use the 'if' bellow for WXGTK environments
+                    %% if (#class:getWindowStyleFlag($name) band ?wxTE_MULTILINE) /= 0 -> #nl
+                    #class:setMaxLength($name, $maxlength),
+                @}
             @}
         </template>
         <template name="evt_connect_OnText">#class:connect($name, command_text_updated, #option),</template>
@@ -127,7 +131,7 @@ Erlang code generation writen by
         </template>
         <template name="settings">
             #ifequal $markup "1"
-            @{ %% wxControl:setLabelMarkup isn't currently supported by wx in Erlang @}
+            @{ %% #class:setLabelMarkup isn't currently supported by wx in Erlang @}
             #ifnotequal $wrap "-1"
             @{ #class:wrap($name,$wrap), @}
         </template>
@@ -186,6 +190,11 @@ Erlang code generation writen by
 
     <templates class="wxBitmapComboBox">
         <template name="construction">
+            <!--
+                #class isn't currently supported by Erlang
+                when implemented, it should be removed from the
+                unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+            -->
             #ifnotnull $choices
             @{ $name #append _Opts = [$choices], #nl @}
             $name = #class:new(#wxparent $name, $id, [#ifnotnull $value
@@ -204,7 +213,7 @@ Erlang code generation writen by
             #ifnotequal $validator_type "wxDefaultValidator"
             @{ %% Validator is not implemented for Erlang code generator @}
             #foreach $choices
-            @{ %% #class:append($name, #pred, wxBitmap:new()) @}
+            @{ %% #class:append($name, #pred, wxBitmap:new()), @}
         </template>
         <template name="settings">
             #ifnotequal $selection "-1"
@@ -276,7 +285,7 @@ Erlang code generation writen by
         </template>
         <template name="settings">
             #ifnotequal $value "0"
-            @{ #class:setValue($name, true) @}
+            @{ #class:setValue($name, true), @}
         </template>
         <template name="evt_connect_OnRadioButton">#class:connect($name, command_radiobutton_selected, #option),</template>
     </templates>
@@ -294,15 +303,20 @@ Erlang code generation writen by
 
     <templates class="wxAnimationCtrl">
         <template name="construction">
+            <!--
+                #class isn't currently supported by Erlang
+                when implemented, it should be removed from the
+                unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+            -->
             $name = #class:new(#wxparent $name, $id, wxAnimation:new(), [{pos,$pos }, {size,$size }, {style,$style #ifnotnull $window_style @{+$window_style @} }]),
             #ifnotnull $animation
             @{ %% wxAnimationCtrl:loadFile($name, $animation), @}
         </template>
         <template name="settings">
             #ifnotnull $inactive_bitmap
-            @{ %% wxAnimationCtrl:setInactiveBitmap($name, $inactive_bitmap) @}
+            @{ %% wxAnimationCtrl:setInactiveBitmap($name, $inactive_bitmap), @}
             #ifequal $play "1"
-            @{ %% wxAnimationCtrl:play($name) @}
+            @{ %% wxAnimationCtrl:play($name), @}
         </template>
     </templates>
 
@@ -358,6 +372,8 @@ Erlang code generation writen by
         <template name="evt_connect_OnListColDragging">#class:connect($name, command_list_col_dragging, #option),</template>
         <template name="evt_connect_OnListColEndDrag">#class:connect($name, command_list_col_end_drag, #option),</template>
         <template name="evt_connect_OnListCacheHint">#class:connect($name, command_list_cache_hint, #option),</template>
+        <template name="evt_connect_OnListItemChecked">%%  event #class:wxEVT_COMMAND_LIST_ITEM_CHECKED isn't currently supported by wx in Erlang</template>
+        <template name="evt_connect_OnListItemUnchecked">%%  event #class:wxEVT_COMMAND_LIST_ITEM_UNCHECKED isn't currently supported by wx in Erlang</template>
     </templates>
 
     <templates class="wxChoice">

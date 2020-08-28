@@ -269,7 +269,7 @@ Erlang code generation writen by
             @}
             #ifequal $ContextHelp "1"
             @{
-              #nl %% wxContextHelpButton is not supported by Erlang
+              #nl %% wxContextHelpButton isn't currently supported by Erlang
               #nl %% $name #append _CtxHelp = wxContextHelpButton:new(#wxparent $name, ?wxID_CONTEXT_HELP),
               #nl %% wxStdDialogButtonSizer:addButton($name, $name #append _CtxHelp),
             @}

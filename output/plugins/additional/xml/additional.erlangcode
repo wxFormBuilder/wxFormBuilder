@@ -40,34 +40,34 @@ Erlang code generation writen by
                                                  @{ #ifnotnull $window_style
                                                     @{{style,$window_style } @}@}]),
         </template>
-        <template name="evt_connect_OnHtmlCellClicked"> %% event #class:wxEVT_COMMAND_HTML_CELL_CLICKED isn't currently supportedby Erlang</template>
-        <template name="evt_connect_OnHtmlCellHover"> %% event #class:wxEVT_COMMAND_HTML_CELL_HOVER isn't currently supportedby Erlang</template>
+        <template name="evt_connect_OnHtmlCellClicked"> %% event #class:wxEVT_COMMAND_HTML_CELL_CLICKED isn't currently supported by Erlang</template>
+        <template name="evt_connect_OnHtmlCellHover"> %% event #class:wxEVT_COMMAND_HTML_CELL_HOVER isn't currently supported by Erlang</template>
         <template name="evt_connect_OnHtmlLinkClicked">#class:connect($name, command_html_link_clicked, #option),</template>
     </templates>
 
     <templates class="wxRichTextCtrl">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
             $name = #class:new(#wxparent $name, $id, EmptyString, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @}
                     #ifnotnull $window_name @{, DefaultValidator, $window_name @} )
         </template>
-		<template name="evt_connect_OnText"> %% event #class:wxEVT_COMMAND_TEXT_UPDATED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnTextEnter"> %% event #class:wxEVT_COMMAND_TEXT_ENTER isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnTextURL"> %% event #class:wxEVT_COMMAND_TEXT_URL isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnTextMaxLen"> %% event #class:wxEVT_COMMAND_TEXT_MAXLEN isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextCharacter"> %% event #class:wxEVT_COMMAND_RICHTEXT_CHARACTER isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextDelete"> %% event #class:wxEVT_COMMAND_RICHTEXT_DELETE isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextReturn"> %% event #class:wxEVT_COMMAND_RICHTEXT_RETURN isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextStyleChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextStyleSheetChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextStyleSheetReplacing"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextStyleSheetReplaced"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextContentInserted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnRichTextContentDeleted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnText"> %% event #class:wxEVT_COMMAND_TEXT_UPDATED isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnTextEnter"> %% event #class:wxEVT_COMMAND_TEXT_ENTER isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnTextURL"> %% event #class:wxEVT_COMMAND_TEXT_URL isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnTextMaxLen"> %% event #class:wxEVT_COMMAND_TEXT_MAXLEN isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextCharacter"> %% event #class:wxEVT_COMMAND_RICHTEXT_CHARACTER isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextDelete"> %% event #class:wxEVT_COMMAND_RICHTEXT_DELETE isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextReturn"> %% event #class:wxEVT_COMMAND_RICHTEXT_RETURN isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextStyleChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextStyleSheetChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextStyleSheetReplacing"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextStyleSheetReplaced"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextContentInserted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED isn't currently supported by Erlang</template>
+		<template name="evt_connect_OnRichTextContentDeleted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED isn't currently supported by Erlang</template>
     </templates>
 
     <templates class="wxToggleButton">
@@ -93,12 +93,12 @@ Erlang code generation writen by
     <templates class="wxBitmapToggleButton">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
             $name = #class:new(#wxparent $name, $id, #ifnull $bitmap
-                                                     @{ wx:null() @}
+                                                     @{ wx:null(), @}
                                                      #ifnotnull $bitmap
                                                      @{ $bitmap @},
                                                      [#ifnotnull $pos
@@ -241,7 +241,7 @@ Erlang code generation writen by
         <template name="evt_connect_OnCalendarMonth">#class:connect($name, calendar_month_changed, #option),</template>
         <template name="evt_connect_OnCalendarYear">#class:connect($name, calendar_year_changed, #option),</template>
         <template name="evt_connect_OnCalendarWeekDayClicked">#class:connect($name, calendar_weekday_clicked, #option),</template>
-        <template name="evt_connect_OnCalendarWeekClicked"> %% #class:wxEVT_CALENDAR_WEEK_CLICKED isn't currently supportedby Erlang</template>
+        <template name="evt_connect_OnCalendarWeekClicked"> %% #class:wxEVT_CALENDAR_WEEK_CLICKED isn't currently supported by Erlang</template>
     </templates>
 
     <templates class="wxScrollBar">
@@ -320,7 +320,7 @@ Erlang code generation writen by
     <templates class="wxSpinCtrlDouble">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -376,7 +376,7 @@ Erlang code generation writen by
     <templates class="wxHyperlinkCtrl">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -406,7 +406,7 @@ Erlang code generation writen by
             @{ #class:setVisitedColour($name, $visited_color), @}
             -->
         </template>
-		<template name="evt_connect_OnHyperlink"> %% event $name:wxEVT_COMMAND_HYPERLINK isn't currently supportedby Erlang</template>
+		<template name="evt_connect_OnHyperlink"> %% event $name:wxEVT_COMMAND_HYPERLINK isn't currently supported by Erlang</template>
     </templates>
 
     <templates class="wxGenericDirCtrl">
@@ -431,7 +431,7 @@ Erlang code generation writen by
         </template>
         <template name="settings">
             #ifequal $show_hidden "1"
-            @{ %% #class:showHidden($name, $show_hidden) is not supported by Erlang @}
+            @{ %% #class:showHidden($name, $show_hidden) isn't currently supported by Erlang @}
         </template>
         <template name="evt_connect_OnDirctrlSelectionChanged">#class:connect($name, command_tree_sel_changed, #option),</template>
         <template name="evt_connect_OnDirctrlFileActivated">#class:connect($name, command_list_item_activated, #option),</template>
@@ -440,7 +440,7 @@ Erlang code generation writen by
     <templates class="wxSearchCtrl">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -451,22 +451,22 @@ Erlang code generation writen by
         <template name="settings">
             <!--
             #ifnotnull $search_button
-            @{ %% #class:showSearchButton($name, $search_button) is not supported by Erlang @}
+            @{ %% #class:showSearchButton($name, $search_button) isn't currently supported by Erlang @}
 
             #ifnotnull $cancel_button
-            @{ %% #class:showCancelButton($name, $cancel_button) is not supported by Erlang @}
+            @{ %% #class:showCancelButton($name, $cancel_button) isn't currently supported by Erlang @}
             -->
         </template>
         <template name="evt_connect_OnText">#class:connect($name, command_text_updated, #option),</template>
         <template name="evt_connect_OnTextEnter">#class:connect($name, command_text_enter, #option),</template>
-        <template name="evt_connect_OnSearchButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN isn't currently supportedby Erlang</template>
-        <template name="evt_connect_OnCancelButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN isn't currently supportedby Erlang</template>
+        <template name="evt_connect_OnSearchButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN isn't currently supported by Erlang</template>
+        <template name="evt_connect_OnCancelButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN isn't currently supported by Erlang</template>
     </templates>
 
     <templates class="CustomControl">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -479,19 +479,19 @@ Erlang code generation writen by
     <templates class="wxMediaCtrl">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
             $name = #class:new(#wxparent $name, $id, "", $pos, $size),
             #ifnotnull $file
-            @{ #class:load($name, $file) is not supported by Erlang @}
+            @{ #class:load($name, $file) isn't currently supported by Erlang @}
             #ifnotnull $playback_rate
-            @{ #class:setPlaybackRate($name, $playback_rate) is not supported by Erlang @}
+            @{ #class:setPlaybackRate($name, $playback_rate) isn't currently supported by Erlang @}
             #ifnotnull $volume
-            @{ #class:setVolume($name, $volume) is not supported by Erlang @}
+            @{ #class:setVolume($name, $volume) isn't currently supported by Erlang @}
             #ifnotnull $player_controls
-            @{ #class:showPlayerControls($name, ?wxMEDIACTRLPLAYERCONTROLS_$player_controls) is not supported by Erlang @}
+            @{ #class:showPlayerControls($name, ?wxMEDIACTRLPLAYERCONTROLS_$player_controls) isn't currently supported by Erlang @}
         </template>
         <template name="settings">
             <!--
@@ -503,7 +503,7 @@ Erlang code generation writen by
 
     <templates class="wxTimer">
         <template name="construction">
-            %% #class isn't currently supportedby Erlang
+            %% #class isn't currently supported by Erlang
             <!--
             $name = #class:new(#wxparent $name, $id),
             -->
@@ -511,9 +511,9 @@ Erlang code generation writen by
         <!--
         <template name="settings">
             #ifequal $enabled "1"
-            @{ #class:start($name, $period #ifequal $oneshot "1" @{, true@}) is not supported by Erlang @}
+            @{ #class:start($name, $period #ifequal $oneshot "1" @{, true@}) isn't currently supported by Erlang @}
         </template>
-        <template name="evt_connect_OnTimer"> %% event #class:wxEVT_TIMER isn't currently supportedby Erlang</template>
+        <template name="evt_connect_OnTimer"> %% event #class:wxEVT_TIMER isn't currently supported by Erlang</template>
         -->
     </templates>
   

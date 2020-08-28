@@ -52,7 +52,7 @@ Erlang code generation writen by
 		</template>
 		<template name="settings">
 			#ifequal $select "1"
-			@{ #wxparent $name:SetActivePage( $name ) @}
+			@{ #wxparent $name:SetActivePage( $name ), @}
 		</template>
 	</templates>
 

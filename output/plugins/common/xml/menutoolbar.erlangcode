@@ -245,7 +245,7 @@ Erlang code generation writen by
     <templates class="wxAuiToolBar">
         <template name="construction">
             <!--
-                #class is not supported by Erlang
+                #class isn't currently supported by Erlang
                 when implemented, it should be removed from the
                 unsupported list in erlangcg.cpp->ErlangCodeGenerator()
             -->
@@ -374,7 +374,7 @@ Erlang code generation writen by
 
     <templates class="wxInfoBar">
         <template name="construction">
-            $name = #class:new(#wxparent $name, $id), is not supported by Erlang
+            $name = #class:new(#wxparent $name, $id), isn't currently supported by Erlang
         </template>
 		<template name="settings">
 			#class:setShowHideEffects($name, $show_effect, $hide_effect); #nl
