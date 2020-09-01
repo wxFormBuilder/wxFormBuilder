@@ -100,13 +100,10 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 	stc->StyleSetBackground(wxSTC_STYLE_DEFAULT, wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW));
     stc->StyleSetFont( wxSTC_STYLE_DEFAULT, font );
     stc->StyleClearAll();
+    // wxSTC's reference: https://docs.wxwidgets.org/3.0.0/stc_8h.html
     stc->StyleSetBold( wxSTC_ERLANG_KEYWORD, true );
     stc->StyleSetBold( wxSTC_ERLANG_NUMBER, true );
-    //stc->StyleSetBold( wxSTC_ERLANG_ATOM, true );
     stc->StyleSetBold( wxSTC_ERLANG_PREPROC, true );
-    //stc->StyleSetBold( wxSTC_ERLANG_FUNCTION_NAME, true );
-    //stc->StyleSetBold( wxSTC_ERLANG_MACRO, true );  // ?wxAAAAAAA
-    // wxSTC's reference: https://docs.wxwidgets.org/3.0.0/stc_8h.html
 	if (!AppData()->IsDarkMode())
 	{
 		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour( 192, 0, 128));
@@ -201,26 +198,26 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 	// Create copy of the original project due to possible temporary modifications
 	PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
 
-	if(panelOnly)
+	if ( panelOnly )
 	{
 	    objectToGenerate = AppData()->GetSelectedForm();
 	}
 
-	if(!panelOnly || !objectToGenerate)
+	if ( !panelOnly || !objectToGenerate )
 	{
 	    objectToGenerate = project;
 	}
 
 	// If only one project item should be generated then remove the rest items
 	// from the temporary project
-	if(doPanel && panelOnly && (objectToGenerate != project))
+	if ( doPanel && panelOnly && (objectToGenerate != project) )
 	{
-	    if( project->GetChildCount() > 0)
+	    if ( project->GetChildCount() > 0 )
 	    {
 	        unsigned int i = 0;
             while( project->GetChildCount() > 1 )
             {
-                if(project->GetChild( i ) != objectToGenerate)
+                if ( project->GetChild( i ) != objectToGenerate )
                 {
                     project->RemoveChild( i );
                 }
@@ -230,7 +227,7 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 	    }
 	}
 
-    if(!project || !objectToGenerate)return;
+    if ( !project || !objectToGenerate ) return;
 
     // Get Erlang properties from the project
 
@@ -239,7 +236,7 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 	PProperty pCodeGen = project->GetProperty( wxT( "code_generation" ) );
 	if ( pCodeGen )
 	{
-		doFile = TypeConv::FlagSet( wxT("Erlang"), pCodeGen->GetValue() ) && !panelOnly;
+		doFile = TypeConv::FlagSet( wxT( "Erlang" ), pCodeGen->GetValue() ) && !panelOnly;
 	}
 
 	if ( !(doPanel || doFile ) )
@@ -249,7 +246,7 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 
 	// Get First ID from Project File
 	unsigned int firstID = 6000;	// (wxID_HIGHEST+1)
-	PProperty pFirstID = project->GetProperty( wxT("first_id") );
+	PProperty pFirstID = project->GetProperty( wxT( "first_id" ) );
 	if ( pFirstID )
 	{
 		firstID = pFirstID->GetValueAsInteger();
@@ -264,7 +261,7 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 	}
 	if ( file.empty() )
 	{
-		file = wxT("noname");
+		file = wxT( "noname" );
 	}
 
 	// Determine if the path is absolute or relative
@@ -347,11 +344,11 @@ void ErlangPanel::OnCodeGeneration( wxFBEvent& event )
 
 			// Determine if Utf8 or Ansi is to be created
 			bool useUtf8 = false;
-			PProperty pUseUtf8 = project->GetProperty( _("encoding") );
+			PProperty pUseUtf8 = project->GetProperty( _( "encoding" ) );
 
 			if ( pUseUtf8 )
 			{
-				useUtf8 = ( pUseUtf8->GetValueAsString() != wxT("ANSI") );
+				useUtf8 = ( pUseUtf8->GetValueAsString() != wxT( "ANSI" ) );
 			}
 
 			PCodeWriter erlang_cw( new FileCodeWriter( path + file + wxT( ".erl" ), useMicrosoftBOM, useUtf8 ) );
