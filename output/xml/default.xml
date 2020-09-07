@@ -22,6 +22,7 @@
       <property name="use_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for control IDs instead of a list of #defines">0</property>
       <property name="use_array_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for the dimensions of arrays">0</property>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only.&#x0A;Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
       <property name="precompiled_header" type="text" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
       <property name="class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
@@ -72,11 +73,14 @@
       </property>
     </category>
     <category name="Erlang Properties">
-      <property name="callback_events" type="bool" help="For Erlang Only.&#x0A;Sets the callback function to handle the event otherwise events will be sent as messages.&#x0A;* A event name is required anyway."></property>
-      <property name="copyright" type="text" help="For Erlang Only.&#x0A;Includes the coryright in the 'erlang_preamble' session if available">©</property>
+      <property name="copyright" type="text" help="For Erlang Only.&#x0A;Includes the copyright in the 'erlang_preamble' session if available">@</property>
       <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
-      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the widows's creation function">create</property>
-      <property name="generate_export" type="bool" help="For Erlang Only.&#x0A;Will add the creation function to an export declaration.">1</property>
+      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the windows's creation function">create</property>
+      <property name="kind_of_code" type="option" help="For Erlang Only.&#x0A;Tells if the source code will include only the window creation, events definition and export the creation function; or if it will create a full code skeleton.">
+        <option name="window_and_events" />
+        <option name="full_code_prototype" />
+        window_and_events
+      </property>
       <property name="lower_identifier" type="bool" help="For Erlang Only.&#x0A;Forces the entire name of the identifiers to lowercase.">1</property>
     </category>
   </objectinfo>

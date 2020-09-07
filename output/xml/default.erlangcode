@@ -16,12 +16,73 @@
             %%  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #nl
             %%  See the License for the specific language governing permissions and #nl
             %%  limitations under the License. #nl
-            %% #nl
-		</template>
-		<template name="export">
+            %%
 		</template>
 		<template name="include">
 			-include_lib("wx/include/wx.hrl"). #nl
+		</template>
+		<template name="export">
+		</template>
+		<template name="full_export_header">
+			-behaviour(wx_object). #nl
+			-export([start/0, start/1, start_link/0, start_link/1, #indent #indent #nl
+			init/1, terminate/2, code_change/3, #nl
+			handle_sync_event/3, handle_event/2, handle_info/2, handle_call/3, handle_cast/2]). #nl #unindent #unindent
+			#nl
+			#nl
+			-record(state, #indent #indent #nl
+			 {win, #nl
+			  config #nl
+			}). #unindent #unindent
+		</template>
+		<template name="full_export_start">
+			start() -> #indent #nl
+			start([]). #unindent #nl
+			#nl
+			start(Config) -> #indent #nl
+			wx_object:start(?MODULE, Config, []). #unindent #nl
+			#nl
+			start_link() -> #indent #nl
+			start_link([]). #unindent #nl
+			#nl
+			start_link(Config) -> #indent #nl
+			wx_object:start_link(?MODULE, Config, []). #unindent #nl
+		</template>
+		<template name="full_export_events_sync">
+			handle_sync_event(Ev = #wx{}, _wxObj, State = #state{}) -> #indent #nl
+			io:format(State#state.config,"Got Event ~p~n",[Ev]), #nl
+			{noreply,State}. #unindent #nl
+			#nl
+		</template>
+		<template name="full_export_events_async">
+			handle_event(Ev = #wx{}, State = #state{}) -> #indent #nl
+			io:format(State#state.config,"Got Event ~p~n",[Ev]), #nl
+			{noreply,State}. #unindent #nl
+			#nl
+		</template>
+		<template name="full_export_events_end">
+			%% Callbacks handled as normal gen_server callbacks #nl
+			handle_info(Msg, State) -> #indent #nl
+			io:format(State#state.config, "Got Info ~p~n",[Msg]), #nl
+			{noreply,State}. #unindent #nl
+			#nl
+			handle_call(shutdown, _From, State=#state{parent=Parent}) -> #indent #nl
+			wxWindow:destroy(Parent), #nl
+			{stop, normal, ok, State}; #unindent #nl
+			#nl
+			handle_call(Msg, _From, State) -> #indent #nl
+			io:format(State#state.config,"Got Call ~p~n",[Msg]), #nl
+			{reply,ok,State}. #unindent #nl
+			#nl
+			handle_cast(Msg, State) -> #indent #nl
+			io:format("Got cast ~p~n",[Msg]), #nl
+			{noreply,State}. #unindent #nl
+			#nl
+			code_change(_, _, State) -> #indent #nl
+			{stop, ignore, State}. #unindent #nl
+			#nl
+			terminate(_Reason, _) -> #indent #nl
+			ok. #unindent
 		</template>
 		<template name="erlang_epilogue">
 		</template>
