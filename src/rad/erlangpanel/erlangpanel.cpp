@@ -85,8 +85,8 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
 {
     stc->SetLexer( wxSTC_LEX_ERLANG );
 	stc->SetKeyWords( 0, wxT( "and andalso band bnot bor bxor callback case create end \
-	                          export false fun function if import include_lib module \
-	                          none new not of ok or orelse true try undefined xor" ) );
+	                          export false fun function if ignore import include_lib module \
+	                          none new not of ok or orelse receive true try undefined xor" ) );
 
 #ifdef __WXGTK__
 	// Debe haber un bug en wxGTK ya que la familia wxMODERN no es de ancho fijo.
@@ -106,29 +106,29 @@ void ErlangPanel::InitStyledTextCtrl( wxStyledTextCtrl *stc )
     stc->StyleSetBold( wxSTC_ERLANG_PREPROC, true );
 	if (!AppData()->IsDarkMode())
 	{
-		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour( 192, 0, 128));
-		stc->StyleSetForeground(wxSTC_ERLANG_STRING, *wxRED);
- 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, *wxBLUE);
- 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour(0, 128, 0));
-		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour(49, 106, 197));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour( 128, 128, 128));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour( 128, 128, 128));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 128, 128, 128));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour( 128, 128, 128));
-		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour(0, 0, 128) );
+		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour( 130, 40, 172 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_STRING, wxColour( 170, 45, 132 ));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, wxColor( 150, 100, 40 ));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour( 40, 144, 170 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour( 49, 106, 197 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour( 160, 53, 35 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour( 160, 53, 35 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 160, 53, 35 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour( 160, 53, 35 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour( 5, 5, 100 ));
 	}
 	else
 	{
-		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour(221, 40, 103));
-		stc->StyleSetForeground(wxSTC_ERLANG_STRING, wxColour(23, 198, 163));
- 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, wxColour( 0, 0, 186));
- 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour(0, 192, 0));
-		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour(204, 129, 186));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour(98, 98, 98));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour(98, 98, 98));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour(98, 98, 98));
-		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour(98, 98, 98));
-		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour(104, 151, 187));
+		stc->StyleSetForeground(wxSTC_ERLANG_KEYWORD, wxColour( 221, 40, 103 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_STRING, wxColour( 23, 198, 163 ));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_VARIABLE, wxColour( 0, 0, 186 ));
+ 		stc->StyleSetForeground(wxSTC_ERLANG_MACRO, wxColour( 0, 192, 0 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_PREPROC, wxColour( 204, 129, 186 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT, wxColour( 98, 98, 98 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_MODULE, wxColour( 98, 98, 98 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_FUNCTION, wxColour( 98, 98, 98 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_COMMENT_DOC, wxColour( 98, 98, 98 ));
+		stc->StyleSetForeground(wxSTC_ERLANG_NUMBER, wxColour( 104, 151, 187 ));
 	}
 	stc->SetUseTabs( false );
 	stc->SetTabWidth( 4 );

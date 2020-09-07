@@ -87,8 +87,14 @@ private:
 	wxString m_rootWxParent;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
-	wxString m_disconnecMode;
 	wxString m_strEventHandlerPostfix;
+
+	/**
+	* local event table containing a list of unique events to be used after all
+	* controls be processed to create the handlers.
+	* layout: [event name, [event class, [form name, control name[,...] |...] |...] |...]
+	**/
+	std::map<wxString, std::map<wxString, std::map<wxString, wxString>>> m_handledEvents;
 
 	/**
 	* Predefined macros won't generate defines.
@@ -126,13 +132,19 @@ private:
 	/**
 	 * Looks for "non-null" event handlers (PEvent) and collects it into a vector.
 	 */
-	void FindEventHandlers(PObjectBase obj, EventVector &events);
+	void FindEventHandlers( PObjectBase obj, EventVector &events );
 
 	/**
 	* Generates classes declarations inside the header file.
 	*/
-	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
-                             ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
+	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
+                              ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
+
+	/**
+	* Handling the local event table.
+	*/
+    void ClearLocalEventTable();
+    void AddLocalEvent( const wxString &strForm, const wxString &strControl, const wxString &strEvtName, const wxString &strEvtType );
 
 	/**
 	* Generates the event table.
@@ -169,14 +181,14 @@ private:
 	/**
 	* Generate a set of all window creation function to forward declare in export session.
 	*/
-	void GenExportSets( PObjectBase obj, std::set< wxString >* subclasses );
-    void GenExport( std::set< wxString > exports, const wxString& createPrefixg, unsigned int createParent );
+    void GenExport( PObjectBase obj, PCodeInfo code_info, const wxString& createPrefixg, unsigned int createParent, bool fullExport );
 
     /**
     * Formats identifiers names to the Erlang style
     */
     wxString ClassToCreateFun( wxString objname, wxString createPrefix );
     wxString MakeErlangIdentifier( wxString idname, unsigned int lowerIdentifier );
+
 	/**
 	* Generates the '#define' section for macros.
 	*/

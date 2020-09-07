@@ -520,6 +520,8 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	if (i18nProperty && i18nProperty->GetValueAsInteger())
 		m_i18n = true;
 
+    // The disconection property was no added to the 'default.xml' for 'Erlang Properties'
+    // We may need to evaluate further the need for the disconnection code generation
 	m_disconnectEvents = ( project->GetPropertyAsInteger( wxT( "disconnect_erlang_events" ) ) != 0 );
 
 	m_source->Clear();
@@ -603,16 +605,6 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
     m_source->WriteLn( tempName );
     m_source->WriteLn();
 
-	// Generate the exports sets
-	PProperty genExport = project->GetProperty( wxT( "generate_export" ) );
-	if ( genExport && genExport->GetValueAsInteger() )
-	{
-        std::set< wxString > exports;
-        GenExportSets( project, &exports );
-        // Write the forward declaration lines
-        GenExport( exports, Prefix, Parent );
-	}
-
 	// Generating  includes
 	std::vector< wxString > headerIncludes;
 	std::set< wxString > templates;
@@ -632,18 +624,15 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	// Generating "defines" for macros
 	GenDefines( project );
 
-	PProperty eventKindProp = project->GetProperty( wxT( "callback_events" ) );
-	if ( eventKindProp->GetValueAsInteger() ){
-		 m_strEventHandlerPostfix = wxT( "[{callback, #function}]" );
-	}
-	else
+	// Generate and writes the exports
+	PProperty genExport = project->GetProperty( wxT( "kind_of_code" ) );
+	if ( genExport )
 	{
-		m_strEventHandlerPostfix = wxT( "[]" );
+	    bool fullExport = genExport->GetValueAsString() == wxT( "full_code_prototype" );
+        GenExport( project, code_info, Prefix, Parent, fullExport );
 	}
 
-	PProperty disconnectMode = project->GetProperty( wxT( "disconnect_mode" ) );
-	m_disconnecMode = disconnectMode->GetValueAsString();
-
+    // Generate and write the creation functions for each form/window
 	unsigned int dProjChildCount = project->GetChildCount();
 	for ( unsigned int i = 0; i < dProjChildCount; i++ )
 	{
@@ -658,11 +647,79 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		GenClassDeclaration(child, false, wxEmptyString, events, m_strEventHandlerPostfix, arrays, Prefix, Parent);
 	}
 
+    // currently, there is not definition for this session in 'defaul.erlangcode' file
 	code = GetCode( project, wxT( "erlang_epilogue" ) );
 	if ( !code.empty() )
 		m_source->WriteLn( code );
 
 	return true;
+}
+
+void ErlangCodeGenerator::ClearLocalEventTable()
+{
+    // looking at event name list for the event type list
+    for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
+            it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
+    {
+        // looking at the event type list for the control info list
+        std::map<wxString, std::map<wxString, wxString>> eventTypeList = it->second;
+
+        for ( std::map<wxString, std::map<wxString, wxString>>::iterator
+                itT=eventTypeList.begin(); itT!=eventTypeList.end(); ++itT )
+        {
+            // looking at the control info list
+            std::map<wxString, wxString> controlInfoList = itT->second;
+            controlInfoList.clear();
+        }
+        eventTypeList.clear();
+    }
+    m_handledEvents.clear();
+}
+
+void ErlangCodeGenerator::AddLocalEvent( const wxString &strForm, const wxString &strControl, const wxString &strEvtName, const wxString &strEvtType )
+{
+    std::map<wxString,wxString> controlInfoList;
+    std::map<wxString,std::map<wxString,wxString>> eventTypeList;
+    std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
+
+    // checking if the event name already was defined
+    it = m_handledEvents.find( strEvtName );
+    if ( it == m_handledEvents.end() )  // not found
+    {
+        controlInfoList.insert( std::make_pair( strForm, strControl ) );
+        eventTypeList.insert( std::make_pair( strEvtType, controlInfoList ) );
+        m_handledEvents.insert( std::make_pair( strEvtName, eventTypeList ) );
+    }
+    else
+    {
+        std::map<wxString,std::map<wxString,wxString>>::iterator itT;
+
+        eventTypeList = it->second;
+        itT = eventTypeList.find( strEvtType );
+        if ( itT == eventTypeList.end() )  // not found
+        {
+            controlInfoList.insert( std::make_pair( strForm, strControl ) );
+            eventTypeList.insert( std::make_pair( strEvtType, controlInfoList ) );
+        }
+        else
+        {
+            std::map<wxString,wxString>::iterator itC;
+
+            controlInfoList == itT->second;
+            itC = controlInfoList.find( strForm );
+            if ( itC == controlInfoList.end() )  // not found
+            {
+                controlInfoList.insert( std::make_pair( strForm, strControl ) );
+            }
+            else
+            {
+                wxString strPrevControls = itC->second;
+                itC->second = strPrevControls + "," + strControl;
+            }
+            itT->second = controlInfoList;
+        }
+        it->second = eventTypeList;
+    }
 }
 
 void ErlangCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events, wxString &strClassName, bool disconnect )
@@ -705,8 +762,18 @@ void ErlangCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &e
 			PEvent event = events[i];
 
 			handlerName = event->GetValue();
-			// evt_entry_... in *.rlangcode files are not evaluated by Erlang code
-			// generator it's used to define generic event handler which is not
+
+			PObjectBase owner = event->GetObject();
+			PProperty propName = owner->GetProperty( wxT( "name" ) );
+			wxString owner_name = propName->GetValue();
+			owner_name[0] = wxToupper( owner_name[0] );
+
+            wxString prototype = wxString::Format( wxT("Event: %s | %s | %s | %s"), class_name, owner_name, event->GetValue().c_str(), event->GetEventInfo()->GetEventClassName().c_str() );
+		    m_source->WriteLn( prototype );
+
+
+			// 'evt_entry_...' in *.rlangcode files are not evaluated by Erlang code generator.
+			// it's used to define 'generic' event handler which is not
 			// implemented in wx (connect) which always requires an event id.
 			wxString templateName = wxString::Format( wxT( "connect_%s" ), event->GetName().c_str() );
 
@@ -738,17 +805,38 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 
 		if ( !_template.empty() )
 		{
+            wxString option;
 			if ( disconnect )
 			{
-				if ( m_disconnecMode == wxT( "handler_name" ) ) 
-				    _template.Replace( wxT( "#handler" ), wxT( "handler = " ) + handlerName );
-				else if ( m_disconnecMode == wxT( "source_name" ) )
-                    _template.Replace( wxT( "#handler" ), wxT( "none" ) );
+                int pos = _template.Find(wxT( "#option" ));
+                if (pos != -1) {
+                    _template.Replace(wxT( "#option" ), wxT( "[]" ));
+                }
 			}
 			else
 			{
-			    wxString option = m_strEventHandlerPostfix;
-			    option.Replace( wxT( "#function" ), handlerName );
+			    // Callbacks are sync events, so we use 'async' to indicate we want to
+			    // handle the event that way.
+			    // We can use 'callback' to indicate the event will be handled by a sync event handler
+			    // or give the event a 'name id' which will create the specific function to handle it
+			    // and be included as the callback parameter in options.
+                if ( handlerName.Lower() == wxT( "async" ) )
+                {
+                    option = wxT( "[{skip, true}]" );
+                }
+                else if ( handlerName.Lower() == wxT( "skip" ) )
+                {
+                    option = wxT( "[{skip, true}]" );
+                }
+                else if ( handlerName.Lower() == wxT( "callback" ) )
+                {
+                    option = wxString::Format( "[%s]", handlerName.Lower() );
+                }
+                else
+                {
+                    option = wxString::Format( "[{callback, %s}]", handlerName.Lower() );
+                }
+
 			    // option is now: "" or "{callback,<handlerName>}"
 				_template.Replace( wxT( "#option" ), option );
 			}
@@ -957,7 +1045,6 @@ wxString ErlangCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxSt
 	// Array needs to be declared
 	wxString code;
 
-
 	// Get the Code
 	code.append(GetCode(obj, wxT( "construction" ), silent, strSelf));
 
@@ -972,7 +1059,8 @@ void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
                                            const EventVector& events,
                                            const wxString& /*eventHandlerPostfix*/,
                                            ArrayItems& arrays,
-                                           const wxString& createPrefix, unsigned int createParent ) {
+                                           const wxString& createPrefix, unsigned int createParent )
+{
 	wxString strClassName = class_obj->GetClassName();
 	PProperty propName = class_obj->GetProperty( wxT( "name" ) );
 	if ( !propName )
@@ -994,37 +1082,59 @@ void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 
 }
 
-void ErlangCodeGenerator::GenExportSets( PObjectBase obj, std::set< wxString >* exports )
+void ErlangCodeGenerator::GenExport( PObjectBase project,
+                                    PCodeInfo code_info,
+                                    const wxString& createPrefixg,
+                                    unsigned int createParent, bool fullExport )
 {
-	// Generate a list of the create functions for the export session
-	for ( unsigned int i = 0; i < obj->GetChildCount(); i++ )
-	{
-	    PObjectBase child = obj->GetChild( i );
-	    if ( child )
-	    {
-            PProperty name = child->GetProperty( wxT( "name" ) );
-            wxString headerVal = name->GetValueAsString();
-            if ( !headerVal.empty() )
-            {
-                exports->insert(headerVal);
-            }
-	    }
-	}
-}
-
-void ErlangCodeGenerator::GenExport( std::set< wxString > exports, const wxString& createPrefix, unsigned int createParent )
-{
-    wxString names = wxT( "" );
-	std::set<wxString>::iterator setIt;
-	for ( setIt = exports.begin(); setIt != exports.end(); ++setIt )
-	{
-	    names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( *setIt, createPrefix ), createParent ) );
-	}
-    if ( !names.empty() )
+    if ( fullExport )
     {
-    	names = names.Left( names.Len() -2 ),
-        m_source->WriteLn( wxString::Format( wxT( "-export([%s])." ), names ) );
-        m_source->WriteLn();
+        // Write the predefined functions on export session
+        wxString code = code_info->GetTemplate( wxT( "full_export_header" ) );
+        if ( !code.empty() )
+        {
+            ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+            code = parser.ParseTemplate();
+
+            m_source->WriteLn( code );
+            m_source->WriteLn( wxEmptyString );
+        }
+
+        code = code_info->GetTemplate( wxT( "full_export_start" ) );
+        if ( !code.empty() )
+        {
+            ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+            code = parser.ParseTemplate();
+
+            m_source->WriteLn( code );
+            m_source->WriteLn( wxEmptyString );
+        }
+    }
+    else
+    {
+        // Write the forward declaration lines
+        wxString names = wxEmptyString;
+        std::set< wxString > exports;
+        // Generate a list of the create functions for the export session
+        for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+        {
+            PObjectBase child = project->GetChild( i );
+            if ( child )
+            {
+                PProperty name = child->GetProperty( wxT( "name" ) );
+                wxString headerVal = name->GetValueAsString();
+                if ( !headerVal.empty() )
+                {
+                    names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( headerVal, createPrefixg ), createParent ) );
+                }
+            }
+        }
+        if ( !names.empty() )
+        {
+            names = names.Left( names.Len() -2 ),
+            m_source->WriteLn( wxString::Format( wxT( "-export([%s])." ), names ) );
+            m_source->WriteLn( wxEmptyString );
+        }
     }
 }
 
@@ -1603,7 +1713,7 @@ void ErlangCodeGenerator::GenDefines( PObjectBase project)
 	}
 }
 
-void ErlangCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxString &strClassName  )
+void ErlangCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxString &strClassName )
 {
 	wxString _template;
 	PCodeInfo code_info = info->GetCodeInfo( wxT( "Erlang" ) );

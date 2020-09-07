@@ -71,11 +71,14 @@
       </property>
     </category>
     <category name="Erlang Properties">
-      <property name="callback_events" type="bool" help="For Erlang Only.&#x0A;Sets the callback function to handle the event otherwise events will be sent as messages.&#x0A;* A event name is required anyway."></property>
-      <property name="copyright" type="text" help="For Erlang Only.&#x0A;Includes the coryright in the 'erlang_preamble' session if available">©</property>
+      <property name="copyright" type="text" help="For Erlang Only.&#x0A;Includes the copyright in the 'erlang_preamble' session if available">@</property>
       <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
-      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the widows's creation function">create</property>
-      <property name="generate_export" type="bool" help="For Erlang Only.&#x0A;Will add the creation function to an export declaration.">1</property>
+      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the windows's creation function">create</property>
+      <property name="kind_of_code" type="option" help="For Erlang Only.&#x0A;Tells if the source code will include only the window creation, events definition and export the creation function; or if it will create a full code skeleton.">
+        <option name="window_and_events" />
+        <option name="full_code_prototype" />
+        window_and_events
+      </property>
       <property name="lower_identifier" type="bool" help="For Erlang Only.&#x0A;Forces the entire name of the identifiers to lowercase.">1</property>
     </category>
   </objectinfo>
