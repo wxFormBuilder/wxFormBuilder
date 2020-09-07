@@ -590,7 +590,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	        time_t theTime = time(NULL);
             struct tm *aTime = localtime(&theTime);
 	        int year = aTime->tm_year + 1900;
-            tempName = wxString::Format( "%s  %i" , propCopyRight->GetValueAsString(), year);
+            tempName = wxString::Format( "%s %i" , propCopyRight->GetValueAsString(), year);
     	    code.Replace( wxT( "#copyright" ), tempName );
     	}
         ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
