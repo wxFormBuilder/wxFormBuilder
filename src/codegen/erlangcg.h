@@ -87,6 +87,8 @@ private:
 	wxString m_rootWxParent;
 	unsigned int m_firstID;
 	bool m_disconnectEvents;
+	bool m_lowerIdentifier;
+	bool m_fullExport;
 	wxString m_strEventHandlerPostfix;
 
 	/**
@@ -138,28 +140,30 @@ private:
 	* Generates classes declarations inside the header file.
 	*/
 	void GenClassDeclaration( PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix,
-                              ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent );
+                              ArrayItems& arrays, const wxString& createPrefix, bool createParent );
 
 	/**
 	* Handling the local event table.
 	*/
-    void ClearLocalEventTable();
-    void AddLocalEvent( const wxString &strForm, const wxString &strControl, const wxString &strEvtName, const wxString &strEvtType );
+    void ClearLocalEventTable( const wxString &strEvtName );
+    void AddLocalEvent( const wxString &strControl, const wxString &strEvtName, const wxString &strEvtClass, const wxString &strEvtType );
 
 	/**
 	* Generates the event table.
 	*/
-	void GenEvents( PObjectBase class_obj, const EventVector &events, wxString &strClassName, bool disconnect = false );
+	void GenEvents( PObjectBase class_obj, const EventVector &events, bool disconnect = false );
 
 	/**
 	* helper function to find the event table entry template in the class or its base classes
 	*/
-	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName,  bool disconnect = false );
+	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, PEvent event, const wxString& templateName, wxString &strClassName,  bool disconnect = false );
 
 	/**
-	* helper function to find the event table entry template in the class or its base classes
+	* Generate the header for the events handler
 	*/
-//	wxString GenEventEntryForInheritedClass( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, wxString &strClassName);
+	void GenFormatedEventHeaders( PObjectBase project, const wxString _template);
+	void GenFormatedEventHeaders( PObjectBase project, const wxString _template, const std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator &it);
+	void GenEventHeaders( PObjectBase project, PCodeInfo code_info );
 
 	/**
 	* Generates the generated_event_handlers template
@@ -175,19 +179,18 @@ private:
 	*/
 	void GenIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
 	void GenObjectIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
-	void GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::vector< wxString >* includes, std::set< wxString >* templates );
 	void AddUniqueIncludes( const wxString& include, std::vector< wxString >* includes );
 
 	/**
 	* Generate a set of all window creation function to forward declare in export session.
 	*/
-    void GenExport( PObjectBase obj, PCodeInfo code_info, const wxString& createPrefixg, unsigned int createParent, bool fullExport );
+    void GenExport( PObjectBase obj, PCodeInfo code_info, const wxString& createPrefixg, bool createParent );
 
     /**
     * Formats identifiers names to the Erlang style
     */
     wxString ClassToCreateFun( wxString objname, wxString createPrefix );
-    wxString MakeErlangIdentifier( wxString idname, unsigned int lowerIdentifier );
+    wxString MakeErlangIdentifier( wxString idname );
 
 	/**
 	* Generates the '#define' section for macros.
@@ -197,7 +200,7 @@ private:
 	/**
 	* Generates the constructor for a class
 	*/
-    void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays, const wxString& createPrefix, unsigned int createParent);
+    void GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName, ArrayItems& arrays, const wxString& createPrefix, bool createParent);
 
 	/**
 	* Generates the destructor for a class
@@ -206,7 +209,7 @@ private:
 
 	/**
 	* Makes the objects construction, setting up the objects' and Layout properties.
-	* The algorithm is simmilar to that used in the designer preview generation.
+	* The algorithm is similar to that used in the designer preview generation.
 	*/
 	void GenConstruction(PObjectBase base_obj, PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
 
@@ -228,8 +231,6 @@ private:
 	*/
 	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
 	void GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines );
-
-    void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPostfix, const wxString& strClassName );
 
 public:
 	/**
