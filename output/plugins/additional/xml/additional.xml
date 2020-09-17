@@ -89,7 +89,6 @@ Written by
     <inherits class="AUI"/>
     <inherits class="Validator"/>
     <property name="name" type="text">m_toggleBtn</property>
-    <property name="label" type="text"></property>
     <property name="value" type="bool">0</property>
     <event name="OnToggleButton" class="wxCommandEvent" help="Handles a wxEVT_TOGGLEBUTTON event."/>
   </objectinfo>

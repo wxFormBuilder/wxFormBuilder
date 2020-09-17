@@ -21,297 +21,299 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 
-Erlang code generation writen by
+Erlang code generation written by
   Micheus Vieira - micheus@gmail.com
 -->
 <codegen language="Erlang">
 
-	<templates class="wxPanel">
-		<template name="construction">
-            $name = #class:new(#wxparent $name, [#ifnotnull $id
-                                                 @{ #ifnotequal $id "wxID_ANY"
-                                                    @{{winid,$id }, @} @}
-                                                 #ifnotnull $pos
-                                                 @{{pos,$pos }, @}
-                                                 #ifnotnull $size
-                                                 @{{size,$size }, @}
-                                                 #ifnotnull $window_style
-                                                 @{{style,$window_style }@}]),
-        </template>
-	</templates>
+  <templates class="wxPanel">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{ #ifnotequal $id "wxID_ANY"
+                                             @{{winid,$id }, @}@}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $window_style
+                                           @{{style,$window_style }@}]),
+    </template>
+  </templates>
 
-	<templates class="wxCollapsiblePane">
-		<template name="construction">
-            $name = #class:new(#wxparent $name, [#ifnotnull $id
-                                                 @{ #ifnotequal $id "wxID_ANY"
-                                                    @{{winid,$id }, @} @}
-                                                 #ifnotnull $label
-                                                 @{{label,$label }, @}
-                                                 #ifnotnull $pos
-                                                 @{{pos,$pos }, @}
-                                                 #ifnotnull $size
-                                                 @{{size,$size }, @}
-                                                 #ifnotnull $style
-                                                 @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                 #ifnull $style
-                                                 @{ #ifnotnull $window_style
-                                                    @{{style,$window_style } @}@}]),
-            #ifnotequal $validator_type "wxDefaultValidator"
-            @{ %% Validator is not implemented for Erlang code generator @}
-        </template>
-		<template name="settings">
-		    #ifnotnull $collapsed
-		    @{ %% #class:collapse($name, $collapsed) isn't currently supported by Erlang @}
-        </template>
-		<template name="evt_connect_OnCollapsiblePaneChanged">#class:connect($name, wxEVT_COLLAPSIBLEPANE_CHANGED, #option),</template>
-	</templates>
+  <templates class="wxCollapsiblePane">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{ #ifnotequal $id "wxID_ANY"
+                                             @{{winid,$id }, @}@}
+                                           #ifnotnull $label
+                                           @{{label,$label }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                             @{{style,$window_style }@}@}]),
+      #ifnotequal $validator_type "wxDefaultValidator"
+      @{ %% Validator is not implemented for Erlang code generator @}
+    </template>
+    <template name="settings">
+      #ifnotnull $collapsed
+      @{ %% #class:collapse($name, $collapsed) isn't currently supported by Erlang @}
+    </template>
+    <template name="evt_connect_OnCollapsiblePaneChanged"> #class:connect($name, wxEVT_COLLAPSIBLEPANE_CHANGED, *option), </template>
+  </templates>
 
-	<templates class="wxSplitterWindow">
-		<template name="construction">
-            $name = #class:new(#wxparent $name, [#ifnotnull $id
-                                                 @{ #ifnotequal $id "wxID_ANY"
-                                                    @{{id,$id }, @} @}
-                                                 #ifnotnull $pos
-                                                 @{{pos,$pos }, @}
-                                                 #ifnotnull $size
-                                                 @{{size,$size }, @}
-                                                 #ifnotnull $style
-                                                 @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                 #ifnull $style
-                                                 @{ #ifnotnull $window_style
-                                                    @{{style,$window_style } @}@}]),
-        </template>
-		<template name="settings">
-			#ifnotnull $sashgravity
-			@{
-				#ifnotequal $sashgravity "0.0"
-			   	@{ #class:setSashGravity($name, $sashgravity), #nl @}
-			@}
-			#ifnotnull $sashsize
-			@{
-				#ifnotequal $sashsize "-1"
-			   	@{ #class:setSashSize($name, $sashsize), #nl @}
-			@}
-			#ifnotnull $sashpos
-			@{
-				#ifnotequal $sashpos "-1"
-			   	@{ #class:connect($name, idle, [{callback, $name #append _on_idle}]), #nl @}
-			@}
-			#ifnotnull $min_pane_size
-			@{
-				#ifnotequal $min_pane_size "0"
-			   	@{ #class:setMinimumPaneSize($name, $min_pane_size), #nl @}
-			@}
-		</template>
-		<template name="generated_event_handlers">
-			#ifnotnull $sashpos
-			@{
-				#ifnotequal $sashpos "-1"
-				@{
-					#nl $name #append _on_idle(#wxIdle{}) ->
-					#nl #indent #class:setSashPosition($sashpos),
-					#nl #class:disconnect(wxEVT_IDLE).
-					#nl #unindent
-				@}
-			@}
-		</template>
-		<template name="evt_connect_OnSplitterSashPosChanging">#class:connect($name, command_splitter_sash_pos_changing, #option),</template>
-		<template name="evt_connect_OnSplitterSashPosChanged">#class:connect($name, command_splitter_sash_pos_changed, #option),</template>
-		<template name="evt_connect_OnSplitterUnsplit">#class:connect($name, command_splitter_unsplit, #option),</template>
-		<template name="evt_connect_OnSplitterDClick">#class:connect($name, command_splitter_doubleclicked, #option),</template>
-	</templates>
+  <templates class="wxSplitterWindow">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{ #ifnotequal $id "wxID_ANY"
+                                             @{{id,$id }, @}@}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                             @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      #ifnotnull $sashgravity
+      @{ #ifnotequal $sashgravity "0.0"
+        @{ #class:setSashGravity($name, $sashgravity), #nl @}
+      @}
+      #ifnotnull $sashsize
+      @{ #ifnotequal $sashsize "-1"
+        @{ #class:setSashSize($name, $sashsize), #nl @}
+      @}
+      #ifnotnull $min_pane_size
+      @{ #ifnotequal $min_pane_size "0"
+        @{ #class:setMinimumPaneSize($name, $min_pane_size), #nl @}
+      @}
+      <!--
+        *** these lines depending on the 'generated_event_handlers' bellow - see comment
+        #ifnotnull $sashpos
+        @{ #ifnotequal $sashpos "-1"
+          @{ #class:connect($name, idle, [{callback, fun $name #append _on_idle/2}]), #nl @}
+        @}
+      -->
+    </template>
+    <template name="generated_event_handlers">
+      <!--
+          %% Event handing headers are still not implemented in the xml files
+
+      *** In case this template name be processed by Erlang code - in the future - in this
+          specific case will need some kind of workaround since the '#wxIdlw{}' will result
+          in a error by the parser.
+
+      #ifnotnull $sashpos
+      @{ #ifnotequal $sashpos "-1"
+        @{
+          #nl $name #append _on_idle(#wxIdle{}) -> #indent #nl
+          #class:setSashPosition($sashpos), #nl
+          #class:disconnect(wxEVT_IDLE). #unindent #nl
+        @}
+      @}
+      -->
+    </template>
+    <template name="evt_connect_OnSplitterSashPosChanging"> #class:connect($name, command_splitter_sash_pos_changing, *option), </template>
+    <template name="evt_connect_OnSplitterSashPosChanged"> #class:connect($name, command_splitter_sash_pos_changed, *option), </template>
+    <template name="evt_connect_OnSplitterUnsplit"> #class:connect($name, command_splitter_unsplit, *option), </template>
+    <template name="evt_connect_OnSplitterDClick"> #class:connect($name, command_splitter_doubleclicked, *option), </template>
+  </templates>
 
 
-	<templates class="wxNotebook">
-		<template name="construction">
-		    $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
-                                                      @{{pos,$pos }, @}
-                                                      #ifnotnull $size
-                                                      @{{size,$size }, @}
-                                                      #ifnotnull $style
-                                                      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                      #ifnull $style
-                                                      @{ #ifnotnull $window_style
-                                                         @{{style,$window_style } @}@}]),
-        </template>
-		<template name="settings">
-			#ifnotnull $bitmapsize
-			@{
-				{$name #append _ImgW, $name #append _ImgH} = $bitmapsize, #nl
-				$name #append _Imgs = wxImageList:new($name #append _ImgW, $name #append _ImgH), #nl
-				#class:assignImageList($name, $name #append _Imgs),
-			@}
-		</template>
-		<template name="evt_connect_OnNotebookPageChanged">#class:connect($name, command_notebook_page_changed, #option),</template>
-		<template name="evt_connect_OnNotebookPageChanging">#class:connect($name, command_notebook_page_changing, #option),</template>
-	</templates>
+  <templates class="wxNotebook">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                  @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      #ifnotnull $bitmapsize
+      @{{$name #append _ImgW, $name #append _ImgH} = $bitmapsize, #nl
+        $name #append _Imgs = wxImageList:new($name #append _ImgW, $name #append _ImgH), #nl
+        #class:assignImageList($name, $name #append _Imgs),
+      @}
+    </template>
+    <template name="evt_connect_OnNotebookPageChanged"> #class:connect($name, command_notebook_page_changed, *option), </template>
+    <template name="evt_connect_OnNotebookPageChanging"> #class:connect($name, command_notebook_page_changing, *option), </template>
+  </templates>
 
-	<templates class="notebookpage">
-		<template name="page_add">
-		    wxNotebook:addPage(#parent $name, #child$name, $label #ifnotequal $select "0" @{, [{bSelect,$select }]@}),
-		</template>
-		<template name="settings">
-			#ifnotnull #parent $bitmapsize
-			@{
-				#ifnotnull #parent $bitmapsize
-				@{ #ifnotnull $bitmap
-				   @{ #nl
-					  wxImageList:add(#parent $name #append _Imgs, $bitmap), #nl
-					  wxNotebook:setPageImage(#parent $name, wxNotebook:getRowCount(#parent $name)-1, wxImageList:getImageCount(#parent $name #append _Imgs)-1), @}
-				@}
-			@}
-        </template>
-	</templates>
+  <templates class="notebookpage">
+    <template name="page_add">
+      wxNotebook:addPage(#parent $name, #child $name, $label #ifnotequal $select "0" @{, [{bSelect,$select }]@}),
+    </template>
+    <template name="settings">
+      #ifnotnull #parent $bitmapsize
+      @{ #ifnotnull #parent $bitmapsize
+        @{ #ifnotnull $bitmap
+          @{ #nl
+            wxImageList:add(#parent $name #append _Imgs, $bitmap), #nl
+            wxNotebook:setPageImage(#parent $name, wxNotebook:getRowCount(#parent $name)-1, wxImageList:getImageCount(#parent $name #append _Imgs)-1),
+          @}
+        @}
+      @}
+    </template>
+  </templates>
 
-	<templates class="wxListbook">
-		<template name="construction">
-		    $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
-                                                      @{{pos,$pos }, @}
-                                                      #ifnotnull $size
-                                                      @{{size,$size }, @}
-                                                      #ifnotnull $style
-                                                      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                      #ifnull $style
-                                                      @{ #ifnotnull $window_style
-                                                         @{{style,$window_style } @}@}]),
-        </template>
-		<template name="settings">
-			#ifnotnull $bitmapsize
-			@{
-				{$name #append _ImgW, $name #append _ImgH} = $bitmapsize, #nl
-				$name #append _Imgs = wxImageList:new($name #append _ImgW, $name #append _ImgH), #nl
-				#class:assignImageList($name, $name #append _Imgs),
-			@}
-		</template>
-		<template name="after_addchild">
-			#ifnull $bitmapsize
-			@{
-				%% ** Small icon style not supported in GTK. You may need to uncomment the lines bellow #nl
-				%% $name #append ListView = #class:getListView($name), #nl
-				%% $name #append Flags = $name #append ListView:getWindowStyleFlag(), #nl
-				%% if ($name #append Flags band ?wxLC_SMALL_ICON) /= 0 ->
-				%% @{
-				%%	#nl #indent $name #append Flags = ($name #append Flags band (not ?wxLC_SMALL_ICON)) or ?wxLC_ICON,
-				%%	#nl #unindent
-				%%	#nl true -> ignore
-				%%	#nl #unindent end,
-				%%	#nl
-				%% @}
-				%% $name #append ListView:setWindowStyleFlag($name #append Flags), #nl
-			@}
-		</template>
-		<template name="evt_connect_OnListbookPageChanged">%% event #class:wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnListbookPageChanging">%% event #class:wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING isn't currently supportedby Erlang</template>
-	</templates>
+  <templates class="wxListbook">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                  @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      #ifnotnull $bitmapsize
+      @{{$name #append _ImgW, $name #append _ImgH} = $bitmapsize, #nl
+        $name #append _Imgs = wxImageList:new($name #append _ImgW, $name #append _ImgH), #nl
+        #class:assignImageList($name, $name #append _Imgs),
+      @}
+    </template>
+    <template name="after_addchild">
+      #ifnull $bitmapsize
+      @{
+        %% ** Small icon style not supported in GTK. You may need to uncomment the lines bellow #nl
+        %% $name #append ListView = #class:getListView($name), #nl
+        %% $name #append Flags = $name #append ListView:getWindowStyleFlag(), #nl
+        %% if ($name #append Flags band ?wxLC_SMALL_ICON) /= 0 -> #indent #nl
+        %% $name #append Flags = ($name #append Flags band (not ?wxLC_SMALL_ICON)) or ?wxLC_ICON, #unindent #nl
+        %% true -> ignore #nl
+        %% end, #nl
+        %% $name #append ListView:setWindowStyleFlag($name #append Flags),
+      @}
+    </template>
+    <template name="evt_connect_OnListbookPageChanged"> %% event #class:wxEVT_COMMAND_LISTBOOK_PAGE_CHANGED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnListbookPageChanging"> %% event #class:wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING isn't currently supported by Erlang </template>
+  </templates>
 
-	<templates class="listbookpage">
-		<template name="page_add">
-		    #class:addPage(#parent $name, #child $name, $label #ifnotequal $select "0" @{, [{bSelect, $select }]@}),
-			#ifnotnull #parent $bitmapsize
-			@{ #ifnotnull $bitmap
-               	@{ #nl
-					wxImageList:add(#parent $name #append _Imgs, $bitmap), #nl
-					#class:setPageImage(#parent $name, #class:getPageCount(#parent $name)-1, wxImageList:getImageCount(#parent $name #append _Imgs)-1),
-				@}
-			@}
-        </template>
-	</templates>
+  <templates class="listbookpage">
+    <template name="page_add">
+      #class:addPage(#parent $name, #child $name, $label #ifnotequal $select "0" @{, [{bSelect, $select }]@}),
 
-	<templates class="wxChoicebook">
-		<template name="construction">
-		    $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
-                                                      @{{pos,$pos }, @}
-                                                      #ifnotnull $size
-                                                      @{{size,$size }, @}
-                                                      #ifnotnull $style
-                                                      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                      #ifnull $style
-                                                      @{ #ifnotnull $window_style
-                                                         @{{style,$window_style } @}@}]),
-        </template>
-		<template name="evt_connect_OnChoicebookPageChanged">%% event #class:wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnChoicebookPageChanging">%% event #class:wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING isn't currently supportedby Erlang</template>
-	</templates>
+      #ifnotnull #parent $bitmapsize
+      @{ #ifnotnull $bitmap
+        @{ #nl
+          wxImageList:add(#parent $name #append _Imgs, $bitmap), #nl
+          #class:setPageImage(#parent $name, #class:getPageCount(#parent $name)-1, wxImageList:getImageCount(#parent $name #append _Imgs)-1),
+        @}
+      @}
+    </template>
+  </templates>
 
-	<templates class="choicebookpage">
-		<template name="page_add">
-		    #parent #class:addPage(#parent $name, #child$name, $label #ifnotequal $select "0" @{, [{bSelect,$select }]@}),
-        </template>
-	</templates>
+  <templates class="wxChoicebook">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                  @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnChoicebookPageChanged"> %% event #class:wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnChoicebookPageChanging"> %% event #class:wxEVT_COMMAND_CHOICEBOOK_PAGE_CHANGING isn't currently supported by Erlang </template>
+  </templates>
 
-	<templates class="wxSimplebook">
-		<template name="construction">
-            <!--
-                #class and all its sub controls are not supported by Erlang
-                when implemented, it should be removed from the
-                unsupported list in erlangcg.cpp->ErlangCodeGenerator()
-            -->
-		    $name = #class:new(#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @}),
-        </template>
-		<template name="evt_connect_OnSimplebookPageChanged">%% event #class:wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGED isn't currently supportedby Erlang</template>
-		<template name="evt_connect_OnSimplebookPageChanging">%% event #class:wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING isn't currently supportedby Erlang</template>
-	</templates>
+  <templates class="choicebookpage">
+    <template name="page_add">
+      wxChoicebook:addPage(#parent $name, #child $name, $label #ifnotequal $select "0" @{, [{bSelect,$select }]@}),
+    </template>
+  </templates>
 
-	<templates class="simplebookpage">
-		<template name="page_add">
-		    #parent #class:addPage(#parent $name, #child$name, $label #ifnotequal $select "0" @{, [{bSelect, $select }]@}),
-        </template>
-	</templates>
+  <templates class="wxSimplebook">
+    <template name="construction">
+      <!--
+        #class and all its sub controls are not supported by Erlang
+        when implemented, it should be removed from the
+        unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, $window_name @}),
+    </template>
+    <template name="evt_connect_OnSimplebookPageChanged"> %% event #class:wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnSimplebookPageChanging"> %% event #class:wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING isn't currently supported by Erlang </template>
+  </templates>
 
-	<templates class="wxAuiNotebook">
-		<template name="construction">
-		    $name = #class:new(#wxparent $name, [#ifnotnull $pos
-                                                 @{{pos,$pos }, @}
-                                                 #ifnotnull $size
-                                                 @{{size,$size }, @}
-                                                 #ifnotnull $style
-                                                 @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-                                                 #ifnull $style
-                                                 @{ #ifnotnull $window_style
-                                                    @{{style,$window_style } @}@}]),
-        </template>
-		<template name="evt_connect_OnAuiNotebookPageClose">#class:connect($name, command_auinotebook_page_close, #option),</template>
-		<template name="evt_connect_OnAuiNotebookPageClosed">#class:connect($name, command_auinotebook_page_closed, #option),</template>
-		<template name="evt_connect_OnAuiNotebookPageChanged">#class:connect($name, command_auinotebook_page_changed, #option),</template>
-		<template name="evt_connect_OnAuiNotebookPageChanging">#class:connect($name, command_auinotebook_page_changing, #option),</template>
-		<template name="evt_connect_OnAuiNotebookButton">#class:connect($name, command_auinotebook_button, #option),</template>
-		<template name="evt_connect_OnAuiNotebookBeginDrag">#class:connect($name, command_auinotebook_begin_drag, #option),</template>
-		<template name="evt_connect_OnAuiNotebookEndDrag">#class:connect($name, command_auinotebook_end_drag, #option),</template>
-		<template name="evt_connect_OnAuiNotebookDragMotion">#class:connect($name, command_auinotebook_drag_motion, #option),</template>
-		<template name="evt_connect_OnAuiNotebookAllowDND">#class:connect($name, command_auinotebook_allow_dnd, #option),</template>
-		<template name="evt_connect_OnAuiNotebookDragDone">#class:connect($name, command_auinotebook_drag_done, #option),</template>
-		<template name="evt_connect_OnAuiNotebookTabMiddleDown">#class:connect($name, command_auinotebook_tab_middle_down, #option),</template>
-		<template name="evt_connect_OnAuiNotebookTabMiddleUp">#class:connect($name, command_auinotebook_tab_middle_up, #option),</template>
-		<template name="evt_connect_OnAuiNotebookTabRightDown">#class:connect($name, command_auinotebook_tab_right_down, #option),</template>
-		<template name="evt_connect_OnAuiNotebookTabRightUp">#class:connect($name, command_auinotebook_tab_right_up, #option),</template>
-		<template name="evt_connect_OnAuiNotebookBGDClick">#class:connect($name, command_auinotebook_bg_dclic, #option),</template>
-	</templates>
+  <templates class="simplebookpage">
+    <template name="page_add">
+      wxSimplebook:addPage(#parent $name, #child $name, $label #ifnotequal $select "0" @{, [{bSelect, $select }]@}),
+    </template>
+  </templates>
 
-	<templates class="auinotebookpage">
-		<template name="page_add">
-		   #ifnotequal $select "0"
-		   @{ wxAuiNotebook:addPage(#parent $name, #child $name, $label, [{select,$select } #ifnotnull $bitmap
-		                                                                                      @{, {bitmap,$bitmap }@}]), @}
-		   #ifequal $select "0"
-		   @{ wxAuiNotebook:addPage(#parent $name, #child $name, $label #ifnotnull $bitmap @{, [{bitmap,$bitmap }]@}), @}
-        </template>
-	</templates>
+  <templates class="wxAuiNotebook">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                             @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnAuiNotebookPageClose"> #class:connect($name, command_auinotebook_page_close, *option), </template>
+    <template name="evt_connect_OnAuiNotebookPageClosed"> #class:connect($name, command_auinotebook_page_closed, *option), </template>
+    <template name="evt_connect_OnAuiNotebookPageChanged"> #class:connect($name, command_auinotebook_page_changed, *option), </template>
+    <template name="evt_connect_OnAuiNotebookPageChanging"> #class:connect($name, command_auinotebook_page_changing, *option), </template>
+    <template name="evt_connect_OnAuiNotebookButton"> #class:connect($name, command_auinotebook_button, *option), </template>
+    <template name="evt_connect_OnAuiNotebookBeginDrag"> #class:connect($name, command_auinotebook_begin_drag, *option), </template>
+    <template name="evt_connect_OnAuiNotebookEndDrag"> #class:connect($name, command_auinotebook_end_drag, *option), </template>
+    <template name="evt_connect_OnAuiNotebookDragMotion"> #class:connect($name, command_auinotebook_drag_motion, *option), </template>
+    <template name="evt_connect_OnAuiNotebookAllowDND"> #class:connect($name, command_auinotebook_allow_dnd, *option), </template>
+    <template name="evt_connect_OnAuiNotebookDragDone"> #class:connect($name, command_auinotebook_drag_done, *option), </template>
+    <template name="evt_connect_OnAuiNotebookTabMiddleDown"> #class:connect($name, command_auinotebook_tab_middle_down, *option), </template>
+    <template name="evt_connect_OnAuiNotebookTabMiddleUp"> #class:connect($name, command_auinotebook_tab_middle_up, *option), </template>
+    <template name="evt_connect_OnAuiNotebookTabRightDown"> #class:connect($name, command_auinotebook_tab_right_down, *option), </template>
+    <template name="evt_connect_OnAuiNotebookTabRightUp"> #class:connect($name, command_auinotebook_tab_right_up, *option), </template>
+    <template name="evt_connect_OnAuiNotebookBGDClick"> #class:connect($name, command_auinotebook_bg_dclic, *option), </template>
+  </templates>
 
-	<templates class="wxScrolledWindow">
-		<template name="construction">
-            $name = #class:new(#wxparent $name, [#ifnotnull $id
-                                                 @{ #ifnotequal $id "wxID_ANY"
-                                                    @{{winid,$id }, @} @}
-                                                 #ifnotnull $pos
-                                                 @{{pos,$pos }, @}
-                                                 #ifnotnull $size
-                                                 @{{size,$size }, @}
-                                                 #ifnotnull $window_style
-                                                 @{{style,$window_style }@}]),
-		</template>
-		<template name="settings">
-			 #class:setScrollRate($name, $scroll_rate_x, $scroll_rate_y),
-        </template>
-	</templates>
+  <templates class="auinotebookpage">
+    <template name="page_add">
+      #ifnotequal $select "0"
+      @{ wxAuiNotebook:addPage(#parent $name, #child $name, $label, [{select,$select }
+        #ifnotnull $bitmap
+        @{, {bitmap,$bitmap }@}]),
+      @}
+      #ifequal $select "0"
+      @{ wxAuiNotebook:addPage(#parent $name, #child $name, $label #ifnotnull $bitmap @{, [{bitmap,$bitmap }]@}), @}
+    </template>
+  </templates>
+
+  <templates class="wxScrolledWindow">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{ #ifnotequal $id "wxID_ANY"
+                                             @{{winid,$id }, @}@}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $window_style
+                                           @{{style,$window_style }@}]),
+    </template>
+    <template name="settings">
+      #class:setScrollRate($name, $scroll_rate_x, $scroll_rate_y),
+    </template>
+  </templates>
 
 </codegen>
