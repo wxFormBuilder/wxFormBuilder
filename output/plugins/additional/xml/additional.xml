@@ -80,6 +80,7 @@ Written by
     <property name="view_whitespace" type="bool" help="Show whitespace characters.">0</property>
     <property name="use_tabs" type="bool" help="Use tabs for indenting, instead of spaces.">1</property>
     <property name="tab_width" type="text" help="The number of spaces per tab character.">4</property>
+    <property name="read_only" type="bool" help="Set ReadOnly Mode. Disable editing.">0</property>
   </objectinfo>
 
   <objectinfo class="wxToggleButton" startgroup="1" icon="toggle_button.xpm" type="widget">
