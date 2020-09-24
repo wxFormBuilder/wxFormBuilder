@@ -69,6 +69,7 @@ executable('wxformbuilder', [
 		'src/rad/designer/menubar.cpp',
 		'src/rad/designer/visualeditor.cpp',
 		'src/rad/designer/visualobj.cpp',
+		'src/rad/dialogfindcomponent.cpp',
 		'src/rad/geninheritclass/geninhertclass_gui.cpp',
 		'src/rad/geninheritclass/geninhertclass.cpp',
 		'src/rad/inspector/objinspect.cpp',
