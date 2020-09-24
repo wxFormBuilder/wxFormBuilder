@@ -242,7 +242,7 @@ Python code generation written by
 
 	<templates class="wxMediaCtrl">
 		<template name="construction">
-			self.$name = wx.media.MediaCtrl( #wxparent $name, $id, wx.EmptyString, $pos, $size)
+			self.$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size)
 			#ifnotnull $file
 			@{ #nl self.$name.Load( $file ) @}
 			#ifnotnull $playback_rate
@@ -273,7 +273,7 @@ Python code generation written by
 
 	<templates class="wxStyledTextCtrl">
 		<template name="construction">
-			self.$name = wx.stc.StyledTextCtrl(#wxparent $name, $id,  $pos, $size, $window_style)
+			self.$name = #class( #wxparent $name, $id,  $pos, $size, $window_style)
 			#nl self.$name.SetUseTabs  ( $use_tabs )
 			#nl self.$name.SetTabWidth ( $tab_width )
 			#nl self.$name.SetIndent   ( $tab_width )

@@ -510,7 +510,7 @@ public:
         XrcToXfbFilter filter(xrcObj, _("wxScrolledWindow"));
         filter.AddWindowProperties();
 
-		ticpp::Element *scrollrate = xrcObj->FirstChildElement("scrollrate");
+		ticpp::Element *scrollrate = xrcObj->FirstChildElement("scrollrate", false);
 		if( scrollrate ) {
 			wxString value( wxString( scrollrate->GetText().c_str(), wxConvUTF8 ) );
 			filter.AddPropertyValue( _("scroll_rate_x"), value.BeforeFirst( wxT(',') ) );

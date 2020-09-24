@@ -1729,6 +1729,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	// altered class names
 	ADD_PREDEFINED_PREFIX( wxCalendarCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxRichTextCtrl, wx.richtext. );
+	ADD_PREDEFINED_PREFIX( wxStyledTextCtrl, wx.stc. );
 	ADD_PREDEFINED_PREFIX( wxHtmlWindow, wx.html. );
 	ADD_PREDEFINED_PREFIX( wxAuiNotebook, wx.aui. );
 	ADD_PREDEFINED_PREFIX( wxGrid, wx.grid. );
@@ -1736,6 +1737,7 @@ void PythonTemplateParser::SetupModulePrefixes()
 	ADD_PREDEFINED_PREFIX( wxDatePickerCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxTimePickerCtrl, wx.adv. );
 	ADD_PREDEFINED_PREFIX( wxHyperlinkCtrl, wx.adv. );
+	ADD_PREDEFINED_PREFIX( wxMediaCtrl, wx.media. );
 
 	// altered macros
 	ADD_PREDEFINED_PREFIX( wxCAL_SHOW_HOLIDAYS, wx.adv. );

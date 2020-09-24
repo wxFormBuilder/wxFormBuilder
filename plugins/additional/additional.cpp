@@ -1274,7 +1274,7 @@ public:
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxFilePickerCtrl"));
-		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("wildcard"),_("wildcard"),XRC_TYPE_TEXT);
 		filter.AddWindowProperties();
@@ -1328,7 +1328,7 @@ public:
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxDirPickerCtrl"));
-		filter.AddProperty(_("value"),_("value"),XRC_TYPE_FONT);
+		filter.AddProperty(_("value"),_("value"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("message"),_("message"),XRC_TYPE_TEXT);
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
