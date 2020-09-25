@@ -59,8 +59,8 @@ Erlang code generation written by
     <template name="construction">
       $name = #class:new(),
     </template>
-  <template name="settings" >
-  </template>
+    <template name="settings" >
+    </template>
     <template name="after_addchild">
       #ifparenttypeequal "menubar"
       @{ wxMenuBar:append(#parent $name, $name, $label), @}
@@ -69,9 +69,7 @@ Erlang code generation written by
       @{ wxMenuBar:append(#parent $name, $name, $label), @}
 
       <!--
-        These connect events may need to be worked on the erlangcg.cpp
-        code due the non possibility to know about the 'parent class'
-        of the current control - there is no macro for that
+        These connect events were transfered to the event templates bock bellow.
 
         #ifnotnull #parent $context_menu
         @{ #ifequal #parent $context_menu "1"
@@ -85,36 +83,18 @@ Erlang code generation written by
         @}
       -->
     </template>
-    <template name="generated_event_handlers">
-      <!--
-          %% Event handing headers are still not implemented in the xml files
-
-          #ifnotnull #parent $context_menu
-          @{ #ifequal #parent $context_menu "1"
-             @{
-              #ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
-              @{
-                  function #parent $name #append OnContextMenu( event) #indent #nl
-                  #parent $name:PopupMenu($name, event:GetPosition()) #nl #unindent #nl end
-              @}
-              #ifparenttypeequal "form || wizard"
-              @{
-                  function #parent $name #append OnContextMenu( event) #indent #nl
-                  #parent$name:PopupMenu($name, event:GetPosition()) #nl #unindent #nl end
-              @}
-              #ifparenttypeequal "tool"
-              @{
-                  function #parent $name #append OnDropDownMenu(event) #indent #nl
-                  if event.IsDropDownClicked() == True  then #indent #nl
-                      #wxparent $name:SetToolSticky(event:GetId(), True) #nl
-                      local rect = #wxparent $name:GetRect(event:GetId()) #nl
-                      local pt = #wxparent$name:ScreenToClient(#wxparent $name:ClientToScreen(rect:GetBottomLeft())); #nl
-                      #wxparent $name:PopupMenu(#wxparent$name, pt) #nl
-                      #wxparent $name:SetToolSticky(event:GetId(), False) #nl #unindent end #unindent #nl end
-              @}
-             @}
-          @}
-      -->
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRightDown">
+      #ifequal #parent $context_menu "1"
+      @{#ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman || form || wizard"
+        {@ wxWindow:connect($name, right_down, *option), @}
+      @}
+    </template>
+    <template name="evt_AUIToolbar_Tool_Dropdown">
+      #ifequal #parent $context_menu "1"
+      @{#ifparenttypeequal "tool"
+        {@ %% event #class:EVT_AUITOOLBAR_TOOL_DROPDOWN isn't currently supported by Erlang @}
+      @}
     </template>
   </templates>
 
@@ -204,9 +184,9 @@ Erlang code generation written by
   <template name="construction">
     #ifparenttypeequal "form || sizeritem || gbsizeritem"
     @{ $name = wxFrame:createToolBar(#wxparent $name, [{style,$style #ifnotnull $window_style
-                                                       @{ | $window_style @}}
+                                                       @{| $window_style @}}
                                                        #ifnotnull $id
-                                                       @{ #ifnotequal $id "wxID_ANY"
+                                                       @{#ifnotequal $id "wxID_ANY"
                                                         @{, {id,$id }@}@}]), @}
   </template>
   <template name="settings">
@@ -228,47 +208,47 @@ Erlang code generation written by
     #class:realize($name),
 
     #ifparenttypeequal "form"
-    @{ #ifequal #parent $aui_managed "1"
-      <!--
-        m_mgr seems to not be still available in the source code.
-        All its references are commented
-      -->
-      <!--
-      %% Option not implemented in menutoolbar.erlangcode
-      @{ #nl
-        #parent$name#append _mgr:addPane($name, wxaui.wxAuiPaneInfo()#ifnotnull $aui_name
-          @{:Name($aui_name)@}:$docking()#ifnotnull $caption
-          @{:Caption($caption)@}#ifequal $caption_visible "0"
-          @{:CaptionVisible($caption_visible)@}#ifequal $close_button "0"
-          @{:CloseButton($close_button)@}#ifequal $maximize_button "1"
-          @{:MaximizeButton($maximize_button)@}#ifequal $minimize_button "1"
-          @{:MinimizeButton($minimize_button)@}#ifequal $pin_button "1"
-          @{:PinButton($pin_button)@}#ifequal $pane_border "0"
-          @{:PaneBorder($pane_border)@}#ifequal $gripper "1"
-          @{:Gripper()@}#ifequal $show "0"
-          @{:Hide()@}#ifequal $moveable "0"
-          @{:Movable($moveable)@}#ifnotnull $dock
-          @{:$dock()#ifequal $dock "Float"
-            @{:FloatingPosition($pane_position)@}
-          @}#ifnotnull $resize
-          @{:$resize()#ifequal $resize "Resizable"
-            @{:FloatingSize($pane_size)@}
-          @}#ifequal $dock_fixed "1"
-          @{:Fixed($dock_fixed)@}#ifequal $BottomDockable "0"
-          @{:BottomDockable($BottomDockable)@}#ifequal $TopDockable "0"
-          @{:TopDockable($TopDockable)@}#ifequal $LeftDockable "0"
-          @{:LeftDockable($LeftDockable)@}#ifequal $RightDockable "0"
-          @{:RightDockable($RightDockable)@}#ifequal $floatable "0"
-          @{:Floatable($floatable)@}#ifnotnull $aui_row
-          @{:Row($aui_row)@}#ifnotnull $aui_position
-          @{:Position($aui_position)@}#ifnotnull $aui_layer
-          @{:Layer($aui_layer)@}#ifequal $center_pane "1"
-          @{:CentrePane()@}#ifequal $default_pane "1"
-          @{:DefaultPane()@}#ifequal $toolbar_pane "1"
-          @{:ToolbarPane()@}
-       )
-      @}
-      -->
+    @{#ifequal #parent $aui_managed "1"
+      #nl
+      $name #append _Pane = ?pi:new(), #nl
+      wxAuiManager:addPane(#parent $name #append _AUImgr, $name,
+          #nl ?pi:$docking($name #append _Pane),
+          #ifnotnull $caption @{ #nl ?pi:caption(*pi, $caption), @}
+          #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible(*pi, [{visible,false}]), @}
+          #ifequal $close_button "0" @{ #nl ?pi:closeButton(*pi, [{visible,false}]), @}
+          #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton(*pi, [{visible,true}]), @}
+          #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton(*pi, [{visible,true}]), @}
+          #ifequal $pin_button "1" @{ #nl ?pi:pinButton(*pi, [{visible,true}]), @}
+          #ifequal $pane_border "0" @{ #nl ?pi:paneButton(*pi, [{visible,false}]), @}
+          #ifequal $gripper "1" @{ #nl ?pi:gripper(*pi, [{visible,true}]), @}
+          #ifequal $show "0" @{ #nl ?pi:hide(*pi), @}
+          #ifequal $moveable "1" @{ #nl ?pi:moveable(*pi, [{b,true}]), @}
+          #ifequal $dock "Float"
+          @{
+            #ifnotnull $pane_position @{ #nl ?pi:floatingPosition(*pi, $pane_position), @}
+            #nl ?pi:floatable(*pi, [{b,true}]),
+          @}
+          #ifequal $dock "Dock" @{ #nl ?pi:dock(*pi), @}
+          #ifequal $resize "Resizable"
+          @{
+            #ifnotnull $pane_size @{ #nl ?pi:floatingSize(*pi, $pane_size), @}
+            #nl ?pi:resizable(*pi, [{resizable,true}]),
+          @}
+          #ifequal $resize "Fixed" @{ #nl ?pi:fixed(*pi), @}
+          #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable(*pi, [{b,false}]), @}
+          #ifequal $TopDockable "0" @{ #nl ?pi:topDockable(*pi, [{b,false}]), @}
+          #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable(*pi, [{b,false}]), @}
+          #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable(*pi, [{b,false}]), @}
+          #ifequal $floatable "0" @{ #nl ?pi:floatable(*pi, [{b,false}]), @}
+          #ifnotnull $aui_row	@{ #nl ?pi:row(*pi, $aui_row), @}
+          #ifnotnull $aui_position	@{ #nl ?pi:position(*pi, $aui_position), @}
+          #ifnotnull $best_size @{ #nl ?pi:bestSize(*pi, $best_size), @}
+          #ifnotnull $min_size @{ #nl ?pi:minSize(*pi, $min_size), @}
+          #ifnotnull $max_size @{ #nl ?pi:maxSize(*pi, $max_size), @}
+          #ifnotnull $aui_layer @{ #nl ?pi:layer(*pi, $aui_layer), @}
+          #ifequal $center_pane "1" @{ #nl ?pi:centerPane(*pi), @}
+          #ifequal $default_pane "1" @{ #nl ?pi:defaultPane(*pi), @}
+          #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane(*pi), @}
     @}
   </template>
   </templates>
@@ -281,7 +261,7 @@ Erlang code generation written by
           unsupported list in erlangcg.cpp->ErlangCodeGenerator()
       -->
       $name = wxAuiToolBar:new(#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style
-                                                                         @{ |$window_style @}
+                                                                         @{| $window_style @}
                                                                          #ifnotnull $window_name
                                                                          @{, wxDefaultValidator, $window_name @}),
 
@@ -301,40 +281,49 @@ Erlang code generation written by
     </template>
     <template name="after_addchild">
       wxAuiToolBar:realize($name),
+
       #ifparenttypeequal "form"
-      @{ #ifequal #parent $aui_managed "1"
-        @{ #nl
-          #parent$name#append _mgr:addPane($name, aui:auiPaneInfo()#ifnotnull $aui_name
-            @{:name($aui_name)@}:$docking()#ifnotnull $caption
-            @{:caption($caption)@}#ifequal $caption_visible "0"
-            @{:captionVisible($caption_visible)@}#ifequal $close_button "0"
-            @{:closeButton($close_button)@}#ifequal $maximize_button "1"
-            @{:maximizeButton($maximize_button)@}#ifequal $minimize_button "1"
-            @{:minimizeButton($minimize_button)@}#ifequal $pin_button "1"
-            @{:pinButton($pin_button)@}#ifequal $pane_border "0"
-            @{:paneBorder($pane_border)@}#ifequal $gripper "1"
-            @{:gripper()@}#ifequal $show "0"
-            @{:hide()@}#ifequal $moveable "0"
-            @{:movable($moveable)@}#ifnotnull $dock
-            @{:$dock()#ifequal $dock "Float"
-              @{:floatingPosition($pane_position)@}
-            @}#ifnotnull $resize
-            @{:$resize()#ifequal $resize "Resizable"
-              @{:floatingSize($pane_size)@}
-            @}#ifequal $dock_fixed "1"
-            @{:dockFixed($dock_fixed)@}#ifequal $BottomDockable "0"
-            @{:bottomDockable($BottomDockable)@}#ifequal $TopDockable "0"
-            @{:topDockable($TopDockable)@}#ifequal $LeftDockable "0"
-            @{:leftDockable($LeftDockable)@}#ifequal $RightDockable "0"
-            @{:rightDockable($RightDockable)@}#ifequal $floatable "0"
-            @{:floatable($floatable)@}#ifnotnull $aui_row
-            @{:row($aui_row)@}#ifnotnull $aui_position
-            @{:position($aui_position)@}#ifnotnull $aui_layer
-            @{:layer($aui_layer)@}#ifequal $center_pane "1"
-            @{:centrePane()@}#ifequal $default_pane "1"
-            @{:defaultPane()@}#ifequal $toolbar_pane "1"
-            @{:toolbarPane()@}
-         )
+      @{#ifequal #parent $aui_managed "1"
+        @{#nl
+          $name #append _Pane = ?pi:new(), #nl
+          wxAuiManager:addPane(#parent $name #append _AUImgr, $name,
+              #nl ?pi:$docking($name #append _Pane),
+              #ifnotnull $caption @{ #nl ?pi:caption(*pi, $caption), @}
+              #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible(*pi, [{visible,false}]), @}
+              #ifequal $close_button "0" @{ #nl ?pi:closeButton(*pi, [{visible,false}]), @}
+              #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton(*pi, [{visible,true}]), @}
+              #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton(*pi, [{visible,true}]), @}
+              #ifequal $pin_button "1" @{ #nl ?pi:pinButton(*pi, [{visible,true}]), @}
+              #ifequal $pane_border "0" @{ #nl ?pi:paneButton(*pi, [{visible,false}]), @}
+              #ifequal $gripper "1" @{ #nl ?pi:gripper(*pi, [{visible,true}]), @}
+              #ifequal $show "0" @{ #nl ?pi:hide(*pi), @}
+              #ifequal $moveable "1" @{ #nl ?pi:moveable(*pi, [{b,true}]), @}
+              #ifequal $dock "Float"
+              @{
+                #ifnotnull $pane_position @{ #nl ?pi:floatingPosition(*pi, $pane_position), @}
+                #nl ?pi:floatable(*pi, [{b,true}]),
+              @}
+              #ifequal $dock "Dock" @{ #nl ?pi:dock(*pi), @}
+              #ifequal $resize "Resizable"
+              @{
+                #ifnotnull $pane_size @{ #nl ?pi:floatingSize(*pi, $pane_size), @}
+                #nl ?pi:resizable(*pi, [{resizable,true}]),
+              @}
+              #ifequal $resize "Fixed" @{ #nl ?pi:fixed(*pi), @}
+              #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable(*pi, [{b,false}]), @}
+              #ifequal $TopDockable "0" @{ #nl ?pi:topDockable(*pi, [{b,false}]), @}
+              #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable(*pi, [{b,false}]), @}
+              #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable(*pi, [{b,false}]), @}
+              #ifequal $floatable "0" @{ #nl ?pi:floatable(*pi, [{b,false}]), @}
+              #ifnotnull $aui_row	@{ #nl ?pi:row(*pi, $aui_row), @}
+              #ifnotnull $aui_position	@{ #nl ?pi:position(*pi, $aui_position), @}
+              #ifnotnull $best_size @{ #nl ?pi:bestSize(*pi, $best_size), @}
+              #ifnotnull $min_size @{ #nl ?pi:minSize(*pi, $min_size), @}
+              #ifnotnull $max_size @{ #nl ?pi:maxSize(*pi, $max_size), @}
+              #ifnotnull $aui_layer @{ #nl ?pi:layer(*pi, $aui_layer), @}
+              #ifequal $center_pane "1" @{ #nl ?pi:centerPane(*pi), @}
+              #ifequal $default_pane "1" @{ #nl ?pi:defaultPane(*pi), @}
+              #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane(*pi), @}
         @}
       @}
     </template>
