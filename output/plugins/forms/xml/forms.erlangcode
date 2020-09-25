@@ -70,27 +70,29 @@ Erlang code generation written by
 
   <templates class="Frame">
     <!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
-    <template name="base">wxFrame
+    <template name="base"> wxFrame
     </template>
     <template name="cons_call">
       wxFrame:new(wx:null(), $id, $title, [#ifnotnull $pos
-      @{{pos,$pos }, @}
-      #ifnotnull $size
-      @{{size,$size }, @}
-      #ifnotnull $style
-      @{{style,$style #ifnotnull $extra_style @{ | $extra_style @} #ifnotnull $window_style @{ | $window_style @}}@}
-      #ifnull $style
-      @{ #ifnotnull $window_style
-      @{{style,$window_style }@}@}]),
+                                            @{{pos,$pos }, @}
+                                            #ifnotnull $size
+                                            @{{size,$size }, @}
+                                            #ifnotnull $style
+                                            @{{style,$style #ifnotnull $extra_style @{ | $extra_style @} #ifnotnull $window_style @{ | $window_style @}}@}
+                                            #ifnull $style
+                                            @{ #ifnotnull $window_style
+                                              @{{style,$window_style }@}@}]),
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:unInit($name#append _mgr), #nl @}
+      @{ wxAuiManager:unInit($name #append _AUImgr), #nl @}
     </template>
     <template name="settings">
       #ifequal $aui_managed "1"
-      @{ $name #append _mgr = wxAuiManager:new([{managed_wnd,$name },
-      {flags,$aui_manager_style }]),
+      @{
+        $name #append _AUImgr = wxAuiManager:new([{managed_wnd,$name }#ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
+                                                                      @{, {flags,$aui_manager_style }@}]), #nl
+        try
       @}
       <!-- recommended by the wxWidgets documentation not to use "setSizeHints"
       #ifnotnull $minimum_size
@@ -105,33 +107,48 @@ Erlang code generation written by
     </template>
     <template name="after_addchild">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:update($name#append _mgr), #nl @}
+      @{ wxAuiManager:update($name #append _AUImgr), @}
+
       #ifnotnull $center
-      @{ wxWindow:centre($name, [{dir,$center }]), #nl @}
+      @{ #nl wxWindow:centre($name, [{dir,$center }]), @}
     </template>
-    <template name="evt_connect_OnChar">wxFrame:connect($name, char, *option), </template>
-    <template name="evt_connect_OnCharHook">wxFrame:connect($name, char_hook, *option), </template>
-    <template name="evt_connect_OnKeyDown">wxFrame:connect($name, key_down, *option), </template>
-    <template name="evt_connect_OnKeyUp">wxFrame:connect($name, key_up, *option), </template>
-    <template name="evt_connect_OnEnterWindow">wxFrame:connect($name, enter_window, *option), </template>
-    <template name="evt_connect_OnLeaveWindow">wxFrame:connect($name, leave_window, *option), </template>
-    <template name="evt_connect_OnLeftDClick">wxFrame:connect($name, left_dclick, *option), </template>
-    <template name="evt_connect_OnLeftDown">wxFrame:connect($name, left_down, *option), </template>
-    <template name="evt_connect_OnLeftUp">wxFrame:connect($name, left_up, *option), </template>
-    <template name="evt_connect_OnMiddleDClick">wxFrame:connect($name, middle_dclick, *option), </template>
-    <template name="evt_connect_OnMiddleDown">wxFrame:connect($name, middle_down, *option), </template>
-    <template name="evt_connect_OnMiddleUp">wxFrame:connect($name, middle_up, *option), </template>
-    <template name="evt_connect_OnRightDClick">wxFrame:connect($name, right_dclick, *option), </template>
-    <template name="evt_connect_OnRightDown">wxFrame:connect($name, right_down, *option), </template>
-    <template name="evt_connect_OnRightUp">wxFrame:connect($name, right_up, *option), </template>
+    <template name="after_addchild_erlang">
+      #ifequal $aui_managed "1"
+      @{
+        #indent #nl
+        *state #unindent #nl
+        catch Class:Reason:ST -> #indent #nl
+          io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
+          wxAuiManager:unInit($name #append _AUImgr), #nl
+          wxAuiManager:destroy($name #append _AUImgr), #nl
+          #class:destroy($name), #nl
+          erlang:raise(Class, Reason, ST) #unindent  #nl
+        end.
+      @}
+    </template>
+    <template name="evt_connect_OnChar"> wxFrame:connect($name, char, *option), </template>
+    <template name="evt_connect_OnCharHook"> wxFrame:connect($name, char_hook, *option), </template>
+    <template name="evt_connect_OnKeyDown"> wxFrame:connect($name, key_down, *option), </template>
+    <template name="evt_connect_OnKeyUp"> wxFrame:connect($name, key_up, *option), </template>
+    <template name="evt_connect_OnEnterWindow"> wxFrame:connect($name, enter_window, *option), </template>
+    <template name="evt_connect_OnLeaveWindow"> wxFrame:connect($name, leave_window, *option), </template>
+    <template name="evt_connect_OnLeftDClick"> wxFrame:connect($name, left_dclick, *option), </template>
+    <template name="evt_connect_OnLeftDown"> wxFrame:connect($name, left_down, *option), </template>
+    <template name="evt_connect_OnLeftUp"> wxFrame:connect($name, left_up, *option), </template>
+    <template name="evt_connect_OnMiddleDClick"> wxFrame:connect($name, middle_dclick, *option), </template>
+    <template name="evt_connect_OnMiddleDown"> wxFrame:connect($name, middle_down, *option), </template>
+    <template name="evt_connect_OnMiddleUp"> wxFrame:connect($name, middle_up, *option), </template>
+    <template name="evt_connect_OnRightDClick"> wxFrame:connect($name, right_dclick, *option), </template>
+    <template name="evt_connect_OnRightDown"> wxFrame:connect($name, right_down, *option), </template>
+    <template name="evt_connect_OnRightUp"> wxFrame:connect($name, right_up, *option), </template>
     <template name="evt_connect_OnAux1DClick"> %% event wxFrame:wxEVT_AUX1_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Down"> %% event wxFrame:wxEVT_AUX1_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Up"> %% event wxFrame:wxEVT_AUX1_UP isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2DClick"> %% event wxFrame:wxEVT_AUX2_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Down"> %% event wxFrame:wxEVT_AUX2_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Up"> %% event wxFrame:wxEVT_AUX2_UP isn't currently supported by Erlang </template>
-    <template name="evt_connect_OnMotion">wxFrame:connect($name, motion, *option), </template>
-    <template name="evt_connect_OnMouseWheel">wxFrame:connect($name, mousewheel, *option), </template>
+    <template name="evt_connect_OnMotion"> wxFrame:connect($name, motion, *option), </template>
+    <template name="evt_connect_OnMouseWheel"> wxFrame:connect($name, mousewheel, *option), </template>
     <template name="evt_connect_OnMouseEvents">
       wxFrame:connect($name, left_down, *option), #nl
       wxFrame:connect($name, left_up, *option), #nl
@@ -153,68 +170,82 @@ Erlang code generation written by
       wxFrame:connect($name, enter_window, *option), #nl
       wxFrame:connect($name, mousewheel, *option), #nl
     </template>
-    <template name="evt_connect_OnSetFocus">wxFrame:connect($name, set_focus, *option), </template>
-    <template name="evt_connect_OnKillFocus">wxFrame:connect($name, kill_focus, *option), </template>
-    <template name="evt_connect_OnPaint">wxFrame:connect($name, paint, *option), </template>
-    <template name="evt_connect_OnEraseBackground">wxFrame:connect($name, erase_background, *option), </template>
-    <template name="evt_connect_OnSize">wxFrame:connect($name, size, *option), </template>
-    <template name="evt_connect_OnUpdateUI">wxFrame:connect($name, update_ui, *option), </template>
+    <template name="evt_connect_OnSetFocus"> wxFrame:connect($name, set_focus, *option), </template>
+    <template name="evt_connect_OnKillFocus"> wxFrame:connect($name, kill_focus, *option), </template>
+    <template name="evt_connect_OnPaint"> wxFrame:connect($name, paint, *option), </template>
+    <template name="evt_connect_OnEraseBackground"> wxFrame:connect($name, erase_background, *option), </template>
+    <template name="evt_connect_OnSize"> wxFrame:connect($name, size, *option), </template>
+    <template name="evt_connect_OnUpdateUI"> wxFrame:connect($name, update_ui, *option), </template>
   </templates>
 
   <templates class="Panel">
     <!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
-    <template name="base">wxPanel
+    <template name="base"> wxPanel
     </template>
     <template name="cons_call">
       wxPanel:new(wx:null(), [#ifnotnull $id
-      @{{winid,$id }, @}
-      #ifnotnull $pos
-      @{{pos,$pos }, @}
-      #ifnotnull $size
-      @{{size,$size }, @}
-      #ifnotnull $window_style
-      @{{style,$window_style }@}]),
+                              @{{winid,$id }, @}
+                              #ifnotnull $pos
+                              @{{pos,$pos }, @}
+                              #ifnotnull $size
+                              @{{size,$size }, @}
+                              #ifnotnull $window_style
+                              @{{style,$window_style }@}]),
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:unInit($name#append _mgr), #nl @}
+      @{ wxAuiManager:unInit($name #append _AUImgr), @}
     </template>
     <template name="settings">
       #ifequal $aui_managed "1"
-      @{ $name#append _mgr = wxAuiManager:new([{managed_wnd, $name }
-      @{ ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
-      , {flags, $aui_manager_style }
-      @} ]), #nl
+      @{
+        $name #append _AUImgr = wxAuiManager:new([{managed_wnd,$name }#ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
+                                                                      @{, {flags,$aui_manager_style }@}]), #nl
+        try
       @}
     </template>
     <template name="after_addchild">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:update($name#append _mgr), @}
+      @{ wxAuiManager:update($name #append _AUImgr), @}
     </template>
-    <template name="evt_connect_OnInitDialog">wxPanel:connect($name, init_dialog, *option), </template>
-    <template name="evt_connect_OnChar">wxPanel:connect($name, char, *option), </template>
-    <template name="evt_connect_OnCharHook">wxPanel:connect($name, char_hook, *option), </template>
-    <template name="evt_connect_OnKeyDown">wxPanel:connect($name, key_down, *option), </template>
-    <template name="evt_connect_OnKeyUp">wxPanel:connect($name, key_up, *option), </template>
-    <template name="evt_connect_OnEnterWindow">wxPanel:connect($name, enter_window, *option), </template>
-    <template name="evt_connect_OnLeaveWindow">wxPanel:connect($name, leave_window, *option), </template>
-    <template name="evt_connect_OnLeftDClick">wxPanel:connect($name, left_dclick, *option), </template>
-    <template name="evt_connect_OnLeftDown">wxPanel:connect($name, left_down, *option), </template>
-    <template name="evt_connect_OnLeftUp">wxPanel:connect($name, left_up, *option), </template>
-    <template name="evt_connect_OnMiddleDClick">wxPanel:connect($name, middle_dclick, *option), </template>
-    <template name="evt_connect_OnMiddleDown">wxPanel:connect($name, middle_down, *option), </template>
-    <template name="evt_connect_OnMiddleUp">wxPanel:connect($name, middle_up, *option), </template>
-    <template name="evt_connect_OnRightDClick">wxPanel:connect($name, right_dclick, *option), </template>
-    <template name="evt_connect_OnRightDown">wxPanel:connect($name, right_down, *option), </template>
-    <template name="evt_connect_OnRightUp">wxPanel:connect($name, right_up, *option), </template>
+    <template name="after_addchild_erlang">
+      #ifequal $aui_managed "1"
+      @{
+        #indent #nl
+        *state  #unindent #nl
+        catch Class:Reason:ST -> #indent #nl
+          io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
+          wxAuiManager:unInit($name #append _AUImgr), #nl
+          wxAuiManager:destroy($name #append _AUImgr), #nl
+          #class:destroy($name), #nl
+          erlang:raise(Class, Reason, ST) #unindent  #nl
+        end.
+      @}
+    </template>
+    <template name="evt_connect_OnInitDialog"> wxPanel:connect($name, init_dialog, *option), </template>
+    <template name="evt_connect_OnChar"> wxPanel:connect($name, char, *option), </template>
+    <template name="evt_connect_OnCharHook"> wxPanel:connect($name, char_hook, *option), </template>
+    <template name="evt_connect_OnKeyDown"> wxPanel:connect($name, key_down, *option), </template>
+    <template name="evt_connect_OnKeyUp"> wxPanel:connect($name, key_up, *option), </template>
+    <template name="evt_connect_OnEnterWindow"> wxPanel:connect($name, enter_window, *option), </template>
+    <template name="evt_connect_OnLeaveWindow"> wxPanel:connect($name, leave_window, *option), </template>
+    <template name="evt_connect_OnLeftDClick"> wxPanel:connect($name, left_dclick, *option), </template>
+    <template name="evt_connect_OnLeftDown"> wxPanel:connect($name, left_down, *option), </template>
+    <template name="evt_connect_OnLeftUp"> wxPanel:connect($name, left_up, *option), </template>
+    <template name="evt_connect_OnMiddleDClick"> wxPanel:connect($name, middle_dclick, *option), </template>
+    <template name="evt_connect_OnMiddleDown"> wxPanel:connect($name, middle_down, *option), </template>
+    <template name="evt_connect_OnMiddleUp"> wxPanel:connect($name, middle_up, *option), </template>
+    <template name="evt_connect_OnRightDClick"> wxPanel:connect($name, right_dclick, *option), </template>
+    <template name="evt_connect_OnRightDown"> wxPanel:connect($name, right_down, *option), </template>
+    <template name="evt_connect_OnRightUp"> wxPanel:connect($name, right_up, *option), </template>
     <template name="evt_connect_OnAux1DClick"> %% event wxPanel:wxEVT_AUX1_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Down"> %% event wxPanel:wxEVT_AUX1_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Up"> %% event wxPanel:wxEVT_AUX1_UP isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2DClick"> %% event wxPanel:wxEVT_AUX2_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Down"> %% event wxPanel:wxEVT_AUX2_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Up"> %% event wxPanel:wxEVT_AUX2_UP isn't currently supported by Erlang </template>
-    <template name="evt_connect_OnMotion">wxPanel:connect($name, motion, *option), </template>
-    <template name="evt_connect_OnMouseWheel">wxPanel:connect($name, mousewheel, *option), </template>
+    <template name="evt_connect_OnMotion"> wxPanel:connect($name, motion, *option), </template>
+    <template name="evt_connect_OnMouseWheel"> wxPanel:connect($name, mousewheel, *option), </template>
     <template name="evt_connect_OnMouseEvents">
       wxPanel:connect($name, left_down, *option), #nl
       wxPanel:connect($name, left_up, *option), #nl
@@ -236,12 +267,12 @@ Erlang code generation written by
       wxPanel:connect($name, enter_window, *option), #nl
       wxPanel:connect($name, mousewheel, *option), #nl
     </template>
-    <template name="evt_connect_OnSetFocus">wxPanel:connect($name, set_focus, *option), </template>
-    <template name="evt_connect_OnKillFocus">wxPanel:connect($name, kill_focus, *option), </template>
-    <template name="evt_connect_OnPaint">wxPanel:connect($name, paint, *option), </template>
-    <template name="evt_connect_OnEraseBackground">wxPanel:connect($name, erase_background, *option), </template>
-    <template name="evt_connect_OnSize">wxPanel:connect($name, size, *option), </template>
-    <template name="evt_connect_OnUpdateUI">wxPanel:connect($name, update_ui, *option), </template>
+    <template name="evt_connect_OnSetFocus"> wxPanel:connect($name, set_focus, *option), </template>
+    <template name="evt_connect_OnKillFocus"> wxPanel:connect($name, kill_focus, *option), </template>
+    <template name="evt_connect_OnPaint"> wxPanel:connect($name, paint, *option), </template>
+    <template name="evt_connect_OnEraseBackground"> wxPanel:connect($name, erase_background, *option), </template>
+    <template name="evt_connect_OnSize"> wxPanel:connect($name, size, *option), </template>
+    <template name="evt_connect_OnUpdateUI"> wxPanel:connect($name, update_ui, *option), </template>
   </templates>
 
 
@@ -262,14 +293,14 @@ Erlang code generation written by
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:unInit($name#append _mgr), #nl @}
+      @{ wxAuiManager:unInit($name #append _AUImgr), #nl @}
     </template>
     <template name="settings">
       #ifequal $aui_managed "1"
-      @{ $name#append _mgr = wxAuiManager:new([{managed_wnd,$name }
-      @{ ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
-      , {flags,$aui_manager_style }@}
-      ]), #nl
+      @{
+        $name #append _AUImgr = wxAuiManager:new([{managed_wnd,$name }#ifnotequal $aui_manager_style "wxAUI_MGR_DEFAULT"
+                                                                      @{, {flags,$aui_manager_style }@}]), #nl
+        try
       @}
       <!-- recommended by the wxWidgets documentation not to use "setSizeHints"
       #ifnotnull $minimum_size
@@ -284,34 +315,49 @@ Erlang code generation written by
     </template>
     <template name="after_addchild">
       #ifequal $aui_managed "1"
-      @{ wxAuiManager:update($name#append _mgr), @}
+      @{ wxAuiManager:update($name #append _AUImgr), @}
+
       #ifnotnull $center
-      @{ wxWindow:centre($name, [{dir,$center }]), @}
+      @{ #nl wxWindow:centre($name, [{dir,$center }]), @}
     </template>
-    <template name="evt_connect_OnInitDialog">wxDialog:connect($name, init_dialog, *option), </template>
-    <template name="evt_connect_OnChar">wxDialog:connect($name, char, *option), </template>
-    <template name="evt_connect_OnCharHook">wxDialog:connect($name, char_hook, *option), </template>
-    <template name="evt_connect_OnKeyDown">wxDialog:connect($name, key_down, *option), </template>
-    <template name="evt_connect_OnKeyUp">wxDialog:connect($name, key_up, *option), </template>
-    <template name="evt_connect_OnEnterWindow">wxDialog:connect($name, enter_window, *option), </template>
-    <template name="evt_connect_OnLeaveWindow">wxDialog:connect($name, leave_window, *option), </template>
-    <template name="evt_connect_OnLeftDClick">wxDialog:connect($name, left_dclick, *option), </template>
-    <template name="evt_connect_OnLeftDown">wxDialog:connect($name, left_down, *option), </template>
-    <template name="evt_connect_OnLeftUp">wxDialog:connect($name, left_up, *option), </template>
-    <template name="evt_connect_OnMiddleDClick">wxDialog:connect($name, middle_dclick, *option), </template>
-    <template name="evt_connect_OnMiddleDown">wxDialog:connect($name, middle_down, *option), </template>
-    <template name="evt_connect_OnMiddleUp">wxDialog:connect($name, middle_up, *option), </template>
-    <template name="evt_connect_OnRightDClick">wxDialog:connect($name, right_dclick, *option), </template>
-    <template name="evt_connect_OnRightDown">wxDialog:connect($name, right_down, *option), </template>
-    <template name="evt_connect_OnRightUp">wxDialog:connect($name, right_up, *option), </template>
+    <template name="after_addchild_erlang">
+      #ifequal $aui_managed "1"
+      @{
+        #indent #nl
+        *state  #unindent #nl
+        catch Class:Reason:ST -> #indent #nl
+          io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
+          wxAuiManager:unInit($name #append _AUImgr), #nl
+          wxAuiManager:destroy($name #append _AUImgr), #nl
+          #class:destroy($name), #nl
+          erlang:raise(Class, Reason, ST) #unindent  #nl
+        end. #unindent
+      @}
+    </template>
+    <template name="evt_connect_OnInitDialog"> wxDialog:connect($name, init_dialog, *option), </template>
+    <template name="evt_connect_OnChar"> wxDialog:connect($name, char, *option), </template>
+    <template name="evt_connect_OnCharHook"> wxDialog:connect($name, char_hook, *option), </template>
+    <template name="evt_connect_OnKeyDown"> wxDialog:connect($name, key_down, *option), </template>
+    <template name="evt_connect_OnKeyUp"> wxDialog:connect($name, key_up, *option), </template>
+    <template name="evt_connect_OnEnterWindow"> wxDialog:connect($name, enter_window, *option), </template>
+    <template name="evt_connect_OnLeaveWindow"> wxDialog:connect($name, leave_window, *option), </template>
+    <template name="evt_connect_OnLeftDClick"> wxDialog:connect($name, left_dclick, *option), </template>
+    <template name="evt_connect_OnLeftDown"> wxDialog:connect($name, left_down, *option), </template>
+    <template name="evt_connect_OnLeftUp"> wxDialog:connect($name, left_up, *option), </template>
+    <template name="evt_connect_OnMiddleDClick"> wxDialog:connect($name, middle_dclick, *option), </template>
+    <template name="evt_connect_OnMiddleDown"> wxDialog:connect($name, middle_down, *option), </template>
+    <template name="evt_connect_OnMiddleUp"> wxDialog:connect($name, middle_up, *option), </template>
+    <template name="evt_connect_OnRightDClick"> wxDialog:connect($name, right_dclick, *option), </template>
+    <template name="evt_connect_OnRightDown"> wxDialog:connect($name, right_down, *option), </template>
+    <template name="evt_connect_OnRightUp"> wxDialog:connect($name, right_up, *option), </template>
     <template name="evt_connect_OnAux1DClick"> %% event wxDialog:wxEVT_AUX1_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Down"> %% event wxDialog:wxEVT_AUX1_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Up"> %% event wxDialog:wxEVT_AUX1_UP isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2DClick"> %% event wxDialog:wxEVT_AUX2_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Down"> %% event wxDialog:wxEVT_AUX2_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Up"> %% event wxDialog:wxEVT_AUX2_UP isn't currently supported by Erlang </template>
-    <template name="evt_connect_OnMotion">wxDialog:connect($name, motion, *option), </template>
-    <template name="evt_connect_OnMouseWheel">wxDialog:connect($name, mousewheel, *option), </template>
+    <template name="evt_connect_OnMotion"> wxDialog:connect($name, motion, *option), </template>
+    <template name="evt_connect_OnMouseWheel"> wxDialog:connect($name, mousewheel, *option), </template>
     <template name="evt_connect_OnMouseEvents">
       wxDialog:connect($name, left_down, *option), #nl
       wxDialog:connect($name, left_up, *option), #nl
@@ -333,12 +379,12 @@ Erlang code generation written by
       wxDialog:connect($name, enter_window, *option), #nl
       wxDialog:connect($name, mousewheel, *option), #nl
     </template>
-    <template name="evt_connect_OnSetFocus">wxDialog:connect($name, set_focus, *option), </template>
-    <template name="evt_connect_OnKillFocus">wxDialog:connect($name, kill_focus, *option), </template>
-    <template name="evt_connect_OnPaint">wxDialog:connect($name, paint, *option), </template>
-    <template name="evt_connect_OnEraseBackground">wxDialog:connect($name, erase_background, *option), </template>
-    <template name="evt_connect_OnSize">wxDialog:connect($name, size, *option), </template>
-    <template name="evt_connect_OnUpdateUI">wxDialog:connect($name, update_ui, *option), </template>
+    <template name="evt_connect_OnSetFocus"> wxDialog:connect($name, set_focus, *option), </template>
+    <template name="evt_connect_OnKillFocus"> wxDialog:connect($name, kill_focus, *option), </template>
+    <template name="evt_connect_OnPaint"> wxDialog:connect($name, paint, *option), </template>
+    <template name="evt_connect_OnEraseBackground"> wxDialog:connect($name, erase_background, *option), </template>
+    <template name="evt_connect_OnSize"> wxDialog:connect($name, size, *option), </template>
+    <template name="evt_connect_OnUpdateUI"> wxDialog:connect($name, update_ui, *option), </template>
   </templates>
 
   <templates class="Wizard">
@@ -397,30 +443,30 @@ Erlang code generation written by
       #ifnotnull $center
       @{ wxWindow:centre($name, [{dir,$center }]), @}
     </template>
-    <template name="evt_connect_OnInitDialog">wxWizard:connect($name, init_dialog, *option), </template>
-    <template name="evt_connect_OnChar">wxWizard:connect($name, char, *option), </template>
-    <template name="evt_connect_OnCharHook">wxWizard:connect($name, char_hook, *option), </template>
-    <template name="evt_connect_OnKeyDown">wxWizard:connect($name, key_down, *option), </template>
-    <template name="evt_connect_OnKeyUp">wxWizard:connect($name, key_up, *option), </template>
-    <template name="evt_connect_OnEnterWindow">wxWizard:connect($name, enter_window, *option), </template>
-    <template name="evt_connect_OnLeaveWindow">wxWizard:connect($name, leave_window, *option), </template>
-    <template name="evt_connect_OnLeftDClick">wxWizard:connect($name, left_dclick, *option), </template>
-    <template name="evt_connect_OnLeftDown">wxWizard:connect($name, left_down, *option), </template>
-    <template name="evt_connect_OnLeftUp">wxWizard:connect($name, left_up, *option), </template>
-    <template name="evt_connect_OnMiddleDClick">wxWizard:connect($name, middle_dclick, *option), </template>
-    <template name="evt_connect_OnMiddleDown">wxWizard:connect($name, middle_down, *option), </template>
-    <template name="evt_connect_OnMiddleUp">wxWizard:connect($name, middle_up, *option), </template>
-    <template name="evt_connect_OnRightDClick">wxWizard:connect($name, right_dclick, *option), </template>
-    <template name="evt_connect_OnRightDown">wxWizard:connect($name, right_down, *option), </template>
-    <template name="evt_connect_OnRightUp">wxWizard:connect($name, right_up, *option), </template>
+    <template name="evt_connect_OnInitDialog"> wxWizard:connect($name, init_dialog, *option), </template>
+    <template name="evt_connect_OnChar"> wxWizard:connect($name, char, *option), </template>
+    <template name="evt_connect_OnCharHook"> wxWizard:connect($name, char_hook, *option), </template>
+    <template name="evt_connect_OnKeyDown"> wxWizard:connect($name, key_down, *option), </template>
+    <template name="evt_connect_OnKeyUp"> wxWizard:connect($name, key_up, *option), </template>
+    <template name="evt_connect_OnEnterWindow"> wxWizard:connect($name, enter_window, *option), </template>
+    <template name="evt_connect_OnLeaveWindow"> wxWizard:connect($name, leave_window, *option), </template>
+    <template name="evt_connect_OnLeftDClick"> wxWizard:connect($name, left_dclick, *option), </template>
+    <template name="evt_connect_OnLeftDown"> wxWizard:connect($name, left_down, *option), </template>
+    <template name="evt_connect_OnLeftUp"> wxWizard:connect($name, left_up, *option), </template>
+    <template name="evt_connect_OnMiddleDClick"> wxWizard:connect($name, middle_dclick, *option), </template>
+    <template name="evt_connect_OnMiddleDown"> wxWizard:connect($name, middle_down, *option), </template>
+    <template name="evt_connect_OnMiddleUp"> wxWizard:connect($name, middle_up, *option), </template>
+    <template name="evt_connect_OnRightDClick"> wxWizard:connect($name, right_dclick, *option), </template>
+    <template name="evt_connect_OnRightDown"> wxWizard:connect($name, right_down, *option), </template>
+    <template name="evt_connect_OnRightUp"> wxWizard:connect($name, right_up, *option), </template>
     <template name="evt_connect_OnAux1DClick"> %% event wxWizard:wxEVT_AUX1_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Down"> %% event wxWizard:wxEVT_AUX1_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux1Up"> %% event wxWizard:wxEVT_AUX1_UP isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2DClick"> %% event wxWizard:wxEVT_AUX2_DCLICK isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Down"> %% event wxWizard:wxEVT_AUX2_DOWN isn't currently supported by Erlang </template>
     <template name="evt_connect_OnAux2Up"> %% event wxWizard:wxEVT_AUX2_UP isn't currently supported by Erlang </template>
-    <template name="evt_connect_OnMotion">wxWizard:connect($name, motion, *option), </template>
-    <template name="evt_connect_OnMouseWheel">wxWizard:connect($name, mousewheel, *option), </template>
+    <template name="evt_connect_OnMotion"> wxWizard:connect($name, motion, *option), </template>
+    <template name="evt_connect_OnMouseWheel"> wxWizard:connect($name, mousewheel, *option), </template>
     <template name="evt_connect_OnMouseEvents">
       wxWizard:connect($name, left_down, *option), #nl
       wxWizard:connect($name, left_up, *option), #nl
@@ -442,12 +488,12 @@ Erlang code generation written by
       wxWizard:connect($name, enter_window, *option), #nl
       wxWizard:connect($name, mousewheel, *option), #nl
     </template>
-    <template name="evt_connect_OnSetFocus">wxWizard:connect($name, set_focus, *option), </template>
-    <template name="evt_connect_OnKillFocus">wxWizard:connect($name, kill_focus, *option), </template>
-    <template name="evt_connect_OnPaint">wxWizard:connect($name, paint, *option), </template>
-    <template name="evt_connect_OnEraseBackground">wxWizard:connect($name, erase_background, *option), </template>
-    <template name="evt_connect_OnSize">wxWizard:connect($name, size, *option), </template>
-    <template name="evt_connect_OnUpdateUI">wxWizard:connect($name, update_ui, *option), </template>
+    <template name="evt_connect_OnSetFocus"> wxWizard:connect($name, set_focus, *option), </template>
+    <template name="evt_connect_OnKillFocus"> wxWizard:connect($name, kill_focus, *option), </template>
+    <template name="evt_connect_OnPaint"> wxWizard:connect($name, paint, *option), </template>
+    <template name="evt_connect_OnEraseBackground"> wxWizard:connect($name, erase_background, *option), </template>
+    <template name="evt_connect_OnSize"> wxWizard:connect($name, size, *option), </template>
+    <template name="evt_connect_OnUpdateUI"> wxWizard:connect($name, update_ui, *option), </template>
     <template name="evt_connect_OnWizardPageChanged"> %% event wxWizard:wxEVT_WIZARD_PAGE_CHANGED isn't currently supported by Erlang </template>
     <template name="evt_connect_OnWizardPageChanging"> %% event wxWizard:wxEVT_WIZARD_PAGE_CHANGING isn't currently supported by Erlang </template>
     <template name="evt_connect_OnWizardPageShown"> %% event wxWizard:wxEVT_WIZARD_PAGE_SHOWN isn't currently supported by Erlang </template>
