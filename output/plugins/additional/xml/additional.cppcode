@@ -396,6 +396,7 @@ Written by
 			#nl $name->SetViewWhiteSpace( $view_whitespace );
 			#nl $name->SetMarginWidth( 2, 0 );
 			#nl $name->SetIndentationGuides( $indentation_guides );
+			#nl $name->SetReadOnly( $read_only );
 			#ifequal $folding "1"
 			@{
 				#nl $name->SetMarginType( 1, wxSTC_MARGIN_SYMBOL );

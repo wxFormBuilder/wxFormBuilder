@@ -283,6 +283,7 @@ Python code generation written by
 			#nl self.$name.SetViewWhiteSpace( $view_whitespace )
 			#nl self.$name.SetMarginWidth( 2, 0 )
 			#nl self.$name.SetIndentationGuides( $indentation_guides )
+			#nl self.$name.SetReadOnly( $read_only );
 			#ifequal $folding "1"
 			@{
 				#nl self.$name.SetMarginType  ( 1, wx.stc.STC_MARGIN_SYMBOL )
