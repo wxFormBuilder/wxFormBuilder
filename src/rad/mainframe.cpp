@@ -1529,15 +1529,15 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_ALIGN_CENTER_V, wxT( "&Align Center &Vertical\tAlt+Shift+V" ),   wxT( "Align item to the center vertically" ) );
 	menuEdit->Append( ID_ALIGN_BOTTOM,   wxT( "&Align &Bottom\tAlt+Shift+Down" ),         wxT( "Align item to the bottom" ) );
 
-	wxMenu *menuView = new wxMenu;
+    wxMenu *menuComponents = CreateMenuComponents();
+
+    wxMenu *menuView = new wxMenu;
 	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );
 	menuView->AppendSeparator();
 	menuView->Append( ID_WINDOW_SWAP, wxT( "&Swap The Editor and Properties Window\tF12" ), wxT( "Swap The Editor and Properties Window" ) );
 
 	wxMenu *menuTools = new wxMenu;
 	menuTools->Append( ID_GEN_INHERIT_CLS, wxT( "&Generate Inherited Class\tF6" ), wxT( "Creates the needed files and class for proper inheritance of your designed GUI" ) );
-
-    wxMenu *menuComponents = CreateMenuComponents();
 
 	wxMenu *menuHelp = new wxMenu;
 	menuHelp->Append( wxID_ABOUT, wxT( "&About...\tF1" ), wxT( "Show about dialog" ) );
@@ -1546,9 +1546,9 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT( "&File" ) );
 	menuBar->Append( menuEdit, wxT( "&Edit" ) );
+    menuBar->Append( menuComponents, wxT( "&Components" ) );
 	menuBar->Append( menuView, wxT( "&View" ) );
 	menuBar->Append( menuTools, wxT( "&Tools" ) );
-    menuBar->Append( menuComponents, wxT( "&Components" ) );
 	menuBar->Append( menuHelp, wxT( "&Help" ) );
 
     return menuBar;
@@ -1609,8 +1609,12 @@ wxMenu * MainFrame::CreateMenuComponents()
         const auto& page = pages[i];
 
         wxMenu *submenu = CreateSubmenuComponents( page.second, nextId );
+        wxMenuItem *menuItem = new wxMenuItem( menuComponents, wxID_ANY, page.first, wxEmptyString,
+                                              wxITEM_NORMAL, submenu );
 
-        menuComponents->AppendSubMenu( submenu, page.first );
+//        menuComponents->AppendSubMenu( submenu, page.first );
+        menuItem->SetBitmap( page.second->GetPackageIcon() );
+        menuComponents->Append( menuItem );
     }
 
     return menuComponents;
@@ -1637,9 +1641,13 @@ wxMenu * MainFrame::CreateSubmenuComponents( PObjectPackage pkg, wxWindowID& nex
         else
         {
             wxString widget( info->GetClassName() );
+            wxMenuItem *menuItem = new wxMenuItem( submenu, nextID, widget );
+            menuItem->SetBitmap( info->GetIconFile() );
 
             Bind( wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this, nextID );
-            submenu->Append( nextID++, widget );
+            nextID++;
+            submenu->Append( menuItem );
+//            submenu->Append( nextID++, widget );
         }
         j++;
     }
