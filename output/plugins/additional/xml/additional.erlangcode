@@ -367,9 +367,9 @@ Erlang code generation written by
                                            @{ #ifnotnull $window_style
                                               @{{style,$window_style }@}@}]),
     </template>
-    <template name="evt_connect_OnSpin"> #class:connect($name, scroll_thumbtrack, *option), </template>
-    <template name="evt_connect_OnSpinUp"> #class:connect($name, scroll_pageup, *option), </template>
-    <template name="evt_connect_OnSpinDown"> #class:connect($name, scroll_linedown, *option), </template>
+    <template name="evt_connect_OnSpin"> #class:connect($name, spin, *option), </template>
+    <template name="evt_connect_OnSpinUp"> #class:connect($name, spin_up, *option), </template>
+    <template name="evt_connect_OnSpinDown"> #class:connect($name, spin_down, *option), </template>
   </templates>
 
   <templates class="wxHyperlinkCtrl">
@@ -543,30 +543,30 @@ Erlang code generation written by
       #nl #class:setIndentationGuides($name, $indentation_guides),
       #ifequal $folding "1"
       @{
-          #nl #class:setMarginType($name, 1, ?wxSTC_MARGIN_SYMBOL),
-          #nl #class:setMarginMask($name, 1, ?wxSTC_MASK_FOLDERS),
-          #nl #class:setMarginWidth($name, 1, 16),
-          #nl #class:setMarginSensitive($name, 1, true),
+        #nl #class:setMarginType($name, 1, ?wxSTC_MARGIN_SYMBOL),
+        #nl #class:setMarginMask($name, 1, ?wxSTC_MASK_FOLDERS),
+        #nl #class:setMarginWidth($name, 1, 16),
+        #nl #class:setMarginSensitive($name, 1, true),
 
-          #nl #class:setProperty($name, "fold", "1"),
-          #nl #class:setFoldFlags($name, ?wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | ?wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED),
+        #nl #class:setProperty($name, "fold", "1"),
+        #nl #class:setFoldFlags($name, ?wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | ?wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED),
       @}
       #ifequal $line_numbers "1"
       @{
-          #nl #class:setMarginType($name, 0, ?wxSTC_MARGIN_NUMBER),
-          #nl #class:setMarginWidth($name, 0, #class:textWidth($name, ?wxSTC_STYLE_LINENUMBER, "99999")),
+        #nl #class:setMarginType($name, 0, ?wxSTC_MARGIN_NUMBER),
+        #nl #class:setMarginWidth($name, 0, #class:textWidth($name, ?wxSTC_STYLE_LINENUMBER, "99999")),
       @}
       #ifnotequal $folding "1"
       @{
-          #ifnotequal $line_numbers "1"
-          @{
-              #nl #class:setMarginWidth($name, 2, 0),
-          @}
+        #ifnotequal $line_numbers "1"
+        @{
+          #nl #class:setMarginWidth($name, 2, 0),
+        @}
       @}
       #ifnotnull $font
       @{
-          #nl $name #append Font = $font,
-          #nl #class:styleSetFont($name, ?wxSTC_STYLE_DEFAULT, $name #append Font),
+        #nl $name #append Font = $font,
+        #nl #class:styleSetFont($name, ?wxSTC_STYLE_DEFAULT, $name #append Font),
       @}
     </template>
   </templates>

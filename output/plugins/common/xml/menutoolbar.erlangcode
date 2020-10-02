@@ -194,14 +194,14 @@ Erlang code generation written by
     @{ #class:setToolBitmapSize($name, $bitmapsize), @}
 
     #ifnotnull $separation
-    @{ #ifnotequal $separation "5"
+    @{#ifnotequal $separation "5"
       @{ #class:setToolSeparation($name, $separation), @}@}
 
     #ifnotnull $margins
     @{ #class:setMargins($name, $margins), @}
 
     #ifnotnull $packing
-    @{ #ifnotequal $packing "1"
+    @{#ifnotequal $packing "1"
       @{ #class:setToolPacking($name, $packing), @}@}
   </template>
   <template name="after_addchild">
@@ -209,46 +209,54 @@ Erlang code generation written by
 
     #ifparenttypeequal "form"
     @{#ifequal #parent $aui_managed "1"
-      #nl
-      $name #append _Pane = ?pi:new(), #nl
-      wxAuiManager:addPane(#parent $name #append _AUImgr, $name,
-          #nl ?pi:$docking($name #append _Pane),
-          #ifnotnull $caption @{ #nl ?pi:caption(*pi, $caption), @}
-          #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible(*pi, [{visible,false}]), @}
-          #ifequal $close_button "0" @{ #nl ?pi:closeButton(*pi, [{visible,false}]), @}
-          #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton(*pi, [{visible,true}]), @}
-          #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton(*pi, [{visible,true}]), @}
-          #ifequal $pin_button "1" @{ #nl ?pi:pinButton(*pi, [{visible,true}]), @}
-          #ifequal $pane_border "0" @{ #nl ?pi:paneButton(*pi, [{visible,false}]), @}
-          #ifequal $gripper "1" @{ #nl ?pi:gripper(*pi, [{visible,true}]), @}
-          #ifequal $show "0" @{ #nl ?pi:hide(*pi), @}
-          #ifequal $moveable "1" @{ #nl ?pi:moveable(*pi, [{b,true}]), @}
-          #ifequal $dock "Float"
-          @{
-            #ifnotnull $pane_position @{ #nl ?pi:floatingPosition(*pi, $pane_position), @}
-            #nl ?pi:floatable(*pi, [{b,true}]),
-          @}
-          #ifequal $dock "Dock" @{ #nl ?pi:dock(*pi), @}
-          #ifequal $resize "Resizable"
-          @{
-            #ifnotnull $pane_size @{ #nl ?pi:floatingSize(*pi, $pane_size), @}
-            #nl ?pi:resizable(*pi, [{resizable,true}]),
-          @}
-          #ifequal $resize "Fixed" @{ #nl ?pi:fixed(*pi), @}
-          #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable(*pi, [{b,false}]), @}
-          #ifequal $TopDockable "0" @{ #nl ?pi:topDockable(*pi, [{b,false}]), @}
-          #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable(*pi, [{b,false}]), @}
-          #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable(*pi, [{b,false}]), @}
-          #ifequal $floatable "0" @{ #nl ?pi:floatable(*pi, [{b,false}]), @}
-          #ifnotnull $aui_row	@{ #nl ?pi:row(*pi, $aui_row), @}
-          #ifnotnull $aui_position	@{ #nl ?pi:position(*pi, $aui_position), @}
-          #ifnotnull $best_size @{ #nl ?pi:bestSize(*pi, $best_size), @}
-          #ifnotnull $min_size @{ #nl ?pi:minSize(*pi, $min_size), @}
-          #ifnotnull $max_size @{ #nl ?pi:maxSize(*pi, $max_size), @}
-          #ifnotnull $aui_layer @{ #nl ?pi:layer(*pi, $aui_layer), @}
-          #ifequal $center_pane "1" @{ #nl ?pi:centerPane(*pi), @}
-          #ifequal $default_pane "1" @{ #nl ?pi:defaultPane(*pi), @}
-          #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane(*pi), @}
+      @{
+        #nl
+        $name #append _Pane = ?pi:new(),
+        #nl
+        #ifequal $docking "Left" @{?pi:left($name #append _Pane), @}
+        #ifequal $docking "Right" @{?pi:right($name #append _Pane), @}
+        #ifequal $docking "botton" @{?pi:botton($name #append _Pane), @}
+        #ifequal $docking "Top" @{?pi:top($name #append _Pane), @}
+        #ifequal $docking "Center" @{?pi:center($name #append _Pane), @}
+        #ifnotnull $caption @{ #nl ?pi:caption($name #append _Pane, $caption), @}
+        #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible($name #append _Pane, [{visible,false}]), @}
+        #ifequal $close_button "0" @{ #nl ?pi:closeButton($name #append _Pane, [{visible,false}]), @}
+        #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton($name #append _Pane, [{visible,true}]), @}
+        #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton($name #append _Pane, [{visible,true}]), @}
+        #ifequal $pin_button "1" @{ #nl ?pi:pinButton($name #append _Pane, [{visible,true}]), @}
+        #ifequal $pane_border "0" @{ #nl ?pi:paneBorder($name #append _Pane, [{visible,false}]), @}
+        #ifequal $gripper "1" @{ #nl ?pi:gripper($name #append _Pane, [{visible,true}]), @}
+        #ifequal $show "0" @{ #nl ?pi:hide($name #append _Pane), @}
+        #ifequal $moveable "1" @{ #nl ?pi:movable($name #append _Pane, [{b,true}]), @}
+        #ifequal $dock "Float"
+        @{
+          #ifnotnull $pane_position @{ #nl ?pi:floatingPosition($name #append _Pane, $pane_position), @}
+          #nl ?pi:floatable($name #append _Pane, [{b,true}]),
+        @}
+        #ifequal $dock "Dock" @{ #nl ?pi:dock($name #append _Pane), @}
+        #ifequal $resize "Resizable"
+        @{
+          #ifnotnull $pane_size @{ #nl ?pi:floatingSize($name #append _Pane, $pane_size), @}
+          #nl ?pi:resizable($name #append _Pane, [{resizable,true}]),
+        @}
+        #ifequal $resize "Fixed" @{ #nl ?pi:fixed($name #append _Pane), @}
+        #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable($name #append _Pane, [{b,false}]), @}
+        #ifequal $TopDockable "0" @{ #nl ?pi:topDockable($name #append _Pane, [{b,false}]), @}
+        #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable($name #append _Pane, [{b,false}]), @}
+        #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable($name #append _Pane, [{b,false}]), @}
+        #ifequal $floatable "0" @{ #nl ?pi:floatable($name #append _Pane, [{b,false}]), @}
+        #ifnotnull $aui_row	@{ #nl ?pi:row($name #append _Pane, $aui_row), @}
+        #ifnotnull $aui_position	@{ #nl ?pi:position($name #append _Pane, $aui_position), @}
+        #ifnotnull $best_size @{ #nl ?pi:bestSize($name #append _Pane, $best_size), @}
+        #ifnotnull $min_size @{ #nl ?pi:minSize($name #append _Pane, $min_size), @}
+        #ifnotnull $max_size @{ #nl ?pi:maxSize($name #append _Pane, $max_size), @}
+        #ifnotnull $aui_layer @{ #nl ?pi:layer($name #append _Pane, $aui_layer), @}
+        #ifequal $center_pane "1" @{ #nl ?pi:centrePane($name #append _Pane), @}
+        #ifequal $default_pane "1" @{ #nl ?pi:defaultPane($name #append _Pane), @}
+        #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane($name #append _Pane), @}
+
+        #nl wxAuiManager:addPane(#parent $name #append _AUImgr, $name, $name #append _Pane),
+      @}
     @}
   </template>
   </templates>
@@ -284,46 +292,53 @@ Erlang code generation written by
 
       #ifparenttypeequal "form"
       @{#ifequal #parent $aui_managed "1"
-        @{#nl
-          $name #append _Pane = ?pi:new(), #nl
-          wxAuiManager:addPane(#parent $name #append _AUImgr, $name,
-              #nl ?pi:$docking($name #append _Pane),
-              #ifnotnull $caption @{ #nl ?pi:caption(*pi, $caption), @}
-              #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible(*pi, [{visible,false}]), @}
-              #ifequal $close_button "0" @{ #nl ?pi:closeButton(*pi, [{visible,false}]), @}
-              #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton(*pi, [{visible,true}]), @}
-              #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton(*pi, [{visible,true}]), @}
-              #ifequal $pin_button "1" @{ #nl ?pi:pinButton(*pi, [{visible,true}]), @}
-              #ifequal $pane_border "0" @{ #nl ?pi:paneButton(*pi, [{visible,false}]), @}
-              #ifequal $gripper "1" @{ #nl ?pi:gripper(*pi, [{visible,true}]), @}
-              #ifequal $show "0" @{ #nl ?pi:hide(*pi), @}
-              #ifequal $moveable "1" @{ #nl ?pi:moveable(*pi, [{b,true}]), @}
-              #ifequal $dock "Float"
-              @{
-                #ifnotnull $pane_position @{ #nl ?pi:floatingPosition(*pi, $pane_position), @}
-                #nl ?pi:floatable(*pi, [{b,true}]),
-              @}
-              #ifequal $dock "Dock" @{ #nl ?pi:dock(*pi), @}
-              #ifequal $resize "Resizable"
-              @{
-                #ifnotnull $pane_size @{ #nl ?pi:floatingSize(*pi, $pane_size), @}
-                #nl ?pi:resizable(*pi, [{resizable,true}]),
-              @}
-              #ifequal $resize "Fixed" @{ #nl ?pi:fixed(*pi), @}
-              #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable(*pi, [{b,false}]), @}
-              #ifequal $TopDockable "0" @{ #nl ?pi:topDockable(*pi, [{b,false}]), @}
-              #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable(*pi, [{b,false}]), @}
-              #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable(*pi, [{b,false}]), @}
-              #ifequal $floatable "0" @{ #nl ?pi:floatable(*pi, [{b,false}]), @}
-              #ifnotnull $aui_row	@{ #nl ?pi:row(*pi, $aui_row), @}
-              #ifnotnull $aui_position	@{ #nl ?pi:position(*pi, $aui_position), @}
-              #ifnotnull $best_size @{ #nl ?pi:bestSize(*pi, $best_size), @}
-              #ifnotnull $min_size @{ #nl ?pi:minSize(*pi, $min_size), @}
-              #ifnotnull $max_size @{ #nl ?pi:maxSize(*pi, $max_size), @}
-              #ifnotnull $aui_layer @{ #nl ?pi:layer(*pi, $aui_layer), @}
-              #ifequal $center_pane "1" @{ #nl ?pi:centerPane(*pi), @}
-              #ifequal $default_pane "1" @{ #nl ?pi:defaultPane(*pi), @}
-              #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane(*pi), @}
+        @{
+          #nl
+          $name #append _Pane = ?pi:new(),
+          #nl
+          #ifequal $docking "Left" @{?pi:left($name #append _Pane), @}
+          #ifequal $docking "Right" @{?pi:right($name #append _Pane), @}
+          #ifequal $docking "botton" @{?pi:botton($name #append _Pane), @}
+          #ifequal $docking "Top" @{?pi:top($name #append _Pane), @}
+          #ifequal $docking "Center" @{?pi:center($name #append _Pane), @}
+          #ifnotnull $caption @{ #nl ?pi:caption($name #append _Pane, $caption), @}
+          #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible($name #append _Pane, [{visible,false}]), @}
+          #ifequal $close_button "0" @{ #nl ?pi:closeButton($name #append _Pane, [{visible,false}]), @}
+          #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton($name #append _Pane, [{visible,true}]), @}
+          #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton($name #append _Pane, [{visible,true}]), @}
+          #ifequal $pin_button "1" @{ #nl ?pi:pinButton($name #append _Pane, [{visible,true}]), @}
+          #ifequal $pane_border "0" @{ #nl ?pi:paneBorder($name #append _Pane, [{visible,false}]), @}
+          #ifequal $gripper "1" @{ #nl ?pi:gripper($name #append _Pane, [{visible,true}]), @}
+          #ifequal $show "0" @{ #nl ?pi:hide($name #append _Pane), @}
+          #ifequal $moveable "1" @{ #nl ?pi:movable($name #append _Pane, [{b,true}]), @}
+          #ifequal $dock "Float"
+          @{
+            #ifnotnull $pane_position @{ #nl ?pi:floatingPosition($name #append _Pane, $pane_position), @}
+            #nl ?pi:floatable($name #append _Pane, [{b,true}]),
+          @}
+          #ifequal $dock "Dock" @{ #nl ?pi:dock($name #append _Pane), @}
+          #ifequal $resize "Resizable"
+          @{
+            #ifnotnull $pane_size @{ #nl ?pi:floatingSize($name #append _Pane, $pane_size), @}
+            #nl ?pi:resizable($name #append _Pane, [{resizable,true}]),
+          @}
+          #ifequal $resize "Fixed" @{ #nl ?pi:fixed($name #append _Pane), @}
+          #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable($name #append _Pane, [{b,false}]), @}
+          #ifequal $TopDockable "0" @{ #nl ?pi:topDockable($name #append _Pane, [{b,false}]), @}
+          #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable($name #append _Pane, [{b,false}]), @}
+          #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable($name #append _Pane, [{b,false}]), @}
+          #ifequal $floatable "0" @{ #nl ?pi:floatable($name #append _Pane, [{b,false}]), @}
+          #ifnotnull $aui_row	@{ #nl ?pi:row($name #append _Pane, $aui_row), @}
+          #ifnotnull $aui_position	@{ #nl ?pi:position($name #append _Pane, $aui_position), @}
+          #ifnotnull $best_size @{ #nl ?pi:bestSize($name #append _Pane, $best_size), @}
+          #ifnotnull $min_size @{ #nl ?pi:minSize($name #append _Pane, $min_size), @}
+          #ifnotnull $max_size @{ #nl ?pi:maxSize($name #append _Pane, $max_size), @}
+          #ifnotnull $aui_layer @{ #nl ?pi:layer($name #append _Pane, $aui_layer), @}
+          #ifequal $center_pane "1" @{ #nl ?pi:centrePane($name #append _Pane), @}
+          #ifequal $default_pane "1" @{ #nl ?pi:defaultPane($name #append _Pane), @}
+          #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane($name #append _Pane), @}
+
+          #nl wxAuiManager:addPane(#parent $name #append _AUImgr, $name, $name, $name #append _Pane),
         @}
       @}
     </template>
@@ -332,62 +347,84 @@ Erlang code generation written by
   <templates class="tool">
     <template name="construction">
       #ifparenttypeequal "toolbar"
-      @{
-        #ifparentclassnotequal "wxAuiToolBar"
-        @{
-          #ifequal $kind "wxITEM_NORMAL"
+      @{#ifparentclassnotequal "wxAuiToolBar"
+        @{#ifequal $kind "wxITEM_NORMAL"
           @{#ifnotnull $label
-            @{ wxToolBar:addTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
-                                                               @{$bitmap, @}
-                                                               #ifnull $bitmap
-                                                               @{wxBitmap:new(), @}
-                                                               [#ifnotnull $tooltip
-                                                                 @{{shortHelp,$tooltip }@}]), @}
+            @{ $name = wxToolBar:addTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
+                                                                       @{$bitmap, @}
+                                                                       #ifnull $bitmap
+                                                                       @{wxBitmap:new(), @}
+                                                                       [#ifnotnull $tooltip
+                                                                         @{{shortHelp,$tooltip }@}]), @}
           @}
           #ifequal $kind "wxITEM_CHECK"
           @{#ifnotnull $label
-            @{ wxToolBar:addCheckTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
-                                                                    @{$bitmap, @}
-                                                                    #ifnull $bitmap
-                                                                    @{wxBitmap:new(), @}
-                                                                    [#ifnotnull $tooltip
-                                                                      @{{shortHelp,$tooltip }, @}
-                                                                     #ifnotnull $statusbar
-                                                                      @{{longHelp,$statusbar }@}]), @}
+            @{ $name = wxToolBar:addCheckTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
+                                                                            @{$bitmap, @}
+                                                                            #ifnull $bitmap
+                                                                            @{wxBitmap:new(), @}
+                                                                            [#ifnotnull $tooltip
+                                                                              @{{shortHelp,$tooltip }, @}
+                                                                             #ifnotnull $statusbar
+                                                                              @{{longHelp,$statusbar }@}]), @}
           @}
           #ifequal $kind "wxITEM_RADIO"
           @{#ifnotnull $label
-            @{ wxToolBar:addRadioTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
-                                                                    @{$bitmap, @}
-                                                                    #ifnull $bitmap
-                                                                    @{wxBitmap:new(), @}
-                                                                    [#ifnotnull $tooltip
-                                                                      @{{shortHelp,$tooltip }, @}
-                                                                     #ifnotnull $statusbar
-                                                                      @{{longHelp,$statusbar }@}]), @}
+            @{ $name = wxToolBar:addRadioTool(#wxparent $name, $id, $label, #ifnotnull $bitmap
+                                                                            @{$bitmap, @}
+                                                                            #ifnull $bitmap
+                                                                            @{wxBitmap:new(), @}
+                                                                            [#ifnotnull $tooltip
+                                                                              @{{shortHelp,$tooltip }, @}
+                                                                             #ifnotnull $statusbar
+                                                                              @{{longHelp,$statusbar }@}]), @}
           @}
         @}
         #ifparentclassequal "wxAuiToolBar"
         @{
           #ifequal #parent $use_explicit_ids "1"
           @{
-            wxAuiToolBar:addTool(#parent $name, $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar), #nl
+            wxAuiToolBar:addTool(#parent $name, $id, $label, #ifnotnull $bitmap
+                                                              @{$bitmap, @}
+                                                              #ifnull $bitmap
+                                                              @{wxBitmap:new(), @}
+                                                              wxBitmap:new(),
+                                                              [{kind,$kind} #ifnotnull $tooltip
+                                                                            @{, {shortHelp,$tooltip }@}
+                                                                            #ifnotnull $statusbar
+                                                                            @{, {longHelp,$statusbar }@}]), #nl
             $name = wxAuiToolBar:findTool(#parent $name, $id),
           @}
           #ifequal #parent $use_explicit_ids "0"
           @{
-            $name = wxAuiToolBar:addTool(#parent $name, $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar),
+            $name = wxAuiToolBar:addTool(#parent $name, $id, $label, #ifnotnull $bitmap
+                                                                      @{$bitmap, @}
+                                                                      #ifnull $bitmap
+                                                                      @{wxBitmap:new(), @}
+                                                                      wxBitmap:new(),
+                                                                      [{kind,$kind} #ifnotnull $tooltip
+                                                                                    @{, {shortHelp,$tooltip }@}
+                                                                                    #ifnotnull $statusbar
+                                                                                    @{, {longHelp,$statusbar }@}]),
           @}
           #ifequal $context_menu "1"
           @{
-            wxAuiToolBar:setToolDropDown(#parent $name, #class:getId($name), true),
+            $name = wxAuiToolBar:setToolDropDown(#parent $name, #class:getId($name), true),
           @}
         @}
       @}
 
       #ifparenttypeequal "toolbar_form"
       @{
-        $name = toolbar:addTool(#parent $name, $id, $label, $bitmap, wxNullBitmap, $kind, $tooltip, $statusbar),
+        $name = wxToolbar:addTool(#parent $name, $id, $label, #ifnotnull $bitmap
+                                                              @{$bitmap, @}
+                                                              #ifnull $bitmap
+                                                              @{wxBitmap:new(), @}
+                                                              wxBitmap:new(),
+                                                              [{kind,$kind} #ifnotnull $tooltip
+                                                                            @{, {shortHelp,$tooltip }@}
+                                                                            #ifnotnull $statusbar
+                                                                            @{, {longHelp,$statusbar }@}]),
       @}
     </template>
     <template name="generated_event_handlers"></template>
@@ -417,8 +454,7 @@ Erlang code generation written by
     ifnotequal $show_effect "wxSHOW_EFFECT_SLIDE_TO_BOTTOM"
     @{ #class:setShowHideEffects($name, $show_effect, $hide_effect), }@
     ifequal $show_effect "wxSHOW_EFFECT_SLIDE_TO_BOTTOM"
-    @{
-      #ifnotequal $hide_effect "wxSHOW_EFFECT_SLIDE_TO_TOP"
+    @{#ifnotequal $hide_effect "wxSHOW_EFFECT_SLIDE_TO_TOP"
       @{ #class:setShowHideEffects($name, $show_effect, $hide_effect), }@
     @}
 

@@ -1310,11 +1310,14 @@ void ErlangCodeGenerator::GenExport( PObjectBase project, PCodeInfo code_info,
             {
                 PProperty name = project->GetChild(0)->GetProperty( wxT( "name" ) );
                 wxString winName = ClassToCreateFun( name->GetValueAsString(), createPrefixg );
-                winName.append( wxT("()") );
-                winName = wxT( "wx:batch(fun() -> #indent #indent #indent #nl "
-                               "{Win,_} = Return = " ) + winName + wxT( ", #nl "
-                               "wxWindow:show(Win), #nl "
-                               "Return #unindent #nl "
+                name = project->GetChild(0)->GetProperty( wxT( "aui_managed" ) );
+                if ( createParent || name->GetValueAsInteger() )
+                    winName.append( wxT("(Options)") );
+                else
+                    winName.append( wxT("()") );
+
+                winName = wxT( "wx:batch(fun() -> #indent #indent #indent #nl " ) +
+                               winName + wxT( " #unindent #nl "
                                "end). #unindent #unindent #nl " );
                 code.Replace( wxT( "*create_win_fun" ), winName );
             }
@@ -1329,7 +1332,9 @@ void ErlangCodeGenerator::GenExport( PObjectBase project, PCodeInfo code_info,
     else
     {
         // Write the forward declaration lines
-        wxString names = wxEmptyString;
+        PProperty name;
+        wxString names, headerVal = wxEmptyString;
+        int numParam;
         std::set< wxString > exports;
         // Generate a list of the create functions for the export session
         for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
@@ -1337,11 +1342,14 @@ void ErlangCodeGenerator::GenExport( PObjectBase project, PCodeInfo code_info,
             PObjectBase child = project->GetChild( i );
             if ( child )
             {
-                PProperty name = child->GetProperty( wxT( "name" ) );
-                wxString headerVal = name->GetValueAsString();
+                name = child->GetProperty( wxT( "name" ) );
+                headerVal = name->GetValueAsString();
+                name = child->GetProperty( wxT( "aui_managed" ) );
+                numParam = 0;
+                if ( createParent || name->GetValueAsInteger() ) ++numParam;
                 if ( !headerVal.empty() )
                 {
-                    names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( headerVal, createPrefixg ), createParent ) );
+                    names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( headerVal, createPrefixg ), numParam ) );
                 }
             }
         }
@@ -1460,35 +1468,50 @@ void ErlangCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 
 	wxString strName = propName->GetValue();
 	strName[0] = wxToupper( strName[0] );  // variables must start with uppercase char
+    m_rootWxParent = strName;
+
+    // The "after_addchild_erlang" template is used exclusively when 'aui_managed'
+    // is defined (see: forms.erlangcode).
+    // It will  close a 'try..catch..end' statement which we will insert the 'try' here.
+	wxString afterAddChildErlang = GetCode( class_obj, wxT( "after_addchild_erlang" ) );
+	bool auiManaged = !afterAddChildErlang.IsEmpty();
+    wxString createObj = GetCode( class_obj, wxT( "cons_call" ) );
 
 	// Creation the function header
+    // By using AUI management, it will require the window to have a 'parent', so we
+    // force the function header be the one with the parameter option
 	wxString funHead = ClassToCreateFun( strClassName, createPrefix);
-	if (createParent)
+	m_source->WriteLn();
+	if ( createParent || auiManaged )
 	{
-	    funHead.append( wxString::Format( wxT( "(%s) ->" ), strName ) );
+	    funHead.append( wxT( "(Options) ->") );
+	    m_source->WriteLn( funHead );
+	    m_source->Indent();
+	    m_source->WriteLn( wxT( "Parent = proplists:get_value(parent, Options, wx:null())," ) );
+        if ( auiManaged )
+        {
+            m_source->WriteLn( wxT( "%% Warning: AUI managed form requires a valid parent window" ) );
+        }
+	    createObj.Replace( wxT( "wx:null()" ), wxT( "Parent" ) );
 	}
 	else
 	{
 	    funHead.append( wxT( "() ->" ) );
+        m_source->WriteLn( funHead );
+        m_source->Indent();
 	}
-    m_rootWxParent = strName;
-	m_source->WriteLn();
-	m_source->WriteLn( funHead );
-	m_source->Indent();
-	if (!createParent)
-	{
-	    m_source->WriteLn(strName + wxT( " = " ) + GetCode( class_obj, wxT( "cons_call" ) ) );
-		wxString settings = GetCode( class_obj, wxT( "settings" ) );
-		if ( !settings.IsEmpty() )
-		{
-			m_source->WriteLn( settings );
-		    // when aui_managed is defined, in the AUI template we use a
-		    // try..catch statement. So, we are going to indent the further
-		    // lines of code(see: forms.erlangcode)
-		    if ( settings.Find( wxT( "try" ) ) )
-	            m_source->Indent();
-		}
-	}
+    m_source->WriteLn(strName + wxT( " = " ) + createObj );
+
+    wxString settings = GetCode( class_obj, wxT( "settings" ) );
+    if ( !settings.IsEmpty() )
+    {
+        m_source->WriteLn( settings );
+        // when aui_managed is defined, in the AUI template we use a
+        // try..catch statement. So, we are going to indent the further
+        // lines of code(see: forms.erlangcode)
+        if ( auiManaged && settings.Find( wxT( "try" ) ) )
+            m_source->Indent();
+    }
 
 /*  // wizard is not supported by Erlang
     if ( class_obj->GetObjectTypeName() == wxT( "wizard" ) && class_obj->GetChildCount() > 0 )
@@ -1513,35 +1536,37 @@ void ErlangCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 	}
 
 	wxString afterAddChild = GetCode( class_obj, wxT( "after_addchild" ) );
-	if ( !afterAddChild.IsEmpty() )
-	{
-		m_source->WriteLn( afterAddChild );
-	}
+	if ( auiManaged ) m_source->WriteLn( afterAddChild );
 
 	GenEvents( class_obj, events );
 
 	// Ending the function
+    // the information about the aui_managed window must be handled here
     wxString funEnding;
     if ( m_fullExport )
     {
         // we finish the function by returning the window and the initialized State record
-        funEnding = wxString::Format( wxT( "{%s, #state{win=%s, params=[]}}" ), strName, strName );
+        if ( auiManaged )
+            funEnding = wxString::Format( wxT( "{%s, #state{win=%s, params=[{aui,%s_AUImgr}]}}" ), strName, strName, strName );
+        else
+            funEnding = wxString::Format( wxT( "{%s, #state{win=%s}}" ), strName, strName );
     }
     else
     {
         // we finish the function by returning the window (container
         // passed as parameter or created here)
-        funEnding = wxString::Format( wxT( "%s" ), strName );
+        if ( auiManaged )
+            funEnding = wxString::Format( wxT( "{%s,%s_AUImgr}" ), strName, strName );
+        else
+            funEnding = wxString::Format( wxT( "%s" ), strName );
     }
 
-    // this template is used exclusively to close a try..catch statement
-    // when aui_managed is defined (see: forms.erlangcode)
-	afterAddChild = GetCode( class_obj, wxT( "after_addchild_erlang" ) );
-	if ( !afterAddChild.IsEmpty() )
+	if ( auiManaged )
 	{
+        // Unindenting the code block and updating #state{} in the 'try..catch..end' statement
 	    m_source->Unindent();
-	    afterAddChild.Replace( wxT("*state"), funEnding );
-		m_source->WriteLn( afterAddChild );
+	    afterAddChildErlang.Replace( wxT("*state"), funEnding );
+		m_source->WriteLn( afterAddChildErlang );
 	}
     else
     {
