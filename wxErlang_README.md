@@ -2,7 +2,7 @@
 
 Here you have some informations you may need to know about in order to write the 
 _*.erlangcode_ files (and any other _*.xxxxcode_) the way the source code will be 
-generated. That includes the sintax used for the **wxFormBuilder** macros and tips
+generated. That includes the syntax used for the **wxFormBuilder** macros and tips
 about the text formation.
 <br>
 I hope these informations can save someone's time when trying to help us to maintain the configuration files updated.
@@ -36,20 +36,20 @@ There are two files in the project _/src/codegen/**erlangcg.cpp/.h**_ and _/src/
 	- _wxWizard, wxWizardPageSimple_
 * **Ribbon** tab {file: ribbon.erlangcode}
 	- _wxRibbonBar_
-	
+
 <br>
 
 ### The configuration files
 The files where the template for Erlang code construction are defined can be found under the folder **./wxFormBuilder/output**.
 
-* In the subdirectory **/xml** we find the **default.xml** which is related to the languages properties and setting that we see on the GUI by selecting the **_Project_** item in the _Object Tree_ window.
-<br>The templates to create the code skeleton (preable, include, ..., epilogue) is found in  **default.erlangcode**.
-* In the subdirectory **/plugins** we find the sudirectories where the templates to create the controls classes and set its properties and events are stored. They are _additional_, _common_, _containers_, _forms_ and _layout_.
-<br>Each one has a subdirectory **/xml** where we find the ***.erlangcode** files.
+* In the sub-directory **/xml** we find the **default.xml** which is related to the languages properties and setting that we see on the GUI by selecting the **_Project_** item in the _Object Tree_ window.
+<br>The templates to create the code skeleton (preamble, include, ..., epilogue) is found in  **default.erlangcode**.
+* In the sub-directory **/plugins** we find the sub-directories where the templates to create the controls classes and set its properties and events are stored. They are _additional_, _common_, _containers_, _forms_ and _layout_.
+<br>Each one has a sub-directory **/xml** where we find the ***.erlangcode** files.
 
 <br>
 
-#### Itentifiers, variable, types and conditional code
+#### Identifiers, variable, types and conditional code
 
 * _$field_name_
 ```
@@ -96,8 +96,8 @@ where to replace the parameters to build the events/function headers accordingly
 
 #### Conditional statement
 ```
-#ifnul $field_name
-#ifnotnul $field_name
+#ifnull $field_name
+#ifnotnull $field_name
 
     Ex. #ifnull $style
 
@@ -122,7 +122,7 @@ where to replace the parameters to build the events/function headers accordingly
     Ex.: #ifparenttypeequal "widget || container || expanded_widget"
 ```
 
-#### New line and identation
+#### New line and indentation
 ```
 #nl - It appends a new line to the template after it be evaluated by the parser.
 
@@ -232,6 +232,33 @@ TIP: 1) When a template has many lines with conditionals put the #nl inside the 
 ```
 <br>
 
+### Testing the templates/generated code
+We can use the werl/erl build the _.beam_ file and test the prototyped module:
+1) **c**(_module_name_).
+This will compile the module and tell us if our template is well defined or not; 
+
+2) _module_name_**:start()**.
+This will start the module and show the prototyped window
+
+3) _module_name_**:init(** _[ {**mode**, [{debug, trace}] } | [ {**parent**, parent_window}] ]_ **)**. 
+This option allow us to start the module with parameters.
+
+Obs:
+1) The **_parent_** option will be mandatory when the AUI management is used, otherwise we are going to get the error message: _"can't create wxWindow without parent"_ 
+2) For AUI managed window we will need provide a parent windows otherwise we are get a wx error. So, a test would look like this:
+```
+wx:new([{debug,trace}]),
+Frame = wxFrame:new(wx:null(), 6000, "wxErlang widgets", [{size,{1000,500}}]),
+Aui = aui:start([{parent,Frame}]),
+wxFrame:show(Frame).
+:
+% after close the window...
+wxFrame:destroy(),
+wx:destroy().
+``` 
+
+<br>
+
 ### Note:
 There are some **'class'** templates which they does not references 
 a wxWidgets control class as we use to know. For instance:
@@ -246,7 +273,7 @@ a wxWidgets control class as we use to know. For instance:
     </template>
 ```
 In these cases we cannot use the creation method (_new_) using
-the _#class_. We must use the proper class name - in this case _wxFrame_.
+the _#class_ tag. We must use the proper class name - in this case _wxFrame_.
 That is valid for the event connections too.
 
 The explanation is available in this [answer](https://github.com/wxFormBuilder/wxFormBuilder/issues/638#issuecomment-689953477) I got from the @sodevel user at GitHub.

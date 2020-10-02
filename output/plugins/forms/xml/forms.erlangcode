@@ -121,7 +121,7 @@ Erlang code generation written by
           io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
           wxAuiManager:unInit($name #append _AUImgr), #nl
           wxAuiManager:destroy($name #append _AUImgr), #nl
-          #class:destroy($name), #nl
+          wxFrame:destroy($name), #nl
           erlang:raise(Class, Reason, ST) #unindent  #nl
         end.
       @}
@@ -217,7 +217,7 @@ Erlang code generation written by
           io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
           wxAuiManager:unInit($name #append _AUImgr), #nl
           wxAuiManager:destroy($name #append _AUImgr), #nl
-          #class:destroy($name), #nl
+          wxPanel:destroy($name), #nl
           erlang:raise(Class, Reason, ST) #unindent  #nl
         end.
       @}
@@ -282,14 +282,14 @@ Erlang code generation written by
     </template>
     <template name="cons_call">
       wxDialog:new(wx:null(), $id, $title, [#ifnotnull $pos
-      @{{pos,$pos }, @}
-      #ifnotnull $size
-      @{{size,$size }, @}
-      #ifnotnull $style
-      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-      #ifnull $style
-      @{ #ifnotnull $window_style
-      @{{style,$window_style }@}@}]),
+                                            @{{pos,$pos }, @}
+                                            #ifnotnull $size
+                                            @{{size,$size }, @}
+                                            #ifnotnull $style
+                                            @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                            #ifnull $style
+                                            @{#ifnotnull $window_style
+                                              @{{style,$window_style }@}@}]),
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
@@ -329,7 +329,7 @@ Erlang code generation written by
           io:format("AUI Crashed ~p ~p~n",[Reason, ST]), #nl
           wxAuiManager:unInit($name #append _AUImgr), #nl
           wxAuiManager:destroy($name #append _AUImgr), #nl
-          #class:destroy($name), #nl
+          wxDialog:destroy($name), #nl
           erlang:raise(Class, Reason, ST) #unindent  #nl
         end. #unindent
       @}
@@ -398,14 +398,14 @@ Erlang code generation written by
     </template>
     <template name="cons_call">
       wxWizard:new(wx:null(), $id, $title, $bitmap, [#ifnotnull $pos
-      @{{pos,$pos }, @}
-      #ifnotnull $size
-      @{{size,$size }, @}
-      #ifnotnull $style
-      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
-      #ifnull $style
-      @{ #ifnotnull $window_style
-      @{{style,$window_style }@}@}]),
+                                                      @{{pos,$pos }, @}
+                                                      #ifnotnull $size
+                                                      @{{size,$size }, @}
+                                                      #ifnotnull $style
+                                                      @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                      #ifnull $style
+                                                      @{#ifnotnull $window_style
+                                                        @{{style,$window_style }@}@}]),
     </template>
     <template name="settings">
       #ifequal $maximum_size "?wxDefaultSize"
@@ -437,7 +437,7 @@ Erlang code generation written by
       #ifnotnull $tooltip
       @{ wxWindow:setToolTip($name, $tooltip), #nl @}
 
-      $name#append_pages = [], #nl
+      $name #append _pages = [], #nl
     </template>
     <template name="after_addchild">
       #ifnotnull $center
@@ -504,6 +504,11 @@ Erlang code generation written by
 
   <templates class="WizardPageSimple">
     <template name="construction">
+      <!--
+          #class and all its sub controls are not supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
       $name  = wxWizardPageSimple:new(#wxparent $name #ifnotnull $bitmap @{, none, none, $bitmap @}), #nl
       %% WizardPageSimple isn't currently supported by Erlang #nl
       %% add_page($name),
@@ -527,25 +532,28 @@ Erlang code generation written by
     </template>
     <template name="settings">
       #ifnotnull $window_style
-      @{ #ifnotequal $window_style "wxTB_HORIZONTAL | wxNO_BORDER"
-      wxWindow:setWindowStyle($name, $window_style), @}@}
+      @{#ifnotequal $window_style "wxTB_HORIZONTAL | wxNO_BORDER"
+        @{ wxWindow:setWindowStyle($name, $window_style), @}
+      @}
 
       #ifnotnull $bitmapsize
-      @{#class:setToolBitmapSize($name, $bitmapsize), #nl @}
+      @{ wxToolBar:setToolBitmapSize($name, $bitmapsize), #nl @}
 
       #ifnotnull $separation
       @{#ifnotequal $separation "5"
-      @{ #class:setToolSeparation($name, $separation), #nl @}@}
+        @{ wxToolBar:setToolSeparation($name, $separation), #nl @}
+      @}
 
       #ifnotnull $margins
-      @{ #class:setMargins($name, $margins), #nl @}
+      @{ wxToolBar:setMargins($name, $margins), #nl @}
 
       #ifnotnull $packing
       @{#ifnotequal $packing "1"
-      @{ #class:setToolPacking($name, $packing), #nl @}@}
+        @{ wxToolBar:setToolPacking($name, $packing), #nl @}
+      @}
     </template>
     <template name="after_addchild">
-      #nl #class:realize($name)
+      #nl #class:realize($name),
     </template>
   </templates>
 
