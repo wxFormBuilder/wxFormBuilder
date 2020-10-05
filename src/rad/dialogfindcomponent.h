@@ -43,13 +43,15 @@
 #include <wx/scrolwin.h>
 #include <wx/textctrl.h>
 #include <wx/listbox.h>
+#include <wx/statline.h>
+#include <wx/button.h>
 
 
 class DialogFindComponent : public wxDialog
 {
 public:
-    DialogFindComponent(wxWindow* parent, const wxArrayString &componentsList,
-                        wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString,
+    DialogFindComponent(wxWindow* parent, const wxArrayString& componentsList,
+                        wxWindowID id = wxID_ANY, const wxString& title = wxT("Find component"),
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxSize( 250,400 ), long style = wxDEFAULT_DIALOG_STYLE);
 
@@ -60,22 +62,28 @@ public:
 private:
     void OnTextCtrlComponent(wxCommandEvent& event);
     void OnListBoxComponentsDClick(wxCommandEvent& event);
-    void OnKeyDownComponents(wxKeyEvent &event);
+    void OnListBoxComponents(wxCommandEvent& event);
+    void OnKeyDownComponents(wxKeyEvent& event);
+    void OnButtonInsertClick(wxCommandEvent& event);
 
-    wxScrolledWindow* m_scrolledWindow;
-    wxTextCtrl* m_textCtrlComponent;
-    wxListBox* m_listBoxComponents;
+    void ListBoxComponentChoose();
+
+    wxScrolledWindow    *m_scrolledWindow;
+    wxTextCtrl          *m_textCtrlComponent;
+    wxListBox           *m_listBoxComponents;
+    wxStaticLine        *m_staticline;
+    wxButton            *m_buttonCancel;
+    wxButton            *m_buttonInsert;
 
     const wxArrayString& m_componentsList;
-    wxArrayString m_componentsFinded;
-    wxString m_chosenComponent = wxEmptyString;
+    wxArrayString        m_componentsFinded;
+    wxString             m_chosenComponent = wxEmptyString;
 
     enum
     {
         ID_LIST_BOX = wxID_HIGHEST + 1,
         ID_TEXT_CTRL
     };
-    void ListBoxComponentChoose();
 };
 
 #endif // DIALOGFINDCOMPONENT_H
