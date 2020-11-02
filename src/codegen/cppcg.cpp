@@ -958,7 +958,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const
 		// execute properly.
 		// So we create a default handler which will skip the event.
 		m_header->WriteLn( wxEmptyString );
-		m_header->WriteLn( wxT( "// Virtual event handlers, overide them in your derived class" ) );
+		m_header->WriteLn( wxT( "// Virtual event handlers, override them in your derived class" ) );
 
 		std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
