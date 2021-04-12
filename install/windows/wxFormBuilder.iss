@@ -124,6 +124,8 @@ Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}; Components: ru
 Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libdeflate*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libwebp*.dll; DestDir: {app}; Components: runtime
 
 
 [Icons]
