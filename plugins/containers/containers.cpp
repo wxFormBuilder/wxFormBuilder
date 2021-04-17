@@ -880,6 +880,18 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
 	}
+    
+    ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc(obj, _("wxSimplebook"), obj->GetPropertyAsString(_("name")));
+		xrc.AddWindowProperties();
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter(xrcObj, _("wxSimplebook"));
+		filter.AddWindowProperties();
+		return filter.GetXfbObject();
+	}
 };
 
 class SimplebookPageComponent : public ComponentBase
@@ -891,6 +903,21 @@ public:
 
 	void OnSelected(wxObject* wxobject) override {
 		BookUtils::OnSelected< wxSimplebook >( wxobject, GetManager() );
+	}
+    
+    ticpp::Element* ExportToXrc(IObject* obj) override {
+		ObjectToXrcFilter xrc(obj, _("simplebookpage"));
+		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+		xrc.AddProperty(_("select"), _("selected"), XRC_TYPE_BOOL);
+		return xrc.GetXrcObject();
+	}
+
+	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
+		XrcToXfbFilter filter(xrcObj, _("simplebookpage"));
+		filter.AddWindowProperties();
+		filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+		filter.AddProperty(_("selected"), _("select"), XRC_TYPE_BOOL);
+		return filter.GetXfbObject();
 	}
 };
 
