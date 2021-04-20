@@ -880,8 +880,8 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("window_style")));
 	}
-    
-    ticpp::Element* ExportToXrc(IObject* obj) override {
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxSimplebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
 		return xrc.GetXrcObject();
@@ -904,8 +904,8 @@ public:
 	void OnSelected(wxObject* wxobject) override {
 		BookUtils::OnSelected< wxSimplebook >( wxobject, GetManager() );
 	}
-    
-    ticpp::Element* ExportToXrc(IObject* obj) override {
+
+	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("simplebookpage"));
 		xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
 		xrc.AddProperty(_("select"), _("selected"), XRC_TYPE_BOOL);
