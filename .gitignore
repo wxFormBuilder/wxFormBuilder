@@ -1,6 +1,7 @@
 build/???/
 build/premake/**/bin/
 build/premake/**/obj/
+build/cmake/
 output/bin/
 output/lib*/
 output/share/
@@ -24,3 +25,5 @@ install/windows/*.exe
 /_install/
 /compile_commands.json
 /.ccls-cache/
+CMakeLists.txt.user*
+cmake_install

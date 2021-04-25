@@ -34,12 +34,44 @@ cd ../../../output/
 ./wxFormBuilder.exe
 ```
 
-### Linux
+### Windows (MSYS2 and CMake):
+
+Install [MSYS2](http://msys2.github.io/) and run the following inside a:
+
+MinGW 32 bit shell:
+
+```sh
+pacman -S --needed mingw-w64-i686-gcc mingw-w64-i686-wxWidgets mingw-w64-i686-cmake make git
+```
+
+or MinGW 64 bit shell:
+
+```sh
+pacman -S --needed mingw-w64-x86_64-gcc mingw-w64-x86_64-wxWidgets mingw-w64-x86_64-cmake make git
+```
+
+Build:
+
+```sh
+git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
+cd wxFormBuilder
+cmake -G 'MSYS Makefiles' -S . -B build/cmake
+cmake --build build/cmake
+cmake --install build/cmake
+```
+
+Run:
+
+```sh
+./cmake_install/wxFormBuilder.exe
+```
+
+### Linux (Meson)
 
 Pre-requisites for Ubuntu:
 
 ```sh
-sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev meson
+sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev meson 
 ```
 
 Pre-requisites for Arch Linux:
@@ -48,7 +80,7 @@ Pre-requisites for Arch Linux:
 sudo pacman -Syu --needed meson wxgtk2
 ```
 
-Build and run:
+Build:
 
 ```sh
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
@@ -56,6 +88,42 @@ cd wxFormBuilder
 meson _build --prefix $PWD/_install --buildtype=release
 ninja -C _build install
 ./_install/bin/wxformbuilder
+```
+
+Run:
+
+```sh
+./_install/bin/wxformbuilder
+```
+
+### Linux (CMake)
+
+Pre-requisites for Ubuntu:
+
+```sh
+sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev cmake 
+```
+
+Pre-requisites for Arch Linux:
+
+```sh
+sudo pacman -Syu --needed cmake wxgtk2
+```
+
+Build:
+
+```sh
+git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
+cd wxFormBuilder
+cmake -S . -B build/cmake
+cmake --build build/cmake
+cmake --install build/cmake
+```
+
+Run:
+
+```sh
+./cmake_install/wxFormBuilder.exe
 ```
 
 ### macOS
