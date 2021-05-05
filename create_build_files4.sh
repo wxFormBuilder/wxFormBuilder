@@ -73,12 +73,12 @@ elif [ "$unamestr" = "Darwin" ]; then
 fi
 
 # Build premake
-make config=release -C ./build/premake/4.3/build/gmake.$platform
+make config=release -C ./scripts/premake/4.3/build/gmake.$platform
 
-./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch codeblocks
-./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
-./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
+./scripts/premake/4.3/bin/release/premake4 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch codeblocks
+./scripts/premake/4.3/bin/release/premake4 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
+./scripts/premake/4.3/bin/release/premake4 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake
 if [ "$platform" = "macosx" ]; then
-   ./build/premake/4.3/bin/release/premake4 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode3
+   ./scripts/premake/4.3/bin/release/premake4 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode3
 fi
 
