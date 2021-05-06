@@ -69,19 +69,19 @@ m_strUserIDsVec(strUserIDsVec)
 
 wxString ErlangTemplateParser::RootWxParentToCode()
 {
-    PObjectBase form = AppData()->GetSelectedForm();
-    if ( form )
-    {
-        wxString formName = form->GetPropertyAsString(_( "name" ) );
-	    return formName;
-    }
-    else
-    {
-        // in heppening, the code needs to be reviewed - usually, in *.erlangcode files, we may
-        // need to use #parent instead of #wxparent. It also happens when exporting the project
-        // and not the only a selected form. Anyway, there is a replace code to try fix it.
-    	return "this()";
-    }
+	PObjectBase form = AppData()->GetSelectedForm();
+	if ( form )
+	{
+		wxString formName = form->GetPropertyAsString(_( "name" ) );
+		return formName;
+	}
+	else
+	{
+		// in heppening, the code needs to be reviewed - usually, in *.erlangcode files, we may
+		// need to use #parent instead of #wxparent. It also happens when exporting the project
+		// and not the only a selected form. Anyway, there is a replace code to try fix it.
+		return "this()";
+	}
 }
 
 PTemplateParser ErlangTemplateParser::CreateParser( const TemplateParser* oldparser, wxString _template )
@@ -119,11 +119,11 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 			break;
 		}
 	case PT_WXPARENT_CP:
-        {
-            value[0] = wxToupper( value[0] );
-            result = wxString::Format( wxT( "wxAuiPaneInfo:getPane(%s)" ), value.c_str() );
-            break;
-        }
+		{
+			value[0] = wxToupper( value[0] );
+			result = wxString::Format( wxT( "wxAuiPaneInfo:getPane(%s)" ), value.c_str() );
+			break;
+		}
 	case PT_WXSTRING:
 	case PT_FILE:
 	case PT_PATH:
@@ -240,13 +240,13 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 				wxFont font = fontContainer.GetFont();
 
 				const int pointSize = fontContainer.GetPointSize();
-                wxString options = wxString::Format( "[{underlined,%s}, {face,%s}]",
-                                                    (fontContainer.GetUnderlined() ? "true" : "false" ),
-                                                    (fontContainer.m_faceName.empty() ? "\"\"" : ( "\"" + fontContainer.m_faceName + "\"" ) ));
-                wxString strGetPoint;
-                if ( pointSize <= 0 )
-                {
-                	strGetPoint = "wxFont:getPointSize(wxSystemSettings:getFont(?wxSYS_DEFAULT_GUI_FONT) ),\n\t\t";
+				wxString options = wxString::Format( "[{underlined,%s}, {face,%s}]",
+									(fontContainer.GetUnderlined() ? "true" : "false" ),
+									(fontContainer.m_faceName.empty() ? "\"\"" : ( "\"" + fontContainer.m_faceName + "\"" ) ));
+				wxString strGetPoint;
+				if ( pointSize <= 0 )
+				{
+					strGetPoint = "wxFont:getPointSize(wxSystemSettings:getFont(?wxSYS_DEFAULT_GUI_FONT) ),\n\t\t";
 				}
 				else
 				{
@@ -268,9 +268,9 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 		case PT_WXCOLOUR:
 		{
-            // wxColor in Erlang is defined wx module as a datatype:
-            // => wx_colour() = {R::byte(), G::byte(), B::byte()} | wx_colour4()
-            //    wx_colour4() = {R::byte(), G::byte(), B::byte(), A::byte()}
+			// wxColor in Erlang is defined wx module as a datatype:
+			// => wx_colour() = {R::byte(), G::byte(), B::byte()} | wx_colour4()
+			//    wx_colour4() = {R::byte(), G::byte(), B::byte(), A::byte()}
 			if ( !value.empty() )
 			{
 				if ( value.find_first_of( wxT( "wx" ) ) == 0 )
@@ -292,82 +292,82 @@ wxString ErlangTemplateParser::ValueToCode( PropertyType type, wxString value )
 		}
 	case PT_BITMAP:
 		{
-            wxString path;
-            wxString source;
-            wxSize icoSize;
-            TypeConv::ParseBitmapWithResource( value, &path, &source, &icoSize );
+			wxString path;
+			wxString source;
+			wxSize icoSize;
+			TypeConv::ParseBitmapWithResource( value, &path, &source, &icoSize );
 
-            if ( path.empty() )
-            {
-                // Empty path, generate an empty Bitmap - Erlang requires a non null parameter
-                result = wxT( "wxBitmap:new()" );
-                break;
-            }
+			if ( path.empty() )
+			{
+				// Empty path, generate an empty Bitmap - Erlang requires a non null parameter
+				result = wxT( "wxBitmap:new()" );
+				break;
+			}
 
-            if ( path.StartsWith( wxT( "file:" ) ) )
-            {
-                wxLogWarning( wxT( "Erlang code generation does not support using URLs for bitmap properties:\n%s" ), path.c_str() );
-                result = wxT( "wxBitmap:new()" );
-                break;
-            }
+			if ( path.StartsWith( wxT( "file:" ) ) )
+			{
+				wxLogWarning( wxT( "Erlang code generation does not support using URLs for bitmap properties:\n%s" ), path.c_str() );
+				result = wxT( "wxBitmap:new()" );
+				break;
+			}
 
-            if ( source == _( "Load From File" ) || source == _( "Load From Embedded File" ) )
-            {
-                wxString absPath;
-                try
-                {
-                    absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
-                }
-                catch( wxFBException& ex )
-                {
-                    wxLogError( ex.what() );
-                    result = wxT( "wxBitmap:new()" );
-                    break;
-                }
+			if ( source == _( "Load From File" ) || source == _( "Load From Embedded File" ) )
+			{
+				wxString absPath;
+				try
+				{
+					absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
+				}
+				catch( wxFBException& ex )
+				{
+					wxLogError( ex.what() );
+					result = wxT( "wxBitmap:new()" );
+					break;
+				}
 
-                wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
+				wxString file = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 
-                result << wxT( "wxBitmap:new(\"" ) << ErlangCodeGenerator::ConvertErlangString(file) << wxT( "\", [{type,?wxBITMAP_TYPE_ANY}])" );
-            }
-            else if ( source == _( "Load From Resource" ) )
-            {
-                result << wxT( "wxBitmap:new(\"" ) << path << wxT( "\", [{type,?wxBITMAP_TYPE_RESOURCE}])" );
-            }
-            else if ( source == _( "Load From Icon Resource" ) )
-            {
-                if ( wxDefaultSize == icoSize )
-                {
-                    result << wxT( "wxIcon:new( " ) << path << wxT( " )" );
-                }
-                else
-                {
-                    result.Printf( wxT( "wxIcon:new(\"%s\", [{type,?wxBITMAP_TYPE_ICON_RESOURCE}, {desiredWidth,%i}, {desiredHeight,%i}])" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }
-            }
-            else if ( source == _( "Load From XRC" ) )
-            {
-                // This requires that the global wxXmlResource object is set
-                result << wxT( "wxXmlResource:loadBitmap(wxXmlResource:get(), \"" ) << path << wxT( "\" )" );
-            }
-            else if ( source == _( "Load From Art Provider" ) )
-            {
-                wxString rid = path.BeforeFirst( wxT(':') );
-                if ( rid.StartsWith( wxT( "gtk-" ) ) )
-                {
-                    rid = wxT( "\"" ) + rid + wxT( "\"" );
-                }
+				result << wxT( "wxBitmap:new(\"" ) << ErlangCodeGenerator::ConvertErlangString(file) << wxT( "\", [{type,?wxBITMAP_TYPE_ANY}])" );
+			}
+			else if ( source == _( "Load From Resource" ) )
+			{
+				result << wxT( "wxBitmap:new(\"" ) << path << wxT( "\", [{type,?wxBITMAP_TYPE_RESOURCE}])" );
+			}
+			else if ( source == _( "Load From Icon Resource" ) )
+			{
+				if ( wxDefaultSize == icoSize )
+				{
+					result << wxT( "wxIcon:new( " ) << path << wxT( " )" );
+				}
+				else
+				{
+					result.Printf( wxT( "wxIcon:new(\"%s\", [{type,?wxBITMAP_TYPE_ICON_RESOURCE}, {desiredWidth,%i}, {desiredHeight,%i}])" ), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}
+			}
+			else if ( source == _( "Load From XRC" ) )
+			{
+				// This requires that the global wxXmlResource object is set
+				result << wxT( "wxXmlResource:loadBitmap(wxXmlResource:get(), \"" ) << path << wxT( "\" )" );
+			}
+			else if ( source == _( "Load From Art Provider" ) )
+			{
+				wxString rid = path.BeforeFirst( wxT(':') );
+				if ( rid.StartsWith( wxT( "gtk-" ) ) )
+				{
+					rid = wxT( "\"" ) + rid + wxT( "\"" );
+				}
 
-                wxString cid = path.AfterFirst( wxT(':') );
+				wxString cid = path.AfterFirst( wxT(':') );
 
-                if ( wxDefaultSize == icoSize )
-                {
-                    result.Printf( wxT( "wxArtProvider:getIcon(\"%s\", [{client,\"%s\"}, {size,{%i,%i}}])" ), rid.c_str(), cid.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }
-                else
-                {
-                    result.Printf( wxT( "wxArtProvider:getBitmap(\"%s\", [{client,\"%s\"}, {size,{%i,%i}}])" ), rid.c_str(), cid.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
-                }
-            }
+				if ( wxDefaultSize == icoSize )
+				{
+					result.Printf( wxT( "wxArtProvider:getIcon(\"%s\", [{client,\"%s\"}, {size,{%i,%i}}])" ), rid.c_str(), cid.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}
+				else
+				{
+					result.Printf( wxT( "wxArtProvider:getBitmap(\"%s\", [{client,\"%s\"}, {size,{%i,%i}}])" ), rid.c_str(), cid.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+				}
+			}
 			break;
 		}
 	case PT_STRINGLIST:
@@ -402,10 +402,10 @@ ErlangCodeGenerator::ErlangCodeGenerator()
 	m_firstID = 1000;  // this value can be overwritten in erlangpanel.cpp (calling SetFirstID() )
 
 	//this classes aren't wrapped by wx in Erlang - make exception
-    // Common tab {file: common.erlangcode}
+	// Common tab {file: common.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxAnimationCtrl" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxBitmapComboBox" ) );
-    // Aditional tab {file: aditional.erlangcode}
+	// Aditional tab {file: aditional.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxRichTextCtrl" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxBitmapToggleButton" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxSearchCtrl" ) );
@@ -415,7 +415,7 @@ ErlangCodeGenerator::ErlangCodeGenerator()
 	m_strUnsupportedClasses.push_back( wxT( "wxTimer" ) );
 	m_strUnsupportedClasses.push_back( wxT( "CustomControl" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxMediaCtrl" ) );
-    // Data tab {file: data.erlangcode}
+	// Data tab {file: data.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxDataViewCtrl" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxDataViewTreeCtrl" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxDataViewListCtrl" ) );
@@ -428,18 +428,18 @@ ErlangCodeGenerator::ErlangCodeGenerator()
 	m_strUnsupportedClasses.push_back( wxT( "wxPropertyGridManager" ) );
 	m_strUnsupportedClasses.push_back( wxT( "propGridItem" ) );
 	m_strUnsupportedClasses.push_back( wxT( "propGridPage" ) );
-    // Containers tab {file: containers.erlangcode}
+	// Containers tab {file: containers.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxCollapsiblePane" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxSimplebook" ) );
-    // Menu/Toolbar tab {file: menutoolbar.erlangcode}
+	// Menu/Toolbar tab {file: menutoolbar.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxInfoBar" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxAuiToolBar" ) );
-    // Layout tab {file: layout.erlangcode}
+	// Layout tab {file: layout.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxWrapSizer" ) );
-    // Forms tab {file: forms.erlangcode}
+	// Forms tab {file: forms.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxWizard" ) );
 	m_strUnsupportedClasses.push_back( wxT( "wxWizardPageSimple" ) );
-    // Ribbon tab {file: ribbon.erlangcode}
+	// Ribbon tab {file: ribbon.erlangcode}
 	m_strUnsupportedClasses.push_back( wxT( "wxRibbonBar" ) );
 
 }
@@ -527,8 +527,8 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	if (i18nProperty && i18nProperty->GetValueAsInteger() )
 		m_i18n = true;
 
-    // The disconection property was no added to the 'default.xml' for 'Erlang Properties'
-    // We may need to evaluate further the need for the disconnection code generation
+	// The disconection property was no added to the 'default.xml' for 'Erlang Properties'
+	// We may need to evaluate further the need for the disconnection code generation
 	m_disconnectEvents = ( project->GetPropertyAsInteger( wxT( "disconnect_erlang_events" ) ) != 0 );
 
 	m_source->Clear();
@@ -546,7 +546,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		wxLogError( wxT( "Missing \"lower_identifier\" property on Project Object" ) );
 		return false;
 	}
-    m_lowerIdentifier = lowerIdentifier->GetValueAsInteger();
+	m_lowerIdentifier = lowerIdentifier->GetValueAsInteger();
 
 	PProperty createPrefix = project->GetProperty( wxT( "create_prefix" ) );
 	if ( !createPrefix )
@@ -563,11 +563,11 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	wxString code = wxString::Format(
-	                wxT( "%%%% --------------------------------------------------------------------------\n" )
-                    wxT( "%%%%  Erlang code generated with wxFormBuilder (version %s%s " ) wxT(__DATE__) wxT( " )\n" )
-                    wxT( "%%%%  http://www.wxformbuilder.org/\n" )
-                    wxT( "%%%%  This file is changed by wxFormBuilder on saving. PLEASE DO *NOT* EDIT IT!\n" )
-                    wxT( "%%%% --------------------------------------------------------------------------\n" ),
+		wxT( "%%%% --------------------------------------------------------------------------\n" )
+		wxT( "%%%%  Erlang code generated with wxFormBuilder (version %s%s " ) wxT(__DATE__) wxT( " )\n" )
+		wxT( "%%%%  http://www.wxformbuilder.org/\n" )
+		wxT( "%%%%  This file is changed by wxFormBuilder on saving. PLEASE DO *NOT* EDIT IT!\n" )
+		wxT( "%%%% --------------------------------------------------------------------------\n" ),
 		VERSION, REVISION
 	);
 
@@ -606,8 +606,8 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 	// Write the module header
 	wxString tempName = wxString::Format( wxT( "-module(%s)." ), file );
-    m_source->WriteLn( tempName );
-    m_source->WriteLn();
+	m_source->WriteLn( tempName );
+	m_source->WriteLn();
 
 	// Generating  includes
 	std::vector< wxString > headerIncludes;
@@ -629,18 +629,18 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	PProperty genExport = project->GetProperty( wxT( "kind_of_code" ) );
 	if ( genExport )
 	{
-	    m_fullExport = genExport->GetValueAsString() == wxT( "full_code_prototype" );
-        GenExport( project, code_info, Prefix, Parent );
+		m_fullExport = genExport->GetValueAsString() == wxT( "full_code_prototype" );
+		GenExport( project, code_info, Prefix, Parent );
 	}
 	else
 	{
 		m_fullExport = false;
 	}
 
-    // Cleaning up the local/temporary event table
-    ClearLocalEventTable( wxT("all") );
-    // Generate and write the creation functions for each form/window and
-    // stores the events for further definition
+	// Cleaning up the local/temporary event table
+	ClearLocalEventTable( wxT("all") );
+	// Generate and write the creation functions for each form/window and
+	// stores the events for further definition
 	unsigned int dProjChildCount = project->GetChildCount();
 	for ( unsigned int i = 0; i < dProjChildCount; i++ )
 	{
@@ -655,10 +655,10 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		GenClassDeclaration(child, false, wxEmptyString, events, m_strEventHandlerPostfix, arrays, Prefix, Parent);
 	}
 
-    // Writes the headers for the events handler
-    GenEventHeaders( project, code_info );
+	// Writes the headers for the events handler
+	GenEventHeaders( project, code_info );
 
-    // currently, there is not definition for this session in 'defaul.erlangcode' file
+	// currently, there is not definition for this session in 'defaul.erlangcode' file
 	code = GetCode( project, wxT( "erlang_epilogue" ) );
 	if ( !code.empty() )
 		m_source->WriteLn( code );
@@ -668,105 +668,105 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 void ErlangCodeGenerator::ClearLocalEventTable( const wxString &strEvtName )
 {
-    if ( strEvtName != wxT("all") )
-    {
-        // this is intended to allow us to remove only sync and async information
-        // from the event table and simplify the process to get the event's name to
-        // be used in the functions declarations
-        std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
+	if ( strEvtName != wxT("all") )
+	{
+		// this is intended to allow us to remove only sync and async information
+		// from the event table and simplify the process to get the event's name to
+		// be used in the functions declarations
+		std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
 
-        it = m_handledEvents.find( strEvtName );
-        if ( it != m_handledEvents.end() )  // not found
-        {
-            std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
+		it = m_handledEvents.find( strEvtName );
+		if ( it != m_handledEvents.end() )  // not found
+		{
+			std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
 
-            for ( std::map<wxString, std::map<wxString, wxString>>::iterator
-                    itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
-            {
-                std::map<wxString, wxString> controlInfoList = itC->second;
-                controlInfoList.clear();
-                eventClassList.erase(itC);
-            }
-            m_handledEvents.erase(it);
-        }
-    }
-    else
-    {
-        // here we are cleanup the entry event table
+			for ( std::map<wxString, std::map<wxString, wxString>>::iterator
+				itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
+			{
+				std::map<wxString, wxString> controlInfoList = itC->second;
+				controlInfoList.clear();
+				eventClassList.erase(itC);
+			}
+			m_handledEvents.erase(it);
+		}
+	}
+	else
+	{
+		// here we are cleanup the entry event table
 
-        // looking at event name list for the event type list
-        for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
-                it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
-        {
-            // looking at the event type list for the control info list
-            std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
-            m_source->WriteLn( wxString::Format("strEvtType-> %s (%i)\n", it->first, eventClassList.size() ) );
+		// looking at event name list for the event type list
+		for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
+			it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
+		{
+			// looking at the event type list for the control info list
+			std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
+			m_source->WriteLn( wxString::Format("strEvtType-> %s (%i)\n", it->first, eventClassList.size() ) );
 
-            for ( std::map<wxString, std::map<wxString, wxString>>::iterator
-                    itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
-            {
-                // looking at the control info list
-                std::map<wxString, wxString> controlInfoList = itC->second;
-                m_source->WriteLn( wxString::Format("strEvtClass-> %s (%i)\n", itC->first, controlInfoList.size() ) );
-                for ( std::map<wxString, wxString>::iterator
-                        itT=controlInfoList.begin(); itT!=controlInfoList.end(); ++itT )
-                {
-                    m_source->WriteLn( wxString::Format("strControl-> %s (%s)\n", itT->first, itT->second) );
-                }
-                controlInfoList.clear();
-            }
-            eventClassList.clear();
-        }
-        m_handledEvents.clear();
-    }
+			for ( std::map<wxString, std::map<wxString, wxString>>::iterator
+				itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
+			{
+				// looking at the control info list
+				std::map<wxString, wxString> controlInfoList = itC->second;
+				m_source->WriteLn( wxString::Format("strEvtClass-> %s (%i)\n", itC->first, controlInfoList.size() ) );
+				for ( std::map<wxString, wxString>::iterator
+					itT=controlInfoList.begin(); itT!=controlInfoList.end(); ++itT )
+				{
+					m_source->WriteLn( wxString::Format("strControl-> %s (%s)\n", itT->first, itT->second) );
+				}
+				controlInfoList.clear();
+			}
+			eventClassList.clear();
+		}
+		m_handledEvents.clear();
+	}
 }
 
 void ErlangCodeGenerator::AddLocalEvent( const wxString &strControl, const wxString &strEvtName, const wxString &strEvtClass, const wxString &strEvtType )
 {
-    std::map<wxString,wxString> controlInfoList;
-    std::map<wxString,std::map<wxString,wxString>> eventClassList;
-    std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
+	std::map<wxString,wxString> controlInfoList;
+	std::map<wxString,std::map<wxString,wxString>> eventClassList;
+	std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
 
-    // strEvtName values possible: sync|async|event name
+	// strEvtName values possible: sync|async|event name
 
-    // checking if the event name already was defined
-    it = m_handledEvents.find( strEvtName );
-    if ( it == m_handledEvents.end() )  // not found
-    {
-        controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
-        eventClassList.insert( std::make_pair( strEvtClass, controlInfoList ) );
-        m_handledEvents.insert( std::make_pair( strEvtName, eventClassList ) );
-    }
-    else
-    {
-        std::map<wxString,std::map<wxString,wxString>>::iterator itC;
+	// checking if the event name already was defined
+	it = m_handledEvents.find( strEvtName );
+	if ( it == m_handledEvents.end() )  // not found
+	{
+		controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
+		eventClassList.insert( std::make_pair( strEvtClass, controlInfoList ) );
+		m_handledEvents.insert( std::make_pair( strEvtName, eventClassList ) );
+	}
+	else
+	{
+		std::map<wxString,std::map<wxString,wxString>>::iterator itC;
 
-        eventClassList = it->second;
-        itC = eventClassList.find( strEvtClass );
-        if ( itC == eventClassList.end() )  // not found
-        {
-            controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
-            eventClassList.insert( std::make_pair( strEvtClass, controlInfoList ) );
-        }
-        else
-        {
-            std::map<wxString,wxString>::iterator itT;
+		eventClassList = it->second;
+		itC = eventClassList.find( strEvtClass );
+		if ( itC == eventClassList.end() )  // not found
+		{
+			controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
+			eventClassList.insert( std::make_pair( strEvtClass, controlInfoList ) );
+		}
+		else
+		{
+			std::map<wxString,wxString>::iterator itT;
 
-            controlInfoList = itC->second;
-            itT = controlInfoList.find( strEvtType );
-            if ( itT == controlInfoList.end() )  // not found
-            {
-                controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
-            }
-            else
-            {
-                wxString strPrevControls = itT->second;
-                itT->second = strPrevControls + ", " + strControl;
-            }
-            itC->second = controlInfoList;
-        }
-        it->second = eventClassList;
-    }
+			controlInfoList = itC->second;
+			itT = controlInfoList.find( strEvtType );
+			if ( itT == controlInfoList.end() )  // not found
+			{
+				controlInfoList.insert( std::make_pair( strEvtType, strControl ) );
+			}
+			else
+			{
+				wxString strPrevControls = itT->second;
+				itT->second = strPrevControls + ", " + strControl;
+			}
+			itC->second = controlInfoList;
+		}
+		it->second = eventClassList;
+	}
 }
 
 void ErlangCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &events, bool disconnect )
@@ -776,7 +776,7 @@ void ErlangCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &e
 		return;
 	}
 
-    m_source->WriteLn();
+	m_source->WriteLn();
 	if ( disconnect )
 	{
 		m_source->WriteLn( wxT( "%% Disconnect Events" ) );
@@ -828,9 +828,9 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 	PCodeInfo code_info = obj_info->GetCodeInfo( wxT( "Erlang" ) );
 	if ( code_info )
 	{
-	    // The disconnect evaluation code was kept, but a property for this was not set
-	    // in default.xml (in "Erlang Properties" category) as well as it was also not
-	    // implemented the variable initialization in this source file
+		// The disconnect evaluation code was kept, but a property for this was not set
+		// in default.xml (in "Erlang Properties" category) as well as it was also not
+		// implemented the variable initialization in this source file
 		_template = code_info->GetTemplate(wxString::Format( wxT( "evt_%s%s" ), disconnect ? wxT( "dis" ) : wxEmptyString, templateName.c_str() ));
 		if ( disconnect && _template.empty() )
 		{
@@ -840,81 +840,81 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 
 		if ( !_template.empty() )
 		{
-            int pos;
-            wxString option;
-	        wxString strHandlerName = event->GetValue();
-	        // wxFormBuilder is allowing to enter multiple words as name for a control or event
-            strHandlerName.Replace( wxT(" "), wxT("_"), true );
+			int pos;
+			wxString option;
+			wxString strHandlerName = event->GetValue();
+			// wxFormBuilder is allowing to enter multiple words as name for a control or event
+			strHandlerName.Replace( wxT(" "), wxT("_"), true );
 
 			if ( disconnect )
 			{
-                strHandlerName = MakeErlangIdentifier( strHandlerName );
-                int pos = _template.Find( wxT( "*option" ) );
-                if ( pos != -1 ) {
-                    _template.Replace( wxT( "*option" ), wxT( "[]" ) );
-                }
+				strHandlerName = MakeErlangIdentifier( strHandlerName );
+				int pos = _template.Find( wxT( "*option" ) );
+				if ( pos != -1 ) {
+					_template.Replace( wxT( "*option" ), wxT( "[]" ) );
+				}
 			}
 			else
 			{
-			    // Callbacks are sync events, so we use 'async' to indicate we want to
-			    // handle the event that way.
-			    // We can use 'callback' to indicate the event will be handled by a sync event handler
-			    // or give the event a 'name id' which will create the specific function to handle it
-			    // and be included as the callback parameter in options.
-                if ( strHandlerName.Lower() == wxT( "async" ) )
-                {
-                    option = wxEmptyString;
-                    strHandlerName = wxT( "async" );
-                }
-                else if ( strHandlerName.Lower() == wxT( "skip" ) )
-                {
-                    option = wxT( ", [{skip, true}]" );
-                    // after used, we sign it as async event
-                    strHandlerName = wxT( "async" );
-                }
-                else if ( strHandlerName.Lower() == wxT( "callback" ) )
-                {
-                    option = wxString::Format( ", [%s]", strHandlerName.Lower() );
-                    strHandlerName = wxT( "sync" );
-                }
-                else
-                {
-                    strHandlerName = MakeErlangIdentifier( strHandlerName );
-                    option = wxString::Format( ", [{callback, fun %s/2}]", strHandlerName );
-                }
-                // trying two variations of format possible entered in the *.erlangcode files
-                pos = _template.Find( wxT( ",*option" ) );
-                if ( pos != -1 ) {
-				    _template.Replace( wxT( ",*option" ), option );
-                }
-                else
-                {
-                    pos = _template.Find( wxT( ", *option" ) );
-                    if ( pos != -1 ) {
-                        _template.Replace( wxT( ", *option" ), option );
-                    }
-                }
+				// Callbacks are sync events, so we use 'async' to indicate we want to
+				// handle the event that way.
+				// We can use 'callback' to indicate the event will be handled by a sync event handler
+				// or give the event a 'name id' which will create the specific function to handle it
+				// and be included as the callback parameter in options.
+				if ( strHandlerName.Lower() == wxT( "async" ) )
+				{
+					option = wxEmptyString;
+					strHandlerName = wxT( "async" );
+				}
+				else if ( strHandlerName.Lower() == wxT( "skip" ) )
+				{
+					option = wxT( ", [{skip, true}]" );
+					// after used, we sign it as async event
+					strHandlerName = wxT( "async" );
+				}
+				else if ( strHandlerName.Lower() == wxT( "callback" ) )
+				{
+					option = wxString::Format( ", [%s]", strHandlerName.Lower() );
+					strHandlerName = wxT( "sync" );
+				}
+				else
+				{
+					strHandlerName = MakeErlangIdentifier( strHandlerName );
+					option = wxString::Format( ", [{callback, fun %s/2}]", strHandlerName );
+				}
+				// trying two variations of format possible entered in the *.erlangcode files
+				pos = _template.Find( wxT( ",*option" ) );
+				if ( pos != -1 ) {
+					_template.Replace( wxT( ",*option" ), option );
+				}
+				else
+				{
+					pos = _template.Find( wxT( ", *option" ) );
+					if ( pos != -1 ) {
+						_template.Replace( wxT( ", *option" ), option );
+					}
+				}
 			}
 
-            // saving the template data for further use
-            wxString eventId = _template;
-            // creating the line of code from the template
+			// saving the template data for further use
+			wxString eventId = _template;
+			// creating the line of code from the template
 			ErlangTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 			wxString code = parser.ParseTemplate();
 
-            // After parse the template, we check if the object class has a 'base' template
-            // if so, it meams the object is from the 'Form' toolbar and wxFormBuilder will
-            // use a class without the 'wx' prefix. The 'base' information has the correct
-            // class to be used (p.e. Panel => wxPanel).
-            // See https://github.com/wxFormBuilder/wxFormBuilder/issues/638#issuecomment-690295084
-	        wxString baseClass = GetCode( obj, wxT("base") );
-	        if ( baseClass != wxEmptyString )
-	        {
-                code = ( baseClass + wxT(":") + code.AfterFirst( wxT(':') ) );
-	        }
+			// After parse the template, we check if the object class has a 'base' template
+			// if so, it meams the object is from the 'Form' toolbar and wxFormBuilder will
+			// use a class without the 'wx' prefix. The 'base' information has the correct
+			// class to be used (p.e. Panel => wxPanel).
+			// See https://github.com/wxFormBuilder/wxFormBuilder/issues/638#issuecomment-690295084
+			wxString baseClass = GetCode( obj, wxT("base") );
+			if ( baseClass != wxEmptyString )
+			{
+				code = ( baseClass + wxT(":") + code.AfterFirst( wxT(':') ) );
+			}
 
-            // This will fix the main form owner name. It will happens when
-            // the var got 'this()' as result of a call to RootWxParentToCode()
+			// This will fix the main form owner name. It will happens when
+			// the var got 'this()' as result of a call to RootWxParentToCode()
 			if ( code.Find( m_rootWxParent ) != -1 )
 			{
 				code.Replace( m_rootWxParent, strClassName );
@@ -923,32 +923,32 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 			// when a conditional if clausule is used in events template code can be null
 			if ( !code.IsEmpty() )
 			{
-                m_source->WriteLn( code );
+				m_source->WriteLn( code );
 
-                // Collecting data to build the event handlers table
+				// Collecting data to build the event handlers table
 
-                // event handlers are defined (usually) in the format:
-                //   #class:connect($name, event_id, *option), #nl
-                //   #class:connect($name, event_id), #nl
-                // or eventually:
-                //   #class:disconnect($name, event_id), #nl
-                eventId.Replace( wxT(" "), wxEmptyString, true );
-                eventId = eventId.AfterFirst( wxT(',') );
-                eventId = eventId.BeforeFirst( wxT(')') );
-                pos = eventId.Find( wxT(',') );
-                if ( pos != -1 ) {
-                    eventId = eventId.BeforeFirst( wxT(',') );
-                }
+				// event handlers are defined (usually) in the format:
+				//   #class:connect($name, event_id, *option), #nl
+				//   #class:connect($name, event_id), #nl
+				// or eventually:
+				//   #class:disconnect($name, event_id), #nl
+				eventId.Replace( wxT(" "), wxEmptyString, true );
+				eventId = eventId.AfterFirst( wxT(',') );
+				eventId = eventId.BeforeFirst( wxT(')') );
+				pos = eventId.Find( wxT(',') );
+				if ( pos != -1 ) {
+					eventId = eventId.BeforeFirst( wxT(',') );
+				}
 
-                wxString strControlName = obj->GetProperty( wxT( "name" ) )->GetValue();
-                strControlName[0] = wxToupper( strControlName[0] );  // variables must start with uppercase char
+				wxString strControlName = obj->GetProperty( wxT( "name" ) )->GetValue();
+				strControlName[0] = wxToupper( strControlName[0] );  // variables must start with uppercase char
 
-                // Filling the event handlers table
-                AddLocalEvent( strControlName,  // control who owns the event
-                               strHandlerName,  // event name|callback|async|skip
-                               event->GetEventInfo()->GetEventClassName(),  // event class
-                               eventId.Lower()  // event type
-                             );
+				// Filling the event handlers table
+				AddLocalEvent( strControlName,  // control who owns the event
+						strHandlerName,  // event name|callback|async|skip
+						event->GetEventInfo()->GetEventClassName(),  // event class
+						eventId.Lower()  // event type
+						);
 			}
 
 			return true;
@@ -969,121 +969,121 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 
 void ErlangCodeGenerator::GenFormatedEventHeaders( PObjectBase project, const wxString _template )
 {
-    wxString code;
-    ErlangTemplateParser parser( project, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
-    code = parser.ParseTemplate();
+	wxString code;
+	ErlangTemplateParser parser( project, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+	code = parser.ParseTemplate();
 
-    // we put back the '#' used by Erlang in the event's class name
-    code.Replace( wxT( "*" ), wxT( "#") );
-    m_source->WriteLn( code );
+	// we put back the '#' used by Erlang in the event's class name
+	code.Replace( wxT( "*" ), wxT( "#") );
+	m_source->WriteLn( code );
 }
 
 void ErlangCodeGenerator::GenFormatedEventHeaders( PObjectBase project, const wxString _template,
-                                                   const std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator &it)
+							const std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator &it)
 {
-    wxString code;
-    wxString strEvtParam;
-    wxString StrEvtClass;
-    wxString strEvtType;
-    wxString strControls;
-    wxString strEvtName = it->first;
-    std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
+	wxString code;
+	wxString strEvtParam;
+	wxString StrEvtClass;
+	wxString strEvtType;
+	wxString strControls;
+	wxString strEvtName = it->first;
+	std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
 
-    for ( std::map<wxString, std::map<wxString, wxString>>::iterator
-            itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
-    {
-        StrEvtClass = itC->first;
-        std::map<wxString, wxString> controlInfo = itC->second;
+	for ( std::map<wxString, std::map<wxString, wxString>>::iterator
+		itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
+	{
+		StrEvtClass = itC->first;
+		std::map<wxString, wxString> controlInfo = itC->second;
 
-        for ( std::map<wxString, wxString>::iterator
-                itT=controlInfo.begin(); itT!=controlInfo.end(); ++itT )
-        {
-            strEvtType = itT->first;
-            strControls = itT->second;
-            code = _template.Clone();
+		for ( std::map<wxString, wxString>::iterator
+			itT=controlInfo.begin(); itT!=controlInfo.end(); ++itT )
+		{
+			strEvtType = itT->first;
+			strControls = itT->second;
+			code = _template.Clone();
 
-            // building the event class and type
-            StrEvtClass.Replace( wxT( "Event" ), wxEmptyString );
-            strEvtParam = wxString::Format( wxT( "*wx{event = *%s{type = %s}}" ),
-                                            StrEvtClass, strEvtType );
+			// building the event class and type
+			StrEvtClass.Replace( wxT( "Event" ), wxEmptyString );
+			strEvtParam = wxString::Format( wxT( "*wx{event = *%s{type = %s}}" ),
+											StrEvtClass, strEvtType );
 
-            // we try to replace defined macros '*controls', '*fun' and '*event' when available
-            // the event - case it was defined on template
-            code.Replace( wxT( "*controls" ), strControls );
-            code.Replace( wxT( "*fun" ), strEvtName, true );  // only exists for non 'sync' and 'async' templates
-            code.Replace( wxT( "*event" ), strEvtParam );
+			// we try to replace defined macros '*controls', '*fun' and '*event' when available
+			// the event - case it was defined on template
+			code.Replace( wxT( "*controls" ), strControls );
+			code.Replace( wxT( "*fun" ), strEvtName, true );  // only exists for non 'sync' and 'async' templates
+			code.Replace( wxT( "*event" ), strEvtParam );
 
-            // if an event for a class is not supported the EvtType will be empty
-            // and then we remove its declaration block
-            if ( !strEvtType.IsEmpty() ) {
-                GenFormatedEventHeaders( project, code);
-            }
-        }
-    }
+			// if an event for a class is not supported the EvtType will be empty
+			// and then we remove its declaration block
+			if ( !strEvtType.IsEmpty() ) {
+				GenFormatedEventHeaders( project, code);
+			}
+		}
+	}
 }
 
 void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_info )
 {
-    wxString code;
-    wxString _template;
-    std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
+	wxString code;
+	wxString _template;
+	std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
 
-    // strEvtName values: sync|async|event name
-    if ( m_fullExport )
-    {
-        m_source->WriteLn( wxEmptyString );
-        m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-                                "%% Sync event from callback events" ) );
+	// strEvtName values: sync|async|event name
+	if ( m_fullExport )
+	{
+		m_source->WriteLn( wxEmptyString );
+		m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+					"%% Sync event from callback events" ) );
 
-        _template = code_info->GetTemplate( wxT( "events_sync" ) );
-        for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
-                it=m_handledEvents.find( wxT("sync") ); (it!=m_handledEvents.end() &&
-                                                         (it->first == wxT("sync") )); ++it )
-        {
-            GenFormatedEventHeaders( project, _template, it );
-        }
-        _template = code_info->GetTemplate( wxT( "events_sync_end" ) );
-        GenFormatedEventHeaders( project, _template );
-        ClearLocalEventTable( wxT("sync") );
+		_template = code_info->GetTemplate( wxT( "events_sync" ) );
+		for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
+			it=m_handledEvents.find( wxT("sync") ); (it!=m_handledEvents.end() &&
+									(it->first == wxT("sync") )); ++it )
+		{
+			GenFormatedEventHeaders( project, _template, it );
+		}
+		_template = code_info->GetTemplate( wxT( "events_sync_end" ) );
+		GenFormatedEventHeaders( project, _template );
+		ClearLocalEventTable( wxT("sync") );
 
-        m_source->WriteLn( wxEmptyString );
-        m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-                                "%% Async Events are handled in handle_event as in handle_info" ) );
+		m_source->WriteLn( wxEmptyString );
+		m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+					"%% Async Events are handled in handle_event as in handle_info" ) );
 
-        _template = code_info->GetTemplate( wxT( "events_async" ) );
-        for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
-                it=m_handledEvents.find( wxT("async") ); (it!=m_handledEvents.end() &&
-                                                         (it->first == wxT("async") )); ++it )
-        {
-            GenFormatedEventHeaders( project, _template, it );
-        }
-        _template = code_info->GetTemplate( wxT( "events_async_end" ) );
-        GenFormatedEventHeaders( project, _template );
-        ClearLocalEventTable( wxT("async") );
+		_template = code_info->GetTemplate( wxT( "events_async" ) );
+		for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
+			it=m_handledEvents.find( wxT("async") ); (it!=m_handledEvents.end() &&
+									(it->first == wxT("async") )); ++it )
+		{
+			GenFormatedEventHeaders( project, _template, it );
+		}
+		_template = code_info->GetTemplate( wxT( "events_async_end" ) );
+		GenFormatedEventHeaders( project, _template );
+		ClearLocalEventTable( wxT("async") );
 
-        _template = code_info->GetTemplate( wxT( "full_export_events_end" ) );
-        GenFormatedEventHeaders( project, _template );
-    }
-    else
-    {
-        ClearLocalEventTable( wxT("sync") );
-        ClearLocalEventTable( wxT("async") );
-    }
+		_template = code_info->GetTemplate( wxT( "full_export_events_end" ) );
+		GenFormatedEventHeaders( project, _template );
+	}
+	else
+	{
+		ClearLocalEventTable( wxT("sync") );
+		ClearLocalEventTable( wxT("async") );
+	}
 
-    it = m_handledEvents.begin();
-    if ( it!=m_handledEvents.end() )
-    {
-        m_source->WriteLn( wxEmptyString );
-        m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
-                                "%% Functions from callback events" ) );
+	it = m_handledEvents.begin();
+	if ( it!=m_handledEvents.end() )
+	{
+		m_source->WriteLn( wxEmptyString );
+		m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
+					"%% Functions from callback events" ) );
 
-        _template = code_info->GetTemplate( wxT( "events_fun" ) );
-        for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
-                it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
-        {
-            GenFormatedEventHeaders( project, _template, it );
-        }
-    }
+		_template = code_info->GetTemplate( wxT( "events_fun" ) );
+		for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
+			it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
+		{
+			GenFormatedEventHeaders( project, _template, it );
+		}
+	}
 }
 
 void ErlangCodeGenerator::GetGenEventHandlers( PObjectBase obj )
@@ -1158,52 +1158,52 @@ wxString ErlangCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 	// param will be inserting a invalid comma to the list which needs to be removed (it's always ", " )
 	// Also, because to use '$var_name}' was causing problems with the parser it was necessart to add
 	// a space between then '$var_name }' which will be removed here too.
-    int pos = code.Find( wxT( "  " ) );
-	if ( pos != -1 ){
-        code.Replace( wxT( "  " ), wxT( " " ) );
-    }
-	pos = code.Find( wxT( " }" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( " }" ), wxT( "}" ) );
-		}
-    // handling malformed strings after the template be processed
-    pos = code.Find( wxT( ", ]" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( ", ]" ), wxT( "]" ) );
-    }
-    // handling malformed strings after the template be processed (for events)
-    pos = code.Find( wxT( "|[]" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( "|[]" ), wxT( "" ) );
-    }
-    // after the previous filter, it can left a list concatenation - we replace it
-    pos = code.Find( wxT( "]|[" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( "]|[" ), wxT( "," ) );
-    }
-    // concatenated flags in template get the space char in its front removed
-    pos = code.Find( wxT( " | " ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( " | " ), wxT( " bor " ) );
-    }  else {
-        pos = code.Find( wxT( "| " ) );
-        if ( pos != -1 ) {
-            code.Replace( wxT( "| " ), wxT( " bor " ) );
-        }
-    }
-	pos = code.Find( wxT( ",}" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( ",}" ), wxT( "" ) );
+	int pos = code.Find( wxT( "  " ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( "  " ), wxT( " " ) );
 	}
-    pos = code.Find( wxT( ",]" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( ",]" ), wxT( "]" ) );
-    }
-    // this() will always reference the main form/frame for which the controls are attached
-    pos = code.Find( wxT( "this()" ) );
-    if ( pos != -1 ) {
-        code.Replace( wxT( "this()" ), m_rootWxParent );
-    }
+	pos = code.Find( wxT( " }" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( " }" ), wxT( "}" ) );
+	}
+	// handling malformed strings after the template be processed
+	pos = code.Find( wxT( ", ]" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( ", ]" ), wxT( "]" ) );
+	}
+	// handling malformed strings after the template be processed (for events)
+	pos = code.Find( wxT( "|[]" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( "|[]" ), wxT( "" ) );
+	}
+	// after the previous filter, it can left a list concatenation - we replace it
+	pos = code.Find( wxT( "]|[" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( "]|[" ), wxT( "," ) );
+	}
+	// concatenated flags in template get the space char in its front removed
+	pos = code.Find( wxT( " | " ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( " | " ), wxT( " bor " ) );
+	}  else {
+		pos = code.Find( wxT( "| " ) );
+		if ( pos != -1 ) {
+			code.Replace( wxT( "| " ), wxT( " bor " ) );
+		}
+	}
+	pos = code.Find( wxT( ",}" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( ",}" ), wxT( "" ) );
+	}
+	pos = code.Find( wxT( ",]" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( ",]" ), wxT( "]" ) );
+	}
+	// this() will always reference the main form/frame for which the controls are attached
+	pos = code.Find( wxT( "this()" ) );
+	if ( pos != -1 ) {
+		code.Replace( wxT( "this()" ), m_rootWxParent );
+	}
 	return code;
 }
 
@@ -1217,7 +1217,7 @@ wxString ErlangCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxSt
 		return GetCode(obj, wxT( "construction" ), silent, strSelf);
 	}
 
-    strSelf[0] = wxToupper( strSelf[0] );
+	strSelf[0] = wxToupper( strSelf[0] );
 	// Object has a name, check if its an array
 	const auto& name = propName->GetValue();
 	wxString baseName;
@@ -1249,11 +1249,11 @@ wxString ErlangCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxSt
 }
 
 void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enum*/,
-                                           const wxString& /*classDecoration*/,
-                                           const EventVector& events,
-                                           const wxString& /*eventHandlerPostfix*/,
-                                           ArrayItems& arrays,
-                                           const wxString& createPrefix, bool createParent )
+						const wxString& /*classDecoration*/,
+						const EventVector& events,
+						const wxString& /*eventHandlerPostfix*/,
+						ArrayItems& arrays,
+						const wxString& createPrefix, bool createParent )
 {
 	wxString strClassName = class_obj->GetClassName();
 	PProperty propName = class_obj->GetProperty( wxT( "name" ) );
@@ -1270,94 +1270,94 @@ void ErlangCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_
 		wxLogError( wxT( "Object name can not be null" ) );
 		return;
 	}
-    // we are not processing this template for Erlang ('generated_event_handlers')
-    //	GetGenEventHandlers( class_obj );
-    strName[0] = wxToupper( strName[0] );
+	// we are not processing this template for Erlang ('generated_event_handlers')
+	//	GetGenEventHandlers( class_obj );
+	strName[0] = wxToupper( strName[0] );
 	GenConstructor(class_obj, events, strName, arrays, createPrefix, createParent);
 
 }
 
 void ErlangCodeGenerator::GenExport( PObjectBase project, PCodeInfo code_info,
-                                    const wxString& createPrefixg, bool createParent )
+					const wxString& createPrefixg, bool createParent )
 {
-    if ( m_fullExport )
-    {
-        // Write the predefined functions on export session
-        wxString code = code_info->GetTemplate( wxT( "full_export_header" ) );
-        if ( !code.empty() )
-        {
-            ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
-            code = parser.ParseTemplate();
+	if ( m_fullExport )
+	{
+		// Write the predefined functions on export session
+		wxString code = code_info->GetTemplate( wxT( "full_export_header" ) );
+		if ( !code.empty() )
+		{
+			ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+			code = parser.ParseTemplate();
 
-            m_source->WriteLn( code );
-            m_source->WriteLn( wxEmptyString );
-        }
+			m_source->WriteLn( code );
+			m_source->WriteLn( wxEmptyString );
+		}
 
-        // Generating "defines" for macros
-        GenDefines( project );
+		// Generating "defines" for macros
+		GenDefines( project );
 
-        code = code_info->GetTemplate( wxT( "full_export_start" ) );
-        if ( !code.empty() )
-        {
-            // Here we are going to try replace 'create_win_fun' tag in the 'init/1' defined
-            // in the template in order to call the function which creates and starts the main window
-            if ( project->GetChildCount() > 0 )
-            {
-                PProperty name = project->GetChild(0)->GetProperty( wxT( "name" ) );
-                wxString winName = ClassToCreateFun( name->GetValueAsString(), createPrefixg );
-                name = project->GetChild(0)->GetProperty( wxT( "aui_managed" ) );
-                if ( createParent || name->GetValueAsInteger() )
-                    winName.append( wxT("(Options)") );
-                else
-                    winName.append( wxT("()") );
+		code = code_info->GetTemplate( wxT( "full_export_start" ) );
+		if ( !code.empty() )
+		{
+			// Here we are going to try replace 'create_win_fun' tag in the 'init/1' defined
+			// in the template in order to call the function which creates and starts the main window
+			if ( project->GetChildCount() > 0 )
+			{
+				PProperty name = project->GetChild(0)->GetProperty( wxT( "name" ) );
+				wxString winName = ClassToCreateFun( name->GetValueAsString(), createPrefixg );
+				name = project->GetChild(0)->GetProperty( wxT( "aui_managed" ) );
+				if ( createParent || name->GetValueAsInteger() )
+					winName.append( wxT("(Options)") );
+				else
+					winName.append( wxT("()") );
 
-                winName = wxT( "wx:batch(fun() -> #indent #indent #indent #nl " ) +
-                               winName + wxT( " #unindent #nl "
-                               "end). #unindent #unindent #nl " );
-                code.Replace( wxT( "*create_win_fun" ), winName );
-            }
+				winName = wxT( "wx:batch(fun() -> #indent #indent #indent #nl " ) +
+						winName + wxT( " #unindent #nl "
+						"end). #unindent #unindent #nl " );
+				code.Replace( wxT( "*create_win_fun" ), winName );
+			}
 
-            ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
-            code = parser.ParseTemplate();
+			ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+			code = parser.ParseTemplate();
 
-            m_source->WriteLn( code );
-            m_source->WriteLn( wxEmptyString );
-        }
-    }
-    else
-    {
-        // Write the forward declaration lines
-        PProperty name;
-        wxString names, headerVal = wxEmptyString;
-        int numParam;
-        std::set< wxString > exports;
-        // Generate a list of the create functions for the export session
-        for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
-        {
-            PObjectBase child = project->GetChild( i );
-            if ( child )
-            {
-                name = child->GetProperty( wxT( "name" ) );
-                headerVal = name->GetValueAsString();
-                name = child->GetProperty( wxT( "aui_managed" ) );
-                numParam = 0;
-                if ( createParent || name->GetValueAsInteger() ) ++numParam;
-                if ( !headerVal.empty() )
-                {
-                    names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( headerVal, createPrefixg ), numParam ) );
-                }
-            }
-        }
-        if ( !names.empty() )
-        {
-            names = names.Left( names.Len() -2 ),
-            m_source->WriteLn( wxString::Format( wxT( "-export([%s])." ), names ) );
-            m_source->WriteLn( wxEmptyString );
-        }
+			m_source->WriteLn( code );
+			m_source->WriteLn( wxEmptyString );
+		}
+	}
+	else
+	{
+		// Write the forward declaration lines
+		PProperty name;
+		wxString names, headerVal = wxEmptyString;
+		int numParam;
+		std::set< wxString > exports;
+		// Generate a list of the create functions for the export session
+		for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
+		{
+			PObjectBase child = project->GetChild( i );
+			if ( child )
+			{
+				name = child->GetProperty( wxT( "name" ) );
+				headerVal = name->GetValueAsString();
+				name = child->GetProperty( wxT( "aui_managed" ) );
+				numParam = 0;
+				if ( createParent || name->GetValueAsInteger() ) ++numParam;
+				if ( !headerVal.empty() )
+				{
+					names.append( wxString::Format( wxT( "%s/%u, " ), ClassToCreateFun( headerVal, createPrefixg ), numParam ) );
+				}
+			}
+		}
+		if ( !names.empty() )
+		{
+			names = names.Left( names.Len() -2 ),
+			m_source->WriteLn( wxString::Format( wxT( "-export([%s])." ), names ) );
+			m_source->WriteLn( wxEmptyString );
+		}
 
-        // Generating "defines" for macros
-        GenDefines( project );
-    }
+		// Generating "defines" for macros
+		GenDefines( project );
+	}
 }
 
 wxString ErlangCodeGenerator::ClassToCreateFun( wxString objname, wxString createPrefix )
@@ -1434,7 +1434,7 @@ void ErlangCodeGenerator::AddUniqueIncludes( const wxString& include, std::vecto
 
 void ErlangCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set )
 {
-    m_source->WriteLn( wxT( "%% FindDependencies" ) );
+	m_source->WriteLn( wxT( "%% FindDependencies" ) );
 	unsigned int ch_count = obj->GetChildCount();
 	if (ch_count > 0)
 	{
@@ -1449,9 +1449,9 @@ void ErlangCodeGenerator::FindDependencies( PObjectBase obj, std::set< PObjectIn
 }
 
 void ErlangCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector& events, wxString& strClassName,
-                                         ArrayItems& arrays, const wxString& createPrefix, bool createParent )
+					ArrayItems& arrays, const wxString& createPrefix, bool createParent )
 {
-    PObjectBase base_obj = class_obj;
+	PObjectBase base_obj = class_obj;
 
 	PProperty propName = class_obj->GetProperty( wxT( "name" ) );
 	if ( !propName )
@@ -1463,53 +1463,53 @@ void ErlangCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 
 	wxString strName = propName->GetValue();
 	strName[0] = wxToupper( strName[0] );  // variables must start with uppercase char
-    m_rootWxParent = strName;
+	m_rootWxParent = strName;
 
-    // The "after_addchild_erlang" template is used exclusively when 'aui_managed'
-    // is defined (see: forms.erlangcode).
-    // It will  close a 'try..catch..end' statement which we will insert the 'try' here.
+	// The "after_addchild_erlang" template is used exclusively when 'aui_managed'
+	// is defined (see: forms.erlangcode).
+	// It will  close a 'try..catch..end' statement which we will insert the 'try' here.
 	wxString afterAddChildErlang = GetCode( class_obj, wxT( "after_addchild_erlang" ) );
 	bool auiManaged = !afterAddChildErlang.IsEmpty();
-    wxString createObj = GetCode( class_obj, wxT( "cons_call" ) );
+	wxString createObj = GetCode( class_obj, wxT( "cons_call" ) );
 
 	// Creation the function header
-    // By using AUI management, it will require the window to have a 'parent', so we
-    // force the function header be the one with the parameter option
+	// By using AUI management, it will require the window to have a 'parent', so we
+	// force the function header be the one with the parameter option
 	wxString funHead = ClassToCreateFun( strClassName, createPrefix);
 	m_source->WriteLn();
 	if ( createParent || auiManaged )
 	{
-	    funHead.append( wxT( "(Options) ->") );
-	    m_source->WriteLn( funHead );
-	    m_source->Indent();
-	    m_source->WriteLn( wxT( "Parent = proplists:get_value(parent, Options, wx:null())," ) );
-        if ( auiManaged )
-        {
-            m_source->WriteLn( wxT( "%% Warning: AUI managed form requires a valid parent window" ) );
-        }
-	    createObj.Replace( wxT( "wx:null()" ), wxT( "Parent" ) );
+		funHead.append( wxT( "(Options) ->") );
+		m_source->WriteLn( funHead );
+		m_source->Indent();
+		m_source->WriteLn( wxT( "Parent = proplists:get_value(parent, Options, wx:null())," ) );
+		if ( auiManaged )
+		{
+			m_source->WriteLn( wxT( "%% Warning: AUI managed form requires a valid parent window" ) );
+		}
+		createObj.Replace( wxT( "wx:null()" ), wxT( "Parent" ) );
 	}
 	else
 	{
-	    funHead.append( wxT( "() ->" ) );
-        m_source->WriteLn( funHead );
-        m_source->Indent();
+		funHead.append( wxT( "() ->" ) );
+		m_source->WriteLn( funHead );
+		m_source->Indent();
 	}
-    m_source->WriteLn(strName + wxT( " = " ) + createObj );
+	m_source->WriteLn(strName + wxT( " = " ) + createObj );
 
-    wxString settings = GetCode( class_obj, wxT( "settings" ) );
-    if ( !settings.IsEmpty() )
-    {
-        m_source->WriteLn( settings );
-        // when aui_managed is defined, in the AUI template we use a
-        // try..catch statement. So, we are going to indent the further
-        // lines of code(see: forms.erlangcode)
-        if ( auiManaged && settings.Find( wxT( "try" ) ) )
-            m_source->Indent();
-    }
+	wxString settings = GetCode( class_obj, wxT( "settings" ) );
+	if ( !settings.IsEmpty() )
+	{
+		m_source->WriteLn( settings );
+		// when aui_managed is defined, in the AUI template we use a
+		// try..catch statement. So, we are going to indent the further
+		// lines of code(see: forms.erlangcode)
+		if ( auiManaged && settings.Find( wxT( "try" ) ) )
+			m_source->Indent();
+	}
 
 /*  // wizard is not supported by Erlang
-    if ( class_obj->GetObjectTypeName() == wxT( "wizard" ) && class_obj->GetChildCount() > 0 )
+	if ( class_obj->GetObjectTypeName() == wxT( "wizard" ) && class_obj->GetChildCount() > 0 )
 	{
 		m_source->WriteLn( wxT( "function add_page(page)" ) );
 		m_source->Indent();
@@ -1536,37 +1536,37 @@ void ErlangCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 	GenEvents( class_obj, events );
 
 	// Ending the function
-    // the information about the aui_managed window must be handled here
-    wxString funEnding;
-    if ( m_fullExport )
-    {
-        // we finish the function by returning the window and the initialized State record
-        if ( auiManaged )
-            funEnding = wxString::Format( wxT( "{%s, #state{win=%s, params=[{aui,%s_AUImgr}]}}" ), strName, strName, strName );
-        else
-            funEnding = wxString::Format( wxT( "{%s, #state{win=%s}}" ), strName, strName );
-    }
-    else
-    {
-        // we finish the function by returning the window (container
-        // passed as parameter or created here)
-        if ( auiManaged )
-            funEnding = wxString::Format( wxT( "{%s,%s_AUImgr}" ), strName, strName );
-        else
-            funEnding = wxString::Format( wxT( "%s" ), strName );
-    }
+	// the information about the aui_managed window must be handled here
+	wxString funEnding;
+	if ( m_fullExport )
+	{
+		// we finish the function by returning the window and the initialized State record
+		if ( auiManaged )
+			funEnding = wxString::Format( wxT( "{%s, #state{win=%s, params=[{aui,%s_AUImgr}]}}" ), strName, strName, strName );
+		else
+			funEnding = wxString::Format( wxT( "{%s, #state{win=%s}}" ), strName, strName );
+	}
+	else
+	{
+		// we finish the function by returning the window (container
+		// passed as parameter or created here)
+		if ( auiManaged )
+			funEnding = wxString::Format( wxT( "{%s,%s_AUImgr}" ), strName, strName );
+		else
+			funEnding = wxString::Format( wxT( "%s" ), strName );
+	}
 
 	if ( auiManaged )
 	{
-        // Unindenting the code block and updating #state{} in the 'try..catch..end' statement
-	    m_source->Unindent();
-	    afterAddChildErlang.Replace( wxT("*state"), funEnding );
+		// Unindenting the code block and updating #state{} in the 'try..catch..end' statement
+		m_source->Unindent();
+		afterAddChildErlang.Replace( wxT("*state"), funEnding );
 		m_source->WriteLn( afterAddChildErlang );
 	}
-    else
-    {
+	else
+	{
 		m_source->WriteLn( funEnding.append( wxT( "." ) ) );
-    }
+	}
 	m_source->Unindent();
 }
 
@@ -1581,8 +1581,8 @@ void ErlangCodeGenerator::GenDestructor( PObjectBase class_obj, const EventVecto
 	{
 		GenEvents( class_obj, events, true );
 	}
-    else if (class_obj->GetPropertyAsInteger( wxT( "aui_managed" ) ) == 0)
-    {
+	else if (class_obj->GetPropertyAsInteger( wxT( "aui_managed" ) ) == 0)
+	{
 		m_source->WriteLn( wxT( "pass" ) );
 	}
 
@@ -1613,14 +1613,14 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 		std::vector<wxString>::iterator itr;
 		if (m_strUnsupportedClasses.end() != (itr = std::find(m_strUnsupportedClasses.begin(),m_strUnsupportedClasses.end(),strClass) ))
 		{
-            strName[0] = wxToupper( strName[0] );
+			strName[0] = wxToupper( strName[0] );
 			m_source->WriteLn( wxT( "%% Instance " ) + strName + wxT( " of Control " ) + *itr + wxT( " you are trying to use isn't wrapped by wxErlang." ) );
 			m_source->WriteLn( wxT( "%% Please try to use another control" ) );
 			m_strUnsupportedInstances.push_back(strName);
 			return;
 		}
-        strClass[0] = wxToupper( strClass[0] );
-        strClassName[0] = wxToupper( strClassName[0] );
+		strClass[0] = wxToupper( strClass[0] );
+		strClassName[0] = wxToupper( strClassName[0] );
 
 		m_source->WriteLn(GetConstruction(obj, false, strClassName, arrays) );
 
@@ -1653,28 +1653,28 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 				// this so we'll make it manually.
 				// It's not a good practice to embed templates into the source code,
 				// because you will need to recompile...
-                wxString  _template = wxT( "wxWindow:setSizer(#wxparent $name, $name),#nl " )
-                                      wxT( "#class:layout($name), " )
-                                      wxT( "#ifnull #parent $size" )
-                                      wxT( "@{ #nl wxSizer:fit($name, #wxparent $name), @} " );
+				wxString  _template = wxT( "wxWindow:setSizer(#wxparent $name, $name),#nl " )
+							wxT( "#class:layout($name), " )
+							wxT( "#ifnull #parent $size" )
+							wxT( "@{ #nl wxSizer:fit($name, #wxparent $name), @} " );
 				ErlangTemplateParser parser( obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
 				wxString res  = parser.ParseTemplate();
 
-                // we check if the owner of this sizer is the "Parent" form by
-                // checking if its parent is a project.
-                // It's trick, but is the way we can correctly translate the codes
-                // since Erlang doesn't has object class
-                if ( obj->GetParent()->GetParent() )
-                {
-				    wxString pType = obj->GetParent()->GetParent()->GetObjectTypeName();
-                    // When the project is the parent, then the sizer is the first one
-                    // and then we "link" it to the Parent window
-                    if ( pType == wxT( "project" ) )
-                    {
-                        // the 'this()' came from RootWxParentToCode()
-				        res.Replace( wxT( "this()" ), m_rootWxParent );
-                    }
-                }
+				// we check if the owner of this sizer is the "Parent" form by
+				// checking if its parent is a project.
+				// It's trick, but is the way we can correctly translate the codes
+				// since Erlang doesn't has object class
+				if ( obj->GetParent()->GetParent() )
+				{
+					wxString pType = obj->GetParent()->GetParent()->GetObjectTypeName();
+					// When the project is the parent, then the sizer is the first one
+					// and then we "link" it to the Parent window
+					if ( pType == wxT( "project" ) )
+					{
+						// the 'this()' came from RootWxParentToCode()
+						res.Replace( wxT( "this()" ), m_rootWxParent );
+					}
+				}
 				m_source->WriteLn(res);
 			}
 		}
@@ -1710,11 +1710,11 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 					{
 						_template = wxT( "#class:splitHorizontally($name, " );
 					}
-                    // ensuring the variables starts with uppercase char
-                    wxString Form1 = sub1->GetProperty( wxT( "name" ) )->GetValue();
-                    Form1[0] = wxToupper( Form1[0] );
-                    wxString Form2 = sub2->GetProperty( wxT( "name" ) )->GetValue();
-                    Form2[0] = wxToupper( Form2[0] );
+					// ensuring the variables starts with uppercase char
+					wxString Form1 = sub1->GetProperty( wxT( "name" ) )->GetValue();
+					Form1[0] = wxToupper( Form1[0] );
+					wxString Form2 = sub2->GetProperty( wxT( "name" ) )->GetValue();
+					Form2[0] = wxToupper( Form2[0] );
 
 					_template = _template + Form1 + wxT( ", " ) + Form2 + wxT( ", [{sashPosition,$sashpos }])," );
 					_template = _template + wxT( "#nl " ) + wxT( "#class:setSplitMode($name, " ) + wxString::Format( wxT( "?%s" ),(bSplitVertical ? "wxSPLIT_VERTICAL" : "wxSPLIT_HORIZONTAL") ) + wxT( ")," );
@@ -1775,11 +1775,11 @@ void ErlangCodeGenerator::GenConstruction(PObjectBase base_obj, PObjectBase obj,
 			return;
 		}
 
-        wxString temp_code = GetCode( obj, temp_name );
-        if ( !temp_code.empty() )
-        {
-            m_source->WriteLn( temp_code );
-        }
+		wxString temp_code = GetCode( obj, temp_name );
+		if ( !temp_code.empty() )
+		{
+			m_source->WriteLn( temp_code );
+		}
 	}
 	else if (	type == wxT( "notebookpage" )		||
 				type == wxT( "flatnotebookpage" )	||
@@ -1875,14 +1875,14 @@ void ErlangCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* ma
 			wxString value = prop->GetValue();
 			if ( value.IsEmpty() ) continue;
 
-            // in order to define a macro when aui_management is used we added it to
-            // the macro lists. Then we will define it as a value - not id in GenDefines/1
-            if ( prop->GetType() != PT_MACRO )
-            {
-                if ( !prop->GetValueAsInteger() ) continue;
+			// in order to define a macro when aui_management is used we added it to
+			// the macro lists. Then we will define it as a value - not id in GenDefines/1
+			if ( prop->GetType() != PT_MACRO )
+			{
+				if ( !prop->GetValueAsInteger() ) continue;
 
-                value = prop->GetName();
-            }
+				value = prop->GetName();
+			}
 
 			// Skip wx IDs
 			if ( ( ! value.Contains( wxT( "XRCID" ) ) ) &&
@@ -1906,20 +1906,20 @@ void ErlangCodeGenerator::FindMacros( PObjectBase obj, std::vector<wxString>* ma
 
 void ErlangCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector &events)
 {
-  unsigned int i;
-  unsigned int evt_cnt = obj->GetEventCount();
-  for (i=0; i < evt_cnt; i++)
-  {
-	PEvent event = obj->GetEvent(i);
-	if (!event->GetValue().IsEmpty() )
-	  events.push_back(event);
-  }
+	unsigned int i;
+	unsigned int evt_cnt = obj->GetEventCount();
+	for (i=0; i < evt_cnt; i++)
+	{
+		PEvent event = obj->GetEvent(i);
+		if ( !event->GetValue().IsEmpty() )
+			events.push_back(event);
+	}
 
-  for (i=0; i < obj->GetChildCount(); i++)
-  {
-	PObjectBase child = obj->GetChild(i);
-	FindEventHandlers(child,events);
-  }
+	for (i=0; i < obj->GetChildCount(); i++)
+	{
+		PObjectBase child = obj->GetChild(i);
+		FindEventHandlers(child,events);
+	}
 }
 
 void ErlangCodeGenerator::GenDefines( PObjectBase project )
@@ -1932,25 +1932,25 @@ void ErlangCodeGenerator::GenDefines( PObjectBase project )
 	wxString strFirstComment;
 	if ( id < wxID_HIGHEST )
 	{
-        // it's not recommended to use values between wxID_LOWEST and wxID_HIGHEST and, accordingly.
-        // See https://docs.wxwidgets.org/3.0/page_stdevtid.html
-	    strFirstComment = wxT( " % wx docs suggests the IDs values must start from wxID_HIGHEST+1 (6000)" );
+		// it's not recommended to use values between wxID_LOWEST and wxID_HIGHEST and, accordingly.
+		// See https://docs.wxwidgets.org/3.0/page_stdevtid.html
+		strFirstComment = wxT( " % wx docs suggests the IDs values must start from wxID_HIGHEST+1 (6000)" );
 	}
 	else
 	{
-	    strFirstComment = wxT( " % starting from wxID_HIGHEST+1" );
+		strFirstComment = wxT( " % starting from wxID_HIGHEST+1" );
 	}
 
 	std::vector< wxString >::iterator it;
 	for (it = macros.begin() ; it != macros.end(); it++)
 	{
-        if ( *it != wxT( "aui_managed" ) )
-        {
-		    m_source->WriteLn( wxString::Format( wxT( "-define(%s, %i). %s" ), it->c_str(), id, strFirstComment ) );
-            id++;
-        }
-        else
-		    m_source->WriteLn( wxString::Format( wxT( "-define(pi, wxAuiPaneInfo). %s" ), strFirstComment ) );
+		if ( *it != wxT( "aui_managed" ) )
+		{
+			m_source->WriteLn( wxString::Format( wxT( "-define(%s, %i). %s" ), it->c_str(), id, strFirstComment ) );
+			id++;
+		}
+		else
+			m_source->WriteLn( wxString::Format( wxT( "-define(pi, wxAuiPaneInfo). %s" ), strFirstComment ) );
 		m_strUserIDsVec.push_back(*it);
 		strFirstComment = wxEmptyString;
 	}
@@ -1980,7 +1980,7 @@ void ErlangCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxStrin
 
 		wxString strRootCode = m_rootWxParent;
 		if (code.Find(strRootCode) != -1){
-            code.Replace(strRootCode, strClassName);
+			code.Replace(strRootCode, strClassName);
 		}
 
 		if ( !code.empty() )
