@@ -43,6 +43,7 @@
 
 #include <wx/fdrepdlg.h>
 #include <wx/stc/stc.h>
+#include <wx/aui/auibook.h>
 
 BEGIN_EVENT_TABLE ( CppPanel,  wxPanel )
 	EVT_FB_CODE_GENERATION( CppPanel::OnCodeGeneration )
