@@ -71,7 +71,7 @@
       </property>
     </category>
     <category name="Erlang Properties">
-      <property name="copyright" type="text" help="For Erlang Only.&#x0A;Includes the copyright in the 'erlang_preamble' session if available">@</property>
+      <property name="copyright notice" type="text" help="For Erlang Only.&#x0A;Copyright and license notice to be inserted at the beginning of the all files in the project"></property>
       <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
       <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the windows's creation function">create</property>
       <property name="kind_of_code" type="option" help="For Erlang Only.&#x0A;Defines the kind of code that will be generated">

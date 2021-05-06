@@ -586,31 +586,26 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	// Insert Erlang preamble
-	wxString tempName = wxString::Format( "%%%%\n%%%% %s.erl\n%%%%", file );
-    m_source->WriteLn( tempName );
-    PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT( "Erlang" ) );
-    code = code_info->GetTemplate( wxT( "erlang_preamble" ) );
+	PCodeInfo code_info = project->GetObjectInfo()->GetCodeInfo( wxT( "Erlang" ) );
+	code = code_info->GetTemplate( wxT( "erlang_preamble" ) );
 	if ( !code.empty() )
 	{
-        PProperty propCopyRight = project->GetProperty( wxT( "copyright" ) );
-	    if (propCopyRight)
-	    {
-	        time_t theTime = time(NULL);
-            struct tm *aTime = localtime(&theTime);
-	        int year = aTime->tm_year + 1900;
-
-            tempName = wxString::Format( "%s %i" , propCopyRight->GetValueAsString(), year);
-    	    code.Replace( wxT( "*copyright" ), tempName );
-    	}
-        ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
-        code = parser.ParseTemplate();
-
+		m_source->WriteLn( code );
+		m_source->WriteLn( wxEmptyString );
+	}
+	PProperty propCopyRight = project->GetProperty( wxT( "copyright notice" ) );
+	if (propCopyRight)
+	{
+		code = propCopyRight->GetValueAsString();
+		code.Replace("\\n","#nl");
+		ErlangTemplateParser parser( project, code, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec );
+		code = parser.ParseTemplate();
 		m_source->WriteLn( code );
 		m_source->WriteLn( wxEmptyString );
 	}
 
 	// Write the module header
-	tempName = wxString::Format( wxT( "-module(%s)." ), file );
+	wxString tempName = wxString::Format( wxT( "-module(%s)." ), file );
     m_source->WriteLn( tempName );
     m_source->WriteLn();
 
