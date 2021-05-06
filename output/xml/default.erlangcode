@@ -5,21 +5,6 @@
          because it's used as tag flag by wxFormBulder.
      -->
     <template name="erlang_preamble">
-      %% #nl
-      %%  Copyright *copyright. All Rights Reserved. #nl
-      %% #nl
-      %%  Licensed under the Apache License, Version 2.0 (the "License"); #nl
-      %%  you may not use this file except in compliance with the License. #nl
-      %%  You may obtain a copy of the License at #nl
-      %% #nl
-      %%     http://www.apache.org/licenses/LICENSE-2.0 #nl
-      %% #nl
-      %%  Unless required by applicable law or agreed to in writing, software #nl
-      %%  distributed under the License is distributed on an "AS IS" BASIS, #nl
-      %%  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. #nl
-      %%  See the License for the specific language governing permissions and #nl
-      %%  limitations under the License. #nl
-      %%
     </template>
     <template name="include">
       -include_lib("wx/include/wx.hrl"). #nl
