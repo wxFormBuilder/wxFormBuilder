@@ -3,36 +3,40 @@
 #include "../utils/debug.h"
 
 #include <unordered_map>
+#include <wx/dynarray.h>
 #include <wx/textfile.h>
 #include <wx/msgdlg.h>
 
-wxString RemoveWhiteSpace(wxString str);
+///debugging 
+#include <wx/log.h>
+
+wxString RemoveWhiteSpace(wxString &str);
 
 /** Stores all of the information for all of the parsed funtions */
-class Function {
+class CppFunction {
 public:
-	Function() {
+	CppFunction() {
 	}
-	~Function() {
+	~CppFunction() {
 	}
+
+
+	/** stores the whole first line of the function as a single string 
+	*   ex: "void ClassName::FunctionName(int number)" */
+	void SetHeading(wxString &heading);
 
 	/** stores the code contained in the body of the function */
-	void SetContents(wxString contents);
-
-	/** stores the whole first line of the function as a single string ex: "void
-	 * fubar::DoSomething(int number)" */
-	void SetHeading(wxString heading);
-
+	void SetContents(wxString &contents);
 	/** stores any code/documentation located between the previous function and the current function
 	 */
-	void SetDocumentation(wxString documentation) {
-		if (documentation.Left(1) == '\n') {
-			documentation.Remove(0, 1);
-		}
-		if (documentation.Right(1) == '\n') {
-			documentation.Remove(documentation.Len() - 1, 1);
-		}
+	void SetDocumentation(wxString &documentation) {
 		m_documentation = documentation;
+		if (m_documentation.Left(1) == '\n') {
+			m_documentation.Remove(0, 1);
+		}
+		if (m_documentation.Right(1) == '\n') {
+			m_documentation.Remove(m_documentation.Len() - 1, 1);
+		}
 	}
 
 	/** retrieves the body code */
@@ -58,98 +62,132 @@ protected:
 	wxString m_documentation;
 };
 
-/** map class mapping Function* to function name */
-using FunctionMap = std::unordered_map<std::string, Function*>;
-#define funcIterator FunctionMap::iterator
 
-/** parses the source and header files for all code added to the generated */
-class CodeParser {
+WX_DEFINE_ARRAY(CppFunction*, ArrayCppFunctionBase);
+
+class ArrayCppFunction : public ArrayCppFunctionBase
+{
 public:
-	/** constructor */
-	CodeParser() {
+	ArrayCppFunction();
+
+	int Find(wxString &functionHeading)
+	{
+		int index = 0;
+		wxString heading = Item(index)->GetHeading();
+		while(index < Count())
+		{
+			if( RemoveWhiteSpace(functionHeading).IsSameAs( RemoveWhiteSpace(heading) ) )
+			{
+				return index;
+			}
+		}
+		return wxNOT_FOUND;
 	}
-
-	~CodeParser() {
-	}
-
-	///////////////////////////////////////////////////////////////////
-
-	/** returns all user header include code before the class declaration */
-	wxString GetUserIncludes() {
-		return m_userInclude;
-	}
-
-	/** returns user class members */
-	wxString GetUserMembers() {
-		return m_userMemebers;
-	}
-
-	/** returns the Documentation of a function by name */
-	wxString GetFunctionDocumentation(wxString function);
-
-	/** returns the contents of a function by name and then removes it from the list of remaining
-	 * functions */
-	wxString GetFunctionContents(wxString function);
-
-	/** returns all ramaining functions including documentation as one string.
-	 this may rearange functions, but should keep them intact */
-	wxString GetRemainingFunctions();
-
-	wxString GetTrailingCode() {
-		return m_trailingCode;
-	}
-
-protected:
-	wxString m_userInclude;
-	wxString m_className;
-	wxString m_userMemebers;
-	wxString m_trailingCode;
-
-	FunctionMap m_functions;
-	funcIterator m_functionIter;
 };
 
+
 /** parses the source and header files for all code added to the generated */
-class CCodeParser : public CodeParser {
-private:
-	wxString m_hFile;
-	wxString m_cFile;
+class CppCodeParser {
+protected:
+	wxString m_headerFileName;
+	wxString m_sourceFileName;
+
+	wxString m_userIncludeFilePreProc;
+	wxString m_userSourceFilePreProc;
+	wxString m_className;
+	wxString m_userHeaderFileMembers;
+	wxString m_userSourceFileTrailing;
+
+
+	ArrayCppFunction m_functionList;
+	int lastRetFunc = 0;
 
 public:
 	/** constructor */
-	CCodeParser() {
+	CppCodeParser() {
 	}
 
-	CCodeParser(wxString headerFileName, wxString sourceFileName) {
-		m_hFile = headerFileName;
-		m_cFile = sourceFileName;
+	CppCodeParser(wxString &headerFileName, wxString &sourceFileName) {
+		m_headerFileName = headerFileName;
+		m_sourceFileName = sourceFileName;
 	}
 
-	~CCodeParser() {
+	~CppCodeParser() {
+		m_functionList.Clear();
 	}
 
 	/** c++ Parser */
 
-	/** opens the header and source,  'className' is the Inherited class */
-	void ParseCFiles(wxString className);
+	/** opens the header and source files,  'className' is the Inherited class */
+	void ParseFiles(wxString &className);
 
 	/** extracts the contents of the files.  take the the entire contents of both files in string
 	 * form */
-	void ParseCCode(wxString header, wxString source);
+	void ParseCode(wxString &header, wxString &source);
 
-	/** extracts all user header include code before the class declaration */
-	void ParseCInclude(wxString code);
+	/** extracts all user preprocessor definitions before the class declaration in include file*/
+	void ParseHeaderFilePreProc(wxString &code);
 
-	/** extracts the contents of the generated class declaration */
-	void ParseCClass(wxString code);
+	/** extracts the contents of the inherited class declaration */
+	void ParseHeaderFileClass(wxString &code);
 
-	void ParseSourceFunctions(wxString code);
+	/** extracts user created class members **/
+	void ParseHeaderFileUserMembers(wxString &code);
 
-	wxString ParseBrackets(wxString code, int& functionStart);
 
-	void ParseCUserMembers(wxString code);
+
+	/** extracts all user preprocessor definitions before the class declaration in source file*/
+	void ParseSourceFilePreProc(wxString &code);
+
+	/** extracts each function in source File**/
+	void ParseSourceFileFunctions(wxString &code);
+
+	wxString ParseBrackets(wxString &code, int &functionStart);
+
+	// Accessor Functions
+	////////////////////////
+	wxString GetUserHeaderFilePreProc() {return m_userIncludeFilePreProc;}
+	wxString GetUserSourceFilePreProc() {return m_userSourceFilePreProc;}
+	wxString GetUserHeaderFileMembers() {return m_userHeaderFileMembers;}
+
+	void AddFunction(CppFunction* function)
+	{
+		m_functionList.Add(function);
+	}
+
+	CppFunction* GetFunction(wxString &functionHeading)
+	{
+		int index = m_functionList.Find(functionHeading);
+		if(index != wxNOT_FOUND)
+		{
+			return m_functionList.Item(index);
+		}
+		return NULL;
+
+	}
+
+
+	/** returns the Documentation of a function by name */
+	wxString GetFunctionDocumentation(wxString &functionHeading);
+
+	/** returns the contents of a function by name and then removes it from the list of remaining
+	 * functions */
+	wxString GetFunctionContents(wxString &functionHeading);
+
+	/** returns all functions including documentation as one string. but should keep them intact */
+	wxString GetAllFunctions();
+
+	//wxString GetRemainingFunctions();
+
+	wxString GetTrailingCode() {
+		return m_userSourceFileTrailing;
+	}
+
+	void DeleteFunction(CppFunction *function)
+	{
+		m_functionList.Remove(function);
+	}
 
 	/***************/
 };
 
-/**class PCodeParser : public CodeParser */

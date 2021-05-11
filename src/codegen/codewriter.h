@@ -63,7 +63,7 @@ protected:
 	 * @param line Single line, must not contain newlines
 	 * @param rawIndents If true, keep leading indenting whitespace and don't apply own indenting
 	 */
-	void ProcessLine(wxString line, bool rawIndents);
+	void ProcessLine(wxString line, bool rawIndents, bool trailingNewline = true);
 
 public:
 	/// Constructor.
@@ -85,7 +85,7 @@ public:
 	 * @param code Block of code
 	 * @param rawIndents If true, keep leading indenting whitespace and don't apply own indenting
 	 */
-	void WriteLn(const wxString& code = wxEmptyString, bool rawIndents = false);
+	void WriteLn(const wxString& code = wxEmptyString, bool rawIndents = false, bool trailingNewline = true);
 
 	/**
 	 * Write a fragment of code without trailing newline

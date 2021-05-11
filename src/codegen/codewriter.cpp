@@ -72,7 +72,7 @@ bool CodeWriter::IsSingleLine(const wxString& code) const
 	return (code.find(wxT("\n")) == wxString::npos);
 }
 
-void CodeWriter::ProcessLine(wxString line, bool rawIndents)
+void CodeWriter::ProcessLine(wxString line, bool rawIndents, bool trailingNewline)
 {
 	static const wxRegEx reIndent = wxRegEx(wxT("%TAB%\\s*"), wxRE_ADVANCED);
 
@@ -93,23 +93,24 @@ void CodeWriter::ProcessLine(wxString line, bool rawIndents)
 	Write(line, rawIndents);
 	m_indent -= templateIndents;
 	// To prevent trailing whitespace in case the line was empty write the newline as-is
-	Write(wxT("\n"), true);
+	if(trailingNewline)
+		{Write(wxT("\n"), true);}
 	m_isLineWriting = false;
 }
 
-void CodeWriter::WriteLn(const wxString& code, bool rawIndents)
+void CodeWriter::WriteLn(const wxString& code, bool rawIndents, bool trailingNewline)
 {
 	if (!IsSingleLine(code))
 	{
 		wxStringTokenizer tkz(code, wxT("\n"), wxTOKEN_RET_EMPTY_ALL);
 		while (tkz.HasMoreTokens())
 		{
-			ProcessLine(tkz.GetNextToken(), rawIndents);
+			ProcessLine(tkz.GetNextToken(), rawIndents, tkz.HasMoreTokens() || trailingNewline);
 		}
 	}
 	else
 	{
-		ProcessLine(code, rawIndents);
+		ProcessLine(code, rawIndents, trailingNewline);
 	}
 }
 
