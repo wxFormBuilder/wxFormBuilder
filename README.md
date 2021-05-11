@@ -1,5 +1,28 @@
 # wxFormBuilder [![Build Status](https://travis-ci.org/wxFormBuilder/wxFormBuilder.svg?branch=master)](https://travis-ci.org/wxFormBuilder/wxFormBuilder)
 
+## Table of content:
+1. [What is wxformbuilder about](#What-is-wxformbuilder-about)
+2. [Download Binaries](#Download-Binaries)
+3. [Install from source](#Install-From-Source)
+
+## What is wxFormBuilder about
+wxFormBuilder is a tool that help you make userinterface with wxwidget in a visual way. It can be very useful if you are visual which make you not good when it come to coding graphical user interface directly into code. 
+
+Here are screenshot of wxFormBuilder:
+
+![Main gui layour](https://i.imgur.com/51QrKyH.png)
+Main gui layout
+![C++ code generation](https://i.imgur.com/EYt2a9e.png)
+C++ code generation
+![Python code generation](https://i.imgur.com/ILLVPel.png)
+Python code generation
+
+wxFormBuilder feature:
+* Visual design of wxWidgets dialogs, frames, panels, toolbars and menubars
+* Source code generation for C++, Python, PHP, Lua and XRC
+* Support for AUI-managed frames
+* Support for wxWidgets 3.0 widgets (wxRibbonBar, wxPropertyGrid, wxDataViewCtrl, ...)
+
 ## Download Binaries
 
 * [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
