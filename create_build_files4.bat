@@ -64,7 +64,7 @@ ECHO                        Example: --wx-version=2.9
 ECHO                        Default: %wxver%
 ECHO.
 ECHO --force-wx-config      Force wx-config for the configuration
-ECHO                        even under MS Windows (usefull when CodeLite IDE
+ECHO                        even under MS Windows (useful when CodeLite IDE
 ECHO                        is used for the building)
 ECHO                        Default: Don't use wx-config under MS Windows
 ECHO.

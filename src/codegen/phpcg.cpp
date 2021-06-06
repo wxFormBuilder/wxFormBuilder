@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// PHP code generation writen by
+// PHP code generation written by
 //   Jefferson González - jgmdev@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -672,7 +672,7 @@ void PHPCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const
 		// execute properly.
 		// So we create a default handler which will skip the event.
 		m_source->WriteLn( wxEmptyString );
-		m_source->WriteLn( wxT("// Virtual event handlers, overide them in your derived class") );
+		m_source->WriteLn( wxT("// Virtual event handlers, override them in your derived class") );
 
 		std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
@@ -1369,7 +1369,7 @@ void PHPCodeGenerator::GenDefines( PObjectBase project)
 	std::vector< wxString > macros;
 	FindMacros( project, &macros );
 
-	// Remove the default macro from the set, for backward compatiblity
+	// Remove the default macro from the set, for backward compatibility
 	std::vector< wxString >::iterator it;
 	it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
 	if ( it != macros.end() )

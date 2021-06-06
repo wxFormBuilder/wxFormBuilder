@@ -39,12 +39,12 @@ Written by
   </objectinfo>
 
   <objectinfo class="AUI Events" smallIcon="wxwindow.png" type="interface">
-    <event name="OnAuiPaneButton" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
-    <event name="OnAuiPaneClose" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
-    <event name="OnAuiPaneMaximize" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
-    <event name="OnAuiPaneRestore" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
-    <event name="OnAuiPaneActivated" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
-    <event name="OnAuiRender" class="wxAuiManagerEvent" help="Event is emmited under AUI-managed form only."/>
+    <event name="OnAuiPaneButton" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
+    <event name="OnAuiPaneClose" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
+    <event name="OnAuiPaneMaximize" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
+    <event name="OnAuiPaneRestore" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
+    <event name="OnAuiPaneActivated" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
+    <event name="OnAuiRender" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
   </objectinfo>
 
   <objectinfo class="Frame" icon="frame.xpm" type="form">

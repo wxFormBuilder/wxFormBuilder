@@ -274,7 +274,7 @@ int MyApp::OnRun()
 
 	// This is not necessary for wxFB to work. However, Windows sets the Current Working Directory
 	// to the directory from which a .fbp file was opened, if opened from Windows Explorer.
-	// This puts an unneccessary lock on the directory.
+	// This puts an unnecessary lock on the directory.
 	// This changes the CWD to the already locked app directory as a workaround
 	#ifdef __WXMSW__
 	::wxSetWorkingDirectory( dataDir );

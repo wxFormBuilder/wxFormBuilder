@@ -7,7 +7,7 @@
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
     <property name="file" type="text" help="The filenames for generated files"/>
     <property name="relative_path" type="bool" help="Use relative paths for external files ( e.g. image files )">1</property>
-    <property name="first_id" type="text" help="All GUI controls have an interger ID, this is the value for the first control, each additional control with increment by 1.">1000</property>
+    <property name="first_id" type="text" help="All GUI controls have an integer ID, this is the value for the first control, each additional control with increment by 1.">1000</property>
     <property name="code_generation" type="bitlist">
       <option name="C++" help="Generate C++ Code"/>
       <option name="Python" help="Generate Python Code"/>
@@ -20,7 +20,7 @@
     <category name="C++ Properties">
       <property name="use_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for control IDs instead of a list of #defines">0</property>
       <property name="use_array_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for the dimensions of arrays">0</property>
-      <property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only.&#x0A;Files are generated with UTF-8 encoding. Microsoft compiliers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
+      <property name="use_microsoft_bom" type="bool" help="For C++ and WXMSW Only.&#x0A;Files are generated with UTF-8 encoding. Microsoft compilers expect a specific byte sequence at the beginning of a file. GCC does NOT expect this. Only set this to true when using a Microsoft compiler.">0</property>
       <property name="precompiled_header" type="text" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
       <property name="class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
         <child name="decoration" help="The name of the macro or the dll export decoration."/>

@@ -8,7 +8,7 @@
 
 wxString RemoveWhiteSpace(wxString str);
 
-/** Stores all of the information for all of the parsed funtions */
+/** Stores all of the information for all of the parsed functions */
 class Function {
 public:
 	Function() {

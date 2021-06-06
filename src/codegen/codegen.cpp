@@ -1111,7 +1111,7 @@ void TemplateParser::ParseAppend()
 	//NOTE: This macro is usually used to attach some postfix to a name to create another unique name.
 	//      If the name contains array brackets the resulting name is not a valid identifier.
 	//      You cannot simply replace all brackets, depending on how many times #append is used in a template
-	//      there might be preceeding brackets that need to be preserved. Here we assume #append is used directly
+	//      there might be preceding brackets that need to be preserved. Here we assume #append is used directly
 	//      after an array name to attach something to it, we have to search for the last delimiter or start of line
 	//      and replace all brackets after this one, not before.
 	if (!m_out.empty() && m_out.GetChar(m_out.size() - 1) == wxT(']'))

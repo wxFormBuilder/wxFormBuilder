@@ -186,7 +186,7 @@ private:
 
 	/**
 	* Makes the objects construction, setting up the objects' and Layout properties.
-	* The algorithm is simmilar to that used in the designer preview generation.
+	* The algorithm is similar to that used in the designer preview generation.
 	*/
 	void GenConstruction(PObjectBase obj, bool is_widget, wxString& strClassName, ArrayItems& arrays);
 
