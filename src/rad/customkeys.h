@@ -28,7 +28,7 @@
 
 #include "wx/wx.h"
 
-// This class is not needed because shorcuts are made through acceletors
+// This class is not needed because shortcuts are made through acceletors
 // of the MainFrame menubar.
 class CustomKeysEvtHandler : public wxEvtHandler
 {

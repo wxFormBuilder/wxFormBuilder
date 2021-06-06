@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Lua code generation writen by
+// Lua code generation written by
 //   Vratislav Zival
 //
 ///////////////////////////////////////////////////////////////////////////////
