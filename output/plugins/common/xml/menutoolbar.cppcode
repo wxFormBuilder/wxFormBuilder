@@ -104,7 +104,7 @@ Written by
 							#nl wxRect rect = #wxparent $name->GetToolRect( event.GetId() );
 							#nl wxPoint pt = #wxparent $name->ClientToScreen( rect.GetBottomLeft() );
 							#nl pt = ScreenToClient( pt );
-							#nl #wxparent $name->PopupMenu( $name, pt );
+							#nl #wxparent PopupMenu( $name, pt );
 							#nl #wxparent $name->SetToolSticky( event.GetId(), false ); #unindent
 						#nl } #unindent
 					#nl }

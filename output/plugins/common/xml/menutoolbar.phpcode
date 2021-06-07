@@ -85,7 +85,7 @@ PHP code generation writen by
 							#wxparent $name->SetToolSticky( @$event->GetId(), true ); #nl
 							@$rect = #wxparent $name->GetToolRect( @$event->GetId() ); #nl
 							@$pt = @$this->ScreenToClient( #wxparent $name->ClientToScreen( @$rect->GetBottomLeft() ) ); #nl
-							#wxparent $name->PopupMenu( @$this->$name, @$pt ); #nl
+							#wxparent @$this->PopupMenu( @$this->$name, @$pt ); #nl
 							#wxparent $name->SetToolSticky( @$event->GetId(), false ); #nl #unindent
 						} #nl #unindent
 					} #nl
