@@ -63,7 +63,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	// Get forbidden characters
 	wxString forbidden = wxFileName::GetForbiddenChars();
 
-	// Repace forbidded characters
+	// Replace forbidded characters
 	for ( size_t c = 0; c < forbidden.Length(); ++c )
 	{
 		wxString bad( forbidden.GetChar( c ) );

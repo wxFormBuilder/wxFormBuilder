@@ -24,7 +24,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// PHP code generation writen by
+// PHP code generation written by
 //   Jefferson González - jgmdev@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////

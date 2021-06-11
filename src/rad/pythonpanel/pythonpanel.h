@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Python code generation writen by
+// Python code generation written by
 //   Michal Bližňak - michal.bliznak@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////

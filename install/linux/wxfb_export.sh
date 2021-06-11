@@ -53,7 +53,7 @@ then
   mkdir $outputDir/share/wxformbuilder
 fi
 
-# copy ouput files to target directories  
+# copy output files to target directories  
 cp -R --interactive output/* $outputDir/share/wxformbuilder/
 
 # reorganize target directories

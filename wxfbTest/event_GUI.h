@@ -88,7 +88,7 @@ class MainFrame : public wxFrame
 		wxMenu* m_helpMenu;
 		wxToolBar* m_toolBar1;
 		
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnClose( wxCloseEvent& event ){ event.Skip(); }
 		virtual void OnSize( wxSizeEvent& event ){ event.Skip(); }
 		virtual void OnFileOpen( wxCommandEvent& event ){ event.Skip(); }
@@ -141,7 +141,7 @@ class CommonPanel : public wxPanel
 		wxSlider* m_slider1;
 		wxGrid* m_grid1;
 		
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnClick( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnClickBitmap( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnText( wxCommandEvent& event ){ event.Skip(); }
@@ -222,7 +222,7 @@ class AdditionalPanel : public wxPanel
 		wxStaticText* m_staticText1;
 		wxScrolledWindow* m_scrolledWindow2;
 		
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnCheckListBox( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnCheckListBoxDClick( wxCommandEvent& event ){ event.Skip(); }
 		virtual void OnCheckListBoxToggle( wxCommandEvent& event ){ event.Skip(); }

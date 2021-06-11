@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Python code generation writen by
+// Python code generation written by
 //   Michal Bližňak - michal.bliznak@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ private:
 
 	/**
 	* Makes the objects construction, setting up the objects' and Layout properties.
-	* The algorithm is simmilar to that used in the designer preview generation.
+	* The algorithm is similar to that used in the designer preview generation.
 	*/
 	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
 

@@ -1406,7 +1406,7 @@ bool ApplicationData::ConvertProject(ticpp::Document& doc, const wxString& path,
 			// underneath the root element
 			std::unique_ptr<ticpp::Node> objectTree = root->Clone();
 
-			// Clear the document to add the declatation and the root element
+			// Clear the document to add the declaration and the root element
 			doc.Clear();
 
 			// Add the declaration
@@ -1657,7 +1657,7 @@ void ApplicationData::ConvertObject( ticpp::Element* parent, int fileMajor, int 
 		}
 
 		// The 'style' property used to have both wxWindow styles and the styles of the specific controls
-		// now it only has the styles of the specfic controls, and wxWindow styles are saved in window_style
+		// now it only has the styles of the specific controls, and wxWindow styles are saved in window_style
 		// This also applies to 'extra_style', which was once combined with 'style'.
 		// And they were named 'WindowStyle' and one point, too...
 

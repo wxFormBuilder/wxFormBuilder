@@ -328,7 +328,7 @@ Written by
       <option name="wxSL_BOTTOM" help="Displays ticks on the bottom (this is the default)."/>
       <option name="wxSL_BOTH" help="Displays ticks on both sides."/>
       <option name="wxSL_SELRANGE" help="Allows the user to select a range on the slider. Windows only."/>
-      <option name="wxSL_INVERSE" help="Inverses the mininum and maximum endpoints on the slider. Not compatible with wxSL_SELRANGE."/>
+      <option name="wxSL_INVERSE" help="Inverses the minimum and maximum endpoints on the slider. Not compatible with wxSL_SELRANGE."/>
       wxSL_HORIZONTAL
     </property>
     <event name="OnScroll" class="wxScrollEvent" help="Process all scroll events."/>

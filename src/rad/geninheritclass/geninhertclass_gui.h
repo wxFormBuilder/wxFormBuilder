@@ -49,7 +49,7 @@ class GenInheritedClassDlgBase : public wxDialog
 		wxButton* m_sdbSizerOK;
 		wxButton* m_sdbSizerCancel;
 
-		// Virtual event handlers, overide them in your derived class
+		// Virtual event handlers, override them in your derived class
 		virtual void OnFormsSelected( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnFormsToggle( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnClassNameChange( wxCommandEvent& event ) { event.Skip(); }

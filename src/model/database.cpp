@@ -696,19 +696,19 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 						{
 							SetupPackage( xmlFileName.GetFullPath(), fullNextPluginPath.GetFullPath(), manager );
 
-							// Load the C++ code tempates
+							// Load the C++ code templates
 							xmlFileName.SetExt( wxT("cppcode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
 
-							// Load the Python code tempates
+							// Load the Python code templates
 							xmlFileName.SetExt( wxT("pythoncode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
 
-							// Load the PHP code tempates
+							// Load the PHP code templates
 							xmlFileName.SetExt( wxT("phpcode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
 
-							// Load the Lua code tempates
+							// Load the Lua code templates
 							xmlFileName.SetExt( wxT("luacode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
 
