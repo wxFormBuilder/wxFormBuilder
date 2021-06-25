@@ -132,6 +132,7 @@
     <property name="context_menu" type="bool" help="Generates event handler for displaying of menu assigned to this widgets as a context menu.">1</property>
     <property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
     <property name="enabled" type="bool" help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>
+    <property name="create_children" type="bool" help="Automatically create children when class instansiated. c++ only">1</property>
     <property name="hidden" type="bool" help="Shows or hides the window.">0</property>
     <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
       <child name="name" help="The name of the subclass."/>
