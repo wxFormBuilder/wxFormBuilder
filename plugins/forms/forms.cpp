@@ -121,12 +121,6 @@ public:
 		{
 			xrc.AddPropertyValue( wxT("centered"), wxT("1") );
 		}
-		if ( !obj->IsNull( wxT("create_children") ) )
-        {
-            xrc.AddProperty(wxT("create_children"), wxT("1"), XRC_TYPE_INTEGER);
-        } else {
-            xrc.AddProperty(wxT("create_children"), wxT("create_children"), XRC_TYPE_INTEGER);
-        }
             return xrc.GetXrcObject();
 	}
 
@@ -135,7 +129,6 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
 		filter.AddProperty(wxT("centered"), wxT("center"), XRC_TYPE_BITLIST);
-        filter.AddProperty(wxT("create_children"), wxT("create_children"), XRC_TYPE_INTEGER);
         return filter.GetXfbObject();
 	}
 };
