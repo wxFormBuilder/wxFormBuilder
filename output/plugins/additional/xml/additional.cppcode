@@ -347,6 +347,11 @@ Written by
 		<template name="include">$include</template>
 	</templates>
 
+	<templates class="CustomCode">
+		<template name="include">$include_cpp</template>
+		<template name="construction">$code_cpp</template>
+	</templates>
+
 	<templates class="wxMediaCtrl">
 		<template name="declaration">#class* $name;</template>
 		<template name="construction">

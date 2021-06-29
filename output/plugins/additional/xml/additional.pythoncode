@@ -240,6 +240,11 @@ Python code generation written by
 		<template name="include">$include</template>
 	</templates>
 
+	<templates class="CustomCode">
+		<template name="include">$import_python</template>
+		<template name="construction">$code_python</template>
+	</templates>
+
 	<templates class="wxMediaCtrl">
 		<template name="construction">
 			self.$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size)
