@@ -1226,8 +1226,10 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	// protected
 	m_header->WriteLn( wxT( "protected:" ) );
-	m_header->Indent();
-    m_header->WriteLn( wxString::Format( wxT( "void Create();\n" ) ) );
+    m_header->Indent();
+    if(class_obj->GetClassName() == "Dialog") {
+        m_header->WriteLn( wxString::Format( wxT( "void CreateChildren();\n" ) ) );
+    }
 
 	if ( use_enum )
 		GenEnumIds( class_obj );
@@ -1587,18 +1589,21 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &
 {
 	m_source->WriteLn();
 	m_source->WriteLn( GetCode( class_obj, wxT( "cons_def" ) ) );
-    if ( class_obj->GetPropertyAsInteger(wxT("create_children")) != 0 ) {
-        m_source->WriteLn( wxT( "{" ) );
-        m_source->Indent();
-        m_source->WriteLn( wxT( "Create();" ) );
-        m_source->Unindent();
-        m_source->WriteLn( wxT( "}" ) );
-    } else {
-        m_source->WriteLn( wxT( "{" ) );
-        m_source->WriteLn( wxT( "}" ) );
+    if(class_obj->GetClassName() == "Dialog") {
+        if ( class_obj->GetPropertyAsInteger(wxT("create_children")) != 0 ) {
+            m_source->WriteLn( wxT( "{" ) );
+            m_source->Indent();
+            m_source->WriteLn( wxT( "CreateChildren();" ) );
+            m_source->Unindent();
+            m_source->WriteLn( wxT( "}" ) );
+        } else {
+            m_source->WriteLn( wxT( "{" ) );
+            m_source->WriteLn( wxT( "}" ) );
+        }
     }
     wxString className = class_obj->GetPropertyAsString( wxT( "name" ) );
-    m_source->WriteLn( wxString::Format( wxT( "void %s::Create()" ), className.c_str(), className.c_str() ) );
+    if(class_obj->GetClassName() == "Dialog")
+        m_source->WriteLn( wxString::Format( wxT( "void %s::CreateChildren()" ), className.c_str(), className.c_str() ) );
     m_source->WriteLn( wxT( "{" ) );
     m_source->Indent();
 

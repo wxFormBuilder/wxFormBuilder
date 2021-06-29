@@ -121,7 +121,13 @@ public:
 		{
 			xrc.AddPropertyValue( wxT("centered"), wxT("1") );
 		}
-		return xrc.GetXrcObject();
+		if ( !obj->IsNull( wxT("create_children") ) )
+        {
+            xrc.AddProperty(wxT("create_children"), wxT("1"), XRC_TYPE_INTEGER);
+        } else {
+            xrc.AddProperty(wxT("create_children"), wxT("create_children"), XRC_TYPE_INTEGER);
+        }
+            return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
@@ -129,7 +135,8 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
 		filter.AddProperty(wxT("centered"), wxT("center"), XRC_TYPE_BITLIST);
-		return filter.GetXfbObject();
+        filter.AddProperty(wxT("create_children"), wxT("create_children"), XRC_TYPE_INTEGER);
+        return filter.GetXfbObject();
 	}
 };
 
