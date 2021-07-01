@@ -167,7 +167,7 @@ Written by
       <option name="wxBOTH"/>
       wxBOTH
     </property>
-    <property name="create_children" type="bool" help="Automatically create children when class instansiated. c++ only">1</property>
+    <property name="create_children" type="bool" help="Automatically create children when class instansiated. c++ only (currently). If 'Off'/'Unchecked' child class will need to call Init() to create child objects. If 'On'/'Checked' constructor will automatically create all child objects">1</property>
     <property name="event_handler" type="option" help="For C++ Only.&#x0A;The way how to declare and implement event handlers.">
       <option name="decl_pure_virtual" help="Only declare event handlers as pure virtual methods."/>
       <option name="decl" help="Declare event handlers but don't generate default implementation. Implementation should be done in separate .cpp file (Not in a generated!)."/>

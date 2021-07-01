@@ -407,7 +407,26 @@ Written by
 			#ifequal $aui_managed "1"
 			@{ @#include &lt;wx/aui/aui.h&gt; @}
 		</template>
-		<template name="settings">
+        <template name="code_init">
+            #ifnotnull $create_children
+            @{
+            #ifequal $create_children "0"
+            @{ { #nl
+            } #nl #nl
+            void $name::Init()
+            @}
+            @}
+        </template>
+        <template name="def_init">
+            #ifnotnull $create_children
+            @{
+            #ifequal $create_children "0"
+            @{
+            void Init(); #nl
+            @}
+            @}
+        </template>
+        <template name="settings">
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 			
 			#ifnotnull $window_extra_style
