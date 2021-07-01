@@ -41,6 +41,7 @@ class PythonPanel;
 class LuaPanel;
 class PHPPanel;
 class XrcPanel;
+class ErlangPanel;
 class ObjectTree;
 class ObjectInspector;
 class wxFbPalette;
@@ -76,6 +77,7 @@ class MainFrame : public wxFrame
   LuaPanel *m_lua;
   PHPPanel *m_php;
   XrcPanel *m_xrc;
+  ErlangPanel *m_erlang;
   int m_style;
 
   // Save which page is selected
