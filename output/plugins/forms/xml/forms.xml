@@ -116,6 +116,7 @@ Written by
       <property name="size" type="wxSize">500,300</property>
     </inherits>
     <property name="name" type="text" hidden="1">MyPanel</property>
+    <property name="two_step_creation" type="bool" help="Add constructor and method for two-step creation. This requires the base class to support two-step creation.">0</property>
     <property name="event_handler" type="option" help="For C++ Only.&#x0A;The way how to declare and implement event handlers.">
       <option name="decl_pure_virtual" help="Only declare event handlers as pure virtual methods."/>
       <option name="decl" help="Declare event handlers but don't generate default implementation. Implementation should be done in separate .cpp file (Not in a generated!)."/>
