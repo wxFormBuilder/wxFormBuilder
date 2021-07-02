@@ -674,22 +674,48 @@ Written by
 			@{ public wxWizard @}
 		</template>
 		<template name="cons_decl">
+			#ifequal $two_step_creation "1"
+			@{
+				$name(); #nl
+			@}
+
 			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxBitmap&amp; bitmap = $bitmap, const wxPoint&amp; pos = $pos, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
-			WizardPages m_pages;
+
+			#ifequal $two_step_creation "1"
+			@{
+				bool Create( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxBitmap&amp; bitmap = $bitmap, const wxPoint&amp; pos = $pos, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
+			@}
+
+			WizardPages m_pages; #nl
 		</template>
 		<template name="cons_def">
+			#ifequal $two_step_creation "1"
+			@{
+				$name::$name() #nl
+				{ #nl
+				} #nl
+				#nl
+			@}
+
 			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxBitmap&amp; bitmap, const wxPoint&amp; pos, long style#ifnotnull $window_name @{, const wxString&amp; name@} )
 
-			#ifnotnull $subclass/name
-			@{ $subclass/name @}
+			#ifequal $two_step_creation "1"
+			@{
+				#nl
+				{ #indent #nl
+					this->Create( parent, id, title, bitmap, pos, style#ifnotnull $window_name @{, name@} ); #unindent #nl
+				} #nl
+				#nl
+				bool $name::Create( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxBitmap&amp; bitmap, const wxPoint&amp; pos, long style#ifnotnull $window_name @{, const wxString&amp; name@} )
+			@}
 		</template>
 		<template name="destruction">
 			m_pages.Clear();
 		</template>
 		<template name="include">
-			@#include &lt;wx/wizard.h&gt;#nl
-			@#include &lt;wx/dynarray.h&gt;#nl
-			@WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages ); #nl
+			@#include &lt;wx/wizard.h&gt; #nl
+			@#include &lt;wx/dynarray.h&gt; #nl
+			WX_DEFINE_ARRAY_PTR( wxWizardPageSimple*, WizardPages ); #nl
 		</template>
 		<template name="settings">
 			#ifnotnull $window_extra_style
@@ -698,7 +724,20 @@ Written by
 			#ifnotnull $extra_style
 			@{ this->SetExtraStyle( $extra_style ); #nl @}
 
-			this->Create( parent, id, title, bitmap, pos, style ); #nl
+			#ifequal $two_step_creation "1"
+			@{
+				if ( !#ifnotnull $subclass/name @{$subclass/name@} #ifnull $subclass/name @{wxWizard@}::Create( parent, id, title, bitmap, pos, style#ifnotnull $window_name @{, name@} ) ) #nl
+				{ #indent #nl
+					return false; #unindent #nl
+				} #nl
+				#nl
+			@}
+
+			#ifnotequal $two_step_creation "1"
+			@{
+				this->Create( parent, id, title, bitmap, pos, style ); #nl
+				#nl
+			@}
 
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 
@@ -723,6 +762,10 @@ Written by
 		<template name="after_addchild">
 			#ifnotnull $center
 			@{ #nl this->Centre( $center ); #nl @}
+		</template>
+		<template name="after_connectevents">
+			#ifequal $two_step_creation "1"
+			@{ return true; @}
 		</template>
 		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
 		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
