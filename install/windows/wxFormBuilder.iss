@@ -114,6 +114,7 @@ Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}; Components: runtime
+Source: C:\msys64\mingw32\bin\libjbig*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}; Components: runtime
 Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
