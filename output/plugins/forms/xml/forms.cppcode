@@ -463,28 +463,65 @@ Written by
 			@{ public wxDialog @}
 		</template>
 		<template name="cons_decl">
-			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} );
+			#ifequal $two_step_creation "1"
+			@{
+				$name(); #nl
+			@}
+
+			$name( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
+
+			#ifequal $two_step_creation "1"
+			@{
+				bool Create( wxWindow* parent, wxWindowID id = $id, const wxString&amp; title = $title, const wxPoint&amp; pos = $pos, const wxSize&amp; size = $size, long style = $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, const wxString&amp; name = $window_name @} ); #nl
+			@}
+
 			#ifequal $aui_managed "1"
 			@{ wxAuiManager m_mgr; #nl @}
 		</template>
 		<template name="cons_def">
-			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} ) :
+			#ifequal $two_step_creation "1"
+			@{
+				$name::$name() #nl
+				{ #nl
+				} #nl
+				#nl
+			@}
 
-			#ifnotnull $subclass/name
-			@{ $subclass/name @}
+			$name::$name( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} )
+			#ifnotequal $two_step_creation "1"
+			@{
+				: #ifnotnull $subclass/name @{$subclass/name@} #ifnull $subclass/name @{wxDialog@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
+			@}
 
-			#ifnull $subclass/name
-			@{ wxDialog@}( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} )
+			#ifequal $two_step_creation "1"
+			@{
+				#nl
+				{ #indent #nl
+					this->Create( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} ); #unindent #nl
+				} #nl
+				#nl
+				bool $name::Create( wxWindow* parent, wxWindowID id, const wxString&amp; title, const wxPoint&amp; pos, const wxSize&amp; size, long style#ifnotnull $window_name @{, const wxString&amp; name@} )
+			@}
 		</template>
 			<template name="destruction">
 			#ifequal $aui_managed "1"
 			@{ m_mgr.UnInit(); #nl @}
 		</template>
 		<template name="include">
-			@#include &lt;wx/dialog.h&gt;#nl
+			@#include &lt;wx/dialog.h&gt; #nl
 			#ifequal $aui_managed "1"
 			@{ @#include &lt;wx/aui/aui.h&gt; @}
 		</template>
+		<template name="settings">
+			#ifequal $two_step_creation "1"
+			@{
+				if ( !#ifnotnull $subclass/name @{$subclass/name@} #ifnull $subclass/name @{wxDialog@}::Create( parent, id, title, pos, size, style#ifnotnull $window_name @{, name@} ) ) #nl
+				{ #indent #nl
+					return false; #unindent #nl
+				} #nl
+				#nl
+			@}
+
         <template name="init_code">
             #ifequal $create_children "0"
             @{
@@ -501,7 +538,7 @@ Written by
         </template>
         <template name="settings">
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
-			
+
 			#ifnotnull $window_extra_style
 			@{ this->SetExtraStyle( this->GetExtraStyle() | $window_extra_style ); #nl @}
 
@@ -534,10 +571,14 @@ Written by
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl m_mgr.Update();@}
-			
+			@{ #nl m_mgr.Update(); @}
+
 			#ifnotnull $center
 			@{ #nl this->Centre( $center ); @}
+		</template>
+		<template name="after_connectevents">
+			#ifequal $two_step_creation "1"
+			@{ return true; @}
 		</template>
 		<template name="evt_entry_OnInitDialog">EVT_INIT_DIALOG( #handler )</template>
 		<template name="evt_connect_OnInitDialog">this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
