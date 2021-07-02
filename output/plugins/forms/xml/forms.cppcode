@@ -407,14 +407,14 @@ Written by
 			#ifequal $aui_managed "1"
 			@{ @#include &lt;wx/aui/aui.h&gt; @}
 		</template>
-        <template name="code_init">
+        <template name="init_code">
             #ifnotnull $create_children
             @{
-            #ifequal $create_children "0"
-            @{ { #nl
-            } #nl #nl
-            void $name::Init()
-            @}
+                #ifequal $create_children "0"
+                @{ { #nl
+                } #nl #nl
+                void $name::Init()
+                @}
             @}
         </template>
         <template name="def_init">

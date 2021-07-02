@@ -1591,10 +1591,10 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &
 {
 	m_source->WriteLn();
 	m_source->WriteLn( GetCode( class_obj, wxT( "cons_def" ) ) );
-    wxString code_init = GetCode( class_obj, wxT( "code_init" ) );
-    if ( !code_init.empty() )
+    wxString init_code = GetCode( class_obj, wxT( "init_code" ) );
+    if ( !init_code.empty() )
     {
-        m_source->WriteLn( code_init );
+        m_source->WriteLn( init_code );
     }
 
     m_source->WriteLn( wxT( "{" ) );
