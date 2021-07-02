@@ -408,22 +408,17 @@ Written by
 			@{ @#include &lt;wx/aui/aui.h&gt; @}
 		</template>
         <template name="init_code">
-            #ifnotnull $create_children
-            @{
-                #ifequal $create_children "0"
-                @{ { #nl
-                } #nl #nl
-                void $name::Init()
-                @}
-            @}
-        </template>
-        <template name="def_init">
-            #ifnotnull $create_children
-            @{
             #ifequal $create_children "0"
             @{
-            void Init(); #nl
+                { #nl
+                } #nl #nl
+                void $name::Init()
             @}
+        </template>
+        <template name="init_def">
+            #ifequal $create_children "0"
+            @{
+                void Init(); #nl
             @}
         </template>
         <template name="settings">

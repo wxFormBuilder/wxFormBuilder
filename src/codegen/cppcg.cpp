@@ -1227,10 +1227,10 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	// protected
 	m_header->WriteLn( wxT( "protected:" ) );
     m_header->Indent();
-    wxString def_init = GetCode( class_obj, wxT( "def_init" ) );
-    if ( !def_init.empty() )
+    wxString init_def = GetCode( class_obj, wxT( "init_def" ) );
+    if ( !init_def.empty() )
     {
-        m_header->WriteLn( def_init );
+        m_header->WriteLn( init_def );
     }
 
 	if ( use_enum )
