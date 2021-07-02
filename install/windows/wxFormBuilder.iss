@@ -52,8 +52,7 @@ ShowLanguageDialog=yes
 AppVersion={#MyAppVer}
 AppendDefaultGroupName=false
 AllowNoIcons=true
-WizardImageFile=compiler:WizModernImage-IS.bmp
-WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
+WizardStyle=modern
 SetupIconFile=support\wxFormBuilder.ico
 UninstallDisplayIcon={app}\wxFormBuilder.exe
 ChangesAssociations=true
@@ -61,11 +60,7 @@ VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
 InfoAfterFile=..\..\output\Changelog.txt
 LicenseFile=..\..\output\license.txt
-MinVersion=0,6.0
-
-
-[Messages]
-BeveledLabel={#MyAppName} {#MyAppVer}
+MinVersion=6.1sp1
 
 
 [Types]
