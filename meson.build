@@ -32,7 +32,7 @@ wx_dep = dependency('wxwidgets', version : '>=3.0.3',
 
 media_dep = dependency('wxwidgets', version : '>=3.0.3', modules : ['media'], required : false)
 if media_dep.found()
-	add_project_arguments('-DUSE_MEDIACTRL', language : 'cpp')
+#	add_project_arguments('-DUSE_MEDIACTRL', language : 'cpp')
 endif
 
 inc = include_directories(['sdk/plugin_interface'])
