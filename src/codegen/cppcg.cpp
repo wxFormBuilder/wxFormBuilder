@@ -1622,6 +1622,13 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &
 		GenEvents( class_obj, events );
 	}
 
+	auto afterConnectEvents = GetCode(class_obj, wxT("after_connectevents"));
+	if (!afterConnectEvents.empty())
+	{
+		m_source->WriteLn();
+		m_source->WriteLn(afterConnectEvents);
+	}
+
 	m_source->Unindent();
 	m_source->WriteLn( wxT( "}" ) );
 }

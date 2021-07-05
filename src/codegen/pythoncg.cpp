@@ -1139,6 +1139,13 @@ void PythonCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 
 	GenEvents( class_obj, events );
 
+	auto afterConnectEvents = GetCode(class_obj, wxT("after_connectevents"));
+	if (!afterConnectEvents.empty())
+	{
+		m_source->WriteLn();
+		m_source->WriteLn(afterConnectEvents);
+	}
+
 	m_source->Unindent();
 
 	if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
