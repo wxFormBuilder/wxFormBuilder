@@ -121,7 +121,7 @@ public:
 		{
 			xrc.AddPropertyValue( wxT("centered"), wxT("1") );
 		}
-		return xrc.GetXrcObject();
+            return xrc.GetXrcObject();
 	}
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
@@ -129,7 +129,7 @@ public:
 		filter.AddWindowProperties();
 		filter.AddProperty( wxT("title"), wxT("title"), XRC_TYPE_TEXT);
 		filter.AddProperty(wxT("centered"), wxT("center"), XRC_TYPE_BITLIST);
-		return filter.GetXfbObject();
+        return filter.GetXfbObject();
 	}
 };
 

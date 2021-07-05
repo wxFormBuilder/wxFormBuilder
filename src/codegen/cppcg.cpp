@@ -1213,6 +1213,7 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 	// private
 	m_header->WriteLn( wxT( "private:" ) );
 	m_header->Indent();
+
 	GenAttributeDeclaration(class_obj, P_PRIVATE, arrays);
 
 	if ( !m_useConnect )
@@ -1225,7 +1226,12 @@ void CppCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool use_enum,
 
 	// protected
 	m_header->WriteLn( wxT( "protected:" ) );
-	m_header->Indent();
+    m_header->Indent();
+    wxString init_def = GetCode( class_obj, wxT( "init_def" ) );
+    if ( !init_def.empty() )
+    {
+        m_header->WriteLn( init_def );
+    }
 
 	if ( use_enum )
 		GenEnumIds( class_obj );
@@ -1585,8 +1591,14 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &
 {
 	m_source->WriteLn();
 	m_source->WriteLn( GetCode( class_obj, wxT( "cons_def" ) ) );
-	m_source->WriteLn( wxT( "{" ) );
-	m_source->Indent();
+    wxString init_code = GetCode( class_obj, wxT( "init_code" ) );
+    if ( !init_code.empty() )
+    {
+        m_source->WriteLn( init_code );
+    }
+
+    m_source->WriteLn( wxT( "{" ) );
+    m_source->Indent();
 
 	wxString settings = GetCode( class_obj, wxT( "settings" ) );
 	if ( !settings.empty() )

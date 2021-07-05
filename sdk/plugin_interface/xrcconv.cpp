@@ -413,7 +413,7 @@ void ObjectToXrcFilter::AddWindowProperties()
 	if (!m_obj->IsNull(_("enabled")) && m_obj->GetPropertyAsInteger(_("enabled")) == 0) {
 		AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
 	}
-	if ( !m_obj->IsNull( _( "focused" ) ) )
+    if ( !m_obj->IsNull( _( "focused" ) ) )
 		AddPropertyValue( _( "focused" ), _( "0" ) );
 
 	if (!m_obj->IsNull(_("hidden")) && m_obj->GetPropertyAsInteger(_("hidden")) != 0) {

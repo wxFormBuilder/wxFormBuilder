@@ -522,6 +522,21 @@ Written by
 				#nl
 			@}
 
+        <template name="init_code">
+            #ifequal $create_children "0"
+            @{
+                { #nl
+                } #nl #nl
+                void $name::Init()
+            @}
+        </template>
+        <template name="init_def">
+            #ifequal $create_children "0"
+            @{
+                void Init(); #nl
+            @}
+        </template>
+        <template name="settings">
 			this->SetSizeHints( $minimum_size, $maximum_size ); #nl
 
 			#ifnotnull $window_extra_style
