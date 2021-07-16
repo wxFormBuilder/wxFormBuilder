@@ -58,6 +58,13 @@ ninja -C _build install
 ./_install/bin/wxformbuilder
 ```
 
+Extra steps to finish install on linux x86-64 (Debian):
+
+```sh
+sudo cp -rd _install/* /usr; 
+sudo ln -s /usr/lib/x86_64-linux-gnu/wxformbuilder/ /usr/lib/wxformbuilder
+```
+
 ### macOS
 
 Pre-requisites for macOS can be installed via [Homebrew](https://brew.sh/):
