@@ -1,7 +1,7 @@
 # create a flatpak-build
 on: [push, pull_request]
 
-name: CI
+name: flatpak
 jobs:
   flatpak:
     name: "Flatpak"
