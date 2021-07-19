@@ -1,8 +1,6 @@
 # create a flatpak-build
-on:
-  push:
-    branches: [main]
-  pull_request:
+on: [push, pull_request]
+
 name: CI
 jobs:
   flatpak:
