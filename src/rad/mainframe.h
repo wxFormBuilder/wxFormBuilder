@@ -31,6 +31,8 @@
 #include <wx/aui/auibook.h>
 #include <wx/fdrepdlg.h>
 
+#include "../utils/wxfbdefs.h"
+
 class wxFBEvent;
 class wxFBObjectEvent;
 class wxFBPropertyEvent;
@@ -141,6 +143,8 @@ class MainFrame : public wxFrame
   void OnXrcPreview(wxCommandEvent& e);
   void OnGenInhertedClass(wxCommandEvent& e);
   void OnWindowSwap(wxCommandEvent& e);
+  void OnFindComponent(wxCommandEvent& e);
+  void OnMenuComponentsClick(wxCommandEvent& e);
 
   void OnAuiNotebookPageChanged( wxAuiNotebookEvent& event );
 
@@ -164,6 +168,8 @@ class MainFrame : public wxFrame
   wxWindow  *CreateObjectTree       (wxWindow *parent);
   wxWindow  *CreateObjectInspector  (wxWindow *parent);
   wxMenuBar *CreateFBMenuBar();
+  wxMenu    *CreateMenuComponents();
+  wxMenu    *CreateSubmenuComponents(PObjectPackage pkg, wxWindowID &nextID);
   wxToolBar *CreateFBToolBar();
 
   void CreateWideGui();
