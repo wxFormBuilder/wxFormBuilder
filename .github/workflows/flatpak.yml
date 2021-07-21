@@ -14,6 +14,6 @@ jobs:
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
       with:
         bundle: wxformbuilder.flatpak
-        manifest-path: wxFormBuilder/install/linux/org.wxformbuilder.wxFormBuilder.json 
+        manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json 
         cache-key: flatpak-builder-${{ github.sha }}
         
