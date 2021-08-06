@@ -16,7 +16,7 @@ jobs:
         msystem: MINGW32
         release: false
         update: false
-        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make'
+        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 make'
     - name: Patch MSYS2
       shell: msys2 {0}
       run: |
@@ -28,16 +28,16 @@ jobs:
         ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
     - name: Create build files
       shell: cmd
-      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
+      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --wx-version=3.1
     - name: Patch build files
       shell: msys2 {0}
       run: |
-        cd build/3.0/gmake
+        cd build/3.1/gmake
         sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
     - name: Build
       shell: msys2 {0}
       run: |
-        cd build/3.0/gmake
+        cd build/3.1/gmake
         make config=release
     - name: Create installer
       shell: cmd
