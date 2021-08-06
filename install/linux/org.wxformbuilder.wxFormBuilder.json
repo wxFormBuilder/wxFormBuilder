@@ -15,24 +15,8 @@
 			"name": "wxWidgets",
 			"config-opts": [
 				"--with-gtk=3",
-				"--with-opengl",
-				"--with-libjpeg",
-				"--disable-shared",
-				"--enable-monolithic",
-				"--with-libtiff",
-				"--with-libpng",
-				"--with-zlib",
-				"--disable-sdltest",
-				"--enable-unicode",
-				"--enable-display",
-				"--enable-propgrid",
-				"--disable-webkit",
-				"--disable-webview",
-				"--disable-webviewwebkit",
+				"--with-cxx=11",
 				"--with-libiconv=/usr"
-			],
-			"cxxflags": [
-				"-std=c++11"
 			],
 			"sources": [
 				{
