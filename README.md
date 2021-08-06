@@ -61,6 +61,8 @@ ninja -C _build install
 
 ### macOS
 
+**Notice:** On recent macOS versions >= 11 wxFormBuilder fails to build and/or run, there is no solution available currently
+
 Pre-requisites for macOS can be installed via [Homebrew](https://brew.sh/):
 
 ```sh
