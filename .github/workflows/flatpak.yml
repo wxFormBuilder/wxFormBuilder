@@ -1,10 +1,10 @@
 # create a flatpak-build
+name: Linux
 on: [push, pull_request]
 
-name: flatpak
 jobs:
   flatpak:
-    name: "Flatpak"
+    name: Flatpak
     runs-on: ubuntu-latest
     container:
       image: bilelmoussaoui/flatpak-github-actions:gnome-40
@@ -16,4 +16,3 @@ jobs:
         bundle: wxformbuilder.flatpak
         manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json 
         cache-key: flatpak-builder-${{ github.sha }}
-
