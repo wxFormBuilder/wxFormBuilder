@@ -11,18 +11,17 @@
 Install [MSYS2](http://msys2.github.io/) and run the following inside a MinGW 32 bit shell:
 
 ```sh
-pacman -S --needed mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make git
+pacman -S --needed mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 make git
 git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
-cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl"
+cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config=versioned --wx-version=3.1
 ln -s /mingw32/include/binutils/ansidecl.h /mingw32/include/ansidecl.h
 ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
-ln -s /mingw32/include/binutils/bfd_stdint.h /mingw32/include/bfd_stdint.h
 ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h
 ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
 ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
 ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
-cd build/3.0/gmake
+cd build/3.1/gmake
 sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
 make config=release
 ```
