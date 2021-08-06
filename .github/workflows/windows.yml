@@ -28,7 +28,7 @@ jobs:
         ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
     - name: Create build files
       shell: cmd
-      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --wx-version=3.1
+      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config=versioned --wx-version=3.1
     - name: Patch build files
       shell: msys2 {0}
       run: |
