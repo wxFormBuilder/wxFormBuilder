@@ -8,7 +8,7 @@
 
 ### Windows (MSYS2)
 
-Install [MSYS2](http://msys2.github.io/) and run the following inside a MinGW 32 bit shell:
+Install [MSYS2](https://www.msys2.org/) and run the following inside a MinGW 32 bit shell:
 
 ```sh
 pacman -S --needed mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 make git
