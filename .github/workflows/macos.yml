@@ -1,0 +1,9 @@
+name: macOS
+on: [push, pull_request]
+
+jobs:
+  bundle:
+    runs-on: macos-latest
+    name: App Bundle
+    steps:
+    - uses: cutenode/action-always-fail@v1.0.1
