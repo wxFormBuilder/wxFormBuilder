@@ -35,6 +35,8 @@ cd ../../../output/
 
 ### Linux
 
+**Notice:** Distributions that use architecture based subdirectories for libraries currently fail to load the plugins, for a workaround see [#524](https://github.com/wxFormBuilder/wxFormBuilder/issues/524)
+
 Pre-requisites for Ubuntu:
 
 ```sh
