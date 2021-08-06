@@ -13,15 +13,32 @@
 	"modules": [
 		{
 			"name": "wxWidgets",
-			"config-opts": "--with-gtk=3 --with-opengl --with-libjpeg --disable-shared --enable-monolithic--with-libtiff --with-libpng --with-zlib --disable-sdltest --enable-unicode --enable-display --enable-propgrid --disable-webkit --disable-webview --disable-webviewwebkit --with-libiconv=/usr",
+			"config-opts": [
+				"--with-gtk=3",
+				"--with-opengl",
+				"--with-libjpeg",
+				"--disable-shared",
+				"--enable-monolithic",
+				"--with-libtiff",
+				"--with-libpng",
+				"--with-zlib",
+				"--disable-sdltest",
+				"--enable-unicode",
+				"--enable-display",
+				"--enable-propgrid",
+				"--disable-webkit",
+				"--disable-webview",
+				"--disable-webviewwebkit",
+				"--with-libiconv=/usr"
+			],
 			"cxxflags": [
 				"-std=c++11"
 			],
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.1/wxWidgets-3.1.1.tar.bz2",
-					"sha256": "c925dfe17e8f8b09eb7ea9bfdcfcc13696a3e14e92750effd839f5e10726159e"
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2",
+					"sha256": "d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224"
 				}
 			],
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
@@ -31,7 +48,7 @@
 			"buildsystem": "simple",
 			"build-commands": [
 				"./create_build_files4.sh",
-				"make config=release -C build/3.1/gmake",
+				"make -C build/3.1/gmake config=release",
 				"mv output/bin/wxformbuilder /app/bin",
 				"mkdir /app/share/wxformbuilder",
 				"mv output/xml /app/share/wxformbuilder",
