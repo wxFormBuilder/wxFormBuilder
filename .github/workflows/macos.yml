@@ -6,4 +6,23 @@ jobs:
     runs-on: macos-latest
     name: App Bundle
     steps:
-    - uses: cutenode/action-always-fail@v1.0.1
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup environment
+      run: |
+        brew update
+        brew install dylibbundler make wxwidgets
+    - name: Create build files
+      run: ./create_build_files4.sh
+    - name: Build
+      run: make -C build/3.1/gmake config=release
+    - name: Package app bundle
+      run: |
+        cd output
+        zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: App Bundle
+        path: output/wxFormBuilder_macOS.zip
