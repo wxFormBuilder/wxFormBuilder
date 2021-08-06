@@ -11,6 +11,8 @@ jobs:
       options: --privileged
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
       with:
         bundle: wxformbuilder.flatpak
