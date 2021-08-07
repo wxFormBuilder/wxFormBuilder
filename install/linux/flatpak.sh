@@ -4,7 +4,9 @@ set -eux
 FLATHUB=https://flathub.org/repo/flathub.flatpakrepo
 
 # needed in github-ci
-command -v dnf && { dnf upgrade -y ; dnf install -y flatpak-builder git wget; }
+if [ `id -u` == 0 ]; then
+  command -v dnf && { dnf upgrade -y ; dnf install -y flatpak-builder git wget; }
+fi
 
 NOTFOUND=""
 command -v flatpak         >/dev/null 2>&1 || NOTFOUND="$NOTFOUND flatpak"
