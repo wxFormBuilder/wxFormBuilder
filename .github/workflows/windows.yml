@@ -36,7 +36,7 @@ jobs:
       shell: msys2 {0}
       run: |
         cd build/3.1/gmake
-        make config=release
+        make -j `nproc` config=release
     - name: Create installer
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'

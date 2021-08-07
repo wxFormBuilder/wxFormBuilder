@@ -32,7 +32,7 @@
 			"buildsystem": "simple",
 			"build-commands": [
 				"./create_build_files4.sh",
-				"make -C build/3.1/gmake config=release",
+				"make -C build/3.1/gmake -j `nproc` config=release",
 				"mv output/bin/wxformbuilder /app/bin",
 				"mkdir /app/share/wxformbuilder",
 				"mv output/xml /app/share/wxformbuilder",

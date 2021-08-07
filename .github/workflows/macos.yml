@@ -16,7 +16,7 @@ jobs:
     - name: Create build files
       run: ./create_build_files4.sh
     - name: Build
-      run: make -C build/3.1/gmake config=release
+      run: make -C build/3.1/gmake -j `sysctl -n hw.ncpu` config=release
     - name: Package app bundle
       run: |
         cd output
