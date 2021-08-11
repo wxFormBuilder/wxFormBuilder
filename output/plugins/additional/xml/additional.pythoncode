@@ -271,7 +271,7 @@ Python code generation written by
 		</template>
 		<template name="settings">
 			#ifequal $enabled "1"
-			@{ self.$name.Start( $period #ifequal $oneshot "1" @{, true@} ) #nl @}
+			@{ self.$name.Start( $period #ifequal $oneshot "1" @{, True@} ) #nl @}
 		</template>
 		<template name="evt_connect_OnTimer">#wxparent $name.Bind( wx.EVT_TIMER, #handler, id=$id )</template>
 	</templates>
