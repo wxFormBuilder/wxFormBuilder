@@ -3,7 +3,10 @@ on: [push, pull_request]
 
 jobs:
   bundle:
-    runs-on: macos-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, macos-11]
     name: App Bundle
     steps:
     - uses: actions/checkout@v2
@@ -24,5 +27,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: App Bundle
+        name: App Bundle ${{ matrix.os }}
         path: output/wxFormBuilder_macOS.zip
