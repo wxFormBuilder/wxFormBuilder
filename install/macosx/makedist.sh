@@ -64,3 +64,6 @@ for lib in $(ls libwx_*.dylib); do
   fi
 done
 popd > /dev/null
+
+# Sign the contents of the app bundle, dylibbundler modified pretty much all binaries and libraries
+codesign -s - -f --deep --verbose "$PROJECT_ROOT/output/wxFormBuilder.app"
