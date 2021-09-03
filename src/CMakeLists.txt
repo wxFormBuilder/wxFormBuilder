@@ -1,0 +1,130 @@
+add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
+add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
+set_target_properties(wxFormBuilder_app PROPERTIES
+  OUTPUT_NAME $<IF:$<BOOL:${WIN32}>,wxFormBuilder,wxformbuilder>
+)
+
+target_sources(wxFormBuilder_app
+  PRIVATE
+    maingui.h
+    maingui.cpp
+    $<$<BOOL:${WIN32}>:wxFormBuilder.rc>
+    codegen/codegen.h
+    codegen/codegen.cpp
+    codegen/codeparser.h
+    codegen/codeparser.cpp
+    codegen/codewriter.h
+    codegen/codewriter.cpp
+    codegen/cppcg.h
+    codegen/cppcg.cpp
+    codegen/luacg.h
+    codegen/luacg.cpp
+    codegen/phpcg.h
+    codegen/phpcg.cpp
+    codegen/pythoncg.h
+    codegen/pythoncg.cpp
+    codegen/xrccg.h
+    codegen/xrccg.cpp
+    dbg_stack_trace/stack.hpp
+    dbg_stack_trace/stack.cpp
+    md5/md5.hh
+    md5/md5.cc
+    model/database.h
+    model/database.cpp
+    model/objectbase.h
+    model/objectbase.cpp
+    model/types.h
+    model/types.cpp
+    model/xrcfilter.h
+    model/xrcfilter.cpp
+    rad/about.h
+    rad/about.cpp
+    rad/appdata.h
+    rad/appdata.cpp
+    rad/auitabart.h
+    rad/bitmaps.h
+    rad/bitmaps.cpp
+    rad/cmdproc.h
+    rad/cmdproc.cpp
+    rad/customkeys.h
+    rad/customkeys.cpp
+    rad/genericpanel.h
+    rad/genericpanel.cpp
+    rad/mainframe.h
+    rad/mainframe.cpp
+    rad/menueditor.h
+    rad/menueditor.cpp
+    rad/palette.h
+    rad/palette.cpp
+    rad/title.h
+    rad/title.cpp
+    rad/wxfbevent.h
+    rad/wxfbevent.cpp
+    rad/wxfbmanager.h
+    rad/wxfbmanager.cpp
+    rad/codeeditor/codeeditor.h
+    rad/codeeditor/codeeditor.cpp
+    rad/cpppanel/cpppanel.h
+    rad/cpppanel/cpppanel.cpp
+    rad/dataobject/dataobject.h
+    rad/dataobject/dataobject.cpp
+    rad/designer/innerframe.h
+    rad/designer/innerframe.cpp
+    rad/designer/menubar.h
+    rad/designer/menubar.cpp
+    rad/designer/visualeditor.h
+    rad/designer/visualeditor.cpp
+    rad/designer/visualobj.h
+    rad/designer/visualobj.cpp
+    rad/designer/window_buttons.h
+    rad/geninheritclass/GenInheritedDlg.fbp
+    rad/geninheritclass/geninhertclass_gui.h
+    rad/geninheritclass/geninhertclass_gui.cpp
+    rad/geninheritclass/geninhertclass.h
+    rad/geninheritclass/geninhertclass.cpp
+    rad/inspector/objinspect.h
+    rad/inspector/objinspect.cpp
+    rad/inspector/wxfbadvprops.h
+    rad/inspector/wxfbadvprops.cpp
+    rad/luapanel/luapanel.h
+    rad/luapanel/luapanel.cpp
+    rad/objecttree/objecttree.h
+    rad/objecttree/objecttree.cpp
+    rad/phppanel/phppanel.h
+    rad/phppanel/phppanel.cpp
+    rad/pythonpanel/pythonpanel.h
+    rad/pythonpanel/pythonpanel.cpp
+    rad/xrcpanel/xrcpanel.h
+    rad/xrcpanel/xrcpanel.cpp
+    rad/xrcpreview/xrcpreview.h
+    rad/xrcpreview/xrcpreview.cpp
+    utils/annoyingdialog.h
+    utils/annoyingdialog.cpp
+    utils/debug.h
+    utils/filetocarray.h
+    utils/filetocarray.cpp
+    utils/m_wxfb.cpp
+    utils/stringutils.h
+    utils/stringutils.cpp
+    utils/typeconv.h
+    utils/typeconv.cpp
+    utils/wxfbdefs.h
+    utils/wxfbexception.h
+    utils/wxfbipc.h
+    utils/wxfbipc.cpp
+    utils/wxlogstring.h
+)
+target_compile_definitions(wxFormBuilder_app
+  PRIVATE
+    $<$<CONFIG:DEBUG>:__WXFB_DEBUG__>
+)
+target_include_directories(wxFormBuilder_app
+  PRIVATE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+)
+target_link_libraries(wxFormBuilder_app
+  PRIVATE
+    wxFormBuilder::plugin-interface
+    ticpp
+    ${wxWidgets_LIBRARIES}
+)
