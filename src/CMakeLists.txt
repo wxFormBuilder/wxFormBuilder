@@ -125,6 +125,6 @@ target_include_directories(wxFormBuilder_app
 target_link_libraries(wxFormBuilder_app
   PRIVATE
     wxFormBuilder::plugin-interface
-    ticpp
+    ticpp::ticpp
     ${wxWidgets_LIBRARIES}
 )

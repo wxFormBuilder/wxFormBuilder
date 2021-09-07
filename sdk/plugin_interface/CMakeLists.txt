@@ -25,6 +25,6 @@ target_include_directories(wxFormBuilder_plugin-interface
 )
 target_link_libraries(wxFormBuilder_plugin-interface
   PUBLIC
-    ticpp
+    ticpp::ticpp
     ${wxWidgets_LIBRARIES}
 )
