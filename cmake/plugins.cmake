@@ -1,16 +1,46 @@
-function(add_plugin pluginName)
-  add_library("wxFormBuilder_${pluginName}" MODULE)
-  add_library("wxFormBuilder::${pluginName}" ALIAS "wxFormBuilder_${pluginName}")
-  set_target_properties("wxFormBuilder_${pluginName}" PROPERTIES
-      OUTPUT_NAME "$<$<BOOL:${WIN32}>:lib>${pluginName}"
+function(add_plugin PLUGIN_NAME)
+  set(options "")
+  set(singleValues DIRECTORY)
+  set(multiValues SOURCES DEFINITIONS LIBRARIES)
+  cmake_parse_arguments(PLUGIN "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  if (NOT DEFINED PLUGIN_DIRECTORY)
+    set(PLUGIN_DIRECTORY "${PLUGIN_NAME}")
+  endif()
+  if(DEFINED PLUGIN_SOURCES)
+    list(TRANSFORM PLUGIN_SOURCES PREPEND "${PLUGIN_DIRECTORY}/")
+  endif()
+
+  add_library("wxFormBuilder_${PLUGIN_NAME}" MODULE)
+  add_library("wxFormBuilder::${PLUGIN_NAME}" ALIAS "wxFormBuilder_${PLUGIN_NAME}")
+  set_target_properties("wxFormBuilder_${PLUGIN_NAME}" PROPERTIES
+      OUTPUT_NAME "$<$<BOOL:${WIN32}>:lib>${PLUGIN_NAME}"
   )
 
-  target_sources("wxFormBuilder_${pluginName}"
+  target_sources("wxFormBuilder_${PLUGIN_NAME}"
     PRIVATE
-      "${pluginName}/${pluginName}.cpp"
+      "${PLUGIN_DIRECTORY}/${PLUGIN_NAME}.cpp"
   )
-  target_link_libraries("wxFormBuilder_${pluginName}"
+  if(DEFINED PLUGIN_SOURCES)
+    target_sources("wxFormBuilder_${PLUGIN_NAME}"
+      PRIVATE
+        ${PLUGIN_SOURCES}
+    )
+  endif()
+  if(DEFINED PLUGIN_DEFINITIONS)
+    target_compile_definitions("wxFormBuilder_${PLUGIN_NAME}"
+      PRIVATE
+        ${PLUGIN_DEFINITIONS}
+    )
+  endif()
+  target_link_libraries("wxFormBuilder_${PLUGIN_NAME}"
     PRIVATE
       wxFormBuilder::plugin-interface
   )
+  if(DEFINED PLUGIN_LIBRARIES)
+    target_link_libraries("wxFormBuilder_${PLUGIN_NAME}"
+      PRIVATE
+        ${PLUGIN_LIBRARIES}
+    )
+  endif()
 endfunction()
