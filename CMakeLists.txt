@@ -27,6 +27,10 @@ if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+
+include(cmake/plugins.cmake)
+
 # TODO: OPTIONAL_COMPONENTS seems to be broken currently (at least on Linux), so make media a required component
 find_package(wxWidgets 3.1.2 REQUIRED media xrc richtext propgrid ribbon stc html aui xml net core base)
 include(${wxWidgets_USE_FILE})
