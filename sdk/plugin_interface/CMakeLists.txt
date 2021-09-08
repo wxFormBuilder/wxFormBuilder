@@ -20,7 +20,7 @@ target_compile_definitions(wxFormBuilder_plugin-interface
     $<$<IN_LIST:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY$<COMMA>MODULE_LIBRARY>:BUILD_DLL>
 )
 target_include_directories(wxFormBuilder_plugin-interface
-  PUBLIC
+  INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
 target_link_libraries(wxFormBuilder_plugin-interface
