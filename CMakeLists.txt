@@ -19,9 +19,15 @@ if(PROJECT_IS_TOP_LEVEL)
   endif()
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+elseif(CMAKE_CXX_STANDARD LESS 17)
+  message(FATAL_ERROR "The CMAKE_CXX_STANDARD value needs to be at least 17, current value: ${CMAKE_CXX_STANDARD}")
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
+  set(CMAKE_CXX_EXTENSIONS OFF)
+endif()
 
 # TODO: OPTIONAL_COMPONENTS seems to be broken currently (at least on Linux), so make media a required component
 find_package(wxWidgets 3.1.2 REQUIRED media xrc richtext propgrid ribbon stc html aui xml net core base)
