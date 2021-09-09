@@ -128,3 +128,23 @@ target_link_libraries(wxFormBuilder_app
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
 )
+file(RELATIVE_PATH libDir
+  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+)
+set(pluginDir "${libDir}/wxformbuilder")
+set_target_properties(wxFormBuilder_app PROPERTIES
+  INSTALL_RPATH "$ORIGIN/${pluginDir}"
+)
+
+install(TARGETS wxFormBuilder_app
+  RUNTIME
+    DESTINATION "${CMAKE_INSTALL_BINDIR}"
+)
+# TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
+install(DIRECTORY ../output/resources
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/wxformbuilder"
+)
+install(DIRECTORY ../output/xml
+  DESTINATION "${CMAKE_INSTALL_DATADIR}/wxformbuilder"
+)

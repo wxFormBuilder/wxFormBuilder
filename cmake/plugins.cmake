@@ -43,4 +43,18 @@ function(add_plugin PLUGIN_NAME)
         ${PLUGIN_LIBRARIES}
     )
   endif()
+
+  install(TARGETS "wxFormBuilder_${PLUGIN_NAME}"
+    RUNTIME
+      DESTINATION "${CMAKE_INSTALL_BINDIR}/wxformbuilder"
+    LIBRARY
+      DESTINATION "${CMAKE_INSTALL_LIBDIR}/wxformbuilder"
+  )
+  # TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
+  install(DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}/icons"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/wxformbuilder/plugins/${PLUGIN_NAME}"
+  )
+  install(DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}/xml"
+    DESTINATION "${CMAKE_INSTALL_DATADIR}/wxformbuilder/plugins/${PLUGIN_NAME}"
+  )
 endfunction()
