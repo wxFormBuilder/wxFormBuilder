@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v3
+    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
       with:
         bundle: wxformbuilder.flatpak
         manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json 
