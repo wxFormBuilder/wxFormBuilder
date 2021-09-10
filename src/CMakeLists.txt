@@ -1,3 +1,9 @@
+file(RELATIVE_PATH libDir
+  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+)
+set(pluginDir ${libDir}/wxformbuilder)
+
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
 set_target_properties(wxFormBuilder_app PROPERTIES
@@ -128,13 +134,8 @@ target_link_libraries(wxFormBuilder_app
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
 )
-file(RELATIVE_PATH libDir
-  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
-  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
-)
-set(pluginDir ${libDir}/wxformbuilder)
 set_target_properties(wxFormBuilder_app PROPERTIES
-  INSTALL_RPATH $ORIGIN/${pluginDir}
+  INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
 )
 
 install(TARGETS wxFormBuilder_app

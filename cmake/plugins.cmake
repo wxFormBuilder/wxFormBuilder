@@ -43,6 +43,9 @@ function(add_plugin PLUGIN_NAME)
         ${PLUGIN_LIBRARIES}
     )
   endif()
+  set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
+    INSTALL_RPATH $ORIGIN/..
+  )
 
   install(TARGETS wxFormBuilder_${PLUGIN_NAME}
     RUNTIME
