@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Layout" lib="liblayout" icon="sizer16x16.xpm" desc="wxWidgets sizer layouts">
+<package name="Layout" lib="layout" icon="sizer16x16.xpm" desc="wxWidgets sizer layouts">
 
   <objectinfo class="sizer" icon="sizer.xpm" type="interface">
     <property name="minimum_size" type="wxSize" help="Give the sizer a minimal size. Normally, the sizer will calculate its minimal size based purely on how much space its children need. After setting the minimal size, 'GetMinSize' will return either the minimal size as requested by its children or the minimal size set here, depending on which is bigger."/>

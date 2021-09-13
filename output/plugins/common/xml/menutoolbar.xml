@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Menu/Toolbar" lib="libcommon" icon="menubar.xpm" desc="wxWidgets Menu and Toolbar Controls">
+<package name="Menu/Toolbar" lib="common" icon="menubar.xpm" desc="wxWidgets Menu and Toolbar Controls">
 
   <objectinfo class="wxStatusBar" icon="statusbar.xpm" type="statusbar">
     <inherits class="wxWindow"/>
