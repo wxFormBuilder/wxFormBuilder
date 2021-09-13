@@ -47,17 +47,26 @@ function(add_plugin PLUGIN_NAME)
     INSTALL_RPATH $ORIGIN/..
   )
 
-  install(TARGETS wxFormBuilder_${PLUGIN_NAME}
-    RUNTIME
-      DESTINATION ${CMAKE_INSTALL_BINDIR}/wxformbuilder
-    LIBRARY
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}/wxformbuilder
-  )
+  if(WIN32)
+    install(TARGETS wxFormBuilder_${PLUGIN_NAME}
+      RUNTIME
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/plugins/${PLUGIN_NAME}
+      LIBRARY
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME}
+    )
+  else()
+    install(TARGETS wxFormBuilder_${PLUGIN_NAME}
+      RUNTIME
+        DESTINATION ${CMAKE_INSTALL_BINDIR}/wxformbuilder
+      LIBRARY
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/wxformbuilder
+    )
+  endif()
   # TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
   install(DIRECTORY ../output/plugins/${PLUGIN_DIRECTORY}/icons
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/wxformbuilder/plugins/${PLUGIN_NAME}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}
   )
   install(DIRECTORY ../output/plugins/${PLUGIN_DIRECTORY}/xml
-    DESTINATION ${CMAKE_INSTALL_DATADIR}/wxformbuilder/plugins/${PLUGIN_NAME}
+    DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}
   )
 endfunction()

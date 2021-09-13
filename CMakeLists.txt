@@ -45,7 +45,15 @@ else()
 endif()
 include(${wxWidgets_USE_FILE})
 
+# Adjust paths to match wxStandardPaths implementation
 include(GNUInstallDirs)
+if(WIN32)
+  set(CMAKE_INSTALL_BINDIR .)
+  set(CMAKE_INSTALL_LIBDIR .)
+  set(CMAKE_INSTALL_DATADIR .)
+else()
+  set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder)
+endif()
 include(cmake/plugins.cmake)
 
 add_subdirectory(subprojects/ticpp)
