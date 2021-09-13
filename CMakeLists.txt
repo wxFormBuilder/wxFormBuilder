@@ -29,8 +29,20 @@ endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 
-# TODO: OPTIONAL_COMPONENTS seems to be broken currently (at least on Linux), so make media a required component
-find_package(wxWidgets 3.1.2 REQUIRED media xrc richtext propgrid ribbon stc html aui xml net core base)
+if(MSVC)
+  set(wxfbWxWidgetsMonoDefault ON)
+else()
+  set(wxfbWxWidgetsMonoDefault OFF)
+endif()
+option(WXFB_WXWIDGETS_MONO "Use monolithic variant of wxWidgets." ${wxfbWxWidgetsMonoDefault})
+
+set(wxfbWxWidgetsVersionMin 3.1.2)
+if(WXFB_WXWIDGETS_MONO)
+  find_package(wxWidgets ${wxfbWxWidgetsVersionMin} REQUIRED mono scintilla)
+else()
+  # TODO: OPTIONAL_COMPONENTS seems to be broken currently (at least on Linux), so make media a required component
+  find_package(wxWidgets ${wxfbWxWidgetsVersionMin} REQUIRED media xrc richtext propgrid ribbon stc html aui xml net core base)
+endif()
 include(${wxWidgets_USE_FILE})
 
 include(GNUInstallDirs)
