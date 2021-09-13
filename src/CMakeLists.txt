@@ -134,6 +134,7 @@ target_link_libraries(wxFormBuilder_app
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
     $<$<BOOL:${WIN32}>:imagehlp>
+    $<$<NOT:$<BOOL:${WIN32}>>:dl>
 )
 set_target_properties(wxFormBuilder_app PROPERTIES
   INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
