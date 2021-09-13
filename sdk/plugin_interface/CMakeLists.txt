@@ -17,7 +17,7 @@ target_sources(wxFormBuilder_plugin-interface
 )
 target_compile_definitions(wxFormBuilder_plugin-interface
   INTERFACE
-    $<$<IN_LIST:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY$<COMMA>MODULE_LIBRARY>:BUILD_DLL>
+    "$<$<IN_LIST:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY;MODULE_LIBRARY>:BUILD_DLL>"
 )
 target_include_directories(wxFormBuilder_plugin-interface
   INTERFACE
