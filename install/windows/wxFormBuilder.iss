@@ -58,8 +58,8 @@ UninstallDisplayIcon={app}\wxFormBuilder.exe
 ChangesAssociations=true
 VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
-InfoAfterFile=..\..\output\Changelog.txt
-LicenseFile=..\..\output\license.txt
+InfoAfterFile=..\..\_install\Changelog.txt
+LicenseFile=..\..\_install\license.txt
 MinVersion=6.1sp1
 
 
@@ -78,7 +78,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 
 [Files]
-#define protected RootDir "..\..\output"
+#define protected RootDir "..\..\_install"
 #define protected PluginsBaseDir "plugins"
 
 #define protected FindHandle
