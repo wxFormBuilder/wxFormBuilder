@@ -1,3 +1,13 @@
+if(WIN32)
+  if(MINGW)
+    find_package(BFD REQUIRED)
+    find_package(Iberty REQUIRED)
+    # TODO: Non-MSYS2-MinGW seems to not require Intl but only ZLIB
+    find_package(Intl REQUIRED)
+    find_package(ZLIB REQUIRED)
+  endif()
+endif()
+
 file(RELATIVE_PATH libDir
   "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
   "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
@@ -120,6 +130,7 @@ target_sources(wxFormBuilder_app
     utils/wxfbipc.cpp
     utils/wxlogstring.h
 )
+
 target_compile_definitions(wxFormBuilder_app
   PRIVATE
     $<$<CONFIG:DEBUG>:__WXFB_DEBUG__>
@@ -128,14 +139,34 @@ target_include_directories(wxFormBuilder_app
   PRIVATE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
+
 target_link_libraries(wxFormBuilder_app
   PRIVATE
     wxFormBuilder::plugin-interface
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
-    $<$<BOOL:${WIN32}>:imagehlp>
-    $<$<NOT:$<BOOL:${WIN32}>>:dl>
 )
+if(WIN32)
+  if(MINGW)
+    target_link_libraries(wxFormBuilder_app
+      PRIVATE
+        BFD::BFD
+        Iberty::Iberty
+        Intl::Intl
+        ZLIB::ZLIB
+        psapi # TODO: Only required for systems older than Windows 7
+    )
+  endif()
+  target_link_libraries(wxFormBuilder_app
+    PRIVATE
+      imagehlp
+  )
+else()
+  target_link_libraries(wxFormBuilder_app
+    PRIVATE
+      dl
+  )
+endif()
 set_target_properties(wxFormBuilder_app PROPERTIES
   INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
 )
