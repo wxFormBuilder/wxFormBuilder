@@ -176,6 +176,12 @@ install(TARGETS wxFormBuilder_app
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 # TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
+install(
+  FILES
+    ../output/Changelog.txt
+    ../output/license.txt
+  DESTINATION ${CMAKE_INSTALL_DATADIR}
+)
 install(DIRECTORY ../output/resources
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
