@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.21)
 
 project(wxFormBuilder VERSION 3.9.0 LANGUAGES CXX)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
+
 if(PROJECT_IS_TOP_LEVEL)
   set(buildTypes "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
   set(defaultBuildType "Debug")
