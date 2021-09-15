@@ -188,6 +188,7 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.wxformbuilder"
   MACOSX_BUNDLE_ICON_FILE "icon.icns"
+  MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../install/macosx/Info.plist.in"
 )
 if(APPLE)
   set_target_properties(wxFormBuilder_app PROPERTIES
