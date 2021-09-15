@@ -43,9 +43,15 @@ function(add_plugin PLUGIN_NAME)
         ${PLUGIN_LIBRARIES}
     )
   endif()
-  set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-    INSTALL_RPATH $ORIGIN/..
-  )
+  if(APPLE)
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
+      INSTALL_RPATH "@loader_path/../lib"
+    )
+  else()
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
+      INSTALL_RPATH $ORIGIN/..
+    )
+  endif()
 
   if(WIN32)
     install(TARGETS wxFormBuilder_${PLUGIN_NAME}
@@ -53,6 +59,13 @@ function(add_plugin PLUGIN_NAME)
         DESTINATION ${CMAKE_INSTALL_BINDIR}/plugins/${PLUGIN_NAME}
       LIBRARY
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME}
+    )
+  elseif(APPLE)
+    install(TARGETS wxFormBuilder_${PLUGIN_NAME}
+      RUNTIME
+        DESTINATION wxFormBuilder.app/Contents/PlugIns
+      LIBRARY
+        DESTINATION wxFormBuilder.app/Contents/PlugIns
     )
   else()
     install(TARGETS wxFormBuilder_${PLUGIN_NAME}

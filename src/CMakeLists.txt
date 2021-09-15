@@ -8,11 +8,13 @@ if(WIN32)
   endif()
 endif()
 
-file(RELATIVE_PATH libDir
-  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
-  "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
-)
-set(pluginDir ${libDir}/wxformbuilder)
+if(NOT APPLE)
+  file(RELATIVE_PATH libDir
+    "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+  )
+  set(pluginDir ${libDir}/wxformbuilder)
+endif()
 
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
@@ -130,6 +132,19 @@ target_sources(wxFormBuilder_app
     utils/wxfbipc.cpp
     utils/wxlogstring.h
 )
+if(APPLE)
+  set(appleResources
+    ../install/macosx/icon.icns
+    ../install/macosx/docicon.icns
+  )
+  target_sources(wxFormBuilder_app
+    PRIVATE
+      ${appleResources}
+  )
+  set_target_properties(wxFormBuilder_app PROPERTIES
+    RESOURCE "${appleResources}"
+  )
+endif()
 
 target_compile_definitions(wxFormBuilder_app
   PRIVATE
@@ -167,11 +182,26 @@ else()
       dl
   )
 endif()
+
 set_target_properties(wxFormBuilder_app PROPERTIES
-  INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
+  MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
+  MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+  MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.wxformbuilder"
+  MACOSX_BUNDLE_ICON_FILE "icon.icns"
 )
+if(APPLE)
+  set_target_properties(wxFormBuilder_app PROPERTIES
+    INSTALL_RPATH "@executable_path/../lib;@executable_path/../PlugIns"
+  )
+else()
+  set_target_properties(wxFormBuilder_app PROPERTIES
+    INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
+  )
+endif()
 
 install(TARGETS wxFormBuilder_app
+  BUNDLE
+    DESTINATION .
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
