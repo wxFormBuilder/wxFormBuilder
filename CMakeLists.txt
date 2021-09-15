@@ -92,3 +92,13 @@ endif()
 add_subdirectory(sdk/plugin_interface)
 add_subdirectory(plugins)
 add_subdirectory(src)
+
+if(APPLE)
+  install(
+    CODE
+    [[
+      include(BundleUtilities)
+      fixup_bundle("${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app" "" "")
+    ]]
+  )
+endif()
