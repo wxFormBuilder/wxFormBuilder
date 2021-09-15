@@ -43,6 +43,7 @@ function(add_plugin PLUGIN_NAME)
         ${PLUGIN_LIBRARIES}
     )
   endif()
+
   if(APPLE)
     set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
       INSTALL_RPATH "@loader_path/../lib"
@@ -52,6 +53,8 @@ function(add_plugin PLUGIN_NAME)
       INSTALL_RPATH $ORIGIN/..
     )
   endif()
+
+  add_dependencies(wxFormBuilder_app wxFormBuilder_${PLUGIN_NAME})
 
   if(WIN32)
     install(TARGETS wxFormBuilder_${PLUGIN_NAME}

@@ -219,3 +219,15 @@ install(DIRECTORY ../output/resources
 install(DIRECTORY ../output/xml
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
+if(APPLE)
+  # TODO: Is there any possibility to determine the output filenames of the plugins to create a list that can be inserted literal?
+  install(
+    CODE
+    [[
+      include(BundleUtilities)
+      set(moduleDependencies "")
+      file(GLOB moduleDependencies LIST_DIRECTORIES false "${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*.so")
+      fixup_bundle("${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app" "${moduleDependencies}" "")
+    ]]
+  )
+endif()
