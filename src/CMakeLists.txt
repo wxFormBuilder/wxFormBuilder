@@ -19,7 +19,7 @@ endif()
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
 set_target_properties(wxFormBuilder_app PROPERTIES
-  OUTPUT_NAME $<IF:$<BOOL:${WIN32}>,wxFormBuilder,wxformbuilder>
+  OUTPUT_NAME $<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>
 )
 
 target_sources(wxFormBuilder_app
