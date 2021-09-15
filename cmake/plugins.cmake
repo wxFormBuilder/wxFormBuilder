@@ -54,8 +54,6 @@ function(add_plugin PLUGIN_NAME)
     )
   endif()
 
-  add_dependencies(wxFormBuilder_app wxFormBuilder_${PLUGIN_NAME})
-
   if(WIN32)
     install(TARGETS wxFormBuilder_${PLUGIN_NAME}
       RUNTIME
