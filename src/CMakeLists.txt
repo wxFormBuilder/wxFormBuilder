@@ -219,3 +219,38 @@ install(DIRECTORY ../output/resources
 install(DIRECTORY ../output/xml
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
+
+if(NOT WIN32 AND NOT APPLE)
+  install(
+    FILES ../install/linux/data/gnome/usr/share/applications/wxformbuilder.desktop
+    RENAME org.wxformbuilder.wxFormBuilder.desktop
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
+  )
+  install(
+    FILES ../install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxFormBuilder.appdata.xml
+    RENAME org.wxformbuilder.wxFormBuilder.metainfo.xml
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
+  )
+  install(
+    FILES ../install/linux/data/gnome/usr/share/pixmaps/wxformbuilder.png
+    RENAME org.wxformbuilder.wxFormBuilder.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps
+  )
+  install(
+    FILES ../install/linux/data/gnome/usr/share/mime/packages/org.wxformbuilder.wxFormBuilder.xml
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
+  )
+  install(
+    FILES ../install/linux/data/gnome/usr/share/icons/gnome/48x48/mimetypes/gnome-mime-application-x-wxformbuilder.png
+    RENAME application-x-wxformbuilder.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/mimetypes
+  )
+  install(
+    CODE
+    "
+      find_program(update-mime-database_cmd NAMES update-mime-database REQUIRED)
+      mark_as_advanced(update-mime-database_cmd)
+      execute_process(COMMAND \${update-mime-database_cmd} \"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mime\")
+    "
+  )
+endif()
