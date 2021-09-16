@@ -242,7 +242,7 @@ if(NOT WIN32 AND NOT APPLE)
   )
   install(
     FILES ../install/linux/data/gnome/usr/share/icons/gnome/48x48/mimetypes/gnome-mime-application-x-wxformbuilder.png
-    RENAME application-x-wxformbuilder.png
+    RENAME org.wxformbuilder.wxFormBuilder.application-x-wxformbuilder.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/mimetypes
   )
   install(
