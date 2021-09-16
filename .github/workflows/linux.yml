@@ -1,4 +1,3 @@
-# create a flatpak-build
 name: Linux
 on: [push, pull_request]
 

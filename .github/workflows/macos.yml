@@ -3,11 +3,11 @@ on: [push, pull_request]
 
 jobs:
   bundle:
+    name: App Bundle
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, macos-11]
-    name: App Bundle
     steps:
     - uses: actions/checkout@v2
       with:

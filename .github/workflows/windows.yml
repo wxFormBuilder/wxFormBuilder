@@ -2,9 +2,9 @@ name: Windows
 on: [push, pull_request]
 
 jobs:
-  build:
-    runs-on: windows-latest
+  installer:
     name: Installer
+    runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
       with:
@@ -15,17 +15,31 @@ jobs:
         release: false
         update: false
         install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 cmake make'
+    - name: Create build system
+      shell: msys2 {0}
+      run: |
+        cmake -S . -B _build -G "MSYS Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+    - name: Package build system
+      if: ${{ startsWith(github.ref, 'refs/heads/test_') }}
+      shell: cmd
+      run: |
+        7z a -tzip -r wxFormBuilder_Windows_build.zip _build
     - name: Build
       shell: msys2 {0}
       run: |
-        cmake -S . -B build -G "MSYS Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
-        cmake --build build -j `nproc`
-        cmake --install build
+        cmake --build _build --config Release -j `nproc`
+        cmake --install _build --config Release
+    - name: Test
+      shell: cmd
+      run: |
+        _install/wxFormBuilder.exe -g wxfbTest/wxfbTest.fbp
     - name: Create installer
       shell: cmd
-      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
+      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /O"." install/windows/wxFormBuilder.iss'
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: Windows Installer
-        path: install\windows\wxFormBuilder-*.exe
+        path: |
+          wxFormBuilder_Windows_build.zip
+          wxFormBuilder-*.exe

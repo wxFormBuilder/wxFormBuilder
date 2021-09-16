@@ -31,9 +31,9 @@
 			"name": "wxFormBuilder",
 			"buildsystem": "simple",
 			"build-commands": [
-				"cmake -S . -B build -G \"Unix Makefiles\" --install-prefix /app -DCMAKE_BUILD_TYPE=Release",
-				"cmake --build build -j `nproc`",
-				"cmake --install build",
+				"cmake -S . -B _build -G \"Unix Makefiles\" --install-prefix /app -DCMAKE_BUILD_TYPE=Release",
+				"cmake --build _build --config Release -j `nproc`",
+				"cmake --install _build --config Release",
 				"mkdir /app/share/applications",
 				"mv install/linux/data/gnome/usr/share/applications/wxformbuilder.desktop /app/share/applications/org.wxformbuilder.wxFormBuilder.desktop",
 				"sed -i s/wxformbuilder.png/org.wxformbuilder.wxFormBuilder.png/ /app/share/applications/org.wxformbuilder.wxFormBuilder.desktop",
