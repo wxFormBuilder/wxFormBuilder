@@ -34,7 +34,7 @@ function(add_plugin PLUGIN_NAME)
     )
   endif()
   target_link_libraries(wxFormBuilder_${PLUGIN_NAME}
-    PRIVATE
+    PUBLIC
       wxFormBuilder::plugin-interface
   )
   if(DEFINED PLUGIN_LIBRARIES)
