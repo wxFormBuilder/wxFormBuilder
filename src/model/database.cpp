@@ -773,9 +773,7 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 		if ( !lib.empty() )
 		{
 			// Add prefix required by non-CMake builds
-			#ifdef __WXMSW__
-				lib.insert(0, "lib");
-			#endif
+			lib.insert(0, "lib");
 			// Allows plugin dependency dlls to be next to plugin dll in windows
 			wxString workingDir = ::wxGetCwd();
 			wxFileName::SetCwd( libPath );
