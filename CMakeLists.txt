@@ -30,6 +30,10 @@ if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
 endif()
 
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+if(APPLE)
+  # TODO: The current plugin loader code requires this extension
+  set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
+endif()
 
 if(MSVC)
   set(wxfbWxWidgetsMonoDefault ON)
@@ -96,7 +100,7 @@ endif()
 if(APPLE)
   # TODO: Is there any possibility to determine the output filenames of the plugins to create a list that can be inserted literal?
   # The variable ${CMAKE_SHARED_MODULE_SUFFIX} is not available during installation so pass it through the cache
-  set(fixupBundleModuleExtension ${CMAKE_SHARED_MODULE_SUFFIX} CACHE INTERNAL)
+  set(fixupBundleModuleExtension ${CMAKE_SHARED_MODULE_SUFFIX} CACHE INTERNAL "")
   install(
     CODE
     [[
