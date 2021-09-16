@@ -104,4 +104,14 @@ if(APPLE)
       fixup_bundle("${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app" "${moduleDependencies}" "")
     ]]
   )
+
+  find_program(CODESIGN
+    NAMES
+      codesign
+    REQUIRED
+  )
+  install(
+    CODE
+      "execute_process(COMMAND ${CODESIGN} -s - -f --deep --verbose \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\")"
+  )
 endif()
