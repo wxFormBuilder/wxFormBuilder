@@ -18,34 +18,25 @@ jobs:
         brew install cmake make wxwidgets
     - name: Create build system
       run: |
-        cmake -S . -B build-unix -G "Unix Makefiles" --install-prefix "$PWD/_install-unix" -DCMAKE_BUILD_TYPE=Release
-        cmake -S . -B build-xcode -G "Xcode" --install-prefix "$PWD/_install-xcode" -DCMAKE_BUILD_TYPE=Release
+        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
     - name: Package build system
       run: |
-        zip -ry wxFormBuilder_macOS_build-unix.zip build-unix
-        zip -ry wxFormBuilder_macOS_build-xcode.zip build-xcode
+        zip -ry wxFormBuilder_macOS_build.zip _build
     - name: Build
       run: |
-        cmake --build build-unix --config Release -j `sysctl -n hw.ncpu`
-        cmake --install build-unix --config Release
-        cmake --build build-xcode --config Release -j `sysctl -n hw.ncpu`
-        cmake --install build-xcode --config Release
+        cmake --build _build --config Release -j `sysctl -n hw.ncpu`
+        cmake --install _build --config Release
     - name: Test
       run: |
-        _install-unix/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
-        _install-xcode/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
+        _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
     - name: Package app bundle
       run: |
-        cd _install-unix
-        zip -ry wxFormBuilder_macOS_bundle.zip wxFormBuilder.app
-        cd ../_install-xcode
+        cd _install
         zip -ry wxFormBuilder_macOS_bundle.zip wxFormBuilder.app
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: App Bundle ${{ matrix.os }}
         path: |
-          wxFormBuilder_macOS_build-unix.zip
-          wxFormBuilder_macOS_build-xcode.zip
-          _install-unix/wxFormBuilder_macOS_bundle.zip
-          _install-xcode/wxFormBuilder_macOS_bundle.zip
+          wxFormBuilder_macOS_build.zip
+          _install/wxFormBuilder_macOS_bundle.zip
