@@ -30,6 +30,10 @@ jobs:
         cmake --install build-unix --config Release
         cmake --build build-xcode --config Release -j `sysctl -n hw.ncpu`
         cmake --install build-xcode --config Release
+    - name: Test
+      run: |
+        _install-unix/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
+        _install-xcode/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
     - name: Package app bundle
       run: |
         cd _install-unix
