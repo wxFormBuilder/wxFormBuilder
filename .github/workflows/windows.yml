@@ -35,7 +35,8 @@ jobs:
         _install/wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
     - name: Create installer
       shell: cmd
-      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /O"." install\\windows\\wxFormBuilder.iss'
+      run: |
+        ISCC.exe /O. install\\windows\\wxFormBuilder.iss
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
