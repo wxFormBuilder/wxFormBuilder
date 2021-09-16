@@ -46,7 +46,7 @@ function(add_plugin PLUGIN_NAME)
 
   if(APPLE)
     set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      INSTALL_RPATH "@loader_path/../lib"
+      INSTALL_RPATH "@loader_path/../Frameworks"
     )
   else()
     set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES

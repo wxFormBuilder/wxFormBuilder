@@ -192,7 +192,7 @@ set_target_properties(wxFormBuilder_app PROPERTIES
 )
 if(APPLE)
   set_target_properties(wxFormBuilder_app PROPERTIES
-    INSTALL_RPATH "@executable_path/../lib;@executable_path/../PlugIns"
+    INSTALL_RPATH "@executable_path/../Frameworks;@executable_path/../PlugIns"
   )
 else()
   set_target_properties(wxFormBuilder_app PROPERTIES
