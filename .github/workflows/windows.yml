@@ -30,9 +30,9 @@ jobs:
         cmake --build _build --config Release -j `nproc`
         cmake --install _build --config Release
     - name: Test
-      shell: cmd
+      shell: msys2 {0}
       run: |
-        '"_install\\wxFormBuilder.exe" -g "wxfbTest\\wxfbTest.fbp"'
+        _install/wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
     - name: Create installer
       shell: cmd
       run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" /O"." install\\windows\\wxFormBuilder.iss'
