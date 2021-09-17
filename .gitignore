@@ -4,7 +4,7 @@
 /.vscode/*cache*/
 /_build*/
 /_install*/
-/build/
+/build*/
 /install/linux/*.flatpak
 /install/linux/.flatpak-builder/
 /install/linux/build/
