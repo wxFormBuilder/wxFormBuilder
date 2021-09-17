@@ -20,7 +20,7 @@ jobs:
       run: |
         cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
     - name: Package build system
-      if: ${{ startsWith(github.ref, 'refs/heads/test_') }}
+      if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
       run: |
         zip -ry wxFormBuilder_macOS_build.zip _build
     - name: Build
