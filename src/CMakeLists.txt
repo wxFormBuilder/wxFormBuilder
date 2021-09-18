@@ -200,7 +200,9 @@ else()
   )
 endif()
 
+# Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
+  RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
   BUNDLE
     DESTINATION .
   RUNTIME
@@ -253,4 +255,58 @@ if(NOT WIN32 AND NOT APPLE)
       execute_process(COMMAND \${update-mime-database_cmd} \"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mime\")
     "
   )
+endif()
+
+if(WIN32)
+  # The installation of runtime dependencies does not take the set paths into account and
+  # only searches in system default paths. Therefor paths of libraries not in such locations
+  # need to be specified manually. Depending on the used compiler these are different.
+  if(MSVC)
+    # The compiler runtime libraries are installed in system default paths, because it is expected
+    # that the runtime distributables are getting installed along the application, these need to get
+    # filtered. The wxWidgets library uses the win32 search style and therefor the library path is defined
+    # (TODO: Unless the CMake build gets imported, what to do then?)
+    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+      DIRECTORIES
+        "${wxWidgets_LIB_DIR}"
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[msvcp.*\.dll]]
+        [[vcruntime.*\.dll]]
+      POST_EXCLUDE_REGEXES
+        # For some reason some dependencies use forward slashes, some backward slashes
+        [[.*[/\]system32/.*\.dll]]
+    )
+  elseif(MSYS)
+    # This environment has its own search paths which are not taken into account and must be specified.
+    # Depending on the bitness of the target architecture different directories are used.
+    # The "virtual" paths used by the MSYS environment cannot be used, they must be translated into physical
+    # paths of the system.
+    find_program(cygpath_cmd NAMES cygpath REQUIRED)
+    mark_as_advanced(cygpath_cmd)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      set(targetBitness 64)
+    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+      set(targetBitness 32)
+    else()
+      message(FATAL_ERROR "Unknown target bitness: ${CMAKE_SIZEOF_VOID_P} bytes")
+    endif()
+    # The mixed mode output equals the CMake path format
+    execute_process(COMMAND "${cygpath_cmd}" -m "/mingw${targetBitness}/bin" OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
+    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+      DIRECTORIES
+        "${msysSystemDir}"
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[user32\.dll]]
+        [[msvcrt.*\.dll]]
+      POST_EXCLUDE_REGEXES
+        # For some reason some dependencies use forward slashes, some backward slashes
+        [[.*[/\]system32/.*\.dll]]
+    )
+  endif()
 endif()

@@ -55,7 +55,12 @@ function(add_plugin PLUGIN_NAME)
   endif()
 
   if(WIN32)
+    # TODO: Using RUNTIME_DEPENDENCIES results in the dependencies getting installed in the locations
+    #       defined in this command, this is however unwanted because they should get installed in
+    #       the global location. Registering the dependencies in a set and installing them later with
+    #       the standalone command has the desired effect, but why?
     install(TARGETS wxFormBuilder_${PLUGIN_NAME}
+      RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
       RUNTIME
         DESTINATION ${CMAKE_INSTALL_BINDIR}/plugins/${PLUGIN_NAME}
       LIBRARY
