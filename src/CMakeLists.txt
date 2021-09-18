@@ -252,7 +252,7 @@ if(NOT WIN32 AND NOT APPLE)
     "
       find_program(update-mime-database_cmd NAMES update-mime-database REQUIRED)
       mark_as_advanced(update-mime-database_cmd)
-      execute_process(COMMAND \${update-mime-database_cmd} \"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mime\")
+      execute_process(COMMAND \"\${update-mime-database_cmd}\" \"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mime\")
     "
   )
 endif()

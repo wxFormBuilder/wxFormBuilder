@@ -108,7 +108,7 @@ if(APPLE)
 
       find_program(codesign_cmd NAMES codesign REQUIRED)
       mark_as_advanced(codesign_cmd)
-      execute_process(COMMAND \${codesign_cmd} -s - -f --deep --verbose \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\")
+      execute_process(COMMAND \"\${codesign_cmd}\" -s - -f --deep --verbose \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\")
     "
   )
 endif()
