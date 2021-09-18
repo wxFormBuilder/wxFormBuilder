@@ -105,24 +105,10 @@ Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsub
   #expr FindClose(FindHandle)
 #endif
 
-Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}; Components: main
+Source: {#RootDir}\wx*.dll; DestDir: {app}; Components: main
 
-Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libjbig*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libdeflate*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libwebp*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libLerc*.dll; DestDir: {app}; Components: runtime
+Source: {#RootDir}\lib*.dll; DestDir: {app}; Components: runtime
+Source: {#RootDir}\zlib1.dll; DestDir: {app}; Components: runtime
 
 
 [Icons]
