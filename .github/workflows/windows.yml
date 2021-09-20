@@ -35,7 +35,7 @@ jobs:
         cmake --build _build --config Release -j `nproc`
         cmake --install _build --config Release
     - name: Test
-      shell: msys2 {0}
+      shell: cmd
       run: |
         _install/wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
     - name: Create installer
