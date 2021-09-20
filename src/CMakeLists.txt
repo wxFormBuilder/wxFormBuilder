@@ -2,8 +2,12 @@ if(WIN32)
   if(MINGW)
     find_package(BFD REQUIRED)
     find_package(Iberty REQUIRED)
-    # TODO: Non-MSYS2-MinGW seems to not require Intl but only ZLIB
-    find_package(Intl REQUIRED)
+    # Non-MSYS2-MinGW builds seem not to require Intl but only ZLIB
+    if(MSYS)
+      find_package(Intl REQUIRED)
+    else()
+      find_package(Intl QUIET)
+    endif()
     find_package(ZLIB REQUIRED)
   endif()
 endif()
@@ -167,7 +171,7 @@ if(WIN32)
       PRIVATE
         BFD::BFD
         Iberty::Iberty
-        Intl::Intl
+        $<TARGET_NAME_IF_EXISTS:Intl::Intl>
         ZLIB::ZLIB
         psapi # TODO: Only required for systems older than Windows 7
     )
