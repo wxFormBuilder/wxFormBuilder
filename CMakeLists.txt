@@ -35,7 +35,7 @@ if(APPLE)
   set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
 endif()
 
-if(MSVC)
+if(MSVC OR MINGW AND NOT MSYS)
   set(wxfbWxWidgetsMonoDefault ON)
 else()
   set(wxfbWxWidgetsMonoDefault OFF)
