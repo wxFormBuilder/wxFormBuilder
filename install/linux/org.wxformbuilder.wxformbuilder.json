@@ -1,0 +1,47 @@
+{
+	"app-id": "org.wxformbuilder.wxformbuilder",
+	"runtime": "org.freedesktop.Platform",
+	"runtime-version": "21.08",
+	"sdk": "org.freedesktop.Sdk",
+	"command": "wxformbuilder",
+	"finish-args": [
+		"--socket=x11",
+		"--socket=wayland",
+		"--filesystem=host"
+	],
+	"cleanup": [ "/include" ],
+	"modules": [
+		{
+			"name": "wxWidgets",
+			"config-opts": [
+				"--with-gtk=3",
+				"--with-cxx=11",
+				"--with-libiconv=/usr"
+			],
+			"sources": [
+				{
+					"type": "archive",
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2",
+					"sha256": "d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224"
+				}
+			],
+			"cleanup": [ "/bin/wx*", "/lib/wx" ]
+		},
+		{
+			"name": "wxFormBuilder",
+			"buildsystem": "simple",
+			"build-commands": [
+				"cmake -S . -B _build -G \"Unix Makefiles\" --install-prefix /app -DCMAKE_BUILD_TYPE=Release",
+				"cmake --build _build --config Release -j `nproc`",
+				"cmake --install _build --config Release"
+			],
+			"sources": [
+				{
+					"type": "git",
+					"branch": "HEAD",
+					"path": "../.."
+				}
+			]
+		}
+	]
+}

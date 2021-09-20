@@ -1,13 +1,18 @@
 name: macOS
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - '**/windows/**'
+      - '**/linux/**'
+  pull_request:
 
 jobs:
   bundle:
+    name: App Bundle
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [macos-latest, macos-11]
-    name: App Bundle
     steps:
     - uses: actions/checkout@v2
       with:
@@ -15,17 +20,29 @@ jobs:
     - name: Setup environment
       run: |
         brew update
-        brew install dylibbundler make wxwidgets
-    - name: Create build files
-      run: ./create_build_files4.sh
+        brew install cmake make wxwidgets
+    - name: Create build system
+      run: |
+        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+    - name: Package build system
+      if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
+      run: |
+        zip -ry wxFormBuilder_macOS_build.zip _build
     - name: Build
-      run: make -C build/3.1/gmake -j `sysctl -n hw.ncpu` config=release
+      run: |
+        cmake --build _build --config Release -j `sysctl -n hw.ncpu`
+        cmake --install _build --config Release
+    - name: Test
+      run: |
+        _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
     - name: Package app bundle
       run: |
-        cd output
-        zip -ry wxFormBuilder_macOS.zip wxFormBuilder.app
+        cd _install
+        zip -ry ../wxFormBuilder_macOS_bundle.zip wxFormBuilder.app
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: App Bundle ${{ matrix.os }}
-        path: output/wxFormBuilder_macOS.zip
+        path: |
+          wxFormBuilder_macOS_build.zip
+          wxFormBuilder_macOS_bundle.zip

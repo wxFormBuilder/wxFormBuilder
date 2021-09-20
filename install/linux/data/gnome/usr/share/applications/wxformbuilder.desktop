@@ -1,13 +1,11 @@
 [Desktop Entry]
 Version=1.0
+Type=Application
 Name=wxFormBuilder
 Comment=wxWidgets GUI Designer
 TryExec=wxformbuilder
 Exec=wxformbuilder %f
-Icon=wxformbuilder.png
 Terminal=false
-X-MultipleArgs=false
-Type=Application
-Categories=GTK;GUIDesigner;Development;
-StartupNotify=true
+Icon=org.wxformbuilder.wxformbuilder
 MimeType=application/x-wxformbuilder;
+Categories=GTK;GUIDesigner;Development;

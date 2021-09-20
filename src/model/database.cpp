@@ -740,13 +740,7 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 	}
 }
 
-void ObjectDatabase::SetupPackage(const wxString& file,
-#ifdef __WXMSW__
-                                  const wxString& path,
-#else
-                                  const wxString& /*path*/,
-#endif
-                                  PwxFBManager manager) {
+void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const wxString& path, PwxFBManager manager) {
 	#ifdef __WXMSW__
 		wxString libPath = path;
 	#else
@@ -760,11 +754,11 @@ void ObjectDatabase::SetupPackage(const wxString& file,
     // that used to cause crashes when trying to debug.
     wxString wxver = wxT("");
 
-#ifdef DEBUG
-	#ifdef APPEND_WXVERSION
-		wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
+	#ifdef DEBUG
+		#ifdef APPEND_WXVERSION
+			wxver = wxver + wxString::Format( wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION );
+		#endif
 	#endif
-#endif
 
 	try
 	{
@@ -778,6 +772,8 @@ void ObjectDatabase::SetupPackage(const wxString& file,
 		root->GetAttributeOrDefault( "lib", &lib, "" );
 		if ( !lib.empty() )
 		{
+			// Add prefix required by non-CMake builds
+			lib.insert(0, "lib");
 			// Allows plugin dependency dlls to be next to plugin dll in windows
 			wxString workingDir = ::wxGetCwd();
 			wxFileName::SetCwd( libPath );
