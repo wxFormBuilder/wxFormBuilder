@@ -3,6 +3,6 @@
 	<mime-type type="application/x-wxformbuilder">
 		<comment>wxFormBuilder Project</comment>
 		<glob pattern="*.fbp"/>
-        <icon name="org.wxformbuilder.wxFormBuilder.application-x-wxformbuilder"/>
+		<icon name="org.wxformbuilder.wxformbuilder.application-x-wxformbuilder"/>
 	</mime-type>
 </mime-info>

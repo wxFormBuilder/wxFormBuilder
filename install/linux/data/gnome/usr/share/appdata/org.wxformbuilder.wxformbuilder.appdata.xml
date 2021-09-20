@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-  <id>org.wxformbuilder.wxFormBuilder</id>
+  <id>org.wxformbuilder.wxformbuilder</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0+</project_license>
   <name>wxFormBuilder</name>
@@ -13,7 +13,7 @@
     </p>
   </description>
 
-  <launchable type="desktop-id">org.wxformbuilder.wxFormBuilder.desktop</launchable>
+  <launchable type="desktop-id">org.wxformbuilder.wxformbuilder.desktop</launchable>
 
   <url type="homepage">http://wxformbuilder.org</url>
 

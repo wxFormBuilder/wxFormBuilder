@@ -229,26 +229,26 @@ install(DIRECTORY ../output/xml
 if(NOT WIN32 AND NOT APPLE)
   install(
     FILES ../install/linux/data/gnome/usr/share/applications/wxformbuilder.desktop
-    RENAME org.wxformbuilder.wxFormBuilder.desktop
+    RENAME org.wxformbuilder.wxformbuilder.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
   )
   install(
-    FILES ../install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxFormBuilder.appdata.xml
-    RENAME org.wxformbuilder.wxFormBuilder.metainfo.xml
+    FILES ../install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxformbuilder.appdata.xml
+    RENAME org.wxformbuilder.wxformbuilder.metainfo.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
   )
   install(
     FILES ../install/linux/data/gnome/usr/share/pixmaps/wxformbuilder.png
-    RENAME org.wxformbuilder.wxFormBuilder.png
+    RENAME org.wxformbuilder.wxformbuilder.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps
   )
   install(
-    FILES ../install/linux/data/gnome/usr/share/mime/packages/org.wxformbuilder.wxFormBuilder.xml
+    FILES ../install/linux/data/gnome/usr/share/mime/packages/org.wxformbuilder.wxformbuilder.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
   )
   install(
     FILES ../install/linux/data/gnome/usr/share/icons/gnome/48x48/mimetypes/gnome-mime-application-x-wxformbuilder.png
-    RENAME org.wxformbuilder.wxFormBuilder.application-x-wxformbuilder.png
+    RENAME org.wxformbuilder.wxformbuilder.application-x-wxformbuilder.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/mimetypes
   )
   install(
