@@ -6,6 +6,6 @@ Comment=wxWidgets GUI Designer
 TryExec=wxformbuilder
 Exec=wxformbuilder %f
 Terminal=false
-Icon=org.wxformbuilder.wxformbuilder
+Icon=org.wxformbuilder.wxFormBuilder
 MimeType=application/x-wxformbuilder;
 Categories=GTK;GUIDesigner;Development;

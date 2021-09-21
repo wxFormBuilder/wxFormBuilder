@@ -1,5 +1,5 @@
 {
-	"app-id": "org.wxformbuilder.wxformbuilder",
+	"app-id": "org.wxformbuilder.wxFormBuilder",
 	"runtime": "org.freedesktop.Platform",
 	"runtime-version": "21.08",
 	"sdk": "org.freedesktop.Sdk",
