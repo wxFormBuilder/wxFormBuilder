@@ -118,6 +118,10 @@ class ObjectDatabase
   // Map the property type string to the property type number
   typedef std::map<wxString,PropertyType> PTMap;
   typedef std::map<wxString,PObjectType> ObjectTypeMap;
+  typedef std::set<wxString> MacroSet;
+  typedef std::map< wxString, PCodeInfo > LangTemplateMap;
+  typedef std::map< PropertyType, LangTemplateMap > PTLangTemplateMap;
+
   #ifdef __WXMAC__
 	typedef std::vector< void * > LibraryVector;
   #else
@@ -125,9 +129,6 @@ class ObjectDatabase
   #endif
   typedef void (*PFFreeComponentLibrary)( IComponentLibrary* lib );
   typedef std::map< PFFreeComponentLibrary, IComponentLibrary * > ComponentLibraryMap;
-  typedef std::set<wxString> MacroSet;
-  typedef std::map< wxString, PCodeInfo > LangTemplateMap;
-  typedef std::map< PropertyType, LangTemplateMap > PTLangTemplateMap;
 
   wxString m_xmlPath;
   wxString m_iconPath;
@@ -135,8 +136,6 @@ class ObjectDatabase
   std::map< wxString, PObjectInfo > m_objs;
   PackageVector m_pkgs;
   PTMap m_propTypes;
-  LibraryVector m_libs;
-  ComponentLibraryMap m_componentLibs;
   ObjectTypeMap m_types; // register object types
 
   // para comprobar que no se nos han quedado macros sin añadir en las
@@ -146,10 +145,12 @@ class ObjectDatabase
   // por registrar en la librería.
   MacroSet m_macroSet;
 
+  PTLangTemplateMap m_propertyTypeTemplates;
+
+  LibraryVector m_libs;
+  ComponentLibraryMap m_componentLibs;
   // used so libraries are only imported once, even if multiple libraries use them
   std::set< wxString > m_importedLibraries;
-
-  PTLangTemplateMap m_propertyTypeTemplates;
 
   /**
    * Initialize the property type map.
