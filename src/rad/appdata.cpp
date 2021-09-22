@@ -482,6 +482,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 		m_manager( new wxFBManager ),
 		m_ipc( new wxFBIPC ),
 		m_fbpVerMajor( 1 ),
+		//FIXME: Increase to 16 for next release
 		m_fbpVerMinor(15)
 {
 	#ifdef __WXFB_DEBUG__
