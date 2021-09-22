@@ -28,6 +28,22 @@
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
 		},
 		{
+			"name": "Boost",
+			"buildsystem": "simple",
+			"build-commands": [
+				"./bootstrap.sh",
+				"./b2 --prefix=$FLATPAK_DEST --build-dir=./build --with-headers install"
+			],
+			"sources": [
+				{
+					"type": "archive",
+					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz",
+					"sha256": "7bd7ddceec1a1dfdcbdb3e609b60d01739c38390a5f956385a12f3122049f0ca"
+				}
+			],
+			"cleanup": [ "/lib/cmake" ]
+		},
+		{
 			"name": "wxFormBuilder",
 			"buildsystem": "simple",
 			"build-commands": [

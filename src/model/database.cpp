@@ -26,6 +26,7 @@
 #include "database.h"
 
 #include "../rad/bitmaps.h"
+#include "../rad/wxfbmanager.h"
 #include "../utils/debug.h"
 #include "../utils/stringutils.h"
 #include "../utils/typeconv.h"
@@ -94,7 +95,8 @@ ObjectDatabase::ObjectDatabase()
 
 ObjectDatabase::~ObjectDatabase()
 {
-    for ( ComponentLibraryMap::iterator lib = m_componentLibs.begin(); lib != m_componentLibs.end(); ++lib )
+    #ifndef WXFB_PLUGINS_RESOLVE
+	for ( ComponentLibraryMap::iterator lib = m_componentLibs.begin(); lib != m_componentLibs.end(); ++lib )
     {
         (*(lib->first))( lib->second );
     }
@@ -114,6 +116,13 @@ ObjectDatabase::~ObjectDatabase()
 			delete *lib;
 		#endif
     }
+	#else
+	for (const auto& plugin : m_pluginLibraries) {
+		if (plugin.second.freeComponentLibrary && plugin.second.componentLibrary) {
+			plugin.second.freeComponentLibrary(plugin.second.componentLibrary);
+		}
+	}
+	#endif
 }
 
 PObjectInfo ObjectDatabase::GetObjectInfo(wxString class_name)
@@ -772,6 +781,7 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 		root->GetAttributeOrDefault( "lib", &lib, "" );
 		if ( !lib.empty() )
 		{
+			#ifndef WXFB_PLUGINS_RESOLVE
 			// Add prefix required by non-CMake builds
 			lib.insert(0, "lib");
 			// Allows plugin dependency dlls to be next to plugin dll in windows
@@ -794,6 +804,18 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 
 			// Put Cwd back
 			wxFileName::SetCwd( workingDir );
+			#else
+			#ifdef __WINDOWS__
+			// On Windows the plugin libraries reside in the directory of the plugin resources,
+			// construct a relative path to that location to be able to find them with the default
+			// search algorithm
+			lib = "plugins/" + lib + "/" + lib;
+			#endif
+			auto pluginLibrary = m_pluginLibraries.find(lib);
+			if (pluginLibrary == m_pluginLibraries.end()) {
+				ImportComponentLibrary(lib, manager);
+			}
+			#endif
 		}
 
 		ticpp::Element* elem_obj = root->FirstChildElement( OBJINFO_TAG, false );
@@ -1399,6 +1421,7 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 
 void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager manager )
 {
+	#ifndef WXFB_PLUGINS_RESOLVE
 	wxString path = libfile;
 
 	// Find the GetComponentLibrary function - all plugins must implement this
@@ -1453,13 +1476,37 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
             THROW_WXFBEX( path << " is not a valid component library" )
 		}
 
-#endif
-        LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
+	#endif
+	LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
 	// Get the component library
 	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
 
 	// Store the function to free the library
 	m_componentLibs[ FreeComponentLibrary ] = comp_lib;
+	#else
+	wxString path;
+	auto pluginLibrary = m_pluginLibraries.emplace(std::piecewise_construct, std::forward_as_tuple(libfile), std::forward_as_tuple()).first;
+	try {
+		pluginLibrary->second.sharedLibrary.load(libfile.ToStdString(),
+			boost::dll::load_mode::default_mode |        // Use platform default parameters
+			boost::dll::load_mode::append_decorations |  // Only the library base name is supplied, it needs to be decorated for the platform
+			boost::dll::load_mode::search_system_folders // This enables usage of RPATH
+		);
+		path = pluginLibrary->second.sharedLibrary.location().native();
+	} catch (const std::system_error& ex) {
+		THROW_WXFBEX("Error loading library " << libfile << ": " << ex.what())
+	}
+	try {
+		pluginLibrary->second.getComponentLibrary = pluginLibrary->second.sharedLibrary.get<IComponentLibrary*(IManager*)>("GetComponentLibrary");
+		pluginLibrary->second.freeComponentLibrary = pluginLibrary->second.sharedLibrary.get<void(IComponentLibrary*)>("FreeComponentLibrary");
+	} catch (const std::system_error& ex) {
+		THROW_WXFBEX(path << " is not a valid component library")
+	}
+
+	LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
+	pluginLibrary->second.componentLibrary = pluginLibrary->second.getComponentLibrary(manager.get());
+	auto* comp_lib = pluginLibrary->second.componentLibrary;
+	#endif
 
 	// Import all of the components
 	for ( unsigned int i = 0; i < comp_lib->GetComponentCount(); i++ )

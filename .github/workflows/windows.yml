@@ -19,7 +19,7 @@ jobs:
         msystem: MINGW32
         release: false
         update: false
-        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 cmake make'
+        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 mingw-w64-i686-boost cmake make'
     - name: Create build system
       shell: msys2 {0}
       run: |
