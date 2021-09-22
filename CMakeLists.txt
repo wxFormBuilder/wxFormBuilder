@@ -69,7 +69,7 @@ else()
   unset(BUILD_SHARED_LIBS)
 endif()
 # TODO: Some Boost packages do not include the CMake config files so config mode with the headers component can't be used
-find_package(Boost 1.76.0 REQUIRED)
+find_package(Boost 1.74.0 REQUIRED)
 
 # Adjust paths to match wxStandardPaths implementation
 include(GNUInstallDirs)
