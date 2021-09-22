@@ -11,6 +11,7 @@ jobs:
     name: App Bundle
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, macos-11]
     steps:
