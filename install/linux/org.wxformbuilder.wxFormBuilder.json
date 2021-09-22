@@ -45,11 +45,9 @@
 		},
 		{
 			"name": "wxFormBuilder",
-			"buildsystem": "simple",
-			"build-commands": [
-				"cmake -S . -B _build -G \"Unix Makefiles\" --install-prefix /app -DCMAKE_BUILD_TYPE=Release",
-				"cmake --build _build --config Release -j `nproc`",
-				"cmake --install _build --config Release"
+			"buildsystem": "cmake",
+			"config-opts": [
+				"-DCMAKE_BUILD_TYPE=Release"
 			],
 			"sources": [
 				{
