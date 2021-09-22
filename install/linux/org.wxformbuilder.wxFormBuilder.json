@@ -13,6 +13,7 @@
 	"modules": [
 		{
 			"name": "wxWidgets",
+			"buildsystem": "autotools",
 			"config-opts": [
 				"--with-gtk=3",
 				"--with-cxx=17",
