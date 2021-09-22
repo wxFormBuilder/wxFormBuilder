@@ -153,6 +153,7 @@ endif()
 target_compile_definitions(wxFormBuilder_app
   PRIVATE
     BOOST_DLL_USE_STD_FS
+    WXFB_PLUGINS_RESOLVE
     $<$<CONFIG:DEBUG>:__WXFB_DEBUG__>
 )
 target_include_directories(wxFormBuilder_app
