@@ -15,7 +15,7 @@
 			"name": "wxWidgets",
 			"config-opts": [
 				"--with-gtk=3",
-				"--with-cxx=11",
+				"--with-cxx=17",
 				"--with-libiconv=/usr"
 			],
 			"sources": [
