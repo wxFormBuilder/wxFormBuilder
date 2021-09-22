@@ -805,6 +805,12 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 			// Put Cwd back
 			wxFileName::SetCwd( workingDir );
 			#else
+			#ifdef __WINDOWS__
+			// On Windows the plugin libraries reside in the directory of the plugin resources,
+			// construct a relative path to that location to be able to find them with the default
+			// search algorithm
+			lib = "plugins/" + lib + "/" + lib;
+			#endif
 			auto pluginLibrary = m_pluginLibraries.find(lib);
 			if (pluginLibrary == m_pluginLibraries.end()) {
 				ImportComponentLibrary(lib, manager);
