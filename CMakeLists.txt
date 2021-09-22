@@ -101,12 +101,18 @@ endif()
 
 if(APPLE)
   # TODO: Is there any possibility to determine the output filenames of the plugins to create a list that can be inserted literal?
+  # TODO: The fixup_bundle command erases all present RPATH information. Since it fixes the loader paths of all libraries and none
+  #       of them loads libraries dynamically, it is sufficient to add an RPATH only to the PlugIns directory which contains the
+  #       libraries that get loaded dynamically.
   install(
     CODE
     "
       include(BundleUtilities)
       file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*${CMAKE_SHARED_MODULE_SUFFIX}\")
       fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
+
+      find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
+      execute_process(COMMAND \"\${install_name_tool_cmd}\" -add_rpath @executable_path/../PlugIns \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/MacOS/wxFormBuilder\")
 
       find_program(codesign_cmd NAMES codesign REQUIRED)
       mark_as_advanced(codesign_cmd)
