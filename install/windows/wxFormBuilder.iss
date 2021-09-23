@@ -14,6 +14,19 @@
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
 
+; The #define Arch is expected to be supplied externally and must contain a MinGW-w64 architecture.
+; If the architecture is 64 bit, enable 64 bit mode and enforce a 64 bit environment, otherwise
+; assume 32 bit and run in default mode.
+#define MyAppArchitecture
+#define MySetupArchitecture
+#ifdef Arch
+  #if Arch == "x86_64"
+    #define MyAppArchitecture "x64"
+    #define MySetupArchitecture "-x64"
+  #else
+    #define MySetupArchitecture "-x86"
+  #endif
+#endif
 
 #define protected FileHandle
 #define protected FileLine
@@ -42,9 +55,11 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 VersionInfoVersion={#MyAppVer}
 VersionInfoDescription={#MyAppName}
+ArchitecturesAllowed={#MyAppArchitecture}
+ArchitecturesInstallIn64BitMode={#MyAppArchitecture}
 MinVersion=6.1sp1
 OutputDir=.
-OutputBaseFilename={#MyAppName}-{#MyAppVer}
+OutputBaseFilename={#MyAppName}-{#MyAppVer}{#MySetupArchitecture}
 Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
