@@ -65,7 +65,7 @@ SolidCompression=true
 InternalCompressLevel=ultra
 WizardStyle=modern
 InfoAfterFile=..\..\_install\Changelog.txt
-LicenseFile=..\..\_install\license.txt
+LicenseFile=..\..\LICENSE
 SetupIconFile=support\wxFormBuilder.ico
 ShowLanguageDialog=yes
 DefaultDirName={commonpf}\{#MyAppName}
@@ -111,7 +111,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 #endsub
 
 Source: {#RootDir}\Changelog.txt; DestDir: {app}; Components: main
-Source: {#RootDir}\license.txt; DestDir: {app}; Components: main
+Source: {#RootDir}\..\LICENSE; DestDir: {app}; Components: main
 Source: {#RootDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
 Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main

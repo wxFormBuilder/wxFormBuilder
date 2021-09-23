@@ -224,7 +224,7 @@ install(TARGETS wxFormBuilder_app
 install(
   FILES
     ../output/Changelog.txt
-    ../output/license.txt
+    ../LICENSE
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 install(DIRECTORY ../output/resources
