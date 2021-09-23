@@ -34,33 +34,33 @@
 
 [Setup]
 AppName={#MyAppName}
+AppVersion={#MyAppVer}
 AppVerName={#MyAppName} {#MyAppVer}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={commonpf}\{#MyAppName}
-DisableDirPage=false
-DefaultGroupName={#MyAppName}
-DisableProgramGroupPage=false
+VersionInfoVersion={#MyAppVer}
+VersionInfoDescription={#MyAppName}
+MinVersion=6.1sp1
+OutputDir=.
 OutputBaseFilename={#MyAppName}-{#MyAppVer}
 Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
-OutputDir=.
-ShowLanguageDialog=yes
-AppVersion={#MyAppVer}
-AppendDefaultGroupName=false
-AllowNoIcons=true
 WizardStyle=modern
-SetupIconFile=support\wxFormBuilder.ico
-UninstallDisplayIcon={app}\wxFormBuilder.exe
-ChangesAssociations=true
-VersionInfoVersion={#MyAppVer}
-VersionInfoDescription={#MyAppName}
 InfoAfterFile=..\..\_install\Changelog.txt
 LicenseFile=..\..\_install\license.txt
-MinVersion=6.1sp1
+SetupIconFile=support\wxFormBuilder.ico
+ShowLanguageDialog=yes
+DefaultDirName={commonpf}\{#MyAppName}
+DisableDirPage=false
+DefaultGroupName={#MyAppName}
+DisableProgramGroupPage=false
+AppendDefaultGroupName=false
+AllowNoIcons=true
+ChangesAssociations=true
+UninstallDisplayIcon={app}\wxFormBuilder.exe
 
 
 [Types]
