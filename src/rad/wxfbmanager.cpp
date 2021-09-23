@@ -156,16 +156,16 @@ wxObject* wxFBManager::GetWxObject( PObjectBase obj )
 
 void wxFBManager::ModifyProperty( wxObject* wxobject, wxString property, wxString value, bool allowUndo )
 {
-	CHECK_VISUAL_EDITOR()
+	CHECK_VISUAL_EDITOR(void())
 
 	// Prevent modified event in visual editor - no need to redraw when the change is happening in the editor!
 	FlagFlipper stopModifiedEvent( m_visualEdit, &VisualEditor::PreventOnModified );
 
-	CHECK_WX_OBJECT()
+	CHECK_WX_OBJECT(void())
 
 	PObjectBase obj = m_visualEdit->GetObjectBase( wxobject );
 
-	CHECK_OBJECT_BASE()
+	CHECK_OBJECT_BASE(void())
 
 	PProperty prop = obj->GetProperty( property );
 
