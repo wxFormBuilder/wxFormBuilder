@@ -28,7 +28,7 @@ jobs:
     - name: Package build system
       if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
       run: |
-        zip -ry wxFormBuilder_macOS_build.zip _build
+        zip -ry wxFormBuilder-macOS-build.zip _build
     - name: Build
       run: |
         cmake --build _build --config Release -j `sysctl -n hw.ncpu`
@@ -39,11 +39,11 @@ jobs:
     - name: Package app bundle
       run: |
         cd _install
-        zip -ry ../wxFormBuilder_macOS_bundle.zip wxFormBuilder.app
+        zip -ry ../wxFormBuilder-bundle.zip wxFormBuilder.app
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: App Bundle ${{ matrix.os }}
         path: |
-          wxFormBuilder_macOS_build.zip
-          wxFormBuilder_macOS_bundle.zip
+          wxFormBuilder-macOS-build.zip
+          wxFormBuilder-bundle.zip
