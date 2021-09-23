@@ -21,7 +21,7 @@ jobs:
         submodules: recursive
     - name: Create source archive
       run: |
-        '7z a -tzip -r -x!.git wxFormBuilder-${{ steps.variables.outputs.result }}-source.zip wxFormBuilder-${{ steps.variables.outputs.result }}'
+        '7z a -tzip -r -x!.git wxFormBuilder-${{ steps.variables.outputs.result }}-source.zip ./wxFormBuilder-${{ steps.variables.outputs.result }}'
     - uses: actions/upload-artifact@v2
       with:
         name: wxFormBuilder Source (CRLF)
@@ -43,7 +43,7 @@ jobs:
         submodules: recursive
     - name: Create source archive
       run: |
-        'tar -czvf wxFormBuilder-${{ steps.variables.outputs.result }}-source.tar.gz --exclude=.git wxFormBuilder-${{ steps.variables.outputs.result }}'
+        'tar -czvf wxFormBuilder-${{ steps.variables.outputs.result }}-source.tar.gz --exclude=.git ./wxFormBuilder-${{ steps.variables.outputs.result }}'
     - uses: actions/upload-artifact@v2
       with:
         name: wxFormBuilder Source (LF)
