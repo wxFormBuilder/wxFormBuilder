@@ -1,0 +1,51 @@
+name: Sources
+on:
+  push:
+#    tags:
+#      - v*
+
+jobs:
+  windows:
+    name: Windows line endings
+    runs-on: windows-latest
+    steps:
+    - uses: actions/github-script@v4
+      id: variables
+      with:
+        result-encoding: string
+        script: |
+          return context.ref.split('/').pop().slice(1)
+    - uses: actions/checkout@v2
+      with:
+        path: wxFormBuilder-${{ steps.variables.outputs.result }}
+        submodules: recursive
+    - name: Create source archive
+      run: |
+        7z a -tzip -r -x!.git wxFormBuilder-${{ steps.variables.outputs.result }}-source.zip .
+    - uses: actions/upload-artifact@v2
+      with:
+        name: wxFormBuilder Source (CRLF)
+        path: |
+          *-source.zip
+  linux:
+    name: Linux line endings
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/github-script@v4
+      id: variables
+      with:
+        result-encoding: string
+        script: |
+          return context.ref.split('/').pop().slice(1)
+    - uses: actions/checkout@v2
+      with:
+        path: wxFormBuilder-${{ steps.variables.outputs.result }}
+        submodules: recursive
+    - name: Create source archive
+      run: |
+        tar -czvf wxFormBuilder-${{ steps.variables.outputs.result }}-source.tar.gz --exclude=.git .
+    - uses: actions/upload-artifact@v2
+      with:
+        name: wxFormBuilder Source (LF)
+        path: |
+          *-source.tar.gz
