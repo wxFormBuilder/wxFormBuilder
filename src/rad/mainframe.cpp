@@ -28,6 +28,7 @@
 #include "../model/xrcfilter.h"
 #include "../utils/stringutils.h"
 #include "../utils/wxfbexception.h"
+#include "version.h"
 #include "about.h"
 #include "appdata.h"
 #include "auitabart.h"
@@ -961,7 +962,7 @@ void MainFrame::UpdateFrame()
 	}
 
 	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v%s%s"),
-	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), VERSION, REVISION));
+	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), getVersion(), REVISION));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries

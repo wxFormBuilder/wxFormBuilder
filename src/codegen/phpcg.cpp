@@ -32,6 +32,7 @@
 #include "../utils/typeconv.h"
 #include "../utils/debug.h"
 #include "../rad/appdata.h"
+#include "../rad/version.h"
 #include "../model/objectbase.h"
 #include "../utils/wxfbexception.h"
 
@@ -469,7 +470,7 @@ bool PHPCodeGenerator::GenerateCode( PObjectBase project )
 		wxT(" *\n")
 		wxT(" * PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT(" */\n"),
-		VERSION, REVISION
+		getVersion(), REVISION
 	);
 
 	m_source->WriteLn( code );

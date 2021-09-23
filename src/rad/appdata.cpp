@@ -55,7 +55,6 @@
 using namespace TypeConv;
 
 
-const char* const VERSION = "3.9.0";
 const char* const REVISION = "";
 
 

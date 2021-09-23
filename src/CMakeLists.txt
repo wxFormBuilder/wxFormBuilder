@@ -20,6 +20,8 @@ if(NOT APPLE)
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
+configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
+
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
 set_target_properties(wxFormBuilder_app PROPERTIES
@@ -80,6 +82,9 @@ target_sources(wxFormBuilder_app
     rad/palette.cpp
     rad/title.h
     rad/title.cpp
+    rad/version.h
+    rad/version.cpp.in
+    ${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp
     rad/wxfbevent.h
     rad/wxfbevent.cpp
     rad/wxfbmanager.h

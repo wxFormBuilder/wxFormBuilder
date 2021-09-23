@@ -30,6 +30,7 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/version.h"
 #include "../utils/debug.h"
 #include "../utils/typeconv.h"
 #include "../utils/wxfbexception.h"
@@ -515,7 +516,7 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("##\n")
 		wxT("## PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT("###########################################################################\n"),
-		VERSION, REVISION
+		getVersion(), REVISION
 	);
 
 	m_source->WriteLn( code );

@@ -39,7 +39,7 @@
   #endif
 #endsub
 
-#for {FileHandle = FileOpen("..\..\src\rad\appdata.cpp"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
+#for {FileHandle = FileOpen("..\..\_build\src\rad\version.cpp"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
 #if FileHandle
   #expr FileClose(FileHandle)
 #endif
