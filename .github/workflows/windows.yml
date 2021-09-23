@@ -52,7 +52,7 @@ jobs:
     - name: Create installer
       shell: cmd
       run: |
-        ISCC.exe /O. install\\windows\\wxFormBuilder.iss
+        ISCC.exe /DArch=${{ matrix.env }} /O. install\\windows\\wxFormBuilder.iss
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
