@@ -1,8 +1,8 @@
 name: Sources
 on:
   push:
-#    tags:
-#      - v*
+    tags:
+      - v*
 
 jobs:
   windows:
