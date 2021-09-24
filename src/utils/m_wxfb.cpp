@@ -1,7 +1,7 @@
 #include <wx/html/forcelnk.h>
 #include <wx/html/m_templ.h>
 
-#include "../rad/appdata.h"
+#include "../rad/revision.h"
 #include "../rad/version.h"
 
 
@@ -26,7 +26,7 @@ TAG_HANDLER_BEGIN(wxFBRevision, "WXFB-REVISION")
 
 TAG_HANDLER_PROC(WXUNUSED(tag))
 {
-	auto* cell = new wxHtmlWordCell(REVISION, *m_WParser->GetDC());
+	auto* cell = new wxHtmlWordCell(getStrippedRevision(getVersion()), *m_WParser->GetDC());
 	m_WParser->ApplyStateToCell(cell);
 	m_WParser->GetContainer()->InsertCell(cell);
 

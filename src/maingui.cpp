@@ -26,6 +26,7 @@
 
 #include "model/objectbase.h"
 #include "rad/appdata.h"
+#include "rad/revision.h"
 #include "rad/version.h"
 #include "rad/mainframe.h"
 #include "utils/typeconv.h"
@@ -130,7 +131,7 @@ int MyApp::OnRun()
 	}
 
 	if (parser.Found("v")) {
-		std::cout << "wxFormBuilder " << getVersion() << REVISION << std::endl;
+		std::cout << "wxFormBuilder " << getVersion() << getStrippedRevision(getVersion()) << std::endl;
 		return EXIT_SUCCESS;
 	}
 

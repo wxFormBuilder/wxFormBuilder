@@ -1,0 +1,18 @@
+#include "rad/revision.h"
+
+#include <cstring>
+
+static const char* const REVISION = "@GIT_REVISION@";
+
+const char* getRevision() {
+    return REVISION;
+}
+
+const char* getStrippedRevision(const char* version) {
+    auto* pos = std::strstr(REVISION, version);
+    if (pos) {
+        return (pos + std::strlen(version));
+    }
+
+    return REVISION;
+}

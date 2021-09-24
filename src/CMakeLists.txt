@@ -21,6 +21,14 @@ if(NOT APPLE)
 endif()
 
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
+add_custom_target(wxFormBuilder_revision
+  COMMAND "${CMAKE_COMMAND}"
+    -D "gitDirectory=${PROJECT_SOURCE_DIR}"
+    -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
+    -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
+    -P "${PROJECT_SOURCE_DIR}/cmake/gitrevision.cmake"
+  VERBATIM
+)
 
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
@@ -80,6 +88,9 @@ target_sources(wxFormBuilder_app
     rad/menueditor.cpp
     rad/palette.h
     rad/palette.cpp
+    rad/revision.h
+    rad/revision.cpp.in
+    "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
     rad/title.h
     rad/title.cpp
     rad/version.h
@@ -194,6 +205,7 @@ else()
       dl
   )
 endif()
+add_dependencies(wxFormBuilder_app wxFormBuilder_revision)
 
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"

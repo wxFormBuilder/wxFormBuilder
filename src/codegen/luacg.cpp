@@ -30,6 +30,7 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
 #include "../rad/version.h"
 #include "../utils/debug.h"
 #include "../utils/typeconv.h"
@@ -574,7 +575,7 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("-- Lua code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
 		wxT("-- http://www.wxformbuilder.org/\n")
 		wxT("----------------------------------------------------------------------------\n"),
-		getVersion(), REVISION
+		getVersion(), getStrippedRevision(getVersion())
 	);
 
 	m_source->WriteLn( code );

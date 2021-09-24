@@ -27,6 +27,7 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
 #include "../rad/version.h"
 #include "../utils/filetocarray.h"
 #include "../utils/typeconv.h"
@@ -605,7 +606,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("//\n")
 		wxT("// PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT("///////////////////////////////////////////////////////////////////////////\n"),
-		getVersion(), REVISION
+		getVersion(), getStrippedRevision(getVersion())
 	);
 
 	m_header->WriteLn( code );

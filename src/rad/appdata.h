@@ -51,8 +51,6 @@ class wxFBIPC;
 #define AppDataInit()	      (ApplicationData::Initialize())
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
-extern const char* const REVISION;
-
 // This class is a singleton class.
 
 class ApplicationData
