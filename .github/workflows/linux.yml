@@ -46,8 +46,10 @@ jobs:
         cmake --build _build --config Release -j `nproc`
         cmake --install _build --config Release
     - name: Test
-      run: |
-        _install/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: |
+          _install/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
     - name: Package deb
       run: |
         echo "TODO"
