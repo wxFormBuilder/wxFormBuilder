@@ -16,10 +16,10 @@ Template parameters:
 
 set(GIT_REVISION "")
 
-find_package(Git QUIET)
-if(GIT_FOUND)
+find_program(git_cmd NAMES git)
+if (git_cmd)
   execute_process(
-    COMMAND "${GIT_EXECUTABLE}" describe --long --dirty
+    COMMAND "${git_cmd}" describe --long --dirty
     WORKING_DIRECTORY "${gitDirectory}"
     RESULT_VARIABLE gitResult
     OUTPUT_VARIABLE GIT_REVISION
