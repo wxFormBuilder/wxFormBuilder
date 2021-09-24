@@ -33,5 +33,4 @@ else()
   message(WARNING "Git not found, using empty revision")
 endif()
 
-configure_file("${gitTemplate}" "${gitOutput}.tmp" @ONLY)
-file(COPY_FILE "${gitOutput}.tmp" "${gitOutput}" ONLY_IF_DIFFERENT)
+configure_file("${gitTemplate}" "${gitOutput}" @ONLY)
