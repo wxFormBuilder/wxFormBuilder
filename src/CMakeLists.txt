@@ -27,6 +27,7 @@ add_custom_target(wxFormBuilder_revision
     -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
     -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
     -P "${PROJECT_SOURCE_DIR}/cmake/gitrevision.cmake"
+  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
   VERBATIM
 )
 
@@ -205,7 +206,6 @@ else()
       dl
   )
 endif()
-add_dependencies(wxFormBuilder_app wxFormBuilder_revision)
 
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
