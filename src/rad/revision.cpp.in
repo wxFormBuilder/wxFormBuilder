@@ -16,3 +16,12 @@ const char* getStrippedRevision(const char* version) {
 
     return REVISION;
 }
+
+const char* getReleaseRevision(const char* version) {
+    auto* pos = std::strstr(REVISION, version);
+    if (pos) {
+        return "";
+    }
+
+    return REVISION;
+}
