@@ -27,6 +27,7 @@ jobs:
         update: false
         install: >-
           mingw-w64-${{ matrix.env }}-toolchain
+          mingw-w64-${{ matrix.env }}-git
           mingw-w64-${{ matrix.env }}-cmake
           mingw-w64-${{ matrix.env }}-make
           mingw-w64-${{ matrix.env }}-wxWidgets3.1
