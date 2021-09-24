@@ -21,12 +21,12 @@ if (git_cmd)
   execute_process(
     COMMAND "${git_cmd}" describe --long --dirty
     WORKING_DIRECTORY "${gitDirectory}"
-    RESULT_VARIABLE gitResult
+    RESULT_VARIABLE git_result
     OUTPUT_VARIABLE GIT_REVISION
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   # A non-zero return code means error
-  if(gitResult)
+  if(git_result)
     message(WARNING "Git could not determine a revision, using empty revision")
   endif()
 else()
