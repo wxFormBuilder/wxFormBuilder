@@ -52,10 +52,11 @@ jobs:
           _install/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
     - name: Package deb
       run: |
-        echo "TODO"
+        cp -rf install/linux/deb/ .
+        dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package
         path: |
           wxFormBuilder-Linux-build.zip
-          install/debian/*.deb
+          ../*.deb
