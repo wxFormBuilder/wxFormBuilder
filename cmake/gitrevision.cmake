@@ -6,6 +6,7 @@ Determine git revision and generate target file from template file if it did cha
 This script is meant to be executed during the build phase by CMake.
 
 Input parameters:
+- gitRequired: If true, it is an error if the git revision can't be determined
 - gitDirectory: Working directory of the git command
 - gitTemplate: Path to the template file
 - gitOutput: Path to the generated file
@@ -36,14 +37,22 @@ if (git_cmd)
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
     if(git_result)
-      message(WARNING "Git could not determine a revision by rev-parse, using empty revision")
+      if(gitRequired)
+        message(FATAL_ERROR "Git could not determine a revision by rev-parse")
+      else()
+        message(WARNING "Git could not determine a revision by rev-parse, using empty revision")
+      endif()
     else()
       # TODO: A hack for getStrippedRevision(const char*) to produce a leading dash
       string(PREPEND GIT_REVISION "-")
     endif()
   endif()
 else()
-  message(WARNING "Git not found, using empty revision")
+  if(gitRequired)
+    message(FATAL_ERROR "Git not found")
+  else()
+    message(WARNING "Git not found, using empty revision")
+  endif()
 endif()
 
 configure_file("${gitTemplate}" "${gitOutput}" @ONLY)

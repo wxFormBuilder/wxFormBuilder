@@ -23,6 +23,7 @@ endif()
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
 add_custom_target(wxFormBuilder_revision
   COMMAND "${CMAKE_COMMAND}"
+    -D "gitRequired=FALSE"
     -D "gitDirectory=${PROJECT_SOURCE_DIR}"
     -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
     -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
