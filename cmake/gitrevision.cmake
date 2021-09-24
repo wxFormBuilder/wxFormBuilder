@@ -27,7 +27,20 @@ if (git_cmd)
   )
   # A non-zero return code means error
   if(git_result)
-    message(WARNING "Git could not determine a revision, using empty revision")
+    message(WARNING "Git could not determine a revision by describe, trying rev-parse")
+    execute_process(
+      COMMAND "${git_cmd}" rev-parse --short HEAD
+      WORKING_DIRECTORY "${gitDirectory}"
+      RESULT_VARIABLE git_result
+      OUTPUT_VARIABLE GIT_REVISION
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    if(git_result)
+      message(WARNING "Git could not determine a revision by rev-parse, using empty revision")
+    else()
+      # TODO: A hack for getStrippedRevision(const char*) to produce a leading dash
+      string(PREPEND GIT_REVISION "-")
+    endif()
   endif()
 else()
   message(WARNING "Git not found, using empty revision")
