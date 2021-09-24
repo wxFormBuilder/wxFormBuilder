@@ -10,6 +10,7 @@ jobs:
   flatpak:
     name: Flatpak
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/debian/') }}
     container:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
       options: --privileged
@@ -22,3 +23,37 @@ jobs:
         bundle: wxFormBuilder.flatpak
         manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json
         cache-key: flatpak-builder-${{ github.sha }}
+  debian:
+    name: Debian Package
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/flatpak/') }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup environment
+      run: |
+        apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev
+    - name: Create build system
+      run: |
+        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+    - name: Package build system
+      if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
+      run: |
+        zip -ry wxFormBuilder-Linux-build.zip _build
+    - name: Build
+      run: |
+        cmake --build _build --config Release -j `nproc`
+        cmake --install _build --config Release
+    - name: Test
+      run: |
+        _install/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+    - name: Package deb
+      run: |
+        echo "TODO"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Debian Package
+        path: |
+          wxFormBuilder-Linux-build.zip
+          install/debian/*.deb
