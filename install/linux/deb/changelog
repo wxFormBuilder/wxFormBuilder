@@ -1,0 +1,5 @@
+wxformbuilder (3.9.0-1) unstable; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Steffen Olszewski <steffen.olszewski@gero-mess.de>  Sat, 25 Sep 2021 00:53:01 +0200

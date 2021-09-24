@@ -1,0 +1,15 @@
+Source: wxformbuilder
+Section: unknown
+Priority: optional
+Maintainer: Steffen Olszewski <steffen.olszewski@gero-mess.de>
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.4.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/wxformbuilder
+#Vcs-Git: https://salsa.debian.org/debian/wxformbuilder.git
+
+Package: wxformbuilder
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
