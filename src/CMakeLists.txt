@@ -95,7 +95,7 @@ target_sources(wxFormBuilder_app
     rad/title.cpp
     rad/version.h
     rad/version.cpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp
+    "${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp"
     rad/wxfbevent.h
     rad/wxfbevent.cpp
     rad/wxfbmanager.h
