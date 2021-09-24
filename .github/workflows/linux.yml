@@ -36,7 +36,7 @@ jobs:
         sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev
     - name: Create build system
       run: |
-        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release -DWXFB_WXWIDGETS_ENABLE_30=ON
     - name: Package build system
       if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
       run: |
