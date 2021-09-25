@@ -28,6 +28,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
+    - uses: actions/github-script@v4
+      id: variables
+      with:
+        result-encoding: string
+        script: |
+          return "${{ github.workspace }}".split('/').slice(0, -1).join('/')
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -65,5 +71,5 @@ jobs:
         name: Debian Package
         path: |
           wxFormBuilder-Linux-build.zip
-          ~/wxFormBuilder/*.deb
-          ~/wxFormBuilder/*.ddeb
+          ${{ steps.variables.outputs.result }}/*.deb
+          ${{ steps.variables.outputs.result }}/*.ddeb
