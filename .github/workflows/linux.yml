@@ -10,6 +10,7 @@ jobs:
   flatpak:
     name: Flatpak
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/debian/') }}
     container:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
       options: --privileged
@@ -22,3 +23,32 @@ jobs:
         bundle: wxFormBuilder.flatpak
         manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json
         cache-key: flatpak-builder-${{ github.sha }}
+  debian:
+    name: Debian Package
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/flatpak/') }}
+    steps:
+    - uses: actions/github-script@v4
+      id: variables
+      with:
+        result-encoding: string
+        script: |
+          return "${{ github.workspace }}".split('/').slice(0, -1).join('/')
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Setup environment
+      run: |
+        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot
+    - name: Setup package build
+      run: |
+        cp -rf install/linux/deb/ ./debian/
+    - name: Build package
+      run: |
+        dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Debian Package
+        path: |
+          ${{ steps.variables.outputs.result }}/*.deb
+          ${{ steps.variables.outputs.result }}/*.ddeb
