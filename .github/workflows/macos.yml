@@ -40,8 +40,7 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder-bundle.zip wxFormBuilder.app
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v2
       with:
         name: App Bundle ${{ matrix.os }}
         path: |
