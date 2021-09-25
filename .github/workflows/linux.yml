@@ -57,6 +57,9 @@ jobs:
       run: |
         cp -rf install/linux/deb/ ./debian/
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
+        echo "PWD: $PWD"
+        echo "Home: $HOME"
+        echo ~
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package
