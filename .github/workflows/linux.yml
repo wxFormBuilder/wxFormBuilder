@@ -51,4 +51,3 @@ jobs:
         name: Debian Package
         path: |
           ${{ steps.variables.outputs.result }}/*.deb
-          ${{ steps.variables.outputs.result }}/*.ddeb
