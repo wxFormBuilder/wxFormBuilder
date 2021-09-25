@@ -25,3 +25,6 @@
 
 override_dh_auto_configure:
 	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release -DWXFB_WXWIDGETS_ENABLE_30=ON
+
+override_dh_builddeb:
+	dh_builddeb --destdir=.

@@ -62,4 +62,5 @@ jobs:
         name: Debian Package
         path: |
           wxFormBuilder-Linux-build.zip
-          ../*.deb
+          *.deb
+          *.ddeb
