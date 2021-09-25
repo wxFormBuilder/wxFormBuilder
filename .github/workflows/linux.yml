@@ -40,36 +40,15 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot
-    - name: Create build system
-      if: ${{ false }}
-      run: |
-        cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release -DWXFB_WXWIDGETS_ENABLE_30=ON
-    - name: Package build system
-      if: ${{ false && (contains(github.ref, '/test_') || contains(github.ref, '/test/')) }}
-      run: |
-        zip -ry wxFormBuilder-Linux-build.zip _build
-    - name: Build
-      if: ${{ false }}
-      run: |
-        cmake --build _build --config Release -j `nproc`
-        cmake --install _build --config Release
-    - name: Test
-      if: ${{ false }}
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        run: |
-          _install/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
-    - name: Package deb
+    - name: Setup package build
       run: |
         cp -rf install/linux/deb/ ./debian/
+    - name: Build package
+      run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
-        echo "PWD: $PWD"
-        echo "Home: $HOME"
-        echo ~
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package
         path: |
-          wxFormBuilder-Linux-build.zip
           ${{ steps.variables.outputs.result }}/*.deb
           ${{ steps.variables.outputs.result }}/*.ddeb
