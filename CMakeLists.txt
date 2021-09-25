@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(wxFormBuilder VERSION 3.9.0 LANGUAGES CXX)
+project(wxFormBuilder VERSION 3.10.0 LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 

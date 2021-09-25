@@ -1,5 +1,9 @@
-			wxFormBuilder ChangeLog
+wxFormBuilder Changelog
 ********************************************************************************
+09/25/2021 Version 3.10.00
+* Too many to list :)
++ Visit https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.0 for more information
+
 10/01/2015 Version 3.05.02 (RC2)
 * #162 Setting extra style interferres with base class
 * #159 Generated code for wxDataViewCtrl & co. is wrong/inconsistent
@@ -985,7 +989,7 @@
 ^ Switch to tabs for indentation.
 * Background color issues in the palette.
 - Typedefs for easier understanding
-_______________________________________________________________
+_______________________________________________________________________
 Legend:
 
 "+" = Addition, "*" = Bug Fix, "-" = Removed, "~" = Move, "^" = Updated

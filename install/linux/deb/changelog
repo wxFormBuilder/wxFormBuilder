@@ -1,8 +1,8 @@
-wxformbuilder (3.9.0-1) unstable; urgency=medium
+wxformbuilder (3.10.0) stable; urgency=medium
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * First release using CMake
 
- -- Steffen Olszewski <steffen.olszewski@gero-mess.de>  Sat, 25 Sep 2021 00:53:01 +0200
+ -- Steffen Olszewski <steffen.olszewski@gero-mess.de>  Sat, 25 Sep 2021 08:00:00 +0200
 
 wxformbuilder (3.9.0) stable; urgency=low
 
