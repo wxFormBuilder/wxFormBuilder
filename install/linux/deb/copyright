@@ -9,12 +9,12 @@ Copyright: 2005 José Antonio Hurtado
            2006 Ryan Mulder
            2006 Ryan Pusztai
            2007 Michal Bliznak
-           2018 Jan Niklas Hasse
+           2016 Jan Niklas Hasse
            2018 Steffen Olszewski
 License: GPL-2.0+
 
 Files: debian/*
-Copyright: 2021 Steffen Olszewski <steffen.olszewski@gero-mess.de>
+Copyright: 2021 Steffen Olszewski
 License: GPL-2.0+
 
 Files: src/dbg_stack_trace/*
