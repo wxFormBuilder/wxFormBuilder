@@ -38,7 +38,7 @@ jobs:
       run: |
         cmake -S . -B _build -G "MSYS Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
     - name: Package build system
-      if: ${{ contains(github.ref, '/test_') || contains(github.ref, '/test/') }}
+      if: ${{ contains(github.ref, '/test/') }}
       shell: cmd
       run: |
         7z a -tzip -r -bb1 wxFormBuilder-Windows-build.zip _build
