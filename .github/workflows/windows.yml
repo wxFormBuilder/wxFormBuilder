@@ -31,6 +31,7 @@ jobs:
           mingw-w64-${{ matrix.env }}-make
           mingw-w64-${{ matrix.env }}-wxWidgets3.1
           mingw-w64-${{ matrix.env }}-boost
+          base-devel
           git
     - name: Create build system
       shell: msys2 {0}
