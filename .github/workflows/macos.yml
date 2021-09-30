@@ -40,7 +40,7 @@ jobs:
     - name: Package app bundle
       run: |
         cd _install
-        zip -ry ../wxFormBuilder-macos-`sw_vers -productVersion`-`uname -m`-bundle.zip wxFormBuilder.app
+        zip -ry ../wxFormBuilder-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
     - uses: actions/upload-artifact@v2
       with:
         name: App Bundle ${{ matrix.os }}
