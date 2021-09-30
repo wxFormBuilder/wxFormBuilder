@@ -40,13 +40,14 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot xvfb
+        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
     - name: Setup package build
       run: |
         cp -rf install/linux/deb/ ./debian/
     - name: Build package
       run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
+        rename "s/(.+_.+_)(.*)/\$1ubuntu-"`lsb_release -r -s`"_\$2/" "${{ steps.variables.outputs.result }}/"*.deb
     - name: Test
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
