@@ -23,7 +23,7 @@ jobs:
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.sys }}
-        release: true
+        release: false
         update: true
         install: >-
           mingw-w64-${{ matrix.env }}-toolchain
