@@ -50,9 +50,7 @@ jobs:
     - name: Test
       uses: GabrielBB/xvfb-action@v1
       with:
-        run: |
-          debian/wxformbuilder/usr/bin/wxformbuilder -v
-          debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+        run: debian/wxformbuilder/usr/bin/wxformbuilder -v && debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package
