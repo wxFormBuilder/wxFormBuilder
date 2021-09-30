@@ -40,7 +40,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot
+        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot xvfb
     - name: Setup package build
       run: |
         cp -rf install/linux/deb/ ./debian/
@@ -48,9 +48,9 @@ jobs:
       run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
     - name: Test
-      uses: GabrielBB/xvfb-action@v1
-      with:
-        run: debian/wxformbuilder/usr/bin/wxformbuilder -v && debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+      run: |
+        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
+        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package
