@@ -35,6 +35,7 @@ jobs:
         cmake --install _build --config Release
     - name: Test
       run: |
+        _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
     - name: Package app bundle
       run: |

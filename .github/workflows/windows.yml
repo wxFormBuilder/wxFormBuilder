@@ -50,6 +50,7 @@ jobs:
     - name: Test
       shell: cmd
       run: |
+        _install\\wxFormBuilder.exe -v
         _install\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
     - name: Create installer
       shell: cmd

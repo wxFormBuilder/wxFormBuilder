@@ -49,6 +49,7 @@ jobs:
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
     - name: Test
       run: |
+        debian/wxformbuilder/usr/bin/wxformbuilder -v
         debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
     - uses: actions/upload-artifact@v2
       with:
