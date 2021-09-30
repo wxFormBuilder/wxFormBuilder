@@ -606,7 +606,7 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("//\n")
 		wxT("// PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT("///////////////////////////////////////////////////////////////////////////\n"),
-		getVersion(), getStrippedRevision(getVersion())
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_header->WriteLn( code );

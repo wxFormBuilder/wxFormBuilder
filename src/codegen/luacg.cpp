@@ -575,7 +575,7 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 		wxT("-- Lua code generated with wxFormBuilder (version %s%s)\n")
 		wxT("-- http://www.wxformbuilder.org/\n")
 		wxT("----------------------------------------------------------------------------\n"),
-		getVersion(), getStrippedRevision(getVersion())
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_source->WriteLn( code );

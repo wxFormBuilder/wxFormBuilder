@@ -3,25 +3,66 @@
 #include <cstring>
 
 static const char* const REVISION = "@GIT_REVISION@";
+static const char* const DESCRIBE = "@GIT_DESCRIBE@";
+static const char* const TAG_NAME = "@GIT_TAG_NAME@";
+static const unsigned int TAG_DISTANCE = @GIT_TAG_DISTANCE@;
+static const bool DIRTY = @GIT_DIRTY@;
 
 const char* getRevision() {
     return REVISION;
 }
 
-const char* getStrippedRevision(const char* version) {
-    auto* pos = std::strstr(REVISION, version);
-    if (pos) {
-        return (pos + std::strlen(version));
-    }
-
-    return REVISION;
+const char* getDescribe() {
+    return DESCRIBE;
 }
 
-const char* getReleaseRevision(const char* version) {
-    auto* pos = std::strstr(REVISION, version);
-    if (pos) {
+const char* getTagName() {
+    return TAG_NAME;
+}
+
+unsigned int getTagDistance() {
+    return TAG_DISTANCE;
+}
+
+bool isDirty() {
+    return DIRTY;
+}
+
+
+std::string getPostfixRevision(const char* version) {
+    if (std::strlen(REVISION) == 0) {
         return "";
     }
 
-    return REVISION;
+    if (std::strlen(DESCRIBE) == 0) {
+        return std::string("-").append(REVISION);
+    }
+
+    // TODO: Assume there is a v prefix
+    if (std::strcmp(TAG_NAME + 1, version) == 0) {
+        return (DESCRIBE + std::strlen(TAG_NAME));
+    }
+        
+    return std::string("-").append(DESCRIBE);
+}
+
+std::string getReleaseRevision(const char* version) {
+    if (std::strlen(REVISION) == 0) {
+        return "";
+    }
+    
+    if (std::strlen(DESCRIBE) == 0) {
+        return std::string("-").append(REVISION);
+    }
+
+    // TODO: Assume there is a v prefix
+    if (std::strcmp(TAG_NAME + 1, version) == 0) {
+        if (TAG_DISTANCE == 0 && !DIRTY) {
+            return "";
+        }
+        
+        return (DESCRIBE + std::strlen(TAG_NAME));
+    }
+    
+    return std::string("-").append(DESCRIBE);
 }

@@ -131,7 +131,7 @@ int MyApp::OnRun()
 	}
 
 	if (parser.Found("v")) {
-		std::cout << "wxFormBuilder " << getVersion() << getStrippedRevision(getVersion()) << std::endl;
+		std::cout << "wxFormBuilder " << getVersion() << getPostfixRevision(getVersion()) << std::endl;
 		return EXIT_SUCCESS;
 	}
 
