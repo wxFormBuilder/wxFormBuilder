@@ -29,17 +29,19 @@
 #endif
 
 #define protected FileHandle
-#define protected FileLine
+#define protected FileVersionPrefix "project(wxFormBuilder VERSION "
+#define protected FileVersionPostfix " LANGUAGES"
 
 #sub ProcessVersionLine
   #define private FileLine = FileRead(FileHandle)
-  #if Pos("VERSION = """, FileLine) > 0
-    #define private temp Copy(FileLine, Pos("""", FileLine) + 1)
-    #define public MyAppVer Copy(temp, 1, RPos("""", temp) - 1)
+  #define private FileVersionPrefixPos = Pos(FileVersionPrefix, FileLine)
+  #if FileVersionPrefixPos > 0
+    #define private FileVersionTemp Copy(FileLine, FileVersionPrefixPos + Len(FileVersionPrefix))
+    #define public MyAppVer Copy(FileVersionTemp, 1, RPos(FileVersionPostfix, FileVersionTemp) - 1)
   #endif
 #endsub
 
-#for {FileHandle = FileOpen("..\..\_build\src\rad\version.cpp"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
+#for {FileHandle = FileOpen("..\..\CMakeLists.txt"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
 #if FileHandle
   #expr FileClose(FileHandle)
 #endif
