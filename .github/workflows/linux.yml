@@ -21,10 +21,13 @@ jobs:
     - name: Fetch tags
       run: |
         git fetch --prune --depth=1 --tags --no-recurse-submodules
+    - name: Parse project data
+      run: |
+        echo "project_version=`sed -n -r -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
     - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
       with:
         arch: x86_64
-        bundle: wxFormBuilder.flatpak
+        bundle: wxFormBuilder${{ env.project_version }}.flatpak
         manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json
         cache-key: flatpak-builder-${{ github.sha }}
   debian:
