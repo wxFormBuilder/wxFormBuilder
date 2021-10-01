@@ -40,7 +40,7 @@ jobs:
         submodules: true
     - name: Fetch tags
       run: |
-        git fetch --deepen=10 --no-recurse-submodules
+        git fetch --verbose --progress --prune --deepen=10 --no-recurse-submodules
         git tag --list
         git describe
         false
