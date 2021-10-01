@@ -40,9 +40,10 @@ jobs:
         submodules: true
     - name: Fetch tags
       run: |
-        git fetch --prune --unshallow --tags
+        git fetch --prune --deepen=10 --no-recurse-submodules
         git tag --list
         git describe
+        false
     - name: Setup environment
       run: |
         sudo apt update
