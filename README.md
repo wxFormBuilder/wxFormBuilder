@@ -37,7 +37,7 @@ Installing the Prerequisites:
 
 ```sh
 pacman -Syu
-pacman -S ${MINGW_PACKAGE_PREFIX}-toolchain ${MINGW_PACKAGE_PREFIX}-cmake ${MINGW_PACKAGE_PREFIX}-make git
+pacman -S ${MINGW_PACKAGE_PREFIX}-toolchain ${MINGW_PACKAGE_PREFIX}-cmake ${MINGW_PACKAGE_PREFIX}-make base-devel git
 pacman -S ${MINGW_PACKAGE_PREFIX}-wxWidgets3.1 ${MINGW_PACKAGE_PREFIX}-boost
 ```
 
