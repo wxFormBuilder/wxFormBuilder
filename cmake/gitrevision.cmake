@@ -26,9 +26,9 @@ set(GIT_TAG_DISTANCE "0")
 set(GIT_DIRTY "false")
 
 if(gitRequired)
-  set(git_message_level WARNING)
-else()
   set(git_message_level FATAL_ERROR)
+else()
+  set(git_message_level WARNING)
 endif()
 
 find_program(git_cmd NAMES git)
