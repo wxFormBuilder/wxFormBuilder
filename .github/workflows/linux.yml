@@ -38,6 +38,11 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Fetch tags
+      run: |
+        git -c protocol.version=2 fetch --prune --progress --no-recurse-submodules --depth=1 origin ${{ github.sha }}:refs/remotes/origin/master
+        git tag --list
+        git describe
     - name: Setup environment
       run: |
         sudo apt update
@@ -45,9 +50,6 @@ jobs:
     - name: Setup package build
       run: |
         cp -rf install/linux/deb/ ./debian/
-        git -c protocol.version=2 fetch --prune --progress --no-recurse-submodules --depth=1 origin +4761b0c5917e68651e3aa982f9893f42ed00544d:refs/remotes/origin/master
-        git tag --list
-        git describe
     - name: Build package
       run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
