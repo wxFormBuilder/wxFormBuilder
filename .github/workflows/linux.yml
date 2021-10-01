@@ -42,9 +42,9 @@ jobs:
       run: |
         git fetch --verbose --progress --prune --depth=20 --tags --no-recurse-submodules
         git tag --list
-        git describe
-        git describe --tags
-        git describe --all
+        git describe || true
+        git describe --tags || true
+        git describe --all || true
         false
     - name: Setup environment
       run: |
