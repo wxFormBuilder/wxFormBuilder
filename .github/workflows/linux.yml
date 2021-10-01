@@ -32,12 +32,6 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
-    - uses: actions/github-script@v4
-      id: variables
-      with:
-        result-encoding: string
-        script: |
-          return "${{ github.workspace }}".split('/').slice(0, -1).join('/')
     - uses: actions/checkout@v2
       with:
         submodules: true
@@ -51,10 +45,11 @@ jobs:
     - name: Setup package build
       run: |
         cp -rf install/linux/deb/ ./debian/
+        echo "package_basedir=${GITHUB_WORKSPACE%/*}" >> $GITHUB_ENV
     - name: Build package
       run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
-        rename "s/(.+_.+_)(.*)/\$1ubuntu-"`lsb_release -r -s`"_\$2/" "${{ steps.variables.outputs.result }}/"*.deb
+        rename "s/(.+_.+_)(.*)/\$1ubuntu-"`lsb_release -r -s`"_\$2/" "${{ env.package_basedir }}/"*.deb
     - name: Test
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
@@ -63,4 +58,4 @@ jobs:
       with:
         name: Debian Package
         path: |
-          ${{ steps.variables.outputs.result }}/*.deb
+          ${{ env.package_basedir }}/*.deb
