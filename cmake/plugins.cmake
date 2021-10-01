@@ -14,7 +14,7 @@ function(add_plugin PLUGIN_NAME)
   add_library(wxFormBuilder_${PLUGIN_NAME} MODULE)
   add_library(wxFormBuilder::${PLUGIN_NAME} ALIAS wxFormBuilder_${PLUGIN_NAME})
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      OUTPUT_NAME $<$<BOOL:${MSVC}>:lib>${PLUGIN_NAME}
+      OUTPUT_NAME ${PLUGIN_NAME}
   )
 
   target_sources(wxFormBuilder_${PLUGIN_NAME}
