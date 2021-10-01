@@ -40,7 +40,7 @@ jobs:
         submodules: true
     - name: Fetch tags
       run: |
-        git -c protocol.version=2 fetch --prune --progress --no-recurse-submodules --depth=1 origin ${{ github.sha }}
+        git fetch --prune --unshallow --tags
         git tag --list
         git describe
     - name: Setup environment
