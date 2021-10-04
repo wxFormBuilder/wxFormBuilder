@@ -9,7 +9,7 @@ jobs:
     name: Windows line endings
     runs-on: windows-latest
     steps:
-    - uses: actions/github-script@v4
+    - uses: actions/github-script@v5
       id: variables
       with:
         result-encoding: string
@@ -32,7 +32,7 @@ jobs:
     name: Linux line endings
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/github-script@v4
+    - uses: actions/github-script@v5
       id: variables
       with:
         result-encoding: string
