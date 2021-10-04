@@ -23,7 +23,7 @@ jobs:
     - name: Fetch tags
       shell: cmd
       run: |
-        git fetch --prune --depth=1 --tags --no-recurse-submodules
+        git fetch --prune --depth=1 --no-recurse-submodules
     - uses: msys2/setup-msys2@v2
       with:
         msystem: ${{ matrix.sys }}

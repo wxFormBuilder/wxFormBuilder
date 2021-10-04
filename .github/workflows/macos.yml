@@ -20,7 +20,7 @@ jobs:
         submodules: true
     - name: Fetch tags
       run: |
-        git fetch --prune --depth=1 --tags --no-recurse-submodules
+        git fetch --prune --depth=1 --no-recurse-submodules
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/ s//-\1/p" CMakeLists.txt `" >> $GITHUB_ENV
