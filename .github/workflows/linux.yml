@@ -52,7 +52,7 @@ jobs:
     - name: Build package
       run: |
         dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
-        rename "s/(.+_.+_)(.*)/\$1ubuntu-"`lsb_release -r -s`"_\$2/" "${{ env.package_basedir }}/"*.deb
+        rename "s/(.+_.+_)(.*)/\$1ubuntu-`lsb_release -r -s`_\$2/" "${{ env.package_basedir }}/"*.deb
     - name: Test
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
