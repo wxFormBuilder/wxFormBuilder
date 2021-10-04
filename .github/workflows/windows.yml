@@ -4,7 +4,31 @@ on:
     branches-ignore:
       - '**/linux/**'
       - '**/macos/**'
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/macos.yml'
+      - 'install/linux/**'
+      - 'install/macosx/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
   pull_request:
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/macos.yml'
+      - 'install/linux/**'
+      - 'install/macosx/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
 
 jobs:
   installer:

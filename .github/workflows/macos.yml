@@ -4,7 +4,31 @@ on:
     branches-ignore:
       - '**/windows/**'
       - '**/linux/**'
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/windows.yml'
+      - 'install/linux/**'
+      - 'install/windows/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
   pull_request:
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/windows.yml'
+      - 'install/linux/**'
+      - 'install/windows/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
 
 jobs:
   bundle:
