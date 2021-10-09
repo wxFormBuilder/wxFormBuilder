@@ -2,8 +2,16 @@
 add_plugin(additional
   DEFINITIONS
     USE_MEDIACTRL
+  COMPONENTS
+    additional
+    data
+    ribbon
 )
-add_plugin(common)
+add_plugin(common
+  COMPONENTS
+    common
+    menutoolbar
+)
 add_plugin(containers
   SOURCES
     bookutils.h
