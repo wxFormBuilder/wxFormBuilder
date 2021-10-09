@@ -6,15 +6,129 @@ add_plugin(additional
     additional
     data
     ribbon
+  ICONS
+    bitmap_toggle_button.xpm
+    calendar16x16.xpm
+    calendar.xpm
+    checklistbox.xpm
+    colourPickerIcon.xpm
+    combo_box.xpm
+    customcode.xpm
+    custom_control.xpm
+    dataview_ctrl.xpm
+    dataviewlist_column.xpm
+    dataviewlist_ctrl.xpm
+    dataviewtree_ctrl.xpm
+    datepicker.xpm
+    dirPicker.xpm
+    filePicker.xpm
+    fontPicker.xpm
+    genericdir_ctrl.xpm
+    grid.xpm
+    htmlwin.xpm
+    hyperlink_ctrl.xpm
+    media_ctrl.xpm
+    propgriditem.xpm
+    propgridman.xpm
+    propgridpage.xpm
+    propgrid.xpm
+    ribbon_bar.xpm
+    ribbon_buttonbar.xpm
+    ribbon_button_dropdown.xpm
+    ribbon_button_hybrid.xpm
+    ribbon_button_toggle.xpm
+    ribbon_button.xpm
+    ribbon_gallery.xpm
+    ribbon_page.xpm
+    ribbon_panel.xpm
+    richtextctrl.xpm
+    scintilla.xpm
+    scrollbar.xpm
+    search.xpm
+    spinbtn.xpm
+    spin_ctrl_double.xpm
+    spin_ctrl.xpm
+    timepicker.xpm
+    timer.xpm
+    toggle_button.xpm
+    tree_ctrl.xpm
+    treelistctrlcolumn.xpm
+    treelistctrl.xpm
 )
+
 add_plugin(common
   COMPONENTS
     common
     menutoolbar
+  ICONS
+    animation.xpm
+    auitoolbar.xpm
+    bitmap_button.xpm
+    button16x16.xpm
+    button.xpm
+    checkbox.xpm
+    choice.xpm
+    combo_box.xpm
+    gauge.xpm
+    infobar.xpm
+    list_box.xpm
+    list_ctrl.xpm
+    menubar.xpm
+    menuitem.xpm
+    menu.xpm
+    radio_box.xpm
+    radio_button.xpm
+    separator.xpm
+    slider.xpm
+    static_bitmap.xpm
+    static_line.xpm
+    static_text.xpm
+    statusbar.xpm
+    submenu.xpm
+    text_ctrl.xpm
+    toolbar.xpm
+    toolSeparator.xpm
+    tool.xpm
 )
+
 add_plugin(containers
   SOURCES
     bookutils.h
+  ICONS
+    auinotebook.xpm
+    choicebook.xpm
+    collpane.xpm
+    listbook.xpm
+    notebook.xpm
+    panel.xpm
+    scrollwin.xpm
+    splitter_window.xpm
 )
-add_plugin(forms)
-add_plugin(layout)
+
+add_plugin(forms
+  ICONS
+    dialog.xpm
+    doc_mdi_parent_frame.xpm
+    doc_parent_frame.xpm
+    document.xpm
+    frame16x16.png
+    frame.xpm
+    menubar.xpm
+    panel.xpm
+    toolbar.xpm
+    wizard.xpm
+    wizpage.xpm
+)
+
+add_plugin(layout
+  ICONS
+    flex_grid_sizer.xpm
+    grid_bag_sizer.xpm
+    grid_sizer.xpm
+    sizer16x16.xpm
+    sizer.xpm
+    spacer.xpm
+    staticbox_sizer.xpm
+    stddialogbuttonsizer.xpm
+    wrap_sizer.xpm
+)
