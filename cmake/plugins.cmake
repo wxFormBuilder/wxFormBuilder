@@ -78,9 +78,6 @@ function(add_plugin PLUGIN_NAME)
     )
   endif()
 
-  # TODO: Use cache variable for these
-  set(generatorLanguages cpp python lua php)
-
   # TODO: In the final sources layout these files should reside next to the sources
   set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/plugins/${PLUGIN_DIRECTORY}/xml")
   set(destDir "${WXFB_STAGEDIR}/${resourceDestination}/xml")
@@ -91,7 +88,7 @@ function(add_plugin PLUGIN_NAME)
   foreach(component IN LISTS PLUGIN_COMPONENTS)
     list(APPEND definitionsSource "${sourceDir}/${component}.xml")
     list(APPEND definitionsDest "${destDir}/${component}.xml")
-    foreach(lang IN LISTS generatorLanguages)
+    foreach(lang IN LISTS WXFB_GENERATOR_LANGUAGES)
       list(APPEND templatesSource "${sourceDir}/${component}.${lang}code")
       list(APPEND templatesDest "${destDir}/${component}.${lang}code")
     endforeach()

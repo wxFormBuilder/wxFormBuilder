@@ -55,6 +55,8 @@ if(WXFB_STAGED_BUILD)
 else()
   unset(WXFB_STAGEDIR CACHE)
 endif()
+# TODO: Currently generator languages cannot be configured
+set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
 
 if(NOT WXFB_WXWIDGETS_ENABLE_30)
   set(wxWidgetsVersion 3.1.2)
