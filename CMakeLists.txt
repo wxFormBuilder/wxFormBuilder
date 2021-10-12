@@ -4,10 +4,10 @@ project(wxFormBuilder VERSION 3.10.0 LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
+get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(PROJECT_IS_TOP_LEVEL)
   set(buildTypes "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
   set(defaultBuildType "Debug")
-  get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
   if(NOT isMultiConfig)
     if(NOT CMAKE_BUILD_TYPE)
       message(STATUS "Setting build type to '${defaultBuildType}' as none was specified.")
@@ -17,6 +17,10 @@ if(PROJECT_IS_TOP_LEVEL)
       message(FATAL_ERROR "Unknown build type: '${CMAKE_BUILD_TYPE}'")
     endif()
   endif()
+
+  set(wxfbStagedBuildDefault ON)
+else()
+  set(wxfbStagedBuildDefault OFF)
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
@@ -44,6 +48,13 @@ option(WXFB_WXWIDGETS_MONO "Use monolithic variant of wxWidgets." ${wxWidgetsMon
 option(WXFB_WXWIDGETS_SHARED "Use shared variant of wxWidgets." ON)
 option(WXFB_WXWIDGETS_ENABLE_30 "Allow using wxWidgets version 3.0.x. Not recommended, only for platforms without wxWidgets version 3.1.x." OFF)
 option(WXFB_TICPP_SHARED "Use shared variant of TiCPP." OFF)
+option(WXFB_STAGED_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStagedBuildDefault})
+
+if(WXFB_STAGED_BUILD)
+  set(WXFB_STAGEDIR "${CMAKE_CURRENT_BINARY_DIR}/stage$<$<BOOL:${isMultiConfig}>:/$<CONFIG>>" CACHE INTERNAL "")
+else()
+  unset(WXFB_STAGEDIR CACHE)
+endif()
 
 if(NOT WXFB_WXWIDGETS_ENABLE_30)
   set(wxWidgetsVersion 3.1.2)
@@ -92,6 +103,15 @@ elseif(APPLE)
 else()
   set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder)
 endif()
+
+# Use installation layout for staged build
+if(WXFB_STAGED_BUILD)
+  set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGEDIR}/${CMAKE_INSTALL_BINDIR}")
+  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGEDIR}/${CMAKE_INSTALL_LIBDIR}")
+  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGEDIR}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+
 include(cmake/plugins.cmake)
 
 add_subdirectory(src)
