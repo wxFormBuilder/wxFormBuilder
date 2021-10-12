@@ -13,10 +13,6 @@ function(add_plugin PLUGIN_NAME)
   if(NOT DEFINED PLUGIN_COMPONENTS)
     set(PLUGIN_COMPONENTS ${PLUGIN_NAME})
   endif()
-  if(DEFINED PLUGIN_ICONS)
-    # TODO: In the final sources layout these files should reside next to the sources
-    list(TRANSFORM PLUGIN_ICONS PREPEND ../output/plugins/${PLUGIN_DIRECTORY}/icons/)
-  endif()
 
   add_library(wxFormBuilder_${PLUGIN_NAME} MODULE)
   add_library(wxFormBuilder::${PLUGIN_NAME} ALIAS wxFormBuilder_${PLUGIN_NAME})
@@ -61,17 +57,87 @@ function(add_plugin PLUGIN_NAME)
     )
   endif()
 
+  # TODO: Use cache variable for these
   set(generatorLanguages cpp python lua php)
-  set(PLUGIN_COMPONENTS_DEFINITIONS "")
-  set(PLUGIN_COMPONENTS_TEMPLATES "")
+
+  # TODO: In the final sources layout these files should reside next to the sources
+  set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/plugins/${PLUGIN_DIRECTORY}/xml")
+  set(destDir "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}/xml")
+  set(definitionsSource "")
+  set(definitionsDest "")
+  set(templatesSource "")
+  set(templatesDest "")
   foreach(component IN LISTS PLUGIN_COMPONENTS)
-    # TODO: In the final sources layout these files should reside next to the sources  
-    list(APPEND PLUGIN_COMPONENTS_DEFINITIONS ../output/plugins/${PLUGIN_DIRECTORY}/xml/${component}.xml)
+    list(APPEND definitionsSource "${sourceDir}/${component}.xml")
+    list(APPEND definitionsDest "${destDir}/${component}.xml")
     foreach(lang IN LISTS generatorLanguages)
-      # TODO: In the final sources layout these files should reside next to the sources
-      list(APPEND PLUGIN_COMPONENTS_TEMPLATES ../output/plugins/${PLUGIN_DIRECTORY}/xml/${component}.${lang}code)
+      list(APPEND templatesSource "${sourceDir}/${component}.${lang}code")
+      list(APPEND templatesDest "${destDir}/${component}.${lang}code")
     endforeach()
   endforeach()
+
+  add_custom_command(OUTPUT ${definitionsDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying component definitions")
+  foreach(source dest IN ZIP_LISTS definitionsSource definitionsDest)
+    add_custom_command(
+      OUTPUT ${definitionsDest}
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
+      DEPENDS "${source}"
+      VERBATIM
+      APPEND
+    )
+  endforeach()
+  add_custom_target(wxFormBuilder_${PLUGIN_NAME}-definitions
+    DEPENDS ${definitionsDest}
+  )
+
+  add_custom_command(OUTPUT ${templatesDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying code templates")
+  foreach(source dest IN ZIP_LISTS templatesSource templatesDest)
+    add_custom_command(
+      OUTPUT ${templatesDest}
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
+      DEPENDS "${source}"
+      VERBATIM
+      APPEND
+    )
+  endforeach()
+  add_custom_target(wxFormBuilder_${PLUGIN_NAME}-templates
+    DEPENDS ${templatesDest}
+  )
+
+  add_dependencies(wxFormBuilder_${PLUGIN_NAME}
+    wxFormBuilder_${PLUGIN_NAME}-definitions
+    wxFormBuilder_${PLUGIN_NAME}-templates
+  )
+
+  if(DEFINED PLUGIN_ICONS)
+    # TODO: In the final sources layout these files should reside next to the sources  
+    set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/plugins/${PLUGIN_DIRECTORY}/icons")
+    set(destDir "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}/icons")
+    set(iconsSource "")
+    set(iconsDest "")
+    foreach(icon IN LISTS PLUGIN_ICONS)
+      list(APPEND iconsSource "${sourceDir}/${icon}")
+      list(APPEND iconsDest "${destDir}/${icon}")
+    endforeach()
+
+    add_custom_command(OUTPUT ${iconsDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying icons")
+    foreach(source dest IN ZIP_LISTS iconsSource iconsDest)
+      add_custom_command(
+        OUTPUT ${iconsDest}
+        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
+        DEPENDS "${source}"
+        VERBATIM
+        APPEND
+      )
+    endforeach()
+    add_custom_target(wxFormBuilder_${PLUGIN_NAME}-icons
+      DEPENDS ${iconsDest}
+    )
+
+    add_dependencies(wxFormBuilder_${PLUGIN_NAME}
+      wxFormBuilder_${PLUGIN_NAME}-icons
+    )
+  endif()
 
   if(WIN32)
     # TODO: Using RUNTIME_DEPENDENCIES results in the dependencies getting installed in the locations
@@ -101,16 +167,16 @@ function(add_plugin PLUGIN_NAME)
     )
   endif()
 
-  install(FILES ${PLUGIN_COMPONENTS_DEFINITIONS}
+  # TODO: In the final sources layout these files should reside next to the sources
+  install(FILES ${definitionsSource}
     DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}/xml
   )
-  install(FILES ${PLUGIN_COMPONENTS_TEMPLATES}
+  install(FILES ${templatesSource}
     DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}/xml
   )
   if(DEFINED PLUGIN_ICONS)
-    # TODO: This loses a possible directory structure of the input files
-    install(FILES ${PLUGIN_ICONS}
-      DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}/icons
+    install(DIRECTORY ../output/plugins/${PLUGIN_DIRECTORY}/icons
+      DESTINATION ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME}
     )
   endif()
 endfunction()
