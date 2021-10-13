@@ -280,7 +280,7 @@ add_custom_target(wxFormBuilder_revision
 
 # TODO: Should this directory get its own CMakeLists.txt?
 set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/xml")
-set(destDir "${WXFB_STAGEDIR}/${CMAKE_INSTALL_DATADIR}/xml")
+set(destDir "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_DATADIR}/xml")
 set(definitionsSource "")
 set(definitionsDest "")
 set(templatesSource "")
@@ -296,7 +296,7 @@ foreach(template IN LISTS templateDefinitions)
   endforeach()
 endforeach()
 
-if(WXFB_STAGED_BUILD)
+if(WXFB_STAGE_BUILD)
   add_custom_command(OUTPUT ${definitionsDest} COMMENT "wxFormBuilder_app: Copying definitions")
   foreach(source dest IN ZIP_LISTS definitionsSource definitionsDest)
     add_custom_command(
@@ -333,7 +333,7 @@ endif()
 
 # TODO: Should this directory get its own CMakeLists.txt?
 set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/resources")
-set(destDir "${WXFB_STAGEDIR}/${CMAKE_INSTALL_DATADIR}/resources")
+set(destDir "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_DATADIR}/resources")
 set(resourcesSource "")
 set(resourcesDest "")
 foreach(common IN LISTS commonResources)
@@ -345,7 +345,7 @@ foreach(icon IN LISTS commonIcons)
   list(APPEND resourcesDest "${destDir}/icons/${icon}")
 endforeach()
 
-if(WXFB_STAGED_BUILD)
+if(WXFB_STAGE_BUILD)
   add_custom_command(OUTPUT ${resourcesDest} COMMENT "wxFormBuilder_app: Copying resources")
   foreach(source dest IN ZIP_LISTS resourcesSource resourcesDest)
     add_custom_command(
