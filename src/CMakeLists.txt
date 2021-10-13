@@ -20,6 +20,16 @@ if(NOT APPLE)
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
+set(resourceDestinationDefinitions ${CMAKE_INSTALL_DATADIR})
+set(resourceDestinationResources ${CMAKE_INSTALL_DATADIR}/resources)
+if(WXFB_STAGE_BUILD)
+  set(stageResourceDestinationDefinitions "${WXFB_STAGE_DIR}/${resourceDestinationDefinitions}")
+  set(stageResourceDestinationResources "${WXFB_STAGE_DIR}/${resourceDestinationResources}")
+else()
+  set(stageResourceDestinationDefinitions "")
+  set(stageResourceDestinationResources "")
+endif()
+
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
 set_target_properties(wxFormBuilder_app PROPERTIES
@@ -278,93 +288,6 @@ add_custom_target(wxFormBuilder_revision
   VERBATIM
 )
 
-# TODO: Should this directory get its own CMakeLists.txt?
-set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/xml")
-set(destDir "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_DATADIR}/xml")
-set(definitionsSource "")
-set(definitionsDest "")
-set(templatesSource "")
-set(templatesDest "")
-foreach(common IN LISTS commonDefinitions)
-  list(APPEND definitionsSource "${sourceDir}/${common}.xml")
-  list(APPEND definitionsDest "${destDir}/${common}.xml")
-endforeach()
-foreach(template IN LISTS templateDefinitions)
-  foreach(lang IN LISTS WXFB_GENERATOR_LANGUAGES)
-    list(APPEND templatesSource "${sourceDir}/${template}.${lang}code")
-    list(APPEND templatesDest "${destDir}/${template}.${lang}code")
-  endforeach()
-endforeach()
-
-if(WXFB_STAGE_BUILD)
-  add_custom_command(OUTPUT ${definitionsDest} COMMENT "wxFormBuilder_app: Copying definitions")
-  foreach(source dest IN ZIP_LISTS definitionsSource definitionsDest)
-    add_custom_command(
-      OUTPUT ${definitionsDest}
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-      DEPENDS "${source}"
-      VERBATIM
-      APPEND
-    )
-  endforeach()
-  add_custom_target(wxFormBuilder_app-definitions
-    DEPENDS ${definitionsDest}
-  )
-
-  add_custom_command(OUTPUT ${templatesDest} COMMENT "wxFormBuilder_app: Copying code templates")
-  foreach(source dest IN ZIP_LISTS templatesSource templatesDest)
-    add_custom_command(
-      OUTPUT ${templatesDest}
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-      DEPENDS "${source}"
-      VERBATIM
-      APPEND
-    )
-  endforeach()
-  add_custom_target(wxFormBuilder_app-templates
-    DEPENDS ${templatesDest}
-  )
-
-  add_dependencies(wxFormBuilder_app
-    wxFormBuilder_app-definitions
-    wxFormBuilder_app-templates
-  )
-endif()
-
-# TODO: Should this directory get its own CMakeLists.txt?
-set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/resources")
-set(destDir "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_DATADIR}/resources")
-set(resourcesSource "")
-set(resourcesDest "")
-foreach(common IN LISTS commonResources)
-  list(APPEND resourcesSource "${sourceDir}/${common}")
-  list(APPEND resourcesDest "${destDir}/${common}")
-endforeach()
-foreach(icon IN LISTS commonIcons)
-  list(APPEND resourcesSource "${sourceDir}/icons/${icon}")
-  list(APPEND resourcesDest "${destDir}/icons/${icon}")
-endforeach()
-
-if(WXFB_STAGE_BUILD)
-  add_custom_command(OUTPUT ${resourcesDest} COMMENT "wxFormBuilder_app: Copying resources")
-  foreach(source dest IN ZIP_LISTS resourcesSource resourcesDest)
-    add_custom_command(
-      OUTPUT ${resourcesDest}
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-      DEPENDS "${source}"
-      VERBATIM
-      APPEND
-    )
-  endforeach()
-  add_custom_target(wxFormBuilder_app-resources
-    DEPENDS ${resourcesDest}
-  )
-
-  add_dependencies(wxFormBuilder_app
-    wxFormBuilder_app-resources
-  )
-endif()
-
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
   RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
@@ -373,24 +296,29 @@ install(TARGETS wxFormBuilder_app
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-# TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
+
+# TODO: Where should these files reside in the final sources layout?
+wxfb_target_definitions(wxFormBuilder_app
+  INPUT_DIRECTORY "../output"
+  OUTPUT_DIRECTORY "${stageResourceDestinationDefinitions}"
+  INSTALL_DIRECTORY "${resourceDestinationDefinitions}"
+  COMMON ${commonDefinitions}
+  TEMPLATES ${templateDefinitions}
+)
+wxfb_target_resources(wxFormBuilder_app
+  INPUT_DIRECTORY "../output/resources"
+  OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
+  INSTALL_DIRECTORY "${resourceDestinationResources}"
+  RESOURCES ${commonResources}
+  ICONS ${commonIcons}
+)
+
+# TODO: Where should these files reside in the final sources layout?
 install(
   FILES
     ../output/Changelog.txt
     ../LICENSE
   DESTINATION ${CMAKE_INSTALL_DATADIR}
-)
-install(FILES ${definitionsSource}
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/xml
-)
-install(FILES ${templatesSource}
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/xml
-)
-# TODO: Exclude these unneeded resources until they are moved away
-install(DIRECTORY ../output/resources
-  DESTINATION ${CMAKE_INSTALL_DATADIR}
-  PATTERN "resources/splash.png" EXCLUDE
-  PATTERN "resources/wxFormBuilder_Banner.png" EXCLUDE
 )
 
 if(NOT WIN32 AND NOT APPLE)

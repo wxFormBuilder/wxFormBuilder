@@ -33,6 +33,9 @@ function(wxfb_add_plugin PLUGIN_NAME)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${runtimeDestination}")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${libraryDestination}")
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${archiveDestination}")
+    set(stageResourceDestination "${WXFB_STAGE_DIR}/${resourceDestination}")
+  else()
+    set(stageResourceDestination "")
   endif()
 
   add_library(wxFormBuilder_${PLUGIN_NAME} MODULE)
@@ -80,89 +83,6 @@ function(wxfb_add_plugin PLUGIN_NAME)
     )
   endif()
 
-  # TODO: In the final sources layout these files should reside next to the sources
-  set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/plugins/${PLUGIN_DIRECTORY}/xml")
-  set(destDir "${WXFB_STAGE_DIR}/${resourceDestination}/xml")
-  set(definitionsSource "")
-  set(definitionsDest "")
-  set(templatesSource "")
-  set(templatesDest "")
-  foreach(component IN LISTS PLUGIN_COMPONENTS)
-    list(APPEND definitionsSource "${sourceDir}/${component}.xml")
-    list(APPEND definitionsDest "${destDir}/${component}.xml")
-    foreach(lang IN LISTS WXFB_GENERATOR_LANGUAGES)
-      list(APPEND templatesSource "${sourceDir}/${component}.${lang}code")
-      list(APPEND templatesDest "${destDir}/${component}.${lang}code")
-    endforeach()
-  endforeach()
-
-  if(WXFB_STAGE_BUILD)
-    add_custom_command(OUTPUT ${definitionsDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying component definitions")
-    foreach(source dest IN ZIP_LISTS definitionsSource definitionsDest)
-      add_custom_command(
-        OUTPUT ${definitionsDest}
-        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-        DEPENDS "${source}"
-        VERBATIM
-        APPEND
-      )
-    endforeach()
-    add_custom_target(wxFormBuilder_${PLUGIN_NAME}-definitions
-      DEPENDS ${definitionsDest}
-    )
-
-    add_custom_command(OUTPUT ${templatesDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying code templates")
-    foreach(source dest IN ZIP_LISTS templatesSource templatesDest)
-      add_custom_command(
-        OUTPUT ${templatesDest}
-        COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-        DEPENDS "${source}"
-        VERBATIM
-        APPEND
-      )
-    endforeach()
-    add_custom_target(wxFormBuilder_${PLUGIN_NAME}-templates
-      DEPENDS ${templatesDest}
-    )
-
-    add_dependencies(wxFormBuilder_${PLUGIN_NAME}
-      wxFormBuilder_${PLUGIN_NAME}-definitions
-      wxFormBuilder_${PLUGIN_NAME}-templates
-    )
-  endif()
-
-  if(DEFINED PLUGIN_ICONS)
-    # TODO: In the final sources layout these files should reside next to the sources  
-    set(sourceDir "${CMAKE_CURRENT_SOURCE_DIR}/../output/plugins/${PLUGIN_DIRECTORY}/icons")
-    set(destDir "${WXFB_STAGE_DIR}/${resourceDestination}/icons")
-    set(iconsSource "")
-    set(iconsDest "")
-    foreach(icon IN LISTS PLUGIN_ICONS)
-      list(APPEND iconsSource "${sourceDir}/${icon}")
-      list(APPEND iconsDest "${destDir}/${icon}")
-    endforeach()
-
-    if(WXFB_STAGE_BUILD)
-      add_custom_command(OUTPUT ${iconsDest} COMMENT "wxFormBuilder_${PLUGIN_NAME}: Copying icons")
-      foreach(source dest IN ZIP_LISTS iconsSource iconsDest)
-        add_custom_command(
-          OUTPUT ${iconsDest}
-          COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${source}" "${dest}"
-          DEPENDS "${source}"
-          VERBATIM
-          APPEND
-        )
-      endforeach()
-      add_custom_target(wxFormBuilder_${PLUGIN_NAME}-icons
-        DEPENDS ${iconsDest}
-      )
-
-      add_dependencies(wxFormBuilder_${PLUGIN_NAME}
-        wxFormBuilder_${PLUGIN_NAME}-icons
-      )
-    endif()
-  endif()
-
   # TODO: Using RUNTIME_DEPENDENCIES results in the dependencies getting installed in the locations
   #       defined in this command, this is however unwanted because they should get installed in
   #       the global location. Registering the dependencies in a set and installing them later with
@@ -174,16 +94,21 @@ function(wxfb_add_plugin PLUGIN_NAME)
     LIBRARY
       DESTINATION ${libraryDestination}
   )
+
   # TODO: In the final sources layout these files should reside next to the sources
-  install(FILES ${definitionsSource}
-    DESTINATION ${resourceDestination}/xml
-  )
-  install(FILES ${templatesSource}
-    DESTINATION ${resourceDestination}/xml
+  wxfb_target_definitions(wxFormBuilder_${PLUGIN_NAME}
+    INPUT_DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}"
+    OUTPUT_DIRECTORY "${stageResourceDestination}"
+    INSTALL_DIRECTORY "${resourceDestination}"
+    COMMON ${PLUGIN_COMPONENTS}
+    TEMPLATES ${PLUGIN_COMPONENTS}
   )
   if(DEFINED PLUGIN_ICONS)
-    install(DIRECTORY ../output/plugins/${PLUGIN_DIRECTORY}/icons
-      DESTINATION ${resourceDestination}
+    wxfb_target_resources(wxFormBuilder_${PLUGIN_NAME}
+      INPUT_DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}"
+      OUTPUT_DIRECTORY "${stageResourceDestination}"
+      INSTALL_DIRECTORY "${resourceDestination}"
+      ICONS ${PLUGIN_ICONS}
     )
   endif()
 endfunction()
