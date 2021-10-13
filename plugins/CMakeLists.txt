@@ -1,5 +1,5 @@
 # TODO: Since media is currently a required component always enable the control
-add_plugin(additional
+wxfb_add_plugin(additional
   DEFINITIONS
     USE_MEDIACTRL
   COMPONENTS
@@ -56,7 +56,7 @@ add_plugin(additional
     treelistctrl.xpm
 )
 
-add_plugin(common
+wxfb_add_plugin(common
   COMPONENTS
     common
     menutoolbar
@@ -91,7 +91,7 @@ add_plugin(common
     tool.xpm
 )
 
-add_plugin(containers
+wxfb_add_plugin(containers
   SOURCES
     bookutils.h
   ICONS
@@ -105,7 +105,7 @@ add_plugin(containers
     splitter_window.xpm
 )
 
-add_plugin(forms
+wxfb_add_plugin(forms
   ICONS
     dialog.xpm
     doc_mdi_parent_frame.xpm
@@ -120,7 +120,7 @@ add_plugin(forms
     wizpage.xpm
 )
 
-add_plugin(layout
+wxfb_add_plugin(layout
   ICONS
     flex_grid_sizer.xpm
     grid_bag_sizer.xpm

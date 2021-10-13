@@ -1,4 +1,4 @@
-function(add_plugin PLUGIN_NAME)
+function(wxfb_add_plugin PLUGIN_NAME)
   set(options "")
   set(singleValues DIRECTORY)
   set(multiValues SOURCES DEFINITIONS LIBRARIES COMPONENTS ICONS)
@@ -7,11 +7,11 @@ function(add_plugin PLUGIN_NAME)
   if(NOT DEFINED PLUGIN_DIRECTORY)
     set(PLUGIN_DIRECTORY ${PLUGIN_NAME})
   endif()
-  if(DEFINED PLUGIN_SOURCES)
-    list(TRANSFORM PLUGIN_SOURCES PREPEND ${PLUGIN_DIRECTORY}/)
-  endif()
   if(NOT DEFINED PLUGIN_COMPONENTS)
     set(PLUGIN_COMPONENTS ${PLUGIN_NAME})
+  endif()
+  if(DEFINED PLUGIN_SOURCES)
+    list(TRANSFORM PLUGIN_SOURCES PREPEND ${PLUGIN_DIRECTORY}/)
   endif()
 
   if(WIN32)
@@ -51,12 +51,14 @@ function(add_plugin PLUGIN_NAME)
         ${PLUGIN_SOURCES}
     )
   endif()
+
   if(DEFINED PLUGIN_DEFINITIONS)
     target_compile_definitions(wxFormBuilder_${PLUGIN_NAME}
       PRIVATE
         ${PLUGIN_DEFINITIONS}
     )
   endif()
+
   target_link_libraries(wxFormBuilder_${PLUGIN_NAME}
     PUBLIC
       wxFormBuilder::plugin-interface
