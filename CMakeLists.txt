@@ -116,7 +116,7 @@ if(WXFB_STAGE_BUILD)
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
 endif()
 
-include(cmake/plugins.cmake)
+include(cmake/functions.cmake)
 
 add_subdirectory(src)
 add_subdirectory(plugins)
