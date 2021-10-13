@@ -17,10 +17,6 @@ if(PROJECT_IS_TOP_LEVEL)
       message(FATAL_ERROR "Unknown build type: '${CMAKE_BUILD_TYPE}'")
     endif()
   endif()
-
-  set(wxfbStagedBuildDefault ON)
-else()
-  set(wxfbStagedBuildDefault OFF)
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
@@ -48,6 +44,11 @@ option(WXFB_WXWIDGETS_MONO "Use monolithic variant of wxWidgets." ${wxWidgetsMon
 option(WXFB_WXWIDGETS_SHARED "Use shared variant of wxWidgets." ON)
 option(WXFB_WXWIDGETS_ENABLE_30 "Allow using wxWidgets version 3.0.x. Not recommended, only for platforms without wxWidgets version 3.1.x." OFF)
 option(WXFB_TICPP_SHARED "Use shared variant of TiCPP." OFF)
+if(PROJECT_IS_TOP_LEVEL)
+  set(wxfbStagedBuildDefault ON)
+else()
+  set(wxfbStagedBuildDefault OFF)
+endif()
 option(WXFB_STAGED_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStagedBuildDefault})
 
 if(WXFB_STAGED_BUILD)
