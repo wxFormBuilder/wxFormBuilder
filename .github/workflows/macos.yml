@@ -62,8 +62,14 @@ jobs:
     - name: Build
       run: |
         cmake --build _build --config Release -j `sysctl -n hw.ncpu`
+    - name: Test stage
+      run: |
+        _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
+        _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
+    - name: Install
+      run: |
         cmake --install _build --config Release
-    - name: Test
+    - name: Test install
       run: |
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
