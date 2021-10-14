@@ -20,17 +20,15 @@ if(NOT APPLE)
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
-configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-add_custom_target(wxFormBuilder_revision
-  COMMAND "${CMAKE_COMMAND}"
-    -D "gitRequired=FALSE"
-    -D "gitDirectory=${PROJECT_SOURCE_DIR}"
-    -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
-    -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
-    -P "${PROJECT_SOURCE_DIR}/cmake/gitrevision.cmake"
-  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
-  VERBATIM
-)
+set(resourceDestinationDefinitions ${CMAKE_INSTALL_DATADIR})
+set(resourceDestinationResources ${CMAKE_INSTALL_DATADIR}/resources)
+if(WXFB_STAGE_BUILD)
+  set(stageResourceDestinationDefinitions "${WXFB_STAGE_DIR}/${resourceDestinationDefinitions}")
+  set(stageResourceDestinationResources "${WXFB_STAGE_DIR}/${resourceDestinationResources}")
+else()
+  set(stageResourceDestinationDefinitions "")
+  set(stageResourceDestinationResources "")
+endif()
 
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
@@ -154,6 +152,58 @@ target_sources(wxFormBuilder_app
     utils/wxfbipc.cpp
     utils/wxlogstring.h
 )
+set(commonDefinitions
+  default
+  icons
+  objtypes
+)
+set(templateDefinitions
+  default
+  properties
+)
+set(commonResources
+  about.html
+)
+set(commonIcons
+  balign.png
+  bottom.xpm
+  chalign.png
+  copy.xpm
+  c++.png
+  cpp.png
+  cut.png
+  cvalign.png
+  delete.png
+  designer.png
+  events.png
+  expand.png
+  generate.png
+  h.png
+  lalign.png
+  left.xpm
+  logo.png
+  logo.xpm
+  lua.png
+  new.png
+  open.png
+  paste.png
+  php.png
+  prefs.xpm
+  project.xpm
+  properties.png
+  python.png
+  ralign.png
+  redo.png
+  right.xpm
+  save.png
+  stretch.png
+  swap.png
+  talign.png
+  top.xpm
+  undo.png
+  wxwin16x16.xpm
+  xrc.png
+)
 if(APPLE)
   set(appleResources
     ../install/macosx/icon.icns
@@ -226,25 +276,48 @@ else()
   )
 endif()
 
+configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
+add_custom_target(wxFormBuilder_revision
+  COMMAND "${CMAKE_COMMAND}"
+    -D "gitRequired=FALSE"
+    -D "gitDirectory=${PROJECT_SOURCE_DIR}"
+    -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
+    -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
+    -P "${PROJECT_SOURCE_DIR}/cmake/gitrevision.cmake"
+  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
+  VERBATIM
+)
+
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
   RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
   BUNDLE
-    DESTINATION .
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
   RUNTIME
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
-# TODO: After changing the layout, maybe use an own CMakeLists for resources and even own targets for them
+
+# TODO: Where should these files reside in the final sources layout?
+wxfb_target_definitions(wxFormBuilder_app
+  INPUT_DIRECTORY "../output"
+  OUTPUT_DIRECTORY "${stageResourceDestinationDefinitions}"
+  INSTALL_DIRECTORY "${resourceDestinationDefinitions}"
+  COMMON ${commonDefinitions}
+  TEMPLATES ${templateDefinitions}
+)
+wxfb_target_resources(wxFormBuilder_app
+  INPUT_DIRECTORY "../output/resources"
+  OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
+  INSTALL_DIRECTORY "${resourceDestinationResources}"
+  RESOURCES ${commonResources}
+  ICONS ${commonIcons}
+)
+
+# TODO: Where should these files reside in the final sources layout?
 install(
   FILES
     ../output/Changelog.txt
     ../LICENSE
-  DESTINATION ${CMAKE_INSTALL_DATADIR}
-)
-install(DIRECTORY ../output/resources
-  DESTINATION ${CMAKE_INSTALL_DATADIR}
-)
-install(DIRECTORY ../output/xml
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 

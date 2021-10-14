@@ -74,8 +74,16 @@ jobs:
       shell: msys2 {0}
       run: |
         cmake --build _build --config Release -j `nproc`
+    - name: Test stage
+      shell: msys2 {0}
+      run: |
+        _build\\stage\\wxFormBuilder.exe -v
+        _build\\stage\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+    - name: Install
+      shell: msys2 {0}
+      run: |
         cmake --install _build --config Release
-    - name: Test
+    - name: Test install
       shell: cmd
       run: |
         _install\\wxFormBuilder.exe -v
