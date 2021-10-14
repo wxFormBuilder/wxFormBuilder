@@ -1,3 +1,26 @@
+#[[
+Add a wxFormBuilder plugin target.
+
+wxfb_add_plugin(<name>
+                [DIRECTORY <directory>]
+                [SOURCES <source>...]
+                [DEFINITIONS <define>...]
+                [LIBRARIES <lib>...]
+                [COMPONENTS <component>...]
+                [ICONS <icon>...])
+
+Adds a plugin target with the name wxFormBuilder_<name>. If <directory> is not specified the sources must reside
+in a subdirectory relative to ${CMAKE_CURRENT_SOURCE_DIR} with the name <name>, otherwise with the name <directory>,
+this is the root directory of the plugin.
+
+The plugin interface implementation must reside in the file <name>.cpp inside the root directory. Additional
+source files can be specified with SOURCES, the paths must be relative to the root directory. Additional defines and
+libraries can be specified with DEFINITIONS and LIBRARIES.
+
+If no COMPONENTS are specified a single component <name> must exist (XML definition file and code templates) in the
+xml directory inside the root directory, otherwise these files must exist for every component.
+Icon resources are specified with ICONS, the paths must be relative to the icon directory inside the root directory.
+]]
 function(wxfb_add_plugin PLUGIN_NAME)
   set(options "")
   set(singleValues DIRECTORY)
@@ -114,6 +137,27 @@ function(wxfb_add_plugin PLUGIN_NAME)
 endfunction()
 
 
+#[[
+Helper function to add XML definition files and code templates to a target with dependency tracking.
+
+wxfb_target_definitions(<target>
+                        INPUT_DIRECTORY <input-dir>
+                        [OUTPUT_DIRECTORY <output-dir>]
+                        [INSTALL_DIRECTORY <install-dir>]
+                        [COMMON <common>...]
+                        [TEMPLATES <template>...])
+
+This function must be called at most one time for <target>.
+
+Source files from <input-dir> are copied during the build phase into <output-dir> and installed into <install-dir>
+during the install phase. The specification of <output-dir> and <install-dir> is optional, if not given the corresponding
+steps are skipped.
+
+If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
+it is intepreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
+
+Simple definition files are specified with COMMON, code templates are specified with TEMPLATES.
+]]
 function(wxfb_target_definitions arg_TARGET)
   set(options "")
   set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY)
@@ -173,6 +217,28 @@ function(wxfb_target_definitions arg_TARGET)
 endfunction()
 
 
+#[[
+Helper function to add resources and icons to a target with dependency tracking.
+
+wxfb_target_resources(<target>
+                      INPUT_DIRECTORY <input-dir>
+                      [OUTPUT_DIRECTORY <output-dir>]
+                      [INSTALL_DIRECTORY <install-dir>]
+                      [RESOURCES <resource>...]
+                      [ICONS <icon>...])
+
+This function must be called at most one time for <target>.
+
+Source files from <input-dir> are copied during the build phase into <output-dir> and installed into <install-dir>
+during the install phase. The specification of <output-dir> and <install-dir> is optional, if not given the corresponding
+steps are skipped.
+
+If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
+it is intepreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
+
+Simple resources are specified with RESOURCES, icons are specified with ICONS. Icons must reside in the icon subdirectory
+of <input-dir>.
+]]
 function(wxfb_target_resources arg_TARGET)
   set(options "")
   set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY)
@@ -227,6 +293,17 @@ function(wxfb_target_resources arg_TARGET)
 endfunction()
 
 
+#[[
+Helper function to copy files from source tree into binary tree with dependency tracking.
+
+wxfb_copy_target_resources(<target> <name> <source-files> <destination-files>)
+
+This function must be called at most one time for <target>.
+
+During the build phase all <source-files> files are copied to <destination-files>. Both lists must contain files with
+absolute paths and must be matching, each source entry is copied to the corresponding destination entry.
+A target <target>-<name> is added as dependency to <target> to track updates of <source-files>.
+]]
 function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
   add_custom_command(OUTPUT ${arg_DESTINATION_ITEMS} COMMENT "${arg_TARGET}: Copying ${arg_NAME}")
   foreach(src dst IN ZIP_LISTS arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
@@ -243,6 +320,15 @@ function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DES
 endfunction()
 
 
+#[[
+Helper function to install files from source tree into installation directory.
+
+wxfb_install_files(<base-directory> <files> <destination-directory>)
+
+During the install phase all <files> are copied into <destination-directory> preserving directory structure.
+The items of <files> are made relative to <base-directory>, the remaining directory structure
+is created inside <destination-directory>.
+]]
 function(wxfb_install_files arg_BASE_DIRECTORY arg_FILES arg_DESTINATION)
   foreach(file IN LISTS arg_FILES)
     cmake_path(RELATIVE_PATH file BASE_DIRECTORY "${arg_BASE_DIRECTORY}" OUTPUT_VARIABLE fileBase)
