@@ -21,7 +21,7 @@ target_compile_definitions(wxFormBuilder_plugin-interface
 )
 target_include_directories(wxFormBuilder_plugin-interface
   INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
 target_link_libraries(wxFormBuilder_plugin-interface
   PUBLIC

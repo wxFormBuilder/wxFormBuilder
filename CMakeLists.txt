@@ -148,6 +148,7 @@ if(APPLE)
       fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
 
       find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
+      mark_as_advanced(install_name_tool_cmd)
       execute_process(COMMAND \"\${install_name_tool_cmd}\" -add_rpath @executable_path/../PlugIns \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/MacOS/wxFormBuilder\")
 
       find_program(codesign_cmd NAMES codesign REQUIRED)

@@ -227,7 +227,7 @@ target_compile_definitions(wxFormBuilder_app
 )
 target_include_directories(wxFormBuilder_app
   PRIVATE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
 
 target_link_libraries(wxFormBuilder_app
@@ -381,7 +381,7 @@ if(WIN32)
   elseif(MINGW)
     # This environment has its own search paths which are not taken into account and must be specified.
     # Depending on the bitness of the target architecture different directories are used.
-    set(extraDirectories)
+    set(extraDirectories "")
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
       set(targetBitness 64)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -395,7 +395,7 @@ if(WIN32)
       find_program(cygpath_cmd NAMES cygpath REQUIRED)
       mark_as_advanced(cygpath_cmd)
       # The mixed mode output equals the CMake path format
-      execute_process(COMMAND "${cygpath_cmd}" -m "/mingw${targetBitness}/bin" OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
+      execute_process(COMMAND "${cygpath_cmd}" -m /mingw${targetBitness}/bin OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
       list(APPEND extraDirectories "${msysSystemDir}")
     else()
       # In plain MinGW environments it is more difficult to determine the paths in a system independent manner.
