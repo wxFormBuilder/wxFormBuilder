@@ -304,7 +304,7 @@ This function must be called at most one time for <target>.
 
 During the build phase all <source-files> files are copied to <destination-files>. Both lists must contain files with
 absolute paths and must be matching, each source entry is copied to the corresponding destination entry.
-A target <target>-<name> is added as dependency to <target> to track updates of <source-files>.
+A target <target>-<name> is added to the default build target to track updates of <source-files>.
 ]]
 function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
   add_custom_command(OUTPUT ${arg_DESTINATION_ITEMS} COMMENT "${arg_TARGET}: Copying ${arg_NAME}")
@@ -317,8 +317,7 @@ function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DES
       APPEND
     )
   endforeach()
-  add_custom_target(${arg_TARGET}-${arg_NAME} DEPENDS ${arg_DESTINATION_ITEMS})
-  add_dependencies(${arg_TARGET} ${arg_TARGET}-${arg_NAME})
+  add_custom_target(${arg_TARGET}-${arg_NAME} ALL DEPENDS ${arg_DESTINATION_ITEMS})
 endfunction()
 
 
