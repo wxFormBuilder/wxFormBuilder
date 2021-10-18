@@ -37,6 +37,11 @@ if(APPLE)
   set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
 endif()
 
+if(MSVC)
+  # Disable warnings about standard conformant code that is not conform to Microsoft standards
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+endif()
+
 if(MSVC OR MINGW AND NOT MSYS)
   set(wxWidgetsMonoDefault ON)
 else()
@@ -49,6 +54,7 @@ option(WXFB_TICPP_SHARED "Use shared variant of TiCPP." OFF)
 if(PROJECT_IS_TOP_LEVEL)
   set(wxfbStagedBuildDefault ON)
 else()
+    # TODO: Maybe check if the required variables are all unset and enable by default in that case
   set(wxfbStagedBuildDefault OFF)
 endif()
 option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStagedBuildDefault})
