@@ -277,16 +277,7 @@ else()
 endif()
 
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-add_custom_target(wxFormBuilder_revision
-  COMMAND "${CMAKE_COMMAND}"
-    -D "gitRequired=FALSE"
-    -D "gitDirectory=${PROJECT_SOURCE_DIR}"
-    -D "gitTemplate=${CMAKE_CURRENT_SOURCE_DIR}/rad/revision.cpp.in"
-    -D "gitOutput=${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
-    -P "${PROJECT_SOURCE_DIR}/cmake/gitrevision.cmake"
-  BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
-  VERBATIM
-)
+get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
 
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app

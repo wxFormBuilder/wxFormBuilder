@@ -119,6 +119,7 @@ if(WXFB_STAGE_BUILD)
 endif()
 
 include(cmake/functions.cmake)
+include(cmake/revision.cmake)
 
 add_subdirectory(src)
 add_subdirectory(plugins)
