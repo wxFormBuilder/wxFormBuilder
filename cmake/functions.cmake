@@ -156,7 +156,7 @@ during the install phase. The specification of <output-dir> and <install-dir> is
 steps are skipped.
 
 If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
-it is intepreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
+it is interpreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
 
 Simple definition files are specified with COMMON, code templates are specified with TEMPLATES.
 ]]
@@ -236,7 +236,7 @@ during the install phase. The specification of <output-dir> and <install-dir> is
 steps are skipped.
 
 If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
-it is intepreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
+it is interpreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
 
 Simple resources are specified with RESOURCES, icons are specified with ICONS. Icons must reside in the icon subdirectory
 of <input-dir>.
