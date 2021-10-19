@@ -1500,7 +1500,7 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 		pluginLibrary->second.getComponentLibrary = pluginLibrary->second.sharedLibrary.get<IComponentLibrary*(IManager*)>("GetComponentLibrary");
 		pluginLibrary->second.freeComponentLibrary = pluginLibrary->second.sharedLibrary.get<void(IComponentLibrary*)>("FreeComponentLibrary");
 	} catch (const std::system_error& ex) {
-		THROW_WXFBEX(path << " is not a valid component library")
+		THROW_WXFBEX(path << " is not a valid component library: " << ex.what())
 	}
 
 	LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
