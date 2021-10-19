@@ -38,7 +38,7 @@ wxDEFINE_EVENT(wxEVT_FB_EVENT_HANDLER_MODIFIED, wxFBEventHandlerEvent);
 
 wxFBEvent::wxFBEvent( wxEventType commandType )
 :
-wxEvent( 0, commandType )
+wxEvent( wxID_ANY, commandType )
 {
 	//ctor
 }
