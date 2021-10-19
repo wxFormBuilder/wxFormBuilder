@@ -19,6 +19,22 @@ if(PROJECT_IS_TOP_LEVEL)
       message(FATAL_ERROR "Unknown build type: '${CMAKE_BUILD_TYPE}'")
     endif()
   endif()
+
+  # TODO: This is not the ideal solution to apply these warning flags.
+  #       Toolchain files are not really intended for this purpose.
+  #       Presets would be a viable solution, but currently, at least on VSCode, this
+  #       has the side effect that pretty much everything from generator to build type
+  #       to binary directory needs to be specified. The usual control ability of especially
+  #       the build type gets lost in preset mode.
+  if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    string(APPEND CMAKE_CXX_FLAGS " /W4")
+  elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    # This assumes the default Clang frontend and not the MSVC compatible one
+    string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
+  else()
+    # This assumes GCC
+    string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
+  endif()
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
