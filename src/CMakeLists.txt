@@ -307,7 +307,7 @@ source_group(
 
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
-  RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+  RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
   BUNDLE
     DESTINATION ${CMAKE_INSTALL_BINDIR}
   RUNTIME
@@ -385,7 +385,7 @@ if(WIN32)
     # that the runtime distributables are getting installed along the application, these need to get
     # filtered. The wxWidgets library uses the win32 search style and therefor the library path is defined
     # (TODO: Unless the CMake build gets imported, what to do then?)
-    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
         "${wxWidgets_LIB_DIR}"
       PRE_EXCLUDE_REGEXES
@@ -426,7 +426,7 @@ if(WIN32)
       # Directories of additional libraries need to be added as well
       list(APPEND extraDirectories "${wxWidgets_LIB_DIR}")
     endif()
-    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
         ${extraDirectories}
       PRE_EXCLUDE_REGEXES

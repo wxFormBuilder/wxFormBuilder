@@ -115,7 +115,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
   #       the global location. Registering the dependencies in a set and installing them later with
   #       the standalone command has the desired effect, but why?
   install(TARGETS wxFormBuilder_${PLUGIN_NAME}
-    RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
+    RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
     RUNTIME
       DESTINATION ${runtimeDestination}
     LIBRARY
