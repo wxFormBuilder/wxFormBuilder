@@ -83,6 +83,8 @@ target_sources(wxFormBuilder_app
     rad/cmdproc.cpp
     rad/customkeys.h
     rad/customkeys.cpp
+    rad/dialogfindcomponent.h
+    rad/dialogfindcomponent.cpp
     rad/genericpanel.h
     rad/genericpanel.cpp
     rad/mainframe.h
