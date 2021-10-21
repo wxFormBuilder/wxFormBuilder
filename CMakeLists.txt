@@ -35,6 +35,8 @@ if(PROJECT_IS_TOP_LEVEL)
     # This assumes GCC
     string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
   endif()
+
+  set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)

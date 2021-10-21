@@ -279,6 +279,8 @@ endif()
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
 get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
 
+set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
+
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
   RUNTIME_DEPENDENCY_SET wxFormBuilder_deps
@@ -296,6 +298,8 @@ wxfb_target_definitions(wxFormBuilder_app
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
+set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
+
 wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "../output/resources"
   OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
@@ -303,6 +307,7 @@ wxfb_target_resources(wxFormBuilder_app
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
+set_target_properties(wxFormBuilder_app-resources wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
 
 # TODO: Where should these files reside in the final sources layout?
 install(

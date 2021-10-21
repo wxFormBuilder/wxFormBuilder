@@ -108,6 +108,8 @@ function(wxfb_add_plugin PLUGIN_NAME)
     )
   endif()
 
+  set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+
   # TODO: Using RUNTIME_DEPENDENCIES results in the dependencies getting installed in the locations
   #       defined in this command, this is however unwanted because they should get installed in
   #       the global location. Registering the dependencies in a set and installing them later with
@@ -128,6 +130,8 @@ function(wxfb_add_plugin PLUGIN_NAME)
     COMMON ${PLUGIN_COMPONENTS}
     TEMPLATES ${PLUGIN_COMPONENTS}
   )
+  set_target_properties(wxFormBuilder_${PLUGIN_NAME}-definitions wxFormBuilder_${PLUGIN_NAME}-templates PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+
   if(DEFINED PLUGIN_ICONS)
     wxfb_target_resources(wxFormBuilder_${PLUGIN_NAME}
       INPUT_DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}"
@@ -135,6 +139,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
       INSTALL_DIRECTORY "${resourceDestination}"
       ICONS ${PLUGIN_ICONS}
     )
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-icons PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
   endif()
 endfunction()
 
