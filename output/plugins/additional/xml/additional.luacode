@@ -217,6 +217,11 @@ Lua code generation written by
 		<template name="include">$include</template>
 	</templates>
 
+	<templates class="CustomCode">
+		<template name="include">$require_lua</template>
+		<template name="construction">$code_lua</template>
+	</templates>
+
 	<templates class="wxMediaCtrl">
 		<template name="construction">
 			#utbl$name = wx.wxMediaCtrl( #utbl#wxparent $name, $id, "", $pos, $size)

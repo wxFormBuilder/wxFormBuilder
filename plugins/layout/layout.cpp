@@ -187,7 +187,7 @@ public:
 	ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj ) override
 	{
 		XrcToXfbFilter filter(xrcObj, _("wxBoxSizer"));
-		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
 	}
@@ -216,7 +216,7 @@ public:
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxWrapSizer"));
-		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"), _("orient"), XRC_TYPE_TEXT);
 		filter.AddProperty(_("flags"), _("flags"), XRC_TYPE_BITLIST);
 		return filter.GetXfbObject();
@@ -254,7 +254,7 @@ public:
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxStaticBoxSizer"));
-		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("orient"),_("orient"),XRC_TYPE_TEXT);
 		filter.AddProperty(_("label"),_("label"),XRC_TYPE_TEXT);
 		return filter.GetXfbObject();
@@ -288,7 +288,7 @@ public:
 
 	ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override {
 		XrcToXfbFilter filter(xrcObj, _("wxGridSizer"));
-		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 		filter.AddProperty(_("rows"), _("rows"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("cols"), _("cols"), XRC_TYPE_INTEGER);
 		filter.AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
@@ -326,7 +326,7 @@ public:
 
 	void ImportXRCProperties( XrcToXfbFilter* filter )
 	{
-		filter->AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter->AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 		filter->AddProperty(_("vgap"), _("vgap"), XRC_TYPE_INTEGER);
 		filter->AddProperty(_("hgap"), _("hgap"), XRC_TYPE_INTEGER);
 		filter->AddProperty(_("growablecols"),_("growablecols"),XRC_TYPE_TEXT);
@@ -431,7 +431,7 @@ public:
 	}
 
 	void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override {
-		// For storing objects whose postion needs to be determined
+		// For storing objects whose position needs to be determined
 		std::vector< std::pair< wxObject*, wxGBSizerItem* > > newObjects;
 		wxGBPosition lastPosition( 0, 0 );
 
@@ -643,7 +643,7 @@ public:
 		buttons[ _("ContextHelp") ] = wxT("0");
 
 		XrcToXfbFilter filter(xrcObj, _("wxStdDialogButtonSizer"));
-		filter.AddProperty(_("minsize"), _("minsize"), XRC_TYPE_SIZE);
+		filter.AddProperty(_("minsize"), _("minimum_size"), XRC_TYPE_SIZE);
 
 		ticpp::Element* button = xrcObj->FirstChildElement( "object", false );
 		for (  ; button != 0; button = button->NextSiblingElement( "object", false ) )

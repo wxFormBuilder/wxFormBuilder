@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Python code generation writen by
+// Python code generation written by
 //   Michal Bližňak - michal.bliznak@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -30,6 +30,8 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 #include "../utils/debug.h"
 #include "../utils/typeconv.h"
 #include "../utils/wxfbexception.h"
@@ -510,12 +512,12 @@ bool PythonCodeGenerator::GenerateCode( PObjectBase project )
 
 	code = wxString::Format(
 		wxT("###########################################################################\n")
-		wxT("## Python code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
+		wxT("## Python code generated with wxFormBuilder (version %s%s)\n")
 		wxT("## http://www.wxformbuilder.org/\n")
 		wxT("##\n")
 		wxT("## PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT("###########################################################################\n"),
-		VERSION, REVISION
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_source->WriteLn( code );
@@ -716,7 +718,7 @@ void PythonCodeGenerator::GenVirtualEventHandlers( const EventVector& events, co
 		// execute properly.
 		// So we create a default handler which will skip the event.
 		m_source->WriteLn( wxEmptyString );
-		m_source->WriteLn( wxT("# Virtual event handlers, overide them in your derived class") );
+		m_source->WriteLn( wxT("# Virtual event handlers, override them in your derived class") );
 
 		std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
@@ -1139,6 +1141,13 @@ void PythonCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
 
 	GenEvents( class_obj, events );
 
+	auto afterConnectEvents = GetCode(class_obj, wxT("after_connectevents"));
+	if (!afterConnectEvents.empty())
+	{
+		m_source->WriteLn();
+		m_source->WriteLn(afterConnectEvents);
+	}
+
 	m_source->Unindent();
 
 	if ( class_obj->GetObjectTypeName() == wxT("wizard") && class_obj->GetChildCount() > 0 )
@@ -1456,7 +1465,7 @@ void PythonCodeGenerator::GenDefines( PObjectBase project)
 	std::vector< wxString > macros;
 	FindMacros( project, &macros );
 
-	// Remove the default macro from the set, for backward compatiblity
+	// Remove the default macro from the set, for backward compatibility
 	std::vector< wxString >::iterator it;
 	it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
 	if ( it != macros.end() )

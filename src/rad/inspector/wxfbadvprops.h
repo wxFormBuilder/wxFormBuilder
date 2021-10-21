@@ -135,7 +135,7 @@ protected:
 //
 // Note that new editor classes needs to be registered before use.
 // This can be accomplished using wxPGRegisterEditorClass macro.
-// Registeration can also be performed in a constructor of a
+// Registration can also be performed in a constructor of a
 // property that is likely to require the editor in question.
 //
 

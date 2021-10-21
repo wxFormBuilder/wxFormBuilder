@@ -1,0 +1,18 @@
+Source: wxformbuilder
+Section: devel
+Priority: optional
+Maintainer: Steffen Olszewski <steffen.olszewski@gero-mess.de>
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.4.1
+Homepage: https://github.com/wxFormBuilder/wxFormBuilder
+#Vcs-Browser: https://salsa.debian.org/debian/wxformbuilder
+#Vcs-Git: https://salsa.debian.org/debian/wxformbuilder.git
+
+Package: wxformbuilder
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: GUI builder for wxWidgets
+ wxFormBuilder is a GUI builder for the wxWidgets framework.
+ Code generation is supported for C++, Python, XRC, wxLua and PHP.
+ Additionally the import and export of XRC code is possible.
+ To support additional widgets custom plugins can be used.

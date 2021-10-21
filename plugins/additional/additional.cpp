@@ -1468,6 +1468,10 @@ public:
 	}
 };
 
+class CustomCodeComponent : public ComponentBase
+{
+};
+
 class SearchCtrlComponent : public ComponentBase
 {
 public:
@@ -2669,6 +2673,7 @@ WINDOW_COMPONENT("wxScrollBar",ScrollBarComponent)
 WINDOW_COMPONENT("wxSpinCtrl",SpinCtrlComponent)
 WINDOW_COMPONENT("wxSpinButton",SpinButtonComponent)
 WINDOW_COMPONENT("CustomControl", CustomControlComponent)
+ABSTRACT_COMPONENT("CustomCode", CustomCodeComponent)
 WINDOW_COMPONENT("wxDataViewCtrl", DataViewCtrl )
 WINDOW_COMPONENT("wxDataViewTreeCtrl", DataViewTreeCtrl )
 WINDOW_COMPONENT("wxDataViewListCtrl", DataViewListCtrl )

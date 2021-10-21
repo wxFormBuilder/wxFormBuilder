@@ -1,0 +1,35 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "default-layout",
+            "displayName": "Default directory layout",
+            "binaryDir": "${sourceDir}/_build",
+            "installDir": "${sourceDir}/_install"
+        },
+        {
+            "name": "warn-msvc",
+            "inherits": "default-layout",
+            "displayName": "Default MSVC warnings",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "/W4"
+            }
+        },
+        {
+            "name": "warn-gcc",
+            "inherits": "default-layout",
+            "displayName": "Default GCC warnings",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic"
+            }
+        },
+        {
+            "name": "warn-clang",
+            "inherits": "default-layout",
+            "displayName": "Default Clang warnings",
+            "cacheVariables": {
+                "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic"
+            }
+        }
+    ]
+}

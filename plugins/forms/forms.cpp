@@ -277,7 +277,7 @@ public:
 		return wizard;
 	}
 
-	void OnSelected(wxObject*, IManager*) {
+	void OnSelected(wxObject*) override {
         wxLogDebug( wxT("Wizard OnSelected") );
     }
 

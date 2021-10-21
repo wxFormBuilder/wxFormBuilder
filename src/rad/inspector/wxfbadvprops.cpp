@@ -257,7 +257,7 @@ wxPGProperty *wxFBBitmapProperty::CreatePropertySource( int sourceIndex )
                             wxString(_("Load From Icon Resource:\n") ) +
                             wxString(_("Windows Only. Load the image from a ICON resource in a .rc file\n\n") ) +
 							wxString(_("Load From XRC:\n")) +
-							wxString(_("Load the image from XRC ressources. The XRC ressources must be initialized by the application code.\n\n")) +
+							wxString(_("Load the image from XRC resources. The XRC resources must be initialized by the application code.\n\n")) +
                             wxString(_("Load From Art Provider:\n") ) +
                             wxString(_("Query registered providers for bitmap with given ID.\n\n") ) );
     AppendChild( srcProp );
@@ -302,7 +302,7 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertyXrcName()
 {
 	// Create 'xrc_name' property ('Load From XRC' only)
 	auto* propXRCName = new wxStringProperty(wxT("xrc_name"), wxPG_LABEL);
-	propXRCName->SetHelpString(_("Name of the item in the XRC ressources."));
+	propXRCName->SetHelpString(_("Name of the item in the XRC resources."));
 
 	return propXRCName;
 }

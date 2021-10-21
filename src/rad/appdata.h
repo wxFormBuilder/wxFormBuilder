@@ -51,9 +51,6 @@ class wxFBIPC;
 #define AppDataInit()	      (ApplicationData::Initialize())
 #define AppDataDestroy()  	(ApplicationData::Destroy())
 
-extern const char* const VERSION;
-extern const char* const REVISION;
-
 // This class is a singleton class.
 
 class ApplicationData
@@ -212,13 +209,13 @@ class ApplicationData
 		Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't exist.
 		@param prop Property containing the options to transfer.
 		@param options Set of options to search for and transfer.
-		@param newPropName Name of property to transfer to, will be created if non-existant.
+		@param newPropName Name of property to transfer to, will be created if non-existent.
 		*/
 		void TransferOptionList( ticpp::Element* prop, std::set< wxString >* options, const std::string& newPropName );
 
 		void PropagateExpansion(PObjectBase obj, bool expand, bool up);
 
-		// hiden constructor
+		// hidden constructor
 		ApplicationData( const wxString &rootdir = wxT( "." ) );
 
 		/**

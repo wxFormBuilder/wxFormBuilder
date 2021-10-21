@@ -284,7 +284,7 @@ private:
 	bool m_expanded; // is expanded in the object tree, allows for saving to file
 
 protected:
-	// utilites for implementing the tree
+	// utilities for implementing the tree
 	static const int INDENT;  // size of indent
 	wxString GetIndentString(int indent); // obtiene la cadena con el indentado
 

@@ -73,11 +73,11 @@ elif [ "$unamestr" = "Darwin" ]; then
 fi
 
 # Build premake
-make config=release -C ./build/premake/5.0/build/gmake.$platform
+make config=release -C ./scripts/premake/5.0/build/gmake.$platform
 
-./build/premake/5.0/bin/release/premake5 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
-./build/premake/5.0/bin/release/premake5 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake2
+./scripts/premake/5.0/bin/release/premake5 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath codelite
+./scripts/premake/5.0/bin/release/premake5 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch $rpath gmake2
 if [ "$platform" = "macosx" ]; then
-   ./build/premake/5.0/bin/release/premake5 --file=./build/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode4
+   ./scripts/premake/5.0/bin/release/premake5 --file=./scripts/premake/solution.lua $wxroot $wxversion $mediactrl $shared $arch xcode4
 fi
 

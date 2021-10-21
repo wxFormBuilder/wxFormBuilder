@@ -24,7 +24,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// PHP code generation writen by
+// PHP code generation written by
 //   Jefferson González - jgmdev@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -173,7 +173,7 @@ private:
 
 	/**
 	* Makes the objects construction, setting up the objects' and Layout properties.
-	* The algorithm is simmilar to that used in the designer preview generation.
+	* The algorithm is similar to that used in the designer preview generation.
 	*/
 	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
 

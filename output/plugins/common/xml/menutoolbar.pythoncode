@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 
-Python code generation writen by
+Python code generation written by
   Michal Bližňák - michal.bliznak@gmail.com
 -->
 <codegen language="Python">
@@ -82,7 +82,7 @@ Python code generation writen by
 						#wxparent $name.SetToolSticky( event.GetId(), True ) #nl
 						rect = #wxparent $name.GetToolRect( event.GetId() ) #nl
 						pt = self.ScreenToClient( #wxparent $name.ClientToScreen( rect.GetBottomLeft() ) ); #nl
-						#wxparent $name.PopupMenu( self.$name, pt ) #nl
+						#wxparent self.PopupMenu( self.$name, pt ) #nl
 						#wxparent $name.SetToolSticky( event.GetId(), False ) #nl #unindent #unindent
 				@}
 			@}@}

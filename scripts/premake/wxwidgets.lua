@@ -58,6 +58,7 @@ wxUnicodeSign     = "u"
 wxUseMediaCtrl    = true
 wxUseUnicode      = true
 wxMonolithic      = true
+wxConfigSuffix    = ""
 
 if not wxCompiler then wxCompiler = "gcc" end
 wxCompilerName = wxCompiler
@@ -79,6 +80,13 @@ if os.is("windows") then
 elseif  os.is("macosx")  then
     wxTarget = "mac"
 end
+
+if _OPTIONS["force-wx-config"] then
+    if _OPTIONS["force-wx-config"] == "versioned" then
+        wxConfigSuffix = "-" .. wxVersion
+    end
+end
+
 -----------------------------------------------------------------------------
 -- The wx_config the parameters are.
 --          Root    : path to wx root folder. Can be left empty if WXWIN is defined
@@ -127,7 +135,7 @@ function wx_config(options)
 -- Use wx-config
     local useWXConfig = "no"
     if _OPTIONS["force-wx-config"] then
-        useWXConfig = "yes"
+        useWXConfig = _OPTIONS["force-wx-config"]
     end
 
     wx_config_Private(options.Root or "",
@@ -238,6 +246,7 @@ function wx_config_Private(wxRoot, wxDebug, wxHost, wxVersion, wxStatic, wxUnico
     function wx_config_for_posix()
         local configCmd = "wx-config" -- this is the wx-config command line
         if wxRoot ~= "" then configCmd = path.join(wxRoot, "wx-config") end
+        if wxConfigSuffix ~= "" then configCmd = configCmd .. wxConfigSuffix end
 
         local function checkYesNo(value, option)
             if value == "" then return "" end

@@ -1,0 +1,90 @@
+name: Linux
+on:
+  push:
+    branches-ignore:
+      - '**/windows/**'
+      - '**/macos/**'
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/windows.yml'
+      - 'docs/**'
+      - 'install/macosx/**'
+      - 'install/windows/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
+  pull_request:
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/macos.yml'
+      - '.github/workflows/windows.yml'
+      - 'docs/**'
+      - 'install/macosx/**'
+      - 'install/windows/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
+
+jobs:
+  flatpak:
+    name: Flatpak
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/debian/') }}
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-21.08
+      options: --privileged
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Fetch tags
+      run: |
+        git fetch --prune --depth=1 --no-recurse-submodules
+    - name: Parse project data
+      run: |
+        echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
+    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+      with:
+        arch: x86_64
+        bundle: wxFormBuilder${{ env.project_version }}.flatpak
+        manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json
+        cache-key: flatpak-builder-${{ github.sha }}
+  debian:
+    name: Debian Package
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.ref, '/flatpak/') }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Fetch tags
+      run: |
+        git fetch --prune --depth=1 --no-recurse-submodules
+    - name: Setup environment
+      run: |
+        sudo apt update
+        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
+    - name: Setup package build
+      run: |
+        cp -rf install/linux/deb/ ./debian/
+        echo "package_basedir=${GITHUB_WORKSPACE%/*}" >> $GITHUB_ENV
+    - name: Build package
+      run: |
+        dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
+        rename "s/(.+_.+_)(.*)/\$1ubuntu-`lsb_release -r -s`_\$2/" "${{ env.package_basedir }}/"*.deb
+    - name: Test package
+      run: |
+        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
+        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Debian Package
+        path: |
+          ${{ env.package_basedir }}/*.deb

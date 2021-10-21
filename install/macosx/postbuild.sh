@@ -90,7 +90,8 @@ cp $PROJECT_ROOT/install/macosx/Info.plist $APPCONTENTS/Info.plist
 # can find them when we make an app bundle
 for filename in $APPCONTENTS/PlugIns/*.dylib; do
 	base=`basename "$filename"`
-	`install_name_tool -id "$APPCONTENTS/PlugIns/$base" "$APPCONTENTS/PlugIns/$base"`
+	install_name_tool -id "$APPCONTENTS/PlugIns/$base" "$APPCONTENTS/PlugIns/$base"
+	codesign -s - -f --verbose "$filename"
 done
 
 if [ "$CONFIG" == "release" ]; then

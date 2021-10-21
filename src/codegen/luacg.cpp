@@ -30,6 +30,8 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 #include "../utils/debug.h"
 #include "../utils/typeconv.h"
 #include "../utils/wxfbexception.h"
@@ -570,10 +572,10 @@ bool LuaCodeGenerator::GenerateCode( PObjectBase project )
 
 	code = wxString::Format(
 		wxT("----------------------------------------------------------------------------\n")
-		wxT("-- Lua code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
+		wxT("-- Lua code generated with wxFormBuilder (version %s%s)\n")
 		wxT("-- http://www.wxformbuilder.org/\n")
 		wxT("----------------------------------------------------------------------------\n"),
-		VERSION, REVISION
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_source->WriteLn( code );
@@ -1247,6 +1249,13 @@ void LuaCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector& 
 
 	GenEvents( class_obj, events, strClassName );
 
+	auto afterConnectEvents = GetCode(class_obj, wxT("after_connectevents"));
+	if (!afterConnectEvents.empty())
+	{
+		m_source->WriteLn();
+		m_source->WriteLn(afterConnectEvents);
+	}
+
 	m_source->Unindent();
 }
 
@@ -1584,7 +1593,7 @@ void LuaCodeGenerator::GenDefines( PObjectBase project)
 	FindMacros( project, &macros );
 	m_strUserIDsVec.erase(m_strUserIDsVec.begin(),m_strUserIDsVec.end());
 
-	// Remove the default macro from the set, for backward compatiblity
+	// Remove the default macro from the set, for backward compatibility
 	std::vector< wxString >::iterator it;
 	it = std::find( macros.begin(), macros.end(), wxT("ID_DEFAULT") );
 	if ( it != macros.end() )

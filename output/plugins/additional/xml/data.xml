@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Data" lib="libadditional" icon="grid.xpm" desc="Data manipulation controls">
+<package name="Data" lib="additional" icon="grid.xpm" desc="Data manipulation controls">
 
   <objectinfo class="wxTreeCtrl" icon="tree_ctrl.xpm" type="widget">
     <inherits class="wxTreeCtrlBase"/>

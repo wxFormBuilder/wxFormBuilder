@@ -14,19 +14,34 @@
 #define MyAppURL "http://wxformbuilder.org"
 #define MyAppExeName "wxFormBuilder.exe"
 
+; The #define Arch is expected to be supplied externally and must contain a MinGW-w64 architecture.
+; If the architecture is 64 bit, enable 64 bit mode and enforce a 64 bit environment, otherwise
+; assume 32 bit and run in default mode.
+#define MyAppArchitecture
+#define MySetupArchitecture
+#ifdef Arch
+  #if Arch == "x86_64"
+    #define MyAppArchitecture "x64"
+    #define MySetupArchitecture "-x64"
+  #else
+    #define MySetupArchitecture "-x86"
+  #endif
+#endif
 
 #define protected FileHandle
-#define protected FileLine
+#define protected FileVersionPrefix "project(wxFormBuilder VERSION "
+#define protected FileVersionPostfix " LANGUAGES"
 
 #sub ProcessVersionLine
   #define private FileLine = FileRead(FileHandle)
-  #if Pos("VERSION = """, FileLine) > 0
-    #define private temp Copy(FileLine, Pos("""", FileLine) + 1)
-    #define public MyAppVer Copy(temp, 1, RPos("""", temp) - 1)
+  #define private FileVersionPrefixPos = Pos(FileVersionPrefix, FileLine)
+  #if FileVersionPrefixPos > 0
+    #define private FileVersionTemp Copy(FileLine, FileVersionPrefixPos + Len(FileVersionPrefix))
+    #define public MyAppVer Copy(FileVersionTemp, 1, RPos(FileVersionPostfix, FileVersionTemp) - 1)
   #endif
 #endsub
 
-#for {FileHandle = FileOpen("..\..\src\rad\appdata.cpp"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
+#for {FileHandle = FileOpen("..\..\CMakeLists.txt"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
 #if FileHandle
   #expr FileClose(FileHandle)
 #endif
@@ -34,38 +49,35 @@
 
 [Setup]
 AppName={#MyAppName}
+AppVersion={#MyAppVer}
 AppVerName={#MyAppName} {#MyAppVer}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+VersionInfoVersion={#MyAppVer}
+VersionInfoDescription={#MyAppName}
+ArchitecturesAllowed={#MyAppArchitecture}
+ArchitecturesInstallIn64BitMode={#MyAppArchitecture}
+MinVersion=6.1sp1
+OutputDir=.
+OutputBaseFilename={#MyAppName}-{#MyAppVer}{#MySetupArchitecture}
+Compression=lzma/ultra
+SolidCompression=true
+InternalCompressLevel=ultra
+WizardStyle=modern
+InfoAfterFile=..\..\_install\Changelog.txt
+LicenseFile=..\..\LICENSE
+SetupIconFile=support\wxFormBuilder.ico
+ShowLanguageDialog=yes
 DefaultDirName={commonpf}\{#MyAppName}
 DisableDirPage=false
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=false
-OutputBaseFilename={#MyAppName}-{#MyAppVer}
-Compression=lzma/ultra
-SolidCompression=true
-InternalCompressLevel=ultra
-OutputDir=.
-ShowLanguageDialog=yes
-AppVersion={#MyAppVer}
 AppendDefaultGroupName=false
 AllowNoIcons=true
-WizardImageFile=compiler:WizModernImage-IS.bmp
-WizardSmallImageFile=compiler:WizModernSmallImage-IS.bmp
-SetupIconFile=support\wxFormBuilder.ico
-UninstallDisplayIcon={app}\wxFormBuilder.exe
 ChangesAssociations=true
-VersionInfoVersion={#MyAppVer}
-VersionInfoDescription={#MyAppName}
-InfoAfterFile=..\..\output\Changelog.txt
-LicenseFile=..\..\output\license.txt
-MinVersion=0,6.0
-
-
-[Messages]
-BeveledLabel={#MyAppName} {#MyAppVer}
+UninstallDisplayIcon={app}\wxFormBuilder.exe
 
 
 [Types]
@@ -83,7 +95,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 
 [Files]
-#define protected RootDir "..\..\output"
+#define protected RootDir "..\..\_install"
 #define protected PluginsBaseDir "plugins"
 
 #define protected FindHandle
@@ -101,7 +113,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 #endsub
 
 Source: {#RootDir}\Changelog.txt; DestDir: {app}; Components: main
-Source: {#RootDir}\license.txt; DestDir: {app}; Components: main
+Source: {#RootDir}\..\LICENSE; DestDir: {app}; Components: main
 Source: {#RootDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
 Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main
@@ -110,20 +122,10 @@ Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsub
   #expr FindClose(FindHandle)
 #endif
 
-Source: C:\msys64\mingw32\bin\wx*.dll; DestDir: {app}; Components: main
+Source: {#RootDir}\wx*.dll; DestDir: {app}; Components: main
 
-Source: C:\msys64\mingw32\bin\libstdc++*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libgcc*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libintl*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libexpat*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libjpeg*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libpng*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libtiff*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\zlib*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libwinpthread*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libiconv*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\liblzma*.dll; DestDir: {app}; Components: runtime
-Source: C:\msys64\mingw32\bin\libzstd*.dll; DestDir: {app}; Components: runtime
+Source: {#RootDir}\lib*.dll; DestDir: {app}; Components: runtime
+Source: {#RootDir}\zlib1.dll; DestDir: {app}; Components: runtime
 
 
 [Icons]

@@ -86,7 +86,7 @@ wxString FileToCArray::Generate( const wxString& sourcePath )
 		return targetFullName;
 	}
 
-	// Determin if Microsoft BOM should be used
+	// Determine if Microsoft BOM should be used
 	bool useMicrosoftBOM = false;
 	PProperty pUseMicrosoftBOM = project->GetProperty( wxT( "use_microsoft_bom" ) );
 	if ( pUseMicrosoftBOM )

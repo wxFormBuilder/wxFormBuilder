@@ -27,6 +27,8 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 #include "../utils/filetocarray.h"
 #include "../utils/typeconv.h"
 #include "../utils/wxfbexception.h"
@@ -599,12 +601,12 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	m_source->Clear();
 	wxString code = wxString::Format(
 		wxT("///////////////////////////////////////////////////////////////////////////\n")
-		wxT("// C++ code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
+		wxT("// C++ code generated with wxFormBuilder (version %s%s)\n")
 		wxT("// http://www.wxformbuilder.org/\n")
 		wxT("//\n")
 		wxT("// PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT("///////////////////////////////////////////////////////////////////////////\n"),
-		VERSION, REVISION
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_header->WriteLn( code );
@@ -958,7 +960,7 @@ void CppCodeGenerator::GenVirtualEventHandlers( const EventVector& events, const
 		// execute properly.
 		// So we create a default handler which will skip the event.
 		m_header->WriteLn( wxEmptyString );
-		m_header->WriteLn( wxT( "// Virtual event handlers, overide them in your derived class" ) );
+		m_header->WriteLn( wxT( "// Virtual event handlers, override them in your derived class" ) );
 
 		std::set<wxString> generatedHandlers;
 		for ( size_t i = 0; i < events.size(); i++ )
@@ -1299,7 +1301,7 @@ void CppCodeGenerator::GenEnumIds( PObjectBase class_obj )
 		m_header->WriteLn( wxT( "{" ) );
 		m_header->Indent();
 
-		// Remove the default macro from the set, for backward compatiblity
+		// Remove the default macro from the set, for backward compatibility
 		it = std::find( macros.begin(), macros.end(), wxT( "ID_DEFAULT" ) );
 		if ( it != macros.end() )
 		{
@@ -1622,6 +1624,13 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector &
 		GenEvents( class_obj, events );
 	}
 
+	auto afterConnectEvents = GetCode(class_obj, wxT("after_connectevents"));
+	if (!afterConnectEvents.empty())
+	{
+		m_source->WriteLn();
+		m_source->WriteLn(afterConnectEvents);
+	}
+
 	m_source->Unindent();
 	m_source->WriteLn( wxT( "}" ) );
 }
@@ -1908,7 +1917,7 @@ void CppCodeGenerator::GenDefines( PObjectBase project )
 	std::vector< wxString > macros;
 	FindMacros( project, &macros );
 
-	// Remove the default macro from the set, for backward compatiblity
+	// Remove the default macro from the set, for backward compatibility
 	std::vector< wxString >::iterator it;
 	it = std::find( macros.begin(), macros.end(), wxT( "ID_DEFAULT" ) );
 	if ( it != macros.end() )
@@ -2082,7 +2091,7 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties( PObjectBase obj, std::set<w
 			{
 				wxString absPath = TypeConv::MakeAbsolutePath( path, AppData()->GetProjectPath() );
 
-				// It's supposed that "path" contains an absolut path to the file
+				// It's supposed that "path" contains an absolute path to the file
 				// and not a relative one.
 				wxString relPath = ( m_useRelativePath ? TypeConv::MakeRelativePath( absPath, m_basePath ) : absPath );
 

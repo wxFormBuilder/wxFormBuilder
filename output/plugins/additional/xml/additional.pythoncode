@@ -240,6 +240,11 @@ Python code generation written by
 		<template name="include">$include</template>
 	</templates>
 
+	<templates class="CustomCode">
+		<template name="include">$import_python</template>
+		<template name="construction">$code_python</template>
+	</templates>
+
 	<templates class="wxMediaCtrl">
 		<template name="construction">
 			self.$name = #class( #wxparent $name, $id, wx.EmptyString, $pos, $size)
@@ -266,7 +271,7 @@ Python code generation written by
 		</template>
 		<template name="settings">
 			#ifequal $enabled "1"
-			@{ self.$name.Start( $period #ifequal $oneshot "1" @{, true@} ) #nl @}
+			@{ self.$name.Start( $period #ifequal $oneshot "1" @{, True@} ) #nl @}
 		</template>
 		<template name="evt_connect_OnTimer">#wxparent $name.Bind( wx.EVT_TIMER, #handler, id=$id )</template>
 	</templates>
@@ -283,6 +288,7 @@ Python code generation written by
 			#nl self.$name.SetViewWhiteSpace( $view_whitespace )
 			#nl self.$name.SetMarginWidth( 2, 0 )
 			#nl self.$name.SetIndentationGuides( $indentation_guides )
+			#nl self.$name.SetReadOnly( $read_only );
 			#ifequal $folding "1"
 			@{
 				#nl self.$name.SetMarginType  ( 1, wx.stc.STC_MARGIN_SYMBOL )

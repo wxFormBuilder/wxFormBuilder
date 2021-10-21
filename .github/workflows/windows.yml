@@ -1,50 +1,102 @@
 name: Windows
-
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - '**/linux/**'
+      - '**/macos/**'
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/macos.yml'
+      - 'docs/**'
+      - 'install/linux/**'
+      - 'install/macosx/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
+  pull_request:
+    paths-ignore:
+      - '.github/workflows/sources.yml'
+      - '.github/workflows/linux.yml'
+      - '.github/workflows/macos.yml'
+      - 'docs/**'
+      - 'install/linux/**'
+      - 'install/macosx/**'
+      - 'scripts/premake/**'
+      - '*.md'
+      - '*.yml'
+      - '.clang-format'
+      - 'create_build_files*'
+      - 'meson.build'
 
 jobs:
-  build:
-
+  installer:
+    name: Installer
     runs-on: windows-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { sys: mingw32, env: i686 }
+          - { sys: mingw64, env: x86_64 }
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: true
+    - name: Fetch tags
+      shell: cmd
+      run: |
+        git fetch --prune --depth=1 --no-recurse-submodules
     - uses: msys2/setup-msys2@v2
       with:
-        msystem: MINGW32
+        msystem: ${{ matrix.sys }}
         release: false
-        update: false
-        install: 'mingw-w64-i686-gcc mingw-w64-i686-wxWidgets make'
-    - name: Patch MSYS2
+        update: true
+        install: >-
+          mingw-w64-${{ matrix.env }}-toolchain
+          mingw-w64-${{ matrix.env }}-cmake
+          mingw-w64-${{ matrix.env }}-make
+          mingw-w64-${{ matrix.env }}-wxWidgets3.1
+          mingw-w64-${{ matrix.env }}-boost
+          base-devel
+          git
+    - name: Create build system
       shell: msys2 {0}
       run: |
-        ln -s /mingw32/include/binutils/ansidecl.h /mingw32/include/ansidecl.h
-        ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
-        ln -s /mingw32/include/binutils/bfd_stdint.h /mingw32/include/bfd_stdint.h
-        ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h
-        ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
-        ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
-        ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
-    - name: Create build files
+        cmake -S . -B _build -G "MSYS Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+    - name: Package build system
+      if: ${{ contains(github.ref, '/build/') }}
       shell: cmd
-      run: create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config --disable-mediactrl
-    - name: Patch build files
-      shell: msys2 {0}
       run: |
-        cd build/3.0/gmake
-        sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
+        7z a -tzip -r -bb1 wxFormBuilder-Windows-build.zip _build
     - name: Build
       shell: msys2 {0}
       run: |
-        cd build/3.0/gmake
-        make config=release
+        cmake --build _build --config Release -j `nproc`
+    - name: Test stage
+      shell: msys2 {0}
+      run: |
+        _build\\stage\\wxFormBuilder.exe -v
+        _build\\stage\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+    - name: Install
+      shell: msys2 {0}
+      run: |
+        cmake --install _build --config Release
+    - name: Test install
+      shell: cmd
+      run: |
+        _install\\wxFormBuilder.exe -v
+        _install\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
     - name: Create installer
       shell: cmd
-      run: '"C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe" install/windows/wxFormBuilder.iss'
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      run: |
+        ISCC.exe /DArch=${{ matrix.env }} /O. install\\windows\\wxFormBuilder.iss
+    - uses: actions/upload-artifact@v2
       with:
-        name: Windows
-        path: install\windows\wxFormBuilder-*.exe
+        name: Windows Installer ${{ matrix.env }}
+        path: |
+          wxFormBuilder-Windows-build.zip
+          wxFormBuilder-*.exe
