@@ -280,6 +280,30 @@ configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
 get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
 
 set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
+get_target_property(sources wxFormBuilder_app SOURCES)
+set(filterSources ${sources})
+list(FILTER filterSources INCLUDE REGEX "\\.hh?$")
+list(FILTER filterSources EXCLUDE REGEX "^(${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./)")
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}"
+  PREFIX "Header Files"
+  FILES ${filterSources}
+)
+set(filterSources ${sources})
+list(FILTER filterSources INCLUDE REGEX "\\.(c(xx|pp)?|in)$")
+list(FILTER filterSources EXCLUDE REGEX "^(${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./)")
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}"
+  PREFIX "Source Files"
+  FILES ${filterSources}
+)
+set(filterSources ${sources})
+list(FILTER filterSources INCLUDE REGEX "^${CMAKE_CURRENT_BINARY_DIR}/")
+source_group(
+  TREE "${CMAKE_CURRENT_BINARY_DIR}"
+  PREFIX "Generated Files"
+  FILES ${filterSources}
+)
 
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app

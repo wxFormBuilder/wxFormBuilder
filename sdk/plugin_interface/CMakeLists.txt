@@ -30,3 +30,19 @@ target_link_libraries(wxFormBuilder_plugin-interface
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
 )
+
+get_target_property(sources wxFormBuilder_plugin-interface SOURCES)
+set(filterSources ${sources})
+list(FILTER filterSources INCLUDE REGEX "\\.hh?$")
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}"
+  PREFIX "Header Files"
+  FILES ${filterSources}
+)
+set(filterSources ${sources})
+list(FILTER filterSources INCLUDE REGEX "\\.(c(xx|pp)?|in)$")
+source_group(
+  TREE "${CMAKE_CURRENT_SOURCE_DIR}"
+  PREFIX "Source Files"
+  FILES ${filterSources}
+)
