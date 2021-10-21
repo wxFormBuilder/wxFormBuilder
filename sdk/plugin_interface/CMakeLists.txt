@@ -15,6 +15,7 @@ target_sources(wxFormBuilder_plugin-interface
     forms/wizard.cpp
     forms/wizard.fbp
 )
+
 target_compile_definitions(wxFormBuilder_plugin-interface
   INTERFACE
     "$<$<IN_LIST:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY;MODULE_LIBRARY>:BUILD_DLL>"
@@ -23,6 +24,7 @@ target_include_directories(wxFormBuilder_plugin-interface
   INTERFACE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
+
 target_link_libraries(wxFormBuilder_plugin-interface
   PUBLIC
     ticpp::ticpp
