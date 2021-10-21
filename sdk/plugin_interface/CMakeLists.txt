@@ -40,7 +40,7 @@ source_group(
   FILES ${filterSources}
 )
 set(filterSources ${sources})
-list(FILTER filterSources INCLUDE REGEX "\\.(c(xx|pp)?|in)$")
+list(FILTER filterSources INCLUDE REGEX "\\.c(xx|pp)?$")
 source_group(
   TREE "${CMAKE_CURRENT_SOURCE_DIR}"
   PREFIX "Source Files"
