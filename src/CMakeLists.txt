@@ -36,6 +36,9 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   OUTPUT_NAME $<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>
 )
 
+configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
+get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
+
 target_sources(wxFormBuilder_app
   PRIVATE
     maingui.h
@@ -275,9 +278,6 @@ else()
     INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
   )
 endif()
-
-configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
 
 set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
 get_target_property(sources wxFormBuilder_app SOURCES)
