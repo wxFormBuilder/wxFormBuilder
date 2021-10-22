@@ -1,5 +1,8 @@
 wxFormBuilder Changelog
 ********************************************************************************
+10/22/2021 Version 3.10.01
++ Visit https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.1 for more information
+
 09/25/2021 Version 3.10.00
 * Too many to list :)
 + Visit https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.0 for more information

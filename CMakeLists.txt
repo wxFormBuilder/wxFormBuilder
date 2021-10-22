@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.21)
 
 # Do not change the format of this line! It must stay as-is up to and including the keyword LANGUAGES.
 # External tools parse the version number from this line.
-project(wxFormBuilder VERSION 3.10.0 LANGUAGES CXX)
+project(wxFormBuilder VERSION 3.10.1 LANGUAGES CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
