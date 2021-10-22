@@ -283,7 +283,7 @@ set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FO
 get_target_property(sources wxFormBuilder_app SOURCES)
 set(filterSources ${sources})
 list(FILTER filterSources INCLUDE REGEX "\\.hh?$")
-list(FILTER filterSources EXCLUDE REGEX "^(${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./)")
+list(FILTER filterSources EXCLUDE REGEX "^((${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./))")
 source_group(
   TREE "${CMAKE_CURRENT_SOURCE_DIR}"
   PREFIX "Header Files"
@@ -291,7 +291,7 @@ source_group(
 )
 set(filterSources ${sources})
 list(FILTER filterSources INCLUDE REGEX "\\.(c(xx|pp)?|in)$")
-list(FILTER filterSources EXCLUDE REGEX "^(${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./)")
+list(FILTER filterSources EXCLUDE REGEX "^((${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./))")
 source_group(
   TREE "${CMAKE_CURRENT_SOURCE_DIR}"
   PREFIX "Source Files"
