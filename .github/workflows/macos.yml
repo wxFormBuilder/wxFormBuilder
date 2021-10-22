@@ -70,7 +70,7 @@ jobs:
         _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
     - name: Install
       run: |
-        cmake --install _build --config Release
+        cmake --install _build --config Release --strip
     - name: Test install
       run: |
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v

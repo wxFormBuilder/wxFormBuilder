@@ -84,7 +84,7 @@ jobs:
     - name: Install
       shell: msys2 {0}
       run: |
-        cmake --install _build --config Release
+        cmake --install _build --config Release --strip
     - name: Test install
       shell: cmd
       run: |
