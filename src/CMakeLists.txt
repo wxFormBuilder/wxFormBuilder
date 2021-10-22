@@ -282,7 +282,7 @@ endif()
 set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
 get_target_property(sources wxFormBuilder_app SOURCES)
 set(filterSources ${sources})
-list(FILTER filterSources INCLUDE REGEX "\\.hh?$")
+list(FILTER filterSources INCLUDE REGEX "\\.h(h|pp)?$")
 list(FILTER filterSources EXCLUDE REGEX "^((${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./))")
 source_group(
   TREE "${CMAKE_CURRENT_SOURCE_DIR}"
@@ -290,7 +290,7 @@ source_group(
   FILES ${filterSources}
 )
 set(filterSources ${sources})
-list(FILTER filterSources INCLUDE REGEX "\\.(c(xx|pp)?|in)$")
+list(FILTER filterSources INCLUDE REGEX "\\.(c(c|xx|pp)?|in)$")
 list(FILTER filterSources EXCLUDE REGEX "^((${CMAKE_CURRENT_BINARY_DIR}/)|(\\.\\./))")
 source_group(
   TREE "${CMAKE_CURRENT_SOURCE_DIR}"
