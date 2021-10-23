@@ -128,7 +128,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				if ( m_i18n )
 				{
-					result << wxT("_(\"") << PHPCodeGenerator::ConvertPHPString(value) << wxT("\")");
+					result << wxT("wxGetTranslation(\"") << PHPCodeGenerator::ConvertPHPString(value) << wxT("\")");
 				}
 				else
 				{

@@ -125,7 +125,7 @@ wxString CppTemplateParser::ValueToCode( PropertyType type, wxString value )
 			{
 				if ( m_i18n )
 				{
-					result << wxT( "_(\"" ) << CppCodeGenerator::ConvertCppString( value ) << wxT( "\")" );
+					result << wxT( "wxGetTranslation(\"" ) << CppCodeGenerator::ConvertCppString( value ) << wxT( "\")" );
 				}
 				else
 				{
