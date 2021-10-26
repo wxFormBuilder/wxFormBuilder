@@ -1560,8 +1560,7 @@ wxMenu * MainFrame::CreateMenuComponents()
 {
     wxMenu *menuComponents = new wxMenu;
 
-    menuComponents->Append( ID_FIND_COMPONENT, wxT( "&Find component...\tCtrl+Shift+F" ),
-                            wxT( "Show component finding dialog" ) );
+    menuComponents->Append(ID_FIND_COMPONENT, _("&Find Component...\tCtrl+Shift+F"), _("Show Component Search Dialog"));
 
     // Package count
     unsigned int pkg_count = AppData()->GetPackageCount();

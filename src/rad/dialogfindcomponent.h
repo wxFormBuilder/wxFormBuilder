@@ -43,7 +43,7 @@ class DialogFindComponent : public wxDialog
 {
 public:
     DialogFindComponent(wxWindow* parent, const wxArrayString& componentsList,
-                        wxWindowID id = wxID_ANY, const wxString& title = wxT("Find component"),
+                        wxWindowID id = wxID_ANY, const wxString& title = _("Find Component"),
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxSize( 250,400 ), long style = wxDEFAULT_DIALOG_STYLE);
 
