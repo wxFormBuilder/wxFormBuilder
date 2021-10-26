@@ -1645,11 +1645,10 @@ wxMenu* MainFrame::CreateSubmenuComponents(PObjectPackage pkg)
             auto* item = new wxMenuItem(submenu, wxID_ANY, info->GetClassName());
 			item->SetBitmap(info->GetIconFile());
 			submenu->Append(item);
-
-			Bind(wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this, item->GetId());
         }
         j++;
     }
+	submenu->Bind(wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this);
 
     return submenu;
 }
