@@ -1635,7 +1635,8 @@ wxMenu * MainFrame::CreateSubmenuComponents( PObjectPackage pkg, wxWindowID& nex
         {
             submenu->AppendSeparator();
         }
-        else if ( nullptr == info->GetComponent() )
+
+        if ( nullptr == info->GetComponent() )
         {
             LogDebug( _( "Missing Component for Class \"" + info->GetClassName() +
                        "\" of Package \"" + pkg->GetPackageName() + "\"." ) );
