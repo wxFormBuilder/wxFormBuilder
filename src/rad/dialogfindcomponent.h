@@ -55,18 +55,17 @@ public:
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxSize( 250,400 ), long style = wxDEFAULT_DIALOG_STYLE);
 
-    ~DialogFindComponent();
+    const wxString& GetSelected() const { return m_chosenComponent; }
 
-    wxString GetSelected() {return m_chosenComponent;}
+public:
+    bool TransferDataToWindow() override;
+    bool TransferDataFromWindow() override;
+    bool Validate() override;
 
 private:
     void OnTextCtrlComponent(wxCommandEvent& event);
     void OnListBoxComponentsDClick(wxCommandEvent& event);
     void OnListBoxComponents(wxCommandEvent& event);
-    void OnKeyDownComponents(wxKeyEvent& event);
-    void OnButtonInsertClick(wxCommandEvent& event);
-
-    void ListBoxComponentChoose();
 
     wxScrolledWindow    *m_scrolledWindow;
     wxTextCtrl          *m_textCtrlComponent;
@@ -77,13 +76,7 @@ private:
 
     const wxArrayString& m_componentsList;
     wxArrayString        m_componentsFinded;
-    wxString             m_chosenComponent = wxEmptyString;
-
-    enum
-    {
-        ID_LIST_BOX = wxID_HIGHEST + 1,
-        ID_TEXT_CTRL
-    };
+    wxString             m_chosenComponent;
 };
 
 #endif // DIALOGFINDCOMPONENT_H

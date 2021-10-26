@@ -43,12 +43,11 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
 
     wxBoxSizer* bSizerScrolled = new wxBoxSizer(wxVERTICAL);
 
-    m_textCtrlComponent = new wxTextCtrl(m_scrolledWindow, ID_TEXT_CTRL, wxEmptyString,
-                                         wxDefaultPosition, wxDefaultSize, 0);
+    m_textCtrlComponent = new wxTextCtrl(m_scrolledWindow, wxID_ANY);
     bSizerScrolled->Add(m_textCtrlComponent, 0, wxALL|wxEXPAND, 5);
 
-    m_listBoxComponents = new wxListBox(m_scrolledWindow, ID_LIST_BOX, wxDefaultPosition,
-                                        wxDefaultSize, 0, nullptr, wxLB_SINGLE|wxWANTS_CHARS);
+    m_listBoxComponents = new wxListBox(m_scrolledWindow, wxID_ANY, wxDefaultPosition,
+                                        wxDefaultSize, 0, nullptr, wxLB_SINGLE);
     bSizerScrolled->Add(m_listBoxComponents, 1, wxALL|wxEXPAND, 5);
 
 
@@ -63,27 +62,22 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
     wxBoxSizer* bSizerButton = new wxBoxSizer(wxHORIZONTAL);
 
     bSizerButton->Add(0, 0, 1, wxEXPAND, 5);
-    m_buttonCancel = new wxButton( this, wxID_CANCEL, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+    m_buttonCancel = new wxButton(this, wxID_CANCEL);
     bSizerButton->Add( m_buttonCancel, 0, wxALL, 5 );
-    m_buttonInsert = new wxButton( this, wxID_ANY, wxT("Insert"), wxDefaultPosition, wxDefaultSize, 0 );
-    m_buttonInsert->Disable();
+    m_buttonInsert = new wxButton(this, wxID_ANY, _("Insert"));
+    m_buttonInsert->SetDefault();
+    
     bSizerButton->Add( m_buttonInsert, 0, wxALL, 5 );
     bSizerMain->Add( bSizerButton, 0, wxEXPAND, 5 );
 
 //    bSizerMain->Add(CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 4);
 
     m_textCtrlComponent->Bind(wxEVT_TEXT, &DialogFindComponent::OnTextCtrlComponent, this);
-    m_textCtrlComponent->Bind(wxEVT_KEY_DOWN, &DialogFindComponent::OnKeyDownComponents, this);
     m_listBoxComponents->Bind(wxEVT_LISTBOX_DCLICK, &DialogFindComponent::OnListBoxComponentsDClick,
                               this);
     m_listBoxComponents->Bind(wxEVT_LISTBOX, &DialogFindComponent::OnListBoxComponents,this);
-    m_listBoxComponents->Bind(wxEVT_KEY_DOWN, &DialogFindComponent::OnKeyDownComponents, this);
-    m_buttonInsert->Bind(wxEVT_BUTTON, &DialogFindComponent::OnButtonInsertClick, this);
 
-    if (m_componentsList.Count())
-    {
-        m_listBoxComponents->InsertItems(m_componentsList, 0);
-    }
+    SetAffirmativeId(m_buttonInsert->GetId());
 
     this->SetSizer( bSizerMain );
     this->Layout();
@@ -91,12 +85,31 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
     this->Centre( wxBOTH );
 }
 
-DialogFindComponent::~DialogFindComponent()
-{
 
+bool DialogFindComponent::TransferDataToWindow() {
+    m_listBoxComponents->Set(m_componentsList);
+    m_chosenComponent.clear();
+    m_buttonInsert->Enable(false);
+
+    return wxDialog::TransferDataToWindow();
 }
 
-void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& event)
+bool DialogFindComponent::TransferDataFromWindow() {
+    m_chosenComponent = m_listBoxComponents->GetString(m_listBoxComponents->GetSelection());
+
+    return wxDialog::TransferDataFromWindow();
+}
+
+bool DialogFindComponent::Validate() {
+    if (m_listBoxComponents->GetSelection() == wxNOT_FOUND) {
+        return false;
+    }
+
+    return wxDialog::Validate();
+}
+
+
+void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
 {
     wxString typed = m_textCtrlComponent->GetValue();
 
@@ -122,47 +135,14 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& event)
     m_buttonInsert->Disable();
 }
 
-void DialogFindComponent::ListBoxComponentChoose()
+void DialogFindComponent::OnListBoxComponentsDClick(wxCommandEvent& WXUNUSED(event))
 {
-    if (m_listBoxComponents->GetSelection() != wxNOT_FOUND)
-    {
-        m_chosenComponent = m_listBoxComponents->GetString(m_listBoxComponents->GetSelection());
+    if (Validate() && TransferDataFromWindow()) {
+        Close();
     }
 }
 
-void DialogFindComponent::OnListBoxComponentsDClick(wxCommandEvent& event)
-{
-    ListBoxComponentChoose();
-    this->Close();
-}
-
-void DialogFindComponent::OnListBoxComponents(wxCommandEvent& event)
+void DialogFindComponent::OnListBoxComponents(wxCommandEvent& WXUNUSED(event))
 {
     m_buttonInsert->Enable();
-}
-
-void DialogFindComponent::OnKeyDownComponents(wxKeyEvent& event)
-{
-    if (event.GetKeyCode() == WXK_ESCAPE)
-    {
-        this->Close();
-    }
-    else if (event.GetKeyCode() == WXK_RETURN || event.GetKeyCode() == WXK_SPACE)
-    {
-        if (event.GetId() == ID_LIST_BOX)
-        {
-            ListBoxComponentChoose();
-            this->Close();
-        }
-    }
-    else
-    {
-        event.Skip();
-    }
-}
-
-void DialogFindComponent::OnButtonInsertClick(wxCommandEvent& event)
-{
-    ListBoxComponentChoose();
-    this->Close();
 }
