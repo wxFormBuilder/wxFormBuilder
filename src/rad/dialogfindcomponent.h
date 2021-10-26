@@ -32,15 +32,7 @@
 #ifndef DIALOGFINDCOMPONENT_H
 #define DIALOGFINDCOMPONENT_H
 
-#include <wx/artprov.h>
-#include <wx/xrc/xmlres.h>
-#include <wx/string.h>
-#include <wx/gdicmn.h>
-#include <wx/font.h>
-#include <wx/colour.h>
-#include <wx/settings.h>
 #include <wx/dialog.h>
-#include <wx/scrolwin.h>
 #include <wx/textctrl.h>
 #include <wx/listbox.h>
 #include <wx/statline.h>
@@ -67,7 +59,6 @@ private:
     void OnListBoxComponentsDClick(wxCommandEvent& event);
     void OnListBoxComponents(wxCommandEvent& event);
 
-    wxScrolledWindow    *m_scrolledWindow;
     wxTextCtrl          *m_textCtrlComponent;
     wxListBox           *m_listBoxComponents;
     wxStaticLine        *m_staticline;

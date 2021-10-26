@@ -25,7 +25,6 @@
 
 #include "dialogfindcomponent.h"
 #include <wx/sizer.h>
-#include <wx/msgdlg.h>
 
 
 DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& componentsList,
@@ -37,40 +36,27 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
 
     wxBoxSizer* bSizerMain = new wxBoxSizer(wxVERTICAL);
 
-    m_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
-                                            wxHSCROLL|wxVSCROLL);
-    m_scrolledWindow->SetScrollRate(5, 5);
+    m_textCtrlComponent = new wxTextCtrl(this, wxID_ANY);
+    bSizerMain->Add(m_textCtrlComponent, 0, wxALL|wxEXPAND, 5);
 
-    wxBoxSizer* bSizerScrolled = new wxBoxSizer(wxVERTICAL);
-
-    m_textCtrlComponent = new wxTextCtrl(m_scrolledWindow, wxID_ANY);
-    bSizerScrolled->Add(m_textCtrlComponent, 0, wxALL|wxEXPAND, 5);
-
-    m_listBoxComponents = new wxListBox(m_scrolledWindow, wxID_ANY, wxDefaultPosition,
+    m_listBoxComponents = new wxListBox(this, wxID_ANY, wxDefaultPosition,
                                         wxDefaultSize, 0, nullptr, wxLB_SINGLE);
-    bSizerScrolled->Add(m_listBoxComponents, 1, wxALL|wxEXPAND, 5);
-
-
-    m_scrolledWindow->SetSizer(bSizerScrolled);
-    m_scrolledWindow->Layout();
-    bSizerScrolled->Fit(m_scrolledWindow);
-    bSizerMain->Add(m_scrolledWindow, 1, wxEXPAND | wxALL, 5);
+    bSizerMain->Add(m_listBoxComponents, 1, wxALL|wxEXPAND, 5);
 
     m_staticline = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
     bSizerMain->Add(m_staticline, 0, wxEXPAND | wxALL, 5);
 
     wxBoxSizer* bSizerButton = new wxBoxSizer(wxHORIZONTAL);
+    bSizerButton->AddStretchSpacer();
 
-    bSizerButton->Add(0, 0, 1, wxEXPAND, 5);
-    m_buttonCancel = new wxButton(this, wxID_CANCEL);
-    bSizerButton->Add( m_buttonCancel, 0, wxALL, 5 );
     m_buttonInsert = new wxButton(this, wxID_ANY, _("Insert"));
     m_buttonInsert->SetDefault();
-    
     bSizerButton->Add( m_buttonInsert, 0, wxALL, 5 );
-    bSizerMain->Add( bSizerButton, 0, wxEXPAND, 5 );
 
-//    bSizerMain->Add(CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 4);
+    m_buttonCancel = new wxButton(this, wxID_CANCEL);
+    bSizerButton->Add( m_buttonCancel, 0, wxALL, 5 );
+    
+    bSizerMain->Add( bSizerButton, 0, wxEXPAND, 5 );
 
     m_textCtrlComponent->Bind(wxEVT_TEXT, &DialogFindComponent::OnTextCtrlComponent, this);
     m_listBoxComponents->Bind(wxEVT_LISTBOX_DCLICK, &DialogFindComponent::OnListBoxComponentsDClick,
