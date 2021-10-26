@@ -169,7 +169,7 @@ class MainFrame : public wxFrame
   wxWindow  *CreateObjectInspector  (wxWindow *parent);
   wxMenuBar *CreateFBMenuBar();
   wxMenu    *CreateMenuComponents();
-  wxMenu    *CreateSubmenuComponents(PObjectPackage pkg, wxWindowID &nextID);
+  wxMenu    *CreateSubmenuComponents(PObjectPackage pkg);
   wxToolBar *CreateFBToolBar();
 
   void CreateWideGui();

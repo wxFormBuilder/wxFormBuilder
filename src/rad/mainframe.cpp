@@ -1558,7 +1558,6 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 
 wxMenu * MainFrame::CreateMenuComponents()
 {
-    wxWindowID nextId = wxID_HIGHEST + 3000;
     wxMenu *menuComponents = new wxMenu;
 
     menuComponents->Append( ID_FIND_COMPONENT, wxT( "&Find component...\tCtrl+Shift+F" ),
@@ -1610,7 +1609,7 @@ wxMenu * MainFrame::CreateMenuComponents()
     {
         const auto& page = pages[i];
 
-        wxMenu *submenu = CreateSubmenuComponents( page.second, nextId );
+        auto* submenu = CreateSubmenuComponents(page.second);
         wxMenuItem *menuItem = new wxMenuItem( menuComponents, wxID_ANY, page.first, wxEmptyString,
                                               wxITEM_NORMAL, submenu );
 
@@ -1622,7 +1621,7 @@ wxMenu * MainFrame::CreateMenuComponents()
     return menuComponents;
 }
 
-wxMenu * MainFrame::CreateSubmenuComponents( PObjectPackage pkg, wxWindowID& nextID )
+wxMenu* MainFrame::CreateSubmenuComponents(PObjectPackage pkg)
 {
     wxMenu *submenu = new wxMenu;
     unsigned int j = 0;
@@ -1643,14 +1642,11 @@ wxMenu * MainFrame::CreateSubmenuComponents( PObjectPackage pkg, wxWindowID& nex
         }
         else
         {
-            wxString widget( info->GetClassName() );
-            wxMenuItem *menuItem = new wxMenuItem( submenu, nextID, widget );
-            menuItem->SetBitmap( info->GetIconFile() );
+            auto* item = new wxMenuItem(submenu, wxID_ANY, info->GetClassName());
+			item->SetBitmap(info->GetIconFile());
+			submenu->Append(item);
 
-            Bind( wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this, nextID );
-            nextID++;
-            submenu->Append( menuItem );
-//            submenu->Append( nextID++, widget );
+			Bind(wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this, item->GetId());
         }
         j++;
     }
