@@ -49,7 +49,7 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
     wxBoxSizer* bSizerButton = new wxBoxSizer(wxHORIZONTAL);
     bSizerButton->AddStretchSpacer();
 
-    m_buttonInsert = new wxButton(this, wxID_ANY, _("Insert"));
+    m_buttonInsert = new wxButton(this, wxID_OK, _("Insert"));
     m_buttonInsert->SetDefault();
     bSizerButton->Add( m_buttonInsert, 0, wxALL, 5 );
 
@@ -124,7 +124,11 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
 void DialogFindComponent::OnListBoxComponentsDClick(wxCommandEvent& WXUNUSED(event))
 {
     if (Validate() && TransferDataFromWindow()) {
-        Close();
+        if (IsModal()) {
+            EndModal(GetAffirmativeId());
+        } else {
+            Show(false);
+        }
     }
 }
 
