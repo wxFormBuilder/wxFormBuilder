@@ -24,13 +24,20 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "dialogfindcomponent.h"
+
+#include <algorithm>
+
 #include <wx/sizer.h>
 
+#include "appdata.h"
+#include "../model/objectbase.h"
+#include "../utils/wxfbdefs.h"
 
-DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& componentsList,
+
+DialogFindComponent::DialogFindComponent(wxWindow* parent,
                                          wxWindowID id, const wxString& title, const wxPoint& pos,
                                          const wxSize& size, long style)
-    : wxDialog(parent, id, title, pos, size, style), m_componentsList{componentsList}
+    : wxDialog(parent, id, title, pos, size, style)
 {
     this->SetSizeHints(wxSize(250,400), wxDefaultSize);
 
@@ -73,8 +80,31 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent, const wxArrayString& 
 
 
 bool DialogFindComponent::TransferDataToWindow() {
-    m_listBoxComponents->Set(m_componentsList);
+    m_allComponents.clear();
+    for ( unsigned i = 0; i < AppData()->GetPackageCount(); ++i )
+    {
+        auto pkg = AppData()->GetPackage( i );
+		m_allComponents.reserve(m_allComponents.size() + pkg->GetObjectCount());
+
+        for ( unsigned j = 0; j < pkg->GetObjectCount(); ++j)
+        {
+            PObjectInfo info = pkg->GetObjectInfo( j );
+
+            m_allComponents.emplace_back(info->GetClassName());
+        }
+    }
+    std::sort(m_allComponents.begin(), m_allComponents.end());
+    m_prevComponents.clear();
     m_chosenComponent.clear();
+
+    // The std::vector overload is not available in wxWidgets 3.0
+    if (!m_allComponents.empty()) {
+        m_listBoxComponents->Set(m_allComponents.size(), &m_allComponents.front());
+    } else {
+        m_listBoxComponents->Clear();
+    }
+    // Clear() emits a text change event
+    m_textCtrlComponent->ChangeValue(wxEmptyString);
     m_buttonInsert->Enable(false);
 
     return wxDialog::TransferDataToWindow();
@@ -99,25 +129,24 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
 {
     wxString typed = m_textCtrlComponent->GetValue();
 
-    m_componentsFinded.Clear();
+    m_prevComponents.clear();
+    m_prevComponents.reserve(m_allComponents.size());
 
-    for (const auto& item : m_componentsList)
+    for (const auto& item : m_allComponents)
     {
         auto pos = item.Lower().find(typed.Lower());
 
         if (pos != wxNOT_FOUND)
         {
-            m_componentsFinded.Add(item);
+            m_prevComponents.emplace_back(item);
         }
     }
 
-    m_listBoxComponents->Clear();
-
-    if (m_componentsFinded.Count())
-    {
-        m_listBoxComponents->InsertItems(m_componentsFinded, 0);
+    if (!m_prevComponents.empty()) {
+        m_listBoxComponents->Set(m_prevComponents.size(), &m_prevComponents.front());
+    } else {
+        m_listBoxComponents->Clear();
     }
-
     m_buttonInsert->Disable();
 }
 

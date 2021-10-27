@@ -32,6 +32,8 @@
 #ifndef DIALOGFINDCOMPONENT_H
 #define DIALOGFINDCOMPONENT_H
 
+#include <vector>
+
 #include <wx/dialog.h>
 #include <wx/textctrl.h>
 #include <wx/listbox.h>
@@ -42,7 +44,7 @@
 class DialogFindComponent : public wxDialog
 {
 public:
-    DialogFindComponent(wxWindow* parent, const wxArrayString& componentsList,
+    DialogFindComponent(wxWindow* parent,
                         wxWindowID id = wxID_ANY, const wxString& title = _("Find Component"),
                         const wxPoint& pos = wxDefaultPosition,
                         const wxSize& size = wxSize( 250,400 ), long style = wxDEFAULT_DIALOG_STYLE);
@@ -65,8 +67,8 @@ private:
     wxButton            *m_buttonCancel;
     wxButton            *m_buttonInsert;
 
-    const wxArrayString& m_componentsList;
-    wxArrayString        m_componentsFinded;
+    std::vector<wxString> m_allComponents;
+    std::vector<wxString> m_prevComponents;
     wxString             m_chosenComponent;
 };
 

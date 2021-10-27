@@ -1877,33 +1877,11 @@ void MainFrame::OnWindowSwap(wxCommandEvent&)
     m_rightSplitter->SetSashPosition(sz.GetWidth() - pos);
 }
 
-void MainFrame::OnFindComponent( wxCommandEvent &e )
+void MainFrame::OnFindComponent(wxCommandEvent& WXUNUSED(event))
 {
-    wxArrayString components;
-
-    for ( unsigned i = 0; i < AppData()->GetPackageCount(); ++i )
-    {
-        auto pkg = AppData()->GetPackage( i );
-
-        for ( unsigned j = 0; j < pkg->GetObjectCount(); ++j)
-        {
-            PObjectInfo info = pkg->GetObjectInfo( j );
-
-            components.Add(info->GetClassName());
-        }
-    }
-
-    components.Sort();
-
-    DialogFindComponent dlg(this, components);
-
-    dlg.ShowModal();
-
-    auto component = dlg.GetSelected();
-
-    if (component != wxEmptyString)
-    {
-        AppData()->CreateObject( component );
+    DialogFindComponent dlg(this);
+    if (dlg.ShowModal() == wxID_OK) {
+        AppData()->CreateObject(dlg.GetSelected());
     }
 }
 
