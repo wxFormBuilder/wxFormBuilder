@@ -28,6 +28,8 @@
 #include "../model/xrcfilter.h"
 #include "../utils/stringutils.h"
 #include "../utils/wxfbexception.h"
+#include "revision.h"
+#include "version.h"
 #include "about.h"
 #include "appdata.h"
 #include "auitabart.h"
@@ -47,6 +49,7 @@
 #include "wxfbevent.h"
 #include "wxfbmanager.h"
 #include "xrcpanel/xrcpanel.h"
+#include "dialogfindcomponent.h"
 
 enum
 {
@@ -101,6 +104,9 @@ enum
 
 	//added by tyysoft to define the swap button ID.
 	ID_WINDOW_SWAP,
+
+    //added by michallukowski to find component from menu.
+    ID_FIND_COMPONENT,
 };
 
 #define STATUS_FIELD_OBJECT 2
@@ -143,6 +149,7 @@ EVT_MENU( ID_GEN_INHERIT_CLS, MainFrame::OnGenInhertedClass )
 EVT_MENU( ID_CLIPBOARD_COPY, MainFrame::OnClipboardCopy )
 EVT_MENU( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPaste )
 EVT_MENU( ID_WINDOW_SWAP, MainFrame::OnWindowSwap )
+EVT_MENU( ID_FIND_COMPONENT, MainFrame::OnFindComponent )
 
 EVT_UPDATE_UI( ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI )
 EVT_CLOSE( MainFrame::OnClose )
@@ -965,8 +972,8 @@ void MainFrame::UpdateFrame()
 		file = fn.GetName();
 	}
 
-	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder v%s%s"),
-	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), VERSION, REVISION));
+	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder %s%s"),
+	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), getVersion(), getReleaseRevision(getVersion()).c_str()));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
@@ -1545,7 +1552,9 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	menuEdit->Append( ID_ALIGN_CENTER_V, wxT( "&Align Center &Vertical\tAlt+Shift+V" ),   wxT( "Align item to the center vertically" ) );
 	menuEdit->Append( ID_ALIGN_BOTTOM,   wxT( "&Align &Bottom\tAlt+Shift+Down" ),         wxT( "Align item to the bottom" ) );
 
-	wxMenu *menuView = new wxMenu;
+    wxMenu *menuComponents = CreateMenuComponents();
+
+    wxMenu *menuView = new wxMenu;
 	menuView->Append( ID_PREVIEW_XRC, wxT( "&XRC Window\tF5" ), wxT( "Show a preview of the XRC window" ) );
 	menuView->AppendSeparator();
 	menuView->Append( ID_WINDOW_SWAP, wxT( "&Swap The Editor and Properties Window\tF12" ), wxT( "Swap The Editor and Properties Window" ) );
@@ -1560,11 +1569,108 @@ wxMenuBar * MainFrame::CreateFBMenuBar()
 	wxMenuBar *menuBar = new wxMenuBar();
 	menuBar->Append( menuFile, wxT( "&File" ) );
 	menuBar->Append( menuEdit, wxT( "&Edit" ) );
+    menuBar->Append( menuComponents, wxT( "&Components" ) );
 	menuBar->Append( menuView, wxT( "&View" ) );
 	menuBar->Append( menuTools, wxT( "&Tools" ) );
 	menuBar->Append( menuHelp, wxT( "&Help" ) );
 
-	return menuBar;
+    return menuBar;
+}
+
+wxMenu * MainFrame::CreateMenuComponents()
+{
+    wxMenu *menuComponents = new wxMenu;
+
+    menuComponents->Append(ID_FIND_COMPONENT, _("&Find Component...\tCtrl+Shift+F"), _("Show Component Search Dialog"));
+
+    // Package count
+    unsigned int pkg_count = AppData()->GetPackageCount();
+    // Lookup map of all packages
+    std::map<wxString, PObjectPackage> packages;
+    // List of pages to add to the menu in the same order like notebook
+    std::vector<std::pair<wxString, PObjectPackage>> pages;
+    pages.reserve( pkg_count );
+
+    // Fill lookup map of packages
+    for ( unsigned int i = 0; i < pkg_count; ++i )
+    {
+        auto pkg = AppData()->GetPackage( i );
+        packages.insert( std::make_pair( pkg->GetPackageName(), pkg ) );
+    }
+
+    // Read the page order from settings and build the list of pages from it
+    auto *config = wxConfigBase::Get();
+    wxStringTokenizer pageOrder( config->Read( wxT( "/palette/pageOrder" ),
+                                             wxT( "Common,Additional,Data,Containers,Menu/Toolbar,"
+                                                 "Layout,Forms,Ribbon" ) ), wxT( "," ) );
+    while ( pageOrder.HasMoreTokens() )
+    {
+        const auto packageName = pageOrder.GetNextToken();
+        auto package = packages.find( packageName );
+        if ( packages.end() == package )
+        {
+            // Plugin missing - move on
+            continue;
+        }
+
+        // Add package to pages list and remove from lookup map
+        pages.push_back( std::make_pair( package->first, package->second ) );
+        packages.erase( package );
+    }
+
+    // The remaining packages from the lookup map need to be added to the page list
+    for ( auto& package : packages )
+    {
+        pages.push_back( std::make_pair( package.first, package.second ) );
+    }
+    packages.clear();
+
+    for ( size_t i = 0; i < pages.size(); ++i )
+    {
+        const auto& page = pages[i];
+
+        auto* submenu = CreateSubmenuComponents(page.second);
+        wxMenuItem *menuItem = new wxMenuItem( menuComponents, wxID_ANY, page.first, wxEmptyString,
+                                              wxITEM_NORMAL, submenu );
+
+//        menuComponents->AppendSubMenu( submenu, page.first );
+        menuItem->SetBitmap( page.second->GetPackageIcon() );
+        menuComponents->Append( menuItem );
+    }
+
+    return menuComponents;
+}
+
+wxMenu* MainFrame::CreateSubmenuComponents(PObjectPackage pkg)
+{
+    wxMenu *submenu = new wxMenu;
+    unsigned int j = 0;
+
+    while ( j < pkg->GetObjectCount() )
+    {
+        PObjectInfo info = pkg->GetObjectInfo( j );
+
+        if ( info->IsStartOfGroup() )
+        {
+            submenu->AppendSeparator();
+        }
+
+        if ( nullptr == info->GetComponent() )
+        {
+            LogDebug( _( "Missing Component for Class \"" + info->GetClassName() +
+                       "\" of Package \"" + pkg->GetPackageName() + "\"." ) );
+        }
+        else
+        {
+            auto* item = new wxMenuItem(submenu, wxID_ANY, info->GetClassName());
+			item->SetBitmap(info->GetIconFile());
+			submenu->Append(item);
+        }
+        j++;
+    }
+	submenu->Bind(wxEVT_MENU, &MainFrame::OnMenuComponentsClick, this);
+
+    return submenu;
 }
 
 wxToolBar * MainFrame::CreateFBToolBar()
@@ -1782,7 +1888,8 @@ void MainFrame::OnSplitterChanged( wxSplitterEvent &event )
 	m_rightSplitter_sash_pos = event.GetSashPosition();
 }
 
-void MainFrame::OnWindowSwap(wxCommandEvent&) {
+void MainFrame::OnWindowSwap(wxCommandEvent&)
+{
     wxWindow* win1 = m_rightSplitter->GetWindow1();
     wxWindow* win2 = m_rightSplitter->GetWindow2();
 
@@ -1793,5 +1900,20 @@ void MainFrame::OnWindowSwap(wxCommandEvent&) {
     m_rightSplitter->SplitVertically(win2, win1);
 
     m_rightSplitter->SetSashPosition(sz.GetWidth() - pos);
+}
 
+void MainFrame::OnFindComponent(wxCommandEvent& WXUNUSED(event))
+{
+    DialogFindComponent dlg(this);
+    if (dlg.ShowModal() == wxID_OK) {
+        AppData()->CreateObject(dlg.GetSelected());
+    }
+}
+
+void MainFrame::OnMenuComponentsClick( wxCommandEvent &e )
+{
+    wxMenu      *menu = static_cast<wxMenu*>( e.GetEventObject() );
+    wxMenuItem  *item = menu->FindChildItem( e.GetId() );
+
+    AppData()->CreateObject( item->GetItemLabelText() );
 }

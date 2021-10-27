@@ -1,7 +1,7 @@
 {
 	"app-id": "org.wxformbuilder.wxFormBuilder",
 	"runtime": "org.freedesktop.Platform",
-	"runtime-version": "20.08",
+	"runtime-version": "21.08",
 	"sdk": "org.freedesktop.Sdk",
 	"command": "wxformbuilder",
 	"finish-args": [
@@ -13,9 +13,10 @@
 	"modules": [
 		{
 			"name": "wxWidgets",
+			"buildsystem": "autotools",
 			"config-opts": [
 				"--with-gtk=3",
-				"--with-cxx=11",
+				"--with-cxx=17",
 				"--with-libiconv=/usr"
 			],
 			"sources": [
@@ -28,25 +29,26 @@
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
 		},
 		{
-			"name": "wxFormBuilder",
+			"name": "Boost",
 			"buildsystem": "simple",
 			"build-commands": [
-				"./create_build_files4.sh",
-				"make -C build/3.1/gmake -j `nproc` config=release",
-				"mv output/bin/wxformbuilder /app/bin",
-				"mkdir /app/share/wxformbuilder",
-				"mv output/xml /app/share/wxformbuilder",
-				"mv output/resources /app/share/wxformbuilder",
-				"mv output/plugins /app/share/wxformbuilder",
-				"mv output/*.* /app/share/wxformbuilder",
-				"mv output/lib/* /app/lib",
-				"mkdir /app/share/applications",
-				"mv install/linux/data/gnome/usr/share/applications/wxformbuilder.desktop /app/share/applications/org.wxformbuilder.wxFormBuilder.desktop",
-				"sed -i s/wxformbuilder.png/org.wxformbuilder.wxFormBuilder.png/ /app/share/applications/org.wxformbuilder.wxFormBuilder.desktop",
-				"mkdir -p /app/share/icons",
-				"mv install/linux/data/gnome/usr/share/pixmaps/wxformbuilder.png /app/share/icons/org.wxformbuilder.wxFormBuilder.png",
-				"mkdir /app/share/appdata",
-				"mv install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxFormBuilder.appdata.xml /app/share/appdata"
+				"./bootstrap.sh",
+				"./b2 --prefix=$FLATPAK_DEST --build-dir=./build --with-headers install"
+			],
+			"sources": [
+				{
+					"type": "archive",
+					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz",
+					"sha256": "7bd7ddceec1a1dfdcbdb3e609b60d01739c38390a5f956385a12f3122049f0ca"
+				}
+			],
+			"cleanup": [ "/lib/cmake" ]
+		},
+		{
+			"name": "wxFormBuilder",
+			"buildsystem": "cmake",
+			"config-opts": [
+				"-DCMAKE_BUILD_TYPE=Release"
 			],
 			"sources": [
 				{

@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Ribbon" lib="libadditional" icon="ribbon_bar.xpm" desc="wxWidgets Ribbon">
+<package name="Ribbon" lib="additional" icon="ribbon_bar.xpm" desc="wxWidgets Ribbon">
 
   <objectinfo class="wxRibbonBar" icon="ribbon_bar.xpm" type="ribbonbar" startgroup="0" wxversion="2904">
     <inherits class="wxWindow"/>

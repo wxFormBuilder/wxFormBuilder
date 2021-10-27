@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.wxformbuilder.wxFormBuilder</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <name>wxFormBuilder</name>
+  <summary>GUI builder for wxWidgets</summary>
+
+  <description>
+    <p>
+      wxFormBuilder is a GUI builder for the wxWidgets framework.
+      Code generation is supported for C++, Python, XRC, wxLua and PHP.
+      Additionally the import and export of XRC code is possible.
+      To support additional widgets custom plugins can be used.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">org.wxformbuilder.wxFormBuilder.desktop</launchable>
+
+  <url type="homepage">http://wxformbuilder.org</url>
+
+  <provides>
+    <binary>wxformbuilder</binary>
+  </provides>
+  
+  <releases>
+    <release version="3.10.1" date="2021-10-22"/>
+    <release version="3.10.0" date="2021-09-25"/>
+    <release version="3.9.0" date="2018-10-26"/>
+    <release version="3.8.1" date="2018-08-08"/>
+    <release version="3.8.0" date="2018-07-11"/>
+    <release version="3.7.0" date="2018-05-29"/>
+    <release version="3.6.2" date="2018-01-23"/>
+    <release version="3.6.1" date="2017-11-06"/>
+    <release version="3.6.0" date="2016-12-21"/>
+  </releases>
+</component>

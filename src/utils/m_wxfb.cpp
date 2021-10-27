@@ -1,7 +1,8 @@
 #include <wx/html/forcelnk.h>
 #include <wx/html/m_templ.h>
 
-#include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 
 
 FORCE_LINK_ME(m_wxfb)
@@ -11,7 +12,7 @@ TAG_HANDLER_BEGIN(wxFBVersion, "WXFB-VERSION")
 
 TAG_HANDLER_PROC(WXUNUSED(tag))
 {
-	auto* cell = new wxHtmlWordCell(VERSION, *m_WParser->GetDC());
+	auto* cell = new wxHtmlWordCell(getVersion(), *m_WParser->GetDC());
 	m_WParser->ApplyStateToCell(cell);
 	m_WParser->GetContainer()->InsertCell(cell);
 
@@ -25,7 +26,7 @@ TAG_HANDLER_BEGIN(wxFBRevision, "WXFB-REVISION")
 
 TAG_HANDLER_PROC(WXUNUSED(tag))
 {
-	auto* cell = new wxHtmlWordCell(REVISION, *m_WParser->GetDC());
+	auto* cell = new wxHtmlWordCell(getPostfixRevision(getVersion()), *m_WParser->GetDC());
 	m_WParser->ApplyStateToCell(cell);
 	m_WParser->GetContainer()->InsertCell(cell);
 

@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Forms" lib="libforms" icon="frame16x16.png" desc="wxWidgets windows">
+<package name="Forms" lib="forms" icon="frame16x16.png" desc="wxWidgets windows">
 
   <objectinfo class="wxTopLevelWindow" smallIcon="wxwindow.png" type="interface">
     <event name="OnActivate" class="wxActivateEvent" help="Process a wxEVT_ACTIVATE event."/>

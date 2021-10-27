@@ -115,9 +115,9 @@ AboutDialog::AboutDialog(wxWindow *parent, int id) : wxDialog(parent,id,wxT("Abo
 
 #ifdef __WXMAC__
   // work around a wxMac bug
-  htmlWin->SetSize(400, 600);
+  htmlWin->SetSize(450, 650);
 #else
-  htmlWin->SetMinSize(wxSize(400, 600));
+  htmlWin->SetMinSize(wxSize(450, 650));
 #endif
 
 

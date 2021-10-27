@@ -26,6 +26,8 @@
 
 #include "model/objectbase.h"
 #include "rad/appdata.h"
+#include "rad/revision.h"
+#include "rad/version.h"
 #include "rad/mainframe.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
@@ -111,7 +113,12 @@ int MyApp::OnRun()
 	delete wxConfigBase::Set( new wxConfig( wxT("wxFormBuilder") ) );
 
 	// Get the data directory
-	wxStandardPathsBase& stdPaths = wxStandardPaths::Get();
+	auto& stdPaths = wxStandardPaths::Get();
+	#if defined(__WINDOWS__)
+	// The CMake stage build roots the whole directory structure at the build directory
+	// so don't ignore that one
+	stdPaths.DontIgnoreAppSubDir();
+	#endif
 	wxString dataDir = stdPaths.GetDataDir();
 	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
 
@@ -129,7 +136,7 @@ int MyApp::OnRun()
 	}
 
 	if (parser.Found("v")) {
-		std::cout << "wxFormBuilder " << VERSION << REVISION << std::endl;
+		std::cout << "wxFormBuilder " << getVersion() << getPostfixRevision(getVersion()) << std::endl;
 		return EXIT_SUCCESS;
 	}
 

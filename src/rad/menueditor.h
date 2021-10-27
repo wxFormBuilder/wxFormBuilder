@@ -71,6 +71,7 @@ class MenuEditor : public wxDialog
     void GetItem(long n, wxString& label, wxString& shortcut, wxString& id,
         wxString& name, wxString& help, wxString& kind, PObjectBase* obj = NULL );
 
+    using wxNavigationEnabled<wxTopLevelWindow>::AddChild;
     /** Inserta en la posición "n" del wxListCtrl, los hijos de "obj". El primer
     hijo de "obj" estará sangrado con el valor de "ident". En "n" se devuelve
     la siguiente posición libre del wxListCtrl tras hacer la inserción */

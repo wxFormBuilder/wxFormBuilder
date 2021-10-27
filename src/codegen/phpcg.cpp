@@ -32,6 +32,8 @@
 #include "../utils/typeconv.h"
 #include "../utils/debug.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 #include "../model/objectbase.h"
 #include "../utils/wxfbexception.h"
 
@@ -464,12 +466,12 @@ bool PHPCodeGenerator::GenerateCode( PObjectBase project )
 
 	code = wxString::Format(
 		wxT("/*\n")
-		wxT(" * PHP code generated with wxFormBuilder (version %s%s ") wxT(__DATE__) wxT(")\n")
+		wxT(" * PHP code generated with wxFormBuilder (version %s%s)\n")
 		wxT(" * http://www.wxformbuilder.org/\n")
 		wxT(" *\n")
 		wxT(" * PLEASE DO *NOT* EDIT THIS FILE!\n")
 		wxT(" */\n"),
-		VERSION, REVISION
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_source->WriteLn( code );

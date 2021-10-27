@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Additional" lib="libadditional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
+<package name="Additional" lib="additional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
 
   <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
     <inherits class="wxWindow"/>

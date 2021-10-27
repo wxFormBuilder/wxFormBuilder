@@ -21,7 +21,7 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Containers" lib="libcontainers" icon="splitter_window.xpm" desc="wxWidgets container controls">
+<package name="Containers" lib="containers" icon="splitter_window.xpm" desc="wxWidgets container controls">
 
   <objectinfo class="wxPanel" icon="panel.xpm" type="container">
     <inherits class="Common Events"/>

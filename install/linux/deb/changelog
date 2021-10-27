@@ -1,0 +1,222 @@
+wxformbuilder (3.10.1) stable; urgency=medium
+
+  * Release
+
+ -- Steffen Olszewski <steffen.olszewski@gero-mess.de>  Fri, 22 Oct 2021 18:00:00 +0200
+
+wxformbuilder (3.10.0) stable; urgency=medium
+
+  * First release using CMake
+
+ -- Steffen Olszewski <steffen.olszewski@gero-mess.de>  Sat, 25 Sep 2021 08:00:00 +0200
+
+wxformbuilder (3.9.0) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Fri, 26 Oct 2018 00:00:00 +0000
+
+wxformbuilder (3.8.1) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Wed, 08 Aug 2018 00:00:00 +0000
+
+wxformbuilder (3.8.0) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Wed, 11 Jul 2018 00:00:00 +0000
+
+wxformbuilder (3.7.0) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Tue, 29 May 2018 00:00:00 +0000
+
+wxformbuilder (3.6.2) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Tue, 23 Jan 2018 00:00:00 +0000
+
+wxformbuilder (3.6.1) stable; urgency=low
+
+  * Release
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Mon, 06 Nov 2017 00:00:00 +0000
+
+wxformbuilder (3.6.0) stable; urgency=low
+
+  * First release after moving to GitHub and last release using Premake build system.
+
+ -- Jan Niklas Hasse <jhasse@bixense.com>  Wed, 21 Dec 2016 21:48:29 +0100
+
+wxformbuilder (3.5.2-4rc2) stable; urgency=low
+
+  * Moved to GitHub project hosting.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Fri, 02 Sep 2016 10:58:36 -0400
+
+wxformbuilder (3.5.2-3rc2) stable; urgency=low
+
+  * Fixed wxPropertyGrid styles.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 19 May 2016 11:34:23 -0400
+
+wxformbuilder (3.5.2-2rc2) stable; urgency=low
+
+  * Fixed wxAuiToolbar styles.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Mon, 16 May 2016 15:52:13 -0400
+
+wxformbuilder (3.5.2-1rc2) stable; urgency=low
+
+  * Fixed GTK output on stderr.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Mon, 09 May 2016 14:13:18 -0400
+
+wxformbuilder (3.5.2-0rc2) stable; urgency=low
+
+  * Sync to upstream 3.5.02 rc2.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 05 May 2016 16:41:27 -0400
+
+wxformbuilder (3.5.01-1) stable; urgency=low
+
+  * Sync to upstream 3.5.01.
+
+ -- Ryan Mulder <ryanjmulder@gmail.com>  Thu, 05 May 2016 16:01:18 -0400
+
+wxformbuilder (3.5.01-0ubuntu1~utopic1) utopic; urgency=low
+
+  * Sync to upstream 3.5.01.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Mon, 10 Nov 2014 17:58:32 -0500
+
+wxformbuilder (3.5.00-0ubuntu1~precise1) precise; urgency=low
+
+  * Sync to upstream 3.5.00.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Fri, 06 Jun 2014 10:28:36 -0400
+
+wxformbuilder (3.4.03-0ubuntu1~precise1) precise; urgency=low
+
+  * Sync to upstream 3.4.03.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Mon, 07 Apr 2014 11:41:34 -0400
+
+wxformbuilder (3.4.02-0ubuntu1~precise1) precise; urgency=low
+
+  * Sync to upstream 3.4.02.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Wed, 26 Feb 2014 11:11:01 -0500
+
+wxformbuilder (3.4.01-0ubuntu1~precise2) precise; urgency=low
+
+  * Fixed dependancy on wxWidgets media control
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 14 Jan 2014 13:38:08 -0500
+
+wxformbuilder (3.4.01-0ubuntu1~saucy1) saucy; urgency=low
+
+  * Sync to upstream 3.4.01.
+  * Building with wxWidgets 3.0.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Mon, 13 Jan 2014 16:13:54 -0500
+
+wxformbuilder (3.4.00-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.4.00.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 30 Apr 2013 14:22:25 -0400
+
+wxformbuilder (3.3.05-0ubuntu1~raring2) raring; urgency=low
+
+  * Sync to upstream 3.3.05.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 30 Apr 2013 14:22:25 -0400
+
+wxformbuilder (3.3.05-0ubuntu1~precise1) precise; urgency=low
+
+  * Sync to upstream 3.3.05.
+
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Mon, 29 Apr 2013 23:00:00 +0200
+
+wxformbuilder (3.3.04-0ubuntu1~oneiric1) oneiric; urgency=low
+
+  * Sync to upstream 3.3.04.
+
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Mon, 08 Oct 2012 09:54:15 +0200
+
+wxformbuilder (3.3.03-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.3.03.
+
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Thu, 05 Apr 2012 11:34:09 +0200
+
+wxformbuilder (3.3.02-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.3.02.
+
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Sun, 18 Mar 2012 09:18:20 +0100
+
+wxformbuilder (3.3.01-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.3.01.
+
+ -- Michal Bližňák (PGP key for Launchpad) <michal.bliznak@gmail.com>  Thu, 09 Feb 2012 12:03:13 +0100
+
+wxformbuilder (3.2.01-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.2.01.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 18 Nov 2010 09:09:58 -0400
+
+wxformbuilder (3.1.69-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.1.69.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 08 Jun 2010 15:05:41 -0400
+
+wxformbuilder (3.1.68-0ubuntu1~lucid1) lucid; urgency=low
+
+  * Sync to upstream 3.1.68.
+
+ -- Ryan Pusztai <rpusztai@gmail.com>  Tue, 04 May 2010 14:18:11 -0400
+
+wxformbuilder (3.1.59-0ubuntu1) jaunty; urgency=low
+
+  * Sync to upstream 3.1.59. (LP: #326747)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Sat, 07 Feb 2009 20:51:58 -0500
+
+wxformbuilder (3.0.57-0ubuntu2) jaunty; urgency=low
+
+  * FTBFS on 9.04 armel. (LP: #310286)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Sun,  21 Dec 2008 14:00:00 -0400
+
+wxformbuilder (3.0.57-0ubuntu1) hardy; urgency=low
+
+  * Sync to upstream 3.0.57. Bug fixes only. (LP: #218001)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Tue,  15 Apr 2008 20:06:25 -0400
+
+wxformbuilder (3.0.56-0ubuntu1) hardy; urgency=low
+
+  * Sync to upstream 3.0.56 (RC8). Bug fixes only. (LP: #203781)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Wed,  18 Mar 2008 20:06:25 -0400
+
+wxformbuilder (3.0.55-0ubuntu1) hardy; urgency=low
+
+  * Fixed build on architectures other than i386 and amd64. (LP: #192818)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Wed,  13 Feb 2008 20:06:25 -0400
+
+wxformbuilder (3.0.54-0ubuntu1) hardy; urgency=low
+
+  * Initial Release. (LP: #181412)
+
+ -- Ryan Mulder <rjmyst3@gmail.com>  Mon,  2 Apr 2007 20:06:25 -0400
