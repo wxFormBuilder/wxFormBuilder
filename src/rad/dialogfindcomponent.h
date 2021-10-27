@@ -69,7 +69,8 @@ private:
 
     std::vector<wxString> m_allComponents;
     std::vector<wxString> m_prevComponents;
-    wxString             m_chosenComponent;
+    wxString m_prevComponent;
+    wxString m_chosenComponent;
 };
 
 #endif // DIALOGFINDCOMPONENT_H
