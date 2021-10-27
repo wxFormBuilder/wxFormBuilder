@@ -30,6 +30,8 @@
 
 #include "../model/objectbase.h"
 #include "../rad/appdata.h"
+#include "../rad/revision.h"
+#include "../rad/version.h"
 #include "../utils/debug.h"
 #include "../utils/typeconv.h"
 #include "../utils/wxfbexception.h"
@@ -564,11 +566,11 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 
 	wxString code = wxString::Format(
 		wxT( "%%%% --------------------------------------------------------------------------\n" )
-		wxT( "%%%%  Erlang code generated with wxFormBuilder (version %s%s " ) wxT(__DATE__) wxT( " )\n" )
+		wxT( "%%%%  Erlang code generated with wxFormBuilder (version %s%s)\n" )
 		wxT( "%%%%  http://www.wxformbuilder.org/\n" )
 		wxT( "%%%%  This file is changed by wxFormBuilder on saving. PLEASE DO *NOT* EDIT IT!\n" )
 		wxT( "%%%% --------------------------------------------------------------------------\n" ),
-		VERSION, REVISION
+		getVersion(), getPostfixRevision(getVersion()).c_str()
 	);
 
 	m_source->WriteLn( code );
