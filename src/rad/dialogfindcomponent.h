@@ -57,10 +57,13 @@ public:
     bool Validate() override;
 
 private:
+    void updateEnabledState();
+
     void OnTextCtrlComponent(wxCommandEvent& event);
     void OnListBoxComponentsDClick(wxCommandEvent& event);
     void OnListBoxComponents(wxCommandEvent& event);
 
+private:
     wxTextCtrl          *m_textCtrlComponent;
     wxListBox           *m_listBoxComponents;
     wxStaticLine        *m_staticline;

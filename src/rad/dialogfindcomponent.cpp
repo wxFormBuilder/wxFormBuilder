@@ -106,7 +106,8 @@ bool DialogFindComponent::TransferDataToWindow() {
     }
     // Clear() emits a text change event
     m_textCtrlComponent->ChangeValue(wxEmptyString);
-    m_buttonInsert->Enable(false);
+    
+    updateEnabledState();
 
     return wxDialog::TransferDataToWindow();
 }
@@ -123,6 +124,14 @@ bool DialogFindComponent::Validate() {
     }
 
     return wxDialog::Validate();
+}
+
+
+void DialogFindComponent::updateEnabledState() {
+    const auto enableInsert = (m_listBoxComponents->GetSelection() != wxNOT_FOUND);
+    if (m_buttonInsert->IsThisEnabled() != enableInsert) {
+        m_buttonInsert->Enable(enableInsert);
+    }
 }
 
 
@@ -147,7 +156,10 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
     }
     m_prevComponents.swap(nextComponents);
 
-    m_buttonInsert->Disable();
+    if (m_listBoxComponents->GetCount() == 1) {
+        m_listBoxComponents->SetSelection(0);
+    }
+    updateEnabledState();
 }
 
 void DialogFindComponent::OnListBoxComponentsDClick(wxCommandEvent& WXUNUSED(event))
@@ -163,5 +175,5 @@ void DialogFindComponent::OnListBoxComponentsDClick(wxCommandEvent& WXUNUSED(eve
 
 void DialogFindComponent::OnListBoxComponents(wxCommandEvent& WXUNUSED(event))
 {
-    m_buttonInsert->Enable();
+    updateEnabledState();
 }
