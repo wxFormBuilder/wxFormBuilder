@@ -849,7 +849,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 			{
 				strHandlerName = MakeErlangIdentifier( strHandlerName );
 				const auto pos = _template.Find( wxT( "*option" ) );
-				if ( pos != -1 ) {
+				if ( pos != wxNOT_FOUND ) {
 					_template.Replace( wxT( "*option" ), wxT( "[]" ) );
 				}
 			}
@@ -883,13 +883,13 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 				}
 				// trying two variations of format possible entered in the *.erlangcode files
 				auto pos = _template.Find( wxT( ",*option" ) );
-				if ( pos != -1 ) {
+				if ( pos != wxNOT_FOUND ) {
 					_template.Replace( wxT( ",*option" ), option );
 				}
 				else
 				{
 					pos = _template.Find( wxT( ", *option" ) );
-					if ( pos != -1 ) {
+					if ( pos != wxNOT_FOUND ) {
 						_template.Replace( wxT( ", *option" ), option );
 					}
 				}
@@ -914,7 +914,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 
 			// This will fix the main form owner name. It will happens when
 			// the var got 'this()' as result of a call to RootWxParentToCode()
-			if ( code.Find( m_rootWxParent ) != -1 )
+			if ( code.Find( m_rootWxParent ) != wxNOT_FOUND )
 			{
 				code.Replace( m_rootWxParent, strClassName );
 			}
@@ -935,7 +935,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 				eventId = eventId.AfterFirst( wxT(',') );
 				eventId = eventId.BeforeFirst( wxT(')') );
 				const auto pos = eventId.Find( wxT(',') );
-				if ( pos != -1 ) {
+				if ( pos != wxNOT_FOUND ) {
 					eventId = eventId.BeforeFirst( wxT(',') );
 				}
 
@@ -1144,49 +1144,49 @@ wxString ErlangCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
 	// Also, because to use '$var_name}' was causing problems with the parser it was necessart to add
 	// a space between then '$var_name }' which will be removed here too.
 	int pos = code.Find( wxT( "  " ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( "  " ), wxT( " " ) );
 	}
 	pos = code.Find( wxT( " }" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( " }" ), wxT( "}" ) );
 	}
 	// handling malformed strings after the template be processed
 	pos = code.Find( wxT( ", ]" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( ", ]" ), wxT( "]" ) );
 	}
 	// handling malformed strings after the template be processed (for events)
 	pos = code.Find( wxT( "|[]" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( "|[]" ), wxT( "" ) );
 	}
 	// after the previous filter, it can left a list concatenation - we replace it
 	pos = code.Find( wxT( "]|[" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( "]|[" ), wxT( "," ) );
 	}
 	// concatenated flags in template get the space char in its front removed
 	pos = code.Find( wxT( " | " ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( " | " ), wxT( " bor " ) );
 	}  else {
 		pos = code.Find( wxT( "| " ) );
-		if ( pos != -1 ) {
+		if ( pos != wxNOT_FOUND ) {
 			code.Replace( wxT( "| " ), wxT( " bor " ) );
 		}
 	}
 	pos = code.Find( wxT( ",}" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( ",}" ), wxT( "" ) );
 	}
 	pos = code.Find( wxT( ",]" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( ",]" ), wxT( "]" ) );
 	}
 	// this() will always reference the main form/frame for which the controls are attached
 	pos = code.Find( wxT( "this()" ) );
-	if ( pos != -1 ) {
+	if ( pos != wxNOT_FOUND ) {
 		code.Replace( wxT( "this()" ), m_rootWxParent );
 	}
 	return code;
@@ -1964,7 +1964,7 @@ void ErlangCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxStrin
 		wxString code = parser.ParseTemplate();
 
 		wxString strRootCode = m_rootWxParent;
-		if (code.Find(strRootCode) != -1){
+		if (code.Find(strRootCode) != wxNOT_FOUND){
 			code.Replace(strRootCode, strClassName);
 		}
 
