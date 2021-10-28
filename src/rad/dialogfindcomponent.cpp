@@ -95,7 +95,7 @@ bool DialogFindComponent::TransferDataToWindow() {
     }
     std::sort(m_allComponents.begin(), m_allComponents.end());
     m_prevComponents.clear();
-    m_prevComponent.clear();
+    m_prevSearch.clear();
     m_chosenComponent.clear();
 
     // The std::vector overload is not available in wxWidgets 3.0
@@ -137,14 +137,14 @@ void DialogFindComponent::updateEnabledState() {
 
 void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
 {
-    auto nextComponent = m_textCtrlComponent->GetValue();
-    nextComponent.MakeLower();
-    const auto& searchComponents = (!m_prevComponent.empty() && nextComponent.Find(m_prevComponent) != wxNOT_FOUND ? m_prevComponents : m_allComponents);
+    auto nextSearch = m_textCtrlComponent->GetValue();
+    nextSearch.MakeLower();
+    const auto& searchComponents = (!m_prevSearch.empty() && nextSearch.Find(m_prevSearch) != wxNOT_FOUND ? m_prevComponents : m_allComponents);
 
     std::vector<wxString> nextComponents;
     nextComponents.reserve(searchComponents.size());
     for (const auto& component : searchComponents) {
-        if (component.Lower().Find(nextComponent) != wxNOT_FOUND) {
+        if (component.Lower().Find(nextSearch) != wxNOT_FOUND) {
             nextComponents.emplace_back(component);
         }
     }
@@ -155,6 +155,7 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
         m_listBoxComponents->Clear();
     }
     m_prevComponents.swap(nextComponents);
+    m_prevSearch.swap(nextSearch);
 
     if (m_listBoxComponents->GetCount() == 1) {
         m_listBoxComponents->SetSelection(0);

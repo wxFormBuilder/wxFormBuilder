@@ -72,7 +72,7 @@ private:
 
     std::vector<wxString> m_allComponents;
     std::vector<wxString> m_prevComponents;
-    wxString m_prevComponent;
+    wxString m_prevSearch;
     wxString m_chosenComponent;
 };
 
