@@ -21,7 +21,7 @@
 //   José Antonio Hurtado - joseantonio.hurtado@gmail.com
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
-// Erlang code generation writen by
+// Erlang code generation written by
 //   Micheus Vieira - micheus@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
