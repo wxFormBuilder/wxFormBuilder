@@ -675,9 +675,7 @@ void ErlangCodeGenerator::ClearLocalEventTable( const wxString &strEvtName )
 		// this is intended to allow us to remove only sync and async information
 		// from the event table and simplify the process to get the event's name to
 		// be used in the functions declarations
-		std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
-
-		it = m_handledEvents.find( strEvtName );
+		auto it = m_handledEvents.find( strEvtName );
 		if ( it != m_handledEvents.end() )  // not found
 		{
 			std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
@@ -725,9 +723,9 @@ void ErlangCodeGenerator::ClearLocalEventTable( const wxString &strEvtName )
 
 void ErlangCodeGenerator::AddLocalEvent( const wxString &strControl, const wxString &strEvtName, const wxString &strEvtClass, const wxString &strEvtType )
 {
-	std::map<wxString,wxString> controlInfoList;
-	std::map<wxString,std::map<wxString,wxString>> eventClassList;
-	std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
+	control_info_type controlInfoList;
+	event_class_type eventClassList;
+	event_table_type::iterator it;
 
 	// strEvtName values possible: sync|async|event name
 
@@ -741,7 +739,7 @@ void ErlangCodeGenerator::AddLocalEvent( const wxString &strControl, const wxStr
 	}
 	else
 	{
-		std::map<wxString,std::map<wxString,wxString>>::iterator itC;
+		event_class_type::iterator itC;
 
 		eventClassList = it->second;
 		itC = eventClassList.find( strEvtClass );
@@ -752,7 +750,7 @@ void ErlangCodeGenerator::AddLocalEvent( const wxString &strControl, const wxStr
 		}
 		else
 		{
-			std::map<wxString,wxString>::iterator itT;
+			control_info_type::iterator itT;
 
 			controlInfoList = itC->second;
 			itT = controlInfoList.find( strEvtType );
@@ -980,33 +978,21 @@ void ErlangCodeGenerator::GenFormatedEventHeaders( PObjectBase project, const wx
 	m_source->WriteLn( code );
 }
 
-void ErlangCodeGenerator::GenFormatedEventHeaders( PObjectBase project, const wxString _template,
-							const std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator &it)
+void ErlangCodeGenerator::GenFormatedEventHeaders( PObjectBase project, const wxString _template, const event_table_type::value_type& event)
 {
-	wxString code;
-	wxString strEvtParam;
-	wxString StrEvtClass;
-	wxString strEvtType;
-	wxString strControls;
-	wxString strEvtName = it->first;
-	std::map<wxString, std::map<wxString, wxString>> eventClassList = it->second;
+	const auto& strEvtName = event.first;
 
-	for ( std::map<wxString, std::map<wxString, wxString>>::iterator
-		itC=eventClassList.begin(); itC!=eventClassList.end(); ++itC )
-	{
-		StrEvtClass = itC->first;
-		std::map<wxString, wxString> controlInfo = itC->second;
+	for (const auto& eventClass : event.second) {
+		auto StrEvtClass = eventClass.first;
+		StrEvtClass.Replace(wxT("Event"), wxEmptyString);
 
-		for ( std::map<wxString, wxString>::iterator
-			itT=controlInfo.begin(); itT!=controlInfo.end(); ++itT )
-		{
-			strEvtType = itT->first;
-			strControls = itT->second;
-			code = _template.Clone();
+		for (const auto& controlInfo : eventClass.second) {
+			const auto& strEvtType = controlInfo.first;
+			const auto& strControls = controlInfo.second;
+			auto code = _template.Clone();
 
 			// building the event class and type
-			StrEvtClass.Replace( wxT( "Event" ), wxEmptyString );
-			strEvtParam = wxString::Format( wxT( "*wx{event = *%s{type = %s}}" ),
+			auto strEvtParam = wxString::Format( wxT( "*wx{event = *%s{type = %s}}" ),
 											StrEvtClass, strEvtType );
 
 			// we try to replace defined macros '*controls', '*fun' and '*event' when available
@@ -1028,7 +1014,6 @@ void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_i
 {
 	wxString code;
 	wxString _template;
-	std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator it;
 
 	// strEvtName values: sync|async|event name
 	if ( m_fullExport )
@@ -1042,7 +1027,7 @@ void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_i
 			it=m_handledEvents.find( wxT("sync") ); (it!=m_handledEvents.end() &&
 									(it->first == wxT("sync") )); ++it )
 		{
-			GenFormatedEventHeaders( project, _template, it );
+			GenFormatedEventHeaders( project, _template, *it );
 		}
 		_template = code_info->GetTemplate( wxT( "events_sync_end" ) );
 		GenFormatedEventHeaders( project, _template );
@@ -1057,7 +1042,7 @@ void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_i
 			it=m_handledEvents.find( wxT("async") ); (it!=m_handledEvents.end() &&
 									(it->first == wxT("async") )); ++it )
 		{
-			GenFormatedEventHeaders( project, _template, it );
+			GenFormatedEventHeaders( project, _template, *it );
 		}
 		_template = code_info->GetTemplate( wxT( "events_async_end" ) );
 		GenFormatedEventHeaders( project, _template );
@@ -1072,8 +1057,7 @@ void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_i
 		ClearLocalEventTable( wxT("async") );
 	}
 
-	it = m_handledEvents.begin();
-	if ( it!=m_handledEvents.end() )
+	if (!m_handledEvents.empty())
 	{
 		m_source->WriteLn( wxEmptyString );
 		m_source->WriteLn( wxT( "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n"
@@ -1083,7 +1067,7 @@ void ErlangCodeGenerator::GenEventHeaders( PObjectBase project, PCodeInfo code_i
 		for ( std::map<wxString, std::map<wxString, std::map<wxString, wxString>>>::iterator
 			it=m_handledEvents.begin(); it!=m_handledEvents.end(); ++it )
 		{
-			GenFormatedEventHeaders( project, _template, it );
+			GenFormatedEventHeaders( project, _template, *it );
 		}
 	}
 }

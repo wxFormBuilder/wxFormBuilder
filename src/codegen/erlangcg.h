@@ -96,7 +96,10 @@ private:
 	* controls be processed to create the handlers.
 	* layout: [event name, [event class, [form name, control name[,...] |...] |...] |...]
 	**/
-	std::map<wxString, std::map<wxString, std::map<wxString, wxString>>> m_handledEvents;
+	using control_info_type = std::map<wxString, wxString>;
+	using event_class_type = std::map<wxString, control_info_type>;
+	using event_table_type = std::map<wxString, event_class_type>;
+	event_table_type m_handledEvents;
 
 	/**
 	* Predefined macros won't generate defines.
@@ -162,7 +165,7 @@ private:
 	* Generate the header for the events handler
 	*/
 	void GenFormatedEventHeaders( PObjectBase project, const wxString _template);
-	void GenFormatedEventHeaders( PObjectBase project, const wxString _template, const std::map<wxString,std::map<wxString,std::map<wxString,wxString>>>::iterator &it);
+	void GenFormatedEventHeaders( PObjectBase project, const wxString _template, const event_table_type::value_type& event);
 	void GenEventHeaders( PObjectBase project, PCodeInfo code_info );
 
 	/**
