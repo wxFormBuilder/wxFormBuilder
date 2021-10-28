@@ -153,46 +153,46 @@
                  true == forward_declare
                  false == Not forward_declare
       -->
-		<child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
-	</property>
-	<category name="wxKeyEvent" type="interface">
-		<event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
-		<event name="OnCharHook" class="wxKeyEvent" help="Process a wxEVT_CHAR_HOOK event. Unlike all the other key events, this event is propagated upwards the window hierarchy which allows intercepting it in the parent window of the focused window to which it is sent initially (if there is no focused window, this event is sent to the wxApp global object). It is also generated before any other key events and so gives the parent window an opportunity to modify the keyboard handling of its children, e.g. it is used internally by wxWidgets in some ports to intercept pressing Esc key in any child of a dialog to close the dialog itself when it's pressed. By default, if this event is handled, i.e. the handler doesn't call wxEvent::Skip(), neither wxEVT_KEY_DOWN nor wxEVT_CHAR events will be generated (although wxEVT_KEY_UP still will be), i.e. it replaces the normal key events. However by calling the special DoAllowNextEvent() method you can handle wxEVT_CHAR_HOOK and still allow normal events generation. This is something that is rarely useful but can be required if you need to prevent a parent wxEVT_CHAR_HOOK handler from running without suppressing the normal key events. Finally notice that this event is not generated when the mouse is captured as it is considered that the window which has the capture should receive all the keyboard events too without allowing its parent wxTopLevelWindow to interfere with their processing."/>
-		<event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed). If this event is handled and not skipped, wxEVT_CHAR will not be generated at all for this key press (but wxEVT_KEY_UP will be)."/>
-		<event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
-	  </category>
-	  <category name="wxMouseEvent" type="interface">
-		<event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
-		<event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
-		<event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
-		<event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
-		<event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
-		<event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
-		<event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
-		<event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
-		<event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
-		<event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
-		<event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
-		<event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
-		<event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DOWN event." />
-		<event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
-		<event name="OnAux1DClick" class="wxMouseEvent" help="Process a wxEVT_AUX1_DCLICK event."/>
-		<event name="OnAux1Down" class="wxMouseEvent" help="Process a wxEVT_AUX1_DOWN event."/>
-		<event name="OnAux1Up" class="wxMouseEvent" help="Process a wxEVT_AUX1_UP event."/>
-		<event name="OnAux2DClick" class="wxMouseEvent" help="Process a wxEVT_AUX2_DCLICK event."/>
-		<event name="OnAux2Down" class="wxMouseEvent" help="Process a wxEVT_AUX2_DOWN event."/>
-		<event name="OnAux2Up" class="wxMouseEvent" help="Process a wxEVT_AUX2_UP event."/>
-	  </category>
-	  <category name="wxFocusEvent" type="interface">
-		<event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
-		<event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
-	  </category>	
-	  <category name="Other Events" type="interface">
-		<event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
-		<event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
-		<event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
-		<event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
-	  </category>
+      <child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
+    </property>
+    <category name="wxKeyEvent" type="interface">
+      <event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event." />
+      <event name="OnCharHook" class="wxKeyEvent" help="Process a wxEVT_CHAR_HOOK event. Unlike all the other key events, this event is propagated upwards the window hierarchy which allows intercepting it in the parent window of the focused window to which it is sent initially (if there is no focused window, this event is sent to the wxApp global object). It is also generated before any other key events and so gives the parent window an opportunity to modify the keyboard handling of its children, e.g. it is used internally by wxWidgets in some ports to intercept pressing Esc key in any child of a dialog to close the dialog itself when it's pressed. By default, if this event is handled, i.e. the handler doesn't call wxEvent::Skip(), neither wxEVT_KEY_DOWN nor wxEVT_CHAR events will be generated (although wxEVT_KEY_UP still will be), i.e. it replaces the normal key events. However by calling the special DoAllowNextEvent() method you can handle wxEVT_CHAR_HOOK and still allow normal events generation. This is something that is rarely useful but can be required if you need to prevent a parent wxEVT_CHAR_HOOK handler from running without suppressing the normal key events. Finally notice that this event is not generated when the mouse is captured as it is considered that the window which has the capture should receive all the keyboard events too without allowing its parent wxTopLevelWindow to interfere with their processing."/>
+      <event name="OnKeyDown" class="wxKeyEvent" help="Process a wxEVT_KEY_DOWN event (any key has been pressed). If this event is handled and not skipped, wxEVT_CHAR will not be generated at all for this key press (but wxEVT_KEY_UP will be)."/>
+      <event name="OnKeyUp" class="wxKeyEvent" help="Process a wxEVT_KEY_UP event (any key has been released)." />
+    </category>
+    <category name="wxMouseEvent" type="interface">
+      <event name="OnEnterWindow" class="wxMouseEvent" help="Process a wxEVT_ENTER_WINDOW event." />
+      <event name="OnLeaveWindow" class="wxMouseEvent" help="Process a wxEVT_LEAVE_WINDOW event." />
+      <event name="OnLeftDClick" class="wxMouseEvent" help="Process a wxEVT_LEFT_DCLICK event." />
+      <event name="OnLeftDown" class="wxMouseEvent" help="Process a wxEVT_LEFT_DOWN event." />
+      <event name="OnLeftUp" class="wxMouseEvent" help="Process a wxEVT_LEFT_UP event." />
+      <event name="OnMiddleDClick" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DCLICK event." />
+      <event name="OnMiddleDown" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_DOWN event." />
+      <event name="OnMiddleUp" class="wxMouseEvent" help="Process a wxEVT_MIDDLE_UP event." />
+      <event name="OnMotion" class="wxMouseEvent" help="Process a wxEVT_MOTION event." />
+      <event name="OnMouseEvents" class="wxMouseEvent" help="Process all mouse events." />
+      <event name="OnMouseWheel" class="wxMouseEvent" help="Process a wxEVT_MOUSEWHEEL event." />
+      <event name="OnRightDClick" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DCLICK event." />
+      <event name="OnRightDown" class="wxMouseEvent" help="Process a wxEVT_RIGHT_DOWN event." />
+      <event name="OnRightUp" class="wxMouseEvent" help="Process a wxEVT_RIGHT_UP event." />
+      <event name="OnAux1DClick" class="wxMouseEvent" help="Process a wxEVT_AUX1_DCLICK event."/>
+      <event name="OnAux1Down" class="wxMouseEvent" help="Process a wxEVT_AUX1_DOWN event."/>
+      <event name="OnAux1Up" class="wxMouseEvent" help="Process a wxEVT_AUX1_UP event."/>
+      <event name="OnAux2DClick" class="wxMouseEvent" help="Process a wxEVT_AUX2_DCLICK event."/>
+      <event name="OnAux2Down" class="wxMouseEvent" help="Process a wxEVT_AUX2_DOWN event."/>
+      <event name="OnAux2Up" class="wxMouseEvent" help="Process a wxEVT_AUX2_UP event."/>
+    </category>
+    <category name="wxFocusEvent" type="interface">
+      <event name="OnKillFocus" class="wxFocusEvent" help="Process a wxEVT_KILL_FOCUS event." />
+      <event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event." />
+    </category>	
+    <category name="Other Events" type="interface">
+      <event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event." />
+      <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event." />
+      <event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event." />
+      <event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event." />
+    </category>
   </objectinfo>
 
   <objectinfo class="wxTreeCtrlBase" type="interface">
