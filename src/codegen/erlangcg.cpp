@@ -840,7 +840,6 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 
 		if ( !_template.empty() )
 		{
-			int pos;
 			wxString option;
 			wxString strHandlerName = event->GetValue();
 			// wxFormBuilder is allowing to enter multiple words as name for a control or event
@@ -849,7 +848,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 			if ( disconnect )
 			{
 				strHandlerName = MakeErlangIdentifier( strHandlerName );
-				int pos = _template.Find( wxT( "*option" ) );
+				const auto pos = _template.Find( wxT( "*option" ) );
 				if ( pos != -1 ) {
 					_template.Replace( wxT( "*option" ), wxT( "[]" ) );
 				}
@@ -883,7 +882,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 					option = wxString::Format( ", [{callback, fun %s/2}]", strHandlerName );
 				}
 				// trying two variations of format possible entered in the *.erlangcode files
-				pos = _template.Find( wxT( ",*option" ) );
+				auto pos = _template.Find( wxT( ",*option" ) );
 				if ( pos != -1 ) {
 					_template.Replace( wxT( ",*option" ), option );
 				}
@@ -935,7 +934,7 @@ bool ErlangCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, 
 				eventId.Replace( wxT(" "), wxEmptyString, true );
 				eventId = eventId.AfterFirst( wxT(',') );
 				eventId = eventId.BeforeFirst( wxT(')') );
-				pos = eventId.Find( wxT(',') );
+				const auto pos = eventId.Find( wxT(',') );
 				if ( pos != -1 ) {
 					eventId = eventId.BeforeFirst( wxT(',') );
 				}
