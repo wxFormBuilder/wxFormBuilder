@@ -18,7 +18,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 //
-// DialogFindComponent writen by
+// DialogFindComponent written by
 //   Michał Łukowski - michal.lukowski@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
