@@ -542,25 +542,25 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		return false;
 	}
 
-	PProperty lowerIdentifier = project->GetProperty( wxT( "lower_identifier" ) );
+	PProperty lowerIdentifier = project->GetProperty( wxT( "erlang_use_lowercase_identifiers" ) );
 	if ( !lowerIdentifier )
 	{
-		wxLogError( wxT( "Missing \"lower_identifier\" property on Project Object" ) );
+		wxLogError( wxT( "Missing \"erlang_use_lowercase_identifiers\" property on Project Object" ) );
 		return false;
 	}
 	m_lowerIdentifier = lowerIdentifier->GetValueAsInteger();
 
-	PProperty createPrefix = project->GetProperty( wxT( "create_prefix" ) );
+	PProperty createPrefix = project->GetProperty( wxT( "erlang_toplevel_function_prefix" ) );
 	if ( !createPrefix )
 	{
-		wxLogError( wxT( "Missing \"create_prefix\" property on Project Object" ) );
+		wxLogError( wxT( "Missing \"erlang_toplevel_function_prefix\" property on Project Object" ) );
 		return false;
 	}
 
-	PProperty createParent = project->GetProperty( wxT( "create_parent" ) );
-	if ( !createParent )
+	PProperty useParent = project->GetProperty( wxT( "erlang_use_toplevel_parent_parameter" ) );
+	if ( !useParent )
 	{
-		wxLogError( wxT( "Missing \"create_parent\" property on Project Object" ) );
+		wxLogError( wxT( "Missing \"erlang_use_toplevel_parent_parameter\" property on Project Object" ) );
 		return false;
 	}
 
@@ -576,7 +576,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	m_source->WriteLn( code );
 
 	wxString Prefix = createPrefix->GetValue();
-	bool Parent = createParent->GetValueAsInteger();
+	bool Parent = useParent->GetValueAsInteger();
 	wxString file = propFile->GetValue();
 	if ( file.empty() )
 	{
@@ -595,7 +595,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 		m_source->WriteLn( code );
 		m_source->WriteLn( wxEmptyString );
 	}
-	PProperty propCopyRight = project->GetProperty( wxT( "copyright notice" ) );
+	PProperty propCopyRight = project->GetProperty( wxT( "erlang_copyright" ) );
 	if (propCopyRight)
 	{
 		code = propCopyRight->GetValueAsString();
@@ -628,7 +628,7 @@ bool ErlangCodeGenerator::GenerateCode( PObjectBase project )
 	}
 
 	// Generate and writes the exports
-	PProperty genExport = project->GetProperty( wxT( "kind_of_code" ) );
+	PProperty genExport = project->GetProperty( wxT( "erlang_code_generation" ) );
 	if ( genExport )
 	{
 		m_fullExport = genExport->GetValueAsString() == wxT( "full_code_prototype" );

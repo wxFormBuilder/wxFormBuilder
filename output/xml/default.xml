@@ -71,15 +71,15 @@
       </property>
     </category>
     <category name="Erlang Properties">
-      <property name="copyright notice" type="text" help="For Erlang Only.&#x0A;Copyright and license notice to be inserted at the beginning of the all files in the project"></property>
-      <property name="create_parent" type="bool" help="For Erlang Only.&#x0A;Use the parent parameter as a form instead of create it in the function.">1</property>
-      <property name="create_prefix" type="text" help="For Erlang Only.&#x0A;Prefix name for the windows's creation function">create</property>
-      <property name="kind_of_code" type="option" help="For Erlang Only.&#x0A;Defines the kind of code that will be generated">
-        <option name="window_and_events" help="The code will include only the window creation, callback events and the export session."/>
-        <option name="full_code_prototype" help="A full module skeleton will be created."/>
+      <property name="erlang_copyright" type="text" help="For Erlang Only.&#x0A;Copyright notice that gets inserted at the beginning of each generated file."></property>
+      <property name="erlang_toplevel_function_prefix" type="text" help="For Erlang Only.&#x0A;Prefix of toplevel component creation functions.">create</property>
+      <property name="erlang_use_toplevel_parent_parameter" type="bool" help="For Erlang Only.&#x0A;Use a parent parameter for toplevel components.">1</property>
+      <property name="erlang_use_lowercase_identifiers" type="bool" help="For Erlang Only.&#x0A;Use lowercase names for generated identifiers.">1</property>
+      <property name="erlang_code_generation" type="option" help="For Erlang Only.&#x0A;Type of code that gets generated.">
+        <option name="window_and_events" help="Generate only window creation, callback events and export session."/>
+        <option name="full_code_prototype" help="Generate full module skeleton."/>
         window_and_events
       </property>
-      <property name="lower_identifier" type="bool" help="For Erlang Only.&#x0A;Forces the entire name of the identifiers to lowercase.">1</property>
     </category>
   </objectinfo>
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
