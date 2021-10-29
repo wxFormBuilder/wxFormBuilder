@@ -2,11 +2,17 @@
 
 #include <cstring>
 
-static const char* const REVISION = "@GIT_REVISION@";
-static const char* const DESCRIBE = "@GIT_DESCRIBE@";
-static const char* const TAG_NAME = "@GIT_TAG_NAME@";
-static const unsigned int TAG_DISTANCE = @GIT_TAG_DISTANCE@;
-static const bool DIRTY = @GIT_DIRTY@;
+static constexpr const char* REVISION = "@GIT_REVISION@";
+static constexpr const char* DESCRIBE = "@GIT_DESCRIBE@";
+static constexpr const char* TAG_NAME = "@GIT_TAG_NAME@";
+static constexpr unsigned int TAG_DISTANCE = @GIT_TAG_DISTANCE@;
+static constexpr bool DIRTY = @GIT_DIRTY@;
+
+
+static constexpr int length(const char* str) {
+    return (*str ? 1 + length(str + 1) : 0);
+}
+
 
 const char* getRevision() {
     return REVISION;
@@ -30,38 +36,38 @@ bool isDirty() {
 
 
 std::string getPostfixRevision(const char* version) {
-    if (std::strlen(REVISION) == 0) {
+    if constexpr (length(REVISION) == 0) {
         return "";
     }
 
-    if (std::strlen(DESCRIBE) == 0) {
+    if constexpr (length(DESCRIBE) == 0) {
         return std::string("-").append(REVISION);
     }
 
     // TODO: Assume there is a v prefix
     if (std::strcmp(TAG_NAME + 1, version) == 0) {
-        return (DESCRIBE + std::strlen(TAG_NAME));
+        return (DESCRIBE + length(TAG_NAME));
     }
         
     return std::string("-").append(DESCRIBE);
 }
 
 std::string getReleaseRevision(const char* version) {
-    if (std::strlen(REVISION) == 0) {
+    if constexpr (length(REVISION) == 0) {
         return "";
     }
     
-    if (std::strlen(DESCRIBE) == 0) {
+    if constexpr (length(DESCRIBE) == 0) {
         return std::string("-").append(REVISION);
     }
 
     // TODO: Assume there is a v prefix
     if (std::strcmp(TAG_NAME + 1, version) == 0) {
-        if (TAG_DISTANCE == 0 && !DIRTY) {
+        if constexpr (TAG_DISTANCE == 0 && !DIRTY) {
             return "";
         }
         
-        return (DESCRIBE + std::strlen(TAG_NAME));
+        return (DESCRIBE + length(TAG_NAME));
     }
     
     return std::string("-").append(DESCRIBE);
