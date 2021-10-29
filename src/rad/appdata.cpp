@@ -3130,7 +3130,7 @@ wxString ApplicationData::GetPathProperty( const wxString& pathName )
 								pathEntry +
 								wxFileName::GetPathSeparator() );
 
-			path.Normalize();
+			path.Normalize(wxPATH_NORM_ABSOLUTE | wxPATH_NORM_DOTS);
 
 			// this approach is probably incorrect if the fb project is located under a symlink
 			/*path.SetCwd( projectPath );
