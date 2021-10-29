@@ -111,11 +111,10 @@ void MD5::update(const unsigned char* input, uint32_t input_length) {
 
 void MD5::update(FILE* file) {
 	unsigned char fileBuffer[1024];
-	size_t len;
 
 	assert(!finalized);
 
-	while ((len = std::fread(fileBuffer, 1, 1024, file)))
+	for (auto len = std::fread(fileBuffer, 1, 1024, file); len != 0; len = std::fread(fileBuffer, 1, 1024, file))
 		update(fileBuffer, static_cast<uint32_t>(len));
 }
 
