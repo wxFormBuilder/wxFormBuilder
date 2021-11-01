@@ -31,10 +31,46 @@
 
 #include <wx/tokenzr.h>
 
+
+BufferedTextInputStream::BufferedTextInputStream(wxTextInputStream& text) : m_text(text), m_buffer(static_cast<wxChar>(wxEOF))
+{
+	readChar();
+}
+
+bool BufferedTextInputStream::Eof() const
+{
+	return (m_buffer == static_cast<wxChar>(wxEOF));
+}
+
+wxChar BufferedTextInputStream::Peek()
+{
+	return m_buffer;
+}
+
+wxChar BufferedTextInputStream::GetC()
+{
+	auto result = m_buffer;
+
+	readChar();
+	
+	return result;
+}
+
+void BufferedTextInputStream::readChar()
+{
+	m_buffer = m_text.GetChar();
+	if (m_buffer == 0) {
+		m_buffer = static_cast<wxChar>(wxEOF);
+	}
+}
+
+
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
 m_obj( obj ),
-m_in( _template ),
+m_stream(_template),
+m_text(m_stream, wxT(" \t"), wxConvUTF8),
+m_in(m_text),
 m_indent( 0 )
 {
 }
@@ -42,7 +78,9 @@ m_indent( 0 )
 TemplateParser::TemplateParser( const TemplateParser & that, wxString _template )
 :
 m_obj( that.m_obj ),
-m_in( _template ),
+m_stream(_template),
+m_text(m_stream, wxT(" \t"), wxConvUTF8),
+m_in(m_text),
 m_indent( 0 )
 {
 }
@@ -170,7 +208,7 @@ TemplateParser::Ident TemplateParser::ParseIdent()
 		m_in.GetC();
 
 		wxChar peek( m_in.Peek() );
-		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$')
+		while (peek != static_cast<wxChar>(wxEOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$')
 			&& ( (peek >= wxT('a') && peek <= wxT('z') ) ||
 			(peek >= wxT('A') && peek <= wxT('Z') ) ||
 			(peek >= wxT('0') && peek <= wxT('9') ) ))
@@ -201,7 +239,7 @@ wxString TemplateParser::ParsePropertyName( wxString* child )
 		m_in.GetC();
 
 		wxChar peek( m_in.Peek() );
-		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$')
+		while (peek != static_cast<wxChar>(wxEOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$')
 			&& ( (peek >= wxT('a') && peek <= wxT('z') ) ||
 			(peek >= wxT('A') && peek <= wxT('Z') ) ||
 			(peek >= wxT('0') && peek <= wxT('9') ) ||
@@ -277,7 +315,7 @@ bool TemplateParser::ParseText()
 	{
 		wxChar peek( m_in.Peek() );
 
-		while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$') )
+		while (peek != static_cast<wxChar>(wxEOF) && !m_in.Eof() && peek != wxT('#') && peek != wxT('$') )
 		{
 			wxChar c( m_in.GetC() );
 			if (c == wxT('@') )
@@ -593,7 +631,7 @@ PProperty TemplateParser::GetProperty( wxString* childName )
 void TemplateParser::ignore_whitespaces()
 {
 	wxChar peek( m_in.Peek() );
-	while ( peek != wxChar(EOF) && !m_in.Eof() && peek == wxT(' ') )
+	while ( peek != static_cast<wxChar>(wxEOF) && !m_in.Eof() && peek == wxT(' ') )
 	{
 		m_in.GetC();
 		peek = wxChar( m_in.Peek() );
@@ -684,7 +722,7 @@ wxString TemplateParser::ExtractLiteral()
 	{
 		bool end = false;
 		// Beginning the template extraction
-		while (!end && !m_in.Eof() && m_in.Peek() != EOF )
+		while (!end && !m_in.Eof() && m_in.Peek() != static_cast<wxChar>(wxEOF) )
 		{
 			c = wxChar(m_in.GetC()); // obtaining one char
 
@@ -703,7 +741,7 @@ wxString TemplateParser::ExtractLiteral()
 					// All the following chars are ignored up to an space char,
 					// so we can avoid errors like "hello"world" -> "hello"
 					wxChar peek( m_in.Peek() );
-					while (peek != wxChar(EOF) && !m_in.Eof() && peek != wxT(' ') )
+					while (peek != static_cast<wxChar>(wxEOF) && !m_in.Eof() && peek != wxT(' ') )
 					{
 						m_in.GetC();
 						peek = wxChar( m_in.Peek() );
@@ -1036,7 +1074,7 @@ wxString TemplateParser::ExtractInnerTemplate()
 		int level = 1;
 		bool end = false;
 		// Beginning with the template extraction
-		while ( !end && !m_in.Eof() && m_in.Peek() != EOF )
+		while ( !end && !m_in.Eof() && m_in.Peek() != static_cast<wxChar>(wxEOF) )
 		{
 			c1 = wxChar(m_in.GetC());
 
