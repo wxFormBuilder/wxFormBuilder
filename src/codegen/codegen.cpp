@@ -68,7 +68,9 @@ void BufferedTextInputStream::readChar()
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
 m_obj( obj ),
-m_in( _template ),
+m_stream(_template),
+m_text(m_stream, wxT(" \t"), wxConvUTF8),
+m_in(m_text),
 m_indent( 0 )
 {
 }
@@ -76,7 +78,9 @@ m_indent( 0 )
 TemplateParser::TemplateParser( const TemplateParser & that, wxString _template )
 :
 m_obj( that.m_obj ),
-m_in( _template ),
+m_stream(_template),
+m_text(m_stream, wxT(" \t"), wxConvUTF8),
+m_in(m_text),
 m_indent( 0 )
 {
 }

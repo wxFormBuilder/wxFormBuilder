@@ -135,7 +135,9 @@ class TemplateParser
 {
 private:
 	PObjectBase m_obj;
-	wxStringInputStream m_in;
+	wxStringInputStream m_stream;
+	wxTextInputStream m_text;
+	BufferedTextInputStream m_in;
 	wxString m_out;
 	wxString m_pred;
 	wxString m_npred;
