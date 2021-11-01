@@ -171,7 +171,7 @@ void wxFBManager::ModifyProperty( wxObject* wxobject, wxString property, wxStrin
 
 	if ( !prop )
 	{
-		wxLogError( _("%s has no property named %s"), obj->GetClassName().c_str(), property.c_str() );
+		wxLogError( _("%s has no property named %s"), obj->GetClassName(), property );
 		return;
 	}
 

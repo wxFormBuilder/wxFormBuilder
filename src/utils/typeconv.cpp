@@ -339,7 +339,7 @@ wxFontContainer TypeConv::StringToFont (const wxString &str)
 wxString TypeConv::FontToString (const wxFontContainer &font)
 {
 	// face name, style, weight, point size, family, underlined
-	return wxString::Format( wxT("%s,%d,%d,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize(), font.GetFamily(), font.GetUnderlined() ? 1 : 0 );
+	return wxString::Format( wxT("%s,%d,%d,%d,%d,%d"), font.GetFaceName(), font.GetStyle(), font.GetWeight(), font.GetPointSize(), font.GetFamily(), font.GetUnderlined() ? 1 : 0 );
 }
 
 wxString TypeConv::FontFamilyToString(wxFontFamily family) {

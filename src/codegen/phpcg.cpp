@@ -248,7 +248,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 
 			if ( path.StartsWith( wxT("file:") ) )
 			{
-				wxLogWarning( wxT("PHP code generation does not support using URLs for bitmap properties:\n%s"), path.c_str() );
+				wxLogWarning( wxT("PHP code generation does not support using URLs for bitmap properties:\n%s"), path );
 				result = wxT("wxNullBitmap");
 				break;
 			}
@@ -287,7 +287,7 @@ wxString PHPTemplateParser::ValueToCode( PropertyType type, wxString value )
 				}
 				else
 				{
-					result.Printf( wxT("new wxIcon( \"%s\", wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path.c_str(), icoSize.GetWidth(), icoSize.GetHeight() );
+					result.Printf( wxT("new wxIcon( \"%s\", wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path, icoSize.GetWidth(), icoSize.GetHeight() );
 				}
 			}
 			else if (source == _("Load From XRC"))
@@ -423,9 +423,9 @@ void PHPCodeGenerator::GenerateInheritedClass( PObjectBase userClasses, PObjectB
 			PEvent event = events[i];
 			if ( generatedHandlers.find( event->GetValue() ) == generatedHandlers.end() )
 			{
-				m_source->WriteLn( wxString::Format( wxT("function %s( event ){"),  event->GetValue().c_str() ) );
+				m_source->WriteLn( wxString::Format( wxT("function %s( event ){"),  event->GetValue() ) );
 				m_source->Indent();
-				m_source->WriteLn( wxString::Format( wxT("// TODO: Implement %s"), event->GetValue().c_str() ) );
+				m_source->WriteLn( wxString::Format( wxT("// TODO: Implement %s"), event->GetValue() ) );
 				m_source->Unindent();
 				m_source->WriteLn( wxT("}") );
 				m_source->WriteLn( wxEmptyString );
@@ -577,7 +577,7 @@ void PHPCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 	if ( !propName )
 	{
 		wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
-			class_obj->GetClassName().c_str());
+			class_obj->GetClassName());
 		return;
 	}
 
@@ -612,13 +612,13 @@ void PHPCodeGenerator::GenEvents( PObjectBase class_obj, const EventVector &even
 
 			handlerName = event->GetValue();
 
-			wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName().c_str() );
+			wxString templateName = wxString::Format( wxT("connect_%s"), event->GetName() );
 
 			PObjectBase obj = event->GetObject();
 			if ( !GenEventEntry( obj, obj->GetObjectInfo(), templateName, handlerName, disconnect ) )
 			{
 				wxLogError( wxT("Missing \"evt_%s\" template for \"%s\" class. Review your XML object description"),
-					templateName.c_str(), class_name.c_str() );
+					templateName, class_name );
 			}
 		}
 	}
@@ -630,7 +630,7 @@ bool PHPCodeGenerator::GenEventEntry( PObjectBase obj, PObjectInfo obj_info, con
 	PCodeInfo code_info = obj_info->GetCodeInfo( wxT("PHP") );
 	if ( code_info )
 	{
-		_template = code_info->GetTemplate(wxString::Format(wxT("evt_%s%s"), disconnect ? wxT("dis") : wxEmptyString, templateName.c_str()));
+		_template = code_info->GetTemplate(wxString::Format(wxT("evt_%s%s"), disconnect ? wxT("dis") : wxEmptyString, templateName));
 		if ( disconnect && _template.empty() )
 		{
 			_template = code_info->GetTemplate( wxT("evt_") + templateName );
@@ -746,7 +746,7 @@ wxString PHPCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silent)
 		if( !silent )
 		{
 			wxString msg( wxString::Format( wxT("Missing \"%s\" template for \"%s\" class. Review your XML object description"),
-				name.c_str(), obj->GetClassName().c_str() ) );
+				name, obj->GetClassName() ) );
 			wxLogError(msg);
 		}
 		return wxEmptyString;
@@ -817,7 +817,7 @@ void PHPCodeGenerator::GenClassDeclaration(PObjectBase class_obj, bool /*use_enu
 	if ( !propName )
 	{
 		wxLogError(wxT("Missing \"name\" property on \"%s\" class. Review your XML object description"),
-			class_obj->GetClassName().c_str());
+			class_obj->GetClassName());
 		return;
 	}
 
@@ -1277,7 +1277,7 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayIte
 				TypeConv::ParseBitmapWithResource( oldVal, &path, &source, &toolsize );
 				if ( wxT("Load From Icon Resource") == source && wxDefaultSize == toolsize )
 				{
-					prop->SetValue( wxString::Format( wxT("%s; %s [%i; %i]"), path.c_str(), source.c_str(), toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
+					prop->SetValue( wxString::Format( wxT("%s; %s [%i; %i]"), path, source, toolbarsize.GetWidth(), toolbarsize.GetHeight() ) );
 					m_source->WriteLn(GetConstruction(obj, arrays));
 					prop->SetValue( oldVal );
 					return;

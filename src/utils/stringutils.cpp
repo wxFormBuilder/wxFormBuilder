@@ -170,17 +170,17 @@ namespace XMLUtils
 		else if ( wxFONTENCODING_MAX == encoding )
 		{
 			wxString msg = wxString::Format( _("The encoding of this xml file is not supported.\n\nFile: %s\nEncoding: %s\nSupported Encodings:\n\n%s"),
-							path.c_str(),
-							encodingName.c_str(),
-							StringUtils::GetSupportedEncodings().c_str() );
-			wxMessageBox( msg, wxString::Format( _("Unsupported Encoding: %s"), encodingName.c_str() ) );
+							path,
+							encodingName,
+							StringUtils::GetSupportedEncodings() );
+			wxMessageBox( msg, wxString::Format( _("Unsupported Encoding: %s"), encodingName ) );
 			THROW_WXFBEX( _("Unsupported encoding for XML File: ") << path );
 		}
 		else
 		{
 			// Ask user to all wxFB to convert the file to UTF-8 and add the XML declaration
 			wxString msg = wxString::Format( _("This xml file has specified encoding %s. wxFormBuilder only works with UTF-8.\n"),
-							wxFontMapper::GetEncodingDescription( encoding ).c_str() );
+							wxFontMapper::GetEncodingDescription( encoding ) );
 			msg 		+= _("Would you like wxFormBuilder to backup the file and convert it to UTF-8\?\n\n");
 			msg			+= _("Path: ");
 			msg			+= path;
@@ -320,30 +320,30 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 	{
 		if ( !::wxCopyFile( path, path + wxT(".bak") ) )
 		{
-			wxString msg = wxString::Format( _("Unable to backup file.\nFile: %s\nBackup: %s.bak"), path.c_str(), path.c_str() );
+			wxString msg = wxString::Format( _("Unable to backup file.\nFile: %s\nBackup: %s.bak"), path, path );
 			THROW_WXFBEX( msg )
 		}
 	}
 
 	// Read the entire contents into a string
-	wxFFile oldEncoding( path.c_str(), wxT("r") );
+	wxFFile oldEncoding( path, wxT("r") );
 	wxString contents;
 	wxCSConv encodingConv( encoding );
 	if ( !oldEncoding.ReadAll( &contents, encodingConv ) )
 	{
-		wxString msg = wxString::Format( _("Unable to read the file in the specified encoding.\nFile: %s\nEncoding: %s"), path.c_str(), wxFontMapper::GetEncodingDescription( encoding ).c_str() );
+		wxString msg = wxString::Format( _("Unable to read the file in the specified encoding.\nFile: %s\nEncoding: %s"), path, wxFontMapper::GetEncodingDescription( encoding ) );
 		THROW_WXFBEX( msg );
 	}
 
 	if ( contents.empty() )
 	{
-		wxString msg = wxString::Format( _("The file is either empty or read with the wrong encoding.\nFile: %s\nEncoding: %s"), path.c_str(), wxFontMapper::GetEncodingDescription( encoding ).c_str() );
+		wxString msg = wxString::Format( _("The file is either empty or read with the wrong encoding.\nFile: %s\nEncoding: %s"), path, wxFontMapper::GetEncodingDescription( encoding ) );
 		THROW_WXFBEX( msg );
 	}
 
 	if ( !oldEncoding.Close() )
 	{
-		wxString msg = wxString::Format( _("Unable to close original file.\nFile: %s"), path.c_str() );
+		wxString msg = wxString::Format( _("Unable to close original file.\nFile: %s"), path );
 		THROW_WXFBEX( msg );
 	}
 
@@ -357,19 +357,19 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 		{
 			firstElement = 0;
 		}
-		contents.insert( firstElement, wxString::Format( wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>\n"), version.c_str(), standalone.c_str() ) );
+		contents.insert( firstElement, wxString::Format( wxT("<\?xml version=\"%s\" encoding=\"UTF-8\" standalone=\"%s\" \?>\n"), version, standalone ) );
 	}
 	else
 	{
 		if ( wxNOT_FOUND == declStart )
 		{
-			wxString msg = wxString::Format( _("Found a declaration end tag \"\?>\" but could not find the start \"<\?\".\nFile: %s"), path.c_str() );
+			wxString msg = wxString::Format( _("Found a declaration end tag \"\?>\" but could not find the start \"<\?\".\nFile: %s"), path );
 			THROW_WXFBEX( msg );
 		}
 
 		if ( wxNOT_FOUND == declEnd )
 		{
-			wxString msg = wxString::Format( _("Found a declaration start tag \"<\?\" but could not find the end \"\?>\".\nFile: %s"), path.c_str() );
+			wxString msg = wxString::Format( _("Found a declaration start tag \"<\?\" but could not find the end \"\?>\".\nFile: %s"), path );
 			THROW_WXFBEX( msg );
 		}
 
@@ -383,24 +383,24 @@ void XMLUtils::ConvertAndChangeDeclaration( const wxString& path, const wxString
 	// Remove the old file
 	if ( !::wxRemoveFile( path ) )
 	{
-		wxString msg = wxString::Format( _("Unable to delete original file.\nFile: %s"), path.c_str() );
+		wxString msg = wxString::Format( _("Unable to delete original file.\nFile: %s"), path );
 		THROW_WXFBEX( msg );
 	}
 
 	// Write the new file
-	wxFFile newEncoding( path.c_str(), wxT("w") );
+	wxFFile newEncoding( path, wxT("w") );
 	if ( !newEncoding.Write( contents, wxConvUTF8 ) )
 	{
-		wxString msg = wxString::Format( _("Unable to write file in its new encoding.\nFile: %s\nEncoding: %s"), path.c_str(), wxFontMapper::GetEncodingDescription( wxFONTENCODING_UTF8 ).c_str() );
+		wxString msg = wxString::Format( _("Unable to write file in its new encoding.\nFile: %s\nEncoding: %s"), path, wxFontMapper::GetEncodingDescription( wxFONTENCODING_UTF8 ) );
 		THROW_WXFBEX( msg );
 	}
 
 	if ( !newEncoding.Close() )
 	{
 		wxString msg = wxString::Format( _("Unable to close file after converting the encoding.\nFile: %s\nOld Encoding: %s\nNew Encoding: %s"),
-											path.c_str(),
-											wxFontMapper::GetEncodingDescription( encoding ).c_str(),
-											wxFontMapper::GetEncodingDescription( wxFONTENCODING_UTF8 ).c_str() );
+											path,
+											wxFontMapper::GetEncodingDescription( encoding ),
+											wxFontMapper::GetEncodingDescription( wxFONTENCODING_UTF8 ) );
 		THROW_WXFBEX( msg );
 	}
 }

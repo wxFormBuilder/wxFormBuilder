@@ -370,7 +370,7 @@ void PythonPanel::OnCodeGeneration( wxFBEvent& event )
 
 			codegen.SetSourceWriter( python_cw );
 			codegen.GenerateCode( project );
-			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path );
 		}
 		catch ( wxFBException& ex )
 		{

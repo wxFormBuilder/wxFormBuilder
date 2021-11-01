@@ -81,7 +81,7 @@ void AppBitmaps::LoadBitmaps( wxString filepath, wxString iconpath )
 	}
 	catch ( ticpp::Exception& ex )
 	{
-		wxLogError( _("Error loading images: %s"), _WXSTR( ex.m_details ).c_str() );
+		wxLogError( _("Error loading images: %s"), _WXSTR( ex.m_details ) );
 	}
 	catch ( wxFBException& ex )
 	{

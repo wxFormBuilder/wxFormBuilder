@@ -421,7 +421,7 @@ void CppPanel::OnCodeGeneration( wxFBEvent& event )
 			codegen.SetHeaderWriter( h_cw );
 			codegen.SetSourceWriter( cpp_cw );
 			codegen.GenerateCode( project );
-			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path );
 		}
 		catch ( wxFBException& ex )
 		{

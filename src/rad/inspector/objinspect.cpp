@@ -385,7 +385,7 @@ wxPGProperty* ObjectInspector::GetProperty( PProperty prop )
 	}
 	else if (type == PT_BITMAP)
 	{
-		wxLogDebug( wxT("OI::GetProperty: prop:%s"), prop->GetValueAsString().c_str() );
+		wxLogDebug( wxT("OI::GetProperty: prop:%s"), prop->GetValueAsString() );
 
 		result = new wxFBBitmapProperty( name, wxPG_LABEL, prop->GetValueAsString() );
 	}
@@ -1084,7 +1084,7 @@ void ObjectInspector::OnPropertyModified( wxFBPropertyEvent& event )
 		break;
 	case PT_BITMAP:
 //      pgProp->SetValue( WXVARIANT( prop->GetValueAsString() ) );
-		wxLogDebug( wxT("OI::OnPropertyModified: prop:%s"), prop->GetValueAsString().c_str() );
+		wxLogDebug( wxT("OI::OnPropertyModified: prop:%s"), prop->GetValueAsString() );
 		break;
 	default:
 		pgProp->SetValueFromString(prop->GetValueAsString(), wxPG_FULL_VALUE);
@@ -1210,7 +1210,7 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
 
 void ObjectInspector::OnBitmapPropertyChanged( wxCommandEvent& event )
 {
-	wxLogDebug( wxT("OI::BitmapPropertyChanged: %s"), event.GetString().c_str() );
+	wxLogDebug( wxT("OI::BitmapPropertyChanged: %s"), event.GetString() );
 
 	wxString propName = event.GetString().BeforeFirst( ':' );
 	wxString propVal = event.GetString().AfterFirst( ':' );

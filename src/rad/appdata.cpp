@@ -596,7 +596,7 @@ void ApplicationData::ResolveNameConflict( PObjectBase obj )
 	while ( it != name_set.end() )
 	{
 		i++;
-		name = wxString::Format( wxT( "%s%i" ), originalName.c_str(), i );
+		name = wxString::Format( wxT( "%s%i" ), originalName, i );
 		it = name_set.find( name );
 	}
 
@@ -676,7 +676,7 @@ void ApplicationData::RemoveEmptyItems( PObjectBase obj )
 
 					emptyItem = true;        // volvemos a recorrer
 					wxString msg;
-					msg.Printf( wxT( "Empty item removed under %s" ), obj->GetPropertyAsString( wxT( "name" ) ).c_str() );
+					msg.Printf( wxT( "Empty item removed under %s" ), obj->GetPropertyAsString( wxT( "name" ) ) );
 					wxLogWarning( msg );
 				}
 			}
@@ -1263,7 +1263,7 @@ bool ApplicationData::LoadProject( const wxString &file, bool justGenerate )
 
 	if ( !wxFileName::FileExists( file ) )
 	{
-		wxLogError( wxT( "This file does not exist: %s" ), file.c_str() );
+		wxLogError( wxT( "This file does not exist: %s" ), file );
 		return false;
 	}
 
@@ -1508,7 +1508,7 @@ void ApplicationData::ConvertProjectProperties( ticpp::Element* project, const w
 
 					if ( !success )
 					{
-						wxLogError( _( "Unable to open %s for writing.\nUser Headers:\n%s" ), filename.c_str(), wxuser_headers.c_str() );
+						wxLogError( _( "Unable to open %s for writing.\nUser Headers:\n%s" ), filename, wxuser_headers );
 					}
 				}
 			}
@@ -2395,7 +2395,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 
 		if ( !::wxDirExists( path ) )
 		{
-			wxLogWarning( _("Invalid Path: %s"), path.c_str() );
+			wxLogWarning( _("Invalid Path: %s"), path );
 			return;
 		}
 
@@ -2417,7 +2417,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
         wxFileName inherFile( file );
         if ( !inherFile.MakeAbsolute( path ) )
         {
-            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), file.c_str(), path.c_str() );
+            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), file, path );
             return;
         }
 
@@ -2425,14 +2425,14 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
         wxFileName genFile( genFileValue );
         if ( !genFile.MakeAbsolute( path ) )
         {
-            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), genFileValue.c_str(), path.c_str() );
+            wxLogWarning( _("Unable to make \"%s\" absolute to \"%s\""), genFileValue, path );
             return;
         }
 
         const wxString& genFileFullPath = genFile.GetFullPath();
         if ( !genFile.MakeRelativeTo( inherFile.GetPath( wxPATH_GET_VOLUME ) ) )
         {
-            wxLogWarning( _("Unable to make \"%s\" relative to \"%s\""), genFileFullPath.c_str(), inherFile.GetPath( wxPATH_GET_VOLUME ).c_str() );
+            wxLogWarning( _("Unable to make \"%s\" relative to \"%s\""), genFileFullPath, inherFile.GetPath( wxPATH_GET_VOLUME ) );
             return;
         }
 
@@ -2515,7 +2515,7 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			codegen.GenerateInheritedClass( obj, form, genFileFullPath );
 		}
 
-		wxLogStatus( wxT( "Class generated at \'%s\'." ), path.c_str() );
+		wxLogStatus( wxT( "Class generated at \'%s\'." ), path );
 	}
 	catch( wxFBException& ex )
 	{
@@ -3005,7 +3005,7 @@ void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 
 	if ( !forcedelayed )
 	{
-		LogDebug( "event: %s", event.GetEventName().c_str() );
+		LogDebug( "event: %s", event.GetEventName() );
 
 		std::vector< wxEvtHandler* >::iterator handler;
 
@@ -3016,7 +3016,7 @@ void ApplicationData::NotifyEvent( wxFBEvent& event, bool forcedelayed )
 	}
 	else
 	{
-		LogDebug( "Pending event: %s", event.GetEventName().c_str() );
+		LogDebug( "Pending event: %s", event.GetEventName() );
 
 		std::vector< wxEvtHandler* >::iterator handler;
 

@@ -564,7 +564,7 @@ PObjectBase ObjectDatabase::CreateObject( ticpp::Element* xml_obj, PObjectBase p
 									wxT("If your project file was just converted from an older version, then the conversion was not complete.\n")
 									wxT("Otherwise, this project is from a newer version of wxFormBuilder.\n\n")
 									wxT("The property's value is: %s\n")
-									wxT("If you save this project, YOU WILL LOSE DATA"), _WXSTR(prop_name).c_str(), _WXSTR(class_name).c_str(), _WXSTR(value).c_str() );
+									wxT("If you save this project, YOU WILL LOSE DATA"), _WXSTR(prop_name), _WXSTR(class_name), _WXSTR(value) );
 					}
 				}
 
@@ -755,7 +755,7 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 	#else
 		wxStandardPathsBase& stdpaths = wxStandardPaths::Get();
 		wxString libPath = stdpaths.GetPluginsDir();
-		libPath.Replace( wxTheApp->GetAppName().c_str(), wxT("wxformbuilder") );
+		libPath.Replace( wxTheApp->GetAppName(), wxT("wxformbuilder") );
 	#endif
 
     // Renamed libraries for convenience in debug using a "-xx" wx version as suffix.
@@ -988,7 +988,7 @@ void ObjectDatabase::LoadCodeGen( const wxString& file )
 				// store code info for properties
 				if ( !m_propertyTypeTemplates[ ParsePropertyType( _WXSTR(prop_name) ) ].insert( LangTemplateMap::value_type( lang, code_info ) ).second )
 				{
-					wxLogError( _("Found second template definition for property \"%s\" for language \"%s\""), _WXSTR(prop_name).c_str(), lang.c_str() );
+					wxLogError( _("Found second template definition for property \"%s\" for language \"%s\""), _WXSTR(prop_name), lang );
 				}
 			}
 			else
@@ -1176,7 +1176,7 @@ void ObjectDatabase::ParseProperties( ticpp::Element* elem_obj, PObjectInfo obj_
 		}
 		catch( wxFBException& ex )
 		{
-			wxLogError( wxT("Error: %s\nWhile parsing property \"%s\" of class \"%s\""), ex.what(), _WXSTR(pname).c_str(), obj_info->GetClassName().c_str() );
+			wxLogError( wxT("Error: %s\nWhile parsing property \"%s\" of class \"%s\""), ex.what(), _WXSTR(pname), obj_info->GetClassName() );
 			elem_prop = elem_prop->NextSiblingElement( PROPERTY_TAG, false );
 			continue;
 		}
@@ -1545,7 +1545,7 @@ PropertyType ObjectDatabase::ParsePropertyType( wxString str )
 		result = it->second;
 	else
 	{
-		THROW_WXFBEX( wxString::Format( wxT("Unknown property type \"%s\""), str.c_str() ) );
+		THROW_WXFBEX( wxString::Format( wxT("Unknown property type \"%s\""), str ) );
 	}
 
 	return result;
@@ -1634,7 +1634,7 @@ bool ObjectDatabase::LoadObjectTypes()
 				PObjectType childType = GetObjectType( childname );
 				if ( !childType )
 				{
-					wxLogError( _("No Object Type found for \"%s\""), childname.c_str() );
+					wxLogError( _("No Object Type found for \"%s\""), childname );
 					continue;
 				}
 

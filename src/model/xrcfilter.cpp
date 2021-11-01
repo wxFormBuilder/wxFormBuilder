@@ -131,14 +131,14 @@ PObjectBase XrcLoader::GetObject( ticpp::Element *xrcObj, PObjectBase parent )
 		IComponent *comp = objInfo->GetComponent();
 		if ( !comp )
 		{
-			wxLogError( _("No component found for class \"%s\", found on line %i."), _WXSTR( className ).c_str(), xrcObj->Row() );
+			wxLogError( _("No component found for class \"%s\", found on line %i."), _WXSTR( className ), xrcObj->Row() );
 		}
 		else
 		{
 			ticpp::Element *fbObj = comp->ImportFromXrc( xrcObj );
 			if ( !fbObj )
 			{
-				wxLogError( _("ImportFromXrc returned NULL for class \"%s\", found on line %i."), _WXSTR( className ).c_str(), xrcObj->Row() );
+				wxLogError( _("ImportFromXrc returned NULL for class \"%s\", found on line %i."), _WXSTR( className ), xrcObj->Row() );
 			}
 			else
 			{
@@ -171,7 +171,7 @@ PObjectBase XrcLoader::GetObject( ticpp::Element *xrcObj, PObjectBase parent )
 
 				if ( !object )
 				{
-					wxLogError( wxT( "CreateObject failed for class \"%s\", with parent \"%s\", found on line %i" ), _WXSTR( className ).c_str(), parent->GetClassName().c_str(), xrcObj->Row() );
+					wxLogError( wxT( "CreateObject failed for class \"%s\", with parent \"%s\", found on line %i" ), _WXSTR( className ), parent->GetClassName(), xrcObj->Row() );
 				}
 				else
 				{
@@ -202,13 +202,13 @@ PObjectBase XrcLoader::GetObject( ticpp::Element *xrcObj, PObjectBase parent )
 		{
 			parent->AddChild( object );
 			object->SetParent( parent );
-			wxLogError( wxT( "Unknown class \"%s\" found on line %i, replaced with a wxPanel" ), _WXSTR( className ).c_str(), xrcObj->Row() );
+			wxLogError( wxT( "Unknown class \"%s\" found on line %i, replaced with a wxPanel" ), _WXSTR( className ), xrcObj->Row() );
 		}
 		else
 		{
 			wxString msg( wxString::Format(
 			                  wxT( "Unknown class \"%s\" found on line %i, and could not replace with a wxPanel as child of \"%s:%s\"" ),
-			                  _WXSTR( className ).c_str(), xrcObj->Row(), parent->GetPropertyAsString( wxT( "name" ) ).c_str(), parent->GetClassName().c_str() ) );
+			                  _WXSTR( className ), xrcObj->Row(), parent->GetPropertyAsString( wxT( "name" ) ), parent->GetClassName() ) );
 
 			wxLogError( msg );
 		}

@@ -692,7 +692,7 @@ void MainFrame::OnProjectLoaded( wxFBEvent& )
 
 	if ( project )
 	{
-		wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), project->GetPropertyAsString( wxT( "name" ) ).c_str(), project->GetClassName().c_str() );
+		wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), project->GetPropertyAsString( wxT( "name" ) ), project->GetClassName() );
 		GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
 	}
 
@@ -782,7 +782,7 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 
 	//GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
 
-	wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), name.c_str(), obj->GetClassName().c_str() );
+	wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), name, obj->GetClassName() );
 
 	GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
 
@@ -798,8 +798,8 @@ void MainFrame::OnObjectCreated( wxFBObjectEvent& event )
 	if ( event.GetFBObject() )
 	{
 		message.Printf( wxT( "Object '%s' of class '%s' created." ),
-		                event.GetFBObject()->GetPropertyAsString( wxT( "name" ) ).c_str(),
-		                event.GetFBObject()->GetClassName().c_str() );
+		                event.GetFBObject()->GetPropertyAsString( wxT( "name" ) ),
+		                event.GetFBObject()->GetClassName() );
 	}
 	else
 	{
@@ -816,7 +816,7 @@ void MainFrame::OnObjectRemoved( wxFBObjectEvent& event )
 {
 	wxString message;
 	message.Printf( wxT( "Object '%s' removed." ),
-	                event.GetFBObject()->GetPropertyAsString( wxT( "name" ) ).c_str() );
+	                event.GetFBObject()->GetPropertyAsString( wxT( "name" ) ) );
 	GetStatusBar()->SetStatusText( message );
 	UpdateFrame();
 }
@@ -837,7 +837,7 @@ void MainFrame::OnPropertyModified( wxFBPropertyEvent& event )
 
 				if ( pipeIdx != oldDetails.npos )
 				{
-					newDetails.Printf( wxT( "Name: %s %s" ), prop->GetValueAsString().c_str(), oldDetails.substr( pipeIdx ).c_str() );
+					newDetails.Printf( wxT( "Name: %s %s" ), prop->GetValueAsString(), oldDetails.substr( pipeIdx ) );
 					GetStatusBar()->SetStatusText( newDetails, STATUS_FIELD_OBJECT );
 				}
 			}
@@ -856,8 +856,8 @@ void MainFrame::OnEventHandlerModified( wxFBEventHandlerEvent& event )
 {
 	wxString message;
 	message.Printf( wxT( "Event handler '%s' of object '%s' modified." ),
-	                event.GetFBEventHandler()->GetName().c_str(),
-	                event.GetFBEventHandler()->GetObject()->GetPropertyAsString( wxT( "name" ) ).c_str() );
+	                event.GetFBEventHandler()->GetName(),
+	                event.GetFBEventHandler()->GetObject()->GetPropertyAsString( wxT( "name" ) ) );
 
 	GetStatusBar()->SetStatusText( message );
 	UpdateFrame();
@@ -880,7 +880,7 @@ void MainFrame::OnProjectRefresh( wxFBEvent& )
 
 	if ( project )
 	{
-		wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), project->GetPropertyAsString( wxT( "name" ) ).c_str(), project->GetClassName().c_str() );
+		wxString objDetails = wxString::Format( wxT( "Name: %s | Class: %s" ), project->GetPropertyAsString( wxT( "name" ) ), project->GetClassName() );
 		GetStatusBar()->SetStatusText( objDetails, STATUS_FIELD_OBJECT );
 	}
 
@@ -968,7 +968,7 @@ void MainFrame::UpdateFrame()
 	}
 
 	SetTitle(wxString::Format(wxT("%s%s - wxFormBuilder %s%s"),
-	                          AppData()->IsModified() ? wxT("*") : wxT(""), file.c_str(), getVersion(), getReleaseRevision(getVersion()).c_str()));
+	                          AppData()->IsModified() ? wxT("*") : wxT(""), file, getVersion(), getReleaseRevision(getVersion()).c_str()));
 	GetStatusBar()->SetStatusText( filename, STATUS_FIELD_PATH );
 
 	// Enable/Disable toolbar and menu entries
@@ -1299,7 +1299,7 @@ void MainFrame::OnGenInhertedClass( wxCommandEvent& WXUNUSED( e ) )
 		AppData()->GenerateInheritedClass( details.m_form, details.m_className, filePath, details.m_fileName );
 	}
 
-	wxMessageBox( wxString::Format( wxT( "Class(es) generated to \'%s\'." ), filePath.c_str() ), wxT("wxFormBuilder") );
+	wxMessageBox( wxString::Format( wxT( "Class(es) generated to \'%s\'." ), filePath ), wxT("wxFormBuilder") );
 }
 
 bool MainFrame::SaveWarning()

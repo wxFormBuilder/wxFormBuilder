@@ -254,7 +254,7 @@ void XrcPanel::OnCodeGeneration( wxFBEvent& event )
 
 			codegen.SetWriter( cw );
 			codegen.GenerateCode( project );
-			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path );
 		}
 		catch ( wxFBException& ex )
 		{

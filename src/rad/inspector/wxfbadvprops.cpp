@@ -529,7 +529,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 						{
 							if (auto* p = Item(i))
 							{
-								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
 								GetGrid()->DeleteProperty(p);
 							}
 						}
@@ -555,7 +555,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 						{
 							if (auto* p = Item(i))
 							{
-								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
 								GetGrid()->DeleteProperty(p);
 							}
 						}
@@ -581,7 +581,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 						{
 							if (auto* p = Item(i))
 							{
-								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
 								GetGrid()->DeleteProperty(p);
 							}
 						}
@@ -608,7 +608,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 						{
 							if (auto* p = Item(i))
 							{
-								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
 								GetGrid()->DeleteProperty(p);
 							}
 						}
@@ -634,7 +634,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
 						{
 							if (auto* p = Item(i))
 							{
-								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel().c_str());
+								wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
 								GetGrid()->DeleteProperty(p);
 							}
 						}

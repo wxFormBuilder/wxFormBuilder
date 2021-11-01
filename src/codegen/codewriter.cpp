@@ -238,7 +238,7 @@ void FileCodeWriter::WriteBuffer()
 		wxFile fileOut;
 		if (!fileOut.Create(m_filename, true))
 		{
-			wxLogError( _("Unable to create file: %s"), m_filename.c_str() );
+			wxLogError( _("Unable to create file: %s"), m_filename );
 			return;
 		}
 

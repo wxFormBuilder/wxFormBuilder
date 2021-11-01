@@ -42,7 +42,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	wxFileName path( file );
 	if ( !path.IsOk() )
 	{
-		wxLogError( wxT("This path is invalid: %s"), file.c_str() );
+		wxLogError( wxT("This path is invalid: %s"), file );
 		return false;
 	}
 
@@ -50,7 +50,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	{
 		if ( !path.MakeAbsolute() )
 		{
-			wxLogError( wxT("Could not make path absolute: %s"), file.c_str() );
+			wxLogError( wxT("Could not make path absolute: %s"), file );
 			return false;
 		}
 	}
@@ -58,7 +58,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	// Check for single instance
 
 	// Create lockfile/mutex name
-	wxString name = wxString::Format( wxT("wxFormBuilder-%s-%s"), wxGetUserId().c_str(), path.GetFullPath().c_str() );
+	wxString name = wxString::Format( wxT("wxFormBuilder-%s-%s"), wxGetUserId(), path.GetFullPath() );
 
 	// Get forbidden characters
 	wxString forbidden = wxFileName::GetForbiddenChars();
@@ -67,7 +67,7 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 	for ( size_t c = 0; c < forbidden.Length(); ++c )
 	{
 		wxString bad( forbidden.GetChar( c ) );
-		name.Replace( bad.c_str(), wxT("_") );
+		name.Replace( bad, wxT("_") );
 	}
 
 	// Paths are not case sensitive in windows
@@ -148,14 +148,14 @@ bool wxFBIPC::VerifySingleInstance( const wxString& file, bool switchTo )
 					wxChar* pid = (wxChar*)connection->Request( wxT("PID"), NULL );
 					if ( NULL != pid )
 					{
-						wxLogStatus( wxT("%s already open in process %s"), file.c_str(), pid );
+						wxLogStatus( wxT("%s already open in process %s"), file, pid );
 					}
 					break;
 				}
 			}
 			if ( !connected )
 			{
-				wxLogError( wxT("There is a lockfile named '%s', but unable to make a connection to that instance."), name.c_str() );
+				wxLogError( wxT("There is a lockfile named '%s', but unable to make a connection to that instance."), name );
 			}
 		#endif
 
@@ -191,7 +191,7 @@ bool wxFBIPC::CreateServer( const wxString& name )
 	{
 		for ( int i = m_port; i < m_port + 20; ++i )
 		{
-			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name.c_str() );
+			wxString nameWithPort = wxString::Format( wxT("%i%s"), i, name );
 			if( server->Create( nameWithPort ) )
 			{
 				m_server = std::move(server);
@@ -205,7 +205,7 @@ bool wxFBIPC::CreateServer( const wxString& name )
 	}
 	#endif
 
-	wxLogError( wxT("Failed to create an IPC service with name %s"), name.c_str() );
+	wxLogError( wxT("Failed to create an IPC service with name %s"), name );
 	return false;
 }
 

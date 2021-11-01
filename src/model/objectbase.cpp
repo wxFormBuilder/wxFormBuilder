@@ -292,7 +292,7 @@ PProperty ObjectBase::GetProperty (wxString name)
 	if ( it != m_properties.end() )
 		return it->second;
 
-  //LogDebug(wxT("[ObjectBase::GetProperty] Property %s not found!"),name.c_str());
+  //LogDebug(wxT("[ObjectBase::GetProperty] Property %s not found!"),name);
 	// este aserto falla siempre que se crea un sizeritem
 	// assert(false);
 	return PProperty();

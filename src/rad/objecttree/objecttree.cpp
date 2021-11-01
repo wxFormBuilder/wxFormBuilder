@@ -285,8 +285,8 @@ void ObjectTree::AddChildren(PObjectBase obj, wxTreeItemId &parent, bool is_root
 			assert(parent);
 
 			msg = wxString::Format(wxT("Item without object as child of \'%s:%s\'"),
-				itemParent->GetPropertyAsString(wxT("name")).c_str(),
-				itemParent->GetClassName().c_str());
+				itemParent->GetPropertyAsString(wxT("name")),
+				itemParent->GetClassName());
 
 			wxLogError(msg);
 		}
@@ -509,7 +509,7 @@ void ObjectTree::OnObjectSelected( wxFBObjectEvent &event )
 	}
 	else
 	{
-		wxLogError( wxT("There is no tree item associated with this object.\n\tClass: %s\n\tName: %s"), obj->GetClassName().c_str(), obj->GetPropertyAsString(wxT("name")).c_str() );
+		wxLogError( wxT("There is no tree item associated with this object.\n\tClass: %s\n\tName: %s"), obj->GetClassName(), obj->GetPropertyAsString(wxT("name")) );
 	}
 }
 

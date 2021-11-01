@@ -214,7 +214,7 @@ wxObject* VisualEditor::GetWxObject( PObjectBase baseobject )
 	}
 	else
 	{
-		wxLogError( _("No corresponding wxObject for ObjectBase. Name: %s"), baseobject->GetClassName().c_str() );
+		wxLogError( _("No corresponding wxObject for ObjectBase. Name: %s"), baseobject->GetClassName() );
 		return NULL;
 	}
 }
@@ -723,7 +723,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 
 	if ( NULL == comp )
 	{
-		THROW_WXFBEX( wxString::Format( wxT("Component for %s not found!"), obj->GetClassName().c_str() ) );
+		THROW_WXFBEX( wxString::Format( wxT("Component for %s not found!"), obj->GetClassName() ) );
 	}
 
 	// Create Object
@@ -739,7 +739,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 			createdWindow = wxDynamicCast( createdObject, wxWindow );
 			if ( NULL == createdWindow )
 			{
-				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a window component, but this is not a wxWindow!"), obj->GetClassName().c_str() ) );
+				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a window component, but this is not a wxWindow!"), obj->GetClassName() ) );
 			}
 			SetupWindow( obj, createdWindow );
 
@@ -763,7 +763,7 @@ void VisualEditor::Generate( PObjectBase obj, wxWindow* wxparent, wxObject* pare
 			}
 			if ( NULL == createdSizer )
 			{
-				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a sizer component, but this is not a wxSizer!"), obj->GetClassName().c_str() ) );
+				THROW_WXFBEX( wxString::Format( wxT("Component for %s was registered as a sizer component, but this is not a wxSizer!"), obj->GetClassName() ) );
 			}
 			SetupSizer( obj, createdSizer );
 

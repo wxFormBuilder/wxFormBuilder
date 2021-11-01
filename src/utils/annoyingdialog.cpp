@@ -90,7 +90,7 @@ AnnoyingDialog::AnnoyingDialog(const wxString& caption, const wxString& message,
     }
     else
     {
-        wxLogError( wxT("Fatal error:\nUndefined style in dialog %s"), caption.c_str() );
+        wxLogError( wxT("Fatal error:\nUndefined style in dialog %s"), caption );
         return;
     }
 

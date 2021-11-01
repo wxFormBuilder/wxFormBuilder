@@ -249,7 +249,7 @@ bool TemplateParser::ParseProperty()
 	PProperty property = m_obj->GetProperty(propname);
 	if (!property)
 	{
-		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname.c_str(), m_obj->GetClassName().c_str() );
+		wxLogError( wxT("The property '%s' does not exist for objects of class '%s'"), propname, m_obj->GetClassName() );
 		return true;
 	}
 
@@ -263,7 +263,7 @@ bool TemplateParser::ParseProperty()
 		m_out << property->GetChildFromParent( childName );
 	}
 
-	//  LogDebug("parsing property %s",propname.c_str());
+	//  LogDebug("parsing property %s",propname);
 
 	return true;
 }
@@ -303,7 +303,7 @@ bool TemplateParser::ParseText()
 		}
 	}
 
-	//LogDebug(wxT("Parsed Text: %s"),text.c_str());
+	//LogDebug(wxT("Parsed Text: %s"),text);
 	return true;
 }
 
@@ -928,7 +928,7 @@ bool TemplateParser::ParseIfTypeNotEqual()
 
 TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 {
-	//  LogDebug("Parsing command %s",ident.c_str());
+	//  LogDebug("Parsing command %s",ident);
 
 	if (ident == wxT("wxparent") )
 		return ID_WXPARENT;
@@ -977,7 +977,7 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 	else if(ident == wxT("utbl"))
 		return ID_UTBL;
 	else
-		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident.c_str() ) );
+		THROW_WXFBEX( wxString::Format( wxT("Unknown macro: \"%s\""), ident ) );
 }
 
 wxString TemplateParser::ParseTemplate()

@@ -120,7 +120,7 @@ int MyApp::OnRun()
 	stdPaths.DontIgnoreAppSubDir();
 	#endif
 	wxString dataDir = stdPaths.GetDataDir();
-	dataDir.Replace( GetAppName().c_str(), wxT("wxformbuilder") );
+	dataDir.Replace( GetAppName(), wxT("wxformbuilder") );
 
 	// Log to stderr while working on the command line
 	delete wxLog::SetActiveTarget( new wxLogStderr );
@@ -313,7 +313,7 @@ int MyApp::OnRun()
 		}
 		else
 		{
-			wxLogError( wxT("Unable to load project: %s"), projectToLoad.c_str() );
+			wxLogError( wxT("Unable to load project: %s"), projectToLoad );
 		}
 	}
 
@@ -403,16 +403,16 @@ void MyApp::MacOpenFile(const wxString &fileName)
 			wxString source;
 			if ( frame.HasSourceLocation() )
 			{
-				source.Printf( wxT("%s@%i"), frame.GetFileName().c_str(), frame.GetLine() );
+				source.Printf( wxT("%s@%i"), frame.GetFileName(), frame.GetLine() );
 			}
 
 			wxLogError( wxT("%03i %i %s %s %s %s"),
 							frame.GetLevel(),
 							frame.GetAddress(),
-							frame.GetModule().c_str(),
-							frame.GetName().c_str(),
-							params.c_str(),
-							source.c_str() );
+							frame.GetModule(),
+							frame.GetName(),
+							params,
+							source );
 		}
 	};
 

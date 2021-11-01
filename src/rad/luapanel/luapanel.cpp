@@ -351,7 +351,7 @@ void LuaPanel::OnCodeGeneration( wxFBEvent& event )
 
 			codegen.SetSourceWriter( lua_cw );
 			codegen.GenerateCode( project );
-			wxLogStatus( wxT( "Code generated on \'%s\'." ), path.c_str() );
+			wxLogStatus( wxT( "Code generated on \'%s\'." ), path );
 		}
 		catch ( wxFBException& ex )
 		{
