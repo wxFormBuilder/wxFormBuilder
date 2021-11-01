@@ -39,6 +39,45 @@
 #include <vector>
 
 #include <wx/sstream.h>
+#include <wx/txtstrm.h>
+
+
+/**
+ * @brief Simple adapter class to provide a wxInputStream interface for TemplateParser
+ * 
+ * TemplateParser reads single characters from a wxInputStream and makes heavy use of Peek().
+ * Single characters can not be read correctly from a wxInputStream if the underlying encoding
+ * uses a variable length or multibyte encoding (e.g. UTF-8). This adapter adds a simple buffer
+ * that allows to Peek() from a wxTextInputStream that correctly processes such encodings.
+ */
+class BufferedTextInputStream {
+public:
+	BufferedTextInputStream(wxTextInputStream& text);
+
+	/**
+	 * @return Returns true after an attempt has been made to read past the end of the stream
+	 */
+	bool Eof() const;
+	/**
+	 * @brief Returns the next character of the stream without removing it
+	 * 
+	 * @return The next character of the stream or wxEOF
+	 */
+	wxChar Peek();
+	/**
+	 * @brief Returns the next character of the stream and removes it
+	 * 
+	 * @return The next character of the stream or wxEOF
+	 */
+	wxChar GetC();
+
+private:
+	void readChar();
+
+private:
+	wxTextInputStream& m_text;
+	wxChar m_buffer;
+};
 
 /**
 * Template notes

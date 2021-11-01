@@ -31,6 +31,40 @@
 
 #include <wx/tokenzr.h>
 
+
+BufferedTextInputStream::BufferedTextInputStream(wxTextInputStream& text) : m_text(text), m_buffer(static_cast<wxChar>(wxEOF))
+{
+	readChar();
+}
+
+bool BufferedTextInputStream::Eof() const
+{
+	return (m_buffer == static_cast<wxChar>(wxEOF));
+}
+
+wxChar BufferedTextInputStream::Peek()
+{
+	return m_buffer;
+}
+
+wxChar BufferedTextInputStream::GetC()
+{
+	auto result = m_buffer;
+
+	readChar();
+	
+	return result;
+}
+
+void BufferedTextInputStream::readChar()
+{
+	m_buffer = m_text.GetChar();
+	if (m_buffer == 0) {
+		m_buffer = static_cast<wxChar>(wxEOF);
+	}
+}
+
+
 TemplateParser::TemplateParser(PObjectBase obj, wxString _template)
 :
 m_obj( obj ),
