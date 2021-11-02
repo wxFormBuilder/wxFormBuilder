@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<codegen language="Erlang">
+  <templates class="Project">
+    <!-- We use '*' instead of '#' for macro substitutions in Erlang parser
+         because it's used as tag flag by wxFormBulder.
+     -->
+    <template name="erlang_preamble">
+    </template>
+    <template name="include">
+      -include_lib("wx/include/wx.hrl"). #nl
+    </template>
+    <!-- The function that creates the form will be added
+         to the export session by the code in erlangcg.cpp
+     -->
+    <template name="export">
+    </template>
+    <!-- Full export functions will use the standard names we find
+         in the erlang sample files
+
+         *** Comments like this cannot be inside a 'template' statement otherwise
+             it will not be read by the code in erlangcg.cpp
+     -->
+    <template name="full_export_header">
+      -behaviour(wx_object). #nl
+      %% client API #nl
+      -export([start/0, start/1, start_link/0, start_link/1]). #nl
+      #nl
+      %% wx_object callbacks #nl
+      -export([init/1, terminate/2, code_change/3, #indent #indent #nl
+      handle_sync_event/3, handle_event/2,
+      handle_info/2, handle_call/3, handle_cast/2]). #unindent #unindent #nl
+      #nl
+      #nl
+      -record(state, {win=none, params=[]}).
+    </template>
+    <template name="full_export_start">
+      start() -> #indent #nl
+      start([]). #unindent #nl
+      #nl
+      start(Config) -> #indent #nl
+      wx_object:start(?MODULE, Config, []). #unindent #nl
+      #nl
+      start_link() -> #indent #nl
+      start_link([]). #unindent #nl
+      #nl
+      start_link(Config) -> #indent #nl
+      wx_object:start_link(?MODULE, Config, []). #unindent #nl
+      #nl
+      init(Options) -> #indent #nl
+      DgbMode = proplists:get_value(mode, Options, []), #nl
+      wx:new(DgbMode), #nl
+      *create_win_fun
+    </template>
+    <!--
+      Testing the templates/generated code in the werl.exe/erl.exe:
+        1) c(module_name).  // will compile the module
+        2a) module_name:start().  // will start the module - show the window
+        or
+        2b) module_name:init([{mode,[{debug,trace}]} | [{parent,parent_window}]]). // allow to start it with parameters
+
+        a parameter is required
+    -->
+
+    <!-- The macros '*fun' and '*event' are used only for events in Erlang parser.
+         They will be replaced accordingly when the template is evaluated in erlangcg.cpp
+     -->
+    <template name="events_sync">
+      #nl
+      %% connected to: *controls #nl
+      handle_sync_event(Ev = *event, _wxObj, State = *state{}) -> #indent #nl
+      wxEvent:skip(_wxObj),
+      io:format("~p | Got sync event ~p~n",[State*state.win,Ev]), #nl
+      ok; #unindent
+    </template>
+    <template name="events_sync_end">
+      #nl
+      handle_sync_event(Ev = *wx{}, _wxObj, State = *state{}) -> #indent #nl
+      wxEvent:skip(_wxObj),
+      io:format("~p | Got sync event ~p~n",[State*state.win,Ev]), #nl
+      ok. #unindent
+    </template>
+    <template name="events_async">
+      #nl
+      %% connected to: *controls #nl
+      handle_event(Ev = *event, State = *state{}) -> #indent #nl
+      io:format("~p | Got async event ~p~n",[State*state.win,Ev]), #nl
+      {noreply,State}; #unindent
+    </template>
+    <template name="events_async_end">
+      #nl
+      handle_event(Ev = *wx{}, State = *state{}) -> #indent #nl
+      io:format("~p | Got async event ~p~n",[State*state.win,Ev]), #nl
+      {noreply,State}. #unindent
+    </template>
+    <template name="events_fun">
+      #nl
+      %% connected to: *controls #nl
+      *fun(Ev = *event, _Obj) -> #indent #nl
+      io:format("~p | *fun/2 got event ~p~n",[_Obj,Ev]), #nl
+      ok. #unindent
+    </template>
+    <template name="full_export_events_end">
+      #nl
+      %% Callbacks handled as normal gen_server callbacks #nl
+      handle_info(Msg, State) -> #indent #nl
+      io:format("Got Info ~p~n",[Msg]), #nl
+      {noreply,State}. #unindent #nl
+      #nl
+      handle_call(shutdown, _From, State=*state{win=Win, params=Params}) -> #indent #nl
+      case proplists:get_value(aui,Params,none) of #indent #nl
+        none -> ignore; #nl
+        AuiMngr -> #indent #nl
+          wxAuiManager:unInit(AuiMngr), #nl
+          wxAuiManager:destroy(AuiMngr) #unindent #unindent #nl
+      end, #nl
+      wxWindow:destroy(Win), #nl
+      {stop, normal, ok, State}; #unindent #nl
+      #nl
+      handle_call(Msg, _From, State) -> #indent #nl
+      io:format("Got Call ~p~n",[Msg]), #nl
+      {reply,ok,State}. #unindent #nl
+      #nl
+      handle_cast(Msg, State) -> #indent #nl
+      io:format("Got cast ~p~n",[Msg]), #nl
+      {noreply,State}. #unindent #nl
+      #nl
+      code_change(_, _, State) -> #indent #nl
+      {stop, ignore, State}. #unindent #nl
+      #nl
+      terminate(_Reason, _) -> #indent #nl
+      ok. #unindent
+    </template>
+    <template name="erlang_epilogue">
+    </template>
+  </templates>
+  <templates class="wxWindow">
+    <template name="settings">
+      #ifnotnull $window_extra_style
+      @{ #class:setExtraStyle($name, $window_extra_style), @}
+
+      #ifnotnull $font
+      @{ #class:setFont($name, $font), @}
+
+      #ifnotnull $fg
+      @{ #class:SetForegroundColour($name, $fg), @}
+
+      #ifnotnull $bg
+      @{ #class:setBackgroundColour($name, $bg), @}
+
+      #ifequal $enabled "0"
+      @{ #class:enable($name, [{enable,$enabled }]), @}
+
+      #ifequal $hidden "1"
+      @{ #class:hide($name), @}
+
+      #ifnotnull $tooltip
+      @{ #class:setToolTip($name, $tooltip), @}
+
+      #ifnotnull $context_help
+      @{ #class:setHelpText($name, $context_help), @}
+
+      #ifnull $maximum_size
+      @{ #ifnotnull $minimum_size
+          @{ wxWindow:setSizeHints($name, $minimum_size), @}
+      @}
+      #ifnotnull $maximum_size
+      @{ wxWindow:setSizeHints($name, $minimum_size, [{maxSize,$maximum_size }]), @}
+
+      #ifparenttypeequal "toolbar_form"
+      @{ wxToolBar:addControl(#wxparent, $name), @}
+    </template>
+
+    <!-- wxKeyEvent -->
+    <template name="evt_connect_OnChar"> #class:connect($name, char, *option), </template>
+    <template name="evt_connect_OnCharHook"> #class:connect($name, char_hook, *option), </template>
+    <template name="evt_connect_OnKeyDown"> #class:connect($name, key_down, *option), </template>
+    <template name="evt_connect_OnKeyUp"> #class:connect($name, key_up, *option), </template>
+
+    <!-- wxMouseEvent -->
+    <template name="evt_connect_OnEnterWindow"> #class:connect($name, enter_window, *option), </template>
+    <template name="evt_connect_OnLeaveWindow"> #class:connect($name, leave_window, *option), </template>
+    <template name="evt_connect_OnLeftDClick"> #class:connect($name, left_dclick, *option), </template>
+    <template name="evt_connect_OnLeftDown"> #class:connect($name, left_down, *option), </template>
+    <template name="evt_connect_OnLeftUp"> #class:connect($name, left_up, *option), </template>
+    <template name="evt_connect_OnMiddleDClick"> #class:connect($name, middle_dclick, *option), </template>
+    <template name="evt_connect_OnMiddleDown"> #class:connect($name, middle_down, *option), </template>
+    <template name="evt_connect_OnMiddleUp"> #class:connect($name, middle_up, *option), </template>
+    <template name="evt_connect_OnRightDClick"> #class:connect($name, right_dclick, *option), </template>
+    <template name="evt_connect_OnRightDown"> #class:connect($name, right_down, *option), </template>
+    <template name="evt_connect_OnRightUp"> #class:connect($name, right_up, *option), </template>
+    <template name="evt_connect_OnAux1DClick"> %% event #class:wxEVT_AUX1_DCLICK isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnAux1Down"> %% event #class:wxEVT_AUX1_DOWN isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnAux1Up"> %% event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnAux2DClick"> %% event #class:wxEVT_AUX2_DCLICK isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnAux2Down"> %% event #class:wxEVT_AUX2_DOWN isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnAux2Up"> %% event #class:wxEVT_AUX2_UP isn't currently supported by wx in Erlang</template>
+    <template name="evt_connect_OnMotion"> #class:connect($name, motion, *option), </template>
+    <template name="evt_connect_OnMouseWheel"> #class:connect($name, mousewheel, *option), </template>
+    <template name="evt_connect_OnMouseEvents">
+      #class:connect($name, left_down, *option), #nl
+      #class:connect($name, left_up, *option), #nl
+      #class:connect($name, middle_down, *option), #nl
+      #class:connect($name, middle_up, *option), #nl
+      #class:connect($name, right_down, *option), #nl
+      #class:connect($name, right_up, *option), #nl
+      %%  event #class:wxEVT_AUX1_DOWN isn't currently supported by wx in Erlang #nl
+      %%  event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang #nl
+      %%  event #class:wxEVT_AUX2_DOWN isn't currently supported by wx in Erlang #nl
+      %%  event #class:wxEVT_AUX1_UP isn't currently supported by wx in Erlang #nl
+      #class:connect($name, motion, *option), #nl
+      #class:connect($name, left_dclick, *option), #nl
+      #class:connect($name, middle_dclick, *option), #nl
+      #class:connect($name, right_dclick, *option), #nl
+      %%  event #class:wxEVT_AUX1_DCLICK isn't currently supported by wx in Erlang #nl
+      %%  event #class:wxEVT_AUX2_DCLICK isn't currently supported by wx in Erlang #nl
+      #class:connect($name, leave_window, *option), #nl
+      #class:connect($name, enter_window, *option), #nl
+      #class:connect($name, mousewheel, *option),
+    </template>
+
+    <!-- wxFocusEvent -->
+    <template name="evt_connect_OnKillFocus"> #class:connect($name, kill_focus, *option), </template>
+    <template name="evt_connect_OnSetFocus"> #class:connect($name, set_focus , *option), </template>
+
+    <!-- wxPaintEvent -->
+    <template name="evt_connect_OnPaint"> #class:connect($name, paint, *option), </template>
+
+    <!-- wxEraseEvent -->
+    <template name="evt_connect_OnEraseBackground"> #class:connect($name, erase_background, *option), </template>
+
+    <!-- wxSizeEvent -->
+    <template name="evt_connect_OnSize"> #class:connect($name, size, *option), </template>
+
+    <!-- wxMoveEvent -->
+    <template name="evt_connect_OnMove"> #class:connect($name, move, *option), </template>
+
+    <!-- wxUpdateUIEvent -->
+    <template name="evt_connect_OnUpdateUI"> #class:connect($name, update_ui, *option), </template>
+  </templates>
+
+  <templates class="AUI">
+    <template name="settings">
+      #ifparenttypeequal "form"
+      @{#ifequal #parent $aui_managed "1"
+        @{#iftypenotequal "toolbar"
+          @{
+            $name #append _Pane = ?pi:new(), 
+            #nl
+            #ifequal $docking "Left" @{?pi:left($name #append _Pane), @}
+            #ifequal $docking "Right" @{?pi:right($name #append _Pane), @}
+            #ifequal $docking "botton" @{?pi:botton($name #append _Pane), @}
+            #ifequal $docking "Top" @{?pi:top($name #append _Pane), @}
+            #ifequal $docking "Center" @{?pi:center($name #append _Pane), @}
+            #ifnotnull $caption @{ #nl ?pi:caption($name #append _Pane, $caption), @}
+            #ifequal $caption_visible "0" @{ #nl ?pi:captionVisible($name #append _Pane, [{visible,false}]), @}
+            #ifequal $close_button "0" @{ #nl ?pi:closeButton($name #append _Pane, [{visible,false}]), @}
+            #ifequal $maximize_button "1" @{ #nl ?pi:maximizeButton($name #append _Pane, [{visible,true}]), @}
+            #ifequal $minimize_button "1" @{ #nl ?pi:minimizeButton($name #append _Pane, [{visible,true}]), @}
+            #ifequal $pin_button "1" @{ #nl ?pi:pinButton($name #append _Pane, [{visible,true}]), @}
+            #ifequal $pane_border "0" @{ #nl ?pi:paneBorder($name #append _Pane, [{visible,false}]), @}
+            #ifequal $gripper "1" @{ #nl ?pi:gripper($name #append _Pane, [{visible,true}]), @}
+            #ifequal $show "0" @{ #nl ?pi:hide($name #append _Pane), @}
+            #ifequal $moveable "1" @{ #nl ?pi:movable($name #append _Pane, [{b,true}]), @}
+            #ifequal $dock "Float"
+            @{
+              #ifnotnull $pane_position @{ #nl ?pi:floatingPosition($name #append _Pane, $pane_position), @}
+              #nl ?pi:floatable($name #append _Pane, [{b,true}]),
+            @}
+            #ifequal $dock "Dock" @{ #nl ?pi:dock($name #append _Pane), @}
+            #ifequal $resize "Resizable"
+            @{
+              #ifnotnull $pane_size @{ #nl ?pi:floatingSize($name #append _Pane, $pane_size), @}
+              #nl ?pi:resizable($name #append _Pane, [{resizable,true}]),
+            @}
+            #ifequal $dock_fixed "1" @{ #nl %% ?pi:dockFixed($name #append _Pane, [{b,true}]), isn't currently supported by Erlang @}
+            #ifequal $resize "Fixed" @{ #nl ?pi:fixed($name #append _Pane), @}
+            #ifequal $BottomDockable "0" @{ #nl ?pi:bottomDockable($name #append _Pane, [{b,false}]), @}
+            #ifequal $TopDockable "0" @{ #nl ?pi:topDockable($name #append _Pane, [{b,false}]), @}
+            #ifequal $LeftDockable "0" @{ #nl ?pi:leftDockable($name #append _Pane, [{b,false}]), @}
+            #ifequal $RightDockable "0" @{ #nl ?pi:rightDockable($name #append _Pane, [{b,false}]), @}
+            #ifequal $floatable "0" @{ #nl ?pi:floatable($name #append _Pane, [{b,false}]), @}
+            #ifnotnull $aui_row	@{ #nl ?pi:row($name #append _Pane, $aui_row), @}
+            #ifnotnull $aui_position	@{ #nl ?pi:position($name #append _Pane, $aui_position), @}
+            #ifnotnull $best_size @{ #nl ?pi:bestSize($name #append _Pane, $best_size), @}
+            #ifnotnull $min_size @{ #nl ?pi:minSize($name #append _Pane, $min_size), @}
+            #ifnotnull $max_size @{ #nl ?pi:maxSize($name #append _Pane, $max_size), @}
+            #ifnotnull $aui_layer @{ #nl ?pi:layer($name #append _Pane, $aui_layer), @}
+            #ifequal $center_pane "1" @{ #nl ?pi:centrePane($name #append _Pane), @}
+            #ifequal $default_pane "1" @{ #nl ?pi:defaultPane($name #append _Pane), @}
+            #ifequal $toolbar_pane "1" @{ #nl ?pi:toolbarPane($name #append _Pane), @}
+
+            #nl wxAuiManager:addPane(#parent $name #append _AUImgr, $name, $name #append _Pane),
+          @}
+        @}
+      @}
+    </template>
+  </templates>
+
+  <templates class="wxTreeCtrlBase">
+    <template name="evt_connect_OnTreeBeginDrag"> #class:connect($name, command_tree_begin_drag, *option), </template>
+    <template name="evt_connect_OnTreeBeginRDrag"> #class:connect($name, command_tree_begin_rdrag, *option), </template>
+    <template name="evt_connect_OnTreeEndDrag"> #class:connect($name, command_tree_end_drag, *option), </template>
+    <template name="evt_connect_OnTreeBeginLabelEdit"> #class:connect($name, command_tree_begin_label_edit, *option), </template>
+    <template name="evt_connect_OnTreeEndLabelEdit"> #class:connect($name, command_tree_end_label_edit, *option), </template>
+    <template name="evt_connect_OnTreeDeleteItem"> #class:connect($name, command_tree_delete_ite, *option), </template>
+    <template name="evt_connect_OnTreeItemActivated"> #class:connect($name, command_tree_item_activated, *option), </template>
+    <template name="evt_connect_OnTreeItemCollapsed"> #class:connect($name, command_tree_item_collapsed, *option), </template>
+    <template name="evt_connect_OnTreeItemCollapsing"> #class:connect($name, command_tree_item_collapsing, *option), </template>
+    <template name="evt_connect_OnTreeItemExpanded"> #class:connect($name, command_tree_item_expanded, *option), </template>
+    <template name="evt_connect_OnTreeItemExpanding"> #class:connect($name, command_tree_item_expanding, *option), </template>
+    <template name="evt_connect_OnTreeItemRightClick"> #class:connect($name, command_tree_item_right_click, *option), </template>
+    <template name="evt_connect_OnTreeItemMiddleClick"> #class:connect($name, command_tree_item_middle_click, *option), </template>
+    <template name="evt_connect_OnTreeSelChanged"> #class:connect($name, command_tree_sel_changed, *option), </template>
+    <template name="evt_connect_OnTreeSelChanging"> #class:connect($name, command_tree_sel_changing, *option), </template>
+    <template name="evt_connect_OnTreeKeyDown"> #class:connect($name, command_tree_key_down, *option), </template>
+    <template name="evt_connect_OnTreeItemMenu"> #class:connect($name, command_tree_item_menu, *option), </template>
+  </templates>
+
+  <templates class="wxAnyButton">
+    <template name="settings">
+      #ifnotnull $disabled @{ #class:setBitmapDisabled($name, $disabled), @}
+      #ifnotnull $pressed @{ #class:setBitmapPressed($name, $pressed), @}
+      #ifnotnull $focus @{ #class:setBitmapFocus($name, $focus), @}
+      #ifnotnull $current @{ #class:setBitmapCurrent($name, $current), @}
+      #ifnotnull $position @{ #class:setBitmapPosition($name, $position), @}
+      #ifnotnull $margins @{ #class:setBitmapMargins($name, $margins), @}
+      <!--
+        Erlang requires a value to $bitmap when creating the buttom, so we remove its pos attribution here
+        #ifnotnull $bitmap @{ #nl #class:setBitmap($name, $bitmap); @}
+        Not supported by Erlang
+        #ifequal $markup "1" @{ #class:setLabelMarkup( $label ); @} -->
+    </template>
+  </templates>
+
+</codegen>

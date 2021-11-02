@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation written by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+
+  <templates class="wxHtmlWindow">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{{id,$id }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                              @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnHtmlCellClicked"> %% event #class:wxEVT_COMMAND_HTML_CELL_CLICKED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnHtmlCellHover"> %% event #class:wxEVT_COMMAND_HTML_CELL_HOVER isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnHtmlLinkClicked"> #class:connect($name, command_html_link_clicked, *option), </template>
+  </templates>
+
+  <templates class="wxRichTextCtrl">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, EmptyString, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @}
+              #ifnotnull $window_name @{, DefaultValidator, $window_name @} )
+    </template>
+  <template name="evt_connect_OnText"> %% event #class:wxEVT_COMMAND_TEXT_UPDATED isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnTextEnter"> %% event #class:wxEVT_COMMAND_TEXT_ENTER isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnTextURL"> %% event #class:wxEVT_COMMAND_TEXT_URL isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnTextMaxLen"> %% event #class:wxEVT_COMMAND_TEXT_MAXLEN isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextCharacter"> %% event #class:wxEVT_COMMAND_RICHTEXT_CHARACTER isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextDelete"> %% event #class:wxEVT_COMMAND_RICHTEXT_DELETE isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextReturn"> %% event #class:wxEVT_COMMAND_RICHTEXT_RETURN isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextStyleChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLE_CHANGED isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextStyleSheetChanged"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_CHANGED isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextStyleSheetReplacing"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACING isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextStyleSheetReplaced"> %% event #class:wxEVT_COMMAND_RICHTEXT_STYLESHEET_REPLACED isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextContentInserted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_INSERTED isn't currently supported by Erlang </template>
+  <template name="evt_connect_OnRichTextContentDeleted"> %% event #class:wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxToggleButton">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, #ifnull $label
+                                               @{"" @}
+                                               #ifnotnull $label
+                                               @{$label @},
+                                               [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $window_style
+                                                @{{style,$window_style }@}]),
+    </template>
+    <template name="settings">
+      #ifnotequal $value "0"
+      @{ #class:setValue($name, true), @}
+    </template>
+    <template name="evt_connect_OnToggleButton"> #class:connect($name, command_togglebutton_clicked, *option), </template>
+  </templates>
+
+  <templates class="wxBitmapToggleButton">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, #ifnull $bitmap
+                                               @{wxBitmap:new() @}
+                                               #ifnotnull $bitmap
+                                               @{$bitmap @},
+                                               [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $window_style
+                                                @{{style,$window_style }@}]),
+    </template>
+  </templates>
+
+  <templates class="wxColourPickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $colour
+                                                @{{col,$colour }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnColourChanged"> #class:connect($name, command_colourpicker_changed, *option), </template>
+  </templates>
+
+  <templates class="wxFontPickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $value
+                                                @{{initial,$value }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                  @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      #ifnotnull $max_point_size
+      @{ #class:setMaxPointSize($name, $max_point_size), @}
+    </template>
+    <template name="evt_connect_OnFontChanged"> #class:connect($name, command_fontpicker_changed, *option), </template>
+  </templates>
+
+  <templates class="wxFilePickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $value
+                                                @{{path,$value }, @}
+                                                #ifnotnull $message
+                                                @{{message,$message }, @}
+                                                #ifnotnull $wildcard
+                                                @{{wildcard,$wildcard }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnFileChanged"> #class:connect($name, command_filepicker_changed, *option), </template>
+  </templates>
+
+  <templates class="wxDirPickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $value
+                                                @{{path,$value }, @}
+                                                #ifnotnull $message
+                                                @{{message,$message }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnDirChanged"> #class:connect($name, command_dirpicker_changed, *option), </template>
+  </templates>
+
+  <templates class="wxDatePickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [{date,calendar:local_time()}
+                                                #ifnotnull $pos
+                                                @{,{pos,$pos } @}
+                                                #ifnotnull $size
+                                                @{,{size,$size } @}
+                                                #ifnotnull $style
+                                                @{,{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{,{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnDateChanged"> #class:connect($name, date_changed, *option), </template>
+  </templates>
+
+  <templates class="wxTimePickerCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [{time,calendar:local_time()}
+                                                #ifnotnull $pos
+                                                @{,{pos,$pos } @}
+                                                #ifnotnull $size
+                                                @{,{size,$size } @}
+                                                #ifnotnull $style
+                                                @{,{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                @{,{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnTimeChanged"> #class:connect($name, time_changed, *option), </template>
+  </templates>
+
+  <templates class="wxCalendarCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [{date,calendar:local_time()}
+                                                #ifnotnull $pos
+                                                @{,{pos,$pos } @}
+                                                #ifnotnull $size
+                                                @{,{size,$size } @}
+                                                #ifnotnull $style
+                                                @{,{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                @{,style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnCalendar"> #class:connect($name, calendar_doubleclicked, *option), </template>
+    <template name="evt_connect_OnCalendarSelChanged"> #class:connect($name, calendar_sel_changed, *option), </template>
+    <template name="evt_connect_OnCalendarPageChanged"> %% #class:connect($name, calendar_page_changed, *option), </template>
+    <template name="evt_connect_OnCalendarDay"> #class:connect($name, calendar_day_changed, *option), </template>
+    <template name="evt_connect_OnCalendarMonth"> #class:connect($name, calendar_month_changed, *option), </template>
+    <template name="evt_connect_OnCalendarYear"> #class:connect($name, calendar_year_changed, *option), </template>
+    <template name="evt_connect_OnCalendarWeekDayClicked"> #class:connect($name, calendar_weekday_clicked, *option), </template>
+    <template name="evt_connect_OnCalendarWeekClicked"> %% #class:wxEVT_CALENDAR_WEEK_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxScrollBar">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{{style,$window_style }@}@}]),
+      #ifnotequal $pagesize "1"
+      @{ #class:setScrollbar($name, $position, $thumbsize, $range, $pagesize), @}
+    </template>
+    <template name="evt_connect_OnScroll"> #class:connect($name, scroll_changed, *option), </template>
+    <template name="evt_connect_OnScrollTop"> #class:connect($name, scroll_top, *option), </template>
+    <template name="evt_connect_OnScrollBottom"> #class:connect($name, scroll_bottom, *option), </template>
+    <template name="evt_connect_OnScrollLineUp"> #class:connect($name, scroll_lineup, *option), </template>
+    <template name="evt_connect_OnScrollLineDown"> #class:connect($name, scroll_linedown, *option), </template>
+    <template name="evt_connect_OnScrollPageUp"> #class:connect($name, scroll_pageup, *option), </template>
+    <template name="evt_connect_OnScrollPageDown"> #class:connect($name, scroll_pagedown, *option), </template>
+    <template name="evt_connect_OnScrollThumbTrack"> #class:connect($name, scroll_thumbtrack, *option), </template>
+    <template name="evt_connect_OnScrollThumbRelease"> #class:connect($name, scroll_thumbrelease, *option), </template>
+    <template name="evt_connect_OnScrollChanged"> #class:connect($name, scroll_changed, *option), </template>
+    <template name="evt_connect_OnCommandScroll">
+      #class:connect($name, scroll_top, *option), #nl
+      #class:connect($name, scroll_bottom, *option), #nl
+      #class:connect($name, scroll_lineup, *option), #nl
+      #class:connect($name, scroll_linedown, *option), #nl
+      #class:connect($name, scroll_pageup, *option), #nl
+      #class:connect($name, scroll_pagedown, *option), #nl
+      #class:connect($name, scroll_thumbtrack, *option), #nl
+      #class:connect($name, scroll_thumbrelease, *option), #nl
+      #class:connect($name, scroll_changed, *option),
+    </template>
+    <template name="evt_connect_OnCommandScrollTop"> #class:connect($name, scroll_top, *option), </template>
+    <template name="evt_connect_OnCommandScrollBottom"> #class:connect($name, scroll_bottom, *option), </template>
+    <template name="evt_connect_OnCommandScrollLineUp"> #class:connect($name, scroll_lineup, *option), </template>
+    <template name="evt_connect_OnCommandScrollLineDown"> #class:connect($name, scroll_linedown, *option), </template>
+    <template name="evt_connect_OnCommandScrollPageUp"> #class:connect($name, scroll_pageup, *option), </template>
+    <template name="evt_connect_OnCommandScrollPageDown"> #class:connect($name, scroll_pagedown, *option), </template>
+    <template name="evt_connect_OnCommandScrollThumbTrack"> #class:connect($name, scroll_thumbtrack, *option), </template>
+    <template name="evt_connect_OnCommandScrollThumbRelease"> #class:connect($name, scroll_thumbrelease, *option), </template>
+    <template name="evt_connect_OnCommandScrollChanged"> #class:connect($name, scroll_changed, *option), </template>
+  </templates>
+
+  <templates class="wxSpinCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{{id,$id }, @}
+                                           #ifnotnull $value
+                                           @{{value, $value }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $min
+                                           @{{min,$min }, @}
+                                           #ifnotnull $max
+                                           @{{max,$max }, @}
+                                           #ifnotnull $initial
+                                           @{{initial, $initial }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                             @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnSpinCtrl"> #class:connect($name, command_spinctrl_updated, *option), </template>
+    <template name="evt_connect_OnSpinCtrlText"> #class:connect($name, command_text_updated, *option), </template>
+    <template name="evt_connect_OnTextEnter"> #class:connect($name, command_text_enter, *option), </template>
+  </templates>
+
+  <templates class="wxSpinCtrlDouble">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $id
+                                                @{{id,$id }, @}
+                                                #ifnotnull $value
+                                                @{{value,$value }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $min
+                                                @{{min,$min }, @}
+                                                #ifnotnull $max
+                                                @{{max,$max }, @}
+                                                #ifnotnull $initial
+                                                @{{initial,$initial }, @}
+                                                #ifnotnull $inc
+                                                @{{inc,$inc }, @}
+                                                #ifnotnull $digits
+                                                @{{digits,$digits }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                   @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">$name:setDigits($digits)</template>
+    <template name="evt_connect_OnSpinCtrlDouble"> #class:connect($name, command_spinctrldouble_updated, *option), </template>
+    <template name="evt_connect_OnSpinCtrlText"> #class:connect($name, command_text_updated, *option), </template>
+    <template name="evt_connect_OnTextEnter"> #class:connect($name, command_text_enter, *option), </template>
+  </templates>
+
+  <templates class="wxSpinButton">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{{id,$id }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                              @{{style,$window_style }@}@}]),
+    </template>
+    <template name="evt_connect_OnSpin"> #class:connect($name, spin, *option), </template>
+    <template name="evt_connect_OnSpinUp"> #class:connect($name, spin_up, *option), </template>
+    <template name="evt_connect_OnSpinDown"> #class:connect($name, spin_down, *option), </template>
+  </templates>
+
+  <templates class="wxHyperlinkCtrl">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, [#ifnotnull $label
+                                                @{{label,$label }, @}
+                                                #ifnotnull $url
+                                                @{{url,$url }, @}
+                                                #ifnotnull $pos
+                                                @{{pos,$pos }, @}
+                                                #ifnotnull $size
+                                                @{{size,$size }, @}
+                                                #ifnotnull $style
+                                                @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                                #ifnull $style
+                                                @{ #ifnotnull $window_style
+                                                  @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      <!--
+      #ifnotnull $hover_color
+      @{ #class:setHoverColour($name, $hover_color), @}
+
+      #ifnotnull $normal_color
+      @{ #class:setNormalColour($name, $normal_color), @}
+
+      #ifnotnull $visited_color
+      @{ #class:setVisitedColour($name, $visited_color), @}
+      -->
+    </template>
+  <template name="evt_connect_OnHyperlink"> %% event $name:wxEVT_COMMAND_HYPERLINK isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxGenericDirCtrl">
+    <template name="construction">
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{{id,$id }, @}
+                                           #ifnotnull $defaultfolder
+                                           @{{dir,$defaultfolder }, @}
+                                           #ifnotnull $filter
+                                           @{{filter,$filter }, @}
+                                           #ifnotnull $defaultfilter
+                                           @{{defaultFilter, $defaultfilter }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $style
+                                           @{{style,$style #ifnotnull $window_style @{ | $window_style @}}@}
+                                           #ifnull $style
+                                           @{ #ifnotnull $window_style
+                                              @{{style,$window_style }@}@}]),
+    </template>
+    <template name="settings">
+      #ifequal $show_hidden "1"
+      @{ %% #class:showHidden($name, $show_hidden) isn't currently supported by Erlang @}
+    </template>
+    <template name="evt_connect_OnDirctrlSelectionChanged"> #class:connect($name, command_tree_sel_changed, *option), </template>
+    <template name="evt_connect_OnDirctrlFileActivated"> #class:connect($name, command_list_item_activated, *option), </template>
+  </templates>
+
+  <templates class="wxSearchCtrl">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, $value, $pos, $size,
+                          $style #ifnotnull $window_style @{| $window_style @}
+                          #ifnotnull $window_name @{, DefaultValidator, $window_name @} )
+    </template>
+    <template name="settings">
+      <!--
+      #ifnotnull $search_button
+      @{ %% #class:showSearchButton($name, $search_button) isn't currently supported by Erlang @}
+
+      #ifnotnull $cancel_button
+      @{ %% #class:showCancelButton($name, $cancel_button) isn't currently supported by Erlang @}
+      -->
+    </template>
+    <template name="evt_connect_OnText"> #class:connect($name, command_text_updated, *option), </template>
+    <template name="evt_connect_OnTextEnter"> #class:connect($name, command_text_enter, *option), </template>
+    <template name="evt_connect_OnSearchButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnCancelButton"> %% event $name:wxEVT_COMMAND_SEARCHCTRL_CANCEL_BTN isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="CustomControl">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $construction
+    </template>
+    <template name="settings">$settings</template>
+  </templates>
+
+  <templates class="wxMediaCtrl">
+    <template name="construction">
+      <!--
+          This class isn't currently supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new(#wxparent $name, $id, "", $pos, $size),
+      #ifnotnull $file
+      @{ #class:load($name, $file) isn't currently supported by Erlang @}
+      #ifnotnull $playback_rate
+      @{ #class:setPlaybackRate($name, $playback_rate) isn't currently supported by Erlang @}
+      #ifnotnull $volume
+      @{ #class:setVolume($name, $volume) isn't currently supported by Erlang @}
+      #ifnotnull $player_controls
+      @{ #class:showPlayerControls($name, ?wxMEDIACTRLPLAYERCONTROLS_$player_controls) isn't currently supported by Erlang @}
+    </template>
+    <template name="settings">
+      <!--
+      #ifequal $play "1"
+      @{ #class:play($name), @}
+      -->
+    </template>
+  </templates>
+
+  <templates class="wxTimer">
+    <template name="construction">
+      %% This class isn't currently supported by Erlang
+      <!--
+      $name = #class:new(#wxparent $name, $id),
+      -->
+    </template>
+    <!--
+    <template name="settings">
+        #ifequal $enabled "1"
+        @{ #class:start($name, $period #ifequal $oneshot "1" @{, true@}) isn't currently supported by Erlang @}
+    </template>
+    <template name="evt_connect_OnTimer"> %% event #class:wxEVT_TIMER isn't currently supported by Erlang </template>
+    -->
+  </templates>
+
+  <templates class="wxStyledTextCtrl">
+    <template name="construction">
+      %% you may need to define these constants - they are not supported by Erlang #nl
+      %%-define(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED, \x0004). #nl
+      %%-define(wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED, \x0010). #nl
+      %%-define(wxSTC_MARGIN_SYMBOL, \x0000). #nl
+      %%-define(wxSTC_MARGIN_NUMBER, \x0001). #nl
+      %%-define(wxSTC_MASK_FOLDERS, \xFE000000). #nl
+      %%-define(wxSTC_STYLE_DEFAULT, 32). #nl
+      %%-define(wxSTC_STYLE_LINENUMBER, 33). #nl
+      $name = #class:new(#wxparent $name, [#ifnotnull $id
+                                           @{{id,$id }, @}
+                                           #ifnotnull $pos
+                                           @{{pos,$pos }, @}
+                                           #ifnotnull $size
+                                           @{{size,$size }, @}
+                                           #ifnotnull $window_style
+                                           @{{style,$window_style}, @}]),
+      #nl #class:setUseTabs($name, $use_tabs),
+      #nl #class:setTabWidth($name, $tab_width),
+      #nl #class:setIndent($name, $tab_width),
+      #nl #class:setTabIndents($name, $tab_indents),
+      #nl #class:setBackSpaceUnIndents($name, $backspace_unindents),
+      #nl #class:setViewEOL($name, $view_eol),
+      #nl #class:setViewWhiteSpace($name, #ifequal $view_whitespace "1" @{1@} #ifnotequal $view_whitespace "1" @{0@}),
+      #nl #class:setIndentationGuides($name, $indentation_guides),
+      #ifequal $folding "1"
+      @{
+        #nl #class:setMarginType($name, 1, ?wxSTC_MARGIN_SYMBOL),
+        #nl #class:setMarginMask($name, 1, ?wxSTC_MASK_FOLDERS),
+        #nl #class:setMarginWidth($name, 1, 16),
+        #nl #class:setMarginSensitive($name, 1, true),
+
+        #nl #class:setProperty($name, "fold", "1"),
+        #nl #class:setFoldFlags($name, ?wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | ?wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED),
+      @}
+      #ifequal $line_numbers "1"
+      @{
+        #nl #class:setMarginType($name, 0, ?wxSTC_MARGIN_NUMBER),
+        #nl #class:setMarginWidth($name, 0, #class:textWidth($name, ?wxSTC_STYLE_LINENUMBER, "99999")),
+      @}
+      #ifnotequal $folding "1"
+      @{
+        #ifnotequal $line_numbers "1"
+        @{
+          #nl #class:setMarginWidth($name, 2, 0),
+        @}
+      @}
+      #ifnotnull $font
+      @{
+        #nl $name #append Font = $font,
+        #nl #class:styleSetFont($name, ?wxSTC_STYLE_DEFAULT, $name #append Font),
+      @}
+    </template>
+  </templates>
+
+</codegen>

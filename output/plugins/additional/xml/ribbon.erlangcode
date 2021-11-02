@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+wxFormBuilder - A Visual Dialog Editor for wxWidgets.
+Copyright (C) 2005 José Antonio Hurtado
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+Written by
+  José Antonio Hurtado - joseantonio.hurtado@gmail.com
+  Juan Antonio Ortega  - jortegalalmolda@gmail.com
+
+Erlang code generation written by
+  Micheus Vieira - micheus@gmail.com
+-->
+<codegen language="Erlang">
+  <templates class="wxRibbonBar">
+    <template name="construction">
+      <!--
+          #class and all its sub controls are not supported by Erlang
+          when implemented, it should be removed from the
+          unsupported list in erlangcg.cpp->ErlangCodeGenerator()
+      -->
+      $name = #class:new( #wxparent $name, $id, $pos, $size, ?wxRIBBON_BAR_DEFAULT_STYLE)
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonBarPageChanged"> %% event #class:wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarPageChanging"> %% event #class:wxEVT_COMMAND_RIBBONBAR_PAGE_CHANGING isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarTabMiddleDown"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TAB_MIDDLE_DOWN isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarTabMiddleUp"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TAB_MIDDLE_UP isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarTabRightDown"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TAB_RIGHT_DOWN isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarTabRightUp"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TAB_RIGHT_UP isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarTabLeftDClick"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TAB_LEFT_DCLICK isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarToggled"> %% event #class:wxEVT_COMMAND_RIBBONBAR_TOGGLED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonBarHelpClick"> %% event #class:wxEVT_COMMAND_RIBBONBAR_HELP_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxRibbonPage">
+    <template name="construction">
+      $name = #class:new( #parent $name, $id, $label , $bitmap , $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+    </template>
+    <template name="settings">
+      #ifequal $select "1"
+      @{ #wxparent $name:SetActivePage( $name ), @}
+    </template>
+  </templates>
+
+  <templates class="wxRibbonPanel">
+    <template name="construction">
+      $name = #class:new( #parent $name, $id, $label , $bitmap , $pos, $size,  $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonPanelExtbuttonActivated"> %% event #class:wxEVT_COMMAND_RIBBONPANEL_EXTBUTTON_ACTIVATED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxRibbonButtonBar">
+    <template name="construction">
+      $name = #class:new( #parent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+    </template>
+  </templates>
+
+  <templates class="ribbonButton">
+    <template name="construction">
+      #wxparent #class:addButton( #parent $name, $id, $label, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonButtonClicked"> %% event #class:wxEVT_COMMAND_RIBBONBUTTON_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonDropdownButton">
+    <template name="construction">
+      #wxparent #class:addDropdownButton( #parent $name, $id, $label, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonButtonDropdownClicked"> %% event #class:wxEVT_COMMAND_RIBBONBUTTON_DROPDOWN_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonHybridButton">
+    <template name="construction">
+      #wxparent #class:addHybridButton( #parent $name, $id, $label, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonButtonClicked"> %% event #class:wxEVT_COMMAND_RIBBONBUTTON_CLICKED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonButtonDropdownClicked"> %% event #class:wxEVT_COMMAND_RIBBONBUTTON_DROPDOWN_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonToggleButton">
+    <template name="construction">
+      #wxparent #class:addToggleButton( #parent $name, $id, $label, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonButtonClicked"> %% event #class:wxEVT_COMMAND_RIBBONBUTTON_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxRibbonToolBar">
+    <template name="construction">
+      $name = #class:new( #parent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
+    </template>
+  </templates>
+
+  <templates class="ribbonTool">
+    <template name="construction">
+      $name = wxRibbonToolBar:addTool( #parent $name, $id, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonToolClicked"> %% event #class:wxEVT_COMMAND_RIBBONTOOL_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonDropdownTool">
+    <template name="construction">
+      $name = wxRibbonToolBar:addDropdownTool( #parent $name, $id, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonToolDropdownClicked"> %% event #class:wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonHybridTool">
+    <template name="construction">
+      $name = wxRibbonToolBar:addHybridTool( #parent $name, $id, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonToolClicked"> %% event #class:wxEVT_COMMAND_RIBBONTOOL_CLICKED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonToolDropdownClicked"> %% event #class:wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonToggleTool">
+    <template name="construction">
+      $name = wxRibbonToolBar:addToggleTool( #parent $name, $id, $bitmap, $help);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonToolClicked"> %% event #class:wxEVT_COMMAND_RIBBONTOOL_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="wxRibbonGallery">
+    <template name="construction">
+      $name = #class:new( #parent $name, $id, $pos, $size, 0);
+    </template>
+    <template name="generated_event_handlers"></template>
+    <template name="evt_connect_OnRibbonGallerySelected"> %% event #class:wxEVT_COMMAND_RIBBONGALLERY_SELECTED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonGalleryClicked"> %% event #class:wxEVT_COMMAND_RIBBONGALLERY_CLICKED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonGalleryHoverChanged"> %% event #class:wxEVT_COMMAND_RIBBONGALLERY_HOVER_CHANGED isn't currently supported by Erlang </template>
+    <template name="evt_connect_OnRibbonGalleryExtensionButtonPressed"> %% event #class:wxEVT_COMMAND_BUTTON_CLICKED isn't currently supported by Erlang </template>
+  </templates>
+
+  <templates class="ribbonGalleryItem">
+    <template name="construction">
+      wxRibbonGallery:append(#parent $name, $bitmap, $id);
+    </template>
+  </templates>
+
+</codegen>

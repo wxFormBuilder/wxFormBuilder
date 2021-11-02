@@ -624,11 +624,13 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 	LoadCodeGen( m_xmlPath + wxT("properties.pythoncode") );
 	LoadCodeGen( m_xmlPath + wxT("properties.luacode") );
 	LoadCodeGen( m_xmlPath + wxT("properties.phpcode") );
+	LoadCodeGen( m_xmlPath + wxT("properties.erlangcode") );
 	LoadPackage( m_xmlPath + wxT("default.xml"), m_iconPath );
 	LoadCodeGen( m_xmlPath + wxT("default.cppcode") );
 	LoadCodeGen( m_xmlPath + wxT("default.pythoncode") );
 	LoadCodeGen( m_xmlPath + wxT("default.luacode") );
 	LoadCodeGen( m_xmlPath + wxT("default.phpcode") );
+	LoadCodeGen( m_xmlPath + wxT("default.erlangcode") );
 
 	// Map to temporarily hold plugins.
 	// Used to both set page order and to prevent two plugins with the same name.
@@ -719,6 +721,10 @@ void ObjectDatabase::LoadPlugins( PwxFBManager manager )
 
 							// Load the Lua code templates
 							xmlFileName.SetExt( wxT("luacode") );
+							LoadCodeGen( xmlFileName.GetFullPath() );
+
+							// Load the Erlang code tempates
+							xmlFileName.SetExt( wxT("erlangcode") );
 							LoadCodeGen( xmlFileName.GetFullPath() );
 
 							std::pair< PackageMap::iterator, bool > addedPackage = packages.insert( PackageMap::value_type( packageIt->second->GetPackageName(), packageIt->second ) );

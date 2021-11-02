@@ -52,6 +52,8 @@ target_sources(wxFormBuilder_app
     codegen/codewriter.cpp
     codegen/cppcg.h
     codegen/cppcg.cpp
+    codegen/erlangcg.h
+    codegen/erlangcg.cpp
     codegen/luacg.h
     codegen/luacg.cpp
     codegen/phpcg.h
@@ -120,6 +122,8 @@ target_sources(wxFormBuilder_app
     rad/designer/visualobj.h
     rad/designer/visualobj.cpp
     rad/designer/window_buttons.h
+    rad/erlangpanel/erlangpanel.h
+    rad/erlangpanel/erlangpanel.cpp
     rad/geninheritclass/GenInheritedDlg.fbp
     rad/geninheritclass/geninhertclass_gui.h
     rad/geninheritclass/geninhertclass_gui.cpp
@@ -180,6 +184,7 @@ set(commonIcons
   cvalign.png
   delete.png
   designer.png
+  erlang.png
   events.png
   expand.png
   generate.png

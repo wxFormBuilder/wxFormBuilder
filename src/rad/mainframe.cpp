@@ -43,6 +43,7 @@
 #include "palette.h"
 #include "phppanel/phppanel.h"
 #include "pythonpanel/pythonpanel.h"
+#include "erlangpanel/erlangpanel.h"
 #include "title.h"
 #include "wx/config.h"
 #include "wxfbevent.h"
@@ -297,6 +298,7 @@ m_findDialog( NULL )
 	m_python = NULL;
 	m_lua = NULL;
 	m_php = NULL;
+	m_erlang = NULL;
 
 	switch ( style )
 	{
@@ -739,6 +741,9 @@ void MainFrame::OnObjectSelected( wxFBObjectEvent& event )
 			   break;
 
 			case 5: // XRC panel
+			   break;
+
+			case 6: // Erlang panel
 			   break;
 
 			default:
@@ -1424,6 +1429,22 @@ void MainFrame::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
 					}
 				}
 				break;
+            case 6: // Erlang panel
+				if( (m_erlang != NULL) && (m_rightSplitter != NULL) )
+				{
+					panel_size = m_erlang->GetClientSize();
+					sash_pos = m_rightSplitter->GetSashPosition();
+
+					LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > Erlang panel: width = %d sash pos = %d"), panel_size.GetWidth(), sash_pos);
+
+					if(panel_size.GetWidth() > sash_pos)
+					{
+						// set the sash position
+						LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
+						m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+					}
+				}
+				break;
 
 
 
@@ -1719,9 +1740,13 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_notebook->AddPage(m_lua,wxT( "Lua" ), false, 4 );
 	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
 
+	m_erlang = new ErlangPanel( m_notebook, wxID_ANY);
+	m_notebook->AddPage( m_erlang, wxT( "Erlang" ), false, 5 );
+	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "erlang" ), 16 ) );
+
 	m_xrc = new XrcPanel( m_notebook, wxID_ANY);
-	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 5 );
-	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
+	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 6 );
+	m_notebook->SetPageBitmap( 6, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 
 	return m_notebook;
 }

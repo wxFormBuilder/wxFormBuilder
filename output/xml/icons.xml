@@ -45,6 +45,7 @@
   <icon name="php" file="php.png"/>
   <icon name="lua" file="lua.png"/>
   <icon name="xrc" file="xrc.png"/>
+  <icon name="erlang" file="erlang.png"/>
 
   <!-- Object Properties -->
   <icon name="properties" file="properties.png"/>

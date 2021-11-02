@@ -34,6 +34,7 @@
 #include "../codegen/luacg.h"
 #include "../codegen/phpcg.h"
 #include "../codegen/pythoncg.h"
+#include "../codegen/erlangcg.h"
 #include "../model/objectbase.h"
 #include "../utils/stringutils.h"
 #include "../utils/typeconv.h"
@@ -2513,6 +2514,15 @@ void ApplicationData::GenerateInheritedClass( PObjectBase form, wxString classNa
 			codegen.SetSourceWriter( lua_cw );
 
 			codegen.GenerateInheritedClass( obj, form, genFileFullPath );
+		}
+		else if( pCodeGen && TypeConv::FlagSet( wxT("Erlang"), pCodeGen->GetValue() ) )
+		{
+			ErlangCodeGenerator codegen;
+
+			const wxString& fullPath = inherFile.GetFullPath();
+			PCodeWriter erlang_cw( new FileCodeWriter( fullPath + wxT(".erl"), useMicrosoftBOM, useUtf8 ) );
+
+			codegen.SetSourceWriter( erlang_cw );
 		}
 
 		wxLogStatus( wxT( "Class generated at \'%s\'." ), path );
