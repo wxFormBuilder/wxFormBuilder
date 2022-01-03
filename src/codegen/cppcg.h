@@ -188,7 +188,10 @@ private:
 	* Generates the '#define' section for macros.
 	*/
 	void GenDefines( PObjectBase project);
-
+/**
+	 * Generates drive class section for class.
+	 */
+	void GenDriveClass(PObjectBase project);
 	/**
 	* Generates an enum with wxWindow identifiers.
 	*/

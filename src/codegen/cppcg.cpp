@@ -776,6 +776,8 @@ bool CppCodeGenerator::GenerateCode( PObjectBase project )
 	{
 		GenDefines( project );
 	}
+	//Generating user drive for class
+	GenDriveClass(project);
 
 	for ( unsigned int i = 0; i < project->GetChildCount(); i++ )
 	{
@@ -1940,6 +1942,24 @@ void CppCodeGenerator::GenDefines( PObjectBase project )
 	}
 
 	m_header->WriteLn(wxEmptyString);
+}
+
+
+void CppCodeGenerator::GenDriveClass(PObjectBase project) {
+	// iterate through all of the properties of all objects, add the macros
+	// to the vector
+	unsigned int i;
+	
+	wxString code = GetCode(project, wxT("userdriveclass"));
+	if (!code.IsEmpty()) {
+		m_header->WriteLn(code);
+	}
+	
+
+	for (i = 0; i < project->GetChildCount(); i++)
+	{
+		GenDriveClass(project->GetChild(i));
+	}
 }
 
 void CppCodeGenerator::GenSettings( PObjectInfo info, PObjectBase obj )
