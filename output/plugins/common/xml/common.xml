@@ -78,6 +78,7 @@ Written by
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
+    <inherits class="UserClasses"/>
     <property name="name" type="text">m_textCtrl</property>
     <property name="style" type="bitlist">
       <option name="wxTE_PROCESS_ENTER" help="The control will generate the event wxEVT_COMMAND_TEXT_ENTER (otherwise pressing Enter key is either processed internally by the control or used for navigation between dialog controls)."/>
@@ -102,6 +103,7 @@ Written by
     </property>
     <property name="value" type="wxString_i18n"/>
     <property name="maxlength" type="text" help="The maximum length of user-entered text. 0 means no limit. Note that in wxGTK this function may only be used with single line text controls."/>
+    <property name="IsDropFile" type="bool"  help="drag file">0</property>
     <event name="OnText" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_UPDATED event, generated when the text changes. Notice that this event will always be sent when the text controls contents changes - whether this is due to user input or comes from the program itself (for example, if SetValue() is called.)"/>
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in a text control (which must have wxTE_PROCESS_ENTER style for this event to be generated)."/>
     <event name="OnTextURL" class="wxTextUrlEvent" help="A mouse event occurred over an URL in the text control (wxMSW and wxGTK2 only)"/>
