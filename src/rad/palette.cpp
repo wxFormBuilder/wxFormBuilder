@@ -185,10 +185,10 @@ void wxFbPalette::Create()
 		if( cursize.x > minsize.x ) minsize.x = cursize.x;
 		if( cursize.y > minsize.y ) minsize.y = cursize.y + 30;
 
-		m_notebook->AddPage(panel, page.first, false, i);
+		m_notebook->InsertPage(i, panel, page.first, false);
 		m_notebook->SetPageBitmap(i, page.second->GetPackageIcon());
-
 	}
+
 	//Title *title = new Title( this, wxT("Component Palette") );
 	//top_sizer->Add(title,0,wxEXPAND,0);
 	top_sizer->Add( m_notebook, 1, wxEXPAND, 0 );
