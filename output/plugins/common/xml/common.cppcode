@@ -43,7 +43,9 @@ Written by
 
 	<templates class="wxTextCtrl">
 		<template name="declaration">#class* $name;</template>
-		<template name="include">@#include &lt;wx/textctrl.h&gt;</template>
+		<template name="include">@#include &lt;wx/textctrl.h&gt;
+								#nl @#include &lt;wx/dnd.h&gt;
+		</template>
 		<template name="userdriveclass">#ifnotequal $IsDropFile "0" @{
 		 class drive_$name : public wxFileDropTarget #nl
 { #nl 
