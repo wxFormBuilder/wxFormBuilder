@@ -311,7 +311,7 @@ wxFontContainer TypeConv::StringToFont (const wxString &str)
 						font.SetWeight(wxFONTWEIGHT_NORMAL);
 						break;
 				}
-			} else if (l_weight >= wxFONTWEIGHT_NORMAL && l_weight < wxFONTWEIGHT_MAX) {
+			} else if (l_weight > wxFONTWEIGHT_INVALID && l_weight < wxFONTWEIGHT_MAX) {
 				font.SetWeight(static_cast<wxFontWeight>(l_weight));
 			} else {
 				font.SetWeight(wxFONTWEIGHT_NORMAL);
