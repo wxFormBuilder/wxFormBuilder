@@ -293,11 +293,51 @@ wxFontContainer TypeConv::StringToFont (const wxString &str)
 		long l_weight;
 		wxString s_weight = tkz.GetNextToken();
 		if (s_weight.ToLong(&l_weight)) {
-			if (l_weight >= wxFONTWEIGHT_NORMAL && l_weight < wxFONTWEIGHT_MAX) {
+			// Due to an ABI break in wxWidgets 3.1.2 the values of the symbols changed, the previous
+			// values are distinct from the new values but are in their range, so they need to be tested first.
+			#if wxCHECK_VERSION(3, 1, 2)
+			if (l_weight >= wxNORMAL && l_weight <= wxBOLD) {
+				switch (l_weight) {
+					case wxNORMAL:
+						font.SetWeight(wxFONTWEIGHT_NORMAL);
+						break;
+					case wxLIGHT:
+						font.SetWeight(wxFONTWEIGHT_LIGHT);
+						break;
+					case wxBOLD:
+						font.SetWeight(wxFONTWEIGHT_BOLD);
+						break;
+					default:
+						font.SetWeight(wxFONTWEIGHT_NORMAL);
+						break;
+				}
+			} else if (l_weight >= wxFONTWEIGHT_NORMAL && l_weight < wxFONTWEIGHT_MAX) {
 				font.SetWeight(static_cast<wxFontWeight>(l_weight));
 			} else {
 				font.SetWeight(wxFONTWEIGHT_NORMAL);
 			}
+			#else
+			if (l_weight >= wxFONTWEIGHT_NORMAL && l_weight < wxFONTWEIGHT_MAX) {
+				font.SetWeight(static_cast<wxFontWeight>(l_weight));
+			} else {
+				// Either an invalid value or a value of a wxWidgets 3.1.2 symbol,
+				// since these symbols are not available here, test for their values directly
+				switch (l_weight) {
+					case 300:
+						font.SetWeight(wxFONTWEIGHT_LIGHT);
+						break;
+					case 400:
+						font.SetWeight(wxFONTWEIGHT_NORMAL);
+						break;
+					case 700:
+						font.SetWeight(wxFONTWEIGHT_BOLD);
+						break;
+					default:
+						font.SetWeight(wxFONTWEIGHT_NORMAL);
+						break;
+				}
+			}
+			#endif
 		}
 	}
 
