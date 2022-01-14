@@ -56,6 +56,23 @@ Running:
 ```sh
 _install/bin/wxFormBuilder
 ```
+build msvc
+
+Installing the Prerequisites:
+download Development Files
+```sh
+https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxMSW-3.1.5_vc14x_Dev.7z
+```
+download header Files
+```sh
+https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5-headers.7z
+```
+Once you have the files you need, unzip all of them into the same directory, for example D:\Temp\wxMSW-3.1.5_vc14x_Dev. You should have only include and lib subdirectories under it, nothing else. 
+
+Building:
+```sh
+create_build_files5.bat --compiler=vc --compiler-version=14x --disable-monolithic --wx-root=D:\Temp\wxMSW-3.1.5_vc14x_Dev --wx-version=3.1
+```
 
 ---
 
