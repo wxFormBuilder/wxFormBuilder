@@ -338,7 +338,7 @@ is created inside <destination-directory>.
 function(wxfb_install_files arg_BASE_DIRECTORY arg_FILES arg_DESTINATION)
   foreach(file IN LISTS arg_FILES)
     cmake_path(RELATIVE_PATH file BASE_DIRECTORY "${arg_BASE_DIRECTORY}" OUTPUT_VARIABLE fileBase)
-    cmake_path(GET fileBase ROOT_PATH fileDir)
+    cmake_path(GET fileBase PARENT_PATH fileDir)
     install(FILES "${file}" DESTINATION "${arg_DESTINATION}/${fileDir}")
   endforeach()
 endfunction()

@@ -91,8 +91,8 @@ ObjectInspector::ObjectInspector( wxWindow* parent, int id, int style )
 	m_pg = CreatePropertyGridManager(m_nb, WXFB_PROPERTY_GRID);
 	m_eg = CreatePropertyGridManager(m_nb, WXFB_EVENT_GRID);
 
-	m_nb->AddPage( m_pg, _("Properties"), false, 0 );
-	m_nb->AddPage( m_eg, _("Events"),     false, 1 );
+	m_nb->InsertPage( 0, m_pg, _("Properties"), false );
+	m_nb->InsertPage( 1, m_eg, _("Events"),     false );
 
 	m_nb->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT("properties"), 16 ) );
 	m_nb->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT("events"), 16 ) );

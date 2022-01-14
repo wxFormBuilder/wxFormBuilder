@@ -1700,27 +1700,27 @@ wxWindow * MainFrame::CreateDesignerWindow( wxWindow *parent )
 	m_visualEdit = new VisualEditor( m_notebook );
 	AppData()->GetManager()->SetVisualEditor( m_visualEdit );
 
-	m_notebook->AddPage( m_visualEdit, wxT( "Designer" ), false, 0 );
+	m_notebook->InsertPage( 0, m_visualEdit, wxT( "Designer" ), false );
 	m_notebook->SetPageBitmap( 0, AppBitmaps::GetBitmap( wxT( "designer" ), 16 ) );
 
 	m_cpp = new CppPanel( m_notebook, wxID_ANY);
-	m_notebook->AddPage( m_cpp, wxT( "C++" ), false, 1 );
+	m_notebook->InsertPage( 1, m_cpp, wxT( "C++" ), false );
 	m_notebook->SetPageBitmap( 1, AppBitmaps::GetBitmap( wxT( "c++" ), 16 ) );
 
 	m_python = new PythonPanel( m_notebook, wxID_ANY);
-	m_notebook->AddPage( m_python, wxT( "Python" ), false, 2 );
+	m_notebook->InsertPage( 2, m_python, wxT( "Python" ), false );
 	m_notebook->SetPageBitmap( 2, AppBitmaps::GetBitmap( wxT( "python" ), 16 ) );
 
 	m_php = new PHPPanel( m_notebook, wxID_ANY);
-	m_notebook->AddPage( m_php, wxT( "PHP" ), false, 3 );
+	m_notebook->InsertPage( 3, m_php, wxT( "PHP" ), false );
 	m_notebook->SetPageBitmap( 3, AppBitmaps::GetBitmap( wxT( "php" ), 16 ) );
 
 	m_lua = new LuaPanel(m_notebook, wxID_ANY);
-	m_notebook->AddPage(m_lua,wxT( "Lua" ), false, 4 );
+	m_notebook->InsertPage( 4, m_lua,wxT( "Lua" ), false );
 	m_notebook->SetPageBitmap( 4, AppBitmaps::GetBitmap( wxT( "lua" ), 16 ) );
 
 	m_xrc = new XrcPanel( m_notebook, wxID_ANY);
-	m_notebook->AddPage( m_xrc, wxT( "XRC" ), false, 5 );
+	m_notebook->InsertPage( 5, m_xrc, wxT( "XRC" ), false );
 	m_notebook->SetPageBitmap( 5, AppBitmaps::GetBitmap( wxT( "xrc" ), 16 ) );
 
 	return m_notebook;
