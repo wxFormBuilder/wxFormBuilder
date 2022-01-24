@@ -89,7 +89,7 @@ if(NOT WXFB_WXWIDGETS_ENABLE_30)
   set(wxWidgetsVersion 3.1.2)
 
   if(MSYS)
-    set(wxWidgets_CONFIG_EXECUTABLE "wx-config-3.1")
+    set(ENV{WX_CONFIG} "wx-config-3.1")
   endif(MSYS)
 else()
   set(wxWidgetsVersion 3.0)
