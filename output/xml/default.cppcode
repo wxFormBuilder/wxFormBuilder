@@ -71,6 +71,9 @@
 			#ifnotnull $context_help
 			@{ $name->SetHelpText( $context_help ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ #nl $name->DragAcceptFiles( true ); #nl @}
+
 			#ifnotnull $minimum_size
 			@{ $name->SetMinSize( $minimum_size ); #nl @}
 
@@ -79,8 +82,6 @@
 
 			#ifparenttypeequal "toolbar_form"
 			@{ AddControl( $name ); @}
-			#ifnotequal $drag_accept_files "0"
-			@{ #nl $name->DragAcceptFiles(true); @}
 		</template>
 
 		<!-- wxKeyEvent -->

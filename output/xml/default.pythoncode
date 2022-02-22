@@ -39,6 +39,9 @@
 			#ifnotnull $context_help
 			@{ self.$name.SetHelpText( $context_help ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ self.$name.DragAcceptFiles( true ) #nl @}
+
 			#ifnotnull $minimum_size
 			@{ self.$name.SetMinSize( $minimum_size ) #nl @}
 
@@ -47,9 +50,6 @@
 
 			#ifparenttypeequal "toolbar_form"
 			@{ self.AddControl( self.$name ) @}
-
-			#ifnotequal $drag_accept_files "0"
-			@{ #nl self.$name.DragAcceptFiles(true); @}
 		</template>
 
 		<!-- wxKeyEvent -->
