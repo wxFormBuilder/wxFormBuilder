@@ -131,6 +131,7 @@
     <property name="tooltip" type="wxString_i18n" help="Attach a tooltip to the window."/>
     <property name="context_menu" type="bool" help="Generates event handler for displaying of menu assigned to this widgets as a context menu.">1</property>
     <property name="context_help" type="wxString_i18n" help="Attach context-sensitive help to the window. Note: The Project's &quot;help_provider&quot; property must be set for context-sensitive help to work."/>
+    <property name="drag_accept_files" type="bool" help="drag file">0</property>
     <property name="enabled" type="bool" help="Enable or disable the window for user input. Note that when a parent window is disabled, all of its children are disabled as well and they are reenabled again when the parent is.">1</property>
     <property name="hidden" type="bool" help="Shows or hides the window.">0</property>
     <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
@@ -142,7 +143,6 @@
       -->
       <child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
     </property>
-    <property name="drag_accept_files" type="bool" help="drag file">0</property>
     <category name="wxKeyEvent" type="interface">
       <event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event."/>
       <event name="OnCharHook" class="wxKeyEvent" help="Process a wxEVT_CHAR_HOOK event. Unlike all the other key events, this event is propagated upwards the window hierarchy which allows intercepting it in the parent window of the focused window to which it is sent initially (if there is no focused window, this event is sent to the wxApp global object). It is also generated before any other key events and so gives the parent window an opportunity to modify the keyboard handling of its children, e.g. it is used internally by wxWidgets in some ports to intercept pressing Esc key in any child of a dialog to close the dialog itself when it's pressed. By default, if this event is handled, i.e. the handler doesn't call wxEvent::Skip(), neither wxEVT_KEY_DOWN nor wxEVT_CHAR events will be generated (although wxEVT_KEY_UP still will be), i.e. it replaces the normal key events. However by calling the special DoAllowNextEvent() method you can handle wxEVT_CHAR_HOOK and still allow normal events generation. This is something that is rarely useful but can be required if you need to prevent a parent wxEVT_CHAR_HOOK handler from running without suppressing the normal key events. Finally notice that this event is not generated when the mouse is captured as it is considered that the window which has the capture should receive all the keyboard events too without allowing its parent wxTopLevelWindow to interfere with their processing."/>
@@ -176,12 +176,12 @@
       <event name="OnSetFocus" class="wxFocusEvent" help="Process a wxEVT_SET_FOCUS event."/>
     </category>
     <category name="Other Events" type="interface">
+      <event name="OnDropFiles" class="wxDropFilesEvent" help=" drag and drop files."/>
       <event name="OnEraseBackground" class="wxEraseEvent" help="Process a wxEVT_ERASE_BACKGROUND event."/>
       <event name="OnPaint" class="wxPaintEvent" help="Process a wxEVT_PAINT event."/>
       <event name="OnSize" class="wxSizeEvent" help="Process a wxEVT_SIZE event."/>
       <event name="OnMove" class="wxMoveEvent" help="Process a wxEVT_MOVE event, which is generated when a window is moved. Not generated in wxGTK" />
       <event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event."/>
-      <event name="OnDropFiles" class="wxDropFilesEvent" help=" drag and drop files."/>
     </category>
   </objectinfo>
 
