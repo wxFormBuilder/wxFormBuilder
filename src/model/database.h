@@ -30,12 +30,9 @@
 #include "types.h"
 
 #include <set>
-#ifndef WXFB_PLUGINS_RESOLVE
-#include <wx/dynlib.h>
-#else
 #include <functional>
 #include <boost/dll/shared_library.hpp>
-#endif
+
 
 class ObjectDatabase;
 class ObjectTypeDictionary;
@@ -128,22 +125,12 @@ class ObjectDatabase
   typedef std::map< wxString, PCodeInfo > LangTemplateMap;
   typedef std::map< PropertyType, LangTemplateMap > PTLangTemplateMap;
 
-  #ifndef WXFB_PLUGINS_RESOLVE
-  #ifdef __WXMAC__
-	typedef std::vector< void * > LibraryVector;
-  #else
-	typedef std::vector< wxDynamicLibrary * > LibraryVector;
-  #endif
-  typedef void (*PFFreeComponentLibrary)( IComponentLibrary* lib );
-  typedef std::map< PFFreeComponentLibrary, IComponentLibrary * > ComponentLibraryMap;
-  #else
   struct PluginLibrary {
     boost::dll::shared_library sharedLibrary;
     std::function<IComponentLibrary*(IManager*)> getComponentLibrary;
     std::function<void(IComponentLibrary*)> freeComponentLibrary;
     IComponentLibrary* componentLibrary = nullptr;
   };
-  #endif
 
   wxString m_xmlPath;
   wxString m_iconPath;
@@ -162,14 +149,7 @@ class ObjectDatabase
 
   PTLangTemplateMap m_propertyTypeTemplates;
 
-  #ifndef WXFB_PLUGINS_RESOLVE
-  LibraryVector m_libs;
-  ComponentLibraryMap m_componentLibs;
-  // used so libraries are only imported once, even if multiple libraries use them
-  std::set< wxString > m_importedLibraries;
-  #else
   std::map<wxString, PluginLibrary> m_pluginLibraries;
-  #endif
 
   /**
    * Initialize the property type map.

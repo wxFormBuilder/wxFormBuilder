@@ -17,7 +17,7 @@ wxFormBuilder runs on Windows, various Linux distributions and macOS.
 * [GitHub Releases](https://github.com/wxFormBuilder/wxFormBuilder/releases)
 * [GitHub CI Builds](https://github.com/wxFormBuilder/wxFormBuilder/actions)
 
-## Install from Source with CMake
+## Install from Source
 
 Building from source requires the fairly recent CMake version 3.21. Most Linux distributions don't contain this version
 in their package repositories currently, the [CMake](https://cmake.org/download/) website offers binary downloads for
@@ -139,91 +139,4 @@ Running:
 
 ```sh
 open _install/wxFormBuilder.app
-```
-
-## Install from Source with Premake/Meson (deprecated)
-
-Previously Premake and Meson have been used for building but support for these build systems has been dropped
-in favor for CMake. Building with these systems is more difficult and the result doesn't work on every platform
-without issues. Both systems will be removed in the future, the documentation is kept for reference until that time.
-
-### Windows (MSYS2)
-
-Install [MSYS2](https://www.msys2.org/) and run the following inside a MinGW 32 bit shell:
-
-```sh
-pacman -Syu
-pacman -S --needed mingw-w64-i686-gcc mingw-w64-i686-wxWidgets3.1 make git
-git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
-cd wxFormBuilder
-cmd.exe /C "create_build_files4.bat --wx-root=/mingw32/bin --force-wx-config=versioned --wx-version=3.1"
-ln -s /mingw32/include/binutils/ansidecl.h /mingw32/include/ansidecl.h
-ln -s /mingw32/include/binutils/bfd.h /mingw32/include/bfd.h
-ln -s /mingw32/include/binutils/diagnostics.h /mingw32/include/diagnostics.h
-ln -s /mingw32/include/binutils/symcat.h /mingw32/include/symcat.h
-ln -s /mingw32/lib/binutils/libbfd.a /mingw32/lib/libbfd.a
-ln -s /mingw32/lib/binutils/libiberty.a /mingw32/lib/libiberty.a
-cd build/3.1/gmake
-sed 's!\$(LDFLAGS) \$(RESOURCES) \$(ARCH) \$(LIBS)!\$(LIBS) \$(LDFLAGS) \$(RESOURCES) \$(ARCH)!g' *.make -i
-make config=release
-```
-
-Run:
-
-```sh
-cd ../../../output/
-./wxFormBuilder.exe
-```
-
-### Linux
-
-**Notice:** Distributions that use architecture based subdirectories for libraries currently fail to load the plugins, for a workaround see [#524](https://github.com/wxFormBuilder/wxFormBuilder/issues/524)
-
-Pre-requisites for Ubuntu:
-
-```sh
-sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev meson
-```
-
-Pre-requisites for Arch Linux:
-
-```sh
-sudo pacman -Syu --needed meson wxgtk2
-```
-
-Build and run:
-
-```sh
-git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
-cd wxFormBuilder
-meson _build --prefix $PWD/_install --buildtype=release
-ninja -C _build install
-./_install/bin/wxformbuilder
-```
-
-### macOS
-
-**Notice:** On recent macOS versions >= 11 wxFormBuilder fails to build and/or run, there is no solution available currently
-
-Pre-requisites for macOS can be installed via [Homebrew](https://brew.sh/):
-
-```sh
-brew install dylibbundler make wxwidgets
-```
-
-Note: Building with Xcode currently does not work without issues (see [#247](https://github.com/wxFormBuilder/wxFormBuilder/issues/247)). Therefore, it is recommended to build with GNU make like as described below:
-
-```sh
-git clone --recursive --depth=1 https://github.com/wxFormBuilder/wxFormBuilder
-cd wxFormBuilder
-./create_build_files4.sh
-cd build/3.1/gmake
-make config=release
-```
-
-Run:
-
-```sh
-cd ../../../output/
-open wxFormBuilder.app
 ```

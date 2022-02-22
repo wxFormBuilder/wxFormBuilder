@@ -1,1 +1,0 @@
-premake.out("ok")

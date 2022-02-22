@@ -62,10 +62,6 @@
 #define WXVERSION_TAG "wxversion"
 
 
-#ifdef __WXMAC__
-#include <dlfcn.h>
-#endif
-
 ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
 {
 	m_name = name;
@@ -95,34 +91,11 @@ ObjectDatabase::ObjectDatabase()
 
 ObjectDatabase::~ObjectDatabase()
 {
-    #ifndef WXFB_PLUGINS_RESOLVE
-	for ( ComponentLibraryMap::iterator lib = m_componentLibs.begin(); lib != m_componentLibs.end(); ++lib )
-    {
-        (*(lib->first))( lib->second );
-    }
-
-    for ( LibraryVector::iterator lib = m_libs.begin(); lib != m_libs.end(); ++lib )
-    {
-        #ifdef __WXFB_DEBUG__
-			// Only unload in release - can't get a good stack trace if the library is unloaded
-			#ifdef __WXMAC__
-				dlclose( *lib );
-			#else
-				(*lib)->Detach();
-			#endif
-        #endif
-
-		#ifndef __WXMAC__
-			delete *lib;
-		#endif
-    }
-	#else
 	for (const auto& plugin : m_pluginLibraries) {
 		if (plugin.second.freeComponentLibrary && plugin.second.componentLibrary) {
 			plugin.second.freeComponentLibrary(plugin.second.componentLibrary);
 		}
 	}
-	#endif
 }
 
 PObjectInfo ObjectDatabase::GetObjectInfo(wxString class_name)
@@ -328,11 +301,11 @@ PObjectBase ObjectDatabase::CreateObject( std::string classname, PObjectBase par
 			{
 				count = CountChildrenWithSameType(parent, { GetObjectType(wxT("sizer")), GetObjectType(wxT("gbsizer")) });
 			}
-			else 
+			else
 			{
 				count = CountChildrenWithSameType(parent, objType);
 			}
-			
+
 			if (max > 0 && count >= max)
 				create = false;
 
@@ -781,30 +754,6 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 		root->GetAttributeOrDefault( "lib", &lib, "" );
 		if ( !lib.empty() )
 		{
-			#ifndef WXFB_PLUGINS_RESOLVE
-			// Add prefix required by non-CMake builds
-			lib.insert(0, "lib");
-			// Allows plugin dependency dlls to be next to plugin dll in windows
-			wxString workingDir = ::wxGetCwd();
-			wxFileName::SetCwd( libPath );
-			try
-			{
-				wxString fullLibPath = libPath + wxFILE_SEP_PATH + _WXSTR(lib) + wxver;
-				if ( m_importedLibraries.insert( fullLibPath ).second )
-				{
-					ImportComponentLibrary( fullLibPath, manager );
-				}
-			}
-			catch ( ... )
-			{
-				// Put Cwd back
-				wxFileName::SetCwd( workingDir );
-				throw;
-			}
-
-			// Put Cwd back
-			wxFileName::SetCwd( workingDir );
-			#else
 			#ifdef __WINDOWS__
 			// On Windows the plugin libraries reside in the directory of the plugin resources,
 			// construct a relative path to that location to be able to find them with the default
@@ -815,7 +764,6 @@ void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const w
 			if (pluginLibrary == m_pluginLibraries.end()) {
 				ImportComponentLibrary(lib, manager);
 			}
-			#endif
 		}
 
 		ticpp::Element* elem_obj = root->FirstChildElement( OBJINFO_TAG, false );
@@ -1421,69 +1369,6 @@ bool ObjectDatabase::ShowInPalette(wxString type)
 
 void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager manager )
 {
-	#ifndef WXFB_PLUGINS_RESOLVE
-	wxString path = libfile;
-
-	// Find the GetComponentLibrary function - all plugins must implement this
-	typedef IComponentLibrary* (*PFGetComponentLibrary)( IManager* manager );
-
-	#ifdef __WXMAC__
-		path += wxT(".dylib");
-
-		// open the library
-		void* handle = dlopen( path.mb_str(), RTLD_LAZY );
-
-		if ( !handle )
-		{
-			wxString error = wxString( dlerror(), wxConvUTF8 );
-
-			THROW_WXFBEX( wxT("Error loading library ") << path << wxT(" ") << error )
-		}
-		dlerror(); // reset errors
-
-		// load the symbol
-
-		PFGetComponentLibrary GetComponentLibrary = (PFGetComponentLibrary) dlsym(handle, "GetComponentLibrary");
-		PFFreeComponentLibrary FreeComponentLibrary = (PFFreeComponentLibrary) dlsym(handle, "FreeComponentLibrary");
-
-		const char *dlsym_error = dlerror();
-		if (dlsym_error)
-		{
-			wxString error = wxString( dlsym_error, wxConvUTF8 );
-            THROW_WXFBEX( path << " is not a valid component library: " << error )
-			dlclose( handle );
-		}
-		else
-		{
-			m_libs.push_back( handle );
-		}
-	#else
-
-		// Attempt to load the DLL
-		wxDynamicLibrary* library = new wxDynamicLibrary( path );
-		if ( !library->IsLoaded() )
-		{
-			THROW_WXFBEX( wxT("Error loading library ") << path )
-		}
-
-		m_libs.push_back( library );
-
-		PFGetComponentLibrary GetComponentLibrary =	(PFGetComponentLibrary)library->GetSymbol( wxT("GetComponentLibrary") );
-		PFFreeComponentLibrary FreeComponentLibrary =	(PFFreeComponentLibrary)library->GetSymbol( wxT("FreeComponentLibrary") );
-
-		if ( !(GetComponentLibrary && FreeComponentLibrary) )
-		{
-            THROW_WXFBEX( path << " is not a valid component library" )
-		}
-
-	#endif
-	LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
-	// Get the component library
-	IComponentLibrary* comp_lib = GetComponentLibrary( (IManager*)manager.get() );
-
-	// Store the function to free the library
-	m_componentLibs[ FreeComponentLibrary ] = comp_lib;
-	#else
 	wxString path;
 	auto pluginLibrary = m_pluginLibraries.emplace(std::piecewise_construct, std::forward_as_tuple(libfile), std::forward_as_tuple()).first;
 	try {
@@ -1506,7 +1391,6 @@ void ObjectDatabase::ImportComponentLibrary( wxString libfile, PwxFBManager mana
 	LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
 	pluginLibrary->second.componentLibrary = pluginLibrary->second.getComponentLibrary(manager.get());
 	auto* comp_lib = pluginLibrary->second.componentLibrary;
-	#endif
 
 	// Import all of the components
 	for ( unsigned int i = 0; i < comp_lib->GetComponentCount(); i++ )
