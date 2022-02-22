@@ -145,6 +145,9 @@
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 
+		<!-- wxDropFilesEvent -->
+		<template name="evt_connect_OnDropFiles">#utbl$name:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 
@@ -159,8 +162,6 @@
 
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-
-		<template name="evt_connect_OnDropFiles">#utbl$name:Connect( wx.wxEVT_DROP_FILES,function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 
 	<templates class="wxTreeCtrlBase">
