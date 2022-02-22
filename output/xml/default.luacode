@@ -49,7 +49,7 @@
 			#ifparenttypeequal "form"
 			@{
 			#ifequal #parent $aui_managed "1"
-			@{ 
+			@{
 			#iftypeequal "widget || container || notebook || auinotebook || flatnotebook || listbook || choicebook || treelistctrl || splitter"
 			@{
 				#utbl#wxparent $name.m_mgr:AddPane( #utbl$name, wxaui.wxAuiPaneInfo()
@@ -88,7 +88,8 @@
 
 			#ifparenttypeequal "toolbar_form"
 			@{ #utbl#wxparent $name:AddControl( #utbl$name ) @}
-			#ifnotequal $drag_accept_files "0" @{ #utbl$name:DragAcceptFiles(true); @}
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name:DragAcceptFiles(true); @}
 		</template>
 
 		<!-- wxKeyEvent -->
@@ -157,7 +158,7 @@
 
 		<!-- wxUpdateUIEvent -->
 		<template name="evt_connect_OnUpdateUI">#utbl$name:Connect( wx.wxEVT_UPDATE_UI, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
-		
+
 		<template name="evt_connect_OnDropFiles">#utbl$name:Connect( wx.wxEVT_DROP_FILES,function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 	</templates>
 

@@ -79,7 +79,8 @@
 
 			#ifparenttypeequal "toolbar_form"
 			@{ AddControl( $name ); @}
-			#ifnotequal $drag_accept_files "0" @{ #nl $name->DragAcceptFiles(true); @}
+			#ifnotequal $drag_accept_files "0"
+			@{ #nl $name->DragAcceptFiles(true); @}
 		</template>
 
 		<!-- wxKeyEvent -->
