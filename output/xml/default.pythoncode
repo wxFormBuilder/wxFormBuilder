@@ -105,7 +105,7 @@
 		<template name="evt_connect_OnSetFocus">self.$name.Bind( wx.EVT_SET_FOCUS, #handler )</template>
 
 		<!-- wxDropFilesEvent -->
-		<template name="evt_connect_OnDropFiles">self.$name.Bind( wx.wxEVT_DROP_FILES, #handler )</template>
+		<template name="evt_connect_OnDropFiles">self.$name.Bind( wx.EVT_DROP_FILES, #handler )</template>
 
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">self.$name.Bind( wx.EVT_PAINT, #handler )</template>
