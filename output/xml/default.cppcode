@@ -71,6 +71,9 @@
 			#ifnotnull $context_help
 			@{ $name->SetHelpText( $context_help ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ $name->DragAcceptFiles( true ); #nl @}
+
 			#ifnotnull $minimum_size
 			@{ $name->SetMinSize( $minimum_size ); #nl @}
 
@@ -158,6 +161,10 @@
 		<template name="evt_connect_OnKillFocus">$name->Connect( wxEVT_KILL_FOCUS, #handler, NULL, this );</template>
 		<template name="evt_entry_OnSetFocus">@#error wxFocusEvent does not propagate, so wxEVT_SET_FOCUS from $name can only be handled with Connect()</template>
 		<template name="evt_connect_OnSetFocus">$name->Connect( wxEVT_SET_FOCUS, #handler, NULL, this );</template>
+
+		<!-- wxDropFilesEvent -->
+		<template name="evt_entry_OnDropFiles">@#error wxDropFilesEvent does not propagate, so wxEVT_DROP_FILES from $name can only be handled with Connect()</template>
+		<template name="evt_connect_OnDropFiles">$name->Connect( wxEVT_DROP_FILES, #handler, NULL, this );</template>
 
 		<!-- wxPaintEvent -->
 		<template name="evt_entry_OnPaint">@#error wxPaintEvent does not propagate, so wxEVT_PAINT from $name can only be handled with Connect()</template>

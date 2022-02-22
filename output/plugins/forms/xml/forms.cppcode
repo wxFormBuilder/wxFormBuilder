@@ -160,6 +160,9 @@ Written by
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ this->DragAcceptFiles( true ); #nl @}
+
 			#ifequal $aui_managed "1"
 			@{ m_mgr.SetManagedWindow(this); #nl
 				#ifnotnull $aui_manager_style
@@ -192,9 +195,9 @@ Written by
 		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
 		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
-		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
-		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
 		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
@@ -249,6 +252,8 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
 		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnDropFiles">EVT_DROP_FILES( #handler )</template>
+		<template name="evt_connect_OnDropFiles">this->Connect( wxEVT_DROP_FILES, #handler );</template>
 		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
 		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
@@ -349,6 +354,9 @@ Written by
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ this->DragAcceptFiles( true ); #nl @}
+
 			#ifnotnull $minimum_size
 			@{ this->SetMinSize( $minimum_size ); #nl @}
 
@@ -356,7 +364,7 @@ Written by
 			@{ this->SetMaxSize( $maximum_size ); #nl @}
 
 			#ifequal $aui_managed "1"
-			@{ m_mgr.SetManagedWindow(this); #nl 
+			@{ m_mgr.SetManagedWindow(this); #nl
 				#ifnotnull $aui_manager_style
 				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
 			@}
@@ -386,9 +394,9 @@ Written by
 		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
 		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
-		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
-		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
 		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
@@ -443,6 +451,8 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
 		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnDropFiles">EVT_DROP_FILES( #handler )</template>
+		<template name="evt_connect_OnDropFiles">this->Connect( wxEVT_DROP_FILES, #handler );</template>
 		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
 		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
@@ -548,8 +558,11 @@ Written by
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ this->DragAcceptFiles( true ); #nl @}
+
 			#ifequal $aui_managed "1"
-			@{ m_mgr.SetManagedWindow(this); #nl 
+			@{ m_mgr.SetManagedWindow(this); #nl
 				#ifnotnull $aui_manager_style
 				@{ m_mgr.SetFlags($aui_manager_style); #nl @}
 			@}
@@ -582,9 +595,9 @@ Written by
 		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
 		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
-		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
-		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
 		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
@@ -639,6 +652,8 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
 		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnDropFiles">EVT_DROP_FILES( #handler )</template>
+		<template name="evt_connect_OnDropFiles">this->Connect( wxEVT_DROP_FILES, #handler );</template>
 		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
 		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
@@ -743,6 +758,9 @@ Written by
 
 			#ifnotnull $tooltip
 			@{ this->SetToolTip( $tooltip ); #nl @}
+
+			#ifnotequal $drag_accept_files "0"
+			@{ this->DragAcceptFiles( true ); #nl @}
 		</template>
 		<template name="after_addchild">
 			#ifnotnull $center
@@ -769,9 +787,9 @@ Written by
 		<template name="evt_entry_OnLeftDClick">EVT_LEFT_DCLICK( #handler )</template>
 		<template name="evt_connect_OnLeftDClick">this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_entry_OnLeftDown">EVT_LEFT_DOWN( #handler )</template>
-		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_entry_OnLeftUp">EVT_LEFT_UP( #handler )</template>
-		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_entry_OnMiddleDClick">EVT_MIDDLE_DCLICK( #handler )</template>
 		<template name="evt_connect_OnMiddleDClick">this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_entry_OnMiddleDown">EVT_MIDDLE_DOWN( #handler )</template>
@@ -826,6 +844,8 @@ Written by
 		<template name="evt_connect_OnSetFocus">this->Connect( wxEVT_SET_FOCUS, #handler );</template>
 		<template name="evt_entry_OnKillFocus">EVT_KILL_FOCUS( #handler )</template>
 		<template name="evt_connect_OnKillFocus">this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
+		<template name="evt_entry_OnDropFiles">EVT_DROP_FILES( #handler )</template>
+		<template name="evt_connect_OnDropFiles">this->Connect( wxEVT_DROP_FILES, #handler );</template>
 		<template name="evt_entry_OnPaint">EVT_PAINT( #handler )</template>
 		<template name="evt_connect_OnPaint">this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_entry_OnEraseBackground">EVT_ERASE_BACKGROUND( #handler )</template>
@@ -867,7 +887,7 @@ Written by
 			$name( long style = $window_style );
 		</template>
 		<template name="cons_def">
-			$name::$name( long style ) : 
+			$name::$name( long style ) :
 
 			#ifnotnull $subclass/name
 			@{ $subclass/name @}

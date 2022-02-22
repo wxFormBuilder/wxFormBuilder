@@ -39,6 +39,9 @@
 			#ifnotnull $context_help
 			@{ self.$name.SetHelpText( $context_help ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ self.$name.DragAcceptFiles( true ) #nl @}
+
 			#ifnotnull $minimum_size
 			@{ self.$name.SetMinSize( $minimum_size ) #nl @}
 
@@ -100,6 +103,9 @@
 		<!-- wxFocusEvent -->
 		<template name="evt_connect_OnKillFocus">self.$name.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_connect_OnSetFocus">self.$name.Bind( wx.EVT_SET_FOCUS, #handler )</template>
+
+		<!-- wxDropFilesEvent -->
+		<template name="evt_connect_OnDropFiles">self.$name.Bind( wx.EVT_DROP_FILES, #handler )</template>
 
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">self.$name.Bind( wx.EVT_PAINT, #handler )</template>

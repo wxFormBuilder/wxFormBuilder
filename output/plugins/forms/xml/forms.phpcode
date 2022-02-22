@@ -52,7 +52,7 @@ PHP code generation written by
 		<template name="evt_connect_OnIdle">@$this->Connect( wxEVT_IDLE, #handler );</template>
 		<template name="evt_disconnect_OnIdle">@$this->Disconnect( wxEVT_IDLE );</template>
 	</templates>
-	
+
 	<templates class="AUI Events">
 		<template name="evt_connect_OnAuiPaneButton">@$this->Connect( wxEVT_AUI_PANE_BUTTON, #handler );</template>
 		<template name="evt_disconnect_OnAuiPaneButton">@$this->Disconnect( wxEVT_AUI_PANE_BUTTON );</template>
@@ -90,7 +90,7 @@ PHP code generation written by
 		<template name="include" />
 		<template name="settings">
 			@$this->SetSizeHints( $minimum_size, $maximum_size ); #nl
-			
+
 			#ifnotnull $window_extra_style
 			@{ @$this->SetExtraStyle( $window_extra_style ); #nl @}
 
@@ -114,9 +114,12 @@ PHP code generation written by
 
 			#ifnotnull $tooltip
 			@{ @$this->SetToolTip( $tooltip ); #nl @}
-			
+
+			#ifnotequal $drag_accept_files "0"
+			@{ @$this->DragAcceptFiles( true ); #nl @}
+
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				@$this->m_mgr = new wxAuiManager(); #nl
 				@$this->m_mgr->SetManagedWindow( @$this ); #nl
 				#ifnotnull $aui_manager_style
@@ -125,7 +128,7 @@ PHP code generation written by
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl  @$this->m_mgr->Update(); @} 
+			@{ #nl  @$this->m_mgr->Update(); @}
 			#ifnotnull $center
 			@{ #nl  @$this->Centre( $center ); @}
 		</template>
@@ -143,9 +146,9 @@ PHP code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">@$this->Disconnect( wxEVT_LEAVE_WINDOW );</template>
 		<template name="evt_connect_OnLeftDClick">@$this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnLeftDClick">@$this->Disconnect( wxEVT_LEFT_DCLICK );</template>
-		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnLeftDown">@$this->Disconnect( wxEVT_LEFT_DOWN );</template>
-		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_disconnect_OnLeftUp">@$this->Disconnect( wxEVT_LEFT_UP );</template>
 		<template name="evt_connect_OnMiddleDClick">@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnMiddleDClick">@$this->Disconnect( wxEVT_MIDDLE_DCLICK );</template>
@@ -222,6 +225,8 @@ PHP code generation written by
 		<template name="evt_disconnect_OnSetFocus">@$this->Disconnect( wxEVT_SET_FOCUS );</template>
 		<template name="evt_connect_OnKillFocus">@$this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
 		<template name="evt_disconnect_OnKillFocus">@$this->Disconnect( wxEVT_KILL_FOCUS );</template>
+		<template name="evt_connect_OnDropFiles">@$this->Connect( wxEVT_DROP_FILES, #handler );</template>
+		<template name="evt_disconnect_OnDropFiles">@$this->Disconnect( wxEVT_DROP_FILES );</template>
 		<template name="evt_connect_OnPaint">@$this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_disconnect_OnPaint">@$this->Disconnect( wxEVT_PAINT );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
@@ -274,14 +279,17 @@ PHP code generation written by
 			#ifnotnull $tooltip
 			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ @$this->DragAcceptFiles( true ); #nl @}
+
 			#ifnotnull $minimum_size
 			@{ @$this->SetMinSize( $minimum_size ); #nl @}
-			
+
 			#ifnotnull $maximum_size
 			@{ @$this->SetMaxSize( $maximum_size ); #nl @}
 
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				@$this->m_mgr = new wxAuiManager(); #nl
 				@$this->m_mgr->SetManagedWindow( @$this ); #nl
 				#ifnotnull $aui_manager_style
@@ -290,7 +298,7 @@ PHP code generation written by
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl @$this->m_mgr->Update(); @} 
+			@{ #nl @$this->m_mgr->Update(); @}
 		</template>
 		<template name="evt_connect_OnInitDialog">@$this->Connect( wxEVT_INIT_DIALOG, #handler );</template>
 		<template name="evt_disconnect_OnInitDialog">@$this->Disconnect( wxEVT_INIT_DIALOG );</template>
@@ -308,9 +316,9 @@ PHP code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">@$this->Disconnect( wxEVT_LEAVE_WINDOW );</template>
 		<template name="evt_connect_OnLeftDClick">@$this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnLeftDClick">@$this->Disconnect( wxEVT_LEFT_DCLICK );</template>
-		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnLeftDown">@$this->Disconnect( wxEVT_LEFT_DOWN );</template>
-		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_disconnect_OnLeftUp">@$this->Disconnect( wxEVT_LEFT_UP );</template>
 		<template name="evt_connect_OnMiddleDClick">@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnMiddleDClick">@$this->Disconnect( wxEVT_MIDDLE_DCLICK );</template>
@@ -387,6 +395,8 @@ PHP code generation written by
 		<template name="evt_disconnect_OnSetFocus">@$this->Disconnect( wxEVT_SET_FOCUS );</template>
 		<template name="evt_connect_OnKillFocus">@$this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
 		<template name="evt_disconnect_OnKillFocus">@$this->Disconnect( wxEVT_KILL_FOCUS );</template>
+		<template name="evt_connect_OnDropFiles">@$this->Connect( wxEVT_DROP_FILES, #handler );</template>
+		<template name="evt_disconnect_OnDropFiles">@$this->Disconnect( wxEVT_DROP_FILES );</template>
 		<template name="evt_connect_OnPaint">@$this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_disconnect_OnPaint">@$this->Disconnect( wxEVT_PAINT );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
@@ -420,7 +430,7 @@ PHP code generation written by
 		<template name="include" />
 		<template name="settings">
 			@$this->SetSizeHints( $minimum_size, $maximum_size ); #nl
-			
+
 			#ifnotnull $window_extra_style
 			@{ @$this->SetExtraStyle( @$this->GetExtraStyle() | $window_extra_style ); #nl @}
 
@@ -445,8 +455,11 @@ PHP code generation written by
 			#ifnotnull $tooltip
 			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ @$this->DragAcceptFiles( true ); #nl @}
+
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				@$this->m_mgr = new wxAuiManager(); #nl
 				@$this->m_mgr->SetManagedWindow( @$this ); #nl
 				#ifnotnull $aui_manager_style
@@ -455,7 +468,7 @@ PHP code generation written by
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl @$this->m_mgr->Update(); @} 
+			@{ #nl @$this->m_mgr->Update(); @}
 			#ifnotnull $center
 			@{ #nl @$this->Centre( $center ); @}
 		</template>
@@ -475,9 +488,9 @@ PHP code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">@$this->Disconnect( wxEVT_LEAVE_WINDOW );</template>
 		<template name="evt_connect_OnLeftDClick">@$this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnLeftDClick">@$this->Disconnect( wxEVT_LEFT_DCLICK );</template>
-		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnLeftDown">@$this->Disconnect( wxEVT_LEFT_DOWN );</template>
-		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_disconnect_OnLeftUp">@$this->Disconnect( wxEVT_LEFT_UP );</template>
 		<template name="evt_connect_OnMiddleDClick">@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnMiddleDClick">@$this->Disconnect( wxEVT_MIDDLE_DCLICK );</template>
@@ -554,6 +567,8 @@ PHP code generation written by
 		<template name="evt_disconnect_OnSetFocus">@$this->Disconnect( wxEVT_SET_FOCUS );</template>
 		<template name="evt_connect_OnKillFocus">@$this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
 		<template name="evt_disconnect_OnKillFocus">@$this->Disconnect( wxEVT_KILL_FOCUS );</template>
+		<template name="evt_connect_OnDropFiles">@$this->Connect( wxEVT_DROP_FILES, #handler );</template>
+		<template name="evt_disconnect_OnDropFiles">@$this->Disconnect( wxEVT_DROP_FILES );</template>
 		<template name="evt_connect_OnPaint">@$this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_disconnect_OnPaint">@$this->Disconnect( wxEVT_PAINT );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
@@ -563,7 +578,7 @@ PHP code generation written by
 		<template name="evt_connect_OnUpdateUI">@$this->Connect( wxEVT_UPDATE_UI, #handler );</template>
 		<template name="evt_disconnect_OnUpdateUI">@$this->Disconnect( wxEVT_UPDATE_UI );</template>
 	</templates>
-	
+
 	<templates class="Wizard">
 		<!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
 		<template name="base">
@@ -607,6 +622,9 @@ PHP code generation written by
 			#ifnotnull $tooltip
 			@{ @$this->SetToolTip( $tooltip ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ @$this->DragAcceptFiles( true ); #nl @}
+
 			@$this->m_pages = array(); #nl
 		</template>
 		<template name="after_addchild">
@@ -629,9 +647,9 @@ PHP code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">@$this->Disconnect( wxEVT_LEAVE_WINDOW );</template>
 		<template name="evt_connect_OnLeftDClick">@$this->Connect( wxEVT_LEFT_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnLeftDClick">@$this->Disconnect( wxEVT_LEFT_DCLICK );</template>
-		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>  
+		<template name="evt_connect_OnLeftDown">@$this->Connect( wxEVT_LEFT_DOWN, #handler );</template>
 		<template name="evt_disconnect_OnLeftDown">@$this->Disconnect( wxEVT_LEFT_DOWN );</template>
-		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>  
+		<template name="evt_connect_OnLeftUp">@$this->Connect( wxEVT_LEFT_UP, #handler );</template>
 		<template name="evt_disconnect_OnLeftUp">@$this->Disconnect( wxEVT_LEFT_UP );</template>
 		<template name="evt_connect_OnMiddleDClick">@$this->Connect( wxEVT_MIDDLE_DCLICK, #handler );</template>
 		<template name="evt_disconnect_OnMiddleDClick">@$this->Disconnect( wxEVT_MIDDLE_DCLICK );</template>
@@ -708,6 +726,8 @@ PHP code generation written by
 		<template name="evt_disconnect_OnSetFocus">@$this->Disconnect( wxEVT_SET_FOCUS );</template>
 		<template name="evt_connect_OnKillFocus">@$this->Connect( wxEVT_KILL_FOCUS, #handler );</template>
 		<template name="evt_disconnect_OnKillFocus">@$this->Disconnect( wxEVT_KILL_FOCUS );</template>
+		<template name="evt_connect_OnDropFiles">@$this->Connect( wxEVT_DROP_FILES, #handler );</template>
+		<template name="evt_disconnect_OnDropFiles">@$this->Disconnect( wxEVT_DROP_FILES );</template>
 		<template name="evt_connect_OnPaint">@$this->Connect( wxEVT_PAINT, #handler );</template>
 		<template name="evt_disconnect_OnPaint">@$this->Disconnect( wxEVT_PAINT );</template>
 		<template name="evt_connect_OnEraseBackground">@$this->Connect( wxEVT_ERASE_BACKGROUND, #handler );</template>
@@ -779,7 +799,7 @@ PHP code generation written by
 				@{ @$this->SetToolSeparation( $separation ); #nl @}
 			@}
 
-			#ifnotnull $margins 
+			#ifnotnull $margins
 			@{ @$this->SetMargins( $margins ); #nl @}
 
 			#ifnotnull $packing

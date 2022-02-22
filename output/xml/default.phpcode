@@ -36,6 +36,9 @@
 			#ifnotnull $context_help
 			@{ @$this->$name->SetHelpText( $context_help ); #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ @$this->$name->DragAcceptFiles( true ); #nl @}
+
 			#ifnotnull $minimum_size
 			@{ @$this->$name->SetMinSize( $minimum_size ); #nl @}
 
@@ -44,7 +47,6 @@
 
 			#ifparenttypeequal "toolbar_form"
 			@{ @$this->AddControl( @$this->$name ); @}
-
 		</template>
 
 		<!-- wxKeyEvent -->
@@ -98,6 +100,9 @@
 		<!-- wxFocusEvent -->
 		<template name="evt_connect_OnKillFocus">@$this->$name->Connect( wxEVT_KILL_FOCUS, #handler );</template>
 		<template name="evt_connect_OnSetFocus">@$this->$name->Connect( wxEVT_SET_FOCUS, #handler );</template>
+
+		<!-- wxDropFilesEvent -->
+		<template name="evt_connect_OnDropFiles">@$this->$name->Connect( wxEVT_DROP_FILES, #handler );</template>
 
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">@$this->$name->Connect( wxEVT_PAINT, #handler );</template>

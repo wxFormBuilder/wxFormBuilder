@@ -123,6 +123,9 @@ Python code generation written by
 			#ifnotnull $tooltip
 			@{ self.SetToolTip( $tooltip ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ self.DragAcceptFiles( true ) #nl @}
+
 			#ifequal $aui_managed "1"
 			@{
 				self.m_mgr = wx.aui.AuiManager() #nl
@@ -210,6 +213,8 @@ Python code generation written by
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">self.Bind( wx.EVT_DROP_FILES, #handler )</template>
+		<template name="evt_disconnect_OnDropFiles">self.Unbind( wx.EVT_DROP_FILES, #handler )</template>
 		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
 		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
@@ -268,6 +273,9 @@ Python code generation written by
 
 			#ifnotnull $tooltip
 			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifnotequal $drag_accept_files "0"
+			@{ self.DragAcceptFiles( true ) #nl @}
 
 			#ifnotnull $minimum_size
 			@{ self.SetMinSize( $minimum_size ) #nl @}
@@ -362,6 +370,8 @@ Python code generation written by
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">self.Bind( wx.EVT_DROP_FILES, #handler )</template>
+		<template name="evt_disconnect_OnDropFiles">self.Unbind( wx.EVT_DROP_FILES, #handler )</template>
 		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
 		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
@@ -426,6 +436,9 @@ Python code generation written by
 
 			#ifnotnull $tooltip
 			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifnotequal $drag_accept_files "0"
+			@{ self.DragAcceptFiles( true ) #nl @}
 
 			#ifequal $aui_managed "1"
 			@{
@@ -516,6 +529,8 @@ Python code generation written by
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">self.Bind( wx.EVT_DROP_FILES, #handler )</template>
+		<template name="evt_disconnect_OnDropFiles">self.Unbind( wx.EVT_DROP_FILES, #handler )</template>
 		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
 		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>
@@ -575,6 +590,9 @@ Python code generation written by
 
 			#ifnotnull $tooltip
 			@{ self.SetToolTip( $tooltip ) #nl @}
+
+			#ifnotequal $drag_accept_files "0"
+			@{ self.DragAcceptFiles( true ) #nl @}
 
 			self.m_pages = [] #nl
 		</template>
@@ -657,6 +675,8 @@ Python code generation written by
 		<template name="evt_disconnect_OnSetFocus">self.Unbind( wx.EVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">self.Bind( wx.EVT_KILL_FOCUS, #handler )</template>
 		<template name="evt_disconnect_OnKillFocus">self.Unbind( wx.EVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">self.Bind( wx.EVT_DROP_FILES, #handler )</template>
+		<template name="evt_disconnect_OnDropFiles">self.Unbind( wx.EVT_DROP_FILES, #handler )</template>
 		<template name="evt_connect_OnPaint">self.Bind( wx.EVT_PAINT, #handler )</template>
 		<template name="evt_disconnect_OnPaint">self.Unbind( wx.EVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">self.Bind( wx.EVT_ERASE_BACKGROUND, #handler )</template>

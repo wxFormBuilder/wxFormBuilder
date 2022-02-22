@@ -40,6 +40,9 @@
 			#ifnotnull $context_help
 			@{ #utbl$name:SetHelpText( $context_help ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name:DragAcceptFiles( true ) #nl @}
+
 			#ifnotnull $minimum_size
 			@{ #utbl$name:SetMinSize( $minimum_size ) #nl @}
 
@@ -49,7 +52,7 @@
 			#ifparenttypeequal "form"
 			@{
 			#ifequal #parent $aui_managed "1"
-			@{ 
+			@{
 			#iftypeequal "widget || container || notebook || auinotebook || flatnotebook || listbook || choicebook || treelistctrl || splitter"
 			@{
 				#utbl#wxparent $name.m_mgr:AddPane( #utbl$name, wxaui.wxAuiPaneInfo()
@@ -141,6 +144,9 @@
 		<!-- wxFocusEvent -->
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
 		<template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>
+
+		<!-- wxDropFilesEvent -->
+		<template name="evt_connect_OnDropFiles">#utbl$name:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 
 		<!-- wxPaintEvent -->
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end  )</template>

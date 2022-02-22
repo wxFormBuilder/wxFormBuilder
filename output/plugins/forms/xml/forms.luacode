@@ -98,7 +98,7 @@ Lua code generation written by
 		</template>
 		<template name="settings">
 			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
-			
+
 			#ifnotnull $window_extra_style
 			@{ #utbl$name :SetExtraStyle( $window_extra_style ) #nl @}
 
@@ -122,16 +122,19 @@ Lua code generation written by
 
 			#ifnotnull $tooltip
 			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
-			
+
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name :DragAcceptFiles( true ) #nl @}
+
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				#utbl$name.m_mgr = wxaui.wxAuiManager() #nl
 				#utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
 			@}
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl #utbl$name .m_mgr:Update() @} 
+			@{ #nl #utbl$name .m_mgr:Update() @}
 			#ifnotnull $center
 			@{ #nl #utbl$name:Centre( $center ) @}
 		</template>
@@ -149,9 +152,9 @@ Lua code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
-		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
-		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
 		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
@@ -208,6 +211,8 @@ Lua code generation written by
 		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">#utbl:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnDropFiles">#utbl:Disconnect( wx.wxEVT_DROP_FILES )</template>
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -267,21 +272,24 @@ Lua code generation written by
 			#ifnotnull $tooltip
 			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name :DragAcceptFiles( true ) #nl @}
+
 			#ifnotnull $minimum_size
 			@{ #utbl$name :SetMinSize( $minimum_size ) #nl @}
-			
+
 			#ifnotnull $maximum_size
 			@{ #utbl$name :SetMaxSize( $maximum_size ) #nl @}
 
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				#utbl$name.m_mgr = wxaui.wxAuiManager() #nl
 				#utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
 			@}
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl #utbl$name .m_mgr:Update() @} 
+			@{ #nl #utbl$name .m_mgr:Update() @}
 		</template>
 		<template name="evt_connect_OnInitDialog">#utbl$name:Connect( wx.wxEVT_INIT_DIALOG, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnInitDialog">$name:Disconnect( wx.wxEVT_INIT_DIALOG )</template>
@@ -299,9 +307,9 @@ Lua code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
-		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
-		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
 		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
@@ -358,6 +366,8 @@ Lua code generation written by
 		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">#utbl:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnDropFiles">#utbl:Disconnect( wx.wxEVT_DROP_FILES )</template>
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -397,7 +407,7 @@ Lua code generation written by
 			<!--@{import wxaui @ --></template>
 		<template name="settings">
 			#utbl$name:SetSizeHints( $minimum_size, $maximum_size ) #nl
-			
+
 			#ifnotnull $window_extra_style
 			@{ #utbl$name :SetExtraStyle( #utbl$name :GetExtraStyle() + $window_extra_style ) #nl @}
 
@@ -422,15 +432,18 @@ Lua code generation written by
 			#ifnotnull $tooltip
 			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name :DragAcceptFiles( true ) #nl @}
+
 			#ifequal $aui_managed "1"
-			@{ 
+			@{
 				#utbl$name.m_mgr = wxaui.wxAuiManager() #nl
 				#utbl$name.m_mgr:SetManagedWindow( #utbl$name ) #nl
 			@}
 		</template>
 		<template name="after_addchild">
 			#ifequal $aui_managed "1"
-			@{ #nl #utbl$name .m_mgr:Update() @} 
+			@{ #nl #utbl$name .m_mgr:Update() @}
 			#ifnotnull $center
 			@{ #nl #utbl$name:Centre( $center ) @}
 		</template>
@@ -450,9 +463,9 @@ Lua code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
-		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
-		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
 		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
@@ -509,6 +522,8 @@ Lua code generation written by
 		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">#utbl:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnDropFiles">#utbl:Disconnect( wx.wxEVT_DROP_FILES )</template>
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -568,6 +583,9 @@ Lua code generation written by
 			#ifnotnull $tooltip
 			@{ #utbl$name :SetToolTip( $tooltip ) #nl @}
 
+			#ifnotequal $drag_accept_files "0"
+			@{ #utbl$name :DragAcceptFiles( true ) #nl @}
+
 			#utbl$name .m_pages = {} #nl
 		</template>
 		<template name="after_addchild">
@@ -590,9 +608,9 @@ Lua code generation written by
 		<template name="evt_disconnect_OnLeaveWindow">$name:Disconnect( wx.wxEVT_LEAVE_WINDOW )</template>
 		<template name="evt_connect_OnLeftDClick">#utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDClick">$name:Disconnect( wx.wxEVT_LEFT_DCLICK )</template>
-		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftDown">#utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftDown">$name:Disconnect( wx.wxEVT_LEFT_DOWN )</template>
-		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>  
+		<template name="evt_connect_OnLeftUp">#utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnLeftUp">$name:Disconnect( wx.wxEVT_LEFT_UP )</template>
 		<template name="evt_connect_OnMiddleDClick">#utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnMiddleDClick">$name:Disconnect( wx.wxEVT_MIDDLE_DCLICK )</template>
@@ -649,6 +667,8 @@ Lua code generation written by
 		<template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
 		<template name="evt_connect_OnKillFocus">#utbl$name:Connect( wx.wxEVT_KILL_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnKillFocus">$name:Disconnect( wx.wxEVT_KILL_FOCUS )</template>
+		<template name="evt_connect_OnDropFiles">#utbl:Connect( wx.wxEVT_DROP_FILES, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
+		<template name="evt_disconnect_OnDropFiles">#utbl:Disconnect( wx.wxEVT_DROP_FILES )</template>
 		<template name="evt_connect_OnPaint">#utbl$name:Connect( wx.wxEVT_PAINT, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
 		<template name="evt_disconnect_OnPaint">$name:Disconnect( wx.wxEVT_PAINT )</template>
 		<template name="evt_connect_OnEraseBackground">#utbl$name:Connect( wx.wxEVT_ERASE_BACKGROUND, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -728,7 +748,7 @@ Lua code generation written by
 				@{ #utbl$name :SetToolSeparation( $separation ) #nl @}
 			@}
 
-			#ifnotnull $margins 
+			#ifnotnull $margins
 			@{ #utbl$name :SetMargins( $margins ) #nl @}
 
 			#ifnotnull $packing
