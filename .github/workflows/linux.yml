@@ -73,7 +73,7 @@ jobs:
         sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
     - name: Setup package build
       run: |
-        cp -rf install/linux/deb/ ./debian/
+        cp -rf data/packaging/linux/debian/ ./debian/
         echo "package_basedir=${GITHUB_WORKSPACE%/*}" >> $GITHUB_ENV
     - name: Build package
       run: |
