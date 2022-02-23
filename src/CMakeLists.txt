@@ -62,8 +62,6 @@ target_sources(wxFormBuilder_app
     codegen/xrccg.cpp
     dbg_stack_trace/stack.hpp
     dbg_stack_trace/stack.cpp
-    md5/md5.hh
-    md5/md5.cc
     model/database.h
     model/database.cpp
     model/objectbase.h
@@ -239,6 +237,7 @@ target_link_libraries(wxFormBuilder_app
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
     Boost::headers
+    md5::md5
 )
 if(WIN32)
   if(MINGW)
