@@ -80,7 +80,7 @@ jobs:
       shell: msys2 {0}
       run: |
         _build\\stage\\wxFormBuilder.exe -v
-        _build\\stage\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+        _build\\stage\\wxFormBuilder.exe -g test\\wxfbTest.fbp
     - name: Install
       shell: msys2 {0}
       run: |
@@ -89,7 +89,7 @@ jobs:
       shell: cmd
       run: |
         _install\\wxFormBuilder.exe -v
-        _install\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+        _install\\wxFormBuilder.exe -g test\\wxfbTest.fbp
     - name: Create installer
       shell: cmd
       run: |

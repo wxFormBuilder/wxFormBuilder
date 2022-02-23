@@ -67,14 +67,14 @@ jobs:
     - name: Test stage
       run: |
         _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
-        _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
+        _build/stage/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g test/wxfbTest.fbp
     - name: Install
       run: |
         cmake --install _build --config Release --strip
     - name: Test install
       run: |
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
-        _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g wxfbTest/wxfbTest.fbp
+        _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g test/wxfbTest.fbp
     - name: Package app bundle
       run: |
         cd _install
