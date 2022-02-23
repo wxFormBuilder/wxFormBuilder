@@ -17,13 +17,13 @@ Files: debian/*
 Copyright: 2021 Steffen Olszewski
 License: GPL-2.0+
 
-Files: src/dbg_stack_trace/*
-Copyright: 2007 Edd Dawson
-License: boost
-
 Files: third_party/md5/md5/*
 Copyright: 1995 Mordechai T. Abzug
 License: md5
+
+Files: third_party/stack_trace/stack_trace/*
+Copyright: 2007 Edd Dawson
+License: boost
 
 Files: third_party/ticpp/*
 Copyright: 2000-2006 Lee Thomason

@@ -1,17 +1,3 @@
-if(WIN32)
-  if(MINGW)
-    find_package(BFD REQUIRED)
-    find_package(Iberty REQUIRED)
-    # Non-MSYS2-MinGW builds seem not to require Intl but only ZLIB
-    if(MSYS)
-      find_package(Intl REQUIRED)
-    else()
-      find_package(Intl QUIET)
-    endif()
-    find_package(ZLIB REQUIRED)
-  endif()
-endif()
-
 if(NOT APPLE)
   file(RELATIVE_PATH libDir
     "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
@@ -60,8 +46,6 @@ target_sources(wxFormBuilder_app
     codegen/pythoncg.cpp
     codegen/xrccg.h
     codegen/xrccg.cpp
-    dbg_stack_trace/stack.hpp
-    dbg_stack_trace/stack.cpp
     model/database.h
     model/database.cpp
     model/objectbase.h
@@ -238,28 +222,8 @@ target_link_libraries(wxFormBuilder_app
     ${wxWidgets_LIBRARIES}
     Boost::headers
     md5::md5
+    stack_trace::stack
 )
-if(WIN32)
-  if(MINGW)
-    target_link_libraries(wxFormBuilder_app
-      PRIVATE
-        BFD::BFD
-        Iberty::Iberty
-        $<TARGET_NAME_IF_EXISTS:Intl::Intl>
-        ZLIB::ZLIB
-        psapi # TODO: Only required for systems older than Windows 7
-    )
-  endif()
-  target_link_libraries(wxFormBuilder_app
-    PRIVATE
-      imagehlp
-  )
-else()
-  target_link_libraries(wxFormBuilder_app
-    PRIVATE
-      dl
-  )
-endif()
 
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
