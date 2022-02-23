@@ -122,9 +122,8 @@ function(wxfb_add_plugin PLUGIN_NAME)
       DESTINATION ${libraryDestination}
   )
 
-  # TODO: In the final sources layout these files should reside next to the sources
   wxfb_target_definitions(wxFormBuilder_${PLUGIN_NAME}
-    INPUT_DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}"
+    INPUT_DIRECTORY "${PLUGIN_DIRECTORY}"
     OUTPUT_DIRECTORY "${stageResourceDestination}"
     INSTALL_DIRECTORY "${resourceDestination}"
     COMMON ${PLUGIN_COMPONENTS}
@@ -134,7 +133,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
 
   if(DEFINED PLUGIN_ICONS)
     wxfb_target_resources(wxFormBuilder_${PLUGIN_NAME}
-      INPUT_DIRECTORY "../output/plugins/${PLUGIN_DIRECTORY}"
+      INPUT_DIRECTORY "${PLUGIN_DIRECTORY}"
       OUTPUT_DIRECTORY "${stageResourceDestination}"
       INSTALL_DIRECTORY "${resourceDestination}"
       ICONS ${PLUGIN_ICONS}
