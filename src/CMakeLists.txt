@@ -277,9 +277,8 @@ install(TARGETS wxFormBuilder_app
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# TODO: Where should these files reside in the final sources layout?
 wxfb_target_definitions(wxFormBuilder_app
-  INPUT_DIRECTORY "../output"
+  INPUT_DIRECTORY "../resources"
   OUTPUT_DIRECTORY "${stageResourceDestinationDefinitions}"
   INSTALL_DIRECTORY "${resourceDestinationDefinitions}"
   COMMON ${commonDefinitions}
@@ -288,7 +287,7 @@ wxfb_target_definitions(wxFormBuilder_app
 set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
 
 wxfb_target_resources(wxFormBuilder_app
-  INPUT_DIRECTORY "../output/resources"
+  INPUT_DIRECTORY "../resources"
   OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
   INSTALL_DIRECTORY "${resourceDestinationResources}"
   RESOURCES ${commonResources}
