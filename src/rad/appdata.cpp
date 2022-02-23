@@ -485,7 +485,7 @@ ApplicationData::ApplicationData( const wxString &rootdir )
 	m_debugLogTarget = new wxLogWindow( NULL, wxT( "Logging" ) );
 	//wxLog::SetActiveTarget( log );
 	#endif
-	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT( "xml" ) + wxFILE_SEP_PATH ) ;
+	m_objDb->SetXmlPath( m_rootDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "xml" ) + wxFILE_SEP_PATH ) ;
 	m_objDb->SetIconPath( m_rootDir + wxFILE_SEP_PATH + wxT( "resources" ) + wxFILE_SEP_PATH + wxT( "icons" ) + wxFILE_SEP_PATH );
 	m_objDb->SetPluginPath( m_rootDir + wxFILE_SEP_PATH + wxT( "plugins" ) + wxFILE_SEP_PATH ) ;
 

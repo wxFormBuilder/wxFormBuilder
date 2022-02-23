@@ -6,14 +6,11 @@ if(NOT APPLE)
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
-set(resourceDestinationDefinitions ${CMAKE_INSTALL_DATADIR})
-set(resourceDestinationResources ${CMAKE_INSTALL_DATADIR}/resources)
+set(resourceDestination ${CMAKE_INSTALL_DATADIR}/resources)
 if(WXFB_STAGE_BUILD)
-  set(stageResourceDestinationDefinitions "${WXFB_STAGE_DIR}/${resourceDestinationDefinitions}")
-  set(stageResourceDestinationResources "${WXFB_STAGE_DIR}/${resourceDestinationResources}")
+  set(stageResourceDestination "${WXFB_STAGE_DIR}/${resourceDestination}")
 else()
-  set(stageResourceDestinationDefinitions "")
-  set(stageResourceDestinationResources "")
+  set(stageResourceDestination "")
 endif()
 
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
@@ -279,8 +276,8 @@ install(TARGETS wxFormBuilder_app
 
 wxfb_target_definitions(wxFormBuilder_app
   INPUT_DIRECTORY "../resources"
-  OUTPUT_DIRECTORY "${stageResourceDestinationDefinitions}"
-  INSTALL_DIRECTORY "${resourceDestinationDefinitions}"
+  OUTPUT_DIRECTORY "${stageResourceDestination}"
+  INSTALL_DIRECTORY "${resourceDestination}"
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
@@ -288,8 +285,8 @@ set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates 
 
 wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "../resources"
-  OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
-  INSTALL_DIRECTORY "${resourceDestinationResources}"
+  OUTPUT_DIRECTORY "${stageResourceDestination}"
+  INSTALL_DIRECTORY "${resourceDestination}"
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
