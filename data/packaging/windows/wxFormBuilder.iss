@@ -28,6 +28,9 @@
   #endif
 #endif
 
+#define protected RootSourceDir "..\..\.."
+#define protected RootInstallDir AddBackslash(RootSourceDir) + "_install"
+
 #define protected FileHandle
 #define protected FileVersionPrefix "project(wxFormBuilder VERSION "
 #define protected FileVersionPostfix " LANGUAGES"
@@ -41,7 +44,7 @@
   #endif
 #endsub
 
-#for {FileHandle = FileOpen("..\..\CMakeLists.txt"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
+#for {FileHandle = FileOpen(AddBackslash(RootSourceDir) + "CMakeLists.txt"); FileHandle && !FileEof(FileHandle) && !Defined(MyAppVer); ""} ProcessVersionLine
 #if FileHandle
   #expr FileClose(FileHandle)
 #endif
@@ -66,8 +69,8 @@ Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
 WizardStyle=modern
-InfoAfterFile=..\..\_install\Changelog.txt
-LicenseFile=..\..\LICENSE
+InfoAfterFile={#RootInstallDir}\Changelog.txt
+LicenseFile={#RootSourceDir}\LICENSE
 SetupIconFile=support\wxFormBuilder.ico
 ShowLanguageDialog=yes
 DefaultDirName={commonpf}\{#MyAppName}
@@ -95,7 +98,6 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 
 [Files]
-#define protected RootDir "..\..\_install"
 #define protected PluginsBaseDir "plugins"
 
 #define protected FindHandle
@@ -104,7 +106,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 #sub ProcessFoundPlugin
   #define private FileName FindGetFileName(FindHandle)
   #if FileName != "." && FileName != ".."
-    #define private PluginsSourceDir AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + FileName
+    #define private PluginsSourceDir AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + FileName
     #define private PluginsDestDir AddBackslash(PluginsBaseDir) + FileName
     Source: {#PluginsSourceDir}\lib{#FileName}.dll; DestDir: {app}\{#PluginsDestDir}; Flags: ignoreversion; Components: main
     Source: {#PluginsSourceDir}\icons\*; DestDir: {app}\{#PluginsDestDir}\icons; Flags: recursesubdirs createallsubdirs; Components: main
@@ -112,20 +114,20 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
   #endif
 #endsub
 
-Source: {#RootDir}\Changelog.txt; DestDir: {app}; Components: main
-Source: {#RootDir}\..\LICENSE; DestDir: {app}; Components: main
-Source: {#RootDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
-Source: {#RootDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
-Source: {#RootDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main
-#for {FindHandle = FindResult = FindFirst(AddBackslash(RootDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
+Source: {#RootInstallDir}\Changelog.txt; DestDir: {app}; Components: main
+Source: {#RootSourceDir}\LICENSE; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
+Source: {#RootInstallDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main
+#for {FindHandle = FindResult = FindFirst(AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
 #if FindHandle
   #expr FindClose(FindHandle)
 #endif
 
-Source: {#RootDir}\wx*.dll; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\wx*.dll; DestDir: {app}; Components: main
 
-Source: {#RootDir}\lib*.dll; DestDir: {app}; Components: runtime
-Source: {#RootDir}\zlib1.dll; DestDir: {app}; Components: runtime
+Source: {#RootInstallDir}\lib*.dll; DestDir: {app}; Components: runtime
+Source: {#RootInstallDir}\zlib1.dll; DestDir: {app}; Components: runtime
 
 
 [Icons]
