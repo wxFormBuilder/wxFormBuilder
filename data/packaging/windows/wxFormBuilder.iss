@@ -118,7 +118,6 @@ Source: {#RootInstallDir}\Changelog.txt; DestDir: {app}; Components: main
 Source: {#RootSourceDir}\LICENSE; DestDir: {app}; Components: main
 Source: {#RootInstallDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
-Source: {#RootInstallDir}\xml\*; DestDir: {app}\xml; Flags: recursesubdirs createallsubdirs; Components: main
 #for {FindHandle = FindResult = FindFirst(AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
 #if FindHandle
   #expr FindClose(FindHandle)
