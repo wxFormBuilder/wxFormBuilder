@@ -190,8 +190,8 @@ set(commonIcons
 )
 if(APPLE)
   set(appleResources
-    ../install/macosx/icon.icns
-    ../install/macosx/docicon.icns
+    ../data/platform/macos/icon.icns
+    ../data/platform/macos/docicon.icns
   )
   target_sources(wxFormBuilder_app
     PRIVATE
@@ -227,7 +227,7 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.wxFormBuilder"
   MACOSX_BUNDLE_ICON_FILE "icon.icns"
-  MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../install/macosx/Info.plist.in"
+  MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../data/platform/macos/Info.plist.in"
 )
 if(APPLE)
   set_target_properties(wxFormBuilder_app PROPERTIES
