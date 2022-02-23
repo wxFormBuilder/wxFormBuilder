@@ -25,7 +25,7 @@ Files: src/md5/*
 Copyright: 1995 Mordechai T. Abzug
 License: md5
 
-Files: subprojects/ticpp/*
+Files: third_party/ticpp/*
 Copyright: 2000-2006 Lee Thomason
            2006 Ryan Pusztai
            2006 Ryan Mulder
