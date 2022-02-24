@@ -19,7 +19,7 @@
         <property name="internationalize">0</property>
         <property name="name">GenInheretedClass</property>
         <property name="namespace"></property>
-        <property name="path">.</property>
+        <property name="path">..\..\src\rad\geninheritclass</property>
         <property name="precompiled_header"></property>
         <property name="relative_path">1</property>
         <property name="skip_lua_events">1</property>
@@ -36,6 +36,7 @@
             <property name="center">wxBOTH</property>
             <property name="context_help"></property>
             <property name="context_menu">1</property>
+            <property name="drag_accept_files">0</property>
             <property name="enabled">1</property>
             <property name="event_handler">impl_virtual</property>
             <property name="extra_style"></property>
@@ -98,6 +99,7 @@
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
+                                <property name="drag_accept_files">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
@@ -162,6 +164,7 @@
                         <property name="dock">Dock</property>
                         <property name="dock_fixed">0</property>
                         <property name="docking">Left</property>
+                        <property name="drag_accept_files">0</property>
                         <property name="enabled">1</property>
                         <property name="fg"></property>
                         <property name="floatable">1</property>
@@ -238,6 +241,7 @@
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
+                                <property name="drag_accept_files">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
@@ -299,6 +303,7 @@
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
+                                <property name="drag_accept_files">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
@@ -364,6 +369,7 @@
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
+                                <property name="drag_accept_files">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
@@ -425,6 +431,7 @@
                                 <property name="dock">Dock</property>
                                 <property name="dock_fixed">0</property>
                                 <property name="docking">Left</property>
+                                <property name="drag_accept_files">0</property>
                                 <property name="enabled">1</property>
                                 <property name="fg"></property>
                                 <property name="floatable">1</property>
