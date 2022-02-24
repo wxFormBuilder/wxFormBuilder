@@ -292,10 +292,9 @@ wxfb_target_resources(wxFormBuilder_app
 )
 set_target_properties(wxFormBuilder_app-resources wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
 
-# TODO: Where should these files reside in the final sources layout?
 install(
   FILES
-    ../output/Changelog.txt
+    ../Changelog.txt
     ../LICENSE
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
