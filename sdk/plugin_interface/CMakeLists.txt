@@ -13,7 +13,6 @@ target_sources(wxFormBuilder_plugin-interface
     xrcconv.cpp
     forms/wizard.h
     forms/wizard.cpp
-    forms/wizard.fbp
 )
 
 target_compile_definitions(wxFormBuilder_plugin-interface

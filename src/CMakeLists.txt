@@ -99,7 +99,6 @@ target_sources(wxFormBuilder_app
     rad/designer/visualobj.h
     rad/designer/visualobj.cpp
     rad/designer/window_buttons.h
-    rad/geninheritclass/GenInheritedDlg.fbp
     rad/geninheritclass/geninhertclass_gui.h
     rad/geninheritclass/geninhertclass_gui.cpp
     rad/geninheritclass/geninhertclass.h
