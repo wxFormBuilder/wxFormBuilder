@@ -70,7 +70,7 @@ SolidCompression=true
 InternalCompressLevel=ultra
 WizardStyle=modern
 InfoAfterFile={#RootInstallDir}\Changelog.txt
-LicenseFile={#RootSourceDir}\LICENSE
+LicenseFile={#RootInstallDir}\LICENSE
 SetupIconFile=support\wxFormBuilder.ico
 ShowLanguageDialog=yes
 DefaultDirName={commonpf}\{#MyAppName}
@@ -115,7 +115,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 #endsub
 
 Source: {#RootInstallDir}\Changelog.txt; DestDir: {app}; Components: main
-Source: {#RootSourceDir}\LICENSE; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\LICENSE; DestDir: {app}; Components: main
 Source: {#RootInstallDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
 #for {FindHandle = FindResult = FindFirst(AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
