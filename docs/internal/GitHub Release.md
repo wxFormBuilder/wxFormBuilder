@@ -12,9 +12,9 @@ otherwise the workflows need to be triggered again manually after the tag got pu
    defined in `src/rad/appdata.cpp` should contain a comment if a version number increase is necessary.
    Perform this in a separate commit if necessary.
 2. Update the version number in the main `CMakeLists.txt` file in the root directory
-3. Add the version number and release timestamp to the AppStream metadata file `install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxformbuilder.appdata.xml`
-4. Add the version number and release timestamp to the Debian changelog file `install/linux/deb/changelog`
-5. Add the version number and release timestamp together with a link to the future GitHub release post in `output/Changelog.txt`
+3. Add the version number and release timestamp to the AppStream metadata file `data/platform/linux/share/metainfo/org.wxformbuilder.wxFormBuilder.metainfo.xml`
+4. Add the version number and release timestamp to the Debian changelog file `data/packaging/linux/debian/changelog`
+5. Add the version number and release timestamp together with a link to the future GitHub release post in `Changelog.txt`
 6. Commit the changes
 7. Tag the commit. The tag name must be the version number prefixed with the letter `v`. To make the tag annotated,
    add a simple message like `Release`.
