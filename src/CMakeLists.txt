@@ -189,8 +189,8 @@ set(commonIcons
 )
 if(APPLE)
   set(appleResources
-    ../data/platform/macos/icon.icns
-    ../data/platform/macos/docicon.icns
+    "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
+    "${PROJECT_SOURCE_DIR}/data/platform/macos/docicon.icns"
   )
   target_sources(wxFormBuilder_app
     PRIVATE
@@ -226,7 +226,7 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.wxFormBuilder"
   MACOSX_BUNDLE_ICON_FILE "icon.icns"
-  MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../data/platform/macos/Info.plist.in"
+  MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/data/platform/macos/Info.plist.in"
 )
 if(APPLE)
   set_target_properties(wxFormBuilder_app PROPERTIES
@@ -274,7 +274,7 @@ install(TARGETS wxFormBuilder_app
 )
 
 wxfb_target_definitions(wxFormBuilder_app
-  INPUT_DIRECTORY "../resources"
+  INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
   COMMON ${commonDefinitions}
@@ -283,7 +283,7 @@ wxfb_target_definitions(wxFormBuilder_app
 set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
 
 wxfb_target_resources(wxFormBuilder_app
-  INPUT_DIRECTORY "../resources"
+  INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
   RESOURCES ${commonResources}
@@ -293,14 +293,14 @@ set_target_properties(wxFormBuilder_app-resources wxFormBuilder_app-icons PROPER
 
 install(
   FILES
-    ../Changelog.txt
-    ../LICENSE
+    "${PROJECT_SOURCE_DIR}/Changelog.txt"
+    "${PROJECT_SOURCE_DIR}/LICENSE"
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 
 if(NOT WIN32 AND NOT APPLE)
   install(
-    DIRECTORY ../data/platform/linux/share/
+    DIRECTORY "${PROJECT_SOURCE_DIR}/data/platform/linux/share/"
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
   )
   install(
