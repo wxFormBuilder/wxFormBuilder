@@ -209,6 +209,7 @@ target_compile_definitions(wxFormBuilder_app
 target_include_directories(wxFormBuilder_app
   PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+    "$<BUILD_INTERFACE:$<$<BOOL:${WIN32}>:${PROJECT_SOURCE_DIR}/data/platform/windows>>"
 )
 
 target_link_libraries(wxFormBuilder_app
