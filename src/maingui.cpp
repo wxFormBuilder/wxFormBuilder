@@ -48,7 +48,7 @@
 #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
 	#include <wx/stackwalk.h>
 #elif defined(_WIN32) && defined(__MINGW32__)
-	#include "dbg_stack_trace/stack.hpp"
+	#include <stack_trace/stack.hpp>
 	#include <sstream>
 	#include <excpt.h>
 

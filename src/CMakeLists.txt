@@ -1,17 +1,3 @@
-if(WIN32)
-  if(MINGW)
-    find_package(BFD REQUIRED)
-    find_package(Iberty REQUIRED)
-    # Non-MSYS2-MinGW builds seem not to require Intl but only ZLIB
-    if(MSYS)
-      find_package(Intl REQUIRED)
-    else()
-      find_package(Intl QUIET)
-    endif()
-    find_package(ZLIB REQUIRED)
-  endif()
-endif()
-
 if(NOT APPLE)
   file(RELATIVE_PATH libDir
     "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
@@ -20,14 +6,11 @@ if(NOT APPLE)
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
-set(resourceDestinationDefinitions ${CMAKE_INSTALL_DATADIR})
-set(resourceDestinationResources ${CMAKE_INSTALL_DATADIR}/resources)
+set(resourceDestination ${CMAKE_INSTALL_DATADIR}/resources)
 if(WXFB_STAGE_BUILD)
-  set(stageResourceDestinationDefinitions "${WXFB_STAGE_DIR}/${resourceDestinationDefinitions}")
-  set(stageResourceDestinationResources "${WXFB_STAGE_DIR}/${resourceDestinationResources}")
+  set(stageResourceDestination "${WXFB_STAGE_DIR}/${resourceDestination}")
 else()
-  set(stageResourceDestinationDefinitions "")
-  set(stageResourceDestinationResources "")
+  set(stageResourceDestination "")
 endif()
 
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
@@ -60,10 +43,6 @@ target_sources(wxFormBuilder_app
     codegen/pythoncg.cpp
     codegen/xrccg.h
     codegen/xrccg.cpp
-    dbg_stack_trace/stack.hpp
-    dbg_stack_trace/stack.cpp
-    md5/md5.hh
-    md5/md5.cc
     model/database.h
     model/database.cpp
     model/objectbase.h
@@ -120,7 +99,6 @@ target_sources(wxFormBuilder_app
     rad/designer/visualobj.h
     rad/designer/visualobj.cpp
     rad/designer/window_buttons.h
-    rad/geninheritclass/GenInheritedDlg.fbp
     rad/geninheritclass/geninhertclass_gui.h
     rad/geninheritclass/geninhertclass_gui.cpp
     rad/geninheritclass/geninhertclass.h
@@ -211,8 +189,8 @@ set(commonIcons
 )
 if(APPLE)
   set(appleResources
-    ../install/macosx/icon.icns
-    ../install/macosx/docicon.icns
+    "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
+    "${PROJECT_SOURCE_DIR}/data/platform/macos/docicon.icns"
   )
   target_sources(wxFormBuilder_app
     PRIVATE
@@ -231,6 +209,7 @@ target_compile_definitions(wxFormBuilder_app
 target_include_directories(wxFormBuilder_app
   PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+    "$<BUILD_INTERFACE:$<$<BOOL:${WIN32}>:${PROJECT_SOURCE_DIR}/data/platform/windows>>"
 )
 
 target_link_libraries(wxFormBuilder_app
@@ -239,35 +218,16 @@ target_link_libraries(wxFormBuilder_app
     ticpp::ticpp
     ${wxWidgets_LIBRARIES}
     Boost::headers
+    md5::md5
+    stack_trace::stack
 )
-if(WIN32)
-  if(MINGW)
-    target_link_libraries(wxFormBuilder_app
-      PRIVATE
-        BFD::BFD
-        Iberty::Iberty
-        $<TARGET_NAME_IF_EXISTS:Intl::Intl>
-        ZLIB::ZLIB
-        psapi # TODO: Only required for systems older than Windows 7
-    )
-  endif()
-  target_link_libraries(wxFormBuilder_app
-    PRIVATE
-      imagehlp
-  )
-else()
-  target_link_libraries(wxFormBuilder_app
-    PRIVATE
-      dl
-  )
-endif()
 
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_GUI_IDENTIFIER "org.wxformbuilder.wxFormBuilder"
   MACOSX_BUNDLE_ICON_FILE "icon.icns"
-  MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/../install/macosx/Info.plist.in"
+  MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/data/platform/macos/Info.plist.in"
 )
 if(APPLE)
   set_target_properties(wxFormBuilder_app PROPERTIES
@@ -314,57 +274,35 @@ install(TARGETS wxFormBuilder_app
     DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# TODO: Where should these files reside in the final sources layout?
 wxfb_target_definitions(wxFormBuilder_app
-  INPUT_DIRECTORY "../output"
-  OUTPUT_DIRECTORY "${stageResourceDestinationDefinitions}"
-  INSTALL_DIRECTORY "${resourceDestinationDefinitions}"
+  INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
+  OUTPUT_DIRECTORY "${stageResourceDestination}"
+  INSTALL_DIRECTORY "${resourceDestination}"
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
 set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
 
 wxfb_target_resources(wxFormBuilder_app
-  INPUT_DIRECTORY "../output/resources"
-  OUTPUT_DIRECTORY "${stageResourceDestinationResources}"
-  INSTALL_DIRECTORY "${resourceDestinationResources}"
+  INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
+  OUTPUT_DIRECTORY "${stageResourceDestination}"
+  INSTALL_DIRECTORY "${resourceDestination}"
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
 set_target_properties(wxFormBuilder_app-resources wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
 
-# TODO: Where should these files reside in the final sources layout?
 install(
   FILES
-    ../output/Changelog.txt
-    ../LICENSE
+    "${PROJECT_SOURCE_DIR}/Changelog.txt"
+    "${PROJECT_SOURCE_DIR}/LICENSE"
   DESTINATION ${CMAKE_INSTALL_DATADIR}
 )
 
 if(NOT WIN32 AND NOT APPLE)
   install(
-    FILES ../install/linux/data/gnome/usr/share/applications/wxformbuilder.desktop
-    RENAME org.wxformbuilder.wxFormBuilder.desktop
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
-  )
-  install(
-    FILES ../install/linux/data/gnome/usr/share/appdata/org.wxformbuilder.wxformbuilder.appdata.xml
-    RENAME org.wxformbuilder.wxFormBuilder.metainfo.xml
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
-  )
-  install(
-    FILES ../install/linux/data/gnome/usr/share/pixmaps/wxformbuilder.png
-    RENAME org.wxformbuilder.wxFormBuilder.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps
-  )
-  install(
-    FILES ../install/linux/data/gnome/usr/share/mime/packages/org.wxformbuilder.wxFormBuilder.xml
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/mime/packages
-  )
-  install(
-    FILES ../install/linux/data/gnome/usr/share/icons/gnome/48x48/mimetypes/gnome-mime-application-x-wxformbuilder.png
-    RENAME org.wxformbuilder.wxFormBuilder.application-x-wxformbuilder.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/mimetypes
+    DIRECTORY "${PROJECT_SOURCE_DIR}/data/platform/linux/share/"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
   )
   install(
     CODE

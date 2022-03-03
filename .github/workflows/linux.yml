@@ -8,29 +8,29 @@ on:
       - '.github/workflows/sources.yml'
       - '.github/workflows/macos.yml'
       - '.github/workflows/windows.yml'
+      - 'data/artwork/**'
+      - 'data/packaging/macos/**'
+      - 'data/packaging/windows/**'
+      - 'data/platform/macos/**'
+      - 'data/platform/windows/**'
       - 'docs/**'
-      - 'install/macosx/**'
-      - 'install/windows/**'
-      - 'scripts/premake/**'
+      - '.clang-format'
       - '*.md'
       - '*.yml'
-      - '.clang-format'
-      - 'create_build_files*'
-      - 'meson.build'
   pull_request:
     paths-ignore:
       - '.github/workflows/sources.yml'
       - '.github/workflows/macos.yml'
       - '.github/workflows/windows.yml'
+      - 'data/artwork/**'
+      - 'data/packaging/macos/**'
+      - 'data/packaging/windows/**'
+      - 'data/platform/macos/**'
+      - 'data/platform/windows/**'
       - 'docs/**'
-      - 'install/macosx/**'
-      - 'install/windows/**'
-      - 'scripts/premake/**'
+      - '.clang-format'
       - '*.md'
       - '*.yml'
-      - '.clang-format'
-      - 'create_build_files*'
-      - 'meson.build'
 
 jobs:
   flatpak:
@@ -54,7 +54,7 @@ jobs:
       with:
         arch: x86_64
         bundle: wxFormBuilder${{ env.project_version }}.flatpak
-        manifest-path: install/linux/org.wxformbuilder.wxFormBuilder.json
+        manifest-path: data/packaging/linux/flatpak/org.wxformbuilder.wxFormBuilder.json
         cache-key: flatpak-builder-${{ github.sha }}
   debian:
     name: Debian Package
@@ -73,7 +73,7 @@ jobs:
         sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
     - name: Setup package build
       run: |
-        cp -rf install/linux/deb/ ./debian/
+        cp -rf data/packaging/linux/debian/ ./debian/
         echo "package_basedir=${GITHUB_WORKSPACE%/*}" >> $GITHUB_ENV
     - name: Build package
       run: |
@@ -82,7 +82,7 @@ jobs:
     - name: Test package
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
-        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g wxfbTest/wxfbTest.fbp
+        xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g test/wxfbTest.fbp
     - uses: actions/upload-artifact@v2
       with:
         name: Debian Package

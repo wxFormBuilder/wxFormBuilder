@@ -8,29 +8,29 @@ on:
       - '.github/workflows/sources.yml'
       - '.github/workflows/linux.yml'
       - '.github/workflows/macos.yml'
+      - 'data/artwork/**'
+      - 'data/packaging/linux/**'
+      - 'data/packaging/macos/**'
+      - 'data/platform/linux/**'
+      - 'data/platform/macos/**'
       - 'docs/**'
-      - 'install/linux/**'
-      - 'install/macosx/**'
-      - 'scripts/premake/**'
+      - '.clang-format'
       - '*.md'
       - '*.yml'
-      - '.clang-format'
-      - 'create_build_files*'
-      - 'meson.build'
   pull_request:
     paths-ignore:
       - '.github/workflows/sources.yml'
       - '.github/workflows/linux.yml'
       - '.github/workflows/macos.yml'
+      - 'data/artwork/**'
+      - 'data/packaging/linux/**'
+      - 'data/packaging/macos/**'
+      - 'data/platform/linux/**'
+      - 'data/platform/macos/**'
       - 'docs/**'
-      - 'install/linux/**'
-      - 'install/macosx/**'
-      - 'scripts/premake/**'
+      - '.clang-format'
       - '*.md'
       - '*.yml'
-      - '.clang-format'
-      - 'create_build_files*'
-      - 'meson.build'
 
 jobs:
   installer:
@@ -80,7 +80,7 @@ jobs:
       shell: msys2 {0}
       run: |
         _build\\stage\\wxFormBuilder.exe -v
-        _build\\stage\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+        _build\\stage\\wxFormBuilder.exe -g test\\wxfbTest.fbp
     - name: Install
       shell: msys2 {0}
       run: |
@@ -89,11 +89,11 @@ jobs:
       shell: cmd
       run: |
         _install\\wxFormBuilder.exe -v
-        _install\\wxFormBuilder.exe -g wxfbTest\\wxfbTest.fbp
+        _install\\wxFormBuilder.exe -g test\\wxfbTest.fbp
     - name: Create installer
       shell: cmd
       run: |
-        ISCC.exe /DArch=${{ matrix.env }} /O. install\\windows\\wxFormBuilder.iss
+        ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
     - uses: actions/upload-artifact@v2
       with:
         name: Windows Installer ${{ matrix.env }}
