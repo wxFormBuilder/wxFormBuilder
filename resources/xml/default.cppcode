@@ -214,8 +214,8 @@
 				#ifequal $TopDockable "0" @{.TopDockable( $TopDockable )@}
 				#ifequal $LeftDockable "0" @{.LeftDockable( $LeftDockable )@}
 				#ifequal $RightDockable "0" @{.RightDockable( $RightDockable )@}
-				#ifequal $floatable "0"	@{.Floatable( $floatable )@}
-				#ifnotnull $aui_row	@{.Row( $aui_row )@}
+				#ifequal $floatable "0" @{.Floatable( $floatable )@}
+				#ifnotnull $aui_row @{.Row( $aui_row )@}
 				#ifnotnull $aui_position @{.Position( $aui_position )@}
 				#ifnotnull $best_size @{.BestSize( $best_size )@}
 				#ifnotnull $min_size @{.MinSize( $min_size )@}

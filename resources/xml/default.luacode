@@ -68,14 +68,14 @@
 				#ifequal $show "0" @{:Hide()@}
 				#ifequal $moveable "0" @{:Movable( $moveable )@}
 				#ifnotnull $dock @{:$dock()#ifequal $dock "Float" @{:FloatingPosition( $pane_position )@}@}
-				#ifnotnull $resize @{:$resize()#ifequal $resize "Resizable"	@{:FloatingSize( $pane_size )@}@}
+				#ifnotnull $resize @{:$resize()#ifequal $resize "Resizable" @{:FloatingSize( $pane_size )@}@}
 				#ifequal $dock_fixed "1" @{:Fixed( $dock_fixed )@}
 				#ifequal $BottomDockable "0" @{:BottomDockable( $BottomDockable )@}
 				#ifequal $TopDockable "0" @{:TopDockable( $TopDockable )@}
 				#ifequal $LeftDockable "0" @{:LeftDockable( $LeftDockable )@}
-				#ifequal $RightDockable "0"	@{:RightDockable( $RightDockable )@}
-				#ifequal $floatable "0"	@{:Floatable( $floatable )@}
-				#ifnotnull $aui_row	@{:Row( $aui_row )@}
+				#ifequal $RightDockable "0" @{:RightDockable( $RightDockable )@}
+				#ifequal $floatable "0" @{:Floatable( $floatable )@}
+				#ifnotnull $aui_row @{:Row( $aui_row )@}
 				#ifnotnull $aui_position @{:Position( $aui_position )@}
 				#ifnotnull $best_size @{:BestSize( $best_size )@}
 				#ifnotnull $min_size @{:MinSize( $min_size )@}
