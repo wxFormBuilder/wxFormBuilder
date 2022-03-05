@@ -692,5 +692,3 @@ void ItemPopupMenu::OnUpdateEvent(wxUpdateUIEvent& e)
 		break;
 	}
 }
-
-

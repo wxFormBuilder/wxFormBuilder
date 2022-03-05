@@ -136,4 +136,3 @@ class MenuEditor : public wxDialog
 };
 
 #endif //__menueditor__
-

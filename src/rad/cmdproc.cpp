@@ -117,4 +117,3 @@ void Command::Restore()
     m_executed = false;
   }
 }
-

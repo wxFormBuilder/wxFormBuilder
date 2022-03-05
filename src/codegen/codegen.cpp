@@ -1306,4 +1306,3 @@ bool CodeGenerator::ParseArrayName(const wxString& name, wxString& baseName, Arr
 
 	return isArray;
 }
-

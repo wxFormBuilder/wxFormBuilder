@@ -156,4 +156,3 @@ wxString FileToCArray::Generate( const wxString& sourcePath )
 
 	return TypeConv::MakeRelativePath( embeddedFilesOutputPath + targetFullName, outputPath );
 }
-

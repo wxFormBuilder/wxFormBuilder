@@ -95,4 +95,3 @@ wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, &func)*/
 
 #endif //__INNER_FRAME__
 
-

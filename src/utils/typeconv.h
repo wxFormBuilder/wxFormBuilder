@@ -134,4 +134,3 @@ public:
 };
 
 #endif //__TYPE_UTILS__
-

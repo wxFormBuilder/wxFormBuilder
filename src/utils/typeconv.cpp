@@ -1160,5 +1160,3 @@ MacroDictionary::MacroDictionary()
 	// Las macros serán incluidas en las bibliotecas de componentes...
 	// Sizers macros
 }
-
-

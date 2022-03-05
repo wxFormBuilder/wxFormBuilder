@@ -44,4 +44,3 @@ void GenericWindow::OnPaint(wxPaintEvent &)
     for (int j=0;j<size.GetHeight();j += 2)
       dc.DrawPoint(i-1,j-1);
 }
-

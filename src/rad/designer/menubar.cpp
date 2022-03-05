@@ -105,5 +105,3 @@ void MenuEvtHandler::OnMouseEvent(wxMouseEvent& )
 {
     m_label->PopupMenu(m_menu, 0, m_label->GetSize().y + 3);
 }
-
-

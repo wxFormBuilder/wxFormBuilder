@@ -514,4 +514,3 @@ void wxInnerFrame::SetTitleStyle( long style )
 {
 	m_titleBar->SetStyle( style );
 }
-

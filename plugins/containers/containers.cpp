@@ -925,7 +925,6 @@ public:
 
 BEGIN_LIBRARY()
 
-
 WINDOW_COMPONENT("wxPanel",PanelComponent)
 
 #ifdef wxUSE_COLLPANE

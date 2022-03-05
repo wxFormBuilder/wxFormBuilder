@@ -382,7 +382,6 @@ Python code generation written by
     <template name="evt_disconnect_OnUpdateUI">self.Unbind( wx.EVT_UPDATE_UI )</template>
   </templates>
 
-
   <templates class="Dialog">
     <!-- The duplication of these templates is not ideal, but the ripup is too big to be done before version 3 -->
     <template name="base">

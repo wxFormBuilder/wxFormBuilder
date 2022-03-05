@@ -74,4 +74,3 @@ void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
   else
     event.Skip();
 }
-

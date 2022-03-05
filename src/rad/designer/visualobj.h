@@ -57,5 +57,3 @@ class VObjEvtHandler : public wxEvtHandler
 
 
 #endif //__VISUAL_OBJS__
-
-
