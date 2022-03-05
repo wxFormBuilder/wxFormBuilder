@@ -7,3 +7,15 @@
 
 # Reformat XML files and code templates
 de436e7498438aa17e65569cbdf1e739d258a5db
+
+# Replace tab whitespace with space
+884b9d14410134c5cb2f1c8d1b8dd58f68937f84
+
+# In code templates replace tab indentation with space
+f79b779a3f703c15a91b21b08960e2418d9af450
+
+# Fix trailing whitespace
+8a9d3ca9061585bdc1882658d6065ed307edefdf
+
+# Remove excess newlines
+443ec456074a9577aee199925420d03d736c7986
