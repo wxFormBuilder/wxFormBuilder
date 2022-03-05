@@ -32,7 +32,7 @@ Python code generation written by
       @{ $name.SetMinSize( $minimum_size ) @}
     </template>
   </templates>
-  
+
   <templates class="spacer"/>
 
   <templates class="sizeritem">

@@ -224,7 +224,7 @@
   <objtype name="auinotebookpage" item="1">
     <childtype name="container" nmax="1" aui_nmax="1"/>
   </objtype>
-  
+
   <objtype name="menubar">
     <childtype name="menu"/>
   </objtype>

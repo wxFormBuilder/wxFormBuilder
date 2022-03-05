@@ -293,7 +293,7 @@ Python code generation written by
     <template name="evt_connect_OnPropertyGridChanging">self.$name.Bind( pg.EVT_PG_CHANGING, #handler )</template>
     <template name="evt_connect_OnPropertyGridChanged">self.$name.Bind( pg.EVT_PG_CHANGED, #handler )</template>
   </templates>
-  
+
   <templates class="propGridItem">
     <template name="construction">
       #ifequal $type "Category"
@@ -306,7 +306,7 @@ Python code generation written by
       @}
     </template>
   </templates>
-  
+
   <templates class="propGridPage">
     <template name="construction">
       #nl self.$name = self.#parent $name.AddPage( $label, $bitmap );

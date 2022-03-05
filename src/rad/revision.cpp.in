@@ -48,7 +48,7 @@ std::string getPostfixRevision(const char* version) {
     if (std::strcmp(TAG_NAME + 1, version) == 0) {
         return (DESCRIBE + length(TAG_NAME));
     }
-        
+
     return std::string("-").append(DESCRIBE);
 }
 
@@ -56,7 +56,7 @@ std::string getReleaseRevision(const char* version) {
     if constexpr (length(REVISION) == 0) {
         return "";
     }
-    
+
     if constexpr (length(DESCRIBE) == 0) {
         return std::string("-").append(REVISION);
     }
@@ -66,9 +66,9 @@ std::string getReleaseRevision(const char* version) {
         if constexpr (TAG_DISTANCE == 0 && !DIRTY) {
             return "";
         }
-        
+
         return (DESCRIBE + length(TAG_NAME));
     }
-    
+
     return std::string("-").append(DESCRIBE);
 }
