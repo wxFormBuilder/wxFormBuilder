@@ -75,7 +75,7 @@ m_stopModifiedEvent( false )
 	}
 	else
 	{
-		SetOwnBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_APPWORKSPACE).ChangeLightness(120));
+		SetOwnBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW).ChangeLightness(120));
 	}
 
 	SetScrollRate(5, 5);
