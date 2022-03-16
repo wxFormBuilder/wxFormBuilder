@@ -26,6 +26,8 @@
 #ifndef RAD_PALETTE_H
 #define RAD_PALETTE_H
 
+// Include bitmap.h to fix compile error of auibar.h of wxWidgets 3.0.x
+#include <wx/bitmap.h>
 #include <wx/aui/auibar.h>
 #include <wx/aui/auibook.h>
 #include <wx/spinbutt.h>
