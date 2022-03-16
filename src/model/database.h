@@ -26,8 +26,8 @@
 #ifndef __OBJ_DATABASE__
 #define __OBJ_DATABASE__
 
-#include "../utils/wxfbdefs.h"
-#include "types.h"
+#include "utils/wxfbdefs.h"
+#include "model/types.h"
 
 #include <set>
 #include <functional>

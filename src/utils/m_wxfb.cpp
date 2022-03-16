@@ -1,8 +1,8 @@
 #include <wx/html/forcelnk.h>
 #include <wx/html/m_templ.h>
 
-#include "../rad/revision.h"
-#include "../rad/version.h"
+#include "rad/revision.h"
+#include "rad/version.h"
 
 
 FORCE_LINK_ME(m_wxfb)

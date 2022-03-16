@@ -25,7 +25,7 @@
 
 #include "menueditor.h"
 
-#include "../model/objectbase.h"
+#include "model/objectbase.h"
 
 enum
 {

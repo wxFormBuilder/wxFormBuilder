@@ -28,16 +28,16 @@
 
 #include "objinspect.h"
 
-#include "wxfbadvprops.h"
+#include "rad/inspector/wxfbadvprops.h"
 
-#include "../../utils/debug.h"
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
+#include "utils/debug.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
-#include "../appdata.h"
-#include "../auitabart.h"
-#include "../bitmaps.h"
-#include "../wxfbevent.h"
+#include "rad/appdata.h"
+#include "rad/auitabart.h"
+#include "rad/bitmaps.h"
+#include "rad/wxfbevent.h"
 
 #include <wx/config.h>
 #include <wx/propgrid/propgrid.h>

@@ -38,7 +38,7 @@
 #ifndef __PHP_PANEL__
 #define __PHP_PANEL__
 
-#include "../../utils/wxfbdefs.h"
+#include "utils/wxfbdefs.h"
 
 #include <wx/panel.h>
 

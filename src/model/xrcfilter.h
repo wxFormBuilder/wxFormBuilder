@@ -26,7 +26,7 @@
 #ifndef __XRC_FILTER__
 #define __XRC_FILTER__
 
-#include "database.h"
+#include "model/database.h"
 
 #include <ticpp.h>
 

@@ -25,9 +25,9 @@
 
 #include "xrcfilter.h"
 
-#include "../utils/debug.h"
-#include "../utils/typeconv.h"
-#include "objectbase.h"
+#include "utils/debug.h"
+#include "utils/typeconv.h"
+#include "model/objectbase.h"
 
 PObjectBase XrcLoader::GetProject( ticpp::Document* xrcDoc )
 {

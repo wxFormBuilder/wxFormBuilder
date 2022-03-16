@@ -23,7 +23,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "rad/genericpanel.h"
+#include "genericpanel.h"
 
 BEGIN_EVENT_TABLE(GenericWindow,wxPanel)
   EVT_PAINT(GenericWindow::OnPaint)

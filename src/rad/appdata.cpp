@@ -25,22 +25,22 @@
 
 #include "appdata.h"
 
-#include "bitmaps.h"
-#include "wxfbevent.h"
-#include "wxfbmanager.h"
+#include "rad/bitmaps.h"
+#include "rad/wxfbevent.h"
+#include "rad/wxfbmanager.h"
 
-#include "../codegen/codewriter.h"
-#include "../codegen/cppcg.h"
-#include "../codegen/luacg.h"
-#include "../codegen/phpcg.h"
-#include "../codegen/pythoncg.h"
-#include "../model/objectbase.h"
-#include "../utils/stringutils.h"
-#include "../utils/typeconv.h"
-#include "../utils/wxfbexception.h"
-#include "../utils/wxfbipc.h"
-#include "dataobject/dataobject.h"
-#include "xrcpreview/xrcpreview.h"
+#include "codegen/codewriter.h"
+#include "codegen/cppcg.h"
+#include "codegen/luacg.h"
+#include "codegen/phpcg.h"
+#include "codegen/pythoncg.h"
+#include "model/objectbase.h"
+#include "utils/stringutils.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+#include "utils/wxfbipc.h"
+#include "rad/dataobject/dataobject.h"
+#include "rad/xrcpreview/xrcpreview.h"
 
 #include <ticpp.h>
 

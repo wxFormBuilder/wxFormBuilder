@@ -23,9 +23,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "dataobject.h"
 
-#include "../../model/objectbase.h"
-#include "../../utils/typeconv.h"
-#include "../appdata.h"
+#include "model/objectbase.h"
+#include "utils/typeconv.h"
+#include "rad/appdata.h"
 
 #include <ticpp.h>
 

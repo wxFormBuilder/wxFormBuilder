@@ -23,9 +23,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "wxfbmanager.h"
 
-#include "../model/objectbase.h"
-#include "appdata.h"
-#include "designer/visualeditor.h"
+#include "model/objectbase.h"
+#include "rad/appdata.h"
+#include "rad/designer/visualeditor.h"
 
 #define CHECK_NULL( THING, THING_NAME, RETURN ) 									\
 	if ( !THING )																	\

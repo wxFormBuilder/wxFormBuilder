@@ -25,8 +25,8 @@
 
 #include "stringutils.h"
 
-#include "typeconv.h"
-#include "wxfbexception.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 #include <ticpp.h>
 #include <wx/ffile.h>

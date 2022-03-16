@@ -29,9 +29,9 @@
 
 #include <wx/sizer.h>
 
-#include "appdata.h"
-#include "../model/objectbase.h"
-#include "../utils/wxfbdefs.h"
+#include "rad/appdata.h"
+#include "model/objectbase.h"
+#include "utils/wxfbdefs.h"
 
 
 DialogFindComponent::DialogFindComponent(wxWindow* parent,

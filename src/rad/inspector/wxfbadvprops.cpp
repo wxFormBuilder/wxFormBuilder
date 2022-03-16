@@ -28,8 +28,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "wxfbadvprops.h"
 
-#include "../../utils/typeconv.h"
-#include "../appdata.h"
+#include "utils/typeconv.h"
+#include "rad/appdata.h"
 
 #include <wx/regex.h>
 

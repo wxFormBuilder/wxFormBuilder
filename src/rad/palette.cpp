@@ -25,10 +25,10 @@
 
 #include "palette.h"
 
-#include "../model/objectbase.h"
-#include "../utils/debug.h"
-#include "appdata.h"
-#include "auitabart.h"
+#include "model/objectbase.h"
+#include "utils/debug.h"
+#include "rad/appdata.h"
+#include "rad/auitabart.h"
 
 #include <map>
 #include <vector>

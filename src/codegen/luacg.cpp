@@ -28,14 +28,14 @@
 
 #include "luacg.h"
 
-#include "../model/objectbase.h"
-#include "../rad/appdata.h"
-#include "../rad/revision.h"
-#include "../rad/version.h"
-#include "../utils/debug.h"
-#include "../utils/typeconv.h"
-#include "../utils/wxfbexception.h"
-#include "codewriter.h"
+#include "model/objectbase.h"
+#include "rad/appdata.h"
+#include "rad/revision.h"
+#include "rad/version.h"
+#include "utils/debug.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+#include "codegen/codewriter.h"
 
 #include <algorithm>
 

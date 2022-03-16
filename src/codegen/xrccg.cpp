@@ -25,9 +25,9 @@
 
 #include "xrccg.h"
 
-#include "../model/objectbase.h"
-#include "../utils/typeconv.h"
-#include "codewriter.h"
+#include "model/objectbase.h"
+#include "utils/typeconv.h"
+#include "codegen/codewriter.h"
 
 #include <ticpp.h>
 

@@ -24,7 +24,7 @@
 #ifndef WXFBMANAGER
 #define WXFBMANAGER
 
-#include "../utils/wxfbdefs.h"
+#include "utils/wxfbdefs.h"
 
 #include <component.h>
 

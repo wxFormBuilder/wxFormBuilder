@@ -25,7 +25,7 @@
 
 #ifndef __MENUEDITOR__
 #define __MENUEDITOR__
-#include "../model/database.h"
+#include "model/database.h"
 
 #include <wx/listctrl.h>
 

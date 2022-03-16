@@ -25,7 +25,7 @@
 
 #include "types.h"
 
-#include "../utils/stringutils.h"
+#include "utils/stringutils.h"
 
 #include <wx/tokenzr.h>
 

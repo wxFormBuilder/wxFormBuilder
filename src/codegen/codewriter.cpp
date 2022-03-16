@@ -26,8 +26,8 @@
 
 #include "codewriter.h"
 
-#include "../utils/typeconv.h"
-#include "../utils/wxfbexception.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 #include <md5/md5.hh>
 

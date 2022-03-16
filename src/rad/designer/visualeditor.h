@@ -26,8 +26,8 @@
 #ifndef __VISUAL_EDITOR__
 #define __VISUAL_EDITOR__
 
-#include "innerframe.h"
-#include "visualobj.h"
+#include "rad/designer/innerframe.h"
+#include "rad/designer/visualobj.h"
 
 #include <forms/wizard.h>
 /**

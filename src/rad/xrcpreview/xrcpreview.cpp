@@ -23,12 +23,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "xrcpreview.h"
 
-#include "../../codegen/codewriter.h"
-#include "../../codegen/xrccg.h"
-#include "../../model/objectbase.h"
-#include "../../utils/annoyingdialog.h"
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
+#include "codegen/codewriter.h"
+#include "codegen/xrccg.h"
+#include "model/objectbase.h"
+#include "utils/annoyingdialog.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 #include <wx/fs_mem.h>
 #include <wx/wizard.h>

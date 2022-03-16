@@ -25,7 +25,7 @@
 #ifndef __INNER_FRAME__
 #define __INNER_FRAME__
 
-#include "../../utils/debug.h"
+#include "utils/debug.h"
 
 #include <wx/aui/aui.h>
 #include <wx/wx.h>
@@ -94,4 +94,3 @@ END_DECLARE_EVENT_TYPES()
 wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, &func)*/
 
 #endif //__INNER_FRAME__
-

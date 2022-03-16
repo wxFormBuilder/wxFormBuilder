@@ -27,17 +27,17 @@
 
 #include "luapanel.h"
 
-#include "../appdata.h"
-#include "../codeeditor/codeeditor.h"
-#include "../wxfbevent.h"
+#include "rad/appdata.h"
+#include "rad/codeeditor/codeeditor.h"
+#include "rad/wxfbevent.h"
 
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
-#include "../../model/objectbase.h"
+#include "model/objectbase.h"
 
-#include "../../codegen/codewriter.h"
-#include "../../codegen/luacg.h"
+#include "codegen/codewriter.h"
+#include "codegen/luacg.h"
 
 #include <wx/fdrepdlg.h>
 

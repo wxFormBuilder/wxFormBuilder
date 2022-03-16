@@ -28,14 +28,14 @@
 
 #include "phpcg.h"
 
-#include "codewriter.h"
-#include "../utils/typeconv.h"
-#include "../utils/debug.h"
-#include "../rad/appdata.h"
-#include "../rad/revision.h"
-#include "../rad/version.h"
-#include "../model/objectbase.h"
-#include "../utils/wxfbexception.h"
+#include "codegen/codewriter.h"
+#include "utils/typeconv.h"
+#include "utils/debug.h"
+#include "rad/appdata.h"
+#include "rad/revision.h"
+#include "rad/version.h"
+#include "model/objectbase.h"
+#include "utils/wxfbexception.h"
 
 #include <algorithm>
 

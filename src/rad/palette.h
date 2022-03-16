@@ -26,7 +26,7 @@
 #ifndef __PALETTE__
 #define __PALETTE__
 
-#include "../model/database.h"
+#include "model/database.h"
 
 #include <wx/aui/auibar.h>
 #include <wx/aui/auibook.h>

@@ -27,19 +27,19 @@
 
 #include "cpppanel.h"
 
-#include "../appdata.h"
-#include "../auitabart.h"
-#include "../bitmaps.h"
-#include "../codeeditor/codeeditor.h"
-#include "../wxfbevent.h"
+#include "rad/appdata.h"
+#include "rad/auitabart.h"
+#include "rad/bitmaps.h"
+#include "rad/codeeditor/codeeditor.h"
+#include "rad/wxfbevent.h"
 
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
-#include "../../model/objectbase.h"
+#include "model/objectbase.h"
 
-#include "../../codegen/codewriter.h"
-#include "../../codegen/cppcg.h"
+#include "codegen/codewriter.h"
+#include "codegen/cppcg.h"
 
 #include <wx/fdrepdlg.h>
 #include <wx/stc/stc.h>

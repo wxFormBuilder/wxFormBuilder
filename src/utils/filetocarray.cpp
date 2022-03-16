@@ -1,11 +1,11 @@
 #include "filetocarray.h"
 
-#include "../rad/appdata.h"
-#include "../model/objectbase.h"
-#include "../codegen/codewriter.h"
-#include "../codegen/cppcg.h"
-#include "typeconv.h"
-#include "wxfbexception.h"
+#include "rad/appdata.h"
+#include "model/objectbase.h"
+#include "codegen/codewriter.h"
+#include "codegen/cppcg.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 #include <wx/filename.h>
 

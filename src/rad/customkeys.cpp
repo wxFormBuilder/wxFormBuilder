@@ -28,7 +28,7 @@
 #include "codegen/cppcg.h"
 #include "model/objectbase.h"
 
-#include <rad/appdata.h>
+#include "rad/appdata.h"
 
 BEGIN_EVENT_TABLE(CustomKeysEvtHandler,wxEvtHandler)
   EVT_CHAR(CustomKeysEvtHandler::OnKeyPress)

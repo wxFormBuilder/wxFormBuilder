@@ -28,7 +28,7 @@
 
 #include "wxfbipc.h"
 
-#include "debug.h"
+#include "utils/debug.h"
 
 #include <wx/filename.h>
 #include <wx/wx.h>

@@ -25,9 +25,9 @@
 
 #include "codegen.h"
 
-#include "../model/objectbase.h"
-#include "../rad/appdata.h"
-#include "../utils/wxfbexception.h"
+#include "model/objectbase.h"
+#include "rad/appdata.h"
+#include "utils/wxfbexception.h"
 
 #include <wx/tokenzr.h>
 

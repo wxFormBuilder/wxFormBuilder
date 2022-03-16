@@ -24,7 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "innerframe.h"
 
-#include "window_buttons.h"
+#include "rad/designer/window_buttons.h"
 
 #include <wx/dcbuffer.h>
 

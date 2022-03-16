@@ -25,13 +25,13 @@
 
 #include "visualeditor.h"
 
-#include "../../model/objectbase.h"
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
-#include "../appdata.h"
-#include "../wxfbevent.h"
-#include "../wxfbmanager.h"
-#include "menubar.h"
+#include "model/objectbase.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+#include "rad/appdata.h"
+#include "rad/wxfbevent.h"
+#include "rad/wxfbmanager.h"
+#include "rad/designer/menubar.h"
 
 #include <wx/collpane.h>
 

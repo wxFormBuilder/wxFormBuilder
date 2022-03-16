@@ -25,13 +25,13 @@
 
 #pragma once
 
-#include "wx/splitter.h"
-#include "wx/wx.h"
+#include <wx/splitter.h>
+#include <wx/wx.h>
 
 #include <wx/aui/auibook.h>
 #include <wx/fdrepdlg.h>
 
-#include "../utils/wxfbdefs.h"
+#include "utils/wxfbdefs.h"
 
 class wxFBEvent;
 class wxFBObjectEvent;

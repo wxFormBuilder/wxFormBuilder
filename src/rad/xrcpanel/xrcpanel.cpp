@@ -27,15 +27,15 @@
 
 #include "xrcpanel.h"
 
-#include "../../codegen/codewriter.h"
-#include "../../codegen/xrccg.h"
+#include "codegen/codewriter.h"
+#include "codegen/xrccg.h"
 
-#include "../../model/objectbase.h"
-#include "../../utils/typeconv.h"
-#include "../../utils/wxfbexception.h"
-#include "../appdata.h"
-#include "../codeeditor/codeeditor.h"
-#include "../wxfbevent.h"
+#include "model/objectbase.h"
+#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
+#include "rad/appdata.h"
+#include "rad/codeeditor/codeeditor.h"
+#include "rad/wxfbevent.h"
 
 #include <wx/fdrepdlg.h>
 

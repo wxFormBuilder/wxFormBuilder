@@ -29,7 +29,7 @@
 #include <vector>
 #include <utility>
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include "fontcontainer.h"
 
 #define COMPONENT_TYPE_ABSTRACT 0

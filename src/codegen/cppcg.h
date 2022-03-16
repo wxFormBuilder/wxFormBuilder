@@ -35,8 +35,8 @@ The value of all properties that are file or a directory paths must be absolute,
 #ifndef _CPP_CODE_GEN_
 #define _CPP_CODE_GEN_
 
-#include "codegen.h"
-#include "codeparser.h"
+#include "codegen/codegen.h"
+#include "codegen/codeparser.h"
 
 #include <set>
 #include <vector>

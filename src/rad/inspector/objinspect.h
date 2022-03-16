@@ -29,7 +29,7 @@
 #ifndef __OBJ_INSPECT__
 #define __OBJ_INSPECT__
 
-#include "../../model/objectbase.h"
+#include "model/objectbase.h"
 
 #include <wx/aui/auibook.h>
 #include <wx/propgrid/manager.h>

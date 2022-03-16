@@ -24,7 +24,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "geninhertclass.h"
 
-#include "../../model/objectbase.h"
+#include "model/objectbase.h"
 
 GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, PObjectBase project )
 :

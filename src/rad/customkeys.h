@@ -26,7 +26,7 @@
 #ifndef __KEYS_HANDLER__
 #define __KEYS_HANDLER__
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 
 // This class is not needed because shortcuts are made through acceletors
 // of the MainFrame menubar.

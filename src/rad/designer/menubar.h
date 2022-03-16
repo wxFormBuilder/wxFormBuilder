@@ -26,7 +26,7 @@
 #ifndef __MENUBAR__
 #define __MENUBAR__
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 #include <vector>
 
 typedef std::vector<wxMenu*> MenuVector;

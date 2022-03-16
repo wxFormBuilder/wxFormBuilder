@@ -29,7 +29,7 @@
 #ifndef __WXFBADVPROPS_H__
 #define __WXFBADVPROPS_H__
 
-#include "fontcontainer.h"
+#include <fontcontainer.h>
 
 #include <wx/propgrid/propgrid.h>
 #include <wx/propgrid/advprops.h>

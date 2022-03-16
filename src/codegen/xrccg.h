@@ -26,7 +26,7 @@
 #ifndef _XRC_CODE_GEN_
 #define _XRC_CODE_GEN_
 
-#include "codegen.h"
+#include "codegen/codegen.h"
 
 namespace ticpp
 {

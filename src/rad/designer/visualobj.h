@@ -26,7 +26,7 @@
 #ifndef __VISUAL_OBJS__
 #define __VISUAL_OBJS__
 
-#include "../../utils/wxfbdefs.h"
+#include "utils/wxfbdefs.h"
 
 #include <wx/wx.h>
 

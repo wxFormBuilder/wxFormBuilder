@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../utils/debug.h"
+#include "utils/debug.h"
 
 #include <unordered_map>
 #include <wx/textfile.h>
