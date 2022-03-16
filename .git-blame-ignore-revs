@@ -19,3 +19,9 @@ f79b779a3f703c15a91b21b08960e2418d9af450
 
 # Remove excess newlines
 443ec456074a9577aee199925420d03d736c7986
+
+# Reformat project sources according to current code style definitions
+86b0298d5af5ed49e3534afa4a0a8933aa2ce508
+
+# Reformat local third-party sources according to current code style definitions
+ce2cb5168c82d98d34878906d0ed068d1a123b77
