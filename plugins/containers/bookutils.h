@@ -27,13 +27,14 @@
 #include <component.h>
 #include <default.xpm>
 #include <vector>
-#ifdef wxUSE_COLLPANE
-#include <wx/collpane.h>
-#endif
 #include <wx/listbook.h>
 #include <wx/choicebk.h>
 #include <wx/simplebook.h>
 #include <wx/aui/auibook.h>
+
+#ifdef wxUSE_COLLPANE
+#include <wx/collpane.h>
+#endif
 
 class SuppressEventHandlers
 {

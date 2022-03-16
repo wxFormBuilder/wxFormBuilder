@@ -29,9 +29,6 @@
 #include <wx/wrapsizer.h>
 #include <xrcconv.h>
 
-#ifdef __WX24__
-	#define wxFIXED_MINSIZE wxADJUST_MINSIZE
-#endif
 
 class SpacerComponent : public ComponentBase
 {

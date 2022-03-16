@@ -34,9 +34,7 @@
 #include <wx/bmpcbox.h>
 #include <wx/listctrl.h>
 #include <wx/statline.h>
-#if wxVERSION_NUMBER >= 2901
 #include <wx/infobar.h>
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from
@@ -152,17 +150,13 @@ protected:
 	void OnChoice( wxCommandEvent& event );
 	void OnComboBox( wxCommandEvent& event );
 	void OnTool( wxCommandEvent& event );
-#if wxVERSION_NUMBER >= 2904
 	void OnButton( wxCommandEvent& event );
 	void OnTimer( wxTimerEvent& event );
-#endif
 
 private:
 	wxWindow* m_window;
 	IManager* m_manager;
-#if wxVERSION_NUMBER >= 2904
 	wxTimer m_timer;
-#endif
 
 	DECLARE_EVENT_TABLE()
 };
@@ -176,11 +170,9 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	// Tools do not get click events, so this will help select them
 	EVT_TOOL( wxID_ANY, ComponentEvtHandler::OnTool )
 
-#if wxVERSION_NUMBER >= 2904
 	// wxInfoBar related handlers
 	EVT_BUTTON( wxID_ANY, ComponentEvtHandler::OnButton )
 	EVT_TIMER( wxID_ANY, ComponentEvtHandler::OnTimer )
-#endif
 END_EVENT_TABLE()
 
 
@@ -201,11 +193,9 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-#if wxCHECK_VERSION( 2, 9, 2 )
 		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			button->SetLabelMarkup(label);
 		}
-#endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
 		{
@@ -306,12 +296,10 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-#if wxCHECK_VERSION( 2, 9, 2 )
 		// To stay in sync what the generator templates do apply the markup label here as well
 		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
 		}
-#endif
 
 		if ( obj->GetPropertyAsInteger( _("default") ) != 0 )
 		{
@@ -482,11 +470,9 @@ public:
 
 		st->Wrap( obj->GetPropertyAsInteger( _("wrap") ) );
 
-#if wxCHECK_VERSION( 2, 9, 2 )
 		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			st->SetLabelMarkup(label);
 		}
-#endif
 
 		return st;
 	}
@@ -1710,7 +1696,6 @@ public:
 	}
 };
 
-#if wxVERSION_NUMBER >= 2904
 class InfoBarComponent : public ComponentBase
 {
 public:
@@ -1773,7 +1758,6 @@ void ComponentEvtHandler::OnTimer(wxTimerEvent&) {
 		ib->ShowMessage( _("Message ...") );
 	}
 }
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -1806,9 +1790,7 @@ WINDOW_COMPONENT("wxChoice", ChoiceComponent)
 WINDOW_COMPONENT("wxSlider", SliderComponent)
 WINDOW_COMPONENT("wxGauge", GaugeComponent)
 WINDOW_COMPONENT("wxAnimationCtrl", AnimCtrlComponent)
-#if wxVERSION_NUMBER >= 2904
 WINDOW_COMPONENT("wxInfoBar", InfoBarComponent)
-#endif
 
 // wxButton
 MACRO(wxBU_LEFT)
@@ -1969,7 +1951,6 @@ MACRO(wxAC_DEFAULT_STYLE)
 MACRO(wxAC_NO_AUTORESIZE)
 
 // wxInfoBar
-#if wxVERSION_NUMBER >= 2904
 MACRO(wxSHOW_EFFECT_NONE)
 MACRO(wxSHOW_EFFECT_ROLL_TO_LEFT)
 MACRO(wxSHOW_EFFECT_ROLL_TO_RIGHT)
@@ -1981,6 +1962,5 @@ MACRO(wxSHOW_EFFECT_SLIDE_TO_TOP)
 MACRO(wxSHOW_EFFECT_SLIDE_TO_BOTTOM)
 MACRO(wxSHOW_EFFECT_BLEND)
 MACRO(wxSHOW_EFFECT_EXPAND)
-#endif
 
 END_LIBRARY()

@@ -38,23 +38,13 @@
 #include <wx/spinctrl.h>
 #include <wx/tglbtn.h>
 #include <wx/timectrl.h>
-#ifdef USE_MEDIACTRL
-#include <wx/mediactrl.h>
-#endif
-#if wxVERSION_NUMBER >= 2904
-// wxPropertyGrid
 #include <wx/propgrid/manager.h>
-// wxStyledTextCtrl
 #include <wx/stc/stc.h>
-// wxDataViewCtrl
 #include <wx/dataview.h>
-// wxRibbonBar
 #include <wx/ribbon/buttonbar.h>
 #include <wx/ribbon/toolbar.h>
 #include <wx/ribbon/gallery.h>
-// wxTreeListCtrl
 #include <wx/treelist.h>
-#endif
 
 #include <wx/clrpicker.h>
 #include <wx/filepicker.h>
@@ -62,6 +52,10 @@
 #include <wx/hyperlink.h>
 #include <wx/richtext/richtextctrl.h>
 #include <wx/srchctrl.h>
+
+#ifdef USE_MEDIACTRL
+#include <wx/mediactrl.h>
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -92,11 +86,9 @@ protected:
 	void OnDirPickerDirChanged(wxFileDirPickerEvent& event);
 	void OnText(wxCommandEvent& event);
 	void OnGenericDirCtrlExpandItem( wxTreeEvent& event );
-#if wxVERSION_NUMBER >= 2904
 	// Enable folding for wxStyledTextCtrl
 	void OnMarginClick ( wxStyledTextEvent& event );
 	void OnRibbonBarPageChanged( wxRibbonBarEvent& event );
-#endif
 	DECLARE_EVENT_TABLE()
 };
 
@@ -114,10 +106,8 @@ BEGIN_EVENT_TABLE( ComponentEvtHandler, wxEvtHandler )
 	EVT_GRID_COL_SIZE( ComponentEvtHandler::OnGridColSize )
 	EVT_GRID_ROW_SIZE( ComponentEvtHandler::OnGridRowSize )
 
-#if wxVERSION_NUMBER >= 2904
 	EVT_STC_MARGINCLICK(wxID_ANY, ComponentEvtHandler::OnMarginClick)
 	EVT_RIBBONBAR_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnRibbonBarPageChanged)
-#endif
 END_EVENT_TABLE()
 
 /**
@@ -437,11 +427,9 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-#if wxCHECK_VERSION( 2, 9, 2 )
 		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			button->SetLabelMarkup(label);
 		}
-#endif
 
 		if (!obj->IsNull(_("bitmap"))) {
 			button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
@@ -545,12 +533,10 @@ public:
 			obj->GetPropertyAsSize(_("size")),
 			obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-#if wxCHECK_VERSION( 2, 9, 2 )
 		// To stay in sync what the generator templates do apply the markup label here as well
 		if (obj->GetPropertyAsInteger(_("markup")) != 0) {
 			button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
 		}
-#endif
 
 		if (!obj->IsNull(_("disabled")))
 		{
@@ -1603,7 +1589,6 @@ class TimerComponent : public ComponentBase
 public:
 };
 
-#if wxVERSION_NUMBER >= 2904
 class PropertyGridComponent : public ComponentBase
 {
 public:
@@ -2655,8 +2640,6 @@ class RibbonGalleryComponent : public ComponentBase
 
 class RibbonGalleryItemComponent : public ComponentBase{};
 
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -2832,7 +2815,6 @@ MACRO(wxDIRCTRL_MULTIPLE)
 // wxTimer
 ABSTRACT_COMPONENT("wxTimer", TimerComponent)
 
-#if wxVERSION_NUMBER >= 2904
 // wxPropertyGrid
 WINDOW_COMPONENT("wxPropertyGrid", PropertyGridComponent)
 ABSTRACT_COMPONENT("propGridItem", PropertyGridItemComponent)
@@ -2921,7 +2903,6 @@ MACRO(wxRIBBON_PANEL_EXT_BUTTON)
 MACRO(wxRIBBON_PANEL_MINIMISE_BUTTON)
 MACRO(wxRIBBON_PANEL_STRETCH)
 MACRO(wxRIBBON_PANEL_FLEXIBLE)
-#endif
 
 
 // wxTreeListCtrl

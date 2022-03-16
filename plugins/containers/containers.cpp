@@ -781,7 +781,6 @@ public:
 		}
 	}
 
-#if wxVERSION_NUMBER >= 2905
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("wxAuiNotebook"), obj->GetPropertyAsString(_("name")));
 		xrc.AddWindowProperties();
@@ -793,7 +792,6 @@ public:
 		filter.AddWindowProperties();
 		return filter.GetXfbObject();
 	}
-#endif
 };
 
 void ComponentEvtHandler::OnAuiNotebookPageChanged( wxAuiNotebookEvent& event )
@@ -851,7 +849,6 @@ public:
 		BookUtils::OnSelected< wxAuiNotebook >( wxobject, GetManager() );
 	}
 
-#if wxVERSION_NUMBER >= 2905
 	ticpp::Element* ExportToXrc(IObject* obj) override {
 		ObjectToXrcFilter xrc(obj, _("notebookpage"));
 		xrc.AddProperty(_("label"),_("label"), XRC_TYPE_TEXT);
@@ -868,7 +865,6 @@ public:
 		filter.AddProperty(_("bitmap"),_("bitmap"),XRC_TYPE_BITMAP);
 		return filter.GetXfbObject();
 	}
-#endif
 };
 
 class SimplebookComponent : public ComponentBase

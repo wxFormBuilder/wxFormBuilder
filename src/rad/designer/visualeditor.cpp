@@ -35,9 +35,6 @@
 
 #include <wx/collpane.h>
 
-#ifdef __WX24__
-#define wxFULL_REPAINT_ON_RESIZE 0
-#endif
 
 static const int ID_TIMER_SCAN = wxWindow::NewControlId();
 
