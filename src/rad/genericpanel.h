@@ -28,14 +28,14 @@
 
 #include <wx/wx.h>
 
+
 class GenericWindow : public wxPanel
 {
- private:
-  DECLARE_EVENT_TABLE()   
- public:
-  GenericWindow(wxWindow *parent);   
-  void OnPaint(wxPaintEvent &event);
+private:
+    DECLARE_EVENT_TABLE()
+public:
+    GenericWindow(wxWindow* parent);
+    void OnPaint(wxPaintEvent& event);
 };
 
-
-#endif // RAD_GENERICPANEL_H
+#endif  // RAD_GENERICPANEL_H

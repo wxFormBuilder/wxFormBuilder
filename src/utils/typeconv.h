@@ -26,83 +26,86 @@
 #ifndef UTILS_TYPECONV_H
 #define UTILS_TYPECONV_H
 
-#include "model/types.h"
 #include <fontcontainer.h>
 
+#include "model/types.h"
+
+
 // macros para la conversión entre wxString <-> wxString
-#define _WXSTR(x)  TypeConv::_StringToWxString(x)
+#define _WXSTR(x) TypeConv::_StringToWxString(x)
 #define _STDSTR(x) TypeConv::_WxStringToString(x)
 #define _ANSISTR(x) TypeConv::_WxStringToAnsiString(x)
 
+
 namespace TypeConv
 {
-	wxString _StringToWxString( const std::string &str );
-	wxString _StringToWxString( const char *str );
-	std::string _WxStringToString( const wxString &str );
-	std::string _WxStringToAnsiString( const wxString & str );
+wxString _StringToWxString(const std::string& str);
+wxString _StringToWxString(const char* str);
+std::string _WxStringToString(const wxString& str);
+std::string _WxStringToAnsiString(const wxString& str);
 
-	wxPoint StringToPoint( const wxString &str );
-	bool    StringToPoint( const wxString &str, wxPoint *point );
-	wxSize  StringToSize( const wxString &str );
+wxPoint StringToPoint(const wxString& str);
+bool StringToPoint(const wxString& str, wxPoint* point);
+wxSize StringToSize(const wxString& str);
 
-	wxString PointToString( const wxPoint &point );
-	wxString SizeToString( const wxSize &size );
+wxString PointToString(const wxPoint& point);
+wxString SizeToString(const wxSize& size);
 
-	int     BitlistToInt( const wxString &str );
-	int     GetMacroValue( const wxString &str );
-	int     StringToInt( const wxString &str );
+int BitlistToInt(const wxString& str);
+int GetMacroValue(const wxString& str);
+int StringToInt(const wxString& str);
 
-	bool     FlagSet( const wxString &flag, const wxString &currentValue );
-	wxString ClearFlag( const wxString &flag, const wxString &currentValue );
-	wxString SetFlag( const wxString &flag, const wxString &currentValue );
+bool FlagSet(const wxString& flag, const wxString& currentValue);
+wxString ClearFlag(const wxString& flag, const wxString& currentValue);
+wxString SetFlag(const wxString& flag, const wxString& currentValue);
 
-	wxBitmap StringToBitmap( const wxString& filename );
+wxBitmap StringToBitmap(const wxString& filename);
 
-	wxFontContainer StringToFont( const wxString &str );
-	wxString FontToString( const wxFontContainer &font );
-	wxString FontFamilyToString(wxFontFamily family);
-	wxString FontStyleToString(wxFontStyle style);
-	wxString FontWeightToString(wxFontWeight weight);
+wxFontContainer StringToFont(const wxString& str);
+wxString FontToString(const wxFontContainer& font);
+wxString FontFamilyToString(wxFontFamily family);
+wxString FontStyleToString(wxFontStyle style);
+wxString FontWeightToString(wxFontWeight weight);
 
-	wxColour StringToColour( const wxString &str );
-	wxSystemColour StringToSystemColour( const wxString& str );
-	wxString ColourToString( const wxColour &colour );
-	wxString SystemColourToString( long colour );
+wxColour StringToColour(const wxString& str);
+wxSystemColour StringToSystemColour(const wxString& str);
+wxString ColourToString(const wxColour& colour);
+wxString SystemColourToString(long colour);
 
-	bool StringToBool( const wxString &str );
-	wxString BoolToString( bool val );
+bool StringToBool(const wxString& str);
+wxString BoolToString(bool val);
 
-	wxArrayString StringToArrayString( const wxString &str );
-	wxString ArrayStringToString( const wxArrayString &arrayStr );
+wxArrayString StringToArrayString(const wxString& str);
+wxString ArrayStringToString(const wxArrayString& arrayStr);
 
-	void ParseBitmapWithResource( const wxString& value, wxString* image, wxString* source, wxSize* icoSize );
+void ParseBitmapWithResource(const wxString& value, wxString* image, wxString* source, wxSize* icoSize);
 
-	/**
-	@internal
-	Used to import old projects.
-	*/
-	wxArrayString OldStringToArrayString( const wxString& str );
+/**
+@internal
+Used to import old projects.
+*/
+wxArrayString OldStringToArrayString(const wxString& str);
 
-	wxString ReplaceSynonymous( const wxString &bitlist );
+wxString ReplaceSynonymous(const wxString& bitlist);
 
-	void SplitFileSystemURL( const wxString& url, wxString* protocol, wxString* path, wxString* anchor );
+void SplitFileSystemURL(const wxString& url, wxString* protocol, wxString* path, wxString* anchor);
 
-	// Obtiene la ruta absoluta de un archivo
-	wxString MakeAbsolutePath( const wxString& filename, const wxString& basePath );
-	wxString MakeAbsoluteURL( const wxString& url, const wxString& basePath );
+// Obtiene la ruta absoluta de un archivo
+wxString MakeAbsolutePath(const wxString& filename, const wxString& basePath);
+wxString MakeAbsoluteURL(const wxString& url, const wxString& basePath);
 
-	// Obtiene la ruta relativa de un archivo
-	wxString MakeRelativePath( const wxString& filename, const wxString& basePath );
-	wxString MakeRelativeURL( const wxString& url, const wxString& basePath );
+// Obtiene la ruta relativa de un archivo
+wxString MakeRelativePath(const wxString& filename, const wxString& basePath);
+wxString MakeRelativeURL(const wxString& url, const wxString& basePath);
 
-	// dada una cadena de caracteres obtiene otra transformando los caracteres
-	// especiales denotados al estilo C ('\n' '\\' '\t')
-	wxString StringToText( const wxString &str );
-	wxString TextToString( const wxString &str );
+// dada una cadena de caracteres obtiene otra transformando los caracteres
+// especiales denotados al estilo C ('\n' '\\' '\t')
+wxString StringToText(const wxString& str);
+wxString TextToString(const wxString& str);
 
-	double StringToFloat( const wxString& str );
-	wxString FloatToString( const double& val );
-}
+double StringToFloat(const wxString& str);
+wxString FloatToString(const double& val);
+}  // namespace TypeConv
 
 
 // No me gusta nada tener que usar variables globales o singletons
@@ -114,23 +117,23 @@ typedef MacroDictionary* PMacroDictionary;
 class MacroDictionary
 {
 private:
-	typedef std::map<wxString, int> MacroMap;
-	static PMacroDictionary s_instance;
+    typedef std::map<wxString, int> MacroMap;
+    static PMacroDictionary s_instance;
 
-	typedef std::map<wxString, wxString> SynMap;
+    typedef std::map<wxString, wxString> SynMap;
 
-	MacroMap m_map;
-	SynMap m_synMap;
+    MacroMap m_map;
+    SynMap m_synMap;
 
-	MacroDictionary();
+    MacroDictionary();
 
 public:
-	static PMacroDictionary GetInstance();
-	static void Destroy();
-	bool SearchMacro( wxString name, int *result );
-	void AddMacro( wxString name, int value );
-	void AddSynonymous( wxString synName, wxString name );
-	bool SearchSynonymous( wxString synName, wxString& result );
+    static PMacroDictionary GetInstance();
+    static void Destroy();
+    bool SearchMacro(wxString name, int* result);
+    void AddMacro(wxString name, int value);
+    void AddSynonymous(wxString synName, wxString name);
+    bool SearchSynonymous(wxString synName, wxString& result);
 };
 
-#endif // UTILS_TYPECONV_H
+#endif  // UTILS_TYPECONV_H

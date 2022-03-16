@@ -21,37 +21,39 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_WXFBMANAGER_H
 #define RAD_WXFBMANAGER_H
 
-#include "utils/wxfbdefs.h"
-
 #include <component.h>
 
-class VisualEditor;
+#include "utils/wxfbdefs.h"
+
+
 class ObjectBase;
+class VisualEditor;
+
 
 class wxFBManager : public IManager
 {
 private:
-	VisualEditor* m_visualEdit;
+    VisualEditor* m_visualEdit;
 
 public:
-	wxFBManager();
-	void SetVisualEditor( VisualEditor* visualEdit );
-	size_t GetChildCount(wxObject* wxobject) override;
-	wxObject* GetChild(wxObject* wxobject, size_t childIndex) override;
-	wxObject* GetParent(wxObject* wxobject) override;
-	IObject* GetIParent(wxObject* wxobject) override;
-	IObject* GetIObject(wxObject* wxobject) override;
-	wxObject* GetWxObject( PObjectBase obj );
-	wxNoObject* NewNoObject() override;
+    wxFBManager();
+    void SetVisualEditor(VisualEditor* visualEdit);
+    size_t GetChildCount(wxObject* wxobject) override;
+    wxObject* GetChild(wxObject* wxobject, size_t childIndex) override;
+    wxObject* GetParent(wxObject* wxobject) override;
+    IObject* GetIParent(wxObject* wxobject) override;
+    IObject* GetIObject(wxObject* wxobject) override;
+    wxObject* GetWxObject(PObjectBase obj);
+    wxNoObject* NewNoObject() override;
 
-	void ModifyProperty(wxObject* wxobject, wxString property, wxString value,
-	                    bool allowUndo = true) override;
+    void ModifyProperty(wxObject* wxobject, wxString property, wxString value, bool allowUndo = true) override;
 
-	// Returns true if selection changed, false if already selected
-	bool SelectObject(wxObject* wxobject) override;
+    // Returns true if selection changed, false if already selected
+    bool SelectObject(wxObject* wxobject) override;
 };
 
-#endif // RAD_WXFBMANAGER_H
+#endif  // RAD_WXFBMANAGER_H

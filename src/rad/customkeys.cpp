@@ -24,53 +24,51 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "customkeys.h"
-#include "utils/debug.h"
+
 #include "codegen/cppcg.h"
 #include "model/objectbase.h"
-
 #include "rad/appdata.h"
+#include "utils/debug.h"
 
-BEGIN_EVENT_TABLE(CustomKeysEvtHandler,wxEvtHandler)
-  EVT_CHAR(CustomKeysEvtHandler::OnKeyPress)
+
+BEGIN_EVENT_TABLE(CustomKeysEvtHandler, wxEvtHandler)
+EVT_CHAR(CustomKeysEvtHandler::OnKeyPress)
 END_EVENT_TABLE()
 
-void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent &event)
+
+void CustomKeysEvtHandler::OnKeyPress(wxKeyEvent& event)
 {
-  LogDebug( wxT("%d"),event.GetKeyCode());
+    LogDebug(wxT("%d"), event.GetKeyCode());
 
-  if (event.GetKeyCode() == WXK_DELETE)
-    AppData()->RemoveObject(AppData()->GetSelectedObject());
-  else if (event.GetKeyCode() == 'P')
-  {
-    /////
-    // prueba del parser
-    /////
+    if (event.GetKeyCode() == WXK_DELETE)
+        AppData()->RemoveObject(AppData()->GetSelectedObject());
+    else if (event.GetKeyCode() == 'P') {
+        /////
+        // prueba del parser
+        /////
 
-    LogDebug( wxT("#### Prueba del parser ####") );
+        LogDebug(wxT("#### Prueba del parser ####"));
 
-    PObjectBase obj = AppData()->GetSelectedObject();
-    PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo( wxT("C++") );
+        PObjectBase obj = AppData()->GetSelectedObject();
+        PCodeInfo code_info = obj->GetObjectInfo()->GetCodeInfo(wxT("C++"));
 
-    LogDebug( wxT("#### Plantillas ####") );
+        LogDebug(wxT("#### Plantillas ####"));
 
-    LogDebug( code_info->GetTemplate( wxT("construction") ) );
-    LogDebug( code_info->GetTemplate( wxT("declaration") ) );
-    LogDebug( wxT("#### Código ####") );
-    {
-      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("construction") ), false, false, wxEmptyString );
+        LogDebug(code_info->GetTemplate(wxT("construction")));
+        LogDebug(code_info->GetTemplate(wxT("declaration")));
+        LogDebug(wxT("#### Código ####"));
+        {
+            CppTemplateParser parser(obj, code_info->GetTemplate(wxT("construction")), false, false, wxEmptyString);
 
-      LogDebug( parser.ParseTemplate() );
-    }
-    {
-      CppTemplateParser parser(obj,code_info->GetTemplate( wxT("declaration") ), false, false, wxEmptyString );
+            LogDebug(parser.ParseTemplate());
+        }
+        {
+            CppTemplateParser parser(obj, code_info->GetTemplate(wxT("declaration")), false, false, wxEmptyString);
 
-      LogDebug( parser.ParseTemplate() );
-    }
-  }
-  else if (event.GetKeyCode() == 'C')
-  {
-    AppData()->GenerateCode();
-  }
-  else
-    event.Skip();
+            LogDebug(parser.ParseTemplate());
+        }
+    } else if (event.GetKeyCode() == 'C') {
+        AppData()->GenerateCode();
+    } else
+        event.Skip();
 }

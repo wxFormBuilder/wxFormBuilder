@@ -3,10 +3,11 @@
 
 #include <wx/string.h>
 
+
 class FileToCArray
 {
 public:
-	static wxString Generate( const wxString& sourcepath );
+    static wxString Generate(const wxString& sourcepath);
 };
 
-#endif // UTILS_FILETOCARRAY_H
+#endif  // UTILS_FILETOCARRAY_H

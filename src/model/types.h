@@ -22,19 +22,23 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef MODEL_TYPES_H
 #define MODEL_TYPES_H
+
+#include <wx/wx.h>
 
 #include <map>
 #include <memory>
 #include <utility>
 #include <vector>
-#include <wx/wx.h>
+
 
 class ObjectType;
 
 typedef std::shared_ptr<ObjectType> PObjectType;
 typedef std::weak_ptr<ObjectType> WPObjectType;
+
 
 /**
  * Representa el tipo de objeto.
@@ -63,103 +67,92 @@ typedef std::weak_ptr<ObjectType> WPObjectType;
 class ObjectType
 {
 public:
+    ObjectType(wxString name, int id, bool hidden = false, bool item = false);
 
-	ObjectType(wxString name, int id, bool hidden = false, bool item = false);
-
-	int    GetId()
-	{
-		return m_id;
-	}
-	wxString GetName()
-	{
-		return m_name;
-	}
-	//bool   IsHidden()  { return m_hidden; }
-	bool   IsItem()
-	{
-		return m_item;
-	}
+    int GetId() { return m_id; }
+    wxString GetName() { return m_name; }
+    // bool   IsHidden()  { return m_hidden; }
+    bool IsItem() { return m_item; }
 
 
-	/**
-	 * Añade el tipo de objeto a la lista de posibles hijos.
-	 */
-	void AddChildType(PObjectType type, int max = -1, int aui_max = -1);
+    /**
+     * Añade el tipo de objeto a la lista de posibles hijos.
+     */
+    void AddChildType(PObjectType type, int max = -1, int aui_max = -1);
 
-	/**
-	 * Busca si el tipo pasado como parámetros está entre sus posibles
-	 * hijos.
-	 * @return numero máximo de ocurrencias del objeto como hijo.
-	 *         -1 = numero ilimitado, 0 = ninguna
-	 */
-	int FindChildType(int type_id, bool aui);
-	int FindChildType(PObjectType type, bool aui);
+    /**
+     * Busca si el tipo pasado como parámetros está entre sus posibles
+     * hijos.
+     * @return numero máximo de ocurrencias del objeto como hijo.
+     *         -1 = numero ilimitado, 0 = ninguna
+     */
+    int FindChildType(int type_id, bool aui);
+    int FindChildType(PObjectType type, bool aui);
 
-	unsigned int GetChildTypeCount();
-	PObjectType GetChildType(unsigned int idx);
+    unsigned int GetChildTypeCount();
+    PObjectType GetChildType(unsigned int idx);
 
 private:
-	class ChildCount
-	{
-	public:
-		ChildCount(int m, int am) : max(m), aui_max(am) {;}
-		int max;
-		int aui_max;
-	};
+    class ChildCount
+    {
+    public:
+        ChildCount(int m, int am) : max(m), aui_max(am) { ; }
+        int max;
+        int aui_max;
+    };
 
-	/**
-	 * Registro con los tipos de los hijos posibles y el número máximo
-	 * de estos.
-	 * @note vamos a usar smart-pointers de tipo "weak" ya que puede haber muchas
-	 *       referencias cruzadas.
-	 */
-	typedef std::map<WPObjectType, ChildCount, std::owner_less<WPObjectType>> ChildTypeMap;
+    /**
+     * Registro con los tipos de los hijos posibles y el número máximo
+     * de estos.
+     * @note vamos a usar smart-pointers de tipo "weak" ya que puede haber muchas
+     *       referencias cruzadas.
+     */
+    typedef std::map<WPObjectType, ChildCount, std::owner_less<WPObjectType>> ChildTypeMap;
 
-	int m_id;        /**< identificador numérico del tipo de objeto */
-	wxString m_name;   /**< cadena de texto asociado al tipo */
-	bool m_hidden;   /**< indica si está oculto en el ObjectTree */
-	bool m_item;     /**< indica si es un "item". Los objetos contenidos en
-                     *  en un item, muestran las propiedades de éste junto
-                     *  con las propias del objeto.
-                     */
+    int m_id;        /**< identificador numérico del tipo de objeto */
+    wxString m_name; /**< cadena de texto asociado al tipo */
+    bool m_hidden;   /**< indica si está oculto en el ObjectTree */
+    bool m_item;     /**< indica si es un "item". Los objetos contenidos en
+                      *  en un item, muestran las propiedades de éste junto
+                      *  con las propias del objeto.
+                      */
 
-	ChildTypeMap m_childTypes; /**< registro de posibles hijos */
+    ChildTypeMap m_childTypes; /**< registro de posibles hijos */
 };
 
 /**
  * Tipos de propiedades.
  */
-typedef enum
-{
-	PT_ERROR,
-	PT_BOOL,
-	PT_TEXT,
-	PT_INT,
-	PT_UINT,
-	PT_BITLIST,
-	PT_INTLIST,
-	PT_UINTLIST,
-	PT_INTPAIRLIST,
-	PT_UINTPAIRLIST,
-	PT_OPTION,
-	PT_MACRO,
-	PT_WXSTRING,
-	PT_WXPOINT,
-	PT_WXSIZE,
-	PT_WXFONT,
-	PT_WXCOLOUR,
-	PT_WXPARENT,
-	PT_WXPARENT_SB,
-	PT_WXPARENT_CP,
-	PT_PATH,
-	PT_FILE,
-	PT_BITMAP,
-	PT_STRINGLIST,
-	PT_FLOAT,
-	PT_WXSTRING_I18N,
-	PT_PARENT,
-	PT_CLASS,
-	PT_EDIT_OPTION
+typedef enum {
+    PT_ERROR,
+    PT_BOOL,
+    PT_TEXT,
+    PT_INT,
+    PT_UINT,
+    PT_BITLIST,
+    PT_INTLIST,
+    PT_UINTLIST,
+    PT_INTPAIRLIST,
+    PT_UINTPAIRLIST,
+    PT_OPTION,
+    PT_MACRO,
+    PT_WXSTRING,
+    PT_WXPOINT,
+    PT_WXSIZE,
+    PT_WXFONT,
+    PT_WXCOLOUR,
+    PT_WXPARENT,
+    PT_WXPARENT_SB,
+    PT_WXPARENT_CP,
+    PT_PATH,
+    PT_FILE,
+    PT_BITMAP,
+    PT_STRINGLIST,
+    PT_FLOAT,
+    PT_WXSTRING_I18N,
+    PT_PARENT,
+    PT_CLASS,
+    PT_EDIT_OPTION
 } PropertyType;
 /*
 typedef enum
@@ -188,33 +181,24 @@ typedef enum
 class IntList
 {
 private:
-	std::vector<std::pair<int, int>> m_ints;
-	bool m_abs;
-	bool m_pairs;
+    std::vector<std::pair<int, int>> m_ints;
+    bool m_abs;
+    bool m_pairs;
 
 public:
-	explicit IntList(bool absolute_value = false, bool pair_value = false);
-	explicit IntList(const wxString& value, bool absolute_value = false, bool pair_value = false);
+    explicit IntList(bool absolute_value = false, bool pair_value = false);
+    explicit IntList(const wxString& value, bool absolute_value = false, bool pair_value = false);
 
-	unsigned int GetSize() const
-	{
-		return static_cast<unsigned int>(m_ints.size());
-	}
-	int GetValue(unsigned int idx) const
-	{
-		return m_ints[idx].first;
-	}
-	std::pair<int, int> GetPair(unsigned int idx) const
-	{
-		return m_ints[idx];
-	}
+    unsigned int GetSize() const { return static_cast<unsigned int>(m_ints.size()); }
+    int GetValue(unsigned int idx) const { return m_ints[idx].first; }
+    std::pair<int, int> GetPair(unsigned int idx) const { return m_ints[idx]; }
 
-	void Add(int value);
-	void Add(int first, int second);
-	void DeleteList();
-	void SetList(const wxString& str);
+    void Add(int value);
+    void Add(int first, int second);
+    void DeleteList();
+    void SetList(const wxString& str);
 
-	wxString ToString(bool skip_zero_second = false);
+    wxString ToString(bool skip_zero_second = false);
 };
 
-#endif // MODEL_TYPES_H
+#endif  // MODEL_TYPES_H

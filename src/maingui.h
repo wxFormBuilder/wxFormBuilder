@@ -22,32 +22,35 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef MAINGUI_H
 #define MAINGUI_H
 
 #include <wx/app.h>
 
+
 class MainFrame;
+
 
 class MyApp : public wxApp
 {
 private:
-  MainFrame *m_frame;
+    MainFrame* m_frame;
 
 public:
-	bool OnInit() override;
-  #if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
-	void OnFatalException() override;
-  #endif
-	int OnRun() override;
-	int OnExit() override;
+    bool OnInit() override;
+#if wxUSE_ON_FATAL_EXCEPTION && wxUSE_STACKWALKER
+    void OnFatalException() override;
+#endif
+    int OnRun() override;
+    int OnExit() override;
 
-  #ifdef __WXMAC__
-  wxString m_mac_file_name;
-  void MacOpenFile(const wxString &fileName) override;
-  #endif
+#ifdef __WXMAC__
+    wxString m_mac_file_name;
+    void MacOpenFile(const wxString& fileName) override;
+#endif
 };
 
 DECLARE_APP(MyApp)
 
-#endif // MAINGUI_H
+#endif  // MAINGUI_H

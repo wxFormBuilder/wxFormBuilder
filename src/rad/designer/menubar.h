@@ -27,38 +27,41 @@
 #define RAD_DESIGNER_MENUBAR_H
 
 #include <wx/wx.h>
+
 #include <vector>
+
 
 typedef std::vector<wxMenu*> MenuVector;
 
+
 class Menubar : public wxPanel
 {
-    public:
-        Menubar();
-        Menubar(wxWindow *parent, int id, const wxPoint& pos = wxDefaultPosition,
-            const wxSize &size = wxDefaultSize,
-            long style = 0, const wxString &name = wxT("fbmenubar"));
-	~Menubar() override;
-        void AppendMenu(const wxString& name, wxMenu *menu);
-        wxMenu* GetMenu(int i);
-        int GetMenuCount();
-        wxMenu* Remove(int i);
+public:
+    Menubar();
+    Menubar(
+      wxWindow* parent, int id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+      long style = 0, const wxString& name = wxT("fbmenubar"));
+    ~Menubar() override;
+    void AppendMenu(const wxString& name, wxMenu* menu);
+    wxMenu* GetMenu(int i);
+    int GetMenuCount();
+    wxMenu* Remove(int i);
 
-    private:
-        MenuVector m_menus;
-        wxBoxSizer *m_sizer;
+private:
+    MenuVector m_menus;
+    wxBoxSizer* m_sizer;
 };
 
 class MenuEvtHandler : public wxEvtHandler
 {
-    public:
-        MenuEvtHandler(wxStaticText *st, wxMenu *menu);
-        void OnMouseEvent(wxMouseEvent& event);
+public:
+    MenuEvtHandler(wxStaticText* st, wxMenu* menu);
+    void OnMouseEvent(wxMouseEvent& event);
 
-        DECLARE_EVENT_TABLE()
-    private:
-        wxStaticText *m_label;
-        wxMenu *m_menu;
+    DECLARE_EVENT_TABLE()
+private:
+    wxStaticText* m_label;
+    wxMenu* m_menu;
 };
 
-#endif // RAD_DESIGNER_MENUBAR_H
+#endif  // RAD_DESIGNER_MENUBAR_H

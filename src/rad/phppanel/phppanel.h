@@ -35,42 +35,41 @@
 #ifndef RAD_PHPPANEL_PHPPANEL_H
 #define RAD_PHPPANEL_PHPPANEL_H
 
-#include "utils/wxfbdefs.h"
-
 #include <wx/panel.h>
 
-class CodeEditor;
+#include "utils/wxfbdefs.h"
 
+
+class CodeEditor;
+class wxFBEvent;
+class wxFBEventHandlerEvent;
+class wxFBObjectEvent;
+class wxFBPropertyEvent;
+class wxFindDialogEvent;
 class wxStyledTextCtrl;
 
-class wxFindDialogEvent;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
-class wxFBEventHandlerEvent;
 
 class PHPPanel : public wxPanel
 {
 private:
-	CodeEditor* m_phpPanel;
-	PTCCodeWriter m_phpCW;
+    CodeEditor* m_phpPanel;
+    PTCCodeWriter m_phpCW;
 
-    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+    void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
 public:
-	PHPPanel( wxWindow *parent, int id );
-	~PHPPanel() override;
+    PHPPanel(wxWindow* parent, int id);
+    ~PHPPanel() override;
 
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
-	void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
+    void OnCodeGeneration(wxFBEvent& event);
+    void OnObjectChange(wxFBObjectEvent& event);
+    void OnEventHandlerModified(wxFBEventHandlerEvent& event);
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-#endif // RAD_PHPPANEL_PHPPANEL_H
+#endif  // RAD_PHPPANEL_PHPPANEL_H

@@ -22,26 +22,28 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef SDK_PLUGIN_INTERFACE_XRCCONV_H
 #define SDK_PLUGIN_INTERFACE_XRCCONV_H
 
 #include "component.h"
 
-#define XRC_TYPE_TEXT    0
+
+#define XRC_TYPE_TEXT 0
 #define XRC_TYPE_INTEGER 1
-#define XRC_TYPE_BOOL    2
-#define XRC_TYPE_COLOUR  3
-#define XRC_TYPE_FONT    4
+#define XRC_TYPE_BOOL 2
+#define XRC_TYPE_COLOUR 3
+#define XRC_TYPE_FONT 4
 #define XRC_TYPE_BITLIST 5
-#define XRC_TYPE_SIZE    6
-#define XRC_TYPE_POINT   7
+#define XRC_TYPE_SIZE 6
+#define XRC_TYPE_POINT 7
 #define XRC_TYPE_STRINGLIST 8
-#define XRC_TYPE_BITMAP  9
+#define XRC_TYPE_BITMAP 9
 #define XRC_TYPE_FLOAT 10
 
 namespace ticpp
 {
-	class Element;
+class Element;
 }
 
 /**
@@ -64,38 +66,32 @@ namespace ticpp
  */
 class ObjectToXrcFilter
 {
- public:
-  ObjectToXrcFilter(IObject *obj,
-                    const wxString &classname,
-                    const wxString &objname = wxT(""),
-                    const wxString &base = wxT(""));
+public:
+    ObjectToXrcFilter(
+      IObject* obj, const wxString& classname, const wxString& objname = wxT(""), const wxString& base = wxT(""));
 
-  ~ObjectToXrcFilter();
+    ~ObjectToXrcFilter();
 
-  void AddProperty (const wxString &objPropName,
-                    const wxString &xrcPropName,
-                    const int &propType);
+    void AddProperty(const wxString& objPropName, const wxString& xrcPropName, const int& propType);
 
-  void AddPropertyValue (const wxString &xrcPropName,
-                         const wxString &xrcPropValue,
-                         bool xrcFormat = false);
+    void AddPropertyValue(const wxString& xrcPropName, const wxString& xrcPropValue, bool xrcFormat = false);
 
-  void AddPropertyPair ( const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName );
+    void AddPropertyPair(const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName);
 
-  void AddWindowProperties();
+    void AddWindowProperties();
 
-  ticpp::Element* GetXrcObject();
+    ticpp::Element* GetXrcObject();
 
- private:
-  ticpp::Element* m_xrcObj;
-  IObject *m_obj;
+private:
+    ticpp::Element* m_xrcObj;
+    IObject* m_obj;
 
-  void LinkText(const wxString &text, ticpp::Element *propElement, bool xrcFormat = false);
-  void LinkColour(const wxColour &colour, ticpp::Element *propElement);
-  void LinkFont(const wxFontContainer &font, ticpp::Element *propElement);
-  void LinkInteger(const int &integer, ticpp::Element *propElement);
-  void LinkFloat( const double& value, ticpp::Element* propElement );
-  void LinkStringList(const wxArrayString &array, ticpp::Element *propElement,  bool xrcFormat = false);
+    void LinkText(const wxString& text, ticpp::Element* propElement, bool xrcFormat = false);
+    void LinkColour(const wxColour& colour, ticpp::Element* propElement);
+    void LinkFont(const wxFontContainer& font, ticpp::Element* propElement);
+    void LinkInteger(const int& integer, ticpp::Element* propElement);
+    void LinkFloat(const double& value, ticpp::Element* propElement);
+    void LinkStringList(const wxArrayString& array, ticpp::Element* propElement, bool xrcFormat = false);
 };
 
 /**
@@ -107,46 +103,39 @@ class ObjectToXrcFilter
  */
 class XrcToXfbFilter
 {
- public:
+public:
+    XrcToXfbFilter(ticpp::Element* obj, const wxString& classname);
 
-  XrcToXfbFilter(ticpp::Element *obj,
-                 const wxString &classname);
+    XrcToXfbFilter(ticpp::Element* obj, const wxString& classname, const wxString& objname);
+    ~XrcToXfbFilter();
 
-  XrcToXfbFilter(ticpp::Element *obj,
-                 const wxString &classname,
-                 const wxString &objname);
-  ~XrcToXfbFilter();
+    void AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, const int& propType);
 
-  void AddProperty (const wxString &xrcPropName,
-                    const wxString &xfbPropName, const int &propType);
+    void AddPropertyValue(const wxString& xfbPropName, const wxString& xfbPropValue, bool parseXrcText = false);
 
-  void AddPropertyValue (const wxString &xfbPropName,
-                         const wxString &xfbPropValue,
-                         bool parseXrcText = false);
+    void AddWindowProperties();
 
-  void AddWindowProperties();
+    void AddPropertyPair(const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2);
 
-  void AddPropertyPair( const char* xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2 );
+    ticpp::Element* GetXfbObject();
 
-  ticpp::Element* GetXfbObject();
+private:
+    ticpp::Element* m_xfbObj;
+    ticpp::Element* m_xrcObj;
 
- private:
-  ticpp::Element *m_xfbObj;
-  ticpp::Element *m_xrcObj;
+    void ImportTextProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText = false);
+    void ImportIntegerProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportFloatProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportBitlistProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportBitmapProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportColourProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportFontProperty(const wxString& xrcPropName, ticpp::Element* property);
+    void ImportStringListProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText = false);
 
-  void ImportTextProperty(const wxString &xrcPropName, ticpp::Element *property, bool parseXrcText = false);
-  void ImportIntegerProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportFloatProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportBitlistProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportBitmapProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportColourProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportFontProperty(const wxString &xrcPropName, ticpp::Element *property);
-  void ImportStringListProperty(const wxString &xrcPropName, ticpp::Element *property, bool parseXrcText = false);
+    void AddStyleProperty();
+    void AddExtraStyleProperty();
 
-  void AddStyleProperty();
-  void AddExtraStyleProperty();
-
-  ticpp::Element *GetXrcProperty(const wxString &name);
+    ticpp::Element* GetXrcProperty(const wxString& name);
 };
 
-#endif // SDK_PLUGIN_INTERFACE_XRCCONV_H
+#endif  // SDK_PLUGIN_INTERFACE_XRCCONV_H

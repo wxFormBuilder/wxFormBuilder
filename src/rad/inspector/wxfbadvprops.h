@@ -26,13 +26,15 @@
 //   This code was part of previous objtree.cpp version.
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_INSPECTOR_WXFBADVPROPS_H
 #define RAD_INSPECTOR_WXFBADVPROPS_H
 
+#include <wx/propgrid/advprops.h>
+#include <wx/propgrid/propgrid.h>
+
 #include <fontcontainer.h>
 
-#include <wx/propgrid/propgrid.h>
-#include <wx/propgrid/advprops.h>
 
 // -----------------------------------------------------------------------
 // wxFBSizeProperty
@@ -40,19 +42,17 @@
 
 class wxFBSizeProperty : public wxPGProperty
 {
-    WX_PG_DECLARE_PROPERTY_CLASS( wxFBSizeProperty )
+    WX_PG_DECLARE_PROPERTY_CLASS(wxFBSizeProperty)
 public:
-    wxFBSizeProperty( const wxString& label = wxPG_LABEL,
-                      const wxString& name  = wxPG_LABEL,
-                      const wxSize&   value = wxSize() );
+    wxFBSizeProperty(
+      const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxSize& value = wxSize());
 
-	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                       wxVariant& childValue) const override;
+    wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
-	void RefreshChildren() override;
+    void RefreshChildren() override;
 
 protected:
-    void DoSetValue( const wxSize& value ) { m_value = WXVARIANT( value ); }
+    void DoSetValue(const wxSize& value) { m_value = WXVARIANT(value); }
 };
 
 // -----------------------------------------------------------------------
@@ -61,20 +61,18 @@ protected:
 
 class wxFBPointProperty : public wxPGProperty
 {
-    WX_PG_DECLARE_PROPERTY_CLASS( wxFBPointProperty )
+    WX_PG_DECLARE_PROPERTY_CLASS(wxFBPointProperty)
 public:
-    wxFBPointProperty( const wxString& label = wxPG_LABEL,
-                       const wxString& name  = wxPG_LABEL,
-                       const wxPoint&  value = wxPoint() );
-	~wxFBPointProperty() override;
+    wxFBPointProperty(
+      const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxPoint& value = wxPoint());
+    ~wxFBPointProperty() override;
 
-	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                       wxVariant& childValue) const override;
+    wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
-	void RefreshChildren() override;
+    void RefreshChildren() override;
 
 protected:
-    void DoSetValue( const wxPoint& value ) { m_value = WXVARIANT( value ); }
+    void DoSetValue(const wxPoint& value) { m_value = WXVARIANT(value); }
 };
 
 // -----------------------------------------------------------------------
@@ -83,45 +81,41 @@ protected:
 
 class wxFBBitmapProperty : public wxPGProperty
 {
-    WX_PG_DECLARE_PROPERTY_CLASS( wxFBBitmapProperty )
+    WX_PG_DECLARE_PROPERTY_CLASS(wxFBBitmapProperty)
 
 public:
-    wxFBBitmapProperty( const wxString& label = wxPG_LABEL,
-                        const wxString& name  = wxPG_LABEL,
-                        const wxString& value = wxString() );
+    wxFBBitmapProperty(
+      const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxString& value = wxString());
 
-	~wxFBBitmapProperty() override;
+    ~wxFBBitmapProperty() override;
 
-    wxPGProperty *CreatePropertySource( int sourceIndex = 0 );
-    wxPGProperty *CreatePropertyFilePath() ;
-    wxPGProperty *CreatePropertyResourceName();
-    wxPGProperty *CreatePropertyIconSize();
-	wxPGProperty *CreatePropertyXrcName();
-    wxPGProperty *CreatePropertyArtId();
-    wxPGProperty *CreatePropertyArtClient();
+    wxPGProperty* CreatePropertySource(int sourceIndex = 0);
+    wxPGProperty* CreatePropertyFilePath();
+    wxPGProperty* CreatePropertyResourceName();
+    wxPGProperty* CreatePropertyIconSize();
+    wxPGProperty* CreatePropertyXrcName();
+    wxPGProperty* CreatePropertyArtId();
+    wxPGProperty* CreatePropertyArtClient();
 
-    wxString SetupImage( const wxString &imgPath = wxEmptyString ) ;
-    wxString SetupResource( const wxString &resName = wxEmptyString ) ;
+    wxString SetupImage(const wxString& imgPath = wxEmptyString);
+    wxString SetupResource(const wxString& resName = wxEmptyString);
 
-	int prevSrc;
-	void SetPrevSource(int src){prevSrc = src;}
+    int prevSrc;
+    void SetPrevSource(int src) { prevSrc = src; }
 
-	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                       wxVariant& childValue) const override;
+    wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
-	void OnSetValue() override;
-	void CreateChildren();
+    void OnSetValue() override;
+    void CreateChildren();
 
-	void UpdateChildValues(const wxString& value);
+    void UpdateChildValues(const wxString& value);
+
 protected:
-
-	void GetChildValues( const wxString& parentValue, wxArrayString& childValues ) const;
+    void GetChildValues(const wxString& parentValue, wxArrayString& childValues) const;
 
     static wxArrayString m_ids;
     static wxArrayString m_clients;
     wxArrayString m_strings;
-
-
 };
 
 // -----------------------------------------------------------------------
@@ -141,28 +135,23 @@ protected:
 
 class wxPGSliderEditor : public wxPGEditor
 {
-    wxDECLARE_DYNAMIC_CLASS( wxPGSliderEditor );
-public:
-    wxPGSliderEditor()
-    :
-    m_max( 10000 )
-    {
-    }
+    wxDECLARE_DYNAMIC_CLASS(wxPGSliderEditor);
 
-	~wxPGSliderEditor() override;
-	wxPGWindowList CreateControls(wxPropertyGrid* propgrid, wxPGProperty* property,
-	                              const wxPoint& pos, const wxSize& size) const override;
-	void UpdateControl(wxPGProperty* property, wxWindow* wnd) const override;
-	bool OnEvent(wxPropertyGrid* propgrid, wxPGProperty* property, wxWindow* wnd,
-	             wxEvent& event) const override;
-	bool GetValueFromControl(wxVariant& variant, wxPGProperty* property,
-	                         wxWindow* ctrl) const override;
-	void SetValueToUnspecified(wxPGProperty* property, wxWindow* ctrl) const override;
+public:
+    wxPGSliderEditor() : m_max(10000) {}
+
+    ~wxPGSliderEditor() override;
+    wxPGWindowList CreateControls(
+      wxPropertyGrid* propgrid, wxPGProperty* property, const wxPoint& pos, const wxSize& size) const override;
+    void UpdateControl(wxPGProperty* property, wxWindow* wnd) const override;
+    bool OnEvent(wxPropertyGrid* propgrid, wxPGProperty* property, wxWindow* wnd, wxEvent& event) const override;
+    bool GetValueFromControl(wxVariant& variant, wxPGProperty* property, wxWindow* ctrl) const override;
+    void SetValueToUnspecified(wxPGProperty* property, wxWindow* ctrl) const override;
 
 private:
     int m_max;
 };
-#endif // wxUSE_SLIDER
+#endif  // wxUSE_SLIDER
 
 // -----------------------------------------------------------------------
 // wxFBFontProperty
@@ -172,19 +161,19 @@ class wxFBFontProperty : public wxPGProperty
 {
     WX_PG_DECLARE_PROPERTY_CLASS(wxFBFontProperty)
 public:
+    wxFBFontProperty(
+      const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL,
+      const wxFontContainer& value = *wxNORMAL_FONT);
+    ~wxFBFontProperty() override;
 
-    wxFBFontProperty( const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxFontContainer& value = *wxNORMAL_FONT);
-	~wxFBFontProperty() override;
+    wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
-	wxVariant ChildChanged(wxVariant& thisValue, int childIndex,
-	                       wxVariant& childValue) const override;
+    void RefreshChildren() override;
 
-	void RefreshChildren() override;
+    void OnSetValue() override;
+    wxString GetValueAsString(int argFlags = 0) const override;
 
-	void OnSetValue() override;
-	wxString GetValueAsString(int argFlags = 0) const override;
-
-	bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
+    bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
 };
 
-#endif // RAD_INSPECTOR_WXFBADVPROPS_H
+#endif  // RAD_INSPECTOR_WXFBADVPROPS_H

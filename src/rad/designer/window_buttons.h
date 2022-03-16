@@ -22,9 +22,11 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_DESIGNER_WINDOW_BUTTONS_H
 #define RAD_DESIGNER_WINDOW_BUTTONS_H
 
+// clang-format off
 /* XPM */
 static const char * minimize_xpm[] = {
 "17 15 6 1",
@@ -169,5 +171,6 @@ static const char * close_disabled_xpm[] = {
 " .@@@@@@@@@@@@@@#+",
 " .###############+",
 " +++++++++++++++++"};
+// clang-format on
 
-#endif // RAD_DESIGNER_WINDOW_BUTTONS_H
+#endif  // RAD_DESIGNER_WINDOW_BUTTONS_H

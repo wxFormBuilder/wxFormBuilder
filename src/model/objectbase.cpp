@@ -25,927 +25,884 @@
 
 #include "objectbase.h"
 
+#include <ticpp.h>
+#include <wx/tokenzr.h>
+
 #include "rad/appdata.h"
 #include "utils/debug.h"
 #include "utils/stringutils.h"
 #include "utils/typeconv.h"
 
-#include <ticpp.h>
-#include <wx/tokenzr.h>
 
-PropertyInfo::PropertyInfo(wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
-						   POptionList opt_list, const std::list< PropertyChild >& children )
+PropertyInfo::PropertyInfo(
+  wxString name, PropertyType type, wxString def_value, wxString description, wxString customEditor,
+  POptionList opt_list, const std::list<PropertyChild>& children)
 {
-	m_name = name;
-	m_type = type;
-	m_def_value = def_value;
-	m_opt_list = opt_list;
-	m_description = description;
-	m_children = children;
-	m_customEditor = customEditor;
+    m_name = name;
+    m_type = type;
+    m_def_value = def_value;
+    m_opt_list = opt_list;
+    m_description = description;
+    m_children = children;
+    m_customEditor = customEditor;
 }
 
 PropertyInfo::~PropertyInfo()
 {
 }
 
-EventInfo::EventInfo(const wxString &name, const wxString &eventClass,
-  const wxString &defValue,  const wxString &description)
-  : m_name(name), m_eventClass(eventClass), m_defaultValue(defValue),
-    m_description(description)
+EventInfo::EventInfo(
+  const wxString& name, const wxString& eventClass, const wxString& defValue, const wxString& description) :
+  m_name(name), m_eventClass(eventClass), m_defaultValue(defValue), m_description(description)
 {
 }
 
 bool Property::IsDefaultValue()
 {
-	return (m_info->GetDefaultValue() == m_value);
+    return (m_info->GetDefaultValue() == m_value);
 }
 
 bool Property::IsNull()
 {
-	switch ( m_info->GetType() )
-	{
-		case PT_BITMAP:
-		{
-			wxString path;
-			size_t semicolonIndex = m_value.find_first_of( wxT(";") );
-			if ( semicolonIndex != m_value.npos )
-			{
-				path = m_value.substr( 0, semicolonIndex );
-			}
-			else
-			{
-				path = m_value;
-			}
+    switch (m_info->GetType()) {
+        case PT_BITMAP: {
+            wxString path;
+            size_t semicolonIndex = m_value.find_first_of(wxT(";"));
+            if (semicolonIndex != m_value.npos) {
+                path = m_value.substr(0, semicolonIndex);
+            } else {
+                path = m_value;
+            }
 
-			return path.empty();
-		}
-		case PT_WXSIZE:
-		{
-			return ( wxDefaultSize == TypeConv::StringToSize( m_value ) );
-		}
-		default:
-		{
-			return m_value.empty();
-		}
-	}
+            return path.empty();
+        }
+        case PT_WXSIZE: {
+            return (wxDefaultSize == TypeConv::StringToSize(m_value));
+        }
+        default: {
+            return m_value.empty();
+        }
+    }
 }
 
 void Property::SetDefaultValue()
 {
-	m_value = m_info->GetDefaultValue();
+    m_value = m_info->GetDefaultValue();
 }
 
-void Property::SetValue(const wxFontContainer &font)
+void Property::SetValue(const wxFontContainer& font)
 {
-	m_value = TypeConv::FontToString( font );
+    m_value = TypeConv::FontToString(font);
 }
-void Property::SetValue(const wxColour &colour)
+void Property::SetValue(const wxColour& colour)
 {
-	m_value = TypeConv::ColourToString( colour );
+    m_value = TypeConv::ColourToString(colour);
 }
-void Property::SetValue(const wxString &str, bool format)
+void Property::SetValue(const wxString& str, bool format)
 {
-	m_value = (format ? TypeConv::TextToString(str) : str );
-}
-
-void Property::SetValue(const wxPoint &point)
-{
-	m_value = TypeConv::PointToString(point);
+    m_value = (format ? TypeConv::TextToString(str) : str);
 }
 
-void Property::SetValue(const wxSize &size)
+void Property::SetValue(const wxPoint& point)
 {
-	m_value = TypeConv::SizeToString(size);
+    m_value = TypeConv::PointToString(point);
+}
+
+void Property::SetValue(const wxSize& size)
+{
+    m_value = TypeConv::SizeToString(size);
 }
 
 void Property::SetValue(const int integer)
 {
-	m_value = StringUtils::IntToStr(integer);
+    m_value = StringUtils::IntToStr(integer);
 }
 
-void Property::SetValue(const double val )
+void Property::SetValue(const double val)
 {
-	m_value = TypeConv::FloatToString( val );
+    m_value = TypeConv::FloatToString(val);
 }
 
 wxFontContainer Property::GetValueAsFont()
 {
-	return TypeConv::StringToFont( m_value );
+    return TypeConv::StringToFont(m_value);
 }
 
 wxColour Property::GetValueAsColour()
 {
-	return TypeConv::StringToColour(m_value);
+    return TypeConv::StringToColour(m_value);
 }
 wxPoint Property::GetValueAsPoint()
 {
-	return TypeConv::StringToPoint(m_value);
+    return TypeConv::StringToPoint(m_value);
 }
 wxSize Property::GetValueAsSize()
 {
-	return TypeConv::StringToSize(m_value);
+    return TypeConv::StringToSize(m_value);
 }
 
 wxBitmap Property::GetValueAsBitmap()
 {
-	return TypeConv::StringToBitmap( m_value );
+    return TypeConv::StringToBitmap(m_value);
 }
 
 int Property::GetValueAsInteger()
 {
-	int result = 0;
+    int result = 0;
 
-	switch (GetType())
-	{
-	case PT_EDIT_OPTION:
-	case PT_OPTION:
-	case PT_MACRO:
-		result = TypeConv::GetMacroValue(m_value);
-		break;
-	case PT_BITLIST:
-		result = TypeConv::BitlistToInt(m_value);
-		break;
-	default:
-		result = TypeConv::StringToInt(m_value);
-		break;
-	}
-	return result;
+    switch (GetType()) {
+        case PT_EDIT_OPTION:
+        case PT_OPTION:
+        case PT_MACRO:
+            result = TypeConv::GetMacroValue(m_value);
+            break;
+        case PT_BITLIST:
+            result = TypeConv::BitlistToInt(m_value);
+            break;
+        default:
+            result = TypeConv::StringToInt(m_value);
+            break;
+    }
+    return result;
 }
 
 wxString Property::GetValueAsString()
 {
-	return m_value;
+    return m_value;
 }
 
 wxString Property::GetValueAsText()
 {
-	return TypeConv::StringToText(m_value);
+    return TypeConv::StringToText(m_value);
 }
 
 wxArrayString Property::GetValueAsArrayString()
 {
-	return TypeConv::StringToArrayString(m_value);
+    return TypeConv::StringToArrayString(m_value);
 }
 
 double Property::GetValueAsFloat()
 {
-	return TypeConv::StringToFloat(m_value);
+    return TypeConv::StringToFloat(m_value);
 }
 
-void Property::SplitParentProperty( std::map< wxString, wxString >* children )
+void Property::SplitParentProperty(std::map<wxString, wxString>* children)
 {
-	children->clear();
-	if ( m_info->GetType() != PT_PARENT )
-	{
-		return;
-	}
+    children->clear();
+    if (m_info->GetType() != PT_PARENT) {
+        return;
+    }
 
-	std::list< PropertyChild >* myChildren = m_info->GetChildren();
-	std::list< PropertyChild >::iterator it = myChildren->begin();
+    std::list<PropertyChild>* myChildren = m_info->GetChildren();
+    std::list<PropertyChild>::iterator it = myChildren->begin();
 
-	wxStringTokenizer tkz( m_value, wxT(";"), wxTOKEN_RET_EMPTY_ALL );
-	while ( tkz.HasMoreTokens() )
-	{
-		if ( myChildren->end() == it )
-		{
-			return;
-		}
-		wxString child = tkz.GetNextToken();
-		child.Trim( false );
-		child.Trim( true );
-		children->insert( std::map< wxString, wxString >::value_type( it->m_name, child ) );
-		it++;
-	}
+    wxStringTokenizer tkz(m_value, wxT(";"), wxTOKEN_RET_EMPTY_ALL);
+    while (tkz.HasMoreTokens()) {
+        if (myChildren->end() == it) {
+            return;
+        }
+        wxString child = tkz.GetNextToken();
+        child.Trim(false);
+        child.Trim(true);
+        children->insert(std::map<wxString, wxString>::value_type(it->m_name, child));
+        it++;
+    }
 }
 
-wxString Property::GetChildFromParent( const wxString& childName )
+wxString Property::GetChildFromParent(const wxString& childName)
 {
-	std::map< wxString, wxString > children;
-	SplitParentProperty( &children );
+    std::map<wxString, wxString> children;
+    SplitParentProperty(&children);
 
-	std::map< wxString, wxString >::iterator child;
-	child = children.find( childName );
+    std::map<wxString, wxString>::iterator child;
+    child = children.find(childName);
 
-	if ( children.end() == child )
-	{
-		return wxEmptyString;
-	}
-	else
-	{
-		return child->second;
-	}
+    if (children.end() == child) {
+        return wxEmptyString;
+    } else {
+        return child->second;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 const int ObjectBase::INDENT = 2;
 
-ObjectBase::ObjectBase (wxString class_name)
-:
-m_expanded( true )
+ObjectBase::ObjectBase(wxString class_name) : m_expanded(true)
 {
-	m_class = class_name;
+    m_class = class_name;
 
-	LogDebug(wxT("new ObjectBase"));
+    LogDebug(wxT("new ObjectBase"));
 }
 
 ObjectBase::~ObjectBase()
 {
-	// remove the reference in the parent
-	PObjectBase parent = m_parent.lock();
+    // remove the reference in the parent
+    PObjectBase parent = m_parent.lock();
 
-	if (parent)
-	{
-		PObjectBase pobj(GetThis());
-		parent->RemoveChild(pobj);
-	}
+    if (parent) {
+        PObjectBase pobj(GetThis());
+        parent->RemoveChild(pobj);
+    }
 
-	LogDebug(wxT("delete ObjectBase"));
+    LogDebug(wxT("delete ObjectBase"));
 }
 
 wxString ObjectBase::GetIndentString(int indent)
 {
-	int i;
-	wxString s;
+    int i;
+    wxString s;
 
-	for (i=0;i<indent;i++)
-		s += wxT(" ");
+    for (i = 0; i < indent; i++) s += wxT(" ");
 
-	return s;
+    return s;
 }
 
-PObjectBase ObjectBase::GetNonSizerParent ()
+PObjectBase ObjectBase::GetNonSizerParent()
 {
-	PObjectBase current = GetThis();
+    PObjectBase current = GetThis();
 
-	while ( ( current = current->GetParent() ) &&
-		( current->GetObjectInfo()->IsSubclassOf( wxT( "sizeritem" ) ) ||
-		  current->GetObjectInfo()->IsSubclassOf( wxT( "sizer" ) ) ) )
-		;
+    while ((current = current->GetParent()) && (current->GetObjectInfo()->IsSubclassOf(wxT("sizeritem")) ||
+                                                current->GetObjectInfo()->IsSubclassOf(wxT("sizer"))))
+        ;
 
-	return current;
+    return current;
 }
 
-PProperty ObjectBase::GetProperty (wxString name)
+PProperty ObjectBase::GetProperty(wxString name)
 {
-	PropertyMap::iterator it = m_properties.find( name );
-	if ( it != m_properties.end() )
-		return it->second;
+    PropertyMap::iterator it = m_properties.find(name);
+    if (it != m_properties.end())
+        return it->second;
 
-  //LogDebug(wxT("[ObjectBase::GetProperty] Property %s not found!"),name);
-	// este aserto falla siempre que se crea un sizeritem
-	// assert(false);
-	return PProperty();
+    // LogDebug(wxT("[ObjectBase::GetProperty] Property %s not found!"),name);
+    //  este aserto falla siempre que se crea un sizeritem
+    //  assert(false);
+    return PProperty();
 }
 
-PProperty ObjectBase::GetProperty (unsigned int idx)
+PProperty ObjectBase::GetProperty(unsigned int idx)
 {
-	assert (idx < m_properties.size());
+    assert(idx < m_properties.size());
 
-	PropertyMap::iterator it = m_properties.begin();
-	unsigned int i = 0;
-	while (i < idx && it != m_properties.end())
-	{
-		i++;
-		it++;
-	}
+    PropertyMap::iterator it = m_properties.begin();
+    unsigned int i = 0;
+    while (i < idx && it != m_properties.end()) {
+        i++;
+        it++;
+    }
 
-	if (it != m_properties.end())
-		return it->second;
+    if (it != m_properties.end())
+        return it->second;
 
-	return PProperty();
+    return PProperty();
 }
 
-PEvent ObjectBase::GetEvent (wxString name)
+PEvent ObjectBase::GetEvent(wxString name)
 {
-	EventMap::iterator it = m_events.find( name );
-	if ( it != m_events.end() )
-		return it->second;
+    EventMap::iterator it = m_events.find(name);
+    if (it != m_events.end())
+        return it->second;
 
     LogDebug("[ObjectBase::GetEvent] Event " + name + " not found!");
-	return PEvent();
+    return PEvent();
 }
 
-PEvent ObjectBase::GetEvent (unsigned int idx)
+PEvent ObjectBase::GetEvent(unsigned int idx)
 {
-	assert (idx < m_events.size());
+    assert(idx < m_events.size());
 
-	EventMap::iterator it = m_events.begin();
-	unsigned int i = 0;
-	while (i < idx && it != m_events.end())
-	{
-		i++;
-		it++;
-	}
+    EventMap::iterator it = m_events.begin();
+    unsigned int i = 0;
+    while (i < idx && it != m_events.end()) {
+        i++;
+        it++;
+    }
 
-	if (it != m_events.end())
-		return it->second;
+    if (it != m_events.end())
+        return it->second;
 
-  return PEvent();
+    return PEvent();
 }
 
-void ObjectBase::AddProperty (PProperty prop)
+void ObjectBase::AddProperty(PProperty prop)
 {
-	m_properties.insert( PropertyMap::value_type( prop->GetName(), prop ) );
+    m_properties.insert(PropertyMap::value_type(prop->GetName(), prop));
 }
 
 void ObjectBase::AddEvent(PEvent event)
 {
-	m_events.insert( EventMap::value_type( event->GetName(), event ) );
+    m_events.insert(EventMap::value_type(event->GetName(), event));
 }
 
 PObjectBase ObjectBase::FindNearAncestor(wxString type)
 {
-	PObjectBase result;
-	PObjectBase parent = GetParent();
-	if (parent)
-	{
-		if (parent->GetObjectTypeName() == type)
-			result = parent;
-		else
-			result = parent->FindNearAncestor(type);
-	}
+    PObjectBase result;
+    PObjectBase parent = GetParent();
+    if (parent) {
+        if (parent->GetObjectTypeName() == type)
+            result = parent;
+        else
+            result = parent->FindNearAncestor(type);
+    }
 
-	return result;
+    return result;
 }
 
 PObjectBase ObjectBase::FindNearAncestorByBaseClass(wxString type)
 {
-	PObjectBase result;
-	PObjectBase parent = GetParent();
-	if (parent)
-	{
-		if ( parent->GetObjectInfo()->IsSubclassOf( type ) )
-			result = parent;
-		else
-			result = parent->FindNearAncestorByBaseClass( type );
-	}
+    PObjectBase result;
+    PObjectBase parent = GetParent();
+    if (parent) {
+        if (parent->GetObjectInfo()->IsSubclassOf(type))
+            result = parent;
+        else
+            result = parent->FindNearAncestorByBaseClass(type);
+    }
 
-	return result;
+    return result;
 }
 
 PObjectBase ObjectBase::FindParentForm()
 {
-	PObjectBase retObj = this->FindNearAncestor( wxT( "form" ) );
-	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "menubar_form" ) );
-	if( retObj == NULL ) retObj = this->FindNearAncestor( wxT( "toolbar_form" ) );
-    if( retObj == NULL ) retObj = this->FindNearAncestor( wxT("wizard") );
+    PObjectBase retObj = this->FindNearAncestor(wxT("form"));
+    if (retObj == NULL)
+        retObj = this->FindNearAncestor(wxT("menubar_form"));
+    if (retObj == NULL)
+        retObj = this->FindNearAncestor(wxT("toolbar_form"));
+    if (retObj == NULL)
+        retObj = this->FindNearAncestor(wxT("wizard"));
 
-	return retObj;
+    return retObj;
 }
 
-bool ObjectBase::AddChild (PObjectBase obj)
+bool ObjectBase::AddChild(PObjectBase obj)
 {
-	bool result = false;
-	if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()))
-		//if (ChildTypeOk(obj->GetObjectTypeName()))
-	{
-		m_children.push_back(obj);
-		result = true;
-	}
+    bool result = false;
+    if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()))
+    // if (ChildTypeOk(obj->GetObjectTypeName()))
+    {
+        m_children.push_back(obj);
+        result = true;
+    }
 
-	return result;
+    return result;
 }
 
-bool ObjectBase::AddChild (unsigned int idx, PObjectBase obj)
+bool ObjectBase::AddChild(unsigned int idx, PObjectBase obj)
 {
-	bool result = false;
-	if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()) && idx <= m_children.size())
-		//if (ChildTypeOk(obj->GetObjectTypeName()) && idx <= m_children.size())
-	{
-		m_children.insert(m_children.begin() + idx,obj);
-		result = true;
-	}
+    bool result = false;
+    if (ChildTypeOk(obj->GetObjectInfo()->GetObjectType()) && idx <= m_children.size())
+    // if (ChildTypeOk(obj->GetObjectTypeName()) && idx <= m_children.size())
+    {
+        m_children.insert(m_children.begin() + idx, obj);
+        result = true;
+    }
 
-	return result;
+    return result;
 }
 
-bool ObjectBase::ChildTypeOk (PObjectType type)
+bool ObjectBase::ChildTypeOk(PObjectType type)
 {
-	// buscamos si puede haber objectos del tipo "type" como hijos
-	// del actual objeto tipo.
+    // buscamos si puede haber objectos del tipo "type" como hijos
+    // del actual objeto tipo.
 
-	int nmax = 0;
+    int nmax = 0;
 
-	// check allowed child count
-	if( GetObjectInfo()->GetObjectType()->GetName() == wxT("form") )
-	{
-		nmax = GetObjectInfo()->GetObjectType()->FindChildType(
-		    type, this->GetPropertyAsInteger(wxT("aui_managed")) != 0);
-	}
-	else
-		nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, false);
+    // check allowed child count
+    if (GetObjectInfo()->GetObjectType()->GetName() == wxT("form")) {
+        nmax =
+          GetObjectInfo()->GetObjectType()->FindChildType(type, this->GetPropertyAsInteger(wxT("aui_managed")) != 0);
+    } else
+        nmax = GetObjectInfo()->GetObjectType()->FindChildType(type, false);
 
-	if (nmax == 0)
-		return false;
+    if (nmax == 0)
+        return false;
 
-	if (nmax < 0)
-		return true;
+    if (nmax < 0)
+        return true;
 
-	// llegados aquí hay que comprobar el número de hijos del tipo pasado
-	int count = 0;
-	for (unsigned int i=0; i < GetChildCount() && count <= nmax; i++)
-	{
-		if (GetChild(i)->GetObjectInfo()->GetObjectType() == type)
-			count++;
-	}
+    // llegados aquí hay que comprobar el número de hijos del tipo pasado
+    int count = 0;
+    for (unsigned int i = 0; i < GetChildCount() && count <= nmax; i++) {
+        if (GetChild(i)->GetObjectInfo()->GetObjectType() == type)
+            count++;
+    }
 
-	if (count > nmax)
-		return false;
+    if (count > nmax)
+        return false;
 
-	return true;
-
+    return true;
 }
 
 PObjectBase ObjectBase::GetLayout()
 {
-	PObjectBase result;
+    PObjectBase result;
 
-	if (GetParent() && GetParent()->GetObjectInfo()->IsSubclassOf( wxT("sizeritembase") ))
-		result = GetParent();
+    if (GetParent() && GetParent()->GetObjectInfo()->IsSubclassOf(wxT("sizeritembase")))
+        result = GetParent();
 
-	return result;
+    return result;
 }
 
-void ObjectBase::RemoveChild (PObjectBase obj)
+void ObjectBase::RemoveChild(PObjectBase obj)
 {
-	std::vector< PObjectBase >::iterator it = m_children.begin();
-	while (it != m_children.end() && *it != obj)
-		it++;
+    std::vector<PObjectBase>::iterator it = m_children.begin();
+    while (it != m_children.end() && *it != obj) it++;
 
-	if (it != m_children.end())
-		m_children.erase(it);
+    if (it != m_children.end())
+        m_children.erase(it);
 }
 
-void ObjectBase::RemoveChild (unsigned int idx)
+void ObjectBase::RemoveChild(unsigned int idx)
 {
-	assert (idx < m_children.size());
+    assert(idx < m_children.size());
 
-	std::vector< PObjectBase >::iterator it =  m_children.begin() + idx;
-	m_children.erase(it);
+    std::vector<PObjectBase>::iterator it = m_children.begin() + idx;
+    m_children.erase(it);
 }
 
-PObjectBase ObjectBase::GetChild (unsigned int idx)
+PObjectBase ObjectBase::GetChild(unsigned int idx)
 {
-	assert (idx < m_children.size());
+    assert(idx < m_children.size());
 
-	return m_children[idx];
+    return m_children[idx];
 }
 
-PObjectBase ObjectBase::GetChild (unsigned int idx, const wxString& type)
+PObjectBase ObjectBase::GetChild(unsigned int idx, const wxString& type)
 {
-	//assert (idx < m_children.size());
+    // assert (idx < m_children.size());
 
-	unsigned int cnt = 0;
+    unsigned int cnt = 0;
 
-	for( std::vector< PObjectBase >::iterator it =  m_children.begin(); it != m_children.end(); ++it )
-	{
-		if( (*it)->GetObjectInfo()->GetObjectTypeName() == type && ++cnt == idx ) return *it;
-	}
+    for (std::vector<PObjectBase>::iterator it = m_children.begin(); it != m_children.end(); ++it) {
+        if ((*it)->GetObjectInfo()->GetObjectTypeName() == type && ++cnt == idx)
+            return *it;
+    }
 
-	return PObjectBase();
+    return PObjectBase();
 }
 
 int ObjectBase::Deep()
 {
-	int deep = 0;
-	PObjectBase obj(GetParent());
-	while (obj)
-	{
-		obj = obj->GetParent();
-		deep++;
+    int deep = 0;
+    PObjectBase obj(GetParent());
+    while (obj) {
+        obj = obj->GetParent();
+        deep++;
 
-		if (deep > 1000)
-			assert(false);
-	}
-	return deep;
+        if (deep > 1000)
+            assert(false);
+    }
+    return deep;
 }
 
-//void ObjectBase::PrintOut(ostream &s, int indent)
+// void ObjectBase::PrintOut(ostream &s, int indent)
 //{
-//  wxString ind_str = GetIndentString(indent);
+//   wxString ind_str = GetIndentString(indent);
 //
-//  s << ind_str << "[ " << GetClassName() << " ] " << GetObjectType() << endl;
-//  map< wxString, PProperty >::const_iterator it_prop;
-//  for (it_prop = m_properties.begin(); it_prop!= m_properties.end(); it_prop++)
-//  {
-//    s << ind_str << "property '" << it_prop->first << "' = '" <<
-//      it_prop->second->GetValue() << "'" << endl;
-//  }
+//   s << ind_str << "[ " << GetClassName() << " ] " << GetObjectType() << endl;
+//   map< wxString, PProperty >::const_iterator it_prop;
+//   for (it_prop = m_properties.begin(); it_prop!= m_properties.end(); it_prop++)
+//   {
+//     s << ind_str << "property '" << it_prop->first << "' = '" <<
+//       it_prop->second->GetValue() << "'" << endl;
+//   }
 //
-//  vector< PObjectBase >::const_iterator it_ch;
-//  for (it_ch = m_children.begin() ; it_ch != m_children.end(); it_ch++)
-//  {
-//    (*it_ch)->PrintOut(s,INDENT + indent);
-//  }
-//}
+//   vector< PObjectBase >::const_iterator it_ch;
+//   for (it_ch = m_children.begin() ; it_ch != m_children.end(); it_ch++)
+//   {
+//     (*it_ch)->PrintOut(s,INDENT + indent);
+//   }
+// }
 //
-//ostream& operator << (ostream &s, PObjectBase obj)
+// ostream& operator << (ostream &s, PObjectBase obj)
 //{
-//  obj->PrintOut(s,0);
-//  return s;
-//}
+//   obj->PrintOut(s,0);
+//   return s;
+// }
 
-void ObjectBase::SerializeObject( ticpp::Element* serializedElement )
+void ObjectBase::SerializeObject(ticpp::Element* serializedElement)
 {
-	ticpp::Element element( "object" );
-	element.SetAttribute( "class", _STDSTR( GetClassName() ) );
-	element.SetAttribute( "expanded", GetExpanded() );
+    ticpp::Element element("object");
+    element.SetAttribute("class", _STDSTR(GetClassName()));
+    element.SetAttribute("expanded", GetExpanded());
 
-	for ( unsigned int i = 0; i < GetPropertyCount(); i++ )
-	{
-		PProperty prop = GetProperty( i );
-		ticpp::Element prop_element( "property" );
-		prop_element.SetAttribute( "name", _STDSTR( prop->GetName() ) );
-		prop_element.SetText( _STDSTR( prop->GetValue() ) );
-		element.LinkEndChild( &prop_element );
-	}
+    for (unsigned int i = 0; i < GetPropertyCount(); i++) {
+        PProperty prop = GetProperty(i);
+        ticpp::Element prop_element("property");
+        prop_element.SetAttribute("name", _STDSTR(prop->GetName()));
+        prop_element.SetText(_STDSTR(prop->GetValue()));
+        element.LinkEndChild(&prop_element);
+    }
 
-	for ( unsigned int i = 0; i < GetEventCount(); i++ )
-	{
-		PEvent event = GetEvent( i );
-		const std::string callback(event->GetValue().ToUTF8());
-		if (callback.empty()) {
-			continue; // skip, because there's no event attached (see issue #467)
-		}
-		ticpp::Element event_element( "event" );
-		event_element.SetAttribute( "name", _STDSTR( event->GetName() ) );
-		event_element.SetText(callback);
-		element.LinkEndChild( &event_element );
-	}
+    for (unsigned int i = 0; i < GetEventCount(); i++) {
+        PEvent event = GetEvent(i);
+        const std::string callback(event->GetValue().ToUTF8());
+        if (callback.empty()) {
+            continue;  // skip, because there's no event attached (see issue #467)
+        }
+        ticpp::Element event_element("event");
+        event_element.SetAttribute("name", _STDSTR(event->GetName()));
+        event_element.SetText(callback);
+        element.LinkEndChild(&event_element);
+    }
 
-	for ( unsigned int i = 0 ; i < GetChildCount(); i++ )
-	{
-		PObjectBase child = GetChild( i );
-		ticpp::Element child_element;
-		child->SerializeObject( &child_element );
-		element.LinkEndChild( &child_element );
-	}
+    for (unsigned int i = 0; i < GetChildCount(); i++) {
+        PObjectBase child = GetChild(i);
+        ticpp::Element child_element;
+        child->SerializeObject(&child_element);
+        element.LinkEndChild(&child_element);
+    }
 
-	*serializedElement = element;
+    *serializedElement = element;
 }
 
-void ObjectBase::Serialize( ticpp::Document* serializedDocument )
+void ObjectBase::Serialize(ticpp::Document* serializedDocument)
 {
-	ticpp::Document document( "document" );
+    ticpp::Document document("document");
 
-	ticpp::Declaration dec( "1.0", "UTF-8", "yes" );
-	document.LinkEndChild( &dec );
+    ticpp::Declaration dec("1.0", "UTF-8", "yes");
+    document.LinkEndChild(&dec);
 
-	ticpp::Element root( "wxFormBuilder_Project" );
+    ticpp::Element root("wxFormBuilder_Project");
 
-	ticpp::Element fileVersion( "FileVersion" );
-	fileVersion.SetAttribute( "major", AppData()->m_fbpVerMajor );
-	fileVersion.SetAttribute( "minor", AppData()->m_fbpVerMinor );
+    ticpp::Element fileVersion("FileVersion");
+    fileVersion.SetAttribute("major", AppData()->m_fbpVerMajor);
+    fileVersion.SetAttribute("minor", AppData()->m_fbpVerMinor);
 
-	root.LinkEndChild( &fileVersion );
+    root.LinkEndChild(&fileVersion);
 
-	ticpp::Element element;
-	SerializeObject( &element );
+    ticpp::Element element;
+    SerializeObject(&element);
 
-	root.LinkEndChild( &element );
-	document.LinkEndChild( &root );
+    root.LinkEndChild(&element);
+    document.LinkEndChild(&root);
 
-	*serializedDocument = document;
+    *serializedDocument = document;
 }
 
 unsigned int ObjectBase::GetChildPosition(PObjectBase obj)
 {
-	unsigned int pos = 0;
-	while (pos < GetChildCount() && m_children[pos] != obj)
-		pos++;
+    unsigned int pos = 0;
+    while (pos < GetChildCount() && m_children[pos] != obj) pos++;
 
-	return pos;
+    return pos;
 }
 
-bool ObjectBase::ChangeChildPosition( PObjectBase obj, unsigned int pos)
+bool ObjectBase::ChangeChildPosition(PObjectBase obj, unsigned int pos)
 {
-	unsigned int obj_pos = GetChildPosition(obj);
+    unsigned int obj_pos = GetChildPosition(obj);
 
-	if (obj_pos == GetChildCount() || pos >= GetChildCount())
-		return false;
+    if (obj_pos == GetChildCount() || pos >= GetChildCount())
+        return false;
 
-	if (pos == obj_pos)
-		return true;
+    if (pos == obj_pos)
+        return true;
 
-	// Procesamos el cambio de posición
-	RemoveChild(obj);
-	AddChild(pos,obj);
-	return true;
+    // Procesamos el cambio de posición
+    RemoveChild(obj);
+    AddChild(pos, obj);
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ObjectBase::IsNull (const wxString& pname)
+bool ObjectBase::IsNull(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->IsNull();
-	else
-		return true;
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->IsNull();
+    else
+        return true;
 }
 
-int ObjectBase::GetPropertyAsInteger (const wxString& pname)
+int ObjectBase::GetPropertyAsInteger(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsInteger();
-	else
-		return 0;
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsInteger();
+    else
+        return 0;
 }
 
 wxFontContainer ObjectBase::GetPropertyAsFont(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsFont();
-	else
-		return wxFontContainer();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsFont();
+    else
+        return wxFontContainer();
 }
 
-wxColour ObjectBase::GetPropertyAsColour  (const wxString& pname)
+wxColour ObjectBase::GetPropertyAsColour(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsColour();
-	else
-		return wxColour();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsColour();
+    else
+        return wxColour();
 }
 
-wxString ObjectBase::GetPropertyAsString  (const wxString& pname)
+wxString ObjectBase::GetPropertyAsString(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsString();
-	else
-		return wxString();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsString();
+    else
+        return wxString();
 }
 
-wxPoint  ObjectBase::GetPropertyAsPoint   (const wxString& pname)
+wxPoint ObjectBase::GetPropertyAsPoint(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsPoint();
-	else
-		return wxPoint();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsPoint();
+    else
+        return wxPoint();
 }
 
-wxSize   ObjectBase::GetPropertyAsSize    (const wxString& pname)
+wxSize ObjectBase::GetPropertyAsSize(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsSize();
-	else
-		return wxDefaultSize;
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsSize();
+    else
+        return wxDefaultSize;
 }
 
-wxBitmap ObjectBase::GetPropertyAsBitmap  (const wxString& pname)
+wxBitmap ObjectBase::GetPropertyAsBitmap(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsBitmap();
-	else
-		return wxBitmap();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsBitmap();
+    else
+        return wxBitmap();
 }
-double ObjectBase::GetPropertyAsFloat( const wxString& pname )
+double ObjectBase::GetPropertyAsFloat(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsFloat();
-	else
-		return 0;
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsFloat();
+    else
+        return 0;
 }
 wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& pname)
 {
-	wxArrayInt array;
-	PProperty property = GetProperty( pname );
-	if (property)
-	{
-		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
-		for (unsigned int i=0; i < il.GetSize() ; i++)
-			array.Add(il.GetValue(i));
-	}
+    wxArrayInt array;
+    PProperty property = GetProperty(pname);
+    if (property) {
+        IntList il(
+          property->GetValue(), property->GetType() == PT_UINTLIST,
+          (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
+        for (unsigned int i = 0; i < il.GetSize(); i++) array.Add(il.GetValue(i));
+    }
 
-	return array;
+    return array;
 }
 
 wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
 {
-	PProperty property = GetProperty( pname );
-	if (property)
-		return property->GetValueAsArrayString();
-	else
-		return wxArrayString();
+    PProperty property = GetProperty(pname);
+    if (property)
+        return property->GetValueAsArrayString();
+    else
+        return wxArrayString();
 }
 
 std::vector<std::pair<int, int>> ObjectBase::GetPropertyAsVectorIntPair(const wxString& pname)
 {
-	std::vector<std::pair<int, int>> result;
-	
-	auto property = GetProperty(pname);
-	if (property)
-	{
-		IntList il(property->GetValue(), property->GetType() == PT_UINTLIST, (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
-		result.reserve(il.GetSize());
-		for (unsigned int i = 0; i < il.GetSize(); ++i)
-		{
-			result.emplace_back(il.GetPair(i));
-		}
-	}
+    std::vector<std::pair<int, int>> result;
 
-	return result;
+    auto property = GetProperty(pname);
+    if (property) {
+        IntList il(
+          property->GetValue(), property->GetType() == PT_UINTLIST,
+          (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
+        result.reserve(il.GetSize());
+        for (unsigned int i = 0; i < il.GetSize(); ++i) { result.emplace_back(il.GetPair(i)); }
+    }
+
+    return result;
 }
 
-wxString ObjectBase::GetChildFromParentProperty( const wxString& parentName, const wxString& childName )
+wxString ObjectBase::GetChildFromParentProperty(const wxString& parentName, const wxString& childName)
 {
-	PProperty property = GetProperty( parentName );
-	if (property)
-		return property->GetChildFromParent( childName );
-	else
-		return wxEmptyString;
+    PProperty property = GetProperty(parentName);
+    if (property)
+        return property->GetChildFromParent(childName);
+    else
+        return wxEmptyString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-ObjectInfo::ObjectInfo(wxString class_name, PObjectType type, WPObjectPackage package, bool startGroup )
+ObjectInfo::ObjectInfo(wxString class_name, PObjectType type, WPObjectPackage package, bool startGroup)
 {
-	m_class = class_name;
-	m_type = type;
-	m_numIns = 0;
-	m_component = NULL;
-	m_package = package;
-	m_category = PPropertyCategory( new PropertyCategory( m_class ) );
-	m_startGroup = startGroup;
+    m_class = class_name;
+    m_type = type;
+    m_numIns = 0;
+    m_component = NULL;
+    m_package = package;
+    m_category = PPropertyCategory(new PropertyCategory(m_class));
+    m_startGroup = startGroup;
 }
 
 PObjectPackage ObjectInfo::GetPackage()
 {
-	return m_package.lock();
+    return m_package.lock();
 }
 
 PPropertyInfo ObjectInfo::GetPropertyInfo(wxString name)
 {
-	PPropertyInfo result;
+    PPropertyInfo result;
 
-	std::map< wxString, PPropertyInfo >::iterator it = m_properties.find(name);
-	if (it != m_properties.end())
-		result = it->second;
+    std::map<wxString, PPropertyInfo>::iterator it = m_properties.find(name);
+    if (it != m_properties.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
 PPropertyInfo ObjectInfo::GetPropertyInfo(unsigned int idx)
 {
-	PPropertyInfo result;
+    PPropertyInfo result;
 
-	assert (idx < m_properties.size());
+    assert(idx < m_properties.size());
 
-	std::map< wxString, PPropertyInfo >::iterator it = m_properties.begin();
-	unsigned int i = 0;
-	while (i < idx && it != m_properties.end())
-	{
-		i++;
-		it++;
-	}
+    std::map<wxString, PPropertyInfo>::iterator it = m_properties.begin();
+    unsigned int i = 0;
+    while (i < idx && it != m_properties.end()) {
+        i++;
+        it++;
+    }
 
-	if (it != m_properties.end())
-		result = it->second;
+    if (it != m_properties.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
 PEventInfo ObjectInfo::GetEventInfo(wxString name)
 {
-	PEventInfo result;
+    PEventInfo result;
 
-	EventInfoMap::iterator it = m_events.find(name);
-	if (it != m_events.end())
-		result = it->second;
+    EventInfoMap::iterator it = m_events.find(name);
+    if (it != m_events.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
 PEventInfo ObjectInfo::GetEventInfo(unsigned int idx)
 {
-	PEventInfo result;
+    PEventInfo result;
 
-	assert (idx < m_events.size());
+    assert(idx < m_events.size());
 
-	EventInfoMap::iterator it = m_events.begin();
-	unsigned int i = 0;
-	while (i < idx && it != m_events.end())
-	{
-		i++;
-		it++;
-	}
+    EventInfoMap::iterator it = m_events.begin();
+    unsigned int i = 0;
+    while (i < idx && it != m_events.end()) {
+        i++;
+        it++;
+    }
 
-	if (it != m_events.end())
-		result = it->second;
+    if (it != m_events.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
-void ObjectInfo::AddPropertyInfo( PPropertyInfo prop )
+void ObjectInfo::AddPropertyInfo(PPropertyInfo prop)
 {
-	m_properties.insert( PropertyInfoMap::value_type(prop->GetName(), prop) );
+    m_properties.insert(PropertyInfoMap::value_type(prop->GetName(), prop));
 }
 
 void ObjectInfo::AddEventInfo(PEventInfo evtInfo)
 {
-  m_events.insert( EventInfoMap::value_type(evtInfo->GetName(), evtInfo) );
+    m_events.insert(EventInfoMap::value_type(evtInfo->GetName(), evtInfo));
 }
 
-void ObjectInfo::AddBaseClassDefaultPropertyValue( size_t baseIndex, const wxString& propertyName, const wxString& defaultValue )
+void ObjectInfo::AddBaseClassDefaultPropertyValue(
+  size_t baseIndex, const wxString& propertyName, const wxString& defaultValue)
 {
-	std::map< size_t, std::map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
-	if ( baseClassMap != m_baseClassDefaultPropertyValues.end() )
-	{
-		baseClassMap->second.insert( std::map< wxString, wxString >::value_type( propertyName, defaultValue ) );
-	}
-	else
-	{
-		std::map< wxString, wxString > propertyDefaultValues;
-		propertyDefaultValues[ propertyName ] = defaultValue;
-		m_baseClassDefaultPropertyValues[ baseIndex ] = propertyDefaultValues;
-	}
+    std::map<size_t, std::map<wxString, wxString>>::iterator baseClassMap =
+      m_baseClassDefaultPropertyValues.find(baseIndex);
+    if (baseClassMap != m_baseClassDefaultPropertyValues.end()) {
+        baseClassMap->second.insert(std::map<wxString, wxString>::value_type(propertyName, defaultValue));
+    } else {
+        std::map<wxString, wxString> propertyDefaultValues;
+        propertyDefaultValues[propertyName] = defaultValue;
+        m_baseClassDefaultPropertyValues[baseIndex] = propertyDefaultValues;
+    }
 }
 
-wxString ObjectInfo::GetBaseClassDefaultPropertyValue( size_t baseIndex, const wxString& propertyName )
+wxString ObjectInfo::GetBaseClassDefaultPropertyValue(size_t baseIndex, const wxString& propertyName)
 {
-	std::map< size_t, std::map< wxString, wxString > >::iterator baseClassMap = m_baseClassDefaultPropertyValues.find( baseIndex );
-	if ( baseClassMap != m_baseClassDefaultPropertyValues.end() )
-	{
-		std::map< wxString, wxString >::iterator defaultValue = baseClassMap->second.find( propertyName );
-		if ( defaultValue != baseClassMap->second.end() )
-		{
-			return defaultValue->second;
-		}
-	}
-	return wxString();
+    std::map<size_t, std::map<wxString, wxString>>::iterator baseClassMap =
+      m_baseClassDefaultPropertyValues.find(baseIndex);
+    if (baseClassMap != m_baseClassDefaultPropertyValues.end()) {
+        std::map<wxString, wxString>::iterator defaultValue = baseClassMap->second.find(propertyName);
+        if (defaultValue != baseClassMap->second.end()) {
+            return defaultValue->second;
+        }
+    }
+    return wxString();
 }
 
 PObjectInfo ObjectInfo::GetBaseClass(unsigned int idx, bool inherited)
 {
-	if( inherited )
-	{
-		std::vector<PObjectInfo> classes;
-		GetBaseClasses( classes );
+    if (inherited) {
+        std::vector<PObjectInfo> classes;
+        GetBaseClasses(classes);
 
-		assert (idx < classes.size());
-		return classes[idx];
-	}
-	else
-	{
-		assert (idx < m_base.size());
-		return m_base[idx];
-	}
+        assert(idx < classes.size());
+        return classes[idx];
+    } else {
+        assert(idx < m_base.size());
+        return m_base[idx];
+    }
 }
 
 unsigned int ObjectInfo::GetBaseClassCount(bool inherited)
 {
-	if( inherited )
-	{
-		std::vector<PObjectInfo> classes;
-		GetBaseClasses( classes );
+    if (inherited) {
+        std::vector<PObjectInfo> classes;
+        GetBaseClasses(classes);
 
-		return (unsigned int)classes.size();
-	}
-	else
-		return (unsigned int)m_base.size();
+        return (unsigned int)classes.size();
+    } else
+        return (unsigned int)m_base.size();
 }
 
-void ObjectInfo::GetBaseClasses(std::vector<PObjectInfo> &classes, bool inherited)
+void ObjectInfo::GetBaseClasses(std::vector<PObjectInfo>& classes, bool inherited)
 {
-	for ( std::vector<PObjectInfo>::iterator it = m_base.begin(); it != m_base.end(); ++it )
-	{
-		PObjectInfo base_info = *it;;
-		classes.push_back( base_info );
+    for (std::vector<PObjectInfo>::iterator it = m_base.begin(); it != m_base.end(); ++it) {
+        PObjectInfo base_info = *it;
+        ;
+        classes.push_back(base_info);
 
-		if( inherited ) base_info->GetBaseClasses( classes );
-	}
+        if (inherited)
+            base_info->GetBaseClasses(classes);
+    }
 }
 
 bool ObjectInfo::IsSubclassOf(wxString classname)
 {
-	bool found = false;
+    bool found = false;
 
-	if (GetClassName() == classname)
-	{
-		found = true;
-	}
-	else
-	{
-		for (unsigned int i=0; !found && i < GetBaseClassCount() ; i++)
-		{
-			PObjectInfo base = GetBaseClass(i);
-			found = base->IsSubclassOf(classname);
-		}
-	}
-	return found;
+    if (GetClassName() == classname) {
+        found = true;
+    } else {
+        for (unsigned int i = 0; !found && i < GetBaseClassCount(); i++) {
+            PObjectInfo base = GetBaseClass(i);
+            found = base->IsSubclassOf(classname);
+        }
+    }
+    return found;
 }
 
 //
-//void ObjectInfo::PrintOut(ostream &s, int indent)
+// void ObjectInfo::PrintOut(ostream &s, int indent)
 //{
 //  wxString ind_str = "";
 //  for (int i=0;i<indent;i++)
@@ -963,61 +920,57 @@ bool ObjectInfo::IsSubclassOf(wxString classname)
 
 void ObjectInfo::AddCodeInfo(wxString lang, PCodeInfo codeinfo)
 {
-	std::map< wxString, PCodeInfo >::iterator templates = m_codeTemp.find( lang );
-	if ( templates == m_codeTemp.end() )
-	{
-		// First code info is a clean copy
-		m_codeTemp[ lang ] = PCodeInfo( new CodeInfo( *codeinfo ) );
-	}
-	else
-	{
-		// If code info already existed for the language, merge code info
-		templates->second->Merge( codeinfo );
-	}
+    std::map<wxString, PCodeInfo>::iterator templates = m_codeTemp.find(lang);
+    if (templates == m_codeTemp.end()) {
+        // First code info is a clean copy
+        m_codeTemp[lang] = PCodeInfo(new CodeInfo(*codeinfo));
+    } else {
+        // If code info already existed for the language, merge code info
+        templates->second->Merge(codeinfo);
+    }
 }
 
 PCodeInfo ObjectInfo::GetCodeInfo(wxString lang)
 {
-	PCodeInfo result;
-	std::map< wxString, PCodeInfo >::iterator it = m_codeTemp.find(lang);
-	if (it != m_codeTemp.end())
-		result = it->second;
+    PCodeInfo result;
+    std::map<wxString, PCodeInfo>::iterator it = m_codeTemp.find(lang);
+    if (it != m_codeTemp.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
-//ostream& operator << (ostream &s, PObjectInfo obj)
+// ostream& operator << (ostream &s, PObjectInfo obj)
 //{
-//  obj->PrintOut(s,0);
-//  return s;
-//}
+//   obj->PrintOut(s,0);
+//   return s;
+// }
 
 ///////////////////////////////////////////////////////////////////////////////
 wxString CodeInfo::GetTemplate(wxString name)
 {
-	wxString result;
+    wxString result;
 
-	TemplateMap::iterator it = m_templates.find(name);
-	if (it != m_templates.end())
-		result = it->second;
+    TemplateMap::iterator it = m_templates.find(name);
+    if (it != m_templates.end())
+        result = it->second;
 
-	return result;
+    return result;
 }
 
 void CodeInfo::AddTemplate(wxString name, wxString _template)
 {
-	m_templates.insert(TemplateMap::value_type(name,_template));
+    m_templates.insert(TemplateMap::value_type(name, _template));
 }
 
-void CodeInfo::Merge( PCodeInfo merger )
+void CodeInfo::Merge(PCodeInfo merger)
 {
-	TemplateMap::iterator mergerTemplate;
-	for ( mergerTemplate = merger->m_templates.begin(); mergerTemplate != merger->m_templates.end(); ++mergerTemplate )
-	{
-		std::pair< TemplateMap::iterator, bool > mine = m_templates.insert( TemplateMap::value_type( mergerTemplate->first, mergerTemplate->second ) );
-		if ( !mine.second )
-		{
-			mine.first->second += mergerTemplate->second;
-		}
-	}
+    TemplateMap::iterator mergerTemplate;
+    for (mergerTemplate = merger->m_templates.begin(); mergerTemplate != merger->m_templates.end(); ++mergerTemplate) {
+        std::pair<TemplateMap::iterator, bool> mine =
+          m_templates.insert(TemplateMap::value_type(mergerTemplate->first, mergerTemplate->second));
+        if (!mine.second) {
+            mine.first->second += mergerTemplate->second;
+        }
+    }
 }

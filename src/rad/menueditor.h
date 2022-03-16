@@ -26,16 +26,17 @@
 #ifndef RAD_MENUEDITOR_H
 #define RAD_MENUEDITOR_H
 
+#include <wx/listctrl.h>
+
 #include "model/database.h"
 
-#include <wx/listctrl.h>
 
 /**
  * Class MenuEditor
  */
 class MenuEditor : public wxDialog
 {
-  private:
+private:
     /** Devuelve el índice del elemento seleccionado en el wxListCtrl */
     long GetSelectedItem();
 
@@ -45,19 +46,19 @@ class MenuEditor : public wxDialog
     /** Inserta en la posición "n" un elemento en el wxListCtrl. No añade
     sangría en el campo label.
     @param obj Pointer to the original object to be saved with SetItemData
-				If the item is still an item when the dialog is closed, this
-				is used to preserve data like bitmaps and events.
+                                If the item is still an item when the dialog is closed, this
+                                is used to preserve data like bitmaps and events.
     */
-    long InsertItem(long n, const wxString& label, const wxString& shortcut,
-        const wxString& id, const wxString& name, const wxString& helpString,
-        const wxString& kind, PObjectBase obj = PObjectBase() );
+    long InsertItem(
+      long n, const wxString& label, const wxString& shortcut, const wxString& id, const wxString& name,
+      const wxString& helpString, const wxString& kind, PObjectBase obj = PObjectBase());
 
     /** Inserta debajo del elemento seleccionado (o en la última posición en
     caso de no haber selección) un nuevo elemento en el wxListCtrl. El campo
     label se sangra al mismo nivel que el elemento que le precede */
-    void AddItem(const wxString& label, const wxString& shortcut,
-        const wxString& id, const wxString& name, const wxString &help,
-        const wxString& kind);
+    void AddItem(
+      const wxString& label, const wxString& shortcut, const wxString& id, const wxString& name, const wxString& help,
+      const wxString& kind);
 
     /** Determina el índice en el que acaba el menú que empieza en la posición
     "n" */
@@ -66,11 +67,12 @@ class MenuEditor : public wxDialog
     /** Devuelve los campos del wxListCtrl del elemento "n". El campo label
     lo devuelve con sangría
     @param obj Pointer to the original object to be retrieved with GetItemData
-				If the item is still an item when the dialog is closed, this
-				is used to preserve data like bitmaps and events.
+                                If the item is still an item when the dialog is closed, this
+                                is used to preserve data like bitmaps and events.
     */
-    void GetItem(long n, wxString& label, wxString& shortcut, wxString& id,
-        wxString& name, wxString& help, wxString& kind, PObjectBase* obj = NULL );
+    void GetItem(
+      long n, wxString& label, wxString& shortcut, wxString& id, wxString& name, wxString& help, wxString& kind,
+      PObjectBase* obj = NULL);
 
     using wxNavigationEnabled<wxTopLevelWindow>::AddChild;
     /** Inserta en la posición "n" del wxListCtrl, los hijos de "obj". El primer
@@ -94,23 +96,22 @@ class MenuEditor : public wxDialog
     y pone el foco en el campo "label". */
     void AddNewItem();
 
-  protected:
-    wxListCtrl *m_menuList;
-    wxTextCtrl *m_tcId;
-    wxTextCtrl *m_tcLabel;
-    wxTextCtrl *m_tcName;
-    wxTextCtrl *m_tcHelpString;
-    wxTextCtrl *m_tcShortcut;
-    wxRadioBox *m_rbItemKind;
+protected:
+    wxListCtrl* m_menuList;
+    wxTextCtrl* m_tcId;
+    wxTextCtrl* m_tcLabel;
+    wxTextCtrl* m_tcName;
+    wxTextCtrl* m_tcHelpString;
+    wxTextCtrl* m_tcShortcut;
+    wxRadioBox* m_rbItemKind;
 
-    std::vector< WPObjectBase > m_originalItems;
+    std::vector<WPObjectBase> m_originalItems;
 
     DECLARE_EVENT_TABLE()
 
-  public:
-
+public:
     /** Constructor */
-    MenuEditor(wxWindow *parent, int id = wxID_ANY);
+    MenuEditor(wxWindow* parent, int id = wxID_ANY);
 
     /** Rellena el wxListCtrl con los datos de "obj", que debe ser de tipo
     menubar */
@@ -136,4 +137,4 @@ class MenuEditor : public wxDialog
     void OnItemActivated(wxListEvent& e);
 };
 
-#endif // RAD_MENUEDITOR_H
+#endif  // RAD_MENUEDITOR_H

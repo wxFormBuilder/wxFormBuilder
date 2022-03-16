@@ -22,79 +22,75 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #include "geninhertclass.h"
 
 #include "model/objectbase.h"
 
-GenInheritedClassDlg::GenInheritedClassDlg( wxWindow* parent, PObjectBase project )
-:
-GenInheritedClassDlgBase( parent )
+
+GenInheritedClassDlg::GenInheritedClassDlg(wxWindow* parent, PObjectBase project) : GenInheritedClassDlgBase(parent)
 {
-	const wxString& projectName = project->GetPropertyAsString( _("name") );
+    const wxString& projectName = project->GetPropertyAsString(_("name"));
 
-	// Setup the initial values for the maps of class names and file names.
-	for ( unsigned int i = 0; i < project->GetChildCount(); ++i )
-	{
-		PObjectBase child = project->GetChild( i );
-		const wxString& formName = child->GetPropertyAsString( _("name") );
-		const wxString& name = projectName + formName;
-		m_classDetails.push_back( GenClassDetails( child, name, name ) );
+    // Setup the initial values for the maps of class names and file names.
+    for (unsigned int i = 0; i < project->GetChildCount(); ++i) {
+        PObjectBase child = project->GetChild(i);
+        const wxString& formName = child->GetPropertyAsString(_("name"));
+        const wxString& name = projectName + formName;
+        m_classDetails.push_back(GenClassDetails(child, name, name));
 
-		// Add the forms to the listctrl.
-		m_formsCheckList->AppendString( formName );
-	}
+        // Add the forms to the listctrl.
+        m_formsCheckList->AppendString(formName);
+    }
 
-	// Disable the controls till the check listbox is selected.
-	m_classNameTextCtrl->Disable();
-	m_fileNameTextCtrl->Disable();
+    // Disable the controls till the check listbox is selected.
+    m_classNameTextCtrl->Disable();
+    m_fileNameTextCtrl->Disable();
 }
 
-void GenInheritedClassDlg::GetFormsSelected( std::vector< GenClassDetails >* forms )
+void GenInheritedClassDlg::GetFormsSelected(std::vector<GenClassDetails>* forms)
 {
-	// Clear the selected forms array.
-	forms->clear();
+    // Clear the selected forms array.
+    forms->clear();
 
-	for ( size_t i = 0; i < m_classDetails.size(); ++i )
-	{
-		if ( m_classDetails[i].m_isSelected )
-		{
-			forms->push_back( m_classDetails[i] );
-		}
-	}
+    for (size_t i = 0; i < m_classDetails.size(); ++i) {
+        if (m_classDetails[i].m_isSelected) {
+            forms->push_back(m_classDetails[i]);
+        }
+    }
 }
 
-void GenInheritedClassDlg::OnFormsSelected( wxCommandEvent& )
+void GenInheritedClassDlg::OnFormsSelected(wxCommandEvent&)
 {
-	// Enable controls because an item is selected.
-	int selection = m_formsCheckList->GetSelection();
-	if ( wxNOT_FOUND == selection )
-	{
-		m_classNameTextCtrl->Disable();
-		m_fileNameTextCtrl->Disable();
-		return;
-	}
+    // Enable controls because an item is selected.
+    int selection = m_formsCheckList->GetSelection();
+    if (wxNOT_FOUND == selection) {
+        m_classNameTextCtrl->Disable();
+        m_fileNameTextCtrl->Disable();
+        return;
+    }
 
-	m_classNameTextCtrl->Enable();
-	m_fileNameTextCtrl->Enable();
+    m_classNameTextCtrl->Enable();
+    m_fileNameTextCtrl->Enable();
 
-	// Set the values of the controls
-	GenClassDetails& details = m_classDetails[ selection ];
-	m_classNameTextCtrl->SetValue( details.m_className );
-	m_fileNameTextCtrl->SetValue( details.m_fileName );
+    // Set the values of the controls
+    GenClassDetails& details = m_classDetails[selection];
+    m_classNameTextCtrl->SetValue(details.m_className);
+    m_fileNameTextCtrl->SetValue(details.m_fileName);
 }
 
-void GenInheritedClassDlg::OnFormsToggle( wxCommandEvent& event )
+void GenInheritedClassDlg::OnFormsToggle(wxCommandEvent& event)
 {
-	int selection = event.GetSelection();
-	m_classDetails[ selection ].m_isSelected = m_formsCheckList->IsChecked( selection );
+    int selection = event.GetSelection();
+    m_classDetails[selection].m_isSelected = m_formsCheckList->IsChecked(selection);
 }
 
-void GenInheritedClassDlg::OnClassNameChange( wxCommandEvent& )
+void GenInheritedClassDlg::OnClassNameChange(wxCommandEvent&)
 {
-	m_classDetails[ m_formsCheckList->GetSelection() ].m_className = m_classNameTextCtrl->GetValue();
+    m_classDetails[m_formsCheckList->GetSelection()].m_className = m_classNameTextCtrl->GetValue();
 }
 
-void GenInheritedClassDlg::OnFileNameChange( wxCommandEvent& )
+void GenInheritedClassDlg::OnFileNameChange(wxCommandEvent&)
 {
-	m_classDetails[ m_formsCheckList->GetSelection() ].m_fileName = m_fileNameTextCtrl->GetValue();
+    m_classDetails[m_formsCheckList->GetSelection()].m_fileName = m_fileNameTextCtrl->GetValue();
 }

@@ -22,6 +22,7 @@
 //   based on original wizard.h include in wxWidgets source code
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
 #define SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
 
@@ -31,59 +32,61 @@
 #include <wx/statline.h>
 #include <wx/wizard.h>
 
+
 class Wizard;
 class WizardPageSimple;
 class WizardEvent;
 
-WX_DEFINE_ARRAY_PTR( WizardPageSimple*, WizardPages );
+WX_DEFINE_ARRAY_PTR(WizardPageSimple*, WizardPages);
+
 
 class WizardPageSimple : public wxPanel
 {
 public:
-    WizardPageSimple( Wizard *parent );
+    WizardPageSimple(Wizard* parent);
     ~WizardPageSimple();
 };
 
 class Wizard : public wxPanel
 {
 public:
-    Wizard( wxWindow *parent, wxWindowID id = wxID_ANY,
-            const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
-            long style = wxTAB_TRAVERSAL );
+    Wizard(
+      wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition,
+      const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~Wizard();
 
-    wxBoxSizer* GetPageSizer()  { return m_sizerPage; }
-//  WizardPageSimple *GetCurrentPage() { return m_page; }
+    wxBoxSizer* GetPageSizer() { return m_sizerPage; }
+    //  WizardPageSimple *GetCurrentPage() { return m_page; }
 
     // set/get bitmap
-//  const wxBitmap& GetBitmap() const { return m_bitmap; }
-    void SetBitmap( const wxBitmap& bitmap );
+    //  const wxBitmap& GetBitmap() const { return m_bitmap; }
+    void SetBitmap(const wxBitmap& bitmap);
 
-    void AddPage( WizardPageSimple* page );
-    WizardPageSimple *GetPage( size_t index ) { return m_pages.Item( index ); }
+    void AddPage(WizardPageSimple* page);
+    WizardPageSimple* GetPage(size_t index) { return m_pages.Item(index); }
     size_t GetPageCount() { return m_pages.GetCount(); }
-    size_t GetPageIndex( WizardPageSimple *wizpage ) { return m_pages.Index( wizpage ); }
-    void SetSelection( size_t pageIndex );
-    void ShowHelpButton( bool showhelp ) { m_btnHelp->Show( showhelp ); }
+    size_t GetPageIndex(WizardPageSimple* wizpage) { return m_pages.Index(wizpage); }
+    void SetSelection(size_t pageIndex);
+    void ShowHelpButton(bool showhelp) { m_btnHelp->Show(showhelp); }
 
 private:
-    void OnBackOrNext( wxCommandEvent& event );
-    void OnHelp( wxCommandEvent& event );
-    void OnCancel( wxCommandEvent& event );
-    void OnWizEvent( WizardEvent& event );
+    void OnBackOrNext(wxCommandEvent& event);
+    void OnHelp(wxCommandEvent& event);
+    void OnCancel(wxCommandEvent& event);
+    void OnWizEvent(WizardEvent& event);
 
-    wxBoxSizer       *m_sizerBmpAndPage; // Page area sizer will be inserted here with padding
-    wxBoxSizer       *m_sizerPage;       // Actual position and size of pages
-    wxStaticBitmap   *m_statbmp;         // the control for the bitmap
-    wxButton         *m_btnHelp;
-    wxButton         *m_btnPrev;         // the "<Back" button
-    wxButton         *m_btnNext;         // the "Next>" or "Finish" button
-    wxButton         *m_btnCancel;
-    WizardPageSimple *m_page;
-    wxBitmap          m_bitmap;          // the default bitmap to show
-    WizardPages       m_pages;
+    wxBoxSizer* m_sizerBmpAndPage;  // Page area sizer will be inserted here with padding
+    wxBoxSizer* m_sizerPage;        // Actual position and size of pages
+    wxStaticBitmap* m_statbmp;      // the control for the bitmap
+    wxButton* m_btnHelp;
+    wxButton* m_btnPrev;  // the "<Back" button
+    wxButton* m_btnNext;  // the "Next>" or "Finish" button
+    wxButton* m_btnCancel;
+    WizardPageSimple* m_page;
+    wxBitmap m_bitmap;  // the default bitmap to show
+    WizardPages m_pages;
 
-//  DECLARE_EVENT_TABLE()
+    //  DECLARE_EVENT_TABLE()
 };
 
 // ----------------------------------------------------------------------------
@@ -95,8 +98,8 @@ private:
 class WizardEvent : public wxNotifyEvent
 {
 public:
-	explicit WizardEvent(wxEventType type = wxEVT_NULL, int id = wxID_ANY, bool direction = true,
-	                     WizardPageSimple* page = nullptr);
+    explicit WizardEvent(
+      wxEventType type = wxEVT_NULL, int id = wxID_ANY, bool direction = true, WizardPageSimple* page = nullptr);
 
     // for EVT_WXFB_WIZARD_PAGE_CHANGING, return true if we're going forward or
     // false otherwise and for EVT_WXFB_WIZARD_PAGE_CHANGED return true if we came
@@ -104,15 +107,13 @@ public:
     // (this function doesn't make sense for CANCEL events)
     bool GetDirection() const { return m_direction; }
 
-    WizardPageSimple *GetPage() const { return m_page; }
+    WizardPageSimple* GetPage() const { return m_page; }
 
-	wxEvent* Clone() const override {
-		return new WizardEvent(*this);
-	}
+    wxEvent* Clone() const override { return new WizardEvent(*this); }
 
 private:
-    bool              m_direction;
-    WizardPageSimple *m_page;
+    bool m_direction;
+    WizardPageSimple* m_page;
 };
 
 // ----------------------------------------------------------------------------
@@ -133,27 +134,26 @@ using WizardEventFunction = void (wxEvtHandler::*)(WizardEvent&);
 
 #define WizardEventHandler(func) wxEVENT_HANDLER_CAST(WizardEventFunction, func)
 
-#define wxFB__DECLARE_WIZARDEVT( evt, id, fn ) \
-    wx__DECLARE_EVT1( wxFB_EVT_WIZARD_ ## evt, id, WizardEventHandler( fn ) )
+#define wxFB__DECLARE_WIZARDEVT(evt, id, fn) wx__DECLARE_EVT1(wxFB_EVT_WIZARD_##evt, id, WizardEventHandler(fn))
 
 // notifies that the page has just been changed (can't be vetoed)
-#define EVT_WXFB_WIZARD_PAGE_CHANGED( id, fn ) wxFB__DECLARE_WIZARDEVT( PAGE_CHANGED, id, fn )
+#define EVT_WXFB_WIZARD_PAGE_CHANGED(id, fn) wxFB__DECLARE_WIZARDEVT(PAGE_CHANGED, id, fn)
 
 // the user pressed "<Back" or "Next>" button and the page is going to be
 // changed - unless the event handler vetoes the event
-#define EVT_WXFB_WIZARD_PAGE_CHANGING( id, fn ) wxFB__DECLARE_WIZARDEVT( PAGE_CHANGING, id, fn )
+#define EVT_WXFB_WIZARD_PAGE_CHANGING(id, fn) wxFB__DECLARE_WIZARDEVT(PAGE_CHANGING, id, fn)
 
 // the user pressed "Cancel" button and the wizard is going to be dismissed -
 // unless the event handler vetoes the event
 #define EVT_WXFB_WIZARD_CANCEL(id, fn) wxFB__DECLARE_WIZARDEVT(CANCEL, id, fn)
 
 // the user pressed "Finish" button and the wizard is going to be dismissed -
-#define EVT_WXFB_WIZARD_FINISHED( id, fn ) wxFB__DECLARE_WIZARDEVT( FINISHED, id, fn )
+#define EVT_WXFB_WIZARD_FINISHED(id, fn) wxFB__DECLARE_WIZARDEVT(FINISHED, id, fn)
 
 // the user pressed "Help" button
-#define EVT_WXFB_WIZARD_HELP(id, fn) wxFB__DECLARE_WIZARDEVT( HELP, id, fn )
+#define EVT_WXFB_WIZARD_HELP(id, fn) wxFB__DECLARE_WIZARDEVT(HELP, id, fn)
 
 // the page was just shown and laid out
-#define EVT_WXFB_WIZARD_PAGE_SHOWN( id, fn ) wxFB__DECLARE_WIZARDEVT( PAGE_SHOWN, id, fn )
+#define EVT_WXFB_WIZARD_PAGE_SHOWN(id, fn) wxFB__DECLARE_WIZARDEVT(PAGE_SHOWN, id, fn)
 
-#endif // SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
+#endif  // SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H

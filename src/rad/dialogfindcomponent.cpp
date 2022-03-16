@@ -29,26 +29,24 @@
 
 #include <wx/sizer.h>
 
-#include "rad/appdata.h"
 #include "model/objectbase.h"
+#include "rad/appdata.h"
 #include "utils/wxfbdefs.h"
 
 
-DialogFindComponent::DialogFindComponent(wxWindow* parent,
-                                         wxWindowID id, const wxString& title, const wxPoint& pos,
-                                         const wxSize& size, long style)
-    : wxDialog(parent, id, title, pos, size, style)
+DialogFindComponent::DialogFindComponent(
+  wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style) :
+  wxDialog(parent, id, title, pos, size, style)
 {
-    this->SetSizeHints(wxSize(250,400), wxDefaultSize);
+    this->SetSizeHints(wxSize(250, 400), wxDefaultSize);
 
     wxBoxSizer* bSizerMain = new wxBoxSizer(wxVERTICAL);
 
     m_textCtrlComponent = new wxTextCtrl(this, wxID_ANY);
-    bSizerMain->Add(m_textCtrlComponent, 0, wxALL|wxEXPAND, 5);
+    bSizerMain->Add(m_textCtrlComponent, 0, wxALL | wxEXPAND, 5);
 
-    m_listBoxComponents = new wxListBox(this, wxID_ANY, wxDefaultPosition,
-                                        wxDefaultSize, 0, nullptr, wxLB_SINGLE);
-    bSizerMain->Add(m_listBoxComponents, 1, wxALL|wxEXPAND, 5);
+    m_listBoxComponents = new wxListBox(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE);
+    bSizerMain->Add(m_listBoxComponents, 1, wxALL | wxEXPAND, 5);
 
     m_staticline = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
     bSizerMain->Add(m_staticline, 0, wxEXPAND | wxALL, 5);
@@ -58,37 +56,35 @@ DialogFindComponent::DialogFindComponent(wxWindow* parent,
 
     m_buttonInsert = new wxButton(this, wxID_OK, _("Insert"));
     m_buttonInsert->SetDefault();
-    bSizerButton->Add( m_buttonInsert, 0, wxALL, 5 );
+    bSizerButton->Add(m_buttonInsert, 0, wxALL, 5);
 
     m_buttonCancel = new wxButton(this, wxID_CANCEL);
-    bSizerButton->Add( m_buttonCancel, 0, wxALL, 5 );
-    
-    bSizerMain->Add( bSizerButton, 0, wxEXPAND, 5 );
+    bSizerButton->Add(m_buttonCancel, 0, wxALL, 5);
+
+    bSizerMain->Add(bSizerButton, 0, wxEXPAND, 5);
 
     m_textCtrlComponent->Bind(wxEVT_TEXT, &DialogFindComponent::OnTextCtrlComponent, this);
-    m_listBoxComponents->Bind(wxEVT_LISTBOX_DCLICK, &DialogFindComponent::OnListBoxComponentsDClick,
-                              this);
-    m_listBoxComponents->Bind(wxEVT_LISTBOX, &DialogFindComponent::OnListBoxComponents,this);
+    m_listBoxComponents->Bind(wxEVT_LISTBOX_DCLICK, &DialogFindComponent::OnListBoxComponentsDClick, this);
+    m_listBoxComponents->Bind(wxEVT_LISTBOX, &DialogFindComponent::OnListBoxComponents, this);
 
     SetAffirmativeId(m_buttonInsert->GetId());
 
-    this->SetSizer( bSizerMain );
+    this->SetSizer(bSizerMain);
     this->Layout();
 
-    this->Centre( wxBOTH );
+    this->Centre(wxBOTH);
 }
 
 
-bool DialogFindComponent::TransferDataToWindow() {
+bool DialogFindComponent::TransferDataToWindow()
+{
     m_allComponents.clear();
-    for ( unsigned i = 0; i < AppData()->GetPackageCount(); ++i )
-    {
-        auto pkg = AppData()->GetPackage( i );
-		m_allComponents.reserve(m_allComponents.size() + pkg->GetObjectCount());
+    for (unsigned i = 0; i < AppData()->GetPackageCount(); ++i) {
+        auto pkg = AppData()->GetPackage(i);
+        m_allComponents.reserve(m_allComponents.size() + pkg->GetObjectCount());
 
-        for ( unsigned j = 0; j < pkg->GetObjectCount(); ++j)
-        {
-            PObjectInfo info = pkg->GetObjectInfo( j );
+        for (unsigned j = 0; j < pkg->GetObjectCount(); ++j) {
+            PObjectInfo info = pkg->GetObjectInfo(j);
 
             m_allComponents.emplace_back(info->GetClassName());
         }
@@ -106,19 +102,21 @@ bool DialogFindComponent::TransferDataToWindow() {
     }
     // Clear() emits a text change event
     m_textCtrlComponent->ChangeValue(wxEmptyString);
-    
+
     updateEnabledState();
 
     return wxDialog::TransferDataToWindow();
 }
 
-bool DialogFindComponent::TransferDataFromWindow() {
+bool DialogFindComponent::TransferDataFromWindow()
+{
     m_chosenComponent = m_listBoxComponents->GetString(m_listBoxComponents->GetSelection());
 
     return wxDialog::TransferDataFromWindow();
 }
 
-bool DialogFindComponent::Validate() {
+bool DialogFindComponent::Validate()
+{
     if (m_listBoxComponents->GetSelection() == wxNOT_FOUND) {
         return false;
     }
@@ -127,7 +125,8 @@ bool DialogFindComponent::Validate() {
 }
 
 
-void DialogFindComponent::updateEnabledState() {
+void DialogFindComponent::updateEnabledState()
+{
     const auto enableInsert = (m_listBoxComponents->GetSelection() != wxNOT_FOUND);
     if (m_buttonInsert->IsThisEnabled() != enableInsert) {
         m_buttonInsert->Enable(enableInsert);
@@ -139,7 +138,8 @@ void DialogFindComponent::OnTextCtrlComponent(wxCommandEvent& WXUNUSED(event))
 {
     auto nextSearch = m_textCtrlComponent->GetValue();
     nextSearch.MakeLower();
-    const auto& searchComponents = (!m_prevSearch.empty() && nextSearch.Find(m_prevSearch) != wxNOT_FOUND ? m_prevComponents : m_allComponents);
+    const auto& searchComponents =
+      (!m_prevSearch.empty() && nextSearch.Find(m_prevSearch) != wxNOT_FOUND ? m_prevComponents : m_allComponents);
 
     std::vector<wxString> nextComponents;
     nextComponents.reserve(searchComponents.size());

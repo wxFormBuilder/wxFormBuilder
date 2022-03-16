@@ -26,61 +26,64 @@
 #ifndef RAD_WXFBEVENT_H
 #define RAD_WXFBEVENT_H
 
+#include <wx/event.h>
+
 #include "utils/wxfbdefs.h"
 
-#include <wx/event.h>
 
 class wxFBEvent : public wxEvent
 {
-	private:
-		wxString m_string;
+private:
+    wxString m_string;
 
-	public:
-		wxFBEvent( wxEventType commandType = wxEVT_NULL );
-		wxFBEvent( const wxFBEvent& event );
-	~wxFBEvent() override;
+public:
+    wxFBEvent(wxEventType commandType = wxEVT_NULL);
+    wxFBEvent(const wxFBEvent& event);
+    ~wxFBEvent() override;
 
-		wxString GetEventName();
+    wxString GetEventName();
 
-		void SetString( const wxString& newString );
-		wxString GetString();
+    void SetString(const wxString& newString);
+    wxString GetString();
 
-		// required for sending with wxPostEvent()
-	wxEvent* Clone() const override;
+    // required for sending with wxPostEvent()
+    wxEvent* Clone() const override;
 };
 
 class wxFBPropertyEvent : public wxFBEvent
 {
 public:
-  wxFBPropertyEvent(wxEventType commandType, PProperty property);
-  wxFBPropertyEvent( const wxFBPropertyEvent& event );
-	wxEvent* Clone() const override;
-  PProperty GetFBProperty() { return m_property; }
+    wxFBPropertyEvent(wxEventType commandType, PProperty property);
+    wxFBPropertyEvent(const wxFBPropertyEvent& event);
+    wxEvent* Clone() const override;
+    PProperty GetFBProperty() { return m_property; }
+
 private:
-  PProperty m_property;
+    PProperty m_property;
 };
 
 class wxFBEventHandlerEvent : public wxFBEvent
 {
 public:
-  wxFBEventHandlerEvent (wxEventType commandType, PEvent event);
-  wxFBEventHandlerEvent( const wxFBEventHandlerEvent& event );
-	wxEvent* Clone() const override;
-  PEvent GetFBEventHandler() { return m_event; }
+    wxFBEventHandlerEvent(wxEventType commandType, PEvent event);
+    wxFBEventHandlerEvent(const wxFBEventHandlerEvent& event);
+    wxEvent* Clone() const override;
+    PEvent GetFBEventHandler() { return m_event; }
+
 private:
-  PEvent m_event;
+    PEvent m_event;
 };
 
 class wxFBObjectEvent : public wxFBEvent
 {
 public:
-  wxFBObjectEvent(wxEventType commandType, PObjectBase object);
-  wxFBObjectEvent( const wxFBObjectEvent& event );
-	wxEvent* Clone() const override;
-  PObjectBase GetFBObject() { return m_object; }
+    wxFBObjectEvent(wxEventType commandType, PObjectBase object);
+    wxFBObjectEvent(const wxFBObjectEvent& event);
+    wxEvent* Clone() const override;
+    PObjectBase GetFBObject() { return m_object; }
 
 private:
-  PObjectBase m_object;
+    PObjectBase m_object;
 };
 
 
@@ -105,34 +108,25 @@ wxDECLARE_EVENT(wxEVT_FB_PROJECT_REFRESH, wxFBEvent);
 wxDECLARE_EVENT(wxEVT_FB_CODE_GENERATION, wxFBEvent);
 wxDECLARE_EVENT(wxEVT_FB_EVENT_HANDLER_MODIFIED, wxFBEventHandlerEvent);
 
-#define EVT_FB_PROJECT_LOADED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_PROJECT_LOADED,wxFBEventHandler(fn))
+#define EVT_FB_PROJECT_LOADED(fn) wx__DECLARE_EVT0(wxEVT_FB_PROJECT_LOADED, wxFBEventHandler(fn))
 
-#define EVT_FB_PROJECT_SAVED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_PROJECT_SAVED,wxFBEventHandler(fn))
+#define EVT_FB_PROJECT_SAVED(fn) wx__DECLARE_EVT0(wxEVT_FB_PROJECT_SAVED, wxFBEventHandler(fn))
 
-#define EVT_FB_OBJECT_EXPANDED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_OBJECT_EXPANDED,wxFBObjectEventHandler(fn))
+#define EVT_FB_OBJECT_EXPANDED(fn) wx__DECLARE_EVT0(wxEVT_FB_OBJECT_EXPANDED, wxFBObjectEventHandler(fn))
 
-#define EVT_FB_OBJECT_SELECTED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_OBJECT_SELECTED,wxFBObjectEventHandler(fn))
+#define EVT_FB_OBJECT_SELECTED(fn) wx__DECLARE_EVT0(wxEVT_FB_OBJECT_SELECTED, wxFBObjectEventHandler(fn))
 
-#define EVT_FB_OBJECT_CREATED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_OBJECT_CREATED,wxFBObjectEventHandler(fn))
+#define EVT_FB_OBJECT_CREATED(fn) wx__DECLARE_EVT0(wxEVT_FB_OBJECT_CREATED, wxFBObjectEventHandler(fn))
 
-#define EVT_FB_OBJECT_REMOVED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_OBJECT_REMOVED,wxFBObjectEventHandler(fn))
+#define EVT_FB_OBJECT_REMOVED(fn) wx__DECLARE_EVT0(wxEVT_FB_OBJECT_REMOVED, wxFBObjectEventHandler(fn))
 
-#define EVT_FB_PROPERTY_MODIFIED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_PROPERTY_MODIFIED,wxFBPropertyEventHandler(fn))
+#define EVT_FB_PROPERTY_MODIFIED(fn) wx__DECLARE_EVT0(wxEVT_FB_PROPERTY_MODIFIED, wxFBPropertyEventHandler(fn))
 
 #define EVT_FB_EVENT_HANDLER_MODIFIED(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_EVENT_HANDLER_MODIFIED,wxFBEventHandlerEventHandler(fn))
+    wx__DECLARE_EVT0(wxEVT_FB_EVENT_HANDLER_MODIFIED, wxFBEventHandlerEventHandler(fn))
 
-#define EVT_FB_PROJECT_REFRESH(fn) \
-  wx__DECLARE_EVT0(wxEVT_FB_PROJECT_REFRESH,wxFBEventHandler(fn))
+#define EVT_FB_PROJECT_REFRESH(fn) wx__DECLARE_EVT0(wxEVT_FB_PROJECT_REFRESH, wxFBEventHandler(fn))
 
-#define EVT_FB_CODE_GENERATION(fn) \
-    wx__DECLARE_EVT0(wxEVT_FB_CODE_GENERATION,wxFBEventHandler(fn))
+#define EVT_FB_CODE_GENERATION(fn) wx__DECLARE_EVT0(wxEVT_FB_CODE_GENERATION, wxFBEventHandler(fn))
 
-#endif // RAD_WXFBEVENT_H
+#endif  // RAD_WXFBEVENT_H

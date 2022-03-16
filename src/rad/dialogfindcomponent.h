@@ -34,20 +34,20 @@
 
 #include <vector>
 
+#include <wx/button.h>
 #include <wx/dialog.h>
-#include <wx/textctrl.h>
 #include <wx/listbox.h>
 #include <wx/statline.h>
-#include <wx/button.h>
+#include <wx/textctrl.h>
 
 
 class DialogFindComponent : public wxDialog
 {
 public:
-    DialogFindComponent(wxWindow* parent,
-                        wxWindowID id = wxID_ANY, const wxString& title = _("Find Component"),
-                        const wxPoint& pos = wxDefaultPosition,
-                        const wxSize& size = wxSize( 250,400 ), long style = wxDEFAULT_DIALOG_STYLE);
+    DialogFindComponent(
+      wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Find Component"),
+      const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(250, 400),
+      long style = wxDEFAULT_DIALOG_STYLE);
 
     const wxString& GetSelected() const { return m_chosenComponent; }
 
@@ -64,11 +64,11 @@ private:
     void OnListBoxComponents(wxCommandEvent& event);
 
 private:
-    wxTextCtrl          *m_textCtrlComponent;
-    wxListBox           *m_listBoxComponents;
-    wxStaticLine        *m_staticline;
-    wxButton            *m_buttonCancel;
-    wxButton            *m_buttonInsert;
+    wxTextCtrl* m_textCtrlComponent;
+    wxListBox* m_listBoxComponents;
+    wxStaticLine* m_staticline;
+    wxButton* m_buttonCancel;
+    wxButton* m_buttonInsert;
 
     std::vector<wxString> m_allComponents;
     std::vector<wxString> m_prevComponents;
@@ -76,4 +76,4 @@ private:
     wxString m_chosenComponent;
 };
 
-#endif // RAD_DIALOGFINDCOMPONENT_H
+#endif  // RAD_DIALOGFINDCOMPONENT_H

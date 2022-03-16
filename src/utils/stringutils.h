@@ -22,37 +22,43 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef UTILS_STRINGUTILS_H
 #define UTILS_STRINGUTILS_H
 
 #include <wx/string.h>
 
-namespace ticpp {
+namespace ticpp
+{
 class Document;
 }
 
 class TiXmlDocument;
 class wxArrayString;
 
+
 namespace StringUtils
 {
-  wxString IntToStr(int num);
+wxString IntToStr(int num);
 
-  wxString GetSupportedEncodings( bool columnateWithTab = true, wxArrayString* array = NULL );
-  wxFontEncoding GetEncodingFromUser( const wxString& message );
-}
+wxString GetSupportedEncodings(bool columnateWithTab = true, wxArrayString* array = NULL);
+wxFontEncoding GetEncodingFromUser(const wxString& message);
+}  // namespace StringUtils
 
 namespace XMLUtils
 {
-	// These are only vaguely string related, perhaps they deserve their own files.
-	// These load xml files and verify the encoding is correct, optionally converting
-	// the files using wxWidgets.
-	void LoadXMLFile( ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString );
-	void LoadXMLFile( TiXmlDocument& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString );
+// These are only vaguely string related, perhaps they deserve their own files.
+// These load xml files and verify the encoding is correct, optionally converting
+// the files using wxWidgets.
+void LoadXMLFile(ticpp::Document& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString);
+void LoadXMLFile(TiXmlDocument& doc, bool condenseWhiteSpace, const wxString& path = wxEmptyString);
 
-	// Converts to UTF-8 and prepends declaration
-	void ConvertAndAddDeclaration( const wxString& path, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
-	void ConvertAndChangeDeclaration( const wxString& path, const wxString& version, const wxString& standalone, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
-}
+// Converts to UTF-8 and prepends declaration
+void ConvertAndAddDeclaration(
+  const wxString& path, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true);
+void ConvertAndChangeDeclaration(
+  const wxString& path, const wxString& version, const wxString& standalone,
+  wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true);
+}  // namespace XMLUtils
 
-#endif // UTILS_STRINGUTILS_H
+#endif  // UTILS_STRINGUTILS_H

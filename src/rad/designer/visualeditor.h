@@ -26,61 +26,63 @@
 #ifndef RAD_DESIGNER_VISUALEDITOR_H
 #define RAD_DESIGNER_VISUALEDITOR_H
 
+#include <forms/wizard.h>
+
 #include "rad/designer/innerframe.h"
 #include "rad/designer/visualobj.h"
 
-#include <forms/wizard.h>
+
 /**
  * Extends the wxInnerFrame to show the object highlight
  */
 class DesignerWindow : public wxInnerFrame
 {
- private:
-   int m_x;
-   int m_y;
-   wxSizer *m_selSizer;
-   wxObject *m_selItem;
-   WPObjectBase m_selObj;
-   wxWindow *m_actPanel;
+private:
+    int m_x;
+    int m_y;
+    wxSizer* m_selSizer;
+    wxObject* m_selItem;
+    WPObjectBase m_selObj;
+    wxWindow* m_actPanel;
 
-   void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object);
+    void DrawRectangle(wxDC& dc, const wxPoint& point, const wxSize& size, PObjectBase object);
 
-   DECLARE_CLASS(DesignerWindow)
+    DECLARE_CLASS(DesignerWindow)
 
-   // Augh!, this class is needed to paint the highlight in the
-   // frame content panel.
-   class HighlightPaintHandler : public wxEvtHandler
-   {
-      DECLARE_EVENT_TABLE()
+    // Augh!, this class is needed to paint the highlight in the
+    // frame content panel.
+    class HighlightPaintHandler : public wxEvtHandler
+    {
+        DECLARE_EVENT_TABLE()
 
-      wxWindow *m_window;
+        wxWindow* m_window;
 
-     public:
-       HighlightPaintHandler(wxWindow *win);
-       void OnPaint(wxPaintEvent &event);
-   };
+    public:
+        HighlightPaintHandler(wxWindow* win);
+        void OnPaint(wxPaintEvent& event);
+    };
 
- protected:
+protected:
+    DECLARE_EVENT_TABLE()
 
-   DECLARE_EVENT_TABLE()
-
- public:
-   DesignerWindow(wxWindow *parent, int id, const wxPoint& pos, const wxSize &size = wxDefaultSize,
-     long style = 0, const wxString &name = wxT("designer_win"));
-	~DesignerWindow() override;
-   void SetGrid(int x, int y);
-   void SetSelectedSizer(wxSizer *sizer) { m_selSizer = sizer; }
-   void SetSelectedItem(wxObject *item) { m_selItem = item; }
-   void SetSelectedObject(PObjectBase object) { m_selObj = object; }
-   void SetSelectedPanel(wxWindow *actPanel) { m_actPanel = actPanel; }
-   wxSizer *GetSelectedSizer() { return m_selSizer; }
-   wxObject* GetSelectedItem() { return m_selItem; }
-   PObjectBase GetSelectedObject() { return m_selObj.lock(); }
-   wxWindow* GetActivePanel() { return m_actPanel; }
-   static wxMenu* GetMenuFromObject(PObjectBase menu);
-   void SetFrameWidgets(PObjectBase menubar, wxWindow *toolbar, wxWindow* statusbar, wxWindow *auipanel);
-   void HighlightSelection(wxDC& dc);
-   void OnPaint(wxPaintEvent &event);
+public:
+    DesignerWindow(
+      wxWindow* parent, int id, const wxPoint& pos, const wxSize& size = wxDefaultSize, long style = 0,
+      const wxString& name = wxT("designer_win"));
+    ~DesignerWindow() override;
+    void SetGrid(int x, int y);
+    void SetSelectedSizer(wxSizer* sizer) { m_selSizer = sizer; }
+    void SetSelectedItem(wxObject* item) { m_selItem = item; }
+    void SetSelectedObject(PObjectBase object) { m_selObj = object; }
+    void SetSelectedPanel(wxWindow* actPanel) { m_actPanel = actPanel; }
+    wxSizer* GetSelectedSizer() { return m_selSizer; }
+    wxObject* GetSelectedItem() { return m_selItem; }
+    PObjectBase GetSelectedObject() { return m_selObj.lock(); }
+    wxWindow* GetActivePanel() { return m_actPanel; }
+    static wxMenu* GetMenuFromObject(PObjectBase menu);
+    void SetFrameWidgets(PObjectBase menubar, wxWindow* toolbar, wxWindow* statusbar, wxWindow* auipanel);
+    void HighlightSelection(wxDC& dc);
+    void OnPaint(wxPaintEvent& event);
 };
 
 class wxFBEvent;
@@ -89,76 +91,76 @@ class wxFBObjectEvent;
 
 class VisualEditor : public wxScrolledWindow
 {
- private:
-  typedef std::map< wxObject*, PObjectBase > wxObjectMap;
-  wxObjectMap m_wxobjects;
+private:
+    typedef std::map<wxObject*, PObjectBase> wxObjectMap;
+    wxObjectMap m_wxobjects;
 
-  typedef std::map< ObjectBase*, wxObject* > ObjectBaseMap;
-  ObjectBaseMap m_baseobjects;
+    typedef std::map<ObjectBase*, wxObject*> ObjectBaseMap;
+    ObjectBaseMap m_baseobjects;
 
-  DesignerWindow *m_back;
-  wxPanel *m_auipanel;
+    DesignerWindow* m_back;
+    wxPanel* m_auipanel;
 
-  PObjectBase m_form;  // Pointer to last form created
+    PObjectBase m_form;  // Pointer to last form created
 
-  // Prevent OnSelected in components
-  bool m_stopSelectedEvent;
+    // Prevent OnSelected in components
+    bool m_stopSelectedEvent;
 
-  // Prevent OnModified in components
-  bool m_stopModifiedEvent;
+    // Prevent OnModified in components
+    bool m_stopModifiedEvent;
 
-  // aui scan timer
-  wxTimer m_AuiScaner;
+    // aui scan timer
+    wxTimer m_AuiScaner;
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 
- protected:
-  void Generate( PObjectBase obj, wxWindow* parent, wxObject* parentObject );
-  void SetupWindow( PObjectBase obj, wxWindow* window );
-  void SetupSizer( PObjectBase obj, wxSizer* sizer );
-  void Create();
-  void DeleteAbstractObjects();
+protected:
+    void Generate(PObjectBase obj, wxWindow* parent, wxObject* parentObject);
+    void SetupWindow(PObjectBase obj, wxWindow* window);
+    void SetupSizer(PObjectBase obj, wxSizer* sizer);
+    void Create();
+    void DeleteAbstractObjects();
 
-  void ClearAui();
-  void SetupAui( PObjectBase obj, wxWindow* window );
-  void ScanPanes( wxWindow* parent );
+    void ClearAui();
+    void SetupAui(PObjectBase obj, wxWindow* window);
+    void ScanPanes(wxWindow* parent);
 
-  void OnAuiScaner(wxTimerEvent& event);
+    void OnAuiScaner(wxTimerEvent& event);
 
     void ClearWizard();
-    void SetupWizard( PObjectBase obj, wxWindow* window, bool pageAdding = false );
-    void OnWizardPageChanged( WizardEvent &event );
+    void SetupWizard(PObjectBase obj, wxWindow* window, bool pageAdding = false);
+    void OnWizardPageChanged(WizardEvent& event);
 
- public:
-  VisualEditor(wxWindow *parent);
-	~VisualEditor() override;
-  void OnResizeBackPanel (wxCommandEvent &event);
-  void OnClickBackPanel( wxMouseEvent& event );
-  void PreventOnSelected( bool prevent = true );
-  void PreventOnModified( bool prevent = true );
+public:
+    VisualEditor(wxWindow* parent);
+    ~VisualEditor() override;
+    void OnResizeBackPanel(wxCommandEvent& event);
+    void OnClickBackPanel(wxMouseEvent& event);
+    void PreventOnSelected(bool prevent = true);
+    void PreventOnModified(bool prevent = true);
 
-  void UpdateVirtualSize();
+    void UpdateVirtualSize();
 
-  PObjectBase GetObjectBase( wxObject* wxobject );
-  wxObject* GetWxObject( PObjectBase baseobject );
+    PObjectBase GetObjectBase(wxObject* wxobject);
+    wxObject* GetWxObject(PObjectBase baseobject);
 
-  //AUI
-  wxAuiManager *m_auimgr;
+    // AUI
+    wxAuiManager* m_auimgr;
 
-  //Wizard
-  Wizard *m_wizard;
+    // Wizard
+    Wizard* m_wizard;
 
-  // Give components an opportunity to cleanup
-  void ClearComponents( wxWindow* parent );
+    // Give components an opportunity to cleanup
+    void ClearComponents(wxWindow* parent);
 
-  // Events
-  void OnProjectLoaded ( wxFBEvent &event );
-  void OnProjectSaved  ( wxFBEvent &event );
-  void OnObjectSelected( wxFBObjectEvent &event );
-  void OnObjectCreated ( wxFBObjectEvent &event );
-  void OnObjectRemoved ( wxFBObjectEvent &event );
-  void OnPropertyModified ( wxFBPropertyEvent &event );
-  void OnProjectRefresh ( wxFBEvent &event);
+    // Events
+    void OnProjectLoaded(wxFBEvent& event);
+    void OnProjectSaved(wxFBEvent& event);
+    void OnObjectSelected(wxFBObjectEvent& event);
+    void OnObjectCreated(wxFBObjectEvent& event);
+    void OnObjectRemoved(wxFBObjectEvent& event);
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
 };
 
-#endif // RAD_DESIGNER_VISUALEDITOR_H
+#endif  // RAD_DESIGNER_VISUALEDITOR_H

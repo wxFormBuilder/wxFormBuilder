@@ -27,29 +27,26 @@
 #define UTILS_DEBUG_H
 
 #ifdef __WXFB_DEBUG__
-#include <wx/string.h>
-#include <wx/log.h>
+    #include <wx/log.h>
+    #include <wx/string.h>
 
-#define LogDebug(...) \
-	{											\
-		wxString LOG_MSG;						\
-		LOG_MSG << wxT(__FILE__);				\
-		LOG_MSG = LOG_MSG.AfterLast('/');		\
-		LOG_MSG << wxT("@");					\
-		LOG_MSG << __LINE__;					\
-		LOG_MSG << wxT(" ");					\
-		LOG_MSG << __FUNCTION__;				\
-		LOG_MSG << wxT(": ");					\
-		wxString s;								\
-		s.Printf(__VA_ARGS__);					\
-		LOG_MSG << s;							\
-		wxLogDebug(LOG_MSG);					\
-	}
-
+    #define LogDebug(...) \
+        { \
+            wxString LOG_MSG; \
+            LOG_MSG << wxT(__FILE__); \
+            LOG_MSG = LOG_MSG.AfterLast('/'); \
+            LOG_MSG << wxT("@"); \
+            LOG_MSG << __LINE__; \
+            LOG_MSG << wxT(" "); \
+            LOG_MSG << __FUNCTION__; \
+            LOG_MSG << wxT(": "); \
+            wxString s; \
+            s.Printf(__VA_ARGS__); \
+            LOG_MSG << s; \
+            wxLogDebug(LOG_MSG); \
+        }
 #else
-
-#define LogDebug(...)
-
+    #define LogDebug(...)
 #endif
 
-#endif // UTILS_DEBUG_H
+#endif  // UTILS_DEBUG_H

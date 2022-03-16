@@ -26,34 +26,31 @@
 #ifndef RAD_DESIGNER_VISUALOBJ_H
 #define RAD_DESIGNER_VISUALOBJ_H
 
+#include <wx/wx.h>
+
 #include "utils/wxfbdefs.h"
 
-#include <wx/wx.h>
 
 /**
  * Processes events from visual objects.
  */
 class VObjEvtHandler : public wxEvtHandler
 {
- private:
-   WPObjectBase m_object;
-   wxWindow *m_window;
+private:
+    WPObjectBase m_object;
+    wxWindow* m_window;
 
-   VObjEvtHandler() = default;
+    VObjEvtHandler() = default;
 
- protected:
-  DECLARE_EVENT_TABLE()
+protected:
+    DECLARE_EVENT_TABLE()
 
- public:
-   VObjEvtHandler(wxWindow *win, PObjectBase obj);
-   void OnLeftClick(wxMouseEvent &event);
-   void OnRightClick(wxMouseEvent &event);
-   void OnPaint(wxPaintEvent &event);
-   void OnSetCursor(wxSetCursorEvent &event);
+public:
+    VObjEvtHandler(wxWindow* win, PObjectBase obj);
+    void OnLeftClick(wxMouseEvent& event);
+    void OnRightClick(wxMouseEvent& event);
+    void OnPaint(wxPaintEvent& event);
+    void OnSetCursor(wxSetCursorEvent& event);
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
-
-
-#endif // RAD_DESIGNER_VISUALOBJ_H
+#endif  // RAD_DESIGNER_VISUALOBJ_H

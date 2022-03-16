@@ -22,13 +22,15 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef SDK_PLUGIN_INTERFACE_PLUGIN_H
 #define SDK_PLUGIN_INTERFACE_PLUGIN_H
 
+#include <map>
+#include <vector>
+
 #include "component.h"
 
-#include <vector>
-#include <map>
 
 // Library implementation. This module must be implemented inside the library,
 // instead of linking it as an object for doing the plugin.
@@ -37,141 +39,130 @@
 
 class ComponentLibrary : public IComponentLibrary
 {
- private:
-  typedef struct
-  {
-    wxString name;
-    IComponent *component;
-  }AComponent;
+private:
+    typedef struct {
+        wxString name;
+        IComponent* component;
+    } AComponent;
 
-  typedef struct
-  {
-    wxString name;
-    int value;
-  } AMacro;
+    typedef struct {
+        wxString name;
+        int value;
+    } AMacro;
 
-  typedef struct
-  {
-    wxString name, syn;
-  } ASynonymous;
+    typedef struct {
+        wxString name, syn;
+    } ASynonymous;
 
-  std::vector<AComponent>  m_components;
-  std::vector<AMacro>      m_macros;
-  typedef std::map<wxString,wxString> SynMap;
-  SynMap m_synMap;
+    std::vector<AComponent> m_components;
+    std::vector<AMacro> m_macros;
+    typedef std::map<wxString, wxString> SynMap;
+    SynMap m_synMap;
 
- public:
-  ~ComponentLibrary() override
-  {
-	std::vector< AComponent >::reverse_iterator component;
-	for ( component = m_components.rbegin(); component != m_components.rend(); ++component )
-	{
-		delete component->component;
-	}
-  }
-
-  void RegisterComponent(const wxString& text, IComponent* c) override
-  {
-    AComponent comp;
-    comp.component = c;
-    comp.name = text;
-
-    m_components.push_back(comp);
-  }
-
-  void RegisterMacro(const wxString& text, const int value) override
-  {
-    AMacro macro;
-    macro.name = text;
-    macro.value = value;
-
-    m_macros.push_back(macro);
-  }
-
-  void RegisterMacroSynonymous(const wxString& syn, const wxString& name) override
-  {
-    /*ASynonymous asyn;
-    asyn.name = name;
-    asyn.syn = syn;
-
-    m_synonymous.push_back(asyn);*/
-    m_synMap.insert(SynMap::value_type(syn, name));
-  }
-
-  IComponent* GetComponent(unsigned int idx) override
-  {
-    if (idx < m_components.size())
-      return m_components[idx].component;
-    return NULL;
-  }
-
-  wxString GetComponentName(unsigned int idx) override
-  {
-    if (idx < m_components.size())
-      return m_components[idx].name;
-
-    return wxString();
-  }
-
-  wxString GetMacroName(unsigned int idx) override
-  {
-    if (idx < m_macros.size())
-      return m_macros[idx].name;
-
-    return wxString();
-  }
-
-  int GetMacroValue(unsigned int idx) override
-  {
-    if (idx < m_macros.size())
-      return m_macros[idx].value;
-
-    return 0;
-  }
-
-  /*wxString GetMacroSynonymous(unsigned int idx) override
-  {
-    if (idx < m_synonymous.size())
-      return m_synonymous[idx].syn;
-
-    return wxString();
-  }
-
-  wxString GetSynonymousName(unsigned int idx) override
-  {
-    if (idx < m_synonymous.size())
-      return m_synonymous[idx].name;
-
-    return wxString();
-  }*/
-
-  bool FindSynonymous(const wxString& syn, wxString& trans) override
-  {
-    bool found = false;
-    SynMap::iterator it = m_synMap.find(syn);
-    if (it != m_synMap.end())
+public:
+    ~ComponentLibrary() override
     {
-      found = true;
-      trans = it->second;
+        std::vector<AComponent>::reverse_iterator component;
+        for (component = m_components.rbegin(); component != m_components.rend(); ++component) {
+            delete component->component;
+        }
     }
 
-    return found;
-  }
+    void RegisterComponent(const wxString& text, IComponent* c) override
+    {
+        AComponent comp;
+        comp.component = c;
+        comp.name = text;
 
-  unsigned int GetMacroCount() override
-  {
-    return (unsigned int)m_macros.size();
-  }
+        m_components.push_back(comp);
+    }
 
-  unsigned int GetComponentCount() override
-  {
-    return (unsigned int)m_components.size();
-  }
+    void RegisterMacro(const wxString& text, const int value) override
+    {
+        AMacro macro;
+        macro.name = text;
+        macro.value = value;
 
-  /*unsigned int GetSynonymousCount() override
-  {
-    return m_synonymous.size();
-  }*/
+        m_macros.push_back(macro);
+    }
+
+    void RegisterMacroSynonymous(const wxString& syn, const wxString& name) override
+    {
+        /*ASynonymous asyn;
+        asyn.name = name;
+        asyn.syn = syn;
+
+        m_synonymous.push_back(asyn);*/
+        m_synMap.insert(SynMap::value_type(syn, name));
+    }
+
+    IComponent* GetComponent(unsigned int idx) override
+    {
+        if (idx < m_components.size())
+            return m_components[idx].component;
+        return NULL;
+    }
+
+    wxString GetComponentName(unsigned int idx) override
+    {
+        if (idx < m_components.size())
+            return m_components[idx].name;
+
+        return wxString();
+    }
+
+    wxString GetMacroName(unsigned int idx) override
+    {
+        if (idx < m_macros.size())
+            return m_macros[idx].name;
+
+        return wxString();
+    }
+
+    int GetMacroValue(unsigned int idx) override
+    {
+        if (idx < m_macros.size())
+            return m_macros[idx].value;
+
+        return 0;
+    }
+
+    /*wxString GetMacroSynonymous(unsigned int idx) override
+    {
+      if (idx < m_synonymous.size())
+        return m_synonymous[idx].syn;
+
+      return wxString();
+    }
+
+    wxString GetSynonymousName(unsigned int idx) override
+    {
+      if (idx < m_synonymous.size())
+        return m_synonymous[idx].name;
+
+      return wxString();
+    }*/
+
+    bool FindSynonymous(const wxString& syn, wxString& trans) override
+    {
+        bool found = false;
+        SynMap::iterator it = m_synMap.find(syn);
+        if (it != m_synMap.end()) {
+            found = true;
+            trans = it->second;
+        }
+
+        return found;
+    }
+
+    unsigned int GetMacroCount() override { return (unsigned int)m_macros.size(); }
+
+    unsigned int GetComponentCount() override { return (unsigned int)m_components.size(); }
+
+    /*unsigned int GetSynonymousCount() override
+    {
+      return m_synonymous.size();
+    }*/
 };
 
 /**
@@ -180,65 +171,34 @@ class ComponentLibrary : public IComponentLibrary
 class ComponentBase : public IComponent
 {
 private:
-	int m_type;
-	IManager* m_manager;
+    int m_type;
+    IManager* m_manager;
 
 public:
-	ComponentBase()
-	:
-	m_type( 0 ),
-	m_manager( NULL )
-	{}
+    ComponentBase() : m_type(0), m_manager(NULL) {}
 
-	void __SetComponentType( int type )
-	{
-		m_type = ( type >= 0 && type <= 2 ? type : COMPONENT_TYPE_ABSTRACT );
-	}
+    void __SetComponentType(int type) { m_type = (type >= 0 && type <= 2 ? type : COMPONENT_TYPE_ABSTRACT); }
 
-	void __SetManager( IManager* manager )
-	{
-		m_manager = manager;
-	}
+    void __SetManager(IManager* manager) { m_manager = manager; }
 
-	IManager* GetManager()
-	{
-		return m_manager;
-	}
+    IManager* GetManager() { return m_manager; }
 
-	wxObject* Create(IObject* /*obj*/, wxObject* /*parent*/) override
-	{
-		return m_manager->NewNoObject(); /* Even components which are not visible must be unique in the map */
-	}
+    wxObject* Create(IObject* /*obj*/, wxObject* /*parent*/) override
+    {
+        return m_manager->NewNoObject(); /* Even components which are not visible must be unique in the map */
+    }
 
-	void Cleanup(wxObject* /*obj*/) override
-	{
+    void Cleanup(wxObject* /*obj*/) override {}
 
-	}
+    void OnCreated(wxObject* /*wxobject*/, wxWindow* /*wxparent*/) override {}
 
-	void OnCreated(wxObject* /*wxobject*/, wxWindow* /*wxparent*/) override
-	{
+    void OnSelected(wxObject* /*wxobject*/) override {}
 
-	}
+    ticpp::Element* ExportToXrc(IObject* /*obj*/) override { return NULL; }
 
-	void OnSelected(wxObject* /*wxobject*/) override
-	{
+    ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/) override { return NULL; }
 
-	}
-
-	ticpp::Element* ExportToXrc(IObject* /*obj*/) override
-	{
-		return NULL;
-	}
-
-	ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/) override
-	{
-		return NULL;
-	}
-
-	int GetComponentType() override
-	{
-		return m_type;
-	}
+    int GetComponentType() override { return m_type; }
 };
 
-#endif // SDK_PLUGIN_INTERFACE_PLUGIN_H
+#endif  // SDK_PLUGIN_INTERFACE_PLUGIN_H

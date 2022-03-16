@@ -19,4 +19,4 @@ std::string getPostfixRevision(const char* version);
 
 std::string getReleaseRevision(const char* version);
 
-#endif // RAD_REVISION_H
+#endif  // RAD_REVISION_H

@@ -21,19 +21,23 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_XRCPREVIEW_XRCPREVIEW_H
 #define RAD_XRCPREVIEW_XRCPREVIEW_H
 
 #include "utils/wxfbdefs.h"
 
+
 class wxWindow;
+
 
 class XRCPreview
 {
 private:
-	static void AddEventHandler( wxWindow* window, wxWindow* form );
+    static void AddEventHandler(wxWindow* window, wxWindow* form);
+
 public:
-	static void Show( PObjectBase form, const wxString& projectpath );
+    static void Show(PObjectBase form, const wxString& projectpath);
 };
 
-#endif // RAD_XRCPREVIEW_XRCPREVIEW_H
+#endif  // RAD_XRCPREVIEW_XRCPREVIEW_H

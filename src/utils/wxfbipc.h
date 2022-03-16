@@ -21,12 +21,15 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef UTILS_WXFBIPC_H
 #define UTILS_WXFBIPC_H
 
-#include <wx/ipc.h>
 #include <memory>
+
+#include <wx/ipc.h>
 #include <wx/snglinst.h>
+
 
 /* Only allow one instance of a project to be loaded at a time */
 
@@ -34,50 +37,46 @@ class AppServer;
 
 class wxFBIPC
 {
-	private:
-		std::unique_ptr<wxSingleInstanceChecker> m_checker;
-		std::unique_ptr<AppServer> m_server;
-		const int m_port;
+private:
+    std::unique_ptr<wxSingleInstanceChecker> m_checker;
+    std::unique_ptr<AppServer> m_server;
+    const int m_port;
 
-		bool CreateServer( const wxString& name );
+    bool CreateServer(const wxString& name);
 
-	public:
-		wxFBIPC()
-		:
-		m_port( 4242 )
-		{
-		}
+public:
+    wxFBIPC() : m_port(4242) {}
 
-		bool VerifySingleInstance( const wxString& file, bool switchTo = true );
-		void Reset();
+    bool VerifySingleInstance(const wxString& file, bool switchTo = true);
+    void Reset();
 };
 
 // Connection class, for use by both communicationg instances
-class AppConnection: public wxConnection
+class AppConnection : public wxConnection
 {
 private:
-	wxString m_data;
+    wxString m_data;
 
 public:
-	AppConnection(){}
+    AppConnection() {}
 };
 
 // Server class, for listening to connection requests
-class AppServer: public wxServer
+class AppServer : public wxServer
 {
 public:
-	const wxString m_name;
+    const wxString m_name;
 
-	AppServer( const wxString& name ) : m_name( name ){}
-	wxConnectionBase* OnAcceptConnection(const wxString& topic) override;
+    AppServer(const wxString& name) : m_name(name) {}
+    wxConnectionBase* OnAcceptConnection(const wxString& topic) override;
 };
 
 // Client class, to be used by subsequent instances in OnInit
-class AppClient: public wxClient
+class AppClient : public wxClient
 {
 public:
-	AppClient(){}
-	wxConnectionBase* OnMakeConnection() override;
+    AppClient() {}
+    wxConnectionBase* OnMakeConnection() override;
 };
 
-#endif // UTILS_WXFBIPC_H
+#endif  // UTILS_WXFBIPC_H

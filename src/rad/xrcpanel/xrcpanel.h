@@ -26,10 +26,10 @@
 #ifndef RAD_XRCPANEL_XRCPANEL_H
 #define RAD_XRCPANEL_XRCPANEL_H
 
-#include "utils/wxfbdefs.h"
-
-#include <wx/stc/stc.h>
 #include <wx/panel.h>
+#include <wx/stc/stc.h>
+
+#include "utils/wxfbdefs.h"
 
 class CodeEditor;
 class wxFBEvent;
@@ -37,27 +37,27 @@ class wxFBObjectEvent;
 class wxFBPropertyEvent;
 class wxFindDialogEvent;
 
+
 class XrcPanel : public wxPanel
 {
 private:
-	CodeEditor* m_xrcPanel;
-	PTCCodeWriter m_cw;
+    CodeEditor* m_xrcPanel;
+    PTCCodeWriter m_cw;
 
-    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+    void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
 public:
-	XrcPanel( wxWindow *parent, int id );
-	~XrcPanel() override;
+    XrcPanel(wxWindow* parent, int id);
+    ~XrcPanel() override;
 
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
+    void OnCodeGeneration(wxFBEvent& event);
+    void OnObjectChange(wxFBObjectEvent& event);
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-
-#endif // RAD_XRCPANEL_XRCPANEL_H
+#endif  // RAD_XRCPANEL_XRCPANEL_H

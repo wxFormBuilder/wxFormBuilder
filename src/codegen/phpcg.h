@@ -31,7 +31,8 @@
 @author Michal Bližňák - michal.bliznak@gmail.com
 @note
 The implementation of the generation of relative paths is a little hacky, and not a solution.
-The value of all properties that are file or a directory paths must be absolute, otherwise the code generation will not work.
+The value of all properties that are file or a directory paths must be absolute, otherwise the code generation will not
+work.
 */
 
 #ifndef CODEGEN_PHPCG_H
@@ -41,201 +42,203 @@ The value of all properties that are file or a directory paths must be absolute,
 #define fbfSILENT true
 #define fbfMESSAGE false
 
-#include "codegen/codegen.h"
-
 #include <set>
 #include <vector>
 
+#include "codegen/codegen.h"
+
+
 /**
-* Parse the PHP templates.
-*/
+ * Parse the PHP templates.
+ */
 class PHPTemplateParser : public TemplateParser
 {
 private:
-	bool m_i18n;
-	bool m_useRelativePath;
-	wxString m_basePath;
+    bool m_i18n;
+    bool m_useRelativePath;
+    wxString m_basePath;
 
 public:
-	PHPTemplateParser( PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath );
-	PHPTemplateParser( const PHPTemplateParser & that, wxString _template );
+    PHPTemplateParser(PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath);
+    PHPTemplateParser(const PHPTemplateParser& that, wxString _template);
 
-	// overrides for PHP
-	PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
-	wxString RootWxParentToCode() override;
-	wxString ValueToCode(PropertyType type, wxString value) override;
+    // overrides for PHP
+    PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+    wxString RootWxParentToCode() override;
+    wxString ValueToCode(PropertyType type, wxString value) override;
 };
 
 /**
-* Generate the PHP code
-*/
+ * Generate the PHP code
+ */
 class PHPCodeGenerator : public CodeGenerator
 {
 private:
-	PCodeWriter m_source;
+    PCodeWriter m_source;
 
-	bool m_useRelativePath;
-	bool m_i18n;
-	wxString m_basePath;
-	unsigned int m_firstID;
-	bool m_disconnectEvents;
-	wxString m_disconnecMode;
+    bool m_useRelativePath;
+    bool m_i18n;
+    wxString m_basePath;
+    unsigned int m_firstID;
+    bool m_disconnectEvents;
+    wxString m_disconnecMode;
 
-	/**
-	* Predefined macros won't generate defines.
-	*/
-	std::set<wxString> m_predMacros;
+    /**
+     * Predefined macros won't generate defines.
+     */
+    std::set<wxString> m_predMacros;
 
-	void SetupPredefinedMacros();
+    void SetupPredefinedMacros();
 
-	/**
-	* Given an object and the name for a template, obtains the code.
-	*/
-	wxString GetCode( PObjectBase obj, wxString name, bool silent = false);
+    /**
+     * Given an object and the name for a template, obtains the code.
+     */
+    wxString GetCode(PObjectBase obj, wxString name, bool silent = false);
 
-	/**
-	* Gets the construction fragment for the specified object.
-	*
-	* This method encapsulates the adjustments that need to be made for array declarations.
-	*/
-	wxString GetConstruction(PObjectBase obj, ArrayItems& arrays);
+    /**
+     * Gets the construction fragment for the specified object.
+     *
+     * This method encapsulates the adjustments that need to be made for array declarations.
+     */
+    wxString GetConstruction(PObjectBase obj, ArrayItems& arrays);
 
-	/**
-	* Stores the project's objects classes set, for generating the includes.
-	*/
-	void FindDependencies( PObjectBase obj, std::set< PObjectInfo >& info_set );
+    /**
+     * Stores the project's objects classes set, for generating the includes.
+     */
+    void FindDependencies(PObjectBase obj, std::set<PObjectInfo>& info_set);
 
-	/**
-	* Stores all the properties for "macro" type objects, so that their
-	* related '#define' can be generated subsequently.
-	*/
-	void FindMacros( PObjectBase obj, std::vector< wxString >* macros );
+    /**
+     * Stores all the properties for "macro" type objects, so that their
+     * related '#define' can be generated subsequently.
+     */
+    void FindMacros(PObjectBase obj, std::vector<wxString>* macros);
 
-	/**
-	 * Looks for "non-null" event handlers (PEvent) and collects it into a vector.
-	 */
-	void FindEventHandlers(PObjectBase obj, EventVector &events);
+    /**
+     * Looks for "non-null" event handlers (PEvent) and collects it into a vector.
+     */
+    void FindEventHandlers(PObjectBase obj, EventVector& events);
 
-	/**
-	* Generates classes declarations inside the header file.
-	*/
-	void GenClassDeclaration(PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events, const wxString& eventHandlerPostfix, ArrayItems& arrays);
+    /**
+     * Generates classes declarations inside the header file.
+     */
+    void GenClassDeclaration(
+      PObjectBase class_obj, bool use_enum, const wxString& classDecoration, const EventVector& events,
+      const wxString& eventHandlerPostfix, ArrayItems& arrays);
 
-	/**
-	* Generates the event table.
-	*/
-	void GenEvents( PObjectBase class_obj, const EventVector &events, bool disconnect = false );
+    /**
+     * Generates the event table.
+     */
+    void GenEvents(PObjectBase class_obj, const EventVector& events, bool disconnect = false);
 
-	/**
-	* helper function to find the event table entry template in the class or its base classes
-	*/
-	bool GenEventEntry( PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName, bool disconnect = false );
+    /**
+     * helper function to find the event table entry template in the class or its base classes
+     */
+    bool GenEventEntry(
+      PObjectBase obj, PObjectInfo obj_info, const wxString& templateName, const wxString& handlerName,
+      bool disconnect = false);
 
-	/**
-	* Generates the generated_event_handlers template
-	*/
-	void GetGenEventHandlers( PObjectBase obj );
-	/**
-	* Generates the generated_event_handlers template
-	*/
-	void GenDefinedEventHandlers( PObjectInfo info, PObjectBase obj );
+    /**
+     * Generates the generated_event_handlers template
+     */
+    void GetGenEventHandlers(PObjectBase obj);
+    /**
+     * Generates the generated_event_handlers template
+     */
+    void GenDefinedEventHandlers(PObjectInfo info, PObjectBase obj);
 
-	/**
-	* Generates the 'import' section for files.
-	*/
-	void GenIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
-	void GenObjectIncludes( PObjectBase project, std::vector< wxString >* includes, std::set< wxString >* templates );
-	void GenBaseIncludes( PObjectInfo info, PObjectBase obj, std::vector< wxString >* includes, std::set< wxString >* templates );
-	void AddUniqueIncludes( const wxString& include, std::vector< wxString >* includes );
+    /**
+     * Generates the 'import' section for files.
+     */
+    void GenIncludes(PObjectBase project, std::vector<wxString>* includes, std::set<wxString>* templates);
+    void GenObjectIncludes(PObjectBase project, std::vector<wxString>* includes, std::set<wxString>* templates);
+    void GenBaseIncludes(
+      PObjectInfo info, PObjectBase obj, std::vector<wxString>* includes, std::set<wxString>* templates);
+    void AddUniqueIncludes(const wxString& include, std::vector<wxString>* includes);
 
-	/**
-	* Generate a set of all subclasses to forward declare in the generated file.
-	*/
-	void GenSubclassSets( PObjectBase obj, std::set< wxString >* subclasses, std::vector< wxString >* headerIncludes );
+    /**
+     * Generate a set of all subclasses to forward declare in the generated file.
+     */
+    void GenSubclassSets(PObjectBase obj, std::set<wxString>* subclasses, std::vector<wxString>* headerIncludes);
 
-	/**
-	* Generates the '#define' section for macros.
-	*/
-	void GenDefines( PObjectBase project);
+    /**
+     * Generates the '#define' section for macros.
+     */
+    void GenDefines(PObjectBase project);
 
-	/**
-	* Generates the constructor for a class
-	*/
-	void GenConstructor(PObjectBase class_obj, const EventVector& events, ArrayItems& arrays);
+    /**
+     * Generates the constructor for a class
+     */
+    void GenConstructor(PObjectBase class_obj, const EventVector& events, ArrayItems& arrays);
 
-	/**
-	* Generates the destructor for a class
-	*/
-	void GenDestructor( PObjectBase class_obj, const EventVector &events );
+    /**
+     * Generates the destructor for a class
+     */
+    void GenDestructor(PObjectBase class_obj, const EventVector& events);
 
-	/**
-	* Makes the objects construction, setting up the objects' and Layout properties.
-	* The algorithm is similar to that used in the designer preview generation.
-	*/
-	void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
+    /**
+     * Makes the objects construction, setting up the objects' and Layout properties.
+     * The algorithm is similar to that used in the designer preview generation.
+     */
+    void GenConstruction(PObjectBase obj, bool is_widget, ArrayItems& arrays);
 
-	/**
-	* Makes the objects destructions.
-	*/
-	void GenDestruction( PObjectBase obj);
+    /**
+     * Makes the objects destructions.
+     */
+    void GenDestruction(PObjectBase obj);
 
-	/**
-	* Configures the object properties, both own and inherited ones.
-	* Information for the class is given, because it will recursively make the
-	* configuration in the "super-classes".
-	*/
-	void GenSettings( PObjectInfo info, PObjectBase obj);
+    /**
+     * Configures the object properties, both own and inherited ones.
+     * Information for the class is given, because it will recursively make the
+     * configuration in the "super-classes".
+     */
+    void GenSettings(PObjectInfo info, PObjectBase obj);
 
-	/**
-	* Adds a control for a toolbar. Needs the objectinfo (wxWindow type) where
-	* the template is found, and the objectbase for the control.
-	*/
-	void GenAddToolbar( PObjectInfo info, PObjectBase obj );
-	void GetAddToolbarCode( PObjectInfo info, PObjectBase obj, wxArrayString& codelines );
+    /**
+     * Adds a control for a toolbar. Needs the objectinfo (wxWindow type) where
+     * the template is found, and the objectbase for the control.
+     */
+    void GenAddToolbar(PObjectInfo info, PObjectBase obj);
+    void GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxArrayString& codelines);
 
-    void GenVirtualEventHandlers( const EventVector &events, const wxString& eventHandlerPostfix );
+    void GenVirtualEventHandlers(const EventVector& events, const wxString& eventHandlerPostfix);
 
 public:
-	/**
-	* Convert a wxString to the "C/C++" format.
-	*/
-	static wxString ConvertPHPString( wxString text);
+    /**
+     * Convert a wxString to the "C/C++" format.
+     */
+    static wxString ConvertPHPString(wxString text);
 
-	PHPCodeGenerator();
+    PHPCodeGenerator();
 
-	/**
-	* Set the codewriter for the source file
-	*/
-	void SetSourceWriter( PCodeWriter cw )
-	{
-		m_source = cw;
-	}
+    /**
+     * Set the codewriter for the source file
+     */
+    void SetSourceWriter(PCodeWriter cw) { m_source = cw; }
 
 
-	/**
-	* Configures the reference path for generating relative paths to
-	* that passed as parameter.
-	*
-	* @note path is generated with the separators, '/', since on Windows
-	*		the compilers interpret path correctly.
-	*/
-	void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
+    /**
+     * Configures the reference path for generating relative paths to
+     * that passed as parameter.
+     *
+     * @note path is generated with the separators, '/', since on Windows
+     *		the compilers interpret path correctly.
+     */
+    void UseRelativePath(bool relative = false, wxString basePath = wxEmptyString);
 
-	/**
-	* Set the First ID used during Code Generation.
-	*/
-	void SetFirstID( const unsigned int id ){ m_firstID = id; }
+    /**
+     * Set the First ID used during Code Generation.
+     */
+    void SetFirstID(const unsigned int id) { m_firstID = id; }
 
-	/**
-	* Generate the project's code
-	*/
-	bool GenerateCode(PObjectBase project) override;
+    /**
+     * Generate the project's code
+     */
+    bool GenerateCode(PObjectBase project) override;
 
-	/**
-	* Generate an inherited class
-	*/
-	void GenerateInheritedClass( PObjectBase userClasses, PObjectBase form );
+    /**
+     * Generate an inherited class
+     */
+    void GenerateInheritedClass(PObjectBase userClasses, PObjectBase form);
 };
 
-
-#endif // CODEGEN_PHPCG_H
+#endif  // CODEGEN_PHPCG_H

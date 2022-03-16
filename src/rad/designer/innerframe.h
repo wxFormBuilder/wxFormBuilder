@@ -22,75 +22,69 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_DESIGNER_INNERFRAME_H
 #define RAD_DESIGNER_INNERFRAME_H
 
+#include <wx/wx.h>
+#include <wx/aui/aui.h>
+
 #include "utils/debug.h"
 
-#include <wx/aui/aui.h>
-#include <wx/wx.h>
 
 class wxInnerFrame : public wxPanel
 {
 private:
+    DECLARE_EVENT_TABLE()
 
-  DECLARE_EVENT_TABLE()
-
-    enum{
-      NONE,
-      RIGHTBOTTOM,
-      RIGHT,
-      BOTTOM
-    } m_sizing;
+    enum { NONE, RIGHTBOTTOM, RIGHT, BOTTOM } m_sizing;
 
     int m_curX, m_curY, m_difX, m_difY;
     int m_resizeBorder;
     wxSize m_minSize;
     wxSize m_baseMinSize;
 
-  class TitleBar;
+    class TitleBar;
 
-  TitleBar *m_titleBar;
-  wxPanel *m_frameContent;
-  //wxAuiManager m_mgr
+    TitleBar* m_titleBar;
+    wxPanel* m_frameContent;
+    // wxAuiManager m_mgr
 protected:
-	wxSize DoGetBestSize() const override;
+    wxSize DoGetBestSize() const override;
 
 public:
-  wxInnerFrame(wxWindow *parent, wxWindowID id,
-                 const wxPoint &pos = wxDefaultPosition,
-                 const wxSize &size = wxDefaultSize,
-                 long style = 0);
+    wxInnerFrame(
+      wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize,
+      long style = 0);
 
-  //virtual ~wxInnerFrame(){m_mgr.UnInit();}
+    // virtual ~wxInnerFrame(){m_mgr.UnInit();}
 
-  wxPanel *GetFrameContentPanel() { return m_frameContent; }
-  void OnMouseMotion(wxMouseEvent& e);
-  void OnLeftDown(wxMouseEvent& e);
-  void OnLeftUp(wxMouseEvent& e);
+    wxPanel* GetFrameContentPanel() { return m_frameContent; }
+    void OnMouseMotion(wxMouseEvent& e);
+    void OnLeftDown(wxMouseEvent& e);
+    void OnLeftUp(wxMouseEvent& e);
 
-  //wxAuiManager& GetAuiManager() {return m_mgr;}
+    // wxAuiManager& GetAuiManager() {return m_mgr;}
 
-  void SetTitle(const wxString &title);
-  wxString GetTitle();
+    void SetTitle(const wxString& title);
+    wxString GetTitle();
 
-  void SetTitleStyle( long style );
+    void SetTitleStyle(long style);
 
-  void ShowTitleBar(bool show = true);
-  void SetToBaseSize();
-  bool IsTitleBarShown();
+    void ShowTitleBar(bool show = true);
+    void SetToBaseSize();
+    bool IsTitleBarShown();
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
-    DECLARE_LOCAL_EVENT_TYPE(wxEVT_INNER_FRAME_RESIZED, -1)
+DECLARE_LOCAL_EVENT_TYPE(wxEVT_INNER_FRAME_RESIZED, -1)
 END_DECLARE_EVENT_TYPES()
 
-#define EVT_INNER_FRAME_RESIZED(id, fn) \
-  wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED,id,wxCommandEventHandler(fn))
+#define EVT_INNER_FRAME_RESIZED(id, fn) wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, wxCommandEventHandler(fn))
 
 /*wxDECLARE_EVENT(wxEVT_INNER_FRAME_RESIZED, wxCommandEvent);
 
 #define EVT_INNER_FRAME_RESIZED(id, func) \
 wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, &func)*/
 
-#endif // RAD_DESIGNER_INNERFRAME_H
+#endif  // RAD_DESIGNER_INNERFRAME_H

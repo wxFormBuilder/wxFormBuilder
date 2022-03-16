@@ -26,47 +26,45 @@
 #ifndef RAD_CPPPANEL_CPPPANEL_H
 #define RAD_CPPPANEL_CPPPANEL_H
 
-#include "utils/wxfbdefs.h"
-
 #include <wx/panel.h>
 
-class CodeEditor;
+#include "utils/wxfbdefs.h"
 
+
+class CodeEditor;
+class wxAuiNotebook;
+class wxFBEvent;
+class wxFBEventHandlerEvent;
+class wxFBObjectEvent;
+class wxFBPropertyEvent;
+class wxFindDialogEvent;
 class wxStyledTextCtrl;
 
-class wxAuiNotebook;
-
-class wxFindDialogEvent;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
-class wxFBEventHandlerEvent;
 
 class CppPanel : public wxPanel
 {
 private:
-	CodeEditor* m_cppPanel;
-	CodeEditor* m_hPanel;
-	PTCCodeWriter m_hCW;
-	PTCCodeWriter m_cppCW;
-	wxAuiNotebook* m_notebook;
+    CodeEditor* m_cppPanel;
+    CodeEditor* m_hPanel;
+    PTCCodeWriter m_hCW;
+    PTCCodeWriter m_cppCW;
+    wxAuiNotebook* m_notebook;
 
-    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+    void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
 public:
-	CppPanel( wxWindow *parent, int id );
-	~CppPanel() override;
+    CppPanel(wxWindow* parent, int id);
+    ~CppPanel() override;
 
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
-	void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
+    void OnCodeGeneration(wxFBEvent& event);
+    void OnObjectChange(wxFBObjectEvent& event);
+    void OnEventHandlerModified(wxFBEventHandlerEvent& event);
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-#endif // RAD_CPPPANEL_CPPPANEL_H
+#endif  // RAD_CPPPANEL_CPPPANEL_H

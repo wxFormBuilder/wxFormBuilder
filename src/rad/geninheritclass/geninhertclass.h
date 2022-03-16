@@ -22,6 +22,7 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_GENINHERITCLASS_GENINHERTCLASS_H
 #define RAD_GENINHERITCLASS_GENINHERTCLASS_H
 
@@ -33,53 +34,49 @@ the wxFormBuilder GUI code.
 @date	01/14/2007
 */
 
-#include "utils/wxfbdefs.h"
 #include "rad/geninheritclass/geninhertclass_gui.h"
+#include "utils/wxfbdefs.h"
+
 
 /** Holds the details of the class to generate. */
 class GenClassDetails
 {
 public:
+    /** Default Constructor. */
+    GenClassDetails() {}
 
-	/** Default Constructor. */
-	GenClassDetails() {}
+    /**
+            Constructor.
+            @param form Form object.
+            @param className Name of the class to generate.
+            @param fileName File name of the output files the at generated class will be in.
+            @param isSelected If true then the class is selected, else it is not.
+    */
+    GenClassDetails(PObjectBase form, const wxString& className, const wxString& fileName, bool isSelected = false) :
+      m_form(form), m_className(className), m_fileName(fileName), m_isSelected(isSelected)
+    {
+    }
 
-	/**
-		Constructor.
-		@param form Form object.
-		@param className Name of the class to generate.
-		@param fileName File name of the output files the at generated class will be in.
-		@param isSelected If true then the class is selected, else it is not.
-	*/
-	GenClassDetails( PObjectBase form, const wxString& className, const wxString& fileName, bool isSelected = false )
-	:
-	m_form( form ),
-	m_className( className ),
-	m_fileName( fileName ),
-	m_isSelected( isSelected )
-	{
-	}
-
-	PObjectBase m_form;			/**< Form object. */
-	wxString m_className;		/**< Name of the class to generate. */
-	wxString m_fileName;		/**< File name to generate the class in.  */
-	bool     m_isSelected;		/**< Holds if the checkbox is selected for the form. */
+    PObjectBase m_form;   /**< Form object. */
+    wxString m_className; /**< Name of the class to generate. */
+    wxString m_fileName;  /**< File name to generate the class in.  */
+    bool m_isSelected;    /**< Holds if the checkbox is selected for the form. */
 };
 
 /**  */
 class GenInheritedClassDlg : public GenInheritedClassDlgBase
 {
 public:
-	GenInheritedClassDlg( wxWindow* parent, PObjectBase project );
-	void GetFormsSelected( std::vector< GenClassDetails >* forms );
+    GenInheritedClassDlg(wxWindow* parent, PObjectBase project);
+    void GetFormsSelected(std::vector<GenClassDetails>* forms);
 
 private:
-	std::vector< GenClassDetails > m_classDetails;
+    std::vector<GenClassDetails> m_classDetails;
 
-	void OnFormsSelected(wxCommandEvent& event) override;
-	void OnFormsToggle(wxCommandEvent& event) override;
-	void OnClassNameChange(wxCommandEvent& event) override;
-	void OnFileNameChange(wxCommandEvent& event) override;
+    void OnFormsSelected(wxCommandEvent& event) override;
+    void OnFormsToggle(wxCommandEvent& event) override;
+    void OnClassNameChange(wxCommandEvent& event) override;
+    void OnFileNameChange(wxCommandEvent& event) override;
 };
 
-#endif // RAD_GENINHERITCLASS_GENINHERTCLASS_H
+#endif  // RAD_GENINHERITCLASS_GENINHERTCLASS_H

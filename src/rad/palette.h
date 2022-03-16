@@ -26,39 +26,41 @@
 #ifndef RAD_PALETTE_H
 #define RAD_PALETTE_H
 
-#include "model/database.h"
-
 #include <wx/aui/auibar.h>
 #include <wx/aui/auibook.h>
 #include <wx/spinbutt.h>
 
+#include "model/database.h"
+
+
 typedef std::vector<wxAuiToolBar*> ToolbarVector;
+
 
 class wxFbPalette : public wxPanel
 {
- private:
-  ToolbarVector m_tv;
-  wxAuiNotebook *m_notebook;
-  static wxWindowID nextId;
-  std::vector<int> m_posVector;
+private:
+    ToolbarVector m_tv;
+    wxAuiNotebook* m_notebook;
+    static wxWindowID nextId;
+    std::vector<int> m_posVector;
 
-  void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar *toolbar);
+    void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
 
-  DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 
- public:
-  wxFbPalette(wxWindow *parent,int id);
+public:
+    wxFbPalette(wxWindow* parent, int id);
 
-	void SavePosition();
+    void SavePosition();
 
-  /**
-   * Crea la paleta, previamente se ha debido configurar el objeto
-   * DataObservable.
-   */
-  void Create();
-  void OnSpinUp(wxSpinEvent& e);
-  void OnSpinDown(wxSpinEvent& e);
-  void OnButtonClick(wxCommandEvent &event);
+    /**
+     * Crea la paleta, previamente se ha debido configurar el objeto
+     * DataObservable.
+     */
+    void Create();
+    void OnSpinUp(wxSpinEvent& e);
+    void OnSpinDown(wxSpinEvent& e);
+    void OnButtonClick(wxCommandEvent& event);
 };
 /*
 class PaletteButton : public wxBitmapButton
@@ -98,4 +100,5 @@ class PaletteButtonEventHandler : public wxEvtHandler
   void OnButtonClick(wxCommandEvent &event);
 };
 */
-#endif // RAD_PALETTE_H
+
+#endif  // RAD_PALETTE_H

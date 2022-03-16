@@ -26,59 +26,61 @@
 #ifndef RAD_CMDPROC_H
 #define RAD_CMDPROC_H
 
-#include <stack>
 #include <memory>
+#include <stack>
+
 
 class Command;
 typedef std::shared_ptr<Command> PCommand;
 
+
 class CommandProcessor
 {
- private:
-  typedef std::stack<PCommand> CommandStack;
+private:
+    typedef std::stack<PCommand> CommandStack;
 
-  CommandStack m_undoStack;
-  CommandStack m_redoStack;
-  size_t m_savePoint;
+    CommandStack m_undoStack;
+    CommandStack m_redoStack;
+    size_t m_savePoint;
 
- public:
-   CommandProcessor();
-   void Execute(PCommand command);
+public:
+    CommandProcessor();
+    void Execute(PCommand command);
 
-   void Undo();
-   void Redo();
-   void Reset();
+    void Undo();
+    void Redo();
+    void Reset();
 
-   void SetSavePoint();
-   bool IsAtSavePoint();
+    void SetSavePoint();
+    bool IsAtSavePoint();
 
-   bool CanUndo();
-   bool CanRedo();
+    bool CanUndo();
+    bool CanRedo();
 };
 
 
 class Command
 {
- private:
-  bool m_executed;
+private:
+    bool m_executed;
 
- protected:
-  /**
-   * Ejecuta el comando.
-   */
-  virtual void DoExecute() = 0;
+protected:
+    /**
+     * Ejecuta el comando.
+     */
+    virtual void DoExecute() = 0;
 
-  /**
-   * Restaura el estado previo a la ejecución del comando.
-   */
-  virtual void DoRestore() = 0;
+    /**
+     * Restaura el estado previo a la ejecución del comando.
+     */
+    virtual void DoRestore() = 0;
 
- public:
-  Command();
-  virtual ~Command() = default;
+public:
+    Command();
+    virtual ~Command() = default;
 
-  void Execute();
-  void Restore();
+    void Execute();
+    void Restore();
 };
 
-#endif // RAD_CMDPROC_H
+#endif  // RAD_CMDPROC_H

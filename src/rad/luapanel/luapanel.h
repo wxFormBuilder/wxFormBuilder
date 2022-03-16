@@ -35,42 +35,41 @@
 #ifndef RAD_LUAPANEL_LUAPANEL_H
 #define RAD_LUAPANEL_LUAPANEL_H
 
-#include "utils/wxfbdefs.h"
-
 #include <wx/panel.h>
 
-class CodeEditor;
+#include "utils/wxfbdefs.h"
 
+
+class CodeEditor;
+class wxFBEvent;
+class wxFBEventHandlerEvent;
+class wxFBObjectEvent;
+class wxFBPropertyEvent;
+class wxFindDialogEvent;
 class wxStyledTextCtrl;
 
-class wxFindDialogEvent;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
-class wxFBEventHandlerEvent;
 
 class LuaPanel : public wxPanel
 {
 private:
-	CodeEditor* m_luaPanel;
-	PTCCodeWriter m_luaCW;
+    CodeEditor* m_luaPanel;
+    PTCCodeWriter m_luaCW;
 
-    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+    void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
 public:
-	LuaPanel( wxWindow *parent, int id );
-	~LuaPanel() override;
+    LuaPanel(wxWindow* parent, int id);
+    ~LuaPanel() override;
 
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
-	void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
+    void OnCodeGeneration(wxFBEvent& event);
+    void OnObjectChange(wxFBObjectEvent& event);
+    void OnEventHandlerModified(wxFBEventHandlerEvent& event);
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-#endif // RAD_LUAPANEL_LUAPANEL_H
+#endif  // RAD_LUAPANEL_LUAPANEL_H

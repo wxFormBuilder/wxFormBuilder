@@ -21,6 +21,7 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef UITILS_WXFBEXCEPTION_H
 #define UITILS_WXFBEXCEPTION_H
 
@@ -32,34 +33,28 @@ Exception class for wxFormBuilder
 class wxFBException
 {
 public:
-	explicit wxFBException( const wxString& what )
-	:
-	m_what(what)
-	{}
+    explicit wxFBException(const wxString& what) : m_what(what) {}
 
-	virtual ~wxFBException() = default;
+    virtual ~wxFBException() = default;
 
-	virtual const wxChar* what() const throw()
-	{
-		return m_what.c_str();
-	}
+    virtual const wxChar* what() const throw() { return m_what.c_str(); }
 
 private:
-   wxString m_what;
+    wxString m_what;
 };
 
 /**
 This allows you to stream your exceptions in.
 It will take care of the conversion	and throwing the exception.
 */
-#define THROW_WXFBEX( message )																								\
-	{																														\
-	wxString hopefullyThisNameWontConflictWithOtherVariables;																\
-	wxString hopefullyUniqueFile(__FILE__, wxConvUTF8);																		\
-	hopefullyUniqueFile = hopefullyUniqueFile.substr(hopefullyUniqueFile.find_last_of(wxT("\\/")) + 1);						\
-	hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << hopefullyUniqueFile << wxT("@");				\
-	hopefullyThisNameWontConflictWithOtherVariables << wxString::Format( wxT("%i"), __LINE__ ) << wxT(">");					\
-	throw wxFBException( hopefullyThisNameWontConflictWithOtherVariables );													\
-	}
+#define THROW_WXFBEX(message) \
+    { \
+        wxString hopefullyThisNameWontConflictWithOtherVariables; \
+        wxString hopefullyUniqueFile(__FILE__, wxConvUTF8); \
+        hopefullyUniqueFile = hopefullyUniqueFile.substr(hopefullyUniqueFile.find_last_of(wxT("\\/")) + 1); \
+        hopefullyThisNameWontConflictWithOtherVariables << message << wxT(" <") << hopefullyUniqueFile << wxT("@"); \
+        hopefullyThisNameWontConflictWithOtherVariables << wxString::Format(wxT("%i"), __LINE__) << wxT(">"); \
+        throw wxFBException(hopefullyThisNameWontConflictWithOtherVariables); \
+    }
 
-#endif // UITILS_WXFBEXCEPTION_H
+#endif  // UITILS_WXFBEXCEPTION_H

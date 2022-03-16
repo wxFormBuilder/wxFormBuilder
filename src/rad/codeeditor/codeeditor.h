@@ -28,24 +28,25 @@
 
 #include <wx/panel.h>
 
+
+class wxFindDialogEvent;
 class wxStyledTextCtrl;
 class wxStyledTextEvent;
 
-class wxFindDialogEvent;
 
 class CodeEditor : public wxPanel
 {
 private:
     wxStyledTextCtrl* m_code;
-    void OnMarginClick( wxStyledTextEvent& event );
-	DECLARE_EVENT_TABLE()
+    void OnMarginClick(wxStyledTextEvent& event);
+    DECLARE_EVENT_TABLE()
 
 public:
-	CodeEditor( wxWindow *parent, int id );
+    CodeEditor(wxWindow* parent, int id);
 
     wxStyledTextCtrl* GetTextCtrl();
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 };
 
-#endif // RAD_CODEEDITOR_CODEEDITOR_H
+#endif  // RAD_CODEEDITOR_CODEEDITOR_H

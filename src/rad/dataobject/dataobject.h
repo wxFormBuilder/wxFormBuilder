@@ -21,28 +21,32 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+
 #ifndef RAD_DATAOBJECT_DATAOBJECT_H
 #define RAD_DATAOBJECT_DATAOBJECT_H
 
+#include <wx/dnd.h>
+
 #include "utils/wxfbdefs.h"
 
-#include <wx/dnd.h>
 
 #define wxFBDataObjectFormat wxDataFormat(wxT("wxFormBuilderDataFormat"))
 
-class wxFBDataObject : public wxDataObject {
+
+class wxFBDataObject : public wxDataObject
+{
 public:
-	wxFBDataObject(PObjectBase obj = PObjectBase());
-	void GetAllFormats(wxDataFormat* formats, Direction dir = Get) const override;
-	bool GetDataHere(const wxDataFormat& format, void* buf) const override;
-	size_t GetDataSize(const wxDataFormat& format) const override;
-	size_t GetFormatCount(Direction dir = Get) const override;
-	wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
-	bool SetData(const wxDataFormat& format, size_t len, const void* buf) override;
-	PObjectBase GetObj();
+    wxFBDataObject(PObjectBase obj = PObjectBase());
+    void GetAllFormats(wxDataFormat* formats, Direction dir = Get) const override;
+    bool GetDataHere(const wxDataFormat& format, void* buf) const override;
+    size_t GetDataSize(const wxDataFormat& format) const override;
+    size_t GetFormatCount(Direction dir = Get) const override;
+    wxDataFormat GetPreferredFormat(Direction dir = Get) const override;
+    bool SetData(const wxDataFormat& format, size_t len, const void* buf) override;
+    PObjectBase GetObj();
 
 private:
-	std::string m_data;
+    std::string m_data;
 };
 
-#endif // RAD_DATAOBJECT_DATAOBJECT_H
+#endif  // RAD_DATAOBJECT_DATAOBJECT_H

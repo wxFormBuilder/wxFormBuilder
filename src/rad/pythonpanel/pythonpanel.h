@@ -35,46 +35,45 @@
 #ifndef RAD_PYTHONPANEL_PYTHONPANEL_H
 #define RAD_PYTHONPANEL_PYTHONPANEL_H
 
-#include "utils/wxfbdefs.h"
-
 #include <wx/panel.h>
 
-class CodeEditor;
+#include "utils/wxfbdefs.h"
 
+
+class CodeEditor;
+class wxFBEvent;
+class wxFBEventHandlerEvent;
+class wxFBObjectEvent;
+class wxFBPropertyEvent;
+class wxFindDialogEvent;
 class wxStyledTextCtrl;
 
-class wxFindDialogEvent;
-
-class wxFBEvent;
-class wxFBPropertyEvent;
-class wxFBObjectEvent;
-class wxFBEventHandlerEvent;
 
 class PythonPanel : public wxPanel
 {
 private:
-	CodeEditor* m_pythonPanel;
-	PTCCodeWriter m_pythonCW;
+    CodeEditor* m_pythonPanel;
+    PTCCodeWriter m_pythonCW;
 
-    void InitStyledTextCtrl( wxStyledTextCtrl* stc );
+    void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
 public:
-	PythonPanel( wxWindow *parent, int id );
-	~PythonPanel() override;
-	PythonPanel(const PythonPanel&) = delete;
-	PythonPanel& operator=(const PythonPanel&) = delete;
-	PythonPanel(PythonPanel&&) = delete;
-	PythonPanel& operator=(PythonPanel&&) = delete;
+    PythonPanel(wxWindow* parent, int id);
+    ~PythonPanel() override;
+    PythonPanel(const PythonPanel&) = delete;
+    PythonPanel& operator=(const PythonPanel&) = delete;
+    PythonPanel(PythonPanel&&) = delete;
+    PythonPanel& operator=(PythonPanel&&) = delete;
 
-	void OnPropertyModified( wxFBPropertyEvent& event );
-	void OnProjectRefresh( wxFBEvent& event );
-	void OnCodeGeneration( wxFBEvent& event );
-	void OnObjectChange( wxFBObjectEvent& event );
-	void OnEventHandlerModified( wxFBEventHandlerEvent& event );
+    void OnPropertyModified(wxFBPropertyEvent& event);
+    void OnProjectRefresh(wxFBEvent& event);
+    void OnCodeGeneration(wxFBEvent& event);
+    void OnObjectChange(wxFBObjectEvent& event);
+    void OnEventHandlerModified(wxFBEventHandlerEvent& event);
 
-	void OnFind( wxFindDialogEvent& event );
+    void OnFind(wxFindDialogEvent& event);
 
-	DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
 
-#endif // RAD_PYTHONPANEL_PYTHONPANEL_H
+#endif  // RAD_PYTHONPANEL_PYTHONPANEL_H

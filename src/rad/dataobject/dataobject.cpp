@@ -21,133 +21,128 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#include "dataobject.h"
 
-#include "model/objectbase.h"
-#include "utils/typeconv.h"
-#include "rad/appdata.h"
+#include "dataobject.h"
 
 #include <ticpp.h>
 
-wxFBDataObject::wxFBDataObject(PObjectBase obj) {
-	if (obj) {
-		// create xml representation of ObjectBase
-		ticpp::Element element;
-		obj->SerializeObject( &element );
+#include "model/objectbase.h"
+#include "rad/appdata.h"
+#include "utils/typeconv.h"
 
-		// add version info to xml data, just in case it is pasted into a different version of wxFB
-		element.SetAttribute( "fbp_version_major", AppData()->m_fbpVerMajor );
-		element.SetAttribute( "fbp_version_minor", AppData()->m_fbpVerMinor );
 
-		ticpp::Document doc;
-		doc.LinkEndChild( &element );
-		TiXmlPrinter printer;
-        printer.SetIndent( "\t" );
+wxFBDataObject::wxFBDataObject(PObjectBase obj)
+{
+    if (obj) {
+        // create xml representation of ObjectBase
+        ticpp::Element element;
+        obj->SerializeObject(&element);
 
-		printer.SetLineBreak("\n");
+        // add version info to xml data, just in case it is pasted into a different version of wxFB
+        element.SetAttribute("fbp_version_major", AppData()->m_fbpVerMajor);
+        element.SetAttribute("fbp_version_minor", AppData()->m_fbpVerMinor);
 
-        doc.Accept( &printer );
-		m_data = printer.Str();
-	}
+        ticpp::Document doc;
+        doc.LinkEndChild(&element);
+        TiXmlPrinter printer;
+        printer.SetIndent("\t");
+
+        printer.SetLineBreak("\n");
+
+        doc.Accept(&printer);
+        m_data = printer.Str();
+    }
 }
 
-void wxFBDataObject::GetAllFormats( wxDataFormat* formats, Direction dir ) const
+void wxFBDataObject::GetAllFormats(wxDataFormat* formats, Direction dir) const
 {
-	switch ( dir )
-	{
-		case Get:
-			formats[0] = wxFBDataObjectFormat;
-			formats[1] = wxDF_TEXT;
-			break;
-		case Set:
-			formats[0] = wxFBDataObjectFormat;
-			break;
-		default:
-			break;
-	}
+    switch (dir) {
+        case Get:
+            formats[0] = wxFBDataObjectFormat;
+            formats[1] = wxDF_TEXT;
+            break;
+        case Set:
+            formats[0] = wxFBDataObjectFormat;
+            break;
+        default:
+            break;
+    }
 }
 
-bool wxFBDataObject::GetDataHere( const wxDataFormat&, void* buf ) const
+bool wxFBDataObject::GetDataHere(const wxDataFormat&, void* buf) const
 {
-	if ( NULL == buf )
-	{
-		return false;
-	}
+    if (NULL == buf) {
+        return false;
+    }
 
-	memcpy( (char*)buf, m_data.c_str(), m_data.length() );
+    memcpy((char*)buf, m_data.c_str(), m_data.length());
 
-	return true;
+    return true;
 }
 
-size_t wxFBDataObject::GetDataSize( const wxDataFormat& /*format*/ ) const
+size_t wxFBDataObject::GetDataSize(const wxDataFormat& /*format*/) const
 {
-	return m_data.length();
+    return m_data.length();
 }
 
-size_t wxFBDataObject::GetFormatCount( Direction dir ) const
+size_t wxFBDataObject::GetFormatCount(Direction dir) const
 {
-	switch ( dir )
-	{
-		case Get:
-			return 2;
-		case Set:
-			return 1;
-		default:
-			return 0;
-	}
+    switch (dir) {
+        case Get:
+            return 2;
+        case Set:
+            return 1;
+        default:
+            return 0;
+    }
 }
 
-wxDataFormat wxFBDataObject::GetPreferredFormat( Direction /*dir*/ ) const
+wxDataFormat wxFBDataObject::GetPreferredFormat(Direction /*dir*/) const
 {
-	return wxFBDataObjectFormat;
+    return wxFBDataObjectFormat;
 }
 
-bool wxFBDataObject::SetData( const wxDataFormat& format, size_t len, const void *buf )
+bool wxFBDataObject::SetData(const wxDataFormat& format, size_t len, const void* buf)
 {
-	if ( format != wxFBDataObjectFormat )
-	{
-		return false;
-	}
+    if (format != wxFBDataObjectFormat) {
+        return false;
+    }
 
-	m_data.assign( reinterpret_cast< const char* >( buf ), len );
-	return true;
+    m_data.assign(reinterpret_cast<const char*>(buf), len);
+    return true;
 }
 
 PObjectBase wxFBDataObject::GetObj()
 {
-	if ( m_data.empty() )
-	{
-		return PObjectBase();
-	}
+    if (m_data.empty()) {
+        return PObjectBase();
+    }
 
-	// Read Object from xml
-	try
-	{
-		ticpp::Document doc;
-		doc.Parse( m_data, true, TIXML_ENCODING_UTF8 );
-		ticpp::Element* element = doc.FirstChildElement();
+    // Read Object from xml
+    try {
+        ticpp::Document doc;
+        doc.Parse(m_data, true, TIXML_ENCODING_UTF8);
+        ticpp::Element* element = doc.FirstChildElement();
 
 
-		int major, minor;
-		element->GetAttribute( "fbp_version_major", &major );
-		element->GetAttribute( "fbp_version_minor", &minor );
+        int major, minor;
+        element->GetAttribute("fbp_version_major", &major);
+        element->GetAttribute("fbp_version_minor", &minor);
 
-		if ( major > AppData()->m_fbpVerMajor || ( AppData()->m_fbpVerMajor == major && minor > AppData()->m_fbpVerMinor ) )
-		{
-			wxLogError( _("This object cannot be pasted because it is from a newer version of wxFormBuilder") );
-		}
+        if (
+          major > AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor > AppData()->m_fbpVerMinor)) {
+            wxLogError(_("This object cannot be pasted because it is from a newer version of wxFormBuilder"));
+        }
 
-		if ( major < AppData()->m_fbpVerMajor || ( AppData()->m_fbpVerMajor == major && minor < AppData()->m_fbpVerMinor ) )
-		{
-			AppData()->ConvertObject( element, major, minor );
-		}
+        if (
+          major < AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor < AppData()->m_fbpVerMinor)) {
+            AppData()->ConvertObject(element, major, minor);
+        }
 
-		PObjectDatabase db = AppData()->GetObjectDatabase();
-		return db->CreateObject( element );
-	}
-	catch( ticpp::Exception& ex )
-	{
-		wxLogError( _WXSTR( ex.m_details ) );
-		return PObjectBase();
-	}
+        PObjectDatabase db = AppData()->GetObjectDatabase();
+        return db->CreateObject(element);
+    } catch (ticpp::Exception& ex) {
+        wxLogError(_WXSTR(ex.m_details));
+        return PObjectBase();
+    }
 }

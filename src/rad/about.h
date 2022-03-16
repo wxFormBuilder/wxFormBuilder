@@ -26,25 +26,27 @@
 #ifndef RAD_ABOUT_H
 #define RAD_ABOUT_H
 
-#include <wx/statline.h>
 #include <wx/wx.h>
+#include <wx/statline.h>
 
-class AboutDialog : public wxDialog {
+
+class AboutDialog : public wxDialog
+{
 public:
-	AboutDialog(wxWindow* parent, int id = wxID_ANY);
-	void OnButtonEvent(wxCommandEvent&);
+    AboutDialog(wxWindow* parent, int id = wxID_ANY);
+    void OnButtonEvent(wxCommandEvent&);
 
 protected:
-	wxStaticText* m_staticText2;
-	wxStaticText* m_staticText3;
-	wxStaticText* m_staticText6;
-	wxStaticLine* window1;
-	wxPanel* m_panel1;
-	wxStaticText* m_staticText8;
-	wxStaticText* m_staticText9;
-	wxStaticText* m_staticText10;
-	wxStaticLine* window2;
-	wxButton* m_button1;
+    wxStaticText* m_staticText2;
+    wxStaticText* m_staticText3;
+    wxStaticText* m_staticText6;
+    wxStaticLine* window1;
+    wxPanel* m_panel1;
+    wxStaticText* m_staticText8;
+    wxStaticText* m_staticText9;
+    wxStaticText* m_staticText10;
+    wxStaticLine* window2;
+    wxButton* m_button1;
 };
 
-#endif // RAD_ABOUT_H
+#endif  // RAD_ABOUT_H

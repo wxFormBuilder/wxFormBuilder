@@ -28,16 +28,15 @@
 
 #include <wx/wx.h>
 
+
 class Title : public wxPanel
 {
- private:
-//  DECLARE_EVENT_TABLE()
- public:
-  Title(wxWindow *parent,const wxString &title=wxT("No title"));
+private:
+    //  DECLARE_EVENT_TABLE()
+public:
+    Title(wxWindow* parent, const wxString& title = wxT("No title"));
 
-  static wxWindow* CreateTitle (wxWindow *inner, const wxString &title);
+    static wxWindow* CreateTitle(wxWindow* inner, const wxString& title);
 };
 
-
-
-#endif // RAD_TITLE_H
+#endif  // RAD_TITLE_H

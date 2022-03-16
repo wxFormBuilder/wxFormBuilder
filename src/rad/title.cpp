@@ -25,34 +25,34 @@
 
 #include "title.h"
 
-Title::Title(wxWindow *parent,const wxString &title) : wxPanel(parent, wxID_ANY)
+
+Title::Title(wxWindow* parent, const wxString& title) : wxPanel(parent, wxID_ANY)
 {
-  wxBoxSizer* sizer = new wxBoxSizer( wxVERTICAL );
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
-  wxStaticText *text = new wxStaticText(this, wxID_ANY,title);//,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
-  SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
-  text->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
-  text->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_CAPTIONTEXT ) );
-	text->SetFont(
-	  wxFont(8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxString()));
+    wxStaticText* text = new wxStaticText(this, wxID_ANY, title);  //,wxDefaultPosition,wxDefaultSize,wxSIMPLE_BORDER);
+    SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
+    text->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_ACTIVECAPTION));
+    text->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+    text->SetFont(wxFont(8, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxString()));
 
-  sizer->Add(text,0,wxALL | wxEXPAND,2);
-  SetSizer(sizer);
-  Fit();
+    sizer->Add(text, 0, wxALL | wxEXPAND, 2);
+    SetSizer(sizer);
+    Fit();
 }
 
-wxWindow * Title::CreateTitle (wxWindow *inner, const wxString &title)
+wxWindow* Title::CreateTitle(wxWindow* inner, const wxString& title)
 {
-  wxWindow *parent = inner->GetParent();
+    wxWindow* parent = inner->GetParent();
 
-  wxPanel *container = new wxPanel(parent, wxID_ANY);
-  Title *titleWin = new Title(container,title);
-  inner->Reparent(container);
+    wxPanel* container = new wxPanel(parent, wxID_ANY);
+    Title* titleWin = new Title(container, title);
+    inner->Reparent(container);
 
-  wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-  sizer->Add(titleWin,0,wxEXPAND);
-  sizer->Add(inner,1,wxEXPAND);
-  container->SetSizer(sizer);
+    wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->Add(titleWin, 0, wxEXPAND);
+    sizer->Add(inner, 1, wxEXPAND);
+    container->SetSizer(sizer);
 
-  return container;
+    return container;
 }
