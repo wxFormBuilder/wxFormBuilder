@@ -1,16 +1,50 @@
-BasedOnStyle: LLVM
-IndentWidth: 4
-TabWidth: 4
+---
+BasedOnStyle: Google
 AccessModifierOffset: -4
-UseTab: ForIndentation
-AllowShortIfStatementsOnASingleLine: true
-ColumnLimit: 100
-ConstructorInitializerIndentWidth: 0
-AllowShortFunctionsOnASingleLine: None
-PointerAlignment: Left
-SortIncludes: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: false
-SpaceBeforeParens: ControlStatements
-SpacesInContainerLiterals: true
-Cpp11BracedListStyle: false
-IndentCaseLabels: true
+AlignAfterOpenBracket: AlwaysBreak
+AlignEscapedNewlines: DontAlign
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: Never
+BreakBeforeBraces: Linux
+BreakInheritanceList: AfterColon
+BreakConstructorInitializers: AfterColon
+ColumnLimit: 120
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 2
+DerivePointerAlignment: false
+IncludeBlocks: Regroup
+IncludeCategories:
+  # Project SDK
+  - Regex:           '^<(component\.h|fontcontainer\.h|plugin\.h|xrcconv\.h|forms/wizard\.h|default\.xpm)>'
+    Priority:        5
+  # Libraries
+  - Regex:           '^<wx/wx.h>'
+    Priority:        4
+    SortPriority:    1
+  - Regex:           '^<(boost|md5|stack_trace|wx)/'
+    Priority:        4
+  - Regex:           '^<ticpp'
+    Priority:        4
+  # C standard library headers
+  - Regex: >-
+      '<('
+      'cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|'
+      'cstdalign|cstdarg|cstdatomic|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstdnoreturn|'
+      'cstring|ctgmath|cthreads|ctime|cuchar|cwchar|cwctype'
+      ')>'
+    Priority:        2
+  # C system headers
+  - Regex:           '^<.*\.h>'
+    Priority:        1
+  # C++ standard library headers
+  - Regex:           '^<[[:alnum:]_]+>'
+    Priority:        3
+  # Project headers
+  - Regex:           '^".*\.h.?.?"'
+    Priority:        6
+IndentPPDirectives: BeforeHash
+IndentWidth: 4
+KeepEmptyLinesAtTheStartOfBlocks: true
+MaxEmptyLinesToKeep: 2
+...
