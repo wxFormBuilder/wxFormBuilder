@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __COMMAND_PROC__
-#define __COMMAND_PROC__
+#ifndef RAD_CMDPROC_H
+#define RAD_CMDPROC_H
 
 #include <stack>
 #include <memory>
@@ -81,4 +81,4 @@ class Command
   void Restore();
 };
 
-#endif //__COMMAND_PROC__
+#endif // RAD_CMDPROC_H

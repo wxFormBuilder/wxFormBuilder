@@ -22,9 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#ifndef __OBJ_DATABASE__
-#define __OBJ_DATABASE__
+#ifndef MODEL_DATABASE_H
+#define MODEL_DATABASE_H
 
 #include "utils/wxfbdefs.h"
 #include "model/types.h"
@@ -281,4 +280,4 @@ class ObjectDatabase
 
 
 
-#endif //__OBJ_DATABASE__
+#endif // MODEL_DATABASE_H

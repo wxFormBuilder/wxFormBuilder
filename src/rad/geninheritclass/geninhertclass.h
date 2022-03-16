@@ -22,8 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __GENINHERTCLASS_IMP__
-#define __GENINHERTCLASS_IMP__
+#ifndef RAD_GENINHERITCLASS_GENINHERTCLASS_H
+#define RAD_GENINHERITCLASS_GENINHERTCLASS_H
 
 /**
 @file
@@ -82,4 +82,4 @@ private:
 	void OnFileNameChange(wxCommandEvent& event) override;
 };
 
-#endif //__GENINHERTCLASS_IMP__
+#endif // RAD_GENINHERITCLASS_GENINHERTCLASS_H

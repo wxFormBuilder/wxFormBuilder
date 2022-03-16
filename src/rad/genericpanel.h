@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __GENERIC_PANEL__
-#define __GENERIC_PANEL__
+#ifndef RAD_GENERICPANEL_H
+#define RAD_GENERICPANEL_H
 
 #include <wx/wx.h>
 
@@ -38,4 +38,4 @@ class GenericWindow : public wxPanel
 };
 
 
-#endif //__GENERIC_PANEL__
+#endif // RAD_GENERICPANEL_H

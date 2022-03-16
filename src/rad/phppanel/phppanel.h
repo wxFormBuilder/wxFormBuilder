@@ -1,6 +1,3 @@
-#ifndef HEADER_E9827DF45C5479A
-#define HEADER_E9827DF45C5479A
-
 ///////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
@@ -35,8 +32,8 @@
 @note
 */
 
-#ifndef __PHP_PANEL__
-#define __PHP_PANEL__
+#ifndef RAD_PHPPANEL_PHPPANEL_H
+#define RAD_PHPPANEL_PHPPANEL_H
 
 #include "utils/wxfbdefs.h"
 
@@ -76,6 +73,4 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-#endif //__PHP_PANEL__
-
-#endif // header guard
+#endif // RAD_PHPPANEL_PHPPANEL_H

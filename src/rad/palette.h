@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __PALETTE__
-#define __PALETTE__
+#ifndef RAD_PALETTE_H
+#define RAD_PALETTE_H
 
 #include "model/database.h"
 
@@ -98,4 +98,4 @@ class PaletteButtonEventHandler : public wxEvtHandler
   void OnButtonClick(wxCommandEvent &event);
 };
 */
-#endif //__PALETTE__
+#endif // RAD_PALETTE_H

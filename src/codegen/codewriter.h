@@ -22,9 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#ifndef __CODE_WRITER__
-#define __CODE_WRITER__
+#ifndef CODEGEN_CODEWRITER_H
+#define CODEGEN_CODEWRITER_H
 
 #include <wx/string.h>
 
@@ -158,4 +157,4 @@ public:
 	void Clear() final;
 };
 
-#endif //__CODE_WRITER__
+#endif // CODEGEN_CODEWRITER_H

@@ -21,7 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef RAD_DATAOBJECT_DATAOBJECT_H
+#define RAD_DATAOBJECT_DATAOBJECT_H
 
 #include "utils/wxfbdefs.h"
 
@@ -43,3 +44,5 @@ public:
 private:
 	std::string m_data;
 };
+
+#endif // RAD_DATAOBJECT_DATAOBJECT_H

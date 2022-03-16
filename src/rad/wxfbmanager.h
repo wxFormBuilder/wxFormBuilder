@@ -21,8 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef WXFBMANAGER
-#define WXFBMANAGER
+#ifndef RAD_WXFBMANAGER_H
+#define RAD_WXFBMANAGER_H
 
 #include "utils/wxfbdefs.h"
 
@@ -54,4 +54,4 @@ public:
 	bool SelectObject(wxObject* wxobject) override;
 };
 
-#endif //WXFBMANAGER
+#endif // RAD_WXFBMANAGER_H

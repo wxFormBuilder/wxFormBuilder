@@ -32,8 +32,8 @@
 @note
 */
 
-#ifndef __PYTHON_PANEL__
-#define __PYTHON_PANEL__
+#ifndef RAD_PYTHONPANEL_PYTHONPANEL_H
+#define RAD_PYTHONPANEL_PYTHONPANEL_H
 
 #include "utils/wxfbdefs.h"
 
@@ -77,4 +77,4 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-#endif //__PYTHON_PANEL__
+#endif // RAD_PYTHONPANEL_PYTHONPANEL_H

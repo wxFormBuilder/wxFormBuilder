@@ -22,7 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef UTILS_STRINGUTILS_H
+#define UTILS_STRINGUTILS_H
 
 #include <wx/string.h>
 
@@ -53,3 +54,5 @@ namespace XMLUtils
 	void ConvertAndAddDeclaration( const wxString& path, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
 	void ConvertAndChangeDeclaration( const wxString& path, const wxString& version, const wxString& standalone, wxFontEncoding encoding = wxFONTENCODING_SYSTEM, bool backup = true );
 }
+
+#endif // UTILS_STRINGUTILS_H

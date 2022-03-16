@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __WXFBEVENT__
-#define __WXFBEVENT__
+#ifndef RAD_WXFBEVENT_H
+#define RAD_WXFBEVENT_H
 
 #include "utils/wxfbdefs.h"
 
@@ -135,4 +135,4 @@ wxDECLARE_EVENT(wxEVT_FB_EVENT_HANDLER_MODIFIED, wxFBEventHandlerEvent);
 #define EVT_FB_CODE_GENERATION(fn) \
     wx__DECLARE_EVT0(wxEVT_FB_CODE_GENERATION,wxFBEventHandler(fn))
 
-#endif // __WXFBEVENT__
+#endif // RAD_WXFBEVENT_H

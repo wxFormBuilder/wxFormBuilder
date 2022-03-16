@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRC_FILTER__
-#define __XRC_FILTER__
+#ifndef MODEL_XRCFILTER_H
+#define MODEL_XRCFILTER_H
 
 #include "model/database.h"
 
@@ -50,4 +50,4 @@ class XrcLoader
   PObjectBase GetProject(ticpp::Document* xrcDoc);
 };
 
-#endif //__XRC_FILTER__
+#endif // MODEL_XRCFILTER_H

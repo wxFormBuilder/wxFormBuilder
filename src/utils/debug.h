@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __DEBUG_H__
-#define __DEBUG_H__
+#ifndef UTILS_DEBUG_H
+#define UTILS_DEBUG_H
 
 #ifdef __WXFB_DEBUG__
 #include <wx/string.h>
@@ -52,4 +52,4 @@
 
 #endif
 
-#endif //__DEBUG_H__
+#endif // UTILS_DEBUG_H

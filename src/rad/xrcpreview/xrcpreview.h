@@ -21,7 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#pragma once
+#ifndef RAD_XRCPREVIEW_XRCPREVIEW_H
+#define RAD_XRCPREVIEW_XRCPREVIEW_H
 
 #include "utils/wxfbdefs.h"
 
@@ -34,3 +35,5 @@ private:
 public:
 	static void Show( PObjectBase form, const wxString& projectpath );
 };
+
+#endif // RAD_XRCPREVIEW_XRCPREVIEW_H

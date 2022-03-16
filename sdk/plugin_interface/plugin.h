@@ -22,8 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#pragma once
+#ifndef SDK_PLUGIN_INTERFACE_PLUGIN_H
+#define SDK_PLUGIN_INTERFACE_PLUGIN_H
 
 #include "component.h"
 
@@ -240,3 +240,5 @@ public:
 		return m_type;
 	}
 };
+
+#endif // SDK_PLUGIN_INTERFACE_PLUGIN_H

@@ -21,8 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef WXFBIPC_H
-#define WXFBIPC_H
+#ifndef UTILS_WXFBIPC_H
+#define UTILS_WXFBIPC_H
 
 #include <wx/ipc.h>
 #include <memory>
@@ -80,4 +80,4 @@ public:
 	wxConnectionBase* OnMakeConnection() override;
 };
 
-#endif //WXFBIPC_H
+#endif // UTILS_WXFBIPC_H

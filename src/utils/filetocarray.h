@@ -1,5 +1,5 @@
-#ifndef FILE_TO_C_ARRAY_H
-#define FILE_TO_C_ARRAY_H
+#ifndef UTILS_FILETOCARRAY_H
+#define UTILS_FILETOCARRAY_H
 
 #include <wx/string.h>
 
@@ -9,4 +9,4 @@ public:
 	static wxString Generate( const wxString& sourcepath );
 };
 
-#endif // FILE_TO_C_ARRAY_H
+#endif // UTILS_FILETOCARRAY_H

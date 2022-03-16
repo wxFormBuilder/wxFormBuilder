@@ -1,4 +1,5 @@
-#pragma once
+#ifndef CODEGEN_CODEPARSER_H
+#define CODEGEN_CODEPARSER_H
 
 #include "utils/debug.h"
 
@@ -153,3 +154,5 @@ public:
 };
 
 /**class PCodeParser : public CodeParser */
+
+#endif // CODEGEN_CODEPARSER_H

@@ -21,8 +21,8 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef BOOKUTILS
-#define BOOKUTILS
+#ifndef PLUGINS_CONTAINERS_BOOKUTILS_H
+#define PLUGINS_CONTAINERS_BOOKUTILS_H
 
 #include <component.h>
 #include <default.xpm>
@@ -177,4 +177,4 @@ namespace BookUtils
 	}
 }
 
-#endif //BOOKUTILS
+#endif // PLUGINS_CONTAINERS_BOOKUTILS_H

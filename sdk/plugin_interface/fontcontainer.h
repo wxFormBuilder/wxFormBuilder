@@ -21,8 +21,8 @@
 //		Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __WXFONTCONTAINER__
-#define __WXFONTCONTAINER__
+#ifndef SDK_PLUGIN_INTERFACE_FONTCONTAINER_H
+#define SDK_PLUGIN_INTERFACE_FONTCONTAINER_H
 
 #include <wx/font.h>
 
@@ -104,4 +104,4 @@ public:
 	}
 };
 
-#endif //__WXFONTCONTAINER__
+#endif // SDK_PLUGIN_INTERFACE_FONTCONTAINER_H

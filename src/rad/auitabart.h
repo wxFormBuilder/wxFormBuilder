@@ -1,5 +1,5 @@
-#ifndef __AUITABART_H__
-#define __AUITABART_H__
+#ifndef RAD_AUITABART_H
+#define RAD_AUITABART_H
 
 #include <wx/aui/auibook.h>
 
@@ -14,4 +14,4 @@ public:
 	}
 };
 
-#endif // __AUITABART_H__
+#endif // RAD_AUITABART_H

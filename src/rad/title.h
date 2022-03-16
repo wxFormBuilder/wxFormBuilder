@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TITLE__
-#define __TITLE__
+#ifndef RAD_TITLE_H
+#define RAD_TITLE_H
 
 #include <wx/wx.h>
 
@@ -40,4 +40,4 @@ class Title : public wxPanel
 
 
 
-#endif //__TITLE__
+#endif // RAD_TITLE_H

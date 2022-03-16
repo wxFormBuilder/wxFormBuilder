@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRC_PANEL__
-#define __XRC_PANEL__
+#ifndef RAD_XRCPANEL_XRCPANEL_H
+#define RAD_XRCPANEL_XRCPANEL_H
 
 #include "utils/wxfbdefs.h"
 
@@ -60,4 +60,4 @@ public:
 };
 
 
-#endif //__XRC_PANEL__
+#endif // RAD_XRCPANEL_XRCPANEL_H

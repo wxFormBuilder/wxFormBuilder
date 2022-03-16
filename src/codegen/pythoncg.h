@@ -34,8 +34,8 @@ The implementation of the generation of relative paths is a little hacky, and no
 The value of all properties that are file or a directory paths must be absolute, otherwise the code generation will not work.
 */
 
-#ifndef _PYTHON_CODE_GEN_
-#define _PYTHON_CODE_GEN_
+#ifndef CODEGEN_PYTHONCG_H
+#define CODEGEN_PYTHONCG_H
 
 // wxFormBuilder flags (fbfXXX)
 #define fbfSILENT true
@@ -256,4 +256,4 @@ public:
 };
 
 
-#endif //_PYTHON_CODE_GEN_
+#endif // CODEGEN_PYTHONCG_H

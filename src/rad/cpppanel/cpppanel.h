@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __CPP_PANEL__
-#define __CPP_PANEL__
+#ifndef RAD_CPPPANEL_CPPPANEL_H
+#define RAD_CPPPANEL_CPPPANEL_H
 
 #include "utils/wxfbdefs.h"
 
@@ -69,4 +69,4 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-#endif //__CPP_PANEL__
+#endif // RAD_CPPPANEL_CPPPANEL_H

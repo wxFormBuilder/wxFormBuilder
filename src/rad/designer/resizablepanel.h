@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef RESIZABLEPANEL_H
-#define RESIZABLEPANEL_H
+#ifndef RAD_DESIGNER_RESIZABLEPANEL_H
+#define RAD_DESIGNER_RESIZABLEPANEL_H
 
 #include <wx/wx.h>
 
@@ -72,4 +72,4 @@ END_DECLARE_EVENT_TYPES()
         (wxObject *) NULL \
     ),
 
-#endif
+#endif // RAD_DESIGNER_RESIZABLEPANEL_H

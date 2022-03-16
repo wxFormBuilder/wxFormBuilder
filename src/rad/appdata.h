@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __APP_DATA__
-#define __APP_DATA__
+#ifndef RAD_APPDATA_H
+#define RAD_APPDATA_H
 
 #include "model/database.h"
 #include "rad/cmdproc.h"
@@ -404,4 +404,4 @@ class ApplicationData
 		bool VerifySingleInstance( const wxString& file, bool switchTo = true );
 };
 
-#endif //__APP_DATA__
+#endif // RAD_APPDATA_H

@@ -29,8 +29,8 @@
 @author Juan Antonio Ortega  - jortegalalmolda@gmail.com
 */
 
-#ifndef __CODEGEN__
-#define __CODEGEN__
+#ifndef CODEGEN_CODEGEN_H
+#define CODEGEN_CODEGEN_H
 
 #include "model/types.h"
 #include "utils/wxfbdefs.h"
@@ -363,4 +363,4 @@ public:
 };
 
 
-#endif //__CODEGEN__
+#endif // CODEGEN_CODEGEN_H

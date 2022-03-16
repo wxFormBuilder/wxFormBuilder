@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __OBJECT_TREE__
-#define __OBJECT_TREE__
+#ifndef RAD_OBJECTTREE_OBJECTTREE_H
+#define RAD_OBJECTTREE_OBJECTTREE_H
 
 #include "utils/wxfbdefs.h"
 #include "rad/customkeys.h"
@@ -125,4 +125,4 @@ class ItemPopupMenu : public wxMenu
   void OnMenuEvent (wxCommandEvent & event);
 };
 
-#endif //__OBJECT_TREE__
+#endif // RAD_OBJECTTREE_OBJECTTREE_H

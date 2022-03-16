@@ -9,7 +9,8 @@
 * Id: annoyingdialog.cpp 4204 2007-07-02 12:30:47Z mandrav
 * HeadURL: http://svn.berlios.de/svnroot/repos/codeblocks/trunk/src/sdk/annoyingdialog.cpp
 */
-#pragma once
+#ifndef UTILS_ANNOYINGDIALOG_H
+#define UTILS_ANNOYINGDIALOG_H
 
 #include <wx/dialog.h>
 #include <wx/artprov.h>
@@ -48,3 +49,5 @@ class AnnoyingDialog : public wxDialog
         int m_defRet;
         DECLARE_EVENT_TABLE()
 };
+
+#endif // UTILS_ANNOYINGDIALOG_H

@@ -22,8 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __MAINGUI__
-#define __MAINGUI__
+#ifndef MAINGUI_H
+#define MAINGUI_H
 
 #include <wx/app.h>
 
@@ -50,4 +50,4 @@ public:
 
 DECLARE_APP(MyApp)
 
-#endif //__MAINGUI__
+#endif // MAINGUI_H

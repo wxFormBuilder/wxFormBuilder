@@ -23,8 +23,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __MENUEDITOR__
-#define __MENUEDITOR__
+#ifndef RAD_MENUEDITOR_H
+#define RAD_MENUEDITOR_H
+
 #include "model/database.h"
 
 #include <wx/listctrl.h>
@@ -135,4 +136,4 @@ class MenuEditor : public wxDialog
     void OnItemActivated(wxListEvent& e);
 };
 
-#endif //__menueditor__
+#endif // RAD_MENUEDITOR_H

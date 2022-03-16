@@ -22,9 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#pragma once
-
+#ifndef SDK_PLUGIN_INTERFACE_COMPONENT_H
+#define SDK_PLUGIN_INTERFACE_COMPONENT_H
 
 #include <vector>
 #include <utility>
@@ -265,3 +264,5 @@ extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary( IManager* manager ) 
 
 #define ABSTRACT_COMPONENT( name, class ) \
   _REGISTER_COMPONENT( name, class, COMPONENT_TYPE_ABSTRACT )
+
+#endif // SDK_PLUGIN_INTERFACE_COMPONENT_H

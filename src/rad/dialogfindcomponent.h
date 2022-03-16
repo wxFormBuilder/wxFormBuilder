@@ -29,8 +29,8 @@
 @note
 */
 
-#ifndef DIALOGFINDCOMPONENT_H
-#define DIALOGFINDCOMPONENT_H
+#ifndef RAD_DIALOGFINDCOMPONENT_H
+#define RAD_DIALOGFINDCOMPONENT_H
 
 #include <vector>
 
@@ -76,4 +76,4 @@ private:
     wxString m_chosenComponent;
 };
 
-#endif // DIALOGFINDCOMPONENT_H
+#endif // RAD_DIALOGFINDCOMPONENT_H

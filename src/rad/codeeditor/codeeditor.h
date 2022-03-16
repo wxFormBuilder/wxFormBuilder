@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __CODE_EDITOR__
-#define __CODE_EDITOR__
+#ifndef RAD_CODEEDITOR_CODEEDITOR_H
+#define RAD_CODEEDITOR_CODEEDITOR_H
 
 #include <wx/panel.h>
 
@@ -48,4 +48,4 @@ public:
 	void OnFind( wxFindDialogEvent& event );
 };
 
-#endif //__CODE_EDITOR__
+#endif // RAD_CODEEDITOR_CODEEDITOR_H

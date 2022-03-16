@@ -26,8 +26,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __OBJ_INSPECT__
-#define __OBJ_INSPECT__
+#ifndef RAD_INSPECTOR_OBJINSPECT_H
+#define RAD_INSPECTOR_OBJINSPECT_H
 
 #include "model/objectbase.h"
 
@@ -168,4 +168,4 @@ public:
     DECLARE_EVENT_TABLE()
 };
 
-#endif //__OBJ_INSPECT__
+#endif // RAD_INSPECTOR_OBJINSPECT_H

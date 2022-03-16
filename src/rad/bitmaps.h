@@ -23,7 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef RAD_BITMAPS_H
+#define RAD_BITMAPS_H
 
 const int ICON_SIZE = 22;
 const int TOOL_SIZE = 22;
@@ -36,3 +37,5 @@ public:
 	static wxBitmap GetBitmap(wxString iconname, unsigned int size = 0);
 	static void LoadBitmaps(wxString filepath, wxString iconpath);
 };
+
+#endif // RAD_BITMAPS_H

@@ -30,8 +30,8 @@
 // En el segundo caso sólo devolverá el número de propiedades definidas
 // para esa clase.
 
-#ifndef __OBJ__
-#define __OBJ__
+#ifndef MODEL_OBJECTBASE_H
+#define MODEL_OBJECTBASE_H
 
 #include "utils/wxfbdefs.h"
 #include "model/types.h"
@@ -699,4 +699,4 @@ private:
 	// designer
 };
 
-#endif
+#endif // MODEL_OBJECTBASE_H

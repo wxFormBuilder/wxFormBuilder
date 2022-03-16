@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __VISUAL_OBJS__
-#define __VISUAL_OBJS__
+#ifndef RAD_DESIGNER_VISUALOBJ_H
+#define RAD_DESIGNER_VISUALOBJ_H
 
 #include "utils/wxfbdefs.h"
 
@@ -56,4 +56,4 @@ class VObjEvtHandler : public wxEvtHandler
 ///////////////////////////////////////////////////////////////////////////////
 
 
-#endif //__VISUAL_OBJS__
+#endif // RAD_DESIGNER_VISUALOBJ_H

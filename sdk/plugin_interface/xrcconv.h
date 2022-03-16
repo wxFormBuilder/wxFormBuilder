@@ -22,6 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef SDK_PLUGIN_INTERFACE_XRCCONV_H
+#define SDK_PLUGIN_INTERFACE_XRCCONV_H
 
 #include "component.h"
 
@@ -146,3 +148,5 @@ class XrcToXfbFilter
 
   ticpp::Element *GetXrcProperty(const wxString &name);
 };
+
+#endif // SDK_PLUGIN_INTERFACE_XRCCONV_H

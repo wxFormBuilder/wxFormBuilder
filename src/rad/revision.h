@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RAD_REVISION_H
+#define RAD_REVISION_H
 
 #include <string>
 
@@ -17,3 +18,5 @@ bool isDirty();
 std::string getPostfixRevision(const char* version);
 
 std::string getReleaseRevision(const char* version);
+
+#endif // RAD_REVISION_H

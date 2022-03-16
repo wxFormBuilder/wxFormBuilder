@@ -21,6 +21,9 @@
 //   Ryan Mulder - rjmyst3@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
+#ifndef UTILS_WXLOGSTRING_H
+#define UTILS_WXLOGSTRING_H
+
 #include <wx/log.h>
 
 class wxLogString : public wxLog {
@@ -45,3 +48,5 @@ public:
 private:
 	wxString m_str;
 };
+
+#endif // UTILS_WXLOGSTRING_H

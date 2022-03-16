@@ -23,7 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef RAD_MAINFRAME_H
+#define RAD_MAINFRAME_H
 
 #include <wx/splitter.h>
 #include <wx/wx.h>
@@ -181,3 +182,5 @@ class MainFrame : public wxFrame
 
   bool SaveWarning();
   };
+
+#endif // RAD_MAINFRAME_H

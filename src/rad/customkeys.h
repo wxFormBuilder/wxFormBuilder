@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __KEYS_HANDLER__
-#define __KEYS_HANDLER__
+#ifndef RAD_CUSTOMKEYS_H
+#define RAD_CUSTOMKEYS_H
 
 #include <wx/wx.h>
 
@@ -40,4 +40,4 @@ class CustomKeysEvtHandler : public wxEvtHandler
   void OnKeyPress(wxKeyEvent &event);
 };
 
-#endif //__KEYS_HANDLER__
+#endif // RAD_CUSTOMKEYS_H

@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __VISUAL_EDITOR__
-#define __VISUAL_EDITOR__
+#ifndef RAD_DESIGNER_VISUALEDITOR_H
+#define RAD_DESIGNER_VISUALEDITOR_H
 
 #include "rad/designer/innerframe.h"
 #include "rad/designer/visualobj.h"
@@ -161,4 +161,4 @@ class VisualEditor : public wxScrolledWindow
   void OnProjectRefresh ( wxFBEvent &event);
 };
 
-#endif //__VISUAL_EDITOR__
+#endif // RAD_DESIGNER_VISUALEDITOR_H

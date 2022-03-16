@@ -23,7 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#ifndef RAD_ABOUT_H
+#define RAD_ABOUT_H
 
 #include <wx/statline.h>
 #include <wx/wx.h>
@@ -45,3 +46,5 @@ protected:
 	wxStaticLine* window2;
 	wxButton* m_button1;
 };
+
+#endif // RAD_ABOUT_H

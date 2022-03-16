@@ -22,8 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-
-#pragma once
+#ifndef MODEL_TYPES_H
+#define MODEL_TYPES_H
 
 #include <map>
 #include <memory>
@@ -216,3 +216,5 @@ public:
 
 	wxString ToString(bool skip_zero_second = false);
 };
+
+#endif // MODEL_TYPES_H

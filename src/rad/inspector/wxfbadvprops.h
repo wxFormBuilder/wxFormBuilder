@@ -26,8 +26,8 @@
 //   This code was part of previous objtree.cpp version.
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __WXFBADVPROPS_H__
-#define __WXFBADVPROPS_H__
+#ifndef RAD_INSPECTOR_WXFBADVPROPS_H
+#define RAD_INSPECTOR_WXFBADVPROPS_H
 
 #include <fontcontainer.h>
 
@@ -187,4 +187,4 @@ public:
 	bool OnEvent(wxPropertyGrid* propgrid, wxWindow* primary, wxEvent& event) override;
 };
 
-#endif //__WXFBADVPROPS_H__
+#endif // RAD_INSPECTOR_WXFBADVPROPS_H

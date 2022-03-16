@@ -22,8 +22,8 @@
 //   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __INNER_FRAME__
-#define __INNER_FRAME__
+#ifndef RAD_DESIGNER_INNERFRAME_H
+#define RAD_DESIGNER_INNERFRAME_H
 
 #include "utils/debug.h"
 
@@ -93,4 +93,4 @@ END_DECLARE_EVENT_TYPES()
 #define EVT_INNER_FRAME_RESIZED(id, func) \
 wx__DECLARE_EVT1(wxEVT_INNER_FRAME_RESIZED, id, &func)*/
 
-#endif //__INNER_FRAME__
+#endif // RAD_DESIGNER_INNERFRAME_H

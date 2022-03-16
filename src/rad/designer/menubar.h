@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __MENUBAR__
-#define __MENUBAR__
+#ifndef RAD_DESIGNER_MENUBAR_H
+#define RAD_DESIGNER_MENUBAR_H
 
 #include <wx/wx.h>
 #include <vector>
@@ -61,4 +61,4 @@ class MenuEvtHandler : public wxEvtHandler
         wxMenu *m_menu;
 };
 
-#endif
+#endif // RAD_DESIGNER_MENUBAR_H

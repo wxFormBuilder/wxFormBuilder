@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef __TYPE_UTILS__
-#define __TYPE_UTILS__
+#ifndef UTILS_TYPECONV_H
+#define UTILS_TYPECONV_H
 
 #include "model/types.h"
 #include <fontcontainer.h>
@@ -133,4 +133,4 @@ public:
 	bool SearchSynonymous( wxString synName, wxString& result );
 };
 
-#endif //__TYPE_UTILS__
+#endif // UTILS_TYPECONV_H

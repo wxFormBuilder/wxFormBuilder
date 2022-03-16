@@ -33,8 +33,8 @@
 none
 */
 
-#ifndef _LUA_CODE_GEN_
-#define _LUA_CODE_GEN_
+#ifndef CODEGEN_LUACG_H
+#define CODEGEN_LUACG_H
 
 // wxFormBuilder flags (fbfXXX)
 #define fbfSILENT true
@@ -254,4 +254,4 @@ public:
 };
 
 
-#endif //_LUA_CODE_GEN_
+#endif // CODEGEN_LUACG_H

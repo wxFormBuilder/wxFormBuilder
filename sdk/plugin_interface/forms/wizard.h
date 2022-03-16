@@ -22,8 +22,8 @@
 //   based on original wizard.h include in wxWidgets source code
 //
 ///////////////////////////////////////////////////////////////////////////////
-#ifndef __WXFB_WIZARD_H__
-#define __WXFB_WIZARD_H__
+#ifndef SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
+#define SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
 
 #include <wx/button.h>
 #include <wx/sizer.h>
@@ -156,4 +156,4 @@ using WizardEventFunction = void (wxEvtHandler::*)(WizardEvent&);
 // the page was just shown and laid out
 #define EVT_WXFB_WIZARD_PAGE_SHOWN( id, fn ) wxFB__DECLARE_WIZARDEVT( PAGE_SHOWN, id, fn )
 
-#endif //__WXFB_WIZARD_H__
+#endif // SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H

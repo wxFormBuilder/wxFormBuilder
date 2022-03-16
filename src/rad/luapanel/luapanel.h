@@ -32,8 +32,8 @@
 @note
 */
 
-#ifndef __LUA_PANEL__
-#define __LUA_PANEL__
+#ifndef RAD_LUAPANEL_LUAPANEL_H
+#define RAD_LUAPANEL_LUAPANEL_H
 
 #include "utils/wxfbdefs.h"
 
@@ -73,4 +73,4 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-#endif //__LUA_PANEL__
+#endif // RAD_LUAPANEL_LUAPANEL_H

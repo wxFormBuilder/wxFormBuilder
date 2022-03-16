@@ -32,8 +32,8 @@ The implementation of the generation of relative paths is a little hacky, and no
 The value of all properties that are file or a directory paths must be absolute, otherwise the code generation will not work.
 */
 
-#ifndef _CPP_CODE_GEN_
-#define _CPP_CODE_GEN_
+#ifndef CODEGEN_CPPCG_H
+#define CODEGEN_CPPCG_H
 
 #include "codegen/codegen.h"
 #include "codegen/codeparser.h"
@@ -302,4 +302,4 @@ public:
 };
 
 
-#endif //_CPP_CODE_GEN_
+#endif // CODEGEN_CPPCG_H

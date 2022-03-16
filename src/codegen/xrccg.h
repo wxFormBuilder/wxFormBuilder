@@ -23,8 +23,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef _XRC_CODE_GEN_
-#define _XRC_CODE_GEN_
+#ifndef CODEGEN_XRCCG_H
+#define CODEGEN_XRCCG_H
 
 #include "codegen/codegen.h"
 
@@ -52,4 +52,4 @@ public:
 };
 
 
-#endif //_XRC_CODE_GEN_
+#endif // CODEGEN_XRCCG_H

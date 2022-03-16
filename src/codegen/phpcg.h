@@ -1,6 +1,3 @@
-#ifndef HEADER_AF8123CA5182B61
-#define HEADER_AF8123CA5182B61
-
 ////////////////////////////////////////////////////////////////////////////////
 //
 // wxFormBuilder - A Visual Dialog Editor for wxWidgets.
@@ -37,8 +34,8 @@ The implementation of the generation of relative paths is a little hacky, and no
 The value of all properties that are file or a directory paths must be absolute, otherwise the code generation will not work.
 */
 
-#ifndef _PHP_CODE_GEN_
-#define _PHP_CODE_GEN_
+#ifndef CODEGEN_PHPCG_H
+#define CODEGEN_PHPCG_H
 
 // wxFormBuilder flags (fbfXXX)
 #define fbfSILENT true
@@ -241,6 +238,4 @@ public:
 };
 
 
-#endif //_PHP_CODE_GEN_
-
-#endif // header guard
+#endif // CODEGEN_PHPCG_H
