@@ -8,17 +8,17 @@ wxfb_add_plugin(additional
     ribbon
   ICONS
     bitmap_toggle_button.xpm
-    calendar16x16.xpm
     calendar.xpm
+    calendar16x16.xpm
     checklistbox.xpm
     colourPickerIcon.xpm
     combo_box.xpm
     customcode.xpm
     custom_control.xpm
-    dataview_ctrl.xpm
     dataviewlist_column.xpm
     dataviewlist_ctrl.xpm
     dataviewtree_ctrl.xpm
+    dataview_ctrl.xpm
     datepicker.xpm
     dirPicker.xpm
     filePicker.xpm
@@ -28,16 +28,16 @@ wxfb_add_plugin(additional
     htmlwin.xpm
     hyperlink_ctrl.xpm
     media_ctrl.xpm
+    propgrid.xpm
     propgriditem.xpm
     propgridman.xpm
     propgridpage.xpm
-    propgrid.xpm
     ribbon_bar.xpm
+    ribbon_button.xpm
     ribbon_buttonbar.xpm
     ribbon_button_dropdown.xpm
     ribbon_button_hybrid.xpm
     ribbon_button_toggle.xpm
-    ribbon_button.xpm
     ribbon_gallery.xpm
     ribbon_page.xpm
     ribbon_panel.xpm
@@ -46,14 +46,14 @@ wxfb_add_plugin(additional
     scrollbar.xpm
     search.xpm
     spinbtn.xpm
-    spin_ctrl_double.xpm
     spin_ctrl.xpm
+    spin_ctrl_double.xpm
     timepicker.xpm
     timer.xpm
     toggle_button.xpm
-    tree_ctrl.xpm
-    treelistctrlcolumn.xpm
     treelistctrl.xpm
+    treelistctrlcolumn.xpm
+    tree_ctrl.xpm
 )
 
 wxfb_add_plugin(common
@@ -64,8 +64,8 @@ wxfb_add_plugin(common
     animation.xpm
     auitoolbar.xpm
     bitmap_button.xpm
-    button16x16.xpm
     button.xpm
+    button16x16.xpm
     checkbox.xpm
     choice.xpm
     combo_box.xpm
@@ -73,9 +73,9 @@ wxfb_add_plugin(common
     infobar.xpm
     list_box.xpm
     list_ctrl.xpm
+    menu.xpm
     menubar.xpm
     menuitem.xpm
-    menu.xpm
     radio_box.xpm
     radio_button.xpm
     separator.xpm
@@ -86,9 +86,9 @@ wxfb_add_plugin(common
     statusbar.xpm
     submenu.xpm
     text_ctrl.xpm
+    tool.xpm
     toolbar.xpm
     toolSeparator.xpm
-    tool.xpm
 )
 
 wxfb_add_plugin(containers
@@ -108,11 +108,11 @@ wxfb_add_plugin(containers
 wxfb_add_plugin(forms
   ICONS
     dialog.xpm
+    document.xpm
     doc_mdi_parent_frame.xpm
     doc_parent_frame.xpm
-    document.xpm
-    frame16x16.png
     frame.xpm
+    frame16x16.png
     menubar.xpm
     panel.xpm
     toolbar.xpm
@@ -125,8 +125,8 @@ wxfb_add_plugin(layout
     flex_grid_sizer.xpm
     grid_bag_sizer.xpm
     grid_sizer.xpm
-    sizer16x16.xpm
     sizer.xpm
+    sizer16x16.xpm
     spacer.xpm
     staticbox_sizer.xpm
     stddialogbuttonsizer.xpm

@@ -24,115 +24,117 @@ get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/re
 
 target_sources(wxFormBuilder_app
   PRIVATE
-    maingui.h
     maingui.cpp
+    maingui.h
     $<$<BOOL:${WIN32}>:wxFormBuilder.rc>
-    codegen/codegen.h
     codegen/codegen.cpp
-    codegen/codeparser.h
+    codegen/codegen.h
     codegen/codeparser.cpp
-    codegen/codewriter.h
+    codegen/codeparser.h
     codegen/codewriter.cpp
-    codegen/cppcg.h
+    codegen/codewriter.h
     codegen/cppcg.cpp
-    codegen/luacg.h
+    codegen/cppcg.h
     codegen/luacg.cpp
-    codegen/phpcg.h
+    codegen/luacg.h
     codegen/phpcg.cpp
-    codegen/pythoncg.h
+    codegen/phpcg.h
     codegen/pythoncg.cpp
-    codegen/xrccg.h
+    codegen/pythoncg.h
     codegen/xrccg.cpp
-    model/database.h
+    codegen/xrccg.h
     model/database.cpp
-    model/objectbase.h
+    model/database.h
     model/objectbase.cpp
-    model/types.h
+    model/objectbase.h
     model/types.cpp
-    model/xrcfilter.h
+    model/types.h
     model/xrcfilter.cpp
-    rad/about.h
+    model/xrcfilter.h
     rad/about.cpp
-    rad/appdata.h
+    rad/about.h
     rad/appdata.cpp
+    rad/appdata.h
     rad/auitabart.h
-    rad/bitmaps.h
     rad/bitmaps.cpp
-    rad/cmdproc.h
+    rad/bitmaps.h
     rad/cmdproc.cpp
-    rad/customkeys.h
+    rad/cmdproc.h
     rad/customkeys.cpp
-    rad/dialogfindcomponent.h
+    rad/customkeys.h
     rad/dialogfindcomponent.cpp
-    rad/genericpanel.h
+    rad/dialogfindcomponent.h
     rad/genericpanel.cpp
-    rad/mainframe.h
+    rad/genericpanel.h
     rad/mainframe.cpp
-    rad/menueditor.h
+    rad/mainframe.h
     rad/menueditor.cpp
-    rad/palette.h
+    rad/menueditor.h
     rad/palette.cpp
-    rad/revision.h
-    rad/revision.cpp.in
+    rad/palette.h
     "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
-    rad/title.h
+    rad/revision.cpp.in
+    rad/revision.h
     rad/title.cpp
-    rad/version.h
-    rad/version.cpp.in
+    rad/title.h
     "${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp"
-    rad/wxfbevent.h
+    rad/version.cpp.in
+    rad/version.h
     rad/wxfbevent.cpp
-    rad/wxfbmanager.h
+    rad/wxfbevent.h
     rad/wxfbmanager.cpp
-    rad/codeeditor/codeeditor.h
+    rad/wxfbmanager.h
     rad/codeeditor/codeeditor.cpp
-    rad/cpppanel/cpppanel.h
+    rad/codeeditor/codeeditor.h
     rad/cpppanel/cpppanel.cpp
-    rad/dataobject/dataobject.h
+    rad/cpppanel/cpppanel.h
     rad/dataobject/dataobject.cpp
-    rad/designer/innerframe.h
+    rad/dataobject/dataobject.h
     rad/designer/innerframe.cpp
-    rad/designer/menubar.h
+    rad/designer/innerframe.h
     rad/designer/menubar.cpp
-    rad/designer/visualeditor.h
+    rad/designer/menubar.h
+    #rad/designer/resizablepanel.cpp
+    #rad/designer/resizablepanel.h
     rad/designer/visualeditor.cpp
-    rad/designer/visualobj.h
+    rad/designer/visualeditor.h
     rad/designer/visualobj.cpp
+    rad/designer/visualobj.h
     rad/designer/window_buttons.h
-    rad/geninheritclass/geninhertclass_gui.h
-    rad/geninheritclass/geninhertclass_gui.cpp
-    rad/geninheritclass/geninhertclass.h
     rad/geninheritclass/geninhertclass.cpp
-    rad/inspector/objinspect.h
+    rad/geninheritclass/geninhertclass.h
+    rad/geninheritclass/geninhertclass_gui.cpp
+    rad/geninheritclass/geninhertclass_gui.h
     rad/inspector/objinspect.cpp
-    rad/inspector/wxfbadvprops.h
+    rad/inspector/objinspect.h
     rad/inspector/wxfbadvprops.cpp
-    rad/luapanel/luapanel.h
+    rad/inspector/wxfbadvprops.h
     rad/luapanel/luapanel.cpp
-    rad/objecttree/objecttree.h
+    rad/luapanel/luapanel.h
     rad/objecttree/objecttree.cpp
-    rad/phppanel/phppanel.h
+    rad/objecttree/objecttree.h
     rad/phppanel/phppanel.cpp
-    rad/pythonpanel/pythonpanel.h
+    rad/phppanel/phppanel.h
     rad/pythonpanel/pythonpanel.cpp
-    rad/xrcpanel/xrcpanel.h
+    rad/pythonpanel/pythonpanel.h
     rad/xrcpanel/xrcpanel.cpp
-    rad/xrcpreview/xrcpreview.h
+    rad/xrcpanel/xrcpanel.h
     rad/xrcpreview/xrcpreview.cpp
-    utils/annoyingdialog.h
+    rad/xrcpreview/xrcpreview.h
     utils/annoyingdialog.cpp
+    utils/annoyingdialog.h
     utils/debug.h
-    utils/filetocarray.h
     utils/filetocarray.cpp
+    utils/filetocarray.h
     utils/m_wxfb.cpp
-    utils/stringutils.h
     utils/stringutils.cpp
-    utils/typeconv.h
+    utils/stringutils.h
     utils/typeconv.cpp
+    utils/typeconv.h
     utils/wxfbdefs.h
     utils/wxfbexception.h
-    utils/wxfbipc.h
     utils/wxfbipc.cpp
+    utils/wxfbipc.h
     utils/wxlogstring.h
 )
 set(commonDefinitions
@@ -150,9 +152,9 @@ set(commonResources
 set(commonIcons
   balign.png
   bottom.xpm
+  c++.png
   chalign.png
   copy.xpm
-  c++.png
   cpp.png
   cut.png
   cvalign.png
@@ -189,8 +191,8 @@ set(commonIcons
 )
 if(APPLE)
   set(appleResources
-    "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
     "${PROJECT_SOURCE_DIR}/data/platform/macos/docicon.icns"
+    "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
   )
   target_sources(wxFormBuilder_app
     PRIVATE
