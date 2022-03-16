@@ -30,8 +30,11 @@
 #ifndef RAD_INSPECTOR_WXFBADVPROPS_H
 #define RAD_INSPECTOR_WXFBADVPROPS_H
 
-#include <wx/propgrid/advprops.h>
+// clang-format off
+// propgrid.h must be included first on wxWidgets 3.0.x
 #include <wx/propgrid/propgrid.h>
+#include <wx/propgrid/advprops.h>
+// clang-format on
 
 #include <fontcontainer.h>
 
