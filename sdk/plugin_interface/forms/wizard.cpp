@@ -31,23 +31,7 @@ wxDEFINE_EVENT(wxFB_EVT_WIZARD_PAGE_CHANGING, WizardEvent);
 wxDEFINE_EVENT(wxFB_EVT_WIZARD_CANCEL, WizardEvent);
 wxDEFINE_EVENT(wxFB_EVT_WIZARD_FINISHED, WizardEvent);
 wxDEFINE_EVENT(wxFB_EVT_WIZARD_HELP, WizardEvent);
-#if wxABI_VERSION >= 20811
 wxDEFINE_EVENT(wxFB_EVT_WIZARD_PAGE_SHOWN, WizardEvent);
-#endif
-/*
-BEGIN_EVENT_TABLE( Wizard, wxPanel )
-    EVT_BUTTON( wxID_CANCEL, Wizard::OnCancel )
-    EVT_BUTTON( wxID_BACKWARD, Wizard::OnBackOrNext )
-    EVT_BUTTON( wxID_FORWARD, Wizard::OnBackOrNext )
-    EVT_BUTTON( wxID_HELP, Wizard::OnHelp )
-
-    EVT_WXFB_WIZARD_PAGE_CHANGED( wxID_ANY, Wizard::OnWizEvent )
-    EVT_WXFB_WIZARD_PAGE_CHANGING( wxID_ANY, Wizard::OnWizEvent )
-    EVT_WXFB_WIZARD_CANCEL( wxID_ANY, Wizard::OnWizEvent )
-    EVT_WXFB_WIZARD_FINISHED( wxID_ANY, Wizard::OnWizEvent )
-    EVT_WXFB_WIZARD_HELP( wxID_ANY, Wizard::OnWizEvent )
-END_EVENT_TABLE()
-*/
 
 
 Wizard::Wizard(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
@@ -152,27 +136,16 @@ void Wizard::OnWizEvent(WizardEvent& event)
             Layout();
         }
 #if 0
-        else if ( eventType == wxFB_EVT_WIZARD_PAGE_CHANGING )
-        {
-            wxLogDebug( wxT("Wizard Page changing.") );
-        }
-        else if ( eventType == wxFB_EVT_WIZARD_CANCEL )
-        {
-            wxLogDebug( wxT("Wizard Cancel button was pressed.") );
-        }
-        else if ( eventType == wxFB_EVT_WIZARD_HELP )
-        {
-            wxLogDebug( wxT("Wizard Help button was pressed.") );
-        }
-    #if wxABI_VERSION >= 20811
-        else if ( eventType == wxFB_EVT_WIZARD_FINISHED )
-        {
-            wxLogDebug( wxT("Wizard Finish button was pressed.") );
-        }
-    #endif
-        else if ( eventType == wxFB_EVT_WIZARD_PAGE_SHOWN )
-        {
-            wxLogDebug( wxT("Wizard Page shown.") );
+        else if (eventType == wxFB_EVT_WIZARD_PAGE_CHANGING) {
+            wxLogDebug(wxT("Wizard Page changing."));
+        } else if (eventType == wxFB_EVT_WIZARD_CANCEL) {
+            wxLogDebug(wxT("Wizard Cancel button was pressed."));
+        } else if (eventType == wxFB_EVT_WIZARD_HELP) {
+            wxLogDebug(wxT("Wizard Help button was pressed."));
+        } else if (eventType == wxFB_EVT_WIZARD_FINISHED) {
+            wxLogDebug(wxT("Wizard Finish button was pressed."));
+        } else if (eventType == wxFB_EVT_WIZARD_PAGE_SHOWN) {
+            wxLogDebug(wxT("Wizard Page shown."));
         }
 #endif
     }

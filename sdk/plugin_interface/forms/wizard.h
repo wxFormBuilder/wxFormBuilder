@@ -74,8 +74,6 @@ private:
     std::vector<WizardPageSimple*> m_pages;
     WizardPageSimple* m_page;
     wxBitmap m_bitmap;  // the default bitmap to show
-
-    //  DECLARE_EVENT_TABLE()
 };
 
 // ----------------------------------------------------------------------------
@@ -115,9 +113,7 @@ wxDECLARE_EXPORTED_EVENT(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_CHANGING, WizardEve
 wxDECLARE_EXPORTED_EVENT(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_CANCEL, WizardEvent);
 wxDECLARE_EXPORTED_EVENT(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_HELP, WizardEvent);
 wxDECLARE_EXPORTED_EVENT(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_FINISHED, WizardEvent);
-#if wxABI_VERSION >= 20811
 wxDECLARE_EXPORTED_EVENT(wxFBDLLIMPEXP, wxFB_EVT_WIZARD_PAGE_SHOWN, WizardEvent);
-#endif
 
 using WizardEventFunction = void (wxEvtHandler::*)(WizardEvent&);
 
