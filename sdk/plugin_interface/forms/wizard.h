@@ -26,28 +26,21 @@
 #ifndef SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
 #define SDK_PLUGIN_INTERFACE_FORMS_WIZARD_H
 
+#include <vector>
+
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/statbmp.h>
 #include <wx/statline.h>
 #include <wx/wizard.h>
 
+#include "wizardbase.h"
 
-class Wizard;
-class WizardPageSimple;
+
 class WizardEvent;
 
-WX_DEFINE_ARRAY_PTR(WizardPageSimple*, WizardPages);
 
-
-class WizardPageSimple : public wxPanel
-{
-public:
-    WizardPageSimple(Wizard* parent);
-    ~WizardPageSimple();
-};
-
-class Wizard : public wxPanel
+class Wizard : public WizardBase
 {
 public:
     Wizard(
@@ -63,28 +56,24 @@ public:
     void SetBitmap(const wxBitmap& bitmap);
 
     void AddPage(WizardPageSimple* page);
-    WizardPageSimple* GetPage(size_t index) { return m_pages.Item(index); }
-    size_t GetPageCount() { return m_pages.GetCount(); }
-    size_t GetPageIndex(WizardPageSimple* wizpage) { return m_pages.Index(wizpage); }
+    WizardPageSimple* GetPage(size_t index) { return m_pages[index]; }
+    size_t GetPageCount() { return m_pages.size(); }
+    size_t GetPageIndex(WizardPageSimple* wizpage);
     void SetSelection(size_t pageIndex);
     void ShowHelpButton(bool showhelp) { m_btnHelp->Show(showhelp); }
 
+protected:
+    void OnBackOrNext(wxCommandEvent& event) override;
+    void OnHelp(wxCommandEvent& event) override;
+    void OnCancel(wxCommandEvent& event) override;
+
 private:
-    void OnBackOrNext(wxCommandEvent& event);
-    void OnHelp(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
     void OnWizEvent(WizardEvent& event);
 
-    wxBoxSizer* m_sizerBmpAndPage;  // Page area sizer will be inserted here with padding
-    wxBoxSizer* m_sizerPage;        // Actual position and size of pages
-    wxStaticBitmap* m_statbmp;      // the control for the bitmap
-    wxButton* m_btnHelp;
-    wxButton* m_btnPrev;  // the "<Back" button
-    wxButton* m_btnNext;  // the "Next>" or "Finish" button
-    wxButton* m_btnCancel;
+private:
+    std::vector<WizardPageSimple*> m_pages;
     WizardPageSimple* m_page;
     wxBitmap m_bitmap;  // the default bitmap to show
-    WizardPages m_pages;
 
     //  DECLARE_EVENT_TABLE()
 };
