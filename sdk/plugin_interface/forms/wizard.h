@@ -44,11 +44,6 @@ public:
       const wxSize& size = wxDefaultSize, long style = wxTAB_TRAVERSAL);
     ~Wizard() override;
 
-    wxBoxSizer* GetPageSizer() { return m_sizerPage; }
-    //  WizardPageSimple *GetCurrentPage() { return m_page; }
-
-    // set/get bitmap
-    //  const wxBitmap& GetBitmap() const { return m_bitmap; }
     void SetBitmap(const wxBitmap& bitmap);
     void ShowHelpButton(bool showhelp) { m_btnHelp->Show(showhelp); }
 
