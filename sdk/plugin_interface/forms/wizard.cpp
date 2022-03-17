@@ -51,27 +51,45 @@ Wizard::~Wizard()
     this->Disconnect(wxID_ANY, wxFB_EVT_WIZARD_CANCEL, WizardEventHandler(Wizard::OnWizEvent));
     this->Disconnect(wxID_ANY, wxFB_EVT_WIZARD_FINISHED, WizardEventHandler(Wizard::OnWizEvent));
     this->Disconnect(wxID_ANY, wxFB_EVT_WIZARD_HELP, WizardEventHandler(Wizard::OnWizEvent));
-
-    m_statbmp->SetBitmap(wxNullBitmap);
-    m_bitmap = wxNullBitmap;
-    m_page = nullptr;
-    m_pages.clear();
 }
 
-void Wizard::OnHelp(wxCommandEvent&)
+
+void Wizard::SetBitmap(const wxBitmap& bitmap)
 {
-    // this function probably can never be called when we don't have an active
-    // page, but a small extra check won't hurt
-    if (m_page != nullptr) {
-        // Create and send the help event to the specific page handler
-        // event data contains the active page so that context-sensitive
-        // help is possible
-        WizardEvent eventHelp(wxFB_EVT_WIZARD_HELP, GetId(), true, m_page);
-        (void)m_page->GetEventHandler()->ProcessEvent(eventHelp);
+    m_bitmap = bitmap;
+    if (m_statbmp) {
+        m_statbmp->SetBitmap(m_bitmap);
+
+        auto pageSize = m_sizerBmpAndPage->GetSize();
+        pageSize.IncTo(wxSize(0, m_bitmap.GetHeight()));
+        m_sizerBmpAndPage->SetMinSize(pageSize);
     }
 }
 
-size_t Wizard::GetPageIndex(WizardPageSimple* wizpage)
+
+void Wizard::AddPage(WizardPageSimple* page)
+{
+    m_page = page;                          // Update current page,
+    m_pages.push_back(page);                // add it to internal page array,
+    const auto pageCount = m_pages.size();  // Internal page array count
+
+    for (size_t i = 0; i < pageCount; ++i) {
+        m_pages[i]->Hide();
+    }
+    page->Show();
+
+    m_sizerPage->Add(page, 1, wxEXPAND, 0);  // insert it into the page sizer,
+    Layout();                                // update layout,
+
+    if (pageCount == 1) {                   // First page: no previous, no next
+        m_btnNext->Enable(true);            // but enable the next page button
+        m_btnNext->SetLabel(_("&Finish"));  // because it acts as 'finish'
+    } else if (pageCount == 2) {            // Enable previous page button:
+        m_btnPrev->Enable(true);            // from now on everything is done in the OnBackOrNext() event
+    }                                       // when user clicks on 'back' or 'next' buttons.
+}
+
+size_t Wizard::GetPageIndex(WizardPageSimple* wizpage) const
 {
     for (size_t i = 0; i < m_pages.size(); ++i) {
         if (m_pages[i] == wizpage) {
@@ -82,17 +100,17 @@ size_t Wizard::GetPageIndex(WizardPageSimple* wizpage)
     return static_cast<size_t>(-1);
 }
 
+
 void Wizard::SetSelection(size_t pageIndex)
 {
     const auto pageCount = m_pages.size();         // Internal page array count
     if (pageIndex < pageCount) {                   // Is it a valid index?
-        bool hasPrev = pageIndex > 0;              // Has this page a previous one,
-        bool hasNext = pageIndex < pageCount - 1;  // or another after it?
+        const auto hasPrev = (pageIndex > 0);              // Has this page a previous one,
+        const auto hasNext = (pageIndex < pageCount - 1);  // or another after it?
 
         m_page = m_pages[pageIndex];  // Yes, update current page and
 
         m_btnPrev->Enable(hasPrev);  // enable 'back' button if a previous page exists,
-
         wxString label = (hasNext ? _("&Next >") : _("&Finish"));
         if (label != m_btnNext->GetLabel()) {  // set the correct label on next button
             m_btnNext->SetLabel(label);
@@ -101,6 +119,7 @@ void Wizard::SetSelection(size_t pageIndex)
         m_btnNext->SetDefault();  // and as default one, user needs it ready to go on.
     }
 }
+
 
 void Wizard::OnBackOrNext(wxCommandEvent& event)
 {
@@ -118,11 +137,25 @@ void Wizard::OnBackOrNext(wxCommandEvent& event)
     m_page->GetEventHandler()->ProcessEvent(eventChanged);
 }
 
+void Wizard::OnHelp(wxCommandEvent&)
+{
+    // this function probably can never be called when we don't have an active
+    // page, but a small extra check won't hurt
+    if (m_page) {
+        // Create and send the help event to the specific page handler
+        // event data contains the active page so that context-sensitive
+        // help is possible
+        WizardEvent eventHelp(wxFB_EVT_WIZARD_HELP, GetId(), true, m_page);
+        m_page->GetEventHandler()->ProcessEvent(eventHelp);
+    }
+}
+
 void Wizard::OnCancel(wxCommandEvent&)
 {
     WizardEvent eventCancel(wxFB_EVT_WIZARD_CANCEL, GetId(), false, m_page);
     GetEventHandler()->ProcessEvent(eventCancel);
 }
+
 
 void Wizard::OnWizEvent(WizardEvent& event)
 {
@@ -130,7 +163,9 @@ void Wizard::OnWizEvent(WizardEvent& event)
         const auto eventType = event.GetEventType();
 
         if (eventType == wxFB_EVT_WIZARD_PAGE_CHANGED) {
-            for (size_t i = 0; i < m_pages.size(); ++i) { m_pages[i]->Hide(); }
+            for (size_t i = 0; i < m_pages.size(); ++i) {
+                m_pages[i]->Hide();
+            }
             event.GetPage()->Show();
 
             Layout();
@@ -151,40 +186,6 @@ void Wizard::OnWizEvent(WizardEvent& event)
     }
 }
 
-void Wizard::AddPage(WizardPageSimple* page)
-{
-    m_page = page;                          // Update current page,
-    m_pages.push_back(page);                // add it to internal page array,
-    const auto pageCount = m_pages.size();  // Internal page array count
-
-    for (size_t i = 0; i < pageCount; ++i) { m_pages[i]->Hide(); }
-    page->Show();
-
-    m_sizerPage->Add(page, 1, wxEXPAND, 0);  // insert it into the page sizer,
-    Layout();                                // update layout,
-
-    if (pageCount == 1) {                   // First page: no previous, no next
-        m_btnNext->Enable(true);            // but enable the next page button
-        m_btnNext->SetLabel(_("&Finish"));  // because it acts as 'finish'
-    } else if (pageCount == 2) {            // Enable previous page button:
-        m_btnPrev->Enable(true);            // from now on everything is done in the OnBackOrNext() event
-    }                                       // when user clicks on 'back' or 'next' buttons.
-}
-
-void Wizard::SetBitmap(const wxBitmap& bitmap)
-{
-    m_bitmap = bitmap;
-    if (m_statbmp) {
-        m_statbmp->SetBitmap(m_bitmap);
-        wxSize pageSize = m_sizerBmpAndPage->GetSize();
-        pageSize.IncTo(wxSize(0, m_bitmap.GetHeight()));
-        m_sizerBmpAndPage->SetMinSize(pageSize);
-    }
-}
-
-// ----------------------------------------------------------------------------
-// WizardEvent
-// ----------------------------------------------------------------------------
 
 WizardEvent::WizardEvent(wxEventType type, int id, bool direction, WizardPageSimple* page) : wxNotifyEvent(type, id)
 {
