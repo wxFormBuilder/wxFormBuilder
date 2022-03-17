@@ -35,7 +35,7 @@ wxDEFINE_EVENT(wxFB_EVT_WIZARD_PAGE_SHOWN, WizardEvent);
 
 
 Wizard::Wizard(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style) :
-  WizardBase(parent, id, pos, size, style), m_page(nullptr), m_bitmap(wxNullBitmap)
+  WizardBase(parent, id, pos, size, style), m_page(nullptr)
 {
     this->Connect(wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGED, WizardEventHandler(Wizard::OnWizEvent));
     this->Connect(wxID_ANY, wxFB_EVT_WIZARD_PAGE_CHANGING, WizardEventHandler(Wizard::OnWizEvent));
@@ -56,14 +56,11 @@ Wizard::~Wizard()
 
 void Wizard::SetBitmap(const wxBitmap& bitmap)
 {
-    m_bitmap = bitmap;
-    if (m_statbmp) {
-        m_statbmp->SetBitmap(m_bitmap);
+    m_statbmp->SetBitmap(bitmap);
 
-        auto pageSize = m_sizerBmpAndPage->GetSize();
-        pageSize.IncTo(wxSize(0, m_bitmap.GetHeight()));
-        m_sizerBmpAndPage->SetMinSize(pageSize);
-    }
+    auto pageSize = m_sizerBmpAndPage->GetSize();
+    pageSize.IncTo(wxSize(0, bitmap.GetHeight()));
+    m_sizerBmpAndPage->SetMinSize(pageSize);
 }
 
 

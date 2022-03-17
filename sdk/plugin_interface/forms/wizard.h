@@ -65,7 +65,6 @@ private:
 private:
     std::vector<WizardPageSimple*> m_pages;
     WizardPageSimple* m_page;
-    wxBitmap m_bitmap;  // the default bitmap to show
 };
 
 
