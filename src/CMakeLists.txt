@@ -283,7 +283,12 @@ wxfb_target_definitions(wxFormBuilder_app
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
-set_target_properties(wxFormBuilder_app-definitions wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
+if(TARGET wxFormBuilder_app-definitions)
+  set_target_properties(wxFormBuilder_app-definitions PROPERTIES FOLDER "Main")
+endif()
+if(TARGET wxFormBuilder_app-templates)
+  set_target_properties(wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
+endif()
 
 wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
@@ -292,7 +297,12 @@ wxfb_target_resources(wxFormBuilder_app
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
-set_target_properties(wxFormBuilder_app-resources wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
+if(TARGET wxFormBuilder_app-resources)
+  set_target_properties(wxFormBuilder_app-resources PROPERTIES FOLDER "Main")
+endif()
+if(TARGET wxFormBuilder_app-icons)
+  set_target_properties(wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
+endif()
 
 install(
   FILES

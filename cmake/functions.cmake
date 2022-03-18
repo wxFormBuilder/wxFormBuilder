@@ -129,7 +129,12 @@ function(wxfb_add_plugin PLUGIN_NAME)
     COMMON ${PLUGIN_COMPONENTS}
     TEMPLATES ${PLUGIN_COMPONENTS}
   )
-  set_target_properties(wxFormBuilder_${PLUGIN_NAME}-definitions wxFormBuilder_${PLUGIN_NAME}-templates PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+  if(TARGET wxFormBuilder_${PLUGIN_NAME}-definitions)
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-definitions PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+  endif()
+  if(TARGET wxFormBuilder_${PLUGIN_NAME}-templates)
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-templates PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+  endif()
 
   if(DEFINED PLUGIN_ICONS)
     wxfb_target_resources(wxFormBuilder_${PLUGIN_NAME}
@@ -138,7 +143,9 @@ function(wxfb_add_plugin PLUGIN_NAME)
       INSTALL_DIRECTORY "${resourceDestination}"
       ICONS ${PLUGIN_ICONS}
     )
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-icons PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+    if(TARGET wxFormBuilder_${PLUGIN_NAME}-icons)
+      set_target_properties(wxFormBuilder_${PLUGIN_NAME}-icons PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+    endif()
   endif()
 endfunction()
 
