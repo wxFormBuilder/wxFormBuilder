@@ -54,7 +54,14 @@ function(wxfb_add_plugin PLUGIN_NAME)
   endif()
   set(resourceDestination ${WXFB_INSTALL_DATADIR}/plugins/${PLUGIN_NAME})
 
+  # TODO: Is this required or does MODULE always set this property?
+  set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+  if(APPLE)
+    # TODO: The current plugin loader code requires this extension
+    set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
+  endif()
   if(WXFB_STAGE_BUILD)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${runtimeDestination}")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${libraryDestination}")
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${archiveDestination}")

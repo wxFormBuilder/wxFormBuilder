@@ -49,12 +49,6 @@ if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-if(APPLE)
-  # TODO: The current plugin loader code requires this extension
-  set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
-endif()
-
 if(MSVC)
   # Disable warnings about standard conformant code that is not conform to Microsoft standards
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
@@ -177,6 +171,8 @@ find_package(Boost 1.71.0 REQUIRED)
 include(cmake/functions.cmake)
 include(cmake/revision.cmake)
 
+# Needs to be enabled for static libraries that get linked into shared libraries
+set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 # Set own, adjusted, installation paths
 set(CMAKE_INSTALL_BINDIR ${WXFB_INSTALL_BINDIR})
 set(CMAKE_INSTALL_LIBDIR ${WXFB_INSTALL_LIBDIR})
@@ -215,7 +211,7 @@ if(APPLE)
     CODE
     "
       include(BundleUtilities)
-      file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*${CMAKE_SHARED_MODULE_SUFFIX}\")
+      file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*.dylib\")
       fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
 
       find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
