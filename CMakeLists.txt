@@ -179,6 +179,11 @@ include(cmake/revision.cmake)
 
 # Needs to be enabled for static libraries that get linked into shared libraries
 set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+# The current plugin loader code requires this extension
+# TODO: Setting this inside wxfb_add_plugin() has no effect so set it here!
+if(APPLE)
+  set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
+endif()
 # Set own, adjusted, installation paths
 set(CMAKE_INSTALL_BINDIR ${WXFB_INSTALL_BINDIR})
 set(CMAKE_INSTALL_LIBDIR ${WXFB_INSTALL_LIBDIR})

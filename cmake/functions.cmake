@@ -56,8 +56,9 @@ function(wxfb_add_plugin PLUGIN_NAME)
 
   # TODO: Is this required or does MODULE always set this property?
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+  # The current plugin loader code requires this extension
+  # TODO: This settings has no effect here?!
   if(APPLE)
-    # TODO: The current plugin loader code requires this extension
     set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
   endif()
   if(WXFB_STAGE_BUILD)
