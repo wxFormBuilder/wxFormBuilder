@@ -56,11 +56,6 @@ function(wxfb_add_plugin PLUGIN_NAME)
 
   # TODO: Is this required or does MODULE always set this property?
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-  # The current plugin loader code requires this extension
-  # TODO: This settings has no effect here?!
-  if(APPLE)
-    set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
-  endif()
   if(WXFB_STAGE_BUILD)
     set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${runtimeDestination}")
@@ -76,6 +71,14 @@ function(wxfb_add_plugin PLUGIN_NAME)
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
     OUTPUT_NAME ${PLUGIN_NAME}
   )
+  if(APPLE) 
+    # The current plugin loader code requires this extension
+    # TODO: Setting CMAKE_SHARED_MODULE_SUFFIX inside this function has no effect, setting it
+    #       in the toplevel CMake file has. Setting the property directly does also work.
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
+      SUFFIX ".dylib"
+    )
+  endif()
 
   target_sources(wxFormBuilder_${PLUGIN_NAME}
     PRIVATE
