@@ -76,6 +76,22 @@ else()
 endif()
 option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStageBuildDefault})
 
+# Adjust paths to match wxStandardPaths implementation, use own cache variables to share across CMake scopes
+include(GNUInstallDirs)
+if(WIN32)
+  set(WXFB_INSTALL_BINDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR . CACHE INTERNAL "")
+elseif(APPLE)
+  set(WXFB_INSTALL_BINDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR wxFormBuilder.app/Contents/SharedSupport CACHE INTERNAL "")
+else()
+  set(WXFB_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder CACHE INTERNAL "")
+endif()
+# Define internal stage directory only if enabled
 if(WXFB_STAGE_BUILD)
   set(WXFB_STAGE_DIR "${CMAKE_CURRENT_BINARY_DIR}/stage$<$<BOOL:${isMultiConfig}>:/$<CONFIG>>" CACHE INTERNAL "")
 else()
@@ -158,19 +174,13 @@ endif()
 # TODO: Some Boost packages do not include the CMake config files so config mode with the headers component can't be used
 find_package(Boost 1.71.0 REQUIRED)
 
-# Adjust paths to match wxStandardPaths implementation
-include(GNUInstallDirs)
-if(WIN32)
-  set(CMAKE_INSTALL_BINDIR .)
-  set(CMAKE_INSTALL_LIBDIR .)
-  set(CMAKE_INSTALL_DATADIR .)
-elseif(APPLE)
-  set(CMAKE_INSTALL_BINDIR .)
-  set(CMAKE_INSTALL_DATADIR wxFormBuilder.app/Contents/SharedSupport)
-else()
-  set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder)
-endif()
+include(cmake/functions.cmake)
+include(cmake/revision.cmake)
 
+# Set own, adjusted, installation paths
+set(CMAKE_INSTALL_BINDIR ${WXFB_INSTALL_BINDIR})
+set(CMAKE_INSTALL_LIBDIR ${WXFB_INSTALL_LIBDIR})
+set(CMAKE_INSTALL_DATADIR ${WXFB_INSTALL_DATADIR})
 # Use installation layout for staged build
 if(WXFB_STAGE_BUILD)
   set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
@@ -178,9 +188,6 @@ if(WXFB_STAGE_BUILD)
   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
 endif()
-
-include(cmake/functions.cmake)
-include(cmake/revision.cmake)
 
 add_subdirectory(src)
 add_subdirectory(plugins)
