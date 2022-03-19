@@ -28,8 +28,8 @@ target_include_directories(wxFormBuilder_plugin-interface
 
 target_link_libraries(wxFormBuilder_plugin-interface
   PUBLIC
+    wxWidgets::wxWidgets
     ticpp::ticpp
-    ${wxWidgets_LIBRARIES}
 )
 
 get_target_property(sources wxFormBuilder_plugin-interface SOURCES)

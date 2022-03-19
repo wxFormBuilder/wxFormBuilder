@@ -217,8 +217,8 @@ target_include_directories(wxFormBuilder_app
 target_link_libraries(wxFormBuilder_app
   PRIVATE
     wxFormBuilder::plugin-interface
+    wxWidgets::wxWidgets
     ticpp::ticpp
-    ${wxWidgets_LIBRARIES}
     Boost::headers
     md5::md5
     stack_trace::stack
