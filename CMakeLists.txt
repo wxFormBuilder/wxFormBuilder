@@ -65,7 +65,8 @@ option(WXFB_WXWIDGETS_MONO "Use monolithic variant of wxWidgets." ${wxfbWxWidget
 unset(wxfbWxWidgetsMonoDefault)
 option(WXFB_WXWIDGETS_ENABLE_30 "Allow using wxWidgets version 3.0.x. Not recommended, only for platforms without wxWidgets version 3.1.x." OFF)
 option(WXFB_TICPP_SHARED "Use shared variant of TiCPP." OFF)
-if(PROJECT_IS_TOP_LEVEL)
+option(WXFB_BUILD_PLUGIN_HOST "Build as plugin host. Disables build steps that must be performed by the toplevel project." OFF)
+if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
   set(wxfbStageBuildDefault ON)
 else()
     # TODO: Maybe check if the required variables are all unset and enable by default in that case
@@ -197,4 +198,6 @@ else()
   unset(BUILD_SHARED_LIBS)
 endif()
 
-wxfb_configure_postbuild()
+if(NOT WXFB_BUILD_PLUGIN_HOST)
+  wxfb_configure_postbuild()
+endif()
