@@ -72,7 +72,6 @@ target_sources(wxFormBuilder_app
     rad/menueditor.h
     rad/palette.cpp
     rad/palette.h
-    "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
     rad/revision.cpp.in
     rad/revision.h
     rad/title.cpp
@@ -323,7 +322,7 @@ if(NOT WIN32 AND NOT APPLE)
     "
       find_program(update-mime-database_cmd NAMES update-mime-database REQUIRED)
       mark_as_advanced(update-mime-database_cmd)
-      execute_process(COMMAND \"\${update-mime-database_cmd}\" \"${CMAKE_INSTALL_FULL_DATAROOTDIR}/mime\")
+      execute_process(COMMAND \"\${update-mime-database_cmd}\" \"\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATAROOTDIR}/mime\")
     "
   )
 endif()

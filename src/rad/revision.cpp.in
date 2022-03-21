@@ -2,11 +2,11 @@
 
 #include <cstring>
 
-static constexpr const char* REVISION = "@GIT_REVISION@";
-static constexpr const char* DESCRIBE = "@GIT_DESCRIBE@";
-static constexpr const char* TAG_NAME = "@GIT_TAG_NAME@";
-static constexpr unsigned int TAG_DISTANCE = @GIT_TAG_DISTANCE@;
-static constexpr bool DIRTY = @GIT_DIRTY@;
+static constexpr const char* REVISION = "@SCM_REVISION@";
+static constexpr const char* DESCRIBE = "@SCM_DESCRIBE@";
+static constexpr const char* TAG_NAME = "@SCM_TAG_NAME@";
+static constexpr unsigned int TAG_DISTANCE = @SCM_TAG_DISTANCE@;
+static constexpr bool DIRTY = @SCM_DIRTY@;
 
 
 static constexpr int length(const char* str) {

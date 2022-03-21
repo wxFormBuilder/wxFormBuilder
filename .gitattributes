@@ -10,3 +10,9 @@
 *.sh eol=lf
 *.make eol=lf
 Makefile eol=lf
+
+/docs/internal export-ignore
+/.github export-ignore
+/.git* export-ignore
+
+/.gitproperties export-subst -export-ignore
