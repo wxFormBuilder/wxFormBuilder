@@ -11,4 +11,8 @@
 *.make eol=lf
 Makefile eol=lf
 
-/.gitproperties export-subst
+/docs/internal export-ignore
+/.github export-ignore
+/.git* export-ignore
+
+/.gitproperties export-subst -export-ignore
