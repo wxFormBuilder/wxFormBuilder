@@ -19,6 +19,8 @@ if(PROJECT_IS_TOP_LEVEL)
       message(FATAL_ERROR "Unknown build type: '${CMAKE_BUILD_TYPE}'")
     endif()
   endif()
+  unset(defaultBuildType)
+  unset(buildTypes)
 
   # TODO: This is not the ideal solution to apply these warning flags.
   #       Toolchain files are not really intended for this purpose.
@@ -49,12 +51,6 @@ if (NOT DEFINED CMAKE_CXX_EXTENSIONS)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
 
-set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
-if(APPLE)
-  # TODO: The current plugin loader code requires this extension
-  set(CMAKE_SHARED_MODULE_SUFFIX ".dylib")
-endif()
-
 if(MSVC)
   # Disable warnings about standard conformant code that is not conform to Microsoft standards
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
@@ -66,16 +62,35 @@ else()
   set(wxfbWxWidgetsMonoDefault OFF)
 endif()
 option(WXFB_WXWIDGETS_MONO "Use monolithic variant of wxWidgets." ${wxfbWxWidgetsMonoDefault})
+unset(wxfbWxWidgetsMonoDefault)
 option(WXFB_WXWIDGETS_ENABLE_30 "Allow using wxWidgets version 3.0.x. Not recommended, only for platforms without wxWidgets version 3.1.x." OFF)
 option(WXFB_TICPP_SHARED "Use shared variant of TiCPP." OFF)
-if(PROJECT_IS_TOP_LEVEL)
+option(WXFB_BUILD_PLUGIN_HOST "Build as plugin host. Disables build steps that must be performed by the toplevel project." OFF)
+if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
   set(wxfbStageBuildDefault ON)
 else()
     # TODO: Maybe check if the required variables are all unset and enable by default in that case
   set(wxfbStageBuildDefault OFF)
 endif()
 option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStageBuildDefault})
+unset(wxfbStageBuildDefault)
 
+# Adjust paths to match wxStandardPaths implementation, use own cache variables to share across CMake scopes
+include(GNUInstallDirs)
+if(WIN32)
+  set(WXFB_INSTALL_BINDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR . CACHE INTERNAL "")
+elseif(APPLE)
+  set(WXFB_INSTALL_BINDIR . CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR wxFormBuilder.app/Contents/SharedSupport CACHE INTERNAL "")
+else()
+  set(WXFB_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR} CACHE INTERNAL "")
+  set(WXFB_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder CACHE INTERNAL "")
+endif()
+# Define internal stage directory only if enabled
 if(WXFB_STAGE_BUILD)
   set(WXFB_STAGE_DIR "${CMAKE_CURRENT_BINARY_DIR}/stage$<$<BOOL:${isMultiConfig}>:/$<CONFIG>>" CACHE INTERNAL "")
 else()
@@ -84,17 +99,17 @@ endif()
 # TODO: Currently generator languages cannot be configured
 set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
 
-if(NOT WXFB_WXWIDGETS_ENABLE_30)
-  set(wxWidgetsVersion 3.1.2)
-else()
-  set(wxWidgetsVersion 3.0)
-endif()
 # BUILD_SHARED_LIBS does only affect win32 search style, wxWidgets_USE_STATIC does only affect unix search style
 if(DEFINED BUILD_SHARED_LIBS)
   set(backup_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
 endif()
 set(BUILD_SHARED_LIBS ON)
 set(wxWidgets_USE_STATIC OFF)
+if(NOT WXFB_WXWIDGETS_ENABLE_30)
+  set(wxWidgetsVersion 3.1.2)
+else()
+  set(wxWidgetsVersion 3.0)
+endif()
 set(wxWidgetsComponentsRequired "")
 if(WXFB_WXWIDGETS_MONO)
   list(APPEND wxWidgetsComponentsRequired mono)
@@ -149,6 +164,8 @@ if(wxWidgets_FOUND AND NOT TARGET wxWidgets::wxWidgets)
     target_link_libraries(wxWidgets_wxWidgets INTERFACE ${wxWidgets_LIBRARIES})
   endif()
 endif()
+unset(wxWidgetsComponentsRequired)
+unset(wxWidgetsVersion)
 if(DEFINED backup_BUILD_SHARED_LIBS)
   set(BUILD_SHARED_LIBS ${backup_BUILD_SHARED_LIBS})
   unset(backup_BUILD_SHARED_LIBS)
@@ -158,29 +175,11 @@ endif()
 # TODO: Some Boost packages do not include the CMake config files so config mode with the headers component can't be used
 find_package(Boost 1.71.0 REQUIRED)
 
-# Adjust paths to match wxStandardPaths implementation
-include(GNUInstallDirs)
-if(WIN32)
-  set(CMAKE_INSTALL_BINDIR .)
-  set(CMAKE_INSTALL_LIBDIR .)
-  set(CMAKE_INSTALL_DATADIR .)
-elseif(APPLE)
-  set(CMAKE_INSTALL_BINDIR .)
-  set(CMAKE_INSTALL_DATADIR wxFormBuilder.app/Contents/SharedSupport)
-else()
-  set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_DATADIR}/wxformbuilder)
-endif()
-
-# Use installation layout for staged build
-if(WXFB_STAGE_BUILD)
-  set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
-  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_BINDIR}")
-  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
-  set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
-endif()
-
 include(cmake/functions.cmake)
+include(cmake/macros.cmake)
 include(cmake/revision.cmake)
+
+wxfb_configure_prebuild()
 
 add_subdirectory(src)
 add_subdirectory(plugins)
@@ -199,25 +198,6 @@ else()
   unset(BUILD_SHARED_LIBS)
 endif()
 
-if(APPLE)
-  # TODO: Is there any possibility to determine the output filenames of the plugins to create a list that can be inserted literal?
-  # TODO: The fixup_bundle command erases all present RPATH information. Since it fixes the loader paths of all libraries and none
-  #       of them loads libraries dynamically, it is sufficient to add an RPATH only to the PlugIns directory which contains the
-  #       libraries that get loaded dynamically.
-  install(
-    CODE
-    "
-      include(BundleUtilities)
-      file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*${CMAKE_SHARED_MODULE_SUFFIX}\")
-      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
-
-      find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
-      mark_as_advanced(install_name_tool_cmd)
-      execute_process(COMMAND \"\${install_name_tool_cmd}\" -add_rpath @executable_path/../PlugIns \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/MacOS/wxFormBuilder\")
-
-      find_program(codesign_cmd NAMES codesign REQUIRED)
-      mark_as_advanced(codesign_cmd)
-      execute_process(COMMAND \"\${codesign_cmd}\" -s - -f --deep --verbose \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\")
-    "
-  )
+if(NOT WXFB_BUILD_PLUGIN_HOST)
+  wxfb_configure_postbuild()
 endif()

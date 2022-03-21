@@ -1,12 +1,12 @@
 if(NOT APPLE)
   file(RELATIVE_PATH libDir
-    "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}"
-    "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/${WXFB_INSTALL_BINDIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}/${WXFB_INSTALL_LIBDIR}"
   )
   set(pluginDir ${libDir}/wxformbuilder)
 endif()
 
-set(resourceDestination ${CMAKE_INSTALL_DATADIR}/resources)
+set(resourceDestination ${WXFB_INSTALL_DATADIR}/resources)
 if(WXFB_STAGE_BUILD)
   set(stageResourceDestination "${WXFB_STAGE_DIR}/${resourceDestination}")
 else()
@@ -266,14 +266,16 @@ source_group(
   PREFIX "Generated Files"
   FILES ${filterSources}
 )
+unset(filterSources)
+unset(sources)
 
 # Use the same dependencies set like the plugins
 install(TARGETS wxFormBuilder_app
   RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
   BUNDLE
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    DESTINATION ${WXFB_INSTALL_BINDIR}
   RUNTIME
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
+    DESTINATION ${WXFB_INSTALL_BINDIR}
 )
 
 wxfb_target_definitions(wxFormBuilder_app
@@ -308,7 +310,7 @@ install(
   FILES
     "${PROJECT_SOURCE_DIR}/Changelog.txt"
     "${PROJECT_SOURCE_DIR}/LICENSE"
-  DESTINATION ${CMAKE_INSTALL_DATADIR}
+  DESTINATION ${WXFB_INSTALL_DATADIR}
 )
 
 if(NOT WIN32 AND NOT APPLE)
@@ -367,6 +369,7 @@ if(WIN32)
       # The mixed mode output equals the CMake path format
       execute_process(COMMAND "${cygpath_cmd}" -m /mingw${targetBitness}/bin OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
       list(APPEND extraDirectories "${msysSystemDir}")
+      unset(msysSystemDir)
     else()
       # In plain MinGW environments it is more difficult to determine the paths in a system independent manner.
       # As best effort search the path of the compiler and hope that contains all system libraries.
@@ -389,5 +392,7 @@ if(WIN32)
         # For some reason some dependencies use forward slashes, some backward slashes
         [[.*[/\]system32/.*\.dll]]
     )
+    unset(targetBitness)
+    unset(extraDirectories)
   endif()
 endif()

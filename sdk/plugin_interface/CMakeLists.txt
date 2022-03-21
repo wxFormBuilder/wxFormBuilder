@@ -47,3 +47,5 @@ source_group(
   PREFIX "Source Files"
   FILES ${filterSources}
 )
+unset(filterSources)
+unset(sources)

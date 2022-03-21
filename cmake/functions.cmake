@@ -40,21 +40,24 @@ function(wxfb_add_plugin PLUGIN_NAME)
   endif()
 
   if(WIN32)
-    set(runtimeDestination ${CMAKE_INSTALL_BINDIR}/plugins/${PLUGIN_NAME})
-    set(libraryDestination ${CMAKE_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME})
-    set(archiveDestination ${CMAKE_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME})
+    set(runtimeDestination ${WXFB_INSTALL_BINDIR}/plugins/${PLUGIN_NAME})
+    set(libraryDestination ${WXFB_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME})
+    set(archiveDestination ${WXFB_INSTALL_LIBDIR}/plugins/${PLUGIN_NAME})
   elseif(APPLE)
     set(runtimeDestination wxFormBuilder.app/Contents/PlugIns)
     set(libraryDestination wxFormBuilder.app/Contents/PlugIns)
     set(archiveDestination wxFormBuilder.app/Contents/PlugIns)
   else()
-    set(runtimeDestination ${CMAKE_INSTALL_BINDIR}/wxformbuilder)
-    set(libraryDestination ${CMAKE_INSTALL_LIBDIR}/wxformbuilder)
-    set(archiveDestination ${CMAKE_INSTALL_LIBDIR}/wxformbuilder)
+    set(runtimeDestination ${WXFB_INSTALL_BINDIR}/wxformbuilder)
+    set(libraryDestination ${WXFB_INSTALL_LIBDIR}/wxformbuilder)
+    set(archiveDestination ${WXFB_INSTALL_LIBDIR}/wxformbuilder)
   endif()
-  set(resourceDestination ${CMAKE_INSTALL_DATADIR}/plugins/${PLUGIN_NAME})
+  set(resourceDestination ${WXFB_INSTALL_DATADIR}/plugins/${PLUGIN_NAME})
 
+  # TODO: Is this required or does MODULE always set this property?
+  set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
   if(WXFB_STAGE_BUILD)
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${runtimeDestination}")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${libraryDestination}")
     set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${archiveDestination}")
@@ -68,6 +71,14 @@ function(wxfb_add_plugin PLUGIN_NAME)
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
     OUTPUT_NAME ${PLUGIN_NAME}
   )
+  if(APPLE) 
+    # The current plugin loader code requires this extension
+    # TODO: Setting CMAKE_SHARED_MODULE_SUFFIX inside this function has no effect, setting it
+    #       in the toplevel CMake file has. Setting the property directly does also work.
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
+      SUFFIX ".dylib"
+    )
+  endif()
 
   target_sources(wxFormBuilder_${PLUGIN_NAME}
     PRIVATE
