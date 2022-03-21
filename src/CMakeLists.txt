@@ -72,7 +72,6 @@ target_sources(wxFormBuilder_app
     rad/menueditor.h
     rad/palette.cpp
     rad/palette.h
-    "${CMAKE_CURRENT_BINARY_DIR}/rad/revision.cpp"
     rad/revision.cpp.in
     rad/revision.h
     rad/title.cpp

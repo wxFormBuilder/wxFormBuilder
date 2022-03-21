@@ -6,61 +6,61 @@ Determine git revision and generate target file from template file if it did cha
 This script is meant to be executed during the build phase by CMake.
 
 Input parameters:
-- gitRequired: If true, it is an error if the git revision can't be determined
-- gitDirectory: Working directory of the git command
-- gitTemplate: Path to the template file
-- gitOutput: Path to the generated file
+- scmRequired: If true, it is an error if the git revision can't be determined
+- scmDirectory: Working directory of the git command
+- scmTemplate: Path to the template file
+- scmOutput: Path to the generated file
 
 Template parameters:
-- GIT_REVISION: Revision short hash
-- GIT_DESCRIBE: Long describe output
-- GIT_TAG_NAME: Name of closest tag
-- GIT_TAG_DISTANCE: Distance in commits to closest tag
-- GIT_DIRTY: Dirty flag of working copy
+- SCM_REVISION: Revision short hash
+- SCM_DESCRIBE: Long describe output
+- SCM_TAG_NAME: Name of closest tag
+- SCM_TAG_DISTANCE: Distance in commits to closest tag
+- SCM_DIRTY: Dirty flag of working copy
 ]]
 
-set(GIT_REVISION "")
-set(GIT_DESCRIBE "")
-set(GIT_TAG_NAME "")
-set(GIT_TAG_DISTANCE "0")
-set(GIT_DIRTY "false")
+set(SCM_REVISION "0")
+set(SCM_DESCRIBE "")
+set(SCM_TAG_NAME "")
+set(SCM_TAG_DISTANCE "0")
+set(SCM_DIRTY "false")
 
-if(gitRequired)
-  set(git_message_level FATAL_ERROR)
+if(scmRequired)
+  set(scm_message_level FATAL_ERROR)
 else()
-  set(git_message_level WARNING)
+  set(scm_message_level WARNING)
 endif()
 
-find_program(git_cmd NAMES git)
-if (git_cmd)
+find_program(scm_cmd NAMES git)
+if (scm_cmd)
   execute_process(
-    COMMAND "${git_cmd}" rev-parse --short HEAD
-    WORKING_DIRECTORY "${gitDirectory}"
-    RESULT_VARIABLE git_result
-    OUTPUT_VARIABLE GIT_REVISION
+    COMMAND "${scm_cmd}" rev-parse --short HEAD
+    WORKING_DIRECTORY "${scmDirectory}"
+    RESULT_VARIABLE scm_result
+    OUTPUT_VARIABLE SCM_REVISION
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
-  if(NOT git_result)
+  if(NOT scm_result)
     execute_process(
-      COMMAND "${git_cmd}" describe --long --dirty
-      WORKING_DIRECTORY "${gitDirectory}"
-      RESULT_VARIABLE git_result
-      OUTPUT_VARIABLE GIT_DESCRIBE
+      COMMAND "${scm_cmd}" describe --long --dirty
+      WORKING_DIRECTORY "${scmDirectory}"
+      RESULT_VARIABLE scm_result
+      OUTPUT_VARIABLE SCM_DESCRIBE
       OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    if(NOT git_result)
+    if(NOT scm_result)
       execute_process(
-        COMMAND "${git_cmd}" describe --abbrev=0
-        WORKING_DIRECTORY "${gitDirectory}"
-        RESULT_VARIABLE git_result
-        OUTPUT_VARIABLE GIT_TAG_NAME
+        COMMAND "${scm_cmd}" describe --abbrev=0
+        WORKING_DIRECTORY "${scmDirectory}"
+        RESULT_VARIABLE scm_result
+        OUTPUT_VARIABLE SCM_TAG_NAME
         OUTPUT_STRIP_TRAILING_WHITESPACE
       )
       execute_process(
-        COMMAND "${git_cmd}" rev-list --count "${GIT_TAG_NAME}..HEAD"
-        WORKING_DIRECTORY "${gitDirectory}"
-        RESULT_VARIABLE git_result
-        OUTPUT_VARIABLE GIT_TAG_DISTANCE
+        COMMAND "${scm_cmd}" rev-list --count "${SCM_TAG_NAME}..HEAD"
+        WORKING_DIRECTORY "${scmDirectory}"
+        RESULT_VARIABLE scm_result
+        OUTPUT_VARIABLE SCM_TAG_DISTANCE
         OUTPUT_STRIP_TRAILING_WHITESPACE
       )
     else()
@@ -68,24 +68,24 @@ if (git_cmd)
       message(WARNING "Git could not describe")
     endif()
     execute_process(
-      COMMAND "${git_cmd}" status --porcelain --ignore-submodules=none -unormal
-      WORKING_DIRECTORY "${gitDirectory}"
-      RESULT_VARIABLE git_result
-      OUTPUT_VARIABLE git_discard
+      COMMAND "${scm_cmd}" status --porcelain --ignore-submodules=none -unormal
+      WORKING_DIRECTORY "${scmDirectory}"
+      RESULT_VARIABLE scm_result
+      OUTPUT_VARIABLE scm_discard
       OUTPUT_STRIP_TRAILING_WHITESPACE
-      ERROR_VARIABLE git_discard
+      ERROR_VARIABLE scm_discard
       ERROR_STRIP_TRAILING_WHITESPACE
     )
-    if(NOT git_result AND NOT git_discard)
-      set(GIT_DIRTY "false")
+    if(NOT scm_result AND NOT scm_discard)
+      set(SCM_DIRTY "false")
     else()
-      set(GIT_DIRTY "true")
+      set(SCM_DIRTY "true")
     endif()
   else()
-    message(${git_message_level} "Git could not determine a revision")
+    message(${scm_message_level} "Git could not determine a revision")
   endif()
 else()
-  message(${git_message_level} "Git not found")
+  message(${scm_message_level} "Git not found")
 endif()
 
-configure_file("${gitTemplate}" "${gitOutput}" @ONLY)
+configure_file("${scmTemplate}" "${scmOutput}" @ONLY)
