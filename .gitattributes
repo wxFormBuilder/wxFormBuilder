@@ -10,3 +10,5 @@
 *.sh eol=lf
 *.make eol=lf
 Makefile eol=lf
+
+/.gitproperties export-subst
