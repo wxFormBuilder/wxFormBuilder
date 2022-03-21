@@ -21,7 +21,7 @@ relative to ${CMAKE_CURRENT_BINARY_DIR}.
 
 The revision details get queried from <working-dir>, if not specified ${PROJECT_SOURCE_DIR} is used.
 If <scm-type> is not specified, it is determined by examining <working-dir>.
-Supported values for <scm-type>: git, svn
+Supported values for <scm-type>: git, svn, gitproperties
 
 If REQUIRED is specified it is an error if no revision details can be retrieved, otherwise it is just a warning
 and the corresponding placeholders evaluate to default values (zero / empty / false).
@@ -47,18 +47,19 @@ function(get_revision arg_TARGET)
   else()
     cmake_path(ABSOLUTE_PATH arg_WORKING_DIRECTORY BASE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" NORMALIZE)
   endif()
-  set(validScmTypes git svn)
+  set(validScmTypes git svn gitproperties)
   if(NOT DEFINED arg_SCM_TYPE)
     foreach(scm IN LISTS validScmTypes)
-      if(IS_DIRECTORY "${arg_WORKING_DIRECTORY}/.${scm}")
+      if(EXISTS "${arg_WORKING_DIRECTORY}/.${scm}")
         set(arg_SCM_TYPE ${scm})
         break()
       endif()
     endforeach()
     if(NOT DEFINED arg_SCM_TYPE)
       if(arg_REQUIRED)
-        message(FATAL_ERROR "Can not determine scm-type")
+        message(FATAL_ERROR "Cannot determine scm-type")
       else()
+        message(WARNING "No scm information present")
         set(arg_SCM_TYPE none)
       endif()
     endif()
