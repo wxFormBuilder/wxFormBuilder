@@ -140,3 +140,7 @@ Running:
 ```sh
 open _install/wxFormBuilder.app
 ```
+
+## Build custom plugins
+
+For building custom wxFormBuilder plugins, refer to the [SDK documentation](./sdk/README.md).
