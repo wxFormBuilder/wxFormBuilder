@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 #[[
-Extract stored git information from file .gitproperties and generate target file from template file if it did change.
+Extract stored git information from file .git-properties and generate target file from template file if it did change.
 
 This script is meant to be executed during the build phase by CMake.
 
@@ -31,7 +31,7 @@ else()
   set(scm_message_level WARNING)
 endif()
 
-cmake_path(SET scm_file NORMALIZE "${scmDirectory}/.gitproperties")
+cmake_path(SET scm_file NORMALIZE "${scmDirectory}/.git-properties")
 if(EXISTS "${scm_file}")
   file(STRINGS "${scm_file}" scm_file_content ENCODING UTF-8)
   foreach(scm_line IN LISTS scm_file_content)

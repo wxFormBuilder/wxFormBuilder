@@ -15,4 +15,4 @@ Makefile eol=lf
 /.github export-ignore
 /.git* export-ignore
 
-/.gitproperties export-subst -export-ignore
+/.git-properties export-subst -export-ignore
