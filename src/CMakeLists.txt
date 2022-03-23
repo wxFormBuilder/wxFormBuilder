@@ -3,7 +3,7 @@ if(NOT APPLE)
     "${CMAKE_CURRENT_BINARY_DIR}/${WXFB_INSTALL_BINDIR}"
     "${CMAKE_CURRENT_BINARY_DIR}/${WXFB_INSTALL_LIBDIR}"
   )
-  set(pluginDir ${libDir}/wxformbuilder)
+  set(pluginDir "${libDir}/wxformbuilder")
 endif()
 
 set(resourceDestination ${WXFB_INSTALL_DATADIR}/resources)
@@ -16,7 +16,7 @@ endif()
 add_executable(wxFormBuilder_app WIN32 MACOSX_BUNDLE)
 add_executable(wxFormBuilder::app ALIAS wxFormBuilder_app)
 set_target_properties(wxFormBuilder_app PROPERTIES
-  OUTPUT_NAME $<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>
+  OUTPUT_NAME "$<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>"
 )
 
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
@@ -284,8 +284,8 @@ wxfb_target_definitions(wxFormBuilder_app
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
-if(TARGET wxFormBuilder_app-definitions)
-  set_target_properties(wxFormBuilder_app-definitions PROPERTIES FOLDER "Main")
+if(TARGET wxFormBuilder_app-common)
+  set_target_properties(wxFormBuilder_app-common PROPERTIES FOLDER "Main")
 endif()
 if(TARGET wxFormBuilder_app-templates)
   set_target_properties(wxFormBuilder_app-templates PROPERTIES FOLDER "Main")

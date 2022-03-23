@@ -36,7 +36,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
     set(PLUGIN_COMPONENTS ${PLUGIN_NAME})
   endif()
   if(DEFINED PLUGIN_SOURCES)
-    list(TRANSFORM PLUGIN_SOURCES PREPEND ${PLUGIN_DIRECTORY}/)
+    list(TRANSFORM PLUGIN_SOURCES PREPEND "${PLUGIN_DIRECTORY}/")
   endif()
 
   if(WIN32)
@@ -69,7 +69,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
   add_library(wxFormBuilder_${PLUGIN_NAME} MODULE)
   add_library(wxFormBuilder::${PLUGIN_NAME} ALIAS wxFormBuilder_${PLUGIN_NAME})
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-    OUTPUT_NAME ${PLUGIN_NAME}
+    OUTPUT_NAME "${PLUGIN_NAME}"
   )
   if(APPLE) 
     # The current plugin loader code requires this extension
@@ -82,7 +82,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
 
   target_sources(wxFormBuilder_${PLUGIN_NAME}
     PRIVATE
-      ${PLUGIN_DIRECTORY}/${PLUGIN_NAME}.cpp
+      "${PLUGIN_DIRECTORY}/${PLUGIN_NAME}.cpp"
   )
   if(DEFINED PLUGIN_SOURCES)
     target_sources(wxFormBuilder_${PLUGIN_NAME}
@@ -115,16 +115,16 @@ function(wxfb_add_plugin PLUGIN_NAME)
     )
   else()
     set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      INSTALL_RPATH $ORIGIN/..
+      INSTALL_RPATH "$ORIGIN/.."
     )
   endif()
 
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
 
-  # TODO: Using RUNTIME_DEPENDENCIES results in the dependencies getting installed in the locations
-  #       defined in this command, this is however unwanted because they should get installed in
-  #       the global location. Registering the dependencies in a set and installing them later with
-  #       the standalone command has the desired effect, but why?
+  # Do not install the RUNTIME_DEPENDENCIES here, because of the currently defined install locations
+  # they would get installed next to the plugin. Instead, register the dependencies in a RUNTIME_DEPENDENCY_SET
+  # and let the main application install them. This way the dependencies get installed into the locations
+  # defined by the main application.
   install(TARGETS wxFormBuilder_${PLUGIN_NAME}
     RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
     RUNTIME
@@ -140,8 +140,8 @@ function(wxfb_add_plugin PLUGIN_NAME)
     COMMON ${PLUGIN_COMPONENTS}
     TEMPLATES ${PLUGIN_COMPONENTS}
   )
-  if(TARGET wxFormBuilder_${PLUGIN_NAME}-definitions)
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-definitions PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
+  if(TARGET wxFormBuilder_${PLUGIN_NAME}-common)
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-common PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
   endif()
   if(TARGET wxFormBuilder_${PLUGIN_NAME}-templates)
     set_target_properties(wxFormBuilder_${PLUGIN_NAME}-templates PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
@@ -212,7 +212,7 @@ function(wxfb_target_definitions arg_TARGET)
         cmake_path(SET outputFile NORMALIZE "${outputDir}/${file}.xml")
         list(APPEND outputFiles "${outputFile}")
       endforeach()
-      wxfb_copy_target_resources("${arg_TARGET}" "definitions" "${inputFiles}" "${outputFiles}")
+      wxfb_copy_target_resources("${arg_TARGET}" "common" "${inputFiles}" "${outputFiles}")
     endif()
     if(DEFINED arg_INSTALL_DIRECTORY)
       wxfb_install_files("${inputDir}" "${inputFiles}" "${arg_INSTALL_DIRECTORY}/xml")

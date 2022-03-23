@@ -1,7 +1,7 @@
 add_library(wxFormBuilder_plugin-interface STATIC)
 add_library(wxFormBuilder::plugin-interface ALIAS wxFormBuilder_plugin-interface)
 set_target_properties(wxFormBuilder_plugin-interface PROPERTIES
-  OUTPUT_NAME plugin-interface
+  OUTPUT_NAME "plugin-interface"
 )
 
 target_sources(wxFormBuilder_plugin-interface
@@ -32,6 +32,7 @@ target_link_libraries(wxFormBuilder_plugin-interface
     ticpp::ticpp
 )
 
+set_target_properties(wxFormBuilder_plugin-interface PROPERTIES FOLDER "Sdk")
 get_target_property(sources wxFormBuilder_plugin-interface SOURCES)
 set(filterSources ${sources})
 list(FILTER filterSources INCLUDE REGEX "\\.h(h|pp)?$")

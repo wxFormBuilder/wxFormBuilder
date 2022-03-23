@@ -34,6 +34,7 @@ macro(wxfb_configure_postbuild)
         include(BundleUtilities)
         file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*.dylib\")
         fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
+        unset(moduleDependencies)
   
         find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
         mark_as_advanced(install_name_tool_cmd)

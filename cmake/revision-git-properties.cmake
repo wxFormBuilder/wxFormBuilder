@@ -7,7 +7,7 @@ This script is meant to be executed during the build phase by CMake.
 
 Input parameters:
 - scmRequired: If true, it is an error if the git revision can't be determined
-- scmDirectory: Working directory of the git command
+- scmDirectory: Working directory that contains the file .git-properties
 - scmTemplate: Path to the template file
 - scmOutput: Path to the generated file
 
