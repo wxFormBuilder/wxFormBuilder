@@ -120,7 +120,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
   endif()
 
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
-  wxfb_target_source_groups(wxFormBuilder_${PLUGIN_NAME})
+  wxfb_target_source_groups(wxFormBuilder_${PLUGIN_NAME} STRIP_PREFIX "${PLUGIN_DIRECTORY}")
 
   # Do not install the RUNTIME_DEPENDENCIES here, because of the currently defined install locations
   # they would get installed next to the plugin. Instead, register the dependencies in a RUNTIME_DEPENDENCY_SET
