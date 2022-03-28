@@ -126,7 +126,7 @@ find_package(wxWidgets ${wxWidgetsVersion} REQUIRED ${wxWidgetsComponentsRequire
 #       an import library can not be created (easily?), create an interface library instead.
 #       This has the drawback that this library is always in global scope, this might make it difficult to use wxWidgets
 #       with different components elsewhere.
-if(wxWidgets_FOUND AND NOT TARGET wxWidgets::wxWidgets)
+if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
   message(DEBUG "Creating target wxWidgets::wxWidgets")
   add_library(wxWidgets_wxWidgets INTERFACE)
   add_library(wxWidgets::wxWidgets ALIAS wxWidgets_wxWidgets)
@@ -162,6 +162,8 @@ if(wxWidgets_FOUND AND NOT TARGET wxWidgets::wxWidgets)
   if(wxWidgets_LIBRARIES)
     target_link_libraries(wxWidgets_wxWidgets INTERFACE ${wxWidgets_LIBRARIES})
   endif()
+else()
+  include(${wxWidgets_USE_FILE})
 endif()
 unset(wxWidgetsComponentsRequired)
 unset(wxWidgetsVersion)
