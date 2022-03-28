@@ -74,6 +74,7 @@ else()
 endif()
 option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${stageBuildDefault})
 unset(stageBuildDefault)
+option(WXFB_ENABLE_EXTRA_CHECKS "Enable additional static code analysis." OFF)
 
 # Adjust paths to match wxStandardPaths implementation, use own cache variables to share across CMake scopes
 include(GNUInstallDirs)
@@ -98,6 +99,16 @@ else()
 endif()
 # TODO: Currently generator languages cannot be configured
 set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
+if(WXFB_ENABLE_EXTRA_CHECKS)
+  set(extraOptions "")
+  if(WIN32 AND NOT MSYS)
+    list(APPEND extraOptions PATH_SUFFIXES LLVM/bin)
+  endif()
+  find_program(clang-tidy_cmd NAMES clang-tidy ${extraOptions} REQUIRED)
+  mark_as_advanced(clang-tidy_cmd)
+  unset(extraOptions)
+  set(CMAKE_CXX_CLANG_TIDY "${clang-tidy_cmd}")
+endif()
 
 include(cmake/variable.cmake)
 
