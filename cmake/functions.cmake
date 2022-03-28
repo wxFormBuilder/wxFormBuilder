@@ -71,7 +71,7 @@ function(wxfb_add_plugin PLUGIN_NAME)
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
     OUTPUT_NAME "${PLUGIN_NAME}"
   )
-  if(APPLE) 
+  if(APPLE)
     # The current plugin loader code requires this extension
     # TODO: Setting CMAKE_SHARED_MODULE_SUFFIX inside this function has no effect, setting it
     #       in the toplevel CMake file has. Setting the property directly does also work.
