@@ -15,7 +15,7 @@ ContinuationIndentWidth: 2
 DerivePointerAlignment: false
 IncludeBlocks: Regroup
 IncludeCategories:
-  # Project SDK
+  # wxFormBuilder SDK
   - Regex:           '^<(component\.h|fontcontainer\.h|plugin\.h|xrcconv\.h|forms/wizard\.h|default\.xpm)>'
     Priority:        5
   # Libraries
