@@ -20,7 +20,7 @@ set_target_properties(wxFormBuilder_app PROPERTIES
 )
 
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp)
+get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp REQUIRED)
 
 target_sources(wxFormBuilder_app
   PRIVATE
