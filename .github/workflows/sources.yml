@@ -39,6 +39,7 @@ jobs:
     - name: Create source archive
       shell: msys2 {0}
       run: |
+        git config --global core.autocrlf true
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
         git submodule foreach --recursive 'git archive --output=module.zip "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/$sm_path/" HEAD && zipmerge "$toplevel/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" module.zip && rm -f module.zip'
     - uses: actions/upload-artifact@v2
