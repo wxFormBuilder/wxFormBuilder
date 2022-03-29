@@ -16,7 +16,11 @@ jobs:
       with:
         result-encoding: string
         script: |
-          return context.ref.split('/').pop().slice(1)
+          if (context.ref.startsWith('refs/tags/')) {
+            return context.ref.split('/').pop().slice(1);
+          } else {
+            return context.ref.split('/').pop();
+          }
     - uses: actions/checkout@v2
       with:
         submodules: recursive
@@ -51,7 +55,11 @@ jobs:
       with:
         result-encoding: string
         script: |
-          return context.ref.split('/').pop().slice(1)
+          if (context.ref.startsWith('refs/tags/')) {
+            return context.ref.split('/').pop().slice(1);
+          } else {
+            return context.ref.split('/').pop();
+          }
     - uses: actions/checkout@v2
       with:
         submodules: recursive
