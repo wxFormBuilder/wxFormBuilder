@@ -16,15 +16,32 @@ jobs:
       with:
         result-encoding: string
         script: |
-          return context.ref.split('/').pop().slice(1)
+          if (context.ref.startsWith('refs/tags/')) {
+            return context.ref.split('/').pop().slice(1);
+          } else {
+            return context.ref.split('/').pop();
+          }
     - uses: actions/checkout@v2
       with:
-        path: wxFormBuilder-${{ steps.variables.outputs.result }}
         submodules: recursive
-    - name: Create source archive
-      shell: cmd
+    - name: Fetch tags
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
       run: |
-        7z a -tzip -r -x!.git -bb1 wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip ./wxFormBuilder-${{ steps.variables.outputs.result }}
+        git fetch --prune --depth=1 --no-recurse-submodules
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: mingw64
+        release: false
+        update: false
+        install: >-
+          mingw-w64-x86_64-libzip
+          git
+    - name: Create source archive
+      shell: msys2 {0}
+      run: |
+        git config --global core.autocrlf true
+        git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
+        git submodule foreach --recursive 'git archive --output=module.zip "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/$sm_path/" HEAD && zipmerge "$toplevel/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" module.zip && rm -f module.zip'
     - uses: actions/upload-artifact@v2
       with:
         name: wxFormBuilder Source (CRLF)
@@ -39,14 +56,23 @@ jobs:
       with:
         result-encoding: string
         script: |
-          return context.ref.split('/').pop().slice(1)
+          if (context.ref.startsWith('refs/tags/')) {
+            return context.ref.split('/').pop().slice(1);
+          } else {
+            return context.ref.split('/').pop();
+          }
     - uses: actions/checkout@v2
       with:
-        path: wxFormBuilder-${{ steps.variables.outputs.result }}
         submodules: recursive
+    - name: Fetch tags
+      if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+      run: |
+        git fetch --prune --depth=1 --no-recurse-submodules
     - name: Create source archive
       run: |
-        tar -czvf wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar.gz --exclude=.git ./wxFormBuilder-${{ steps.variables.outputs.result }}
+        git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
+        git submodule foreach --recursive 'git archive --output=module.tar "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/$sm_path/" HEAD && tar -Af "$toplevel/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" module.tar && rm -f module.tar'
+        gzip "wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar"
     - uses: actions/upload-artifact@v2
       with:
         name: wxFormBuilder Source (LF)
