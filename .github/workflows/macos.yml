@@ -2,6 +2,7 @@ name: macOS
 on:
   push:
     branches-ignore:
+      - '**/sources/**'
       - '**/windows/**'
       - '**/linux/**'
     paths-ignore:

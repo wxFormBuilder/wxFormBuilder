@@ -1,6 +1,8 @@
 name: Sources
 on:
   push:
+    branches:
+      - '**/sources/**'
     tags:
       - v*
 

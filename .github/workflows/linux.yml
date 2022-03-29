@@ -2,6 +2,7 @@ name: Linux
 on:
   push:
     branches-ignore:
+      - '**/sources/**'
       - '**/windows/**'
       - '**/macos/**'
     paths-ignore:
