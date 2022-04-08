@@ -77,7 +77,6 @@ target_sources(wxFormBuilder_app
     rad/menueditor.h
     rad/palette.cpp
     rad/palette.h
-    rad/revision.cpp.in
     rad/revision.h
     rad/title.cpp
     rad/title.h

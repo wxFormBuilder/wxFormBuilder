@@ -27,6 +27,8 @@ Supported values for <scm-type>: git, svn, git-properties
 
 If REQUIRED is specified it is an error if no revision details can be retrieved, otherwise it is just a warning
 and the corresponding placeholders evaluate to default values (zero / empty / false).
+
+The <input-file>, <output-file> get added as source to <target>.
 ]]
 function(get_revision arg_TARGET)
   set(options REQUIRED)
@@ -86,4 +88,7 @@ function(get_revision arg_TARGET)
     set_target_properties(${arg_TARGET}-revision PROPERTIES FOLDER "${arg_FOLDER}")
   endif()
   target_sources(${arg_TARGET} PRIVATE "${arg_OUTPUT_FILE}")
+
+  set_source_files_properties("${arg_INPUT_FILE}" TARGET_DIRECTORY ${arg_TARGET} PROPERTIES HEADER_FILE_ONLY ON)
+  target_sources(${arg_TARGET} PRIVATE "${arg_INPUT_FILE}")
 endfunction()
