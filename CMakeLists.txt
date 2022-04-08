@@ -7,7 +7,8 @@ project(wxFormBuilder VERSION 3.10.1 LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(PROJECT_IS_TOP_LEVEL)
+
+if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
   set(buildTypes "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
   set(defaultBuildType "Debug")
   if(NOT isMultiConfig)
@@ -22,6 +23,10 @@ if(PROJECT_IS_TOP_LEVEL)
   unset(defaultBuildType)
   unset(buildTypes)
 
+  set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+endif()
+
+if(PROJECT_IS_TOP_LEVEL)
   # TODO: This is not the ideal solution to apply these warning flags.
   #       Toolchain files are not really intended for this purpose.
   #       Presets would be a viable solution, but currently, at least on VSCode, this
@@ -37,8 +42,6 @@ if(PROJECT_IS_TOP_LEVEL)
     # This assumes GCC
     string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
   endif()
-
-  set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
