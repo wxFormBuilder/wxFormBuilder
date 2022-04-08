@@ -379,9 +379,9 @@ wxfb_target_source_groups(<target>
                           [STRIP_SOURCE_PREFIX <strip-source-prefix>]
                           [STRIP_BINARY_PREFIX <strip-binary-prefix>])
 
-Create source groups "Header Files", "Source Files", "Generated Files" for the source files
-of the target <target>. Only files inside the directory trees rooted at SOURCE_DIR and BINARY_DIR
-of <target> are grouped.
+Create source groups "Header Files", "Header Templates", "Source Files", "Source Templates",
+"Generated Files" for the source files of the target <target>. Only files inside the directory
+trees rooted at SOURCE_DIR and BINARY_DIR of <target> are grouped.
 
 If specified, the common path prefix <strip-source-prefix> of the files inside SOURCE_DIR and
 the common path prefix <strip-binary-prefix> of the files inside BINARY_DIR gets removed,
@@ -430,19 +430,34 @@ function(wxfb_target_source_groups arg_TARGET)
   list(FILTER binaryFiles INCLUDE REGEX "^${binaryDir}/")
 
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?(\\.in)?$")
+  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Header Files"
     FILES ${filterSources}
   )
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?(\\.in)?$")
+  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?\\.in$")
+  source_group(
+    TREE "${sourceTreeDir}"
+    PREFIX "Header Templates"
+    FILES ${filterSources}
+  )
+  set(filterSources ${sourceFiles})
+  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Source Files"
     FILES ${filterSources}
   )
+  set(filterSources ${sourceFiles})
+  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?\\.in$")
+  source_group(
+    TREE "${sourceTreeDir}"
+    PREFIX "Source Templates"
+    FILES ${filterSources}
+  )
+
   set(filterSources ${binaryFiles})
   list(FILTER filterSources INCLUDE REGEX "^${binaryDir}/")
   source_group(
