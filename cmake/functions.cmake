@@ -377,7 +377,8 @@ Create default source groups.
 wxfb_target_source_groups(<target>
                           [STRIP_PREFIX <strip-prefix>]
                           [STRIP_SOURCE_PREFIX <strip-source-prefix>]
-                          [STRIP_BINARY_PREFIX <strip-binary-prefix>])
+                          [STRIP_BINARY_PREFIX <strip-binary-prefix>]
+                          [EXTRA_BINARY_DIRECTORY <extra-binary-dir>])
 
 Create source groups "Header Files", "Header Templates", "Source Files", "Source Templates",
 "Generated Files" for the source files of the target <target>. Only files inside the directory
@@ -387,10 +388,15 @@ If specified, the common path prefix <strip-source-prefix> of the files inside S
 the common path prefix <strip-binary-prefix> of the files inside BINARY_DIR gets removed,
 it is an error if not all paths start with that prefix. Use <strip-prefix> if the same prefix
 should be used for SOURCE_DIR and BINARY_DIR, the other two parameters must not be specified in that case.
+
+If <extra-binary-dir> is specified, source files of <target> inside that directory will also get added
+to the group "Generated Files", no prefix stripping will be applied to these files. If <extra-binary-dir>
+is not absolute it is interpreted relative to ${CMAKE_CURRENT_BINARY_DIR}. The <extra-binary-dir> may
+contain BINARY_DIR of <target>, the contents of BINARY_DIR will get excluded when processing <extra-binary-dir>.
 ]]
 function(wxfb_target_source_groups arg_TARGET)
   set(options "")
-  set(singleValues STRIP_PREFIX STRIP_SOURCE_PREFIX STRIP_BINARY_PREFIX)
+  set(singleValues STRIP_PREFIX STRIP_SOURCE_PREFIX STRIP_BINARY_PREFIX EXTRA_BINARY_DIRECTORY)
   set(multiValues "")
   cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
 
@@ -414,6 +420,9 @@ function(wxfb_target_source_groups arg_TARGET)
     cmake_path(SET binaryTreeDir NORMALIZE "${binaryDir}/${arg_STRIP_BINARY_PREFIX}")
   else()
     set(binaryTreeDir "${binaryDir}")
+  endif()
+  if(DEFINED arg_EXTRA_BINARY_DIRECTORY)
+    cmake_path(ABSOLUTE_PATH arg_EXTRA_BINARY_DIRECTORY BASE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}" NORMALIZE)
   endif()
 
   set(fileSources "")
@@ -465,4 +474,16 @@ function(wxfb_target_source_groups arg_TARGET)
     PREFIX "Generated Files"
     FILES ${filterSources}
   )
+  if(DEFINED arg_EXTRA_BINARY_DIRECTORY)
+    # If the specified directory contains the binary dir of the target, the files will get added
+    # twice with a different path, so exclude that directory.
+    set(filterSources ${fileSources})
+    list(FILTER filterSources INCLUDE REGEX "^${arg_EXTRA_BINARY_DIRECTORY}/")
+    list(FILTER filterSources EXCLUDE REGEX "^${binaryDir}/")
+    source_group(
+      TREE "${arg_EXTRA_BINARY_DIRECTORY}"
+      PREFIX "Generated Files"
+      FILES ${filterSources}
+    )
+  endif()
 endfunction()
