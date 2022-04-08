@@ -375,18 +375,22 @@ endfunction()
 Create default source groups.
 
 wxfb_target_source_groups(<target>
-                          [STRIP_PREFIX <strip-prefix>])
+                          [STRIP_PREFIX <strip-prefix>]
+                          [STRIP_SOURCE_PREFIX <strip-source-prefix>]
+                          [STRIP_BINARY_PREFIX <strip-binary-prefix>])
 
 Create source groups "Header Files", "Source Files", "Generated Files" for the source files
 of the target <target>. Only files inside the directory trees rooted at SOURCE_DIR and BINARY_DIR
 of <target> are grouped.
 
-If specified, the common path prefix <strip-prefix> of the files gets removed from the created groups,
-it is an error if not all paths start with that prefix.
+If specified, the common path prefix <strip-source-prefix> of the files inside SOURCE_DIR and
+the common path prefix <strip-binary-prefix> of the files inside BINARY_DIR gets removed,
+it is an error if not all paths start with that prefix. Use <strip-prefix> if the same prefix
+should be used for SOURCE_DIR and BINARY_DIR, the other two parameters must not be specified in that case.
 ]]
 function(wxfb_target_source_groups arg_TARGET)
   set(options "")
-  set(singleValues STRIP_PREFIX)
+  set(singleValues STRIP_PREFIX STRIP_SOURCE_PREFIX STRIP_BINARY_PREFIX)
   set(multiValues "")
   cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
 
@@ -394,11 +398,21 @@ function(wxfb_target_source_groups arg_TARGET)
   get_target_property(binaryDir ${arg_TARGET} BINARY_DIR)
   get_target_property(sources ${arg_TARGET} SOURCES)
 
-  if(arg_STRIP_PREFIX)
-    cmake_path(SET sourceTreeDir NORMALIZE "${sourceDir}/${arg_STRIP_PREFIX}")
-    cmake_path(SET binaryTreeDir NORMALIZE "${binaryDir}/${arg_STRIP_PREFIX}")
+  if(DEFINED arg_STRIP_PREFIX)
+    if(DEFINED arg_STRIP_SOURCE_PREFIX OR DEFINED arg_STRIP_BINARY_PREFIX)
+      message(FATAL_ERROR "STRIP_PREFIX must not be used together with STRIP_SOURCE_PREFIX or STRIP_BINARY_PREFIX")
+    endif()
+    set(arg_STRIP_SOURCE_PREFIX "${arg_STRIP_PREFIX}")
+    set(arg_STRIP_BINARY_PREFIX "${arg_STRIP_PREFIX}")
+  endif()
+  if(DEFINED arg_STRIP_SOURCE_PREFIX)
+    cmake_path(SET sourceTreeDir NORMALIZE "${sourceDir}/${arg_STRIP_SOURCE_PREFIX}")
   else()
     set(sourceTreeDir "${sourceDir}")
+  endif()
+  if(DEFINED arg_STRIP_BINARY_PREFIX)
+    cmake_path(SET binaryTreeDir NORMALIZE "${binaryDir}/${arg_STRIP_BINARY_PREFIX}")
+  else()
     set(binaryTreeDir "${binaryDir}")
   endif()
 
