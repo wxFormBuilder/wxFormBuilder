@@ -7,7 +7,8 @@ project(wxFormBuilder VERSION 3.10.1 LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
 get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(PROJECT_IS_TOP_LEVEL)
+
+if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
   set(buildTypes "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
   set(defaultBuildType "Debug")
   if(NOT isMultiConfig)
@@ -22,6 +23,10 @@ if(PROJECT_IS_TOP_LEVEL)
   unset(defaultBuildType)
   unset(buildTypes)
 
+  set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+endif()
+
+if(PROJECT_IS_TOP_LEVEL)
   # TODO: This is not the ideal solution to apply these warning flags.
   #       Toolchain files are not really intended for this purpose.
   #       Presets would be a viable solution, but currently, at least on VSCode, this
@@ -37,8 +42,6 @@ if(PROJECT_IS_TOP_LEVEL)
     # This assumes GCC
     string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
   endif()
-
-  set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 endif()
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
@@ -54,6 +57,8 @@ endif()
 if(MSVC)
   # Disable warnings about standard conformant code that is not conform to Microsoft standards
   add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+  # Without BOM the UTF-8 encoding doesn't get detected so enforce it
+  add_compile_options(/source-charset:utf-8)
 endif()
 
 if(MSVC OR MINGW AND NOT MSYS)
@@ -76,6 +81,9 @@ option(WXFB_STAGE_BUILD "Use stage directory to build directly executable varian
 unset(stageBuildDefault)
 option(WXFB_ENABLE_EXTRA_CHECKS "Enable additional static code analysis." OFF)
 
+# TODO: Currently generator languages cannot be configured
+set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
+
 # Adjust paths to match wxStandardPaths implementation, use own cache variables to share across CMake scopes
 include(GNUInstallDirs)
 if(WIN32)
@@ -97,8 +105,7 @@ if(WXFB_STAGE_BUILD)
 else()
   unset(WXFB_STAGE_DIR CACHE)
 endif()
-# TODO: Currently generator languages cannot be configured
-set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
+
 if(WXFB_ENABLE_EXTRA_CHECKS)
   set(extraOptions "")
   if(WIN32 AND NOT MSYS)
@@ -185,6 +192,7 @@ find_package(Boost 1.71.0 REQUIRED)
 include(cmake/functions.cmake)
 include(cmake/macros.cmake)
 include(cmake/revision.cmake)
+include(cmake/version.cmake)
 
 wxfb_configure_prebuild()
 

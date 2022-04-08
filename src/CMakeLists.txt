@@ -19,8 +19,16 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   OUTPUT_NAME "$<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>"
 )
 
-configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp REQUIRED)
+get_version(wxFormBuilder_app
+  INPUT_FILE rad/version.cpp.in
+  OUTPUT_FILE rad/version.cpp
+)
+get_revision(wxFormBuilder_app
+  INPUT_FILE rad/revision.cpp.in
+  OUTPUT_FILE rad/revision.cpp
+  FOLDER "Application"
+  REQUIRED
+)
 
 target_sources(wxFormBuilder_app
   PRIVATE
@@ -72,12 +80,9 @@ target_sources(wxFormBuilder_app
     rad/menueditor.h
     rad/palette.cpp
     rad/palette.h
-    rad/revision.cpp.in
     rad/revision.h
     rad/title.cpp
     rad/title.h
-    "${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp"
-    rad/version.cpp.in
     rad/version.h
     rad/wxfbevent.cpp
     rad/wxfbevent.h
@@ -193,13 +198,8 @@ if(APPLE)
     "${PROJECT_SOURCE_DIR}/data/platform/macos/docicon.icns"
     "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
   )
-  target_sources(wxFormBuilder_app
-    PRIVATE
-      ${appleResources}
-  )
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    RESOURCE "${appleResources}"
-  )
+  target_sources(wxFormBuilder_app PRIVATE ${appleResources})
+  set_target_properties(wxFormBuilder_app PROPERTIES RESOURCE "${appleResources}")
 endif()
 
 target_compile_definitions(wxFormBuilder_app
@@ -227,7 +227,6 @@ else()
   target_link_libraries(wxFormBuilder_app PUBLIC ${wxWidgets_LIBRARIES})
 endif()
 
-
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
@@ -236,16 +235,12 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/data/platform/macos/Info.plist.in"
 )
 if(APPLE)
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    INSTALL_RPATH "@executable_path/../Frameworks;@executable_path/../PlugIns"
-  )
+  set_target_properties(wxFormBuilder_app PROPERTIES INSTALL_RPATH "@executable_path/../Frameworks;@executable_path/../PlugIns")
 else()
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
-  )
+  set_target_properties(wxFormBuilder_app PROPERTIES INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}")
 endif()
 
-set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
+set_target_properties(wxFormBuilder_app PROPERTIES FOLDER "Application")
 wxfb_target_source_groups(wxFormBuilder_app)
 
 # Use the same dependencies set like the plugins
@@ -261,29 +256,19 @@ wxfb_target_definitions(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
+  FOLDER "Application"
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
-if(TARGET wxFormBuilder_app-common)
-  set_target_properties(wxFormBuilder_app-common PROPERTIES FOLDER "Main")
-endif()
-if(TARGET wxFormBuilder_app-templates)
-  set_target_properties(wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
-endif()
 
 wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
+  FOLDER "Application"
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
-if(TARGET wxFormBuilder_app-resources)
-  set_target_properties(wxFormBuilder_app-resources PROPERTIES FOLDER "Main")
-endif()
-if(TARGET wxFormBuilder_app-icons)
-  set_target_properties(wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
-endif()
 
 install(
   FILES
@@ -311,14 +296,16 @@ if(WIN32)
   # The installation of runtime dependencies does not take the set paths into account and
   # only searches in system default paths. Therefor paths of libraries not in such locations
   # need to be specified manually. Depending on the used compiler these are different.
+  set(extraDirectories "")
   if(MSVC)
     # The compiler runtime libraries are installed in system default paths, because it is expected
     # that the runtime distributables are getting installed along the application, these need to get
     # filtered. The wxWidgets library uses the win32 search style and therefor the library path is defined
     # (TODO: Unless the CMake build gets imported, what to do then?)
+    list(APPEND extraDirectories "${wxWidgets_LIB_DIR}")
     install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
-        "${wxWidgets_LIB_DIR}"
+        ${extraDirectories}
       PRE_EXCLUDE_REGEXES
         [[api-ms-win-.*]]
         [[ext-ms-.*]]
@@ -332,7 +319,6 @@ if(WIN32)
   elseif(MINGW)
     # This environment has its own search paths which are not taken into account and must be specified.
     # Depending on the bitness of the target architecture different directories are used.
-    set(extraDirectories "")
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
       set(targetBitness 64)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -372,6 +358,6 @@ if(WIN32)
         [[.*[/\]system32/.*\.dll]]
     )
     unset(targetBitness)
-    unset(extraDirectories)
   endif()
+  unset(extraDirectories)
 endif()
