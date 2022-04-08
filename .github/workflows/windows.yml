@@ -61,7 +61,7 @@ jobs:
       with:
         msystem: ${{ matrix.sys }}
         release: false
-        update: true
+        update: false
         install: >-
           mingw-w64-${{ matrix.env }}-toolchain
           mingw-w64-${{ matrix.env }}-cmake
