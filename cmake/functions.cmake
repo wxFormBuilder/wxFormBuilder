@@ -421,22 +421,29 @@ function(wxfb_target_source_groups arg_TARGET)
     cmake_path(ABSOLUTE_PATH source BASE_DIRECTORY "${sourceDir}" NORMALIZE OUTPUT_VARIABLE file)
     list(APPEND fileSources "${file}")
   endforeach()
+  # Normally, the build tree is a subdirectory of the source tree. For the root directory the prefix match
+  # will also match the binary tree, so create separate file lists by filtering the binary prefix explicit.
+  # This will fail when doing an in-tree build, in that case everything will be classified as binary.
+  set(sourceFiles ${fileSources})
+  list(FILTER sourceFiles EXCLUDE REGEX "^${binaryDir}/")
+  set(binaryFiles ${fileSources})
+  list(FILTER binaryFiles INCLUDE REGEX "^${binaryDir}/")
 
-  set(filterSources ${fileSources})
+  set(filterSources ${sourceFiles})
   list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?(\\.in)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Header Files"
     FILES ${filterSources}
   )
-  set(filterSources ${fileSources})
+  set(filterSources ${sourceFiles})
   list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?(\\.in)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Source Files"
     FILES ${filterSources}
   )
-  set(filterSources ${fileSources})
+  set(filterSources ${binaryFiles})
   list(FILTER filterSources INCLUDE REGEX "^${binaryDir}/")
   source_group(
     TREE "${binaryTreeDir}"
