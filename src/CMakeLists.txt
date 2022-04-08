@@ -26,7 +26,7 @@ get_version(wxFormBuilder_app
 get_revision(wxFormBuilder_app
   INPUT_FILE rad/revision.cpp.in
   OUTPUT_FILE rad/revision.cpp
-  FOLDER "Main"
+  FOLDER "Application"
   REQUIRED
 )
 
@@ -240,7 +240,7 @@ else()
   set_target_properties(wxFormBuilder_app PROPERTIES INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}")
 endif()
 
-set_target_properties(wxFormBuilder_app PROPERTIES FOLDER "Main")
+set_target_properties(wxFormBuilder_app PROPERTIES FOLDER "Application")
 wxfb_target_source_groups(wxFormBuilder_app)
 
 # Use the same dependencies set like the plugins
@@ -256,7 +256,7 @@ wxfb_target_definitions(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
-  FOLDER "Main"
+  FOLDER "Application"
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
@@ -265,7 +265,7 @@ wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
-  FOLDER "Main"
+  FOLDER "Application"
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
