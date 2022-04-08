@@ -169,6 +169,7 @@ wxfb_target_definitions(<target>
                         INPUT_DIRECTORY <input-dir>
                         [OUTPUT_DIRECTORY <output-dir>]
                         [INSTALL_DIRECTORY <install-dir>]
+                        [FOLDER <folder>]
                         [COMMON <common>...]
                         [TEMPLATES <template>...])
 
@@ -181,16 +182,21 @@ steps are skipped.
 If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
 it is interpreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
 
+If <folder> is specified, the created utility targets will be placed into that folder.
+
 Simple definition files are specified with COMMON, code templates are specified with TEMPLATES.
 ]]
 function(wxfb_target_definitions arg_TARGET)
   set(options "")
-  set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY)
+  set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY FOLDER)
   set(multiValues COMMON TEMPLATES)
   cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
 
   if(NOT DEFINED arg_INPUT_DIRECTORY)
     message(FATAL_ERROR "No input directory specified")
+  endif()
+  if(NOT DEFINED arg_FOLDER)
+    set(arg_FOLDER "")
   endif()
 
   cmake_path(ABSOLUTE_PATH arg_INPUT_DIRECTORY BASE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" NORMALIZE OUTPUT_VARIABLE inputDir)
@@ -213,7 +219,7 @@ function(wxfb_target_definitions arg_TARGET)
         cmake_path(SET outputFile NORMALIZE "${outputDir}/${file}.xml")
         list(APPEND outputFiles "${outputFile}")
       endforeach()
-      wxfb_copy_target_resources("${arg_TARGET}" "common" "${inputFiles}" "${outputFiles}")
+      wxfb_copy_target_resources("${arg_TARGET}" "common" "${arg_FOLDER}" "${inputFiles}" "${outputFiles}")
     endif()
     if(DEFINED arg_INSTALL_DIRECTORY)
       wxfb_install_files("${inputDir}" "${inputFiles}" "${arg_INSTALL_DIRECTORY}/xml")
@@ -237,7 +243,7 @@ function(wxfb_target_definitions arg_TARGET)
           list(APPEND outputFiles "${outputFile}")
         endforeach()
       endforeach()
-      wxfb_copy_target_resources("${arg_TARGET}" "templates" "${inputFiles}" "${outputFiles}")
+      wxfb_copy_target_resources("${arg_TARGET}" "templates" "${arg_FOLDER}" "${inputFiles}" "${outputFiles}")
     endif()
     if(DEFINED arg_INSTALL_DIRECTORY)
       wxfb_install_files("${inputDir}" "${inputFiles}" "${arg_INSTALL_DIRECTORY}/xml")
@@ -253,6 +259,7 @@ wxfb_target_resources(<target>
                       INPUT_DIRECTORY <input-dir>
                       [OUTPUT_DIRECTORY <output-dir>]
                       [INSTALL_DIRECTORY <install-dir>]
+                      [FOLDER <folder>]
                       [RESOURCES <resource>...]
                       [ICONS <icon>...])
 
@@ -265,17 +272,22 @@ steps are skipped.
 If <input-dir> is not absolute it is interpreted relative to ${CMAKE_CURRENT_SOURCE_DIR}, if <output-dir> is not absolute
 it is interpreted relative to ${CMAKE_CURRENT_BINARY_DIR}.
 
+If <folder> is specified, the created utility targets will be placed into that folder.
+
 Simple resources are specified with RESOURCES, icons are specified with ICONS. Icons must reside in the icon subdirectory
 of <input-dir>.
 ]]
 function(wxfb_target_resources arg_TARGET)
   set(options "")
-  set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY)
+  set(singleValues INPUT_DIRECTORY OUTPUT_DIRECTORY INSTALL_DIRECTORY FOLDER)
   set(multiValues RESOURCES ICONS)
   cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
 
   if(NOT DEFINED arg_INPUT_DIRECTORY)
     message(FATAL_ERROR "No input directory specified")
+  endif()
+  if(NOT DEFINED arg_FOLDER)
+    set(arg_FOLDER "")
   endif()
 
   if(DEFINED arg_RESOURCES)
@@ -293,7 +305,7 @@ function(wxfb_target_resources arg_TARGET)
         cmake_path(SET outputFile NORMALIZE "${outputDir}/${file}")
         list(APPEND outputFiles "${outputFile}")
       endforeach()
-      wxfb_copy_target_resources("${arg_TARGET}" "resources" "${inputFiles}" "${outputFiles}")
+      wxfb_copy_target_resources("${arg_TARGET}" "resources" "${arg_FOLDER}" "${inputFiles}" "${outputFiles}")
     endif()
     if(DEFINED arg_INSTALL_DIRECTORY)
       wxfb_install_files("${inputDir}" "${inputFiles}" "${arg_INSTALL_DIRECTORY}")
@@ -317,7 +329,7 @@ function(wxfb_target_resources arg_TARGET)
         cmake_path(SET outputFile NORMALIZE "${outputDir}/${file}")
         list(APPEND outputFiles "${outputFile}")
       endforeach()
-      wxfb_copy_target_resources("${arg_TARGET}" "icons" "${inputFiles}" "${outputFiles}")
+      wxfb_copy_target_resources("${arg_TARGET}" "icons" "${arg_FOLDER}" "${inputFiles}" "${outputFiles}")
     endif()
     if(DEFINED arg_INSTALL_DIRECTORY)
       wxfb_install_files("${inputDir}" "${inputFiles}" "${arg_INSTALL_DIRECTORY}/icons")
@@ -329,15 +341,17 @@ endfunction()
 #[[
 Helper function to copy files from source tree into binary tree with dependency tracking.
 
-wxfb_copy_target_resources(<target> <name> <source-files> <destination-files>)
+wxfb_copy_target_resources(<target> <name> <folder> <source-files> <destination-files>)
 
 This function must be called at most one time for <target>.
 
 During the build phase all <source-files> files are copied to <destination-files>. Both lists must contain files with
 absolute paths and must be matching, each source entry is copied to the corresponding destination entry.
+
 A target <target>-<name> is added to the default build target to track updates of <source-files>.
+If <folder> is not empty, the created target gets placed into that folder.
 ]]
-function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
+function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_FOLDER arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
   add_custom_command(OUTPUT ${arg_DESTINATION_ITEMS} COMMENT "${arg_TARGET}: Copying ${arg_NAME}")
   foreach(src dst IN ZIP_LISTS arg_SOURCE_ITEMS arg_DESTINATION_ITEMS)
     add_custom_command(
@@ -349,6 +363,9 @@ function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_SOURCE_ITEMS arg_DES
     )
   endforeach()
   add_custom_target(${arg_TARGET}-${arg_NAME} ALL DEPENDS ${arg_DESTINATION_ITEMS})
+  if(NOT arg_FOLDER STREQUAL "")
+    set_target_properties(${arg_TARGET}-${arg_NAME} PROPERTIES FOLDER "${arg_FOLDER}")
+  endif()
 endfunction()
 
 

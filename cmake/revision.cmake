@@ -8,11 +8,13 @@ get_revision(<target>
              OUTPUT_FILE <output-file>
              [WORKING_DIRECTORY <working-dir>]
              [SCM_TYPE <scm-type>]
+             [FOLDER <folder>]
              [REQUIRED])
 
 This function must be called at most one time for <target>.
 
 The revision details are queried during the build phase, an utility target <target>-revision is created.
+If <folder> is specified, the utility target will be placed into that folder.
 
 In the template file <input-file> the placeholders get replaced with revision information and the result
 is written to <output-file>, for supported placeholders see revision-<scm-type>.cmake. If <input-file> is not absolute
@@ -28,7 +30,7 @@ and the corresponding placeholders evaluate to default values (zero / empty / fa
 ]]
 function(get_revision arg_TARGET)
   set(options REQUIRED)
-  set(singleValues INPUT_FILE OUTPUT_FILE WORKING_DIRECTORY SCM_TYPE)
+  set(singleValues INPUT_FILE OUTPUT_FILE WORKING_DIRECTORY SCM_TYPE FOLDER)
   set(multiValues "")
   cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
 
@@ -80,5 +82,8 @@ function(get_revision arg_TARGET)
     COMMENT "${arg_TARGET}: Getting revision details"
     VERBATIM
   )
+  if(DEFINED arg_FOLDER)
+    set_target_properties(${arg_TARGET}-revision PROPERTIES FOLDER "${arg_FOLDER}")
+  endif()
   target_sources(${arg_TARGET} PRIVATE "${arg_OUTPUT_FILE}")
 endfunction()
