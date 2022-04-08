@@ -76,6 +76,9 @@ option(WXFB_STAGE_BUILD "Use stage directory to build directly executable varian
 unset(stageBuildDefault)
 option(WXFB_ENABLE_EXTRA_CHECKS "Enable additional static code analysis." OFF)
 
+# TODO: Currently generator languages cannot be configured
+set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
+
 # Adjust paths to match wxStandardPaths implementation, use own cache variables to share across CMake scopes
 include(GNUInstallDirs)
 if(WIN32)
@@ -97,8 +100,7 @@ if(WXFB_STAGE_BUILD)
 else()
   unset(WXFB_STAGE_DIR CACHE)
 endif()
-# TODO: Currently generator languages cannot be configured
-set(WXFB_GENERATOR_LANGUAGES cpp python lua php CACHE INTERNAL "")
+
 if(WXFB_ENABLE_EXTRA_CHECKS)
   set(extraOptions "")
   if(WIN32 AND NOT MSYS)
