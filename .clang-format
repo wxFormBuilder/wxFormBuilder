@@ -27,7 +27,7 @@ IncludeCategories:
   - Regex:           '^<ticpp'
     Priority:        4
   # C standard library headers
-  - Regex:           '<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdatomic|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstdnoreturn|cstring|ctgmath|cthreads|ctime|cuchar|cwchar|cwctype)>'
+  - Regex:           '^<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdatomic|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstdnoreturn|cstring|ctgmath|cthreads|ctime|cuchar|cwchar|cwctype)>'
     Priority:        2
   # C system headers
   - Regex:           '^<.*\.h>'
@@ -36,7 +36,7 @@ IncludeCategories:
   - Regex:           '^<[[:alnum:]_]+>'
     Priority:        3
   # Project headers
-  - Regex:           '^".*\.h.?.?"'
+  - Regex:           '^".*\.h(h|pp)?"'
     Priority:        6
 IndentPPDirectives: BeforeHash
 IndentWidth: 4
