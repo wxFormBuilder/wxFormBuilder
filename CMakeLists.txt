@@ -185,6 +185,7 @@ find_package(Boost 1.71.0 REQUIRED)
 include(cmake/functions.cmake)
 include(cmake/macros.cmake)
 include(cmake/revision.cmake)
+include(cmake/version.cmake)
 
 wxfb_configure_prebuild()
 

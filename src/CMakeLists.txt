@@ -19,7 +19,10 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   OUTPUT_NAME "$<IF:$<OR:$<BOOL:${WIN32}>,$<BOOL:${APPLE}>>,wxFormBuilder,wxformbuilder>"
 )
 
-configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
+get_version(wxFormBuilder_app
+  INPUT_FILE rad/version.cpp.in
+  OUTPUT_FILE rad/version.cpp
+)
 get_revision(wxFormBuilder_app
   INPUT_FILE rad/revision.cpp.in
   OUTPUT_FILE rad/revision.cpp
@@ -80,8 +83,6 @@ target_sources(wxFormBuilder_app
     rad/revision.h
     rad/title.cpp
     rad/title.h
-    "${CMAKE_CURRENT_BINARY_DIR}/rad/version.cpp"
-    rad/version.cpp.in
     rad/version.h
     rad/wxfbevent.cpp
     rad/wxfbevent.h
