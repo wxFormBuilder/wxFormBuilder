@@ -305,14 +305,16 @@ if(WIN32)
   # The installation of runtime dependencies does not take the set paths into account and
   # only searches in system default paths. Therefor paths of libraries not in such locations
   # need to be specified manually. Depending on the used compiler these are different.
+  set(extraDirectories "")
   if(MSVC)
     # The compiler runtime libraries are installed in system default paths, because it is expected
     # that the runtime distributables are getting installed along the application, these need to get
     # filtered. The wxWidgets library uses the win32 search style and therefor the library path is defined
     # (TODO: Unless the CMake build gets imported, what to do then?)
+    list(APPEND extraDirectories "${wxWidgets_LIB_DIR}")
     install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
-        "${wxWidgets_LIB_DIR}"
+        ${extraDirectories}
       PRE_EXCLUDE_REGEXES
         [[api-ms-win-.*]]
         [[ext-ms-.*]]
@@ -326,7 +328,6 @@ if(WIN32)
   elseif(MINGW)
     # This environment has its own search paths which are not taken into account and must be specified.
     # Depending on the bitness of the target architecture different directories are used.
-    set(extraDirectories "")
     if(CMAKE_SIZEOF_VOID_P EQUAL 8)
       set(targetBitness 64)
     elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
@@ -366,6 +367,6 @@ if(WIN32)
         [[.*[/\]system32/.*\.dll]]
     )
     unset(targetBitness)
-    unset(extraDirectories)
   endif()
+  unset(extraDirectories)
 endif()
