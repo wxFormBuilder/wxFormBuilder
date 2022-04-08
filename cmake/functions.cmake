@@ -75,48 +75,27 @@ function(wxfb_add_plugin PLUGIN_NAME)
     # The current plugin loader code requires this extension
     # TODO: Setting CMAKE_SHARED_MODULE_SUFFIX inside this function has no effect, setting it
     #       in the toplevel CMake file has. Setting the property directly does also work.
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      SUFFIX ".dylib"
-    )
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES SUFFIX ".dylib")
   endif()
 
-  target_sources(wxFormBuilder_${PLUGIN_NAME}
-    PRIVATE
-      "${PLUGIN_DIRECTORY}/${PLUGIN_NAME}.cpp"
-  )
+  target_sources(wxFormBuilder_${PLUGIN_NAME} PRIVATE "${PLUGIN_DIRECTORY}/${PLUGIN_NAME}.cpp")
   if(DEFINED PLUGIN_SOURCES)
-    target_sources(wxFormBuilder_${PLUGIN_NAME}
-      PRIVATE
-        ${PLUGIN_SOURCES}
-    )
+    target_sources(wxFormBuilder_${PLUGIN_NAME} PRIVATE ${PLUGIN_SOURCES})
   endif()
 
   if(DEFINED PLUGIN_DEFINITIONS)
-    target_compile_definitions(wxFormBuilder_${PLUGIN_NAME}
-      PRIVATE
-        ${PLUGIN_DEFINITIONS}
-    )
+    target_compile_definitions(wxFormBuilder_${PLUGIN_NAME} PRIVATE ${PLUGIN_DEFINITIONS})
   endif()
 
-  target_link_libraries(wxFormBuilder_${PLUGIN_NAME}
-    PUBLIC
-      wxFormBuilder::plugin-interface
-  )
+  target_link_libraries(wxFormBuilder_${PLUGIN_NAME} PUBLIC wxFormBuilder::plugin-interface)
   if(DEFINED PLUGIN_LIBRARIES)
-    target_link_libraries(wxFormBuilder_${PLUGIN_NAME}
-      PRIVATE
-        ${PLUGIN_LIBRARIES}
-    )
+    target_link_libraries(wxFormBuilder_${PLUGIN_NAME} PRIVATE ${PLUGIN_LIBRARIES})
   endif()
 
   if(APPLE)
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      INSTALL_RPATH "@loader_path/../Frameworks"
-    )
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES INSTALL_RPATH "@loader_path/../Frameworks")
   else()
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES
-      INSTALL_RPATH "$ORIGIN/.."
-    )
+    set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES INSTALL_RPATH "$ORIGIN/..")
   endif()
 
   set_target_properties(wxFormBuilder_${PLUGIN_NAME} PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")

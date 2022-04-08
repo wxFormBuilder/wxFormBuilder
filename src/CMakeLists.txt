@@ -198,13 +198,8 @@ if(APPLE)
     "${PROJECT_SOURCE_DIR}/data/platform/macos/docicon.icns"
     "${PROJECT_SOURCE_DIR}/data/platform/macos/icon.icns"
   )
-  target_sources(wxFormBuilder_app
-    PRIVATE
-      ${appleResources}
-  )
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    RESOURCE "${appleResources}"
-  )
+  target_sources(wxFormBuilder_app PRIVATE ${appleResources})
+  set_target_properties(wxFormBuilder_app PROPERTIES RESOURCE "${appleResources}")
 endif()
 
 target_compile_definitions(wxFormBuilder_app
@@ -240,13 +235,9 @@ set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/data/platform/macos/Info.plist.in"
 )
 if(APPLE)
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    INSTALL_RPATH "@executable_path/../Frameworks;@executable_path/../PlugIns"
-  )
+  set_target_properties(wxFormBuilder_app PROPERTIES INSTALL_RPATH "@executable_path/../Frameworks;@executable_path/../PlugIns")
 else()
-  set_target_properties(wxFormBuilder_app PROPERTIES
-    INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}"
-  )
+  set_target_properties(wxFormBuilder_app PROPERTIES INSTALL_RPATH "$ORIGIN/${libDir};$ORIGIN/${pluginDir}")
 endif()
 
 set_target_properties(wxFormBuilder_app PROPERTIES FOLDER "Main")
