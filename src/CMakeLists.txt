@@ -20,7 +20,12 @@ set_target_properties(wxFormBuilder_app PROPERTIES
 )
 
 configure_file(rad/version.cpp.in rad/version.cpp @ONLY)
-get_revision(wxFormBuilder_app INPUT_FILE rad/revision.cpp.in OUTPUT_FILE rad/revision.cpp REQUIRED)
+get_revision(wxFormBuilder_app
+  INPUT_FILE rad/revision.cpp.in
+  OUTPUT_FILE rad/revision.cpp
+  FOLDER "Main"
+  REQUIRED
+)
 
 target_sources(wxFormBuilder_app
   PRIVATE
@@ -227,7 +232,6 @@ else()
   target_link_libraries(wxFormBuilder_app PUBLIC ${wxWidgets_LIBRARIES})
 endif()
 
-
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
@@ -245,7 +249,7 @@ else()
   )
 endif()
 
-set_target_properties(wxFormBuilder_app wxFormBuilder_app-revision PROPERTIES FOLDER "Main")
+set_target_properties(wxFormBuilder_app PROPERTIES FOLDER "Main")
 wxfb_target_source_groups(wxFormBuilder_app)
 
 # Use the same dependencies set like the plugins
@@ -261,29 +265,19 @@ wxfb_target_definitions(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
+  FOLDER "Main"
   COMMON ${commonDefinitions}
   TEMPLATES ${templateDefinitions}
 )
-if(TARGET wxFormBuilder_app-common)
-  set_target_properties(wxFormBuilder_app-common PROPERTIES FOLDER "Main")
-endif()
-if(TARGET wxFormBuilder_app-templates)
-  set_target_properties(wxFormBuilder_app-templates PROPERTIES FOLDER "Main")
-endif()
 
 wxfb_target_resources(wxFormBuilder_app
   INPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources"
   OUTPUT_DIRECTORY "${stageResourceDestination}"
   INSTALL_DIRECTORY "${resourceDestination}"
+  FOLDER "Main"
   RESOURCES ${commonResources}
   ICONS ${commonIcons}
 )
-if(TARGET wxFormBuilder_app-resources)
-  set_target_properties(wxFormBuilder_app-resources PROPERTIES FOLDER "Main")
-endif()
-if(TARGET wxFormBuilder_app-icons)
-  set_target_properties(wxFormBuilder_app-icons PROPERTIES FOLDER "Main")
-endif()
 
 install(
   FILES

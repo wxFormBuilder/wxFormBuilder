@@ -138,26 +138,19 @@ function(wxfb_add_plugin PLUGIN_NAME)
     INPUT_DIRECTORY "${PLUGIN_DIRECTORY}"
     OUTPUT_DIRECTORY "${stageResourceDestination}"
     INSTALL_DIRECTORY "${resourceDestination}"
+    FOLDER "Plugins/${PLUGIN_NAME}"
     COMMON ${PLUGIN_COMPONENTS}
     TEMPLATES ${PLUGIN_COMPONENTS}
   )
-  if(TARGET wxFormBuilder_${PLUGIN_NAME}-common)
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-common PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
-  endif()
-  if(TARGET wxFormBuilder_${PLUGIN_NAME}-templates)
-    set_target_properties(wxFormBuilder_${PLUGIN_NAME}-templates PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
-  endif()
 
   if(DEFINED PLUGIN_ICONS)
     wxfb_target_resources(wxFormBuilder_${PLUGIN_NAME}
       INPUT_DIRECTORY "${PLUGIN_DIRECTORY}"
       OUTPUT_DIRECTORY "${stageResourceDestination}"
       INSTALL_DIRECTORY "${resourceDestination}"
+      FOLDER "Plugins/${PLUGIN_NAME}"
       ICONS ${PLUGIN_ICONS}
     )
-    if(TARGET wxFormBuilder_${PLUGIN_NAME}-icons)
-      set_target_properties(wxFormBuilder_${PLUGIN_NAME}-icons PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
-    endif()
   endif()
 endfunction()
 
