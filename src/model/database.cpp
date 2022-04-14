@@ -1175,7 +1175,10 @@ void ObjectDatabase::ImportComponentLibrary(wxString libfile, PwxFBManager manag
         );
         path = pluginLibrary->second.sharedLibrary.location().native();
     } catch (const std::system_error& ex) {
-        THROW_WXFBEX("Error loading library " << libfile << ": " << ex.what())
+        //TODO: Workaround for exception messages received from at least MSVC 2019 and 2022 containing percent placeholders
+        wxString escapedEx(ex.what());
+        escapedEx.Replace("%", "%%");
+        THROW_WXFBEX("Error loading library " << libfile << ": " << escapedEx)
     }
     try {
         pluginLibrary->second.getComponentLibrary =
