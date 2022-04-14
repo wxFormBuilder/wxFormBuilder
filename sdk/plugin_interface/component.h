@@ -34,22 +34,12 @@
 #include "fontcontainer.h"
 
 
-#define COMPONENT_TYPE_ABSTRACT 0
-#define COMPONENT_TYPE_WINDOW 1
-#define COMPONENT_TYPE_SIZER 2
-
 namespace ticpp
 {
 class Element;
 }
 
 class IComponent;
-
-// Sections for source code generation
-enum { CG_DECLARATION, CG_CONSTRUCTION, CG_POST_CONSTRUCTION, CG_SETTINGS };
-
-// Programming languages for source code generation
-enum { CG_CPP };
 
 
 // Plugins interface
@@ -58,24 +48,27 @@ enum { CG_CPP };
 class IObject
 {
 public:
-    virtual bool IsNull(const wxString& pname) = 0;
-    virtual int GetPropertyAsInteger(const wxString& pname) = 0;
-    virtual wxFontContainer GetPropertyAsFont(const wxString& pname) = 0;
-    virtual wxColour GetPropertyAsColour(const wxString& pname) = 0;
-    virtual wxString GetPropertyAsString(const wxString& pname) = 0;
-    virtual wxPoint GetPropertyAsPoint(const wxString& pname) = 0;
-    virtual wxSize GetPropertyAsSize(const wxString& pname) = 0;
-    virtual wxBitmap GetPropertyAsBitmap(const wxString& pname) = 0;
-    virtual wxArrayInt GetPropertyAsArrayInt(const wxString& pname) = 0;
-    virtual wxArrayString GetPropertyAsArrayString(const wxString& pname) = 0;
-    virtual std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& pname) = 0;
-    virtual double GetPropertyAsFloat(const wxString& pname) = 0;
-    virtual wxString GetChildFromParentProperty(const wxString& parentName, const wxString& childName) = 0;
-    virtual wxString GetClassName() = 0;
-    virtual unsigned int GetChildCount() = 0;
-    virtual wxString GetObjectTypeName() = 0;
-    virtual IObject* GetChildPtr(unsigned int idx) = 0;
-    virtual ~IObject() {}
+    virtual ~IObject() = default;
+
+    virtual wxString GetClassName() const = 0;
+    virtual wxString GetObjectTypeName() const = 0;
+    virtual std::size_t GetChildCount() const = 0;
+    virtual IObject* GetChildObject(std::size_t index) const = 0;
+
+    virtual wxString GetChildFromParentProperty(const wxString& parentName, const wxString& childName) const = 0;
+
+    virtual bool IsPropertyNull(const wxString& name) const = 0;
+    virtual int GetPropertyAsInteger(const wxString& name) const = 0;
+    virtual double GetPropertyAsFloat(const wxString& name) const = 0;
+    virtual wxString GetPropertyAsString(const wxString& name) const = 0;
+    virtual wxPoint GetPropertyAsPoint(const wxString& name) const = 0;
+    virtual wxSize GetPropertyAsSize(const wxString& name) const = 0;
+    virtual wxBitmap GetPropertyAsBitmap(const wxString& name) const = 0;
+    virtual wxColour GetPropertyAsColour(const wxString& name) const = 0;
+    virtual wxFontContainer GetPropertyAsFont(const wxString& name) const = 0;
+    virtual wxArrayInt GetPropertyAsArrayInt(const wxString& name) const = 0;
+    virtual wxArrayString GetPropertyAsArrayString(const wxString& name) const = 0;
+    virtual std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& name) const = 0;
 };
 
 // Interface which intends to contain all the components for a plugin
@@ -83,24 +76,18 @@ public:
 class IComponentLibrary
 {
 public:
+    virtual ~IComponentLibrary() = default;
+
     // Used by the plugin for registering components and macros
-    virtual void RegisterComponent(const wxString& text, IComponent* c) = 0;
-    virtual void RegisterMacro(const wxString& text, const int value) = 0;
-    virtual void RegisterMacroSynonymous(const wxString& text, const wxString& name) = 0;
+    virtual void RegisterComponent(const wxString& name, IComponent* component) = 0;
+    virtual void RegisterMacro(const wxString& macro, int value) = 0;
+    virtual void RegisterSynonymous(const wxString& synonymous, const wxString& macro) = 0;
 
     // Used by wxFormBuilder for recovering components and macros
-    virtual IComponent* GetComponent(unsigned int idx) = 0;
-    virtual wxString GetComponentName(unsigned int idx) = 0;
-    virtual wxString GetMacroName(unsigned int i) = 0;
-    virtual int GetMacroValue(unsigned int i) = 0;
-    // virtual wxString    GetMacroSynonymous(unsigned int i) = 0;
-    // virtual wxString    GetSynonymousName(unsigned int i) = 0;
-    virtual bool FindSynonymous(const wxString& syn, wxString& trans) = 0;
+    virtual std::vector<std::pair<wxString, IComponent*>> GetComponents() const = 0;
+    virtual std::vector<std::pair<wxString, int>> GetMacros() const = 0;
 
-    virtual unsigned int GetMacroCount() = 0;
-    virtual unsigned int GetComponentCount() = 0;
-    // virtual unsigned int GetSynonymousCount() = 0;
-    virtual ~IComponentLibrary() {}
+    virtual wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const = 0;
 };
 
 /**
@@ -109,15 +96,25 @@ public:
 class IComponent
 {
 public:
+    enum class Type {
+        Abstract = 0,
+        Window,
+        Sizer,
+    };
+
+public:
+    virtual ~IComponent() = default;
+
+    virtual Type GetComponentType() const = 0;
+
     /**
      * Create an instance of the wxObject and return a pointer
      */
     virtual wxObject* Create(IObject* obj, wxObject* parent) = 0;
-
     /**
      * Cleanup (do the reverse of Create)
      */
-    virtual void Cleanup(wxObject* obj) = 0;
+    virtual void Cleanup(wxObject* wxobject) = 0;
 
     /**
      * Allows components to do something after they have been created.
@@ -128,7 +125,6 @@ public:
      * @param wxparent The wxWidgets parent - the wxObject that the created object was added to.
      */
     virtual void OnCreated(wxObject* wxobject, wxWindow* wxparent) = 0;
-
     /**
      * Allows components to respond when selected in object tree.
      * For example, when a wxNotebook's page is selected, it can switch to that page
@@ -139,15 +135,10 @@ public:
      * Export the object to an XRC node
      */
     virtual ticpp::Element* ExportToXrc(IObject* obj) = 0;
-
     /**
      * Converts from an XRC element to a wxFormBuilder project file XML element
      */
     virtual ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) = 0;
-
-
-    virtual int GetComponentType() = 0;
-    virtual ~IComponent() {}
 };
 
 // Used to identify wxObject* that must be manually deleted
@@ -162,32 +153,38 @@ Essentially a collection of utility functions that take a wxObject* and do somet
 class IManager
 {
 public:
-    /**
-    Get the count of the children of this object.
-    */
-    virtual size_t GetChildCount(wxObject* wxobject) = 0;
-
-    /**
-    Get a child of the object.
-    @param childIndex Index of the child to get.
-    */
-    virtual wxObject* GetChild(wxObject* wxobject, size_t childIndex) = 0;
-
-    /**
-    Get the parent of the object.
-    */
-    virtual wxObject* GetParent(wxObject* wxobject) = 0;
-
-    /**
-    Get the IObject interface to the parent of the object.
-    */
-    virtual IObject* GetIParent(wxObject* wxobject) = 0;
+    virtual ~IManager() = default;
 
     /**
     Get the corresponding object interface pointer for the object.
     This allows easy read only access to properties.
     */
-    virtual IObject* GetIObject(wxObject* wxobject) = 0;
+    virtual IObject* GetIObject(wxObject* wxobject) const = 0;
+
+    /**
+    Get the count of the children of this object.
+    */
+    virtual std::size_t GetChildCount(wxObject* wxobject) const = 0;
+    /**
+    Get a child of the object.
+    @param childIndex Index of the child to get.
+    */
+    virtual wxObject* GetChild(wxObject* wxobject, std::size_t childIndex) const = 0;
+
+    /**
+    Get the parent of the object.
+    */
+    virtual wxObject* GetParent(wxObject* wxobject) const = 0;
+    /**
+    Get the IObject interface to the parent of the object.
+    */
+    virtual IObject* GetIParent(wxObject* wxobject) const = 0;
+
+    /**
+    Select the object in the object tree
+    Returns true if selection changed, false if already selected
+    */
+    virtual bool SelectObject(wxObject* wxobject) = 0;
 
     /**
     Modify a property of the object.
@@ -196,18 +193,10 @@ public:
     @param allowUndo If true, the property change will be placed into the undo stack, if false it will be modified
     silently.
     */
-    virtual void ModifyProperty(wxObject* wxobject, wxString property, wxString value, bool allowUndo = true) = 0;
+    virtual void ModifyProperty(wxObject* wxobject, const wxString& property, const wxString& value, bool allowUndo = true) = 0;
 
     // used so the wxNoObjects are both created and destroyed in the application
     virtual wxNoObject* NewNoObject() = 0;
-
-    /**
-    Select the object in the object tree
-    Returns true if selection changed, false if already selected
-    */
-    virtual bool SelectObject(wxObject* wxobject) = 0;
-
-    virtual ~IManager() {}
 };
 
 #ifdef BUILD_DLL
