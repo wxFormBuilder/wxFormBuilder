@@ -38,6 +38,7 @@ namespace ticpp
 {
 class Element;
 }
+class IComponentLibrary;
 
 
 // Plugins interface
@@ -145,6 +146,8 @@ public:
 public:
     virtual ~IComponent() = default;
 
+    virtual IComponentLibrary* GetLibrary() const = 0;
+    
     virtual Type GetComponentType() const = 0;
 
     /**
@@ -194,11 +197,12 @@ public:
     virtual void RegisterMacro(const wxString& macro, int value) = 0;
     virtual void RegisterSynonymous(const wxString& synonymous, const wxString& macro) = 0;
 
+    virtual IManager* GetManager() const = 0;
+    virtual wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const = 0;
+
     // Used by wxFormBuilder for recovering components and macros
     virtual std::vector<std::pair<wxString, IComponent*>> GetComponents() const = 0;
     virtual std::vector<std::pair<wxString, int>> GetMacros() const = 0;
-
-    virtual wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const = 0;
 };
 
 
