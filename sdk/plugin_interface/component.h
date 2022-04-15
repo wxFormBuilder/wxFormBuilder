@@ -213,38 +213,9 @@ public:
 #endif
 
 // Function that the application calls to get the library
-DLL_FUNC IComponentLibrary* GetComponentLibrary(IManager* manager);
+DLL_FUNC IComponentLibrary* CreateComponentLibrary(IManager* manager);
 
 // Function that the application calls to free the library
 DLL_FUNC void FreeComponentLibrary(IComponentLibrary* lib);
-
-#define BEGIN_LIBRARY() \
-\
-    extern "C" WXEXPORT IComponentLibrary* GetComponentLibrary(IManager* manager) \
-    { \
-        IComponentLibrary* lib = new ComponentLibrary();
-
-#define END_LIBRARY() \
-    return lib; \
-    } \
-    extern "C" WXEXPORT void FreeComponentLibrary(IComponentLibrary* lib) { delete lib; }
-
-#define MACRO(name) lib->RegisterMacro(wxT(#name), name);
-
-#define SYNONYMOUS(syn, name) lib->RegisterMacroSynonymous(wxT(#syn), wxT(#name));
-
-#define _REGISTER_COMPONENT(name, class, type) \
-    { \
-        ComponentBase* c = new class(); \
-        c->__SetComponentType(type); \
-        c->__SetManager(manager); \
-        lib->RegisterComponent(wxT(name), c); \
-    }
-
-#define WINDOW_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_WINDOW)
-
-#define SIZER_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_SIZER)
-
-#define ABSTRACT_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_ABSTRACT)
 
 #endif  // SDK_PLUGIN_INTERFACE_COMPONENT_H
