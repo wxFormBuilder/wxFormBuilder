@@ -187,16 +187,15 @@ public:
     virtual ~IComponent() = default;
 
     /**
+     * @return Type of this component
+     */
+    virtual Type GetType() const = 0;
+    /**
      * @brief Get the component library of this object
      *
      * @return The component library of this object, this is never nullptr
      */
     virtual IComponentLibrary* GetLibrary() const = 0;
-
-    /**
-     * @return Type of this component
-     */
-    virtual Type GetComponentType() const = 0;
 
     /**
      * @brief Create a new object

@@ -96,7 +96,7 @@ public:
      */
     IManager* GetManager() const { return m_library->GetManager(); }
 
-    Type GetComponentType() const override { return m_type; }
+    Type GetType() const override { return m_type; }
     IComponentLibrary* GetLibrary() const override { return m_library; }
 
     wxObject* Create([[maybe_unused]] IObject* obj, [[maybe_unused]] wxObject* parent) override {
