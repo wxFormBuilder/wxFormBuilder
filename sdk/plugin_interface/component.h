@@ -39,8 +39,6 @@ namespace ticpp
 class Element;
 }
 
-class IComponent;
-
 
 // Plugins interface
 // The point is to provide an interface for accessing the object's properties
@@ -71,80 +69,12 @@ public:
     virtual std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& name) const = 0;
 };
 
-// Interface which intends to contain all the components for a plugin
-// This is an abstract class and it'll be the object that the DLL will export.
-class IComponentLibrary
-{
-public:
-    virtual ~IComponentLibrary() = default;
-
-    // Used by the plugin for registering components and macros
-    virtual void RegisterComponent(const wxString& name, IComponent* component) = 0;
-    virtual void RegisterMacro(const wxString& macro, int value) = 0;
-    virtual void RegisterSynonymous(const wxString& synonymous, const wxString& macro) = 0;
-
-    // Used by wxFormBuilder for recovering components and macros
-    virtual std::vector<std::pair<wxString, IComponent*>> GetComponents() const = 0;
-    virtual std::vector<std::pair<wxString, int>> GetMacros() const = 0;
-
-    virtual wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const = 0;
-};
-
-/**
- * Component Interface
- */
-class IComponent
-{
-public:
-    enum class Type {
-        Abstract = 0,
-        Window,
-        Sizer,
-    };
-
-public:
-    virtual ~IComponent() = default;
-
-    virtual Type GetComponentType() const = 0;
-
-    /**
-     * Create an instance of the wxObject and return a pointer
-     */
-    virtual wxObject* Create(IObject* obj, wxObject* parent) = 0;
-    /**
-     * Cleanup (do the reverse of Create)
-     */
-    virtual void Cleanup(wxObject* wxobject) = 0;
-
-    /**
-     * Allows components to do something after they have been created.
-     * For example, Abstract components like NotebookPage and SizerItem can
-     * add the actual widget to the Notebook or sizer.
-     *
-     * @param wxobject The object which was just created.
-     * @param wxparent The wxWidgets parent - the wxObject that the created object was added to.
-     */
-    virtual void OnCreated(wxObject* wxobject, wxWindow* wxparent) = 0;
-    /**
-     * Allows components to respond when selected in object tree.
-     * For example, when a wxNotebook's page is selected, it can switch to that page
-     */
-    virtual void OnSelected(wxObject* wxobject) = 0;
-
-    /**
-     * Export the object to an XRC node
-     */
-    virtual ticpp::Element* ExportToXrc(IObject* obj) = 0;
-    /**
-     * Converts from an XRC element to a wxFormBuilder project file XML element
-     */
-    virtual ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) = 0;
-};
 
 // Used to identify wxObject* that must be manually deleted
 class wxNoObject : public wxObject
 {
 };
+
 
 /**
 Interface to the "Manager" class in the application.
@@ -198,6 +128,79 @@ public:
     // used so the wxNoObjects are both created and destroyed in the application
     virtual wxNoObject* NewNoObject() = 0;
 };
+
+
+/**
+ * Component Interface
+ */
+class IComponent
+{
+public:
+    enum class Type {
+        Abstract = 0,
+        Window,
+        Sizer,
+    };
+
+public:
+    virtual ~IComponent() = default;
+
+    virtual Type GetComponentType() const = 0;
+
+    /**
+     * Create an instance of the wxObject and return a pointer
+     */
+    virtual wxObject* Create(IObject* obj, wxObject* parent) = 0;
+    /**
+     * Cleanup (do the reverse of Create)
+     */
+    virtual void Cleanup(wxObject* wxobject) = 0;
+
+    /**
+     * Allows components to do something after they have been created.
+     * For example, Abstract components like NotebookPage and SizerItem can
+     * add the actual widget to the Notebook or sizer.
+     *
+     * @param wxobject The object which was just created.
+     * @param wxparent The wxWidgets parent - the wxObject that the created object was added to.
+     */
+    virtual void OnCreated(wxObject* wxobject, wxWindow* wxparent) = 0;
+    /**
+     * Allows components to respond when selected in object tree.
+     * For example, when a wxNotebook's page is selected, it can switch to that page
+     */
+    virtual void OnSelected(wxObject* wxobject) = 0;
+
+    /**
+     * Export the object to an XRC node
+     */
+    virtual ticpp::Element* ExportToXrc(IObject* obj) = 0;
+    /**
+     * Converts from an XRC element to a wxFormBuilder project file XML element
+     */
+    virtual ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) = 0;
+};
+
+
+// Interface which intends to contain all the components for a plugin
+// This is an abstract class and it'll be the object that the DLL will export.
+class IComponentLibrary
+{
+public:
+    virtual ~IComponentLibrary() = default;
+
+    // Used by the plugin for registering components and macros
+    virtual void RegisterComponent(const wxString& name, IComponent* component) = 0;
+    virtual void RegisterMacro(const wxString& macro, int value) = 0;
+    virtual void RegisterSynonymous(const wxString& synonymous, const wxString& macro) = 0;
+
+    // Used by wxFormBuilder for recovering components and macros
+    virtual std::vector<std::pair<wxString, IComponent*>> GetComponents() const = 0;
+    virtual std::vector<std::pair<wxString, int>> GetMacros() const = 0;
+
+    virtual wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const = 0;
+};
+
 
 #ifdef BUILD_DLL
     #define DLL_FUNC extern "C" WXEXPORT
