@@ -27,207 +27,126 @@
 #define SDK_PLUGIN_INTERFACE_PLUGIN_H
 
 #include <map>
+#include <memory>
 #include <vector>
 
 #include "component.h"
 
 
-// Library implementation. This module must be implemented inside the library,
-// instead of linking it as an object for doing the plugin.
-// We will make a template so that the preprocessor implements the library inside
-// the module itself.
-
+/**
+ * @brief ComponentLibrary implementation for plugins
+ */
 class ComponentLibrary : public IComponentLibrary
 {
-private:
-    typedef struct {
-        wxString name;
-        IComponent* component;
-    } AComponent;
-
-    typedef struct {
-        wxString name;
-        int value;
-    } AMacro;
-
-    typedef struct {
-        wxString name, syn;
-    } ASynonymous;
-
-    std::vector<AComponent> m_components;
-    std::vector<AMacro> m_macros;
-    typedef std::map<wxString, wxString> SynMap;
-    SynMap m_synMap;
-
 public:
-    ~ComponentLibrary() override
-    {
-        std::vector<AComponent>::reverse_iterator component;
-        for (component = m_components.rbegin(); component != m_components.rend(); ++component) {
-            delete component->component;
-        }
-    }
+    ComponentLibrary(IManager* manager) : m_manager(manager) {}
 
-    void RegisterComponent(const wxString& text, IComponent* c) override
-    {
-        AComponent comp;
-        comp.component = c;
-        comp.name = text;
+    void RegisterComponent(const wxString& name, IComponent* component) override;
+    void RegisterMacro(const wxString& macro, int value) override;
+    void RegisterSynonymous(const wxString& synonymous, const wxString& macro) override;
 
-        m_components.push_back(comp);
-    }
+    IManager* GetManager() const override { return m_manager; }
+    wxString ReplaceSynonymous(const wxString& synonymous, bool* replaced = nullptr) const override;
 
-    void RegisterMacro(const wxString& text, const int value) override
-    {
-        AMacro macro;
-        macro.name = text;
-        macro.value = value;
+    std::vector<std::pair<wxString, IComponent*>> GetComponents() const override;
+    std::vector<std::pair<wxString, int>> GetMacros() const override;
 
-        m_macros.push_back(macro);
-    }
+private:
+    /// Registered components
+    std::map<wxString, std::unique_ptr<IComponent>> m_components;
+    /// Registered macros
+    std::map<wxString, int> m_macros;
+    /// Registered synonymous
+    std::map<wxString, wxString> m_synonymous;
 
-    void RegisterMacroSynonymous(const wxString& syn, const wxString& name) override
-    {
-        /*ASynonymous asyn;
-        asyn.name = name;
-        asyn.syn = syn;
-
-        m_synonymous.push_back(asyn);*/
-        m_synMap.insert(SynMap::value_type(syn, name));
-    }
-
-    IComponent* GetComponent(unsigned int idx) override
-    {
-        if (idx < m_components.size())
-            return m_components[idx].component;
-        return NULL;
-    }
-
-    wxString GetComponentName(unsigned int idx) override
-    {
-        if (idx < m_components.size())
-            return m_components[idx].name;
-
-        return wxString();
-    }
-
-    wxString GetMacroName(unsigned int idx) override
-    {
-        if (idx < m_macros.size())
-            return m_macros[idx].name;
-
-        return wxString();
-    }
-
-    int GetMacroValue(unsigned int idx) override
-    {
-        if (idx < m_macros.size())
-            return m_macros[idx].value;
-
-        return 0;
-    }
-
-    /*wxString GetMacroSynonymous(unsigned int idx) override
-    {
-      if (idx < m_synonymous.size())
-        return m_synonymous[idx].syn;
-
-      return wxString();
-    }
-
-    wxString GetSynonymousName(unsigned int idx) override
-    {
-      if (idx < m_synonymous.size())
-        return m_synonymous[idx].name;
-
-      return wxString();
-    }*/
-
-    bool FindSynonymous(const wxString& syn, wxString& trans) override
-    {
-        bool found = false;
-        SynMap::iterator it = m_synMap.find(syn);
-        if (it != m_synMap.end()) {
-            found = true;
-            trans = it->second;
-        }
-
-        return found;
-    }
-
-    unsigned int GetMacroCount() override { return (unsigned int)m_macros.size(); }
-
-    unsigned int GetComponentCount() override { return (unsigned int)m_components.size(); }
-
-    /*unsigned int GetSynonymousCount() override
-    {
-      return m_synonymous.size();
-    }*/
+    /// Manager this object was created for
+    IManager* m_manager;
 };
 
+
 /**
- * Base class for components
+ * @brief Base class of plugin components
  */
 class ComponentBase : public IComponent
 {
-private:
-    int m_type;
-    IManager* m_manager;
-
 public:
-    ComponentBase() : m_type(0), m_manager(NULL) {}
+    ComponentBase() : m_type(Type::Abstract), m_library(nullptr) {}
 
-    void __SetComponentType(int type) { m_type = (type >= 0 && type <= 2 ? type : COMPONENT_TYPE_ABSTRACT); }
+    /**
+     * @brief Set the component type
+     *
+     * TODO: Maybe component implementations should define their type themself
+     *
+     * @param type Component type
+     */
+    void SetType(Type type) { m_type = type; }
+    /**
+     * @brief Set the component library this object is part of
+     *
+     * @param library Component library
+     */
+    void SetLibrary(IComponentLibrary* library) { m_library = library; }
 
-    void __SetManager(IManager* manager) { m_manager = manager; }
+    /**
+     * @brief Get the manager object
+     *
+     * Helper/compatibility function to get the manager directly from the component object.
+     *
+     * @return Manager object
+     */
+    IManager* GetManager() const { return m_library->GetManager(); }
 
-    IManager* GetManager() { return m_manager; }
+    Type GetComponentType() const override { return m_type; }
+    IComponentLibrary* GetLibrary() const override { return m_library; }
 
-    wxObject* Create(IObject* /*obj*/, wxObject* /*parent*/) override
-    {
-        return m_manager->NewNoObject(); /* Even components which are not visible must be unique in the map */
+    wxObject* Create([[maybe_unused]] IObject* obj, [[maybe_unused]] wxObject* parent) override {
+       return m_library->GetManager()->NewNoObject();
     }
+    void Cleanup([[maybe_unused]] wxObject* wxobject) override {}
 
-    void Cleanup(wxObject* /*obj*/) override {}
+    void OnCreated([[maybe_unused]] wxObject* wxobject, [[maybe_unused]] wxWindow* wxparent) override {}
+    void OnSelected([[maybe_unused]] wxObject* wxobject) override {}
 
-    void OnCreated(wxObject* /*wxobject*/, wxWindow* /*wxparent*/) override {}
+    ticpp::Element* ExportToXrc([[maybe_unused]] IObject* obj) override { return nullptr; }
+    ticpp::Element* ImportFromXrc([[maybe_unused]] ticpp::Element* xrcObj) override { return nullptr; }
 
-    void OnSelected(wxObject* /*wxobject*/) override {}
+private:
+    /// Component type
+    Type m_type;
 
-    ticpp::Element* ExportToXrc(IObject* /*obj*/) override { return NULL; }
-
-    ticpp::Element* ImportFromXrc(ticpp::Element* /*xrcObj*/) override { return NULL; }
-
-    int GetComponentType() override { return m_type; }
+    /// Component library this object is part of
+    IComponentLibrary* m_library;
 };
 
+
 #define BEGIN_LIBRARY() \
-\
-    extern "C" WXEXPORT IComponentLibrary* CreateComponentLibrary(IManager* manager) \
+    DLL_FUNC IComponentLibrary* CreateComponentLibrary(IManager* manager) \
     { \
-        IComponentLibrary* lib = new ComponentLibrary();
+        auto* componentLibrary = new ComponentLibrary(manager);
 
 #define END_LIBRARY() \
-    return lib; \
+    return componentLibrary; \
     } \
-    extern "C" WXEXPORT void FreeComponentLibrary(IComponentLibrary* lib) { delete lib; }
+    \
+    DLL_FUNC void FreeComponentLibrary(IComponentLibrary* lib) { delete lib; }
 
-#define MACRO(name) lib->RegisterMacro(wxT(#name), name);
 
-#define SYNONYMOUS(syn, name) lib->RegisterMacroSynonymous(wxT(#syn), wxT(#name));
+#define MACRO(macro) componentLibrary->RegisterMacro(wxT(#macro), macro);
+
+#define SYNONYMOUS(synonymous, macro) componentLibrary->RegisterSynonymous(wxT(#synonymous), wxT(#macro));
 
 #define _REGISTER_COMPONENT(name, class, type) \
     { \
-        ComponentBase* c = new class(); \
-        c->__SetComponentType(type); \
-        c->__SetManager(manager); \
-        lib->RegisterComponent(wxT(name), c); \
+        ComponentBase* component = new class(); \
+        component->SetType(type); \
+        component->SetLibrary(componentLibrary); \
+        componentLibrary->RegisterComponent(wxT(name), component); \
     }
 
-#define WINDOW_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_WINDOW)
+#define WINDOW_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, ComponentBase::Type::Window)
 
-#define SIZER_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_SIZER)
+#define SIZER_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, ComponentBase::Type::Sizer)
 
-#define ABSTRACT_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, COMPONENT_TYPE_ABSTRACT)
+#define ABSTRACT_COMPONENT(name, class) _REGISTER_COMPONENT(name, class, ComponentBase::Type::Abstract)
 
 #endif  // SDK_PLUGIN_INTERFACE_PLUGIN_H
