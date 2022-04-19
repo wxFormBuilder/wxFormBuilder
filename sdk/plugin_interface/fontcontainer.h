@@ -70,12 +70,12 @@ public:
     inline wxFontContainer(
       int pointSize, wxFontFamily family = wxFONTFAMILY_DEFAULT, wxFontStyle style = wxFONTSTYLE_NORMAL,
       wxFontWeight weight = wxFONTWEIGHT_NORMAL, bool underlined = false, const wxString& faceName = wxEmptyString) :
-      m_pointSize(pointSize),
-      m_family(family),
-      m_style(style),
-      m_weight(weight),
-      m_underlined(underlined),
-      m_faceName(faceName)
+        m_pointSize(pointSize),
+        m_family(family),
+        m_style(style),
+        m_weight(weight),
+        m_underlined(underlined),
+        m_faceName(faceName)
     {
     }
 

@@ -146,16 +146,18 @@ public:
      * @param wxobject Object to modify
      * @param property Property to modify
      * @param value New value of the property
-     * @param allowUndo If true, the property change will be placed into the undo stack, otherwise the change will be silent
+     * @param allowUndo If true, the property change will be placed into the undo stack, otherwise the change will be
+     *                  silent
      */
-    virtual void ModifyProperty(wxObject* wxobject, const wxString& property, const wxString& value, bool allowUndo = true) = 0;
+    virtual void ModifyProperty(
+      wxObject* wxobject, const wxString& property, const wxString& value, bool allowUndo = true) = 0;
 
     /**
      * @brief Create a wxNoObject
      *
-     * TODO: This shall ensure that these objects are created in the main application and the dynamic cast to test for them
-     *       does work there, but is this really necessary? All other objects are created inside the plugin and deleted
-     *       by wxWidgets in the main application.
+     * TODO: This shall ensure that these objects are created in the main application and the dynamic cast to test for
+     *       them does work there, but is this really necessary? All other objects are created inside the plugin and
+     *       deleted by wxWidgets in the main application.
      *
      * @return A wxNoObject
      */
@@ -166,7 +168,8 @@ public:
 /**
  * @brief Base interface of a plugin component
  *
- * A plugin component implements the functionality to create objects of a specific type for usage by the main application.
+ * A plugin component implements the functionality to create objects of a specific type for usage by the main
+ * application.
  */
 class IComponent
 {

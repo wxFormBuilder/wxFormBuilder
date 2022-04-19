@@ -38,7 +38,7 @@ static wxString StringToXrcText(const wxString& str)
 
     for (auto current = str.begin(); current != str.end(); ++current) {
         const auto ch = *current;
-        switch(ch.GetValue()) {
+        switch (ch.GetValue()) {
             case '\n':
                 result += "\\n";
                 break;
@@ -94,7 +94,7 @@ static wxString XrcTextToString(const wxString& str)
                         break;
                 }
                 ++current;
-            } // else Broken escape sequence at end, drop
+            }  // else Broken escape sequence at end, drop
         } else if (ch == '_') {
             auto next = current + 1;
             if (next != str.end() && *next == '_') {
@@ -138,7 +138,7 @@ static wxString ReplaceSynonymous(const IComponentLibrary* lib, const wxString& 
 ObjectToXrcFilter::ObjectToXrcFilter(
   const IComponentLibrary* lib, const IObject* obj, const wxString& classname, const wxString& objname,
   const wxString& base) :
-  m_lib(lib), m_obj(obj)
+    m_lib(lib), m_obj(obj)
 {
     m_xrcObj = new ticpp::Element("object");
     m_xrcObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
@@ -206,8 +206,7 @@ void ObjectToXrcFilter::AddProperty(const wxString& objPropName, const wxString&
               bitmapProp.StartsWith("Load From XRC")) {
                 LinkText(filename.Trim().Trim(false), &propElement);
             } else if (bitmapProp.StartsWith("Load From Art Provider")) {
-                propElement.SetAttribute(
-                  "stock_id", filename.BeforeFirst(';').Trim().Trim(false).mb_str(wxConvUTF8));
+                propElement.SetAttribute("stock_id", filename.BeforeFirst(';').Trim().Trim(false).mb_str(wxConvUTF8));
                 propElement.SetAttribute(
                   "stock_client", filename.AfterFirst(';').Trim().Trim(false).mb_str(wxConvUTF8));
 
@@ -231,8 +230,8 @@ void ObjectToXrcFilter::AddPropertyPair(
   const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName)
 {
     AddPropertyValue(
-      xrcPropName, wxString::Format(
-                     "%i,%i", m_obj->GetPropertyAsInteger(objPropName1), m_obj->GetPropertyAsInteger(objPropName2)));
+      xrcPropName,
+      wxString::Format("%i,%i", m_obj->GetPropertyAsInteger(objPropName1), m_obj->GetPropertyAsInteger(objPropName2)));
 }
 
 
@@ -429,7 +428,7 @@ void ObjectToXrcFilter::LinkStringList(const wxArrayString& array, ticpp::Elemen
 
 
 XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname) :
-  m_lib(lib), m_xrcObj(obj)
+    m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");
     m_xfbObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
@@ -446,7 +445,7 @@ XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Elemen
 XrcToXfbFilter::XrcToXfbFilter(
   const IComponentLibrary* lib, const ticpp::Element* obj, [[maybe_unused]] const wxString& classname,
   const wxString& objname) :
-  m_lib(lib), m_xrcObj(obj)
+    m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");
     try {

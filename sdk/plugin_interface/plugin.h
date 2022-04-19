@@ -99,8 +99,9 @@ public:
     Type GetType() const override { return m_type; }
     IComponentLibrary* GetLibrary() const override { return m_library; }
 
-    wxObject* Create([[maybe_unused]] IObject* obj, [[maybe_unused]] wxObject* parent) override {
-       return m_library->GetManager()->NewNoObject();
+    wxObject* Create([[maybe_unused]] IObject* obj, [[maybe_unused]] wxObject* parent) override
+    {
+        return m_library->GetManager()->NewNoObject();
     }
     void Cleanup([[maybe_unused]] wxObject* wxobject) override {}
 
@@ -127,7 +128,7 @@ private:
 #define END_LIBRARY() \
     return componentLibrary; \
     } \
-    \
+\
     DLL_FUNC void FreeComponentLibrary(IComponentLibrary* lib) { delete lib; }
 
 
