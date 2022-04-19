@@ -34,81 +34,78 @@
 static wxString StringToXrcText(const wxString& str)
 {
     wxString result;
+    result.reserve(str.size() * 1.2);
 
-    for (unsigned int i = 0; i < str.Length(); i++) {
-        wxChar c = str[i];
-
-        switch (c) {
-            case wxChar('\n'):
-                result = result + wxT("\\n");
+    for (auto current = str.begin(); current != str.end(); ++current) {
+        const auto ch = *current;
+        switch(ch.GetValue()) {
+            case '\n':
+                result += "\\n";
                 break;
-
-            case wxChar('\t'):
-                result = result + wxT("\\t");
+            case '\r':
+                result += "\\r";
                 break;
-
-            case wxChar('\r'):
-                result = result + wxT("\\r");
+            case '\t':
+                result += "\\t";
                 break;
-
-            case wxChar('\\'):
-                result = result + wxT("\\\\");
+            case '\\':
+                result += "\\\\";
                 break;
-
-            case wxChar('_'):
-                result = result + wxT("__");
+            case '_':
+                result += "__";
                 break;
-
-            case wxChar('&'):
-                result = result + wxT("_");
+            case '&':
+                result += "_";
                 break;
-
             default:
-                result = result + c;
+                result += ch;
                 break;
         }
     }
+
     return result;
 }
 
 static wxString XrcTextToString(const wxString& str)
 {
     wxString result;
+    result.reserve(str.size());
 
-    for (unsigned int i = 0; i < str.Length(); i++) {
-        wxChar c = str[i];
-        if (c == wxChar('\\') && i < str.length() - 1) {
-            wxChar next = str[i + 1];
-
-            switch (next) {
-                case wxChar('n'):
-                    result = result + wxChar('\n');
-                    i++;
-                    break;
-
-                case wxChar('t'):
-                    result = result + wxChar('\t');
-                    i++;
-                    break;
-
-                case wxChar('r'):
-                    result = result + wxChar('\r');
-                    i++;
-                    break;
-
-                case wxChar('\\'):
-                    result = result + wxChar('\\');
-                    i++;
-                    break;
+    for (auto current = str.begin(); current != str.end(); ++current) {
+        const auto ch = *current;
+        if (ch == '\\') {
+            auto next = current + 1;
+            if (next != str.end()) {
+                switch ((*next).GetValue()) {
+                    case 'n':
+                        result += '\n';
+                        break;
+                    case 'r':
+                        result += '\r';
+                        break;
+                    case 't':
+                        result += '\t';
+                        break;
+                    case '\\':
+                        result += '\\';
+                        break;
+                    default:
+                        // Invalid escape sequence, drop
+                        break;
+                }
+                ++current;
+            } // else Broken escape sequence at end, drop
+        } else if (ch == '_') {
+            auto next = current + 1;
+            if (next != str.end() && *next == '_') {
+                result += '_';
+                ++current;
+            } else {
+                result += '&';
             }
-        } else if (c == wxChar('_')) {
-            if (i < str.Length() - 1 && str[i + 1] == wxChar('_')) {
-                result = result + wxChar('_');
-                i++;
-            } else
-                result = result + wxChar('&');
-        } else
-            result = result + c;
+        } else {
+            result += ch;
+        }
     }
 
     return result;
