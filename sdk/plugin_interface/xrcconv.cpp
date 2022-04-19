@@ -111,33 +111,34 @@ static wxString XrcTextToString(const wxString& str)
     return result;
 }
 
-static wxString ReplaceSynonymous(const wxString& bitlist)
+static wxString ReplaceSynonymous(const IComponentLibrary* lib, const wxString& bitlist)
 {
-    IComponentLibrary* lib = GetComponentLibrary(NULL);
-    wxString result, translation;
-    wxStringTokenizer tkz(bitlist, wxT("|"));
+    wxString result;
+    result.reserve(bitlist.size());
+
+    wxStringTokenizer tkz(bitlist, "|");
     while (tkz.HasMoreTokens()) {
-        wxString token;
-        token = tkz.GetNextToken();
+        auto token = tkz.GetNextToken();
         token.Trim(true);
         token.Trim(false);
 
-        if (result != wxT(""))
-            result = result + wxChar('|');
-
-        if (lib->FindSynonymous(token, translation))
-            result += translation;
-        else
-            result += token;
+        if (!result.empty()) {
+            result += '|';
+        }
+        result += lib->ReplaceSynonymous(token);
     }
-    delete lib;
 
     return result;
 }
 
 
+///////////////////////////////////////////////////////////////////////////////
+
+
 ObjectToXrcFilter::ObjectToXrcFilter(
-  IObject* obj, const wxString& classname, const wxString& objname, const wxString& base) : m_obj(obj)
+  const IComponentLibrary* lib, IObject* obj, const wxString& classname, const wxString& objname,
+  const wxString& base) :
+  m_lib(lib), m_obj(obj)
 {
     m_xrcObj = new ticpp::Element("object");
     m_xrcObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
@@ -427,7 +428,8 @@ void ObjectToXrcFilter::LinkStringList(const wxArrayString& array, ticpp::Elemen
 ///////////////////////////////////////////////////////////////////////////////
 
 
-XrcToXfbFilter::XrcToXfbFilter(ticpp::Element* obj, const wxString& classname) : m_xrcObj(obj)
+XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname) :
+  m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");
     m_xfbObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
@@ -441,7 +443,9 @@ XrcToXfbFilter::XrcToXfbFilter(ticpp::Element* obj, const wxString& classname) :
     }
 }
 
-XrcToXfbFilter::XrcToXfbFilter(ticpp::Element* obj, const wxString& /*classname*/, const wxString& objname) : m_xrcObj(obj)
+XrcToXfbFilter::XrcToXfbFilter(
+  const IComponentLibrary* lib, ticpp::Element* obj, const wxString& /*classname*/, const wxString& objname) :
+  m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");
     try {
@@ -774,7 +778,7 @@ void XrcToXfbFilter::ImportBitlistProperty(const wxString& xrcPropName, ticpp::E
         auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
 
         auto bitlist = wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-        bitlist = ReplaceSynonymous(bitlist);
+        bitlist = ReplaceSynonymous(m_lib, bitlist);
         property->SetText(bitlist.mb_str(wxConvUTF8));
     } catch (ticpp::Exception& ex) {
         wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
@@ -817,7 +821,7 @@ void XrcToXfbFilter::AddStyleProperty()
         auto* xrcProperty = m_xrcObj->FirstChildElement("style");
 
         auto bitlist = wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-        bitlist = ReplaceSynonymous(bitlist);
+        bitlist = ReplaceSynonymous(m_lib, bitlist);
 
         // FIXME: We should avoid hardcoding these things
         std::set<wxString> windowStyles;
@@ -874,7 +878,7 @@ void XrcToXfbFilter::AddExtraStyleProperty()
         auto* xrcProperty = m_xrcObj->FirstChildElement("exstyle");
 
         auto bitlist = wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-        bitlist = ReplaceSynonymous(bitlist);
+        bitlist = ReplaceSynonymous(m_lib, bitlist);
 
         // FIXME: We should avoid hardcoding these things
         std::set<wxString> windowStyles;

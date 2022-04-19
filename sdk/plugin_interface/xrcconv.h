@@ -73,7 +73,7 @@ protected:
  *
  * @code
  *
- * ObjectToXrcFilter xrc(obj, "wxButton", "button1");
+ * ObjectToXrcFilter xrc(GetLibrary(), obj, "wxButton", "button1");
  * xrc.AddProperty("label", "label", XrcFilter::Type::Text);
  * xrc.AddProperty("style", "style", XrcFilter::Type::BitList);
  * xrc.AddProperty("default", "default", XrcFilter::Type::Bool);
@@ -85,7 +85,8 @@ class ObjectToXrcFilter : public XrcFilter
 {
 public:
     ObjectToXrcFilter(
-      IObject* obj, const wxString& classname, const wxString& objname = wxEmptyString, const wxString& base = wxEmptyString);
+      const IComponentLibrary* lib, IObject* obj, const wxString& classname, const wxString& objname = wxEmptyString,
+      const wxString& base = wxEmptyString);
     ~ObjectToXrcFilter();
 
     void AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType);
@@ -105,7 +106,9 @@ private:
     void LinkStringList(const wxArrayString& array, ticpp::Element* propElement, bool xrcFormat = false);
 
 private:
+    const IComponentLibrary* m_lib;
     IObject* m_obj;
+
     ticpp::Element* m_xrcObj;
 };
 
@@ -119,8 +122,8 @@ private:
 class XrcToXfbFilter : public XrcFilter
 {
 public:
-    XrcToXfbFilter(ticpp::Element* obj, const wxString& classname);
-    XrcToXfbFilter(ticpp::Element* obj, const wxString& classname, const wxString& objname);
+    XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname);
+    XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname, const wxString& objname);
     ~XrcToXfbFilter();
 
     void AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType);
@@ -147,7 +150,9 @@ private:
     ticpp::Element* GetXrcProperty(const wxString& name);
 
 private:
+    const IComponentLibrary* m_lib;
     ticpp::Element* m_xrcObj;
+
     ticpp::Element* m_xfbObj;
 };
 
