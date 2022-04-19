@@ -136,7 +136,7 @@ static wxString ReplaceSynonymous(const IComponentLibrary* lib, const wxString& 
 
 
 ObjectToXrcFilter::ObjectToXrcFilter(
-  const IComponentLibrary* lib, IObject* obj, const wxString& classname, const wxString& objname,
+  const IComponentLibrary* lib, const IObject* obj, const wxString& classname, const wxString& objname,
   const wxString& base) :
   m_lib(lib), m_obj(obj)
 {
@@ -428,7 +428,7 @@ void ObjectToXrcFilter::LinkStringList(const wxArrayString& array, ticpp::Elemen
 ///////////////////////////////////////////////////////////////////////////////
 
 
-XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname) :
+XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname) :
   m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");
@@ -444,7 +444,8 @@ XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj
 }
 
 XrcToXfbFilter::XrcToXfbFilter(
-  const IComponentLibrary* lib, ticpp::Element* obj, const wxString& /*classname*/, const wxString& objname) :
+  const IComponentLibrary* lib, const ticpp::Element* obj, [[maybe_unused]] const wxString& classname,
+  const wxString& objname) :
   m_lib(lib), m_xrcObj(obj)
 {
     m_xfbObj = new ticpp::Element("object");

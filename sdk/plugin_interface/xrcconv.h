@@ -85,8 +85,8 @@ class ObjectToXrcFilter : public XrcFilter
 {
 public:
     ObjectToXrcFilter(
-      const IComponentLibrary* lib, IObject* obj, const wxString& classname, const wxString& objname = wxEmptyString,
-      const wxString& base = wxEmptyString);
+      const IComponentLibrary* lib, const IObject* obj, const wxString& classname,
+      const wxString& objname = wxEmptyString, const wxString& base = wxEmptyString);
     ~ObjectToXrcFilter();
 
     void AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType);
@@ -107,7 +107,7 @@ private:
 
 private:
     const IComponentLibrary* m_lib;
-    IObject* m_obj;
+    const IObject* m_obj;
 
     ticpp::Element* m_xrcObj;
 };
@@ -122,8 +122,9 @@ private:
 class XrcToXfbFilter : public XrcFilter
 {
 public:
-    XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname);
-    XrcToXfbFilter(const IComponentLibrary* lib, ticpp::Element* obj, const wxString& classname, const wxString& objname);
+    XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname);
+    XrcToXfbFilter(
+      const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname, const wxString& objname);
     ~XrcToXfbFilter();
 
     void AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType);
@@ -151,7 +152,7 @@ private:
 
 private:
     const IComponentLibrary* m_lib;
-    ticpp::Element* m_xrcObj;
+    const ticpp::Element* m_xrcObj;
 
     ticpp::Element* m_xfbObj;
 };
