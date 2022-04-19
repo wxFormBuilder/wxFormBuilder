@@ -25,3 +25,6 @@ f79b779a3f703c15a91b21b08960e2418d9af450
 
 # Reformat local third-party sources according to current code style definitions
 ce2cb5168c82d98d34878906d0ed068d1a123b77
+
+# Reformat plugin common sources
+285835852638f048a7377b6aaf3979a6404554c0
