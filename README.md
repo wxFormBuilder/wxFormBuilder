@@ -92,7 +92,7 @@ _install/bin/wxformbuilder
 Installing the Prerequisites:
 
 ```sh
-sudo dnf install wxGTK wxGTK-media boost-devel cmake make git
+sudo dnf install wxGTK-devel wxGTK-media boost-devel cmake make git
 ```
 
 Building:
