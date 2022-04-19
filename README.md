@@ -6,9 +6,10 @@
 
 wxFormBuilder is a GUI builder for the wxWidgets framework.
 
-Code generation is supported for C++, Python, XRC, wxLua and PHP.
+Code generation is supported for [C++](https://wxwidgets.org/), [Python](https://wxpython.org/),
+[XRC](https://docs.wxwidgets.org/trunk/overview_xrc.html), [Lua](https://github.com/pkulchenko/wxlua) and [PHP](https://github.com/wxphp/wxphp).
 Additionally, the import and export of XRC code is possible.
-To support additional widgets custom plugins can be used.
+To support additional widgets, custom plugins can be used.
 
 wxFormBuilder runs on Windows, various Linux distributions and macOS.
 
