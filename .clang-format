@@ -6,11 +6,12 @@ AlignEscapedNewlines: DontAlign
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: InlineOnly
 AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
 BreakBeforeBraces: Linux
 BreakInheritanceList: AfterColon
 BreakConstructorInitializers: AfterColon
 ColumnLimit: 120
-ConstructorInitializerIndentWidth: 2
+ConstructorInitializerIndentWidth: 4
 ContinuationIndentWidth: 2
 DerivePointerAlignment: false
 IncludeBlocks: Regroup
@@ -38,7 +39,7 @@ IncludeCategories:
   # Project headers
   - Regex:           '^".*\.h(h|pp)?"'
     Priority:        6
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: None
 IndentWidth: 4
 KeepEmptyLinesAtTheStartOfBlocks: true
 MaxEmptyLinesToKeep: 2
