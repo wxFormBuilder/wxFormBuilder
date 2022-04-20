@@ -161,7 +161,7 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
                   ((pointSize <= 0) ? "wxNORMAL_FONT->GetPointSize()" : (wxString() << pointSize)),
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()), font.GetStyleString(),
                   font.GetWeightString(), (fontContainer.GetUnderlined() ? "true" : "false"),
-                  (fontContainer.m_faceName.empty() ? "wxEmptyString" : ("wxT(\"" + fontContainer.m_faceName + "\")")));
+                  (fontContainer.GetFaceName().empty() ? "wxEmptyString" : ("wxT(\"" + fontContainer.GetFaceName() + "\")")));
             } else {
                 result = wxT("*wxNORMAL_FONT");
             }
