@@ -842,8 +842,9 @@ void VisualEditor::SetupAui(PObjectBase obj, wxWindow* window)
         info.DefaultPane();
     }
 
-    if (!obj->IsNull(wxT("caption")))
+    if (!obj->IsPropertyNull(wxT("caption"))) {
         info.Caption(obj->GetPropertyAsString(wxT("caption")));
+    }
     info.CaptionVisible(obj->GetPropertyAsInteger(wxT("caption_visible")) != 0);
     info.CloseButton(obj->GetPropertyAsInteger(wxT("close_button")) != 0);
     info.MaximizeButton(obj->GetPropertyAsInteger(wxT("maximize_button")) != 0);
@@ -857,10 +858,10 @@ void VisualEditor::SetupAui(PObjectBase obj, wxWindow* window)
     info.LeftDockable(obj->GetPropertyAsInteger(wxT("LeftDockable")) != 0);
     info.RightDockable(obj->GetPropertyAsInteger(wxT("RightDockable")) != 0);
 
-    if (!obj->IsNull(wxT("dock"))) {
+    if (!obj->IsPropertyNull(wxT("dock"))) {
         if (obj->GetPropertyAsString(wxT("dock")) == wxT("Dock")) {
             info.Dock();
-            if (!obj->IsNull(wxT("docking"))) {
+            if (!obj->IsPropertyNull(wxT("docking"))) {
                 if (obj->GetPropertyAsString(wxT("docking")) == wxT("Bottom"))
                     info.Bottom();
                 else if (obj->GetPropertyAsString(wxT("docking")) == wxT("Top"))
@@ -876,7 +877,7 @@ void VisualEditor::SetupAui(PObjectBase obj, wxWindow* window)
         }
     }
 
-    if (!obj->IsNull(wxT("resize"))) {
+    if (!obj->IsPropertyNull(wxT("resize"))) {
         if (obj->GetPropertyAsString(wxT("resize")) == wxT("Resizable"))
             info.Resizable();
         else
@@ -899,11 +900,11 @@ void VisualEditor::SetupAui(PObjectBase obj, wxWindow* window)
     if (obj->GetPropertyAsInteger(wxT("toolbar_pane")) != 0) {
         info.ToolbarPane();
     }
-    if (!obj->IsNull(wxT("aui_position")))
+    if (!obj->IsPropertyNull(wxT("aui_position")))
         info.Position(obj->GetPropertyAsInteger(wxT("aui_position")));
-    if (!obj->IsNull(wxT("aui_row")))
+    if (!obj->IsPropertyNull(wxT("aui_row")))
         info.Row(obj->GetPropertyAsInteger(wxT("aui_row")));
-    if (!obj->IsNull(wxT("aui_layer")))
+    if (!obj->IsPropertyNull(wxT("aui_layer")))
         info.Layer(obj->GetPropertyAsInteger(wxT("aui_layer")));
     if (obj->GetPropertyAsInteger(wxT("show")) == 0) {
         info.Hide();
