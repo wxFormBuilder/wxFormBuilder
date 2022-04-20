@@ -639,8 +639,8 @@ void VisualEditor::Generate(PObjectBase obj, wxWindow* wxparent, wxObject* paren
     wxWindow* vobjWindow = nullptr;
     wxEvtHandler* vobjHandler = nullptr;
 
-    switch (comp->GetComponentType()) {
-        case COMPONENT_TYPE_WINDOW:
+    switch (comp->GetType()) {
+        case IComponent::Type::Window:
             createdWindow = wxDynamicCast(createdObject, wxWindow);
             if (NULL == createdWindow) {
                 THROW_WXFBEX(wxString::Format(
@@ -656,7 +656,7 @@ void VisualEditor::Generate(PObjectBase obj, wxWindow* wxparent, wxObject* paren
             vobjHandler = new VObjEvtHandler(createdWindow, obj);
             break;
 
-        case COMPONENT_TYPE_SIZER: {
+        case IComponent::Type::Sizer: {
             wxStaticBoxSizer* staticBoxSizer = wxDynamicCast(createdObject, wxStaticBoxSizer);
             if (staticBoxSizer) {
                 createdWindow = staticBoxSizer->GetStaticBox();
@@ -998,10 +998,10 @@ void VisualEditor::OnObjectSelected(wxFBObjectEvent& event)
     // Save wxobject
     wxObject* item = it->second;
 
-    int componentType = COMPONENT_TYPE_ABSTRACT;
+    auto componentType = IComponent::Type::Abstract;
     IComponent* comp = obj->GetObjectInfo()->GetComponent();
     if (comp) {
-        componentType = comp->GetComponentType();
+        componentType = comp->GetType();
 
         // Fire selection event in plugin
         if (!m_stopSelectedEvent) {
@@ -1016,8 +1016,8 @@ void VisualEditor::OnObjectSelected(wxFBObjectEvent& event)
         SetupWizard(obj, wizpage);
     }
 
-    if (componentType != COMPONENT_TYPE_WINDOW && componentType != COMPONENT_TYPE_SIZER) {
-        item = NULL;
+    if (componentType != IComponent::Type::Window && componentType != IComponent::Type::Sizer) {
+        item = nullptr;
     }
 
     // Fire selection event in plugin for all parents
@@ -1050,7 +1050,7 @@ void VisualEditor::OnObjectSelected(wxFBObjectEvent& event)
             break;
         }
 
-        if (parentComp->GetComponentType() == COMPONENT_TYPE_WINDOW) {
+        if (parentComp->GetType() == IComponent::Type::Window) {
             break;
         }
 
@@ -1091,13 +1091,13 @@ void VisualEditor::OnObjectSelected(wxFBObjectEvent& event)
             break;
         }
 
-        if (nextComp->GetComponentType() == COMPONENT_TYPE_SIZER) {
+        if (nextComp->GetType() == IComponent::Type::Sizer) {
             it = m_baseobjects.find(nextObj.get());
             if (it != m_baseobjects.end()) {
                 sizer = wxDynamicCast(it->second, wxSizer);
             }
             break;
-        } else if (nextComp->GetComponentType() == COMPONENT_TYPE_WINDOW) {
+        } else if (nextComp->GetType() == IComponent::Type::Window) {
             break;
         }
 
