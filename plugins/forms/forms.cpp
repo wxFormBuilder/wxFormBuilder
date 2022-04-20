@@ -69,7 +69,7 @@ public:
         ObjectToXrcFilter xrc(obj, wxT("wxFrame"), obj->GetPropertyAsString(wxT("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(wxT("title"), wxT("title"), XRC_TYPE_TEXT);
-        if (!obj->IsNull(wxT("center"))) {
+        if (!obj->IsPropertyNull(wxT("center"))) {
             xrc.AddPropertyValue(wxT("centered"), wxT("1"));
         }
         xrc.AddProperty(wxT("aui_managed"), wxT("aui_managed"), XRC_TYPE_BOOL);
@@ -125,7 +125,7 @@ public:
         ObjectToXrcFilter xrc(obj, wxT("wxDialog"), obj->GetPropertyAsString(wxT("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(wxT("title"), wxT("title"), XRC_TYPE_TEXT);
-        if (!obj->IsNull(wxT("center"))) {
+        if (!obj->IsPropertyNull(wxT("center"))) {
             xrc.AddPropertyValue(wxT("centered"), wxT("1"));
         }
         return xrc.GetXrcObject();
@@ -174,15 +174,15 @@ public:
           obj->GetPropertyAsInteger(wxT("style")) | obj->GetPropertyAsInteger(wxT("window_style")) | wxTB_NOALIGN |
             wxTB_NODIVIDER | wxNO_BORDER);
 
-        if (!obj->IsNull(wxT("bitmapsize")))
+        if (!obj->IsPropertyNull(wxT("bitmapsize")))
             tb->SetToolBitmapSize(obj->GetPropertyAsSize(wxT("bitmapsize")));
-        if (!obj->IsNull(wxT("margins"))) {
+        if (!obj->IsPropertyNull(wxT("margins"))) {
             wxSize margins(obj->GetPropertyAsSize(wxT("margins")));
             tb->SetMargins(margins.GetWidth(), margins.GetHeight());
         }
-        if (!obj->IsNull(wxT("packing")))
+        if (!obj->IsPropertyNull(wxT("packing")))
             tb->SetToolPacking(obj->GetPropertyAsInteger(wxT("packing")));
-        if (!obj->IsNull(wxT("separation")))
+        if (!obj->IsPropertyNull(wxT("separation")))
             tb->SetToolSeparation(obj->GetPropertyAsInteger(wxT("separation")));
 
         tb->PushEventHandler(new ComponentEvtHandler(GetManager()));
@@ -282,10 +282,10 @@ public:
         ObjectToXrcFilter xrc(obj, wxT("wxWizard"), obj->GetPropertyAsString(wxT("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(wxT("title"), wxT("title"), XRC_TYPE_TEXT);
-        if (!obj->IsNull(wxT("center")))
+        if (!obj->IsPropertyNull(wxT("center")))
             xrc.AddPropertyValue(wxT("centered"), wxT("1"));
 
-        if (!obj->IsNull(wxT("bitmap")))
+        if (!obj->IsPropertyNull(wxT("bitmap")))
             xrc.AddProperty(wxT("bitmap"), wxT("bitmap"), XRC_TYPE_BITMAP);
 
         return xrc.GetXrcObject();
@@ -347,7 +347,7 @@ public:
     {
         ObjectToXrcFilter xrc(obj, wxT("wxWizardPageSimple"), obj->GetPropertyAsString(wxT("name")));
         xrc.AddWindowProperties();
-        if (!obj->IsNull(wxT("bitmap")))
+        if (!obj->IsPropertyNull(wxT("bitmap")))
             xrc.AddProperty(wxT("bitmap"), wxT("bitmap"), XRC_TYPE_BITMAP);
         return xrc.GetXrcObject();
     }

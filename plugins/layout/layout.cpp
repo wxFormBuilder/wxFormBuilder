@@ -405,7 +405,7 @@ public:
         wxGridBagSizer* sizer =
           new wxGridBagSizer(obj->GetPropertyAsInteger(_("vgap")), obj->GetPropertyAsInteger(_("hgap")));
 
-        if (!obj->IsNull(_("empty_cell_size"))) {
+        if (!obj->IsPropertyNull(_("empty_cell_size"))) {
             sizer->SetEmptyCellSize(obj->GetPropertyAsSize(_("empty_cell_size")));
         }
 

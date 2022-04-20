@@ -182,31 +182,31 @@ public:
             button->SetAuthNeeded();
         }
 
-        if (!obj->IsNull(_("bitmap"))) {
+        if (!obj->IsPropertyNull(_("bitmap"))) {
             button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
         }
 
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
         }
 
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
         }
 
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
         }
 
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
         }
 
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             button->SetBitmapPosition(static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
         }
 
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
         }
 
@@ -222,22 +222,22 @@ public:
         xrc.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
         xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
         xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
         }
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
         }
         return xrc.GetXrcObject();
@@ -285,27 +285,27 @@ public:
             button->SetAuthNeeded();
         }
 
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
         }
 
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
         }
 
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
         }
 
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
         }
 
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             button->SetBitmapPosition(static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
         }
 
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
         }
 
@@ -317,22 +317,22 @@ public:
         ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
         }
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
         }
         xrc.AddProperty(_("default"), _("default"), XRC_TYPE_BOOL);
@@ -368,7 +368,7 @@ public:
           obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("maxlength"))) {
+        if (!obj->IsPropertyNull(_("maxlength"))) {
             tc->SetMaxLength(obj->GetPropertyAsInteger(_("maxlength")));
         }
 
@@ -390,7 +390,7 @@ public:
         ObjectToXrcFilter xrc(obj, _("wxTextCtrl"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        if (!obj->IsNull(_("maxlength")))
+        if (!obj->IsPropertyNull(_("maxlength")))
             xrc.AddProperty(_("maxlength"), _("maxlength"), XRC_TYPE_INTEGER);
         return xrc.GetXrcObject();
     }
@@ -990,7 +990,7 @@ public:
         xrc.AddPropertyValue(_("label"), label, true);
         xrc.AddProperty(_("help"), _("help"), XRC_TYPE_TEXT);
 
-        if (!obj->IsNull(_("bitmap")))
+        if (!obj->IsPropertyNull(_("bitmap")))
             xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
 
         int kind = obj->GetPropertyAsInteger(_("kind"));
@@ -1065,15 +1065,15 @@ public:
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN |
             wxTB_NODIVIDER | wxNO_BORDER);
 
-        if (!obj->IsNull(_("bitmapsize")))
+        if (!obj->IsPropertyNull(_("bitmapsize")))
             tb->SetToolBitmapSize(obj->GetPropertyAsSize(_("bitmapsize")));
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             wxSize margins(obj->GetPropertyAsSize(_("margins")));
             tb->SetMargins(margins.GetWidth(), margins.GetHeight());
         }
-        if (!obj->IsNull(_("packing")))
+        if (!obj->IsPropertyNull(_("packing")))
             tb->SetToolPacking(obj->GetPropertyAsInteger(_("packing")));
-        if (!obj->IsNull(_("separation")))
+        if (!obj->IsPropertyNull(_("separation")))
             tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
 
         tb->PushEventHandler(new ComponentEvtHandler(tb, GetManager()));
@@ -1147,7 +1147,7 @@ wxMenu* AuiToolBar::GetMenuFromObject(IObject* menu)
     int lastMenuId = wxID_HIGHEST + 1;
     wxMenu* menuWidget = new wxMenu();
     for (unsigned int j = 0; j < menu->GetChildCount(); j++) {
-        IObject* menuItem = menu->GetChildPtr(j);
+        auto* menuItem = menu->GetChildObject(j);
         if (menuItem->GetObjectTypeName() == wxT("submenu")) {
             menuWidget->Append(lastMenuId++, menuItem->GetPropertyAsString(wxT("label")), GetMenuFromObject(menuItem));
         } else if (menuItem->GetClassName() == wxT("separator")) {
@@ -1163,9 +1163,9 @@ wxMenu* AuiToolBar::GetMenuFromObject(IObject* menu)
               menuWidget, lastMenuId++, label, menuItem->GetPropertyAsString(wxT("help")),
               (wxItemKind)menuItem->GetPropertyAsInteger(wxT("kind")));
 
-            if (!menuItem->IsNull(wxT("bitmap"))) {
+            if (!menuItem->IsPropertyNull(wxT("bitmap"))) {
                 wxBitmap unchecked = wxNullBitmap;
-                if (!menuItem->IsNull(wxT("unchecked_bitmap"))) {
+                if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
                     unchecked = menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap"));
                 }
 #ifdef __WXMSW__
@@ -1174,7 +1174,7 @@ wxMenu* AuiToolBar::GetMenuFromObject(IObject* menu)
                 item->SetBitmap(menuItem->GetPropertyAsBitmap(wxT("bitmap")));
 #endif
             } else {
-                if (!menuItem->IsNull(wxT("unchecked_bitmap"))) {
+                if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
 #ifdef __WXMSW__
                     item->SetBitmaps(wxNullBitmap, menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap")));
 #endif
@@ -1257,15 +1257,15 @@ public:
           obj->GetPropertyAsInteger(_("style")));  // | obj->GetPropertyAsInteger(_("window_style")) | wxTB_NOALIGN |
                                                    // wxTB_NODIVIDER | wxNO_BORDER);
 
-        if (!obj->IsNull(_("bitmapsize")))
+        if (!obj->IsPropertyNull(_("bitmapsize")))
             tb->SetToolBitmapSize(obj->GetPropertyAsSize(_("bitmapsize")));
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             wxSize margins(obj->GetPropertyAsSize(_("margins")));
             tb->SetMargins(margins.GetWidth(), margins.GetHeight());
         }
-        if (!obj->IsNull(_("packing")))
+        if (!obj->IsPropertyNull(_("packing")))
             tb->SetToolPacking(obj->GetPropertyAsInteger(_("packing")));
-        if (!obj->IsNull(_("separation")))
+        if (!obj->IsPropertyNull(_("separation")))
             tb->SetToolSeparation(obj->GetPropertyAsInteger(_("separation")));
 
         return tb;
@@ -1565,16 +1565,16 @@ public:
           obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("animation"))) {
+        if (!obj->IsPropertyNull(_("animation"))) {
             if (ac->LoadFile(obj->GetPropertyAsString(_("animation")))) {
-                if (!obj->IsNull(_("play")) && (obj->GetPropertyAsInteger(_("play")) == 1))
+                if (!obj->IsPropertyNull(_("play")) && (obj->GetPropertyAsInteger(_("play")) == 1))
                     ac->Play();
                 else
                     ac->Stop();
             }
         }
 
-        if (!obj->IsNull(_("inactive_bitmap"))) {
+        if (!obj->IsPropertyNull(_("inactive_bitmap"))) {
             wxBitmap bmp = obj->GetPropertyAsBitmap(_("inactive_bitmap"));
             if (bmp.IsOk())
                 ac->SetInactiveBitmap(bmp);

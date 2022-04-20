@@ -424,31 +424,31 @@ public:
             button->SetLabelMarkup(label);
         }
 
-        if (!obj->IsNull(_("bitmap"))) {
+        if (!obj->IsPropertyNull(_("bitmap"))) {
             button->SetBitmap(obj->GetPropertyAsBitmap(_("bitmap")));
         }
 
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
         }
 
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
         }
 
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
         }
 
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
         }
 
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             button->SetBitmapPosition(static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
         }
 
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
         }
 
@@ -477,22 +477,22 @@ public:
         xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
         xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
         xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
         }
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
         }
         xrc.AddProperty(_("value"), _("checked"), XRC_TYPE_BOOL);
@@ -532,27 +532,27 @@ public:
             button->SetLabelMarkup(obj->GetPropertyAsString(_("label")));
         }
 
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             button->SetBitmapDisabled(obj->GetPropertyAsBitmap(_("disabled")));
         }
 
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             button->SetBitmapPressed(obj->GetPropertyAsBitmap(_("pressed")));
         }
 
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             button->SetBitmapFocus(obj->GetPropertyAsBitmap(_("focus")));
         }
 
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             button->SetBitmapCurrent(obj->GetPropertyAsBitmap(_("current")));
         }
 
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             button->SetBitmapPosition(static_cast<wxDirection>(obj->GetPropertyAsInteger(_("position"))));
         }
 
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             button->SetBitmapMargins(obj->GetPropertyAsSize(_("margins")));
         }
 
@@ -579,22 +579,22 @@ public:
         ObjectToXrcFilter xrc(obj, _("wxBitmapToggleButton"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        if (!obj->IsNull(_("disabled"))) {
+        if (!obj->IsPropertyNull(_("disabled"))) {
             xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("pressed"))) {
+        if (!obj->IsPropertyNull(_("pressed"))) {
             xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("focus"))) {
+        if (!obj->IsPropertyNull(_("focus"))) {
             xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("current"))) {
+        if (!obj->IsPropertyNull(_("current"))) {
             xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
         }
-        if (!obj->IsNull(_("position"))) {
+        if (!obj->IsPropertyNull(_("position"))) {
             xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
         }
-        if (!obj->IsNull(_("margins"))) {
+        if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
         }
         xrc.AddProperty(_("value"), _("checked"), XRC_TYPE_BOOL);
@@ -895,7 +895,7 @@ public:
         grid->EnableDragRowSize(obj->GetPropertyAsInteger(_("drag_row_size")) != 0);
         grid->EnableEditing(obj->GetPropertyAsInteger(_("editing")) != 0);
         grid->EnableGridLines(obj->GetPropertyAsInteger(_("grid_lines")) != 0);
-        if (!obj->IsNull(_("grid_line_color"))) {
+        if (!obj->IsPropertyNull(_("grid_line_color"))) {
             grid->SetGridLineColour(obj->GetPropertyAsColour(_("grid_line_color")));
         }
         grid->SetMargins(obj->GetPropertyAsInteger(_("margin_width")), obj->GetPropertyAsInteger(_("margin_height")));
@@ -910,7 +910,7 @@ public:
             grid->SetColLabelValue(i, columnLabels[i]);
         }
 
-        if (!obj->IsNull(_("col_label_size"))) {
+        if (!obj->IsPropertyNull(_("col_label_size"))) {
             grid->SetColLabelSize(obj->GetPropertyAsInteger(_("col_label_size")));
         }
 
@@ -928,7 +928,7 @@ public:
             grid->SetRowLabelValue(i, rowLabels[i]);
         }
 
-        if (!obj->IsNull(_("row_label_size"))) {
+        if (!obj->IsPropertyNull(_("row_label_size"))) {
             grid->SetRowLabelSize(obj->GetPropertyAsInteger(_("row_label_size")));
         }
 
@@ -937,13 +937,13 @@ public:
             grid->SetRowSize(i, rowSizes[i]);
         }
 
-        if (!obj->IsNull(_("label_bg"))) {
+        if (!obj->IsPropertyNull(_("label_bg"))) {
             grid->SetLabelBackgroundColour(obj->GetPropertyAsColour(_("label_bg")));
         }
-        if (!obj->IsNull(_("label_text"))) {
+        if (!obj->IsPropertyNull(_("label_text"))) {
             grid->SetLabelTextColour(obj->GetPropertyAsColour(_("label_text")));
         }
-        if (!obj->IsNull(_("label_font"))) {
+        if (!obj->IsPropertyNull(_("label_font"))) {
             grid->SetLabelFont(obj->GetPropertyAsFont(_("label_font")));
         }
 
@@ -951,13 +951,13 @@ public:
         grid->SetDefaultCellAlignment(
           obj->GetPropertyAsInteger(_("cell_horiz_alignment")), obj->GetPropertyAsInteger(_("cell_vert_alignment")));
 
-        if (!obj->IsNull(_("cell_bg"))) {
+        if (!obj->IsPropertyNull(_("cell_bg"))) {
             grid->SetDefaultCellBackgroundColour(obj->GetPropertyAsColour(_("cell_bg")));
         }
-        if (!obj->IsNull(_("cell_text"))) {
+        if (!obj->IsPropertyNull(_("cell_text"))) {
             grid->SetDefaultCellTextColour(obj->GetPropertyAsColour(_("cell_text")));
         }
-        if (!obj->IsNull(_("cell_font"))) {
+        if (!obj->IsPropertyNull(_("cell_font"))) {
             grid->SetDefaultCellFont(obj->GetPropertyAsFont(_("cell_font")));
         }
 
@@ -1141,7 +1141,7 @@ public:
           obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("max_point_size"))) {
+        if (!obj->IsPropertyNull(_("max_point_size"))) {
             picker->SetMaxPointSize(obj->GetPropertyAsInteger(_("max_point_size")));
         }
 
@@ -1160,7 +1160,7 @@ public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
         ObjectToXrcFilter xrc(obj, _("wxFontPickerCtrl"), obj->GetPropertyAsString(_("name")));
-        if (!obj->IsNull(_("value"))) {
+        if (!obj->IsPropertyNull(_("value"))) {
             xrc.AddProperty(_("value"), _("value"), XRC_TYPE_FONT);
         }
         xrc.AddWindowProperties();
@@ -1299,13 +1299,13 @@ public:
           obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("hover_color"))) {
+        if (!obj->IsPropertyNull(_("hover_color"))) {
             ctrl->SetHoverColour(obj->GetPropertyAsColour(_("hover_color")));
         }
-        if (!obj->IsNull(_("normal_color"))) {
+        if (!obj->IsPropertyNull(_("normal_color"))) {
             ctrl->SetNormalColour(obj->GetPropertyAsColour(_("normal_color")));
         }
-        if (!obj->IsNull(_("visited_color"))) {
+        if (!obj->IsPropertyNull(_("visited_color"))) {
             ctrl->SetVisitedColour(obj->GetPropertyAsColour(_("visited_color")));
         }
 
@@ -1419,11 +1419,11 @@ public:
           obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("search_button"))) {
+        if (!obj->IsPropertyNull(_("search_button"))) {
             sc->ShowSearchButton(obj->GetPropertyAsInteger(_("search_button")) != 0);
         }
 
-        if (!obj->IsNull(_("cancel_button"))) {
+        if (!obj->IsPropertyNull(_("cancel_button"))) {
             sc->ShowCancelButton(obj->GetPropertyAsInteger(_("cancel_button")) != 0);
         }
 
@@ -1479,15 +1479,15 @@ public:
           (wxWindow*)parent, wxID_ANY, wxT(""), obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsNull(_("file"))) {
+        if (!obj->IsPropertyNull(_("file"))) {
             if (mc->Load(obj->GetPropertyAsString(_("file")))) {
-                if (!obj->IsNull(_("playback_rate")))
+                if (!obj->IsPropertyNull(_("playback_rate")))
                     mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("playback_rate")));
                 if (
-                  !obj->IsNull(_("volume")) && (obj->GetPropertyAsFloat(_("volume")) >= 0) &&
+                  !obj->IsPropertyNull(_("volume")) && (obj->GetPropertyAsFloat(_("volume")) >= 0) &&
                   (obj->GetPropertyAsFloat(_("volume")) <= 1))
                     mc->SetPlaybackRate(obj->GetPropertyAsFloat(_("volume")));
-                if (!obj->IsNull(_("player_controls"))) {
+                if (!obj->IsPropertyNull(_("player_controls"))) {
                     if (obj->GetPropertyAsString(_("player_controls")) == wxT("STEP"))
                         mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);
                     if (obj->GetPropertyAsString(_("player_controls")) == wxT("VOLUME"))
@@ -1498,7 +1498,7 @@ public:
                         mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_NONE);
                 }
 
-                if (!obj->IsNull(_("play")) && (obj->GetPropertyAsInteger(_("play")) == 1))
+                if (!obj->IsPropertyNull(_("play")) && (obj->GetPropertyAsInteger(_("play")) == 1))
                     mc->Play();
                 else
                     mc->Stop();
@@ -1507,7 +1507,7 @@ public:
             }
         }
 
-        if (!obj->IsNull(_("style")))
+        if (!obj->IsPropertyNull(_("style")))
             mc->ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_STEP);
 
         mc->PushEventHandler(new ComponentEvtHandler(mc, GetManager()));
@@ -1730,7 +1730,7 @@ public:
                   pgm->AddPage(childObj->GetPropertyAsString(_("label")), childObj->GetPropertyAsBitmap(_("bitmap")));
 
                 for (size_t j = 0; j < childObj->GetChildCount(); ++j) {
-                    IObject* innerChildObj = childObj->GetChildPtr(j);
+                    auto* innerChildObj = childObj->GetChildObject(j);
                     if (innerChildObj->GetClassName() == _("propGridItem")) {
                         if (innerChildObj->GetPropertyAsString(_("type")) == _("Category")) {
                             page->Append(new wxPropertyCategory(
@@ -1942,7 +1942,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -1953,7 +1953,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -1964,7 +1964,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -1975,7 +1975,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -1986,7 +1986,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -1997,7 +1997,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -2052,7 +2052,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -2063,7 +2063,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -2074,7 +2074,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }
@@ -2085,7 +2085,7 @@ public:
                       childObj->GetPropertyAsInteger(_("width")),
                       static_cast<wxAlignment>(childObj->GetPropertyAsInteger(_("align"))),
                       childObj->GetPropertyAsInteger(_("flags")));
-                    if (!childObj->IsNull(_("ellipsize"))) {
+                    if (!childObj->IsPropertyNull(_("ellipsize"))) {
                         col->GetRenderer()->EnableEllipsize(
                           static_cast<wxEllipsizeMode>(childObj->GetPropertyAsInteger(_("ellipsize"))));
                     }

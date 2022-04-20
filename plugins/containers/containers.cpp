@@ -292,13 +292,13 @@ class SplitterWindowComponent : public ComponentBase
           (obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style"))) &
             ~wxSP_PERMIT_UNSPLIT);
 
-        if (!obj->IsNull(_("sashgravity"))) {
+        if (!obj->IsPropertyNull(_("sashgravity"))) {
             float gravity = obj->GetPropertyAsFloat(_("sashgravity"));
             gravity = (gravity < 0.0 ? 0.0 : gravity);
             gravity = (gravity > 1.0 ? 1.0 : gravity);
             splitter->SetSashGravity(gravity);
         }
-        if (!obj->IsNull(_("min_pane_size"))) {
+        if (!obj->IsPropertyNull(_("min_pane_size"))) {
             int minPaneSize = obj->GetPropertyAsInteger(_("min_pane_size"));
             splitter->m_customMinPaneSize = minPaneSize;
             minPaneSize = (minPaneSize < 1 ? 1 : minPaneSize);
@@ -558,7 +558,7 @@ public:
         ObjectToXrcFilter xrc(obj, _("notebookpage"));
         xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
         xrc.AddProperty(_("select"), _("selected"), XRC_TYPE_BOOL);
-        if (!obj->IsNull(_("bitmap"))) {
+        if (!obj->IsPropertyNull(_("bitmap"))) {
             xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
         }
         return xrc.GetXrcObject();
@@ -816,7 +816,7 @@ public:
 
         // Save selection
         int selection = book->GetSelection();
-        const wxBitmap& bitmap = obj->IsNull(_("bitmap")) ? wxNullBitmap : obj->GetPropertyAsBitmap(_("bitmap"));
+        const wxBitmap& bitmap = obj->IsPropertyNull(_("bitmap")) ? wxNullBitmap : obj->GetPropertyAsBitmap(_("bitmap"));
         book->AddPage(page, obj->GetPropertyAsString(_("label")), false, bitmap);
 
         if (obj->GetPropertyAsString(_("select")) == wxT("0") && selection >= 0) {
