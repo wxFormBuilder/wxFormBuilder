@@ -215,49 +215,49 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxButton"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("default"), _("default"), XRC_TYPE_BOOL);
-        xrc.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
-        xrc.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("default"), _("default"), XrcFilter::Type::Bool);
+        xrc.AddProperty(_("auth_needed"), _("auth_needed"), XrcFilter::Type::Bool);
+        xrc.AddProperty(_("markup"), _("markup"), XrcFilter::Type::Bool);
+        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         if (!obj->IsPropertyNull(_("disabled"))) {
-            xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("pressed"))) {
-            xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("focus"))) {
-            xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("current"))) {
-            xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+            xrc.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
         }
         if (!obj->IsPropertyNull(_("margins"))) {
-            xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+            xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         }
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxButton"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxButton"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("default"), _("default"), XRC_TYPE_BOOL);
-        filter.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
-        filter.AddProperty(_("markup"), _("markup"), XRC_TYPE_BOOL);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("default"), _("default"), XrcFilter::Type::Bool);
+        filter.AddProperty(_("auth_needed"), _("auth_needed"), XrcFilter::Type::Bool);
+        filter.AddProperty(_("markup"), _("markup"), XrcFilter::Type::Bool);
+        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+        filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         return filter.GetXfbObject();
     }
 };
@@ -314,45 +314,45 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxBitmapButton"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         if (!obj->IsPropertyNull(_("disabled"))) {
-            xrc.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("pressed"))) {
-            xrc.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("focus"))) {
-            xrc.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("current"))) {
-            xrc.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
+            xrc.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
         }
         if (!obj->IsPropertyNull(_("margins"))) {
-            xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
+            xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         }
-        xrc.AddProperty(_("default"), _("default"), XRC_TYPE_BOOL);
-        xrc.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
+        xrc.AddProperty(_("default"), _("default"), XrcFilter::Type::Bool);
+        xrc.AddProperty(_("auth_needed"), _("auth_needed"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxBitmapButton"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxBitmapButton"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("disabled"), _("disabled"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("pressed"), _("pressed"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("focus"), _("focus"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("current"), _("current"), XRC_TYPE_BITMAP);
-        filter.AddProperty(_("position"), _("position"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
-        filter.AddProperty(_("default"), _("default"), XRC_TYPE_BOOL);
-        filter.AddProperty(_("auth_needed"), _("auth_needed"), XRC_TYPE_BOOL);
+        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
+        filter.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+        filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+        filter.AddProperty(_("default"), _("default"), XrcFilter::Type::Bool);
+        filter.AddProperty(_("auth_needed"), _("auth_needed"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
     }
 };
@@ -387,20 +387,20 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxTextCtrl"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxTextCtrl"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
         if (!obj->IsPropertyNull(_("maxlength")))
-            xrc.AddProperty(_("maxlength"), _("maxlength"), XRC_TYPE_INTEGER);
+            xrc.AddProperty(_("maxlength"), _("maxlength"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxTextCtrl"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxTextCtrl"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("maxlength"), _("maxlength"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
+        filter.AddProperty(_("maxlength"), _("maxlength"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -446,19 +446,19 @@ public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
         wxString name = obj->GetPropertyAsString(_("name"));
-        ObjectToXrcFilter xrc(obj, _("wxStaticText"), name);
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxStaticText"), name);
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("wrap"), _("wrap"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("wrap"), _("wrap"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxStaticText"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxStaticText"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("wrap"), _("wrap"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("wrap"), _("wrap"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -496,19 +496,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxComboBox"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxComboBox"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxComboBox"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxComboBox"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
+        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
         return filter.GetXfbObject();
     }
 };
@@ -549,19 +549,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxBitmapComboBox"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxBitmapComboBox"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxBitmapComboBox"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
+        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
         return filter.GetXfbObject();
     }
 };
@@ -592,19 +592,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxCheckBox"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxCheckBox"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("checked"), _("checked"), XRC_TYPE_BOOL);
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("checked"), _("checked"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxCheckBox"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxCheckBox"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("checked"), _("checked"), XRC_TYPE_BOOL);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("checked"), _("checked"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
     }
 };
@@ -632,17 +632,17 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxStaticBitmap"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxStaticBitmap"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxStaticBitmap"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxStaticBitmap"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
     }
 };
@@ -663,14 +663,14 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxStaticLine"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxStaticLine"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxStaticLine"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxStaticLine"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
     }
@@ -713,14 +713,14 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxListCtrl"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxListCtrl"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxListCtrl"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxListCtrl"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
     }
@@ -744,17 +744,17 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxListBox"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxListBox"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
+        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxListBox"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxListBox"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
+        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
         return filter.GetXfbObject();
     }
 };
@@ -818,23 +818,23 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxRadioBox"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxRadioBox"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
-        xrc.AddProperty(_("majorDimension"), _("dimension"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("selection"), _("selection"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
+        xrc.AddProperty(_("majorDimension"), _("dimension"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxRadioBox"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxRadioBox"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
-        filter.AddProperty(_("dimension"), _("majorDimension"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("selection"), _("selection"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
+        filter.AddProperty(_("dimension"), _("majorDimension"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -855,19 +855,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxRadioButton"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxRadioButton"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_BOOL);
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxRadioButton"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxRadioButton"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_BOOL);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
     }
 };
@@ -900,17 +900,17 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxStatusBar"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxStatusBar"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("fields"), _("fields"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("fields"), _("fields"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxStatusBar"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxStatusBar"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("fields"), _("fields"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("fields"), _("fields"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -927,13 +927,13 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxMenuBar"), obj->GetPropertyAsString(_("name")));
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxMenuBar"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxMenuBar"));
         return filter.GetXfbObject();
     }
 };
@@ -943,15 +943,15 @@ class MenuComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxMenu"));
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxMenu"));
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
     }
 };
@@ -961,15 +961,15 @@ class SubMenuComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxMenu"), obj->GetPropertyAsString(_("name")));
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("submenu"));
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("submenu"));
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
     }
 };
@@ -979,7 +979,7 @@ class MenuItemComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxMenuItem"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxMenuItem"), obj->GetPropertyAsString(_("name")));
         wxString shortcut = obj->GetPropertyAsString(_("shortcut"));
         wxString label;
         if (shortcut.IsEmpty())
@@ -988,18 +988,18 @@ public:
             label = obj->GetPropertyAsString(_("label")) + wxT("\t") + shortcut;
 
         xrc.AddPropertyValue(_("label"), label, true);
-        xrc.AddProperty(_("help"), _("help"), XRC_TYPE_TEXT);
+        xrc.AddProperty(_("help"), _("help"), XrcFilter::Type::Text);
 
         if (!obj->IsPropertyNull(_("bitmap")))
-            xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+            xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
 
         int kind = obj->GetPropertyAsInteger(_("kind"));
 
         if (obj->GetPropertyAsInteger(_("checked")) != 0 && (kind == wxITEM_RADIO || kind == wxITEM_CHECK)) {
-            xrc.AddProperty(_("checked"), _("checked"), XRC_TYPE_BOOL);
+            xrc.AddProperty(_("checked"), _("checked"), XrcFilter::Type::Bool);
         }
         if (obj->GetPropertyAsInteger(_("enabled")) == 0)
-            xrc.AddProperty(_("enabled"), _("enabled"), XRC_TYPE_BOOL);
+            xrc.AddProperty(_("enabled"), _("enabled"), XrcFilter::Type::Bool);
 
         switch (kind) {
             case wxITEM_CHECK:
@@ -1015,7 +1015,7 @@ public:
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxMenuItem"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxMenuItem"));
 
         try {
             ticpp::Element* labelElement = xrcObj->FirstChildElement("label");
@@ -1033,8 +1033,8 @@ public:
         } catch (ticpp::Exception&) {
         }
 
-        filter.AddProperty(_("help"), _("help"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        filter.AddProperty(_("help"), _("help"), XrcFilter::Type::Text);
+        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
     }
 };
@@ -1044,13 +1044,13 @@ class SeparatorComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("separator"));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("separator"));
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("separator"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("separator"));
         return filter.GetXfbObject();
     }
 };
@@ -1121,23 +1121,23 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxToolBar"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxToolBar"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
-        xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
-        xrc.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XrcFilter::Type::Size);
+        xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+        xrc.AddProperty(_("packing"), _("packing"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("separation"), _("separation"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxToolBar"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxToolBar"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
-        filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
-        filter.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XrcFilter::Type::Size);
+        filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+        filter.AddProperty(_("packing"), _("packing"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("separation"), _("separation"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -1309,23 +1309,23 @@ public:
     /*
             ticpp::Element* ExportToXrc(IObject *obj) override
             {
-                    ObjectToXrcFilter xrc(obj, _("wxAuiToolBar"), obj->GetPropertyAsString(_("name")));
+                    ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxAuiToolBar"), obj->GetPropertyAsString(_("name")));
                     xrc.AddWindowProperties();
-                    xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
-                    xrc.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
-                    xrc.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
-                    xrc.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+                    xrc.AddProperty(_("bitmapsize"), _("bitmapsize"), XrcFilter::Type::Size);
+                    xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+                    xrc.AddProperty(_("packing"), _("packing"), XrcFilter::Type::Integer);
+                    xrc.AddProperty(_("separation"), _("separation"), XrcFilter::Type::Integer);
                     return xrc.GetXrcObject();
             }
 
             ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
             {
-                    XrcToXfbFilter filter(xrcObj, _("wxAuiToolBar"));
+                    XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxAuiToolBar"));
                     filter.AddWindowProperties();
-                    filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XRC_TYPE_SIZE);
-                    filter.AddProperty(_("margins"), _("margins"), XRC_TYPE_SIZE);
-                    filter.AddProperty(_("packing"), _("packing"), XRC_TYPE_INTEGER);
-                    filter.AddProperty(_("separation"), _("separation"), XRC_TYPE_INTEGER);
+                    filter.AddProperty(_("bitmapsize"), _("bitmapsize"), XrcFilter::Type::Size);
+                    filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+                    filter.AddProperty(_("packing"), _("packing"), XrcFilter::Type::Integer);
+                    filter.AddProperty(_("separation"), _("separation"), XrcFilter::Type::Integer);
                     return filter.GetXfbObject();
             }
     */
@@ -1352,11 +1352,11 @@ class ToolComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("tool"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("statusbar"), _("longhelp"), XRC_TYPE_TEXT);
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("tool"), obj->GetPropertyAsString(_("name")));
+        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("tooltip"), _("tooltip"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("statusbar"), _("longhelp"), XrcFilter::Type::Text);
+        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
 
         wxItemKind kind = (wxItemKind)obj->GetPropertyAsInteger(_("kind"));
         if (wxITEM_CHECK == kind) {
@@ -1369,11 +1369,11 @@ public:
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("tool"));
-        filter.AddProperty(_("longhelp"), _("statusbar"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("tooltip"), _("tooltip"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("label"), _("label"), XRC_TYPE_TEXT);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XRC_TYPE_BITMAP);
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("tool"));
+        filter.AddProperty(_("longhelp"), _("statusbar"), XrcFilter::Type::Text);
+        filter.AddProperty(_("tooltip"), _("tooltip"), XrcFilter::Type::Text);
+        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
+        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         bool gotToggle = false;
         bool gotRadio = false;
         ticpp::Element* toggle = xrcObj->FirstChildElement("toggle", false);
@@ -1405,13 +1405,13 @@ class ToolSeparatorComponent : public ComponentBase
 public:
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("separator"));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("separator"));
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("toolSeparator"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("toolSeparator"));
         return filter.GetXfbObject();
     }
 };
@@ -1450,19 +1450,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxChoice"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("choices"), _("content"), XRC_TYPE_STRINGLIST);
+        xrc.AddProperty(_("selection"), _("selection"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxChoice"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxChoice"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("selection"), _("selection"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("content"), _("choices"), XRC_TYPE_STRINGLIST);
+        filter.AddProperty(_("selection"), _("selection"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
         return filter.GetXfbObject();
     }
 };
@@ -1504,21 +1504,21 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxSlider"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSlider"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("minValue"), _("min"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("maxValue"), _("max"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("minValue"), _("min"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("maxValue"), _("max"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxSlider"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSlider"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("min"), _("minValue"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("max"), _("maxValue"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("min"), _("minValue"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("max"), _("maxValue"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -1538,19 +1538,19 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxGauge"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxGauge"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("range"), _("range"), XRC_TYPE_INTEGER);
-        xrc.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
+        xrc.AddProperty(_("range"), _("range"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxGauge"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxGauge"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("range"), _("range"), XRC_TYPE_INTEGER);
-        filter.AddProperty(_("value"), _("value"), XRC_TYPE_INTEGER);
+        filter.AddProperty(_("range"), _("range"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
     }
 };
@@ -1597,17 +1597,17 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("wxAnimationCtrl"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxAnimationCtrl"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
-        xrc.AddProperty(_("animation"), _("animation"), XRC_TYPE_TEXT);
+        xrc.AddProperty(_("animation"), _("animation"), XrcFilter::Type::Text);
         return xrc.GetXrcObject();
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
-        XrcToXfbFilter filter(xrcObj, _("wxAnimationCtrl"));
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxAnimationCtrl"));
         filter.AddWindowProperties();
-        filter.AddProperty(_("animation"), _("animation"), XRC_TYPE_TEXT);
+        filter.AddProperty(_("animation"), _("animation"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
     }
 };
@@ -1640,9 +1640,9 @@ public:
 
     ticpp::Element* ExportToXrc(IObject* obj) override
     {
-        ObjectToXrcFilter xrc(obj, _("unknown"), obj->GetPropertyAsString(_("name")));
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("unknown"), obj->GetPropertyAsString(_("name")));
 
-        /*ObjectToXrcFilter xrc(obj, _("wxInfoBar"), obj->GetPropertyAsString(_("name")));
+        /*ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxInfoBar"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();*/
 
         return xrc.GetXrcObject();
@@ -1650,7 +1650,7 @@ public:
 
     /*ticpp::Element* ImportFromXrc( ticpp::Element* xrcObj )
     {
-            XrcToXfbFilter filter(xrcObj, _("wxInfoBar"));
+            XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxInfoBar"));
             filter.AddWindowProperties();
             return filter.GetXfbObject();
     }*/
