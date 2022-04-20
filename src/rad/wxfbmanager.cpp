@@ -46,124 +46,113 @@
 // forgetting to unset the flag
 class FlagFlipper
 {
-private:
-    VisualEditor* m_visualEditor;
-    void (VisualEditor::*m_flagFunction)(bool);
-
 public:
     FlagFlipper(VisualEditor* visualEdit, void (VisualEditor::*flagFunction)(bool)) :
-      m_visualEditor(visualEdit), m_flagFunction(flagFunction)
+        m_visualEditor(visualEdit), m_flagFunction(flagFunction)
     {
         (m_visualEditor->*m_flagFunction)(true);
     }
 
     ~FlagFlipper() { (m_visualEditor->*m_flagFunction)(false); }
+
+private:
+    VisualEditor* m_visualEditor;
+    void (VisualEditor::*m_flagFunction)(bool);
 };
 
-wxFBManager::wxFBManager() : m_visualEdit(NULL)
+
+IObject* wxFBManager::GetIObject(wxObject* wxobject) const
 {
-}
+    CHECK_VISUAL_EDITOR(nullptr)
+    CHECK_WX_OBJECT(nullptr)
 
-void wxFBManager::SetVisualEditor(VisualEditor* visualEdit)
-{
-    m_visualEdit = visualEdit;
-}
-
-IObject* wxFBManager::GetIObject(wxObject* wxobject)
-{
-    CHECK_VISUAL_EDITOR(NULL)
-
-    CHECK_WX_OBJECT(NULL)
-
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
-    CHECK_OBJECT_BASE(NULL)
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
+    CHECK_OBJECT_BASE(nullptr)
 
     return obj.get();
 }
 
-size_t wxFBManager::GetChildCount(wxObject* wxobject)
+
+std::size_t wxFBManager::GetChildCount(wxObject* wxobject) const
 {
     CHECK_VISUAL_EDITOR(0)
-
     CHECK_WX_OBJECT(0)
 
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
     CHECK_OBJECT_BASE(0)
 
     return obj->GetChildCount();
 }
 
-wxObject* wxFBManager::GetChild(wxObject* wxobject, size_t childIndex)
+wxObject* wxFBManager::GetChild(wxObject* wxobject, std::size_t childIndex) const
 {
-    CHECK_VISUAL_EDITOR(NULL)
+    CHECK_VISUAL_EDITOR(nullptr)
+    CHECK_WX_OBJECT(nullptr)
 
-    CHECK_WX_OBJECT(NULL)
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
+    CHECK_OBJECT_BASE(nullptr)
 
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
-    CHECK_OBJECT_BASE(NULL)
-
-    if (childIndex >= obj->GetChildCount()) {
-        return NULL;
+    if (!(childIndex < obj->GetChildCount())) {
+        return nullptr;
     }
 
     return m_visualEdit->GetWxObject(obj->GetChild(childIndex));
 }
 
-IObject* wxFBManager::GetIParent(wxObject* wxobject)
+
+wxObject* wxFBManager::GetParent(wxObject* wxobject) const
 {
-    CHECK_VISUAL_EDITOR(NULL)
+    CHECK_VISUAL_EDITOR(nullptr)
+    CHECK_WX_OBJECT(nullptr)
 
-    CHECK_WX_OBJECT(NULL)
-
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
-    CHECK_OBJECT_BASE(NULL)
-
-    return obj->GetParent().get();
-}
-
-wxObject* wxFBManager::GetParent(wxObject* wxobject)
-{
-    CHECK_VISUAL_EDITOR(NULL)
-
-    CHECK_WX_OBJECT(NULL)
-
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
-    CHECK_OBJECT_BASE(NULL)
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
+    CHECK_OBJECT_BASE(nullptr)
 
     return m_visualEdit->GetWxObject(obj->GetParent());
 }
 
-wxObject* wxFBManager::GetWxObject(PObjectBase obj)
+IObject* wxFBManager::GetIParent(wxObject* wxobject) const
 {
-    CHECK_OBJECT_BASE(NULL)
+    CHECK_VISUAL_EDITOR(nullptr)
+    CHECK_WX_OBJECT(nullptr)
 
-    return m_visualEdit->GetWxObject(obj);
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
+    CHECK_OBJECT_BASE(nullptr)
+
+    return obj->GetParent().get();
 }
 
-void wxFBManager::ModifyProperty(wxObject* wxobject, wxString property, wxString value, bool allowUndo)
+
+bool wxFBManager::SelectObject(wxObject* wxobject)
+{
+    CHECK_VISUAL_EDITOR(false)
+    CHECK_WX_OBJECT(false)
+
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
+    CHECK_OBJECT_BASE(false)
+
+    // Prevent loop of selection events
+    FlagFlipper stopSelectedEvent(m_visualEdit, &VisualEditor::PreventOnSelected);
+
+    return AppData()->SelectObject(obj);
+}
+
+void wxFBManager::ModifyProperty(wxObject* wxobject, const wxString& property, const wxString& value, bool allowUndo)
 {
     CHECK_VISUAL_EDITOR(void())
-
-    // Prevent modified event in visual editor - no need to redraw when the change is happening in the editor!
-    FlagFlipper stopModifiedEvent(m_visualEdit, &VisualEditor::PreventOnModified);
-
     CHECK_WX_OBJECT(void())
 
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
+    auto obj = m_visualEdit->GetObjectBase(wxobject);
     CHECK_OBJECT_BASE(void())
 
-    PProperty prop = obj->GetProperty(property);
-
+    auto prop = obj->GetProperty(property);
     if (!prop) {
         wxLogError(_("%s has no property named %s"), obj->GetClassName(), property);
         return;
     }
+
+    // Prevent modified event in visual editor - no need to redraw when the change is happening in the editor!
+    FlagFlipper stopModifiedEvent(m_visualEdit, &VisualEditor::PreventOnModified);
 
     if (allowUndo) {
         AppData()->ModifyProperty(prop, value);
@@ -172,23 +161,8 @@ void wxFBManager::ModifyProperty(wxObject* wxobject, wxString property, wxString
     }
 }
 
-bool wxFBManager::SelectObject(wxObject* wxobject)
-{
-    CHECK_VISUAL_EDITOR(false)
-
-    // Prevent loop of selection events
-    FlagFlipper stopSelectedEvent(m_visualEdit, &VisualEditor::PreventOnSelected);
-
-    CHECK_WX_OBJECT(false)
-
-    PObjectBase obj = m_visualEdit->GetObjectBase(wxobject);
-
-    CHECK_OBJECT_BASE(false)
-
-    return AppData()->SelectObject(obj);
-}
 
 wxNoObject* wxFBManager::NewNoObject()
 {
-    return new wxNoObject;
+    return new wxNoObject();
 }

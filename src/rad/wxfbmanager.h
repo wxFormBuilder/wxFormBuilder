@@ -36,24 +36,27 @@ class VisualEditor;
 
 class wxFBManager : public IManager
 {
-private:
-    VisualEditor* m_visualEdit;
-
 public:
-    wxFBManager();
-    void SetVisualEditor(VisualEditor* visualEdit);
-    size_t GetChildCount(wxObject* wxobject) override;
-    wxObject* GetChild(wxObject* wxobject, size_t childIndex) override;
-    wxObject* GetParent(wxObject* wxobject) override;
-    IObject* GetIParent(wxObject* wxobject) override;
-    IObject* GetIObject(wxObject* wxobject) override;
-    wxObject* GetWxObject(PObjectBase obj);
+    wxFBManager() : m_visualEdit(nullptr) {}
+
+    void SetVisualEditor(VisualEditor* visualEdit) { m_visualEdit = visualEdit; }
+
+    IObject* GetIObject(wxObject* wxobject) const override;
+
+    std::size_t GetChildCount(wxObject* wxobject) const override;
+    wxObject* GetChild(wxObject* wxobject, std::size_t childIndex) const override;
+
+    wxObject* GetParent(wxObject* wxobject) const override;
+    IObject* GetIParent(wxObject* wxobject) const override;
+
+    bool SelectObject(wxObject* wxobject) override;
+    void ModifyProperty(
+      wxObject* wxobject, const wxString& property, const wxString& value, bool allowUndo = true) override;
+
     wxNoObject* NewNoObject() override;
 
-    void ModifyProperty(wxObject* wxobject, wxString property, wxString value, bool allowUndo = true) override;
-
-    // Returns true if selection changed, false if already selected
-    bool SelectObject(wxObject* wxobject) override;
+private:
+    VisualEditor* m_visualEdit;
 };
 
 #endif  // RAD_WXFBMANAGER_H
