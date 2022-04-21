@@ -48,7 +48,7 @@ jobs:
       matrix:
         os: [macos-latest, macos-10.15]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.2
       with:
         submodules: true
     - name: Fetch tags
@@ -86,7 +86,7 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3.0.0
       with:
         name: App Bundle ${{ matrix.os }}
         path: |

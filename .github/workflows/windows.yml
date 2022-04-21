@@ -50,14 +50,14 @@ jobs:
           - { sys: mingw32, env: i686 }
           - { sys: mingw64, env: x86_64 }
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3.0.2
       with:
         submodules: true
     - name: Fetch tags
       shell: cmd
       run: |
         git fetch --prune --depth=1 --no-recurse-submodules
-    - uses: msys2/setup-msys2@v2
+    - uses: msys2/setup-msys2@v2.10.0
       with:
         msystem: ${{ matrix.sys }}
         release: false
@@ -101,7 +101,7 @@ jobs:
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3.0.0
       with:
         name: Windows Installer ${{ matrix.env }}
         path: |
