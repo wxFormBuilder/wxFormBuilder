@@ -1175,14 +1175,15 @@ void ObjectDatabase::ImportComponentLibrary(wxString libfile, PwxFBManager manag
         );
         path = pluginLibrary->second.sharedLibrary.location().native();
     } catch (const std::system_error& ex) {
-        //TODO: Workaround for exception messages received from at least MSVC 2019 and 2022 containing percent placeholders
+        // TODO: Workaround for exception messages received from at least MSVC 2019 and 2022 containing percent
+        // placeholders
         wxString escapedEx(ex.what());
         escapedEx.Replace("%", "%%");
         THROW_WXFBEX("Error loading library " << libfile << ": " << escapedEx)
     }
     try {
-        pluginLibrary->second.getComponentLibrary =
-          pluginLibrary->second.sharedLibrary.get<IComponentLibrary*(IManager*)>("GetComponentLibrary");
+        pluginLibrary->second.createComponentLibrary =
+          pluginLibrary->second.sharedLibrary.get<IComponentLibrary*(IManager*)>("CreateComponentLibrary");
         pluginLibrary->second.freeComponentLibrary =
           pluginLibrary->second.sharedLibrary.get<void(IComponentLibrary*)>("FreeComponentLibrary");
     } catch (const std::system_error& ex) {
@@ -1190,28 +1191,34 @@ void ObjectDatabase::ImportComponentLibrary(wxString libfile, PwxFBManager manag
     }
 
     LogDebug("[Database::ImportComponentLibrary] Importing " + path + " library");
-    pluginLibrary->second.componentLibrary = pluginLibrary->second.getComponentLibrary(manager.get());
-    auto* comp_lib = pluginLibrary->second.componentLibrary;
+    pluginLibrary->second.componentLibrary = pluginLibrary->second.createComponentLibrary(manager.get());
 
     // Import all of the components
-    for (unsigned int i = 0; i < comp_lib->GetComponentCount(); i++) {
-        wxString class_name = comp_lib->GetComponentName(i);
-        IComponent* comp = comp_lib->GetComponent(i);
+    auto components = pluginLibrary->second.componentLibrary->GetComponents();
+    for (auto& component : components) {
+        const auto& class_name = component.first;
+        auto* component_interface = component.second;
 
         // Look for the class in the data read from the .xml files
         PObjectInfo class_info = GetObjectInfo(class_name);
         if (class_info) {
-            class_info->SetComponent(comp);
+            // TODO: Raise an error instead?
+            if (class_info->GetComponent()) {
+                LogDebug("Duplicate ObjectInfo for <" + class_name + "> found while loading library <" + path + ">");
+            }
+            class_info->SetComponent(component_interface);
         } else {
             LogDebug("ObjectInfo for <" + class_name + "> not found while loading library <" + path + ">");
         }
     }
 
     // Add all of the macros in the library to the macro dictionary
+    auto macros = pluginLibrary->second.componentLibrary->GetMacros();
     PMacroDictionary dic = MacroDictionary::GetInstance();
-    for (unsigned int i = 0; i < comp_lib->GetMacroCount(); i++) {
-        wxString name = comp_lib->GetMacroName(i);
-        int value = comp_lib->GetMacroValue(i);
+    for (const auto& macro : macros) {
+        const auto& name = macro.first;
+        const auto& value = macro.second;
+
         dic->AddMacro(name, value);
         m_macroSet.erase(name);
     }

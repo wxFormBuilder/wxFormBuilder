@@ -1214,7 +1214,7 @@ void MainFrame::OnGenInhertedClass(wxCommandEvent& WXUNUSED(e))
 
     // Show the dialog
     PObjectBase project = AppData()->GetProjectData();
-    if (project->IsNull(_("file"))) {
+    if (project->IsPropertyNull(_("file"))) {
         wxLogWarning(_("You must set the \"file\" property of the project before generating inherited classes."));
         return;
     }

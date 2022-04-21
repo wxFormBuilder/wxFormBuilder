@@ -268,9 +268,9 @@ PObjectBase ObjectBase::GetNonSizerParent()
     return current;
 }
 
-PProperty ObjectBase::GetProperty(wxString name)
+PProperty ObjectBase::GetProperty(const wxString& name) const
 {
-    PropertyMap::iterator it = m_properties.find(name);
+    auto it = m_properties.find(name);
     if (it != m_properties.end())
         return it->second;
 
@@ -461,7 +461,7 @@ void ObjectBase::RemoveChild(unsigned int idx)
     m_children.erase(it);
 }
 
-PObjectBase ObjectBase::GetChild(unsigned int idx)
+PObjectBase ObjectBase::GetChild(unsigned int idx) const
 {
     assert(idx < m_children.size());
 
@@ -607,131 +607,149 @@ bool ObjectBase::ChangeChildPosition(PObjectBase obj, unsigned int pos)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool ObjectBase::IsNull(const wxString& pname)
+wxString ObjectBase::GetChildFromParentProperty(const wxString& parentName, const wxString& childName) const
 {
-    PProperty property = GetProperty(pname);
-    if (property)
+    auto property = GetProperty(parentName);
+    if (property) {
+        return property->GetChildFromParent(childName);
+    }
+
+    return wxEmptyString;
+}
+
+bool ObjectBase::IsPropertyNull(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
         return property->IsNull();
-    else
-        return true;
+    }
+
+    return true;
 }
 
-int ObjectBase::GetPropertyAsInteger(const wxString& pname)
+int ObjectBase::GetPropertyAsInteger(const wxString& name) const
 {
-    PProperty property = GetProperty(pname);
-    if (property)
+    auto property = GetProperty(name);
+    if (property) {
         return property->GetValueAsInteger();
-    else
-        return 0;
+    }
+
+    return 0;
 }
 
-wxFontContainer ObjectBase::GetPropertyAsFont(const wxString& pname)
+double ObjectBase::GetPropertyAsFloat(const wxString& name) const
 {
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsFont();
-    else
-        return wxFontContainer();
-}
-
-wxColour ObjectBase::GetPropertyAsColour(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsColour();
-    else
-        return wxColour();
-}
-
-wxString ObjectBase::GetPropertyAsString(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsString();
-    else
-        return wxString();
-}
-
-wxPoint ObjectBase::GetPropertyAsPoint(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsPoint();
-    else
-        return wxPoint();
-}
-
-wxSize ObjectBase::GetPropertyAsSize(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsSize();
-    else
-        return wxDefaultSize;
-}
-
-wxBitmap ObjectBase::GetPropertyAsBitmap(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
-        return property->GetValueAsBitmap();
-    else
-        return wxBitmap();
-}
-double ObjectBase::GetPropertyAsFloat(const wxString& pname)
-{
-    PProperty property = GetProperty(pname);
-    if (property)
+    auto property = GetProperty(name);
+    if (property) {
         return property->GetValueAsFloat();
-    else
-        return 0;
+    }
+
+    return 0.0;
 }
-wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& pname)
+
+wxString ObjectBase::GetPropertyAsString(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsString();
+    }
+
+    return wxEmptyString;
+}
+
+wxPoint ObjectBase::GetPropertyAsPoint(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsPoint();
+    }
+
+    return wxDefaultPosition;
+}
+
+wxSize ObjectBase::GetPropertyAsSize(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsSize();
+    }
+
+    return wxDefaultSize;
+}
+
+wxBitmap ObjectBase::GetPropertyAsBitmap(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsBitmap();
+    }
+
+    return wxNullBitmap;
+}
+
+wxColour ObjectBase::GetPropertyAsColour(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsColour();
+    }
+
+    return wxNullColour;
+}
+
+wxFontContainer ObjectBase::GetPropertyAsFont(const wxString& name) const
+{
+    auto property = GetProperty(name);
+    if (property) {
+        return property->GetValueAsFont();
+    }
+
+    return wxFontContainer();
+}
+
+wxArrayInt ObjectBase::GetPropertyAsArrayInt(const wxString& name) const
 {
     wxArrayInt array;
-    PProperty property = GetProperty(pname);
+
+    auto property = GetProperty(name);
     if (property) {
         IntList il(
           property->GetValue(), property->GetType() == PT_UINTLIST,
           (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
-        for (unsigned int i = 0; i < il.GetSize(); i++) array.Add(il.GetValue(i));
+        for (unsigned int i = 0; i < il.GetSize(); ++i) {
+            array.Add(il.GetValue(i));
+        }
     }
 
     return array;
 }
 
-wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& pname)
+wxArrayString ObjectBase::GetPropertyAsArrayString(const wxString& name) const
 {
-    PProperty property = GetProperty(pname);
-    if (property)
+    auto property = GetProperty(name);
+    if (property) {
         return property->GetValueAsArrayString();
-    else
-        return wxArrayString();
+    }
+
+    return wxArrayString();
 }
 
-std::vector<std::pair<int, int>> ObjectBase::GetPropertyAsVectorIntPair(const wxString& pname)
+std::vector<std::pair<int, int>> ObjectBase::GetPropertyAsVectorIntPair(const wxString& name) const
 {
     std::vector<std::pair<int, int>> result;
 
-    auto property = GetProperty(pname);
+    auto property = GetProperty(name);
     if (property) {
         IntList il(
           property->GetValue(), property->GetType() == PT_UINTLIST,
           (property->GetType() == PT_INTPAIRLIST || property->GetType() == PT_UINTPAIRLIST));
         result.reserve(il.GetSize());
-        for (unsigned int i = 0; i < il.GetSize(); ++i) { result.emplace_back(il.GetPair(i)); }
+        for (unsigned int i = 0; i < il.GetSize(); ++i) {
+            result.emplace_back(il.GetPair(i));
+        }
     }
 
     return result;
-}
-
-wxString ObjectBase::GetChildFromParentProperty(const wxString& parentName, const wxString& childName)
-{
-    PProperty property = GetProperty(parentName);
-    if (property)
-        return property->GetChildFromParent(childName);
-    else
-        return wxEmptyString;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

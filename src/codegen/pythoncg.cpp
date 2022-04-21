@@ -203,7 +203,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()).replace(0, 2, "wx."),
                   font.GetStyleString().replace(0, 2, "wx."), font.GetWeightString().replace(0, 2, "wx."),
                   (fontContainer.GetUnderlined() ? "True" : "False"),
-                  (fontContainer.m_faceName.empty() ? "wx.EmptyString" : ("\"" + fontContainer.m_faceName + "\"")));
+                  (fontContainer.GetFaceName().empty() ? "wx.EmptyString" : ("\"" + fontContainer.GetFaceName() + "\"")));
             } else {
                 result = wxT("wx.NORMAL_FONT");
             }

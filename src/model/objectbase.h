@@ -285,15 +285,6 @@ public:
     */
     bool GetExpanded() { return m_expanded; }
 
-    /**
-     * Obtiene el nombre del objeto.
-     *
-     * @note No confundir con la propiedad nombre que tienen algunos objetos.
-     *       Cada objeto tiene un nombre, el cual será el mismo que el usado
-     *       como clave en el registro de descriptores.
-     */
-    wxString GetClassName() override { return m_class; }
-
     /// Gets the parent object
     PObjectBase GetParent() { return m_parent.lock(); }
 
@@ -308,7 +299,7 @@ public:
      * @note Notar que no existe el método SetProperty, ya que la modificación
      *       se hace a través de la referencia.
      */
-    PProperty GetProperty(wxString name);
+    PProperty GetProperty(const wxString& name) const;
 
     PEvent GetEvent(wxString name);
 
@@ -431,14 +422,9 @@ public:
     /**
      * Obtiene un hijo del objeto.
      */
-    PObjectBase GetChild(unsigned int idx);
+    PObjectBase GetChild(unsigned int idx) const;
 
     PObjectBase GetChild(unsigned int idx, const wxString& type);
-
-    /**
-     * Obtiene el número de hijos del objeto.
-     */
-    unsigned int GetChildCount() override { return (unsigned int)m_children.size(); }
 
     /**
      * Comprueba si el tipo de objeto pasado es válido como hijo del objeto.
@@ -451,12 +437,6 @@ public:
 
     PObjectBase GetLayout();
 
-    /**
-     * Devuelve el tipo de objeto.
-     *
-     * Deberá ser redefinida en cada clase derivada.
-     */
-    wxString GetObjectTypeName() override { return m_type; }
     void SetObjectTypeName(wxString type) { m_type = type; }
 
     /**
@@ -483,22 +463,25 @@ public:
     /////////////////////////
     // Implementación de la interfaz IObject para su uso dentro de los
     // plugins
-    bool IsNull(const wxString& pname) override;
-    int GetPropertyAsInteger(const wxString& pname) override;
-    wxFontContainer GetPropertyAsFont(const wxString& pname) override;
-    wxColour GetPropertyAsColour(const wxString& pname) override;
-    wxString GetPropertyAsString(const wxString& pname) override;
-    wxPoint GetPropertyAsPoint(const wxString& pname) override;
-    wxSize GetPropertyAsSize(const wxString& pname) override;
-    wxBitmap GetPropertyAsBitmap(const wxString& pname) override;
-    double GetPropertyAsFloat(const wxString& pname) override;
+    wxString GetClassName() const override { return m_class; }
+    wxString GetObjectTypeName() const override { return m_type; }
+    std::size_t GetChildCount() const override { return m_children.size(); }
+    IObject* GetChildObject(std::size_t index) const override { return GetChild(index).get(); }
 
-    wxArrayInt GetPropertyAsArrayInt(const wxString& pname) override;
-    wxArrayString GetPropertyAsArrayString(const wxString& pname) override;
-    std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& pname) override;
-    wxString GetChildFromParentProperty(const wxString& parentName, const wxString& childName) override;
+    wxString GetChildFromParentProperty(const wxString& parentName, const wxString& childName) const override;
 
-    IObject* GetChildPtr(unsigned int idx) override { return GetChild(idx).get(); }
+    bool IsPropertyNull(const wxString& name) const override;
+    int GetPropertyAsInteger(const wxString& name) const override;
+    double GetPropertyAsFloat(const wxString& name) const override;
+    wxString GetPropertyAsString(const wxString& name) const override;
+    wxPoint GetPropertyAsPoint(const wxString& name) const override;
+    wxSize GetPropertyAsSize(const wxString& name) const override;
+    wxBitmap GetPropertyAsBitmap(const wxString& name) const override;
+    wxColour GetPropertyAsColour(const wxString& name) const override;
+    wxFontContainer GetPropertyAsFont(const wxString& name) const override;
+    wxArrayInt GetPropertyAsArrayInt(const wxString& name) const override;
+    wxArrayString GetPropertyAsArrayString(const wxString& name) const override;
+    std::vector<std::pair<int, int>> GetPropertyAsVectorIntPair(const wxString& name) const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

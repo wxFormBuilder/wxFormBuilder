@@ -8,6 +8,7 @@ target_sources(wxFormBuilder_plugin-interface
   PRIVATE
     component.h
     fontcontainer.h
+    plugin.cpp
     plugin.h
     xrcconv.cpp
     xrcconv.h

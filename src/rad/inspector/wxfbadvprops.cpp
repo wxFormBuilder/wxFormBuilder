@@ -878,12 +878,12 @@ WX_PG_IMPLEMENT_PROPERTY_CLASS(wxFBFontProperty, wxPGProperty, wxFont, const wxF
 
     wxString emptyString(wxEmptyString);
 
-    AddPrivateChild(new wxIntProperty(_("Point Size"), wxT("Point Size"), value.m_pointSize));
+    AddPrivateChild(new wxIntProperty(_("Point Size"), wxT("Point Size"), value.GetPointSize()));
 
     AddPrivateChild(
-      new wxEnumProperty(_("Family"), wxT("Family"), gs_fp_es_family_labels, gs_fp_es_family_values, value.m_family));
+      new wxEnumProperty(_("Family"), wxT("Family"), gs_fp_es_family_labels, gs_fp_es_family_values, value.GetFamily()));
 
-    wxString faceName = value.m_faceName;
+    const auto& faceName = value.GetFaceName();
     // If font was not in there, add it now
     if (faceName.length() && wxPGGlobalVars->m_fontFamilyChoices->Index(faceName) == wxNOT_FOUND)
         wxPGGlobalVars->m_fontFamilyChoices->AddAsSorted(faceName);
@@ -895,12 +895,12 @@ WX_PG_IMPLEMENT_PROPERTY_CLASS(wxFBFontProperty, wxPGProperty, wxFont, const wxF
     AddPrivateChild(p);
 
     AddPrivateChild(
-      new wxEnumProperty(_("Style"), wxT("Style"), gs_fp_es_style_labels, gs_fp_es_style_values, value.m_style));
+      new wxEnumProperty(_("Style"), wxT("Style"), gs_fp_es_style_labels, gs_fp_es_style_values, value.GetStyle()));
 
     AddPrivateChild(
-      new wxEnumProperty(_("Weight"), wxT("Weight"), gs_fp_es_weight_labels, gs_fp_es_weight_values, value.m_weight));
+      new wxEnumProperty(_("Weight"), wxT("Weight"), gs_fp_es_weight_labels, gs_fp_es_weight_values, value.GetWeight()));
 
-    AddPrivateChild(new wxBoolProperty(_("Underlined"), wxT("Underlined"), value.m_underlined));
+    AddPrivateChild(new wxBoolProperty(_("Underlined"), wxT("Underlined"), value.GetUnderlined()));
 }
 
 wxFBFontProperty::~wxFBFontProperty()
@@ -948,12 +948,12 @@ void wxFBFontProperty::RefreshChildren()
     wxString fstr = m_value.GetString();
     wxFontContainer font = TypeConv::StringToFont(fstr);
 
-    Item(0)->SetValue(font.m_pointSize);
-    Item(1)->SetValue(font.m_family);
-    Item(2)->SetValueFromString(font.m_faceName, wxPG_FULL_VALUE);
-    Item(3)->SetValue(font.m_style);
-    Item(4)->SetValue(font.m_weight);
-    Item(5)->SetValue(font.m_underlined);
+    Item(0)->SetValue(font.GetPointSize());
+    Item(1)->SetValue(font.GetFamily());
+    Item(2)->SetValueFromString(font.GetFaceName(), wxPG_FULL_VALUE);
+    Item(3)->SetValue(font.GetStyle());
+    Item(4)->SetValue(font.GetWeight());
+    Item(5)->SetValue(font.GetUnderlined());
 }
 
 wxVariant wxFBFontProperty::ChildChanged(wxVariant& thisValue, int ind, wxVariant& childValue) const
@@ -961,13 +961,13 @@ wxVariant wxFBFontProperty::ChildChanged(wxVariant& thisValue, int ind, wxVarian
     wxFontContainer font = TypeConv::StringToFont(thisValue.GetString());
 
     if (ind == 0) {
-        font.m_pointSize = childValue.GetLong();
+        font.SetPointSize(childValue.GetLong());
     } else if (ind == 1) {
         int fam = childValue.GetLong();
         if (fam < wxFONTFAMILY_DEFAULT || fam > wxFONTFAMILY_TELETYPE) {
             fam = wxFONTFAMILY_DEFAULT;
         }
-        font.m_family = static_cast<wxFontFamily>(fam);
+        font.SetFamily(static_cast<wxFontFamily>(fam));
     } else if (ind == 2) {
         wxString faceName;
         int faceIndex = childValue.GetLong();
@@ -975,20 +975,20 @@ wxVariant wxFBFontProperty::ChildChanged(wxVariant& thisValue, int ind, wxVarian
         if (faceIndex >= 0)
             faceName = wxPGGlobalVars->m_fontFamilyChoices->GetLabel(faceIndex);
 
-        font.m_faceName = faceName;
+        font.SetFaceName(faceName);
     } else if (ind == 3) {
         int st = childValue.GetLong();
         if (st != wxFONTSTYLE_NORMAL && st != wxFONTSTYLE_SLANT && st != wxFONTSTYLE_ITALIC) {
             st = wxFONTSTYLE_NORMAL;
         }
-        font.m_style = static_cast<wxFontStyle>(st);
+        font.SetStyle(static_cast<wxFontStyle>(st));
     } else if (ind == 4) {
         int wt = childValue.GetLong();
         if (wt != wxFONTWEIGHT_NORMAL && wt != wxFONTWEIGHT_LIGHT && wt != wxFONTWEIGHT_BOLD)
             wt = wxFONTWEIGHT_NORMAL;
-        font.m_weight = static_cast<wxFontWeight>(wt);
+        font.SetWeight(static_cast<wxFontWeight>(wt));
     } else if (ind == 5) {
-        font.m_underlined = childValue.GetBool();
+        font.SetUnderlined(childValue.GetBool());
     }
 
     thisValue = WXVARIANT(TypeConv::FontToString(font));

@@ -211,7 +211,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
                   ((pointSize <= 0) ? "wx.wxNORMAL_FONT:GetPointSize()" : (wxString() << pointSize)),
                   "wx." + TypeConv::FontFamilyToString(fontContainer.GetFamily()), "wx." + font.GetStyleString(),
                   "wx." + font.GetWeightString(), (fontContainer.GetUnderlined() ? "True" : "False"),
-                  (fontContainer.m_faceName.empty() ? "\"\"" : ("\"" + fontContainer.m_faceName + "\"")));
+                  (fontContainer.GetFaceName().empty() ? "\"\"" : ("\"" + fontContainer.GetFaceName() + "\"")));
             } else {
                 result = wxT("wx.wxNORMAL_FONT");
             }

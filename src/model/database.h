@@ -129,7 +129,7 @@ private:
 
     struct PluginLibrary {
         boost::dll::shared_library sharedLibrary;
-        std::function<IComponentLibrary*(IManager*)> getComponentLibrary;
+        std::function<IComponentLibrary*(IManager*)> createComponentLibrary;
         std::function<void(IComponentLibrary*)> freeComponentLibrary;
         IComponentLibrary* componentLibrary = nullptr;
     };
