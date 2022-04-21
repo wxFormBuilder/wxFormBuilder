@@ -70,6 +70,10 @@ jobs:
           mingw-w64-${{ matrix.env }}-boost
           base-devel
           git
+    - name: Configure msys2 environment
+      shell: msys2 {0}
+      run: |
+        git config --global core.autocrlf true
     - name: Create build system
       shell: msys2 {0}
       run: |
