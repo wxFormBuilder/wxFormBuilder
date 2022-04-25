@@ -1,3 +1,6 @@
 [submodule "third_party/ticpp"]
 	path = third_party/ticpp
 	url = ../ticpp.git
+[submodule "third_party/tinyxml2"]
+	path = third_party/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
