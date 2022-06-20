@@ -65,20 +65,20 @@ Lua code generation written by
   </templates>
 
   <templates class="ribbonButton">
-    <template name="evt_connect_OnRibbonButtonClicked">-- event #utbl$name:OnRibbonButtonClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonButtonClicked">-- event OnRibbonButtonClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonDropdownButton">
-    <template name="evt_connect_OnRibbonButtonDropdownClicked">-- event #utbl$name:OnRibbonButtonDropdownClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonButtonDropdownClicked">-- event OnRibbonButtonDropdownClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonHybridButton">
-    <template name="evt_connect_OnRibbonButtonClicked">-- event #utbl$name:OnRibbonButtonClicked isn't currently supported by wxLua</template>
-    <template name="evt_connect_OnRibbonButtonDropdownClicked">-- event #utbl$name:OnRibbonButtonDropdownClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonButtonClicked">-- event OnRibbonButtonClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonButtonDropdownClicked">-- event OnRibbonButtonDropdownClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonToggleButton">
-    <template name="evt_connect_OnRibbonButtonClicked">-- event #utbl$name:OnRibbonButtonClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonButtonClicked">-- event OnRibbonButtonClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="wxRibbonToolBar">
@@ -88,30 +88,30 @@ Lua code generation written by
   </templates>
 
   <templates class="ribbonTool">
-    <template name="evt_connect_OnRibbonToolClicked">-- event #utbl$name:OnRibbonToolClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonToolClicked">-- event OnRibbonToolClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonDropdownTool">
-    <template name="evt_connect_OnRibbonToolDropdownClicked">-- event #utbl$name:OnRibbonToolDropdownClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonToolDropdownClicked">-- event OnRibbonToolDropdownClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonHybridTool">
-    <template name="evt_connect_OnRibbonToolClicked">-- event #utbl$name:OnRibbonToolClicked isn't currently supported by wxLua</template>
-    <template name="evt_connect_OnRibbonToolDropdownClicked">-- event #utbl$name:OnRibbonToolDropdownClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonToolClicked">-- event OnRibbonToolClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonToolDropdownClicked">-- event OnRibbonToolDropdownClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="ribbonToggleTool">
-    <template name="evt_connect_OnRibbonToolClicked">-- event #utbl$name:OnRibbonToolClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonToolClicked">-- event OnRibbonToolClicked isn't currently supported by wxLua</template>
   </templates>
 
   <templates class="wxRibbonGallery">
     <template name="construction">
       #utbl$name = wx.RibbonGallery( #utbl#wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} );
     </template>
-    <template name="evt_connect_OnRibbonGallerySelected">-- event #utbl$name:OnRibbonGallerySelected isn't currently supported by wxLua</template>
-    <template name="evt_connect_OnRibbonGalleryClicked">-- event #utbl$name:OnRibbonGalleryClicked isn't currently supported by wxLua</template>
-    <template name="evt_connect_OnRibbonGalleryHoverChanged">-- event #utbl$name:OnRibbonGalleryHoverChanged isn't currently supported by wxLua</template>
-    <template name="evt_connect_OnRibbonGalleryExtensionButtonPressed">-- event #utbl$name:GalleryExtensionButtonPressed isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonGallerySelected">-- event OnRibbonGallerySelected isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonGalleryClicked">-- event OnRibbonGalleryClicked isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonGalleryHoverChanged">-- event OnRibbonGalleryHoverChanged isn't currently supported by wxLua</template>
+    <template name="evt_connect_OnRibbonGalleryExtensionButtonPressed">-- event GalleryExtensionButtonPressed isn't currently supported by wxLua</template>
   </templates>
 
 </codegen>
