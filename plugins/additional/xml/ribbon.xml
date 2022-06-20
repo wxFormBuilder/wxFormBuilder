@@ -88,8 +88,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonButton" icon="ribbon_button.xpm" type="ribbonbutton" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonButton</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonButton</property>
     <property name="bitmap" type="bitmap" help="ribbonButton bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonButton"/>
@@ -97,8 +96,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonDropdownButton" icon="ribbon_button_dropdown.xpm" type="ribbondropdownbutton" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonDropdownButton</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonDropdownButton</property>
     <property name="bitmap" type="bitmap" help="ribbonDropdownButton bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonDropdownButton"/>
@@ -106,8 +104,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonHybridButton" icon="ribbon_button_hybrid.xpm" type="ribbonhybridbutton" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonHybridButton</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonHybridButton</property>
     <property name="bitmap" type="bitmap" help="ribbonHybridButton bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonHybridButton"/>
@@ -116,8 +113,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonToggleButton" icon="ribbon_button_toggle.xpm" type="ribbontogglebutton" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonToggleButton</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonToggleButton</property>
     <property name="bitmap" type="bitmap" help="ribbonToggleButton bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonToggleButton"/>
@@ -130,8 +126,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonTool" icon="ribbon_button.xpm" type="ribbontool" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonTool</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonTool</property>
     <property name="bitmap" type="bitmap" help="ribbonTool bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonTool"/>
@@ -139,8 +134,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonDropdownTool" icon="ribbon_button_dropdown.xpm" type="ribbondropdowntool" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonDropdownTool</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonDropdownTool</property>
     <property name="bitmap" type="bitmap" help="ribbonDropdownTool bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonDropdownTool"/>
@@ -148,8 +142,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonHybridTool" icon="ribbon_button_hybrid.xpm" type="ribbonhybridtool" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonHybridTool</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonHybridTool</property>
     <property name="bitmap" type="bitmap" help="ribbonHybridTool bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonHybridTool"/>
@@ -158,8 +151,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonToggleTool" icon="ribbon_button_toggle.xpm" type="ribbontoggletool" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonToggleTool</property>
+    <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonToggleTool</property>
     <property name="bitmap" type="bitmap" help="ribbonToggleTool bitmap."/>
     <property name="help" type="wxString_i18n" help="ribbonToggleTool"/>
@@ -176,8 +168,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="ribbonGalleryItem" icon="ribbon_button.xpm" type="ribbongalleryitem" startgroup="0" wxversion="2904">
-    <inherits class="wxWindow"/>
-    <property name="name" type="text">m_ribbonGalleryItem</property>
+    <property name="id" type="macro"/>
     <property name="bitmap" type="bitmap" help="ribbonGalleryItem bitmap."/>
   </objectinfo>
 
