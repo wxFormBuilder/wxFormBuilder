@@ -270,7 +270,7 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
   </refsect1>
   <refsect1 id="see_also">
     <title>SEE ALSO</title>
-    <!-- In alpabetical order. -->
+    <!-- In alphabetical order. -->
     <para><citerefentry>
         <refentrytitle>bar</refentrytitle>
         <manvolnum>1</manvolnum>

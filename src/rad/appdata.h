@@ -395,7 +395,7 @@ public:
 
     void SetApplicationPath(const wxString& path) { m_rootDir = path; }
 
-    // Allow a single instance check from outsid the AppData class
+    // Allow a single instance check from outside the AppData class
     bool VerifySingleInstance(const wxString& file, bool switchTo = true);
 };
 
