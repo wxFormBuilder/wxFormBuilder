@@ -23,7 +23,7 @@ wxFormBuilder runs on Windows, various Linux distributions and macOS.
 Building from source requires the fairly recent CMake version 3.21. Most Linux distributions don't contain this version
 in their package repositories currently, the [CMake](https://cmake.org/download/) website offers binary downloads for
 multiple platforms. wxFormBuilder uses the [wxWidgets](https://wxwidgets.org/) framework itself, it is highly recommended using
-the current development version 3.1.x. The latest stable version 3.0.x is known to cause multiple issues and should be avoided.
+the current development version 3.2.x. The latest stable version 3.0.x is known to cause multiple issues and should be avoided.
 
 ### Windows
 
@@ -39,7 +39,7 @@ Installing the Prerequisites:
 ```sh
 pacman -Syu
 pacman -S ${MINGW_PACKAGE_PREFIX}-toolchain ${MINGW_PACKAGE_PREFIX}-cmake ${MINGW_PACKAGE_PREFIX}-make base-devel git
-pacman -S ${MINGW_PACKAGE_PREFIX}-wxWidgets3.1 ${MINGW_PACKAGE_PREFIX}-boost
+pacman -S ${MINGW_PACKAGE_PREFIX}-wxWidgets3.2 ${MINGW_PACKAGE_PREFIX}-boost
 ```
 
 Building:
@@ -101,7 +101,7 @@ Building:
 ```sh
 git clone --recursive https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
-cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
+cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release -DWXFB_WXWIDGETS_ENABLE_31=ON
 cmake --build _build --config Release -j `nproc`
 cmake --install _build --config Release
 ```
