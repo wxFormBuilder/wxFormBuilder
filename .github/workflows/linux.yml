@@ -51,6 +51,9 @@ jobs:
     - uses: actions/checkout@v3.0.2
       with:
         submodules: true
+    - name: Configure container environment
+      run: |
+        git config --global --add safe.directory ${GITHUB_WORKSPACE}
     - name: Fetch tags
       run: |
         git fetch --prune --depth=1 --no-recurse-submodules
