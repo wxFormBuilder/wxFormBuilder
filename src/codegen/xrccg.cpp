@@ -193,7 +193,7 @@ ticpp::Element* XrcCodeGenerator::GetElement(PObjectBase obj, ticpp::Element* pa
         }
     } else {
         if (obj->GetObjectTypeName() != wxT("nonvisual")) {
-            // The componenet does not XRC
+            // The component does not XRC
             element = new ticpp::Element("object");
             element->SetAttribute("class", "unknown");
             element->SetAttribute("name", _STDSTR(obj->GetPropertyAsString(_("name"))));
