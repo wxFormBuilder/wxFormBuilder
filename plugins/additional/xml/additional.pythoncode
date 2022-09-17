@@ -29,9 +29,9 @@ Python code generation written by
   <templates class="wxHtmlWindow">
     <template name="construction">self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )</template>
     <template name="include">import wx.html</template>
-    <template name="evt_connect_OnHtmlCellClicked">self.$name.Bind( wx.EVT_COMMAND_HTML_CELL_CLICKED, #handler )</template>
-    <template name="evt_connect_OnHtmlCellHover">self.$name.Bind( wx.EVT_COMMAND_HTML_CELL_HOVER, #handler )</template>
-    <template name="evt_connect_OnHtmlLinkClicked">self.$name.Bind( wx.EVT_COMMAND_HTML_LINK_CLICKED, #handler )</template>
+    <template name="evt_connect_OnHtmlCellClicked">self.$name.Bind( wx.html.EVT_HTML_CELL_CLICKED, #handler )</template>
+    <template name="evt_connect_OnHtmlCellHover">self.$name.Bind( wx.html.EVT_HTML_CELL_HOVER, #handler )</template>
+    <template name="evt_connect_OnHtmlLinkClicked">self.$name.Bind( wx.html.EVT_HTML_LINK_CLICKED, #handler )</template>
   </templates>
 
   <templates class="wxRichTextCtrl">
