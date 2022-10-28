@@ -46,9 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-10.15]
+        os: [macos-latest, macos-12]
     steps:
-    - uses: actions/checkout@v3.0.2
+    - uses: actions/checkout@v3.1.0
       with:
         submodules: true
     - name: Fetch tags
@@ -67,7 +67,7 @@ jobs:
     - name: Package build system
       if: ${{ contains(github.ref, '/build/') }}
       run: |
-        zip -ry wxFormBuilder-macOS-build.zip _build
+        zip -ry wxFormBuilder-macOS-${{ matrix.os }}-build.zip _build
     - name: Build
       run: |
         cmake --build _build --config Release -j `sysctl -n hw.ncpu`
@@ -86,12 +86,13 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
-    - uses: actions/upload-artifact@v3.0.0
+    - uses: actions/upload-artifact@v3.1.1
+      if: ${{ contains(github.ref, '/build/') }}
       with:
         name: macOS Build Debugging ${{ matrix.os }}
         path: |
-          wxFormBuilder-macOS-build.zip
-    - uses: actions/upload-artifact@v3.0.0
+          wxFormBuilder-*-build.zip
+    - uses: actions/upload-artifact@v3.1.1
       with:
         name: App Bundle ${{ matrix.os }}
         path: |
