@@ -113,6 +113,11 @@ jobs:
         ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
     - uses: actions/upload-artifact@v3.0.0
       with:
+        name: Windows Build Debugging ${{ matrix.env }}
+        path: |
+          wxFormBuilder-Windows-build.zip
+    - uses: actions/upload-artifact@v3.0.0
+      with:
         name: Windows Archive ${{ matrix.env }}
         path: |
           wxFormBuilder-*.zip
@@ -120,5 +125,4 @@ jobs:
       with:
         name: Windows Installer ${{ matrix.env }}
         path: |
-          wxFormBuilder-Windows-build.zip
           wxFormBuilder-*.exe
