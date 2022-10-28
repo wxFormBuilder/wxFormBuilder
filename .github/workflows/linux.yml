@@ -68,7 +68,11 @@ jobs:
         cache-key: flatpak-builder-${{ github.sha }}
   debian:
     name: Debian Package
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-22.04]
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
     - uses: actions/checkout@v3.1.0
