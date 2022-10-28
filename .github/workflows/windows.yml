@@ -74,6 +74,7 @@ jobs:
       shell: msys2 {0}
       run: |
         git config --global core.autocrlf true
+        echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
     - name: Create build system
       shell: msys2 {0}
       run: |
@@ -101,13 +102,27 @@ jobs:
       run: |
         _install\\wxFormBuilder.exe -v
         _install\\wxFormBuilder.exe -g test\\wxfbTest.fbp
+    - name: Create archive
+      shell: cmd
+      run: |
+        cd _install
+        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}.zip" .
     - name: Create installer
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
     - uses: actions/upload-artifact@v3.0.0
       with:
-        name: Windows Installer ${{ matrix.env }}
+        name: Windows Build Debugging ${{ matrix.env }}
         path: |
           wxFormBuilder-Windows-build.zip
+    - uses: actions/upload-artifact@v3.0.0
+      with:
+        name: Windows Archive ${{ matrix.env }}
+        path: |
+          wxFormBuilder-*.zip
+    - uses: actions/upload-artifact@v3.0.0
+      with:
+        name: Windows Installer ${{ matrix.env }}
+        path: |
           wxFormBuilder-*.exe
