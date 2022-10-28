@@ -83,7 +83,7 @@ jobs:
       if: ${{ contains(github.ref, '/build/') }}
       shell: cmd
       run: |
-        7z a -tzip -bb1 wxFormBuilder-Windows-build.zip _build
+        7z a -tzip -bb1 wxFormBuilder-Windows-${{ matrix.env }}-build.zip _build
     - name: Build
       shell: msys2 {0}
       run: |
@@ -106,7 +106,7 @@ jobs:
       shell: cmd
       run: |
         cd _install
-        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}.zip" .
+        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}-${{ matrix.env }}.zip" .
     - name: Create installer
       shell: cmd
       run: |
@@ -115,7 +115,7 @@ jobs:
       with:
         name: Windows Build Debugging ${{ matrix.env }}
         path: |
-          wxFormBuilder-Windows-build.zip
+          wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v3.1.1
       with:
         name: Windows Archive ${{ matrix.env }}

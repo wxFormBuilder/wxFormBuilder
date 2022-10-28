@@ -67,7 +67,7 @@ jobs:
     - name: Package build system
       if: ${{ contains(github.ref, '/build/') }}
       run: |
-        zip -ry wxFormBuilder-macOS-build.zip _build
+        zip -ry wxFormBuilder-macOS-${{ matrix.os }}-build.zip _build
     - name: Build
       run: |
         cmake --build _build --config Release -j `sysctl -n hw.ncpu`
@@ -90,7 +90,7 @@ jobs:
       with:
         name: macOS Build Debugging ${{ matrix.os }}
         path: |
-          wxFormBuilder-macOS-build.zip
+          wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v3.1.1
       with:
         name: App Bundle ${{ matrix.os }}
