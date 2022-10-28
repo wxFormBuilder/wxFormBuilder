@@ -74,6 +74,7 @@ jobs:
       shell: msys2 {0}
       run: |
         git config --global core.autocrlf true
+        echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
     - name: Create build system
       shell: msys2 {0}
       run: |
