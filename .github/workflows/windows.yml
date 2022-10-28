@@ -82,7 +82,7 @@ jobs:
       if: ${{ contains(github.ref, '/build/') }}
       shell: cmd
       run: |
-        7z a -tzip -r -bb1 wxFormBuilder-Windows-build.zip _build
+        7z a -tzip -bb1 wxFormBuilder-Windows-build.zip _build
     - name: Build
       shell: msys2 {0}
       run: |
