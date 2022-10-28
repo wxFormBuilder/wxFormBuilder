@@ -60,7 +60,7 @@ jobs:
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
-    - uses: bilelmoussaoui/flatpak-github-actions/flatpak-builder@v4
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v4
       with:
         arch: x86_64
         bundle: wxFormBuilder${{ env.project_version }}.flatpak
