@@ -102,10 +102,20 @@ jobs:
       run: |
         _install\\wxFormBuilder.exe -v
         _install\\wxFormBuilder.exe -g test\\wxfbTest.fbp
+    - name: Create archive
+      shell: cmd
+      run: |
+        cd _install
+        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}.zip" .
     - name: Create installer
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
+    - uses: actions/upload-artifact@v3.0.0
+      with:
+        name: Windows Archive ${{ matrix.env }}
+        path: |
+          wxFormBuilder-*.zip
     - uses: actions/upload-artifact@v3.0.0
       with:
         name: Windows Installer ${{ matrix.env }}
