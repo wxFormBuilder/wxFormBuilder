@@ -55,7 +55,7 @@ cmake --install _build --config Release
 Running:
 
 ```sh
-_install/bin/wxFormBuilder
+_install/wxFormBuilder
 ```
 
 ---
