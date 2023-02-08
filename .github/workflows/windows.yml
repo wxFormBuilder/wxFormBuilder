@@ -50,14 +50,14 @@ jobs:
           - { sys: mingw32, env: i686 }
           - { sys: mingw64, env: x86_64 }
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v3.3.0
       with:
         submodules: true
     - name: Fetch tags
       shell: cmd
       run: |
         git fetch --prune --depth=1 --no-recurse-submodules
-    - uses: msys2/setup-msys2@v2.13.0
+    - uses: msys2/setup-msys2@v2.16.0
       with:
         msystem: ${{ matrix.sys }}
         release: false
@@ -66,7 +66,7 @@ jobs:
           mingw-w64-${{ matrix.env }}-toolchain
           mingw-w64-${{ matrix.env }}-cmake
           mingw-w64-${{ matrix.env }}-make
-          mingw-w64-${{ matrix.env }}-wxWidgets3.1
+          mingw-w64-${{ matrix.env }}-wxWidgets3.2
           mingw-w64-${{ matrix.env }}-boost
           base-devel
           git
@@ -111,19 +111,19 @@ jobs:
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: Windows Build Debugging ${{ matrix.env }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       with:
         name: Windows Archive ${{ matrix.env }}
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       with:
         name: Windows Installer ${{ matrix.env }}
         path: |

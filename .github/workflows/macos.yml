@@ -46,9 +46,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-12]
+        os: [macos-latest, macos-11]
     steps:
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v3.3.0
       with:
         submodules: true
     - name: Fetch tags
@@ -86,13 +86,13 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: macOS Build Debugging ${{ matrix.os }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       with:
         name: App Bundle ${{ matrix.os }}
         path: |

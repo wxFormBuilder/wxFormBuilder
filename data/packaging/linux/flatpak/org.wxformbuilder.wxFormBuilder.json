@@ -1,7 +1,7 @@
 {
 	"app-id": "org.wxformbuilder.wxFormBuilder",
 	"runtime": "org.freedesktop.Platform",
-	"runtime-version": "21.08",
+	"runtime-version": "22.08",
 	"sdk": "org.freedesktop.Sdk",
 	"command": "wxformbuilder",
 	"finish-args": [
@@ -22,8 +22,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.1.5/wxWidgets-3.1.5.tar.bz2",
-					"sha256": "d7b3666de33aa5c10ea41bb9405c40326e1aeb74ee725bb88f90f1d50270a224"
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.1/wxWidgets-3.2.1.tar.bz2",
+					"sha256": "c229976bb413eb88e45cb5dfb68b27890d450149c09b331abd751e7ae0f5fa66"
 				}
 			],
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
@@ -38,8 +38,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.gz",
-					"sha256": "7bd7ddceec1a1dfdcbdb3e609b60d01739c38390a5f956385a12f3122049f0ca"
+					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz",
+					"sha256": "205666dea9f6a7cfed87c7a6dfbeb52a2c1b9de55712c9c1a87735d7181452b6"
 				}
 			],
 			"cleanup": [ "/lib/cmake" ]
