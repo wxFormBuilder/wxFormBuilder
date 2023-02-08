@@ -11,6 +11,8 @@ if(WIN32)
     find_package(ZLIB REQUIRED)
     # zstd is required since binutils 2.40
     find_package(zstd REQUIRED)
+    # SFrame is required and exists only since binutils 2.40
+    find_package(SFrame QUIET)
   endif()
 endif()
 
@@ -37,6 +39,7 @@ if(WIN32)
         $<TARGET_NAME_IF_EXISTS:Intl::Intl>
         ZLIB::ZLIB
         zstd::libzstd_shared
+        $<TARGET_NAME_IF_EXISTS:SFrame::SFrame>
         psapi # TODO: Only required for systems older than Windows 7
     )
   endif()
