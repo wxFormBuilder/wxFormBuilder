@@ -72,7 +72,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-22.04]
+        os: [ubuntu-latest, ubuntu-20.04]
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
     - uses: actions/checkout@v3.3.0
