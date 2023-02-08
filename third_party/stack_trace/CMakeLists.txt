@@ -9,6 +9,8 @@ if(WIN32)
       find_package(Intl QUIET)
     endif()
     find_package(ZLIB REQUIRED)
+    # zstd is required since binutils 2.40
+    find_package(zstd REQUIRED)
   endif()
 endif()
 
@@ -34,6 +36,7 @@ if(WIN32)
         Iberty::Iberty
         $<TARGET_NAME_IF_EXISTS:Intl::Intl>
         ZLIB::ZLIB
+        zstd::libzstd_shared
         psapi # TODO: Only required for systems older than Windows 7
     )
   endif()
