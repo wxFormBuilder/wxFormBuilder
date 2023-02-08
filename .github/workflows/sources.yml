@@ -11,7 +11,7 @@ jobs:
     name: Windows line endings
     runs-on: windows-latest
     steps:
-    - uses: actions/github-script@v6.3.3
+    - uses: actions/github-script@v6.4.0
       id: variables
       with:
         result-encoding: string
@@ -21,13 +21,13 @@ jobs:
           } else {
             return context.ref.split('/').pop();
           }
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v3.3.0
       with:
         submodules: recursive
     - name: Fetch tags
       run: |
         git fetch --prune --depth=1 --no-recurse-submodules
-    - uses: msys2/setup-msys2@v2.13.0
+    - uses: msys2/setup-msys2@v2.16.0
       with:
         msystem: mingw64
         release: false
@@ -41,7 +41,7 @@ jobs:
         git config --global core.autocrlf true
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
         git submodule foreach --recursive 'git archive --output=module.zip "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/$sm_path/" HEAD && zipmerge "$toplevel/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" module.zip && rm -f module.zip'
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       with:
         name: wxFormBuilder Source (CRLF)
         path: |
@@ -50,7 +50,7 @@ jobs:
     name: Linux line endings
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/github-script@v6.3.3
+    - uses: actions/github-script@v6.4.0
       id: variables
       with:
         result-encoding: string
@@ -60,7 +60,7 @@ jobs:
           } else {
             return context.ref.split('/').pop();
           }
-    - uses: actions/checkout@v3.1.0
+    - uses: actions/checkout@v3.3.0
       with:
         submodules: recursive
     - name: Fetch tags
@@ -71,7 +71,7 @@ jobs:
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
         git submodule foreach --recursive 'git archive --output=module.tar "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/$sm_path/" HEAD && tar -Af "$toplevel/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" module.tar && rm -f module.tar'
         gzip "wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar"
-    - uses: actions/upload-artifact@v3.1.1
+    - uses: actions/upload-artifact@v3.1.2
       with:
         name: wxFormBuilder Source (LF)
         path: |
