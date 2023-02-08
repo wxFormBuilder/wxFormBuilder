@@ -76,7 +76,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonButtonClicked">// event wxEVT_COMMAND_RIBBONBUTTON_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -85,7 +84,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonButtonDropdownClicked">// event  wxEVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -94,7 +92,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonButtonClicked">// event wxEVT_COMMAND_RIBBONBUTTON_CLICKED  isn't currently supported by wxPHP</template>
     <template name="evt_connect_OnRibbonButtonDropdownClicked">// event  wxEVT_RIBBONBUTTONBAR_DROPDOWN_CLICKED  isn't currently supported by wxPHP</template>
@@ -104,7 +101,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonButtonClicked">// event wxEVT_COMMAND_RIBBONBUTTON_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -121,7 +117,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonToolClicked">// event  wxEVT_COMMAND_RIBBONTOOL_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -130,7 +125,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonToolDropdownClicked">// event wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -139,7 +133,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonToolClicked">// event wxEVT_COMMAND_RIBBONTOOL_CLICKED  isn't currently supported by wxPHP</template>
     <template name="evt_connect_OnRibbonToolDropdownClicked">// event wxEVT_COMMAND_RIBBONTOOL_DROPDOWN_CLICKED  isn't currently supported by wxPHP</template>
@@ -149,7 +142,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
     <template name="evt_connect_OnRibbonToolClicked">// event  wxEVT_COMMAND_RIBBONTOOL_CLICKED  isn't currently supported by wxPHP</template>
   </templates>
@@ -171,7 +163,6 @@ PHP code generation written by
     <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
-      @$this->$name = new wxWindow( #wxparent $name );
     </template>
   </templates>
 

@@ -467,6 +467,7 @@ ApplicationData::ApplicationData(const wxString& rootdir) :
   m_manager(new wxFBManager),
   m_ipc(new wxFBIPC),
   m_fbpVerMajor(1),
+  // TODO: Update to 17 for next release
   m_fbpVerMinor(16)
 {
 #ifdef __WXFB_DEBUG__
@@ -2044,6 +2045,22 @@ void ApplicationData::ConvertObject(ticpp::Element* parent, int fileMajor, int f
                 wxLogMessage(_("Removed property label for class wxMenuBar because it is no longer used"));
                 showRemovalWarnings = false;
             }
+        }
+    }
+
+    /* The file is now at least version 1.16 */
+    if (fileMajor < 1 || (fileMajor == 1 && fileMinor < 17)) {
+        if (
+          objClass == "ribbonButton" || objClass == "ribbonDropdownButton" || objClass == "ribbonHybridButton" ||
+          objClass == "ribbonToggleButton" || objClass == "ribbonTool" || objClass == "ribbonDropdownTool" ||
+          objClass == "ribbonHybridTool" || objClass == "ribbonToggleTool" || objClass == "ribbonGalleryItem") {
+            RemoveProperties(
+              parent, {"bg", "context_help", "context_menu", "drag_accept_files", "enabled", "fg", "font", "hidden",
+                       "maximum_size", "minimum_size", "name", "permission", "pos", "size", "subclass", "tooltip",
+                       "window_extra_style", "window_name", "window_style"});
+        }
+        if (objClass == "ribbonGalleryItem") {
+            RemoveProperties(parent, {"label", "help"});
         }
     }
 }
