@@ -2,7 +2,12 @@ Source: wxformbuilder
 Section: devel
 Priority: optional
 Maintainer: Steffen Olszewski <steffen.olszewski@gero-mess.de>
-Build-Depends: debhelper-compat (= 12)
+Build-Depends: debhelper-compat (= 12),
+               cmake (>= 3.21),
+               git,
+               libwxgtk3.2-dev | libwxgtk3.0-gtk3-dev,
+               libwxgtk-media3.2-dev | libwxgtk-media3.0-gtk3-dev,
+               libboost-dev
 Standards-Version: 4.4.1
 Homepage: https://github.com/wxFormBuilder/wxFormBuilder
 #Vcs-Browser: https://salsa.debian.org/debian/wxformbuilder

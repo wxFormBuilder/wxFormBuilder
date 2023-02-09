@@ -91,7 +91,7 @@ jobs:
         echo "package_basedir=${GITHUB_WORKSPACE%/*}" >> $GITHUB_ENV
     - name: Build package
       run: |
-        dpkg-buildpackage --build=binary --no-sign --root-command=fakeroot --jobs=auto
+        dpkg-buildpackage --build=binary --no-check-builddeps --no-sign --root-command=fakeroot --jobs=auto
         rename "s/(.+_.+_)(.*)/\$1ubuntu-`lsb_release -r -s`_\$2/" "${{ env.package_basedir }}/"*.deb
     - name: Test package
       run: |
