@@ -56,9 +56,13 @@ endif()
 
 if(MSVC)
   # Disable warnings about standard conformant code that is not conform to Microsoft standards
-  add_compile_definitions(_CRT_SECURE_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
   # Without BOM the UTF-8 encoding doesn't get detected so enforce it
   add_compile_options(/source-charset:utf-8)
+  # Report the correct C++ version if supported
+  if(MSVC_VERSION GREATER_EQUAL 1914)
+    add_compile_options(/Zc:__cplusplus)
+  endif()
 endif()
 
 if(MSVC OR MINGW AND NOT MSYS)
