@@ -93,8 +93,8 @@ ObjectInspector::ObjectInspector(wxWindow* parent, int id, int style) : wxPanel(
     m_nb->InsertPage(0, m_pg, _("Properties"), false);
     m_nb->InsertPage(1, m_eg, _("Events"), false);
 
-    m_nb->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("properties"), 16));
-    m_nb->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("events"), 16));
+    m_nb->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("properties"), AppBitmaps::Size::Icon_Medium));
+    m_nb->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("events"), AppBitmaps::Size::Icon_Medium));
 
     wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
     topSizer->Add(m_nb, 1, wxALL | wxEXPAND, 0);
