@@ -140,6 +140,8 @@ target_sources(wxFormBuilder_app
     utils/wxfbipc.cpp
     utils/wxfbipc.h
     utils/wxlogstring.h
+    utils/xmlutils.cpp
+    utils/xmlutils.h
 )
 set(commonDefinitions
   default
@@ -219,6 +221,7 @@ target_link_libraries(wxFormBuilder_app
     wxWidgets::wxWidgets
     Boost::headers
     ticpp::ticpp
+    tinyxml2::tinyxml2
     md5::md5
     stack_trace::stack
 )
