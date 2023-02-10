@@ -25,13 +25,13 @@
 
 #include "bitmaps.h"
 
-#include <ticpp.h>
+#include <wx/intl.h>
+#include <wx/log.h>
 
 #include <default.xpm>
 
-#include "utils/stringutils.h"
-#include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
+#include "utils/xmlutils.h"
 
 
 static std::map<wxString, wxBitmap> m_bitmaps;
@@ -59,24 +59,35 @@ wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size)
 
 void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath)
 {
+    m_bitmaps.insert_or_assign("unknown", wxBitmap(default_xpm));
+
+    std::unique_ptr<tinyxml2::XMLDocument> doc;
     try {
-        m_bitmaps[wxT("unknown")] = wxBitmap(default_xpm);
-
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, true, filepath);
-
-        ticpp::Element* root = doc.FirstChildElement("icons");
-        ticpp::Element* elem = root->FirstChildElement("icon", false);
-        while (elem) {
-            wxString name = _WXSTR(elem->GetAttribute("name"));
-            wxString file = _WXSTR(elem->GetAttribute("file"));
-            m_bitmaps[name] = wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY);
-
-            elem = elem->NextSiblingElement("icon", false);
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_("Error loading images: %s"), _WXSTR(ex.m_details));
+        doc = XMLUtils::LoadXMLFile(filepath, true);
     } catch (wxFBException& ex) {
-        wxLogError(_("Error loading images: %s"), ex.what());
+        wxLogError(ex.what());
+
+        return;
+    }
+    const auto* root = doc->FirstChildElement("icons");
+    if (!root) {
+        wxLogError(_("%s: Invalid root node"), filepath);
+
+        return;
+    }
+
+    for (const auto* icon = root->FirstChildElement("icon"); icon; icon = icon->NextSiblingElement("icon")) {
+        auto name = XMLUtils::StringAttribute(icon, "name");
+        if (name.empty()) {
+            wxLogError(_("%s: Empty icon name"), filepath);
+            continue;
+        }
+        auto file = XMLUtils::StringAttribute(icon, "file");
+        if (file.empty()) {
+            wxLogError(_("%s: Empty icon path"), filepath);
+            continue;
+        }
+
+        m_bitmaps.insert_or_assign(name, wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY));
     }
 }
