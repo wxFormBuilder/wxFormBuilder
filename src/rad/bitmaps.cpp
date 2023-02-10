@@ -34,30 +34,28 @@
 #include "utils/xmlutils.h"
 
 
-static std::map<wxString, wxBitmap> m_bitmaps;
+std::map<wxString, wxBitmap> AppBitmaps::m_bitmaps;
 
 
-wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size)
+wxBitmap AppBitmaps::GetBitmap(const wxString& iconname, Size size)
 {
-    std::map<wxString, wxBitmap>::iterator bitmap;
-    bitmap = m_bitmaps.find(iconname);
     wxBitmap bmp;
-    if (bitmap != m_bitmaps.end()) {
-        bmp = m_bitmaps[iconname];
+    if (auto bitmap = m_bitmaps.find(iconname); bitmap != m_bitmaps.end()) {
+        bmp = bitmap->second;
     } else {
-        bmp = m_bitmaps[wxT("unknown")];
+        bmp = m_bitmaps["unknown"];
     }
-    if (size != 0) {
-        // rescale it to requested size
-        if (bmp.GetWidth() != (int)size || bmp.GetHeight() != (int)size) {
-            wxImage image = bmp.ConvertToImage();
-            bmp = wxBitmap(image.Scale(size, size));
-        }
+    if (
+      size != Size::Default &&
+      (bmp.GetWidth() != static_cast<int>(size) || bmp.GetHeight() != static_cast<int>(size))) {
+        auto image = bmp.ConvertToImage();
+        bmp = wxBitmap(image.Scale(static_cast<int>(size), static_cast<int>(size)));
     }
+
     return bmp;
 }
 
-void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath)
+void AppBitmaps::LoadBitmaps(const wxString& filepath, const wxString& iconpath)
 {
     m_bitmaps.insert_or_assign("unknown", wxBitmap(default_xpm));
 
@@ -90,4 +88,10 @@ void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath)
 
         m_bitmaps.insert_or_assign(name, wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY));
     }
+}
+
+
+int AppBitmaps::GetPixelSize(Size size)
+{
+    return static_cast<int>(size);
 }
