@@ -37,6 +37,7 @@
 #include "utils/stringutils.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
+#include "utils/xmlutils.h"
 
 //#define DEBUG_PRINT(x) cout << x
 
@@ -1274,60 +1275,64 @@ void ObjectDatabase::InitPropertyTypes()
 
 bool ObjectDatabase::LoadObjectTypes()
 {
-    ticpp::Document doc;
-    wxString xmlPath = m_xmlPath + wxT("objtypes.xml");
-    XMLUtils::LoadXMLFile(doc, true, xmlPath);
-
-    // First load the object types, then the children
+    const auto filepath = m_xmlPath + "objtypes.xml";
+    std::unique_ptr<tinyxml2::XMLDocument> doc;
     try {
-        ticpp::Element* root = doc.FirstChildElement("definitions");
-        ticpp::Element* elem = root->FirstChildElement("objtype");
-        while (elem) {
-            bool hidden;
-            elem->GetAttributeOrDefault("hidden", &hidden, false);
+        doc = XMLUtils::LoadXMLFile(filepath, true);
+    } catch (wxFBException& ex) {
+        wxLogError(ex.what());
 
-            bool item;
-            elem->GetAttributeOrDefault("item", &item, false);
-
-            wxString name = _WXSTR(elem->GetAttribute("name"));
-
-            PObjectType objType(new ObjectType(name, (int)m_types.size(), hidden, item));
-            m_types.insert(ObjectTypeMap::value_type(name, objType));
-
-            elem = elem->NextSiblingElement("objtype", false);
-        }
-
-        // now load the children
-        elem = root->FirstChildElement("objtype");
-        while (elem) {
-            wxString name = _WXSTR(elem->GetAttribute("name"));
-
-            // get the objType
-            PObjectType objType = GetObjectType(name);
-            ticpp::Element* child = elem->FirstChildElement("childtype", false);
-            while (child) {
-                int nmax = -1;      // no limit
-                int aui_nmax = -1;  // no limit
-                child->GetAttributeOrDefault("nmax", &nmax, -1);
-                child->GetAttributeOrDefault("aui_nmax", &aui_nmax, -1);
-
-                wxString childname = _WXSTR(child->GetAttribute("name"));
-
-                PObjectType childType = GetObjectType(childname);
-                if (!childType) {
-                    wxLogError(_("No Object Type found for \"%s\""), childname);
-                    continue;
-                }
-
-                objType->AddChildType(childType, nmax, aui_nmax);
-
-                child = child->NextSiblingElement("childtype", false);
-            }
-            elem = elem->NextSiblingElement("objtype", false);
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_WXSTR(ex.m_details));
         return false;
+    }
+    const auto* root = doc->FirstChildElement("definitions");
+    if (!root) {
+        wxLogError(_("%s: Invalid root node"), filepath);
+
+        return false;
+    }
+
+    // Load object types first so that child types can reference object types defined later in the file
+
+    for (const auto* object = root->FirstChildElement("objtype"); object;
+         object = object->NextSiblingElement("objtype")) {
+        auto hidden = object->BoolAttribute("hidden", false);
+        auto item = object->BoolAttribute("item", false);
+        auto name = XMLUtils::StringAttribute(object, "name");
+        if (name.empty()) {
+            wxLogError(_("%s: Empty object type name"), filepath);
+            continue;
+        }
+
+        auto objectType = std::make_shared<ObjectType>(name, static_cast<int>(m_types.size()), hidden, item);
+        m_types.try_emplace(name, objectType);
+    }
+
+    for (const auto* object = root->FirstChildElement("objtype"); object;
+         object = object->NextSiblingElement("objtype")) {
+        auto objectName = XMLUtils::StringAttribute(object, "name");
+        if (objectName.empty()) {
+            // The error has already been reported in the loop above
+            continue;
+        }
+        auto objectType = GetObjectType(objectName);
+
+        for (const auto* child = object->FirstChildElement("childtype"); child;
+             child = child->NextSiblingElement("childtype")) {
+            auto nmax = child->IntAttribute("nmax", -1);
+            auto aui_nmax = child->IntAttribute("aui_nmax", -1);
+            auto childName = XMLUtils::StringAttribute(child, "name");
+            if (childName.empty()) {
+                wxLogError(_("%s: Empty child name"), filepath);
+                continue;
+            }
+
+            auto childType = GetObjectType(childName);
+            if (!childType) {
+                wxLogError(_("%s: Unknown child type \"%s\""), filepath, childName);
+                continue;
+            }
+            objectType->AddChildType(childType, nmax, aui_nmax);
+        }
     }
 
     return true;
