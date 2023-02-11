@@ -27,4 +27,11 @@ std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool co
     return doc;
 }
 
+wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& name, const wxString& defaultValue)
+{
+    const auto* value = element->Attribute(name.utf8_str());
+
+    return (value ? wxString(value, wxConvUTF8) : defaultValue);
+}
+
 }  // namespace XMLUtils

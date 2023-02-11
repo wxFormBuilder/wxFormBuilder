@@ -23,6 +23,16 @@ namespace XMLUtils
  */
 std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool collapseWhitespace = false);
 
+/**
+ * @brief Return string typed attribute
+ *
+ * @param element XML element node
+ * @param name Name of the attribute
+ * @param defaultValue Default value returned if attribute is missing
+ * @return Attribute value
+ */
+wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& name, const wxString& defaultValue = wxEmptyString);
+
 }  // namespace XMLUtils
 
 #endif  // UTILS_XMLUTILS_H
