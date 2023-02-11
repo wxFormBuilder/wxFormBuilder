@@ -28,7 +28,6 @@
 #include <ticpp.h>
 #include <wx/dir.h>
 #include <wx/filename.h>
-#include <wx/stdpaths.h>
 
 #include "model/objectbase.h"
 #include "rad/bitmaps.h"
@@ -649,103 +648,71 @@ void ObjectDatabase::LoadPlugins(PwxFBManager manager)
 
 void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const wxString& path, PwxFBManager manager)
 {
-#ifdef __WXMSW__
-    wxString libPath = path;
-#else
-    wxStandardPathsBase& stdpaths = wxStandardPaths::Get();
-    wxString libPath = stdpaths.GetPluginsDir();
-    libPath.Replace(wxTheApp->GetAppName(), wxT("wxformbuilder"));
-#endif
+    auto doc = XMLUtils::LoadXMLFile(file, true);
+    const auto* root = doc->FirstChildElement(PACKAGE_TAG);
+    if (!root) {
+        THROW_WXFBEX(wxString::Format(_("%s: Invalid root node"), file))
+    }
 
-    // Renamed libraries for convenience in debug using a "-xx" wx version as suffix.
-    // This will also prevent loading debug libraries in release and vice versa,
-    // that used to cause crashes when trying to debug.
-    wxString wxver = wxT("");
-
-#ifdef DEBUG
-    #ifdef APPEND_WXVERSION
-    wxver = wxver + wxString::Format(wxT("-%i%i"), wxMAJOR_VERSION, wxMINOR_VERSION);
-    #endif
-#endif
-
-    try {
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, true, file);
-
-        ticpp::Element* root = doc.FirstChildElement(PACKAGE_TAG);
-
-        // get the library to import
-        std::string lib;
-        root->GetAttributeOrDefault("lib", &lib, "");
-        if (!lib.empty()) {
+    if (auto lib = XMLUtils::StringAttribute(root, "lib"); !lib.empty()) {
 #ifdef __WINDOWS__
-            // On Windows the plugin libraries reside in the directory of the plugin resources,
-            // construct a relative path to that location to be able to find them with the default
-            // search algorithm
-            lib = "plugins/" + lib + "/" + lib;
+        // On Windows the plugin libraries reside in the directory of the plugin resources,
+        // construct a relative path to that location to be able to find them with the default
+        // search algorithm
+        lib = "plugins/" + lib + "/" + lib;
 #endif
-            auto pluginLibrary = m_pluginLibraries.find(lib);
-            if (pluginLibrary == m_pluginLibraries.end()) {
-                ImportComponentLibrary(lib, manager);
+        if (auto pluginLibrary = m_pluginLibraries.find(lib); pluginLibrary == m_pluginLibraries.end()) {
+            ImportComponentLibrary(lib, manager);
+        }
+    }
+
+    for (const auto* object = root->FirstChildElement(OBJINFO_TAG); object;
+         object = object->NextSiblingElement(OBJINFO_TAG)) {
+        // Skip components that are not supported by the wxWidgets version this application is linked against
+        if (auto wxVersion = object->IntAttribute(WXVERSION_TAG, 0); wxVersion > wxVERSION_NUMBER) {
+            continue;
+        }
+
+        auto className = XMLUtils::StringAttribute(object, CLASS_TAG);
+        if (className.empty()) {
+            THROW_WXFBEX(wxString::Format(_("%s: Empty class name"), file))
+        }
+        auto classInfo = GetObjectInfo(className);
+        for (const auto* base = object->FirstChildElement("inherits"); base;
+             base = base->NextSiblingElement("inherits")) {
+            auto baseName = XMLUtils::StringAttribute(base, CLASS_TAG);
+            if (baseName.empty()) {
+                THROW_WXFBEX(wxString::Format(_("%s: Empty base class name for class \"%s\""), file, className))
+            }
+            auto baseInfo = GetObjectInfo(baseName);
+            if (!(classInfo && baseInfo)) {
+                continue;
+            }
+
+            auto baseIndex = classInfo->AddBaseClass(baseInfo);
+            for (const auto* inheritedProperty = base->FirstChildElement("property"); inheritedProperty;
+                 inheritedProperty = inheritedProperty->NextSiblingElement("property")) {
+                auto propertyName = XMLUtils::StringAttribute(inheritedProperty, NAME_TAG);
+                if (propertyName.empty()) {
+                    THROW_WXFBEX(wxString::Format(_("%s: Empty property name for base class \"%s\""), file, baseName))
+                }
+                auto propertyValue = XMLUtils::GetText(inheritedProperty);
+
+                classInfo->AddBaseClassDefaultPropertyValue(baseIndex, propertyName, propertyValue);
             }
         }
 
-        ticpp::Element* elem_obj = root->FirstChildElement(OBJINFO_TAG, false);
-        while (elem_obj) {
-            std::string wxver_obj;
-            elem_obj->GetAttributeOrDefault(WXVERSION_TAG, &wxver_obj, "");
-            if (!wxver_obj.empty()) {
-                long wxversion = 0;
-                // skip widgets supported by higher wxWidgets version than used for the build
-                if ((!_WXSTR(wxver_obj).ToLong(&wxversion)) || (wxversion > wxVERSION_NUMBER)) {
-                    elem_obj = elem_obj->NextSiblingElement(OBJINFO_TAG, false);
-                    continue;
+        // Add the "C++" base class, predefined for the components and widgets
+        if (auto typeName = classInfo->GetObjectTypeName(); HasCppProperties(typeName)) {
+            if (auto cppInfo = GetObjectInfo("C++"); cppInfo) {
+                auto baseIndex = classInfo->AddBaseClass(cppInfo);
+                // Set default visibility of "non-objects" elements to none
+                // FIXME: This shouldn't be done in code, also this list isn't complete
+                if (typeName == "sizer" || typeName == "gbsizer" || typeName == "menuitem") {
+                    classInfo->AddBaseClassDefaultPropertyValue(baseIndex, "permission", "none");
                 }
             }
-
-            std::string class_name;
-            elem_obj->GetAttribute(CLASS_TAG, &class_name);
-
-            PObjectInfo class_info = GetObjectInfo(_WXSTR(class_name));
-
-            ticpp::Element* elem_base = elem_obj->FirstChildElement("inherits", false);
-            while (elem_base) {
-                std::string base_name;
-                elem_base->GetAttribute(CLASS_TAG, &base_name);
-
-                // Add a reference to its base class
-                PObjectInfo base_info = GetObjectInfo(_WXSTR(base_name));
-                if (class_info && base_info) {
-                    size_t baseIndex = class_info->AddBaseClass(base_info);
-
-                    std::string prop_name, value;
-                    ticpp::Element* inheritedProperty = elem_base->FirstChildElement("property", false);
-                    while (inheritedProperty) {
-                        inheritedProperty->GetAttribute(NAME_TAG, &prop_name);
-                        value = inheritedProperty->GetText();
-                        class_info->AddBaseClassDefaultPropertyValue(baseIndex, _WXSTR(prop_name), _WXSTR(value));
-                        inheritedProperty = inheritedProperty->NextSiblingElement("property", false);
-                    }
-                }
-                elem_base = elem_base->NextSiblingElement("inherits", false);
-            }
-
-            // Add the "C++" base class, predefined for the components and widgets
-            wxString typeName = class_info->GetObjectTypeName();
-            if (HasCppProperties(typeName)) {
-                PObjectInfo cpp_interface = GetObjectInfo(wxT("C++"));
-                if (cpp_interface) {
-                    size_t baseIndex = class_info->AddBaseClass(cpp_interface);
-                    if (typeName == wxT("sizer") || typeName == wxT("gbsizer") || typeName == wxT("menuitem")) {
-                        class_info->AddBaseClassDefaultPropertyValue(baseIndex, _("permission"), _("none"));
-                    }
-                }
-            }
-
-            elem_obj = elem_obj->NextSiblingElement(OBJINFO_TAG, false);
         }
-    } catch (ticpp::Exception& ex) {
-        THROW_WXFBEX(_WXSTR(ex.m_details));
     }
 }
 
