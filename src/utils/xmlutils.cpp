@@ -34,4 +34,21 @@ wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& na
     return (value ? wxString(value, wxConvUTF8) : defaultValue);
 }
 
+wxString GetText(const tinyxml2::XMLElement* element, const wxString& defaultValue, bool deepSearch)
+{
+    const char* value = nullptr;
+    if (!deepSearch) {
+        value = element->GetText();
+    } else {
+        for (const auto* node = element->FirstChild(); node; node = node->NextSibling()) {
+            if (node->ToText()) {
+                value = node->Value();
+                break;
+            }
+        }
+    }
+
+    return (value ? wxString(value, wxConvUTF8) : defaultValue);
+}
+
 }  // namespace XMLUtils
