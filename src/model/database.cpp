@@ -738,64 +738,70 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 
 void ObjectDatabase::LoadCodeGen(const wxString& file)
 {
+    std::unique_ptr<tinyxml2::XMLDocument> doc;
     try {
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, true, file);
-
-        // read the codegen element
-        ticpp::Element* elem_codegen = doc.FirstChildElement("codegen");
-        std::string language;
-        elem_codegen->GetAttribute("language", &language);
-        wxString lang = _WXSTR(language);
-
-        // read the templates
-        ticpp::Element* elem_templates = elem_codegen->FirstChildElement("templates", false);
-        while (elem_templates) {
-
-            std::string prop_name;
-            elem_templates->GetAttribute("property", &prop_name, false);
-            bool hasProp = !prop_name.empty();
-
-            std::string class_name;
-            elem_templates->GetAttribute("class", &class_name, !hasProp);
-
-            PCodeInfo code_info(new CodeInfo());
-
-            ticpp::Element* elem_template = elem_templates->FirstChildElement("template", false);
-            while (elem_template) {
-                std::string template_name;
-                elem_template->GetAttribute("name", &template_name);
-
-                std::string template_code = elem_template->GetText(false);
-
-                code_info->AddTemplate(_WXSTR(template_name), _WXSTR(template_code));
-
-                elem_template = elem_template->NextSiblingElement("template", false);
-            }
-
-            if (hasProp) {
-                // store code info for properties
-                if (!m_propertyTypeTemplates[ParsePropertyType(_WXSTR(prop_name))]
-                       .insert(LangTemplateMap::value_type(lang, code_info))
-                       .second) {
-                    wxLogError(
-                      _("Found second template definition for property \"%s\" for language \"%s\""), _WXSTR(prop_name),
-                      lang);
-                }
-            } else {
-                // store code info for objects
-                PObjectInfo obj_info = GetObjectInfo(_WXSTR(class_name));
-                if (obj_info) {
-                    obj_info->AddCodeInfo(lang, code_info);
-                }
-            }
-
-            elem_templates = elem_templates->NextSiblingElement("templates", false);
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_WXSTR(ex.m_details));
+        doc = XMLUtils::LoadXMLFile(file, true);
     } catch (wxFBException& ex) {
         wxLogError(ex.what());
+
+        return;
+    }
+    const auto* root = doc->FirstChildElement("codegen");
+    if (!root) {
+        wxLogError(_("%s: Invalid root node"), file);
+
+        return;
+    }
+
+    auto language = XMLUtils::StringAttribute(root, "language");
+    if (language.empty()) {
+        wxLogError(_("%s: Empty code generation language"), file);
+
+        return;
+    }
+    for (const auto* itemTemplates = root->FirstChildElement("templates"); itemTemplates;
+         itemTemplates = itemTemplates->NextSiblingElement("templates")) {
+        auto propName = XMLUtils::StringAttribute(itemTemplates, "property");
+        auto className = XMLUtils::StringAttribute(itemTemplates, "class");
+        if (propName.empty() && className.empty()) {
+            wxLogError(_("%s: Invalid code templates entry, no type attributes"), file);
+            continue;
+        }
+        if (!propName.empty() && !className.empty()) {
+            wxLogError(_("%s: Invalid code templates entry, multiple type attributes, using property type"), file);
+        }
+
+        auto codeInfo = std::make_shared<CodeInfo>();
+        for (const auto* itemTemplate = itemTemplates->FirstChildElement("template"); itemTemplate;
+             itemTemplate = itemTemplate->NextSiblingElement("template")) {
+            auto templateName = XMLUtils::StringAttribute(itemTemplate, "name");
+            if (templateName.empty()) {
+                wxLogError(_("%s: Empty code template name"), file);
+                continue;
+            }
+            auto templateCode = XMLUtils::GetText(itemTemplate);
+
+            codeInfo->AddTemplate(templateName, templateCode);
+        }
+
+        if (!propName.empty()) {
+            try {
+                auto propType = ParsePropertyType(propName);
+                auto [propTemplates, propTemplatesInserted] = m_propertyTypeTemplates.try_emplace(propType);
+                auto [propTemplate, propTemplateInserted] = propTemplates->second.try_emplace(language, codeInfo);
+                if (!propTemplateInserted) {
+                    wxLogError(_("%s: Duplicate code template for property \"%s\""), file, propName);
+                }
+            } catch (wxFBException& ex) {
+                wxLogError(wxString::Format(_("%s: %s"), file, ex.what()));
+            }
+        } else {
+            if (auto objectInfo = GetObjectInfo(className); objectInfo) {
+                objectInfo->AddCodeInfo(language, codeInfo);
+            } else {
+                wxLogError(_("%s: Code template for unknown class \"%s\""), file, className);
+            }
+        }
     }
 }
 
