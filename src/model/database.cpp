@@ -807,307 +807,221 @@ void ObjectDatabase::LoadCodeGen(const wxString& file)
 
 PObjectPackage ObjectDatabase::LoadPackage(const wxString& file, const wxString& iconPath)
 {
-    PObjectPackage package;
+    auto doc = XMLUtils::LoadXMLFile(file, true);
+    const auto* root = doc->FirstChildElement(PACKAGE_TAG);
+    if (!root) {
+        THROW_WXFBEX(wxString::Format(_("%s: Invalid root node"), file))
+    }
 
-    try {
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, true, file);
+    auto packageName = XMLUtils::StringAttribute(root, NAME_TAG);
+    if (packageName.empty()) {
+        THROW_WXFBEX(wxString::Format(_("%s: Empty package name"), file))
+    }
+    auto packageDesc = XMLUtils::StringAttribute(root, PKGDESC_TAG);
+    auto packageIcon = XMLUtils::StringAttribute(root, ICON_TAG);
 
-        ticpp::Element* root = doc.FirstChildElement(PACKAGE_TAG);
+    auto packageIconPath = wxFileName(iconPath, packageIcon);
+    wxBitmap packageBitmap;
+    if (packageIconPath.HasName() && packageIconPath.FileExists()) {
+        auto packageImage = wxImage(packageIconPath.GetFullPath(), wxBITMAP_TYPE_ANY);
+        packageBitmap = wxBitmap(packageImage.Scale(
+          AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Medium),
+          AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Medium)));
+    } else {
+        packageBitmap = AppBitmaps::GetBitmap("unknown", AppBitmaps::Size::Icon_Medium);
+    }
 
-        // Name Attribute
-        std::string pkg_name;
-        root->GetAttribute(NAME_TAG, &pkg_name);
+    auto package = std::make_shared<ObjectPackage>(packageName, packageDesc, packageBitmap);
 
-        // Description Attribute
-        std::string pkg_desc;
-        root->GetAttributeOrDefault(PKGDESC_TAG, &pkg_desc, "");
+    for (const auto* object = root->FirstChildElement(OBJINFO_TAG); object;
+         object = object->NextSiblingElement(OBJINFO_TAG)) {
+        // Skip components that are not supported by the wxWidgets version this application is linked against
+        if (auto wxVersion = object->IntAttribute(WXVERSION_TAG, 0); wxVersion > wxVERSION_NUMBER) {
+            continue;
+        }
 
-        // Icon Path Attribute
-        std::string pkgIconName;
-        root->GetAttributeOrDefault(ICON_TAG, &pkgIconName, "");
-        wxString pkgIconPath = iconPath + wxFILE_SEP_PATH + _WXSTR(pkgIconName);
+        auto objectClass = XMLUtils::StringAttribute(object, CLASS_TAG);
+        if (objectClass.empty()) {
+            THROW_WXFBEX(wxString::Format(_("%s: Empty object class"), file))
+        }
+        auto objectType = XMLUtils::StringAttribute(object, "type");
+        if (objectType.empty()) {
+            THROW_WXFBEX(wxString::Format(_("%s: Empty type for class \"%s\""), file, objectClass))
+        }
+        auto objectIcon = XMLUtils::StringAttribute(object, "icon");
+        auto objectIconSmall = XMLUtils::StringAttribute(object, "smallIcon");
+        auto startGroup = object->BoolAttribute("startgroup", false);
 
-        wxBitmap pkg_icon;
-        if (!pkgIconName.empty() && wxFileName::FileExists(pkgIconPath)) {
-            wxImage image(pkgIconPath, wxBITMAP_TYPE_ANY);
-            pkg_icon = wxBitmap(image.Scale(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Medium), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Medium)));
+        auto objectInfo = std::make_shared<ObjectInfo>(objectClass, GetObjectType(objectType), package, startGroup);
+        if (auto objectIconPath = wxFileName(iconPath, objectIcon);
+            objectIconPath.HasName() && objectIconPath.FileExists()) {
+            auto objectImage = wxImage(objectIconPath.GetFullPath(), wxBITMAP_TYPE_ANY);
+            objectInfo->SetIconFile(wxBitmap(objectImage.Scale(
+              AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon))));
         } else {
-            pkg_icon = AppBitmaps::GetBitmap(wxT("unknown"), AppBitmaps::Size::Icon_Medium);
+            objectInfo->SetIconFile(AppBitmaps::GetBitmap("unknown", AppBitmaps::Size::Icon));
         }
-
-        package = PObjectPackage(new ObjectPackage(_WXSTR(pkg_name), _WXSTR(pkg_desc), pkg_icon));
-
-
-        ticpp::Element* elem_obj = root->FirstChildElement(OBJINFO_TAG, false);
-
-        while (elem_obj) {
-            std::string class_name;
-            elem_obj->GetAttribute(CLASS_TAG, &class_name);
-
-            std::string type;
-            elem_obj->GetAttribute("type", &type);
-
-            std::string icon;
-            elem_obj->GetAttributeOrDefault("icon", &icon, "");
-            wxString iconFullPath = iconPath + wxFILE_SEP_PATH + _WXSTR(icon);
-
-            std::string smallIcon;
-            elem_obj->GetAttributeOrDefault("smallIcon", &smallIcon, "");
-            wxString smallIconFullPath = iconPath + wxFILE_SEP_PATH + _WXSTR(smallIcon);
-
-            std::string wxver;
-            elem_obj->GetAttributeOrDefault(WXVERSION_TAG, &wxver, "");
-            if (wxver != "") {
-                long wxversion = 0;
-                // skip widgets supported by higher wxWidgets version than used for the build
-                if ((!_WXSTR(wxver).ToLong(&wxversion)) || (wxversion > wxVERSION_NUMBER)) {
-                    elem_obj = elem_obj->NextSiblingElement(OBJINFO_TAG, false);
-                    continue;
-                }
-            }
-
-            bool startGroup;
-            elem_obj->GetAttributeOrDefault("startgroup", &startGroup, false);
-
-            PObjectInfo obj_info(new ObjectInfo(_WXSTR(class_name), GetObjectType(_WXSTR(type)), package, startGroup));
-
-            if (!icon.empty() && wxFileName::FileExists(iconFullPath)) {
-                wxImage img(iconFullPath, wxBITMAP_TYPE_ANY);
-                obj_info->SetIconFile(wxBitmap(img.Scale(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon))));
-            } else {
-                obj_info->SetIconFile(AppBitmaps::GetBitmap(wxT("unknown"), AppBitmaps::Size::Icon));
-            }
-
-            if (!smallIcon.empty() && wxFileName::FileExists(smallIconFullPath)) {
-                wxImage img(smallIconFullPath, wxBITMAP_TYPE_ANY);
-                obj_info->SetSmallIconFile(wxBitmap(img.Scale(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small))));
-            } else {
-                wxImage img = obj_info->GetIconFile().ConvertToImage();
-                obj_info->SetSmallIconFile(wxBitmap(img.Scale(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small))));
-            }
-
-            // Parse the Properties
-            std::set<PropertyType> types;
-            ParseProperties(elem_obj, obj_info, obj_info->GetCategory(), &types);
-            ParseEvents(elem_obj, obj_info, obj_info->GetCategory());
-
-            // Add the ObjectInfo to the map
-            m_objs.insert(ObjectInfoMap::value_type(_WXSTR(class_name), obj_info));
-
-            // Add the object to the palette
-            if (ShowInPalette(obj_info->GetObjectTypeName())) {
-                package->Add(obj_info);
-            }
-
-            elem_obj = elem_obj->NextSiblingElement(OBJINFO_TAG, false);
+        if (auto objectIconSmallPath = wxFileName(iconPath, objectIconSmall);
+            objectIconSmallPath.HasName() && objectIconSmallPath.FileExists()) {
+            auto objectImageSmall = wxImage(objectIconSmallPath.GetFullPath(), wxBITMAP_TYPE_ANY);
+            objectInfo->SetSmallIconFile(wxBitmap(objectImageSmall.Scale(
+              AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small),
+              AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon_Small))));
+        } else {
+            objectInfo->SetSmallIconFile(AppBitmaps::GetBitmap("unknown", AppBitmaps::Size::Icon_Small));
         }
-    } catch (ticpp::Exception& ex) {
-        THROW_WXFBEX(_WXSTR(ex.m_details));
+        std::set<PropertyType> types;
+        ParseProperties(object, objectInfo, objectInfo->GetCategory(), types);
+        ParseEvents(object, objectInfo, objectInfo->GetCategory());
+
+        m_objs.try_emplace(objectClass, objectInfo);
+        // TODO: This property should be stored inside the XML instead beeing hardcoded
+        if (ShowInPalette(objectInfo->GetObjectTypeName())) {
+            package->Add(objectInfo);
+        }
     }
 
     return package;
 }
 
 void ObjectDatabase::ParseProperties(
-  ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category, std::set<PropertyType>* types)
+  const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory,
+  std::set<PropertyType>& types)
 {
-    ticpp::Element* elem_category = elem_obj->FirstChildElement(CATEGORY_TAG, false);
-    while (elem_category) {
-        // Category name attribute
-        std::string cname;
-        elem_category->GetAttribute(NAME_TAG, &cname);
-        PPropertyCategory new_cat(new PropertyCategory(_WXSTR(cname)));
+    for (const auto* childCategory = object->FirstChildElement(CATEGORY_TAG); childCategory;
+         childCategory = childCategory->NextSiblingElement(CATEGORY_TAG)) {
+        auto categoryName = XMLUtils::StringAttribute(childCategory, NAME_TAG);
+        if (categoryName.empty()) {
+            THROW_WXFBEX(wxString::Format(
+              _("Empty child category for category \"%s\" for class \"%s\""), objectCategory->GetName(),
+              objectInfo->GetClassName()))
+        }
 
-        // Add category
-        category->AddCategory(new_cat);
+        auto propertyCategory = std::make_shared<PropertyCategory>(categoryName);
+        objectCategory->AddCategory(propertyCategory);
 
-        // Recurse
-        ParseProperties(elem_category, obj_info, new_cat, types);
-
-        elem_category = elem_category->NextSiblingElement(CATEGORY_TAG, false);
+        ParseProperties(childCategory, objectInfo, propertyCategory, types);
     }
 
-    ticpp::Element* elem_prop = elem_obj->FirstChildElement(PROPERTY_TAG, false);
-    while (elem_prop) {
-        // Property Name Attribute
-        std::string pname;
-        elem_prop->GetAttribute(NAME_TAG, &pname);
-        category->AddProperty(_WXSTR(pname));
-
-        std::string description;
-        elem_prop->GetAttributeOrDefault(DESCRIPTION_TAG, &description, "");
-
-        std::string customEditor;
-        elem_prop->GetAttributeOrDefault(CUSTOM_EDITOR_TAG, &customEditor, "");
-
-        std::string prop_type;
-        elem_prop->GetAttribute("type", &prop_type);
-        PropertyType ptype;
-        try {
-            ptype = ParsePropertyType(_WXSTR(prop_type));
-        } catch (wxFBException& ex) {
-            wxLogError(
-              wxT("Error: %s\nWhile parsing property \"%s\" of class \"%s\""), ex.what(), _WXSTR(pname),
-              obj_info->GetClassName());
-            elem_prop = elem_prop->NextSiblingElement(PROPERTY_TAG, false);
-            continue;
+    for (const auto* property = object->FirstChildElement(PROPERTY_TAG); property;
+         property = property->NextSiblingElement(PROPERTY_TAG)) {
+        auto propertyName = XMLUtils::StringAttribute(property, NAME_TAG);
+        if (propertyName.empty()) {
+            THROW_WXFBEX(wxString::Format(
+              _("Empty property name for category \"%s\" for class \"%s\""), objectCategory->GetName(),
+              objectInfo->GetClassName()))
         }
-
-        // Get default value
-        std::string def_value;
-        try {
-            ticpp::Node* lastChild = elem_prop->LastChild(false);
-            if (lastChild && lastChild->Type() == TiXmlNode::TEXT) {
-                ticpp::Text* text = lastChild->ToText();
-                wxASSERT(text);
-                def_value = text->Value();
-            }
-        } catch (ticpp::Exception& ex) {
-            wxLogDebug(ex.what());
+        auto propertyDesc = XMLUtils::StringAttribute(property, DESCRIPTION_TAG);
+        auto propertyCustomEditor = XMLUtils::StringAttribute(property, CUSTOM_EDITOR_TAG);
+        auto propertyTypeName = XMLUtils::StringAttribute(property, "type");
+        if (propertyTypeName.empty()) {
+            THROW_WXFBEX(wxString::Format(
+              _("Empty property type for category \"%s\" for class \"%s\""), objectCategory->GetName(),
+              objectInfo->GetClassName()))
         }
+        auto propertyDefaultValue = XMLUtils::GetText(property, wxEmptyString, true);
 
-        // if the property is a "bitlist" then parse all of the options
-        POptionList opt_list;
-        std::list<PropertyChild> children;
-        if (ptype == PT_BITLIST || ptype == PT_OPTION || ptype == PT_EDIT_OPTION) {
-            opt_list = POptionList(new OptionList());
-            ticpp::Element* elem_opt = elem_prop->FirstChildElement("option", false);
-            while (elem_opt) {
-                std::string macro_name;
-                elem_opt->GetAttribute(NAME_TAG, &macro_name);
+        auto propertyType = ParsePropertyType(propertyTypeName);
+        auto optionList = std::make_shared<OptionList>();
+        std::list<PropertyChild> childList;
+        switch (propertyType) {
+            case PT_BITLIST:
+            case PT_OPTION:
+            case PT_EDIT_OPTION:
+                for (const auto* option = property->FirstChildElement("option"); option;
+                     option = option->NextSiblingElement("option")) {
+                    // To allow an empty selection, an empty name must be allowed
+                    auto optionName = XMLUtils::StringAttribute(option, NAME_TAG);
+                    auto optionDesc = XMLUtils::StringAttribute(option, DESCRIPTION_TAG);
 
-                std::string macro_description;
-                elem_opt->GetAttributeOrDefault(DESCRIPTION_TAG, &macro_description, "");
-
-                opt_list->AddOption(_WXSTR(macro_name), _WXSTR(macro_description));
-
-                m_macroSet.insert(_WXSTR(macro_name));
-
-                elem_opt = elem_opt->NextSiblingElement("option", false);
-            }
-        } else if (ptype == PT_PARENT) {
-            // If the property is a parent, then get the children
-            def_value.clear();
-            ticpp::Element* elem_child = elem_prop->FirstChildElement("child", false);
-            while (elem_child) {
-                PropertyChild child;
-
-                std::string child_name;
-                elem_child->GetAttribute(NAME_TAG, &child_name);
-                child.m_name = _WXSTR(child_name);
-
-                std::string child_description;
-                elem_child->GetAttributeOrDefault(DESCRIPTION_TAG, &child_description, "");
-                child.m_description = _WXSTR(child_description);
-
-                std::string child_type;
-                elem_child->GetAttributeOrDefault("type", &child_type, "wxString");
-                child.m_type = ParsePropertyType(_WXSTR(child_type));
-
-                // Get default value
-                // Empty tags don't contain any child so this will throw in that case
-                std::string child_value;
-                try {
-                    ticpp::Node* lastChild = elem_child->LastChild(false);
-                    if (lastChild && lastChild->Type() == TiXmlNode::TEXT) {
-                        ticpp::Text* text = lastChild->ToText();
-                        wxASSERT(text);
-                        child_value = text->Value();
+                    optionList->AddOption(optionName, optionDesc);
+                    m_macroSet.emplace(optionName);
+                }
+                break;
+            case PT_PARENT:
+                // The default value is constructed from the child element default values, so delete a possible present
+                // property default value
+                propertyDefaultValue.clear();
+                for (const auto* child = property->FirstChildElement("child"); child;
+                     child = child->NextSiblingElement("child")) {
+                    auto childName = XMLUtils::StringAttribute(child, NAME_TAG);
+                    if (childName.empty()) {
+                        THROW_WXFBEX(wxString::Format(
+                          _("Empty child name for property \"%s\" for category \"%s\" for class \"%s\""), propertyName,
+                          objectCategory->GetName(), objectInfo->GetClassName()))
                     }
-                } catch (ticpp::Exception& ex) {
-                    wxLogDebug(ex.what());
+                    auto childDesc = XMLUtils::StringAttribute(child, DESCRIPTION_TAG);
+                    auto childTypeName = XMLUtils::StringAttribute(child, "type", "wxString");
+                    auto childDefaultValue = XMLUtils::GetText(child, wxEmptyString, true);
+
+                    auto childType = ParsePropertyType(childTypeName);
+
+                    if (!childList.empty()) {
+                        propertyDefaultValue.append("; ");
+                    }
+                    propertyDefaultValue.append(childDefaultValue);
+                    // TODO: Due to a missing constructor, aggregate initialize a temporary object
+                    childList.emplace_back(PropertyChild{childName, childDefaultValue, childDesc, childType});
                 }
-                child.m_defaultValue = _WXSTR(child_value);
-
-                // build parent default value
-                if (children.size() > 0) {
-                    def_value += "; ";
-                }
-                def_value += child_value;
-
-                children.push_back(child);
-
-                elem_child = elem_child->NextSiblingElement("child", false);
-            }
+                break;
+            default:
+                break;
         }
 
-        // create an instance of PropertyInfo
-        PPropertyInfo prop_info(new PropertyInfo(
-          _WXSTR(pname), ptype, _WXSTR(def_value), _WXSTR(description), _WXSTR(customEditor), opt_list, children));
+        objectCategory->AddProperty(propertyName);
+        auto propertyInfo = std::make_shared<PropertyInfo>(
+          propertyName, propertyType, propertyDefaultValue, propertyDesc, propertyCustomEditor, optionList, childList);
+        objectInfo->AddPropertyInfo(propertyInfo);
 
-        // add the PropertyInfo to the property
-        obj_info->AddPropertyInfo(prop_info);
-
-        // merge property code templates, once per property type
-        if (types->insert(ptype).second) {
-            LangTemplateMap& propLangTemplates = m_propertyTypeTemplates[ptype];
-            LangTemplateMap::iterator lang;
-            for (lang = propLangTemplates.begin(); lang != propLangTemplates.end(); ++lang) {
-                if (lang->second) {
-                    obj_info->AddCodeInfo(lang->first, lang->second);
+        // Merge property code templates, once per property type
+        if (types.emplace(propertyType).second) {
+            if (auto propertyLanguageMap = m_propertyTypeTemplates.find(propertyType);
+                propertyLanguageMap != m_propertyTypeTemplates.end()) {
+                for (const auto& [language, codeInfo] : propertyLanguageMap->second) {
+                    if (codeInfo) {
+                        objectInfo->AddCodeInfo(language, codeInfo);
+                    }
                 }
             }
         }
-
-        elem_prop = elem_prop->NextSiblingElement(PROPERTY_TAG, false);
     }
 }
 
-void ObjectDatabase::ParseEvents(ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category)
+void ObjectDatabase::ParseEvents(
+  const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory)
 {
-    ticpp::Element* elem_category = elem_obj->FirstChildElement(CATEGORY_TAG, false);
-    while (elem_category) {
-        // Category name attribute
-        std::string cname;
-        elem_category->GetAttribute(NAME_TAG, &cname);
-        PPropertyCategory new_cat(new PropertyCategory(_WXSTR(cname)));
-
-        // Add category
-        category->AddCategory(new_cat);
-
-        // Recurse
-        ParseEvents(elem_category, obj_info, new_cat);
-
-        elem_category = elem_category->NextSiblingElement(CATEGORY_TAG, false);
-    }
-
-    ticpp::Element* elem_evt = elem_obj->FirstChildElement(EVENT_TAG, false);
-    while (elem_evt) {
-        // Event Name Attribute
-        std::string evt_name;
-        elem_evt->GetAttribute(NAME_TAG, &evt_name);
-        category->AddEvent(_WXSTR(evt_name));
-
-        // Event class
-        std::string evt_class;
-        elem_evt->GetAttributeOrDefault(EVENT_CLASS_TAG, &evt_class, "wxEvent");
-
-
-        // Help string
-        std::string description;
-        elem_evt->GetAttributeOrDefault(DESCRIPTION_TAG, &description, "");
-
-        // Get default value
-        std::string def_value;
-        try {
-            ticpp::Node* lastChild = elem_evt->LastChild(false);
-            if (lastChild && lastChild->Type() == TiXmlNode::TEXT) {
-                ticpp::Text* text = lastChild->ToText();
-                wxASSERT(text);
-                def_value = text->Value();
-            }
-        } catch (ticpp::Exception& ex) {
-            wxLogDebug(ex.what());
+    for (const auto* childCategory = object->FirstChildElement(CATEGORY_TAG); childCategory;
+         childCategory = childCategory->NextSiblingElement(CATEGORY_TAG)) {
+        auto categoryName = XMLUtils::StringAttribute(childCategory, NAME_TAG);
+        if (categoryName.empty()) {
+            THROW_WXFBEX(wxString::Format(
+              _("Empty child category for category \"%s\" for class \"%s\""), objectCategory->GetName(),
+              objectInfo->GetClassName()))
         }
 
-        // create an instance of EventInfo
-        PEventInfo evt_info(new EventInfo(_WXSTR(evt_name), _WXSTR(evt_class), _WXSTR(def_value), _WXSTR(description)));
+        auto propertyCategory = std::make_shared<PropertyCategory>(categoryName);
+        objectCategory->AddCategory(propertyCategory);
 
-        // add the EventInfo to the event
-        obj_info->AddEventInfo(evt_info);
+        ParseEvents(childCategory, objectInfo, propertyCategory);
+    }
 
-        elem_evt = elem_evt->NextSiblingElement(EVENT_TAG, false);
+    for (const auto* event = object->FirstChildElement(EVENT_TAG); event;
+         event = event->NextSiblingElement(EVENT_TAG)) {
+        auto eventName = XMLUtils::StringAttribute(event, NAME_TAG);
+        if (eventName.empty()) {
+            THROW_WXFBEX(wxString::Format(
+              _("Empty event name for category \"%s\" for class \"%s\""), objectCategory->GetName(),
+              objectInfo->GetClassName()))
+        }
+        auto eventClass = XMLUtils::StringAttribute(event, EVENT_CLASS_TAG, "wxEvent");
+        auto eventDesc = XMLUtils::StringAttribute(event, DESCRIPTION_TAG);
+        // TODO: This seems to be unused, deepSearch differs from the old approach of just examining the last element
+        // node
+        auto eventDefaultValue = XMLUtils::GetText(event, wxEmptyString, true);
+
+        objectCategory->AddEvent(eventName);
+        auto eventInfo = std::make_shared<EventInfo>(eventName, eventClass, eventDefaultValue, eventDesc);
+        objectInfo->AddEventInfo(eventInfo);
     }
 }
 

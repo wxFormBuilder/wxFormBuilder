@@ -45,6 +45,10 @@ namespace ticpp
 {
 class Element;
 }
+namespace tinyxml2
+{
+class XMLElement;
+}
 
 
 /**
@@ -171,8 +175,9 @@ private:
     PObjectPackage LoadPackage(const wxString& file, const wxString& iconPath = wxEmptyString);
 
     void ParseProperties(
-      ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category, std::set<PropertyType>* types);
-    void ParseEvents(ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category);
+      const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory,
+      std::set<PropertyType>& types);
+    void ParseEvents(const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory);
 
     /**
      * Importa una librería de componentes y lo asocia a cada clase.
