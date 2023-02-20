@@ -187,25 +187,25 @@ Lua code generation written by
     <template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
     <!--<template name="evt_connect_OnMouseEvents">
-      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end )
     </template>-->
     <template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
@@ -342,25 +342,25 @@ Lua code generation written by
     <template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
     <!--<template name="evt_connect_OnMouseEvents">
-      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end )
     </template>-->
     <template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
@@ -498,25 +498,25 @@ Lua code generation written by
     <template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
     <!--<template name="evt_connect_OnMouseEvents">
-      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end )
     </template>-->
     <template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
@@ -643,25 +643,25 @@ Lua code generation written by
     <template name="evt_connect_OnMouseEvents">#utbl$name:Connect( wx.wxEVT_MOUSE, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnMouseEvents">$name:Disconnect( wx.wxEVT_MOUSE )</template>
     <!--<template name="evt_connect_OnMouseEvents">
-      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl --implements  #handler#nl #skip #nl end ) #nl
-      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl --implements  #handler#nl #skip #nl end )
+      #utbl$name:Connect( wx.wxEVT_LEFT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DOWN, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_UP, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOTION, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEFT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MIDDLE_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_RIGHT_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX1_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_AUX2_DCLICK, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_LEAVE_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_ENTER_WINDOW, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end ) #nl
+      #utbl$name:Connect( wx.wxEVT_MOUSEWHEEL, function(event)#nl &#45;&#45;implements  #handler#nl #skip #nl end )
     </template>-->
     <template name="evt_connect_OnSetFocus">#utbl$name:Connect( wx.wxEVT_SET_FOCUS, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
     <template name="evt_disconnect_OnSetFocus">$name:Disconnect( wx.wxEVT_SET_FOCUS )</template>
