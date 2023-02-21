@@ -2,6 +2,7 @@
 
 #include <wx/ffile.h>
 #include <wx/intl.h>
+#include <wx/log.h>
 
 #include "utils/wxfbexception.h"
 
@@ -11,6 +12,7 @@ namespace XMLUtils
 
 std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool collapseWhitespace)
 {
+    wxLogDebug("Loading XML file: %s", path);
     // Use wxFFile to get full unicode support for path on Windows
     wxFFile file;
     if (wxLogNull noLog; !file.Open(path, "rb")) {
