@@ -318,21 +318,13 @@ if(WIN32)
     )
   elseif(MINGW)
     # This environment has its own search paths which are not taken into account and must be specified.
-    # Depending on the bitness of the target architecture different directories are used.
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-      set(targetBitness 64)
-    elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
-      set(targetBitness 32)
-    else()
-      message(FATAL_ERROR "Unknown target bitness: ${CMAKE_SIZEOF_VOID_P} bytes")
-    endif()
     if(MSYS)
       # The "virtual" paths used by the MSYS environment cannot be used, they must be translated into physical
       # paths of the system.
       find_program(cygpath_cmd NAMES cygpath REQUIRED)
       mark_as_advanced(cygpath_cmd)
       # The mixed mode output equals the CMake path format
-      execute_process(COMMAND "${cygpath_cmd}" -m /mingw${targetBitness}/bin OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
+      execute_process(COMMAND "${cygpath_cmd}" -m "$ENV{MSYSTEM_PREFIX}/bin" OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
       list(APPEND extraDirectories "${msysSystemDir}")
       unset(msysSystemDir)
     else()
@@ -357,7 +349,6 @@ if(WIN32)
         # For some reason some dependencies use forward slashes, some backward slashes
         [[.*[/\]system32/.*\.dll]]
     )
-    unset(targetBitness)
   endif()
   unset(extraDirectories)
 endif()
