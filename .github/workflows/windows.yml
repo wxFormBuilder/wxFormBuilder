@@ -48,7 +48,7 @@ jobs:
       matrix:
         include:
           - { sys: mingw32, arch: i686, pkg: i686 }
-          - { sys: mingw64, arch: x86_64, pkg: x86_64 }
+          - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
     steps:
     - uses: actions/checkout@v3.3.0
       with:
