@@ -47,8 +47,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { sys: mingw32, env: i686 }
-          - { sys: mingw64, env: x86_64 }
+          - { sys: mingw32, arch: i686, pkg: i686 }
+          - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
     steps:
     - uses: actions/checkout@v3.3.0
       with:
@@ -63,11 +63,11 @@ jobs:
         release: false
         update: false
         install: >-
-          mingw-w64-${{ matrix.env }}-toolchain
-          mingw-w64-${{ matrix.env }}-cmake
-          mingw-w64-${{ matrix.env }}-make
-          mingw-w64-${{ matrix.env }}-wxWidgets3.2
-          mingw-w64-${{ matrix.env }}-boost
+          mingw-w64-${{ matrix.pkg }}-toolchain
+          mingw-w64-${{ matrix.pkg }}-cmake
+          mingw-w64-${{ matrix.pkg }}-make
+          mingw-w64-${{ matrix.pkg }}-wxWidgets3.2
+          mingw-w64-${{ matrix.pkg }}-boost
           base-devel
           git
     - name: Configure msys2 environment
@@ -83,7 +83,7 @@ jobs:
       if: ${{ contains(github.ref, '/build/') }}
       shell: cmd
       run: |
-        7z a -tzip -bb1 wxFormBuilder-Windows-${{ matrix.env }}-build.zip _build
+        7z a -tzip -bb1 wxFormBuilder-Windows-${{ matrix.pkg }}-build.zip _build
     - name: Build
       shell: msys2 {0}
       run: |
@@ -106,25 +106,25 @@ jobs:
       shell: cmd
       run: |
         cd _install
-        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}-${{ matrix.env }}.zip" .
+        7z a -tzip -bb1 "..\\wxFormBuilder${{ env.project_version }}-${{ matrix.pkg }}.zip" .
     - name: Create installer
       shell: cmd
       run: |
-        ISCC.exe /DArch=${{ matrix.env }} /O. data\\packaging\\windows\\wxFormBuilder.iss
+        ISCC.exe /DArch=${{ matrix.arch }} /O. data\\packaging\\windows\\wxFormBuilder.iss
     - uses: actions/upload-artifact@v3.1.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
-        name: Windows Build Debugging ${{ matrix.env }}
+        name: Windows Build Debugging ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v3.1.2
       with:
-        name: Windows Archive ${{ matrix.env }}
+        name: Windows Archive ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v3.1.2
       with:
-        name: Windows Installer ${{ matrix.env }}
+        name: Windows Installer ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*.exe
