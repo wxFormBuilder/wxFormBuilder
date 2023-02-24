@@ -7,8 +7,8 @@
 wxFormBuilder is a GUI builder for the wxWidgets framework.
 
 Code generation is supported for [C++](https://wxwidgets.org/), [Python](https://wxpython.org/),
-[XRC](https://docs.wxwidgets.org/trunk/overview_xrc.html), [Lua](https://github.com/pkulchenko/wxlua) and [PHP](https://github.com/wxphp/wxphp).
-Additionally, the import and export of XRC code is possible.
+[Lua](https://github.com/pkulchenko/wxlua) and [PHP](https://github.com/wxphp/wxphp).
+Additionally, the import and export of [XRC](https://docs.wxwidgets.org/trunk/overview_xrc.html) code is possible.
 To support additional widgets, custom plugins can be used.
 
 wxFormBuilder runs on Windows, various Linux distributions and macOS.
@@ -69,7 +69,7 @@ Building on Linux has been tested on Ubuntu and Fedora with GCC in 64 bit mode b
 Installing the Prerequisites:
 
 ```sh
-sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev cmake make git
+sudo apt install libwxgtk3.2-dev libwxgtk-media3.2-dev libboost-dev cmake make git
 ```
 
 Building:
@@ -77,7 +77,7 @@ Building:
 ```sh
 git clone --recursive https://github.com/wxFormBuilder/wxFormBuilder
 cd wxFormBuilder
-cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release -DWXFB_WXWIDGETS_ENABLE_30=ON
+cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
 cmake --build _build --config Release -j `nproc`
 cmake --install _build --config Release
 ```
