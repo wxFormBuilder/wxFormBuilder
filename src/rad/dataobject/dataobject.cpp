@@ -24,6 +24,8 @@
 
 #include "dataobject.h"
 
+#include <cstring>
+
 #include <ticpp.h>
 
 #include "model/objectbase.h"
@@ -31,12 +33,20 @@
 #include "utils/typeconv.h"
 
 
-wxFBDataObject::wxFBDataObject(PObjectBase obj)
+wxDataFormat wxFBDataObject::DataObjectFormat()
 {
-    if (obj) {
+    static const auto format = wxDataFormat("wxFormBuilderDataFormat");
+
+    return format;
+}
+
+
+wxFBDataObject::wxFBDataObject(PObjectBase object)
+{
+    if (object) {
         // create xml representation of ObjectBase
         ticpp::Element element;
-        obj->SerializeObject(&element);
+        object->SerializeObject(&element);
 
         // add version info to xml data, just in case it is pasted into a different version of wxFB
         element.SetAttribute("fbp_version_major", AppData()->m_fbpVerMajor);
@@ -54,65 +64,8 @@ wxFBDataObject::wxFBDataObject(PObjectBase obj)
     }
 }
 
-void wxFBDataObject::GetAllFormats(wxDataFormat* formats, Direction dir) const
-{
-    switch (dir) {
-        case Get:
-            formats[0] = wxFBDataObjectFormat;
-            formats[1] = wxDF_TEXT;
-            break;
-        case Set:
-            formats[0] = wxFBDataObjectFormat;
-            break;
-        default:
-            break;
-    }
-}
 
-bool wxFBDataObject::GetDataHere(const wxDataFormat&, void* buf) const
-{
-    if (NULL == buf) {
-        return false;
-    }
-
-    memcpy((char*)buf, m_data.c_str(), m_data.length());
-
-    return true;
-}
-
-size_t wxFBDataObject::GetDataSize(const wxDataFormat& /*format*/) const
-{
-    return m_data.length();
-}
-
-size_t wxFBDataObject::GetFormatCount(Direction dir) const
-{
-    switch (dir) {
-        case Get:
-            return 2;
-        case Set:
-            return 1;
-        default:
-            return 0;
-    }
-}
-
-wxDataFormat wxFBDataObject::GetPreferredFormat(Direction /*dir*/) const
-{
-    return wxFBDataObjectFormat;
-}
-
-bool wxFBDataObject::SetData(const wxDataFormat& format, size_t len, const void* buf)
-{
-    if (format != wxFBDataObjectFormat) {
-        return false;
-    }
-
-    m_data.assign(reinterpret_cast<const char*>(buf), len);
-    return true;
-}
-
-PObjectBase wxFBDataObject::GetObj()
+PObjectBase wxFBDataObject::GetObject() const
 {
     if (m_data.empty()) {
         return PObjectBase();
@@ -145,4 +98,64 @@ PObjectBase wxFBDataObject::GetObj()
         wxLogError(_WXSTR(ex.m_details));
         return PObjectBase();
     }
+}
+
+
+void wxFBDataObject::GetAllFormats(wxDataFormat* formats, Direction dir) const
+{
+    switch (dir) {
+        case Get:
+            formats[0] = DataObjectFormat();
+            formats[1] = wxDF_TEXT;
+            break;
+        case Set:
+            formats[0] = DataObjectFormat();
+            break;
+        default:
+            break;
+    }
+}
+
+bool wxFBDataObject::GetDataHere(const wxDataFormat&, void* buf) const
+{
+    if (!buf) {
+        return false;
+    }
+
+    std::memcpy(buf, m_data.data(), m_data.size());
+
+    return true;
+}
+
+size_t wxFBDataObject::GetDataSize([[maybe_unused]] const wxDataFormat& format) const
+{
+    return m_data.size();
+}
+
+size_t wxFBDataObject::GetFormatCount(Direction dir) const
+{
+    switch (dir) {
+        case Get:
+            return 2;
+        case Set:
+            return 1;
+        default:
+            return 0;
+    }
+}
+
+wxDataFormat wxFBDataObject::GetPreferredFormat([[maybe_unused]] Direction dir) const
+{
+    return DataObjectFormat();
+}
+
+bool wxFBDataObject::SetData(const wxDataFormat& format, size_t len, const void* buf)
+{
+    if (format != DataObjectFormat()) {
+        return false;
+    }
+
+    m_data.assign(reinterpret_cast<const char*>(buf), len);
+
+    return true;
 }

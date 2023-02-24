@@ -872,13 +872,13 @@ bool ApplicationData::PasteObjectFromClipboard(PObjectBase parent)
         }
     }
 
-    if (wxTheClipboard->IsSupported(wxFBDataObjectFormat)) {
+    if (wxTheClipboard->IsSupported(wxFBDataObject::DataObjectFormat())) {
         wxFBDataObject data;
         if (wxTheClipboard->GetData(data)) {
-            PObjectBase obj = data.GetObj();
-            if (obj) {
+            PObjectBase object = data.GetObject();
+            if (object) {
                 wxTheClipboard->Close();
-                return PasteObject(parent, obj);
+                return PasteObject(parent, object);
             }
         }
     }
@@ -897,7 +897,7 @@ bool ApplicationData::CanPasteObjectFromClipboard()
         }
     }
 
-    bool canPaste = wxTheClipboard->IsSupported(wxFBDataObjectFormat);
+    bool canPaste = wxTheClipboard->IsSupported(wxFBDataObject::DataObjectFormat());
 
     if (wxTheClipboard->IsOpened())
         wxTheClipboard->Close();
