@@ -253,13 +253,14 @@ public:
      * Fabrica de objetos.
      * A partir del nombre de la clase se crea una nueva instancia de un objeto.
      */
-    PObjectBase CreateObject(std::string class_name, PObjectBase parent = PObjectBase());
+    PObjectBase CreateObject(const wxString& class_name, PObjectBase parent = PObjectBase());
 
     /**
      * Fábrica de objetos a partir de un objeto XML.
      * Este método se usará para cargar un proyecto almacenado.
      */
     PObjectBase CreateObject(ticpp::Element* obj, PObjectBase parent = PObjectBase());
+    PObjectBase CreateObject(const tinyxml2::XMLElement* object, PObjectBase parentObject = PObjectBase());
 
     /**
      * Crea un objeto como copia de otro.

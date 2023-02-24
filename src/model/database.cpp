@@ -230,14 +230,14 @@ el máximo definido. El objeto no se crea si supera el máximo permitido.
 * Nota: quizá sea conveniente que el método cree el objeto sin enlazarlo
 *       en el árbol, para facilitar el undo-redo.
 */
-PObjectBase ObjectDatabase::CreateObject(std::string classname, PObjectBase parent)
+PObjectBase ObjectDatabase::CreateObject(const wxString& classname, PObjectBase parent)
 {
     PObjectBase object;
-    PObjectInfo objInfo = GetObjectInfo(_WXSTR(classname));
+    PObjectInfo objInfo = GetObjectInfo(classname);
 
     if (!objInfo) {
         THROW_WXFBEX(
-          wxT("Unknown Object Type: ") << _WXSTR(classname)
+          wxT("Unknown Object Type: ") << classname
                                        << wxT("\n") wxT("The most likely causes are that this copy of wxFormBuilder is "
                                                         "out of date, or that there is a plugin missing.\n")
                                             wxT("Please check at http://www.wxFormBuilder.org")
@@ -524,6 +524,66 @@ PObjectBase ObjectDatabase::CreateObject(ticpp::Element* xml_obj, PObjectBase pa
     } catch (ticpp::Exception&) {
         return PObjectBase();
     }
+}
+
+PObjectBase ObjectDatabase::CreateObject(const tinyxml2::XMLElement* object, PObjectBase parentObject)
+{
+    auto className = XMLUtils::StringAttribute(object, CLASS_TAG);
+    auto baseObject = CreateObject(className, parentObject);
+    // CreateObject might return an "item" that contains the acutal object, e.g. sizeritem or splitteritem.
+    // In that case, determine the real object and use that one.
+    // TODO: What is the proper way to do this?
+    auto targetObject = (baseObject && baseObject->GetChildCount() > 0 ? baseObject->GetChild(0) : baseObject);
+    if (!targetObject) {
+        return baseObject;
+    }
+
+    auto expanded = object->BoolAttribute(EXPANDED_TAG, true);
+    targetObject->SetExpanded(expanded);
+
+    for (const auto* property = object->FirstChildElement(PROPERTY_TAG); property; property = property->NextSiblingElement(PROPERTY_TAG)) {
+        auto propertyName = XMLUtils::StringAttribute(property, NAME_TAG);
+        auto propertyValue = XMLUtils::GetText(property);
+        auto propertyObject = targetObject->GetProperty(propertyName);
+
+        if (propertyObject) {
+            propertyObject->SetValue(propertyValue);
+        } else {
+            // TODO: The previous code reported the error only if the value was non-empty, why?
+            wxLogError(
+                _(
+                    "The property \"%s\" of class \"%s\" is not supported by this version of wxFormBuilder.\n"
+                    "If your project file was just converted from an older version, the conversion is not complete.\n"
+                    "Otherwise, this project file is from a newer version of wxFormBuilder.\n\n"
+                    "The value of the property is: \"%s\"\n\n"
+                    "If you save this project, YOU WILL LOSE DATA!"
+                ),
+                propertyName, className, propertyValue
+            );
+        }
+    }
+
+    for (const auto* event = object->FirstChildElement(EVENT_TAG); event; event = event->NextSiblingElement(EVENT_TAG)) {
+        auto eventName = XMLUtils::StringAttribute(event, NAME_TAG);
+        auto eventValue = XMLUtils::GetText(event);
+        auto eventObject = targetObject->GetEvent(eventName);
+
+        // TODO: Why does the previous code not report an error for unknown events?
+        if (eventObject) {
+            eventObject->SetValue(eventValue);
+        }
+    }
+
+    if (parentObject) {
+        parentObject->AddChild(baseObject);
+        baseObject->SetParent(parentObject);
+    }
+
+    for (const auto* child = object->FirstChildElement(OBJECT_TAG); child; child = child->NextSiblingElement(OBJECT_TAG)) {
+        CreateObject(child, targetObject);
+    }
+
+    return baseObject;
 }
 
 //////////////////////////////
