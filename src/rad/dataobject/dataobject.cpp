@@ -26,11 +26,11 @@
 
 #include <cstring>
 
-#include <ticpp.h>
+#include <tinyxml2.h>
 
 #include "model/objectbase.h"
 #include "rad/appdata.h"
-#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 
 wxDataFormat wxFBDataObject::DataObjectFormat()
@@ -43,25 +43,22 @@ wxDataFormat wxFBDataObject::DataObjectFormat()
 
 wxFBDataObject::wxFBDataObject(PObjectBase object)
 {
-    if (object) {
-        // create xml representation of ObjectBase
-        ticpp::Element element;
-        object->SerializeObject(&element);
-
-        // add version info to xml data, just in case it is pasted into a different version of wxFB
-        element.SetAttribute("fbp_version_major", AppData()->m_fbpVerMajor);
-        element.SetAttribute("fbp_version_minor", AppData()->m_fbpVerMinor);
-
-        ticpp::Document doc;
-        doc.LinkEndChild(&element);
-        TiXmlPrinter printer;
-        printer.SetIndent("\t");
-
-        printer.SetLineBreak("\n");
-
-        doc.Accept(&printer);
-        m_data = printer.Str();
+    if (!object) {
+        return;
     }
+
+    tinyxml2::XMLDocument doc;
+    auto* root = doc.NewElement("");
+    doc.InsertEndChild(root);
+
+    object->Serialize(root);
+    root->SetAttribute("fbp_version_major", static_cast<int>(AppData()->m_fbpVerMajor));
+    root->SetAttribute("fbp_version_minor", static_cast<int>(AppData()->m_fbpVerMinor));
+
+    tinyxml2::XMLPrinter printer(nullptr, true, 0);
+    doc.Print(&printer);
+    m_data = printer.CStr();
+    wxLogDebug("wxFBDataObject::wxFBDataObject() %s", m_data.c_str());
 }
 
 
@@ -70,34 +67,45 @@ PObjectBase wxFBDataObject::GetObject() const
     if (m_data.empty()) {
         return PObjectBase();
     }
+    wxLogDebug("wxFBDataObject::GetObj(): %s", m_data.c_str());
 
-    // Read Object from xml
-    try {
-        ticpp::Document doc;
-        doc.Parse(m_data, true, TIXML_ENCODING_UTF8);
-        ticpp::Element* element = doc.FirstChildElement();
+    auto doc = std::make_unique<tinyxml2::XMLDocument>(true, tinyxml2::PRESERVE_WHITESPACE);
+    if (doc->Parse(m_data.data(), m_data.size()) != tinyxml2::XML_SUCCESS) {
+        wxLogError(_("Failed to parse wxFormBuilderDataFormat: %s"), doc->ErrorStr());
 
-
-        int major, minor;
-        element->GetAttribute("fbp_version_major", &major);
-        element->GetAttribute("fbp_version_minor", &minor);
-
-        if (
-          major > AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor > AppData()->m_fbpVerMinor)) {
-            wxLogError(_("This object cannot be pasted because it is from a newer version of wxFormBuilder"));
-        }
-
-        if (
-          major < AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor < AppData()->m_fbpVerMinor)) {
-            AppData()->ConvertObject(element, major, minor);
-        }
-
-        PObjectDatabase db = AppData()->GetObjectDatabase();
-        return db->CreateObject(element);
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_WXSTR(ex.m_details));
         return PObjectBase();
     }
+    auto* root = doc->FirstChildElement();
+    if (!root) {
+        wxLogError(_("wxFormBuilderDataFormat: Missing root node"));
+
+        return PObjectBase();
+    }
+
+    auto versionMajor = root->IntAttribute("fbp_version_major", -1);
+    auto versionMinor = root->IntAttribute("fbp_version_minor", -1);
+    if (versionMajor < 0 || versionMinor < 0) {
+        wxLogError(_("wxFormBuilderDataFormat: Invalid version %i.%i"), versionMajor, versionMinor);
+
+        return PObjectBase();
+    }
+
+    if (
+        versionMajor > AppData()->m_fbpVerMajor ||
+        (versionMajor == AppData()->m_fbpVerMajor && versionMinor > AppData()->m_fbpVerMinor)
+    ) {
+        wxLogError(_("wxFormBuilderDataFormat: This object cannot be pasted because it is from a newer version of wxFormBuilder"));
+
+        return PObjectBase();
+    }
+    if (
+        versionMajor < AppData()->m_fbpVerMajor ||
+        (versionMajor == AppData()->m_fbpVerMajor && versionMinor < AppData()->m_fbpVerMinor)
+    ) {
+        AppData()->ConvertObject(root, versionMajor, versionMinor);
+    }
+
+    return AppData()->GetObjectDatabase()->CreateObject(root);
 }
 
 
