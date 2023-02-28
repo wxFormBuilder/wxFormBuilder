@@ -34,6 +34,15 @@ std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool co
 wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& name, const wxString& defaultValue = wxEmptyString);
 
 /**
+ * @brief Set string type attribute
+ *
+ * @param element XML element node
+ * @param name Name of the attribute
+ * @param value Value of the attribute
+ */
+void SetAttribute(tinyxml2::XMLElement* element, const wxString& name, const wxString& value);
+
+/**
  * @brief Return text of the element
  *
  * @param element XML element node
@@ -43,6 +52,15 @@ wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& na
  * @return Text of the element
  */
 wxString GetText(const tinyxml2::XMLElement* element, const wxString& defaultValue = wxEmptyString, bool deepSearch = false);
+
+/**
+ * @brief Set text of the element
+ *
+ * @param element XML element node
+ * @param value Text value of the node
+ * @param insertElement If true, the text is inserted as text node as last child element, otherwise a simple SetText() is used.
+ */
+void SetText(tinyxml2::XMLElement* element, const wxString& value, bool insertElement = false);
 
 }  // namespace XMLUtils
 

@@ -34,6 +34,11 @@ wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& na
     return (value ? wxString(value, wxConvUTF8) : defaultValue);
 }
 
+void SetAttribute(tinyxml2::XMLElement* element, const wxString& name, const wxString& value)
+{
+    element->SetAttribute(name.utf8_str(), value.utf8_str());
+}
+
 wxString GetText(const tinyxml2::XMLElement* element, const wxString& defaultValue, bool deepSearch)
 {
     const char* value = nullptr;
@@ -49,6 +54,15 @@ wxString GetText(const tinyxml2::XMLElement* element, const wxString& defaultVal
     }
 
     return (value ? wxString(value, wxConvUTF8) : defaultValue);
+}
+
+void SetText(tinyxml2::XMLElement* element, const wxString& value, bool insertElement)
+{
+    if (!insertElement) {
+        element->SetText(value.utf8_str());
+    } else {
+        element->InsertNewText(value.utf8_str());
+    }
 }
 
 }  // namespace XMLUtils
