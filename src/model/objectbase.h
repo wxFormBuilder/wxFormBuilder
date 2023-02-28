@@ -41,6 +41,12 @@
 #include "utils/wxfbdefs.h"
 
 
+namespace tinyxml2
+{
+class XMLElement;
+}
+
+
 class OptionList
 {
 private:
@@ -388,6 +394,7 @@ public:
      * Obtiene el documento xml del arbol tomando como raíz el nodo actual.
      */
     void Serialize(ticpp::Document* serializedDocument);
+    void Serialize(tinyxml2::XMLElement* element);
 
     /**
      * Añade un hijo al objeto.

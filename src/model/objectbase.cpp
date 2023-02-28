@@ -32,6 +32,7 @@
 #include "utils/debug.h"
 #include "utils/stringutils.h"
 #include "utils/typeconv.h"
+#include "utils/xmlutils.h"
 
 
 PropertyInfo::PropertyInfo(
@@ -579,6 +580,43 @@ void ObjectBase::Serialize(ticpp::Document* serializedDocument)
     document.LinkEndChild(&root);
 
     *serializedDocument = document;
+}
+
+void ObjectBase::Serialize(tinyxml2::XMLElement* element)
+{
+    element->SetName("object");
+    XMLUtils::SetAttribute(element, "class", GetClassName());
+    element->SetAttribute("expanded", GetExpanded());
+
+    for (unsigned int i = 0; i < GetPropertyCount(); ++i) {
+        auto property = GetProperty(i);
+        const auto& propertyValue = property->GetValue();
+        // TODO: Why can't empty properties also be dropped? When is empty != default? See Issue #467.
+
+        auto* propertyElement = element->InsertNewChildElement("property");
+        XMLUtils::SetAttribute(propertyElement, "name", property->GetName());
+        XMLUtils::SetText(propertyElement, propertyValue);
+    }
+
+    for (unsigned int i = 0; i < GetEventCount(); ++i) {
+        auto event = GetEvent(i);
+        const auto& eventValue = event->GetValue();
+        // Drop empty handlers to reduce size of XML, this means empty == no handler
+        if (eventValue.empty()) {
+            continue;
+        }
+
+        auto *eventElement = element->InsertNewChildElement("event");
+        XMLUtils::SetAttribute(eventElement, "name", event->GetName());
+        XMLUtils::SetText(eventElement, eventValue);
+    }
+
+    for (unsigned int i = 0; i < GetChildCount(); ++i) {
+        auto child = GetChild(i);
+
+        auto* childElement = element->InsertNewChildElement("");
+        child->Serialize(childElement);
+    }
 }
 
 unsigned int ObjectBase::GetChildPosition(PObjectBase obj)
