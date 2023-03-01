@@ -1144,25 +1144,29 @@ void ApplicationData::SaveProject(const wxString& filename)
         return;
     }
 
-    try {
-        ticpp::Document doc;
-        m_project->Serialize(&doc);
-        doc.SaveFile(std::string(filename.mb_str(wxConvFile)));
+    tinyxml2::XMLDocument doc;
+    auto* prolog = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
+    auto* root = doc.NewElement("wxFormBuilder_Project");
+    doc.InsertEndChild(prolog);
+    doc.InsertEndChild(root);
 
-        m_projectFile = filename;
-        SetProjectPath(::wxPathOnly(filename));
-        m_modFlag = false;
-        m_cmdProc.SetSavePoint();
-        NotifyProjectSaved();
-    } catch (ticpp::Exception& ex) {
-        wxString message = _WXSTR(ex.m_details);
+    auto* version = doc.NewElement("FileVersion");
+    version->SetAttribute("major", static_cast<int>(AppData()->m_fbpVerMajor));
+    version->SetAttribute("minor", static_cast<int>(AppData()->m_fbpVerMinor));
+    root->InsertEndChild(version);
 
-        if (message.empty()) {
-            message = wxString(ex.m_details.c_str(), wxConvFile);
-        }
+    auto* project = doc.NewElement("");
+    m_project->Serialize(project);
+    root->InsertEndChild(project);
 
-        THROW_WXFBEX(message)
-    }
+    wxFileName name(filename);
+    XMLUtils::SaveXMLFile(name.GetFullPath(), doc);
+
+    m_projectFile = name.GetFullPath();
+    SetProjectPath(name.GetPath());
+    m_modFlag = false;
+    m_cmdProc.SetSavePoint();
+    NotifyProjectSaved();
 }
 
 bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
