@@ -24,6 +24,19 @@ namespace XMLUtils
 std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool collapseWhitespace = false);
 
 /**
+ * @brief Save the given XML document to file
+ *
+ * The document must contain a valid XML structure, this is not verified and simply assumed.
+ *
+ * @param path Destination Path
+ * @param document XML document
+ * @param compact If true, a compact representation is written, omitting all optional whitespace
+ *
+ * @throw wxFBException Failed to write the file
+ */
+void SaveXMLFile(const wxString& path, const tinyxml2::XMLDocument& document, bool compact = false);
+
+/**
  * @brief Return string typed attribute
  *
  * @param element XML element node
