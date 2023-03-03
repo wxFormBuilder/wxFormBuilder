@@ -1144,7 +1144,7 @@ void ApplicationData::SaveProject(const wxString& filename)
         return;
     }
 
-    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLDocument doc(false, tinyxml2::PRESERVE_WHITESPACE);
     auto* prolog = doc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
     auto* root = doc.NewElement("wxFormBuilder_Project");
     doc.InsertEndChild(prolog);

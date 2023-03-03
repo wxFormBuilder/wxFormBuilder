@@ -47,7 +47,7 @@ wxFBDataObject::wxFBDataObject(PObjectBase object)
         return;
     }
 
-    tinyxml2::XMLDocument doc;
+    tinyxml2::XMLDocument doc(false, tinyxml2::PRESERVE_WHITESPACE);
     auto* root = doc.NewElement("");
     doc.InsertEndChild(root);
 
@@ -69,13 +69,13 @@ PObjectBase wxFBDataObject::GetObject() const
     }
     wxLogDebug("wxFBDataObject::GetObj(): %s", m_data.c_str());
 
-    auto doc = std::make_unique<tinyxml2::XMLDocument>(true, tinyxml2::PRESERVE_WHITESPACE);
-    if (doc->Parse(m_data.data(), m_data.size()) != tinyxml2::XML_SUCCESS) {
-        wxLogError(_("Failed to parse wxFormBuilderDataFormat: %s"), doc->ErrorStr());
+    tinyxml2::XMLDocument doc(false, tinyxml2::PRESERVE_WHITESPACE);
+    if (doc.Parse(m_data.data(), m_data.size()) != tinyxml2::XML_SUCCESS) {
+        wxLogError(_("Failed to parse wxFormBuilderDataFormat: %s"), doc.ErrorStr());
 
         return PObjectBase();
     }
-    auto* root = doc->FirstChildElement();
+    auto* root = doc.FirstChildElement();
     if (!root) {
         wxLogError(_("wxFormBuilderDataFormat: Missing root node"));
 
