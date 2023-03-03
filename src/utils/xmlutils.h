@@ -7,6 +7,13 @@
 #include <wx/string.h>
 
 
+/**
+ * @brief Helper functions to process XML documents with TinyXML 2
+ *
+ * Because of the insufficient XML entity processing of TinyXML 2 this feature is not used
+ * but the entities are processed by these functions themself. Therefor it is important if
+ * tinyxml2::XMLDocument objects are created externally to create them with entity processing disabled.
+ */
 namespace XMLUtils
 {
 
