@@ -25,6 +25,8 @@
 
 #include "appdata.h"
 
+#include <cstring>
+
 #include <ticpp.h>
 #include <wx/clipbrd.h>
 #include <wx/ffile.h>
@@ -1164,110 +1166,123 @@ void ApplicationData::SaveProject(const wxString& filename)
 }
 
 bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
-
 {
-    LogDebug(wxT("LOADING"));
-
-    if (!wxFileName::FileExists(file)) {
-        wxLogError(wxT("This file does not exist: %s"), file);
+    wxFileName filename(file);
+    if (!filename.FileExists()) {
+        wxLogError(_("File does not exist: %s"), file);
         return false;
     }
 
-    if (!justGenerate) {
-        if (!m_ipc->VerifySingleInstance(file)) {
-            return false;
-        }
+    if (!justGenerate && !m_ipc->VerifySingleInstance(file)) {
+        return false;
     }
 
+    std::unique_ptr<tinyxml2::XMLDocument> doc;
     try {
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, false, file);
-
-        ticpp::Element* root = doc.FirstChildElement();
-
-        m_objDb->ResetObjectCounters();
-
-        int fbpVerMajor = 0;
-        int fbpVerMinor = 0;
-
-        if (root->Value() != std::string("object")) {
-            try {
-                ticpp::Element* fileVersion = root->FirstChildElement("FileVersion");
-                fileVersion->GetAttributeOrDefault("major", &fbpVerMajor, 0);
-                fileVersion->GetAttributeOrDefault("minor", &fbpVerMinor, 0);
-            } catch (ticpp::Exception&) {
-            }
-        }
-
-        bool older = false;
-        bool newer = false;
-
-        if (m_fbpVerMajor == fbpVerMajor) {
-            older = (fbpVerMinor < m_fbpVerMinor);
-            newer = (fbpVerMinor > m_fbpVerMinor);
-        } else {
-            older = (fbpVerMajor < m_fbpVerMajor);
-            newer = (fbpVerMajor > m_fbpVerMajor);
-        }
-
-        if (newer) {
-            if (justGenerate) {
-                wxLogError(wxT("This project file is newer than this version of wxFormBuilder.\n"));
-            } else {
-                wxMessageBox(
-                  wxT("This project file is newer than this version of wxFormBuilder.\n")
-                    wxT("It cannot be opened.\n\n")
-                      wxT("Please download an updated version from http://www.wxFormBuilder.org"),
-                  _("New Version"), wxICON_ERROR);
-            }
-            return false;
-        }
-
-        if (older) {
-            if (justGenerate) {
-                wxLogError(wxT("This project file is out of date.  Update your .fbp before using --generate"));
-                return false;
-            }
-
-            wxMessageBox(
-              _("This project file is using an older file format, it will be updated during loading.\n\n"
-                "WARNING: Saving the project will update the format of the project file on disk!"),
-              _("Older file format"));
-
-            if (ConvertProject(doc, file, fbpVerMajor, fbpVerMinor)) {
-                // Document has changed -- reacquire the root node
-                root = doc.FirstChildElement();
-            } else {
-                wxLogError(wxT("Unable to convert project"));
-                return false;
-            }
-        }
-
-        ticpp::Element* object = root->FirstChildElement("object");
-        PObjectBase proj;
-
-        try {
-            proj = m_objDb->CreateObject(object);
-        } catch (wxFBException& ex) {
-            wxLogError(ex.what());
-            return false;
-        }
-
-        if (proj && proj->GetObjectTypeName() == wxT("project")) {
-            PObjectBase old_proj = m_project;
-            m_project = proj;
-            m_selObj = m_project;
-            // Set the modification to true if the project was older and has been converted
-            m_modFlag = older;
-            m_cmdProc.Reset();
-            m_projectFile = file;
-            SetProjectPath(::wxPathOnly(file));
-            NotifyProjectLoaded();
-            NotifyProjectRefresh();
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_WXSTR(ex.m_details));
+        doc = XMLUtils::LoadXMLFile(filename.GetFullPath(), false);
+    } catch (wxFBException& ex) {
+        wxLogError(ex.what());
         return false;
+    }
+    const auto* root = doc->FirstChildElement();
+    if (!root) {
+        wxLogError(_("%s: Missing root node"), file);
+        return false;
+    }
+    const auto* rootName = root->Name();
+    if (!rootName) {
+        rootName = "";
+    }
+
+    int versionMajor = 0;
+    int versionMinor = 0;
+    if (std::strcmp(rootName, "wxFormBuilder_Project") == 0) {
+        const auto* version = root->FirstChildElement("FileVersion");
+        if (!version) {
+            wxLogError(_("%s: Invalid version node"), file);
+            return false;
+        }
+        versionMajor = version->IntAttribute("major", versionMajor);
+        versionMinor = version->IntAttribute("minor", versionMinor);
+    } else if (std::strcmp(rootName, "object") != 0) {
+        wxLogError(_("%s: Invalid root node"), file);
+        return false;
+    }
+
+    enum class VersionState {
+        OLDER = -1,
+        EQUAL,
+        NEWER,
+    };
+    auto versionState = VersionState::EQUAL;
+    if (versionMajor == m_fbpVerMajor) {
+        if (versionMinor < m_fbpVerMinor) {
+            versionState = VersionState::OLDER;
+        } else if (versionMinor > m_fbpVerMinor) {
+            versionState = VersionState::NEWER;
+        }
+    } else {
+        if (versionMajor < m_fbpVerMajor) {
+            versionState = VersionState::OLDER;
+        } else if (versionMajor > m_fbpVerMajor) {
+            versionState = VersionState::NEWER;
+        }
+    }
+    if (versionState == VersionState::NEWER) {
+        if (justGenerate) {
+            wxLogError("This project file version is newer than this version of wxFormBuilder.\n");
+        } else {
+            wxMessageBox(
+                _(
+                    "This project file version is newer than this version of wxFormBuilder.\n"
+                    "The file cannot be opened.\n\n"
+                    "Please download an new wxFormBuilder version version from http://www.wxformbuilder.org"
+                ),
+                _("New Project File Version"),
+                wxICON_ERROR
+            );
+        }
+        return false;
+    }
+    if (versionState == VersionState::OLDER) {
+        if (justGenerate) {
+            wxLogError("This project file version is outdated, update the file by using the GUI mode first.\n");
+        } else {
+            wxMessageBox(
+                _(
+                    "This project file version is older than this version of wxFormBuilder,\n"
+                    "the file version will get updated during loading.\n\n"
+                    "WARNING: Saving the project file will prevent older versions of wxFormBuilder to open the file!"
+                ),
+                _("Old Project File Version")
+            );
+        }
+
+        if (ConvertProject(doc.get(), file, versionMajor, versionMinor)) {
+            root = doc->FirstChildElement();
+        } else {
+            wxLogError(_("%s: Failed to convert project"), file);
+            return false;
+        }
+    }
+
+    const auto* project = root->FirstChildElement("object");
+    if (!project) {
+        wxLogError(_("%s: Invalid project node"), file);
+        return false;
+    }
+
+    m_objDb->ResetObjectCounters();
+    if (auto projectObject = m_objDb->CreateObject(project); projectObject && projectObject->GetObjectTypeName() == "project") {
+        m_project = projectObject;
+        m_selObj = m_project;
+        m_projectFile = filename.GetFullPath();
+        SetProjectPath(filename.GetPath());
+        // Set the modification to true if the project was older and has been converted
+        m_modFlag = (versionState == VersionState::OLDER);
+        m_cmdProc.Reset();
+        NotifyProjectLoaded();
+        NotifyProjectRefresh();
     }
 
     return true;
