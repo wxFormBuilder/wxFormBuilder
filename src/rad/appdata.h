@@ -26,6 +26,8 @@
 #ifndef RAD_APPDATA_H
 #define RAD_APPDATA_H
 
+#include <unordered_set>
+
 #include "model/database.h"
 #include "rad/cmdproc.h"
 
@@ -36,6 +38,11 @@ class Document;
 class Node;
 class Element;
 }  // namespace ticpp
+namespace tinyxml2
+{
+class XMLDocument;
+class XMLElement;
+}
 
 class Property;
 class wxFBEvent;
@@ -184,6 +191,7 @@ private:
     @param fileMinor The minor revision of the file.
     */
     void ConvertProjectProperties(ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor);
+    void ConvertProjectProperties(tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor);
 
     /**
     Iterates through 'property' element children of @a parent.
@@ -194,6 +202,7 @@ private:
     */
     void GetPropertiesToConvert(
       ticpp::Node* parent, const std::set<std::string>& names, std::set<ticpp::Element*>* properties);
+    std::unordered_set<tinyxml2::XMLElement*> GetProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties);
 
     /**
     Iterates through 'property' element children of @a parent.
@@ -202,6 +211,7 @@ private:
     @param names Set of property names to search for.
     */
     void RemoveProperties(ticpp::Node* parent, const std::set<std::string>& names);
+    void RemoveProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties);
 
     /**
     Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't
@@ -211,6 +221,7 @@ private:
     @param newPropName Name of property to transfer to, will be created if non-existent.
     */
     void TransferOptionList(ticpp::Element* prop, std::set<wxString>* options, const std::string& newPropName);
+    bool MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::unordered_set<wxString>& options, bool deleteEmptySrc = false);
 
     void PropagateExpansion(PObjectBase obj, bool expand, bool up);
 
@@ -274,6 +285,7 @@ public:
     */
 
     bool ConvertProject(ticpp::Document& doc, const wxString& path, int fileMajor, int fileMinor);
+    bool ConvertProject(tinyxml2::XMLDocument* doc, const wxString& path, int versionMajor, int versionMinor);
 
     /**
     Recursive function used to convert the object tree in the project file to the latest version.
@@ -282,6 +294,7 @@ public:
     @param fileMinor The minor revision of the file
     */
     void ConvertObject(ticpp::Element* object, int fileMajor, int fileMinor);
+    void ConvertObject(tinyxml2::XMLElement* object, int versionMajor, int versionMinor);
 
     void ExpandObject(PObjectBase obj, bool expand);
 
