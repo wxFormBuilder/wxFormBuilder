@@ -26,6 +26,7 @@
 #ifndef RAD_APPDATA_H
 #define RAD_APPDATA_H
 
+#include <set>
 #include <unordered_set>
 
 #include "model/database.h"
@@ -202,7 +203,7 @@ private:
     */
     void GetPropertiesToConvert(
       ticpp::Node* parent, const std::set<std::string>& names, std::set<ticpp::Element*>* properties);
-    std::unordered_set<tinyxml2::XMLElement*> GetProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties);
+    std::unordered_set<tinyxml2::XMLElement*> GetProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
 
     /**
     Iterates through 'property' element children of @a parent.
@@ -211,7 +212,7 @@ private:
     @param names Set of property names to search for.
     */
     void RemoveProperties(ticpp::Node* parent, const std::set<std::string>& names);
-    void RemoveProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties);
+    void RemoveProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
 
     /**
     Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't
@@ -221,7 +222,7 @@ private:
     @param newPropName Name of property to transfer to, will be created if non-existent.
     */
     void TransferOptionList(ticpp::Element* prop, std::set<wxString>* options, const std::string& newPropName);
-    bool MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::unordered_set<wxString>& options, bool deleteEmptySrc = false);
+    bool MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc = false);
 
     void PropagateExpansion(PObjectBase obj, bool expand, bool up);
 

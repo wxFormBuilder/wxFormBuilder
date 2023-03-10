@@ -2683,7 +2683,7 @@ void ApplicationData::GetPropertiesToConvert(
     }
 }
 
-std::unordered_set<tinyxml2::XMLElement*> ApplicationData::GetProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties)
+std::unordered_set<tinyxml2::XMLElement*> ApplicationData::GetProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties)
 {
     std::unordered_set<tinyxml2::XMLElement*> result;
     for (auto* property = element->FirstChildElement("property"); property; property = property->NextSiblingElement("property")) {
@@ -2716,7 +2716,7 @@ void ApplicationData::RemoveProperties(ticpp::Node* parent, const std::set<std::
     }
 }
 
-void ApplicationData::RemoveProperties(tinyxml2::XMLElement* element, const std::unordered_set<wxString>& properties)
+void ApplicationData::RemoveProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties)
 {
     for (auto* next = element->FirstChildElement("property"); next; ) {
         auto* current = next;
@@ -2813,7 +2813,7 @@ void ApplicationData::TransferOptionList(
     }
 }
 
-bool ApplicationData::MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::unordered_set<wxString>& options, bool deleteEmptySrc)
+bool ApplicationData::MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc)
 {
     auto currentSrcValue = XMLUtils::GetText(src);
     auto currentDestValue = XMLUtils::GetText(dest);
