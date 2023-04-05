@@ -131,6 +131,7 @@ target_sources(wxFormBuilder_app
     utils/filetocarray.cpp
     utils/filetocarray.h
     utils/m_wxfb.cpp
+    utils/scopeexit.h
     utils/stringutils.cpp
     utils/stringutils.h
     utils/typeconv.cpp
