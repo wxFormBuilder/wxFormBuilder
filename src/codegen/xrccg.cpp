@@ -30,12 +30,14 @@
 #include "codegen/codewriter.h"
 #include "model/objectbase.h"
 #include "utils/typeconv.h"
+#include "utils/xmlutils.h"
 
 
 void XrcCodeGenerator::SetWriter(PCodeWriter cw)
 {
     m_cw = cw;
 }
+
 
 bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 {
@@ -201,4 +203,107 @@ ticpp::Element* XrcCodeGenerator::GetElement(PObjectBase obj, ticpp::Element* pa
     }
 
     return element;
+}
+
+tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2::XMLElement* parent)
+{
+    auto* objectXrc = m_xrc.NewElement("");
+
+    if (auto* objectComponent = object->GetObjectInfo()->GetComponent(); !(objectComponent && objectComponent->ExportToXrc(objectXrc, object.get()))) {
+        // Return a special element for unknown objects
+        if (object->GetObjectTypeName() != "nonvisual") {
+            objectXrc->SetName("object");
+            XMLUtils::SetAttribute(objectXrc, "class", "unknown");
+            XMLUtils::SetAttribute(objectXrc, "name", object->GetPropertyAsString("name"));
+
+            return objectXrc;
+        }
+
+        // Don't return an element for nonvisual objects
+        m_xrc.DeleteNode(objectXrc);
+
+        return nullptr;
+    }
+
+    if (auto xrcClass = XMLUtils::StringAttribute(objectXrc, "class"); xrcClass == "__dummyitem__") {
+        // FIXME: What is this class?
+        m_xrc.DeleteNode(objectXrc);
+        if (object->GetChildCount() > 0) {
+            return GetElement(object->GetChild(0), static_cast<tinyxml2::XMLElement*>(nullptr));
+        }
+
+        return nullptr;
+    } else if (xrcClass == "spacer") {
+        // FIXME: Hack to replace the containing sizeritem with the spacer
+        if (parent) {
+            XMLUtils::SetAttribute(parent, "class", "spacer");
+            for (auto* childXrc = objectXrc->FirstChild(); childXrc; childXrc = childXrc->NextSibling()) {
+                parent->InsertEndChild(childXrc);
+            }
+            m_xrc.DeleteNode(objectXrc);
+
+            return nullptr;
+        }
+    } else if (xrcClass == "wxFrame") {
+        // FIXME: Hack to prevent sizer generation directly under a wxFrame.
+        //        If there is a sizer, the size property of the wxFrame is ignored when loading the xrc file at runtime.
+        // FIXME: Why only wxFrame, doesn't this apply to all top level windows?
+        if (object->GetPropertyAsInteger("xrc_skip_sizer") != 0) {
+            for (std::size_t i = 0; i < object->GetChildCount(); ++i) {
+                tinyxml2::XMLElement* childXrc = nullptr;
+
+                auto childObject = object->GetChild(i);
+                // TODO: Why needs the child count be exactly one? Other parts of the code are not so strict.
+                if (childObject->GetObjectInfo()->IsSubclassOf("sizer") && childObject->GetChildCount() == 1) {
+                    auto sizerItemObject = childObject->GetChild(0);
+                    childXrc = GetElement(sizerItemObject->GetChild(0), objectXrc);
+                }
+                if (!childXrc) {
+                    childXrc = GetElement(childObject, objectXrc);
+                }
+
+                if (childXrc) {
+                    objectXrc->InsertEndChild(childXrc);
+                }
+            }
+
+            return objectXrc;
+        }
+    } else if (xrcClass == "wxMenu") {
+        // Do not generate context menus assigned to forms or widgets
+        if (parent) {
+            auto parentXrcClass = XMLUtils::StringAttribute(parent, "class");
+            if (parentXrcClass != "wxMenuBar" && parentXrcClass != "wxMenu") {
+                // Process the children and record context menu for delayed processing, context menus will be generated as top level menus
+                for (std::size_t i = 0; i < object->GetChildCount(); ++i) {
+                    auto* childXrc = GetElement(object->GetChild(i), objectXrc);
+                    if (childXrc) {
+                        objectXrc->InsertEndChild(childXrc);
+                    }
+                }
+                m_contextMenus2.emplace_back(objectXrc);
+
+                return nullptr;
+            }
+        }
+    } else if (xrcClass == "wxCollapsiblePane") {
+        if (object->GetChildCount() > 0) {
+            auto* paneWindowXrc = objectXrc->InsertNewChildElement("object");
+            XMLUtils::SetAttribute(paneWindowXrc, "class", "panewindow");
+
+            auto* childXrc = GetElement(object->GetChild(0), paneWindowXrc);
+            paneWindowXrc->InsertEndChild(childXrc);
+        }
+
+        return objectXrc;
+    }
+
+    for (std::size_t i = 0; i < object->GetChildCount(); ++i) {
+        auto* childXrc = GetElement(object->GetChild(i), objectXrc);
+        if (childXrc) {
+            objectXrc->InsertEndChild(childXrc);
+        }
+    }
+
+    return objectXrc;
 }
