@@ -166,6 +166,16 @@ void SaveXMLFile(const wxString& path, const tinyxml2::XMLDocument& document, bo
     document.Print(&printer);
 }
 
+wxString SaveXMLString(const tinyxml2::XMLDocument& document, bool compact)
+{
+    assert(!document.ProcessEntities());
+
+    CompactPrinter printer(nullptr, compact);
+    document.Print(&printer);
+
+    return wxString(printer.CStr(), wxConvUTF8);
+}
+
 wxString StringAttribute(const tinyxml2::XMLElement* element, const wxString& name, const wxString& defaultValue)
 {
     const auto* value = element->Attribute(name.utf8_str());
