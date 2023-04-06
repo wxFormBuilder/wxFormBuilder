@@ -41,51 +41,39 @@ void XrcCodeGenerator::SetWriter(PCodeWriter cw)
 
 bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 {
-    m_cw->Clear();
-    m_contextMenus.clear();
+    m_xrc.Clear();
+    auto* prolog = m_xrc.NewDeclaration("xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"");
+    auto* root = m_xrc.NewElement("resource");
+    XMLUtils::SetAttribute(root, "xmlns", "http://www.wxwidgets.org/wxxrc");
+    XMLUtils::SetAttribute(root, "version", "2.5.3.0");
+    m_xrc.InsertEndChild(prolog);
+    m_xrc.InsertEndChild(root);
 
-    ticpp::Document doc;
-    ticpp::Declaration decl("1.0", "UTF-8", "yes");
-    doc.LinkEndChild(&decl);
-
-    ticpp::Element element("resource");
-    element.SetAttribute("xmlns", "http://www.wxwidgets.org/wxxrc");
-    element.SetAttribute("version", "2.5.3.0");
-
-    // If project is not actually a "Project", generate it
-    if (project->GetClassName() == wxT("Project")) {
-        for (unsigned int i = 0; i < project->GetChildCount(); i++) {
-            ticpp::Element* child = GetElement(project->GetChild(i));
-            if (child) {
-                element.LinkEndChild(child);
-                delete child;
+    // If the given argument is a project, generate code for all its children.
+    // Otherwise assume it is an object and generate code only for it.
+    m_contextMenus2.clear();
+    if (project->GetClassName() == "Project") {
+        for (std::size_t i = 0; i < project->GetChildCount(); ++i) {
+            auto* childXrc = GetElement(project->GetChild(i), static_cast<tinyxml2::XMLElement*>(nullptr));
+            if (childXrc) {
+                root->InsertEndChild(childXrc);
             }
         }
     } else {
-        ticpp::Element* child = GetElement(project);
-        if (child) {
-            element.LinkEndChild(child);
-            delete child;
+        auto* objectXrc = GetElement(project, static_cast<tinyxml2::XMLElement*>(nullptr));
+        if (objectXrc) {
+            root->InsertEndChild(objectXrc);
         }
     }
-
-    // generate context menus as top-level menus
-    for (std::vector<ticpp::Element*>::iterator it = m_contextMenus.begin(); it != m_contextMenus.end(); ++it) {
-        element.LinkEndChild(*it);
-        delete *it;
+    // Generate context menus as top level menus
+    for (auto& contextMenu : m_contextMenus2) {
+        root->InsertEndChild(contextMenu);
     }
+    m_contextMenus2.clear();
 
-    doc.LinkEndChild(&element);
-
-    TiXmlPrinter printer;
-    printer.SetIndent("\t");
-
-    printer.SetLineBreak("\n");
-
-    doc.Accept(&printer);
-    const std::string& xrcFile = printer.Str();
-
-    m_cw->Write(_WXSTR(xrcFile));
+    m_cw->Clear();
+    auto code = XMLUtils::SaveXMLString(m_xrc);
+    m_cw->Write(code);
 
     return true;
 }
