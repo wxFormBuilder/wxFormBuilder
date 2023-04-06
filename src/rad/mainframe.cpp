@@ -51,6 +51,7 @@
 #include "rad/xrcpanel/xrcpanel.h"
 #include "utils/stringutils.h"
 #include "utils/wxfbexception.h"
+#include "utils/xmlutils.h"
 
 
 enum {
@@ -594,34 +595,32 @@ void MainFrame::OnOpenRecent(wxCommandEvent& event)
     }
 }
 
-void MainFrame::OnImportXrc(wxCommandEvent&)
+void MainFrame::OnImportXrc([[maybe_unused]] wxCommandEvent& event)
 {
-    wxFileDialog* dialog =
-      new wxFileDialog(this, wxT("Import XRC file"), m_currentDir, wxT("example.xrc"), wxT("*.xrc"), wxFD_OPEN);
-
-    if (dialog->ShowModal() == wxID_OK) {
-        m_currentDir = dialog->GetDirectory();
-
-        try {
-            ticpp::Document doc;
-            XMLUtils::LoadXMLFile(doc, false, dialog->GetPath());
-
-            XrcLoader xrc;
-            xrc.SetObjectDatabase(AppData()->GetObjectDatabase());
-
-            PObjectBase project = xrc.GetProject(&doc);
-
-            if (project) {
-                AppData()->MergeProject(project);
-            } else {
-                wxLogError(wxT("Error while loading XRC"));
-            }
-        } catch (wxFBException& ex) {
-            wxLogError(_("Error Loading XRC: %s"), ex.what());
-        }
+    wxFileDialog dlg(
+        this,
+        _("Import XRC File"),
+        m_currentDir,
+        wxEmptyString,
+        _("XRC files (*.xrc)|*.xrc|All files (*.*)|*.*"),
+        wxFD_OPEN|wxFD_FILE_MUST_EXIST
+    );
+    if (dlg.ShowModal() != wxID_OK) {
+        return;
     }
 
-    dialog->Destroy();
+    wxFileName xrcFile(dlg.GetPath());
+    m_currentDir = xrcFile.GetPath();
+    XrcLoader xrcLoader(AppData()->GetObjectDatabase());
+    try {
+        auto doc = XMLUtils::LoadXMLFile(xrcFile.GetFullPath(), false);
+        auto project = xrcLoader.GetProject(doc.get());
+        if (project) {
+            AppData()->MergeProject(project);
+        }
+    } catch (wxFBException& ex) {
+        wxLogError(ex.what());
+    }
 }
 
 
