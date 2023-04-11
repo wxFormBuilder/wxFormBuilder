@@ -29,8 +29,7 @@
 #include <wx/log.h>
 
 #include <plugin_interface/default.xpm>
-
-#include "utils/xmlutils.h"
+#include <common/xmlutils.h>
 
 
 std::map<wxString, wxBitmap> AppBitmaps::m_bitmaps;

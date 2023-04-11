@@ -37,6 +37,8 @@
 #include <wx/richmsgdlg.h>
 #include <wx/tokenzr.h>
 
+#include <common/xmlutils.h>
+
 #include "codegen/codewriter.h"
 #include "codegen/cppcg.h"
 #include "codegen/luacg.h"
@@ -50,7 +52,6 @@
 #include "rad/xrcpreview/xrcpreview.h"
 #include "utils/stringutils.h"
 #include "utils/typeconv.h"
-#include "utils/xmlutils.h"
 #include "utils/wxfbexception.h"
 #include "utils/wxfbipc.h"
 

@@ -27,12 +27,13 @@
 
 #include <wx/log.h>
 
+#include <common/xmlutils.h>
+
 #include "model/objectbase.h"
 #include "utils/debug.h"
 #include "utils/scopeexit.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
-#include "utils/xmlutils.h"
 
 
 PObjectBase XrcLoader::GetProject(ticpp::Document* xrcDoc)

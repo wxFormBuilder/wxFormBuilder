@@ -141,8 +141,6 @@ target_sources(wxFormBuilder_app
     utils/wxfbipc.cpp
     utils/wxfbipc.h
     utils/wxlogstring.h
-    utils/xmlutils.cpp
-    utils/xmlutils.h
 )
 set(commonDefinitions
   default
@@ -219,6 +217,7 @@ target_include_directories(wxFormBuilder_app
 target_link_libraries(wxFormBuilder_app
   PRIVATE
     wxFormBuilder::sdk_plugin-interface
+    wxFormBuilder::sdk_common
     wxWidgets::wxWidgets
     Boost::headers
     ticpp::ticpp

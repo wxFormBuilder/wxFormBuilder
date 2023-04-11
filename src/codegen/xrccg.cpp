@@ -27,10 +27,11 @@
 
 #include <ticpp.h>
 
+#include <common/xmlutils.h>
+
 #include "codegen/codewriter.h"
 #include "model/objectbase.h"
 #include "utils/typeconv.h"
-#include "utils/xmlutils.h"
 
 
 void XrcCodeGenerator::SetWriter(PCodeWriter cw)

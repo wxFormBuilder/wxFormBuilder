@@ -29,6 +29,8 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 
+#include <common/xmlutils.h>
+
 #include "model/objectbase.h"
 #include "rad/bitmaps.h"
 #include "rad/wxfbmanager.h"
@@ -36,7 +38,6 @@
 #include "utils/stringutils.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
-#include "utils/xmlutils.h"
 
 //#define DEBUG_PRINT(x) cout << x
 

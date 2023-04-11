@@ -1,5 +1,5 @@
-#ifndef UTILS_XMLUTILS_H
-#define UTILS_XMLUTILS_H
+#ifndef SDK_COMMON_XMLUTILS_H
+#define SDK_COMMON_XMLUTILS_H
 
 #include <memory>
 
@@ -93,4 +93,4 @@ void SetText(tinyxml2::XMLElement* element, const wxString& value, bool insertEl
 
 }  // namespace XMLUtils
 
-#endif  // UTILS_XMLUTILS_H
+#endif  // SDK_COMMON_XMLUTILS_H

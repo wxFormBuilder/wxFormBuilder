@@ -28,6 +28,8 @@
 
 #include <wx/config.h>
 
+#include <common/xmlutils.h>
+
 #include "model/xrcfilter.h"
 #include "rad/about.h"
 #include "rad/appdata.h"
@@ -51,7 +53,6 @@
 #include "rad/xrcpanel/xrcpanel.h"
 #include "utils/stringutils.h"
 #include "utils/wxfbexception.h"
-#include "utils/xmlutils.h"
 
 
 enum {
