@@ -17,7 +17,7 @@ DerivePointerAlignment: false
 IncludeBlocks: Regroup
 IncludeCategories:
   # wxFormBuilder SDK
-  - Regex:           '^<(component\.h|fontcontainer\.h|plugin\.h|xrcconv\.h|forms/wizard\.h|default\.xpm)>'
+  - Regex:           '^<(common|plugin_interface)/'
     Priority:        5
   # Libraries
   - Regex:           '^<wx/wx.h>'
