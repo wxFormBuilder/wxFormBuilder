@@ -6,7 +6,7 @@ for building and should be added as a git submodule.
 ]]
 cmake_minimum_required(VERSION 3.21)
 
-project(wxFormBuilderSDK VERSION 1.0.0 LANGUAGES CXX)
+project(wxFormBuilderExamplePlugin VERSION 1.0.0 LANGUAGES CXX)
 
 # The wxFormBuilder project must be processed first.
 # This loads necessary CMake scripts and initializes internal variables.

@@ -5,5 +5,5 @@ Since wxFormBuilder and plugins use C++, it is important that both are build usi
 
 For easier development of plugins, the SDK uses wxFormBuilder as subproject to be able to execute the plugin directly
 from the plugin project. The recommended setup is to integrate the wxFormBuilder project as git submodule of the
-plugin repository. This directory contains an example `CMakeLists.txt` file that can be used as top level CMake file
+plugin repository. This directory contains an example `CMakeLists.txt.example` file that can be used as top level CMake file
 of a plugin project.
