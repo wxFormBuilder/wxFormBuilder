@@ -38,10 +38,9 @@ std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool co
  * @param path Destination Path
  * @param document XML document
  * @param compact If true, a compact representation is written, omitting all optional whitespace
- *
- * @throw wxFBException Failed to write the file
+ * @return True if successful, false if writing to file failed
  */
-void SaveXMLFile(const wxString& path, const tinyxml2::XMLDocument& document, bool compact = false);
+bool SaveXMLFile(const wxString& path, const tinyxml2::XMLDocument& document, bool compact = false);
 
 /**
  * @brief Save the given XML document to a wxString

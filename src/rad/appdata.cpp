@@ -1160,7 +1160,9 @@ void ApplicationData::SaveProject(const wxString& filename)
     root->InsertEndChild(project);
 
     wxFileName name(filename);
-    XMLUtils::SaveXMLFile(name.GetFullPath(), doc);
+    if (!XMLUtils::SaveXMLFile(name.GetFullPath(), doc)) {
+        THROW_WXFBEX(_("Failed to write to file: ") << name.GetFullPath())
+    }
 
     m_projectFile = name.GetFullPath();
     SetProjectPath(name.GetPath());
