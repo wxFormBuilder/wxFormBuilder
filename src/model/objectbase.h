@@ -35,7 +35,7 @@
 
 #include <list>
 
-#include <component.h>
+#include <plugin_interface/component.h>
 
 #include "model/types.h"
 #include "utils/wxfbdefs.h"

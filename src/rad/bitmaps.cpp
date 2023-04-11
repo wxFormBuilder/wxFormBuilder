@@ -28,7 +28,7 @@
 #include <wx/intl.h>
 #include <wx/log.h>
 
-#include <default.xpm>
+#include <plugin_interface/default.xpm>
 
 #include "utils/xmlutils.h"
 

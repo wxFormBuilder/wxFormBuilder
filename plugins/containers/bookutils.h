@@ -32,8 +32,8 @@
 #include <wx/listbook.h>
 #include <wx/simplebook.h>
 
-#include <component.h>
-#include <default.xpm>
+#include <plugin_interface/component.h>
+#include <plugin_interface/default.xpm>
 
 #ifdef wxUSE_COLLPANE
     #include <wx/collpane.h>

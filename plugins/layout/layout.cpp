@@ -27,8 +27,8 @@
 #include <wx/gbsizer.h>
 #include <wx/wrapsizer.h>
 
-#include <plugin.h>
-#include <xrcconv.h>
+#include <plugin_interface/plugin.h>
+#include <plugin_interface/xrcconv.h>
 
 
 class SpacerComponent : public ComponentBase

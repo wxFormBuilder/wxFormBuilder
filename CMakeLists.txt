@@ -101,7 +101,7 @@ wxfb_configure_prebuild()
 
 add_subdirectory(src)
 add_subdirectory(plugins)
-add_subdirectory(sdk/plugin_interface)
+add_subdirectory(sdk)
 add_subdirectory(third_party/md5)
 add_subdirectory(third_party/stack_trace)
 stash_variable(BUILD_SHARED_LIBS VALUE ${WXFB_TICPP_SHARED})

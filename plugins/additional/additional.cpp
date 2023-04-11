@@ -46,8 +46,8 @@
 #include <wx/timectrl.h>
 #include <wx/treelist.h>
 
-#include <plugin.h>
-#include <xrcconv.h>
+#include <plugin_interface/plugin.h>
+#include <plugin_interface/xrcconv.h>
 
 #include "logo.xpm"
 #include "smiley.xpm"

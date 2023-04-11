@@ -36,7 +36,7 @@
 #include <wx/propgrid/advprops.h>
 // clang-format on
 
-#include <fontcontainer.h>
+#include <plugin_interface/fontcontainer.h>
 
 
 // -----------------------------------------------------------------------

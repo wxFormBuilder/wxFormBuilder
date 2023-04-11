@@ -26,7 +26,7 @@
 #ifndef UTILS_TYPECONV_H
 #define UTILS_TYPECONV_H
 
-#include <fontcontainer.h>
+#include <plugin_interface/fontcontainer.h>
 
 #include "model/types.h"
 

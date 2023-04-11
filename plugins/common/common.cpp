@@ -33,8 +33,8 @@
 #include <wx/listctrl.h>
 #include <wx/statline.h>
 
-#include <plugin.h>
-#include <xrcconv.h>
+#include <plugin_interface/plugin.h>
+#include <plugin_interface/xrcconv.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Custom status bar class for windows to prevent the status bar gripper from

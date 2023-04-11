@@ -25,7 +25,7 @@
 #ifndef RAD_WXFBMANAGER_H
 #define RAD_WXFBMANAGER_H
 
-#include <component.h>
+#include <plugin_interface/component.h>
 
 #include "utils/wxfbdefs.h"
 

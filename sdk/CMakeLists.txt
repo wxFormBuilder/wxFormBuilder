@@ -6,16 +6,16 @@ set_target_properties(wxFormBuilder_plugin-interface PROPERTIES
 
 target_sources(wxFormBuilder_plugin-interface
   PRIVATE
-    component.h
-    fontcontainer.h
-    plugin.cpp
-    plugin.h
-    xrcconv.cpp
-    xrcconv.h
-    forms/wizard.cpp
-    forms/wizard.h
-    forms/wizardbase.cpp
-    forms/wizardbase.h
+    plugin_interface/component.h
+    plugin_interface/fontcontainer.h
+    plugin_interface/plugin.cpp
+    plugin_interface/plugin.h
+    plugin_interface/xrcconv.cpp
+    plugin_interface/xrcconv.h
+    plugin_interface/forms/wizard.cpp
+    plugin_interface/forms/wizard.h
+    plugin_interface/forms/wizardbase.cpp
+    plugin_interface/forms/wizardbase.h
 )
 
 target_compile_definitions(wxFormBuilder_plugin-interface
