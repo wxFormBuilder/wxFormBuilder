@@ -612,8 +612,16 @@ void MainFrame::OnImportXrc([[maybe_unused]] wxCommandEvent& event)
     wxFileName xrcFile(dlg.GetPath());
     m_currentDir = xrcFile.GetPath();
     XrcLoader xrcLoader(AppData()->GetObjectDatabase());
+    auto doc = XMLUtils::LoadXMLFile(xrcFile.GetFullPath(), false);
+    if (!doc) {
+        wxLogError(_("%s: Failed to open file"), xrcFile.GetFullPath());
+        return;
+    }
+    if (doc->Error()) {
+        wxLogError(doc->ErrorStr());
+        return;
+    }
     try {
-        auto doc = XMLUtils::LoadXMLFile(xrcFile.GetFullPath(), false);
         auto project = xrcLoader.GetProject(doc.get());
         if (project) {
             AppData()->MergeProject(project);

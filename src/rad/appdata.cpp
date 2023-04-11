@@ -1183,11 +1183,13 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
         return false;
     }
 
-    std::unique_ptr<tinyxml2::XMLDocument> doc;
-    try {
-        doc = XMLUtils::LoadXMLFile(filename.GetFullPath(), false);
-    } catch (wxFBException& ex) {
-        wxLogError(ex.what());
+    auto doc = XMLUtils::LoadXMLFile(filename.GetFullPath(), false);
+    if (!doc) {
+        wxLogError(_("%s: Failed to open file"), filename.GetFullPath());
+        return false;
+    }
+    if (doc->Error()) {
+        wxLogError(doc->ErrorStr());
         return false;
     }
     const auto* root = doc->FirstChildElement();

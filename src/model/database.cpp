@@ -709,6 +709,12 @@ void ObjectDatabase::LoadPlugins(PwxFBManager manager)
 void ObjectDatabase::SetupPackage(const wxString& file, [[maybe_unused]] const wxString& path, PwxFBManager manager)
 {
     auto doc = XMLUtils::LoadXMLFile(file, true);
+    if (!doc) {
+        THROW_WXFBEX(wxString::Format(_("%s: Failed to open file"), file))
+    }
+    if (doc->Error()) {
+        THROW_WXFBEX(doc->ErrorStr())
+    }
     const auto* root = doc->FirstChildElement(PACKAGE_TAG);
     if (!root) {
         THROW_WXFBEX(wxString::Format(_("%s: Invalid root node"), file))
@@ -798,11 +804,14 @@ bool ObjectDatabase::HasCppProperties(wxString type)
 
 void ObjectDatabase::LoadCodeGen(const wxString& file)
 {
-    std::unique_ptr<tinyxml2::XMLDocument> doc;
-    try {
-        doc = XMLUtils::LoadXMLFile(file, true);
-    } catch (wxFBException& ex) {
-        wxLogError(ex.what());
+    auto doc = XMLUtils::LoadXMLFile(file, true);
+    if (!doc) {
+        wxLogError(_("%s: Failed to open file"), file);
+
+        return;
+    }
+    if (doc->Error()) {
+        wxLogError(doc->ErrorStr());
 
         return;
     }
@@ -868,6 +877,12 @@ void ObjectDatabase::LoadCodeGen(const wxString& file)
 PObjectPackage ObjectDatabase::LoadPackage(const wxString& file, const wxString& iconPath)
 {
     auto doc = XMLUtils::LoadXMLFile(file, true);
+    if (!doc) {
+        THROW_WXFBEX(wxString::Format(_("%s: Failed to open file"), file))
+    }
+    if (doc->Error()) {
+        THROW_WXFBEX(doc->ErrorStr())
+    }
     const auto* root = doc->FirstChildElement(PACKAGE_TAG);
     if (!root) {
         THROW_WXFBEX(wxString::Format(_("%s: Invalid root node"), file))
@@ -1223,11 +1238,14 @@ void ObjectDatabase::InitPropertyTypes()
 bool ObjectDatabase::LoadObjectTypes()
 {
     const auto filepath = m_xmlPath + "objtypes.xml";
-    std::unique_ptr<tinyxml2::XMLDocument> doc;
-    try {
-        doc = XMLUtils::LoadXMLFile(filepath, true);
-    } catch (wxFBException& ex) {
-        wxLogError(ex.what());
+    auto doc = XMLUtils::LoadXMLFile(filepath, true);
+    if (!doc) {
+        wxLogError(_("%s: Failed to open file"), filepath);
+
+        return false;
+    }
+    if (doc->Error()) {
+        wxLogError(doc->ErrorStr());
 
         return false;
     }

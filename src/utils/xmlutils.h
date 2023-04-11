@@ -24,9 +24,8 @@ namespace XMLUtils
  *
  * @param path Path to XML file
  * @param collapseWhitespace If true, collapse whitespace, otherwise preserve it
- * @return The loaded XML file
- *
- * @throw wxFBException Failed to open or parse the file
+ * @return The loaded XML file, nullptr if the file could not be opened.
+ *         NOTE: The error code of the returned XMLDocument must be checked as well.
  */
 std::unique_ptr<tinyxml2::XMLDocument> LoadXMLFile(const wxString& path, bool collapseWhitespace = false);
 
