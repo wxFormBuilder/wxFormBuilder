@@ -56,8 +56,10 @@ target_include_directories(wxFormBuilder_sdk_plugin-interface
 
 target_link_libraries(wxFormBuilder_sdk_plugin-interface
   PUBLIC
+    wxFormBuilder::sdk_common
     wxWidgets::wxWidgets
     ticpp::ticpp
+    tinyxml2::tinyxml2
 )
 
 set_target_properties(wxFormBuilder_sdk_plugin-interface PROPERTIES FOLDER "Sdk")
