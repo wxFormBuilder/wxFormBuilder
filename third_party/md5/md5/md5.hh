@@ -41,6 +41,7 @@ documentation and/or software.
 #ifndef MD5_MD5_H
 #define MD5_MD5_H
 
+#include <cstdint>
 #include <cstdio>
 #include <istream>
 
