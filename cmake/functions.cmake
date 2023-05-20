@@ -435,28 +435,28 @@ function(wxfb_target_source_groups arg_TARGET)
   endforeach()
 
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?$")
+  list(FILTER filterSources INCLUDE REGEX "/.+\\.h(h|pp)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Header Files"
     FILES ${filterSources}
   )
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.h(h|pp)?\\.in$")
+  list(FILTER filterSources INCLUDE REGEX "/.+\\.h(h|pp)?\\.in$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Header Templates"
     FILES ${filterSources}
   )
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?$")
+  list(FILTER filterSources INCLUDE REGEX "/.+\\.c(c|xx|pp)?$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Source Files"
     FILES ${filterSources}
   )
   set(filterSources ${sourceFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${sourceDir}/.+\\.c(c|xx|pp)?\\.in$")
+  list(FILTER filterSources INCLUDE REGEX "/.+\\.c(c|xx|pp)?\\.in$")
   source_group(
     TREE "${sourceTreeDir}"
     PREFIX "Source Templates"
@@ -464,7 +464,6 @@ function(wxfb_target_source_groups arg_TARGET)
   )
 
   set(filterSources ${binaryFiles})
-  list(FILTER filterSources INCLUDE REGEX "^${binaryDir}/")
   source_group(
     TREE "${binaryTreeDir}"
     PREFIX "Generated Files"
