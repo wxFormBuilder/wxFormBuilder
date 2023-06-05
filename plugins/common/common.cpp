@@ -235,7 +235,7 @@ public:
             xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+            xrc.AddProperty(_("position"), _("bitmapposition"), XrcFilter::Type::Text);
         }
         if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
