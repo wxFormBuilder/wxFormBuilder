@@ -256,7 +256,7 @@ public:
         filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+        filter.AddProperty(_("bitmapposition"), _("position"), XrcFilter::Type::Text);
         filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         return filter.GetXfbObject();
     }
