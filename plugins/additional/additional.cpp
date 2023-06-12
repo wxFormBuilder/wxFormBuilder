@@ -490,7 +490,7 @@ public:
             xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+            xrc.AddProperty(_("position"), _("bitmapposition"), XrcFilter::Type::Text);
         }
         if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
@@ -510,7 +510,7 @@ public:
         filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+        filter.AddProperty(_("bitmapposition"), _("position"), XrcFilter::Type::Text);
         filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         filter.AddProperty(_("checked"), _("value"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
@@ -592,7 +592,7 @@ public:
             xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
         }
         if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+            xrc.AddProperty(_("position"), _("bitmapposition"), XrcFilter::Type::Text);
         }
         if (!obj->IsPropertyNull(_("margins"))) {
             xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
@@ -610,7 +610,7 @@ public:
         filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
         filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("position"), _("position"), XrcFilter::Type::Text);
+        filter.AddProperty(_("bitmapposition"), _("position"), XrcFilter::Type::Text);
         filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
         filter.AddProperty(_("checked"), _("value"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
