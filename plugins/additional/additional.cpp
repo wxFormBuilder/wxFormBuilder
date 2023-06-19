@@ -801,8 +801,8 @@ public:
         ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSpinCtrlDouble"), obj->GetPropertyAsString(_("name")));
         xrc.AddWindowProperties();
         xrc.AddProperty(_("initial"), _("value"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("min"), _("min"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("max"), _("max"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("min"), _("min"), XrcFilter::Type::Float);
+        xrc.AddProperty(_("max"), _("max"), XrcFilter::Type::Float);
         xrc.AddProperty(_("inc"), _("inc"), XrcFilter::Type::Float);
         xrc.AddProperty(_("digits"), _("digits"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
