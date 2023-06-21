@@ -814,8 +814,8 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
         filter.AddProperty(_("value"), _("initial"), XrcFilter::Type::Text);
-        filter.AddProperty(_("min"), _("min"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("max"), _("max"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("min"), _("min"), XrcFilter::Type::Float);
+        filter.AddProperty(_("max"), _("max"), XrcFilter::Type::Float);
         filter.AddProperty(_("inc"), _("inc"), XrcFilter::Type::Float);
         filter.AddProperty(_("digits"), _("digits"), XrcFilter::Type::Integer);
 
