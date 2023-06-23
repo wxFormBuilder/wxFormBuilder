@@ -155,7 +155,7 @@ bool SaveXMLFile(const wxString& path, const tinyxml2::XMLDocument& document, bo
 
     // Use wxFFile to get full unicode support for path on Windows
     wxFFile file;
-    if (wxLogNull noLog; !file.Open(path, "wb")) {
+    if (wxLogNull noLog; !file.Open(path, "w")) {
         return false;
     }
     CompactPrinter printer(file.fp(), compact);

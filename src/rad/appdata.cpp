@@ -1585,7 +1585,7 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
                     if (dlg.ShowModal() == wxID_OK) {
                         wxLogNull noLog;
                         auto outputPath = dlg.GetPath();
-                        if (wxFFile outputFile(outputPath, "wb"); outputFile.IsOpened()) {
+                        if (wxFFile outputFile(outputPath, "w"); outputFile.IsOpened()) {
                             outputFile.Write(userHeadersValue);
                         } else {
                             wxLogError(_("Failed to open %s for writing \"user_headers\":\n%s"), outputPath, userHeadersValue);
