@@ -102,6 +102,7 @@ public:
     ~ObjectToXrcFilter();
 
     void AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType);
+    void AddProperty(Type propType, const wxString& objPropName, const wxString& xrcPropName = wxEmptyString);
     void AddPropertyValue(const wxString& xrcPropName, const wxString& xrcPropValue, bool xrcFormat = false);
     void AddPropertyPair(const wxString& objPropName1, const wxString& objPropName2, const wxString& xrcPropName);
 
@@ -152,6 +153,7 @@ public:
     ~XrcToXfbFilter();
 
     void AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType);
+    void AddProperty(Type propType, const wxString& xrcPropName, const wxString& xfbPropName = wxEmptyString);
     void AddPropertyValue(const wxString& xfbPropName, const wxString& xfbPropValue, bool parseXrcText = false);
     void AddPropertyPair(const wxString& xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2);
 
