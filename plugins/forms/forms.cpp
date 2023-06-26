@@ -75,6 +75,18 @@ public:
         xrc.AddProperty(wxT("aui_managed"), wxT("aui_managed"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxFrame");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        if (!obj->IsPropertyNull("center")) {
+            filter.AddPropertyValue("centered", "1");
+        }
+        // FIXME: This property doesn't exist in XRC
+        filter.AddProperty(XrcFilter::Type::Bool, "aui_managed");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -84,6 +96,17 @@ public:
         filter.AddProperty(wxT("centered"), wxT("center"), XrcFilter::Type::BitList);
         filter.AddProperty(wxT("aui_managed"), wxT("aui_managed"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "Frame");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        // FIXME: This is wrong, while XFB does in fact use a bitlist, XRC contains a bool only
+        filter.AddProperty(XrcFilter::Type::BitList, "centered", "center");
+        // FIXME: This property doesn't exist in XRC
+        filter.AddProperty(XrcFilter::Type::Bool, "aui_managed");
+        return xfb;
     }
 };
 
@@ -102,12 +125,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxPanel");
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, wxT("Panel"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "Panel");
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -130,6 +165,17 @@ public:
         }
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxDialog");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        // FIXME: XFB uses a bitlist and allows to center both directions independent, XRC offers only a bool
+        if (!obj->IsPropertyNull("center")) {
+            filter.AddPropertyValue("centered", "1");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -138,6 +184,15 @@ public:
         filter.AddProperty(wxT("title"), wxT("title"), XrcFilter::Type::Text);
         filter.AddProperty(wxT("centered"), wxT("center"), XrcFilter::Type::BitList);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "Dialog");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        // FIXME: This is wrong, while XFB does in fact use a bitlist, XRC contains a bool only
+        filter.AddProperty(XrcFilter::Type::BitList, "centered", "center");
+        return xfb;
     }
 };
 
@@ -156,11 +211,21 @@ public:
         ObjectToXrcFilter xrc(GetLibrary(), obj, wxT("wxMenuBar"), obj->GetPropertyAsString(wxT("name")));
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxMenuBar");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, wxT("MenuBar"));
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "MenuBar");
+        return xfb;
     }
 };
 
@@ -237,6 +302,16 @@ public:
         xrc.AddProperty(wxT("separation"), wxT("separation"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxToolBar");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Size, "bitmapsize");
+        filter.AddProperty(XrcFilter::Type::Size, "margins");
+        filter.AddProperty(XrcFilter::Type::Integer, "packing");
+        filter.AddProperty(XrcFilter::Type::Integer, "separation");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -247,6 +322,16 @@ public:
         filter.AddProperty(wxT("packing"), wxT("packing"), XrcFilter::Type::Integer);
         filter.AddProperty(wxT("separation"), wxT("separation"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "ToolBar");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Size, "bitmapsize");
+        filter.AddProperty(XrcFilter::Type::Size, "margins");
+        filter.AddProperty(XrcFilter::Type::Integer, "packing");
+        filter.AddProperty(XrcFilter::Type::Integer, "separation");
+        return xfb;
     }
 };
 
@@ -290,6 +375,21 @@ public:
 
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxWizard");
+        filter.AddWindowProperties();
+        // FIXME: This property does not exist in XRC?
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        // FIXME: This property does not exist in XRC?
+        if (!obj->IsPropertyNull("center")) {
+            filter.AddPropertyValue("centered", "1");
+        }
+        if (!obj->IsPropertyNull("bitmap")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -299,6 +399,17 @@ public:
         filter.AddProperty(wxT("centered"), wxT("center"), XrcFilter::Type::BitList);
         filter.AddProperty(wxT("bitmap"), wxT("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "Wizard");
+        filter.AddWindowProperties();
+        // FIXME: This property does not exist in XRC?
+        filter.AddProperty(XrcFilter::Type::Text, "title");
+        // FIXME: This property does not exist in XRC?
+        filter.AddProperty(XrcFilter::Type::BitList, "centered", "center");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        return xfb;
     }
 };
 
@@ -351,6 +462,15 @@ public:
             xrc.AddProperty(wxT("bitmap"), wxT("bitmap"), XrcFilter::Type::Bitmap);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "wxWizardPageSimple");
+        filter.AddWindowProperties();
+        if (!obj->IsPropertyNull("bitmap")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -358,6 +478,13 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(wxT("bitmap"), wxT("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "WizardPageSimple");
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        return xfb;
     }
 };
 
