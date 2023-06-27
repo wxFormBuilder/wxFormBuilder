@@ -216,16 +216,12 @@ target_include_directories(wxFormBuilder_app
 target_link_libraries(wxFormBuilder_app
   PRIVATE
     wxFormBuilder::plugin-interface
-    ticpp::ticpp
+    wxWidgets::wxWidgets
     Boost::headers
+    ticpp::ticpp
     md5::md5
     stack_trace::stack
 )
-if(TARGET wxWidgets::wxWidgets)
-  target_link_libraries(wxFormBuilder_app PUBLIC wxWidgets::wxWidgets)
-else()
-  target_link_libraries(wxFormBuilder_app PUBLIC ${wxWidgets_LIBRARIES})
-endif()
 
 set_target_properties(wxFormBuilder_app PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "${PROJECT_NAME}"
