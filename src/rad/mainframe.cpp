@@ -931,8 +931,8 @@ void MainFrame::UpdateFrame()
     }
 
     SetTitle(wxString::Format(
-      wxT("%s%s - wxFormBuilder %s%s"), AppData()->IsModified() ? wxT("*") : wxT(""), file, getVersion(),
-      getReleaseRevision(getVersion()).c_str()));
+      wxT("%s%s - wxFormBuilder %s%s%s"), AppData()->IsModified() ? wxT("*") : wxT(""), file, getVersion(),
+      getReleaseRevision(getVersion()).c_str(), getReleaseBranch(getBranch()).c_str()));
     GetStatusBar()->SetStatusText(filename, STATUS_FIELD_PATH);
 
     // Enable/Disable toolbar and menu entries

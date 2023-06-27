@@ -27,13 +27,9 @@ target_include_directories(wxFormBuilder_plugin-interface
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
 )
 
-if(TARGET wxWidgets::wxWidgets)
-  target_link_libraries(wxFormBuilder_plugin-interface PUBLIC wxWidgets::wxWidgets)
-else()
-  target_link_libraries(wxFormBuilder_plugin-interface PUBLIC ${wxWidgets_LIBRARIES})
-endif()
 target_link_libraries(wxFormBuilder_plugin-interface
   PUBLIC
+    wxWidgets::wxWidgets
     ticpp::ticpp
 )
 

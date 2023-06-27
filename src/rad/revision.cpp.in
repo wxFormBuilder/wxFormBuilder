@@ -3,6 +3,7 @@
 #include <cstring>
 
 static constexpr const char* REVISION = "@SCM_REVISION@";
+static constexpr const char* BRANCH = "@SCM_BRANCH@";
 static constexpr const char* DESCRIBE = "@SCM_DESCRIBE@";
 static constexpr const char* TAG_NAME = "@SCM_TAG_NAME@";
 static constexpr unsigned int TAG_DISTANCE = @SCM_TAG_DISTANCE@;
@@ -16,6 +17,10 @@ static constexpr int length(const char* str) {
 
 const char* getRevision() {
     return REVISION;
+}
+
+const char* getBranch() {
+    return BRANCH;
 }
 
 const char* getDescribe() {
@@ -71,4 +76,16 @@ std::string getReleaseRevision(const char* version) {
     }
 
     return std::string("-").append(DESCRIBE);
+}
+
+std::string getReleaseBranch(const char* branch) {
+    if constexpr (length(BRANCH) == 0) {
+        return "";
+    }
+
+    if (std::strcmp(branch, "master") == 0 || std::strcmp(branch, "main") == 0) {
+        return "";
+    }
+
+    return std::string(" [").append(BRANCH).append("]");
 }
