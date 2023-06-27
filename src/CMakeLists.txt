@@ -292,13 +292,54 @@ if(WIN32)
   # The installation of runtime dependencies does not take the set paths into account and
   # only searches in system default paths. Therefor paths of libraries not in such locations
   # need to be specified manually. Depending on the used compiler these are different.
+  # TODO: Should both variables be used? What do the find_* commands do?
   set(extraDirectories "")
+  set(prefixPaths "")
+  if(DEFINED ENV{CMAKE_PREFIX_PATH})
+    cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST pathList NORMALIZE)
+    list(APPEND prefixPaths ${pathList})
+    unset(pathList)
+  endif()
+  if(DEFINED CMAKE_PREFIX_PATH)
+    cmake_path(CONVERT "${CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST pathList NORMALIZE)
+    list(APPEND prefixPaths ${pathList})
+    unset(pathList)
+  endif()
+  # TODO: To find the external libraries, the search path must be augmented for certain libraries
+  #       which don't use a standard prefix layout, a certain naming of their directories is assumed.
+  #       An alternative would be to install the IMPORTED_RUNTIME_ARTIFACTS of the libraries themself,
+  #       but this does not work easily currently because of its limitations
+  #       (does not work with UNKNOWN IMPORTED or ALIAS libraries).
+  foreach(entry IN LISTS prefixPaths)
+    cmake_path(GET entry PARENT_PATH libraryPath)
+    cmake_path(GET libraryPath FILENAME libraryName)
+    if(libraryName STREQUAL "boost")
+      list(APPEND extraDirectories "${entry}/lib")
+    elseif(libraryName STREQUAL "wxWidgets")
+      if(MSVC)
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+          list(APPEND extraDirectories "${entry}/lib/vc_x64_dll")
+        else()
+          list(APPEND extraDirectories "${entry}/lib/vc_dll")
+        endif()
+      else()
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+          list(APPEND extraDirectories "${entry}/lib/gcc_dll_x64")
+        else()
+          list(APPEND extraDirectories "${entry}/lib/gcc_dll")
+        endif()
+      endif()
+    else()
+      list(APPEND extraDirectories "${entry}/bin")
+    endif()
+  endforeach()
+  unset(prefixPaths)
+  unset(libraryPath)
+  unset(libraryName)
   if(MSVC)
     # The compiler runtime libraries are installed in system default paths, because it is expected
     # that the runtime distributables are getting installed along the application, these need to get
-    # filtered. The wxWidgets library uses the win32 search style and therefor the library path is defined
-    # (TODO: Unless the CMake build gets imported, what to do then?)
-    list(APPEND extraDirectories "${wxWidgets_LIB_DIR}")
+    # filtered.
     install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
         ${extraDirectories}
@@ -329,8 +370,6 @@ if(WIN32)
       find_path(compilerSystemDir NAMES gcc.exe REQUIRED)
       mark_as_advanced(compilerSystemDir)
       list(APPEND extraDirectories "${compilerSystemDir}")
-      # Directories of additional libraries need to be added as well
-      list(APPEND extraDirectories "${wxWidgets_LIB_DIR}")
     endif()
     install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
