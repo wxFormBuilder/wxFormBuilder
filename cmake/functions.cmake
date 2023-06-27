@@ -162,6 +162,115 @@ endfunction()
 
 
 #[[
+Create a target for the wxWidgets library.
+
+wxfb_create_target_wxwidgets([COMPONENTS <component>...]
+                             [DISABLE_GUI])
+
+This function must be called after the find_package() call of the wxWidgets library,
+do not use the include(${wxWidgets_USE_FILE}) command when using this function.
+
+The wxWidgets Find Module does not create a target yet but relies on variables,
+this helper function does create a target from the search results of the Find Module.
+Due to the nature of the search results, instead of an imported target, an interface target
+gets created. This has the drawback that this target will be always in global scope,
+so there can be only one library configuration present in a project.
+
+In case wxWidgets was found by using config mode, the created targets are used instead. To prevent
+the usage of every present target, especially unused targets that require external libraries,
+the required components can be specified by <component>. The given components should be identical
+to the components given to the find_package() call.
+
+If DISABLE_GUI is specified, defines that disable GUI components get set. This allows to use the monolithic
+variant of wxWidgets in Console Mode.
+]]
+function(wxfb_create_target_wxwidgets)
+  set(options DISABLE_GUI)
+  set(singleValues "")
+  set(multiValues COMPONENTS)
+  cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  if(NOT arg_COMPONENTS)
+    # If no components are specified, try to use all present ones
+    set(arg_COMPONENTS base net core adv aui html propgrid ribbon richtext webview stc xrc media gl qa xml mono)
+  endif()
+
+  if(NOT wxWidgets_FOUND)
+    message(FATAL_ERROR "wxWidgets NOT FOUND")
+  endif()
+  if(NOT wxWidgets_wxrc_EXECUTABLE)
+    # Config-Mode does not search for wxrc, assume the environment is properly setup and search for it ourself
+    find_program(wxWidgets_wxrc_EXECUTABLE NAMES wxrc REQUIRED)
+    mark_as_advanced(wxWidgets_wxrc_EXECUTABLE)
+  endif()
+
+  if(NOT TARGET wxWidgets::wxWidgets)
+    message(DEBUG "Creating target wxWidgets::wxWidgets")
+    add_library(wxWidgets_wxWidgets INTERFACE)
+    add_library(wxWidgets::wxWidgets ALIAS wxWidgets_wxWidgets)
+
+    # To detect if CONFIG mode or MODULE mode was used, test for the presence of all required components
+    set(targets "")
+    foreach(component IN LISTS arg_COMPONENTS)
+      message(DEBUG "Checking component: ${component}")
+      if(TARGET wx::${component})
+        message(DEBUG "Found target: wx::${component}")
+        list(APPEND targets wx::${component})
+      endif()
+    endforeach()
+
+    list(LENGTH targets targetCount)
+    if(targetCount GREATER 0)
+      message(DEBUG "wxWidgets targets: ${targets}")
+      target_link_libraries(wxWidgets_wxWidgets INTERFACE ${targets})
+    else()
+      message(DEBUG "wxWidgets_INCLUDE_DIRS: ${wxWidgets_INCLUDE_DIRS}")
+      if(wxWidgets_INCLUDE_DIRS)
+        if(wxWidgets_INCLUDE_DIRS_NO_SYSTEM)
+          target_include_directories(wxWidgets_wxWidgets INTERFACE ${wxWidgets_INCLUDE_DIRS})
+        else()
+          target_include_directories(wxWidgets_wxWidgets SYSTEM INTERFACE ${wxWidgets_INCLUDE_DIRS})
+        endif()
+      endif()
+      message(DEBUG "wxWidgets_LIBRARY_DIRS: ${wxWidgets_LIBRARY_DIRS}")
+      if(wxWidgets_LIBRARY_DIRS)
+        target_link_directories(wxWidgets_wxWidgets INTERFACE ${wxWidgets_LIBRARY_DIRS})
+      endif()
+      message(DEBUG "wxWidgets_DEFINITIONS: ${wxWidgets_DEFINITIONS}")
+      if(wxWidgets_DEFINITIONS)
+        target_compile_definitions(wxWidgets_wxWidgets INTERFACE ${wxWidgets_DEFINITIONS})
+      endif()
+      message(DEBUG "wxWidgets_DEFINITIONS_DEBUG: ${wxWidgets_DEFINITIONS_DEBUG}")
+      if(wxWidgets_DEFINITIONS_DEBUG)
+        list(TRANSFORM wxWidgets_DEFINITIONS_DEBUG REPLACE [[^(.+)$]] [[$<$<CONFIG:Debug>:\1>]] OUTPUT_VARIABLE wxWidgets_DEFINITIONS_DEBUG_GENEX)
+        message(DEBUG "wxWidgets_DEFINITIONS_DEBUG_GENEX: ${wxWidgets_DEFINITIONS_DEBUG_GENEX}")
+        target_compile_definitions(wxWidgets_wxWidgets INTERFACE ${wxWidgets_DEFINITIONS_DEBUG_GENEX})
+        unset(wxWidgets_DEFINITIONS_DEBUG_GENEX)
+      endif()
+      message(DEBUG "wxWidgets_CXX_FLAGS: ${wxWidgets_CXX_FLAGS}")
+      if(wxWidgets_CXX_FLAGS)
+        target_compile_options(wxWidgets_wxWidgets INTERFACE ${wxWidgets_CXX_FLAGS})
+      endif()
+      message(DEBUG "wxWidgets_LIBRARIES: ${wxWidgets_LIBRARIES}")
+      if(wxWidgets_LIBRARIES)
+        target_link_libraries(wxWidgets_wxWidgets INTERFACE ${wxWidgets_LIBRARIES})
+      endif()
+    endif()
+
+    if(arg_DISABLE_GUI)
+      target_compile_definitions(wxWidgets_wxWidgets INTERFACE wxUSE_GUI=0)
+    endif()
+  endif()
+
+  if(NOT TARGET wxWidgets::wxrc)
+    message(DEBUG "Creating target wxWidgets::wxrc")
+    add_executable(wxWidgets::wxrc IMPORTED GLOBAL)
+    set_target_properties(wxWidgets::wxrc PROPERTIES IMPORTED_LOCATION "${wxWidgets_wxrc_EXECUTABLE}")
+  endif()
+endfunction()
+
+
+#[[
 Add a wxFormBuilder plugin target.
 
 wxfb_add_plugin(<name>
