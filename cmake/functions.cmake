@@ -1,6 +1,167 @@
 cmake_minimum_required(VERSION 3.21)
 
 #[[
+Set default build type.
+
+wxfb_set_default_build_type([BUILD_TYPE <build-type>])
+
+If the build type has not been set yet and this function is beeing called from a top level project or plugin host
+for a single-config generator, sets CMAKE_BUILD_TYPE to <build-type>, otherwise it does nothing.
+If <build-type> is not specified, Debug is used.
+]]
+function(wxfb_set_default_build_type)
+  set(options "")
+  set(singleValues BUILD_TYPE)
+  set(multiValues "")
+  cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  set(buildTypes "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+  if(NOT DEFINED arg_BUILD_TYPE)
+    set(arg_BUILD_TYPE "Debug")
+  else()
+    if(NOT arg_BUILD_TYPE IN_LIST buildTypes)
+      message(FATAL_ERROR "Invalid build type: '${arg_BUILD_TYPE}'")
+    endif()
+  endif()
+
+  if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
+    get_property(isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+    if(NOT isMultiConfig)
+      if(NOT CMAKE_BUILD_TYPE)
+        message(STATUS "Setting build type to '${arg_BUILD_TYPE}' as none was specified.")
+        set(CMAKE_BUILD_TYPE "${arg_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
+        set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "${buildTypes}")
+      elseif(NOT CMAKE_BUILD_TYPE IN_LIST buildTypes)
+        message(FATAL_ERROR "Unknown build type: '${CMAKE_BUILD_TYPE}'")
+      endif()
+    endif()
+  endif()
+endfunction()
+
+#[[
+Set default compiler options.
+
+wxfb_set_default_compiler_options([SKIP_SOURCE_CHARSET]
+                                  [SKIP_WARNING_LEVEL])
+
+This function should be called from the top level project after specifying the default build type
+but before creating any targets that get compiled.
+
+If SKIP_SOURCE_CHARSET is specified, the source charset value UTF-8 is not set.
+If SKIP_WARNING_LEVEL is specified, the warning level is not set.
+]]
+function(wxfb_set_default_compiler_options)
+  set(options SKIP_SOURCE_CHARSET SKIP_WARNING_LEVEL)
+  set(singleValues "")
+  set(multiValues "")
+  cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  if(NOT arg_SKIP_WARNING_LEVEL)
+    wxfb_set_default_compiler_warnings()
+    # FIXME: Internal knowledge that this variable must be passed upwards
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" PARENT_SCOPE)
+  endif()
+
+  if(MSVC)
+    # Disable warnings about standard conformant code that is not conform to Microsoft standards
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS _CRT_NONSTDC_NO_WARNINGS _SCL_SECURE_NO_WARNINGS)
+    if(NOT arg_SKIP_SOURCE_CHARSET)
+      # Without BOM the UTF-8 encoding doesn't get detected so enforce it
+      add_compile_options(/source-charset:utf-8)
+    endif()
+    # Report the correct C++ version if supported
+    if(MSVC_VERSION GREATER_EQUAL 1914)
+      add_compile_options(/Zc:__cplusplus)
+    endif()
+  endif()
+endfunction()
+
+#[[
+Set default compiler warning level.
+
+wxfb_set_default_compiler_warnings()
+
+This function should be called from the top level project after specifying the default build type
+but before creating any targets that get compiled.
+]]
+function(wxfb_set_default_compiler_warnings)
+  if(PROJECT_IS_TOP_LEVEL)
+    # TODO: This is not the ideal solution to apply these warning flags.
+    #       Toolchain files are not really intended for this purpose.
+    #       Presets would be a viable solution, but currently, at least on VSCode, this
+    #       has the side effect that pretty much everything from generator to build type
+    #       to binary directory needs to be specified. The usual control ability of especially
+    #       the build type gets lost in preset mode.
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+      string(APPEND CMAKE_CXX_FLAGS " /W4")
+    elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+      # This assumes the default Clang frontend and not the MSVC compatible one
+      string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
+    else()
+      # This assumes GCC
+      string(APPEND CMAKE_CXX_FLAGS " -Wall -Wextra -Wpedantic")
+    endif()
+
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" PARENT_SCOPE)
+  endif()
+endfunction()
+
+#[[
+Set or verify language standards.
+
+wxfb_set_language_standard([C_STANDARD <c-standard>]
+                           [CXX_STANDARD <cxx-standard>]
+                           [NO_POSITION_INDEPENDENT_CODE])
+
+Sets the requested language standard if not already set, otherwise verifies that the set language standard
+it not older than requested. If NO_POSITION_INDEPENDENT_CODE is not specified, position independent code gets enabled.
+]]
+function(wxfb_set_language_standard)
+  set(options NO_POSITION_INDEPENDENT_CODE)
+  set(singleValues C_STANDARD CXX_STANDARD)
+  set(multiValues "")
+  cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  if(DEFINED arg_C_STANDARD)
+    if(NOT DEFINED CMAKE_C_STANDARD)
+      set(CMAKE_C_STANDARD ${arg_C_STANDARD} PARENT_SCOPE)
+      message(STATUS "Setting CMAKE_C_STANDARD: ${arg_C_STANDARD}")
+    elseif(NOT (
+      (arg_C_STANDARD LESS 90 AND (CMAKE_C_STANDARD GREATER_EQUAL arg_C_STANDARD AND CMAKE_C_STANDARD LESS 90)) OR
+      (arg_C_STANDARD GREATER_EQUAL 90 AND (CMAKE_C_STANDARD GREATER_EQUAL arg_C_STANDARD OR CMAKE_C_STANDARD LESS 90))
+    ))
+      message(FATAL_ERROR "The CMAKE_C_STANDARD value needs to be at least ${arg_C_STANDARD}, current value: ${CMAKE_C_STANDARD}")
+    endif()
+    set(CMAKE_C_STANDARD_REQUIRED ON PARENT_SCOPE)
+    if(NOT DEFINED CMAKE_C_EXTENSIONS)
+      set(CMAKE_C_EXTENSIONS OFF PARENT_SCOPE)
+    endif()
+  endif()
+
+  if(DEFINED arg_CXX_STANDARD)
+    if(NOT DEFINED CMAKE_CXX_STANDARD)
+      set(CMAKE_CXX_STANDARD ${arg_CXX_STANDARD} PARENT_SCOPE)
+      message(STATUS "Setting CMAKE_CXX_STANDARD: ${arg_CXX_STANDARD}")
+    elseif(NOT (
+      (arg_CXX_STANDARD LESS 98 AND (CMAKE_CXX_STANDARD GREATER_EQUAL arg_CXX_STANDARD AND CMAKE_CXX_STANDARD LESS 98)) OR
+      (arg_CXX_STANDARD GREATER_EQUAL 98 AND (CMAKE_CXX_STANDARD GREATER_EQUAL arg_CXX_STANDARD OR CMAKE_CXX_STANDARD LESS 98))
+    ))
+      message(FATAL_ERROR "The CMAKE_CXX_STANDARD value needs to be at least ${arg_CXX_STANDARD}, current value: ${CMAKE_CXX_STANDARD}")
+    endif()
+    set(CMAKE_CXX_STANDARD_REQUIRED ON PARENT_SCOPE)
+    if(NOT DEFINED CMAKE_CXX_EXTENSIONS)
+      set(CMAKE_CXX_EXTENSIONS OFF PARENT_SCOPE)
+    endif()
+  endif()
+
+  if(NOT arg_NO_POSITION_INDEPENDENT_CODE)
+    set(CMAKE_POSITION_INDEPENDENT_CODE TRUE PARENT_SCOPE)
+    message(STATUS "Setting CMAKE_POSITION_INDEPENDENT_CODE: TRUE")
+  endif()
+endfunction()
+
+
+#[[
 Add a wxFormBuilder plugin target.
 
 wxfb_add_plugin(<name>
