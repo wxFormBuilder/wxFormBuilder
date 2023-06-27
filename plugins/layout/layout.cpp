@@ -23,10 +23,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <cstring>
+#include <map>
+
 #include <ticpp.h>
 #include <wx/gbsizer.h>
 #include <wx/wrapsizer.h>
 
+#include <common/xmlutils.h>
 #include <plugin_interface/plugin.h>
 #include <plugin_interface/xrcconv.h>
 
@@ -42,6 +46,12 @@ public:
         xrc.AddPropertyPair(_("width"), _("height"), _("size"));
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddPropertyPair("width", "height", "size");
+        return xrc;
+    }
 };
 
 class GBSizerItemComponent : public ComponentBase
@@ -55,6 +65,15 @@ public:
         xrc.AddProperty(_("flag"), _("flag"), XrcFilter::Type::BitList);
         xrc.AddProperty(_("border"), _("border"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
+    }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "sizeritem", "");
+        filter.AddProperty(XrcFilter::Type::BitList, "flag");
+        filter.AddProperty(XrcFilter::Type::Integer, "border");
+        filter.AddPropertyPair("row", "column", "cellpos");
+        filter.AddPropertyPair("rowspan", "colspan", "cellspan");
+        return xrc;
     }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
@@ -76,6 +95,22 @@ public:
         }
 
         return sizeritem;
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "gbsizeritem", "");
+        filter.AddProperty(XrcFilter::Type::BitList, "flag");
+        filter.AddProperty(XrcFilter::Type::Integer, "border");
+        filter.AddPropertyPair("cellpos", "row", "column");
+        filter.AddPropertyPair("cellspan", "rowspan", "colspan");
+
+        // XrcLoader::GetObject imports spacers as sizeritems, check if this is a spacer
+        if (!xrc->FirstChildElement("object") && xrc->FirstChildElement("size")) {
+            XrcToXfbFilter spacerFilter(xfb->InsertNewChildElement(""), GetLibrary(), xrc, "spacer", "");
+            spacerFilter.AddPropertyPair("size", "width", "height");
+        }
+
+        return xfb;
     }
 };
 
@@ -141,6 +176,14 @@ public:
         xrc.AddProperty(_("border"), _("border"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::BitList, "flag");
+        filter.AddProperty(XrcFilter::Type::Integer, "border");
+        filter.AddProperty(XrcFilter::Type::Integer, "proportion", "option");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -158,6 +201,21 @@ public:
             sizeritem->LinkEndChild(spacer.GetXfbObject());
         }
         return sizeritem;
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::BitList, "flag");
+        filter.AddProperty(XrcFilter::Type::Integer, "border");
+        filter.AddProperty(XrcFilter::Type::Integer, "option", "proportion");
+
+        // XrcLoader::GetObject imports spacers as sizeritems, check if this is a spacer
+        if (!xrc->FirstChildElement("object") && xrc->FirstChildElement("size")) {
+            XrcToXfbFilter spacerFilter(xfb->InsertNewChildElement(""), GetLibrary(), xrc, "spacer", "");
+            spacerFilter.AddPropertyPair("size", "width", "height");
+        }
+
+        return xfb;
     }
 };
 
@@ -179,6 +237,15 @@ public:
         xrc.AddProperty(_("orient"), _("orient"), XrcFilter::Type::Text);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -186,6 +253,13 @@ public:
         filter.AddProperty(_("minsize"), _("minimum_size"), XrcFilter::Type::Size);
         filter.AddProperty(_("orient"), _("orient"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        return xfb;
     }
 };
 
@@ -210,6 +284,16 @@ public:
         xrc.AddProperty(_("flags"), _("flags"), XrcFilter::Type::BitList);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::BitList, "flags");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -218,6 +302,14 @@ public:
         filter.AddProperty(_("orient"), _("orient"), XrcFilter::Type::Text);
         filter.AddProperty(_("flags"), _("flags"), XrcFilter::Type::BitList);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::BitList, "flags");
+        return xfb;
     }
 };
 
@@ -247,6 +339,16 @@ public:
         xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -255,6 +357,14 @@ public:
         filter.AddProperty(_("orient"), _("orient"), XrcFilter::Type::Text);
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        return xfb;
     }
 };
 
@@ -283,6 +393,18 @@ public:
         xrc.AddProperty(_("hgap"), _("hgap"), XrcFilter::Type::Integer);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        filter.AddProperty(XrcFilter::Type::Integer, "rows");
+        filter.AddProperty(XrcFilter::Type::Integer, "cols");
+        filter.AddProperty(XrcFilter::Type::Integer, "vgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "hgap");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -293,6 +415,16 @@ public:
         filter.AddProperty(_("vgap"), _("vgap"), XrcFilter::Type::Integer);
         filter.AddProperty(_("hgap"), _("hgap"), XrcFilter::Type::Integer);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+        filter.AddProperty(XrcFilter::Type::Integer, "rows");
+        filter.AddProperty(XrcFilter::Type::Integer, "cols");
+        filter.AddProperty(XrcFilter::Type::Integer, "vgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "hgap");
+        return xfb;
     }
 };
 
@@ -321,6 +453,18 @@ public:
         xrc->AddPropertyValue(_("growablecols"), obj->GetPropertyAsString(_("growablecols")));
         xrc->AddPropertyValue(_("growablerows"), obj->GetPropertyAsString(_("growablerows")));
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "", "");
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        filter.AddProperty(XrcFilter::Type::Integer, "vgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "hgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "growablerows");
+        filter.AddProperty(XrcFilter::Type::Integer, "growablecols");
+        return xrc;
+    }
 
     void ImportXRCProperties(XrcToXfbFilter* filter)
     {
@@ -329,6 +473,16 @@ public:
         filter->AddProperty(_("hgap"), _("hgap"), XrcFilter::Type::Integer);
         filter->AddProperty(_("growablecols"), _("growablecols"), XrcFilter::Type::Text);
         filter->AddProperty(_("growablerows"), _("growablerows"), XrcFilter::Type::Text);
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "", "");
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+        filter.AddProperty(XrcFilter::Type::Integer, "vgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "hgap");
+        filter.AddProperty(XrcFilter::Type::Integer, "growablerows");
+        filter.AddProperty(XrcFilter::Type::Integer, "growablecols");
+        return xfb;
     }
 };
 
@@ -354,6 +508,16 @@ public:
         ExportXRCProperties(&xrc, obj);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        FlexGridSizerBase::ExportToXrc(xrc, obj);
+
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddProperty(XrcFilter::Type::Integer, "rows");
+        filter.AddProperty(XrcFilter::Type::Integer, "cols");
+
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -362,6 +526,16 @@ public:
         filter.AddProperty(_("cols"), _("cols"), XrcFilter::Type::Integer);
         ImportXRCProperties(&filter);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        FlexGridSizerBase::ImportFromXrc(xfb, xrc);
+
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Integer, "rows");
+        filter.AddProperty(XrcFilter::Type::Integer, "cols");
+
+        return xfb;
     }
 };
 
@@ -492,12 +666,28 @@ public:
         ExportXRCProperties(&xrc, obj);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        FlexGridSizerBase::ExportToXrc(xrc, obj);
+
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxGridBagSizer"));
         ImportXRCProperties(&filter);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        FlexGridSizerBase::ImportFromXrc(xfb, xrc);
+
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+
+        return xfb;
     }
 };
 
@@ -532,6 +722,17 @@ private:
         } catch (ticpp::Exception& ex) {
             wxLogError(wxString(ex.m_details.c_str(), wxConvUTF8));
         }
+    }
+    tinyxml2::XMLElement* ExportButtonToXrc(tinyxml2::XMLElement* xrc, const wxString& buttonId)
+    {
+        auto* buttonElement = xrc->InsertNewChildElement("object");
+        XMLUtils::SetAttribute(buttonElement, "class", "button");
+
+        auto* wxButtonElement = buttonElement->InsertNewChildElement("object");
+        XMLUtils::SetAttribute(wxButtonElement, "class", "wxButton");
+        XMLUtils::SetAttribute(wxButtonElement, "name", buttonId);
+
+        return xrc;
     }
 
 public:
@@ -605,6 +806,39 @@ public:
 
         return sizer;
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
+            filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
+        }
+        if (obj->GetPropertyAsInteger("OK") != 0) {
+            ExportButtonToXrc(xrc, "wxID_OK");
+        }
+        if (obj->GetPropertyAsInteger("Yes") != 0) {
+            ExportButtonToXrc(xrc, "wxID_YES");
+        }
+        if (obj->GetPropertyAsInteger("Save") != 0) {
+            ExportButtonToXrc(xrc, "wxID_SAVE");
+        }
+        if (obj->GetPropertyAsInteger("Apply") != 0) {
+            ExportButtonToXrc(xrc, "wxID_APPLY");
+        }
+        // FIXME: Close currently missing in data model
+        if (obj->GetPropertyAsInteger("No") != 0) {
+            ExportButtonToXrc(xrc, "wxID_NO");
+        }
+        if (obj->GetPropertyAsInteger("Cancel") != 0) {
+            ExportButtonToXrc(xrc, "wxID_CANCEL");
+        }
+        if (obj->GetPropertyAsInteger("Help") != 0) {
+            ExportButtonToXrc(xrc, "wxID_HELP");
+        }
+        if (obj->GetPropertyAsInteger("ContextHelp") != 0) {
+            ExportButtonToXrc(xrc, "wxID_CONTEXT_HELP");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -670,6 +904,42 @@ public:
         xrcObj->Clear();
 
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
+
+        std::map<wxString, std::pair<wxString, wxString>> buttons = {
+            {"wxID_OK", {"OK", "0"}},
+            {"wxID_YES", {"Yes", "0"}},
+            {"wxID_SAVE", {"Save", "0"}},
+            {"wxID_APPLY", {"Apply", "0"}},
+            // FIXME: Close currently missing in data model
+            {"wxID_NO", {"No", "0"}},
+            {"wxID_CANCEL", {"Cancel", "0"}},
+            {"wxID_HELP", {"Help", "0"}},
+            {"wxID_CONTEXT_HELP", {"ContextHelp", "0"}},
+        };
+        for (const auto* button = xrc->FirstChildElement("object"); button; button = button->NextSiblingElement("object")) {
+            if (XMLUtils::StringAttribute(button, "class") != "button") {
+                continue;
+            }
+
+            const auto* wxButton = button->FirstChildElement("object");
+            if (XMLUtils::StringAttribute(wxButton, "class") != "wxButton") {
+                continue;
+            }
+            auto buttonEntry = buttons.find(XMLUtils::StringAttribute(wxButton, "name"));
+            if (buttonEntry != buttons.end()) {
+                buttonEntry->second.second = "1";
+            }
+        }
+        for (const auto [id, property] : buttons) {
+            filter.AddPropertyValue(property.first, property.second);
+        }
+
+        return xfb;
     }
 };
 
