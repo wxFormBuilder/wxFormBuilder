@@ -13,6 +13,7 @@ Input parameters:
 
 Template parameters:
 - SCM_REVISION: Revision short hash
+- SCM_BRANCH: Name of current branch
 - SCM_DESCRIBE: Long describe output
 - SCM_TAG_NAME: Name of closest tag
 - SCM_TAG_DISTANCE: Distance in commits to closest tag
@@ -20,6 +21,7 @@ Template parameters:
 ]]
 
 set(SCM_REVISION "0")
+set(SCM_BRANCH "")
 set(SCM_DESCRIBE "")
 set(SCM_TAG_NAME "")
 set(SCM_TAG_DISTANCE "0")
@@ -41,6 +43,15 @@ if (scm_cmd)
     OUTPUT_STRIP_TRAILING_WHITESPACE
   )
   if(NOT scm_result)
+    # While git name-rev --name-only HEAD does output a branch name with distance from HEAD if in detached HEAD state,
+    # it shows a wrong result if multiple branches are at HEAD, so for now live with an empty result for detached HEAD
+    execute_process(
+      COMMAND "${scm_cmd}" branch --show-current
+      WORKING_DIRECTORY "${scmDirectory}"
+      RESULT_VARIABLE scm_result
+      OUTPUT_VARIABLE SCM_BRANCH
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
     execute_process(
       COMMAND "${scm_cmd}" describe --long --dirty
       WORKING_DIRECTORY "${scmDirectory}"

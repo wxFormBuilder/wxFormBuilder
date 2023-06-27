@@ -11,6 +11,7 @@ Input parameters:
 
 Template parameters:
 - SCM_REVISION: Always zero
+- SCM_BRANCH: Always empty
 - SCM_DESCRIBE: Always empty
 - SCM_TAG_NAME: Always empty
 - SCM_TAG_DISTANCE: Always zero
@@ -18,6 +19,7 @@ Template parameters:
 ]]
 
 set(SCM_REVISION "0")
+set(SCM_BRANCH "")
 set(SCM_DESCRIBE "")
 set(SCM_TAG_NAME "")
 set(SCM_TAG_DISTANCE "0")

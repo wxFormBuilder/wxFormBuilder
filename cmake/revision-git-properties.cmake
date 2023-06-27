@@ -13,6 +13,7 @@ Input parameters:
 
 Template parameters:
 - SCM_REVISION: Revision short hash
+- SCM_BRANCH: Always empty
 - SCM_DESCRIBE: Long describe output
 - SCM_TAG_NAME: Name of closest tag
 - SCM_TAG_DISTANCE: Distance in commits to closest tag
@@ -20,6 +21,7 @@ Template parameters:
 ]]
 
 set(SCM_REVISION "0")
+set(SCM_BRANCH "")
 set(SCM_DESCRIBE "")
 set(SCM_TAG_NAME "")
 set(SCM_TAG_DISTANCE "0")
@@ -36,7 +38,7 @@ if(EXISTS "${scm_file}")
   file(STRINGS "${scm_file}" scm_file_content ENCODING UTF-8)
   foreach(scm_line IN LISTS scm_file_content)
     if(scm_line MATCHES [[^git\.commit\.id\.abbrev=([0-9a-fA-F]+)$]])
-      set(SCM_REVISION "${CMAKE_MATCH_1}")  
+      set(SCM_REVISION "${CMAKE_MATCH_1}")
       continue()
     endif()
     if(scm_line MATCHES [[^git\.commit\.id\.describe=([^-]+)(-([0-9]+)-g([0-9a-fA-F]+))?$]])
