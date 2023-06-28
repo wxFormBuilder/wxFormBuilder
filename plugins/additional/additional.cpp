@@ -71,22 +71,142 @@ public:
     ComponentEvtHandler(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
 
 protected:
-    void OnGridClick(wxGridEvent& event);
-    void OnGridColSize(wxGridSizeEvent& event);
-    void OnGridRowSize(wxGridSizeEvent& event);
-    void OnColourPickerColourChanged(wxColourPickerEvent& event);
-    void OnFontPickerFontChanged(wxFontPickerEvent& event);
-    void OnFilePickerFileChanged(wxFileDirPickerEvent& event);
-    void OnDirPickerDirChanged(wxFileDirPickerEvent& event);
-    void OnText(wxCommandEvent& event);
-    void OnGenericDirCtrlExpandItem(wxTreeEvent& event);
+    void OnGridClick([[maybe_unused]] wxGridEvent& event)
+    {
+        m_manager->SelectObject(m_window);
+        event.Skip();
+    }
+
+    void OnGridColSize([[maybe_unused]] wxGridSizeEvent& event)
+    {
+        wxGrid* grid = wxDynamicCast(m_window, wxGrid);
+        if (NULL == grid) {
+            return;
+        }
+
+        wxString sizes;
+        for (int i = 0; i < grid->GetNumberCols(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetColSize(i)); }
+        sizes = sizes.substr(0, sizes.length() - 1);
+
+        m_manager->ModifyProperty(m_window, _("column_sizes"), sizes, true);
+    }
+
+    void OnGridRowSize([[maybe_unused]] wxGridSizeEvent& event)
+    {
+        wxGrid* grid = wxDynamicCast(m_window, wxGrid);
+        if (NULL == grid) {
+            return;
+        }
+
+        wxString sizes;
+        for (int i = 0; i < grid->GetNumberRows(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetRowSize(i)); }
+        sizes = sizes.substr(0, sizes.length() - 1);
+
+        m_manager->ModifyProperty(m_window, _("row_sizes"), sizes, true);
+    }
+
+    void OnColourPickerColourChanged([[maybe_unused]] wxColourPickerEvent& event)
+    {
+        wxColourPickerCtrl* window = wxDynamicCast(m_window, wxColourPickerCtrl);
+        if (window != NULL) {
+            wxColour colour = window->GetColour();
+            m_manager->ModifyProperty(
+            window, _("colour"), wxString::Format(wxT("%d,%d,%d"), colour.Red(), colour.Green(), colour.Blue()));
+        }
+    }
+
+    void OnFontPickerFontChanged([[maybe_unused]] wxFontPickerEvent& event)
+    {
+        wxFontPickerCtrl* window = wxDynamicCast(m_window, wxFontPickerCtrl);
+        if (window != NULL) {
+            wxFont font = window->GetSelectedFont();
+            m_manager->ModifyProperty(
+            window, _("value"),
+            wxString::Format(
+                wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize()));
+        }
+    }
+
+    void OnFilePickerFileChanged([[maybe_unused]] wxFileDirPickerEvent& event)
+    {
+        wxFilePickerCtrl* window = wxDynamicCast(m_window, wxFilePickerCtrl);
+        if (window != NULL) {
+            m_manager->ModifyProperty(window, _("value"), window->GetPath());
+        }
+    }
+
+    void OnDirPickerDirChanged([[maybe_unused]] wxFileDirPickerEvent& event)
+    {
+        wxDirPickerCtrl* window = wxDynamicCast(m_window, wxDirPickerCtrl);
+        if (window != NULL) {
+            m_manager->ModifyProperty(window, _("value"), window->GetPath());
+        }
+    }
+
+    void OnText([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxSearchCtrl* sc = wxDynamicCast(m_window, wxSearchCtrl);
+        if (sc != NULL) {
+            m_manager->ModifyProperty(m_window, _("value"), sc->GetValue());
+            sc->SetInsertionPointEnd();
+            sc->SetFocus();
+        }
+
+        event.Skip();
+    }
+
     // Enable folding for wxStyledTextCtrl
-    void OnMarginClick(wxStyledTextEvent& event);
-    void OnRibbonBarPageChanged(wxRibbonBarEvent& event);
-    DECLARE_EVENT_TABLE()
+    void OnMarginClick([[maybe_unused]] wxStyledTextEvent& event)
+    {
+        wxStyledTextCtrl* scintilla = wxDynamicCast(m_window, wxStyledTextCtrl);
+        if (scintilla != NULL) {
+            if (event.GetMargin() == 1) {
+                int lineClick = scintilla->LineFromPosition(event.GetPosition());
+                int levelClick = scintilla->GetFoldLevel(lineClick);
+                if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0) {
+                    scintilla->ToggleFold(lineClick);
+                }
+            }
+        }
+        event.Skip();
+    }
+
+    void OnRibbonBarPageChanged([[maybe_unused]] wxRibbonBarEvent& event)
+    {
+        if (m_window != event.GetEventObject()) {
+            return;
+        }
+
+        wxRibbonBar* rb = wxDynamicCast(event.GetEventObject(), wxRibbonBar);
+        if (rb == NULL) {
+            return;
+        }
+
+        int selPage = rb->GetActivePage();
+
+        size_t count = m_manager->GetChildCount(m_window);
+        for (size_t i = 0; i < count; i++) {
+            wxObject* wxChild = m_manager->GetChild(m_window, i);
+            IObject* iChild = m_manager->GetIObject(wxChild);
+            if (iChild) {
+                if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
+                    m_manager->ModifyProperty(wxChild, _("select"), wxT("1"), false);
+                } else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
+                    m_manager->ModifyProperty(wxChild, _("select"), wxT("0"), false);
+                }
+            }
+        }
+
+        // Select the corresponding ribbon page in the object tree
+        if (NULL != rb) {
+            m_manager->SelectObject(rb->GetPage(selPage));
+        }
+    }
+
+    wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
 EVT_COLOURPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnColourPickerColourChanged)
 EVT_FONTPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFontPickerFontChanged)
 EVT_FILEPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFilePickerFileChanged)
@@ -102,7 +222,7 @@ EVT_GRID_ROW_SIZE(ComponentEvtHandler::OnGridRowSize)
 
 EVT_STC_MARGINCLICK(wxID_ANY, ComponentEvtHandler::OnMarginClick)
 EVT_RIBBONBAR_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnRibbonBarPageChanged)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /**
 Event handler for events generated by wxGenericDirCtrl.
@@ -113,17 +233,23 @@ public:
     GenericDirCtrlEvtHandler(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
 
 protected:
-    void OnGenericDirCtrlLeftClick(wxMouseEvent& event);
-    DECLARE_EVENT_TABLE()
+    void OnGenericDirCtrlLeftClick([[maybe_unused]] wxMouseEvent& event)
+    {
+        m_manager->SelectObject(m_window);
+        event.Skip();
+    }
+
+    wxDECLARE_EVENT_TABLE();
+
 private:
     wxWindow* m_window;
     IManager* m_manager;
 };
 
-BEGIN_EVENT_TABLE(GenericDirCtrlEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(GenericDirCtrlEvtHandler, wxEvtHandler)
 // GenericDirCtrl also seems to ignore clicks
 EVT_LEFT_DOWN(GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -240,7 +366,6 @@ public:
         return xfb;
     }
 };
-
 
 class RichTextCtrlComponent : public ComponentBase
 {
@@ -471,7 +596,6 @@ public:
         return xfb;
     }
 };
-
 
 class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
@@ -1264,39 +1388,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnGridClick(wxGridEvent& event)
-{
-    m_manager->SelectObject(m_window);
-    event.Skip();
-}
-
-void ComponentEvtHandler::OnGridColSize(wxGridSizeEvent&)
-{
-    wxGrid* grid = wxDynamicCast(m_window, wxGrid);
-    if (NULL == grid) {
-        return;
-    }
-
-    wxString sizes;
-    for (int i = 0; i < grid->GetNumberCols(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetColSize(i)); }
-    sizes = sizes.substr(0, sizes.length() - 1);
-
-    m_manager->ModifyProperty(m_window, _("column_sizes"), sizes, true);
-}
-
-void ComponentEvtHandler::OnGridRowSize(wxGridSizeEvent&)
-{
-    wxGrid* grid = wxDynamicCast(m_window, wxGrid);
-    if (NULL == grid) {
-        return;
-    }
-
-    wxString sizes;
-    for (int i = 0; i < grid->GetNumberRows(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetRowSize(i)); }
-    sizes = sizes.substr(0, sizes.length() - 1);
-
-    m_manager->ModifyProperty(m_window, _("row_sizes"), sizes, true);
-}
 
 class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
@@ -1396,16 +1487,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnColourPickerColourChanged(wxColourPickerEvent&)
-{
-    wxColourPickerCtrl* window = wxDynamicCast(m_window, wxColourPickerCtrl);
-    if (window != NULL) {
-        wxColour colour = window->GetColour();
-        m_manager->ModifyProperty(
-          window, _("colour"), wxString::Format(wxT("%d,%d,%d"), colour.Red(), colour.Green(), colour.Blue()));
-    }
-}
-
 class FontPickerComponent : public PickerComponentBase
 {
 public:
@@ -1466,18 +1547,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnFontPickerFontChanged(wxFontPickerEvent&)
-{
-    wxFontPickerCtrl* window = wxDynamicCast(m_window, wxFontPickerCtrl);
-    if (window != NULL) {
-        wxFont font = window->GetSelectedFont();
-        m_manager->ModifyProperty(
-          window, _("value"),
-          wxString::Format(
-            wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize()));
-    }
-}
 
 class FilePickerComponent : public PickerComponentBase
 {
@@ -1541,14 +1610,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnFilePickerFileChanged(wxFileDirPickerEvent&)
-{
-    wxFilePickerCtrl* window = wxDynamicCast(m_window, wxFilePickerCtrl);
-    if (window != NULL) {
-        m_manager->ModifyProperty(window, _("value"), window->GetPath());
-    }
-}
-
 class DirPickerComponent : public PickerComponentBase
 {
 public:
@@ -1605,14 +1666,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnDirPickerDirChanged(wxFileDirPickerEvent&)
-{
-    wxDirPickerCtrl* window = wxDynamicCast(m_window, wxDirPickerCtrl);
-    if (window != NULL) {
-        m_manager->ModifyProperty(window, _("value"), window->GetPath());
-    }
-}
 
 class HyperlinkComponent : public ComponentBase
 {
@@ -1745,12 +1798,6 @@ public:
     }
 };
 
-void GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick(wxMouseEvent& event)
-{
-    m_manager->SelectObject(m_window);
-    event.Skip();
-}
-
 class CustomControlComponent : public ComponentBase
 {
 public:
@@ -1836,18 +1883,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnText(wxCommandEvent& event)
-{
-    wxSearchCtrl* sc = wxDynamicCast(m_window, wxSearchCtrl);
-    if (sc != NULL) {
-        m_manager->ModifyProperty(m_window, _("value"), sc->GetValue());
-        sc->SetInsertionPointEnd();
-        sc->SetFocus();
-    }
-
-    event.Skip();
-}
 
 #ifdef USE_MEDIACTRL
 class MediaCtrlComponent : public ComponentBase
@@ -2272,21 +2307,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnMarginClick(wxStyledTextEvent& event)
-{
-    wxStyledTextCtrl* scintilla = wxDynamicCast(m_window, wxStyledTextCtrl);
-    if (scintilla != NULL) {
-        if (event.GetMargin() == 1) {
-            int lineClick = scintilla->LineFromPosition(event.GetPosition());
-            int levelClick = scintilla->GetFoldLevel(lineClick);
-            if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0) {
-                scintilla->ToggleFold(lineClick);
-            }
-        }
-    }
-    event.Skip();
-}
-
 class DataViewModel : public wxDataViewModel
 {
 public:
@@ -2399,7 +2419,6 @@ public:
     }
 };
 
-
 class DataViewTreeCtrl : public ComponentBase
 {
 public:
@@ -2495,8 +2514,6 @@ class DataViewColumn : public ComponentBase
 {
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
 class wxcoreTreeListCtrlComponent : public ComponentBase
 {
 public:
@@ -2615,38 +2632,6 @@ class RibbonBarComponent : public ComponentBase
         rb->Realize();
     }
 };
-
-void ComponentEvtHandler::OnRibbonBarPageChanged(wxRibbonBarEvent& event)
-{
-    if (m_window != event.GetEventObject()) {
-        return;
-    }
-
-    wxRibbonBar* rb = wxDynamicCast(event.GetEventObject(), wxRibbonBar);
-    if (rb == NULL) {
-        return;
-    }
-
-    int selPage = rb->GetActivePage();
-
-    size_t count = m_manager->GetChildCount(m_window);
-    for (size_t i = 0; i < count; i++) {
-        wxObject* wxChild = m_manager->GetChild(m_window, i);
-        IObject* iChild = m_manager->GetIObject(wxChild);
-        if (iChild) {
-            if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
-                m_manager->ModifyProperty(wxChild, _("select"), wxT("1"), false);
-            } else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
-                m_manager->ModifyProperty(wxChild, _("select"), wxT("0"), false);
-            }
-        }
-    }
-
-    // Select the corresponding ribbon page in the object tree
-    if (NULL != rb) {
-        m_manager->SelectObject(rb->GetPage(selPage));
-    }
-}
 
 class RibbonPageComponent : public ComponentBase
 {
@@ -2827,12 +2812,15 @@ class RibbonToolBarComponent : public ComponentBase
 class RibbonToolComponent : public ComponentBase
 {
 };
+
 class RibbonDropdownToolComponent : public ComponentBase
 {
 };
+
 class RibbonHybridToolComponent : public ComponentBase
 {
 };
+
 class RibbonToggleToolComponent : public ComponentBase
 {
 };
@@ -3004,10 +2992,8 @@ MACRO(wxDP_SHOWCENTURY)
 MACRO(wxDP_ALLOWNONE)
 MACRO(wxDP_DEFAULT)
 
-
 // wxTimePickerCtrl
 MACRO(wxTP_DEFAULT)
-
 
 // wxHtmlWindow
 MACRO(wxHW_SCROLLBAR_NEVER)
@@ -3146,7 +3132,6 @@ MACRO(wxRIBBON_PANEL_EXT_BUTTON)
 MACRO(wxRIBBON_PANEL_MINIMISE_BUTTON)
 MACRO(wxRIBBON_PANEL_STRETCH)
 MACRO(wxRIBBON_PANEL_FLEXIBLE)
-
 
 // wxTreeListCtrl
 WINDOW_COMPONENT("wxTreeListCtrl", wxcoreTreeListCtrlComponent)

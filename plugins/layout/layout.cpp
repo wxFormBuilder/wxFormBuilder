@@ -946,6 +946,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
+
 ABSTRACT_COMPONENT("spacer", SpacerComponent)
 ABSTRACT_COMPONENT("sizeritem", SizerItemComponent)
 ABSTRACT_COMPONENT("gbsizeritem", GBSizerItemComponent)

@@ -37,7 +37,7 @@
 #include <plugin_interface/plugin.h>
 #include <plugin_interface/xrcconv.h>
 
-///////////////////////////////////////////////////////////////////////////////
+
 // Custom status bar class for windows to prevent the status bar gripper from
 // moving the entire wxFB window
 #if defined(__WIN32__) && wxUSE_NATIVE_STATUSBAR
@@ -52,7 +52,7 @@ public:
     }
 
     // override this virtual function to prevent the status bar from moving the main frame
-    virtual WXLRESULT MSWWindowProc(WXUINT nMsg, WXWPARAM wParam, WXLPARAM lParam)
+    WXLRESULT MSWWindowProc(WXUINT nMsg, WXWPARAM wParam, WXLPARAM lParam) override
     {
         return wxStatusBarBase::MSWWindowProc(nMsg, wParam, lParam);
     }
@@ -61,26 +61,7 @@ public:
 typedef wxStatusBar wxIndependentStatusBar;
 #endif
 
-class wxLeftDownRedirect : public wxEvtHandler
-{
-private:
-    wxWindow* m_window;
-    IManager* m_manager;
-
-    void OnLeftDown(wxMouseEvent&) { m_manager->SelectObject(m_window); }
-
-public:
-    wxLeftDownRedirect(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
-    DECLARE_EVENT_TABLE()
-};
-
-BEGIN_EVENT_TABLE(wxLeftDownRedirect, wxEvtHandler)
-EVT_LEFT_DOWN(wxLeftDownRedirect::OnLeftDown)
-END_EVENT_TABLE()
-
-///////////////////////////////////////////////////////////////////////////////
 // Custom Aui toolbar
-
 class AuiToolBar : public wxAuiToolBar
 {
     friend class AuiToolBarComponent;
@@ -92,29 +73,136 @@ public:
         m_manager = manager;
     }
 
-    void SetObject(int index, wxObject* pObject) { m_aObjects[index] = pObject; }
-    wxObject* GetObject(int index) { return m_aObjects[index]; }
+    void SetObject(int index, wxObject* pObject)
+    {
+        m_aObjects[index] = pObject;
+    }
+
+    wxObject* GetObject(int index)
+    {
+        return m_aObjects[index];
+    }
 
 protected:
     IManager* m_manager;
 
-    wxMenu* GetMenuFromObject(IObject* menu);
+    wxMenu* GetMenuFromObject(IObject* menu)
+    {
+        int lastMenuId = wxID_HIGHEST + 1;
+        wxMenu* menuWidget = new wxMenu();
+        for (unsigned int j = 0; j < menu->GetChildCount(); j++) {
+            auto* menuItem = menu->GetChildObject(j);
+            if (menuItem->GetObjectTypeName() == wxT("submenu")) {
+                menuWidget->Append(lastMenuId++, menuItem->GetPropertyAsString(wxT("label")), GetMenuFromObject(menuItem));
+            } else if (menuItem->GetClassName() == wxT("separator")) {
+                menuWidget->AppendSeparator();
+            } else {
+                wxString label = menuItem->GetPropertyAsString(wxT("label"));
+                wxString shortcut = menuItem->GetPropertyAsString(wxT("shortcut"));
+                if (!shortcut.IsEmpty()) {
+                    label = label + wxChar('\t') + shortcut;
+                }
 
-    void OnDropDownMenu(wxAuiToolBarEvent& event);
-    void OnTool(wxCommandEvent& event);
+                wxMenuItem* item = new wxMenuItem(
+                menuWidget, lastMenuId++, label, menuItem->GetPropertyAsString(wxT("help")),
+                (wxItemKind)menuItem->GetPropertyAsInteger(wxT("kind")));
 
-    DECLARE_EVENT_TABLE()
+                if (!menuItem->IsPropertyNull(wxT("bitmap"))) {
+                    wxBitmap unchecked = wxNullBitmap;
+                    if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
+                        unchecked = menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap"));
+                    }
+    #ifdef __WXMSW__
+                    item->SetBitmaps(menuItem->GetPropertyAsBitmap(wxT("bitmap")), unchecked);
+    #elif defined(__WXGTK__)
+                    item->SetBitmap(menuItem->GetPropertyAsBitmap(wxT("bitmap")));
+    #endif
+                } else {
+                    if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
+    #ifdef __WXMSW__
+                        item->SetBitmaps(wxNullBitmap, menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap")));
+    #endif
+                    }
+                }
+
+                menuWidget->Append(item);
+
+                if (item->GetKind() == wxITEM_CHECK && menuItem->GetPropertyAsInteger(wxT("checked")) != 0) {
+                    item->Check(true);
+                }
+
+                item->Enable((menuItem->GetPropertyAsInteger(wxT("enabled")) != 0));
+            }
+        }
+
+        return menuWidget;
+    }
+
+    void OnDropDownMenu([[maybe_unused]] wxAuiToolBarEvent& event)
+    {
+        wxAuiToolBar* tb = wxDynamicCast(event.GetEventObject(), wxAuiToolBar);
+
+        if (tb) {
+            wxAuiToolBarItem* item = tb->FindTool(event.GetId());
+
+            if (item && item->HasDropDown()) {
+                wxObject* wxobject = GetObject(item->GetUserData());
+
+                if (wxobject) {
+                    m_manager->SelectObject(wxobject);
+                }
+
+                tb->SetToolSticky(item->GetId(), true);
+                wxRect rect = tb->GetToolRect(item->GetId());
+                wxPoint pt = tb->ClientToScreen(rect.GetBottomLeft());
+                pt = tb->ScreenToClient(pt);
+
+                wxObject* child = m_manager->GetChild(wxobject, 0);
+                if (child) {
+                    tb->PopupMenu(GetMenuFromObject(m_manager->GetIObject(child)), pt);
+                    tb->SetToolSticky(item->GetId(), false);
+                }
+
+                // TODO: For some strange reason, this event is occasionally propagated upwards even though it's been
+                // handled here and there's a clash of IDs between that given a tool by wxAui and the IDs in mainframe.cpp
+                // which sometimes results in a wxFormBuilder dialog being fired.
+                // So StopPropagation() now, but those IDs need changing to avoid clashes.
+                // event.StopPropagation();
+            }
+        }
+    }
+
+    void OnTool([[maybe_unused]] wxCommandEvent& event)
+    {
+        AuiToolBar* tb = wxDynamicCast(event.GetEventObject(), AuiToolBar);
+        if (NULL == tb) {
+            // very very strange
+            return;
+        }
+
+        wxAuiToolBarItem* item = tb->FindTool(event.GetId());
+        if (item) {
+            wxObject* wxobject = GetObject(item->GetUserData());
+
+            if (wxobject) {
+                m_manager->SelectObject(wxobject);
+            }
+        }
+    }
+
+    wxDECLARE_EVENT_TABLE();
 
 private:
     std::unordered_map<int, wxObject*> m_aObjects;
 };
 
-BEGIN_EVENT_TABLE(AuiToolBar, wxAuiToolBar)
+wxBEGIN_EVENT_TABLE(AuiToolBar, wxAuiToolBar)
 EVT_AUITOOLBAR_TOOL_DROPDOWN(wxID_ANY, AuiToolBar::OnDropDownMenu)
 EVT_TOOL(wxID_ANY, AuiToolBar::OnTool)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
+
 /**
 Event handler for events generated by controls in this plugin
 */
@@ -126,23 +214,102 @@ public:
     ComponentEvtHandler(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
 
 protected:
-    void OnText(wxCommandEvent& event);
-    void OnChecked(wxCommandEvent& event);
-    void OnChoice(wxCommandEvent& event);
-    void OnComboBox(wxCommandEvent& event);
-    void OnTool(wxCommandEvent& event);
-    void OnButton(wxCommandEvent& event);
-    void OnTimer(wxTimerEvent& event);
+    void OnText([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxTextCtrl* tc = wxDynamicCast(m_window, wxTextCtrl);
+        if (tc != NULL) {
+            m_manager->ModifyProperty(m_window, _("value"), tc->GetValue());
+            tc->SetInsertionPointEnd();
+            tc->SetFocus();
+            return;
+        }
+
+        wxComboBox* cb = wxDynamicCast(m_window, wxComboBox);
+        if (cb != NULL) {
+            m_manager->ModifyProperty(m_window, _("value"), cb->GetValue());
+            cb->SetInsertionPointEnd();
+            cb->SetFocus();
+            return;
+        }
+    }
+
+    void OnChecked([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxCheckBox* cb = wxDynamicCast(m_window, wxCheckBox);
+        if (cb != NULL) {
+            wxString cbValue;
+            cbValue.Printf(wxT("%i"), cb->GetValue());
+            m_manager->ModifyProperty(m_window, _("checked"), cbValue);
+            cb->SetFocus();
+        }
+    }
+
+    void OnChoice([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxChoice* window = wxDynamicCast(m_window, wxChoice);
+        if (window != NULL) {
+            wxString value;
+            value.Printf(wxT("%i"), window->GetSelection());
+            m_manager->ModifyProperty(m_window, _("selection"), value);
+            window->SetFocus();
+        }
+    }
+
+    void OnComboBox([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxComboBox* window = wxDynamicCast(m_window, wxComboBox);
+        if (window != NULL) {
+            wxString value;
+            value.Printf(wxT("%i"), window->GetSelection());
+            m_manager->ModifyProperty(m_window, _("selection"), value);
+            window->SetFocus();
+        }
+    }
+
+    void OnTool([[maybe_unused]] wxCommandEvent& event)
+    {
+        // FIXME: Same as above
+
+        wxToolBar* tb = wxDynamicCast(event.GetEventObject(), wxToolBar);
+        if (NULL == tb) {
+            // very very strange
+            return;
+        }
+
+        wxObject* wxobject = tb->GetToolClientData(event.GetId());
+        if (NULL != wxobject) {
+            m_manager->SelectObject(wxobject);
+        }
+    }
+
+    void OnButton([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxInfoBar* ib = wxDynamicCast(m_window, wxInfoBar);
+        if (ib) {
+            m_timer.SetOwner(this);
+            m_timer.Start(ib->GetEffectDuration() + 1000, true);
+        }
+
+        event.Skip();
+    }
+
+    void OnTimer([[maybe_unused]] wxTimerEvent& event)
+    {
+        wxInfoBar* ib = wxDynamicCast(m_window, wxInfoBar);
+        if (ib) {
+            ib->ShowMessage(_("Message ..."));
+        }
+    }
 
 private:
     wxWindow* m_window;
     IManager* m_manager;
     wxTimer m_timer;
 
-    DECLARE_EVENT_TABLE()
+    wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
 EVT_TEXT(wxID_ANY, ComponentEvtHandler::OnText)
 EVT_CHECKBOX(wxID_ANY, ComponentEvtHandler::OnChecked)
 EVT_CHOICE(wxID_ANY, ComponentEvtHandler::OnChoice)
@@ -154,11 +321,29 @@ EVT_TOOL(wxID_ANY, ComponentEvtHandler::OnTool)
 // wxInfoBar related handlers
 EVT_BUTTON(wxID_ANY, ComponentEvtHandler::OnButton)
 EVT_TIMER(wxID_ANY, ComponentEvtHandler::OnTimer)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
+class wxLeftDownRedirect : public wxEvtHandler
+{
+private:
+    wxWindow* m_window;
+    IManager* m_manager;
 
-///////////////////////////////////////////////////////////////////////////////
-// WIDGETS
+    void OnLeftDown([[maybe_unused]] wxMouseEvent& event)
+    {
+        m_manager->SelectObject(m_window);
+    }
+
+public:
+    wxLeftDownRedirect(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
+
+    wxDECLARE_EVENT_TABLE();
+};
+
+wxBEGIN_EVENT_TABLE(wxLeftDownRedirect, wxEvtHandler)
+EVT_LEFT_DOWN(wxLeftDownRedirect::OnLeftDown)
+wxEND_EVENT_TABLE()
+
 ///////////////////////////////////////////////////////////////////////////////
 
 class ButtonComponent : public ComponentBase
@@ -446,7 +631,6 @@ public:
     }
 };
 
-
 class TextCtrlComponent : public ComponentBase
 {
 public:
@@ -511,25 +695,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnText(wxCommandEvent&)
-{
-    wxTextCtrl* tc = wxDynamicCast(m_window, wxTextCtrl);
-    if (tc != NULL) {
-        m_manager->ModifyProperty(m_window, _("value"), tc->GetValue());
-        tc->SetInsertionPointEnd();
-        tc->SetFocus();
-        return;
-    }
-
-    wxComboBox* cb = wxDynamicCast(m_window, wxComboBox);
-    if (cb != NULL) {
-        m_manager->ModifyProperty(m_window, _("value"), cb->GetValue());
-        cb->SetInsertionPointEnd();
-        cb->SetFocus();
-        return;
-    }
-}
 
 class StaticTextComponent : public ComponentBase
 {
@@ -779,17 +944,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnChecked(wxCommandEvent&)
-{
-    wxCheckBox* cb = wxDynamicCast(m_window, wxCheckBox);
-    if (cb != NULL) {
-        wxString cbValue;
-        cbValue.Printf(wxT("%i"), cb->GetValue());
-        m_manager->ModifyProperty(m_window, _("checked"), cbValue);
-        cb->SetFocus();
-    }
-}
 
 class StaticBitmapComponent : public ComponentBase
 {
@@ -1525,110 +1679,6 @@ public:
     }
 };
 
-wxMenu* AuiToolBar::GetMenuFromObject(IObject* menu)
-{
-    int lastMenuId = wxID_HIGHEST + 1;
-    wxMenu* menuWidget = new wxMenu();
-    for (unsigned int j = 0; j < menu->GetChildCount(); j++) {
-        auto* menuItem = menu->GetChildObject(j);
-        if (menuItem->GetObjectTypeName() == wxT("submenu")) {
-            menuWidget->Append(lastMenuId++, menuItem->GetPropertyAsString(wxT("label")), GetMenuFromObject(menuItem));
-        } else if (menuItem->GetClassName() == wxT("separator")) {
-            menuWidget->AppendSeparator();
-        } else {
-            wxString label = menuItem->GetPropertyAsString(wxT("label"));
-            wxString shortcut = menuItem->GetPropertyAsString(wxT("shortcut"));
-            if (!shortcut.IsEmpty()) {
-                label = label + wxChar('\t') + shortcut;
-            }
-
-            wxMenuItem* item = new wxMenuItem(
-              menuWidget, lastMenuId++, label, menuItem->GetPropertyAsString(wxT("help")),
-              (wxItemKind)menuItem->GetPropertyAsInteger(wxT("kind")));
-
-            if (!menuItem->IsPropertyNull(wxT("bitmap"))) {
-                wxBitmap unchecked = wxNullBitmap;
-                if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
-                    unchecked = menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap"));
-                }
-#ifdef __WXMSW__
-                item->SetBitmaps(menuItem->GetPropertyAsBitmap(wxT("bitmap")), unchecked);
-#elif defined(__WXGTK__)
-                item->SetBitmap(menuItem->GetPropertyAsBitmap(wxT("bitmap")));
-#endif
-            } else {
-                if (!menuItem->IsPropertyNull(wxT("unchecked_bitmap"))) {
-#ifdef __WXMSW__
-                    item->SetBitmaps(wxNullBitmap, menuItem->GetPropertyAsBitmap(wxT("unchecked_bitmap")));
-#endif
-                }
-            }
-
-            menuWidget->Append(item);
-
-            if (item->GetKind() == wxITEM_CHECK && menuItem->GetPropertyAsInteger(wxT("checked")) != 0) {
-                item->Check(true);
-            }
-
-            item->Enable((menuItem->GetPropertyAsInteger(wxT("enabled")) != 0));
-        }
-    }
-
-    return menuWidget;
-}
-
-void AuiToolBar::OnDropDownMenu(wxAuiToolBarEvent& event)
-{
-    wxAuiToolBar* tb = wxDynamicCast(event.GetEventObject(), wxAuiToolBar);
-
-    if (tb) {
-        wxAuiToolBarItem* item = tb->FindTool(event.GetId());
-
-        if (item && item->HasDropDown()) {
-            wxObject* wxobject = GetObject(item->GetUserData());
-
-            if (wxobject) {
-                m_manager->SelectObject(wxobject);
-            }
-
-            tb->SetToolSticky(item->GetId(), true);
-            wxRect rect = tb->GetToolRect(item->GetId());
-            wxPoint pt = tb->ClientToScreen(rect.GetBottomLeft());
-            pt = tb->ScreenToClient(pt);
-
-            wxObject* child = m_manager->GetChild(wxobject, 0);
-            if (child) {
-                tb->PopupMenu(GetMenuFromObject(m_manager->GetIObject(child)), pt);
-                tb->SetToolSticky(item->GetId(), false);
-            }
-
-            // TODO: For some strange reason, this event is occasionally propagated upwards even though it's been
-            // handled here and there's a clash of IDs between that given a tool by wxAui and the IDs in mainframe.cpp
-            // which sometimes results in a wxFormBuilder dialog being fired.
-            // So StopPropagation() now, but those IDs need changing to avoid clashes.
-            // event.StopPropagation();
-        }
-    }
-}
-
-void AuiToolBar::OnTool(wxCommandEvent& event)
-{
-    AuiToolBar* tb = wxDynamicCast(event.GetEventObject(), AuiToolBar);
-    if (NULL == tb) {
-        // very very strange
-        return;
-    }
-
-    wxAuiToolBarItem* item = tb->FindTool(event.GetId());
-    if (item) {
-        wxObject* wxobject = GetObject(item->GetUserData());
-
-        if (wxobject) {
-            m_manager->SelectObject(wxobject);
-        }
-    }
-}
-
 class AuiToolBarComponent : public ComponentBase
 {
 public:
@@ -1733,22 +1783,6 @@ public:
             }
     */
 };
-
-void ComponentEvtHandler::OnTool(wxCommandEvent& event)
-{
-    // FIXME: Same as above
-
-    wxToolBar* tb = wxDynamicCast(event.GetEventObject(), wxToolBar);
-    if (NULL == tb) {
-        // very very strange
-        return;
-    }
-
-    wxObject* wxobject = tb->GetToolClientData(event.GetId());
-    if (NULL != wxobject) {
-        m_manager->SelectObject(wxobject);
-    }
-}
 
 class ToolComponent : public ComponentBase
 {
@@ -1931,28 +1965,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnChoice(wxCommandEvent&)
-{
-    wxChoice* window = wxDynamicCast(m_window, wxChoice);
-    if (window != NULL) {
-        wxString value;
-        value.Printf(wxT("%i"), window->GetSelection());
-        m_manager->ModifyProperty(m_window, _("selection"), value);
-        window->SetFocus();
-    }
-}
-
-void ComponentEvtHandler::OnComboBox(wxCommandEvent&)
-{
-    wxComboBox* window = wxDynamicCast(m_window, wxComboBox);
-    if (window != NULL) {
-        wxString value;
-        value.Printf(wxT("%i"), window->GetSelection());
-        m_manager->ModifyProperty(m_window, _("selection"), value);
-        window->SetFocus();
-    }
-}
 
 class SliderComponent : public ComponentBase
 {
@@ -2188,25 +2200,6 @@ public:
         return xfb;
     }
 };
-
-void ComponentEvtHandler::OnButton(wxCommandEvent& event)
-{
-    wxInfoBar* ib = wxDynamicCast(m_window, wxInfoBar);
-    if (ib) {
-        m_timer.SetOwner(this);
-        m_timer.Start(ib->GetEffectDuration() + 1000, true);
-    }
-
-    event.Skip();
-}
-
-void ComponentEvtHandler::OnTimer(wxTimerEvent&)
-{
-    wxInfoBar* ib = wxDynamicCast(m_window, wxInfoBar);
-    if (ib) {
-        ib->ShowMessage(_("Message ..."));
-    }
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 

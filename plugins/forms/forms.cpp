@@ -43,14 +43,30 @@ public:
     ComponentEvtHandler(IManager* manager) : m_manager(manager) {}
 
 protected:
-    void OnTool(wxCommandEvent& event);
+    void OnTool([[maybe_unused]] wxCommandEvent& event)
+    {
+        // FIXME: Same as above
 
-    DECLARE_EVENT_TABLE()
+        wxToolBar* tb = wxDynamicCast(event.GetEventObject(), wxToolBar);
+        if (NULL == tb) {
+            // very very strange
+            return;
+        }
+
+        wxObject* wxobject = tb->GetToolClientData(event.GetId());
+        if (NULL != wxobject) {
+            m_manager->SelectObject(wxobject);
+        }
+    }
+
+    wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
 EVT_TOOL(wxID_ANY, ComponentEvtHandler::OnTool)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
+
+///////////////////////////////////////////////////////////////////////////////
 
 // TO-DO: The "Form" type component should be drawn in the designer, so that,
 //        for instance, a dark panel could be drawn for a wxFrame (N.B. ??)
@@ -335,22 +351,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnTool(wxCommandEvent& event)
-{
-    // FIXME: Same as above
-
-    wxToolBar* tb = wxDynamicCast(event.GetEventObject(), wxToolBar);
-    if (NULL == tb) {
-        // very very strange
-        return;
-    }
-
-    wxObject* wxobject = tb->GetToolClientData(event.GetId());
-    if (NULL != wxobject) {
-        m_manager->SelectObject(wxobject);
-    }
-}
-
 class WizardFormComponent : public ComponentBase
 {
 public:
@@ -487,6 +487,8 @@ public:
         return xfb;
     }
 };
+
+///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
 
