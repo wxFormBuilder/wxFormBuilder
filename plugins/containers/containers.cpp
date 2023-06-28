@@ -26,6 +26,7 @@
 #include <ticpp.h>
 #include <wx/splitter.h>
 
+#include <common/xmlutils.h>
 #include <plugin_interface/plugin.h>
 #include <plugin_interface/xrcconv.h>
 
@@ -216,12 +217,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxPanel"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -259,6 +272,14 @@ public:
         xrc.AddProperty(_("collapsed"), _("collapsed"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "collapsed");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -267,6 +288,14 @@ public:
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         filter.AddProperty(_("collapsed"), _("collapsed"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "collapsed");
+        return xfb;
     }
 };
 
@@ -326,41 +355,6 @@ class SplitterWindowComponent : public ComponentBase
                 window->PopEventHandler(true);
             }
         }
-    }
-
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSplitterWindow"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("sashgravity"), _("gravity"), XrcFilter::Type::Float);
-        xrc.AddProperty(_("min_pane_size"), _("minsize"), XrcFilter::Type::Integer);
-        if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
-            xrc.AddPropertyValue(_("orientation"), wxT("vertical"));
-        else
-            xrc.AddPropertyValue(_("orientation"), wxT("horizontal"));
-
-        return xrc.GetXrcObject();
-    }
-
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSplitterWindow"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("gravity"), _("sashgravity"), XrcFilter::Type::Float);
-        filter.AddProperty(_("minsize"), _("min_pane_size"), XrcFilter::Type::Integer);
-        try {
-            ticpp::Element* splitmode = xrcObj->FirstChildElement("orientation");
-            std::string value = splitmode->GetText();
-            if (value == "vertical")
-                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_VERTICAL"));
-            else
-                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_HORIZONTAL"));
-        } catch (ticpp::Exception&) {
-        }
-
-        return filter.GetXfbObject();
     }
 
     void OnCreated(wxObject* wxobject, wxWindow* /*wxparent*/) override
@@ -437,6 +431,71 @@ class SplitterWindowComponent : public ComponentBase
                 return;
         }
     }
+
+    ticpp::Element* ExportToXrc(IObject* obj) override
+    {
+        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSplitterWindow"), obj->GetPropertyAsString(_("name")));
+        xrc.AddWindowProperties();
+        xrc.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
+        xrc.AddProperty(_("sashgravity"), _("gravity"), XrcFilter::Type::Float);
+        xrc.AddProperty(_("min_pane_size"), _("minsize"), XrcFilter::Type::Integer);
+        if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
+            xrc.AddPropertyValue(_("orientation"), wxT("vertical"));
+        else
+            xrc.AddPropertyValue(_("orientation"), wxT("horizontal"));
+
+        return xrc.GetXrcObject();
+    }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Integer, "sashpos");
+        filter.AddProperty(XrcFilter::Type::Float, "sashgravity", "gravity");
+        filter.AddProperty(XrcFilter::Type::Integer, "min_pane_size", "minsize");
+        if (obj->GetPropertyAsString("splitmode") == "wxSPLIT_VERTICAL") {
+            filter.AddPropertyValue("orientation", "vertical");
+        } else {
+            filter.AddPropertyValue("orientation", "horizontal");
+        }
+        return xrc;
+    }
+
+    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    {
+        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSplitterWindow"));
+        filter.AddWindowProperties();
+        filter.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
+        filter.AddProperty(_("gravity"), _("sashgravity"), XrcFilter::Type::Float);
+        filter.AddProperty(_("minsize"), _("min_pane_size"), XrcFilter::Type::Integer);
+        try {
+            ticpp::Element* splitmode = xrcObj->FirstChildElement("orientation");
+            std::string value = splitmode->GetText();
+            if (value == "vertical")
+                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_VERTICAL"));
+            else
+                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_HORIZONTAL"));
+        } catch (ticpp::Exception&) {
+        }
+
+        return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Integer, "sashpos");
+        filter.AddProperty(XrcFilter::Type::Float, "gravity", "sashgravity");
+        filter.AddProperty(XrcFilter::Type::Integer, "minsize", "min_pane_size");
+        if (const auto* orientationElement = xrc->FirstChildElement("orientation")) {
+            if (XMLUtils::GetText(orientationElement) == "vertical") {
+                filter.AddPropertyValue("splitmode", "wxSPLIT_VERTICAL");
+            } else {
+                filter.AddPropertyValue("splitmode", "wxSPLIT_HORIZONTAL");
+            }
+        }
+        return xfb;
+    }
 };
 
 void ComponentEvtHandler::OnSplitterSashChanged(wxSplitterEvent&)
@@ -456,6 +515,12 @@ class SplitterItemComponent : public ComponentBase
         // A __dummyitem__ will be ignored...
         ObjectToXrcFilter xrc(GetLibrary(), obj, _("__dummyitem__"), wxT(""));
         return xrc.GetXrcObject();
+    }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        // FIXME: Why is this __dummyitem__ required?
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "__dummyitem__", "");
+        return xrc;
     }
 };
 
@@ -482,6 +547,13 @@ public:
                              obj->GetPropertyAsInteger(_("scroll_rate_y"))));
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddPropertyPair("scroll_rate_x", "scroll_rate_y", "scrollrate");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -495,6 +567,13 @@ public:
             filter.AddPropertyValue(_("scroll_rate_y"), value.AfterFirst(wxT(',')));
         }
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        filter.AddPropertyPair("scrollrate", "scroll_rate_x", "scroll_rate_y");
+        return xfb;
     }
 };
 
@@ -528,12 +607,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxNotebook"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -563,6 +654,16 @@ public:
         }
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "select", "selected");
+        if (!obj->IsPropertyNull("bitmap")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -572,6 +673,14 @@ public:
         filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
         filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "selected", "select");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        return xfb;
     }
 };
 
@@ -623,12 +732,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxListbook"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -655,6 +776,16 @@ public:
         xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "select", "selected");
+        if (!obj->IsPropertyNull("bitmap")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -663,6 +794,14 @@ public:
         filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "selected", "select");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        return xfb;
     }
 };
 
@@ -694,12 +833,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxChoicebook"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -726,6 +877,14 @@ public:
         xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "select", "selected");
+        // FIXME: bitmap currently missing in data model
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -734,6 +893,14 @@ public:
         filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "selected", "select");
+        // FIXME: bitmap currently missing in data model
+        return xfb;
     }
 };
 
@@ -768,12 +935,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxAuiNotebook"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -836,6 +1015,16 @@ public:
         xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "notebookpage", "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "select", "selected");
+        if (!obj->IsPropertyNull("bitmap")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        }
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -845,6 +1034,14 @@ public:
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "notebookpage", "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "selected", "select");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        return xfb;
     }
 };
 
@@ -864,12 +1061,24 @@ public:
         xrc.AddWindowProperties();
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
         XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSimplebook"));
         filter.AddWindowProperties();
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
     }
 };
 
@@ -890,6 +1099,13 @@ public:
         xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
         return xrc.GetXrcObject();
     }
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "select", "selected");
+        return xrc;
+    }
 
     ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
     {
@@ -898,6 +1114,13 @@ public:
         filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
         filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
         return filter.GetXfbObject();
+    }
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "selected", "select");
+        return xfb;
     }
 };
 
