@@ -27,7 +27,6 @@
 
 #include <set>
 
-#include <ticpp.h>
 #include <wx/colour.h>
 #include <wx/tokenzr.h>
 
@@ -139,23 +138,11 @@ static wxString ReplaceSynonymous(const IComponentLibrary* lib, const wxString& 
 
 
 ObjectToXrcFilter::ObjectToXrcFilter(
-  const IComponentLibrary* lib, const IObject* obj, const wxString& classname, const wxString& objname) :
-    m_lib(lib), m_obj(obj), m_xrcElement(nullptr)
-{
-    m_xrcObj = new ticpp::Element("object");
-    m_xrcObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
-    if (!objname.empty()) {
-        m_xrcObj->SetAttribute("name", objname.mb_str(wxConvUTF8));
-    }
-}
-
-ObjectToXrcFilter::ObjectToXrcFilter(
     tinyxml2::XMLElement* xrcElement,
     const IComponentLibrary* lib, const IObject* obj,
     std::optional<wxString> className, std::optional<wxString> objectName
 ) :
     m_lib(lib), m_obj(obj),
-    m_xrcObj(nullptr),
     m_xrcElement(xrcElement)
 {
     xrcElement->SetName("object");
@@ -167,51 +154,35 @@ ObjectToXrcFilter::ObjectToXrcFilter(
     }
 }
 
-ObjectToXrcFilter::~ObjectToXrcFilter()
-{
-    delete m_xrcObj;
-}
-
 
 void ObjectToXrcFilter::AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType)
 {
-    ticpp::Element propElement(xrcPropName.mb_str(wxConvUTF8));
-    auto* propertyElement = m_xrcElement ? m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str()) : nullptr;
-
+    auto* propertyElement = m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str());
     switch (propType) {
         case Type::Size:
         case Type::Point:
         case Type::BitList:
-            LinkText(m_obj->GetPropertyAsString(objPropName), &propElement);
-            if (propertyElement) SetText(propertyElement, m_obj->GetPropertyAsString(objPropName));
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName));
             break;
-        case Type::Text: {
+        case Type::Text:
             // The text must be converted to XRC format
-            auto text = m_obj->GetPropertyAsString(objPropName);
-            LinkText(text, &propElement, true);
-            if (propertyElement) SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
             break;
-        }
         case Type::Bool:
         case Type::Integer:
-            LinkInteger(m_obj->GetPropertyAsInteger(objPropName), &propElement);
-            if (propertyElement) SetInteger(propertyElement, m_obj->GetPropertyAsInteger(objPropName));
+            SetInteger(propertyElement, m_obj->GetPropertyAsInteger(objPropName));
             break;
         case Type::Float:
-            LinkFloat(m_obj->GetPropertyAsFloat(objPropName), &propElement);
-            if (propertyElement) SetFloat(propertyElement, m_obj->GetPropertyAsFloat(objPropName));
+            SetFloat(propertyElement, m_obj->GetPropertyAsFloat(objPropName));
             break;
         case Type::Colour:
-            LinkColour(m_obj->GetPropertyAsColour(objPropName), &propElement);
-            if (propertyElement) SetColour(propertyElement, m_obj->GetPropertyAsColour(objPropName));
+            SetColour(propertyElement, m_obj->GetPropertyAsColour(objPropName));
             break;
         case Type::Font:
-            LinkFont(m_obj->GetPropertyAsFont(objPropName), &propElement);
-            if (propertyElement) SetFont(propertyElement, m_obj->GetPropertyAsFont(objPropName));
+            SetFont(propertyElement, m_obj->GetPropertyAsFont(objPropName));
             break;
         case Type::StringList:
-            LinkStringList(m_obj->GetPropertyAsArrayString(objPropName), &propElement);
-            if (propertyElement) SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
+            SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
             break;
         case Type::Bitmap: {
             auto bitmapProp = m_obj->GetPropertyAsString(objPropName);
@@ -229,25 +200,16 @@ void ObjectToXrcFilter::AddProperty(const wxString& objPropName, const wxString&
             if (
               bitmapProp.StartsWith("Load From File") || bitmapProp.StartsWith("Load From Embedded File") ||
               bitmapProp.StartsWith("Load From XRC")) {
-                LinkText(filename.Trim().Trim(false), &propElement);
-                if (propertyElement) SetText(propertyElement, filename.Trim().Trim(false));
+                SetText(propertyElement, filename.Trim().Trim(false));
             } else if (bitmapProp.StartsWith("Load From Art Provider")) {
-                propElement.SetAttribute("stock_id", filename.BeforeFirst(';').Trim().Trim(false).mb_str(wxConvUTF8));
-                propElement.SetAttribute(
-                  "stock_client", filename.AfterFirst(';').Trim().Trim(false).mb_str(wxConvUTF8));
-
-                LinkText("undefined.png", &propElement);
-
-                if (propertyElement) XMLUtils::SetAttribute(propertyElement, "stock_id", filename.BeforeFirst(';').Trim().Trim(false));
-                if (propertyElement) XMLUtils::SetAttribute(propertyElement, "stock_client", filename.AfterFirst(';').Trim().Trim(false));
+                XMLUtils::SetAttribute(propertyElement, "stock_id", filename.BeforeFirst(';').Trim().Trim(false));
+                XMLUtils::SetAttribute(propertyElement, "stock_client", filename.AfterFirst(';').Trim().Trim(false));
                 // TODO: Don't specify a fallback bitmap at all?
-                if (propertyElement) SetText(propertyElement, "undefined.png");
+                SetText(propertyElement, "undefined.png");
             }
             break;
         }
     }
-
-    if (m_xrcObj) m_xrcObj->LinkEndChild(&propElement);
 }
 
 void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, const wxString& xrcPropName)
@@ -257,13 +219,8 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
 
 void ObjectToXrcFilter::AddPropertyValue(const wxString& xrcPropName, const wxString& xrcPropValue, bool xrcFormat)
 {
-    ticpp::Element propElement(xrcPropName.mb_str(wxConvUTF8));
-    auto* propertyElement = m_xrcElement ? m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str()) : nullptr;
-
-    LinkText(xrcPropValue, &propElement, xrcFormat);
-    if (propertyElement) SetText(propertyElement, xrcPropValue, xrcFormat);
-
-    if (m_xrcObj) m_xrcObj->LinkEndChild(&propElement);
+    auto* propertyElement = m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str());
+    SetText(propertyElement, xrcPropValue, xrcFormat);
 }
 
 void ObjectToXrcFilter::AddPropertyPair(
@@ -348,128 +305,8 @@ void ObjectToXrcFilter::AddWindowProperties()
     if (!m_obj->IsPropertyNull("subclass")) {
         auto subclass = m_obj->GetChildFromParentProperty("subclass", "name");
         if (!subclass.empty()) {
-            if (m_xrcObj) m_xrcObj->SetAttribute("subclass", subclass.mb_str(wxConvUTF8));
-            if (m_xrcElement) XMLUtils::SetAttribute(m_xrcElement, "subclass", subclass);
+            XMLUtils::SetAttribute(m_xrcElement, "subclass", subclass);
         }
-    }
-}
-
-
-ticpp::Element* ObjectToXrcFilter::GetXrcObject()
-{
-    return new ticpp::Element(*m_xrcObj);
-}
-
-
-void ObjectToXrcFilter::LinkInteger(int integer, ticpp::Element* propElement)
-{
-    propElement->SetText(integer);
-}
-
-void ObjectToXrcFilter::LinkFloat(double value, ticpp::Element* propElement)
-{
-    propElement->SetText(value);
-}
-
-void ObjectToXrcFilter::LinkText(const wxString& text, ticpp::Element* propElement, bool xrcFormat)
-{
-    auto value = (xrcFormat ? StringToXrcText(text) : text);
-    propElement->SetText(value.mb_str(wxConvUTF8));
-}
-
-void ObjectToXrcFilter::LinkColour(const wxColour& colour, ticpp::Element* propElement)
-{
-    auto value = wxString::Format("#%02x%02x%02x", colour.Red(), colour.Green(), colour.Blue());
-    propElement->SetText(value.mb_str(wxConvUTF8));
-}
-
-void ObjectToXrcFilter::LinkFont(const wxFontContainer& font, ticpp::Element* propElement)
-{
-    if (font.GetPointSize() > 0) {
-        wxString aux;
-        aux.Printf("%i", font.GetPointSize());
-
-        ticpp::Element size("size");
-        size.SetText(aux.mb_str(wxConvUTF8));
-        propElement->LinkEndChild(&size);
-    }
-
-    bool skipFamily = false;
-    ticpp::Element family("family");
-    switch (font.GetFamily()) {
-        case wxFONTFAMILY_DECORATIVE:
-            family.SetText("decorative");
-            break;
-        case wxFONTFAMILY_ROMAN:
-            family.SetText("roman");
-            break;
-        case wxFONTFAMILY_SWISS:
-            family.SetText("swiss");
-            break;
-        case wxFONTFAMILY_SCRIPT:
-            family.SetText("script");
-            break;
-        case wxFONTFAMILY_MODERN:
-            family.SetText("modern");
-            break;
-        case wxFONTFAMILY_TELETYPE:
-            family.SetText("teletype");
-            break;
-        default:
-            // wxWidgets 2.9.0 doesn't define "default" family
-            skipFamily = true;
-            break;
-    }
-    if (!skipFamily) {
-        propElement->LinkEndChild(&family);
-    }
-
-    ticpp::Element style("style");
-    switch (font.GetStyle()) {
-        case wxFONTSTYLE_SLANT:
-            style.SetText("slant");
-            break;
-        case wxFONTSTYLE_ITALIC:
-            style.SetText("italic");
-            break;
-        default:
-            style.SetText("normal");
-            break;
-    }
-    propElement->LinkEndChild(&style);
-
-    ticpp::Element weight("weight");
-    switch (font.GetWeight()) {
-        case wxFONTWEIGHT_LIGHT:
-            weight.SetText("light");
-            break;
-        case wxFONTWEIGHT_BOLD:
-            weight.SetText("bold");
-            break;
-        default:
-            weight.SetText("normal");
-            break;
-    }
-    propElement->LinkEndChild(&weight);
-
-    ticpp::Element underlined("underlined");
-    underlined.SetText(font.GetUnderlined() ? "1" : "0");
-    propElement->LinkEndChild(&underlined);
-
-    if (!font.GetFaceName().empty()) {
-        ticpp::Element face("face");
-        face.SetText(font.GetFaceName().mb_str(wxConvUTF8));
-        propElement->LinkEndChild(&face);
-    }
-}
-
-void ObjectToXrcFilter::LinkStringList(const wxArrayString& array, ticpp::Element* propElement, bool xrcFormat)
-{
-    for (size_t i = 0; i < array.GetCount(); ++i) {
-        const auto& value = (xrcFormat ? StringToXrcText(array[i]) : array[i]);
-        ticpp::Element item("item");
-        item.SetText(value.mb_str(wxConvUTF8));
-        propElement->LinkEndChild(&item);
     }
 }
 
@@ -582,28 +419,12 @@ void ObjectToXrcFilter::SetStringList(tinyxml2::XMLElement* element, const wxArr
 ///////////////////////////////////////////////////////////////////////////////
 
 
-XrcToXfbFilter::XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname) :
-    m_lib(lib), m_xrcObj(obj), m_xrcElement(nullptr), m_xfbElement(nullptr)
-{
-    m_xfbObj = new ticpp::Element("object");
-    m_xfbObj->SetAttribute("class", classname.mb_str(wxConvUTF8));
-    try {
-        std::string name;
-        obj->GetAttribute("name", &name);
-        wxString objname(name.c_str(), wxConvUTF8);
-        AddPropertyValue("name", objname);
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
 XrcToXfbFilter::XrcToXfbFilter(
     tinyxml2::XMLElement* xfbElement,
     const IComponentLibrary* lib, const tinyxml2::XMLElement* xrcElement,
     std::optional<wxString> className, std::optional<wxString> objectName
 ) :
     m_lib(lib), m_xrcElement(xrcElement),
-    m_xrcObj(nullptr), m_xfbObj(nullptr),
     m_xfbElement(xfbElement)
 {
     xfbElement->SetName("object");
@@ -615,61 +436,42 @@ XrcToXfbFilter::XrcToXfbFilter(
     }
 }
 
-XrcToXfbFilter::~XrcToXfbFilter()
-{
-    delete m_xfbObj;
-}
-
 
 void XrcToXfbFilter::AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType)
 {
-    ticpp::Element propElement("property");
-    propElement.SetAttribute("name", xfbPropName.mb_str(wxConvUTF8));
-    auto* propertyElement = m_xfbElement ? m_xfbElement->InsertNewChildElement("property") : nullptr;
-    if (propertyElement) XMLUtils::SetAttribute(propertyElement, "name", xfbPropName);
-
+    auto* propertyElement = m_xfbElement->InsertNewChildElement("property");
+    XMLUtils::SetAttribute(propertyElement, "name", xfbPropName);
     switch (propType) {
         case Type::Size:
         case Type::Point:
         case Type::Bool:
-            if (m_xrcObj) ImportTextProperty(xrcPropName, &propElement);
-            if (propertyElement) SetTextProperty(propertyElement, xrcPropName);
+            SetTextProperty(propertyElement, xrcPropName);
             break;
         case Type::Text:
-            if (m_xrcObj) ImportTextProperty(xrcPropName, &propElement, true);
-            if (propertyElement) SetTextProperty(propertyElement, xrcPropName, true);
+            SetTextProperty(propertyElement, xrcPropName, true);
             break;
         case Type::Integer:
-            if (m_xrcObj) ImportIntegerProperty(xrcPropName, &propElement);
-            if (propertyElement) SetIntegerProperty(propertyElement, xrcPropName);
+            SetIntegerProperty(propertyElement, xrcPropName);
             break;
         case Type::Float:
-            if (m_xrcObj) ImportFloatProperty(xrcPropName, &propElement);
-            if (propertyElement) SetFloatProperty(propertyElement, xrcPropName);
+            SetFloatProperty(propertyElement, xrcPropName);
             break;
         case Type::BitList:
-            if (m_xrcObj) ImportBitlistProperty(xrcPropName, &propElement);
-            if (propertyElement) SetBitlistProperty(propertyElement, xrcPropName);
+            SetBitlistProperty(propertyElement, xrcPropName);
             break;
         case Type::Colour:
-            if (m_xrcObj) ImportColourProperty(xrcPropName, &propElement);
-            if (propertyElement) SetColourProperty(propertyElement, xrcPropName);
+            SetColourProperty(propertyElement, xrcPropName);
             break;
         case Type::Font:
-            if (m_xrcObj) ImportFontProperty(xrcPropName, &propElement);
-            if (propertyElement) SetFontProperty(propertyElement, xrcPropName);
+            SetFontProperty(propertyElement, xrcPropName);
             break;
         case Type::StringList:
-            if (m_xrcObj) ImportStringListProperty(xrcPropName, &propElement, true);
-            if (propertyElement) SetStringListProperty(propertyElement, xrcPropName, true);
+            SetStringListProperty(propertyElement, xrcPropName, true);
             break;
         case Type::Bitmap:
-            if (m_xrcObj) ImportBitmapProperty(xrcPropName, &propElement);
-            if (propertyElement) SetBitmapProperty(propertyElement, xrcPropName);
+            SetBitmapProperty(propertyElement, xrcPropName);
             break;
     }
-
-    if (m_xfbObj) m_xfbObj->LinkEndChild(&propElement);
 }
 
 void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, const wxString& xfbPropName)
@@ -679,40 +481,16 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
 
 void XrcToXfbFilter::AddPropertyValue(const wxString& xfbPropName, const wxString& xfbPropValue, bool parseXrcText)
 {
-    ticpp::Element propElement("property");
-    propElement.SetAttribute("name", xfbPropName.mb_str(wxConvUTF8));
-    auto* propertyElement = m_xfbElement ? m_xfbElement->InsertNewChildElement("property") : nullptr;
-    if (propertyElement) XMLUtils::SetAttribute(propertyElement, "name", xfbPropName);
+    auto* propertyElement = m_xfbElement->InsertNewChildElement("property");
+    XMLUtils::SetAttribute(propertyElement, "name", xfbPropName);
 
     const auto& value = (parseXrcText ? XrcTextToString(xfbPropValue) : xfbPropValue);
-    propElement.SetText(value.mb_str(wxConvUTF8));
-    if (propertyElement) XMLUtils::SetText(propertyElement, value);
-
-    if (m_xfbObj) m_xfbObj->LinkEndChild(&propElement);
+    XMLUtils::SetText(propertyElement, value);
 }
 
 void XrcToXfbFilter::AddPropertyPair(
   const wxString& xrcPropName, const wxString& xfbPropName1, const wxString& xfbPropName2)
 {
-    if (m_xrcObj) {
-    try {
-        auto* pairProp = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-
-        wxString width;
-        wxString height;
-        wxStringTokenizer tkz(wxString(pairProp->GetText().c_str(), wxConvUTF8), ",");
-        if (tkz.HasMoreTokens()) {
-            width = tkz.GetNextToken();
-            if (tkz.HasMoreTokens()) {
-                height = tkz.GetNextToken();
-            }
-        }
-        AddPropertyValue(xfbPropName1, width);
-        AddPropertyValue(xfbPropName2, height);
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-    } else {
     const auto* propertyElement = m_xrcElement->FirstChildElement(xrcPropName.utf8_str());
     if (!propertyElement) {
         return;
@@ -722,7 +500,6 @@ void XrcToXfbFilter::AddPropertyPair(
     auto first = XMLUtils::GetText(propertyElement).BeforeFirst(',', &second);
     AddPropertyValue(xfbPropName1, first);
     AddPropertyValue(xfbPropName2, second);
-    }
 }
 
 
@@ -753,266 +530,9 @@ void XrcToXfbFilter::AddWindowProperties()
 
     // TODO: help
 
-    if (m_xrcObj) {
-    std::string subclass;
-    m_xrcObj->GetAttribute("subclass", &subclass, false);
-    if (!subclass.empty()) {
-        ticpp::Element propElement("property");
-        propElement.SetAttribute("name", "subclass");
-        propElement.SetText(subclass);
-        m_xfbObj->LinkEndChild(&propElement);
-    }
-    } else {
     auto subclass = XMLUtils::StringAttribute(m_xrcElement, "subclass");
     if (!subclass.empty()) {
         AddPropertyValue("subclass", subclass);
-    }
-    }
-}
-
-
-ticpp::Element* XrcToXfbFilter::GetXfbObject()
-{
-    return m_xfbObj->Clone().release()->ToElement();
-}
-
-
-void XrcToXfbFilter::ImportIntegerProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-        property->SetText(xrcProperty->GetText());
-    } catch (ticpp::Exception&) {
-        property->SetText("0");
-    }
-}
-
-void XrcToXfbFilter::ImportFloatProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-        property->SetText(xrcProperty->GetText());
-    } catch (ticpp::Exception&) {
-        property->SetText("0.0");
-    }
-}
-
-void XrcToXfbFilter::ImportTextProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-
-        // Convert XRC text to normal text
-        auto value = wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-        if (parseXrcText) {
-            value = XrcTextToString(value);
-        }
-
-        property->SetText(value.mb_str(wxConvUTF8));
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
-void XrcToXfbFilter::ImportBitmapProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-
-        if (!xrcProperty->GetAttribute("stock_id").empty() && !xrcProperty->GetAttribute("stock_client").empty()) {
-            // read wxArtProvider-based bitmap
-            wxString res = "Load From Art Provider";
-            res += ";";
-            res += wxString(xrcProperty->GetAttribute("stock_id").c_str(), wxConvUTF8);
-            res += ";";
-            res += wxString(xrcProperty->GetAttribute("stock_client").c_str(), wxConvUTF8);
-            property->SetText(res.Trim().mb_str(wxConvUTF8));
-        } else {
-            // read file-based bitmap
-            wxString res = "Load From File";
-            res += ";";
-            res += wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-            property->SetText(res.Trim().mb_str(wxConvUTF8));
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
-void XrcToXfbFilter::ImportColourProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-        auto value = xrcProperty->GetText();
-
-        // Changing "#rrggbb" format to "rrr,ggg,bbb"
-        std::string hexColour = "0x" + value.substr(1, 2) + " 0x" + value.substr(3, 2) + " 0x" + value.substr(5, 2);
-
-        std::istringstream strIn;
-        std::ostringstream strOut;
-        unsigned int red, green, blue;
-
-        strIn.str(hexColour);
-        strIn >> std::hex;
-
-        strIn >> red;
-        strIn >> green;
-        strIn >> blue;
-
-        strOut << red << "," << green << "," << blue;
-
-        property->SetText(strOut.str());
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
-void XrcToXfbFilter::ImportFontProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-
-        wxFontContainer font;
-
-        // the size
-        try {
-            auto* element = xrcProperty->FirstChildElement("size");
-            long size;
-            element->GetText(&size);
-            font.SetPointSize(size);
-        } catch (ticpp::Exception& ex) {
-            wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-        }
-
-        // the family
-        try {
-            auto* element = xrcProperty->FirstChildElement("family");
-            wxString family_str(element->GetText().c_str(), wxConvUTF8);
-
-            if (family_str == "decorative") {
-                font.SetFamily(wxFONTFAMILY_DECORATIVE);
-            } else if (family_str == "roman") {
-                font.SetFamily(wxFONTFAMILY_ROMAN);
-            } else if (family_str == "swiss") {
-                font.SetFamily(wxFONTFAMILY_SWISS);
-            } else if (family_str == "script") {
-                font.SetFamily(wxFONTFAMILY_SCRIPT);
-            } else if (family_str == "modern") {
-                font.SetFamily(wxFONTFAMILY_MODERN);
-            } else if (family_str == "teletype") {
-                font.SetFamily(wxFONTFAMILY_TELETYPE);
-            } else {
-                font.SetFamily(wxFONTFAMILY_DEFAULT);
-            }
-        } catch (ticpp::Exception&) {
-            font.SetFamily(wxFONTFAMILY_DEFAULT);
-        }
-
-        // the style
-        try {
-            auto* element = xrcProperty->FirstChildElement("style");
-            wxString style_str(element->GetText().c_str(), wxConvUTF8);
-
-            if (style_str == "slant") {
-                font.SetStyle(wxFONTSTYLE_SLANT);
-            } else if (style_str == "italic") {
-                font.SetStyle(wxFONTSTYLE_ITALIC);
-            } else {
-                font.SetStyle(wxFONTSTYLE_NORMAL);
-            }
-        } catch (ticpp::Exception&) {
-            font.SetStyle(wxFONTSTYLE_NORMAL);
-        }
-
-
-        // weight
-        try {
-            auto* element = xrcProperty->FirstChildElement("weight");
-            wxString weight_str(element->GetText().c_str(), wxConvUTF8);
-
-            if (weight_str == "light") {
-                font.SetWeight(wxFONTWEIGHT_LIGHT);
-            } else if (weight_str == "bold") {
-                font.SetWeight(wxFONTWEIGHT_BOLD);
-            } else {
-                font.SetWeight(wxFONTWEIGHT_NORMAL);
-            }
-        } catch (ticpp::Exception&) {
-            font.SetWeight(wxFONTWEIGHT_NORMAL);
-        }
-
-        // underlined
-        try {
-            auto* element = xrcProperty->FirstChildElement("underlined");
-            wxString underlined_str(element->GetText().c_str(), wxConvUTF8);
-
-            if (underlined_str == "1") {
-                font.SetUnderlined(true);
-            } else {
-                font.SetUnderlined(false);
-            }
-        } catch (ticpp::Exception&) {
-            font.SetUnderlined(false);
-        }
-
-        // face
-        try {
-            auto* element = xrcProperty->FirstChildElement("face");
-            wxString face(element->GetText().c_str(), wxConvUTF8);
-            font.SetFaceName(face);
-        } catch (ticpp::Exception&) {
-            font.SetFaceName(wxEmptyString);
-        }
-
-        // We already have the font type. So we must now use the wxFB format
-        auto font_str = wxString::Format(
-          "%s,%i,%i,%i,%i,%i", font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize(),
-          font.GetFamily(), font.GetUnderlined());
-        property->SetText(font_str.mb_str(wxConvUTF8));
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
-void XrcToXfbFilter::ImportBitlistProperty(const wxString& xrcPropName, ticpp::Element* property)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-
-        auto bitlist = wxString(xrcProperty->GetText().c_str(), wxConvUTF8);
-        bitlist = ReplaceSynonymous(m_lib, bitlist);
-        property->SetText(bitlist.mb_str(wxConvUTF8));
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxString(ex.m_details.c_str(), wxConvUTF8));
-    }
-}
-
-void XrcToXfbFilter::ImportStringListProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText)
-{
-    try {
-        auto* xrcProperty = m_xrcObj->FirstChildElement(xrcPropName.mb_str(wxConvUTF8));
-        wxString res;
-
-        auto* element = xrcProperty->FirstChildElement("item", false);
-        while (element) {
-            try {
-                wxString value(element->GetText().c_str(), wxConvUTF8);
-                if (parseXrcText) {
-                    value = XrcTextToString(value);
-                }
-
-                res += '\"' + value + "\" ";
-            } catch (ticpp::Exception& ex) {
-                wxLogDebug(wxT("%s. line: %i"), wxString(ex.m_details.c_str(), wxConvUTF8).c_str(), __LINE__);
-            }
-
-            element = element->NextSiblingElement("item", false);
-        }
-
-        res.Trim();
-        property->SetText(res.mb_str(wxConvUTF8));
-    } catch (ticpp::Exception& ex) {
-        wxLogDebug(wxT("%s. line: %i"), wxString(ex.m_details.c_str(), wxConvUTF8).c_str(), __LINE__);
     }
 }
 

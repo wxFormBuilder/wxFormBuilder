@@ -31,10 +31,6 @@
 #include "component.h"
 
 
-namespace ticpp
-{
-class Element;
-}
 namespace tinyxml2
 {
 class XMLElement;
@@ -91,15 +87,11 @@ class ObjectToXrcFilter : public XrcFilter
 {
 public:
     ObjectToXrcFilter(
-      const IComponentLibrary* lib, const IObject* obj, const wxString& classname,
-      const wxString& objname = wxEmptyString);
-    ObjectToXrcFilter(
         tinyxml2::XMLElement* xrcElement,
         const IComponentLibrary* lib, const IObject* obj,
         std::optional<wxString> className = std::nullopt,
         std::optional<wxString> objectName = std::nullopt
     );
-    ~ObjectToXrcFilter();
 
     void AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType);
     void AddProperty(Type propType, const wxString& objPropName, const wxString& xrcPropName = wxEmptyString);
@@ -108,16 +100,7 @@ public:
 
     void AddWindowProperties();
 
-    ticpp::Element* GetXrcObject();
-
 private:
-    void LinkInteger(int integer, ticpp::Element* propElement);
-    void LinkFloat(double value, ticpp::Element* propElement);
-    void LinkText(const wxString& text, ticpp::Element* propElement, bool xrcFormat = false);
-    void LinkColour(const wxColour& colour, ticpp::Element* propElement);
-    void LinkFont(const wxFontContainer& font, ticpp::Element* propElement);
-    void LinkStringList(const wxArrayString& array, ticpp::Element* propElement, bool xrcFormat = false);
-
     void SetInteger(tinyxml2::XMLElement* element, int integer) const;
     void SetFloat(tinyxml2::XMLElement* element, double value) const;
     void SetText(tinyxml2::XMLElement* element, const wxString& text, bool xrcFormat = false) const;
@@ -129,7 +112,6 @@ private:
     const IComponentLibrary* m_lib;
     const IObject* m_obj;
 
-    ticpp::Element* m_xrcObj;
     tinyxml2::XMLElement* m_xrcElement;
 };
 
@@ -143,14 +125,12 @@ private:
 class XrcToXfbFilter : public XrcFilter
 {
 public:
-    XrcToXfbFilter(const IComponentLibrary* lib, const ticpp::Element* obj, const wxString& classname);
     XrcToXfbFilter(
         tinyxml2::XMLElement* xfbElement,
         const IComponentLibrary* lib, const tinyxml2::XMLElement* xrcElement,
         std::optional<wxString> className = std::nullopt,
         std::optional<wxString> objectName = std::nullopt
     );
-    ~XrcToXfbFilter();
 
     void AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType);
     void AddProperty(Type propType, const wxString& xrcPropName, const wxString& xfbPropName = wxEmptyString);
@@ -159,18 +139,7 @@ public:
 
     void AddWindowProperties();
 
-    ticpp::Element* GetXfbObject();
-
 private:
-    void ImportIntegerProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportFloatProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportTextProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText = false);
-    void ImportBitmapProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportColourProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportFontProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportBitlistProperty(const wxString& xrcPropName, ticpp::Element* property);
-    void ImportStringListProperty(const wxString& xrcPropName, ticpp::Element* property, bool parseXrcText = false);
-
     void SetIntegerProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetFloatProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetTextProperty(tinyxml2::XMLElement* element, const wxString& name, bool xrcFormat = false) const;
@@ -185,10 +154,8 @@ private:
 
 private:
     const IComponentLibrary* m_lib;
-    const ticpp::Element* m_xrcObj;
     const tinyxml2::XMLElement* m_xrcElement;
 
-    ticpp::Element* m_xfbObj;
     tinyxml2::XMLElement* m_xfbElement;
 };
 
