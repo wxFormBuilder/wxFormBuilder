@@ -220,7 +220,6 @@ target_link_libraries(wxFormBuilder_app
     wxFormBuilder::sdk_common
     wxWidgets::wxWidgets
     Boost::headers
-    ticpp::ticpp
     tinyxml2::tinyxml2
     md5::md5
     stack_trace::stack
