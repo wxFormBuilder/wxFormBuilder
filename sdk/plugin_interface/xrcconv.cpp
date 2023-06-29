@@ -155,9 +155,9 @@ ObjectToXrcFilter::ObjectToXrcFilter(
 }
 
 
-void ObjectToXrcFilter::AddProperty(const wxString& objPropName, const wxString& xrcPropName, Type propType)
+void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, const wxString& xrcPropName)
 {
-    auto* propertyElement = m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str());
+    auto* propertyElement = m_xrcElement->InsertNewChildElement(!xrcPropName.empty() ? xrcPropName.utf8_str() : objPropName.utf8_str());
     switch (propType) {
         case Type::Size:
         case Type::Point:
@@ -212,11 +212,6 @@ void ObjectToXrcFilter::AddProperty(const wxString& objPropName, const wxString&
     }
 }
 
-void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, const wxString& xrcPropName)
-{
-    AddProperty(objPropName, !xrcPropName.empty() ? xrcPropName : objPropName, propType);
-}
-
 void ObjectToXrcFilter::AddPropertyValue(const wxString& xrcPropName, const wxString& xrcPropValue, bool xrcFormat)
 {
     auto* propertyElement = m_xrcElement->InsertNewChildElement(xrcPropName.utf8_str());
@@ -235,10 +230,10 @@ void ObjectToXrcFilter::AddPropertyPair(
 void ObjectToXrcFilter::AddWindowProperties()
 {
     if (!m_obj->IsPropertyNull("pos")) {
-        AddProperty("pos", "pos", Type::Size);
+        AddProperty(Type::Size, "pos");
     }
     if (!m_obj->IsPropertyNull("size")) {
-        AddProperty("size", "size", Type::Size);
+        AddProperty(Type::Size, "size");
     }
 
     wxString style;
@@ -270,33 +265,33 @@ void ObjectToXrcFilter::AddWindowProperties()
     }
 
     if (!m_obj->IsPropertyNull("fg")) {
-        AddProperty("fg", "fg", Type::Colour);
+        AddProperty(Type::Colour, "fg");
     }
     // TODO: ownfg
     if (!m_obj->IsPropertyNull("bg")) {
-        AddProperty("bg", "bg", Type::Colour);
+        AddProperty(Type::Colour, "bg");
     }
     // TODO: ownbg
 
     if (!m_obj->IsPropertyNull("enabled") && m_obj->GetPropertyAsInteger("enabled") == 0) {
-        AddProperty("enabled", "enabled", Type::Bool);
+        AddProperty(Type::Bool, "enabled");
     }
     // TODO: This property does not exist in the data model
     //if (!m_obj->IsPropertyNull("focused")) {
     //    AddPropertyValue("focused", "0");
     //}
     if (!m_obj->IsPropertyNull("hidden") && m_obj->GetPropertyAsInteger("hidden") != 0) {
-        AddProperty("hidden", "hidden", Type::Bool);
+        AddProperty(Type::Bool, "hidden");
     }
 
     if (!m_obj->IsPropertyNull("tooltip")) {
-        AddProperty("tooltip", "tooltip", Type::Text);
+        AddProperty(Type::Text, "tooltip");
     }
 
     // TODO: variant
 
     if (!m_obj->IsPropertyNull("font")) {
-        AddProperty("font", "font", Type::Font);
+        AddProperty(Type::Font, "font");
     }
     // TODO: ownfont
 
@@ -437,10 +432,10 @@ XrcToXfbFilter::XrcToXfbFilter(
 }
 
 
-void XrcToXfbFilter::AddProperty(const wxString& xrcPropName, const wxString& xfbPropName, Type propType)
+void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, const wxString& xfbPropName)
 {
     auto* propertyElement = m_xfbElement->InsertNewChildElement("property");
-    XMLUtils::SetAttribute(propertyElement, "name", xfbPropName);
+    XMLUtils::SetAttribute(propertyElement, "name", !xfbPropName.empty() ? xfbPropName : xrcPropName);
     switch (propType) {
         case Type::Size:
         case Type::Point:
@@ -474,11 +469,6 @@ void XrcToXfbFilter::AddProperty(const wxString& xrcPropName, const wxString& xf
     }
 }
 
-void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, const wxString& xfbPropName)
-{
-    AddProperty(xrcPropName, !xfbPropName.empty() ? xfbPropName : xrcPropName, propType);
-}
-
 void XrcToXfbFilter::AddPropertyValue(const wxString& xfbPropName, const wxString& xfbPropValue, bool parseXrcText)
 {
     auto* propertyElement = m_xfbElement->InsertNewChildElement("property");
@@ -506,26 +496,26 @@ void XrcToXfbFilter::AddPropertyPair(
 void XrcToXfbFilter::AddWindowProperties()
 {
     // FIXME: Check existence of all properties before adding them
-    AddProperty("pos", "pos", Type::Point);
-    AddProperty("size", "size", Type::Size);
+    AddProperty(Type::Point, "pos");
+    AddProperty(Type::Size, "size");
 
     AddStyleProperty();
     AddExtraStyleProperty();
 
-    AddProperty("fg", "fg", Type::Colour);
+    AddProperty(Type::Colour, "fg");
     // TODO: ownfg
-    AddProperty("bg", "bg", Type::Colour);
+    AddProperty(Type::Colour, "bg");
     // TODO: ownbg
 
-    AddProperty("enabled", "enabled", Type::Bool);
+    AddProperty(Type::Bool, "enabled");
     // TODO: focused does not exist in the data model
-    AddProperty("hidden", "hidden", Type::Bool);
+    AddProperty(Type::Bool, "hidden");
 
-    AddProperty("tooltip", "tooltip", Type::Text);
+    AddProperty(Type::Text, "tooltip");
 
     // TODO: variant
 
-    AddProperty("font", "font", Type::Font);
+    AddProperty(Type::Font, "font");
     // TODO: ownfont
 
     // TODO: help
