@@ -26,19 +26,31 @@
 #ifndef RAD_BITMAPS_H
 #define RAD_BITMAPS_H
 
-#include <wx/wx.h>
+#include <map>
 
-
-const int ICON_SIZE = 22;
-const int TOOL_SIZE = 22;
-const int SMALL_ICON_SIZE = 14;
+#include <wx/bitmap.h>
+#include <wx/string.h>
 
 
 class AppBitmaps
 {
 public:
-    static wxBitmap GetBitmap(wxString iconname, unsigned int size = 0);
-    static void LoadBitmaps(wxString filepath, wxString iconpath);
+    enum class Size {
+        Default = -1,
+        Icon = 22,
+        Icon_Big = 32,
+        Icon_Medium = 16,
+        Icon_Small = 14,
+        Tool = 22,
+    };
+
+    static wxBitmap GetBitmap(const wxString& iconname, Size size = Size::Default);
+    static void LoadBitmaps(const wxString& filepath, const wxString& iconpath);
+
+    static int GetPixelSize(Size size);
+
+private:
+    static std::map<wxString, wxBitmap> m_bitmaps;
 };
 
 #endif  // RAD_BITMAPS_H

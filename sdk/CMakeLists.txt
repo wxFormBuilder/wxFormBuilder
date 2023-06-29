@@ -1,29 +1,65 @@
-#[[
-This file can be used as top level CMakeLists.txt file to build a wxFormBuilder plugin.
+add_library(wxFormBuilder_sdk_common STATIC)
+add_library(wxFormBuilder::sdk_common ALIAS wxFormBuilder_sdk_common)
+set_target_properties(wxFormBuilder_sdk_common PROPERTIES
+  OUTPUT_NAME "common"
+)
 
-This file should be added to a new repository, the wxFormBuilder project is required
-for building and should be added as a git submodule.
-]]
-cmake_minimum_required(VERSION 3.21)
+target_sources(wxFormBuilder_sdk_common
+  PRIVATE
+    common/xmlutils.cpp
+    common/xmlutils.h
+)
 
-project(wxFormBuilderSDK VERSION 1.0.0 LANGUAGES CXX)
+target_include_directories(wxFormBuilder_sdk_common
+  INTERFACE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+)
 
-# The wxFormBuilder project must be processed first.
-# This loads necessary CMake scripts and initializes internal variables.
-# Adjust the path to the actual location of the wxFormBuilder submodule.
-set(WXFB_BUILD_PLUGIN_HOST ON)
-add_subdirectory(wxFormBuilder)
+target_link_libraries(wxFormBuilder_sdk_common
+  PUBLIC
+    wxWidgets::wxWidgets
+    tinyxml2::tinyxml2
+)
 
-# Initialize the environment for building, this must be executed as first step.
-wxfb_configure_prebuild()
+set_target_properties(wxFormBuilder_sdk_common PROPERTIES FOLDER "Sdk")
+wxfb_target_source_groups(wxFormBuilder_sdk_common)
 
-# If you need to build external code or find libraries for your plugin, add such code here.
-# If you need to link against the wxWidgets library, use the target wxWidgets::wxWidgets
-# to use the same version used by wxFormBuilder.
 
-# Each plugin gets fully defined by wxfb_add_plugin(), for a reference of available parameters
-# refer to its documentation.
-wxfb_add_plugin(example)
+add_library(wxFormBuilder_sdk_plugin-interface STATIC)
+add_library(wxFormBuilder::sdk_plugin-interface ALIAS wxFormBuilder_sdk_plugin-interface)
+set_target_properties(wxFormBuilder_sdk_plugin-interface PROPERTIES
+  OUTPUT_NAME "plugin-interface"
+)
 
-# Perform postbuild configuration steps, this must be executed as last step.
-wxfb_configure_postbuild()
+target_sources(wxFormBuilder_sdk_plugin-interface
+  PRIVATE
+    plugin_interface/component.h
+    plugin_interface/fontcontainer.h
+    plugin_interface/plugin.cpp
+    plugin_interface/plugin.h
+    plugin_interface/xrcconv.cpp
+    plugin_interface/xrcconv.h
+    plugin_interface/forms/wizard.cpp
+    plugin_interface/forms/wizard.h
+    plugin_interface/forms/wizardbase.cpp
+    plugin_interface/forms/wizardbase.h
+)
+
+target_compile_definitions(wxFormBuilder_sdk_plugin-interface
+  INTERFACE
+    "$<$<IN_LIST:$<TARGET_PROPERTY:TYPE>,SHARED_LIBRARY;MODULE_LIBRARY>:BUILD_DLL>"
+)
+target_include_directories(wxFormBuilder_sdk_plugin-interface
+  INTERFACE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+)
+
+target_link_libraries(wxFormBuilder_sdk_plugin-interface
+  PUBLIC
+    wxFormBuilder::sdk_common
+    wxWidgets::wxWidgets
+    tinyxml2::tinyxml2
+)
+
+set_target_properties(wxFormBuilder_sdk_plugin-interface PROPERTIES FOLDER "Sdk")
+wxfb_target_source_groups(wxFormBuilder_sdk_plugin-interface)

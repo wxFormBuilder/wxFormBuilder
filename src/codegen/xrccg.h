@@ -26,30 +26,29 @@
 #ifndef CODEGEN_XRCCG_H
 #define CODEGEN_XRCCG_H
 
+#include <tinyxml2.h>
+
 #include "codegen/codegen.h"
 
-
-namespace ticpp
-{
-class Element;
-}
 
 /// XRC code generator.
 
 class XrcCodeGenerator : public CodeGenerator
 {
-private:
-    PCodeWriter m_cw;
-    std::vector<ticpp::Element*> m_contextMenus;
-
-    ticpp::Element* GetElement(PObjectBase obj, ticpp::Element* parent = NULL);
-
 public:
     /// Configures the code writer for the XML file.
     void SetWriter(PCodeWriter cw);
 
     /// Generates the XRC code for the project.
     bool GenerateCode(PObjectBase project) override;
+
+private:
+    tinyxml2::XMLElement* GetElement(PObjectBase object, tinyxml2::XMLElement* parent);
+
+private:
+    PCodeWriter m_cw;
+    tinyxml2::XMLDocument m_xrc{false, tinyxml2::PRESERVE_WHITESPACE};
+    std::vector<tinyxml2::XMLElement*> m_contextMenus;
 };
 
 #endif  // CODEGEN_XRCCG_H

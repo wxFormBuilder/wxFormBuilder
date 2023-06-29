@@ -25,58 +25,74 @@
 
 #include "bitmaps.h"
 
-#include <ticpp.h>
+#include <wx/intl.h>
+#include <wx/log.h>
 
-#include <default.xpm>
-
-#include "utils/stringutils.h"
-#include "utils/typeconv.h"
-#include "utils/wxfbexception.h"
+#include <plugin_interface/default.xpm>
+#include <common/xmlutils.h>
 
 
-static std::map<wxString, wxBitmap> m_bitmaps;
+std::map<wxString, wxBitmap> AppBitmaps::m_bitmaps;
 
 
-wxBitmap AppBitmaps::GetBitmap(wxString iconname, unsigned int size)
+wxBitmap AppBitmaps::GetBitmap(const wxString& iconname, Size size)
 {
-    std::map<wxString, wxBitmap>::iterator bitmap;
-    bitmap = m_bitmaps.find(iconname);
     wxBitmap bmp;
-    if (bitmap != m_bitmaps.end()) {
-        bmp = m_bitmaps[iconname];
+    if (auto bitmap = m_bitmaps.find(iconname); bitmap != m_bitmaps.end()) {
+        bmp = bitmap->second;
     } else {
-        bmp = m_bitmaps[wxT("unknown")];
+        bmp = m_bitmaps["unknown"];
     }
-    if (size != 0) {
-        // rescale it to requested size
-        if (bmp.GetWidth() != (int)size || bmp.GetHeight() != (int)size) {
-            wxImage image = bmp.ConvertToImage();
-            bmp = wxBitmap(image.Scale(size, size));
-        }
+    if (
+      size != Size::Default &&
+      (bmp.GetWidth() != static_cast<int>(size) || bmp.GetHeight() != static_cast<int>(size))) {
+        auto image = bmp.ConvertToImage();
+        bmp = wxBitmap(image.Scale(static_cast<int>(size), static_cast<int>(size)));
     }
+
     return bmp;
 }
 
-void AppBitmaps::LoadBitmaps(wxString filepath, wxString iconpath)
+void AppBitmaps::LoadBitmaps(const wxString& filepath, const wxString& iconpath)
 {
-    try {
-        m_bitmaps[wxT("unknown")] = wxBitmap(default_xpm);
+    m_bitmaps.insert_or_assign("unknown", wxBitmap(default_xpm));
 
-        ticpp::Document doc;
-        XMLUtils::LoadXMLFile(doc, true, filepath);
+    auto doc = XMLUtils::LoadXMLFile(filepath, true);
+    if (!doc) {
+        wxLogError(_("%s: Failed to open file"), filepath);
 
-        ticpp::Element* root = doc.FirstChildElement("icons");
-        ticpp::Element* elem = root->FirstChildElement("icon", false);
-        while (elem) {
-            wxString name = _WXSTR(elem->GetAttribute("name"));
-            wxString file = _WXSTR(elem->GetAttribute("file"));
-            m_bitmaps[name] = wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY);
-
-            elem = elem->NextSiblingElement("icon", false);
-        }
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_("Error loading images: %s"), _WXSTR(ex.m_details));
-    } catch (wxFBException& ex) {
-        wxLogError(_("Error loading images: %s"), ex.what());
+        return;
     }
+    if (doc->Error()) {
+        wxLogError(doc->ErrorStr());
+
+        return;
+    }
+    const auto* root = doc->FirstChildElement("icons");
+    if (!root) {
+        wxLogError(_("%s: Invalid root node"), filepath);
+
+        return;
+    }
+
+    for (const auto* icon = root->FirstChildElement("icon"); icon; icon = icon->NextSiblingElement("icon")) {
+        auto name = XMLUtils::StringAttribute(icon, "name");
+        if (name.empty()) {
+            wxLogError(_("%s: Empty icon name"), filepath);
+            continue;
+        }
+        auto file = XMLUtils::StringAttribute(icon, "file");
+        if (file.empty()) {
+            wxLogError(_("%s: Empty icon path"), filepath);
+            continue;
+        }
+
+        m_bitmaps.insert_or_assign(name, wxBitmap(iconpath + file, wxBITMAP_TYPE_ANY));
+    }
+}
+
+
+int AppBitmaps::GetPixelSize(Size size)
+{
+    return static_cast<int>(size);
 }

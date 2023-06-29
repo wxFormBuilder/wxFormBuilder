@@ -17,7 +17,7 @@ DerivePointerAlignment: false
 IncludeBlocks: Regroup
 IncludeCategories:
   # wxFormBuilder SDK
-  - Regex:           '^<(component\.h|fontcontainer\.h|plugin\.h|xrcconv\.h|forms/wizard\.h|default\.xpm)>'
+  - Regex:           '^<(common|plugin_interface)/'
     Priority:        5
   # Libraries
   - Regex:           '^<wx/wx.h>'
@@ -25,7 +25,7 @@ IncludeCategories:
     SortPriority:    1
   - Regex:           '^<(boost|md5|stack_trace|wx)/'
     Priority:        4
-  - Regex:           '^<ticpp'
+  - Regex:           '^<tinyxml2.h>'
     Priority:        4
   # C standard library headers
   - Regex:           '^<(cassert|ccomplex|cctype|cerrno|cfenv|cfloat|cinttypes|ciso646|climits|clocale|cmath|csetjmp|csignal|cstdalign|cstdarg|cstdatomic|cstdbool|cstddef|cstdint|cstdio|cstdlib|cstdnoreturn|cstring|ctgmath|cthreads|ctime|cuchar|cwchar|cwctype)>'

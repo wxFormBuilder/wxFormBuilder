@@ -35,10 +35,16 @@
 
 #include <list>
 
-#include <component.h>
+#include <plugin_interface/component.h>
 
 #include "model/types.h"
 #include "utils/wxfbdefs.h"
+
+
+namespace tinyxml2
+{
+class XMLElement;
+}
 
 
 class OptionList
@@ -234,11 +240,6 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-namespace ticpp
-{
-class Document;
-class Element;
-}  // namespace ticpp
 
 class ObjectBase : public IObject, public std::enable_shared_from_this<ObjectBase>
 {
@@ -262,9 +263,6 @@ protected:
 
     ObjectBaseVector& GetChildren() { return m_children; }
     PropertyMap& GetProperties() { return m_properties; }
-
-    // Crea un elemento del objeto
-    void SerializeObject(ticpp::Element* serializedElement);
 
     // devuelve el puntero "this"
     PObjectBase GetThis() { return shared_from_this(); }
@@ -387,7 +385,7 @@ public:
     /**
      * Obtiene el documento xml del arbol tomando como raíz el nodo actual.
      */
-    void Serialize(ticpp::Document* serializedDocument);
+    void Serialize(tinyxml2::XMLElement* element);
 
     /**
      * Añade un hijo al objeto.

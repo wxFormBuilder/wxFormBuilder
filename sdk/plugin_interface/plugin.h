@@ -108,8 +108,8 @@ public:
     void OnCreated([[maybe_unused]] wxObject* wxobject, [[maybe_unused]] wxWindow* wxparent) override {}
     void OnSelected([[maybe_unused]] wxObject* wxobject) override {}
 
-    ticpp::Element* ExportToXrc([[maybe_unused]] IObject* obj) override { return nullptr; }
-    ticpp::Element* ImportFromXrc([[maybe_unused]] ticpp::Element* xrcObj) override { return nullptr; }
+    tinyxml2::XMLElement* ExportToXrc([[maybe_unused]] tinyxml2::XMLElement* xrc, [[maybe_unused]] const IObject* obj) override { return nullptr; }
+    tinyxml2::XMLElement* ImportFromXrc([[maybe_unused]] tinyxml2::XMLElement* xfb, [[maybe_unused]] const tinyxml2::XMLElement* xrc) override { return nullptr; }
 
 private:
     /// Component type

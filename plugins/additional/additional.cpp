@@ -23,7 +23,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <ticpp.h>
 #include <wx/calctrl.h>
 #include <wx/clrpicker.h>
 #include <wx/dataview.h>
@@ -46,8 +45,9 @@
 #include <wx/timectrl.h>
 #include <wx/treelist.h>
 
-#include <plugin.h>
-#include <xrcconv.h>
+#include <common/xmlutils.h>
+#include <plugin_interface/plugin.h>
+#include <plugin_interface/xrcconv.h>
 
 #include "logo.xpm"
 #include "smiley.xpm"
@@ -70,22 +70,142 @@ public:
     ComponentEvtHandler(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
 
 protected:
-    void OnGridClick(wxGridEvent& event);
-    void OnGridColSize(wxGridSizeEvent& event);
-    void OnGridRowSize(wxGridSizeEvent& event);
-    void OnColourPickerColourChanged(wxColourPickerEvent& event);
-    void OnFontPickerFontChanged(wxFontPickerEvent& event);
-    void OnFilePickerFileChanged(wxFileDirPickerEvent& event);
-    void OnDirPickerDirChanged(wxFileDirPickerEvent& event);
-    void OnText(wxCommandEvent& event);
-    void OnGenericDirCtrlExpandItem(wxTreeEvent& event);
+    void OnGridClick([[maybe_unused]] wxGridEvent& event)
+    {
+        m_manager->SelectObject(m_window);
+        event.Skip();
+    }
+
+    void OnGridColSize([[maybe_unused]] wxGridSizeEvent& event)
+    {
+        wxGrid* grid = wxDynamicCast(m_window, wxGrid);
+        if (NULL == grid) {
+            return;
+        }
+
+        wxString sizes;
+        for (int i = 0; i < grid->GetNumberCols(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetColSize(i)); }
+        sizes = sizes.substr(0, sizes.length() - 1);
+
+        m_manager->ModifyProperty(m_window, _("column_sizes"), sizes, true);
+    }
+
+    void OnGridRowSize([[maybe_unused]] wxGridSizeEvent& event)
+    {
+        wxGrid* grid = wxDynamicCast(m_window, wxGrid);
+        if (NULL == grid) {
+            return;
+        }
+
+        wxString sizes;
+        for (int i = 0; i < grid->GetNumberRows(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetRowSize(i)); }
+        sizes = sizes.substr(0, sizes.length() - 1);
+
+        m_manager->ModifyProperty(m_window, _("row_sizes"), sizes, true);
+    }
+
+    void OnColourPickerColourChanged([[maybe_unused]] wxColourPickerEvent& event)
+    {
+        wxColourPickerCtrl* window = wxDynamicCast(m_window, wxColourPickerCtrl);
+        if (window != NULL) {
+            wxColour colour = window->GetColour();
+            m_manager->ModifyProperty(
+            window, _("colour"), wxString::Format(wxT("%d,%d,%d"), colour.Red(), colour.Green(), colour.Blue()));
+        }
+    }
+
+    void OnFontPickerFontChanged([[maybe_unused]] wxFontPickerEvent& event)
+    {
+        wxFontPickerCtrl* window = wxDynamicCast(m_window, wxFontPickerCtrl);
+        if (window != NULL) {
+            wxFont font = window->GetSelectedFont();
+            m_manager->ModifyProperty(
+            window, _("value"),
+            wxString::Format(
+                wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize()));
+        }
+    }
+
+    void OnFilePickerFileChanged([[maybe_unused]] wxFileDirPickerEvent& event)
+    {
+        wxFilePickerCtrl* window = wxDynamicCast(m_window, wxFilePickerCtrl);
+        if (window != NULL) {
+            m_manager->ModifyProperty(window, _("value"), window->GetPath());
+        }
+    }
+
+    void OnDirPickerDirChanged([[maybe_unused]] wxFileDirPickerEvent& event)
+    {
+        wxDirPickerCtrl* window = wxDynamicCast(m_window, wxDirPickerCtrl);
+        if (window != NULL) {
+            m_manager->ModifyProperty(window, _("value"), window->GetPath());
+        }
+    }
+
+    void OnText([[maybe_unused]] wxCommandEvent& event)
+    {
+        wxSearchCtrl* sc = wxDynamicCast(m_window, wxSearchCtrl);
+        if (sc != NULL) {
+            m_manager->ModifyProperty(m_window, _("value"), sc->GetValue());
+            sc->SetInsertionPointEnd();
+            sc->SetFocus();
+        }
+
+        event.Skip();
+    }
+
     // Enable folding for wxStyledTextCtrl
-    void OnMarginClick(wxStyledTextEvent& event);
-    void OnRibbonBarPageChanged(wxRibbonBarEvent& event);
-    DECLARE_EVENT_TABLE()
+    void OnMarginClick([[maybe_unused]] wxStyledTextEvent& event)
+    {
+        wxStyledTextCtrl* scintilla = wxDynamicCast(m_window, wxStyledTextCtrl);
+        if (scintilla != NULL) {
+            if (event.GetMargin() == 1) {
+                int lineClick = scintilla->LineFromPosition(event.GetPosition());
+                int levelClick = scintilla->GetFoldLevel(lineClick);
+                if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0) {
+                    scintilla->ToggleFold(lineClick);
+                }
+            }
+        }
+        event.Skip();
+    }
+
+    void OnRibbonBarPageChanged([[maybe_unused]] wxRibbonBarEvent& event)
+    {
+        if (m_window != event.GetEventObject()) {
+            return;
+        }
+
+        wxRibbonBar* rb = wxDynamicCast(event.GetEventObject(), wxRibbonBar);
+        if (rb == NULL) {
+            return;
+        }
+
+        int selPage = rb->GetActivePage();
+
+        size_t count = m_manager->GetChildCount(m_window);
+        for (size_t i = 0; i < count; i++) {
+            wxObject* wxChild = m_manager->GetChild(m_window, i);
+            IObject* iChild = m_manager->GetIObject(wxChild);
+            if (iChild) {
+                if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
+                    m_manager->ModifyProperty(wxChild, _("select"), wxT("1"), false);
+                } else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
+                    m_manager->ModifyProperty(wxChild, _("select"), wxT("0"), false);
+                }
+            }
+        }
+
+        // Select the corresponding ribbon page in the object tree
+        if (NULL != rb) {
+            m_manager->SelectObject(rb->GetPage(selPage));
+        }
+    }
+
+    wxDECLARE_EVENT_TABLE();
 };
 
-BEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(ComponentEvtHandler, wxEvtHandler)
 EVT_COLOURPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnColourPickerColourChanged)
 EVT_FONTPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFontPickerFontChanged)
 EVT_FILEPICKER_CHANGED(wxID_ANY, ComponentEvtHandler::OnFilePickerFileChanged)
@@ -101,7 +221,7 @@ EVT_GRID_ROW_SIZE(ComponentEvtHandler::OnGridRowSize)
 
 EVT_STC_MARGINCLICK(wxID_ANY, ComponentEvtHandler::OnMarginClick)
 EVT_RIBBONBAR_PAGE_CHANGED(wxID_ANY, ComponentEvtHandler::OnRibbonBarPageChanged)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 /**
 Event handler for events generated by wxGenericDirCtrl.
@@ -112,17 +232,23 @@ public:
     GenericDirCtrlEvtHandler(wxWindow* win, IManager* manager) : m_window(win), m_manager(manager) {}
 
 protected:
-    void OnGenericDirCtrlLeftClick(wxMouseEvent& event);
-    DECLARE_EVENT_TABLE()
+    void OnGenericDirCtrlLeftClick([[maybe_unused]] wxMouseEvent& event)
+    {
+        m_manager->SelectObject(m_window);
+        event.Skip();
+    }
+
+    wxDECLARE_EVENT_TABLE();
+
 private:
     wxWindow* m_window;
     IManager* m_manager;
 };
 
-BEGIN_EVENT_TABLE(GenericDirCtrlEvtHandler, wxEvtHandler)
+wxBEGIN_EVENT_TABLE(GenericDirCtrlEvtHandler, wxEvtHandler)
 // GenericDirCtrl also seems to ignore clicks
 EVT_LEFT_DOWN(GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick)
-END_EVENT_TABLE()
+wxEND_EVENT_TABLE()
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -137,18 +263,18 @@ public:
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxCalendarCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxCalendarCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 
@@ -163,18 +289,18 @@ public:
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxDatePickerCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxDatePickerCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 
@@ -189,21 +315,20 @@ public:
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxTimePickerCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxTimePickerCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
-
 
 class RichTextCtrlComponent : public ComponentBase
 {
@@ -361,20 +486,20 @@ public:
         return richText;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxRichTextCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxRichTextCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        return xfb;
     }
 };
 
@@ -394,21 +519,20 @@ public:
         return hw;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxHtmlWindow"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxHtmlWindow"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
-
 
 class ToggleButtonComponent : public ComponentBase, public wxEvtHandler
 {
@@ -470,50 +594,50 @@ public:
     }
 
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxToggleButton"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("markup"), _("markup"), XrcFilter::Type::Bool);
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        if (!obj->IsPropertyNull(_("disabled"))) {
-            xrc.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "markup");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        if (!obj->IsPropertyNull("disabled")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "disabled");
         }
-        if (!obj->IsPropertyNull(_("pressed"))) {
-            xrc.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("pressed")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         }
-        if (!obj->IsPropertyNull(_("focus"))) {
-            xrc.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("focus")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         }
-        if (!obj->IsPropertyNull(_("current"))) {
-            xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("current")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
-        if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("bitmapposition"), XrcFilter::Type::Text);
+        if (!obj->IsPropertyNull("position")) {
+            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
         }
-        if (!obj->IsPropertyNull(_("margins"))) {
-            xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+        if (!obj->IsPropertyNull("margins")) {
+            filter.AddProperty(XrcFilter::Type::Size, "margins");
         }
-        xrc.AddProperty(_("value"), _("checked"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
+        filter.AddProperty(XrcFilter::Type::Bool, "value", "checked");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxToggleButton"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        filter.AddProperty(_("markup"), _("markup"), XrcFilter::Type::Bool);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("bitmapposition"), _("position"), XrcFilter::Type::Text);
-        filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
-        filter.AddProperty(_("checked"), _("value"), XrcFilter::Type::Bool);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddProperty(XrcFilter::Type::Bool, "markup");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "disabled");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "current");
+        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Size, "margins");
+        filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
+        return xfb;
     }
 };
 
@@ -574,46 +698,46 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxBitmapToggleButton"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        if (!obj->IsPropertyNull(_("disabled"))) {
-            xrc.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        if (!obj->IsPropertyNull("disabled")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "disabled");
         }
-        if (!obj->IsPropertyNull(_("pressed"))) {
-            xrc.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("pressed")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         }
-        if (!obj->IsPropertyNull(_("focus"))) {
-            xrc.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("focus")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         }
-        if (!obj->IsPropertyNull(_("current"))) {
-            xrc.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
+        if (!obj->IsPropertyNull("current")) {
+            filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
-        if (!obj->IsPropertyNull(_("position"))) {
-            xrc.AddProperty(_("position"), _("bitmapposition"), XrcFilter::Type::Text);
+        if (!obj->IsPropertyNull("position")) {
+            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
         }
-        if (!obj->IsPropertyNull(_("margins"))) {
-            xrc.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
+        if (!obj->IsPropertyNull("margins")) {
+            filter.AddProperty(XrcFilter::Type::Size, "margins");
         }
-        xrc.AddProperty(_("value"), _("checked"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
+        filter.AddProperty(XrcFilter::Type::Bool, "value", "checked");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxBitmapToggleButton"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("disabled"), _("disabled"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("pressed"), _("pressed"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("focus"), _("focus"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("current"), _("current"), XrcFilter::Type::Bitmap);
-        filter.AddProperty(_("bitmapposition"), _("position"), XrcFilter::Type::Text);
-        filter.AddProperty(_("margins"), _("margins"), XrcFilter::Type::Size);
-        filter.AddProperty(_("checked"), _("value"), XrcFilter::Type::Bool);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Bitmap, "bitmap");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "disabled");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
+        filter.AddProperty(XrcFilter::Type::Bitmap, "current");
+        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Size, "margins");
+        filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
+        return xfb;
     }
 };
 
@@ -642,18 +766,18 @@ public:
         return tc;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxTreeCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxTreeCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 
@@ -672,26 +796,26 @@ public:
         return sb;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxScrollBar"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("thumbsize"), _("thumbsize"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("range"), _("range"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("pagesize"), _("pagesize"), XrcFilter::Type::Integer);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Integer, "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "thumbsize");
+        filter.AddProperty(XrcFilter::Type::Integer, "range");
+        filter.AddProperty(XrcFilter::Type::Integer, "pagesize");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxScrollBar"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("thumbsize"), _("thumbsize"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("range"), _("range"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("pagesize"), _("pagesize"), XrcFilter::Type::Integer);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Integer, "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "thumbsize");
+        filter.AddProperty(XrcFilter::Type::Integer, "range");
+        filter.AddProperty(XrcFilter::Type::Integer, "pagesize");
+        return xfb;
     }
 };
 
@@ -733,26 +857,26 @@ public:
         ComponentBase::Cleanup(obj);
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSpinCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("initial"), _("value"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("min"), _("min"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("max"), _("max"), XrcFilter::Type::Integer);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "min");
+        filter.AddProperty(XrcFilter::Type::Integer, "max");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSpinCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        filter.AddProperty(_("value"), _("initial"), XrcFilter::Type::Text);
-        filter.AddProperty(_("min"), _("min"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("max"), _("max"), XrcFilter::Type::Integer);
-
-        return filter.GetXfbObject();
+        // FIXME: Why is value filtered twice? What effect does this have?
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        filter.AddProperty(XrcFilter::Type::Integer, "min");
+        filter.AddProperty(XrcFilter::Type::Integer, "max");
+        return xfb;
     }
 };
 
@@ -796,30 +920,30 @@ public:
         ComponentBase::Cleanup(obj);
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSpinCtrlDouble"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("initial"), _("value"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("min"), _("min"), XrcFilter::Type::Float);
-        xrc.AddProperty(_("max"), _("max"), XrcFilter::Type::Float);
-        xrc.AddProperty(_("inc"), _("inc"), XrcFilter::Type::Float);
-        xrc.AddProperty(_("digits"), _("digits"), XrcFilter::Type::Integer);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Float, "min");
+        filter.AddProperty(XrcFilter::Type::Float, "max");
+        filter.AddProperty(XrcFilter::Type::Float, "inc");
+        filter.AddProperty(XrcFilter::Type::Integer, "digits");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSpinCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        filter.AddProperty(_("value"), _("initial"), XrcFilter::Type::Text);
-        filter.AddProperty(_("min"), _("min"), XrcFilter::Type::Float);
-        filter.AddProperty(_("max"), _("max"), XrcFilter::Type::Float);
-        filter.AddProperty(_("inc"), _("inc"), XrcFilter::Type::Float);
-        filter.AddProperty(_("digits"), _("digits"), XrcFilter::Type::Integer);
-
-        return filter.GetXfbObject();
+        // FIXME: Why is value filtered twice? What effect does this have?
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        filter.AddProperty(XrcFilter::Type::Float, "min");
+        filter.AddProperty(XrcFilter::Type::Float, "max");
+        filter.AddProperty(XrcFilter::Type::Float, "inc");
+        filter.AddProperty(XrcFilter::Type::Integer, "digits");
+        return xfb;
     }
 };
 
@@ -833,18 +957,18 @@ public:
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSpinButton"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSpinButton"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 
@@ -861,20 +985,20 @@ public:
         return cl;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxCheckListBox"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("choices"), _("content"), XrcFilter::Type::StringList);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxCheckListBox"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("content"), _("choices"), XrcFilter::Type::StringList);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        return xfb;
     }
 };
 
@@ -988,54 +1112,21 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxGrid"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxGrid"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 
-void ComponentEvtHandler::OnGridClick(wxGridEvent& event)
-{
-    m_manager->SelectObject(m_window);
-    event.Skip();
-}
-
-void ComponentEvtHandler::OnGridColSize(wxGridSizeEvent&)
-{
-    wxGrid* grid = wxDynamicCast(m_window, wxGrid);
-    if (NULL == grid) {
-        return;
-    }
-
-    wxString sizes;
-    for (int i = 0; i < grid->GetNumberCols(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetColSize(i)); }
-    sizes = sizes.substr(0, sizes.length() - 1);
-
-    m_manager->ModifyProperty(m_window, _("column_sizes"), sizes, true);
-}
-
-void ComponentEvtHandler::OnGridRowSize(wxGridSizeEvent&)
-{
-    wxGrid* grid = wxDynamicCast(m_window, wxGrid);
-    if (NULL == grid) {
-        return;
-    }
-
-    wxString sizes;
-    for (int i = 0; i < grid->GetNumberRows(); ++i) { sizes += wxString::Format(wxT("%i,"), grid->GetRowSize(i)); }
-    sizes = sizes.substr(0, sizes.length() - 1);
-
-    m_manager->ModifyProperty(m_window, _("row_sizes"), sizes, true);
-}
 
 class PickerComponentBase : public ComponentBase, public wxEvtHandler
 {
@@ -1104,32 +1195,22 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxColourPickerCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("colour"), _("value"), XrcFilter::Type::Colour);
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Colour, "colour", "value");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxColourPickerCtrl"));
-        filter.AddProperty(_("value"), _("colour"), XrcFilter::Type::Colour);
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Colour, "value", "colour");
+        return xfb;
     }
 };
-
-void ComponentEvtHandler::OnColourPickerColourChanged(wxColourPickerEvent&)
-{
-    wxColourPickerCtrl* window = wxDynamicCast(m_window, wxColourPickerCtrl);
-    if (window != NULL) {
-        wxColour colour = window->GetColour();
-        m_manager->ModifyProperty(
-          window, _("colour"), wxString::Format(wxT("%d,%d,%d"), colour.Red(), colour.Green(), colour.Blue()));
-    }
-}
 
 class FontPickerComponent : public PickerComponentBase
 {
@@ -1157,36 +1238,24 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxFontPickerCtrl"), obj->GetPropertyAsString(_("name")));
-        if (!obj->IsPropertyNull(_("value"))) {
-            xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Font);
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        if (!obj->IsPropertyNull("value")) {
+            filter.AddProperty(XrcFilter::Type::Font, "value");
         }
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxFontPickerCtrl"));
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Font);
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Font, "value");
+        return xfb;
     }
 };
-
-void ComponentEvtHandler::OnFontPickerFontChanged(wxFontPickerEvent&)
-{
-    wxFontPickerCtrl* window = wxDynamicCast(m_window, wxFontPickerCtrl);
-    if (window != NULL) {
-        wxFont font = window->GetSelectedFont();
-        m_manager->ModifyProperty(
-          window, _("value"),
-          wxString::Format(
-            wxT("%s,%d,%d,%d"), font.GetFaceName().c_str(), font.GetStyle(), font.GetWeight(), font.GetPointSize()));
-    }
-}
 
 class FilePickerComponent : public PickerComponentBase
 {
@@ -1211,34 +1280,26 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxFilePickerCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("message"), _("message"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("wildcard"), _("wildcard"), XrcFilter::Type::Text);
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "message");
+        filter.AddProperty(XrcFilter::Type::Text, "wildcard");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxFilePickerCtrl"));
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        filter.AddProperty(_("message"), _("message"), XrcFilter::Type::Text);
-        filter.AddProperty(_("wildcard"), _("wildcard"), XrcFilter::Type::Text);
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "message");
+        filter.AddProperty(XrcFilter::Type::Text, "wildcard");
+        return xfb;
     }
 };
-
-void ComponentEvtHandler::OnFilePickerFileChanged(wxFileDirPickerEvent&)
-{
-    wxFilePickerCtrl* window = wxDynamicCast(m_window, wxFilePickerCtrl);
-    if (window != NULL) {
-        m_manager->ModifyProperty(window, _("value"), window->GetPath());
-    }
-}
 
 class DirPickerComponent : public PickerComponentBase
 {
@@ -1262,32 +1323,24 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxDirPickerCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("message"), _("message"), XrcFilter::Type::Text);
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "message");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxDirPickerCtrl"));
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        filter.AddProperty(_("message"), _("message"), XrcFilter::Type::Text);
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::Text, "message");
+        return xfb;
     }
 };
-
-void ComponentEvtHandler::OnDirPickerDirChanged(wxFileDirPickerEvent&)
-{
-    wxDirPickerCtrl* window = wxDynamicCast(m_window, wxDirPickerCtrl);
-    if (window != NULL) {
-        m_manager->ModifyProperty(window, _("value"), window->GetPath());
-    }
-}
 
 class HyperlinkComponent : public ComponentBase
 {
@@ -1312,30 +1365,24 @@ public:
         return ctrl;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxHyperlinkCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddPropertyValue(_("url"), obj->GetPropertyAsString(_("url")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        filter.AddPropertyValue("url", obj->GetPropertyAsString("url"));
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxHyperlinkCtrl"));
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-
-        try {
-            ticpp::Element* urlElement = xrcObj->FirstChildElement("url");
-            wxString url(urlElement->GetText().c_str(), wxConvUTF8);
-
-            filter.AddPropertyValue(_("url"), url);
-        } catch (ticpp::Exception&) {
-        }
-
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "label");
+        if (const auto* urlElement = xrc->FirstChildElement("url")) {
+            filter.AddPropertyValue("url", XMLUtils::GetText(urlElement));
+        }
+        return xfb;
     }
 };
 
@@ -1363,32 +1410,26 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxGenericDirCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddProperty(_("defaultfolder"), _("defaultfolder"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("filter"), _("filter"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("defaultfilter"), _("defaultfilter"), XrcFilter::Type::Integer);
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::Text, "filter");
+        filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxGenericDirCtrl"));
-        filter.AddProperty(_("defaultfolder"), _("defaultfolder"), XrcFilter::Type::Text);
-        filter.AddProperty(_("filter"), _("filter"), XrcFilter::Type::Text);
-        filter.AddProperty(_("defaultfilter"), _("defaultfilter"), XrcFilter::Type::Integer);
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::Text, "filter");
+        filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
+        return xfb;
     }
 };
-
-void GenericDirCtrlEvtHandler::OnGenericDirCtrlLeftClick(wxMouseEvent& event)
-{
-    m_manager->SelectObject(m_window);
-    event.Skip();
-}
 
 class CustomControlComponent : public ComponentBase
 {
@@ -1398,10 +1439,10 @@ public:
         return new wxPanel((wxWindow*)parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0);
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, obj->GetPropertyAsString(_("class")), obj->GetPropertyAsString(_("name")));
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj, obj->GetPropertyAsString("class"));
+        return xrc;
     }
 };
 
@@ -1440,34 +1481,22 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSearchCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSearchCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(_("value"), _("value"), XrcFilter::Type::Text);
-        return filter.GetXfbObject();
+        filter.AddProperty(XrcFilter::Type::Text, "value");
+        return xfb;
     }
 };
-
-void ComponentEvtHandler::OnText(wxCommandEvent& event)
-{
-    wxSearchCtrl* sc = wxDynamicCast(m_window, wxSearchCtrl);
-    if (sc != NULL) {
-        m_manager->ModifyProperty(m_window, _("value"), sc->GetValue());
-        sc->SetInsertionPointEnd();
-        sc->SetFocus();
-    }
-
-    event.Skip();
-}
 
 #ifdef USE_MEDIACTRL
 class MediaCtrlComponent : public ComponentBase
@@ -1523,18 +1552,18 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxMediaCtrl"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxMediaCtrl"));
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        return filter.GetXfbObject();
+        return xfb;
     }
 };
 #endif
@@ -1880,21 +1909,6 @@ public:
     }
 };
 
-void ComponentEvtHandler::OnMarginClick(wxStyledTextEvent& event)
-{
-    wxStyledTextCtrl* scintilla = wxDynamicCast(m_window, wxStyledTextCtrl);
-    if (scintilla != NULL) {
-        if (event.GetMargin() == 1) {
-            int lineClick = scintilla->LineFromPosition(event.GetPosition());
-            int levelClick = scintilla->GetFoldLevel(lineClick);
-            if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0) {
-                scintilla->ToggleFold(lineClick);
-            }
-        }
-    }
-    event.Skip();
-}
-
 class DataViewModel : public wxDataViewModel
 {
 public:
@@ -2007,7 +2021,6 @@ public:
     }
 };
 
-
 class DataViewTreeCtrl : public ComponentBase
 {
 public:
@@ -2103,8 +2116,6 @@ class DataViewColumn : public ComponentBase
 {
 };
 
-
-///////////////////////////////////////////////////////////////////////////////
 class wxcoreTreeListCtrlComponent : public ComponentBase
 {
 public:
@@ -2223,38 +2234,6 @@ class RibbonBarComponent : public ComponentBase
         rb->Realize();
     }
 };
-
-void ComponentEvtHandler::OnRibbonBarPageChanged(wxRibbonBarEvent& event)
-{
-    if (m_window != event.GetEventObject()) {
-        return;
-    }
-
-    wxRibbonBar* rb = wxDynamicCast(event.GetEventObject(), wxRibbonBar);
-    if (rb == NULL) {
-        return;
-    }
-
-    int selPage = rb->GetActivePage();
-
-    size_t count = m_manager->GetChildCount(m_window);
-    for (size_t i = 0; i < count; i++) {
-        wxObject* wxChild = m_manager->GetChild(m_window, i);
-        IObject* iChild = m_manager->GetIObject(wxChild);
-        if (iChild) {
-            if (int(i) == selPage && iChild->GetPropertyAsInteger(_("select")) == 0) {
-                m_manager->ModifyProperty(wxChild, _("select"), wxT("1"), false);
-            } else if (int(i) != selPage && iChild->GetPropertyAsInteger(_("select")) != 0) {
-                m_manager->ModifyProperty(wxChild, _("select"), wxT("0"), false);
-            }
-        }
-    }
-
-    // Select the corresponding ribbon page in the object tree
-    if (NULL != rb) {
-        m_manager->SelectObject(rb->GetPage(selPage));
-    }
-}
 
 class RibbonPageComponent : public ComponentBase
 {
@@ -2435,12 +2414,15 @@ class RibbonToolBarComponent : public ComponentBase
 class RibbonToolComponent : public ComponentBase
 {
 };
+
 class RibbonDropdownToolComponent : public ComponentBase
 {
 };
+
 class RibbonHybridToolComponent : public ComponentBase
 {
 };
+
 class RibbonToggleToolComponent : public ComponentBase
 {
 };
@@ -2612,10 +2594,8 @@ MACRO(wxDP_SHOWCENTURY)
 MACRO(wxDP_ALLOWNONE)
 MACRO(wxDP_DEFAULT)
 
-
 // wxTimePickerCtrl
 MACRO(wxTP_DEFAULT)
-
 
 // wxHtmlWindow
 MACRO(wxHW_SCROLLBAR_NEVER)
@@ -2754,7 +2734,6 @@ MACRO(wxRIBBON_PANEL_EXT_BUTTON)
 MACRO(wxRIBBON_PANEL_MINIMISE_BUTTON)
 MACRO(wxRIBBON_PANEL_STRETCH)
 MACRO(wxRIBBON_PANEL_FLEXIBLE)
-
 
 // wxTreeListCtrl
 WINDOW_COMPONENT("wxTreeListCtrl", wxcoreTreeListCtrlComponent)

@@ -34,9 +34,9 @@
 #include "fontcontainer.h"
 
 
-namespace ticpp
+namespace tinyxml2
 {
-class Element;
+class XMLElement;
 }
 class IComponentLibrary;
 
@@ -243,19 +243,21 @@ public:
     /**
      * @brief Export object properties into a XRC node
      *
+     * @param xrc Target node, must be an empty node
      * @param obj Object properties
-     * @return The created XRC node, the caller gets ownership of the object
+     * @return On success, xrc is returned, otherwise nullptr
      */
-    virtual ticpp::Element* ExportToXrc(IObject* obj) = 0;
+    virtual tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) = 0;
     /**
      * @brief Import object properties from a XRC node
      *
      * The properties are converted into a XML node of a wxFormBuilder project file
      *
-     * @param xrcObj XRC node
-     * @return wxFormBuilder project file XML node, the caller gets ownership of the object
+     * @param xfb Target node, must be an empty node
+     * @param xrc XRC node
+     * @return On success, xfb is returned, otherwise nullptr
      */
-    virtual ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) = 0;
+    virtual tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) = 0;
 };
 
 

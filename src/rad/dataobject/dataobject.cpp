@@ -24,45 +24,100 @@
 
 #include "dataobject.h"
 
-#include <ticpp.h>
+#include <cstring>
+
+#include <tinyxml2.h>
 
 #include "model/objectbase.h"
 #include "rad/appdata.h"
-#include "utils/typeconv.h"
+#include "utils/wxfbexception.h"
 
 
-wxFBDataObject::wxFBDataObject(PObjectBase obj)
+wxDataFormat wxFBDataObject::DataObjectFormat()
 {
-    if (obj) {
-        // create xml representation of ObjectBase
-        ticpp::Element element;
-        obj->SerializeObject(&element);
+    static const auto format = wxDataFormat("wxFormBuilderDataFormat");
 
-        // add version info to xml data, just in case it is pasted into a different version of wxFB
-        element.SetAttribute("fbp_version_major", AppData()->m_fbpVerMajor);
-        element.SetAttribute("fbp_version_minor", AppData()->m_fbpVerMinor);
-
-        ticpp::Document doc;
-        doc.LinkEndChild(&element);
-        TiXmlPrinter printer;
-        printer.SetIndent("\t");
-
-        printer.SetLineBreak("\n");
-
-        doc.Accept(&printer);
-        m_data = printer.Str();
-    }
+    return format;
 }
+
+
+wxFBDataObject::wxFBDataObject(PObjectBase object)
+{
+    if (!object) {
+        return;
+    }
+
+    tinyxml2::XMLDocument doc(false, tinyxml2::PRESERVE_WHITESPACE);
+    auto* root = doc.NewElement("");
+    doc.InsertEndChild(root);
+
+    object->Serialize(root);
+    root->SetAttribute("fbp_version_major", static_cast<int>(AppData()->m_fbpVerMajor));
+    root->SetAttribute("fbp_version_minor", static_cast<int>(AppData()->m_fbpVerMinor));
+
+    tinyxml2::XMLPrinter printer(nullptr, true, 0);
+    doc.Print(&printer);
+    m_data = printer.CStr();
+    wxLogDebug("wxFBDataObject::wxFBDataObject() %s", m_data.c_str());
+}
+
+
+PObjectBase wxFBDataObject::GetObject() const
+{
+    if (m_data.empty()) {
+        return PObjectBase();
+    }
+    wxLogDebug("wxFBDataObject::GetObj(): %s", m_data.c_str());
+
+    tinyxml2::XMLDocument doc(false, tinyxml2::PRESERVE_WHITESPACE);
+    if (doc.Parse(m_data.data(), m_data.size()) != tinyxml2::XML_SUCCESS) {
+        wxLogError(_("Failed to parse wxFormBuilderDataFormat: %s"), doc.ErrorStr());
+
+        return PObjectBase();
+    }
+    auto* root = doc.FirstChildElement();
+    if (!root) {
+        wxLogError(_("wxFormBuilderDataFormat: Missing root node"));
+
+        return PObjectBase();
+    }
+
+    auto versionMajor = root->IntAttribute("fbp_version_major", -1);
+    auto versionMinor = root->IntAttribute("fbp_version_minor", -1);
+    if (versionMajor < 0 || versionMinor < 0) {
+        wxLogError(_("wxFormBuilderDataFormat: Invalid version %i.%i"), versionMajor, versionMinor);
+
+        return PObjectBase();
+    }
+
+    if (
+        versionMajor > AppData()->m_fbpVerMajor ||
+        (versionMajor == AppData()->m_fbpVerMajor && versionMinor > AppData()->m_fbpVerMinor)
+    ) {
+        wxLogError(_("wxFormBuilderDataFormat: This object cannot be pasted because it is from a newer version of wxFormBuilder"));
+
+        return PObjectBase();
+    }
+    if (
+        versionMajor < AppData()->m_fbpVerMajor ||
+        (versionMajor == AppData()->m_fbpVerMajor && versionMinor < AppData()->m_fbpVerMinor)
+    ) {
+        AppData()->ConvertObject(root, versionMajor, versionMinor);
+    }
+
+    return AppData()->GetObjectDatabase()->CreateObject(root);
+}
+
 
 void wxFBDataObject::GetAllFormats(wxDataFormat* formats, Direction dir) const
 {
     switch (dir) {
         case Get:
-            formats[0] = wxFBDataObjectFormat;
+            formats[0] = DataObjectFormat();
             formats[1] = wxDF_TEXT;
             break;
         case Set:
-            formats[0] = wxFBDataObjectFormat;
+            formats[0] = DataObjectFormat();
             break;
         default:
             break;
@@ -71,18 +126,18 @@ void wxFBDataObject::GetAllFormats(wxDataFormat* formats, Direction dir) const
 
 bool wxFBDataObject::GetDataHere(const wxDataFormat&, void* buf) const
 {
-    if (NULL == buf) {
+    if (!buf) {
         return false;
     }
 
-    memcpy((char*)buf, m_data.c_str(), m_data.length());
+    std::memcpy(buf, m_data.data(), m_data.size());
 
     return true;
 }
 
-size_t wxFBDataObject::GetDataSize(const wxDataFormat& /*format*/) const
+size_t wxFBDataObject::GetDataSize([[maybe_unused]] const wxDataFormat& format) const
 {
-    return m_data.length();
+    return m_data.size();
 }
 
 size_t wxFBDataObject::GetFormatCount(Direction dir) const
@@ -97,52 +152,18 @@ size_t wxFBDataObject::GetFormatCount(Direction dir) const
     }
 }
 
-wxDataFormat wxFBDataObject::GetPreferredFormat(Direction /*dir*/) const
+wxDataFormat wxFBDataObject::GetPreferredFormat([[maybe_unused]] Direction dir) const
 {
-    return wxFBDataObjectFormat;
+    return DataObjectFormat();
 }
 
 bool wxFBDataObject::SetData(const wxDataFormat& format, size_t len, const void* buf)
 {
-    if (format != wxFBDataObjectFormat) {
+    if (format != DataObjectFormat()) {
         return false;
     }
 
     m_data.assign(reinterpret_cast<const char*>(buf), len);
+
     return true;
-}
-
-PObjectBase wxFBDataObject::GetObj()
-{
-    if (m_data.empty()) {
-        return PObjectBase();
-    }
-
-    // Read Object from xml
-    try {
-        ticpp::Document doc;
-        doc.Parse(m_data, true, TIXML_ENCODING_UTF8);
-        ticpp::Element* element = doc.FirstChildElement();
-
-
-        int major, minor;
-        element->GetAttribute("fbp_version_major", &major);
-        element->GetAttribute("fbp_version_minor", &minor);
-
-        if (
-          major > AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor > AppData()->m_fbpVerMinor)) {
-            wxLogError(_("This object cannot be pasted because it is from a newer version of wxFormBuilder"));
-        }
-
-        if (
-          major < AppData()->m_fbpVerMajor || (AppData()->m_fbpVerMajor == major && minor < AppData()->m_fbpVerMinor)) {
-            AppData()->ConvertObject(element, major, minor);
-        }
-
-        PObjectDatabase db = AppData()->GetObjectDatabase();
-        return db->CreateObject(element);
-    } catch (ticpp::Exception& ex) {
-        wxLogError(_WXSTR(ex.m_details));
-        return PObjectBase();
-    }
 }

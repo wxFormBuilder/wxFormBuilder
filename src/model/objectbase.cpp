@@ -25,8 +25,9 @@
 
 #include "objectbase.h"
 
-#include <ticpp.h>
 #include <wx/tokenzr.h>
+
+#include <common/xmlutils.h>
 
 #include "rad/appdata.h"
 #include "utils/debug.h"
@@ -521,64 +522,41 @@ int ObjectBase::Deep()
 //   return s;
 // }
 
-void ObjectBase::SerializeObject(ticpp::Element* serializedElement)
+void ObjectBase::Serialize(tinyxml2::XMLElement* element)
 {
-    ticpp::Element element("object");
-    element.SetAttribute("class", _STDSTR(GetClassName()));
-    element.SetAttribute("expanded", GetExpanded());
+    element->SetName("object");
+    XMLUtils::SetAttribute(element, "class", GetClassName());
+    element->SetAttribute("expanded", GetExpanded());
 
-    for (unsigned int i = 0; i < GetPropertyCount(); i++) {
-        PProperty prop = GetProperty(i);
-        ticpp::Element prop_element("property");
-        prop_element.SetAttribute("name", _STDSTR(prop->GetName()));
-        prop_element.SetText(_STDSTR(prop->GetValue()));
-        element.LinkEndChild(&prop_element);
+    for (unsigned int i = 0; i < GetPropertyCount(); ++i) {
+        auto property = GetProperty(i);
+        const auto& propertyValue = property->GetValue();
+        // TODO: Why can't empty properties also be dropped? When is empty != default? See Issue #467.
+
+        auto* propertyElement = element->InsertNewChildElement("property");
+        XMLUtils::SetAttribute(propertyElement, "name", property->GetName());
+        XMLUtils::SetText(propertyElement, propertyValue);
     }
 
-    for (unsigned int i = 0; i < GetEventCount(); i++) {
-        PEvent event = GetEvent(i);
-        const std::string callback(event->GetValue().ToUTF8());
-        if (callback.empty()) {
-            continue;  // skip, because there's no event attached (see issue #467)
+    for (unsigned int i = 0; i < GetEventCount(); ++i) {
+        auto event = GetEvent(i);
+        const auto& eventValue = event->GetValue();
+        // Drop empty handlers to reduce size of XML, this means empty == no handler
+        if (eventValue.empty()) {
+            continue;
         }
-        ticpp::Element event_element("event");
-        event_element.SetAttribute("name", _STDSTR(event->GetName()));
-        event_element.SetText(callback);
-        element.LinkEndChild(&event_element);
+
+        auto *eventElement = element->InsertNewChildElement("event");
+        XMLUtils::SetAttribute(eventElement, "name", event->GetName());
+        XMLUtils::SetText(eventElement, eventValue);
     }
 
-    for (unsigned int i = 0; i < GetChildCount(); i++) {
-        PObjectBase child = GetChild(i);
-        ticpp::Element child_element;
-        child->SerializeObject(&child_element);
-        element.LinkEndChild(&child_element);
+    for (unsigned int i = 0; i < GetChildCount(); ++i) {
+        auto child = GetChild(i);
+
+        auto* childElement = element->InsertNewChildElement("");
+        child->Serialize(childElement);
     }
-
-    *serializedElement = element;
-}
-
-void ObjectBase::Serialize(ticpp::Document* serializedDocument)
-{
-    ticpp::Document document("document");
-
-    ticpp::Declaration dec("1.0", "UTF-8", "yes");
-    document.LinkEndChild(&dec);
-
-    ticpp::Element root("wxFormBuilder_Project");
-
-    ticpp::Element fileVersion("FileVersion");
-    fileVersion.SetAttribute("major", AppData()->m_fbpVerMajor);
-    fileVersion.SetAttribute("minor", AppData()->m_fbpVerMinor);
-
-    root.LinkEndChild(&fileVersion);
-
-    ticpp::Element element;
-    SerializeObject(&element);
-
-    root.LinkEndChild(&element);
-    document.LinkEndChild(&root);
-
-    *serializedDocument = document;
 }
 
 unsigned int ObjectBase::GetChildPosition(PObjectBase obj)

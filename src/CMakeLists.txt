@@ -131,6 +131,7 @@ target_sources(wxFormBuilder_app
     utils/filetocarray.cpp
     utils/filetocarray.h
     utils/m_wxfb.cpp
+    utils/scopeexit.h
     utils/stringutils.cpp
     utils/stringutils.h
     utils/typeconv.cpp
@@ -215,10 +216,11 @@ target_include_directories(wxFormBuilder_app
 
 target_link_libraries(wxFormBuilder_app
   PRIVATE
-    wxFormBuilder::plugin-interface
+    wxFormBuilder::sdk_plugin-interface
+    wxFormBuilder::sdk_common
     wxWidgets::wxWidgets
     Boost::headers
-    ticpp::ticpp
+    tinyxml2::tinyxml2
     md5::md5
     stack_trace::stack
 )

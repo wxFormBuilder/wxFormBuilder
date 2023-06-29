@@ -41,9 +41,9 @@ class PropertyCategory;
 
 typedef std::shared_ptr<ObjectDatabase> PObjectDatabase;
 
-namespace ticpp
+namespace tinyxml2
 {
-class Element;
+class XMLElement;
 }
 
 
@@ -171,8 +171,9 @@ private:
     PObjectPackage LoadPackage(const wxString& file, const wxString& iconPath = wxEmptyString);
 
     void ParseProperties(
-      ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category, std::set<PropertyType>* types);
-    void ParseEvents(ticpp::Element* elem_obj, PObjectInfo obj_info, PPropertyCategory category);
+      const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory,
+      std::set<PropertyType>& types);
+    void ParseEvents(const tinyxml2::XMLElement* object, PObjectInfo objectInfo, PPropertyCategory objectCategory);
 
     /**
      * Importa una librería de componentes y lo asocia a cada clase.
@@ -248,13 +249,13 @@ public:
      * Fabrica de objetos.
      * A partir del nombre de la clase se crea una nueva instancia de un objeto.
      */
-    PObjectBase CreateObject(std::string class_name, PObjectBase parent = PObjectBase());
+    PObjectBase CreateObject(const wxString& class_name, PObjectBase parent = PObjectBase());
 
     /**
      * Fábrica de objetos a partir de un objeto XML.
      * Este método se usará para cargar un proyecto almacenado.
      */
-    PObjectBase CreateObject(ticpp::Element* obj, PObjectBase parent = PObjectBase());
+    PObjectBase CreateObject(const tinyxml2::XMLElement* object, PObjectBase parentObject = PObjectBase());
 
     /**
      * Crea un objeto como copia de otro.

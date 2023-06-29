@@ -26,7 +26,7 @@
 #ifndef RAD_DESIGNER_VISUALEDITOR_H
 #define RAD_DESIGNER_VISUALEDITOR_H
 
-#include <forms/wizard.h>
+#include <plugin_interface/forms/wizard.h>
 
 #include "rad/designer/innerframe.h"
 #include "rad/designer/visualobj.h"
