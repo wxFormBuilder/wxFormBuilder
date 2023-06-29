@@ -58,7 +58,6 @@ target_link_libraries(wxFormBuilder_sdk_plugin-interface
   PUBLIC
     wxFormBuilder::sdk_common
     wxWidgets::wxWidgets
-    ticpp::ticpp
     tinyxml2::tinyxml2
 )
 
