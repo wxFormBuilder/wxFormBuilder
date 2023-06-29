@@ -23,7 +23,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#include <ticpp.h>
 #include <wx/splitter.h>
 
 #include <common/xmlutils.h>
@@ -250,12 +249,6 @@ public:
         return panel;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxPanel"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -263,12 +256,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxPanel"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -303,14 +290,6 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxCollapsiblePane"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("collapsed"), _("collapsed"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -320,14 +299,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxCollapsiblePane"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        filter.AddProperty(_("collapsed"), _("collapsed"), XrcFilter::Type::Bool);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -459,20 +430,6 @@ class SplitterWindowComponent : public ComponentBase
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSplitterWindow"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
-        xrc.AddProperty(_("sashgravity"), _("gravity"), XrcFilter::Type::Float);
-        xrc.AddProperty(_("min_pane_size"), _("minsize"), XrcFilter::Type::Integer);
-        if (obj->GetPropertyAsString(_("splitmode")) == wxT("wxSPLIT_VERTICAL"))
-            xrc.AddPropertyValue(_("orientation"), wxT("vertical"));
-        else
-            xrc.AddPropertyValue(_("orientation"), wxT("horizontal"));
-
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -488,25 +445,6 @@ class SplitterWindowComponent : public ComponentBase
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSplitterWindow"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("sashpos"), _("sashpos"), XrcFilter::Type::Integer);
-        filter.AddProperty(_("gravity"), _("sashgravity"), XrcFilter::Type::Float);
-        filter.AddProperty(_("minsize"), _("min_pane_size"), XrcFilter::Type::Integer);
-        try {
-            ticpp::Element* splitmode = xrcObj->FirstChildElement("orientation");
-            std::string value = splitmode->GetText();
-            if (value == "vertical")
-                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_VERTICAL"));
-            else
-                filter.AddPropertyValue(wxT("splitmode"), wxT("wxSPLIT_HORIZONTAL"));
-        } catch (ticpp::Exception&) {
-        }
-
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -527,12 +465,6 @@ class SplitterWindowComponent : public ComponentBase
 
 class SplitterItemComponent : public ComponentBase
 {
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        // A __dummyitem__ will be ignored...
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("__dummyitem__"), wxT(""));
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         // FIXME: Why is this __dummyitem__ required?
@@ -554,16 +486,6 @@ public:
         return sw;
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxScrolledWindow"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        xrc.AddPropertyValue(
-          _("scrollrate"), wxString::Format(
-                             wxT("%d,%d"), obj->GetPropertyAsInteger(_("scroll_rate_x")),
-                             obj->GetPropertyAsInteger(_("scroll_rate_y"))));
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -572,19 +494,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxScrolledWindow"));
-        filter.AddWindowProperties();
-
-        ticpp::Element* scrollrate = xrcObj->FirstChildElement("scrollrate", false);
-        if (scrollrate) {
-            wxString value(wxString(scrollrate->GetText().c_str(), wxConvUTF8));
-            filter.AddPropertyValue(_("scroll_rate_x"), value.BeforeFirst(wxT(',')));
-            filter.AddPropertyValue(_("scroll_rate_y"), value.AfterFirst(wxT(',')));
-        }
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -618,12 +527,6 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxNotebook"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -631,12 +534,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxNotebook"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -655,16 +552,6 @@ public:
 
     void OnSelected(wxObject* wxobject) override { BookUtils::OnSelected<wxNotebook>(wxobject, GetManager()); }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("notebookpage"));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
-        if (!obj->IsPropertyNull(_("bitmap"))) {
-            xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        }
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
@@ -676,15 +563,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("notebookpage"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
@@ -737,12 +615,6 @@ public:
     }
 #endif
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxListbook"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -750,12 +622,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxListbook"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -774,13 +640,6 @@ public:
 
     void OnSelected(wxObject* wxobject) override { BookUtils::OnSelected<wxListbook>(wxobject, GetManager()); }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("listbookpage"));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
@@ -792,14 +651,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("listbookpage"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
@@ -832,12 +683,6 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxChoicebook"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -845,12 +690,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxChoicebook"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -869,13 +708,6 @@ public:
 
     void OnSelected(wxObject* wxobject) override { BookUtils::OnSelected<wxChoicebook>(wxobject, GetManager()); }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("choicebookpage"));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
@@ -885,14 +717,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("choicebookpage"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
@@ -928,12 +752,6 @@ public:
         }
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxAuiNotebook"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -941,12 +759,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxAuiNotebook"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -1000,14 +812,6 @@ public:
 
     void OnSelected(wxObject* wxobject) override { BookUtils::OnSelected<wxAuiNotebook>(wxobject, GetManager()); }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("notebookpage"));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("selected"), _("selected"), XrcFilter::Type::Bool);
-        xrc.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "notebookpage", "");
@@ -1019,15 +823,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("notebookpage"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("selected"), _("selected"), XrcFilter::Type::Bool);
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        filter.AddProperty(_("bitmap"), _("bitmap"), XrcFilter::Type::Bitmap);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "notebookpage", "");
@@ -1048,12 +843,6 @@ public:
           obj->GetPropertyAsInteger(_("window_style")));
     }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("wxSimplebook"), obj->GetPropertyAsString(_("name")));
-        xrc.AddWindowProperties();
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
@@ -1061,12 +850,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("wxSimplebook"));
-        filter.AddWindowProperties();
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
@@ -1085,13 +868,6 @@ public:
 
     void OnSelected(wxObject* wxobject) override { BookUtils::OnSelected<wxSimplebook>(wxobject, GetManager()); }
 
-    ticpp::Element* ExportToXrc(IObject* obj) override
-    {
-        ObjectToXrcFilter xrc(GetLibrary(), obj, _("simplebookpage"));
-        xrc.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        xrc.AddProperty(_("select"), _("selected"), XrcFilter::Type::Bool);
-        return xrc.GetXrcObject();
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, std::nullopt, "");
@@ -1100,14 +876,6 @@ public:
         return xrc;
     }
 
-    ticpp::Element* ImportFromXrc(ticpp::Element* xrcObj) override
-    {
-        XrcToXfbFilter filter(GetLibrary(), xrcObj, _("simplebookpage"));
-        filter.AddWindowProperties();
-        filter.AddProperty(_("label"), _("label"), XrcFilter::Type::Text);
-        filter.AddProperty(_("selected"), _("select"), XrcFilter::Type::Bool);
-        return filter.GetXfbObject();
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, std::nullopt, "");
