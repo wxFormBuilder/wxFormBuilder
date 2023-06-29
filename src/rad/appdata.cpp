@@ -49,7 +49,6 @@
 #include "rad/wxfbevent.h"
 #include "rad/wxfbmanager.h"
 #include "rad/xrcpreview/xrcpreview.h"
-#include "utils/stringutils.h"
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
 #include "utils/wxfbipc.h"

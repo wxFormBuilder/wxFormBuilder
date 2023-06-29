@@ -51,7 +51,6 @@
 #include "rad/wxfbevent.h"
 #include "rad/wxfbmanager.h"
 #include "rad/xrcpanel/xrcpanel.h"
-#include "utils/stringutils.h"
 #include "utils/wxfbexception.h"
 
 
