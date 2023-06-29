@@ -312,15 +312,6 @@ public:
         sizer->SetNonFlexibleGrowMode((wxFlexSizerGrowMode)obj->GetPropertyAsInteger(_("non_flexible_grow_mode")));
     }
 
-    void ExportXRCProperties(ObjectToXrcFilter* xrc, IObject* obj)
-    {
-        if (obj->GetPropertyAsSize(_("minimum_size")) != wxDefaultSize)
-            xrc->AddProperty(_("minimum_size"), _("minsize"), XrcFilter::Type::Size);
-        xrc->AddProperty(_("vgap"), _("vgap"), XrcFilter::Type::Integer);
-        xrc->AddProperty(_("hgap"), _("hgap"), XrcFilter::Type::Integer);
-        xrc->AddPropertyValue(_("growablecols"), obj->GetPropertyAsString(_("growablecols")));
-        xrc->AddPropertyValue(_("growablerows"), obj->GetPropertyAsString(_("growablerows")));
-    }
     tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj, "", "");
@@ -334,14 +325,6 @@ public:
         return xrc;
     }
 
-    void ImportXRCProperties(XrcToXfbFilter* filter)
-    {
-        filter->AddProperty(_("minsize"), _("minimum_size"), XrcFilter::Type::Size);
-        filter->AddProperty(_("vgap"), _("vgap"), XrcFilter::Type::Integer);
-        filter->AddProperty(_("hgap"), _("hgap"), XrcFilter::Type::Integer);
-        filter->AddProperty(_("growablecols"), _("growablecols"), XrcFilter::Type::Text);
-        filter->AddProperty(_("growablerows"), _("growablerows"), XrcFilter::Type::Text);
-    }
     tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc, "", "");
