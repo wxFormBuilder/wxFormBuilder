@@ -25,8 +25,6 @@
 
 #include "xrccg.h"
 
-#include <ticpp.h>
-
 #include <common/xmlutils.h>
 
 #include "codegen/codewriter.h"
@@ -52,7 +50,7 @@ bool XrcCodeGenerator::GenerateCode(PObjectBase project)
 
     // If the given argument is a project, generate code for all its children.
     // Otherwise assume it is an object and generate code only for it.
-    m_contextMenus2.clear();
+    m_contextMenus.clear();
     if (project->GetClassName() == "Project") {
         for (std::size_t i = 0; i < project->GetChildCount(); ++i) {
             auto* childXrc = GetElement(project->GetChild(i), static_cast<tinyxml2::XMLElement*>(nullptr));
@@ -67,10 +65,10 @@ bool XrcCodeGenerator::GenerateCode(PObjectBase project)
         }
     }
     // Generate context menus as top level menus
-    for (auto& contextMenu : m_contextMenus2) {
+    for (auto& contextMenu : m_contextMenus) {
         root->InsertEndChild(contextMenu);
     }
-    m_contextMenus2.clear();
+    m_contextMenus.clear();
 
     m_cw->Clear();
     auto code = XMLUtils::SaveXMLString(m_xrc);
@@ -79,120 +77,6 @@ bool XrcCodeGenerator::GenerateCode(PObjectBase project)
     return true;
 }
 
-
-ticpp::Element* XrcCodeGenerator::GetElement(PObjectBase obj, ticpp::Element* parent)
-{
-    ticpp::Element* element = NULL;
-
-    IComponent* comp = obj->GetObjectInfo()->GetComponent();
-
-    if (comp)
-        element = comp->ExportToXrc(obj.get());
-
-    if (element) {
-        std::string class_name = element->GetAttribute("class");
-        if (class_name == "__dummyitem__") {
-            delete element;
-            element = NULL;
-
-            if (obj->GetChildCount() > 0)
-                element = GetElement(obj->GetChild(0));
-
-            return element;
-        } else if (class_name == "spacer") {
-            // Dirty hack to replace the containing sizeritem with the spacer
-            if (parent) {
-                parent->SetAttribute("class", "spacer");
-                for (ticpp::Node* child = element->FirstChild(false); child; child = child->NextSibling(false)) {
-                    parent->LinkEndChild(child->Clone().release());
-                }
-                delete element;
-                return NULL;
-            }
-
-        } else if (class_name == "wxFrame") {
-            // Dirty hack to prevent sizer generation directly under a wxFrame
-            // If there is a sizer, the size property of the wxFrame is ignored
-            // when loading the xrc file at runtime
-            if (obj->GetPropertyAsInteger(_("xrc_skip_sizer")) != 0) {
-                for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
-                    ticpp::Element* aux = NULL;
-
-                    PObjectBase child = obj->GetChild(i);
-                    if (child->GetObjectInfo()->IsSubclassOf(wxT("sizer"))) {
-                        if (child->GetChildCount() == 1) {
-                            PObjectBase sizeritem = child->GetChild(0);
-                            if (sizeritem) {
-                                aux = GetElement(sizeritem->GetChild(0), element);
-                            }
-                        }
-                    }
-
-                    if (!aux) {
-                        aux = GetElement(child, element);
-                    }
-
-                    if (aux) {
-                        element->LinkEndChild(aux);
-                        delete aux;
-                    }
-                }
-                return element;
-            }
-        } else if (class_name == "wxMenu") {
-            if (parent) {
-                // Do not generate context menus assigned to forms or widgets
-                std::string parent_name = parent->GetAttribute("class");
-                if ((parent_name != "wxMenuBar") && (parent_name != "wxMenu")) {
-                    // insert context menu into vector for delayed processing (context menus will be
-                    // generated as top-level menus)
-                    for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
-                        ticpp::Element* aux = GetElement(obj->GetChild(i), element);
-                        if (aux) {
-                            element->LinkEndChild(aux);
-                            delete aux;
-                        }
-                    }
-
-                    m_contextMenus.push_back(element);
-                    return nullptr;
-                }
-            }
-        } else if (class_name == "wxCollapsiblePane") {
-            if (obj->GetChildCount() > 0) {
-                ticpp::Element* aux = new ticpp::Element("object");
-                aux->SetAttribute("class", "panewindow");
-
-                ticpp::Element* child = GetElement(obj->GetChild(0), aux);
-
-                aux->LinkEndChild(child);
-                element->LinkEndChild(aux);
-
-                delete aux;
-                delete child;
-            }
-
-            return element;
-        }
-
-        for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
-            ticpp::Element* aux = GetElement(obj->GetChild(i), element);
-            if (aux) {
-                element->LinkEndChild(aux);
-                delete aux;
-            }
-        }
-    } else {
-        if (obj->GetObjectTypeName() != wxT("nonvisual")) {
-            // The component does not XRC
-            element = new ticpp::Element("object");
-            element->SetAttribute("class", "unknown");
-            element->SetAttribute("name", _STDSTR(obj->GetPropertyAsString(_("name"))));
-        }
-    }
-
-    return element;
-}
 
 tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2::XMLElement* parent)
 {
@@ -270,7 +154,7 @@ tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2:
                         objectXrc->InsertEndChild(childXrc);
                     }
                 }
-                m_contextMenus2.emplace_back(objectXrc);
+                m_contextMenus.emplace_back(objectXrc);
 
                 return nullptr;
             }

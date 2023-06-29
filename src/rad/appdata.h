@@ -33,12 +33,6 @@
 #include "rad/cmdproc.h"
 
 
-namespace ticpp
-{
-class Document;
-class Node;
-class Element;
-}  // namespace ticpp
 namespace tinyxml2
 {
 class XMLDocument;
@@ -191,7 +185,6 @@ private:
     @param fileMajor The major revision of the file.
     @param fileMinor The minor revision of the file.
     */
-    void ConvertProjectProperties(ticpp::Element* project, const wxString& path, int fileMajor, int fileMinor);
     void ConvertProjectProperties(tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor);
 
     /**
@@ -201,8 +194,6 @@ private:
     @param names Set of property names to search for.
     @param properties Pointer to a set in which to store the result of the search.
     */
-    void GetPropertiesToConvert(
-      ticpp::Node* parent, const std::set<std::string>& names, std::set<ticpp::Element*>* properties);
     std::unordered_set<tinyxml2::XMLElement*> GetProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
 
     /**
@@ -211,7 +202,6 @@ private:
     @param parent Object element with child properties.
     @param names Set of property names to search for.
     */
-    void RemoveProperties(ticpp::Node* parent, const std::set<std::string>& names);
     void RemoveProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
 
     /**
@@ -221,7 +211,6 @@ private:
     @param options Set of options to search for and transfer.
     @param newPropName Name of property to transfer to, will be created if non-existent.
     */
-    void TransferOptionList(ticpp::Element* prop, std::set<wxString>* options, const std::string& newPropName);
     bool MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc = false);
 
     void PropagateExpansion(PObjectBase obj, bool expand, bool up);
@@ -237,9 +226,6 @@ private:
 #ifdef __WXFB_DEBUG__
     wxLog* m_debugLogTarget;
 #endif
-
-    typedef std::map<std::string, std::set<std::string> > PropertiesToRemove;
-    PropertiesToRemove& GetPropertiesToRemove_v1_12() const;
 
 public:
     ~ApplicationData();
@@ -284,8 +270,6 @@ public:
     @param fileMinor The minor revision of the file
     @return true if successful, false otherwise
     */
-
-    bool ConvertProject(ticpp::Document& doc, const wxString& path, int fileMajor, int fileMinor);
     bool ConvertProject(tinyxml2::XMLDocument* doc, const wxString& path, int versionMajor, int versionMinor);
 
     /**
@@ -294,7 +278,6 @@ public:
     @param fileMajor The major revision of the file
     @param fileMinor The minor revision of the file
     */
-    void ConvertObject(ticpp::Element* object, int fileMajor, int fileMinor);
     void ConvertObject(tinyxml2::XMLElement* object, int versionMajor, int versionMinor);
 
     void ExpandObject(PObjectBase obj, bool expand);

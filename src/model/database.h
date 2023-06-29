@@ -41,10 +41,6 @@ class PropertyCategory;
 
 typedef std::shared_ptr<ObjectDatabase> PObjectDatabase;
 
-namespace ticpp
-{
-class Element;
-}
 namespace tinyxml2
 {
 class XMLElement;
@@ -259,7 +255,6 @@ public:
      * Fábrica de objetos a partir de un objeto XML.
      * Este método se usará para cargar un proyecto almacenado.
      */
-    PObjectBase CreateObject(ticpp::Element* obj, PObjectBase parent = PObjectBase());
     PObjectBase CreateObject(const tinyxml2::XMLElement* object, PObjectBase parentObject = PObjectBase());
 
     /**

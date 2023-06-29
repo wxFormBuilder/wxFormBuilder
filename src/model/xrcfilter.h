@@ -26,7 +26,6 @@
 #ifndef MODEL_XRCFILTER_H
 #define MODEL_XRCFILTER_H
 
-#include <ticpp.h>
 #include <tinyxml2.h>
 
 #include "model/database.h"
@@ -44,10 +43,6 @@ public:
     void SetObjectDatabase(PObjectDatabase db) { m_objDb = db; }
 
     /**
-     * Dado un árbol XML en formato XRC, crea el arbol de objetos asociado.
-     */
-    PObjectBase GetProject(ticpp::Document* xrcDoc);
-    /**
      * @brief Load the given XRC document as Project
      *
      * @param xrc XRC document
@@ -58,7 +53,6 @@ public:
     PObjectBase GetProject(const tinyxml2::XMLDocument* xrc);
 
 private:
-    PObjectBase GetObject(ticpp::Element* xrcObj, PObjectBase parent);
     /**
      * @brief Load the given XRC element as Object
      *

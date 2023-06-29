@@ -25,7 +25,6 @@
 
 #include "objectbase.h"
 
-#include <ticpp.h>
 #include <wx/tokenzr.h>
 
 #include <common/xmlutils.h>
@@ -522,66 +521,6 @@ int ObjectBase::Deep()
 //   obj->PrintOut(s,0);
 //   return s;
 // }
-
-void ObjectBase::SerializeObject(ticpp::Element* serializedElement)
-{
-    ticpp::Element element("object");
-    element.SetAttribute("class", _STDSTR(GetClassName()));
-    element.SetAttribute("expanded", GetExpanded());
-
-    for (unsigned int i = 0; i < GetPropertyCount(); i++) {
-        PProperty prop = GetProperty(i);
-        ticpp::Element prop_element("property");
-        prop_element.SetAttribute("name", _STDSTR(prop->GetName()));
-        prop_element.SetText(_STDSTR(prop->GetValue()));
-        element.LinkEndChild(&prop_element);
-    }
-
-    for (unsigned int i = 0; i < GetEventCount(); i++) {
-        PEvent event = GetEvent(i);
-        const std::string callback(event->GetValue().ToUTF8());
-        if (callback.empty()) {
-            continue;  // skip, because there's no event attached (see issue #467)
-        }
-        ticpp::Element event_element("event");
-        event_element.SetAttribute("name", _STDSTR(event->GetName()));
-        event_element.SetText(callback);
-        element.LinkEndChild(&event_element);
-    }
-
-    for (unsigned int i = 0; i < GetChildCount(); i++) {
-        PObjectBase child = GetChild(i);
-        ticpp::Element child_element;
-        child->SerializeObject(&child_element);
-        element.LinkEndChild(&child_element);
-    }
-
-    *serializedElement = element;
-}
-
-void ObjectBase::Serialize(ticpp::Document* serializedDocument)
-{
-    ticpp::Document document("document");
-
-    ticpp::Declaration dec("1.0", "UTF-8", "yes");
-    document.LinkEndChild(&dec);
-
-    ticpp::Element root("wxFormBuilder_Project");
-
-    ticpp::Element fileVersion("FileVersion");
-    fileVersion.SetAttribute("major", AppData()->m_fbpVerMajor);
-    fileVersion.SetAttribute("minor", AppData()->m_fbpVerMinor);
-
-    root.LinkEndChild(&fileVersion);
-
-    ticpp::Element element;
-    SerializeObject(&element);
-
-    root.LinkEndChild(&element);
-    document.LinkEndChild(&root);
-
-    *serializedDocument = document;
-}
 
 void ObjectBase::Serialize(tinyxml2::XMLElement* element)
 {

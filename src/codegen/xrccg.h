@@ -31,11 +31,6 @@
 #include "codegen/codegen.h"
 
 
-namespace ticpp
-{
-class Element;
-}
-
 /// XRC code generator.
 
 class XrcCodeGenerator : public CodeGenerator
@@ -48,15 +43,12 @@ public:
     bool GenerateCode(PObjectBase project) override;
 
 private:
-    ticpp::Element* GetElement(PObjectBase obj, ticpp::Element* parent = NULL);
     tinyxml2::XMLElement* GetElement(PObjectBase object, tinyxml2::XMLElement* parent);
 
 private:
     PCodeWriter m_cw;
     tinyxml2::XMLDocument m_xrc{false, tinyxml2::PRESERVE_WHITESPACE};
-    std::vector<ticpp::Element*> m_contextMenus;
-    // FIXME: Rename after removal of ticpp
-    std::vector<tinyxml2::XMLElement*> m_contextMenus2;
+    std::vector<tinyxml2::XMLElement*> m_contextMenus;
 };
 
 #endif  // CODEGEN_XRCCG_H
