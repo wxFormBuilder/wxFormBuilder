@@ -353,6 +353,8 @@ public:
         wxFont font(12, wxFONTFAMILY_ROMAN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
 
         wxRichTextCtrl& r = *richText;
+        r.Freeze();
+        r.SetDefaultStyle(wxRichTextAttr());
         r.SetFont(font);
         r.BeginSuppressUndo();
 
@@ -482,6 +484,7 @@ public:
               "from inline XPMs. Enjoy wxRichTextCtrl!"));
 
         r.EndSuppressUndo();
+        r.Thaw();
 
         return richText;
     }
