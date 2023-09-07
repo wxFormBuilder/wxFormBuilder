@@ -16,7 +16,7 @@ command -v wget            >/dev/null 2>&1 || NOTFOUND="$NOTFOUND wget"
 test -z "$NOTFOUND" || { echo "$NOTFOUND: not found, but needed. please install. Aborting. "; exit 1; }
 
 flatpak --user remote-add --if-not-exists flathub $FLATHUB
-flatpak --user install -y flathub org.freedesktop.Platform 21.08
-flatpak --user install -y flathub org.freedesktop.Sdk 21.08
+flatpak --user install -y flathub org.freedesktop.Platform 23.08
+flatpak --user install -y flathub org.freedesktop.Sdk 23.08
 flatpak-builder --force-clean --repo=repo ./build org.wxformbuilder.wxFormBuilder.json
 flatpak build-bundle repo wxFormBuilder.flatpak org.wxformbuilder.wxFormBuilder --runtime-repo=$FLATHUB
