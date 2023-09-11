@@ -384,7 +384,7 @@ Written by
       @{ $name.Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
     </template>
     <template name="evt_entry_OnTimer">EVT_TIMER( $id, #handler )</template>
-    <template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
+    <template name="evt_connect_OnTimer">#wxparent $name->Connect( $name.GetId(), wxEVT_TIMER, #handler );</template>
   </templates>
 
   <templates class="wxStyledTextCtrl">
