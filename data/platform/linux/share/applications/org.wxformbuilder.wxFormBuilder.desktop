@@ -9,3 +9,4 @@ Terminal=false
 Icon=org.wxformbuilder.wxFormBuilder
 MimeType=application/x-wxformbuilder;
 Categories=GTK;GUIDesigner;Development;
+Keywords=wxWidgets;XRC;GUI;builder;designer;
