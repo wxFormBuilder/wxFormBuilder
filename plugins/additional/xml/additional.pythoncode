@@ -266,7 +266,7 @@ Python code generation written by
   <templates class="wxTimer">
     <template name="construction">
       self.$name = #class() #nl
-      self.$name.SetOwner( #wxparent $name, $id )
+      self.$name.SetOwner( #wxparent $name, self.$name.GetId() )
     </template>
     <template name="settings">
       #ifequal $enabled "1"

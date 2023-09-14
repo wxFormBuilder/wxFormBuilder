@@ -378,7 +378,7 @@ Written by
   <templates class="wxTimer">
     <template name="include">@#include &lt;wx/timer.h&gt;</template>
     <template name="declaration">#class @ $name;</template>
-    <template name="construction">$name.SetOwner( #wxparent $name, $id );</template>
+    <template name="construction">$name.SetOwner( #wxparent $name, $name.GetId() );</template>
     <template name="settings">
       #ifequal $enabled "1"
       @{ $name.Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
