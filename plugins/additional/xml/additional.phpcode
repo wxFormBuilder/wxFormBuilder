@@ -262,13 +262,13 @@ PHP code generation written by
   <templates class="wxTimer">
     <template name="construction">
       @$this->$name = new #class(); #nl
-      @$this->$name->SetOwner( #wxparent $name, $id );
+      @$this->$name->SetOwner( #wxparent $name, @$this->$name->GetId() );
     </template>
     <template name="settings">
       #ifequal $enabled "1"
       @{ @$this->$name->Start( $period #ifequal $oneshot "1" @{, true@} ); #nl @}
     </template>
-    <template name="evt_connect_OnTimer">#wxparent $name->Connect( $id, wxEVT_TIMER, #handler );</template>
+    <template name="evt_connect_OnTimer">#wxparent $name->Connect( @$this->$name->GetId(), wxEVT_TIMER, #handler );</template>
   </templates>
 
   <templates class="wxStyledTextCtrl">
