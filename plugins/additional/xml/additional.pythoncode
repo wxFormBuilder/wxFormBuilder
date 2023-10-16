@@ -266,13 +266,13 @@ Python code generation written by
   <templates class="wxTimer">
     <template name="construction">
       self.$name = #class() #nl
-      self.$name.SetOwner( #wxparent $name, $id )
+      self.$name.SetOwner( #wxparent $name, self.$name.GetId() )
     </template>
     <template name="settings">
       #ifequal $enabled "1"
       @{ self.$name.Start( $period #ifequal $oneshot "1" @{, True@} ) #nl @}
     </template>
-    <template name="evt_connect_OnTimer">#wxparent $name.Bind( wx.EVT_TIMER, #handler, id=$id )</template>
+    <template name="evt_connect_OnTimer">#wxparent $name.Bind( wx.EVT_TIMER, #handler, id=self.$name.GetId() )</template>
   </templates>
 
   <templates class="wxStyledTextCtrl">
