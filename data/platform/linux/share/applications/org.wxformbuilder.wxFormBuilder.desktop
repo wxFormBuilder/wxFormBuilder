@@ -2,7 +2,7 @@
 Version=1.0
 Type=Application
 Name=wxFormBuilder
-Comment=wxWidgets GUI Designer
+Comment=GUI builder for wxWidgets
 TryExec=wxformbuilder
 Exec=wxformbuilder %f
 Terminal=false
