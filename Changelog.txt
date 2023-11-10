@@ -12,7 +12,7 @@ wxFormBuilder Changelog
 * #159 Generated code for wxDataViewCtrl & co. is wrong/inconsistent
 * #164 Alignment issues 3.5-RC1
 * #165 A Fatal Error Occured
-* #157 Setting min larger than max causes crash 
+* #157 Setting min larger than max causes crash
 
 06/17/2015 Version 3.05.01.01 (RC1)
 * Updated installer scripts.
@@ -126,7 +126,7 @@ wxFormBuilder Changelog
 + Added support for wxWizard - Andrea Zanellato.
 + Added support for PHP code generation - JGM.
 ^ Combo box component (wxComboBox) now supports value change from visual designer.
-* Fixed gridbag sizer so it can be added directly to any container without need of 
+* Fixed gridbag sizer so it can be added directly to any container without need of
   another underlying sizer.
 ^ Added missing IDs to wxArtProvider bitmap source.
 * Fixed AUI pane buttons.
@@ -164,7 +164,7 @@ wxFormBuilder Changelog
 ^ XRC preview is disabled for AUI-managed frames.
 
 11/02/2010 Version 3.02.01 (Beta)
-* Fixed occasional crash occured during design of forms managed by AUI. 
+* Fixed occasional crash occured during design of forms managed by AUI.
 * Fixed build issue on Linux when wxWidgets library was built with wxUSE_MEDIACTRL=0
   (build files must be re-created by using ./create_build_files.sh)
 * Form/dialog background colour used in the designer is more "native".
@@ -222,9 +222,9 @@ wxFormBuilder Changelog
   is displayed on a right-mouse-button click by default, but the behaviour can be
   changed by "context_menu" widget's option. Note that this feature is supported
   in C++ and Python code generation only.
-* FS#280 - wxMenu not part of a wxMenuBar 
+* FS#280 - wxMenu not part of a wxMenuBar
 * Fixed startup crash on MacOS X 10.5.7 (for wxWidgets 2.8.10)
-* Fixed loading of wxTreeListCtrl events that were inherited from wxTreeCtrl in 
+* Fixed loading of wxTreeListCtrl events that were inherited from wxTreeCtrl in
   wxAdditions.
 * FS#444 - python code generation error
 * FS#428 - extra import(s) in wxpython code generation
@@ -233,12 +233,12 @@ wxFormBuilder Changelog
   be generated as stand-alone classes which can be instantiated later or directly into XRC).
   See 'Forms' palette.
 ^ Significantly improved speed of adding/removing of project items on large projects.
-^ Significantly improved speed of undo/redo/paste operations on large projects (note for existing projects: 
+^ Significantly improved speed of undo/redo/paste operations on large projects (note for existing projects:
   the patch will have an effect after manual expansion and collapsion of all form-based items in the object tree).
 
 08/27/2009 Version 3.01.64 (Beta)
 * FS#389 - Center option for dialogs should be set to wxBOTH by default
-* FS#391 - Change (some) user notifications from status bar to message box 
+* FS#391 - Change (some) user notifications from status bar to message box
 
 08/26/2009 Version 3.01.63 (Beta)
 * Fixed code generation of wxGrid events in Python
@@ -255,10 +255,10 @@ wxFormBuilder Changelog
 06/11/2009 Version 3.01.61 (Beta)
 + Added support for Python (wxPython) code generation
 * FS#424 - No encoding declared
-* FS#425 - ListBook: C++ code instead of Python code 
+* FS#425 - ListBook: C++ code instead of Python code
 
 03/06/2009 Version 3.01.60 (Beta)
-* Moved the 'event_handler' type to the Forms plug-in. This allows different 
+* Moved the 'event_handler' type to the Forms plug-in. This allows different
   event handling methods to be used per Frame/Dialog/Panel. This makes it even
   easier to create Dialogs that don't need any inherited class to work.
 * Removed the 'virtual_decl' 'event_handler' method because it seemed like hassle
@@ -292,11 +292,11 @@ wxFormBuilder Changelog
 * FS#328 - "Unknown style flag wxTE_BESTWRAP for wxTextCtrl"
   Removed the flag, it is the default, and #define'd to 0x0000, so it was pointless anyway.
 * FS#339 - "wx/icon.h not included when using resource icons in wxToolBar"
-^ Removed the two project-level XRC properties, "bitmaps" and "icons". 
+^ Removed the two project-level XRC properties, "bitmaps" and "icons".
   These never worked properly, and wxFB is not the right place to enter that information,
   a standalone XRC file written with any text-editor would be much better.
   This was prompted by, and caused the closure of, these issues:
-  FS#340 - "bitmap resources are unnamed, preventing use of wxXmlResource::Get()->LoadBitmap()" 
+  FS#340 - "bitmap resources are unnamed, preventing use of wxXmlResource::Get()->LoadBitmap()"
   FS#329 - "XRC Properties - Follow on"
 * FS#324 - "[wxMac] Buttons on the component palette have a black background"
 
@@ -399,10 +399,10 @@ wxFormBuilder Changelog
 * Fixed hang if opened with a project of an older version.
 * Fixed the find dialog only working one time.
 * Fixed FS#230 - "Repainting issue with border drawn by wxFormBuilder"
-* The value of the "precompiled_header" property should now be the exact code to be 
-   generated at the top of the source file to support precompiled headers. For example, 
+* The value of the "precompiled_header" property should now be the exact code to be
+   generated at the top of the source file to support precompiled headers. For example,
    to include wxprec.h, the value of this property should be:  #include <wx/wxprec.h>
-  This forced a project version uprev to 1.8.  
+  This forced a project version uprev to 1.8.
   This closes FS#232 - "Precompiled headers with Visual C++ 2005".
 * Removed #include <wx/wx.h> from the generated header.
 
@@ -468,7 +468,7 @@ wxFormBuilder Changelog
 + Implemented FS#192 - "Add support for dynamic event handling via Connect() methods."
   Connect() is now the default implementation of event handling.
   See the "event_generation" property of the Project object.
-+ Added CustomControl - This allows the user to generate arbitrary code for a 
++ Added CustomControl - This allows the user to generate arbitrary code for a
   control which is not yet fully supported by wxFormBuilder.
 ^ Updated a bunch of icons. This completes the new theme in wxFormBuilder.
 + Added wxHyperlinkCtrl.
@@ -515,9 +515,9 @@ wxFormBuilder Changelog
 04-18-2007 Version 3.00.38 (Beta 3)
 ^ Updated the program icon.
 * Fixed FS#169 - "About dialog box fails to open web browser for home page URL"
-* Fixed FS#171 - "Wrong string literal macro in generated headers 
+* Fixed FS#171 - "Wrong string literal macro in generated headers
   for internationalized code generation"
-* Fixed FS#165 - "focus in wxNotebook always switches to the first panel after 
+* Fixed FS#165 - "focus in wxNotebook always switches to the first panel after
   adding a widget/layout to another panel"
 * Fixed FS#166 - "Adding three tabs to tab control throws an error."
 * Fixed FS#172 - "Event list for wxListCtrl shows "OnListCasheHint" instead of "OnListCacheHint""
