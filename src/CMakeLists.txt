@@ -270,7 +270,7 @@ wxfb_target_resources(wxFormBuilder_app
 
 install(
   FILES
-    "${PROJECT_SOURCE_DIR}/Changelog.txt"
+    "${PROJECT_SOURCE_DIR}/CHANGELOG.md"
     "${PROJECT_SOURCE_DIR}/LICENSE"
   DESTINATION ${WXFB_INSTALL_DATADIR}
 )

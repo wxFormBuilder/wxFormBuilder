@@ -69,7 +69,7 @@ Compression=lzma/ultra
 SolidCompression=true
 InternalCompressLevel=ultra
 WizardStyle=modern
-InfoAfterFile={#RootInstallDir}\Changelog.txt
+InfoAfterFile={#RootInstallDir}\CHANGELOG.md
 LicenseFile={#RootInstallDir}\LICENSE
 SetupIconFile=support\wxFormBuilder.ico
 ShowLanguageDialog=yes
@@ -114,7 +114,7 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
   #endif
 #endsub
 
-Source: {#RootInstallDir}\Changelog.txt; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\CHANGELOG.md; DestDir: {app}; Components: main
 Source: {#RootInstallDir}\LICENSE; DestDir: {app}; Components: main
 Source: {#RootInstallDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
