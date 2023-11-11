@@ -14,12 +14,12 @@ otherwise the workflows need to be triggered again manually after the tag got pu
 2. Update the version number in the main `CMakeLists.txt` file in the root directory
 3. Add the version number and release timestamp to the AppStream metadata file `data/platform/linux/share/metainfo/org.wxformbuilder.wxFormBuilder.metainfo.xml`
 4. Add the version number and release timestamp to the Debian changelog file `data/packaging/linux/debian/changelog`
-5. Add the version number and release timestamp together with a link to the future GitHub release post in `Changelog.txt`
+5. Add the version number and release timestamp together with the required information to the changelog file `CHANGELOG.md`
 6. Commit the changes
 7. Tag the commit. The tag name must be the version number prefixed with the letter `v`. To make the tag annotated,
    add a simple message like `Release`.
 8. Push the commit together with the tag: `git push --follow-tags`
 9. Download all created artifacts and extract them. Not the downloaded zip archives but their content gets added to the release post.
-    Rename the Flatpak file to contain the architecture tag like its archive, all other filenames are already final.
+   Rename the Flatpak file to contain the architecture tag like its archive, all other filenames are already final.
 10. On the GitHub website create a release for the tag. Highlight the most important changes, upload all artifacts.
 11. Publish the release
