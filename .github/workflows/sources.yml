@@ -23,9 +23,10 @@ jobs:
           }
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-tags: true
-        fetch-depth: 1
         submodules: recursive
+    - name: Fetch tags
+      run: |
+        git fetch --prune --prune-tags --force --depth=1 --no-recurse-submodules
     - uses: msys2/setup-msys2@v2.21.0
       with:
         msystem: mingw64
@@ -61,9 +62,10 @@ jobs:
           }
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-tags: true
-        fetch-depth: 1
         submodules: recursive
+    - name: Fetch tags
+      run: |
+        git fetch --prune --prune-tags --force --depth=1 --no-recurse-submodules
     - name: Create source archive
       run: |
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
