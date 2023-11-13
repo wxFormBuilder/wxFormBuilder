@@ -23,7 +23,6 @@ jobs:
           }
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-tags: true
         submodules: recursive
     - uses: msys2/setup-msys2@v2.21.0
       with:
@@ -60,7 +59,6 @@ jobs:
           }
     - uses: actions/checkout@v4.1.1
       with:
-        fetch-tags: true
         submodules: recursive
     - name: Create source archive
       run: |
