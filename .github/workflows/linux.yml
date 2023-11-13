@@ -50,7 +50,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        submodules: true
+        submodules: recursive
     - name: Configure container environment
       run: |
         git config --global --add safe.directory ${GITHUB_WORKSPACE}
@@ -77,7 +77,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
-        submodules: true
+        submodules: recursive
     - name: Fetch tags
       run: |
         git fetch --prune --depth=1 --no-recurse-submodules
