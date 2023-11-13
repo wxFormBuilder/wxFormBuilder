@@ -50,13 +50,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
+        fetch-tags: true
         submodules: recursive
     - name: Configure container environment
       run: |
         git config --global --add safe.directory ${GITHUB_WORKSPACE}
-    - name: Fetch tags
-      run: |
-        git fetch --prune --depth=1 --no-recurse-submodules
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
@@ -77,10 +75,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
+        fetch-tags: true
         submodules: recursive
-    - name: Fetch tags
-      run: |
-        git fetch --prune --depth=1 --no-recurse-submodules
     - name: Setup environment
       run: |
         sudo apt update

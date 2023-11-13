@@ -52,11 +52,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
       with:
+        fetch-tags: true
         submodules: recursive
-    - name: Fetch tags
-      shell: cmd
-      run: |
-        git fetch --prune --depth=1 --no-recurse-submodules
     - uses: msys2/setup-msys2@v2.21.0
       with:
         msystem: ${{ matrix.sys }}
