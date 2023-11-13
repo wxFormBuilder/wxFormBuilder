@@ -1604,3 +1604,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 [unreleased]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.1...HEAD
 [3.10.1]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.0...v3.10.1
 [3.10.0]: https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.0
+
+<!-- markdownlint-configure-file { "no-duplicate-header": { "siblings_only": true } } -->
