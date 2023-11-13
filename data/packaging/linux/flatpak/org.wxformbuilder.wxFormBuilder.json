@@ -22,8 +22,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.2.1/wxWidgets-3.2.2.1.tar.bz2",
-					"sha256": "dffcb6be71296fff4b7f8840eb1b510178f57aa2eb236b20da41182009242c02"
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxWidgets-3.2.4.tar.bz2",
+					"sha256": "0640e1ab716db5af2ecb7389dbef6138d7679261fbff730d23845ba838ca133e"
 				}
 			],
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]

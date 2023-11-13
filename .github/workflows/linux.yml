@@ -45,22 +45,20 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.ref, '/debian/') }}
     container:
-      image: bilelmoussaoui/flatpak-github-actions:freedesktop-22.08
+      image: bilelmoussaoui/flatpak-github-actions:freedesktop-23.08
       options: --privileged
     steps:
-    - uses: actions/checkout@v3.3.0
+    - uses: actions/checkout@v4.1.1
       with:
-        submodules: true
+        fetch-tags: true
+        submodules: recursive
     - name: Configure container environment
       run: |
         git config --global --add safe.directory ${GITHUB_WORKSPACE}
-    - name: Fetch tags
-      run: |
-        git fetch --prune --depth=1 --no-recurse-submodules
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
-    - uses: flatpak/flatpak-github-actions/flatpak-builder@v5
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.3
       with:
         arch: x86_64
         bundle: wxFormBuilder${{ env.project_version }}.flatpak
@@ -75,12 +73,10 @@ jobs:
         os: [ubuntu-latest, ubuntu-20.04]
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
-    - uses: actions/checkout@v3.3.0
+    - uses: actions/checkout@v4.1.1
       with:
-        submodules: true
-    - name: Fetch tags
-      run: |
-        git fetch --prune --depth=1 --no-recurse-submodules
+        fetch-tags: true
+        submodules: recursive
     - name: Setup environment
       run: |
         sudo apt update
@@ -97,7 +93,7 @@ jobs:
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g test/wxfbTest.fbp
-    - uses: actions/upload-artifact@v3.1.2
+    - uses: actions/upload-artifact@v3.1.3
       with:
         name: Debian Package ${{ matrix.os }}
         path: |
