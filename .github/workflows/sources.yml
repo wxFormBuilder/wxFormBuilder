@@ -16,7 +16,7 @@ jobs:
       with:
         result-encoding: string
         script: |
-          if (context.ref.startsWith('refs/tags/')) {
+          if (context.ref.startsWith('refs/tags/v')) {
             return context.ref.split('/').pop().slice(1);
           } else {
             return context.ref.split('/').pop();
@@ -54,7 +54,7 @@ jobs:
       with:
         result-encoding: string
         script: |
-          if (context.ref.startsWith('refs/tags/')) {
+          if (context.ref.startsWith('refs/tags/v')) {
             return context.ref.split('/').pop().slice(1);
           } else {
             return context.ref.split('/').pop();
