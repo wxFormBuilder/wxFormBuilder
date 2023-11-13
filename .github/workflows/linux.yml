@@ -40,7 +40,7 @@ jobs:
         submodules: true
     - name: Fetch tags
       run: |
-        git fetch --verbose --progress --depth=1 --no-recurse-submodules 'refs/tags/*:refs/tags/*'
+        git fetch --verbose --progress --prune --prune-tags --depth=1 --no-recurse-submodules
     - name: Setup environment
       run: |
         sudo apt update
