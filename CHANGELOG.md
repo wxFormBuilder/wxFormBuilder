@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Component Search dialog
+- DragAcceptFiles property
+- Plugin SDK
+
+### Changed
+
+- Restructured Project Files layout
+- Replaced library ticpp with TinyXML2
+- Updated Plugin Interface for TinyXML2, this causes an API and ABI break
+- Updated wxHtmlWindow event names for current wxPython API
+- The Windows x64 Release now uses the MSYS2 64 Bit UCRT Runtime
+
+### Removed
+
+- Legacy Build System Meson
+- Legacy Build System Premake
+- Files supporting the legacy Build Systems
+
+### Fixed
+
+- Fixed unicode processing of the Template Processor
+- Fixed incorrect use of API `wxAuiTabContainer::AddPage`
+- Fixed generated code for Ribbon items
+- Fixed wxButton like Widgets bitmap position parameter for XRC files
+- Fixed wxSpinCtrlDouble properties min and max data type for XRC conversion
+- Fixed wxBitmapComboBox constructor generation for wxPython
+- Fixed wxRichTextCtrl crash on GNU/Linux
+- Fixed GCC 13 build issues
+- Fixed multiple timers callback bug
+- Fixed wxAuiPaneInfo generation for wxToolBar and wxAuiToolBar components
+
 ## [3.10.1] - 2021-10-22
 
 ### Added
