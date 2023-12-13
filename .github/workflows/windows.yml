@@ -18,7 +18,6 @@ on:
       - '.clang-format'
       - '.git-blame-ignore-revs'
       - '.git-properties'
-      - 'Changelog.txt'
       - 'LICENSE'
       - '**.md'
   pull_request:
@@ -35,7 +34,6 @@ on:
       - '.clang-format'
       - '.git-blame-ignore-revs'
       - '.git-properties'
-      - 'Changelog.txt'
       - 'LICENSE'
       - '**.md'
 
