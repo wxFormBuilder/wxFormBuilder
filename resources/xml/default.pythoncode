@@ -40,7 +40,7 @@
       @{ self.$name.SetHelpText( $context_help ) #nl @}
 
       #ifnotequal $drag_accept_files "0"
-      @{ self.$name.DragAcceptFiles( true ) #nl @}
+      @{ self.$name.DragAcceptFiles( True ) #nl @}
 
       #ifnotnull $minimum_size
       @{ self.$name.SetMinSize( $minimum_size ) #nl @}

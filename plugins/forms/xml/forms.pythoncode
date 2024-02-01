@@ -124,7 +124,7 @@ Python code generation written by
       @{ self.SetToolTip( $tooltip ) #nl @}
 
       #ifnotequal $drag_accept_files "0"
-      @{ self.DragAcceptFiles( true ) #nl @}
+      @{ self.DragAcceptFiles( True ) #nl @}
 
       #ifequal $aui_managed "1"
       @{
@@ -275,7 +275,7 @@ Python code generation written by
       @{ self.SetToolTip( $tooltip ) #nl @}
 
       #ifnotequal $drag_accept_files "0"
-      @{ self.DragAcceptFiles( true ) #nl @}
+      @{ self.DragAcceptFiles( True ) #nl @}
 
       #ifnotnull $minimum_size
       @{ self.SetMinSize( $minimum_size ) #nl @}
@@ -437,7 +437,7 @@ Python code generation written by
       @{ self.SetToolTip( $tooltip ) #nl @}
 
       #ifnotequal $drag_accept_files "0"
-      @{ self.DragAcceptFiles( true ) #nl @}
+      @{ self.DragAcceptFiles( True ) #nl @}
 
       #ifequal $aui_managed "1"
       @{
@@ -591,7 +591,7 @@ Python code generation written by
       @{ self.SetToolTip( $tooltip ) #nl @}
 
       #ifnotequal $drag_accept_files "0"
-      @{ self.DragAcceptFiles( true ) #nl @}
+      @{ self.DragAcceptFiles( True ) #nl @}
 
       self.m_pages = [] #nl
     </template>
