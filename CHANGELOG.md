@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Update required wxWidgets version to 3.2
+
 ### Fixed
 
+- Prevent installation of TinyXML2 development files
 - Code generation for wxDataViewTreeCtrl sets an invalid style by default ([#799](https://github.com/wxFormBuilder/wxFormBuilder/issues/799))
 - Error creating code in python. Create "true" Instead of "True" ([#803](https://github.com/wxFormBuilder/wxFormBuilder/issues/803))
 - Generated C++ code cannot be built if wxNO_IMPLICIT_WXSTRING_ENCODING is defined ([#801](https://github.com/wxFormBuilder/wxFormBuilder/issues/801))
