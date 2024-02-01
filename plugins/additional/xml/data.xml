@@ -273,6 +273,7 @@ Written by
       <option name="wxDV_VERT_RULES" help="Display the separator lines between columns."/>
       <option name="wxDV_VARIABLE_LINE_HEIGHT" help="Allow variable line heights. This can be inefficient when displaying large number of items."/>
       <option name="wxDV_NO_HEADER" help="Do not show column headers (which are shown by default)."/>
+      wxDV_NO_HEADER|wxDV_ROW_LINES
     </property>
     <template name="generated_event_handlers"></template>
     <event name="OnDataViewTreeCtrlSelectionChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_SELECTION_CHANGED event."/>
@@ -307,6 +308,7 @@ Written by
       <option name="wxDV_VERT_RULES" help="Display the separator lines between columns."/>
       <option name="wxDV_VARIABLE_LINE_HEIGHT" help="Allow variable line heights. This can be inefficient when displaying large number of items."/>
       <option name="wxDV_NO_HEADER" help="Do not show column headers (which are shown by default)."/>
+      wxDV_ROW_LINES
     </property>
     <template name="generated_event_handlers"></template>
     <event name="OnDataViewListCtrlSelectionChanged" class="wxDataViewEvent" help="Process a wxEVT_DATAVIEW_SELECTION_CHANGED event."/>
