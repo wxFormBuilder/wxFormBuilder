@@ -255,7 +255,7 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
                 if (rid.StartsWith(wxT("gtk-")))
                     rid = wxT("wxT(\"") + rid + wxT("\")");
 
-                result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") + path.AfterFirst(wxT(':')) + wxT(" )");
+                result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") + path.AfterFirst(wxT(':')) + wxT(") )");
             }
             break;
         }
