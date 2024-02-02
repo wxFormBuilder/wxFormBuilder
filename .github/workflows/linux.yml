@@ -91,7 +91,7 @@ jobs:
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g test/wxfbTest.fbp
-    - uses: actions/upload-artifact@v3.1.3
+    - uses: actions/upload-artifact@v4.3.0
       with:
         name: Debian Package ${{ matrix.os }}
         path: |
