@@ -629,7 +629,7 @@ public:
                 buttonEntry->second.second = "1";
             }
         }
-        for (const auto [id, property] : buttons) {
+        for (const auto& [id, property] : buttons) {
             filter.AddPropertyValue(property.first, property.second);
         }
 
