@@ -320,8 +320,10 @@ public:
         }
         filter.AddProperty(XrcFilter::Type::Integer, "vgap");
         filter.AddProperty(XrcFilter::Type::Integer, "hgap");
-        filter.AddProperty(XrcFilter::Type::Integer, "growablerows");
-        filter.AddProperty(XrcFilter::Type::Integer, "growablecols");
+        wxString s = obj->GetPropertyAsString("growablerows");
+        filter.AddPropertyValue("growablerows", s, false);
+        s = obj->GetPropertyAsString("growablecols");
+        filter.AddPropertyValue("growablecols", s, false);
         return xrc;
     }
 
