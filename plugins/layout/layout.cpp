@@ -320,10 +320,8 @@ public:
         }
         filter.AddProperty(XrcFilter::Type::Integer, "vgap");
         filter.AddProperty(XrcFilter::Type::Integer, "hgap");
-        wxString s = obj->GetPropertyAsString("growablerows");
-        filter.AddPropertyValue("growablerows", s, false);
-        s = obj->GetPropertyAsString("growablecols");
-        filter.AddPropertyValue("growablecols", s, false);
+        filter.AddPropertyValue("growablerows", obj->GetPropertyAsString("growablerows"), false);
+        filter.AddPropertyValue("growablecols", obj->GetPropertyAsString("growablecols"), false);
         return xrc;
     }
 
@@ -333,8 +331,8 @@ public:
         filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
         filter.AddProperty(XrcFilter::Type::Integer, "vgap");
         filter.AddProperty(XrcFilter::Type::Integer, "hgap");
-        filter.AddProperty(XrcFilter::Type::Integer, "growablerows");
-        filter.AddProperty(XrcFilter::Type::Integer, "growablecols");
+        filter.AddProperty(XrcFilter::Type::Text, "growablerows");
+        filter.AddProperty(XrcFilter::Type::Text, "growablecols");
         return xfb;
     }
 };
