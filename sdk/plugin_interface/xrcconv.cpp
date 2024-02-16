@@ -159,15 +159,6 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
 {
     auto* propertyElement = m_xrcElement->InsertNewChildElement(!xrcPropName.empty() ? xrcPropName.utf8_str() : objPropName.utf8_str());
     switch (propType) {
-        case Type::Size:
-        case Type::Point:
-        case Type::BitList:
-            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName));
-            break;
-        case Type::Text:
-            // The text must be converted to XRC format
-            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
-            break;
         case Type::Bool:
         case Type::Integer:
             SetInteger(propertyElement, m_obj->GetPropertyAsInteger(objPropName));
@@ -175,14 +166,14 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
         case Type::Float:
             SetFloat(propertyElement, m_obj->GetPropertyAsFloat(objPropName));
             break;
-        case Type::Colour:
-            SetColour(propertyElement, m_obj->GetPropertyAsColour(objPropName));
+        case Type::Text:
+            // The text must be converted to XRC format
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
             break;
-        case Type::Font:
-            SetFont(propertyElement, m_obj->GetPropertyAsFont(objPropName));
-            break;
-        case Type::StringList:
-            SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
+        case Type::Point:
+        case Type::Size:
+        case Type::BitList:
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
             break;
         case Type::Bitmap: {
             auto bitmapProp = m_obj->GetPropertyAsString(objPropName);
@@ -209,6 +200,15 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
             }
             break;
         }
+        case Type::Colour:
+            SetColour(propertyElement, m_obj->GetPropertyAsColour(objPropName));
+            break;
+        case Type::Font:
+            SetFont(propertyElement, m_obj->GetPropertyAsFont(objPropName));
+            break;
+        case Type::StringList:
+            SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
+            break;
         case Type::Passthrough:
             SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
             break;
@@ -440,13 +440,10 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
     auto* propertyElement = m_xfbElement->InsertNewChildElement("property");
     XMLUtils::SetAttribute(propertyElement, "name", !xfbPropName.empty() ? xfbPropName : xrcPropName);
     switch (propType) {
-        case Type::Size:
-        case Type::Point:
         case Type::Bool:
-            SetTextProperty(propertyElement, xrcPropName);
-            break;
-        case Type::Text:
-            SetTextProperty(propertyElement, xrcPropName, true);
+        case Type::Point:
+        case Type::Size:
+            SetTextProperty(propertyElement, xrcPropName, false);
             break;
         case Type::Integer:
             SetIntegerProperty(propertyElement, xrcPropName);
@@ -454,8 +451,11 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
         case Type::Float:
             SetFloatProperty(propertyElement, xrcPropName);
             break;
-        case Type::BitList:
-            SetBitlistProperty(propertyElement, xrcPropName);
+        case Type::Text:
+            SetTextProperty(propertyElement, xrcPropName, true);
+            break;
+        case Type::Bitmap:
+            SetBitmapProperty(propertyElement, xrcPropName);
             break;
         case Type::Colour:
             SetColourProperty(propertyElement, xrcPropName);
@@ -463,11 +463,11 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
         case Type::Font:
             SetFontProperty(propertyElement, xrcPropName);
             break;
+        case Type::BitList:
+            SetBitlistProperty(propertyElement, xrcPropName);
+            break;
         case Type::StringList:
             SetStringListProperty(propertyElement, xrcPropName, true);
-            break;
-        case Type::Bitmap:
-            SetBitmapProperty(propertyElement, xrcPropName);
             break;
         case Type::Passthrough:
             SetTextProperty(propertyElement, xrcPropName, false);
