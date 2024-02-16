@@ -172,6 +172,7 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
             break;
         case Type::Point:
         case Type::Size:
+        case Type::Option:
         case Type::BitList:
             SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
             break;
@@ -463,6 +464,9 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
         case Type::Font:
             SetFontProperty(propertyElement, xrcPropName);
             break;
+        case Type::Option:
+            SetOptionProperty(propertyElement, xrcPropName);
+            break;
         case Type::BitList:
             SetBitlistProperty(propertyElement, xrcPropName);
             break;
@@ -676,6 +680,18 @@ void XrcToXfbFilter::SetFontProperty(tinyxml2::XMLElement* element, const wxStri
         fontFamily,
         fontUnderlined
     ));
+}
+
+void XrcToXfbFilter::SetOptionProperty(tinyxml2::XMLElement* element, const wxString& name) const
+{
+    const auto* propertyElement = m_xrcElement->FirstChildElement(name.utf8_str());
+    if (!propertyElement) {
+        return;
+    }
+
+    auto option = XMLUtils::GetText(propertyElement);
+    option = m_lib->ReplaceSynonymous(option);
+    XMLUtils::SetText(element, option);
 }
 
 void XrcToXfbFilter::SetBitlistProperty(tinyxml2::XMLElement* element, const wxString& name) const
