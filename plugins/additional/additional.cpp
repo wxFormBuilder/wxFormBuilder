@@ -1287,7 +1287,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         filter.AddProperty(XrcFilter::Type::Text, "wildcard");
         return xrc;
@@ -1297,7 +1297,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         filter.AddProperty(XrcFilter::Type::Text, "wildcard");
         return xfb;
@@ -1330,7 +1330,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         return xrc;
     }
@@ -1339,7 +1339,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         return xfb;
     }
@@ -1373,7 +1373,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
-        filter.AddPropertyValue("url", obj->GetPropertyAsString("url"));
+        filter.AddProperty(XrcFilter::Type::String, "url");
         return xrc;
     }
 
@@ -1382,9 +1382,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
-        if (const auto* urlElement = xrc->FirstChildElement("url")) {
-            filter.AddPropertyValue("url", XMLUtils::GetText(urlElement));
-        }
+        filter.AddProperty(XrcFilter::Type::String, "url");
         return xfb;
     }
 };
@@ -1417,7 +1415,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::String, "defaultfolder");
         filter.AddProperty(XrcFilter::Type::Text, "filter");
         filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
         return xrc;
@@ -1427,7 +1425,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::String, "defaultfolder");
         filter.AddProperty(XrcFilter::Type::Text, "filter");
         filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
         return xfb;

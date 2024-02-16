@@ -1587,7 +1587,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "animation");
+        filter.AddProperty(XrcFilter::Type::String, "animation");
         return xrc;
     }
 
@@ -1595,7 +1595,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "animation");
+        filter.AddProperty(XrcFilter::Type::String, "animation");
         return xfb;
     }
 };
