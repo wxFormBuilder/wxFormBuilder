@@ -166,15 +166,16 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
         case Type::Float:
             SetFloat(propertyElement, m_obj->GetPropertyAsFloat(objPropName));
             break;
-        case Type::Text:
-            // The text must be converted to XRC format
-            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
-            break;
+        case Type::String:
         case Type::Point:
         case Type::Size:
         case Type::Option:
         case Type::BitList:
             SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
+            break;
+        case Type::Text:
+            // The text must be converted to XRC format
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), true);
             break;
         case Type::Bitmap: {
             auto bitmapProp = m_obj->GetPropertyAsString(objPropName);
@@ -209,9 +210,6 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
             break;
         case Type::StringList:
             SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
-            break;
-        case Type::Passthrough:
-            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
             break;
     }
 }
@@ -442,6 +440,7 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
     XMLUtils::SetAttribute(propertyElement, "name", !xfbPropName.empty() ? xfbPropName : xrcPropName);
     switch (propType) {
         case Type::Bool:
+        case Type::String:
         case Type::Point:
         case Type::Size:
             SetTextProperty(propertyElement, xrcPropName, false);
@@ -472,9 +471,6 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
             break;
         case Type::StringList:
             SetStringListProperty(propertyElement, xrcPropName, true);
-            break;
-        case Type::Passthrough:
-            SetTextProperty(propertyElement, xrcPropName, false);
             break;
     }
 }

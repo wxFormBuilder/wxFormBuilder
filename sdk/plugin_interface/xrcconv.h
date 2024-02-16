@@ -49,6 +49,7 @@ public:
         Bool = 0,
         Integer,
         Float,
+        String,
         Text,
         Point,
         Size,
@@ -58,7 +59,6 @@ public:
         Option,
         BitList,
         StringList,
-        Passthrough,
     };
 
 protected:
