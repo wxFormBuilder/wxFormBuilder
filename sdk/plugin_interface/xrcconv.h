@@ -57,6 +57,7 @@ public:
         Font,
         BitList,
         StringList,
+        Passthrough,
     };
 
 protected:

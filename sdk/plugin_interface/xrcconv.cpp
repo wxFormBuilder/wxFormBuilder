@@ -209,6 +209,9 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
             }
             break;
         }
+        case Type::Passthrough:
+            SetText(propertyElement, m_obj->GetPropertyAsString(objPropName), false);
+            break;
     }
 }
 
@@ -465,6 +468,9 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
             break;
         case Type::Bitmap:
             SetBitmapProperty(propertyElement, xrcPropName);
+            break;
+        case Type::Passthrough:
+            SetTextProperty(propertyElement, xrcPropName, false);
             break;
     }
 }
