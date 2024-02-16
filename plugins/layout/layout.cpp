@@ -174,7 +174,7 @@ public:
         if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
             filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
         }
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         return xrc;
     }
 
@@ -182,7 +182,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         return xfb;
     }
 };
@@ -204,7 +204,7 @@ public:
         if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
             filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
         }
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         filter.AddProperty(XrcFilter::Type::BitList, "flags");
         return xrc;
     }
@@ -213,7 +213,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         filter.AddProperty(XrcFilter::Type::BitList, "flags");
         return xfb;
     }
@@ -242,7 +242,7 @@ public:
         if (obj->GetPropertyAsSize("minimum_size") != wxDefaultSize) {
             filter.AddProperty(XrcFilter::Type::Size, "minimum_size", "minsize");
         }
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         filter.AddProperty(XrcFilter::Type::Text, "label");
         return xrc;
     }
@@ -251,7 +251,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddProperty(XrcFilter::Type::Size, "minsize", "minimum_size");
-        filter.AddProperty(XrcFilter::Type::Text, "orient");
+        filter.AddProperty(XrcFilter::Type::Option, "orient");
         filter.AddProperty(XrcFilter::Type::Text, "label");
         return xfb;
     }

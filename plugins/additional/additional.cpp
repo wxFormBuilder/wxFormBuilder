@@ -617,7 +617,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -637,7 +637,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
         return xfb;
@@ -719,7 +719,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -737,7 +737,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
         return xfb;

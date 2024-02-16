@@ -420,7 +420,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -441,7 +441,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         return xfb;
     }
@@ -517,7 +517,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -536,7 +536,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         return xfb;
     }
@@ -1630,8 +1630,8 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "show_effect", "showeffect");
-        filter.AddProperty(XrcFilter::Type::Text, "hide_effect", "hideeffect");
+        filter.AddProperty(XrcFilter::Type::Option, "show_effect", "showeffect");
+        filter.AddProperty(XrcFilter::Type::Option, "hide_effect", "hideeffect");
         filter.AddProperty(XrcFilter::Type::Integer, "duration", "effectduration");
         // FIXME: button is currently not part of the data model
         return xrc;
@@ -1641,8 +1641,8 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "showeffect", "show_effect");
-        filter.AddProperty(XrcFilter::Type::Text, "hideeffect", "hide_effect");
+        filter.AddProperty(XrcFilter::Type::Option, "showeffect", "show_effect");
+        filter.AddProperty(XrcFilter::Type::Option, "hideeffect", "hide_effect");
         filter.AddProperty(XrcFilter::Type::Integer, "effectduration", "duration");
         // FIXME: button is currently not part of the data model
         return xfb;
