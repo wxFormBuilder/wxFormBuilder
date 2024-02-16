@@ -664,7 +664,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -673,7 +673,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -717,7 +717,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -726,7 +726,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -900,7 +900,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -908,7 +908,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -976,7 +976,7 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         filter.AddProperty(XrcFilter::Type::Integer, "majorDimension", "dimension");
         return xrc;
     }
@@ -987,7 +987,7 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         filter.AddProperty(XrcFilter::Type::Integer, "dimension", "majorDimension");
         return xfb;
     }
@@ -1463,7 +1463,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -1472,7 +1472,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };

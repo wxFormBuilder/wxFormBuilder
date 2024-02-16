@@ -992,7 +992,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -1000,7 +1000,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };

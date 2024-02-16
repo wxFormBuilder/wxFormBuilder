@@ -208,7 +208,7 @@ void ObjectToXrcFilter::AddProperty(Type propType, const wxString& objPropName, 
         case Type::Font:
             SetFont(propertyElement, m_obj->GetPropertyAsFont(objPropName));
             break;
-        case Type::StringList:
+        case Type::TextList:
             SetStringList(propertyElement, m_obj->GetPropertyAsArrayString(objPropName));
             break;
     }
@@ -469,7 +469,7 @@ void XrcToXfbFilter::AddProperty(Type propType, const wxString& xrcPropName, con
         case Type::BitList:
             SetBitlistProperty(propertyElement, xrcPropName);
             break;
-        case Type::StringList:
+        case Type::TextList:
             SetStringListProperty(propertyElement, xrcPropName, true);
             break;
     }
