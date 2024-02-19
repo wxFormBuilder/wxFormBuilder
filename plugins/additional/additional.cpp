@@ -617,7 +617,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -637,7 +637,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
         return xfb;
@@ -719,7 +719,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -737,7 +737,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         filter.AddProperty(XrcFilter::Type::Bool, "checked", "value");
         return xfb;
@@ -864,7 +864,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "initial", "value");
         filter.AddProperty(XrcFilter::Type::Integer, "min");
         filter.AddProperty(XrcFilter::Type::Integer, "max");
         return xrc;
@@ -874,9 +874,9 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        // FIXME: Why is value filtered twice? What effect does this have?
-        filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        // TODO: XRC only supports the integral initial value, filter it twice to initialize the string initial value as well
+        filter.AddProperty(XrcFilter::Type::String, "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "value", "initial");
         filter.AddProperty(XrcFilter::Type::Integer, "min");
         filter.AddProperty(XrcFilter::Type::Integer, "max");
         return xfb;
@@ -927,7 +927,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Float, "initial", "value");
         filter.AddProperty(XrcFilter::Type::Float, "min");
         filter.AddProperty(XrcFilter::Type::Float, "max");
         filter.AddProperty(XrcFilter::Type::Float, "inc");
@@ -939,9 +939,9 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        // FIXME: Why is value filtered twice? What effect does this have?
-        filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        // TODO: XRC only supports the float initial value, filter it twice to initialize the string initial value as well
+        filter.AddProperty(XrcFilter::Type::String, "value");
+        filter.AddProperty(XrcFilter::Type::Float, "value", "initial");
         filter.AddProperty(XrcFilter::Type::Float, "min");
         filter.AddProperty(XrcFilter::Type::Float, "max");
         filter.AddProperty(XrcFilter::Type::Float, "inc");
@@ -992,7 +992,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -1000,7 +1000,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -1287,7 +1287,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         filter.AddProperty(XrcFilter::Type::Text, "wildcard");
         return xrc;
@@ -1297,7 +1297,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         filter.AddProperty(XrcFilter::Type::Text, "wildcard");
         return xfb;
@@ -1330,7 +1330,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         return xrc;
     }
@@ -1339,7 +1339,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "value");
+        filter.AddProperty(XrcFilter::Type::String, "value");
         filter.AddProperty(XrcFilter::Type::Text, "message");
         return xfb;
     }
@@ -1373,7 +1373,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
-        filter.AddPropertyValue("url", obj->GetPropertyAsString("url"));
+        filter.AddProperty(XrcFilter::Type::String, "url");
         return xrc;
     }
 
@@ -1382,9 +1382,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
-        if (const auto* urlElement = xrc->FirstChildElement("url")) {
-            filter.AddPropertyValue("url", XMLUtils::GetText(urlElement));
-        }
+        filter.AddProperty(XrcFilter::Type::String, "url");
         return xfb;
     }
 };
@@ -1417,7 +1415,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::String, "defaultfolder");
         filter.AddProperty(XrcFilter::Type::Text, "filter");
         filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
         return xrc;
@@ -1427,7 +1425,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "defaultfolder");
+        filter.AddProperty(XrcFilter::Type::String, "defaultfolder");
         filter.AddProperty(XrcFilter::Type::Text, "filter");
         filter.AddProperty(XrcFilter::Type::Integer, "defaultfilter");
         return xfb;

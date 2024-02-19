@@ -49,14 +49,16 @@ public:
         Bool = 0,
         Integer,
         Float,
+        String,
         Text,
         Point,
         Size,
         Bitmap,
         Colour,
         Font,
+        Option,
         BitList,
-        StringList,
+        TextList,
     };
 
 protected:
@@ -219,6 +221,7 @@ private:
     void SetBitmapProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetColourProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetFontProperty(tinyxml2::XMLElement* element, const wxString& name) const;
+    void SetOptionProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetBitlistProperty(tinyxml2::XMLElement* element, const wxString& name) const;
     void SetStringListProperty(tinyxml2::XMLElement* element, const wxString& name, bool xrcFormat = false) const;
 

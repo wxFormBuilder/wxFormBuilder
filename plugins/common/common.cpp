@@ -420,7 +420,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -441,7 +441,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         return xfb;
     }
@@ -517,7 +517,7 @@ public:
             filter.AddProperty(XrcFilter::Type::Bitmap, "current");
         }
         if (!obj->IsPropertyNull("position")) {
-            filter.AddProperty(XrcFilter::Type::Text, "position", "bitmapposition");
+            filter.AddProperty(XrcFilter::Type::Option, "position", "bitmapposition");
         }
         if (!obj->IsPropertyNull("margins")) {
             filter.AddProperty(XrcFilter::Type::Size, "margins");
@@ -536,7 +536,7 @@ public:
         filter.AddProperty(XrcFilter::Type::Bitmap, "pressed");
         filter.AddProperty(XrcFilter::Type::Bitmap, "focus");
         filter.AddProperty(XrcFilter::Type::Bitmap, "current");
-        filter.AddProperty(XrcFilter::Type::Text, "bitmapposition", "position");
+        filter.AddProperty(XrcFilter::Type::Option, "bitmapposition", "position");
         filter.AddProperty(XrcFilter::Type::Size, "margins");
         return xfb;
     }
@@ -664,7 +664,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -673,7 +673,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -717,7 +717,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -726,7 +726,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -900,7 +900,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -908,7 +908,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -976,7 +976,7 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         filter.AddProperty(XrcFilter::Type::Integer, "majorDimension", "dimension");
         return xrc;
     }
@@ -987,7 +987,7 @@ public:
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Text, "label");
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         filter.AddProperty(XrcFilter::Type::Integer, "dimension", "majorDimension");
         return xfb;
     }
@@ -1463,7 +1463,7 @@ public:
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "choices", "content");
+        filter.AddProperty(XrcFilter::Type::TextList, "choices", "content");
         return xrc;
     }
 
@@ -1472,7 +1472,7 @@ public:
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
         filter.AddProperty(XrcFilter::Type::Integer, "selection");
-        filter.AddProperty(XrcFilter::Type::StringList, "content", "choices");
+        filter.AddProperty(XrcFilter::Type::TextList, "content", "choices");
         return xfb;
     }
 };
@@ -1587,7 +1587,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "animation");
+        filter.AddProperty(XrcFilter::Type::String, "animation");
         return xrc;
     }
 
@@ -1595,7 +1595,7 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "animation");
+        filter.AddProperty(XrcFilter::Type::String, "animation");
         return xfb;
     }
 };
@@ -1630,8 +1630,8 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "show_effect", "showeffect");
-        filter.AddProperty(XrcFilter::Type::Text, "hide_effect", "hideeffect");
+        filter.AddProperty(XrcFilter::Type::Option, "show_effect", "showeffect");
+        filter.AddProperty(XrcFilter::Type::Option, "hide_effect", "hideeffect");
         filter.AddProperty(XrcFilter::Type::Integer, "duration", "effectduration");
         // FIXME: button is currently not part of the data model
         return xrc;
@@ -1641,8 +1641,8 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "showeffect", "show_effect");
-        filter.AddProperty(XrcFilter::Type::Text, "hideeffect", "hide_effect");
+        filter.AddProperty(XrcFilter::Type::Option, "showeffect", "show_effect");
+        filter.AddProperty(XrcFilter::Type::Option, "hideeffect", "hide_effect");
         filter.AddProperty(XrcFilter::Type::Integer, "effectduration", "duration");
         // FIXME: button is currently not part of the data model
         return xfb;
