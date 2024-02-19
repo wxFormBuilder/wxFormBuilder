@@ -864,7 +864,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "initial", "value");
         filter.AddProperty(XrcFilter::Type::Integer, "min");
         filter.AddProperty(XrcFilter::Type::Integer, "max");
         return xrc;
@@ -874,9 +874,9 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        // FIXME: Why is value filtered twice? What effect does this have?
-        filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        // TODO: XRC only supports the integral initial value, filter it twice to initialize the string initial value as well
+        filter.AddProperty(XrcFilter::Type::String, "value");
+        filter.AddProperty(XrcFilter::Type::Integer, "value", "initial");
         filter.AddProperty(XrcFilter::Type::Integer, "min");
         filter.AddProperty(XrcFilter::Type::Integer, "max");
         return xfb;
@@ -927,7 +927,7 @@ public:
     {
         ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
         filter.AddWindowProperties();
-        filter.AddProperty(XrcFilter::Type::Text, "initial", "value");
+        filter.AddProperty(XrcFilter::Type::Float, "initial", "value");
         filter.AddProperty(XrcFilter::Type::Float, "min");
         filter.AddProperty(XrcFilter::Type::Float, "max");
         filter.AddProperty(XrcFilter::Type::Float, "inc");
@@ -939,9 +939,9 @@ public:
     {
         XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
         filter.AddWindowProperties();
-        // FIXME: Why is value filtered twice? What effect does this have?
-        filter.AddProperty(XrcFilter::Type::Text, "value");
-        filter.AddProperty(XrcFilter::Type::Text, "value", "initial");
+        // TODO: XRC only supports the float initial value, filter it twice to initialize the string initial value as well
+        filter.AddProperty(XrcFilter::Type::String, "value");
+        filter.AddProperty(XrcFilter::Type::Float, "value", "initial");
         filter.AddProperty(XrcFilter::Type::Float, "min");
         filter.AddProperty(XrcFilter::Type::Float, "max");
         filter.AddProperty(XrcFilter::Type::Float, "inc");
