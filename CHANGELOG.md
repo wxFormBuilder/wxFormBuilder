@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Code generation for wxDataViewTreeCtrl sets an invalid style by default ([#799](https://github.com/wxFormBuilder/wxFormBuilder/issues/799))
 - Error creating code in python. Create "true" Instead of "True" ([#803](https://github.com/wxFormBuilder/wxFormBuilder/issues/803))
 - Generated C++ code cannot be built if wxNO_IMPLICIT_WXSTRING_ENCODING is defined ([#801](https://github.com/wxFormBuilder/wxFormBuilder/issues/801))
+- Fix wxFlexGridSizer XRC output of growablerows and growablecols ([#806](https://github.com/wxFormBuilder/wxFormBuilder/pull/806))
 
 ## [4.0.0] - 2023-11-14
 
