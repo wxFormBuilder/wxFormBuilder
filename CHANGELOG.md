@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [4.1.0]
+
 ### Changed
 
 - Update required wxWidgets version to 3.2
@@ -1649,7 +1651,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Background color issues in the palette
 
-[unreleased]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.0.0...HEAD
+[unreleased]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.1.0...HEAD
+[4.1.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.0.0...4.1.0
 [4.0.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.1...v4.0.0
 [3.10.1]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.0...v3.10.1
 [3.10.0]: https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.0
