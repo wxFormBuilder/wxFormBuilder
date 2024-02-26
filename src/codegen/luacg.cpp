@@ -1219,12 +1219,16 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
                 // It's not a good practice to embed templates into the source code,
                 // because you will need to recompile...
 
+                // In Lua the root-element is also just a member of the UI-table, using #wxparent in Lua is pretty much always wrong
                 wxString _template =
                   wxT("#utbl#parent $name:SetSizer( #utbl$name ) #nl") wxT("#utbl#parent $name:Layout()")
                     wxT("#ifnull #parent $size") wxT("@{ #nl #utbl$name:Fit( #utbl#parent $name ) @}");
 
                 LuaTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec);
                 wxString res = parser.ParseTemplate();
+                // FIXME: This is pretty pointless here and will lead to an error if the UI-table uses the same name like
+                //        that magic value of LuaTemplateParser::RootWxParentToCode(). But this is also broken in other parts
+                //        and it is currently unknown why this was done in the first place.
                 res.Replace(parser.RootWxParentToCode(), wxEmptyString);
                 m_source->WriteLn(res);
             }
