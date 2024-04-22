@@ -287,7 +287,7 @@ Python code generation written by
       #nl self.$name.SetViewWhiteSpace( $view_whitespace )
       #nl self.$name.SetMarginWidth( 2, 0 )
       #nl self.$name.SetIndentationGuides( $indentation_guides )
-      #nl self.$name.SetReadOnly( $read_only );
+      #nl self.$name.SetReadOnly( $read_only )
       #ifequal $folding "1"
       @{
         #nl self.$name.SetMarginType  ( 1, wx.stc.STC_MARGIN_SYMBOL )
@@ -295,7 +295,7 @@ Python code generation written by
         #nl self.$name.SetMarginWidth ( 1, 16)
         #nl self.$name.SetMarginSensitive( 1, True )
         #nl self.$name.SetProperty       ( "fold", "1" )
-        #nl self.$name.SetFoldFlags      ( wx.stc.STC_FOLDFLAG_LINEBEFORE_CONTRACTED | wx.stc.STC_FOLDFLAG_LINEAFTER_CONTRACTED );
+        #nl self.$name.SetFoldFlags      ( wx.stc.STC_FOLDFLAG_LINEBEFORE_CONTRACTED | wx.stc.STC_FOLDFLAG_LINEAFTER_CONTRACTED )
       @}
       #ifnotequal $folding "1"
       @{
@@ -303,7 +303,7 @@ Python code generation written by
       @}
       #ifequal $line_numbers "1"
       @{
-        #nl self.$name.SetMarginType( 0, wx.stc.STC_MARGIN_NUMBER );
+        #nl self.$name.SetMarginType( 0, wx.stc.STC_MARGIN_NUMBER )
         #nl self.$name.SetMarginWidth( 0, self.$name.TextWidth( wx.stc.STC_STYLE_LINENUMBER, "_99999" ) )
       @}
       #ifnotequal $line_numbers "1"
@@ -331,7 +331,7 @@ Python code generation written by
       #nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERMIDTAIL, wx.stc.STC_MARK_EMPTY )
       #nl self.$name.MarkerDefine( wx.stc.STC_MARKNUM_FOLDERTAIL, wx.stc.STC_MARK_EMPTY )
       #nl self.$name.SetSelBackground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHT ) )
-      #nl self.$name.SetSelForeground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT ) )    
+      #nl self.$name.SetSelForeground( True, wx.SystemSettings.GetColour(wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
     </template>
     <template name="include">import wx.stc</template>
   </templates>

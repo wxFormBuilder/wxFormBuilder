@@ -35,7 +35,7 @@ Python code generation written by
   </templates>
 
   <templates class="wxDataViewCtrl">
-    <template name="declaration">#class* $name;</template>
+    <template name="declaration">#class* $name</template>
     <template name="include">import wx.dataview</template>
     <template name="construction">
       self.$name = wx.dataview.DataViewCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
@@ -61,7 +61,7 @@ Python code generation written by
   </templates>
 
   <templates class="wxDataViewTreeCtrl">
-    <template name="declaration">#class* $name;</template>
+    <template name="declaration">#class* $name</template>
     <template name="include">import wx.dataview</template>
     <template name="construction">
       self.$name = wx.dataview.DataViewTreeCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
@@ -87,7 +87,7 @@ Python code generation written by
   </templates>
 
   <templates class="wxDataViewListCtrl">
-    <template name="declaration">#class* $name;</template>
+    <template name="declaration">#class* $name</template>
     <template name="include">import wx.dataview</template>
     <template name="construction">
       self.$name = wx.dataview.DataViewListCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} )
@@ -116,7 +116,7 @@ Python code generation written by
     <template name="construction">
       self.$name = self.#parent $name.Append${type}Column( $label, $mode, $width, $align, $flags )
       #ifnotnull $ellipsize
-      @{ #nl self.$name.GetRenderer().EnableEllipsize( $ellipsize ); @}
+      @{ #nl self.$name.GetRenderer().EnableEllipsize( $ellipsize ) @}
     </template>
   </templates>
 
@@ -124,12 +124,12 @@ Python code generation written by
     <template name="construction">
       self.$name = self.#parent $name.Append${type}Column( $label, $model_column, $mode, $width, $align, $flags )
       #ifnotnull $ellipsize
-      @{ #nl self.$name.GetRenderer().EnableEllipsize( $ellipsize ); @}
+      @{ #nl self.$name.GetRenderer().EnableEllipsize( $ellipsize ) @}
     </template>
   </templates>
 
   <templates class="wxTreeListCtrl">
-    <template name="declaration">#class* $name;</template>
+    <template name="declaration">#class* $name</template>
     <template name="include">import wx.dataview</template>
     <template name="construction">
       self.$name = wx.dataview.TreeListCtrl( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
@@ -309,7 +309,7 @@ Python code generation written by
 
   <templates class="propGridPage">
     <template name="construction">
-      #nl self.$name = self.#parent $name.AddPage( $label, $bitmap );
+      #nl self.$name = self.#parent $name.AddPage( $label, $bitmap )
     </template>
   </templates>
 
