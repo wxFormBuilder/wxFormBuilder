@@ -254,7 +254,7 @@ Python code generation written by
       #ifnotnull $volume
       @{#nl self.$name.SetVolume($volume)@}
       #ifnotnull $player_controls
-      @{#nl self.$name.ShowPlayerControls(wxMEDIACTRLPLAYERCONTROLS_$player_controls)@}
+      @{#nl self.$name.ShowPlayerControls(wx.media.MEDIACTRLPLAYERCONTROLS_$player_controls)@}
     </template>
     <template name="settings">
       #ifequal $play "1"
