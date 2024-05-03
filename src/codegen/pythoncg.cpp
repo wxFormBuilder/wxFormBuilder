@@ -155,7 +155,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
             result = (value.empty() ? wxT("0") : value);
 
             wxString pred, bit;
-            wxStringTokenizer bits(result, wxT("|"), wxTOKEN_STRTOK);
+            wxStringTokenizer bits(result, wxT(" | "), wxTOKEN_STRTOK);
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
@@ -174,7 +174,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
             if (value.empty()) {
                 result = wxT("wx.DefaultPosition");
             } else {
-                result << wxT("wx.Point( ") << value << wxT(" )");
+                result << wxT("wx.Point(") << value << wxT(")");
             }
             break;
         }
@@ -182,7 +182,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
             if (value.empty()) {
                 result = wxT("wx.DefaultSize");
             } else {
-                result << wxT("wx.Size( ") << value << wxT(" )");
+                result << wxT("wx.Size(") << value << wxT(")");
             }
             break;
         }
@@ -213,7 +213,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
             if (!value.empty()) {
                 if (value.find_first_of(wxT("wx")) == 0) {
                     // System Colour
-                    result << wxT("wx.SystemSettings.GetColour( ") << ValueToCode(PT_OPTION, value) << wxT(" )");
+                    result << wxT("wx.SystemSettings.GetColour(") << ValueToCode(PT_OPTION, value) << wxT(")");
                 } else {
                     wxColour colour = TypeConv::StringToColour(value);
                     result =
@@ -289,7 +289,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 wxString cid = path.AfterFirst(wxT(':'));
                 cid.Replace(wxT("wx"), wxT("wx."));
 
-                result = wxT("wx.ArtProvider.GetBitmap( ") + rid + wxT(", ") + cid + wxT(" )");
+                result = wxT("wx.ArtProvider.GetBitmap(") + rid + wxT(", ") + cid + wxT(")");
             }
             break;
         }
@@ -400,7 +400,7 @@ void PythonCodeGenerator::GenerateInheritedClass(PObjectBase userClasses, PObjec
         for (size_t i = 0; i < events.size(); i++) {
             PEvent event = events[i];
             if (generatedHandlers.find(event->GetValue()) == generatedHandlers.end()) {
-                m_source->WriteLn(wxString::Format(wxT("def %s( self, event ):"), event->GetValue()));
+                m_source->WriteLn(wxString::Format(wxT("def %s(self, event):"), event->GetValue()));
                 m_source->Indent();
                 m_source->WriteLn(wxString::Format(wxT("# TODO: Implement %s"), event->GetValue()));
                 m_source->WriteLn(wxT("pass"));
@@ -440,10 +440,10 @@ bool PythonCodeGenerator::GenerateCode(PObjectBase project)
     }
 
     code = wxString::Format(
-      wxT("###########################################################################\n")
-        wxT("## Python code generated with wxFormBuilder (version %s%s)\n") wxT("## http://www.wxformbuilder.org/\n")
-          wxT("##\n") wxT("## PLEASE DO *NOT* EDIT THIS FILE!\n")
-            wxT("###########################################################################\n"),
+      wxT("# #########################################################################\n")
+        wxT("# # Python code generated with wxFormBuilder (version %s%s)\n") wxT("# # http://www.wxformbuilder.org/\n")
+          wxT("# #\n") wxT("# # PLEASE DO *NOT* EDIT THIS FILE!\n")
+            wxT("# #########################################################################\n"),
       getVersion(), getPostfixRevision(getVersion()).c_str());
 
     m_source->WriteLn(code);
@@ -628,11 +628,12 @@ void PythonCodeGenerator::GenVirtualEventHandlers(const EventVector& events, con
         // So we create a default handler which will skip the event.
         m_source->WriteLn(wxEmptyString);
         m_source->WriteLn(wxT("# Virtual event handlers, override them in your derived class"));
+        m_source->WriteLn(wxEmptyString);
 
         std::set<wxString> generatedHandlers;
         for (size_t i = 0; i < events.size(); i++) {
             PEvent event = events[i];
-            wxString aux = wxT("def ") + event->GetValue() + wxT("( self, event ):");
+            wxString aux = wxT("def ") + event->GetValue() + wxT("(self, event):");
 
             if (generatedHandlers.find(aux) == generatedHandlers.end()) {
                 m_source->WriteLn(aux);
@@ -806,13 +807,13 @@ void PythonCodeGenerator::GenClassDeclaration(
         return;
     }
 
-    m_source->WriteLn(wxT("###########################################################################"));
-    m_source->WriteLn(wxT("## Class ") + class_name);
-    m_source->WriteLn(wxT("###########################################################################"));
+    m_source->WriteLn(wxT("# #########################################################################"));
+    m_source->WriteLn(wxT("# # Class ") + class_name);
+    m_source->WriteLn(wxT("# #########################################################################"));
     m_source->WriteLn();
 
     m_source->WriteLn(
-      wxT("class ") + classDecoration + class_name + wxT(" ( ") + GetCode(class_obj, wxT("base")).Trim() + wxT(" ):"));
+      wxT("class ") + classDecoration + class_name + wxT("(") + GetCode(class_obj, wxT("base")).Trim() + wxT("):"));
     m_source->Indent();
 
     // The constructor is also included within public
@@ -1043,7 +1044,7 @@ void PythonCodeGenerator::GenDestructor(PObjectBase class_obj, const EventVector
 {
     m_source->WriteLn();
     // generate function definition
-    m_source->WriteLn(wxT("def __del__( self ):"));
+    m_source->WriteLn(wxT("def __del__(self):"));
     m_source->Indent();
 
     if (m_disconnectEvents && !events.empty()) {
@@ -1093,8 +1094,8 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
                 // It's not a good practice to embed templates into the source code,
                 // because you will need to recompile...
 
-                wxString _template = wxT("#wxparent $name.SetSizer( $name ) #nl") wxT("#wxparent $name.Layout()")
-                  wxT("#ifnull #parent $size") wxT("@{ #nl $name.Fit( #wxparent $name ) @}");
+                wxString _template = wxT("#wxparent $name.SetSizer($name) #nl") wxT("#wxparent $name.Layout()")
+                  wxT("#ifnull #parent $size") wxT("@{ #nl $name.Fit(#wxparent $name) @}");
 
                 PythonTemplateParser parser(
                   obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName);
@@ -1105,8 +1106,8 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
             switch (obj->GetChildCount()) {
                 case 1: {
                     PObjectBase sub1 = obj->GetChild(0)->GetChild(0);
-                    wxString _template = wxT("self.$name.Initialize( ");
-                    _template = _template + wxT("self.") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(" )");
+                    wxString _template = wxT("self.$name.Initialize(");
+                    _template = _template + wxT("self.") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(")");
 
                     PythonTemplateParser parser(
                       obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName);
@@ -1120,13 +1121,13 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
 
                     wxString _template;
                     if (obj->GetProperty(wxT("splitmode"))->GetValue() == wxT("wxSPLIT_VERTICAL")) {
-                        _template = wxT("self.$name.SplitVertically( ");
+                        _template = wxT("self.$name.SplitVertically(");
                     } else {
-                        _template = wxT("self.$name.SplitHorizontally( ");
+                        _template = wxT("self.$name.SplitHorizontally(");
                     }
 
                     _template = _template + wxT("self.") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(", self.") +
-                                sub2->GetProperty(wxT("name"))->GetValue() + wxT(", $sashpos )");
+                                sub2->GetProperty(wxT("name"))->GetValue() + wxT(", $sashpos)");
 
                     PythonTemplateParser parser(
                       obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName);
