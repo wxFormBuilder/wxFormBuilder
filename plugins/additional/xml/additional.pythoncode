@@ -200,13 +200,13 @@ Python code generation written by
     <template name="construction">self.$name = #class(#wxparent $name, $id, $label, $url, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @})</template>
     <template name="settings">
       #ifnotnull $hover_color
-      @{ #nl self.$name.SetHoverColour( $hover_color ) @}
+      @{ #nl self.$name.SetHoverColour($hover_color) @}
 
       #ifnotnull $normal_color
-      @{ #nl self.$name.SetNormalColour( $normal_color ) @}
+      @{ #nl self.$name.SetNormalColour($normal_color) @}
 
       #ifnotnull $visited_color
-      @{ #nl self.$name.SetVisitedColour( $visited_color ) @}
+      @{ #nl self.$name.SetVisitedColour($visited_color) @}
     </template>
     <template name="include">import wx.adv</template>
     <template name="evt_connect_OnHyperlink">self.$name.Bind(wx.adv.EVT_HYPERLINK, #handler)</template>
@@ -215,7 +215,7 @@ Python code generation written by
   <templates class="wxGenericDirCtrl">
     <template name="construction">self.$name = #class(#wxparent $name, $id, $defaultfolder, $pos, $size, $style #ifnotnull $window_style @{ |$window_style@}, $filter, $defaultfilter #ifnotnull $window_name @{, $window_name @})</template>
     <template name="settings">
-      #nl self.$name.ShowHidden( $show_hidden )
+      #nl self.$name.ShowHidden($show_hidden)
     </template>
     <template name="evt_connect_OnDirctrlSelectionChanged">self.$name.Bind(wx.EVT_DIRCTRL_SELECTIONCHANGED, #handler)</template>
     <template name="evt_connect_OnDirctrlFileActivated">self.$name.Bind(wx.EVT_DIRCTRL_FILEACTIVATED, #handler)</template>
@@ -224,8 +224,8 @@ Python code generation written by
   <templates class="wxSearchCtrl">
     <template name="construction">self.$name = #class(#wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})</template>
     <template name="settings">
-      self.$name.ShowSearchButton( $search_button )
-      #nl self.$name.ShowCancelButton( $cancel_button )
+      self.$name.ShowSearchButton($search_button)
+      #nl self.$name.ShowCancelButton($cancel_button)
     </template>
     <template name="evt_connect_OnText">self.$name.Bind(wx.EVT_TEXT, #handler)</template>
     <template name="evt_connect_OnTextEnter">self.$name.Bind(wx.EVT_TEXT_ENTER, #handler)</template>
@@ -248,7 +248,7 @@ Python code generation written by
     <template name="construction">
       self.$name = #class(#wxparent $name, $id, wx.EmptyString, $pos, $size)
       #ifnotnull $file
-      @{ #nl self.$name.Load( $file ) @}
+      @{ #nl self.$name.Load($file) @}
       #ifnotnull $playback_rate
       @{#nl self.$name.SetPlaybackRate($playback_rate)@}
       #ifnotnull $volume
@@ -266,13 +266,13 @@ Python code generation written by
   <templates class="wxTimer">
     <template name="construction">
       self.$name = #class() #nl
-      self.$name.SetOwner( #wxparent $name, self.$name.GetId() )
+      self.$name.SetOwner(#wxparent $name, self.$name.GetId())
     </template>
     <template name="settings">
       #ifequal $enabled "1"
-      @{ self.$name.Start( $period #ifequal $oneshot "1" @{, True@} ) #nl @}
+      @{ self.$name.Start($period #ifequal $oneshot "1" @{, True@}) #nl @}
     </template>
-    <template name="evt_connect_OnTimer">#wxparent $name.Bind(wx.EVT_TIMER, #handler, id=self.$name.GetId() )</template>
+    <template name="evt_connect_OnTimer">#wxparent $name.Bind(wx.EVT_TIMER, #handler, id=self.$name.GetId())</template>
   </templates>
 
   <templates class="wxStyledTextCtrl">
@@ -299,12 +299,12 @@ Python code generation written by
       @}
       #ifnotequal $folding "1"
       @{
-        #nl self.$name.SetMarginWidth( 1, 0 )
+        #nl self.$name.SetMarginWidth(1, 0)
       @}
       #ifequal $line_numbers "1"
       @{
-        #nl self.$name.SetMarginType( 0, wx.stc.STC_MARGIN_NUMBER )
-        #nl self.$name.SetMarginWidth( 0, self.$name.TextWidth(wx.stc.STC_STYLE_LINENUMBER, "_99999"))
+        #nl self.$name.SetMarginType(0, wx.stc.STC_MARGIN_NUMBER)
+        #nl self.$name.SetMarginWidth(0, self.$name.TextWidth(wx.stc.STC_STYLE_LINENUMBER, "_99999"))
       @}
       #ifnotequal $line_numbers "1"
       @{

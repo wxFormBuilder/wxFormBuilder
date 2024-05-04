@@ -155,7 +155,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
             result = (value.empty() ? wxT("0") : value);
 
             wxString pred, bit;
-            wxStringTokenizer bits(result, wxT(" | "), wxTOKEN_STRTOK);
+            wxStringTokenizer bits(result, wxT("|"), wxTOKEN_STRTOK);
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
@@ -163,11 +163,12 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
 
                 if (bit.Contains(wxT("wx"))) {
                     if (!pred.empty())
-                        result.Replace(bit, pred + bit.AfterFirst('x'));
+                        result.Replace(bit, pred + bit.AfterFirst('x').Trim());
                     else
-                        result.Replace(bit, wxT("wx.") + bit.AfterFirst('x'));
+                        result.Replace(bit, wxT("wx.") + bit.AfterFirst('x').Trim());
                 }
             }
+            result.Replace(wxT("|"), wxT(" | "));
             break;
         }
         case PT_WXPOINT: {
@@ -175,6 +176,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 result = wxT("wx.DefaultPosition");
             } else {
                 result << wxT("wx.Point(") << value << wxT(")");
+                result.Replace(wxT(","), wxT(", "));
             }
             break;
         }
@@ -183,6 +185,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 result = wxT("wx.DefaultSize");
             } else {
                 result << wxT("wx.Size(") << value << wxT(")");
+                result.Replace(wxT(","), wxT(", "));
             }
             break;
         }
@@ -217,7 +220,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 } else {
                     wxColour colour = TypeConv::StringToColour(value);
                     result =
-                      wxString::Format(wxT("wx.Colour( %i, %i, %i )"), colour.Red(), colour.Green(), colour.Blue());
+                      wxString::Format(wxT("wx.Colour(%i, %i, %i)"), colour.Red(), colour.Green(), colour.Blue());
                 }
             } else {
                 result = wxT("wx.Colour()");
@@ -255,29 +258,29 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
 
                 wxString file = (m_useRelativePath ? TypeConv::MakeRelativePath(absPath, m_basePath) : absPath);
 
-                result << wxT("wx.Bitmap( ");
+                result << wxT("wx.Bitmap(");
                 if (!m_imagePathWrapperFunctionName.empty()) {
-                    result << wxT("self.") << m_imagePathWrapperFunctionName << wxT("( ");
+                    result << wxT("self.") << m_imagePathWrapperFunctionName << wxT("(");
                 }
                 result << wxT("u\"") << PythonCodeGenerator::ConvertPythonString(file) << wxT("\"");
                 if (!m_imagePathWrapperFunctionName.empty()) {
-                    result << wxT(" )");
+                    result << wxT(")");
                 }
                 result << wxT(", wx.BITMAP_TYPE_ANY )");
 
             } else if (source == _("Load From Resource")) {
-                result << wxT("wx.Bitmap( u\"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE )");
+                result << wxT("wx.Bitmap(u\"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE)");
             } else if (source == _("Load From Icon Resource")) {
                 if (wxDefaultSize == icoSize) {
-                    result << wxT("wx.ICON( ") << path << wxT(" )");
+                    result << wxT("wx.ICON(") << path << wxT(" )");
                 } else {
                     result.Printf(
-                      wxT("wx.Icon( u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path, icoSize.GetWidth(),
+                      wxT("wx.Icon(u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i)"), path, icoSize.GetWidth(),
                       icoSize.GetHeight());
                 }
             } else if (source == _("Load From XRC")) {
                 // NOTE: The module wx.xrc is part of the default code template
-                result << wxT("wx.xrc.XmlResource.Get().LoadBitmap( u\"") << path << wxT("\" )");
+                result << wxT("wx.xrc.XmlResource.Get().LoadBitmap(u\"") << path << wxT("\")");
             } else if (source == _("Load From Art Provider")) {
                 wxString rid = path.BeforeFirst(wxT(':'));
 
@@ -626,7 +629,7 @@ void PythonCodeGenerator::GenVirtualEventHandlers(const EventVector& events, con
         // events could be triggered in the constructor in which virtual methods are
         // execute properly.
         // So we create a default handler which will skip the event.
-        m_source->WriteLn(wxEmptyString);
+        // m_source->WriteLn(wxEmptyString);
         m_source->WriteLn(wxT("# Virtual event handlers, override them in your derived class"));
         m_source->WriteLn(wxEmptyString);
 
@@ -810,6 +813,7 @@ void PythonCodeGenerator::GenClassDeclaration(
     m_source->WriteLn(wxT("# #########################################################################"));
     m_source->WriteLn(wxT("# # Class ") + class_name);
     m_source->WriteLn(wxT("# #########################################################################"));
+    m_source->WriteLn();
     m_source->WriteLn();
 
     m_source->WriteLn(
@@ -1086,7 +1090,6 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
             if (!afterAddChild.empty()) {
                 m_source->WriteLn(afterAddChild);
             }
-            m_source->WriteLn();
 
             if (is_widget) {
                 // the parent object is not a sizer. There is no template for

@@ -138,7 +138,7 @@ Python code generation written by
       #ifequal $aui_managed "1"
       @{ #nl self.m_mgr.Update() @}
       #ifnotnull $center
-      @{ #nl self.Centre($center) @}
+      @{ self.Centre($center) @}
     </template>
     <template name="evt_connect_OnChar">self.Bind(wx.EVT_CHAR, #handler)</template>
     <template name="evt_disconnect_OnChar">self.Unbind(wx.EVT_CHAR)</template>
@@ -451,7 +451,7 @@ Python code generation written by
       #ifequal $aui_managed "1"
       @{ #nl self.m_mgr.Update() @}
       #ifnotnull $center
-      @{ #nl self.Centre($center) @}
+      @{ self.Centre($center) @}
     </template>
     <template name="evt_connect_OnInitDialog">self.Bind(wx.EVT_INIT_DIALOG, #handler)</template>
     <template name="evt_disconnect_OnInitDialog">self.Unbind(wx.EVT_INIT_DIALOG)</template>
@@ -764,7 +764,7 @@ Python code generation written by
         @{ self.SetToolPacking($packing) #nl @}
       @}
     </template>
-    <template name="after_addchild">#nl self.Realize()</template>
+    <template name="after_addchild">self.Realize()</template>
   </templates>
 
 </codegen>
