@@ -824,8 +824,6 @@ void PythonCodeGenerator::GenClassDeclaration(
     GenConstructor(class_obj, events, arrays);
     GenDestructor(class_obj, events);
 
-    m_source->WriteLn(wxEmptyString);
-
     // event handlers
     GenVirtualEventHandlers(events, eventHandlerPostfix);
     GetGenEventHandlers(class_obj);
@@ -834,7 +832,6 @@ void PythonCodeGenerator::GenClassDeclaration(
     GenImagePathWrapperFunction();
 
     m_source->Unindent();
-    m_source->WriteLn(wxEmptyString);
 }
 
 void PythonCodeGenerator::GenSubclassSets(
@@ -1003,7 +1000,9 @@ void PythonCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
     m_source->WriteLn(GetCode(class_obj, wxT("cons_def")));
     m_source->Indent();
 
-    m_source->WriteLn(GetCode(class_obj, wxT("cons_call")));
+    wxString conscall = GetCode(class_obj, wxT("cons_call"));
+    conscall.Replace(wxT("|"), wxT(" | "));
+    m_source->WriteLn(conscall);
     m_source->WriteLn();
 
     wxString settings = GetCode(class_obj, wxT("settings"));

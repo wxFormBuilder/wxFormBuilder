@@ -85,8 +85,7 @@ Python code generation written by
       @{ $subclass/name.__init__@}
 
       #ifnull $subclass/name
-      @{ wx.Frame.__init__@}
-     (self, parent, id=$id, title=$title, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
+      @{ wx.Frame.__init__@}(self, parent, id=$id, title=$title, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
@@ -242,8 +241,7 @@ Python code generation written by
       @{ $subclass/name.__init__@}
 
       #ifnull $subclass/name
-      @{ wx.Panel.__init__@}
-      (self, parent, id=id, pos=pos, size=size, style=style, name=name)
+      @{ wx.Panel.__init__@}(self, parent, id=id, pos=pos, size=size, style=style, name=name)
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
@@ -399,8 +397,7 @@ Python code generation written by
       @{ $subclass/name.__init__@}
 
       #ifnull $subclass/name
-      @{ wx.Dialog.__init__@}
-      (self, parent, id=$id, title=$title, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
+      @{ wx.Dialog.__init__@}(self, parent, id=$id, title=$title, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
     </template>
     <template name="destruction">
       #ifequal $aui_managed "1"
@@ -557,8 +554,7 @@ Python code generation written by
       @{ $subclass/name.__init__@}
 
       #ifnull $subclass/name
-      @{ wx.adv.Wizard.__init__@}
-      (self, parent, id=$id, title=$title, bitmap=$bitmap, pos=$pos, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
+      @{ wx.adv.Wizard.__init__@}(self, parent, id=$id, title=$title, bitmap=$bitmap, pos=$pos, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
     </template>
     <template name="include">
       import wx.adv
@@ -742,8 +738,7 @@ Python code generation written by
       @{ $subclass/name.__init__@}
 
       #ifnull $subclass/name
-      @{ wx.ToolBar.__init__@}
-      (self, parent, id=$id, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
+      @{ wx.ToolBar.__init__@}(self, parent, id=$id, pos=$pos, size=$size, style=$style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, name=$window_name @})
     </template>
     <template name="settings">
       #ifnotnull $bitmapsize
