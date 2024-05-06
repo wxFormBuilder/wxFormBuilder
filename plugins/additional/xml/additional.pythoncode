@@ -54,7 +54,7 @@ Python code generation written by
 
   <templates class="wxToggleButton">
     <template name="construction">self.$name = #class(#wxparent $name, $id, $label, $pos, $size, $window_style #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})</template>
-    <template name="settings">#ifnotequal $value "0" @{ self.$name.SetValue( True ) @}</template>
+    <template name="settings">#ifnotequal $value "0" @{ self.$name.SetValue(True) @}</template>
     <template name="evt_connect_OnToggleButton">self.$name.Bind(wx.EVT_TOGGLEBUTTON, #handler)</template>
   </templates>
 
@@ -69,7 +69,7 @@ Python code generation written by
       @{ wx.BLACK, @}
       #ifnotnull $colour
       @{ $colour, @}
-      $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
     <template name="evt_connect_OnColourChanged">self.$name.Bind(wx.EVT_COLOURPICKER_CHANGED, #handler)</template>
   </templates>
@@ -81,25 +81,25 @@ Python code generation written by
       @{ wx.NullFont, @}
       #ifnotnull $value
       @{ $value, @}
-      $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
     <template name="settings">
       #ifnotnull $max_point_size
-      @{ self.$name.SetMaxPointSize( $max_point_size ) @}
+      @{ self.$name.SetMaxPointSize($max_point_size) @}
     </template>
     <template name="evt_connect_OnFontChanged">self.$name.Bind(wx.EVT_FONTPICKER_CHANGED, #handler)</template>
   </templates>
 
   <templates class="wxFilePickerCtrl">
     <template name="construction">
-      self.$name = #class(#wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      self.$name = #class(#wxparent $name, $id, $value, $message, $wildcard, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
     <template name="evt_connect_OnFileChanged">self.$name.Bind(wx.EVT_FILEPICKER_CHANGED, #handler)</template>
   </templates>
 
   <templates class="wxDirPickerCtrl">
     <template name="construction">
-      self.$name = #class(#wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      self.$name = #class(#wxparent $name, $id, $value, $message, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
     <template name="evt_connect_OnDirChanged">self.$name.Bind(wx.EVT_DIRPICKER_CHANGED, #handler)</template>
   </templates>
@@ -183,7 +183,7 @@ Python code generation written by
 
   <templates class="wxSpinCtrlDouble">
     <template name="construction">self.$name = #class(#wxparent $name, $id, $value, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @}, $min, $max, $initial, $inc #ifnotnull $window_name @{, $window_name @})</template>
-    <template name="settings">self.$name.SetDigits( $digits )</template>
+    <template name="settings">self.$name.SetDigits($digits)</template>
     <template name="evt_connect_OnSpinCtrlDouble">self.$name.Bind(wx.EVT_SPINCTRLDOUBLE, #handler)</template>
     <template name="evt_connect_OnSpinCtrlText">self.$name.Bind(wx.EVT_TEXT, #handler)</template>
     <template name="evt_connect_OnTextEnter">self.$name.Bind(wx.EVT_TEXT_ENTER, #handler)</template>

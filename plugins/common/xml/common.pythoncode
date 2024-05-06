@@ -49,7 +49,7 @@ Python code generation written by
     </template>
     <template name="settings">
       #ifnotnull $maxlength
-      @{ self.$name.SetMaxLength( $maxlength ) @}
+      @{ self.$name.SetMaxLength($maxlength) @}
     </template>
     <template name="evt_connect_OnText">self.$name.Bind(wx.EVT_TEXT, #handler)</template>
     <template name="evt_connect_OnTextEnter">self.$name.Bind(wx.EVT_TEXT_ENTER, #handler)</template>
@@ -79,7 +79,7 @@ Python code generation written by
     <template name="construction">
       #ifnotnull $choices
       @{
-        $name #append Choices = [ $choices ] #nl
+        $name #append Choices = [$choices] #nl
       @}
       #ifnull $choices
       @{
@@ -87,7 +87,7 @@ Python code generation written by
       @}
       self.$name = #class(#wxparent $name, $id, $value, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
-    <template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection( $selection )@}</template>
+    <template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection($selection)@}</template>
     <template name="evt_connect_OnCombobox">self.$name.Bind(wx.EVT_COMBOBOX, #handler)</template>
     <template name="evt_connect_OnText">self.$name.Bind(wx.EVT_TEXT, #handler)</template>
     <template name="evt_connect_OnTextEnter">self.$name.Bind(wx.EVT_TEXT_ENTER, #handler)</template>
@@ -95,11 +95,11 @@ Python code generation written by
 
   <templates class="wxBitmapComboBox">
     <template name="construction">
-      self.$name = wx.adv.BitmapComboBox( #wxparent $name, $id, $value, $pos, $size, [], $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
+      self.$name = wx.adv.BitmapComboBox(#wxparent $name, $id, $value, $pos, $size, [], $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
       #foreach $choices
-      @{ self.$name.Append( #pred.partition(":")[2], wx.Image.ConvertToBitmap(wx.Image(#pred.partition(":")[0]))) @}
+      @{ self.$name.Append(#pred.partition(":")[2], wx.Image.ConvertToBitmap(wx.Image(#pred.partition(":")[0]))) @}
     </template>
-    <template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection( $selection )@}</template>
+    <template name="settings">#ifnotequal $selection "-1" @{self.$name.SetSelection($selection)@}</template>
     <template name="evt_connect_OnCombobox">self.$name.Bind(wx.EVT_COMBOBOX, #handler)</template>
     <template name="evt_connect_OnText">self.$name.Bind(wx.EVT_TEXT, #handler)</template>
     <template name="evt_connect_OnTextEnter">self.$name.Bind(wx.EVT_TEXT_ENTER, #handler)</template>
@@ -110,7 +110,7 @@ Python code generation written by
     <template name="construction">
       #ifnotnull $choices
       @{
-        $name #append Choices = [ $choices ] #nl
+        $name #append Choices = [$choices] #nl
       @}
       #ifnull $choices
       @{
@@ -126,9 +126,9 @@ Python code generation written by
     <template name="construction">
       #ifnotnull $choices
       @{
-        $name #append Choices = [ $choices ] #nl
+        $name #append Choices = [$choices] #nl
         self.$name = #class(#wxparent $name, $id, $label, $pos, $size, $name #append Choices, $majorDimension, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @}) #nl
-        self.$name.SetSelection( $selection )
+        self.$name.SetSelection($selection)
       @}
       #ifnull $choices
       @{
@@ -143,7 +143,7 @@ Python code generation written by
     <template name="construction">self.$name = #class(#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})</template>
     <template name="settings">
       #ifnotequal $value "0"
-      @{ self.$name.SetValue( True ) @}
+      @{ self.$name.SetValue(True) @}
     </template>
     <template name="evt_connect_OnRadioButton">self.$name.Bind(wx.EVT_RADIOBUTTON, #handler)</template>
   </templates>
@@ -156,11 +156,11 @@ Python code generation written by
     <template name="construction">
       self.$name = #class(#wxparent $name, $id, wx.adv.NullAnimation, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @})
       #ifnotnull $animation
-      @{ #nl self.$name.LoadFile( $animation ) @}
+      @{ #nl self.$name.LoadFile($animation) @}
     </template>
     <template name="settings">
       #ifnotnull $inactive_bitmap
-      @{ #nl self.$name.SetInactiveBitmap( $inactive_bitmap ) @}
+      @{ #nl self.$name.SetInactiveBitmap($inactive_bitmap) @}
       #ifequal $play "1"
       @{ #nl self.$name.Play() @}
     </template>
@@ -201,7 +201,7 @@ Python code generation written by
     <template name="construction">
       #ifnotnull $choices
       @{
-        $name #append Choices = [ $choices ] #nl
+        $name #append Choices = [$choices] #nl
       @}
       #ifnull $choices
       @{
@@ -209,7 +209,7 @@ Python code generation written by
       @}
       self.$name = #class(#wxparent $name, $id, $pos, $size, $name #append Choices, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})
     </template>
-    <template name="settings">self.$name.SetSelection( $selection )</template>
+    <template name="settings">self.$name.SetSelection($selection)</template>
     <template name="evt_connect_OnChoice">self.$name.Bind(wx.EVT_CHOICE, #handler)</template>
   </templates>
 
@@ -217,7 +217,7 @@ Python code generation written by
     <template name="construction">self.$name = #class(#wxparent $name, $id, $range, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @})</template>
     <template name="settings">
       #ifnotnull $value
-      @{ self.$name.SetValue( $value ) @}
+      @{ self.$name.SetValue($value) @}
     </template>
   </templates>
 

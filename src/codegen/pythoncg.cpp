@@ -201,7 +201,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 const int pointSize = fontContainer.GetPointSize();
 
                 result = wxString::Format(
-                  "wx.Font( %s, %s, %s, %s, %s, %s )",
+                  "wx.Font(%s, %s, %s, %s, %s, %s)",
                   ((pointSize <= 0) ? "wx.NORMAL_FONT.GetPointSize()" : (wxString() << pointSize)),
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()).replace(0, 2, "wx."),
                   font.GetStyleString().replace(0, 2, "wx."), font.GetWeightString().replace(0, 2, "wx."),
@@ -649,7 +649,7 @@ void PythonCodeGenerator::GenVirtualEventHandlers(const EventVector& events, con
             if (i < (events.size() - 1))
                 m_source->WriteLn();
         }
-        m_source->WriteLn(wxEmptyString);
+        // m_source->WriteLn(wxEmptyString);
     }
 }
 
@@ -690,7 +690,7 @@ void PythonCodeGenerator::GenImagePathWrapperFunction()
 {
     if (!m_imagePathWrapperFunctionName.empty()) {
         m_source->WriteLn(wxT("# Virtual image path resolution method. Override this in your derived class."));
-        wxString decl = wxT("def ") + m_imagePathWrapperFunctionName + wxT("( self, bitmap_path ):");
+        wxString decl = wxT("def ") + m_imagePathWrapperFunctionName + wxT("(self, bitmap_path):");
         m_source->WriteLn(decl);
         m_source->Indent();
         m_source->WriteLn(wxT("return bitmap_path"));
@@ -810,6 +810,7 @@ void PythonCodeGenerator::GenClassDeclaration(
         return;
     }
 
+    m_source->WriteLn();
     m_source->WriteLn(wxT("# #########################################################################"));
     m_source->WriteLn(wxT("# # Class ") + class_name);
     m_source->WriteLn(wxT("# #########################################################################"));
