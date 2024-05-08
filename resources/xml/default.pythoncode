@@ -16,7 +16,7 @@
   <templates class="wxWindow">
     <template name="settings">
       #ifnotnull $window_extra_style
-      @{ self.$name.SetExtraStyle( $window_extra_style ) #nl @}
+      @{ self.$name.SetExtraStyle($window_extra_style) #nl @}
 
       #ifnotnull $font
       @{ self.$name.SetFont($font) #nl @}
@@ -141,7 +141,7 @@
         #ifnotnull $aui_name @{.Name($aui_name)@}.$docking()
         #ifnotnull $caption @{.Caption($caption)@}
         #ifequal $caption_visible "0" @{.CaptionVisible($caption_visible)@}
-        #ifequal $close_button "0" @{.CloseButton( $close_button )@}
+        #ifequal $close_button "0" @{.CloseButton($close_button)@}
         #ifequal $maximize_button "1" @{.MaximizeButton($maximize_button)@}
         #ifequal $minimize_button "1" @{.MinimizeButton($minimize_button)@}
         #ifequal $pin_button "1" @{.PinButton($pin_button)@}

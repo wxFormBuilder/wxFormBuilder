@@ -68,12 +68,12 @@ Python code generation written by
         #ifparenttypeequal "widget || container || expanded_widget || wizardpagesimple || treelistctrl || dataviewctrl || dataviewtreectrl || dataviewlistctrl || propgrid || propgridman"
         @{
           def #parent $name #append OnContextMenu(self, event): #indent #nl
-          self.#parent $name.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+          self.#parent $name.PopupMenu(self.$name, event.GetPosition()) #nl #unindent
         @}
         #ifparenttypeequal "form || wizard"
         @{
           def #parent $name #append OnContextMenu(self, event): #indent #nl
-          self.PopupMenu( self.$name, event.GetPosition() ) #nl #unindent
+          self.PopupMenu(self.$name, event.GetPosition()) #nl #unindent
         @}
         #ifparenttypeequal "tool"
         @{
@@ -81,7 +81,7 @@ Python code generation written by
           if event.IsDropDownClicked() == True: #indent #nl
             #wxparent $name.SetToolSticky(event.GetId(), True) #nl
             rect = #wxparent $name.GetToolRect(event.GetId()) #nl
-            pt = self.ScreenToClient(#wxparent $name.ClientToScreen( rect.GetBottomLeft())) #nl
+            pt = self.ScreenToClient(#wxparent $name.ClientToScreen(rect.GetBottomLeft())) #nl
             #wxparent $name.PopupMenu(self.$name, pt) #nl
             #wxparent $name.SetToolSticky(event.GetId(), False) #nl #unindent #unindent
         @}

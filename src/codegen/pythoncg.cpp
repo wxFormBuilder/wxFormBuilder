@@ -168,7 +168,6 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                         result.Replace(bit, wxT("wx.") + bit.AfterFirst('x').Trim());
                 }
             }
-            result.Replace(wxT("|"), wxT(" | "));
             break;
         }
         case PT_WXPOINT: {
@@ -266,13 +265,13 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 if (!m_imagePathWrapperFunctionName.empty()) {
                     result << wxT(")");
                 }
-                result << wxT(", wx.BITMAP_TYPE_ANY )");
+                result << wxT(", wx.BITMAP_TYPE_ANY)");
 
             } else if (source == _("Load From Resource")) {
                 result << wxT("wx.Bitmap(u\"") << path << wxT("\", wx.BITMAP_TYPE_RESOURCE)");
             } else if (source == _("Load From Icon Resource")) {
                 if (wxDefaultSize == icoSize) {
-                    result << wxT("wx.ICON(") << path << wxT(" )");
+                    result << wxT("wx.ICON(") << path << wxT(")");
                 } else {
                     result.Printf(
                       wxT("wx.Icon(u\"%s\", wx.BITMAP_TYPE_ICO_RESOURCE, %i, %i)"), path, icoSize.GetWidth(),
@@ -720,6 +719,10 @@ wxString PythonCodeGenerator::GetCode(PObjectBase obj, wxString name, bool silen
     PythonTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_imagePathWrapperFunctionName);
     wxString code = parser.ParseTemplate();
 
+    // add spaces around bitwise or shift operator
+    if (code.Find(wxT(" | ")) == wxNOT_FOUND)
+        code.Replace(wxT("|"), wxT(" | "));
+
     return code;
 }
 
@@ -1001,9 +1004,7 @@ void PythonCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVecto
     m_source->WriteLn(GetCode(class_obj, wxT("cons_def")));
     m_source->Indent();
 
-    wxString conscall = GetCode(class_obj, wxT("cons_call"));
-    conscall.Replace(wxT("|"), wxT(" | "));
-    m_source->WriteLn(conscall);
+    m_source->WriteLn(GetCode(class_obj, wxT("cons_call")));
     m_source->WriteLn();
 
     wxString settings = GetCode(class_obj, wxT("settings"));

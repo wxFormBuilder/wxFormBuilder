@@ -42,8 +42,8 @@ Python code generation written by
   </templates>
 
   <templates class="gbsizeritem">
-    <template name="window_add">#parent $name.Add(self.#child $name, wx.GBPosition($row, $column), wx.GBSpan($rowspan, $colspan), $flag, $border) #nl</template>
-    <template name="sizer_add">#parent $name.Add(#child $name, wx.GBPosition($row, $column), wx.GBSpan( $rowspan, $colspan ), $flag, $border) #nl</template>
+    <template name="window_add">#parent $name.Add(self.#child $name, wx.GBPosition($row, $column), wx.GBSpan($rowspan, $colspan), $flag, $border)</template>
+    <template name="sizer_add">#parent $name.Add(#child $name, wx.GBPosition($row, $column), wx.GBSpan($rowspan, $colspan), $flag, $border)</template>
     <template name="spacer_add">#parent $name.Add((#child $width, #child $height), wx.GBPosition($row, $column), wx.GBSpan($rowspan, $colspan), $flag, $border)</template>
   </templates>
 
@@ -52,7 +52,7 @@ Python code generation written by
   </templates>
 
   <templates class="wxStaticBoxSizer">
-    <template name="construction">$name = wx.StaticBoxSizer(wx.StaticBox( #wxparent $name, $id, $label ), $orient) #nl</template>
+    <template name="construction">$name = wx.StaticBoxSizer(wx.StaticBox(#wxparent $name, $id, $label), $orient) #nl</template>
     <template name="evt_connect_OnUpdateUI">$name.GetStaticBox().Bind(wx.EVT_UPDATE_UI, #handler)</template>
   </templates>
 
@@ -92,10 +92,10 @@ Python code generation written by
       @{ #nl $name.SetFlexibleDirection($flexible_direction) @}
 
       #ifnotnull $non_flexible_grow_mode
-      @{ #nl $name.SetNonFlexibleGrowMode( $non_flexible_grow_mode ) @}
+      @{ #nl $name.SetNonFlexibleGrowMode($non_flexible_grow_mode) @}
 
       #ifnotnull $empty_cell_size
-      @{ #nl $name.SetEmptyCellSize( $empty_cell_size ) @}
+      @{ #nl $name.SetEmptyCellSize($empty_cell_size) @}
       #nl
     </template>
     <template name="after_addchild">
@@ -122,19 +122,19 @@ Python code generation written by
 
       #ifequal $Save "1"
       @{
-        #nl self.$name #append Save = wx.Button( #wxparent $name, wx.ID_SAVE )
+        #nl self.$name #append Save = wx.Button(#wxparent $name, wx.ID_SAVE)
         #nl $name.AddButton(self.$name #append Save)
       @}
 
       #ifequal $Apply "1"
       @{
-        #nl self.$name #append Apply = wx.Button( #wxparent $name, wx.ID_APPLY )
+        #nl self.$name #append Apply = wx.Button(#wxparent $name, wx.ID_APPLY)
         #nl $name.AddButton(self.$name #append Apply)
       @}
 
       #ifequal $No "1"
       @{
-        #nl self.$name #append No = wx.Button( #wxparent $name, wx.ID_NO )
+        #nl self.$name #append No = wx.Button(#wxparent $name, wx.ID_NO)
         #nl $name.AddButton(self.$name #append No)
       @}
 
