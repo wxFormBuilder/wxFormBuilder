@@ -256,6 +256,9 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
                     rid = wxT("wxT(\"") + rid + wxT("\")");
 
                 result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") + path.AfterFirst(wxT(':')) + wxT(") )");
+            } else if (source == _("Load From SVG Resource")) {
+                result.Printf( wxT("wxBitmapBundle::FromSVGResource( wxT(\"%s\"), {%i, %i} )"),
+                               path, icoSize.GetWidth(), icoSize.GetHeight());
             }
             break;
         }

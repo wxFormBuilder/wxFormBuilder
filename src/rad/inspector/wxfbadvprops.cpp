@@ -209,6 +209,8 @@ void wxFBBitmapProperty::CreateChildren()
         childIndex = 4;
     } else if (source == wxString(_("Load From Art Provider"))) {
         childIndex = 5;
+    } else if (source == wxString(_("Load From SVG Resource"))) {
+        childIndex = 6;
     }
 
     childValue = WXVARIANT(childIndex);
@@ -229,6 +231,7 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertySource(int sourceIndex)
     sourceChoices.Add(_("Load From Icon Resource"));
     sourceChoices.Add(_("Load From XRC"));
     sourceChoices.Add(_("Load From Art Provider"));
+    sourceChoices.Add(_("Load From SVG Resource"));
 
     wxPGProperty* srcProp = new wxEnumProperty(wxT("source"), wxPG_LABEL, sourceChoices, sourceIndex);
     srcProp->SetHelpString(
@@ -244,9 +247,13 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertySource(int sourceIndex)
       wxString(
         _("Load the image from XRC resources. The XRC resources must be initialized by the application code.\n\n")) +
       wxString(_("Load From Art Provider:\n")) +
-      wxString(_("Query registered providers for bitmap with given ID.\n\n")));
-    AppendChild(srcProp);
+      wxString(_("Query registered providers for bitmap with given ID.\n\n")) +
+      wxString(_("Load From SVG Resource:\n")) +
+      wxString(_("On Windows, resource name must be a resource with RT_RCDATA type.\n")) +
+      wxString(_("On MacOS, resource name must be a file with an extension 'svg' placed in the "
+                 "'Resources' subdirectory of the application bundle.\n\n")));
 
+    AppendChild(srcProp);
     return srcProp;
 }
 
@@ -266,7 +273,7 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertyFilePath()
 
 wxPGProperty* wxFBBitmapProperty::CreatePropertyResourceName()
 {
-    // Create 'resource_name' property (common for 'Load From Resource' and 'Load From Icon Resource' choices)
+    // Create 'resource_name' property (common for 'Load From Resource', 'Load From Icon Resource', 'Load From SVG Resource' choices)
     wxPGProperty* propResName = new wxStringProperty(wxT("resource_name"), wxPG_LABEL);
     propResName->SetHelpString(_("Windows Only. Name of the resource in the .rc file."));
 
@@ -280,6 +287,15 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertyIconSize()
     propIcoSize->SetHelpString(_("The size of the icon to use from a ICON resource with multiple icons in it."));
 
     return propIcoSize;
+}
+
+wxPGProperty* wxFBBitmapProperty::CreatePropertyDefSize()
+{
+    // Create 'def_size' property ('Load From SVG Resource' only)
+    wxPGProperty* propDefSize = new wxFBSizeProperty(wxT("def_size"), wxPG_LABEL, {16, 16});
+    propDefSize->SetHelpString(_("The default size to return from GetDefaultSize() for this wxBitmapBundle."));
+
+    return propDefSize;
 }
 
 wxPGProperty* wxFBBitmapProperty::CreatePropertyXrcName()
@@ -502,7 +518,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
             const auto count = GetChildCount();
 
             // childValue.GetInteger() returns the chosen item index
-            switch (childValue.GetInteger()) {
+            switch (auto child_val = childValue.GetInteger()) {
                 // 'Load From File' and 'Load From Embedded File'
                 case 0:
                 case 1: {
@@ -542,9 +558,10 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                     }
                     break;
                 }
-                // 'Load From Icon Resource'
-                case 3: {
-                    if (prevSrc != 3) {
+                // 'Load From Icon Resource' and 'Load From SVG Resource'
+                case 3:
+                case 6: {
+                    if (prevSrc != 3 && prevSrc != 6) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -552,7 +569,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                             }
                         }
                         bp->AppendChild(bp->CreatePropertyResourceName());
-                        bp->AppendChild(bp->CreatePropertyIconSize());
+                        auto prop = child_val == 3 ? bp->CreatePropertyIconSize() : bp->CreatePropertyDefSize();
+                        bp->AppendChild(prop);
                     }
 
                     if (childVals.GetCount() == 3) {
@@ -663,7 +681,7 @@ void wxFBBitmapProperty::UpdateChildValues(const wxString& value)
         if (childVals.Count() > 1) {
             Item(1)->SetValue(childVals[1]);
         }
-    } else if (childVals[0].Contains(_("Load From Icon Resource"))) {
+    } else if (childVals[0].Contains(_("Load From Icon Resource")) || childVals[0].Contains(_("Load From SVG Resource"))) {
         if (childVals.Count() > 1) {
             Item(1)->SetValue(childVals[1]);
         }
