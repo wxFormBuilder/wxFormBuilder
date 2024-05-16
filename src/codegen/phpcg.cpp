@@ -1225,8 +1225,8 @@ void PHPCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)
     }
 
     // Proceeding recursively with the base classes
-    for (unsigned int i = 0; i < info->GetBaseClassCount(); i++) {
-        PObjectInfo base_info = info->GetBaseClass(i);
+    for (unsigned int i = 0; i < info->GetBaseClassCount(false); i++) {
+        PObjectInfo base_info = info->GetBaseClass(i, false);
         GenSettings(base_info, obj);
     }
 }
