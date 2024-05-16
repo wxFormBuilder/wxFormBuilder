@@ -27,9 +27,9 @@
 #include "codewriter.h"
 
 #include <cstring>
-#include <fstream>
 
 #include <md5/md5.hh>
+#include <wx/ffile.h>
 #include <wx/file.h>
 #include <wx/regex.h>
 #include <wx/stc/stc.h>
@@ -188,10 +188,9 @@ void FileCodeWriter::WriteBuffer()
     // Compare buffer with existing file (if any) to determine if
     // writing the file is necessary
     bool shouldWrite = true;
-    std::ifstream fileIn(m_filename.mb_str(wxConvFile), std::ios::binary | std::ios::in);
-
-    if (fileIn) {
-        MD5 diskHash(fileIn);
+    wxFFile fileIn;
+    if (wxLogNull noLog; fileIn.Open(m_filename, "rb")) {
+        MD5 diskHash(fileIn.fp());
         unsigned char* diskDigest = diskHash.raw_digest();
 
         MD5 bufferHash;
@@ -209,8 +208,8 @@ void FileCodeWriter::WriteBuffer()
     }
 
     if (shouldWrite) {
-        wxFile fileOut;
-        if (!fileOut.Create(m_filename, true)) {
+        wxFFile fileOut;
+        if (wxLogNull noLog; !fileOut.Open(m_filename, "wb")) {
             wxLogError(_("Unable to create file: %s"), m_filename);
             return;
         }
