@@ -297,6 +297,9 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
                 cid.Replace(wxT("wx"), wxT("wx.wx"));
 
                 result = wxT("wx.wxArtProvider.GetBitmap( ") + rid + wxT(", ") + cid + wxT(" )");
+            } else if (source == _("Load From SVG Resource")) {
+                wxLogWarning(wxT("Lua code generation does not support using SVG resources for bitmap properties:\n%s"), path);
+                result = wxT("wx.wxNullBitmap");
             }
             break;
         }
