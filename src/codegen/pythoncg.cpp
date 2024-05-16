@@ -290,6 +290,10 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
                 cid.Replace(wxT("wx"), wxT("wx."));
 
                 result = wxT("wx.ArtProvider.GetBitmap( ") + rid + wxT(", ") + cid + wxT(" )");
+            } else if (source == _("Load From SVG Resource")) {
+                wxLogWarning(
+                  wxT("Python code generation does not support using SVG resources for bitmap properties:\n%s"), path);
+                result = wxT("wx.NullBitmap");
             }
             break;
         }

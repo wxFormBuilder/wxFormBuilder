@@ -241,9 +241,10 @@ wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
                     rid = wxT("wxT(\"") + rid + wxT("\")");
 
                 result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") + path.AfterFirst(wxT(':')) + wxT(" )");
+            } else if (source == _("Load From SVG Resource")) {
+                wxLogWarning(wxT("PHP code generation does not support using SVG resources for bitmap properties:\n%s"), path);
+                result = wxT("wxNullBitmap");
             }
-            break;
-
             break;
         }
         case PT_STRINGLIST: {

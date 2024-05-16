@@ -289,7 +289,7 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertyIconSize()
     return propIcoSize;
 }
 
-wxPGProperty* wxFBBitmapProperty::CreatePropertyDefSize()
+wxPGProperty* wxFBBitmapProperty::CreatePropertyDefaultSize()
 {
     // Create 'def_size' property ('Load From SVG Resource' only)
     wxPGProperty* propDefSize = new wxFBSizeProperty(wxT("def_size"), wxPG_LABEL, {16, 16});
@@ -518,7 +518,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
             const auto count = GetChildCount();
 
             // childValue.GetInteger() returns the chosen item index
-            switch (auto child_val = childValue.GetInteger()) {
+            switch (auto childVal = childValue.GetInteger()) {
                 // 'Load From File' and 'Load From Embedded File'
                 case 0:
                 case 1: {
@@ -569,8 +569,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                             }
                         }
                         bp->AppendChild(bp->CreatePropertyResourceName());
-                        auto prop = child_val == 3 ? bp->CreatePropertyIconSize() : bp->CreatePropertyDefSize();
-                        bp->AppendChild(prop);
+                        bp->AppendChild(childVal == 3 ? bp->CreatePropertyIconSize() : bp->CreatePropertyDefaultSize());
                     }
 
                     if (childVals.GetCount() == 3) {

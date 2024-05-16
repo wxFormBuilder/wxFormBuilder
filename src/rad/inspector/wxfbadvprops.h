@@ -96,7 +96,7 @@ public:
     wxPGProperty* CreatePropertyFilePath();
     wxPGProperty* CreatePropertyResourceName();
     wxPGProperty* CreatePropertyIconSize();
-    wxPGProperty* CreatePropertyDefSize();
+    wxPGProperty* CreatePropertyDefaultSize();
     wxPGProperty* CreatePropertyXrcName();
     wxPGProperty* CreatePropertyArtId();
     wxPGProperty* CreatePropertyArtClient();
