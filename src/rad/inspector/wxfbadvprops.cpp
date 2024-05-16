@@ -516,9 +516,10 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
         // source
         case 0: {
             const auto count = GetChildCount();
-
             // childValue.GetInteger() returns the chosen item index
-            switch (auto childVal = childValue.GetInteger()) {
+            auto childVal = childValue.GetInteger();
+
+            switch (childVal) {
                 // 'Load From File' and 'Load From Embedded File'
                 case 0:
                 case 1: {
@@ -620,6 +621,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                     break;
                 }
             }
+
+            bp->SetPrevSource(childVal);
             break;
         }
 
@@ -646,8 +649,6 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
             break;
         }
     }
-
-    bp->SetPrevSource(childValue.GetInteger());
 
     if (newVal != val) {
         wxVariant ret = WXVARIANT(newVal);
