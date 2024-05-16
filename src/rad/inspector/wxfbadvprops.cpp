@@ -196,7 +196,7 @@ void wxFBBitmapProperty::CreateChildren()
     } else {
         source = _("Load From File");
     }
-    prevSrc = -1;
+    m_prevSrc = -1;
     if (source == wxString(_("Load From File"))) {
         childIndex = 0;
     } else if (source == wxString(_("Load From Embedded File"))) {
@@ -523,7 +523,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 // 'Load From File' and 'Load From Embedded File'
                 case 0:
                 case 1: {
-                    if (prevSrc != 0 && prevSrc != 1) {
+                    if (m_prevSrc != 0 && m_prevSrc != 1) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -542,7 +542,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 }
                 // 'Load From Resource'
                 case 2: {
-                    if (prevSrc != 2) {
+                    if (m_prevSrc != 2) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -562,7 +562,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 // 'Load From Icon Resource' and 'Load From SVG Resource'
                 case 3:
                 case 4: {
-                    if (prevSrc != childVal) {
+                    if (m_prevSrc != childVal) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -583,7 +583,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 }
                 // 'Load From XRC'
                 case 5: {
-                    if (prevSrc != 5) {
+                    if (m_prevSrc != 5) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -602,7 +602,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 }
                 // 'Load From Art Provider'
                 case 6: {
-                    if (prevSrc != 6) {
+                    if (m_prevSrc != 6) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -622,7 +622,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 }
             }
 
-            bp->SetPrevSource(childVal);
+            bp->m_prevSrc = childVal;
             break;
         }
 
