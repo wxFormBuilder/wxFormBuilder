@@ -183,7 +183,7 @@ void FileCodeWriter::WriteBuffer()
 {
     static const unsigned char MICROSOFT_BOM[3] = {0xEF, 0xBB, 0xBF};
 
-    const std::string& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
+    const auto& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
 
     // Compare buffer with existing file (if any) to determine if
     // writing the file is necessary
@@ -191,15 +191,15 @@ void FileCodeWriter::WriteBuffer()
     wxFFile fileIn;
     if (wxLogNull noLog; fileIn.Open(m_filename, "rb")) {
         MD5 diskHash(fileIn.fp());
-        unsigned char* diskDigest = diskHash.raw_digest();
+        auto* diskDigest = diskHash.raw_digest();
 
         MD5 bufferHash;
         if (m_useUtf8 && m_useMicrosoftBOM) {
-            bufferHash.update(MICROSOFT_BOM, 3);
+            bufferHash.update(MICROSOFT_BOM, sizeof(MICROSOFT_BOM));
         }
         bufferHash.update(reinterpret_cast<const unsigned char*>(data.c_str()), data.size());
         bufferHash.finalize();
-        unsigned char* bufferDigest = bufferHash.raw_digest();
+        auto* bufferDigest = bufferHash.raw_digest();
 
         shouldWrite = (0 != std::memcmp(diskDigest, bufferDigest, 16));
 
@@ -215,7 +215,7 @@ void FileCodeWriter::WriteBuffer()
         }
 
         if (m_useUtf8 && m_useMicrosoftBOM) {
-            fileOut.Write(MICROSOFT_BOM, 3);
+            fileOut.Write(MICROSOFT_BOM, sizeof(MICROSOFT_BOM));
         }
         fileOut.Write(data.c_str(), data.length());
     }
