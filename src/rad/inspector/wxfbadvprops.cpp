@@ -561,7 +561,7 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 // 'Load From Icon Resource' and 'Load From SVG Resource'
                 case 3:
                 case 4: {
-                    if (prevSrc != 3 && prevSrc != 4) {
+                    if (prevSrc != childVal) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
