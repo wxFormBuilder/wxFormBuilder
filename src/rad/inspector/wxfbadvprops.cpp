@@ -205,11 +205,11 @@ void wxFBBitmapProperty::CreateChildren()
         childIndex = 2;
     } else if (source == wxString(_("Load From Icon Resource"))) {
         childIndex = 3;
-    } else if (source == wxString(_("Load From XRC"))) {
-        childIndex = 4;
-    } else if (source == wxString(_("Load From Art Provider"))) {
-        childIndex = 5;
     } else if (source == wxString(_("Load From SVG Resource"))) {
+        childIndex = 4;
+    } else if (source == wxString(_("Load From XRC"))) {
+        childIndex = 5;
+    } else if (source == wxString(_("Load From Art Provider"))) {
         childIndex = 6;
     }
 
@@ -229,9 +229,9 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertySource(int sourceIndex)
     sourceChoices.Add(_("Load From Embedded File"));
     sourceChoices.Add(_("Load From Resource"));
     sourceChoices.Add(_("Load From Icon Resource"));
+    sourceChoices.Add(_("Load From SVG Resource"));
     sourceChoices.Add(_("Load From XRC"));
     sourceChoices.Add(_("Load From Art Provider"));
-    sourceChoices.Add(_("Load From SVG Resource"));
 
     wxPGProperty* srcProp = new wxEnumProperty(wxT("source"), wxPG_LABEL, sourceChoices, sourceIndex);
     srcProp->SetHelpString(
@@ -243,15 +243,15 @@ wxPGProperty* wxFBBitmapProperty::CreatePropertySource(int sourceIndex)
       wxString(_("Windows Only. Load the image from a BITMAP resource in a .rc file\n\n")) +
       wxString(_("Load From Icon Resource:\n")) +
       wxString(_("Windows Only. Load the image from a ICON resource in a .rc file\n\n")) +
+      wxString(_("Load From SVG Resource:\n")) +
+      wxString(_("On Windows, resource name must be a resource with RT_RCDATA type.\n")) +
+      wxString(_("On MacOS, resource name must be a file with an extension 'svg' placed in the "
+                 "'Resources' subdirectory of the application bundle.\n\n")) +
       wxString(_("Load From XRC:\n")) +
       wxString(
         _("Load the image from XRC resources. The XRC resources must be initialized by the application code.\n\n")) +
       wxString(_("Load From Art Provider:\n")) +
-      wxString(_("Query registered providers for bitmap with given ID.\n\n")) +
-      wxString(_("Load From SVG Resource:\n")) +
-      wxString(_("On Windows, resource name must be a resource with RT_RCDATA type.\n")) +
-      wxString(_("On MacOS, resource name must be a file with an extension 'svg' placed in the "
-                 "'Resources' subdirectory of the application bundle.\n\n")));
+      wxString(_("Query registered providers for bitmap with given ID.\n\n")));
 
     AppendChild(srcProp);
     return srcProp;
@@ -560,8 +560,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                 }
                 // 'Load From Icon Resource' and 'Load From SVG Resource'
                 case 3:
-                case 6: {
-                    if (prevSrc != 3 && prevSrc != 6) {
+                case 4: {
+                    if (prevSrc != 3 && prevSrc != 4) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -581,8 +581,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                     break;
                 }
                 // 'Load From XRC'
-                case 4: {
-                    if (prevSrc != 4) {
+                case 5: {
+                    if (prevSrc != 5) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
@@ -600,8 +600,8 @@ wxVariant wxFBBitmapProperty::ChildChanged(wxVariant& thisValue, const int child
                     break;
                 }
                 // 'Load From Art Provider'
-                case 5: {
-                    if (prevSrc != 5) {
+                case 6: {
+                    if (prevSrc != 6) {
                         for (unsigned int i = 1; i < count; ++i) {
                             if (auto* p = Item(i)) {
                                 wxLogDebug(wxT("wxFBBP::ChildChanged: Removing:%s"), p->GetLabel());
