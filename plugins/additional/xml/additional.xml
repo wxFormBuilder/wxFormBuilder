@@ -411,29 +411,29 @@ Written by
     <inherits class="AUI"/>
     <property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
     <property name="class" type="text" help="The control is generated to XRC with this class."/>
-    <property name="declaration" type="text" help="Code to generate for the declaration of this control."/>
-    <property name="construction" type="text" help="Code to generate for the construction of this control."/>
-    <property name="include" type="text" help="Code to generate for the include statements for this control."/>
-    <property name="settings" type="text" help="Code to generate for the settings of this control."/>
+    <property name="declaration" type="text_ml" help="Code to generate for the declaration of this control."/>
+    <property name="construction" type="text_ml" help="Code to generate for the construction of this control."/>
+    <property name="include" type="text_ml" help="Code to generate for the include statements for this control."/>
+    <property name="settings" type="text_ml" help="Code to generate for the settings of this control."/>
   </objectinfo>
 
   <objectinfo class="CustomCode" startgroup="1" icon="customcode.xpm" type="nonvisual">
     <property name="name" type="text" help="Informal name, this is not used in the generated file and therefor doesn't need to be unique">MyCode</property>
     <category name="C++">
-      <property name="include_cpp" type="text" help="Optional include directive for c++"></property>
-      <property name="code_cpp" type="text" help="This custom code fragment gets inserted as is at the current position into the generated c++ file"></property>
+      <property name="include_cpp" type="text_ml" help="Optional include directive for c++"></property>
+      <property name="code_cpp" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated c++ file"></property>
     </category>
     <category name="Python">
-      <property name="import_python" type="text" help="Optional import directive for python"></property>
-      <property name="code_python" type="text" help="This custom code fragment gets inserted as is at the current position into the generated python file"></property>
+      <property name="import_python" type="text_ml" help="Optional import directive for python"></property>
+      <property name="code_python" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated python file"></property>
     </category>
     <category name="Lua">
-      <property name="require_lua" type="text" help="Optional require directive for lua"></property>
-      <property name="code_lua" type="text" help="This custom code fragment gets inserted as is at the current position into the generated lua file"></property>
+      <property name="require_lua" type="text_ml" help="Optional require directive for lua"></property>
+      <property name="code_lua" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated lua file"></property>
     </category>
     <category name="PHP">
-      <property name="require_php" type="text" help="Optional require directive for php"></property>
-      <property name="code_php" type="text" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
+      <property name="require_php" type="text_ml" help="Optional require directive for php"></property>
+      <property name="code_php" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
     </category>
   </objectinfo>
 

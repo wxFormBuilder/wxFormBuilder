@@ -25,7 +25,7 @@
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
     <property name="first_id" type="uint" help="Integral value of the first generated static wxWindowID">6000</property>
     <category name="C++ Properties">
-      <property name="precompiled_header" type="text" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
+      <property name="precompiled_header" type="text_ml" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
       <property name="namespace" type="stringlist" help="For C++ Only.&#x0A;Namespaces to wrap class declarations in."/>
       <property name="class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
         <child name="decoration" help="The name of the macro or the dll export decoration"/>
@@ -84,9 +84,9 @@
 
   <objectinfo class="UserCode" type="interface">
     <property name="enable_user_code" type="bool">0</property>
-    <property name="user_cpp_code" type="text"/>
-    <property name="user_python_code" type="text"/>
-    <property name="user_lua_code" type="text"/>
+    <property name="user_cpp_code" type="text_ml"/>
+    <property name="user_python_code" type="text_ml"/>
+    <property name="user_lua_code" type="text_ml"/>
     <!--property name="insertion_mode" type="option">
       <option name="prepend"/>
       <option name="insert"/>
@@ -232,7 +232,7 @@
     <property name="gen_file" type="text"/>
     <property name="type" type="text"/>
     <category name="C++ Properties">
-      <property name="precompiled_header" type="text"/>
+      <property name="precompiled_header" type="text_ml"/>
     </category>
   </objectinfo>
 
