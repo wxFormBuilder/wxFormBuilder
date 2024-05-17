@@ -130,8 +130,6 @@ Written by
       <option name="wxAUI_TB_DEFAULT_STYLE" help="The default is to have no styles."/>
       wxAUI_TB_HORZ_LAYOUT
     </property>
-    <property name="label_visible" type="bool">0</property>
-    <property name="toolbar_label" type="text">label</property>
     <property name="use_explicit_ids" type="bool" help="Use user-specified tool IDs instead of automatically assigned ones (needed for old wxAuiToolBar implementation).">0</property>
   </objectinfo>
 
