@@ -125,6 +125,7 @@ wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
             break;
         }
         case PT_TEXT:
+        case PT_TEXT_ML:
         case PT_FLOAT:
         case PT_INT:
         case PT_UINT: {

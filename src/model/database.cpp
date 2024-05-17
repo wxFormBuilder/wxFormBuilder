@@ -1129,6 +1129,7 @@ void ObjectDatabase::InitPropertyTypes()
 {
     PT(wxT("bool"), PT_BOOL);
     PT(wxT("text"), PT_TEXT);
+    PT(wxT("text_ml"), PT_TEXT_ML);
     PT(wxT("int"), PT_INT);
     PT(wxT("uint"), PT_UINT);
     PT(wxT("bitlist"), PT_BITLIST);
