@@ -226,7 +226,7 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
     } else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N) {
         result = new wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
     } else if (type == PT_TEXT) {
-        result = new wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
+        result = new wxStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
     } else if (type == PT_TEXT_ML) {
         result = new wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
     } else if (type == PT_BOOL) {
@@ -609,7 +609,6 @@ void ObjectInspector::OnPropertyGridChanged(wxPropertyGridEvent& event)
                 ModifyProperty(prop, TypeConv::FloatToString(val));
                 break;
             }
-            case PT_TEXT:
             case PT_TEXT_ML: {
                 // The used wxPropertyGrid component does (undocumented?) escape certain control characters,
                 // especially \n, which is not desired for this type, its value should be preserved as is.
@@ -618,6 +617,7 @@ void ObjectInspector::OnPropertyGridChanged(wxPropertyGridEvent& event)
                 ModifyProperty(prop, rawValue);
                 break;
             }
+            case PT_TEXT:
             case PT_MACRO:
             case PT_INT:
             case PT_UINT: {
