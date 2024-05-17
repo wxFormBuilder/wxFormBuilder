@@ -23,7 +23,7 @@
     <property name="internationalize" type="bool" help="Mark translatable strings for translation. If not enabled, no strings will get translated. Depending on the code generation language disabling this option can reduce dependencies.">1</property>
     <property name="relative_path" type="bool" help="Use relative paths for external files (e.g. image files)">1</property>
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
-    <property name="first_id" type="text" help="Integral value of the first generated static wxWindowID">6000</property>
+    <property name="first_id" type="uint" help="Integral value of the first generated static wxWindowID">6000</property>
     <category name="C++ Properties">
       <property name="precompiled_header" type="text" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
       <property name="namespace" type="stringlist" help="For C++ Only.&#x0A;Namespaces to wrap class declarations in."/>
