@@ -81,21 +81,22 @@ wxString FileToCArray::Generate(const wxString& sourcePath)
 
     // Determine if Microsoft BOM should be used
     bool useMicrosoftBOM = false;
-    PProperty pUseMicrosoftBOM = project->GetProperty(wxT("use_microsoft_bom"));
-    if (pUseMicrosoftBOM) {
-        useMicrosoftBOM = (pUseMicrosoftBOM->GetValueAsInteger() != 0);
+    if (auto property = project->GetProperty("use_microsoft_bom"); property) {
+        useMicrosoftBOM = (property->GetValueAsInteger() != 0);
     }
-
-    // Determine if Utf8 or Ansi is to be created
+    // Determine encoding
     bool useUtf8 = false;
-    PProperty pUseUtf8 = project->GetProperty(_("encoding"));
-
-    if (pUseUtf8) {
-        useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
+    if (auto property = project->GetProperty("encoding"); property) {
+        useUtf8 = (property->GetValueAsString() != wxT("ANSI"));
+    }
+    // Determine eol-style
+    bool useNativeEOL = false;
+    if (auto property = project->GetProperty("use_native_eol"); property) {
+        useNativeEOL = (property->GetValueAsInteger() != 0);
     }
 
     // setup output file
-    PCodeWriter arrayCodeWriter(new FileCodeWriter(embeddedFilesOutputPath + targetFullName, useMicrosoftBOM, useUtf8));
+    auto arrayCodeWriter = std::make_shared<FileCodeWriter>(embeddedFilesOutputPath + targetFullName, useMicrosoftBOM, useUtf8, useNativeEOL);
 
     const wxString headerGuardName = arrayName.Upper() + wxT("_H");
     arrayCodeWriter->WriteLn(wxT("#ifndef ") + headerGuardName);

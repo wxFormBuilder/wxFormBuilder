@@ -233,9 +233,9 @@ void XrcPanel::OnCodeGeneration(wxFBEvent& event)
             }
 
             wxString filePath;
-
             filePath << path << file << wxT(".xrc");
-            PCodeWriter cw(new FileCodeWriter(filePath));
+
+            auto cw= std::make_shared<FileCodeWriter>(filePath);
 
             codegen.SetWriter(cw);
             codegen.GenerateCode(project);

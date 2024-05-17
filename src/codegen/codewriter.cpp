@@ -27,9 +27,9 @@
 #include "codewriter.h"
 
 #include <cstring>
-#include <fstream>
 
 #include <md5/md5.hh>
+#include <wx/ffile.h>
 #include <wx/file.h>
 #include <wx/regex.h>
 #include <wx/stc/stc.h>
@@ -168,8 +168,8 @@ const wxString& StringCodeWriter::GetString() const
     return m_buffer;
 }
 
-FileCodeWriter::FileCodeWriter(const wxString& file, bool useMicrosoftBOM, bool useUtf8) :
-  m_filename(file), m_useMicrosoftBOM(useMicrosoftBOM), m_useUtf8(useUtf8)
+FileCodeWriter::FileCodeWriter(const wxString& file, bool useMicrosoftBOM, bool useUtf8, bool useNativeEOL) :
+  m_filename(file), m_useMicrosoftBOM(useMicrosoftBOM), m_useUtf8(useUtf8), m_useNativeEOL(useNativeEOL)
 {
     Clear();
 }
@@ -183,24 +183,24 @@ void FileCodeWriter::WriteBuffer()
 {
     static const unsigned char MICROSOFT_BOM[3] = {0xEF, 0xBB, 0xBF};
 
-    const std::string& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
+    const auto& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
 
-    // Compare buffer with existing file (if any) to determine if
-    // writing the file is necessary
+    // Compare buffer with existing file (if any) to determine if writing the file is necessary.
+    // Since the buffer contents always use LF the file must always be read in text mode or
+    // in case of native eol output there will always be a mismatch with the buffer contents.
     bool shouldWrite = true;
-    std::ifstream fileIn(m_filename.mb_str(wxConvFile), std::ios::binary | std::ios::in);
-
-    if (fileIn) {
-        MD5 diskHash(fileIn);
-        unsigned char* diskDigest = diskHash.raw_digest();
+    wxFFile fileIn;
+    if (wxLogNull noLog; fileIn.Open(m_filename, "r")) {
+        MD5 diskHash(fileIn.fp());
+        auto* diskDigest = diskHash.raw_digest();
 
         MD5 bufferHash;
         if (m_useUtf8 && m_useMicrosoftBOM) {
-            bufferHash.update(MICROSOFT_BOM, 3);
+            bufferHash.update(MICROSOFT_BOM, sizeof(MICROSOFT_BOM));
         }
         bufferHash.update(reinterpret_cast<const unsigned char*>(data.c_str()), data.size());
         bufferHash.finalize();
-        unsigned char* bufferDigest = bufferHash.raw_digest();
+        auto* bufferDigest = bufferHash.raw_digest();
 
         shouldWrite = (0 != std::memcmp(diskDigest, bufferDigest, 16));
 
@@ -209,14 +209,14 @@ void FileCodeWriter::WriteBuffer()
     }
 
     if (shouldWrite) {
-        wxFile fileOut;
-        if (!fileOut.Create(m_filename, true)) {
+        wxFFile fileOut;
+        if (wxLogNull noLog; !fileOut.Open(m_filename, m_useNativeEOL ? "w" : "wb")) {
             wxLogError(_("Unable to create file: %s"), m_filename);
             return;
         }
 
         if (m_useUtf8 && m_useMicrosoftBOM) {
-            fileOut.Write(MICROSOFT_BOM, 3);
+            fileOut.Write(MICROSOFT_BOM, sizeof(MICROSOFT_BOM));
         }
         fileOut.Write(data.c_str(), data.length());
     }
