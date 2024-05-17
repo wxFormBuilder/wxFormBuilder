@@ -309,27 +309,21 @@ void PHPPanel::OnCodeGeneration(wxFBEvent& event)
 
             // Determine if Microsoft BOM should be used
             bool useMicrosoftBOM = false;
-
-            PProperty pUseMicrosoftBOM = project->GetProperty(wxT("use_microsoft_bom"));
-
-            if (pUseMicrosoftBOM) {
-                useMicrosoftBOM = (pUseMicrosoftBOM->GetValueAsInteger() != 0);
+            if (auto property = project->GetProperty("use_microsoft_bom"); property) {
+                useMicrosoftBOM = (property->GetValueAsInteger() != 0);
             }
-
-            // Determine if Utf8 or Ansi is to be created
+            // Determine encoding
             bool useUtf8 = false;
-            PProperty pUseUtf8 = project->GetProperty(_("encoding"));
-
-            if (pUseUtf8) {
-                useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
+            if (auto property = project->GetProperty("encoding"); property) {
+                useUtf8 = (property->GetValueAsString() != wxT("ANSI"));
             }
-
+            // Determine eol-style
             bool useNativeEOL = false;
             if (auto property = project->GetProperty("use_native_eol"); property) {
                 useNativeEOL = (property->GetValueAsInteger() != 0);
             }
 
-            PCodeWriter php_cw(new FileCodeWriter(path + file + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL));
+            auto php_cw = std::make_shared<FileCodeWriter>(path + file + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetSourceWriter(php_cw);
             codegen.GenerateCode(project);
