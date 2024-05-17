@@ -168,8 +168,8 @@ const wxString& StringCodeWriter::GetString() const
     return m_buffer;
 }
 
-FileCodeWriter::FileCodeWriter(const wxString& file, bool useMicrosoftBOM, bool useUtf8) :
-  m_filename(file), m_useMicrosoftBOM(useMicrosoftBOM), m_useUtf8(useUtf8)
+FileCodeWriter::FileCodeWriter(const wxString& file, bool useMicrosoftBOM, bool useUtf8, bool useNativeEOL) :
+  m_filename(file), m_useMicrosoftBOM(useMicrosoftBOM), m_useUtf8(useUtf8), m_useNativeEOL(useNativeEOL)
 {
     Clear();
 }
@@ -185,11 +185,12 @@ void FileCodeWriter::WriteBuffer()
 
     const auto& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
 
-    // Compare buffer with existing file (if any) to determine if
-    // writing the file is necessary
+    // Compare buffer with existing file (if any) to determine if writing the file is necessary.
+    // Since the buffer contents always use LF the file must always be read in text mode or
+    // in case of native eol output there will always be a mismatch with the buffer contents.
     bool shouldWrite = true;
     wxFFile fileIn;
-    if (wxLogNull noLog; fileIn.Open(m_filename, "rb")) {
+    if (wxLogNull noLog; fileIn.Open(m_filename, "r")) {
         MD5 diskHash(fileIn.fp());
         auto* diskDigest = diskHash.raw_digest();
 
@@ -209,7 +210,7 @@ void FileCodeWriter::WriteBuffer()
 
     if (shouldWrite) {
         wxFFile fileOut;
-        if (wxLogNull noLog; !fileOut.Open(m_filename, "wb")) {
+        if (wxLogNull noLog; !fileOut.Open(m_filename, m_useNativeEOL ? "w" : "wb")) {
             wxLogError(_("Unable to create file: %s"), m_filename);
             return;
         }

@@ -148,12 +148,13 @@ private:
     wxString m_filename;
     bool m_useMicrosoftBOM;
     bool m_useUtf8;
+    bool m_useNativeEOL;
 
 protected:
     void WriteBuffer();
 
 public:
-    FileCodeWriter(const wxString& file, bool useMicrosoftBOM = false, bool useUtf8 = true);
+    FileCodeWriter(const wxString& file, bool useMicrosoftBOM = false, bool useUtf8 = true, bool useNativeEOL = false);
     ~FileCodeWriter() override;
 
     void Clear() final;
