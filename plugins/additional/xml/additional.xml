@@ -409,7 +409,7 @@ Written by
   <objectinfo class="CustomControl" startgroup="1" icon="custom_control.xpm" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
-    <property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
+    <property name="name" type="text">m_customControl</property>
     <property name="class" type="text" help="The control is generated to XRC with this class."/>
     <property name="declaration" type="text_ml" help="Code to generate for the declaration of this control."/>
     <property name="construction" type="text_ml" help="Code to generate for the construction of this control."/>
@@ -438,7 +438,7 @@ Written by
   </objectinfo>
 
   <objectinfo class="wxTimer" icon="timer.xpm" type="nonvisual">
-    <property name="name" type="text" help="wxTimer object name.">m_timer</property>
+    <property name="name" type="text">m_timer</property>
     <property name="id" type="macro" help="Timer identifier.">wxID_ANY</property>
     <property name="period" type="int" help="Timer period in milliseconds.">1000</property>
     <property name="enabled" type="bool" help="Enable timer on startup.">0</property>

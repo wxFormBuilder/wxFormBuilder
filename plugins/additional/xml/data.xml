@@ -497,13 +497,13 @@ Written by
   </objectinfo>
 
   <objectinfo class="propGridPage" icon="propgridpage.xpm" type="propgridpage" wxversion="2904">
-    <property name="name" type="text" help="Instance name.">m_propertyGridPage</property>
+    <property name="name" type="text">m_propertyGridPage</property>
     <property name="label" type="wxString_i18n" help="Label shown as a tooltip of the manager's tool button.">Page</property>
     <property name="bitmap" type="bitmap" help="Bitmap shown in the property manager's header."/>
   </objectinfo>
 
   <objectinfo class="propGridItem" icon="propgriditem.xpm" type="propgriditem" wxversion="2904">
-    <property name="name" type="text" help="Instance name and an internal name of the property item.">m_propertyGridItem</property>
+    <property name="name" type="text">m_propertyGridItem</property>
     <property name="label" type="wxString_i18n" help="Label shown in parent property grid/page.">Name</property>
     <property name="type" type="option" help="Type of the property item.">
       <option name="Category" help="Append properties category."/>
