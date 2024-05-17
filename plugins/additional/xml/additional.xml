@@ -253,10 +253,10 @@ Written by
     <inherits class="AUI"/>
     <inherits class="Validator"/>
     <property name="name" type="text">m_scrollBar</property>
-    <property name="value" help="The position of the scrollbar in scroll units." type="uint">0</property>
-    <property name="range" help="The maximum position of the scrollbar." type="uint">100</property>
-    <property name="thumbsize" help="The size of the thumb, or visible portion of the scrollbar, in scroll units." type="uint">1</property>
-    <property name="pagesize" help="This is the number of scroll units that will be scrolled when the user pages up or down." type="uint">1</property>
+    <property name="value" type="uint" help="The position of the scrollbar in scroll units.">0</property>
+    <property name="range" type="uint" help="The maximum position of the scrollbar.">100</property>
+    <property name="thumbsize" type="uint" help="The size of the thumb, or visible portion of the scrollbar, in scroll units.">1</property>
+    <property name="pagesize" type="uint" help="This is the number of scroll units that will be scrolled when the user pages up or down.">1</property>
     <property name="style" type="option">
       <option name="wxSB_HORIZONTAL" help="Specifies a horizontal scrollbar."/>
       <option name="wxSB_VERTICAL" help="Specifies a vertical scrollbar."/>

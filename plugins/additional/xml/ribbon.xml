@@ -40,7 +40,7 @@ Written by
       <option name="wxRIBBON_BAR_SHOW_HELP_BUTTON" help="Causes a help button to appear on the ribbon bar at the top-right corner."/>
       wxRIBBON_BAR_DEFAULT_STYLE
     </property>
-    <property name = "theme" type="option" help="Select the RibbonBar theme.">
+    <property name="theme" type="option" help="Select the RibbonBar theme.">
       <option name="Default" help="Use Default theme."/>
       <option name="Generic" help="Use Generic theme."/>
       <option name="MSW" help="Use MSW theme."/>
