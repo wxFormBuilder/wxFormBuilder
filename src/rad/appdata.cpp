@@ -1279,16 +1279,22 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
     }
 
     m_objDb->ResetObjectCounters();
-    if (auto projectObject = m_objDb->CreateObject(project); projectObject && projectObject->GetObjectTypeName() == "project") {
-        m_project = projectObject;
-        m_selObj = m_project;
-        m_projectFile = filename.GetFullPath();
-        SetProjectPath(filename.GetPath());
-        // Set the modification to true if the project was older and has been converted
-        m_modFlag = (versionState == VersionState::OLDER);
-        m_cmdProc.Reset();
-        NotifyProjectLoaded();
-        NotifyProjectRefresh();
+
+    try {
+        if (auto projectObject = m_objDb->CreateObject(project); projectObject && projectObject->GetObjectTypeName() == "project") {
+            m_project = projectObject;
+            m_selObj = m_project;
+            m_projectFile = filename.GetFullPath();
+            SetProjectPath(filename.GetPath());
+            // Set the modification to true if the project was older and has been converted
+            m_modFlag = (versionState == VersionState::OLDER);
+            m_cmdProc.Reset();
+            NotifyProjectLoaded();
+            NotifyProjectRefresh();
+        }
+    } catch (wxFBException& ex) {
+        wxLogError(ex.what());
+        return false;
     }
 
     return true;
