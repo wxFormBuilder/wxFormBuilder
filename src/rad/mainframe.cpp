@@ -1686,13 +1686,13 @@ wxWindow* MainFrame::CreateDesignerWindow(wxWindow* parent)
     m_notebook->InsertPage(2, m_python, wxT("Python"), false);
     m_notebook->SetPageBitmap(2, AppBitmaps::GetBitmap(wxT("python"), AppBitmaps::Size::Icon_Medium));
 
-    m_php = new PHPPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(3, m_php, wxT("PHP"), false);
-    m_notebook->SetPageBitmap(3, AppBitmaps::GetBitmap(wxT("php"), AppBitmaps::Size::Icon_Medium));
-
     m_lua = new LuaPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(4, m_lua, wxT("Lua"), false);
-    m_notebook->SetPageBitmap(4, AppBitmaps::GetBitmap(wxT("lua"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->InsertPage(3, m_lua, wxT("Lua"), false);
+    m_notebook->SetPageBitmap(3, AppBitmaps::GetBitmap(wxT("lua"), AppBitmaps::Size::Icon_Medium));
+
+    m_php = new PHPPanel(m_notebook, wxID_ANY);
+    m_notebook->InsertPage(4, m_php, wxT("PHP"), false);
+    m_notebook->SetPageBitmap(4, AppBitmaps::GetBitmap(wxT("php"), AppBitmaps::Size::Icon_Medium));
 
     m_xrc = new XrcPanel(m_notebook, wxID_ANY);
     m_notebook->InsertPage(5, m_xrc, wxT("XRC"), false);
