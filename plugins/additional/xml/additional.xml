@@ -427,13 +427,13 @@ Written by
       <property name="import_python" type="text" help="Optional import directive for python"></property>
       <property name="code_python" type="text" help="This custom code fragment gets inserted as is at the current position into the generated python file"></property>
     </category>
-    <category name="PHP">
-      <property name="require_php" type="text" help="Optional require directive for php"></property>
-      <property name="code_php" type="text" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
-    </category>
     <category name="Lua">
       <property name="require_lua" type="text" help="Optional require directive for lua"></property>
       <property name="code_lua" type="text" help="This custom code fragment gets inserted as is at the current position into the generated lua file"></property>
+    </category>
+    <category name="PHP">
+      <property name="require_php" type="text" help="Optional require directive for php"></property>
+      <property name="code_php" type="text" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
     </category>
   </objectinfo>
 
