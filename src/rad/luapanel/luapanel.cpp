@@ -316,7 +316,12 @@ void LuaPanel::OnCodeGeneration(wxFBEvent& event)
                 useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
             }
 
-            PCodeWriter lua_cw(new FileCodeWriter(path + file + wxT(".lua"), useMicrosoftBOM, useUtf8));
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
+            }
+
+            PCodeWriter lua_cw(new FileCodeWriter(path + file + wxT(".lua"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetSourceWriter(lua_cw);
             codegen.GenerateCode(project);

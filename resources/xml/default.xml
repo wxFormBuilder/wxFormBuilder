@@ -19,6 +19,7 @@
       UTF-8
     </property>
     <property name="use_microsoft_bom" type="bool" help="If UTF-8 encoding is used, add an UTF-8 BOM.&#x0A;Old Microsoft compilers could process UTF-8 encoded files correctly only with a present UTF-8 BOM while GCC could not process such files. For recent compilers this option should not be used anymore.">0</property>
+    <property name="use_native_eol" type="bool" help="Use the native eol-style instead of LF for generated files. This has an effect on Windows only.">0</property>
     <property name="internationalize" type="bool" help="Mark translatable strings for translation. If not enabled, no strings will get translated. Depending on the code generation language disabling this option can reduce dependencies.">0</property>
     <property name="relative_path" type="bool" help="Use relative paths for external files (e.g. image files)">1</property>
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>

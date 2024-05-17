@@ -332,7 +332,12 @@ void PythonPanel::OnCodeGeneration(wxFBEvent& event)
                 useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
             }
 
-            PCodeWriter python_cw(new FileCodeWriter(path + file + wxT(".py"), useMicrosoftBOM, useUtf8));
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
+            }
+
+            PCodeWriter python_cw(new FileCodeWriter(path + file + wxT(".py"), useMicrosoftBOM, useUtf8, useNativeEOL));
             python_cw->SetIndentWithSpaces(useSpaces);
 
             codegen.SetSourceWriter(python_cw);

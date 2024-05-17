@@ -2042,14 +2042,19 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
         }
 
+        bool useNativeEOL = false;
+        if (auto property = project->GetProperty("use_native_eol"); property) {
+            useNativeEOL = (property->GetValueAsInteger() != 0);
+        }
+
         PProperty pCodeGen = project->GetProperty(wxT("code_generation"));
         if (pCodeGen && TypeConv::FlagSet(wxT("C++"), pCodeGen->GetValue())) {
             CppCodeGenerator codegen;
             const wxString& fullPath = inherFile.GetFullPath();
             codegen.ParseFiles(fullPath + wxT(".h"), fullPath + wxT(".cpp"));
 
-            PCodeWriter h_cw(new FileCodeWriter(fullPath + wxT(".h"), useMicrosoftBOM, useUtf8));
-            PCodeWriter cpp_cw(new FileCodeWriter(fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8));
+            PCodeWriter h_cw(new FileCodeWriter(fullPath + wxT(".h"), useMicrosoftBOM, useUtf8, useNativeEOL));
+            PCodeWriter cpp_cw(new FileCodeWriter(fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetHeaderWriter(h_cw);
             codegen.SetSourceWriter(cpp_cw);
@@ -2059,7 +2064,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             PythonCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            PCodeWriter python_cw(new FileCodeWriter(fullPath + wxT(".py"), useMicrosoftBOM, useUtf8));
+            PCodeWriter python_cw(new FileCodeWriter(fullPath + wxT(".py"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetSourceWriter(python_cw);
 
@@ -2068,7 +2073,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             PHPCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            PCodeWriter php_cw(new FileCodeWriter(fullPath + wxT(".php"), useMicrosoftBOM, useUtf8));
+            PCodeWriter php_cw(new FileCodeWriter(fullPath + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetSourceWriter(php_cw);
 
@@ -2077,7 +2082,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             LuaCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            PCodeWriter lua_cw(new FileCodeWriter(fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8));
+            PCodeWriter lua_cw(new FileCodeWriter(fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetSourceWriter(lua_cw);
 

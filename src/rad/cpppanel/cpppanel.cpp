@@ -376,9 +376,14 @@ void CppPanel::OnCodeGeneration(wxFBEvent& event)
                 useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
             }
 
-            PCodeWriter h_cw(new FileCodeWriter(path + file + wxT(".h"), useMicrosoftBOM, useUtf8));
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
+            }
 
-            PCodeWriter cpp_cw(new FileCodeWriter(path + file + wxT(".cpp"), useMicrosoftBOM, useUtf8));
+            PCodeWriter h_cw(new FileCodeWriter(path + file + wxT(".h"), useMicrosoftBOM, useUtf8, useNativeEOL));
+
+            PCodeWriter cpp_cw(new FileCodeWriter(path + file + wxT(".cpp"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetHeaderWriter(h_cw);
             codegen.SetSourceWriter(cpp_cw);

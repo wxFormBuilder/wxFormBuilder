@@ -324,7 +324,12 @@ void PHPPanel::OnCodeGeneration(wxFBEvent& event)
                 useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
             }
 
-            PCodeWriter php_cw(new FileCodeWriter(path + file + wxT(".php"), useMicrosoftBOM, useUtf8));
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
+            }
+
+            PCodeWriter php_cw(new FileCodeWriter(path + file + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL));
 
             codegen.SetSourceWriter(php_cw);
             codegen.GenerateCode(project);

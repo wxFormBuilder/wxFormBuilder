@@ -94,8 +94,13 @@ wxString FileToCArray::Generate(const wxString& sourcePath)
         useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
     }
 
+    bool useNativeEOL = false;
+    if (auto property = project->GetProperty("use_native_eol"); property) {
+        useNativeEOL = (property->GetValueAsInteger() != 0);
+    }
+
     // setup output file
-    PCodeWriter arrayCodeWriter(new FileCodeWriter(embeddedFilesOutputPath + targetFullName, useMicrosoftBOM, useUtf8));
+    PCodeWriter arrayCodeWriter(new FileCodeWriter(embeddedFilesOutputPath + targetFullName, useMicrosoftBOM, useUtf8, useNativeEOL));
 
     const wxString headerGuardName = arrayName.Upper() + wxT("_H");
     arrayCodeWriter->WriteLn(wxT("#ifndef ") + headerGuardName);
