@@ -35,7 +35,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxDataViewCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -61,7 +60,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxDataViewTreeCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -87,7 +85,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxDataViewListCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );

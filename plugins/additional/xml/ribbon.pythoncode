@@ -153,7 +153,6 @@ Python code generation written by
   </templates>
 
   <templates class="ribbonGalleryItem">
-    <template name="declaration"></template>
     <template name="construction">
       self.#parent $name.Append( $bitmap, $id)
     </template>
