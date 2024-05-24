@@ -58,8 +58,8 @@
       </property>
     </category>
     <category name="Lua Properties">
-      <property name="ui_table" type="text" help="For Lua Only.&#x0A;The table which stores all created UI elements.">UI</property>
-      <property name="skip_lua_events" type="bool" help="For Lua Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+      <property name="lua_ui_table" type="text" help="For Lua Only.&#x0A;The table which stores all created UI elements.">UI</property>
+      <property name="lua_skip_events" type="bool" help="For Lua Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
     </category>
     <category name="PHP Properties">
       <property name="skip_php_events" type="bool" help="For PHP Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
