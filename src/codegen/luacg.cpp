@@ -553,7 +553,7 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     // Generating "defines" for macros
     GenDefines(project);
 
-    PProperty propNamespace = project->GetProperty(wxT("ui_table"));
+    PProperty propNamespace = project->GetProperty("lua_ui_table");
     if (propNamespace) {
         m_strUITable = propNamespace->GetValueAsString();
         if (m_strUITable.length() <= 0) {
@@ -564,7 +564,7 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     }
 
 
-    PProperty eventKindProp = project->GetProperty(wxT("skip_lua_events"));
+    PProperty eventKindProp = project->GetProperty("lua_skip_events");
     if (eventKindProp->GetValueAsInteger()) {
         m_strEventHandlerPostfix = wxT("event:Skip()");
     } else {
@@ -572,8 +572,10 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     }
 
 
-    PProperty disconnectMode = project->GetProperty(wxT("disconnect_mode"));
-    m_disconnecMode = disconnectMode->GetValueAsString();
+    // NOTE: This property does not exist, disconnection is actually unused, but due to copy-paste
+    //       the member variable does exist
+    //PProperty disconnectMode = project->GetProperty("lua_disconnect_mode");
+    //m_disconnecMode = disconnectMode->GetValueAsString();
 
     unsigned int dProjChildCount = project->GetChildCount();
     for (unsigned int i = 0; i < dProjChildCount; i++) {
@@ -854,7 +856,7 @@ wxString LuaCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxStrin
     // UI table code copied from TemplateParser
     wxString strTableName;
     const auto& project = AppData()->GetProjectData();
-    const auto& table = project->GetProperty(wxT("ui_table"));
+    const auto& table = project->GetProperty("lua_ui_table");
     if (table) {
         strTableName = table->GetValueAsString();
         if (strTableName.empty()) {
