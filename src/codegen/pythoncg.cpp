@@ -1540,10 +1540,12 @@ void PythonCodeGenerator::SetupPredefinedMacros()
 void PythonTemplateParser::SetupModulePrefixes()
 {
     // altered class names
+    ADD_PREDEFINED_PREFIX(wxBitmapComboBox, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxCalendarCtrl, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxRichTextCtrl, wx.richtext.);
     ADD_PREDEFINED_PREFIX(wxStyledTextCtrl, wx.stc.);
     ADD_PREDEFINED_PREFIX(wxHtmlWindow, wx.html.);
+    ADD_PREDEFINED_PREFIX(wxAuiToolBar, wx.aui.);
     ADD_PREDEFINED_PREFIX(wxAuiNotebook, wx.aui.);
     ADD_PREDEFINED_PREFIX(wxGrid, wx.grid.);
     ADD_PREDEFINED_PREFIX(wxAnimationCtrl, wx.adv.);
@@ -1551,6 +1553,10 @@ void PythonTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX(wxTimePickerCtrl, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxHyperlinkCtrl, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxMediaCtrl, wx.media.);
+    ADD_PREDEFINED_PREFIX(wxDataViewCtrl, wx.dataview.);
+    ADD_PREDEFINED_PREFIX(wxDataViewTreeCtrl, wx.dataview.);
+    ADD_PREDEFINED_PREFIX(wxDataViewListCtrl, wx.dataview.);
+    ADD_PREDEFINED_PREFIX(wxTreeListCtrl, wx.dataview.);
     ADD_PREDEFINED_PREFIX(wxPropertyGrid, wx.propgrid.);
     ADD_PREDEFINED_PREFIX(wxPropertyGridManager, wx.propgrid.);
     ADD_PREDEFINED_PREFIX(wxRibbonBar, wx.lib.agw.ribbon.);

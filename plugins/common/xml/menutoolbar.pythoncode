@@ -210,7 +210,7 @@ Python code generation written by
   <templates class="wxAuiToolBar">
     <template name="include">import wx.aui</template>
     <template name="construction">
-      self.$name = wx.aui.AuiToolBar( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
+      self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} )
 
       #ifnotnull $bitmapsize
       @{ #nl self.$name.SetToolBitmapSize( $bitmapsize ) @}
