@@ -425,10 +425,10 @@ Written by
     <template name="declaration">wxPGProperty* $name;</template>
     <template name="construction">
       #ifequal $type "Category"
-      @{ $name = #parent $name->Append( new wxPropertyCategory( $label, $label ) ); @}
+      @{ $name = #parent $name->Append( new wxPropertyCategory( $label #ifnotnull $prop_name @{ , $prop_name @} ) ); @}
       #ifnotequal $type "Category"
       @{
-        $name = #parent $name->Append( new wx${type}Property( $label, $label ) );
+        $name = #parent $name->Append( new wx${type}Property( $label #ifnotnull $prop_name @{ , $prop_name @} ) );
         #ifnotnull $help
         @{ #nl #parent $name->SetPropertyHelpString( $name, $help ); @}
       @}
