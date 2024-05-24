@@ -262,14 +262,14 @@ void PythonPanel::OnCodeGeneration(wxFBEvent& event)
     }
 
     bool useSpaces = false;
-    PProperty pUseSpaces = project->GetProperty(wxT("indent_with_spaces"));
+    PProperty pUseSpaces = project->GetProperty("python_indent_with_spaces");
     if (pUseSpaces) {
         useSpaces = (pUseSpaces->GetValueAsInteger() ? true : false);
     }
     m_pythonCW->SetIndentWithSpaces(useSpaces);
 
     wxString imagePathWrapperFunctionName;
-    PProperty pImagePathWrapperFunctionName = project->GetProperty(wxT("image_path_wrapper_function_name"));
+    PProperty pImagePathWrapperFunctionName = project->GetProperty("python_image_path_wrapper_function_name");
     if (pImagePathWrapperFunctionName) {
         imagePathWrapperFunctionName = pImagePathWrapperFunctionName->GetValueAsString();
     }

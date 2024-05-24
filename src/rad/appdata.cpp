@@ -1464,6 +1464,63 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
             eventHandlerProperty->GetDocument()->DeleteNode(eventHandlerProperty);
         }
     }
+
+    if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 18)) {
+        auto cppProperties = GetProperties(project, {
+            "precompiled_header",
+            "namespace",
+            "class_decoration",
+            "use_enum",
+            "use_array_enum",
+            "help_provider",
+            "event_generation",
+            "disconnect_events"
+        });
+        for (auto& property : cppProperties) {
+            auto name = XMLUtils::StringAttribute(property, "name");
+            XMLUtils::SetAttribute(property, "name", wxString::Format("cpp_%s", name));
+        }
+
+        auto pythonProperties = GetProperties(project, {
+            "indent_with_spaces",
+            "image_path_wrapper_function_name",
+            "skip_python_events",
+            "disconnect_python_events",
+            "disconnect_mode"
+        });
+        for (auto& property : pythonProperties) {
+            auto name = XMLUtils::StringAttribute(property, "name");
+            name.Replace("_python", "");
+            XMLUtils::SetAttribute(property, "name", wxString::Format("python_%s", name));
+        }
+
+        auto luaProperties = GetProperties(project, {
+            "ui_table",
+            "skip_lua_events"
+        });
+        for (auto& property : luaProperties) {
+            auto name = XMLUtils::StringAttribute(property, "name");
+            name.Replace("_lua", "");
+            XMLUtils::SetAttribute(property, "name", wxString::Format("lua_%s", name));
+        }
+
+        auto phpProperties = GetProperties(project, {
+            "skip_php_events",
+            "disconnect_php_events"
+        });
+        for (auto& property : phpProperties) {
+            auto name = XMLUtils::StringAttribute(property, "name");
+            name.Replace("_php", "");
+            XMLUtils::SetAttribute(property, "name", wxString::Format("php_%s", name));
+        }
+        // The originally unprefixed python property was silently used before, initialize the own property from that value
+        if (auto properties = GetProperties(project, {"python_disconnect_mode"}); !properties.empty()) {
+            auto* disconnectModeProperty = *properties.begin();
+            auto* phpDisconnectModeProperty = project->InsertNewChildElement("property");
+            XMLUtils::SetAttribute(phpDisconnectModeProperty, "name", "php_disconnect_mode");
+            XMLUtils::SetText(phpDisconnectModeProperty, XMLUtils::GetText(disconnectModeProperty));
+        }
+    }
 }
 
 void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMajor, int versionMinor)
@@ -2002,7 +2059,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
         PProperty fileProp = obj->GetProperty(wxT("file"));
         PProperty genfileProp = obj->GetProperty(wxT("gen_file"));
         PProperty typeProp = obj->GetProperty(wxT("type"));
-        PProperty pchProp = obj->GetProperty(wxT("precompiled_header"));
+        PProperty pchProp = obj->GetProperty("cpp_precompiled_header");
 
         if (!(baseNameProp && nameProp && fileProp && typeProp && genfileProp && pchProp)) {
             wxLogWarning(wxT("Missing Property"));
@@ -2035,7 +2092,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
         genfileProp->SetValue(genFile.GetFullPath());
         typeProp->SetValue(form->GetClassName());
 
-        if (auto property = project->GetProperty("precompiled_header"); property) {
+        if (auto property = project->GetProperty("cpp_precompiled_header"); property) {
             pchProp->SetValue(property->GetValue());
         }
 

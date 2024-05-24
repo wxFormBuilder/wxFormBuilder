@@ -5,7 +5,7 @@
     <template name="header_preamble">
       @#include &lt;wx/artprov.h&gt;
       #nl @#include &lt;wx/xrc/xmlres.h&gt;
-      #ifnotequal $help_provider "none"
+      #ifnotequal $cpp_help_provider "none"
       @{ #nl @#include &lt;wx/cshelp.h&gt; @}
 
       #ifnotequal $internationalize "0"
@@ -15,13 +15,13 @@
       ///////////////////////////////////////////////////////////////////////////
     </template>
     <template name="cpp_preamble">
-      #ifnotnull $precompiled_header
+      #ifnotnull $cpp_precompiled_header
       @{
-        $precompiled_header
+        $cpp_precompiled_header
       @}
     </template>
     <template name="cpp_epilogue">
-      #ifnotequal $help_provider "none"
+      #ifnotequal $cpp_help_provider "none"
       @{
         // Using the construction of a static object to ensure that the help provider is set #nl
         // wx Manages the most recent HelpProvider passed to ::Set, but not the previous ones #nl
@@ -31,7 +31,7 @@
           public: #nl
             wxFBContextSensitiveHelpSetter() #nl
             { #nl
-              $help_provider* help = new wxSimpleHelpProvider(); #nl
+              $cpp_help_provider* help = new wxSimpleHelpProvider(); #nl
               wxHelpProvider* old = wxHelpProvider::Set( help  ); #nl
               if (old != 0){ #nl
                 delete old; #nl
@@ -313,9 +313,9 @@
     </template>
     <template name="header_include">@#include &quot;$gen_file.h&quot;</template>
     <template name="source_include">
-      #ifnotnull $precompiled_header
+      #ifnotnull $cpp_precompiled_header
       @{
-        $precompiled_header #nl
+        $cpp_precompiled_header #nl
       @}
       @#include &quot;$file.h&quot;
     </template>

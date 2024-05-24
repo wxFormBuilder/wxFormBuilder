@@ -1000,8 +1000,11 @@ void ObjectInspector::AutoGenerateId(PObjectBase objectChanged, PProperty propCh
         if (
           (propChanged->GetName() == wxT("name") && reason == wxT("PropChange")) ||
           (propChanged->GetName() == wxT("id") && reason == wxT("DblClk"))) {
-            // wxPGId pgid = m_pg->GetPropertyByLabel(wxT(""));
-            prop = AppData()->GetProjectData()->GetProperty(wxT("event_generation"));
+            // FIXME: This generic automatic ID changing depending on a C++ only property is extremely unexpected,
+            //        but turning this property into a generic property is also quite misleading because in fact
+            //        this event generation type is really only applicable to C++. Maybe this feature could be activated
+            //        by a separate property, but how can be ensured that this property must be enabled for table mode?
+            prop = AppData()->GetProjectData()->GetProperty("cpp_event_generation");
             if (prop) {
                 if (prop->GetValueAsString() == wxT("table")) {
                     prop = objectChanged->GetProperty(wxT("id"));
