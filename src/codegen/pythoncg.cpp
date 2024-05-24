@@ -1551,6 +1551,8 @@ void PythonTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX(wxTimePickerCtrl, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxHyperlinkCtrl, wx.adv.);
     ADD_PREDEFINED_PREFIX(wxMediaCtrl, wx.media.);
+    ADD_PREDEFINED_PREFIX(wxPropertyGrid, wx.propgrid.);
+    ADD_PREDEFINED_PREFIX(wxPropertyGridManager, wx.propgrid.);
 
     // altered macros
     ADD_PREDEFINED_PREFIX(wxCAL_SHOW_HOLIDAYS, wx.adv.);
