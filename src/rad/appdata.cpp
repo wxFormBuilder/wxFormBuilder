@@ -2035,7 +2035,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
         genfileProp->SetValue(genFile.GetFullPath());
         typeProp->SetValue(form->GetClassName());
 
-        if (auto property = project->GetProperty("precompiled_header"); property) {
+        if (auto property = project->GetProperty("cpp_precompiled_header"); property) {
             pchProp->SetValue(property->GetValue());
         }
 

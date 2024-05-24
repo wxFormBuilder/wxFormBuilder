@@ -490,12 +490,12 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
 
     bool useEnum = false;
 
-    PProperty useEnumProperty = project->GetProperty(wxT("use_enum"));
+    PProperty useEnumProperty = project->GetProperty("cpp_use_enum");
     if (useEnumProperty && useEnumProperty->GetValueAsInteger())
         useEnum = true;
 
     m_useArrayEnum = false;
-    const auto& useArrayEnumProperty = project->GetProperty(wxT("use_array_enum"));
+    const auto& useArrayEnumProperty = project->GetProperty("cpp_use_array_enum");
     if (useArrayEnumProperty && useArrayEnumProperty->GetValueAsInteger()) {
         m_useArrayEnum = true;
     }
@@ -505,8 +505,8 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     if (i18nProperty && i18nProperty->GetValueAsInteger())
         m_i18n = true;
 
-    m_useConnect = !(_("table") == project->GetPropertyAsString(_("event_generation")));
-    m_disconnectEvents = (project->GetPropertyAsInteger(_("disconnect_events")) != 0);
+    m_useConnect = !(_("table") == project->GetPropertyAsString("cpp_event_generation"));
+    m_disconnectEvents = (project->GetPropertyAsInteger("cpp_disconnect_events") != 0);
 
     m_header->Clear();
     m_source->Clear();
@@ -569,7 +569,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     }
 
     // class decoration
-    PProperty propClassDecoration = project->GetProperty(wxT("class_decoration"));
+    PProperty propClassDecoration = project->GetProperty("cpp_class_decoration");
     wxString classDecoration;
     if (propClassDecoration) {
         // get the decoration to be used by GenClassDeclaration
@@ -634,7 +634,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     m_source->WriteLn(code);
 
     // namespace
-    PProperty propNamespace = project->GetProperty(wxT("namespace"));
+    PProperty propNamespace = project->GetProperty("cpp_namespace");
     wxArrayString namespaceArray;
     if (propNamespace) {
         namespaceArray = propNamespace->GetValueAsArrayString();
