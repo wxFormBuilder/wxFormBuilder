@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-13, macos-latest]
+        os: [macos-latest, macos-13, macos-12]
     steps:
     - uses: actions/checkout@v4.1.1
       with:
@@ -57,7 +57,7 @@ jobs:
       run: |
         export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=TRUE
         brew update
-        brew install cmake make wxwidgets boost
+        brew install wxwidgets boost
     - name: Create build system
       run: |
         cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release

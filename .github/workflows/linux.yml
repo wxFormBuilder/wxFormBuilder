@@ -68,7 +68,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-20.04]
+        include:
+          - { os: ubuntu-24.04, wxver: 3.2 }
+          - { os: ubuntu-latest, wxver: 3.0-gtk3 }
+          - { os: ubuntu-20.04, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') }}
     steps:
     - uses: actions/checkout@v4.1.1
@@ -78,7 +81,7 @@ jobs:
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
+        sudo apt install libwxgtk${{ matrix.wxver }}-dev libwxgtk-media${{ matrix.wxver }}-dev libboost-dev debhelper fakeroot rename xvfb
     - name: Setup package build
       run: |
         cp -rf data/packaging/linux/debian/ ./debian/

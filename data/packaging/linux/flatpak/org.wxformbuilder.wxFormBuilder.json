@@ -22,8 +22,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.4/wxWidgets-3.2.4.tar.bz2",
-					"sha256": "0640e1ab716db5af2ecb7389dbef6138d7679261fbff730d23845ba838ca133e"
+					"url": "https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.5/wxWidgets-3.2.5.tar.bz2",
+					"sha256": "0ad86a3ad3e2e519b6a705248fc9226e3a09bbf069c6c692a02acf7c2d1c6b51"
 				}
 			],
 			"cleanup": [ "/bin/wx*", "/lib/wx" ]
@@ -38,8 +38,8 @@
 			"sources": [
 				{
 					"type": "archive",
-					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2",
-					"sha256": "6478edfe2f3305127cffe8caf73ea0176c53769f4bf1585be237eb30798c3b8e"
+					"url": "https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.bz2",
+					"sha256": "7009fe1faa1697476bdc7027703a2badb84e849b7b0baad5086b087b971f8617"
 				}
 			],
 			"cleanup": [ "/lib/cmake" ]
