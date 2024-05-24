@@ -504,7 +504,8 @@ Written by
 
   <objectinfo class="propGridItem" icon="propgriditem.xpm" type="propgriditem" wxversion="2904">
     <property name="name" type="text">m_propertyGridItem</property>
-    <property name="label" type="wxString_i18n" help="Label shown in parent property grid/page.">Name</property>
+    <property name="label" type="wxString_i18n" help="Label of the property.">Name</property>
+    <property name="prop_name" type="wxString" help="Name of the property. If empty, the label will be used."/>
     <property name="type" type="option" help="Type of the property item.">
       <option name="Category" help="Append properties category."/>
       <option name="Bool" help="Append Boolean property to the parent property grid (page)."/>

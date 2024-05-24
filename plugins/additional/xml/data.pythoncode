@@ -293,10 +293,10 @@ Python code generation written by
   <templates class="propGridItem">
     <template name="construction">
       #ifequal $type "Category"
-      @{ self.$name = self.#parent $name.Append( wx.propgrid.PropertyCategory( $label, $label ) ) @}
+      @{ self.$name = self.#parent $name.Append( wx.propgrid.PropertyCategory( $label #ifnotnull $prop_name @{ , $prop_name @} ) ) @}
       #ifnotequal $type "Category"
       @{
-        self.$name = self.#parent $name.Append( wx.propgrid.${type}Property( $label, $label ) )
+        self.$name = self.#parent $name.Append( wx.propgrid.${type}Property( $label #ifnotnull $prop_name @{ , $prop_name @} ) )
         #ifnotnull $help
         @{ #nl self.#parent $name.SetPropertyHelpString( self.$name, $help ) @}
       @}
