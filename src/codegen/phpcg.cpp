@@ -382,7 +382,7 @@ bool PHPCodeGenerator::GenerateCode(PObjectBase project)
     if (i18nProperty && i18nProperty->GetValueAsInteger())
         m_i18n = true;
 
-    m_disconnectEvents = (project->GetPropertyAsInteger(wxT("disconnect_php_events")) != 0);
+    m_disconnectEvents = (project->GetPropertyAsInteger("php_disconnect_events") != 0);
 
     m_source->Clear();
 
@@ -443,14 +443,14 @@ bool PHPCodeGenerator::GenerateCode(PObjectBase project)
     GenDefines(project);
 
     wxString eventHandlerPostfix;
-    PProperty eventKindProp = project->GetProperty(wxT("skip_php_events"));
+    PProperty eventKindProp = project->GetProperty("php_skip_events");
     if (eventKindProp->GetValueAsInteger()) {
         eventHandlerPostfix = wxT("$event->Skip();");
     } else {
         eventHandlerPostfix = wxEmptyString;
     }
 
-    PProperty disconnectMode = project->GetProperty(wxT("disconnect_mode"));
+    PProperty disconnectMode = project->GetProperty("php_disconnect_mode");
     m_disconnecMode = disconnectMode->GetValueAsString();
 
     for (unsigned int i = 0; i < project->GetChildCount(); i++) {
