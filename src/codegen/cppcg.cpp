@@ -117,6 +117,7 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
         case PT_CLASS:
         case PT_MACRO:
         case PT_TEXT:
+        case PT_TEXT_ML:
         case PT_OPTION:
         case PT_EDIT_OPTION:
         case PT_FLOAT:
@@ -1657,7 +1658,7 @@ void CppCodeGenerator::GenDefines(PObjectBase project)
     }
 
     unsigned int id = m_firstID;
-    if (id < 1000) {
+    if (id < wxID_HIGHEST) {
         wxLogWarning(wxT("First ID is Less than 1000"));
     }
     for (it = macros.begin(); it != macros.end(); it++) {

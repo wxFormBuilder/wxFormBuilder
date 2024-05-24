@@ -79,7 +79,7 @@ Written by
     <property name="view_eol" type="bool" help="Show end of line characters.">0</property>
     <property name="view_whitespace" type="bool" help="Show whitespace characters.">0</property>
     <property name="use_tabs" type="bool" help="Use tabs for indenting, instead of spaces.">1</property>
-    <property name="tab_width" type="text" help="The number of spaces per tab character.">4</property>
+    <property name="tab_width" type="uint" help="The number of spaces per tab character.">4</property>
     <property name="read_only" type="bool" help="Set ReadOnly Mode. Disable editing.">0</property>
   </objectinfo>
 
@@ -253,10 +253,10 @@ Written by
     <inherits class="AUI"/>
     <inherits class="Validator"/>
     <property name="name" type="text">m_scrollBar</property>
-    <property name="value" help="The position of the scrollbar in scroll units." type="uint">0</property>
-    <property name="range" help="The maximum position of the scrollbar." type="uint">100</property>
-    <property name="thumbsize" help="The size of the thumb, or visible portion of the scrollbar, in scroll units." type="uint">1</property>
-    <property name="pagesize" help="This is the number of scroll units that will be scrolled when the user pages up or down." type="uint">1</property>
+    <property name="value" type="uint" help="The position of the scrollbar in scroll units.">0</property>
+    <property name="range" type="uint" help="The maximum position of the scrollbar.">100</property>
+    <property name="thumbsize" type="uint" help="The size of the thumb, or visible portion of the scrollbar, in scroll units.">1</property>
+    <property name="pagesize" type="uint" help="This is the number of scroll units that will be scrolled when the user pages up or down.">1</property>
     <property name="style" type="option">
       <option name="wxSB_HORIZONTAL" help="Specifies a horizontal scrollbar."/>
       <option name="wxSB_VERTICAL" help="Specifies a vertical scrollbar."/>
@@ -409,36 +409,36 @@ Written by
   <objectinfo class="CustomControl" startgroup="1" icon="custom_control.xpm" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
-    <property name="name" type="text" help="The control is added to a sizer using this name.">m_customControl</property>
+    <property name="name" type="text">m_customControl</property>
     <property name="class" type="text" help="The control is generated to XRC with this class."/>
-    <property name="declaration" type="text" help="Code to generate for the declaration of this control."/>
-    <property name="construction" type="text" help="Code to generate for the construction of this control."/>
-    <property name="include" type="text" help="Code to generate for the include statements for this control."/>
-    <property name="settings" type="text" help="Code to generate for the settings of this control."/>
+    <property name="declaration" type="text_ml" help="Code to generate for the declaration of this control."/>
+    <property name="construction" type="text_ml" help="Code to generate for the construction of this control."/>
+    <property name="include" type="text_ml" help="Code to generate for the include statements for this control."/>
+    <property name="settings" type="text_ml" help="Code to generate for the settings of this control."/>
   </objectinfo>
 
   <objectinfo class="CustomCode" startgroup="1" icon="customcode.xpm" type="nonvisual">
     <property name="name" type="text" help="Informal name, this is not used in the generated file and therefor doesn't need to be unique">MyCode</property>
     <category name="C++">
-      <property name="include_cpp" type="text" help="Optional include directive for c++"></property>
-      <property name="code_cpp" type="text" help="This custom code fragment gets inserted as is at the current position into the generated c++ file"></property>
+      <property name="include_cpp" type="text_ml" help="Optional include directive for c++"></property>
+      <property name="code_cpp" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated c++ file"></property>
     </category>
     <category name="Python">
-      <property name="import_python" type="text" help="Optional import directive for python"></property>
-      <property name="code_python" type="text" help="This custom code fragment gets inserted as is at the current position into the generated python file"></property>
-    </category>
-    <category name="PHP">
-      <property name="require_php" type="text" help="Optional require directive for php"></property>
-      <property name="code_php" type="text" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
+      <property name="import_python" type="text_ml" help="Optional import directive for python"></property>
+      <property name="code_python" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated python file"></property>
     </category>
     <category name="Lua">
-      <property name="require_lua" type="text" help="Optional require directive for lua"></property>
-      <property name="code_lua" type="text" help="This custom code fragment gets inserted as is at the current position into the generated lua file"></property>
+      <property name="require_lua" type="text_ml" help="Optional require directive for lua"></property>
+      <property name="code_lua" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated lua file"></property>
+    </category>
+    <category name="PHP">
+      <property name="require_php" type="text_ml" help="Optional require directive for php"></property>
+      <property name="code_php" type="text_ml" help="This custom code fragment gets inserted as is at the current position into the generated php file"></property>
     </category>
   </objectinfo>
 
   <objectinfo class="wxTimer" icon="timer.xpm" type="nonvisual">
-    <property name="name" type="text" help="wxTimer object name.">m_timer</property>
+    <property name="name" type="text">m_timer</property>
     <property name="id" type="macro" help="Timer identifier.">wxID_ANY</property>
     <property name="period" type="int" help="Timer period in milliseconds.">1000</property>
     <property name="enabled" type="bool" help="Enable timer on startup.">0</property>

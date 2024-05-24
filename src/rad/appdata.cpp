@@ -470,6 +470,7 @@ ApplicationData::ApplicationData(const wxString& rootdir) :
   m_manager(new wxFBManager),
   m_ipc(new wxFBIPC),
   m_fbpVerMajor(1),
+  // TODO: Update for next release
   m_fbpVerMinor(17)
 {
 #ifdef __WXFB_DEBUG__
@@ -1875,6 +1876,13 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         }
         if (objectClass == "ribbonGalleryItem") {
             RemoveProperties(object, {"label", "help"});
+        }
+    }
+
+    // Convert to version 1.18
+    if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 18)) {
+        if (objectClass == "wxAuiToolBar") {
+            RemoveProperties(object, {"label_visible", "toolbar_label"});
         }
     }
 }

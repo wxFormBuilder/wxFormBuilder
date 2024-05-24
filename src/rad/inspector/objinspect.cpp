@@ -226,6 +226,8 @@ wxPGProperty* ObjectInspector::GetProperty(PProperty prop)
     } else if (type == PT_WXSTRING || type == PT_WXSTRING_I18N) {
         result = new wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
     } else if (type == PT_TEXT) {
+        result = new wxStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
+    } else if (type == PT_TEXT_ML) {
         result = new wxLongStringProperty(name, wxPG_LABEL, prop->GetValueAsText());
     } else if (type == PT_BOOL) {
         result = new wxBoolProperty(name, wxPG_LABEL, prop->GetValue() == wxT("1"));
@@ -607,7 +609,7 @@ void ObjectInspector::OnPropertyGridChanged(wxPropertyGridEvent& event)
                 ModifyProperty(prop, TypeConv::FloatToString(val));
                 break;
             }
-            case PT_TEXT: {
+            case PT_TEXT_ML: {
                 // The used wxPropertyGrid component does (undocumented?) escape certain control characters,
                 // especially \n, which is not desired for this type, its value should be preserved as is.
                 // TypeConv::TextToString() reverses exactly the same escape sequences.
@@ -615,6 +617,7 @@ void ObjectInspector::OnPropertyGridChanged(wxPropertyGridEvent& event)
                 ModifyProperty(prop, rawValue);
                 break;
             }
+            case PT_TEXT:
             case PT_MACRO:
             case PT_INT:
             case PT_UINT: {
@@ -855,6 +858,7 @@ void ObjectInspector::OnPropertyModified(wxFBPropertyEvent& event)
             break;
         }
         case PT_TEXT:
+        case PT_TEXT_ML:
             pgProp->SetValueFromString(prop->GetValueAsText(), 0);
             break;
         case PT_MACRO:
