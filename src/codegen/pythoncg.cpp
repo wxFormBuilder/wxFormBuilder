@@ -1553,6 +1553,12 @@ void PythonTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX(wxMediaCtrl, wx.media.);
     ADD_PREDEFINED_PREFIX(wxPropertyGrid, wx.propgrid.);
     ADD_PREDEFINED_PREFIX(wxPropertyGridManager, wx.propgrid.);
+    ADD_PREDEFINED_PREFIX(wxRibbonBar, wx.lib.agw.ribbon.);
+    ADD_PREDEFINED_PREFIX(wxRibbonPage, wx.lib.agw.ribbon.);
+    ADD_PREDEFINED_PREFIX(wxRibbonPanel, wx.lib.agw.ribbon.);
+    ADD_PREDEFINED_PREFIX(wxRibbonButtonBar, wx.lib.agw.ribbon.);
+    ADD_PREDEFINED_PREFIX(wxRibbonToolBar, wx.lib.agw.ribbon.);
+    ADD_PREDEFINED_PREFIX(wxRibbonGallery, wx.lib.agw.ribbon.);
 
     // altered macros
     ADD_PREDEFINED_PREFIX(wxCAL_SHOW_HOLIDAYS, wx.adv.);

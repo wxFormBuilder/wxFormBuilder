@@ -29,7 +29,7 @@ Python code generation written by
   <templates class="wxRibbonBar">
     <template name="include">import wx.lib.agw.ribbon</template>
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonBar( self , $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      self.$name = #class( self , $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
     </template>
     <template name="after_addchild">
       self.$name.Realize()
@@ -56,7 +56,7 @@ Python code generation written by
 
   <templates class="wxRibbonPage">
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonPage( self.#parent $name,  $id, $label , $bitmap ,  0 )
+      self.$name = #class( self.#parent $name,  $id, $label , $bitmap ,  0 )
     </template>
     <template name="settings">
       #ifequal $select "1"
@@ -66,14 +66,14 @@ Python code generation written by
 
   <templates class="wxRibbonPanel">
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonPanel( self.#parent $name,  $id, $label , $bitmap , $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
+      self.$name = #class( self.#parent $name,  $id, $label , $bitmap , $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
     </template>
     <template name="evt_connect_OnRibbonPanelExtbuttonActivated">@# event EVT_COMMAND_RIBBONPANEL_EXTBUTTON_ACTIVATED isn't currently supported by wxPython</template>
   </templates>
 
   <templates class="wxRibbonButtonBar">
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonButtonBar( self.#parent $name,  $id, $pos, $size, 0)
+      self.$name = #class( self.#parent $name,  $id, $pos, $size, 0)
     </template>
   </templates>
 
@@ -108,7 +108,7 @@ Python code generation written by
 
   <templates class="wxRibbonToolBar">
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonToolBar( self.#parent $name,  $id, $pos, $size, 0)
+      self.$name = #class( self.#parent $name,  $id, $pos, $size, 0)
     </template>
   </templates>
 
@@ -143,7 +143,7 @@ Python code generation written by
 
   <templates class="wxRibbonGallery">
     <template name="construction">
-      self.$name = wx.lib.agw.ribbon.RibbonGallery( self.#parent $name,  $id, $pos, $size, 0)
+      self.$name = #class( self.#parent $name,  $id, $pos, $size, 0)
     </template>
     <template name="generated_event_handlers"></template>
     <template name="evt_connect_OnRibbonGallerySelected">self.Bind( wx.lib.agw.ribbon.EVT_RIBBONGALLERY_SELECTED, #handler, id = $id )</template>
