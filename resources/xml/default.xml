@@ -213,17 +213,6 @@
     <property name="margins" type="wxSize" help="The margins between the bitmap and the text of the button. This is currently only implemented under MSW. If it is not specified, default margin is used around the bitmap."/>
   </objectinfo>
 
-  <objectinfo class="UserClasses" type="interface">
-    <property name="name" type="text"/>
-    <property name="basename" type="text"/>
-    <property name="file" type="text"/>
-    <property name="gen_file" type="text"/>
-    <property name="type" type="text"/>
-    <category name="C++ Properties">
-      <property name="cpp_precompiled_header" type="text_ml"/>
-    </category>
-  </objectinfo>
-
   <objectinfo class="AUI" type="interface">
     <property name="aui_name" type="wxString" help="Sets the internal name of the pane."/>
     <property name="caption_visible" type="bool" help="Indicates that a pane caption should be visible.">1</property>
@@ -304,6 +293,17 @@
       <option name="wxString" help="String value. This should be used for wxButton, wxComboBox, wxStaticText, wxTextCtrl."/>
       <option name="wxArrayInt" help="Array of integers. This should be used for wxListBox, wxCheckListBox."/>
     </property>
+  </objectinfo>
+
+  <objectinfo class="UserClasses" type="interface">
+    <property name="name" type="text"/>
+    <property name="basename" type="text"/>
+    <property name="file" type="text"/>
+    <property name="gen_file" type="text"/>
+    <property name="type" type="text"/>
+    <category name="C++ Properties">
+      <property name="cpp_precompiled_header" type="text_ml"/>
+    </category>
   </objectinfo>
 
 </package>
