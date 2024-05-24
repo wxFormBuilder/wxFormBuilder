@@ -25,26 +25,26 @@
     <property name="embedded_files_path" type="path" help="The path to generated files for embedded files">res</property>
     <property name="first_id" type="uint" help="Integral value of the first generated static wxWindowID">6000</property>
     <category name="C++ Properties">
-      <property name="precompiled_header" type="text_ml" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
-      <property name="namespace" type="stringlist" help="For C++ Only.&#x0A;Namespaces to wrap class declarations in."/>
-      <property name="class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
+      <property name="cpp_precompiled_header" type="text_ml" help="For C++ Only.&#x0A;The exact code to be generated at the top of the source file to support precompiled headers. For example, to include wxprec.h, the value of this property should be:&#x0A;#include &lt;wx/wxprec.h&gt;"/>
+      <property name="cpp_namespace" type="stringlist" help="For C++ Only.&#x0A;Namespaces to wrap class declarations in."/>
+      <property name="cpp_class_decoration" type="parent" help="For C++ Only.&#x0A;Used to decorate classes with DLL export macros.">
         <child name="decoration" help="The name of the macro or the dll export decoration"/>
         <child name="header" help="Optional header file where the export macro is defined"/>
       </property>
-      <property name="use_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for control IDs instead of a list of #defines.">1</property>
-      <property name="use_array_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for the dimensions of arrays.">0</property>
-      <property name="help_provider" type="option" help="For C++ Only.&#x0A;The class of help provider to use for context-sensitive help.">
+      <property name="cpp_use_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for control IDs instead of a list of #defines.">1</property>
+      <property name="cpp_use_array_enum" type="bool" help="For C++ Only.&#x0A;Generate an enumeration for the dimensions of arrays.">0</property>
+      <property name="cpp_help_provider" type="option" help="For C++ Only.&#x0A;The class of help provider to use for context-sensitive help.">
         <option name="none" help="No support for context-sensitive help"/>
         <option name="wxSimpleHelpProvider" help="Use wxSimpleHelpProvider to provide context-sensitive help"/>
         <option name="wxHelpControllerHelpProvider" help="Use wxHelpControllerHelpProvider to provide context-sensitive help"/>
         none
       </property>
-      <property name="event_generation" type="option" help="For C++ Only.&#x0A;Type of event connection to generate.">
+      <property name="cpp_event_generation" type="option" help="For C++ Only.&#x0A;Type of event connection to generate.">
         <option name="connect" help="Use the Connect() function to link event handlers to events"/>
         <option name="table" help="Use event macro tables to link event handlers to events"/>
         connect
       </property>
-      <property name="disconnect_events" type="bool" help="For event_generation=connect Only.&#x0A;Disconnect events in the destructor.">0</property>
+      <property name="cpp_disconnect_events" type="bool" help="For cpp_event_generation=connect Only.&#x0A;Disconnect events in the destructor.">0</property>
     </category>
     <category name="Python Properties">
       <property name="indent_with_spaces" type="bool" help="For Python only.&#x0A;Use 4-spaces for indentation instead of tabs.">1</property>
