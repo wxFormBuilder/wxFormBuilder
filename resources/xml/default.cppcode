@@ -313,9 +313,9 @@
     </template>
     <template name="header_include">@#include &quot;$gen_file.h&quot;</template>
     <template name="source_include">
-      #ifnotnull $precompiled_header
+      #ifnotnull $cpp_precompiled_header
       @{
-        $precompiled_header #nl
+        $cpp_precompiled_header #nl
       @}
       @#include &quot;$file.h&quot;
     </template>

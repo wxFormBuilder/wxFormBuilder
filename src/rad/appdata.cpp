@@ -2059,7 +2059,7 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
         PProperty fileProp = obj->GetProperty(wxT("file"));
         PProperty genfileProp = obj->GetProperty(wxT("gen_file"));
         PProperty typeProp = obj->GetProperty(wxT("type"));
-        PProperty pchProp = obj->GetProperty(wxT("precompiled_header"));
+        PProperty pchProp = obj->GetProperty("cpp_precompiled_header");
 
         if (!(baseNameProp && nameProp && fileProp && typeProp && genfileProp && pchProp)) {
             wxLogWarning(wxT("Missing Property"));
