@@ -1608,16 +1608,19 @@ public:
             wxObject* child = GetManager()->GetChild(wxobject, i);
             IObject* childObj = GetManager()->GetIObject(child);
             if (childObj->GetClassName() == _("propGridItem")) {
+                auto propName = childObj->GetPropertyAsString(_("prop_name"));
                 if (childObj->GetPropertyAsString(_("type")) == _("Category")) {
                     pg->Append(new wxPropertyCategory(
-                      childObj->GetPropertyAsString(_("label")), childObj->GetPropertyAsString(_("label"))));
+                      childObj->GetPropertyAsString(_("label")), !propName.empty() ? propName : wxPG_LABEL));
                 } else {
                     wxPGProperty* prop = wxDynamicCast(
                       wxCreateDynamicObject(wxT("wx") + (childObj->GetPropertyAsString(_("type"))) + wxT("Property")),
                       wxPGProperty);
                     if (prop) {
                         prop->SetLabel(childObj->GetPropertyAsString(_("label")));
-                        prop->SetName(childObj->GetPropertyAsString(_("label")));
+                        if (!propName.empty()) {
+                            prop->SetName(propName);
+                        }
                         pg->Append(prop);
 
                         if (childObj->GetPropertyAsString(_("help")) != wxEmptyString) {
@@ -1762,10 +1765,11 @@ public:
                 for (size_t j = 0; j < childObj->GetChildCount(); ++j) {
                     auto* innerChildObj = childObj->GetChildObject(j);
                     if (innerChildObj->GetClassName() == _("propGridItem")) {
+                        auto propName = innerChildObj->GetPropertyAsString(_("prop_name"));
                         if (innerChildObj->GetPropertyAsString(_("type")) == _("Category")) {
                             page->Append(new wxPropertyCategory(
                               innerChildObj->GetPropertyAsString(_("label")),
-                              innerChildObj->GetPropertyAsString(_("label"))));
+                              !propName.empty() ? propName : wxPG_LABEL));
                         } else {
                             wxPGProperty* prop = wxDynamicCast(
                               wxCreateDynamicObject(
@@ -1773,7 +1777,9 @@ public:
                               wxPGProperty);
                             if (prop) {
                                 prop->SetLabel(innerChildObj->GetPropertyAsString(_("label")));
-                                prop->SetName(innerChildObj->GetPropertyAsString(_("label")));
+                                if (!propName.empty()) {
+                                    prop->SetName(propName);
+                                }
                                 page->Append(prop);
 
                                 if (innerChildObj->GetPropertyAsString(_("help")) != wxEmptyString) {
