@@ -47,11 +47,11 @@
       <property name="cpp_disconnect_events" type="bool" help="For cpp_event_generation=connect Only.&#x0A;Disconnect events in the destructor.">0</property>
     </category>
     <category name="Python Properties">
-      <property name="indent_with_spaces" type="bool" help="For Python only.&#x0A;Use 4-spaces for indentation instead of tabs.">1</property>
-      <property name="image_path_wrapper_function_name" type="text" help="For Python only.&#x0A;Wrap image paths into a function with this name.&#x0A;Useful for freezing the application."/>
-      <property name="skip_python_events" type="bool" help="For Python Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
-      <property name="disconnect_python_events" type="bool" help="For Python Only.&#x0A;Disconnect events in the destructor.">0</property>
-      <property name="disconnect_mode" type="option" help="For Python Only.&#x0A;Choose which strategy will be used for disconnecting of events (due to different prototypes of Unbind() function in wxPython).">
+      <property name="python_indent_with_spaces" type="bool" help="For Python only.&#x0A;Use 4-spaces for indentation instead of tabs.">1</property>
+      <property name="python_image_path_wrapper_function_name" type="text" help="For Python only.&#x0A;Wrap image paths into a function with this name.&#x0A;Useful for freezing the application."/>
+      <property name="python_skip_events" type="bool" help="For Python Only.&#x0A;Call Skip() function in all generated event handlers.">1</property>
+      <property name="python_disconnect_events" type="bool" help="For Python Only.&#x0A;Disconnect events in the destructor.">0</property>
+      <property name="python_disconnect_mode" type="option" help="For Python Only.&#x0A;Choose which strategy will be used for disconnecting of events (due to different prototypes of Unbind() function in wxPython).">
         <option name="source_name" help="Pass source widget name to Unbind() function"/>
         <option name="handler_name" help="Pass event handler name to Unbind() function"/>
         source_name
