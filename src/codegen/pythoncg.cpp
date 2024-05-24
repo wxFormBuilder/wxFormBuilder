@@ -432,7 +432,7 @@ bool PythonCodeGenerator::GenerateCode(PObjectBase project)
     if (i18nProperty && i18nProperty->GetValueAsInteger())
         m_i18n = true;
 
-    m_disconnectEvents = (project->GetPropertyAsInteger(wxT("disconnect_python_events")) != 0);
+    m_disconnectEvents = (project->GetPropertyAsInteger("python_disconnect_events") != 0);
 
     m_source->Clear();
 
@@ -495,13 +495,13 @@ bool PythonCodeGenerator::GenerateCode(PObjectBase project)
     GenDefines(project);
 
     wxString eventHandlerPostfix;
-    PProperty eventKindProp = project->GetProperty(wxT("skip_python_events"));
+    PProperty eventKindProp = project->GetProperty("python_skip_events");
     if (eventKindProp->GetValueAsInteger()) {
         eventHandlerPostfix = wxT("event.Skip()");
     } else
         eventHandlerPostfix = wxT("pass");
 
-    PProperty disconnectMode = project->GetProperty(wxT("disconnect_mode"));
+    PProperty disconnectMode = project->GetProperty("python_disconnect_mode");
     m_disconnecMode = disconnectMode->GetValueAsString();
 
     for (unsigned int i = 0; i < project->GetChildCount(); i++) {
