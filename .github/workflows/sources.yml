@@ -22,7 +22,7 @@ jobs:
           } else {
             return context.ref.split('/').pop();
           }
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         submodules: recursive
     - name: Fetch tags
@@ -61,7 +61,7 @@ jobs:
           } else {
             return context.ref.split('/').pop();
           }
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.6
       with:
         submodules: recursive
     - name: Fetch tags
