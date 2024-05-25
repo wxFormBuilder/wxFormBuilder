@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - '**/sources/**'
+      - 'dependabot/**'
     tags:
       - v*
 
