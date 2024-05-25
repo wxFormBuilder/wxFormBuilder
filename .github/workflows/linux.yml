@@ -21,6 +21,8 @@ on:
       - 'LICENSE'
       - '**.md'
   pull_request:
+    branches-ignore:
+      - 'dependabot/**'
     paths-ignore:
       - '.github/workflows/sources.yml'
       - '.github/workflows/macos.yml'
