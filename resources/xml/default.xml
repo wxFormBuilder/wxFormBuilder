@@ -12,7 +12,7 @@
       C++
     </property>
     <property name="path" type="path" help="Output path of generated files">.</property>
-    <property name="file" type="text" help="Base filename of generated files"/>
+    <property name="file" type="text" help="Base filename of generated files">MyProjectBase</property>
     <property name="encoding" type="option" help="Encoding of generated files">
       <option name="UTF-8"/>
       <option name="ANSI"/>
