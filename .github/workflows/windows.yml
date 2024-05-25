@@ -54,7 +54,7 @@ jobs:
       with:
         fetch-tags: true
         submodules: recursive
-    - uses: msys2/setup-msys2@v2.22.0
+    - uses: msys2/setup-msys2@v2.23.0
       with:
         msystem: ${{ matrix.sys }}
         release: false
