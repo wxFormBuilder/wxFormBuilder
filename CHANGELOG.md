@@ -6,6 +6,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- Add 'Load From SVG Resource' for bitmap property ([#817](https://github.com/wxFormBuilder/wxFormBuilder/pull/817))
+- Add project option to use native eol-style for generated files
+- Add a separate property to propGridItem to specify the name ([#815](https://github.com/wxFormBuilder/wxFormBuilder/issues/815))
+- Add subclassing support for classes where missing for Python
+
+### Changed
+
+- BREAKING CHANGE: Data type `text` is now single line only instead of multiline. Many properties use this data type although they
+  should contain single line values only. If such properties do contain multiline values, silent data loss will happen when these
+  values are modified.
+- Some properties now use a numeric data type instead of a text data type. These properties must only contain numeric values,
+  this change should not lead to silent data loss because text values would have generated broken code.
+- Reorder project properties for clarity
+- Move some project C++ properties into global scope because they are in fact used by all languages
+- Use a common prefix for language specific project properties to prevent name clashes
+- Use more sensible default values for project properties
+
+### Fixed
+
+- Fix wxMediaControl Player Controls generated Python code ([#809](https://github.com/wxFormBuilder/wxFormBuilder/issues/809))
+- Fix PHP code generation for objects with base classes
+- Fix name clash of project property `disconnect_mode` between Python and PHP
+- Prevent possible crash when loading a project file
+- Code for property grid manager code generated with an error ([#805](https://github.com/wxFormBuilder/wxFormBuilder/issues/805))
+
 ## [4.1.0] - 2024-02-26
 
 ### Changed
