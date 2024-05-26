@@ -1674,29 +1674,28 @@ wxWindow* MainFrame::CreateDesignerWindow(wxWindow* parent)
 
     m_visualEdit = new VisualEditor(m_notebook);
     AppData()->GetManager()->SetVisualEditor(m_visualEdit);
-
-    m_notebook->InsertPage(0, m_visualEdit, wxT("Designer"), false);
-    m_notebook->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("designer"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_visualEdit, _("Designer"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("designer", AppBitmaps::Size::Icon_Medium));
 
     m_cpp = new CppPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(1, m_cpp, wxT("C++"), false);
-    m_notebook->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("c++"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_cpp, _("C++"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("c++", AppBitmaps::Size::Icon_Medium));
 
     m_python = new PythonPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(2, m_python, wxT("Python"), false);
-    m_notebook->SetPageBitmap(2, AppBitmaps::GetBitmap(wxT("python"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_python, _("Python"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("python", AppBitmaps::Size::Icon_Medium));
 
     m_lua = new LuaPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(3, m_lua, wxT("Lua"), false);
-    m_notebook->SetPageBitmap(3, AppBitmaps::GetBitmap(wxT("lua"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_lua, _("Lua"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("lua", AppBitmaps::Size::Icon_Medium));
 
     m_php = new PHPPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(4, m_php, wxT("PHP"), false);
-    m_notebook->SetPageBitmap(4, AppBitmaps::GetBitmap(wxT("php"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_php, _("PHP"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("php", AppBitmaps::Size::Icon_Medium));
 
     m_xrc = new XrcPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(5, m_xrc, wxT("XRC"), false);
-    m_notebook->SetPageBitmap(5, AppBitmaps::GetBitmap(wxT("xrc"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_xrc, _("XRC"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("xrc", AppBitmaps::Size::Icon_Medium));
 
     return m_notebook;
 }
