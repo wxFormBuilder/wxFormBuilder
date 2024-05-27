@@ -56,21 +56,18 @@ END_EVENT_TABLE()
 
 PythonPanel::PythonPanel(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-    AppData()->AddHandler(this->GetEventHandler());
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
 
     m_pythonPanel = new CodeEditor(this, wxID_ANY);
     InitStyledTextCtrl(m_pythonPanel->GetTextCtrl());
 
-    top_sizer->Add(m_pythonPanel, 1, wxEXPAND, 0);
+    topSizer->Add(m_pythonPanel, 1, wxEXPAND, 0);
 
-    SetSizer(top_sizer);
-    SetAutoLayout(true);
-    // top_sizer->SetSizeHints( this );
-    top_sizer->Fit(this);
-    top_sizer->Layout();
+    SetSizer(topSizer);
 
-    m_pythonCW = PTCCodeWriter(new TCCodeWriter(m_pythonPanel->GetTextCtrl()));
+    m_pythonCW = std::make_shared<TCCodeWriter>(m_pythonPanel->GetTextCtrl());
+
+    AppData()->AddHandler(this->GetEventHandler());
 }
 
 PythonPanel::~PythonPanel()
