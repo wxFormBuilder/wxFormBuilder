@@ -80,7 +80,7 @@ private:
     bool m_useArrayEnum;
     bool m_i18n;
     wxString m_basePath;
-    unsigned int m_firstID;
+    int m_firstID;
     bool m_useConnect;
     bool m_disconnectEvents;
 
@@ -287,7 +287,7 @@ public:
     /**
      * Set the First ID used during Code Generation.
      */
-    void SetFirstID(const unsigned int id) { m_firstID = id; }
+    void SetFirstID(int id) { m_firstID = id; }
 
     /**
      * Generate the project's code

@@ -225,7 +225,7 @@ void LuaPanel::OnCodeGeneration(wxFBEvent& event)
     }
 
     // Get First ID from Project File
-    unsigned int firstID = 1000;
+    int firstID = 1000;
     PProperty pFirstID = project->GetProperty(wxT("first_id"));
     if (pFirstID) {
         firstID = pFirstID->GetValueAsInteger();

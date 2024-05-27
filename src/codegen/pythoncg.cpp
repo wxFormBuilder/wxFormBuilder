@@ -1291,7 +1291,7 @@ void PythonCodeGenerator::GenDefines(PObjectBase project)
         macros.erase(it);
     }
 
-    unsigned int id = m_firstID;
+    auto id = m_firstID;
     if (id < wxID_HIGHEST) {
         wxLogWarning(wxT("First ID is Less than 1000"));
     }
