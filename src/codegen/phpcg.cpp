@@ -1191,7 +1191,7 @@ void PHPCodeGenerator::GenDefines(PObjectBase project)
 
     auto id = m_firstID;
     if (id < wxID_HIGHEST) {
-        wxLogWarning(wxT("First ID is Less than 1000"));
+        wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
     }
     for (it = macros.begin(); it != macros.end(); it++) {
         // Don't redefine wx IDs
