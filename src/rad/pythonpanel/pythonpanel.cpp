@@ -217,7 +217,6 @@ void PythonPanel::OnCodeGeneration(wxFBEvent& event)
     bool doFile = false;
     PProperty pCodeGen = project->GetProperty(wxT("code_generation"));
     if (pCodeGen) {
-        // doFile = TypeConv::FlagSet( wxT("C++"), pCodeGen->GetValue() ) && !panelOnly;
         doFile = TypeConv::FlagSet(wxT("Python"), pCodeGen->GetValue()) && !panelOnly;
     }
 
