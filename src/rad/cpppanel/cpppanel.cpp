@@ -273,7 +273,7 @@ void CppPanel::OnCodeGeneration(wxFBEvent& event)
     }
 
     // Get First ID from Project File
-    int firstID = 1000;
+    int firstID = wxID_HIGHEST;
     PProperty pFirstID = project->GetProperty(wxT("first_id"));
     if (pFirstID) {
         firstID = pFirstID->GetValueAsInteger();
