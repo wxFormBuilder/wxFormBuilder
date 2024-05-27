@@ -126,12 +126,12 @@
     <property name="hidden" type="bool" help="Shows or hides the window.">0</property>
     <property name="subclass" type="parent" help="For easy use of custom widgets which are simple variations from standard ones, without requiring a new plugin for wxFB or a full xrc handler for wxWidgets. For C++, this replaces the name of the class. For XRC, this sets the subclass value on the object tag.">
       <child name="name" help="The name of the subclass."/>
-      <child name="header" help="For C++ Only. The header to be included for the subclass."/>
+      <child name="header" help="For C++ only.&#x0A;The header to be included for the subclass."/>
       <!-- Note: Because the element type parent is stored in the format of a composed wxPGProperty the value has to be specified in this format:
                  true == forward_declare
                  false == Not forward_declare
       -->
-      <child name="forward_declare" type="bool" help="For C++ Only. Forward declare the subclass, otherwise include the header.">forward_declare</child>
+      <child name="forward_declare" type="bool" help="For C++ only.&#x0A;Forward declare the subclass, otherwise include the header.">forward_declare</child>
     </property>
     <category name="wxKeyEvent" type="interface">
       <event name="OnChar" class="wxKeyEvent" help="Process a wxEVT_CHAR event."/>
@@ -267,13 +267,13 @@
   </objectinfo>
 
   <objectinfo class="Validator" type="interface">
-    <property name="validator_type" type="option" hidden="1" help="For C++ Only.&#x0A;Type of a validator assigned to the window">
+    <property name="validator_type" type="option" hidden="1" help="For C++ only.&#x0A;Type of a validator assigned to the window">
       <option name="wxDefaultValidator" help="Default validator (does nothing)"/>
       <option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
       <option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>
       wxDefaultValidator
     </property>
-    <property name="validator_style" type="bitlist" help="For C++ Only.&#x0A;Data filtering style for wxTextValidator.">
+    <property name="validator_style" type="bitlist" help="For C++ only.&#x0A;Data filtering style for wxTextValidator.">
       <option name="wxFILTER_NONE" help="No filtering takes place."/>
       <option name="wxFILTER_ASCII" help="Non-ASCII characters are filtered out."/>
       <option name="wxFILTER_ALPHA" help="Non-alpha characters are filtered out."/>
@@ -285,8 +285,8 @@
       <option name="wxFILTER_EXCLUDE_CHAR_LIST" help="Use an include list. The validator checks if each input character is in the list (one character per list element), complaining if it is. See wxTextValidator::SetExcludes."/>
       wxFILTER_NONE
     </property>
-    <property name="validator_variable" type="text" help="For C++ Only.&#x0A;Name of a member variable associated with the validator"/>
-    <property name="validator_data_type" type="option" hidden="1" help="For C++ Only.&#x0A;Data type of the member variable">
+    <property name="validator_variable" type="text" help="For C++ only.&#x0A;Name of a member variable associated with the validator"/>
+    <property name="validator_data_type" type="option" hidden="1" help="For C++ only.&#x0A;Data type of the member variable">
       <option name="" help ="Undefined data type."/>
       <option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton."/>
       <option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>
