@@ -108,13 +108,13 @@ Lua code generation written by
 
   <templates class="dataViewListColumn">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
   <templates class="dataViewColumn">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
@@ -255,27 +255,27 @@ Lua code generation written by
 
   <templates class="wxPropertyGrid">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
       #utbl$name = wx.wxWindow( #utbl#wxparent $name )
     </template>
   </templates>
 
   <templates class="wxPropertyGridManager">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
       #utbl$name = wx.wxWindow( #utbl#wxparent $name )
     </template>
   </templates>
 
   <templates class="propGridItem">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
   <templates class="propGridPage">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
