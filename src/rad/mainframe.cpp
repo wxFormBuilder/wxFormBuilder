@@ -935,7 +935,7 @@ void MainFrame::UpdateFrame()
     toolbar->EnableTool(ID_UNDO, undo);
 
     bool copy = AppData()->CanCopyObject();
-    bool isEditor = (_("Designer") != m_notebook->GetPageText(m_notebook->GetSelection()));
+    bool isEditor = !(m_visualEdit && m_notebook->GetCurrentPage() == m_visualEdit);
     menuEdit->Enable(ID_FIND, isEditor);
 
     menuEdit->Enable(ID_CLIPBOARD_COPY, copy);

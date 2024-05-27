@@ -27,6 +27,7 @@
 
 #include "cpppanel.h"
 
+#include <wx/aui/auibook.h>
 #include <wx/fdrepdlg.h>
 #include <wx/stc/stc.h>
 
@@ -149,37 +150,12 @@ void CppPanel::InitStyledTextCtrl(wxStyledTextCtrl* stc)
 
 void CppPanel::OnFind(wxFindDialogEvent& event)
 {
-    wxAuiNotebook* languageBook = wxDynamicCast(this->GetParent(), wxAuiNotebook);
-    if (NULL == languageBook) {
+    auto* page = m_notebook->GetCurrentPage();
+    if (!page) {
         return;
     }
 
-    int languageSelection = languageBook->GetSelection();
-    if (languageSelection < 0) {
-        return;
-    }
-
-    wxString languageText = languageBook->GetPageText(languageSelection);
-    if (wxT("C++") != languageText) {
-        return;
-    }
-
-    wxAuiNotebook* notebook = wxDynamicCast(m_cppPanel->GetParent(), wxAuiNotebook);
-    if (NULL == notebook) {
-        return;
-    }
-
-    int selection = notebook->GetSelection();
-    if (selection < 0) {
-        return;
-    }
-
-    wxString text = notebook->GetPageText(selection);
-    if (wxT("cpp") == text) {
-        m_cppPanel->GetEventHandler()->ProcessEvent(event);
-    } else if (wxT("h") == text) {
-        m_hPanel->GetEventHandler()->ProcessEvent(event);
-    }
+    page->GetEventHandler()->ProcessEvent(event);
 }
 
 void CppPanel::OnPropertyModified(wxFBPropertyEvent& event)
