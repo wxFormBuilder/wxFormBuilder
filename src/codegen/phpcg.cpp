@@ -1181,26 +1181,25 @@ void PHPCodeGenerator::GenDefines(PObjectBase project)
     FindMacros(project, &macros);
 
     // Remove the default macro from the set, for backward compatibility
-    std::vector<wxString>::iterator it;
-    it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-    if (it != macros.end()) {
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
         // The default macro is defined to wxID_ANY
-        m_source->WriteLn(wxT("const ID_DEFAULT = wxID_ANY; // Default"));
-        macros.erase(it);
+        m_source->WriteLn("const ID_DEFAULT = wxID_ANY; // Default");
+        macros.erase(macro);
+    }
+
+    if (macros.empty()) {
+        return;
     }
 
     auto id = m_firstID;
     if (id < wxID_HIGHEST) {
         wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
     }
-    for (it = macros.begin(); it != macros.end(); it++) {
+    for (const auto& macro : macros) {
         // Don't redefine wx IDs
-        m_source->WriteLn(wxString::Format(wxT("const %s = %i;"), it->c_str(), id));
-        id++;
+        m_source->WriteLn(wxString::Format("const %s = %i", macro, id++));
     }
-    if (!macros.empty()) {
-        m_source->WriteLn(wxEmptyString);
-    }
+    m_source->WriteLn(wxEmptyString);
 }
 
 void PHPCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj)

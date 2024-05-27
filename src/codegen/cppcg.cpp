@@ -1130,42 +1130,33 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
 {
     std::vector<wxString> macros;
     FindMacros(class_obj, &macros);
-
-    std::vector<wxString>::iterator it = macros.begin();
-    if (it != macros.end()) {
-        m_header->WriteLn(wxT("enum"));
-        m_header->WriteLn(wxT("{"));
-        m_header->Indent();
-
-        // Remove the default macro from the set, for backward compatibility
-        it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-        if (it != macros.end()) {
-            // The default macro is defined to wxID_ANY
-            m_header->WriteLn(wxT("ID_DEFAULT = wxID_ANY, // Default"));
-            macros.erase(it);
-        }
-
-        size_t idx;
-        size_t count = macros.size();
-        wxString sId;
-
-        for (idx = 0; idx < count; idx++) {
-            sId = macros.at(idx);
-
-            if (idx == 0)
-                sId = wxString::Format(wxT("%s = %i"), sId, m_firstID);
-
-            if (idx < (count - 1))
-                sId << wxT(",");
-
-            m_header->WriteLn(sId);
-        }
-
-        // m_header->WriteLn(id);
-        m_header->Unindent();
-        m_header->WriteLn(wxT("};"));
-        m_header->WriteLn(wxEmptyString);
+    if (macros.empty()) {
+        return;
     }
+
+    m_header->WriteLn("enum");
+    m_header->WriteLn("{");
+    m_header->Indent();
+
+    // Remove the default macro from the set, for backward compatibility
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
+        // The default macro is defined to wxID_ANY
+        m_header->WriteLn("ID_DEFAULT = wxID_ANY, // Default");
+        macros.erase(macro);
+    }
+
+    if (!macros.empty()) {
+        m_header->WriteLn(wxString::Format("%s = %i,", *macros.begin(), m_firstID));
+        macros.erase(macros.begin());
+    }
+
+    for (const auto& macro : macros) {
+        m_header->WriteLn(wxString::Format("%s,", macro));
+    }
+
+    m_header->Unindent();
+    m_header->WriteLn("};");
+    m_header->WriteLn();
 }
 
 void CppCodeGenerator::GenSubclassSets(
@@ -1646,24 +1637,24 @@ void CppCodeGenerator::GenDefines(PObjectBase project)
     FindMacros(project, &macros);
 
     // Remove the default macro from the set, for backward compatibility
-    std::vector<wxString>::iterator it;
-    it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-    if (it != macros.end()) {
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
         // The default macro is defined to wxID_ANY
-        m_header->WriteLn(wxT("#define ID_DEFAULT wxID_ANY // Default"));
-        macros.erase(it);
+        m_header->WriteLn("#define ID_DEFAULT wxID_ANY // Default");
+        macros.erase(macro);
+    }
+
+    if (macros.empty()) {
+        return;
     }
 
     auto id = m_firstID;
     if (id < wxID_HIGHEST) {
         wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
     }
-    for (it = macros.begin(); it != macros.end(); it++) {
+    for (const auto& macro : macros) {
         // Don't redefine wx IDs
-        m_header->WriteLn(wxString::Format(wxT("#define %s %i"), it->c_str(), id));
-        id++;
+        m_header->WriteLn(wxString::Format("#define %s %i", macro, id++));
     }
-
     m_header->WriteLn(wxEmptyString);
 }
 
