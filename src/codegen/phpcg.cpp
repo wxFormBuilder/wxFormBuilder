@@ -272,9 +272,6 @@ wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
 PHPCodeGenerator::PHPCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 }
 
 wxString PHPCodeGenerator::ConvertPHPString(wxString text)

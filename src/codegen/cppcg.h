@@ -76,13 +76,13 @@ private:
     PCodeWriter m_header;
     PCodeWriter m_source;
 
-    bool m_useRelativePath;
-    bool m_useArrayEnum;
-    bool m_i18n;
     wxString m_basePath;
-    int m_firstID;
-    bool m_useConnect;
-    bool m_disconnectEvents;
+    int m_firstID = wxID_HIGHEST;
+    bool m_i18n = false;
+    bool m_useRelativePath = false;
+    bool m_useArrayEnum = false;
+    bool m_useConnect = false;
+    bool m_disconnectEvents = false;
 
     /**
      * Predefined macros won't generate defines.

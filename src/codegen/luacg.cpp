@@ -328,9 +328,6 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
 LuaCodeGenerator::LuaCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 
     // this classes aren't wrapped by wxLua - make exception
     m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));

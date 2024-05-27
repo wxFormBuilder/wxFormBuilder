@@ -82,14 +82,14 @@ class LuaCodeGenerator : public CodeGenerator
 private:
     PCodeWriter m_source;
 
-    bool m_useRelativePath;
-    bool m_i18n;
     wxString m_basePath;
-    int m_firstID;
-    bool m_disconnectEvents;
-    wxString m_disconnecMode;
-    wxString m_strEventHandlerPostfix;
     wxString m_strUITable;
+    wxString m_strEventHandlerPostfix;
+    wxString m_disconnecMode;
+    int m_firstID = wxID_HIGHEST;
+    bool m_i18n = false;
+    bool m_useRelativePath = false;
+    bool m_disconnectEvents = false;
 
 private:
     /**

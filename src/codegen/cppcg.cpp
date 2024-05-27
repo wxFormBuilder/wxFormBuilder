@@ -287,9 +287,6 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
 CppCodeGenerator::CppCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 }
 
 wxString CppCodeGenerator::ConvertCppString(wxString text)

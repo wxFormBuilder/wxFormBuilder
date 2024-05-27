@@ -322,9 +322,6 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
 PythonCodeGenerator::PythonCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 }
 
 wxString PythonCodeGenerator::ConvertPythonString(wxString text)
