@@ -153,22 +153,12 @@ void CppPanel::InitStyledTextCtrl(wxStyledTextCtrl* stc)
 
 void CppPanel::OnFind(wxFindDialogEvent& event)
 {
-    wxAuiNotebook* notebook = wxDynamicCast(m_cppPanel->GetParent(), wxAuiNotebook);
-    if (NULL == notebook) {
+    auto* page = m_notebook->GetCurrentPage();
+    if (!page) {
         return;
     }
 
-    int selection = notebook->GetSelection();
-    if (selection < 0) {
-        return;
-    }
-
-    wxString text = notebook->GetPageText(selection);
-    if (wxT("cpp") == text) {
-        m_cppPanel->GetEventHandler()->ProcessEvent(event);
-    } else if (wxT("h") == text) {
-        m_hPanel->GetEventHandler()->ProcessEvent(event);
-    }
+    page->GetEventHandler()->ProcessEvent(event);
 }
 
 void CppPanel::OnPropertyModified(wxFBPropertyEvent& event)
