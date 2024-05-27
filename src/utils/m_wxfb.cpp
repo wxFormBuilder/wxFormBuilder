@@ -26,7 +26,9 @@ TAG_HANDLER_BEGIN(wxFBRevision, "WXFB-REVISION")
 
 TAG_HANDLER_PROC(WXUNUSED(tag))
 {
-    auto* cell = new wxHtmlWordCell(getPostfixRevision(getVersion()), *m_WParser->GetDC());
+    auto* cell = new wxHtmlWordCell(
+        wxString::Format("%s%s", getPostfixRevision(getVersion()).c_str(), getReleaseBranch(getBranch()).c_str()),
+        *m_WParser->GetDC());
     m_WParser->ApplyStateToCell(cell);
     m_WParser->GetContainer()->InsertCell(cell);
 
