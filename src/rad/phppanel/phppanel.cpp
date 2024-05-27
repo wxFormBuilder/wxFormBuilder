@@ -56,21 +56,18 @@ END_EVENT_TABLE()
 
 PHPPanel::PHPPanel(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-    AppData()->AddHandler(this->GetEventHandler());
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
 
     m_phpPanel = new CodeEditor(this, wxID_ANY);
     InitStyledTextCtrl(m_phpPanel->GetTextCtrl());
 
-    top_sizer->Add(m_phpPanel, 1, wxEXPAND, 0);
+    topSizer->Add(m_phpPanel, 1, wxEXPAND, 0);
 
-    SetSizer(top_sizer);
-    SetAutoLayout(true);
-    // top_sizer->SetSizeHints( this );
-    top_sizer->Fit(this);
-    top_sizer->Layout();
+    SetSizer(topSizer);
 
-    m_phpCW = PTCCodeWriter(new TCCodeWriter(m_phpPanel->GetTextCtrl()));
+    m_phpCW = std::make_shared<TCCodeWriter>(m_phpPanel->GetTextCtrl());
+
+    AppData()->AddHandler(this->GetEventHandler());
 }
 
 PHPPanel::~PHPPanel()

@@ -695,72 +695,47 @@ void MainFrame::OnObjectExpanded(wxFBObjectEvent&)
 
 void MainFrame::OnObjectSelected(wxFBObjectEvent& event)
 {
-    PObjectBase obj = event.GetFBObject();
+    LogDebug("MainFrame::OnObjectSelected");
 
-    LogDebug(wxT("MainFrame::OnObjectSelected"));
+    const auto obj = event.GetFBObject();
 
     // resize sash position if necessary
     if (m_autoSash) {
-        wxSize panel_size;
-        int sash_pos;
+        if (m_page_selection != wxNOT_FOUND && m_style != wxFB_CLASSIC_GUI) {
+            const auto* page = m_notebook->GetPage(m_page_selection);
+            if (page && m_rightSplitter) {
+                if (!(page == m_cpp || page == m_python || page == m_lua || page == m_php || page == m_xrc) && m_visualEdit) {
+                    // If selected object is not a Frame or a Panel or a dialog, we won't
+                    // adjust the sash position
+                    if (
+                        obj->GetObjectTypeName() == wxT("form") || obj->GetObjectTypeName() == wxT("wizard") ||
+                        obj->GetObjectTypeName() == wxT("menubar_form") ||
+                        obj->GetObjectTypeName() == wxT("toolbar_form")) {
+                        auto sash_pos = m_rightSplitter->GetSashPosition();
+                        auto panel_size = m_visualEdit->GetVirtualSize();
 
-        if (m_style != wxFB_CLASSIC_GUI) {
-            switch (m_page_selection) {
-                case 1:  // CPP panel
-                    break;
+                        LogDebug("MainFrame::OnObjectSelected > sash pos = %d", sash_pos);
+                        LogDebug("MainFrame::OnObjectSelected > virtual width = %d", panel_size.GetWidth());
 
-                case 2:  // Python panel
-                    break;
-
-                case 3:  // PHP panel
-                    break;
-
-                case 4:  // LUA panel
-                    break;
-
-                case 5:  // XRC panel
-                    break;
-
-                default:
-                    if (m_visualEdit != NULL) {
-
-                        // If selected object is not a Frame or a Panel or a dialog, we won't
-                        // adjust the sash position
-                        if (
-                          obj->GetObjectTypeName() == wxT("form") || obj->GetObjectTypeName() == wxT("wizard") ||
-                          obj->GetObjectTypeName() == wxT("menubar_form") ||
-                          obj->GetObjectTypeName() == wxT("toolbar_form")) {
-                            sash_pos = m_rightSplitter->GetSashPosition();
-                            panel_size = m_visualEdit->GetVirtualSize();
-
-                            LogDebug(wxT("MainFrame::OnObjectSelected > sash pos = %d"), sash_pos);
-                            LogDebug(wxT("MainFrame::OnObjectSelected > virtual width = %d"), panel_size.GetWidth());
-
-                            if (panel_size.GetWidth() > sash_pos) {
-                                // set the sash position
-                                LogDebug(wxT("MainFrame::OnObjectSelected > set sash position"));
-                                m_rightSplitter_sash_pos = panel_size.GetWidth();
-                                m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
-                            }
+                        if (panel_size.GetWidth() > sash_pos) {
+                            // set the sash position
+                            LogDebug("MainFrame::OnObjectSelected > set sash position");
+                            m_rightSplitter_sash_pos = panel_size.GetWidth();
+                            m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
                         }
                     }
-                    break;
+                }
             }
         }
     }
 
-    wxString name;
-    PProperty prop(obj->GetProperty(wxT("name")));
-
-    if (prop)
-        name = prop->GetValueAsString();
-    else
-        name = wxT("\"Unknown\"");
-
-    // GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
-
-    wxString objDetails = wxString::Format(wxT("Name: %s | Class: %s"), name, obj->GetClassName());
-
+    wxString objName;
+    if (auto nameProp = obj->GetProperty("name"); nameProp) {
+        objName = nameProp->GetValueAsString();
+    } else {
+        objName = _("\"Unknown\"");
+    }
+    auto objDetails = wxString::Format(_("Name: %s | Class: %s"), objName, obj->GetClassName());
     GetStatusBar()->SetStatusText(objDetails, STATUS_FIELD_OBJECT);
 
     UpdateFrame();
@@ -1268,115 +1243,38 @@ void MainFrame::OnAuiNotebookPageChanged(wxAuiNotebookEvent& event)
 
     if (m_autoSash) {
         m_page_selection = event.GetSelection();
-        LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > selection = %d"), m_page_selection);
+        LogDebug("MainFrame::OnFlatNotebookPageChanged > selection = %d", m_page_selection);
 
-        wxSize panel_size;
-        int sash_pos;
+        if (m_page_selection != wxNOT_FOUND && m_style != wxFB_CLASSIC_GUI) {
+            const auto* page = m_notebook->GetPage(m_page_selection);
+            if (page && m_rightSplitter) {
+                if (page == m_cpp || page == m_python || page == m_lua || page == m_php || page == m_xrc) {
+                    auto panel_size = page->GetClientSize();
+                    auto sash_pos = m_rightSplitter->GetSashPosition();
 
-        if (m_style != wxFB_CLASSIC_GUI) {
-            switch (m_page_selection) {
-                case 1:  // CPP panel
-                    if ((m_cpp != NULL) && (m_rightSplitter != NULL)) {
-                        panel_size = m_cpp->GetClientSize();
-                        sash_pos = m_rightSplitter->GetSashPosition();
+                    LogDebug(
+                        "MainFrame::OnFlatNotebookPageChanged > %s panel: width = %d sash pos = %d",
+                        m_notebook->GetPageText(m_page_selection), panel_size.GetWidth(), sash_pos);
 
+                    if (panel_size.GetWidth() > sash_pos) {
+                        // set the sash position
+                        LogDebug("MainFrame::OnFlatNotebookPageChanged > reset sash position");
+                        m_rightSplitter->SetSashPosition(panel_size.GetWidth());
+                    }
+                } else if (m_visualEdit) {
+                    auto sash_pos = m_rightSplitter->GetSashPosition();
+
+                    if (m_rightSplitter_sash_pos < sash_pos) {
+                        // restore the sash position
                         LogDebug(
-                          wxT("MainFrame::OnFlatNotebookPageChanged > CPP panel: width = %d sash pos = %d"),
-                          panel_size.GetWidth(), sash_pos);
-
-                        if (panel_size.GetWidth() > sash_pos) {
-                            // set the sash position
-                            LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
-                            m_rightSplitter->SetSashPosition(panel_size.GetWidth());
-                        }
+                            "MainFrame::OnFlatNotebookPageChanged > restore sash position: sash pos = %d",
+                            m_rightSplitter_sash_pos);
+                        m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
+                    } else {
+                        // update position
+                        m_rightSplitter_sash_pos = sash_pos;
                     }
-                    break;
-
-                case 2:  // Python panel
-                    if ((m_python != NULL) && (m_rightSplitter != NULL)) {
-                        panel_size = m_python->GetClientSize();
-                        sash_pos = m_rightSplitter->GetSashPosition();
-
-                        LogDebug(
-                          wxT("MainFrame::OnFlatNotebookPageChanged > Python panel: width = %d sash pos = %d"),
-                          panel_size.GetWidth(), sash_pos);
-
-                        if (panel_size.GetWidth() > sash_pos) {
-                            // set the sash position
-                            LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
-                            m_rightSplitter->SetSashPosition(panel_size.GetWidth());
-                        }
-                    }
-                    break;
-
-                case 3:  // PHP panel
-                    if ((m_php != NULL) && (m_rightSplitter != NULL)) {
-                        panel_size = m_xrc->GetClientSize();
-                        sash_pos = m_rightSplitter->GetSashPosition();
-
-                        LogDebug(
-                          wxT("MainFrame::OnFlatNotebookPageChanged > PHP panel: width = %d sash pos = %d"),
-                          panel_size.GetWidth(), sash_pos);
-
-                        if (panel_size.GetWidth() > sash_pos) {
-                            // set the sash position
-                            LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
-                            m_rightSplitter->SetSashPosition(panel_size.GetWidth());
-                        }
-                    }
-                    break;
-
-                case 4:  // Lua panel
-                    if ((m_lua != NULL) && (m_rightSplitter != NULL)) {
-                        panel_size = m_lua->GetClientSize();
-                        sash_pos = m_rightSplitter->GetSashPosition();
-
-                        LogDebug(
-                          wxT("MainFrame::OnFlatNotebookPageChanged > Lua panel: width = %d sash pos = %d"),
-                          panel_size.GetWidth(), sash_pos);
-
-                        if (panel_size.GetWidth() > sash_pos) {
-                            // set the sash position
-                            LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
-                            m_rightSplitter->SetSashPosition(panel_size.GetWidth());
-                        }
-                    }
-                    break;
-
-                case 5:  // XRC panel
-                    if ((m_xrc != NULL) && (m_rightSplitter != NULL)) {
-                        panel_size = m_xrc->GetClientSize();
-                        sash_pos = m_rightSplitter->GetSashPosition();
-
-                        LogDebug(
-                          wxT("MainFrame::OnFlatNotebookPageChanged > XRC panel: width = %d sash pos = %d"),
-                          panel_size.GetWidth(), sash_pos);
-
-                        if (panel_size.GetWidth() > sash_pos) {
-                            // set the sash position
-                            LogDebug(wxT("MainFrame::OnFlatNotebookPageChanged > reset sash position"));
-                            m_rightSplitter->SetSashPosition(panel_size.GetWidth());
-                        }
-                    }
-                    break;
-
-
-                default:
-                    if (m_visualEdit != NULL) {
-                        sash_pos = m_rightSplitter->GetSashPosition();
-
-                        if (m_rightSplitter_sash_pos < sash_pos) {
-                            // restore the sash position
-                            LogDebug(
-                              wxT("MainFrame::OnFlatNotebookPageChanged > restore sash position: sash pos = %d"),
-                              m_rightSplitter_sash_pos);
-                            m_rightSplitter->SetSashPosition(m_rightSplitter_sash_pos);
-                        } else {
-                            // update position
-                            m_rightSplitter_sash_pos = sash_pos;
-                        }
-                    }
-                    break;
+                }
             }
         }
     }
@@ -1674,29 +1572,28 @@ wxWindow* MainFrame::CreateDesignerWindow(wxWindow* parent)
 
     m_visualEdit = new VisualEditor(m_notebook);
     AppData()->GetManager()->SetVisualEditor(m_visualEdit);
-
-    m_notebook->InsertPage(0, m_visualEdit, wxT("Designer"), false);
-    m_notebook->SetPageBitmap(0, AppBitmaps::GetBitmap(wxT("designer"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_visualEdit, _("Designer"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("designer", AppBitmaps::Size::Icon_Medium));
 
     m_cpp = new CppPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(1, m_cpp, wxT("C++"), false);
-    m_notebook->SetPageBitmap(1, AppBitmaps::GetBitmap(wxT("c++"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_cpp, _("C++"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("c++", AppBitmaps::Size::Icon_Medium));
 
     m_python = new PythonPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(2, m_python, wxT("Python"), false);
-    m_notebook->SetPageBitmap(2, AppBitmaps::GetBitmap(wxT("python"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_python, _("Python"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("python", AppBitmaps::Size::Icon_Medium));
 
     m_lua = new LuaPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(3, m_lua, wxT("Lua"), false);
-    m_notebook->SetPageBitmap(3, AppBitmaps::GetBitmap(wxT("lua"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_lua, _("Lua"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("lua", AppBitmaps::Size::Icon_Medium));
 
     m_php = new PHPPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(4, m_php, wxT("PHP"), false);
-    m_notebook->SetPageBitmap(4, AppBitmaps::GetBitmap(wxT("php"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_php, _("PHP"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("php", AppBitmaps::Size::Icon_Medium));
 
     m_xrc = new XrcPanel(m_notebook, wxID_ANY);
-    m_notebook->InsertPage(5, m_xrc, wxT("XRC"), false);
-    m_notebook->SetPageBitmap(5, AppBitmaps::GetBitmap(wxT("xrc"), AppBitmaps::Size::Icon_Medium));
+    m_notebook->AddPage(m_xrc, _("XRC"), false);
+    m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("xrc", AppBitmaps::Size::Icon_Medium));
 
     return m_notebook;
 }
