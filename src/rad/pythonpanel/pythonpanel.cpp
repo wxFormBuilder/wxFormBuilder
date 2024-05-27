@@ -214,7 +214,6 @@ void PythonPanel::OnCodeGeneration(wxFBEvent& event)
     bool doFile = false;
     PProperty pCodeGen = project->GetProperty(wxT("code_generation"));
     if (pCodeGen) {
-        // doFile = TypeConv::FlagSet( wxT("C++"), pCodeGen->GetValue() ) && !panelOnly;
         doFile = TypeConv::FlagSet(wxT("Python"), pCodeGen->GetValue()) && !panelOnly;
     }
 
@@ -223,7 +222,7 @@ void PythonPanel::OnCodeGeneration(wxFBEvent& event)
     }
 
     // Get First ID from Project File
-    unsigned int firstID = 1000;
+    int firstID = wxID_HIGHEST;
     PProperty pFirstID = project->GetProperty(wxT("first_id"));
     if (pFirstID) {
         firstID = pFirstID->GetValueAsInteger();
