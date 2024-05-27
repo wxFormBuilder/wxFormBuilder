@@ -45,7 +45,7 @@ class HtmlWindow : public wxHtmlWindow
 public:
     HtmlWindow(wxWindow* parent) :
       wxHtmlWindow(
-        parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_NEVER | wxHW_NO_SELECTION | wxRAISED_BORDER)
+        parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_NEVER | wxRAISED_BORDER)
     {
     }
 
