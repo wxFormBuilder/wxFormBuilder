@@ -695,9 +695,9 @@ void MainFrame::OnObjectExpanded(wxFBObjectEvent&)
 
 void MainFrame::OnObjectSelected(wxFBObjectEvent& event)
 {
-    PObjectBase obj = event.GetFBObject();
-
     LogDebug("MainFrame::OnObjectSelected");
+
+    const auto obj = event.GetFBObject();
 
     // resize sash position if necessary
     if (m_autoSash) {
@@ -729,18 +729,13 @@ void MainFrame::OnObjectSelected(wxFBObjectEvent& event)
         }
     }
 
-    wxString name;
-    PProperty prop(obj->GetProperty(wxT("name")));
-
-    if (prop)
-        name = prop->GetValueAsString();
-    else
-        name = wxT("\"Unknown\"");
-
-    // GetStatusBar()->SetStatusText( wxT( "Object " ) + name + wxT( " Selected!" ) );
-
-    wxString objDetails = wxString::Format(wxT("Name: %s | Class: %s"), name, obj->GetClassName());
-
+    wxString objName;
+    if (auto nameProp = obj->GetProperty("name"); nameProp) {
+        objName = nameProp->GetValueAsString();
+    } else {
+        objName = _("\"Unknown\"");
+    }
+    auto objDetails = wxString::Format(_("Name: %s | Class: %s"), objName, obj->GetClassName());
     GetStatusBar()->SetStatusText(objDetails, STATUS_FIELD_OBJECT);
 
     UpdateFrame();

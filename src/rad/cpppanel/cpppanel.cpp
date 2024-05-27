@@ -58,8 +58,7 @@ END_EVENT_TABLE()
 
 CppPanel::CppPanel(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-    AppData()->AddHandler(this->GetEventHandler());
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
 
     m_notebook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP);
     m_notebook->SetArtProvider(new AuiTabArt());
@@ -74,16 +73,14 @@ CppPanel::CppPanel(wxWindow* parent, int id) : wxPanel(parent, id)
     m_notebook->AddPage(m_hPanel, _("h"), false);
     m_notebook->SetPageBitmap(m_notebook->GetPageCount() - 1, AppBitmaps::GetBitmap("h", AppBitmaps::Size::Icon_Medium));
 
-    top_sizer->Add(m_notebook, 1, wxEXPAND, 0);
+    topSizer->Add(m_notebook, 1, wxEXPAND, 0);
 
-    SetSizer(top_sizer);
-    SetAutoLayout(true);
-    // top_sizer->SetSizeHints( this );
-    top_sizer->Fit(this);
-    top_sizer->Layout();
+    SetSizer(topSizer);
 
-    m_hCW = PTCCodeWriter(new TCCodeWriter(m_hPanel->GetTextCtrl()));
-    m_cppCW = PTCCodeWriter(new TCCodeWriter(m_cppPanel->GetTextCtrl()));
+    m_hCW = std::make_shared<TCCodeWriter>(m_hPanel->GetTextCtrl());
+    m_cppCW = std::make_shared<TCCodeWriter>(m_cppPanel->GetTextCtrl());
+
+    AppData()->AddHandler(this->GetEventHandler());
 }
 
 CppPanel::~CppPanel()
