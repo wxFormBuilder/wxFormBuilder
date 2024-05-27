@@ -27,7 +27,6 @@
 
 #include "xrcpanel.h"
 
-#include <wx/aui/auibook.h>
 #include <wx/fdrepdlg.h>
 
 #include "codegen/codewriter.h"
@@ -115,20 +114,7 @@ void XrcPanel::InitStyledTextCtrl(wxStyledTextCtrl* stc)
 
 void XrcPanel::OnFind(wxFindDialogEvent& event)
 {
-    wxAuiNotebook* notebook = wxDynamicCast(this->GetParent(), wxAuiNotebook);
-    if (NULL == notebook) {
-        return;
-    }
-
-    int selection = notebook->GetSelection();
-    if (selection < 0) {
-        return;
-    }
-
-    wxString text = notebook->GetPageText(selection);
-    if (wxT("XRC") == text) {
-        m_xrcPanel->GetEventHandler()->ProcessEvent(event);
-    }
+    m_xrcPanel->GetEventHandler()->ProcessEvent(event);
 }
 
 void XrcPanel::OnPropertyModified(wxFBPropertyEvent& event)
