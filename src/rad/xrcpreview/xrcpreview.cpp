@@ -36,7 +36,7 @@
 #include "utils/wxfbexception.h"
 
 
-#define MENU_DELETE 109
+static constexpr int MENU_DELETE = 109;
 
 
 class XrcPreviewPopupMenu : public wxMenu

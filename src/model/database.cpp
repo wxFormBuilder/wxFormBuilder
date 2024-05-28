@@ -39,26 +39,26 @@
 #include "utils/wxfbexception.h"
 
 
-#define OBJINFO_TAG "objectinfo"
-#define CODEGEN_TAG "codegen"
-#define TEMPLATE_TAG "template"
-#define NAME_TAG "name"
-#define DESCRIPTION_TAG "help"
-#define CUSTOM_EDITOR_TAG "editor"
-#define PROPERTY_TAG "property"
-#define CHILD_TAG "child"
-#define EVENT_TAG "event"
-#define EVENT_CLASS_TAG "class"
-#define CATEGORY_TAG "category"
-#define OBJECT_TAG "object"
-#define CLASS_TAG "class"
-#define PACKAGE_TAG "package"
-#define PKGDESC_TAG "desc"
-#define PRGLANG_TAG "language"
-#define ICON_TAG "icon"
-#define SMALL_ICON_TAG "smallIcon"
-#define EXPANDED_TAG "expanded"
-#define WXVERSION_TAG "wxversion"
+static constexpr const char* OBJINFO_TAG = "objectinfo";
+static constexpr const char* CODEGEN_TAG = "codegen";
+static constexpr const char* TEMPLATE_TAG = "template";
+static constexpr const char* NAME_TAG = "name";
+static constexpr const char* DESCRIPTION_TAG = "help";
+static constexpr const char* CUSTOM_EDITOR_TAG = "editor";
+static constexpr const char* PROPERTY_TAG = "property";
+static constexpr const char* CHILD_TAG = "child";
+static constexpr const char* EVENT_TAG = "event";
+static constexpr const char* EVENT_CLASS_TAG = "class";
+static constexpr const char* CATEGORY_TAG = "category";
+static constexpr const char* OBJECT_TAG = "object";
+static constexpr const char* CLASS_TAG = "class";
+static constexpr const char* PACKAGE_TAG = "package";
+static constexpr const char* PKGDESC_TAG = "desc";
+static constexpr const char* PRGLANG_TAG = "language";
+static constexpr const char* ICON_TAG = "icon";
+static constexpr const char* SMALL_ICON_TAG = "smallIcon";
+static constexpr const char* EXPANDED_TAG = "expanded";
+static constexpr const char* WXVERSION_TAG = "wxversion";
 
 
 ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
@@ -181,7 +181,7 @@ PObjectBase ObjectDatabase::NewObject(PObjectInfo obj_info)
     obj_info->IncrementInstanceCount();
 
     unsigned int ins = obj_info->GetInstanceCount();
-    PProperty pname = object->GetProperty(wxT(NAME_TAG));
+    PProperty pname = object->GetProperty(NAME_TAG);
     if (pname)
         pname->SetValue(pname->GetValue() + StringUtils::IntToStr(ins));
 
