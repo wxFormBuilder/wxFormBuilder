@@ -1123,34 +1123,35 @@ wxString ObjectDatabase::ParseObjectType(wxString str)
 }
 
 
-#define PT(x, y) m_propTypes.insert(PTMap::value_type(x, y))
 void ObjectDatabase::InitPropertyTypes()
 {
-    PT(wxT("bool"), PT_BOOL);
-    PT(wxT("text"), PT_TEXT);
-    PT(wxT("text_ml"), PT_TEXT_ML);
-    PT(wxT("int"), PT_INT);
-    PT(wxT("uint"), PT_UINT);
-    PT(wxT("bitlist"), PT_BITLIST);
-    PT(wxT("intlist"), PT_INTLIST);
-    PT(wxT("uintlist"), PT_UINTLIST);
-    PT(wxT("intpairlist"), PT_INTPAIRLIST);
-    PT(wxT("uintpairlist"), PT_UINTPAIRLIST);
-    PT(wxT("option"), PT_OPTION);
-    PT(wxT("macro"), PT_MACRO);
-    PT(wxT("path"), PT_PATH);
-    PT(wxT("file"), PT_FILE);
-    PT(wxT("wxString"), PT_WXSTRING);
-    PT(wxT("wxPoint"), PT_WXPOINT);
-    PT(wxT("wxSize"), PT_WXSIZE);
-    PT(wxT("wxFont"), PT_WXFONT);
-    PT(wxT("wxColour"), PT_WXCOLOUR);
-    PT(wxT("bitmap"), PT_BITMAP);
-    PT(wxT("wxString_i18n"), PT_WXSTRING_I18N);
-    PT(wxT("stringlist"), PT_STRINGLIST);
-    PT(wxT("float"), PT_FLOAT);
-    PT(wxT("parent"), PT_PARENT);
-    PT(wxT("editoption"), PT_EDIT_OPTION);
+    m_propTypes = {
+        {"bool", PT_BOOL},
+        {"text", PT_TEXT},
+        {"text_ml", PT_TEXT_ML},
+        {"int", PT_INT},
+        {"uint", PT_UINT},
+        {"bitlist", PT_BITLIST},
+        {"intlist", PT_INTLIST},
+        {"uintlist", PT_UINTLIST},
+        {"intpairlist", PT_INTPAIRLIST},
+        {"uintpairlist", PT_UINTPAIRLIST},
+        {"option", PT_OPTION},
+        {"macro", PT_MACRO},
+        {"path", PT_PATH},
+        {"file", PT_FILE},
+        {"wxString", PT_WXSTRING},
+        {"wxPoint", PT_WXPOINT},
+        {"wxSize", PT_WXSIZE},
+        {"wxFont", PT_WXFONT},
+        {"wxColour", PT_WXCOLOUR},
+        {"bitmap", PT_BITMAP},
+        {"wxString_i18n", PT_WXSTRING_I18N},
+        {"stringlist", PT_STRINGLIST},
+        {"float", PT_FLOAT},
+        {"parent", PT_PARENT},
+        {"editoption", PT_EDIT_OPTION},
+    };
 }
 
 bool ObjectDatabase::LoadObjectTypes()
