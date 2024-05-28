@@ -118,7 +118,7 @@ AboutDialog::AboutDialog(wxWindow* parent, int id) : wxDialog(parent, id, wxT("A
     // work around a wxMac bug
     htmlWin->SetSize(450, 650);
 #else
-    htmlWin->SetMinSize(wxSize(450, 650));
+    htmlWin->SetMinSize(wxSize(550, 650));
 #endif
 
 
