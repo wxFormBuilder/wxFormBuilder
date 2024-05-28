@@ -1146,6 +1146,9 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
     }
 
     if (!macros.empty()) {
+        if (m_firstID < wxID_HIGHEST) {
+            wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
+        }
         m_header->WriteLn(wxString::Format("%s = %i,", *macros.begin(), m_firstID));
         macros.erase(macros.begin());
     }
