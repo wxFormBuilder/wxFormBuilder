@@ -747,7 +747,7 @@ void ApplicationData::CreateObject(wxString name)
 
             while (parent && !created) {
                 // además, el objeto se insertará a continuación del objeto seleccionado
-                obj = m_objDb->CreateObject(_STDSTR(name), parent);
+                obj = m_objDb->CreateObject(name, parent);
 
                 if (obj) {
                     int pos = CalcPositionOfInsertion(GetSelectedObject(), parent);
@@ -963,7 +963,7 @@ bool ApplicationData::PasteObject(PObjectBase parent, PObjectBase objToPaste)
         //           wxButton   <- Cambiamos este por m_clipboard
         PObjectBase old_parent = parent;
 
-        PObjectBase obj = m_objDb->CreateObject(_STDSTR(clipboard->GetObjectInfo()->GetClassName()), parent);
+        PObjectBase obj = m_objDb->CreateObject(clipboard->GetObjectInfo()->GetClassName(), parent);
 
         // If the object is already contained in an item, we may need to get the object out of the first
         // item before pasting
@@ -976,7 +976,7 @@ bool ApplicationData::PasteObject(PObjectBase parent, PObjectBase objToPaste)
                     break;
                 }
 
-                obj = m_objDb->CreateObject(_STDSTR(tempItem->GetObjectInfo()->GetClassName()), parent);
+                obj = m_objDb->CreateObject(tempItem->GetObjectInfo()->GetClassName(), parent);
                 if (obj) {
                     clipboard = tempItem;
                     break;
@@ -999,7 +999,7 @@ bool ApplicationData::PasteObject(PObjectBase parent, PObjectBase objToPaste)
             }
 
             if (parent) {
-                obj = m_objDb->CreateObject(_STDSTR(clipboard->GetObjectInfo()->GetClassName()), parent);
+                obj = m_objDb->CreateObject(clipboard->GetObjectInfo()->GetClassName(), parent);
                 if (obj) {
                     pos = CalcPositionOfInsertion(selected, parent);
                 }
