@@ -38,10 +38,6 @@ work.
 #ifndef CODEGEN_PYTHONCG_H
 #define CODEGEN_PYTHONCG_H
 
-// wxFormBuilder flags (fbfXXX)
-#define fbfSILENT true
-#define fbfMESSAGE false
-
 #include <map>
 #include <set>
 #include <vector>

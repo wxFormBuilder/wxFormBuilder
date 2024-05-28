@@ -32,7 +32,6 @@
 
 
 // macros para la conversión entre wxString <-> wxString
-#define _WXSTR(x) TypeConv::_StringToWxString(x)
 #define _STDSTR(x) TypeConv::_WxStringToString(x)
 #define _ANSISTR(x) TypeConv::_WxStringToAnsiString(x)
 

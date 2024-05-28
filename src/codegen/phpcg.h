@@ -38,10 +38,6 @@ work.
 #ifndef CODEGEN_PHPCG_H
 #define CODEGEN_PHPCG_H
 
-// wxFormBuilder flags (fbfXXX)
-#define fbfSILENT true
-#define fbfMESSAGE false
-
 #include <set>
 #include <vector>
 

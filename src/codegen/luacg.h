@@ -36,10 +36,6 @@ none
 #ifndef CODEGEN_LUACG_H
 #define CODEGEN_LUACG_H
 
-// wxFormBuilder flags (fbfXXX)
-#define fbfSILENT true
-#define fbfMESSAGE false
-
 #include <map>
 #include <set>
 #include <vector>

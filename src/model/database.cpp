@@ -38,7 +38,6 @@
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
 
-//#define DEBUG_PRINT(x) cout << x
 
 #define OBJINFO_TAG "objectinfo"
 #define CODEGEN_TAG "codegen"
