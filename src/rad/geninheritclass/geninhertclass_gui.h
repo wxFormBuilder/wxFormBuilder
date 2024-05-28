@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 3.9.0 Dec  4 2019)
+// C++ code generated with wxFormBuilder (version 4.1.0-112-g3f2172f2)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -36,7 +36,7 @@ class GenInheritedClassDlgBase : public wxDialog
 		{
 			ID_FORMS_CHECK_LIST = 1000,
 			ID_CLASS_NAME_TEXT_CTRL,
-			ID_FILE_NAME_TEXT_CTRL
+			ID_FILE_NAME_TEXT_CTRL,
 		};
 
 		wxStaticText* m_instructionsStaticText;
@@ -59,6 +59,8 @@ class GenInheritedClassDlgBase : public wxDialog
 	public:
 
 		GenInheritedClassDlgBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Generate Inherited Class"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_DIALOG_STYLE );
+
 		~GenInheritedClassDlgBase();
 
 };
+
