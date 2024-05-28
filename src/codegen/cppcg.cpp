@@ -1836,6 +1836,7 @@ void CppCodeGenerator::UseRelativePath(bool relative, wxString basePath)
 }
 
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert(wxT(#x))
+
 void CppCodeGenerator::SetupPredefinedMacros()
 {
     /* no id matches this one when compared to it */
@@ -1968,3 +1969,5 @@ void CppCodeGenerator::SetupPredefinedMacros()
 
     ADD_PREDEFINED_MACRO(wxID_HIGHEST);
 }
+
+#undef ADD_PREDEFINED_MACRO

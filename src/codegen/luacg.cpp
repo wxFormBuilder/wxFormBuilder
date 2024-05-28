@@ -1713,3 +1713,6 @@ void LuaTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX(wxAC_DEFAULT_STYLE, wx.);
     ADD_PREDEFINED_PREFIX(wxAC_NO_AUTORESIZE, wx.);
 }
+
+#undef ADD_PREDEFINED_MACRO
+#undef ADD_PREDEFINED_PREFIX

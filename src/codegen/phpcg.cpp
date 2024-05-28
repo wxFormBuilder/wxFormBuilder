@@ -1413,3 +1413,6 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 
     ADD_PREDEFINED_MACRO(wxID_HIGHEST);
 }
+
+#undef ADD_PREDEFINED_MACRO
+#undef ADD_PREDEFINED_PREFIX

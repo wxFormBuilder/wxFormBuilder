@@ -79,6 +79,8 @@ wxString wxFBEvent::GetEventName()
     return wxT("Unknown Type");
 }
 
+#undef CASE
+
 void wxFBEvent::SetString(const wxString& newString)
 {
     m_string = newString;

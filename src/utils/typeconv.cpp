@@ -668,6 +668,8 @@ wxSystemColour TypeConv::StringToSystemColour(const wxString& str)
                                                 return systemVal;
 }
 
+#undef ElseIfSystemColourConvert
+
 wxColour TypeConv::StringToColour(const wxString& str)
 {
 
@@ -755,6 +757,8 @@ wxString TypeConv::SystemColourToString(long colour)
 
     return s;
 }
+
+#undef SystemColourConvertCase
 
 bool TypeConv::FlagSet(const wxString& flag, const wxString& currentValue)
 {

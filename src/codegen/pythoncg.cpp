@@ -1690,3 +1690,6 @@ void PythonTemplateParser::SetupModulePrefixes()
 
     ADD_PREDEFINED_PREFIX(wxTP_DEFAULT, wx.adv.);
 }
+
+#undef ADD_PREDEFINED_MACRO
+#undef ADD_PREDEFINED_PREFIX
