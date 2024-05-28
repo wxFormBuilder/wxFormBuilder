@@ -183,7 +183,7 @@ void FileCodeWriter::WriteBuffer()
 {
     static const unsigned char MICROSOFT_BOM[3] = {0xEF, 0xBB, 0xBF};
 
-    const auto& data = (m_useUtf8 ? _STDSTR(m_buffer) : _ANSISTR(m_buffer));
+    const auto& data = (m_useUtf8 ? TypeConv::WxStringToString(m_buffer) : TypeConv::WxStringToAnsiString(m_buffer));
 
     // Compare buffer with existing file (if any) to determine if writing the file is necessary.
     // Since the buffer contents always use LF the file must always be read in text mode or

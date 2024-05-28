@@ -111,8 +111,10 @@ enum {
     ID_FIND_COMPONENT,
 };
 
-#define STATUS_FIELD_OBJECT 2
-#define STATUS_FIELD_PATH 1
+enum {
+    STATUS_FIELD_OBJECT = 2,
+    STATUS_FIELD_PATH = 1,
+};
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 EVT_MENU(ID_NEW_PRJ, MainFrame::OnNewProject)

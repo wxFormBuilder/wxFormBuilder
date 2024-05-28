@@ -57,7 +57,6 @@ protected:
 
 /** map class mapping Function* to function name */
 using FunctionMap = std::unordered_map<std::string, Function*>;
-#define funcIterator FunctionMap::iterator
 
 /** parses the source and header files for all code added to the generated */
 class CodeParser
@@ -96,7 +95,7 @@ protected:
     wxString m_trailingCode;
 
     FunctionMap m_functions;
-    funcIterator m_functionIter;
+    FunctionMap::iterator m_functionIter;
 };
 
 /** parses the source and header files for all code added to the generated */

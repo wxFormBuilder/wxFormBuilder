@@ -32,7 +32,7 @@
 
 
 #if 0
-    #define ID_OK 1000
+static constexpr int ID_OK = 1000;
 
 BEGIN_EVENT_TABLE(AboutDialog,wxDialog)
   EVT_BUTTON(ID_OK,AboutDialog::OnButtonEvent)

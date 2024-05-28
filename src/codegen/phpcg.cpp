@@ -1277,18 +1277,6 @@ void PHPCodeGenerator::UseRelativePath(bool relative, wxString basePath)
         }
     }
 }
-/*
-wxString CppCodeGenerator::ConvertToRelativePath(wxString path, wxString basePath)
-{
-wxString auxPath = path;
-if (basePath != "")
-{
-wxFileName filename(_WXSTR(auxPath));
-if (filename.MakeRelativeTo(_WXSTR(basePath)))
-auxPath = _STDSTR(filename.GetFullPath());
-}
-return auxPath;
-}*/
 
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert(wxT(#x))
 #define ADD_PREDEFINED_PREFIX(k, v) m_predModulePrefix[wxT(#k)] = wxT(#v)
@@ -1425,3 +1413,6 @@ void PHPCodeGenerator::SetupPredefinedMacros()
 
     ADD_PREDEFINED_MACRO(wxID_HIGHEST);
 }
+
+#undef ADD_PREDEFINED_MACRO
+#undef ADD_PREDEFINED_PREFIX

@@ -36,7 +36,7 @@
 #include "utils/wxfbexception.h"
 
 
-#define MENU_DELETE 109
+static constexpr int MENU_DELETE = 109;
 
 
 class XrcPreviewPopupMenu : public wxMenu
@@ -151,7 +151,7 @@ void XRCPreview::Show(PObjectBase form, const wxString& projectPath)
     wxXmlResource* res = wxXmlResource::Get();
     res->InitAllHandlers();
 
-    const std::string& data = _STDSTR(cw->GetString());
+    const std::string& data = TypeConv::WxStringToString(cw->GetString());
     wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), data.c_str(), data.size());
     res->Load(wxT("memory:xrcpreview.xrc"));
 

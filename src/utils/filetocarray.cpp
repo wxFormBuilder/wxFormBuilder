@@ -43,6 +43,8 @@ wxString GetBitmapTypeName(long type)
     };
 }
 
+#undef CASE_BITMAP_TYPE
+
 wxString GetBitmapType(const wxFileName& sourceFileName)
 {
     wxImageHandler* handler = wxImage::FindHandler(sourceFileName.GetExt(), wxBITMAP_TYPE_ANY);
