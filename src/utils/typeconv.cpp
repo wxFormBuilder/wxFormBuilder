@@ -1045,9 +1045,6 @@ bool MacroDictionary::SearchSynonymous(wxString synName, wxString& result)
 
     return found;
 }
-/*
-#define MACRO(x) m_map.insert(MacroMap::value_type(#x,x))
-#define MACRO2(x,y) m_map.insert(MacroMap::value_type(#x,y))*/
 
 void MacroDictionary::AddMacro(wxString name, int value)
 {

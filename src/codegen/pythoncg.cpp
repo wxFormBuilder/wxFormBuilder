@@ -1379,19 +1379,6 @@ void PythonCodeGenerator::UseRelativePath(bool relative, wxString basePath)
     }
 }
 
-/*
-wxString CppCodeGenerator::ConvertToRelativePath(wxString path, wxString basePath)
-{
-wxString auxPath = path;
-if (basePath != "")
-{
-wxFileName filename(_WXSTR(auxPath));
-if (filename.MakeRelativeTo(_WXSTR(basePath)))
-auxPath = _STDSTR(filename.GetFullPath());
-}
-return auxPath;
-}*/
-
 void PythonCodeGenerator::SetImagePathWrapperFunctionName(wxString imagePathWrapperFunctionName)
 {
     m_imagePathWrapperFunctionName = imagePathWrapperFunctionName;
