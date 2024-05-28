@@ -470,8 +470,7 @@ ApplicationData::ApplicationData(const wxString& rootdir) :
   m_manager(new wxFBManager),
   m_ipc(new wxFBIPC),
   m_fbpVerMajor(1),
-  // TODO: Update for next release
-  m_fbpVerMinor(17)
+  m_fbpVerMinor(18)
 {
 #ifdef __WXFB_DEBUG__
     // wxLog* log = wxLog::SetActiveTarget( NULL );
