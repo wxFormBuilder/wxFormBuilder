@@ -1150,8 +1150,8 @@ void ApplicationData::SaveProject(const wxString& filename)
     doc.InsertEndChild(root);
 
     auto* version = doc.NewElement("FileVersion");
-    version->SetAttribute("major", static_cast<int>(AppData()->m_fbpVerMajor));
-    version->SetAttribute("minor", static_cast<int>(AppData()->m_fbpVerMinor));
+    version->SetAttribute("major", static_cast<int>(m_fbpVerMajor));
+    version->SetAttribute("minor", static_cast<int>(m_fbpVerMinor));
     root->InsertEndChild(version);
 
     auto* project = doc.NewElement("");
@@ -1338,8 +1338,8 @@ bool ApplicationData::ConvertProject(tinyxml2::XMLDocument* doc, const wxString&
 
     ConvertProjectProperties(project, path, versionMajor, versionMinor);
     ConvertObject(project, versionMajor, versionMinor);
-    version->SetAttribute("major", static_cast<int>(AppData()->m_fbpVerMajor));
-    version->SetAttribute("minor", static_cast<int>(AppData()->m_fbpVerMinor));
+    version->SetAttribute("major", static_cast<int>(m_fbpVerMajor));
+    version->SetAttribute("minor", static_cast<int>(m_fbpVerMinor));
 
     return true;
 }
@@ -2702,7 +2702,7 @@ wxString ApplicationData::GetPathProperty(const wxString& pathName)
         path = wxFileName::DirName(pathEntry);
 
         if (!path.IsAbsolute()) {
-            wxString projectPath = AppData()->GetProjectPath();
+            wxString projectPath = GetProjectPath();
 
             if (projectPath.empty()) {
                 THROW_WXFBEX(wxT("You must save the project when using a relative path for output files"));
