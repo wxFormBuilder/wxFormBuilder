@@ -14,8 +14,8 @@
     <property name="embedded_files_path">res</property>
     <property name="encoding">UTF-8</property>
     <property name="file">geninhertclass_gui</property>
-    <property name="first_id">1000</property>
-    <property name="internationalize">0</property>
+    <property name="first_id">6000</property>
+    <property name="internationalize">1</property>
     <property name="lua_skip_events">1</property>
     <property name="lua_ui_table">UI</property>
     <property name="name">GenInheretedClass</property>
@@ -173,7 +173,7 @@
             <property name="font"></property>
             <property name="gripper">0</property>
             <property name="hidden">0</property>
-            <property name="id">ID_FORMS_CHECK_LIST</property>
+            <property name="id">wxID_ANY</property>
             <property name="max_size"></property>
             <property name="maximize_button">0</property>
             <property name="maximum_size">-1,-1</property>
@@ -312,7 +312,7 @@
                 <property name="font"></property>
                 <property name="gripper">0</property>
                 <property name="hidden">0</property>
-                <property name="id">ID_CLASS_NAME_TEXT_CTRL</property>
+                <property name="id">wxID_ANY</property>
                 <property name="max_size"></property>
                 <property name="maximize_button">0</property>
                 <property name="maximum_size"></property>
@@ -440,7 +440,7 @@
                 <property name="font"></property>
                 <property name="gripper">0</property>
                 <property name="hidden">0</property>
-                <property name="id">ID_FILE_NAME_TEXT_CTRL</property>
+                <property name="id">wxID_ANY</property>
                 <property name="max_size"></property>
                 <property name="maximize_button">0</property>
                 <property name="maximum_size"></property>

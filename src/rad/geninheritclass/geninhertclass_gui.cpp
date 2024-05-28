@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.1.0-112-g3f2172f2)
+// C++ code generated with wxFormBuilder (version 4.1.0-113-ge9c16a2d)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -17,9 +17,9 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	mainSizer = new wxBoxSizer( wxVERTICAL );
 
 	wxStaticBoxSizer* instructionsSbSizer;
-	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Instructions") ), wxVERTICAL );
+	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Instructions") ), wxVERTICAL );
 
-	m_instructionsStaticText = new wxStaticText( instructionsSbSizer->GetStaticBox(), wxID_ANY, wxT("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
+	m_instructionsStaticText = new wxStaticText( instructionsSbSizer->GetStaticBox(), wxID_ANY, _("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
 	m_instructionsStaticText->Wrap( -1 );
 	instructionsSbSizer->Add( m_instructionsStaticText, 0, wxALL|wxEXPAND, 5 );
 
@@ -27,26 +27,26 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	mainSizer->Add( instructionsSbSizer, 0, wxEXPAND|wxLEFT|wxRIGHT|wxTOP, 5 );
 
 	wxArrayString m_formsCheckListChoices;
-	m_formsCheckList = new wxCheckListBox( this, ID_FORMS_CHECK_LIST, wxDefaultPosition, wxDefaultSize, m_formsCheckListChoices, 0 );
+	m_formsCheckList = new wxCheckListBox( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, m_formsCheckListChoices, 0 );
 	m_formsCheckList->SetMinSize( wxSize( 350,150 ) );
 
 	mainSizer->Add( m_formsCheckList, 0, wxALL|wxEXPAND, 5 );
 
 	wxStaticBoxSizer* classDescriptionSbSizer;
-	classDescriptionSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Class Details") ), wxVERTICAL );
+	classDescriptionSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Class Details") ), wxVERTICAL );
 
-	m_classNameStaticText = new wxStaticText( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, wxT("Class Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_classNameStaticText = new wxStaticText( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, _("Class Name:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_classNameStaticText->Wrap( -1 );
 	classDescriptionSbSizer->Add( m_classNameStaticText, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	m_classNameTextCtrl = new wxTextCtrl( classDescriptionSbSizer->GetStaticBox(), ID_CLASS_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_classNameTextCtrl = new wxTextCtrl( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	classDescriptionSbSizer->Add( m_classNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 
-	m_fileNameStaticText = new wxStaticText( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, wxT("File Names: (.cpp/.h)"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_fileNameStaticText = new wxStaticText( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, _("File Names: (.cpp/.h)"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_fileNameStaticText->Wrap( -1 );
 	classDescriptionSbSizer->Add( m_fileNameStaticText, 0, wxLEFT|wxRIGHT|wxTOP, 5 );
 
-	m_fileNameTextCtrl = new wxTextCtrl( classDescriptionSbSizer->GetStaticBox(), ID_FILE_NAME_TEXT_CTRL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	m_fileNameTextCtrl = new wxTextCtrl( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	classDescriptionSbSizer->Add( m_fileNameTextCtrl, 0, wxBOTTOM|wxRIGHT|wxLEFT|wxEXPAND, 5 );
 
 
