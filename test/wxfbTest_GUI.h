@@ -1,76 +1,82 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-// wxFormBuilder - A Visual Dialog Editor for wxWidgets.
-// Copyright (C) 2005 José Antonio Hurtado
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-//
-// C++ code generated with wxFormBuilder (version May  4 2007)
+///////////////////////////////////////////////////////////////////////////
+// C++ code generated with wxFormBuilder (version 4.1.0-115-ge275391f-dirty)
 // http://www.wxformbuilder.org/
 //
-// PLEASE DO "NOT" EDIT THIS FILE!
+// PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#ifndef __wxfbTest_GUI__
-#define __wxfbTest_GUI__
+#pragma once
 
-#include <wx/wx.h>
-
+#include <wx/artprov.h>
+#include <wx/xrc/xmlres.h>
+#include <wx/string.h>
+#include <wx/bitmap.h>
+#include <wx/image.h>
+#include <wx/icon.h>
 #include <wx/menu.h>
+#include <wx/gdicmn.h>
+#include <wx/font.h>
+#include <wx/colour.h>
+#include <wx/settings.h>
+#include <wx/statusbr.h>
+#include <wx/toolbar.h>
+#include <wx/frame.h>
 #include <wx/button.h>
 #include <wx/bmpbuttn.h>
+#include <wx/textctrl.h>
+#include <wx/stattext.h>
+#include <wx/checkbox.h>
+#include <wx/combobox.h>
+#include <wx/sizer.h>
+#include <wx/listbox.h>
+#include <wx/radiobox.h>
 #include <wx/grid.h>
+#include <wx/statbox.h>
 #include <wx/statbmp.h>
 #include <wx/statline.h>
 #include <wx/listctrl.h>
 #include <wx/choice.h>
 #include <wx/slider.h>
 #include <wx/checklst.h>
+#include <wx/panel.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
 #define ID_DEFAULT wxID_ANY // Default
-#define ID_EXIT 1000
-#define ID_ABOUT 1001
+#define ID_EXIT 6000
+#define ID_ABOUT 6001
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainFrame
 ///////////////////////////////////////////////////////////////////////////////
-class MainFrame : public wxFrame 
+class MainFrame : public wxFrame
 {
 	private:
-	
+
 	protected:
 		wxMenuBar* m_menubar1;
 		wxMenu* file;
 		wxMenu* help;
 		wxStatusBar* m_statusBar1;
 		wxToolBar* m_toolBar1;
-	
+		wxToolBarToolBase* m_tool1;
+		wxToolBarToolBase* m_tool2;
+
 	public:
-		MainFrame( wxWindow* parent, int id = ID_DEFAULT, wxString title = wxT("wxFormBuilder Test App"), wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 500,300 ), int style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
-	
+
+		MainFrame( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxString& title = wxT("wxFormBuilder Test App"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+
+		~MainFrame();
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainPanel
 ///////////////////////////////////////////////////////////////////////////////
-class MainPanel : public wxPanel 
+class MainPanel : public wxPanel
 {
 	private:
-	
+
 	protected:
 		wxButton* m_button1;
 		wxBitmapButton* m_bpButton1;
@@ -89,10 +95,12 @@ class MainPanel : public wxPanel
 		wxChoice* m_choice1;
 		wxSlider* m_slider1;
 		wxCheckListBox* m_checkList1;
-	
+
 	public:
-		MainPanel( wxWindow* parent, int id = ID_DEFAULT, wxPoint pos = wxDefaultPosition, wxSize size = wxSize( 800,600 ), int style = wxTAB_TRAVERSAL );
-	
+
+		MainPanel( wxWindow* parent, wxWindowID id = ID_DEFAULT, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 800,600 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+
+		~MainPanel();
+
 };
 
-#endif //__wxfbTest_GUI__
