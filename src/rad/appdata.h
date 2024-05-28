@@ -46,9 +46,6 @@ class wxFBManager;
 
 
 #define AppData() (ApplicationData::Get())
-#define AppDataCreate(path) (ApplicationData::Get(path))
-#define AppDataInit() (ApplicationData::Initialize())
-#define AppDataDestroy() (ApplicationData::Destroy())
 
 
 // This class is a singleton class.

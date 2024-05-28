@@ -166,7 +166,7 @@ int MyApp::OnRun()
 
     // Create singleton AppData - wait to initialize until sure that this is not the second
     // instance of a project file.
-    AppDataCreate(dataDir);
+    ApplicationData::Get(dataDir);
 
     // Make passed project name absolute
     try {
@@ -207,7 +207,7 @@ int MyApp::OnRun()
 
     // Init AppData
     try {
-        AppDataInit();
+        ApplicationData::Initialize();
     } catch (wxFBException& ex) {
         wxLogError(_("Error loading application: %s\nwxFormBuilder cannot continue."), ex.what());
         wxLog::FlushActive();
@@ -307,7 +307,7 @@ bool MyApp::OnInit()
 int MyApp::OnExit()
 {
     MacroDictionary::Destroy();
-    AppDataDestroy();
+    ApplicationData::Destroy();
 
     if (!wxTheClipboard->IsOpened()) {
         if (!wxTheClipboard->Open()) {
