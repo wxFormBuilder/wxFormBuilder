@@ -45,9 +45,6 @@ class wxFBIPC;
 class wxFBManager;
 
 
-#define AppData() (ApplicationData::Get())
-
-
 // This class is a singleton class.
 
 class ApplicationData
@@ -392,5 +389,10 @@ public:
     // Allow a single instance check from outside the AppData class
     bool VerifySingleInstance(const wxString& file, bool switchTo = true);
 };
+
+inline ApplicationData* AppData()
+{
+    return ApplicationData::Get();
+}
 
 #endif  // RAD_APPDATA_H
