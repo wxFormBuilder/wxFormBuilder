@@ -246,7 +246,7 @@ void ExpandObjectCmd::DoRestore()
 }
 
 InsertObjectCmd::InsertObjectCmd(ApplicationData* data, PObjectBase object, PObjectBase parent, int pos) :
-  m_data(data), m_parent(parent), m_object(object), m_pos(pos)
+    m_data(data), m_parent(parent), m_object(object), m_pos(pos)
 {
     m_oldSelected = data->GetSelectedObject();
 }
@@ -466,15 +466,15 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
-  m_rootDir(rootdir),
-  m_modFlag(false),
-  m_warnOnAdditionsUpdate(true),
-  m_darkMode(false),
-  m_objDb(new ObjectDatabase()),
-  m_manager(new wxFBManager),
-  m_ipc(new wxFBIPC),
-  m_fbpVerMajor(1),
-  m_fbpVerMinor(18)
+    m_rootDir(rootdir),
+    m_modFlag(false),
+    m_warnOnAdditionsUpdate(true),
+    m_darkMode(false),
+    m_objDb(new ObjectDatabase()),
+    m_manager(new wxFBManager),
+    m_ipc(new wxFBIPC),
+    m_fbpVerMajor(1),
+    m_fbpVerMinor(18)
 {
 #ifdef __WXFB_DEBUG__
     // wxLog* log = wxLog::SetActiveTarget( NULL );
@@ -634,14 +634,10 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
             wxLogError("This project file version is newer than this version of wxFormBuilder.\n");
         } else {
             wxMessageBox(
-                _(
-                    "This project file version is newer than this version of wxFormBuilder.\n"
-                    "The file cannot be opened.\n\n"
-                    "Please download an new wxFormBuilder version version from http://www.wxformbuilder.org"
-                ),
-                _("New Project File Version"),
-                wxICON_ERROR
-            );
+              _("This project file version is newer than this version of wxFormBuilder.\n"
+                "The file cannot be opened.\n\n"
+                "Please download an new wxFormBuilder version version from http://www.wxformbuilder.org"),
+              _("New Project File Version"), wxICON_ERROR);
         }
         return false;
     }
@@ -650,13 +646,10 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
             wxLogError("This project file version is outdated, update the file by using the GUI mode first.\n");
         } else {
             wxMessageBox(
-                _(
-                    "This project file version is older than this version of wxFormBuilder,\n"
-                    "the file version will get updated during loading.\n\n"
-                    "WARNING: Saving the project file will prevent older versions of wxFormBuilder to open the file!"
-                ),
-                _("Old Project File Version")
-            );
+              _("This project file version is older than this version of wxFormBuilder,\n"
+                "the file version will get updated during loading.\n\n"
+                "WARNING: Saving the project file will prevent older versions of wxFormBuilder to open the file!"),
+              _("Old Project File Version"));
         }
 
         if (ConvertProject(doc.get(), file, versionMajor, versionMinor)) {
@@ -676,7 +669,8 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
     m_objDb->ResetObjectCounters();
 
     try {
-        if (auto projectObject = m_objDb->CreateObject(project); projectObject && projectObject->GetObjectTypeName() == "project") {
+        if (auto projectObject = m_objDb->CreateObject(project);
+            projectObject && projectObject->GetObjectTypeName() == "project") {
             m_project = projectObject;
             m_selObj = m_project;
             m_projectFile = filename.GetFullPath();
@@ -744,7 +738,8 @@ bool ApplicationData::IsModified()
 }
 
 
-bool ApplicationData::ConvertProject(tinyxml2::XMLDocument* doc, const wxString& path, int versionMajor, int versionMinor)
+bool ApplicationData::ConvertProject(
+  tinyxml2::XMLDocument* doc, const wxString& path, int versionMajor, int versionMinor)
 {
     auto* root = doc->FirstChildElement();
     if (!root) {
@@ -814,26 +809,24 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         XMLUtils::SetAttribute(windowStyleProperty, "name", "window_style");
         for (auto* property : windowStyleProperties) {
             MoveOptions(
-                property,
-                windowStyleProperty,
-                {
-                    "wxSIMPLE_BORDER",
-                    "wxDOUBLE_BORDER",
-                    "wxSUNKEN_BORDER",
-                    "wxRAISED_BORDER",
-                    "wxSTATIC_BORDER",
-                    "wxNO_BORDER",
-                    "wxTRANSPARENT_WINDOW",
-                    "wxTAB_TRAVERSAL",
-                    "wxWANTS_CHARS",
-                    "wxVSCROLL",
-                    "wxHSCROLL",
-                    "wxALWAYS_SHOW_SB",
-                    "wxCLIP_CHILDREN",
-                    "wxFULL_REPAINT_ON_RESIZE",
-                },
-                true
-            );
+              property, windowStyleProperty,
+              {
+                "wxSIMPLE_BORDER",
+                "wxDOUBLE_BORDER",
+                "wxSUNKEN_BORDER",
+                "wxRAISED_BORDER",
+                "wxSTATIC_BORDER",
+                "wxNO_BORDER",
+                "wxTRANSPARENT_WINDOW",
+                "wxTAB_TRAVERSAL",
+                "wxWANTS_CHARS",
+                "wxVSCROLL",
+                "wxHSCROLL",
+                "wxALWAYS_SHOW_SB",
+                "wxCLIP_CHILDREN",
+                "wxFULL_REPAINT_ON_RESIZE",
+              },
+              true);
         }
 
         auto windowExtraStyleProperties = GetProperties(object, {"style", "extra_style", "WindowStyle"});
@@ -841,17 +834,15 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         XMLUtils::SetAttribute(windowExtraStyleProperty, "name", "window_extra_style");
         for (auto* property : windowExtraStyleProperties) {
             MoveOptions(
-                property,
-                windowExtraStyleProperty,
-                {
-                    "wxWS_EX_VALIDATE_RECURSIVELY",
-                    "wxWS_EX_BLOCK_EVENTS",
-                    "wxWS_EX_TRANSIENT",
-                    "wxWS_EX_PROCESS_IDLE",
-                    "wxWS_EX_PROCESS_UI_UPDATES",
-                },
-                true
-            );
+              property, windowExtraStyleProperty,
+              {
+                "wxWS_EX_VALIDATE_RECURSIVELY",
+                "wxWS_EX_BLOCK_EVENTS",
+                "wxWS_EX_TRANSIENT",
+                "wxWS_EX_PROCESS_IDLE",
+                "wxWS_EX_PROCESS_UI_UPDATES",
+              },
+              true);
         }
     }
 
@@ -871,7 +862,8 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         if (objectClass == "spacer") {
             // Spacer used to be represented by its own class, it is now under a sizeritem like everything else.
             // No need to check for a wxGridBagSizer, because it was introduced at the same time.
-            // The goal is to change the class to sizeritem, then create a spacer child, then move "width" and "height" to the spacer
+            // The goal is to change the class to sizeritem, then create a spacer child, then move "width" and "height"
+            // to the spacer
             XMLUtils::SetAttribute(object, "class", "sizeritem");
 
             auto* spacer = object->InsertNewChildElement("object");
@@ -889,7 +881,8 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
 
     // Convert to version 1.7
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 7)) {
-        // All font properties get stored now. The font property conversion is automatic because it is just an extension of the old values.
+        // All font properties get stored now. The font property conversion is automatic because it is just an extension
+        // of the old values.
 
         // Remove deprecated 2.6 things
         if (objectClass == "Dialog") {
@@ -914,9 +907,12 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
     // Convert to version 1.9
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 9)) {
         // The format of string list properties changed
-        //std::invoke_result<decltype(GetProperties), ApplicationData*, tinyxml2::XMLElement*, const std::unordered_set<wxString>&>::type properties;
+        // std::invoke_result<decltype(GetProperties), ApplicationData*, tinyxml2::XMLElement*, const
+        // std::unordered_set<wxString>&>::type properties;
         std::unordered_set<tinyxml2::XMLElement*> properties;
-        if (objectClass == "wxComboBox" || objectClass == "wxChoice" || objectClass == "wxListBox" || objectClass == "wxRadioBox" || objectClass == "wxCheckListBox") {
+        if (
+          objectClass == "wxComboBox" || objectClass == "wxChoice" || objectClass == "wxListBox" ||
+          objectClass == "wxRadioBox" || objectClass == "wxCheckListBox") {
             properties = GetProperties(object, {"choices"});
         } else if (objectClass == "wxGrid") {
             properties = GetProperties(object, {"col_label_values", "row_label_values"});
@@ -951,47 +947,47 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
 
     // Convert to version 1.12
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 12)) {
-        // Note: The previous update code converted wxTreeListCtrl and wxTreeListCtrlColumn to wxadditions::wxTreeListCtrl and wxadditions::wxTreeListCtrlColumn.
-        //       However, the current XML definitions use the non namespace variants and this change was never reverted, so this update was dropped.
+        // Note: The previous update code converted wxTreeListCtrl and wxTreeListCtrlColumn to
+        // wxadditions::wxTreeListCtrl and wxadditions::wxTreeListCtrlColumn.
+        //       However, the current XML definitions use the non namespace variants and this change was never reverted,
+        //       so this update was dropped.
         if (objectClass == "wxScintilla") {
             XMLUtils::SetAttribute(object, "class", "wxStyledTextCtrl");
         }
 
         if (objectClass == "Dialog" || objectClass == "Panel") {
             RemoveProperties(
-                object,
-                {
-                    "BottomDockable",
-                    "LeftDockable",
-                    "RightDockable",
-                    "TopDockable",
-                    "caption_visible",
-                    "center_pane",
-                    "close_button",
-                    "default_pane",
-                    "dock",
-                    "dock_fixed",
-                    "docking",
-                    "floatable",
-                    "gripper",
-                    "maximize_button",
-                    "minimize_button",
-                    "moveable",
-                    "pane_border",
-                    "pin_button",
-                    "resize",
-                    "show",
-                    "toolbar_pane",
-                    "aui_name",
-                }
-            );
+              object, {
+                        "BottomDockable",
+                        "LeftDockable",
+                        "RightDockable",
+                        "TopDockable",
+                        "caption_visible",
+                        "center_pane",
+                        "close_button",
+                        "default_pane",
+                        "dock",
+                        "dock_fixed",
+                        "docking",
+                        "floatable",
+                        "gripper",
+                        "maximize_button",
+                        "minimize_button",
+                        "moveable",
+                        "pane_border",
+                        "pin_button",
+                        "resize",
+                        "show",
+                        "toolbar_pane",
+                        "aui_name",
+                      });
         }
 
         if (
-            objectClass == "Dialog" || objectClass == "Panel" ||
-            objectClass == "wxStaticText" || objectClass == "CustomControl" || objectClass == "wxAuiNotebook" || objectClass == "wxPanel" ||
-            objectClass == "wxToolBar" || objectClass == "wxStyledTextCtrl" || objectClass == "wxPropertyGridManager" || objectClass == "wxTreeListCtrl"
-        ) {
+          objectClass == "Dialog" || objectClass == "Panel" || objectClass == "wxStaticText" ||
+          objectClass == "CustomControl" || objectClass == "wxAuiNotebook" || objectClass == "wxPanel" ||
+          objectClass == "wxToolBar" || objectClass == "wxStyledTextCtrl" || objectClass == "wxPropertyGridManager" ||
+          objectClass == "wxTreeListCtrl") {
             RemoveProperties(object, {"validator_style", "validator_type"});
         }
 
@@ -1142,16 +1138,14 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         } else if (objectClass == "wxGrid") {
             // wxGrid: Rename wxALIGN_CENTRE -> wxALIGN_CENTER
             auto properties = GetProperties(
-                object,
-                {
-                    "col_label_horiz_alignment",
-                    "col_label_vert_alignment",
-                    "row_label_horiz_alignment",
-                    "row_label_vert_alignment",
-                    "cell_horiz_alignment",
-                    "cell_vert_alignment",
-                }
-            );
+              object, {
+                        "col_label_horiz_alignment",
+                        "col_label_vert_alignment",
+                        "row_label_horiz_alignment",
+                        "row_label_vert_alignment",
+                        "cell_horiz_alignment",
+                        "cell_vert_alignment",
+                      });
             for (auto* property : properties) {
                 auto value = XMLUtils::GetText(property);
                 if (!value.empty()) {
@@ -1187,9 +1181,10 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
     // Convert to version 1.17
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 17)) {
         if (
-          objectClass == "ribbonButton" || objectClass == "ribbonDropdownButton" || objectClass == "ribbonHybridButton" ||
-          objectClass == "ribbonToggleButton" || objectClass == "ribbonTool" || objectClass == "ribbonDropdownTool" ||
-          objectClass == "ribbonHybridTool" || objectClass == "ribbonToggleTool" || objectClass == "ribbonGalleryItem") {
+          objectClass == "ribbonButton" || objectClass == "ribbonDropdownButton" ||
+          objectClass == "ribbonHybridButton" || objectClass == "ribbonToggleButton" || objectClass == "ribbonTool" ||
+          objectClass == "ribbonDropdownTool" || objectClass == "ribbonHybridTool" ||
+          objectClass == "ribbonToggleTool" || objectClass == "ribbonGalleryItem") {
             RemoveProperties(
               object, {"bg", "context_help", "context_menu", "drag_accept_files", "enabled", "fg", "font", "hidden",
                        "maximum_size", "minimum_size", "name", "permission", "pos", "size", "subclass", "tooltip",
@@ -1328,7 +1323,8 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             codegen.ParseFiles(fullPath + wxT(".h"), fullPath + wxT(".cpp"));
 
             auto h_cw = std::make_shared<FileCodeWriter>(fullPath + wxT(".h"), useMicrosoftBOM, useUtf8, useNativeEOL);
-            auto cpp_cw = std::make_shared<FileCodeWriter>(fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8, useNativeEOL);
+            auto cpp_cw =
+              std::make_shared<FileCodeWriter>(fullPath + wxT(".cpp"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetHeaderWriter(h_cw);
             codegen.SetSourceWriter(cpp_cw);
@@ -1338,7 +1334,8 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             PythonCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            auto python_cw = std::make_shared<FileCodeWriter>(fullPath + wxT(".py"), useMicrosoftBOM, useUtf8, useNativeEOL);
+            auto python_cw =
+              std::make_shared<FileCodeWriter>(fullPath + wxT(".py"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetSourceWriter(python_cw);
 
@@ -1347,7 +1344,8 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             PHPCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            auto php_cw = std::make_shared<FileCodeWriter>(fullPath + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL);
+            auto php_cw =
+              std::make_shared<FileCodeWriter>(fullPath + wxT(".php"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetSourceWriter(php_cw);
 
@@ -1356,7 +1354,8 @@ void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString classNam
             LuaCodeGenerator codegen;
 
             const wxString& fullPath = inherFile.GetFullPath();
-            auto lua_cw = std::make_shared<FileCodeWriter>(fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8, useNativeEOL);
+            auto lua_cw =
+              std::make_shared<FileCodeWriter>(fullPath + wxT(".lua"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetSourceWriter(lua_cw);
 
@@ -1496,7 +1495,8 @@ void ApplicationData::CreateObject(wxString name)
                     // no puede ser un item!
                     parent = parent->GetParent();
 
-                    while (parent && parent->GetObjectInfo()->GetObjectType()->IsItem()) parent = parent->GetParent();
+                    while (parent && parent->GetObjectInfo()->GetObjectType()->IsItem())
+                        parent = parent->GetParent();
                 }
             }
         }
@@ -2144,7 +2144,8 @@ void ApplicationData::Redo()
 }
 
 
-void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor)
+void ApplicationData::ConvertProjectProperties(
+  tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor)
 {
     if (auto projectClass = XMLUtils::StringAttribute(project, "class"); projectClass != "Project") {
         return;
@@ -2157,36 +2158,28 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
             auto userHeadersValue = XMLUtils::GetText(userHeadersProperty);
             if (!userHeadersValue.empty()) {
                 if (
-                    wxMessageBox(
-                        _(
-                            "The project property \"user_headers\" has been removed.\n"
-                            "The purpose of this property was to include precompiled headers or headers for subclasses.\n"
-                            "Now, this is done by using the project property \"precompiled_header\" and\n"
-                            "the property \"header\" of the property \"subclass\".\n\n"
-                            "This conversion cannot be done automatically, do you want to extract the current value of\n"
-                            "the property \"user_classes\" to file to be able to perform this conversion manually?"
-                        ),
-                        _("Property removed"),
-                        wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT,
-                        wxTheApp->GetTopWindow()
-                    ) == wxYES
-                ) {
+                  wxMessageBox(
+                    _("The project property \"user_headers\" has been removed.\n"
+                      "The purpose of this property was to include precompiled headers or headers for subclasses.\n"
+                      "Now, this is done by using the project property \"precompiled_header\" and\n"
+                      "the property \"header\" of the property \"subclass\".\n\n"
+                      "This conversion cannot be done automatically, do you want to extract the current value of\n"
+                      "the property \"user_classes\" to file to be able to perform this conversion manually?"),
+                    _("Property removed"), wxICON_QUESTION | wxYES_NO | wxYES_DEFAULT,
+                    wxTheApp->GetTopWindow()) == wxYES) {
                     wxFileName projectPath(path);
                     wxFileDialog dlg(
-                        wxTheApp->GetTopWindow(),
-                        _("Save \"user_headers\""),
-                        projectPath.GetPath(),
-                        wxString::Format("%s_user_headers.txt", projectPath.GetName()),
-                        _("All Files (*.*)|*.*"),
-                        wxFD_SAVE
-                    );
+                      wxTheApp->GetTopWindow(), _("Save \"user_headers\""), projectPath.GetPath(),
+                      wxString::Format("%s_user_headers.txt", projectPath.GetName()), _("All Files (*.*)|*.*"),
+                      wxFD_SAVE);
                     if (dlg.ShowModal() == wxID_OK) {
                         wxLogNull noLog;
                         auto outputPath = dlg.GetPath();
                         if (wxFFile outputFile(outputPath, "w"); outputFile.IsOpened()) {
                             outputFile.Write(userHeadersValue);
                         } else {
-                            wxLogError(_("Failed to open %s for writing \"user_headers\":\n%s"), outputPath, userHeadersValue);
+                            wxLogError(
+                              _("Failed to open %s for writing \"user_headers\":\n%s"), outputPath, userHeadersValue);
                         }
                     }
                 }
@@ -2206,36 +2199,30 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
             if (!pchValue.empty()) {
                 if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 6)) {
                     XMLUtils::SetText(
-                        pchProperty,
-                        wxString::Format(
-                            "#include \"%s\"\n"
-                            "#ifdef __BORLANDC__\n"
-                            "#pragma hdrstop\n"
-                            "#endif //__BORLANDC__\n"
-                            "\n"
-                            "#ifndef WX_PRECOMP\n"
-                            "#include <wx/wx.h>\n"
-                            "#endif //WX_PRECOMP",
-                            pchValue
-                        )
-                    );
+                      pchProperty, wxString::Format(
+                                     "#include \"%s\"\n"
+                                     "#ifdef __BORLANDC__\n"
+                                     "#pragma hdrstop\n"
+                                     "#endif //__BORLANDC__\n"
+                                     "\n"
+                                     "#ifndef WX_PRECOMP\n"
+                                     "#include <wx/wx.h>\n"
+                                     "#endif //WX_PRECOMP",
+                                     pchValue));
                 } else {
                     XMLUtils::SetText(
-                        pchProperty,
-                        wxString::Format(
-                            "#ifdef WX_PRECOMP\n"
-                            "\n"
-                            "#include \"%s\"\n"
-                            "#ifdef __BORLANDC__\n"
-                            "#pragma hdrstop\n"
-                            "#endif //__BORLANDC__\n"
-                            "\n"
-                            "#else\n"
-                            "#include <wx/wx.h>\n"
-                            "#endif //WX_PRECOMP",
-                            pchValue
-                        )
-                    );
+                      pchProperty, wxString::Format(
+                                     "#ifdef WX_PRECOMP\n"
+                                     "\n"
+                                     "#include \"%s\"\n"
+                                     "#ifdef __BORLANDC__\n"
+                                     "#pragma hdrstop\n"
+                                     "#endif //__BORLANDC__\n"
+                                     "\n"
+                                     "#else\n"
+                                     "#include <wx/wx.h>\n"
+                                     "#endif //WX_PRECOMP",
+                                     pchValue));
                 }
             }
         }
@@ -2266,54 +2253,38 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
     }
 
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 18)) {
-        auto cppProperties = GetProperties(project, {
-            "precompiled_header",
-            "namespace",
-            "class_decoration",
-            "use_enum",
-            "use_array_enum",
-            "help_provider",
-            "event_generation",
-            "disconnect_events"
-        });
+        auto cppProperties = GetProperties(
+          project, {"precompiled_header", "namespace", "class_decoration", "use_enum", "use_array_enum",
+                    "help_provider", "event_generation", "disconnect_events"});
         for (auto& property : cppProperties) {
             auto name = XMLUtils::StringAttribute(property, "name");
             XMLUtils::SetAttribute(property, "name", wxString::Format("cpp_%s", name));
         }
 
-        auto pythonProperties = GetProperties(project, {
-            "indent_with_spaces",
-            "image_path_wrapper_function_name",
-            "skip_python_events",
-            "disconnect_python_events",
-            "disconnect_mode"
-        });
+        auto pythonProperties = GetProperties(
+          project, {"indent_with_spaces", "image_path_wrapper_function_name", "skip_python_events",
+                    "disconnect_python_events", "disconnect_mode"});
         for (auto& property : pythonProperties) {
             auto name = XMLUtils::StringAttribute(property, "name");
             name.Replace("_python", "");
             XMLUtils::SetAttribute(property, "name", wxString::Format("python_%s", name));
         }
 
-        auto luaProperties = GetProperties(project, {
-            "ui_table",
-            "skip_lua_events"
-        });
+        auto luaProperties = GetProperties(project, {"ui_table", "skip_lua_events"});
         for (auto& property : luaProperties) {
             auto name = XMLUtils::StringAttribute(property, "name");
             name.Replace("_lua", "");
             XMLUtils::SetAttribute(property, "name", wxString::Format("lua_%s", name));
         }
 
-        auto phpProperties = GetProperties(project, {
-            "skip_php_events",
-            "disconnect_php_events"
-        });
+        auto phpProperties = GetProperties(project, {"skip_php_events", "disconnect_php_events"});
         for (auto& property : phpProperties) {
             auto name = XMLUtils::StringAttribute(property, "name");
             name.Replace("_php", "");
             XMLUtils::SetAttribute(property, "name", wxString::Format("php_%s", name));
         }
-        // The originally unprefixed python property was silently used before, initialize the own property from that value
+        // The originally unprefixed python property was silently used before, initialize the own property from that
+        // value
         if (auto properties = GetProperties(project, {"python_disconnect_mode"}); !properties.empty()) {
             auto* disconnectModeProperty = *properties.begin();
             auto* phpDisconnectModeProperty = project->InsertNewChildElement("property");
@@ -2323,10 +2294,12 @@ void ApplicationData::ConvertProjectProperties(tinyxml2::XMLElement* project, co
     }
 }
 
-std::unordered_set<tinyxml2::XMLElement*> ApplicationData::GetProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties)
+std::unordered_set<tinyxml2::XMLElement*> ApplicationData::GetProperties(
+  tinyxml2::XMLElement* element, const std::set<wxString>& properties)
 {
     std::unordered_set<tinyxml2::XMLElement*> result;
-    for (auto* property = element->FirstChildElement("property"); property; property = property->NextSiblingElement("property")) {
+    for (auto* property = element->FirstChildElement("property"); property;
+         property = property->NextSiblingElement("property")) {
         auto name = XMLUtils::StringAttribute(property, "name");
         if (name.empty()) {
             continue;
@@ -2341,7 +2314,7 @@ std::unordered_set<tinyxml2::XMLElement*> ApplicationData::GetProperties(tinyxml
 
 void ApplicationData::RemoveProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties)
 {
-    for (auto* next = element->FirstChildElement("property"); next; ) {
+    for (auto* next = element->FirstChildElement("property"); next;) {
         auto* current = next;
         next = next->NextSiblingElement("property");
 
@@ -2355,7 +2328,8 @@ void ApplicationData::RemoveProperties(tinyxml2::XMLElement* element, const std:
     }
 }
 
-bool ApplicationData::MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc)
+bool ApplicationData::MoveOptions(
+  tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc)
 {
     auto currentSrcValue = XMLUtils::GetText(src);
     auto currentDestValue = XMLUtils::GetText(dest);
@@ -2528,7 +2502,8 @@ void ApplicationData::ResolveSubtreeNameConflicts(PObjectBase obj, PObjectBase t
     ResolveNameConflict(obj);
 
     // Recurse through all children
-    for (unsigned int i = 0; i < obj->GetChildCount(); i++) ResolveSubtreeNameConflicts(obj->GetChild(i), topObj);
+    for (unsigned int i = 0; i < obj->GetChildCount(); i++)
+        ResolveSubtreeNameConflicts(obj->GetChild(i), topObj);
 }
 
 void ApplicationData::BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wxString>& name_set)
@@ -2540,7 +2515,8 @@ void ApplicationData::BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wx
             name_set.insert(nameProp->GetValue());
     }
 
-    for (unsigned int i = 0; i < top->GetChildCount(); i++) BuildNameSet(obj, top->GetChild(i), name_set);
+    for (unsigned int i = 0; i < top->GetChildCount(); i++)
+        BuildNameSet(obj, top->GetChild(i), name_set);
 }
 
 
@@ -2628,7 +2604,8 @@ void ApplicationData::RemoveEmptyItems(PObjectBase obj)
         }
     }
 
-    for (unsigned int i = 0; i < obj->GetChildCount(); i++) RemoveEmptyItems(obj->GetChild(i));
+    for (unsigned int i = 0; i < obj->GetChildCount(); i++)
+        RemoveEmptyItems(obj->GetChild(i));
 }
 
 void ApplicationData::DoRemoveObject(PObjectBase obj, bool cutObject)
@@ -2681,7 +2658,9 @@ void ApplicationData::NotifyEvent(wxFBEvent& event, bool forcedelayed)
 
         std::vector<wxEvtHandler*>::iterator handler;
 
-        for (handler = m_handlers.begin(); handler != m_handlers.end(); handler++) { (*handler)->ProcessEvent(event); }
+        for (handler = m_handlers.begin(); handler != m_handlers.end(); handler++) {
+            (*handler)->ProcessEvent(event);
+        }
     } else {
         LogDebug("Pending event: %s", event.GetEventName());
 

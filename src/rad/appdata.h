@@ -37,7 +37,7 @@ namespace tinyxml2
 {
 class XMLDocument;
 class XMLElement;
-}
+}  // namespace tinyxml2
 
 class Property;
 class wxFBEvent;
@@ -59,6 +59,7 @@ public:
 
 private:
     ApplicationData(const wxString& rootdir = wxT("."));
+
 public:
     ~ApplicationData();
 
@@ -99,19 +100,19 @@ public:
     bool IsModified();
 
     /**
-    Convert a project from an older version.
-    @param path The path to the project file
-    @param fileMajor The major revision of the file
-    @param fileMinor The minor revision of the file
-    @return true if successful, false otherwise
-    */
+     * Convert a project from an older version.
+     * @param path The path to the project file
+     * @param fileMajor The major revision of the file
+     * @param fileMinor The minor revision of the file
+     * @return true if successful, false otherwise
+     */
     bool ConvertProject(tinyxml2::XMLDocument* doc, const wxString& path, int versionMajor, int versionMinor);
     /**
-    Recursive function used to convert the object tree in the project file to the latest version.
-    @param object A pointer to the object element
-    @param fileMajor The major revision of the file
-    @param fileMinor The minor revision of the file
-    */
+     * Recursive function used to convert the object tree in the project file to the latest version.
+     * @param object A pointer to the object element
+     * @param fileMajor The major revision of the file
+     * @param fileMinor The minor revision of the file
+     */
     void ConvertObject(tinyxml2::XMLElement* object, int versionMajor, int versionMinor);
 
     /** Path to the fbp file that is opened. */
@@ -119,12 +120,12 @@ public:
     void SetProjectPath(const wxString& path) { m_projectPath = path; }
     wxString GetProjectFileName() { return m_projectFile; }
     /**
-    Path where the files will be generated.
-    */
+     * Path where the files will be generated.
+     */
     wxString GetOutputPath();
     /**
-    Path where the embedded bitmap files will be generated.
-    */
+     * Path where the embedded bitmap files will be generated.
+     */
     wxString GetEmbeddedFilesOutputPath();
 
     PObjectBase GetProjectData();
@@ -184,36 +185,40 @@ public:
 
 private:
     /**
-    Convert the properties of the project element. Handle this separately because it does not repeat.
-    @param project The project element.
-    @param path The path to the project file.
-    @param fileMajor The major revision of the file.
-    @param fileMinor The minor revision of the file.
-    */
-    void ConvertProjectProperties(tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor);
+     * Convert the properties of the project element. Handle this separately because it does not repeat.
+     * @param project The project element.
+     * @param path The path to the project file.
+     * @param fileMajor The major revision of the file.
+     * @param fileMinor The minor revision of the file.
+     */
+    void ConvertProjectProperties(
+      tinyxml2::XMLElement* project, const wxString& path, int versionMajor, int versionMinor);
     /**
-    Iterates through 'property' element children of @a parent.
-    Saves all properties with a 'name' attribute matching one of @a names into @a properties
-    @param parent Object element with child properties.
-    @param names Set of property names to search for.
-    @param properties Pointer to a set in which to store the result of the search.
-    */
-    std::unordered_set<tinyxml2::XMLElement*> GetProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
+     * Iterates through 'property' element children of @a parent.
+     * Saves all properties with a 'name' attribute matching one of @a names into @a properties
+     * @param parent Object element with child properties.
+     * @param names Set of property names to search for.
+     * @param properties Pointer to a set in which to store the result of the search.
+     */
+    std::unordered_set<tinyxml2::XMLElement*> GetProperties(
+      tinyxml2::XMLElement* element, const std::set<wxString>& properties);
     /**
-    Iterates through 'property' element children of @a parent.
-    Removes all properties with a 'name' attribute matching one of @a names
-    @param parent Object element with child properties.
-    @param names Set of property names to search for.
-    */
+     * Iterates through 'property' element children of @a parent.
+     * Removes all properties with a 'name' attribute matching one of @a names
+     * @param parent Object element with child properties.
+     * @param names Set of property names to search for.
+     */
     void RemoveProperties(tinyxml2::XMLElement* element, const std::set<wxString>& properties);
     /**
-    Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't
-    exist.
-    @param prop Property containing the options to transfer.
-    @param options Set of options to search for and transfer.
-    @param newPropName Name of property to transfer to, will be created if non-existent.
-    */
-    bool MoveOptions(tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options, bool deleteEmptySrc = false);
+     * Transfers @a options from the text of @a prop to the text of @a newPropName, which will be created if it doesn't
+     * exist.
+     * @param prop Property containing the options to transfer.
+     * @param options Set of options to search for and transfer.
+     * @param newPropName Name of property to transfer to, will be created if non-existent.
+     */
+    bool MoveOptions(
+      tinyxml2::XMLElement* src, tinyxml2::XMLElement* dest, const std::set<wxString>& options,
+      bool deleteEmptySrc = false);
 
     /**
      * Helper for GetOutputPath and GetEmbeddedFilesOutputPath
@@ -320,7 +325,7 @@ private:
 
     // Procesador de comandos Undo/Redo
     CommandProcessor m_cmdProc;
-    bool m_modFlag;  // flag de proyecto modificado
+    bool m_modFlag;      // flag de proyecto modificado
     bool m_copyOnPaste;  // flag que indica si hay que copiar el objeto al pegar
 };
 
