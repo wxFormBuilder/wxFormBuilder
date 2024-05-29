@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [4.2.0] - 2024-05-29
+
 ### Added
 
 - Add 'Load From SVG Resource' for bitmap property ([#817](https://github.com/wxFormBuilder/wxFormBuilder/pull/817))
@@ -1679,10 +1681,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 - Background color issues in the palette
 
-[unreleased]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.1.0...HEAD
-[4.1.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.0.0...4.1.0
+[unreleased]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.2.0...HEAD
+[4.2.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.1.0...v4.2.0
+[4.1.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v4.0.0...v4.1.0
 [4.0.0]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.1...v4.0.0
 [3.10.1]: https://github.com/wxFormBuilder/wxFormBuilder/compare/v3.10.0...v3.10.1
 [3.10.0]: https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.10.0
 
-<!-- markdownlint-configure-file { "no-duplicate-heading": { "siblings_only": true } } -->
+<!--
+markdownlint-configure-file {
+  "no-duplicate-heading": {
+    "siblings_only": true
+  }
+}
+-->
