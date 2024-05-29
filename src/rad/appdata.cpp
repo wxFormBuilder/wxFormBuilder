@@ -1164,6 +1164,13 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
 
     // Convert to version 1.18
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 18)) {
+        // Convert empty default values to 0
+        for (auto* property : GetProperties(object, {"aui_row", "aui_position", "aui_layer"})) {
+            auto value = XMLUtils::GetText(property);
+            if (value.empty()) {
+                XMLUtils::SetText(property, "0");
+            }
+        }
         if (objectClass == "wxAuiToolBar") {
             RemoveProperties(object, {"label_visible", "toolbar_label"});
         }
