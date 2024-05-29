@@ -430,15 +430,16 @@ ApplicationData* ApplicationData::s_instance = NULL;
 
 ApplicationData* ApplicationData::Get(const wxString& rootdir)
 {
-    if (!s_instance)
+    if (!s_instance) {
         s_instance = new ApplicationData(rootdir);
+    }
 
     return s_instance;
 }
 
 void ApplicationData::Initialize()
 {
-    ApplicationData* appData = ApplicationData::Get();
+    auto* appData = ApplicationData::Get();
     appData->LoadApp();
 
     // Use the color of a dominant text to determine if dark mode should be used.
@@ -452,8 +453,7 @@ void ApplicationData::Initialize()
 void ApplicationData::Destroy()
 {
     delete s_instance;
-
-    s_instance = NULL;
+    s_instance = nullptr;
 }
 
 
@@ -468,10 +468,9 @@ ApplicationData::ApplicationData(const wxString& rootdir) :
     m_copyOnPaste(false)
 {
 #ifdef __WXFB_DEBUG__
-    // wxLog* log = wxLog::SetActiveTarget( NULL );
-    m_debugLogTarget = new wxLogWindow(NULL, wxT("Logging"));
-// wxLog::SetActiveTarget( log );
+    m_debugLogTarget = new wxLogWindow(nullptr, _("Logging"));
 #endif
+
     m_objDb->SetXmlPath(
       m_rootDir + wxFILE_SEP_PATH + wxT("resources") + wxFILE_SEP_PATH + wxT("xml") + wxFILE_SEP_PATH);
     m_objDb->SetIconPath(
@@ -491,7 +490,6 @@ ApplicationData::~ApplicationData()
 {
 #ifdef __WXFB_DEBUG__
     delete m_debugLogTarget;
-    m_debugLogTarget = 0;
 #endif
 }
 
@@ -532,8 +530,8 @@ void ApplicationData::NewProject()
     m_selObj = m_project;
     m_modFlag = false;
     m_cmdProc.Reset();
-    m_projectFile = wxT("");
-    m_projectPath = wxT("");
+    m_projectFile.clear();
+    m_projectPath.clear();
     m_ipc->Reset();
     NotifyProjectRefresh();
 }
@@ -1188,10 +1186,12 @@ PObjectBase ApplicationData::GetSelectedForm() const
 {
     if (
       (m_selObj->GetObjectTypeName() == wxT("form")) || (m_selObj->GetObjectTypeName() == wxT("wizard")) ||
-      (m_selObj->GetObjectTypeName() == wxT("menubar_form")) || (m_selObj->GetObjectTypeName() == wxT("toolbar_form")))
+      (m_selObj->GetObjectTypeName() == wxT("menubar_form")) ||
+      (m_selObj->GetObjectTypeName() == wxT("toolbar_form"))) {
         return m_selObj;
-    else
+    } else {
         return m_selObj->FindParentForm();
+    }
 }
 
 
@@ -1200,7 +1200,8 @@ void ApplicationData::GenerateCode(bool panelOnly, bool noDelayed)
     NotifyCodeGeneration(panelOnly, !noDelayed);
 }
 
-void ApplicationData::GenerateInheritedClass(PObjectBase form, const wxString& className, const wxString& path, const wxString& file)
+void ApplicationData::GenerateInheritedClass(
+  PObjectBase form, const wxString& className, const wxString& path, const wxString& file)
 {
     try {
         PObjectBase project = GetProjectData();
@@ -1331,11 +1332,12 @@ void ApplicationData::ShowXrcPreview()
 {
     PObjectBase form = GetSelectedForm();
 
-    if (form == NULL) {
-        wxMessageBox(wxT("Please select a form and try again."), wxT("XRC Preview"), wxICON_ERROR);
+    if (!form) {
+        wxMessageBox(_("Please select a form and try again."), _("XRC Preview"), wxICON_ERROR);
         return;
-    } else if (form->GetPropertyAsInteger(wxT("aui_managed")) != 0) {
-        wxMessageBox(wxT("XRC preview doesn't support AUI-managed frames."), wxT("XRC Preview"), wxICON_ERROR);
+    }
+    if (form->GetPropertyAsInteger("aui_managed") != 0) {
+        wxMessageBox(_("XRC preview doesn't support AUI-managed frames."), _("XRC Preview"), wxICON_ERROR);
         return;
     }
 
@@ -1343,7 +1345,7 @@ void ApplicationData::ShowXrcPreview()
 }
 
 
-bool ApplicationData::SelectObject(PObjectBase obj, bool force /*= false*/, bool notify /*= true */)
+bool ApplicationData::SelectObject(PObjectBase obj, bool force, bool notify)
 {
     if ((obj == m_selObj) && !force) {
         return false;
@@ -1404,18 +1406,18 @@ void ApplicationData::MergeProject(PObjectBase project)
 
     // Merge bitmaps and icons properties
     PObjectBase thisProject = GetProjectData();
-    PProperty prop = thisProject->GetProperty(_("bitmaps"));
+    PProperty prop = thisProject->GetProperty("bitmaps");
     if (prop) {
         wxString value = prop->GetValue();
         value.Trim();
-        value << wxT(" ") << project->GetPropertyAsString(_("bitmaps"));
+        value << " " << project->GetPropertyAsString("bitmaps");
         prop->SetValue(value);
     }
-    prop = thisProject->GetProperty(_("icons"));
+    prop = thisProject->GetProperty("icons");
     if (prop) {
         wxString value = prop->GetValue();
         value.Trim();
-        value << wxT(" ") << project->GetPropertyAsString(_("icons"));
+        value << " " << project->GetPropertyAsString("icons");
         prop->SetValue(value);
     }
 
@@ -1423,7 +1425,7 @@ void ApplicationData::MergeProject(PObjectBase project)
 }
 
 
-void ApplicationData::CreateObject(wxString name)
+void ApplicationData::CreateObject(const wxString& name)
 {
     try {
         LogDebug("[ApplicationData::CreateObject] New " + name);
@@ -1567,18 +1569,16 @@ bool ApplicationData::CanCopyObject() const
 {
     PObjectBase obj = GetSelectedObject();
 
-    if (obj && obj->GetObjectTypeName() != wxT("project"))
-        return true;
-
-    return false;
+    return (obj && obj->GetObjectTypeName() != "project");
 }
 
 bool ApplicationData::CanPasteObject() const
 {
     PObjectBase obj = GetSelectedObject();
 
-    if (obj && obj->GetObjectTypeName() != wxT("project"))
-        return (m_clipboard != NULL);
+    if (obj && obj->GetObjectTypeName() != "project") {
+        return (!!m_clipboard);
+    }
 
     return false;
 }
@@ -1712,8 +1712,9 @@ bool ApplicationData::PasteObject(PObjectBase parent, PObjectBase objToPaste)
 
         PObjectBase aux = obj;
 
-        while (aux && aux->GetObjectInfo() != clipboard->GetObjectInfo())
+        while (aux && aux->GetObjectInfo() != clipboard->GetObjectInfo()) {
             aux = (aux->GetChildCount() > 0 ? aux->GetChild(0) : PObjectBase());
+        }
 
         if (aux && aux != obj) {
             // sustituimos aux por clipboard
@@ -1723,16 +1724,18 @@ bool ApplicationData::PasteObject(PObjectBase parent, PObjectBase objToPaste)
 
             auxParent->AddChild(clipboard);
             clipboard->SetParent(auxParent);
-        } else
+        } else {
             obj = clipboard;
+        }
 
         // y finalmente insertamos en el arbol
         PCommand command(new InsertObjectCmd(this, obj, parent, pos));
 
         Execute(command);
 
-        if (!m_copyOnPaste)
+        if (!m_copyOnPaste) {
             m_clipboard.reset();
+        }
 
         ResolveSubtreeNameConflicts(obj);
 
@@ -2010,20 +2013,24 @@ void ApplicationData::ToggleBorderFlag(PObjectBase obj, int border)
     int intVal = propFlag->GetValueAsInteger();
     intVal ^= border;
 
-    if ((intVal & wxALL) == wxALL)
+    if ((intVal & wxALL) == wxALL) {
         value = TypeConv::SetFlag(wxT("wxALL"), value);
-    else {
-        if ((intVal & wxTOP) != 0)
+    } else {
+        if ((intVal & wxTOP) != 0) {
             value = TypeConv::SetFlag(wxT("wxTOP"), value);
+        }
 
-        if ((intVal & wxBOTTOM) != 0)
+        if ((intVal & wxBOTTOM) != 0) {
             value = TypeConv::SetFlag(wxT("wxBOTTOM"), value);
+        }
 
-        if ((intVal & wxRIGHT) != 0)
+        if ((intVal & wxRIGHT) != 0) {
             value = TypeConv::SetFlag(wxT("wxRIGHT"), value);
+        }
 
-        if ((intVal & wxLEFT) != 0)
+        if ((intVal & wxLEFT) != 0) {
             value = TypeConv::SetFlag(wxT("wxLEFT"), value);
+        }
     }
 
     ModifyProperty(propFlag, value);
@@ -2397,16 +2404,18 @@ void ApplicationData::CheckProjectTree(PObjectBase obj)
 void ApplicationData::ResolveNameConflict(PObjectBase obj)
 {
     while (obj && obj->GetObjectInfo()->GetObjectType()->IsItem()) {
-        if (obj->GetChildCount() > 0)
+        if (obj->GetChildCount() > 0) {
             obj = obj->GetChild(0);
-        else
+        } else {
             return;
+        }
     }
 
     PProperty nameProp = obj->GetProperty(wxT("name"));
 
-    if (!nameProp)
+    if (!nameProp) {
         return;
+    }
 
     // Save the original name for use later.
     wxString originalName = nameProp->GetValue();
@@ -2415,8 +2424,9 @@ void ApplicationData::ResolveNameConflict(PObjectBase obj)
     /*PObjectBase top = obj->FindNearAncestor( wxT( "form" ) );*/
     PObjectBase top = obj->FindParentForm();
 
-    if (!top)
+    if (!top) {
         top = m_project;  // el objeto es un form.
+    }
 
     // construimos el conjunto de nombres
     std::set<wxString> name_set;
@@ -2445,24 +2455,27 @@ void ApplicationData::ResolveSubtreeNameConflicts(PObjectBase obj, PObjectBase t
         /*topObj = obj->FindNearAncestor( wxT( "form" ) );*/
         topObj = obj->FindParentForm();
 
-        if (!topObj)
+        if (!topObj) {
             topObj = m_project;  // object is the project
+        }
     }
 
     // Ignore item objects
     while (obj && obj->GetObjectInfo()->GetObjectType()->IsItem()) {
-        if (obj->GetChildCount() > 0)
+        if (obj->GetChildCount() > 0) {
             obj = obj->GetChild(0);
-        else
+        } else {
             return;  // error
+        }
     }
 
     // Resolve a possible name conflict
     ResolveNameConflict(obj);
 
     // Recurse through all children
-    for (unsigned int i = 0; i < obj->GetChildCount(); i++)
+    for (unsigned int i = 0; i < obj->GetChildCount(); ++i) {
         ResolveSubtreeNameConflicts(obj->GetChild(i), topObj);
+    }
 }
 
 void ApplicationData::BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wxString>& name_set)
@@ -2470,12 +2483,14 @@ void ApplicationData::BuildNameSet(PObjectBase obj, PObjectBase top, std::set<wx
     if (obj != top) {
         PProperty nameProp = top->GetProperty(wxT("name"));
 
-        if (nameProp)
+        if (nameProp) {
             name_set.insert(nameProp->GetValue());
+        }
     }
 
-    for (unsigned int i = 0; i < top->GetChildCount(); i++)
+    for (unsigned int i = 0; i < top->GetChildCount(); ++i) {
         BuildNameSet(obj, top->GetChild(i), name_set);
+    }
 }
 
 
@@ -2491,8 +2506,9 @@ int ApplicationData::CalcPositionOfInsertion(PObjectBase selected, PObjectBase p
             parentSelected = selected->GetParent();
         }
 
-        if (parentSelected && parentSelected == parent)
+        if (parentSelected && parentSelected == parent) {
             pos = parent->GetChildPosition(selected) + 1;
+        }
     }
 
     return pos;
@@ -2502,11 +2518,12 @@ PObjectBase ApplicationData::SearchSizerInto(PObjectBase obj)
 {
     PObjectBase theSizer;
 
-    if (obj->GetObjectInfo()->IsSubclassOf(wxT("sizer")) || obj->GetObjectInfo()->IsSubclassOf(wxT("gbsizer")))
+    if (obj->GetObjectInfo()->IsSubclassOf(wxT("sizer")) || obj->GetObjectInfo()->IsSubclassOf(wxT("gbsizer"))) {
         theSizer = obj;
-    else {
-        for (unsigned int i = 0; !theSizer && i < obj->GetChildCount(); i++)
+    } else {
+        for (unsigned int i = 0; !theSizer && i < obj->GetChildCount(); ++i) {
             theSizer = SearchSizerInto(obj->GetChild(i));
+        }
     }
 
     return theSizer;
@@ -2563,8 +2580,9 @@ void ApplicationData::RemoveEmptyItems(PObjectBase obj)
         }
     }
 
-    for (unsigned int i = 0; i < obj->GetChildCount(); i++)
+    for (unsigned int i = 0; i < obj->GetChildCount(); ++i) {
         RemoveEmptyItems(obj->GetChild(i));
+    }
 }
 
 void ApplicationData::DoRemoveObject(PObjectBase obj, bool cutObject)
@@ -2594,8 +2612,9 @@ void ApplicationData::DoRemoveObject(PObjectBase obj, bool cutObject)
         NotifyObjectRemoved(deleted_obj);
         SelectObject(GetSelectedObject(), true, true);
     } else {
-        if (obj->GetObjectTypeName() != wxT("project"))
+        if (obj->GetObjectTypeName() != "project") {
             assert(false);
+        }
     }
 
     CheckProjectTree(m_project);
@@ -2617,7 +2636,7 @@ void ApplicationData::NotifyEvent(wxFBEvent& event, bool forcedelayed)
 
         std::vector<wxEvtHandler*>::iterator handler;
 
-        for (handler = m_handlers.begin(); handler != m_handlers.end(); handler++) {
+        for (handler = m_handlers.begin(); handler != m_handlers.end(); ++handler) {
             (*handler)->ProcessEvent(event);
         }
     } else {
@@ -2625,7 +2644,7 @@ void ApplicationData::NotifyEvent(wxFBEvent& event, bool forcedelayed)
 
         std::vector<wxEvtHandler*>::iterator handler;
 
-        for (handler = m_handlers.begin(); handler != m_handlers.end(); handler++) {
+        for (handler = m_handlers.begin(); handler != m_handlers.end(); ++handler) {
             (*handler)->AddPendingEvent(event);
         }
     }
@@ -2660,8 +2679,9 @@ void ApplicationData::NotifyObjectExpanded(PObjectBase obj)
 void ApplicationData::NotifyObjectSelected(PObjectBase obj, bool force)
 {
     wxFBObjectEvent event(wxEVT_FB_OBJECT_SELECTED, obj);
-    if (force)
-        event.SetString(wxT("force"));
+    if (force) {
+        event.SetString("force");
+    }
 
     NotifyEvent(event, false);
 }
@@ -2698,7 +2718,7 @@ void ApplicationData::NotifyCodeGeneration(bool panelOnly, bool forcedelayed)
     wxFBEvent event(wxEVT_FB_CODE_GENERATION);
 
     // Using the previously unused Id field in the event to carry a boolean
-    event.SetId((panelOnly ? 1 : 0));
+    event.SetId(panelOnly ? 1 : 0);
 
     NotifyEvent(event, forcedelayed);
 }

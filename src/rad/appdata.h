@@ -151,7 +151,7 @@ public:
 
     void MergeProject(PObjectBase project);
 
-    void CreateObject(wxString name);
+    void CreateObject(const wxString& name);
     void InsertObject(PObjectBase obj, PObjectBase parent);
     void CreateBoxSizerWithObject(PObjectBase obj);
     void RemoveObject(PObjectBase obj);
