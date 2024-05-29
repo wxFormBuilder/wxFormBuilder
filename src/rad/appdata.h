@@ -53,12 +53,12 @@ public:
     const int m_fbpVerMinor;
 
 public:
-    static ApplicationData* Get(const wxString& rootdir = wxT("."));
+    static ApplicationData* Get(const wxString& rootdir = ".");
     static void Initialize();
     static void Destroy();
 
 private:
-    ApplicationData(const wxString& rootdir = wxT("."));
+    explicit ApplicationData(const wxString& rootdir);
 
 public:
     ~ApplicationData();

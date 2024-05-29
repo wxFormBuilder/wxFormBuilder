@@ -466,14 +466,15 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
-    m_rootDir(rootdir),
-    m_modFlag(false),
-    m_darkMode(false),
-    m_objDb(new ObjectDatabase()),
-    m_manager(new wxFBManager),
-    m_ipc(new wxFBIPC),
     m_fbpVerMajor(1),
-    m_fbpVerMinor(18)
+    m_fbpVerMinor(18),
+    m_ipc(std::make_shared<wxFBIPC>()),
+    m_rootDir(rootdir),
+    m_manager(std::make_shared<wxFBManager>()),
+    m_objDb(std::make_shared<ObjectDatabase>()),
+    m_darkMode(false),
+    m_modFlag(false),
+    m_copyOnPaste(false)
 {
 #ifdef __WXFB_DEBUG__
     // wxLog* log = wxLog::SetActiveTarget( NULL );
