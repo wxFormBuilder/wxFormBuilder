@@ -518,12 +518,6 @@ bool ApplicationData::VerifySingleInstance(const wxString& file, bool switchTo)
 }
 
 
-PwxFBManager ApplicationData::GetManager()
-{
-    return m_manager;
-}
-
-
 void ApplicationData::AddHandler(wxEvtHandler* handler)
 {
     m_handlers.push_back(handler);
@@ -537,17 +531,6 @@ void ApplicationData::RemoveHandler(wxEvtHandler* handler)
             break;
         }
     }
-}
-
-
-void ApplicationData::SetDarkMode(bool darkMode)
-{
-    m_darkMode = darkMode;
-}
-
-bool ApplicationData::IsDarkMode() const
-{
-    return m_darkMode;
 }
 
 
@@ -729,11 +712,6 @@ void ApplicationData::SaveProject(const wxString& filename)
     m_modFlag = false;
     m_cmdProc.SetSavePoint();
     NotifyProjectSaved();
-}
-
-bool ApplicationData::IsModified()
-{
-    return m_modFlag;
 }
 
 
@@ -1214,11 +1192,6 @@ wxString ApplicationData::GetEmbeddedFilesOutputPath()
 }
 
 
-PObjectBase ApplicationData::GetProjectData()
-{
-    return m_project;
-}
-
 PObjectBase ApplicationData::GetSelectedForm()
 {
     if (
@@ -1227,11 +1200,6 @@ PObjectBase ApplicationData::GetSelectedForm()
         return m_selObj;
     else
         return m_selObj->FindParentForm();
-}
-
-PObjectBase ApplicationData::GetSelectedObject()
-{
-    return m_selObj;
 }
 
 

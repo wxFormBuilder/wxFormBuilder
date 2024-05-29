@@ -80,7 +80,7 @@ public:
     const wxString& GetApplicationPath() { return m_rootDir; }
 
     // Hold a pointer to the wxFBManager
-    PwxFBManager GetManager();
+    PwxFBManager GetManager() { return m_manager; }
     PObjectDatabase GetObjectDatabase() { return m_objDb; }
     PObjectPackage GetPackage(unsigned int idx) { return m_objDb->GetPackage(idx); }
     unsigned int GetPackageCount() { return m_objDb->GetPackageCount(); }
@@ -89,14 +89,14 @@ public:
     void AddHandler(wxEvtHandler* handler);
     void RemoveHandler(wxEvtHandler* handler);
 
-    void SetDarkMode(bool darkMode);
-    bool IsDarkMode() const;
+    void SetDarkMode(bool darkMode) { m_darkMode = darkMode; }
+    bool IsDarkMode() const { return m_darkMode; }
 
     void NewProject();
     // Operaciones sobre los datos
     bool LoadProject(const wxString& file, bool justGenerate = false);
     void SaveProject(const wxString& filename);
-    bool IsModified();
+    bool IsModified() { return m_modFlag; }
 
     /**
      * Convert a project from an older version.
@@ -126,10 +126,10 @@ public:
      */
     wxString GetEmbeddedFilesOutputPath();
 
-    PObjectBase GetProjectData();
+    PObjectBase GetProjectData() { return m_project; }
     PObjectBase GetSelectedForm();
     // Servicios para los observadores
-    PObjectBase GetSelectedObject();
+    PObjectBase GetSelectedObject() { return m_selObj; }
 
     // Servicios específicos, no definidos en DataObservable
     void SetClipboardObject(PObjectBase obj) { m_clipboard = obj; }
