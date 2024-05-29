@@ -78,7 +78,6 @@ public:
     bool VerifySingleInstance(const wxString& file, bool switchTo = true);
 
     const wxString& GetApplicationPath() { return m_rootDir; }
-    void SetApplicationPath(const wxString& path) { m_rootDir = path; }
 
     // Hold a pointer to the wxFBManager
     PwxFBManager GetManager();
@@ -117,7 +116,6 @@ public:
 
     /** Path to the fbp file that is opened. */
     const wxString& GetProjectPath() { return m_projectPath; }
-    void SetProjectPath(const wxString& path) { m_projectPath = path; }
     wxString GetProjectFileName() { return m_projectFile; }
     /**
      * Path where the files will be generated.

@@ -559,7 +559,7 @@ void ApplicationData::NewProject()
     m_modFlag = false;
     m_cmdProc.Reset();
     m_projectFile = wxT("");
-    SetProjectPath(wxT(""));
+    m_projectPath = wxT("");
     m_ipc->Reset();
     NotifyProjectRefresh();
 }
@@ -674,7 +674,7 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
             m_project = projectObject;
             m_selObj = m_project;
             m_projectFile = filename.GetFullPath();
-            SetProjectPath(filename.GetPath());
+            m_projectPath = filename.GetPath();
             // Set the modification to true if the project was older and has been converted
             m_modFlag = (versionState == VersionState::OLDER);
             m_cmdProc.Reset();
@@ -726,7 +726,7 @@ void ApplicationData::SaveProject(const wxString& filename)
     }
 
     m_projectFile = name.GetFullPath();
-    SetProjectPath(name.GetPath());
+    m_projectPath = name.GetPath();
     m_modFlag = false;
     m_cmdProc.SetSavePoint();
     NotifyProjectSaved();
