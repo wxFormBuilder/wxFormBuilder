@@ -69,11 +69,11 @@ void CommandProcessor::Reset()
     m_savePoint = 0;
 }
 
-bool CommandProcessor::CanUndo()
+bool CommandProcessor::CanUndo() const
 {
     return (!m_undoStack.empty());
 }
-bool CommandProcessor::CanRedo()
+bool CommandProcessor::CanRedo() const
 {
     return (!m_redoStack.empty());
 }
