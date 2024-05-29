@@ -468,7 +468,6 @@ void ApplicationData::Destroy()
 ApplicationData::ApplicationData(const wxString& rootdir) :
     m_rootDir(rootdir),
     m_modFlag(false),
-    m_warnOnAdditionsUpdate(true),
     m_darkMode(false),
     m_objDb(new ObjectDatabase()),
     m_manager(new wxFBManager),

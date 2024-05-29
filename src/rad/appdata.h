@@ -311,7 +311,6 @@ private:
     PObjectDatabase m_objDb;  // Base de datos de objetos
     std::vector<wxEvtHandler*> m_handlers;
     bool m_darkMode;
-    bool m_warnOnAdditionsUpdate;  // flag to warn on additions update / class renames
 
     PObjectBase m_project;  // Proyecto
     wxString m_projectPath;
