@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.1.0-115-ge275391f-dirty)
+// C++ code generated with wxFormBuilder (version 4.1.0-132-g5d6740ed)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -142,7 +142,7 @@ MainPanel::MainPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	bSizer1->Add( sbSizer1, 0, wxALL|wxEXPAND, 5 );
 
 	wxGridSizer* gSizer1;
-	gSizer1 = new wxGridSizer( 2, 2, 0, 0 );
+	gSizer1 = new wxGridSizer( 0, 2, 0, 0 );
 
 	m_bitmap1 = new wxStaticBitmap( this, ID_DEFAULT, wxBitmap( wxT("../bin/resources/splash.png"), wxBITMAP_TYPE_ANY ), wxDefaultPosition, wxSize( 100,20 ), 0 );
 	gSizer1->Add( m_bitmap1, 1, wxALL|wxEXPAND, 5 );
