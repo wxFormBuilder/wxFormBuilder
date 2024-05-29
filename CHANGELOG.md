@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix wxTextCtrl property `maxlength` conversion
+- Fix default values of AUI properties `aui_row`, `aui_position`, `aui_layer`
+
 ## [4.2.0] - 2024-05-29
 
 ### Added
