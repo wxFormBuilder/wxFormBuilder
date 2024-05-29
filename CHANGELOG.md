@@ -24,6 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Move some project C++ properties into global scope because they are in fact used by all languages
 - Use a common prefix for language specific project properties to prevent name clashes
 - Use more sensible default values for project properties
+- Update project file version to 1.18
 
 ### Fixed
 
