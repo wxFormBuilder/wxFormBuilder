@@ -395,7 +395,7 @@ Written by
     <inherits class="AUI"/>
     <property name="name" type="text">m_mediaCtrl</property>
     <property name="file" type="file" help="The path to media file."/>
-    <property name="play" type="bool" help="Play the media file."/>
+    <property name="play" type="bool" help="Play the media file.">0</property>
     <property name="playback_rate" type="float" help="Sets the playback rate, or speed of the media, to that referred by dRate. 1.0 represents normal speed, while 2.0 represents twice the normal speed of the media, for example. Not supported on the GStreamer (Unix) backend.">1</property>
     <property name="volume" type="float" help="Sets the volume of the media from a 0.0 to 1.0 range to that referred by dVolume. 1.0 represents full volume, while 0.5 represents half (50 percent) volume, for example. Note that this may not be exact due to conversion and rounding errors, although setting the volume to full or none is always exact.">1</property>
     <property name="player_controls" type="option">
