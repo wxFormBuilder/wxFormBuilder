@@ -116,7 +116,7 @@ public:
 
     /** Path to the fbp file that is opened. */
     const wxString& GetProjectPath() const { return m_projectPath; }
-    wxString GetProjectFileName() const { return m_projectFile; }
+    const wxString& GetProjectFileName() const { return m_projectFile; }
     /**
      * Path where the files will be generated.
      */
@@ -136,7 +136,7 @@ public:
     PObjectBase GetClipboardObject() const { return m_clipboard; }
 
     void GenerateCode(bool panelOnly = false, bool noDelayed = false);
-    void GenerateInheritedClass(PObjectBase form, wxString className, wxString path, wxString file);
+    void GenerateInheritedClass(PObjectBase form, const wxString& className, const wxString& path, const wxString& file);
     void ShowXrcPreview();
 
     // Object will not be selected if it already is selected, unless force = true
@@ -152,8 +152,8 @@ public:
     void CreateBoxSizerWithObject(PObjectBase obj);
     void RemoveObject(PObjectBase obj);
 
-    void ModifyProperty(PProperty prop, wxString value);
-    void ModifyEventHandler(PEvent evt, wxString value);
+    void ModifyProperty(PProperty prop, const wxString& value);
+    void ModifyEventHandler(PEvent evt, const wxString& value);
 
     bool CanCopyObject() const;
     bool CanPasteObject() const;

@@ -132,14 +132,15 @@ class ModifyPropertyCmd : public Command
 
 private:
     PProperty m_property;
-    wxString m_oldValue, m_newValue;
+    wxString m_oldValue;
+    wxString m_newValue;
 
 protected:
     void DoExecute() override;
     void DoRestore() override;
 
 public:
-    ModifyPropertyCmd(PProperty prop, wxString value);
+    ModifyPropertyCmd(PProperty prop, const wxString& value);
 };
 
 /**
@@ -151,14 +152,15 @@ class ModifyEventHandlerCmd : public Command
 
 private:
     PEvent m_event;
-    wxString m_oldValue, m_newValue;
+    wxString m_oldValue;
+    wxString m_newValue;
 
 protected:
     void DoExecute() override;
     void DoRestore() override;
 
 public:
-    ModifyEventHandlerCmd(PEvent event, wxString value);
+    ModifyEventHandlerCmd(PEvent event, const wxString& value);
 };
 
 /**
@@ -170,7 +172,8 @@ class ShiftChildCmd : public Command
 
 private:
     PObjectBase m_object;
-    int m_oldPos, m_newPos;
+    int m_oldPos;
+    int m_newPos;
 
 protected:
     void DoExecute() override;
@@ -278,10 +281,8 @@ void InsertObjectCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-RemoveObjectCmd::RemoveObjectCmd(ApplicationData* data, PObjectBase object)
+RemoveObjectCmd::RemoveObjectCmd(ApplicationData* data, PObjectBase object) : m_data(data), m_object(object)
 {
-    m_data = data;
-    m_object = object;
     m_parent = object->GetParent();
     m_oldPos = m_parent->GetChildPosition(object);
     m_oldSelected = data->GetSelectedObject();
@@ -306,7 +307,7 @@ void RemoveObjectCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-ModifyPropertyCmd::ModifyPropertyCmd(PProperty prop, wxString value) : m_property(prop), m_newValue(value)
+ModifyPropertyCmd::ModifyPropertyCmd(PProperty prop, const wxString& value) : m_property(prop), m_newValue(value)
 {
     m_oldValue = prop->GetValue();
 }
@@ -323,7 +324,7 @@ void ModifyPropertyCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-ModifyEventHandlerCmd::ModifyEventHandlerCmd(PEvent event, wxString value) : m_event(event), m_newValue(value)
+ModifyEventHandlerCmd::ModifyEventHandlerCmd(PEvent event, const wxString& value) : m_event(event), m_newValue(value)
 {
     m_oldValue = event->GetValue();
 }
@@ -340,15 +341,13 @@ void ModifyEventHandlerCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-ShiftChildCmd::ShiftChildCmd(PObjectBase object, int pos)
+ShiftChildCmd::ShiftChildCmd(PObjectBase object, int pos) : m_object(object), m_newPos(pos)
 {
-    m_object = object;
     PObjectBase parent = object->GetParent();
 
     assert(parent);
 
     m_oldPos = parent->GetChildPosition(object);
-    m_newPos = pos;
 }
 
 void ShiftChildCmd::DoExecute()
@@ -369,10 +368,8 @@ void ShiftChildCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-CutObjectCmd::CutObjectCmd(ApplicationData* data, PObjectBase object)
+CutObjectCmd::CutObjectCmd(ApplicationData* data, PObjectBase object) : m_data(data), m_object(object)
 {
-    m_data = data;
-    m_object = object;
     m_parent = object->GetParent();
     m_oldPos = m_parent->GetChildPosition(object);
     m_oldSelected = data->GetSelectedObject();
@@ -405,10 +402,8 @@ void CutObjectCmd::DoRestore()
 
 //-----------------------------------------------------------------------------
 
-ReparentObjectCmd ::ReparentObjectCmd(PObjectBase sizeritem, PObjectBase sizer)
+ReparentObjectCmd::ReparentObjectCmd(PObjectBase sizeritem, PObjectBase sizer) : m_sizeritem(sizeritem), m_sizer(sizer)
 {
-    m_sizeritem = sizeritem;
-    m_sizer = sizer;
     m_oldSizer = m_sizeritem->GetParent();
     m_oldPosition = m_oldSizer->GetChildPosition(sizeritem);
 }
@@ -1209,7 +1204,7 @@ void ApplicationData::GenerateCode(bool panelOnly, bool noDelayed)
     NotifyCodeGeneration(panelOnly, !noDelayed);
 }
 
-void ApplicationData::GenerateInheritedClass(PObjectBase form, wxString className, wxString path, wxString file)
+void ApplicationData::GenerateInheritedClass(PObjectBase form, const wxString& className, const wxString& path, const wxString& file)
 {
     try {
         PObjectBase project = GetProjectData();
@@ -1547,7 +1542,7 @@ void ApplicationData::RemoveObject(PObjectBase obj)
 }
 
 
-void ApplicationData::ModifyProperty(PProperty prop, wxString str)
+void ApplicationData::ModifyProperty(PProperty prop, const wxString& str)
 {
     PObjectBase object = prop->GetObject();
 
@@ -1559,7 +1554,7 @@ void ApplicationData::ModifyProperty(PProperty prop, wxString str)
     }
 }
 
-void ApplicationData::ModifyEventHandler(PEvent evt, wxString value)
+void ApplicationData::ModifyEventHandler(PEvent evt, const wxString& value)
 {
     PObjectBase object = evt->GetObject();
 
