@@ -1167,6 +1167,15 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
         if (objectClass == "wxAuiToolBar") {
             RemoveProperties(object, {"label_visible", "toolbar_label"});
         }
+        if (objectClass == "wxTextCtrl") {
+            if (auto properties = GetProperties(object, {"maxlength"}); !properties.empty()) {
+                auto* maxlengthProperty = *properties.begin();
+                auto maxlengthValue = XMLUtils::GetText(maxlengthProperty);
+                if (maxlengthValue.empty()) {
+                    XMLUtils::SetText(maxlengthProperty, "0");
+                }
+            }
+        }
     }
 }
 
