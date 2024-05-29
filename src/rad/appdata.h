@@ -77,13 +77,13 @@ public:
     // Allow a single instance check from outside the AppData class
     bool VerifySingleInstance(const wxString& file, bool switchTo = true);
 
-    const wxString& GetApplicationPath() { return m_rootDir; }
+    const wxString& GetApplicationPath() const { return m_rootDir; }
 
     // Hold a pointer to the wxFBManager
-    PwxFBManager GetManager() { return m_manager; }
-    PObjectDatabase GetObjectDatabase() { return m_objDb; }
-    PObjectPackage GetPackage(unsigned int idx) { return m_objDb->GetPackage(idx); }
-    unsigned int GetPackageCount() { return m_objDb->GetPackageCount(); }
+    PwxFBManager GetManager() const { return m_manager; }
+    PObjectDatabase GetObjectDatabase() const { return m_objDb; }
+    PObjectPackage GetPackage(unsigned int idx) const { return m_objDb->GetPackage(idx); }
+    unsigned int GetPackageCount() const { return m_objDb->GetPackageCount(); }
 
     // Procedures for register/unregister wxEvtHandlers to be notified of wxFBEvents
     void AddHandler(wxEvtHandler* handler);
@@ -96,7 +96,7 @@ public:
     // Operaciones sobre los datos
     bool LoadProject(const wxString& file, bool justGenerate = false);
     void SaveProject(const wxString& filename);
-    bool IsModified() { return m_modFlag; }
+    bool IsModified() const { return m_modFlag; }
 
     /**
      * Convert a project from an older version.
@@ -115,25 +115,25 @@ public:
     void ConvertObject(tinyxml2::XMLElement* object, int versionMajor, int versionMinor);
 
     /** Path to the fbp file that is opened. */
-    const wxString& GetProjectPath() { return m_projectPath; }
-    wxString GetProjectFileName() { return m_projectFile; }
+    const wxString& GetProjectPath() const { return m_projectPath; }
+    wxString GetProjectFileName() const { return m_projectFile; }
     /**
      * Path where the files will be generated.
      */
-    wxString GetOutputPath();
+    wxString GetOutputPath() const;
     /**
      * Path where the embedded bitmap files will be generated.
      */
-    wxString GetEmbeddedFilesOutputPath();
+    wxString GetEmbeddedFilesOutputPath() const;
 
-    PObjectBase GetProjectData() { return m_project; }
-    PObjectBase GetSelectedForm();
+    PObjectBase GetProjectData() const { return m_project; }
+    PObjectBase GetSelectedForm() const;
     // Servicios para los observadores
-    PObjectBase GetSelectedObject() { return m_selObj; }
+    PObjectBase GetSelectedObject() const { return m_selObj; }
 
     // Servicios específicos, no definidos en DataObservable
     void SetClipboardObject(PObjectBase obj) { m_clipboard = obj; }
-    PObjectBase GetClipboardObject() { return m_clipboard; }
+    PObjectBase GetClipboardObject() const { return m_clipboard; }
 
     void GenerateCode(bool panelOnly = false, bool noDelayed = false);
     void GenerateInheritedClass(PObjectBase form, wxString className, wxString path, wxString file);
@@ -155,9 +155,9 @@ public:
     void ModifyProperty(PProperty prop, wxString value);
     void ModifyEventHandler(PEvent evt, wxString value);
 
-    bool CanCopyObject();
-    bool CanPasteObject();
-    bool CanPasteObjectFromClipboard();
+    bool CanCopyObject() const;
+    bool CanPasteObject() const;
+    bool CanPasteObjectFromClipboard() const;
 
     void CopyObject(PObjectBase obj);
     void CutObject(PObjectBase obj);
@@ -175,8 +175,8 @@ public:
     void ToggleExpandLayout(PObjectBase obj);
     void ToggleStretchLayout(PObjectBase obj);
 
-    bool CanUndo() { return m_cmdProc.CanUndo(); }
-    bool CanRedo() { return m_cmdProc.CanRedo(); }
+    bool CanUndo() const { return m_cmdProc.CanUndo(); }
+    bool CanRedo() const { return m_cmdProc.CanRedo(); }
 
     void Undo();
     void Redo();
@@ -221,7 +221,7 @@ private:
     /**
      * Helper for GetOutputPath and GetEmbeddedFilesOutputPath
      */
-    wxString GetPathProperty(const wxString& pathName);
+    wxString GetPathProperty(const wxString& pathName) const;
 
     /**
      * Comprueba las referencias cruzadas de todos los nodos del árbol

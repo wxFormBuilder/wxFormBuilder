@@ -1181,18 +1181,18 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
 }
 
 
-wxString ApplicationData::GetOutputPath()
+wxString ApplicationData::GetOutputPath() const
 {
     return GetPathProperty(wxT("path"));
 }
 
-wxString ApplicationData::GetEmbeddedFilesOutputPath()
+wxString ApplicationData::GetEmbeddedFilesOutputPath() const
 {
     return GetPathProperty(wxT("embedded_files_path"));
 }
 
 
-PObjectBase ApplicationData::GetSelectedForm()
+PObjectBase ApplicationData::GetSelectedForm() const
 {
     if (
       (m_selObj->GetObjectTypeName() == wxT("form")) || (m_selObj->GetObjectTypeName() == wxT("wizard")) ||
@@ -1571,7 +1571,7 @@ void ApplicationData::ModifyEventHandler(PEvent evt, wxString value)
 }
 
 
-bool ApplicationData::CanCopyObject()
+bool ApplicationData::CanCopyObject() const
 {
     PObjectBase obj = GetSelectedObject();
 
@@ -1581,7 +1581,7 @@ bool ApplicationData::CanCopyObject()
     return false;
 }
 
-bool ApplicationData::CanPasteObject()
+bool ApplicationData::CanPasteObject() const
 {
     PObjectBase obj = GetSelectedObject();
 
@@ -1591,7 +1591,7 @@ bool ApplicationData::CanPasteObject()
     return false;
 }
 
-bool ApplicationData::CanPasteObjectFromClipboard()
+bool ApplicationData::CanPasteObjectFromClipboard() const
 {
     // Do not call Open() when the clipboard is opened
     if (!wxTheClipboard->IsOpened()) {
@@ -2341,7 +2341,7 @@ bool ApplicationData::MoveOptions(
 }
 
 
-wxString ApplicationData::GetPathProperty(const wxString& pathName)
+wxString ApplicationData::GetPathProperty(const wxString& pathName) const
 {
     PObjectBase project = GetProjectData();
     wxFileName path;

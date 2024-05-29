@@ -54,8 +54,8 @@ public:
     void SetSavePoint();
     bool IsAtSavePoint();
 
-    bool CanUndo();
-    bool CanRedo();
+    bool CanUndo() const;
+    bool CanRedo() const;
 };
 
 
