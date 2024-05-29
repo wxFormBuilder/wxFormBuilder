@@ -309,8 +309,7 @@ private:
     wxString m_rootDir;  // directorio raíz (mismo que el ejecutable)
     PwxFBManager m_manager;
     PObjectDatabase m_objDb;  // Base de datos de objetos
-    typedef std::vector<wxEvtHandler*> HandlerVector;
-    HandlerVector m_handlers;
+    std::vector<wxEvtHandler*> m_handlers;
     bool m_darkMode;
     bool m_warnOnAdditionsUpdate;  // flag to warn on additions update / class renames
 

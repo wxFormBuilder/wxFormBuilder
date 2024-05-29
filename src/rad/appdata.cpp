@@ -532,7 +532,7 @@ void ApplicationData::AddHandler(wxEvtHandler* handler)
 
 void ApplicationData::RemoveHandler(wxEvtHandler* handler)
 {
-    for (HandlerVector::iterator it = m_handlers.begin(); it != m_handlers.end(); ++it) {
+    for (auto it = m_handlers.begin(); it != m_handlers.end(); ++it) {
         if (*it == handler) {
             m_handlers.erase(it);
             break;
