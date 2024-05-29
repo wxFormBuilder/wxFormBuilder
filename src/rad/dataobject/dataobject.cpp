@@ -52,8 +52,8 @@ wxFBDataObject::wxFBDataObject(PObjectBase object)
     doc.InsertEndChild(root);
 
     object->Serialize(root);
-    root->SetAttribute("fbp_version_major", static_cast<int>(AppData()->m_fbpVerMajor));
-    root->SetAttribute("fbp_version_minor", static_cast<int>(AppData()->m_fbpVerMinor));
+    root->SetAttribute("fbp_version_major", static_cast<int>(AppData()->getFbpVersion().major));
+    root->SetAttribute("fbp_version_minor", static_cast<int>(AppData()->getFbpVersion().minor));
 
     tinyxml2::XMLPrinter printer(nullptr, true, 0);
     doc.Print(&printer);
@@ -91,16 +91,16 @@ PObjectBase wxFBDataObject::GetObject() const
     }
 
     if (
-        versionMajor > AppData()->m_fbpVerMajor ||
-        (versionMajor == AppData()->m_fbpVerMajor && versionMinor > AppData()->m_fbpVerMinor)
+        versionMajor > AppData()->getFbpVersion().major ||
+        (versionMajor == AppData()->getFbpVersion().major && versionMinor > AppData()->getFbpVersion().minor)
     ) {
         wxLogError(_("wxFormBuilderDataFormat: This object cannot be pasted because it is from a newer version of wxFormBuilder"));
 
         return PObjectBase();
     }
     if (
-        versionMajor < AppData()->m_fbpVerMajor ||
-        (versionMajor == AppData()->m_fbpVerMajor && versionMinor < AppData()->m_fbpVerMinor)
+        versionMajor < AppData()->getFbpVersion().major ||
+        (versionMajor == AppData()->getFbpVersion().major && versionMinor < AppData()->getFbpVersion().minor)
     ) {
         AppData()->ConvertObject(root, versionMajor, versionMinor);
     }

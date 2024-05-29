@@ -49,8 +49,10 @@ class wxFBManager;
 class ApplicationData
 {
 public:
-    const int m_fbpVerMajor;
-    const int m_fbpVerMinor;
+    struct Version {
+        int major;
+        int minor;
+    };
 
 public:
     static ApplicationData* Get(const wxString& rootdir = ".");
@@ -71,6 +73,8 @@ public:
 #ifdef __WXFB_DEBUG__
     wxLog* GetDebugLogTarget() { return m_debugLogTarget; }
 #endif
+
+    const Version& getFbpVersion() const { return m_fbpVersion; }
 
     // Initialize application
     void LoadApp();
@@ -299,6 +303,9 @@ private:
 
 private:
     static ApplicationData* s_instance;
+
+    // Current project file format version
+    const Version m_fbpVersion;
 
     // Prevent more than one instance of a project
     std::shared_ptr<wxFBIPC> m_ipc;

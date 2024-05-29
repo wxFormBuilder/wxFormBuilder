@@ -461,8 +461,7 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
-    m_fbpVerMajor(1),
-    m_fbpVerMinor(18),
+    m_fbpVersion{1, 18},
     m_ipc(std::make_shared<wxFBIPC>()),
     m_rootDir(rootdir),
     m_manager(std::make_shared<wxFBManager>()),
@@ -594,16 +593,16 @@ bool ApplicationData::LoadProject(const wxString& file, bool justGenerate)
         NEWER,
     };
     auto versionState = VersionState::EQUAL;
-    if (versionMajor == m_fbpVerMajor) {
-        if (versionMinor < m_fbpVerMinor) {
+    if (versionMajor == m_fbpVersion.major) {
+        if (versionMinor < m_fbpVersion.minor) {
             versionState = VersionState::OLDER;
-        } else if (versionMinor > m_fbpVerMinor) {
+        } else if (versionMinor > m_fbpVersion.minor) {
             versionState = VersionState::NEWER;
         }
     } else {
-        if (versionMajor < m_fbpVerMajor) {
+        if (versionMajor < m_fbpVersion.major) {
             versionState = VersionState::OLDER;
-        } else if (versionMajor > m_fbpVerMajor) {
+        } else if (versionMajor > m_fbpVersion.major) {
             versionState = VersionState::NEWER;
         }
     }
@@ -690,8 +689,8 @@ void ApplicationData::SaveProject(const wxString& filename)
     doc.InsertEndChild(root);
 
     auto* version = doc.NewElement("FileVersion");
-    version->SetAttribute("major", static_cast<int>(m_fbpVerMajor));
-    version->SetAttribute("minor", static_cast<int>(m_fbpVerMinor));
+    version->SetAttribute("major", static_cast<int>(m_fbpVersion.major));
+    version->SetAttribute("minor", static_cast<int>(m_fbpVersion.minor));
     root->InsertEndChild(version);
 
     auto* project = doc.NewElement("");
@@ -749,8 +748,8 @@ bool ApplicationData::ConvertProject(
 
     ConvertProjectProperties(project, path, versionMajor, versionMinor);
     ConvertObject(project, versionMajor, versionMinor);
-    version->SetAttribute("major", static_cast<int>(m_fbpVerMajor));
-    version->SetAttribute("minor", static_cast<int>(m_fbpVerMinor));
+    version->SetAttribute("major", static_cast<int>(m_fbpVersion.major));
+    version->SetAttribute("minor", static_cast<int>(m_fbpVersion.minor));
 
     return true;
 }
