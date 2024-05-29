@@ -102,8 +102,6 @@ public:
 
 ////////////////////////////////////
 
-using namespace TypeConv;
-
 wxString TypeConv::StringToWxString(const std::string& str)
 {
     return StringToWxString(str.c_str());

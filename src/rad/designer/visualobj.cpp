@@ -29,8 +29,6 @@
 #include "visualeditor.h"
 
 
-using namespace TypeConv;
-
 BEGIN_EVENT_TABLE(VObjEvtHandler, wxEvtHandler)
 EVT_LEFT_DOWN(VObjEvtHandler::OnLeftClick)
 EVT_RIGHT_DOWN(VObjEvtHandler::OnRightClick)
