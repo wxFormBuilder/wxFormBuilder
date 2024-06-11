@@ -52,7 +52,17 @@ PHP code generation written by
   </templates>
 
   <templates class="wxStaticBoxSizer">
-    <template name="construction">@$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
+    <template name="construction">
+      #ifnull $staticbox
+      @{
+        @$$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl
+      @}
+      #ifnotnull $staticbox
+      @{
+        @$$staticbox->SetLabel( $label ); #nl
+        @$$name = new wxStaticBoxSizer( @$$staticbox, $orient ); #nl
+      @}
+    </template>
     <template name="evt_connect_OnUpdateUI">$name->GetStaticBox()->Connect->( wxEVT_UPDATE_UI, #handler );</template>
   </templates>
 
