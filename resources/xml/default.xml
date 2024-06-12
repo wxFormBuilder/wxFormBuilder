@@ -73,7 +73,7 @@
   </objectinfo>
 
   <objectinfo class="C++" smallIcon="c++.png" type="interface">
-    <property name="permission" type="option" hidden="1">
+    <property name="permission" type="option">
       <option name="none"/>
       <option name="private"/>
       <option name="protected"/>
@@ -267,7 +267,7 @@
   </objectinfo>
 
   <objectinfo class="Validator" type="interface">
-    <property name="validator_type" type="option" hidden="1" help="For C++ only.&#x0A;Type of a validator assigned to the window">
+    <property name="validator_type" type="option" help="For C++ only.&#x0A;Type of a validator assigned to the window">
       <option name="wxDefaultValidator" help="Default validator (does nothing)"/>
       <option name="wxGenericValidator" help="Generic validator. Transfers data from/to window ."/>
       <option name="wxTextValidator" help="Text validator. Transfer data from/to window and allows basic data filtering."/>
@@ -286,7 +286,7 @@
       wxFILTER_NONE
     </property>
     <property name="validator_variable" type="text" help="For C++ only.&#x0A;Name of a member variable associated with the validator"/>
-    <property name="validator_data_type" type="option" hidden="1" help="For C++ only.&#x0A;Data type of the member variable">
+    <property name="validator_data_type" type="option" help="For C++ only.&#x0A;Data type of the member variable">
       <option name="" help ="Undefined data type."/>
       <option name="bool" help="Logical value. This should be used for wxCheckBox and wxRadioButton."/>
       <option name="int" help="Signed integer value. This should be used for wxGauge, wxScrollBar, wxRadioBox, wxSpinButton, wxChoice."/>

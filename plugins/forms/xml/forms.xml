@@ -54,7 +54,7 @@ Written by
       <property name="window_style">wxTAB_TRAVERSAL</property>
       <property name="size" type="wxSize">500,300</property>
     </inherits>
-    <property name="name" type="text" hidden="1">MyFrame</property>
+    <property name="name" type="text">MyFrame</property>
     <property name="title" type="wxString_i18n"/>
     <property name="style" type="bitlist">
       <option name="wxDEFAULT_FRAME_STYLE" help="Defined as wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN"/>
@@ -115,7 +115,7 @@ Written by
       <property name="window_style">wxTAB_TRAVERSAL</property>
       <property name="size" type="wxSize">500,300</property>
     </inherits>
-    <property name="name" type="text" hidden="1">MyPanel</property>
+    <property name="name" type="text">MyPanel</property>
     <property name="two_step_creation" type="bool" help="Add constructor and method for two-step creation. This requires the base class to support two-step creation.">0</property>
     <property name="event_handler" type="option" help="For C++ Only.&#x0A;The way how to declare and implement event handlers.">
       <option name="decl_pure_virtual" help="Only declare event handlers as pure virtual methods."/>
@@ -144,7 +144,7 @@ Written by
     <inherits class="wxTopLevelWindow"/>
     <inherits class="AUI Events"/>
     <inherits class="wxWindow"/>
-    <property name="name" type="text" hidden="1">MyDialog</property>
+    <property name="name" type="text">MyDialog</property>
     <property name="title" type="wxString_i18n"/>
     <property name="style" type="bitlist">
       <option name="wxCAPTION" help="Puts a caption on the dialog box."/>
@@ -196,7 +196,7 @@ Written by
   <objectinfo class="Wizard" icon="wizard.xpm" type="wizard" startgroup="1">
     <inherits class="wxTopLevelWindow"/>
     <inherits class="wxWindow"/>
-    <property name="name" type="text" hidden="1">MyWizard</property>
+    <property name="name" type="text">MyWizard</property>
     <property name="title" type="wxString_i18n"/>
     <property name="bitmap" type="bitmap" help="Bitmap to display on the left side of the wizard (default: none)."/>
     <property name="style" type="bitlist">
