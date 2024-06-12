@@ -458,6 +458,7 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
+    // TODO: Update for next release
     m_fbpVersion{1, 18},
     m_ipc(std::make_shared<wxFBIPC>()),
     m_rootDir(rootdir),
@@ -1182,6 +1183,13 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
                     XMLUtils::SetText(maxlengthProperty, "0");
                 }
             }
+        }
+    }
+
+    // Convert to version 1.19
+    if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 19)) {
+        if (objectClass == "wxStaticBoxSizer") {
+            RemoveProperties(object, {"id"});
         }
     }
 }
