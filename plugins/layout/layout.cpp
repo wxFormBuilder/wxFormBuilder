@@ -222,15 +222,9 @@ public:
 class StaticBoxSizerComponent : public ComponentBase
 {
 public:
-    int m_count;
-    StaticBoxSizerComponent() { m_count = 0; }
     wxObject* Create(IObject* obj, wxObject* parent) override
     {
-        m_count++;
-        wxStaticBox* box = new wxStaticBox((wxWindow*)parent, wxID_ANY, obj->GetPropertyAsString(_("label")));
-
-        wxStaticBoxSizer* sizer = new wxStaticBoxSizer(box, obj->GetPropertyAsInteger(_("orient")));
-
+        auto* sizer = new wxStaticBoxSizer(obj->GetPropertyAsInteger(_("orient")), (wxWindow*)parent, obj->GetPropertyAsString(_("label")));
         sizer->SetMinSize(obj->GetPropertyAsSize(_("minimum_size")));
 
         return sizer;
