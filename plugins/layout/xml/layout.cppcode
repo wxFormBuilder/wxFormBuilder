@@ -59,7 +59,7 @@ Written by
     <template name="construction">
       #ifnull $staticbox
       @{
-        $name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl
+        $name = new wxStaticBoxSizer( $orient, #wxparent $name, $label ); #nl
       @}
       #ifnotnull $staticbox
       @{

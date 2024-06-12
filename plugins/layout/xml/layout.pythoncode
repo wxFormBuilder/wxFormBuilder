@@ -55,7 +55,7 @@ Python code generation written by
     <template name="construction">
       #ifnull $staticbox
       @{
-        $name = wx.StaticBoxSizer( wx.StaticBox( #wxparent $name, $id, $label ), $orient ) #nl
+        $name = wx.StaticBoxSizer( $orient, #wxparent $name, $label ) #nl
       @}
       #ifnotnull $staticbox
       @{

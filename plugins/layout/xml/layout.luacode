@@ -55,7 +55,7 @@ Lua code generation written by
     <template name="construction">
       #ifnull $staticbox
       @{
-        #utbl$name = wx.wxStaticBoxSizer( wx.wxStaticBox( #utbl#parentname, $id, $label ), $orient ) #nl
+        #utbl$name = wx.wxStaticBoxSizer( $orient, #utbl#parentname, $label ) #nl
       @}
       #ifnotnull $staticbox
       @{
