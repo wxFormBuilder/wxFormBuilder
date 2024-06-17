@@ -21,8 +21,6 @@ on:
       - 'LICENSE'
       - '**.md'
   pull_request:
-    branches-ignore:
-      - 'dependabot/**'
     paths-ignore:
       - '.github/workflows/sources.yml'
       - '.github/workflows/macos.yml'
@@ -43,7 +41,7 @@ jobs:
   flatpak:
     name: Flatpak
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.ref, '/debian/') }}
+    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     container:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-23.08
       options: --privileged
@@ -74,7 +72,7 @@ jobs:
           - { os: ubuntu-24.04, wxver: 3.2 }
           - { os: ubuntu-latest, wxver: 3.0-gtk3 }
           - { os: ubuntu-20.04, wxver: 3.0-gtk3 }
-    if: ${{ !contains(github.ref, '/flatpak/') }}
+    if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.1.6
       with:

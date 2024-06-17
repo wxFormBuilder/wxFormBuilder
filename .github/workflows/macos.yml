@@ -21,8 +21,6 @@ on:
       - 'LICENSE'
       - '**.md'
   pull_request:
-    branches-ignore:
-      - 'dependabot/**'
     paths-ignore:
       - '.github/workflows/sources.yml'
       - '.github/workflows/linux.yml'
@@ -47,6 +45,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, macos-13, macos-12]
+    if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.1.6
       with:
