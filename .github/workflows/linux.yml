@@ -46,7 +46,7 @@ jobs:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-23.08
       options: --privileged
     steps:
-    - uses: actions/checkout@v4.1.6
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
@@ -74,7 +74,7 @@ jobs:
           - { os: ubuntu-20.04, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.1.6
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
