@@ -59,7 +59,6 @@ Python code generation written by
       @}
       #ifnotnull $staticbox
       @{
-        $staticbox.SetLabel( $label ); #nl
         $name = wx.StaticBoxSizer( $staticbox, $orient ) #nl
       @}
     </template>

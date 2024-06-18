@@ -81,7 +81,7 @@ Written by
       <option name="wxHORIZONTAL" help="Align items horizontally"/>
       wxVERTICAL
     </property>
-    <property name="label" type="wxString_i18n" help="Text to be displayed in the static box, use empty string for no label.">label</property>
+    <property name="label" type="wxString_i18n" help="Text to be displayed in the static box, use empty string for no label. This property is unused if a custom wxStaticBox is used.">label</property>
     <property name="staticbox" type="text" help="Identifier of the custom wxStaticBox to use. If not specified, a new wxStaticBox gets created internally. To use a custom wxStaticBox, usually the CustomCode component is required to create such an element."></property>
     <property name="parent" type="bool" help="Use encapsulated wxStaticBox as a parent of managed children (recommended for wxWidgets 2.9.1 and later).">1</property>
     <event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event."/>

@@ -59,7 +59,6 @@ Lua code generation written by
       @}
       #ifnotnull $staticbox
       @{
-        #utbl$staticbox:SetLabel( $label ); #nl
         #utbl$name = wx.wxStaticBoxSizer( #utbl$staticbox, $orient ) #nl
       @}
     </template>

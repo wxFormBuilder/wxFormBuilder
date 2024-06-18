@@ -59,7 +59,6 @@ PHP code generation written by
       @}
       #ifnotnull $staticbox
       @{
-        @$$staticbox->SetLabel( $label ); #nl
         @$$name = new wxStaticBoxSizer( @$$staticbox, $orient ); #nl
       @}
     </template>
