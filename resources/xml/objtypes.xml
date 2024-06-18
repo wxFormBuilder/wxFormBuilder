@@ -141,6 +141,7 @@
 
   <objtype name="sizer">
     <childtype name="sizeritem"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="sizeritem" item="1">
@@ -168,6 +169,7 @@
 
   <objtype name="gbsizer">
     <childtype name="gbsizeritem"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="gbsizeritem" item="1">
