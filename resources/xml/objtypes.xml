@@ -86,6 +86,7 @@
   <objtype name="wizard">
     <childtype name="menu" nmax="1"/>
     <childtype name="wizardpagesimple"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="wizardpagesimple">
@@ -96,12 +97,14 @@
 
   <objtype name="menubar_form">
     <childtype name="menu"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="toolbar_form">
     <childtype name="tool"/>
     <childtype name="widget"/>
     <childtype name="expanded_widget"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
 
