@@ -240,8 +240,8 @@ Python code generation written by
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$import_python</template>
-    <template name="construction">$code_python</template>
+    <template name="include">$python_import</template>
+    <template name="construction">$python_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">

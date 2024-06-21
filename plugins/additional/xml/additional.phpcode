@@ -236,8 +236,8 @@ PHP code generation written by
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$require_php</template>
-    <template name="construction">$code_php</template>
+    <template name="include">$php_require</template>
+    <template name="construction">$php_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">

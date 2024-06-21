@@ -218,8 +218,8 @@ Lua code generation written by
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$require_lua</template>
-    <template name="construction">$code_lua</template>
+    <template name="include">$lua_require</template>
+    <template name="construction">$lua_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">

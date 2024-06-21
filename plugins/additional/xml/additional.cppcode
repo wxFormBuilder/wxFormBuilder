@@ -348,8 +348,8 @@ Written by
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$include_cpp</template>
-    <template name="construction">$code_cpp</template>
+    <template name="include">$cpp_include</template>
+    <template name="construction">$cpp_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">
@@ -424,7 +424,7 @@ Written by
       #ifnotequal $line_numbers "1"
       @{
         #nl $name->SetMarginWidth( 0, 0 );
-      @}      
+      @}
       #ifnotnull $font
       @{
         #nl {
