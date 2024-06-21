@@ -230,9 +230,12 @@ PHP code generation written by
   </templates>
 
   <templates class="CustomControl">
-    <template name="construction">$construction</template>
-    <template name="settings">$settings</template>
-    <template name="include">$include</template>
+    <template name="construction">
+      #ifnotnull $php_construction @{ $php_construction @}
+      #ifnull $php_construction @{ @$this->$name = new $class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); @}
+    </template>
+    <template name="settings">$php_settings</template>
+    <template name="include">$php_require</template>
   </templates>
 
   <templates class="CustomCode">
