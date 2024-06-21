@@ -1202,6 +1202,36 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
                 auto baseName = XMLUtils::StringAttribute(property, "name").BeforeFirst('_', &postfix);
                 XMLUtils::SetAttribute(property, "name", wxString::Format("%s_%s", postfix, baseName));
             }
+        } else if (objectClass == "CustomControl") {
+            // This property is only used for C++, it can be simply renamed
+            if (auto properties = GetProperties(object, {"declaration"}); !properties.empty()) {
+                XMLUtils::SetAttribute(*properties.begin(), "name", "cpp_declaration");
+            }
+            // These properties are used by all languages. It is wrong to copy their values to each language specific property,
+            // but since it is unknown for which language their values are, this way nothing gets lost. It is up to the user
+            // to correct / remove the values of the other languages.
+            for (auto* property : GetProperties(object, {"include", "construction", "settings"})) {
+                auto name = XMLUtils::StringAttribute(property, "name");
+                auto value = XMLUtils::GetText(property);
+
+                for (const auto& prefix : {"cpp", "python", "lua", "php"}) {
+                    auto* languageProperty = object->InsertNewChildElement("property");
+                    if (name == "include" && std::strcmp(prefix, "cpp") != 0) {
+                        if (std::strcmp(prefix, "python") == 0) {
+                            XMLUtils::SetAttribute(languageProperty, "name", "python_import");
+                        } else if (std::strcmp(prefix, "lua") == 0) {
+                            XMLUtils::SetAttribute(languageProperty, "name", "lua_require");
+                        } else if (std::strcmp(prefix, "php") == 0) {
+                            XMLUtils::SetAttribute(languageProperty, "name", "php_require");
+                        } // else fix your logic
+                    } else {
+                        XMLUtils::SetAttribute(languageProperty, "name", wxString::Format("%s_%s", prefix, name));
+                    }
+                    XMLUtils::SetText(languageProperty, value);
+                }
+
+                object->DeleteChild(property);
+            }
         }
     }
 }
