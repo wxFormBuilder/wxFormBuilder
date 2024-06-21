@@ -1190,6 +1190,18 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 19)) {
         if (objectClass == "wxStaticBoxSizer") {
             RemoveProperties(object, {"id"});
+        } else if (objectClass == "CustomCode") {
+            auto properties = GetProperties(object, {
+                "include_cpp", "code_cpp",
+                "import_python", "code_python",
+                "require_lua", "code_lua",
+                "require_php", "code_php"
+            });
+            for (auto* property : properties) {
+                wxString postfix;
+                auto baseName = XMLUtils::StringAttribute(property, "name").BeforeFirst('_', &postfix);
+                XMLUtils::SetAttribute(property, "name", wxString::Format("%s_%s", postfix, baseName));
+            }
         }
     }
 }
