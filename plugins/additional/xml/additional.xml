@@ -410,11 +410,28 @@ Written by
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_customControl</property>
-    <property name="class" type="text" help="The control is generated to XRC with this class."/>
-    <property name="declaration" type="text_ml" help="Code to generate for the declaration of this control."/>
-    <property name="construction" type="text_ml" help="Code to generate for the construction of this control."/>
-    <property name="include" type="text_ml" help="Code to generate for the include statements for this control."/>
-    <property name="settings" type="text_ml" help="Code to generate for the settings of this control."/>
+    <property name="class" type="text" help="Class of the control. This is used for default construction and for XRC."/>
+    <category name="C++">
+      <property name="cpp_include" type="text_ml" help="Optional include directive for C++."/>
+      <property name="cpp_declaration" type="text_ml" help="C++ code to generate for the declaration of the control. If not specified, a default declaration is used."/>
+      <property name="cpp_construction" type="text_ml" help="C++ code to generate for the construction of the control. If not specified, a default construction is used."/>
+      <property name="cpp_settings" type="text_ml" help="C++ code to generate for the settings of the control. If not specified, no settings are used."/>
+    </category>
+    <category name="Python">
+      <property name="python_import" type="text_ml" help="Optional import directive for Python."/>
+      <property name="python_construction" type="text_ml" help="Python code to generate for the construction of the control. If not specified, a default construction is used."/>
+      <property name="python_settings" type="text_ml" help="Python code to generate for the settings of the control. If not specified, no settings are used."/>
+    </category>
+    <category name="Lua">
+      <property name="lua_require" type="text_ml" help="Optional require directive for Lua."/>
+      <property name="lua_construction" type="text_ml" help="Lua code to generate for the construction of the control. If not specified, a default construction is used."/>
+      <property name="lua_settings" type="text_ml" help="Lua code to generate for the settings of the control. If not specified, no settings are used."/>
+    </category>
+    <category name="PHP">
+      <property name="php_require" type="text_ml" help="Optional require directive for PHP."/>
+      <property name="php_construction" type="text_ml" help="PHP code to generate for the construction of the control. If not specified, a default construction is used."/>
+      <property name="php_settings" type="text_ml" help="PHP code to generate for the settings of the control. If not specified, no settings are used."/>
+    </category>
   </objectinfo>
 
   <objectinfo class="CustomCode" startgroup="1" icon="customcode.xpm" type="nonvisual">
