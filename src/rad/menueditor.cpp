@@ -40,7 +40,7 @@ enum {
     ID_MODIFYMENUITEM,
 };
 
-#define IDENTATION 4
+static constexpr int IDENTATION = 4;
 
 BEGIN_EVENT_TABLE(MenuEditor, wxDialog)
 EVT_BUTTON(ID_ADDMENUITEM, MenuEditor::OnAddMenuItem)

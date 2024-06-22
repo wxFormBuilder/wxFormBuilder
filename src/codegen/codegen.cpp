@@ -403,7 +403,7 @@ bool TemplateParser::ParseForm()
 void TemplateParser::ParseLuaTable()
 {
     const auto& project = AppData()->GetProjectData();
-    const auto& table = project->GetProperty(wxT("ui_table"));
+    const auto& table = project->GetProperty("lua_ui_table");
     if (table) {
         auto strTableName = table->GetValueAsString();
         if (strTableName.empty()) {

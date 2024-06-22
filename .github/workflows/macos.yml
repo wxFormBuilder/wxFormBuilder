@@ -44,9 +44,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-14, macos-13, macos-latest]
+        os: [macos-latest, macos-13, macos-12]
+    if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
@@ -57,7 +58,7 @@ jobs:
       run: |
         export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=TRUE
         brew update
-        brew install cmake make wxwidgets boost
+        brew install wxwidgets boost
     - name: Create build system
       run: |
         cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
@@ -83,13 +84,13 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: macOS Build Debugging ${{ matrix.os }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       with:
         name: App Bundle ${{ matrix.os }}
         path: |

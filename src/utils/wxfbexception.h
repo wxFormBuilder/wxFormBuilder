@@ -22,8 +22,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifndef UITILS_WXFBEXCEPTION_H
-#define UITILS_WXFBEXCEPTION_H
+#ifndef UTILS_WXFBEXCEPTION_H
+#define UTILS_WXFBEXCEPTION_H
 
 #include <wx/string.h>
 
@@ -57,4 +57,4 @@ It will take care of the conversion	and throwing the exception.
         throw wxFBException(hopefullyThisNameWontConflictWithOtherVariables); \
     }
 
-#endif  // UITILS_WXFBEXCEPTION_H
+#endif  // UTILS_WXFBEXCEPTION_H

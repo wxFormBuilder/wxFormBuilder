@@ -27,7 +27,6 @@ PHP code generation written by
 <codegen language="PHP">
 
   <templates class="wxRibbonBar">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -44,7 +43,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxRibbonPage">
-    <template name="declaration">wxRibbonPage* $name;</template>    
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -56,7 +54,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxRibbonPanel">
-    <template name="declaration">wxRibbonPanel* $name;</template>    
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -65,7 +62,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxRibbonButtonBar">
-    <template name="declaration">wxRibbonButtonBar* $name;</template>    
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -73,7 +69,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonButton">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -81,7 +76,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonDropdownButton">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -89,7 +83,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonHybridButton">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -98,7 +91,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonToggleButton">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -106,7 +98,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxRibbonToolBar">
-    <template name="declaration">wxRibbonToolBar* $name;</template>    
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -114,7 +105,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonTool">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -122,7 +112,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonDropdownTool">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -130,7 +119,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonHybridTool">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -139,7 +127,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonToggleTool">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>
@@ -147,7 +134,6 @@ PHP code generation written by
   </templates>
 
   <templates class="wxRibbonGallery">
-    <template name="declaration">wxRibbonGallery* $name;</template>    
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
       @$this->$name = new wxWindow( #wxparent $name );
@@ -160,7 +146,6 @@ PHP code generation written by
   </templates>
 
   <templates class="ribbonGalleryItem">
-    <template name="declaration"></template>
     <template name="construction">
       @/* WARNING: PHP code generation isn't supported for this widget yet. */#nl
     </template>

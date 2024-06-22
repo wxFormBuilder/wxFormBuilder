@@ -117,6 +117,7 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
         case PT_CLASS:
         case PT_MACRO:
         case PT_TEXT:
+        case PT_TEXT_ML:
         case PT_OPTION:
         case PT_EDIT_OPTION:
         case PT_FLOAT:
@@ -256,6 +257,9 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
                     rid = wxT("wxT(\"") + rid + wxT("\")");
 
                 result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") + path.AfterFirst(wxT(':')) + wxT(") )");
+            } else if (source == _("Load From SVG Resource")) {
+                result.Printf( wxT("wxBitmapBundle::FromSVGResource( wxT(\"%s\"), {%i, %i} )"),
+                               path, icoSize.GetWidth(), icoSize.GetHeight());
             }
             break;
         }
@@ -283,9 +287,6 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
 CppCodeGenerator::CppCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 }
 
 wxString CppCodeGenerator::ConvertCppString(wxString text)
@@ -486,12 +487,12 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
 
     bool useEnum = false;
 
-    PProperty useEnumProperty = project->GetProperty(wxT("use_enum"));
+    PProperty useEnumProperty = project->GetProperty("cpp_use_enum");
     if (useEnumProperty && useEnumProperty->GetValueAsInteger())
         useEnum = true;
 
     m_useArrayEnum = false;
-    const auto& useArrayEnumProperty = project->GetProperty(wxT("use_array_enum"));
+    const auto& useArrayEnumProperty = project->GetProperty("cpp_use_array_enum");
     if (useArrayEnumProperty && useArrayEnumProperty->GetValueAsInteger()) {
         m_useArrayEnum = true;
     }
@@ -501,8 +502,8 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     if (i18nProperty && i18nProperty->GetValueAsInteger())
         m_i18n = true;
 
-    m_useConnect = !(_("table") == project->GetPropertyAsString(_("event_generation")));
-    m_disconnectEvents = (project->GetPropertyAsInteger(_("disconnect_events")) != 0);
+    m_useConnect = !(_("table") == project->GetPropertyAsString("cpp_event_generation"));
+    m_disconnectEvents = (project->GetPropertyAsInteger("cpp_disconnect_events") != 0);
 
     m_header->Clear();
     m_source->Clear();
@@ -565,7 +566,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     }
 
     // class decoration
-    PProperty propClassDecoration = project->GetProperty(wxT("class_decoration"));
+    PProperty propClassDecoration = project->GetProperty("cpp_class_decoration");
     wxString classDecoration;
     if (propClassDecoration) {
         // get the decoration to be used by GenClassDeclaration
@@ -630,7 +631,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     m_source->WriteLn(code);
 
     // namespace
-    PProperty propNamespace = project->GetProperty(wxT("namespace"));
+    PProperty propNamespace = project->GetProperty("cpp_namespace");
     wxArrayString namespaceArray;
     if (propNamespace) {
         namespaceArray = propNamespace->GetValueAsArrayString();
@@ -1129,42 +1130,36 @@ void CppCodeGenerator::GenEnumIds(PObjectBase class_obj)
 {
     std::vector<wxString> macros;
     FindMacros(class_obj, &macros);
-
-    std::vector<wxString>::iterator it = macros.begin();
-    if (it != macros.end()) {
-        m_header->WriteLn(wxT("enum"));
-        m_header->WriteLn(wxT("{"));
-        m_header->Indent();
-
-        // Remove the default macro from the set, for backward compatibility
-        it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-        if (it != macros.end()) {
-            // The default macro is defined to wxID_ANY
-            m_header->WriteLn(wxT("ID_DEFAULT = wxID_ANY, // Default"));
-            macros.erase(it);
-        }
-
-        size_t idx;
-        size_t count = macros.size();
-        wxString sId;
-
-        for (idx = 0; idx < count; idx++) {
-            sId = macros.at(idx);
-
-            if (idx == 0)
-                sId = wxString::Format(wxT("%s = %i"), sId, m_firstID);
-
-            if (idx < (count - 1))
-                sId << wxT(",");
-
-            m_header->WriteLn(sId);
-        }
-
-        // m_header->WriteLn(id);
-        m_header->Unindent();
-        m_header->WriteLn(wxT("};"));
-        m_header->WriteLn(wxEmptyString);
+    if (macros.empty()) {
+        return;
     }
+
+    m_header->WriteLn("enum");
+    m_header->WriteLn("{");
+    m_header->Indent();
+
+    // Remove the default macro from the set, for backward compatibility
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
+        // The default macro is defined to wxID_ANY
+        m_header->WriteLn("ID_DEFAULT = wxID_ANY, // Default");
+        macros.erase(macro);
+    }
+
+    if (!macros.empty()) {
+        if (m_firstID < wxID_HIGHEST) {
+            wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
+        }
+        m_header->WriteLn(wxString::Format("%s = %i,", *macros.begin(), m_firstID));
+        macros.erase(macros.begin());
+    }
+
+    for (const auto& macro : macros) {
+        m_header->WriteLn(wxString::Format("%s,", macro));
+    }
+
+    m_header->Unindent();
+    m_header->WriteLn("};");
+    m_header->WriteLn();
 }
 
 void CppCodeGenerator::GenSubclassSets(
@@ -1645,24 +1640,24 @@ void CppCodeGenerator::GenDefines(PObjectBase project)
     FindMacros(project, &macros);
 
     // Remove the default macro from the set, for backward compatibility
-    std::vector<wxString>::iterator it;
-    it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-    if (it != macros.end()) {
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
         // The default macro is defined to wxID_ANY
-        m_header->WriteLn(wxT("#define ID_DEFAULT wxID_ANY // Default"));
-        macros.erase(it);
+        m_header->WriteLn("#define ID_DEFAULT wxID_ANY // Default");
+        macros.erase(macro);
     }
 
-    unsigned int id = m_firstID;
-    if (id < 1000) {
-        wxLogWarning(wxT("First ID is Less than 1000"));
+    if (macros.empty()) {
+        return;
     }
-    for (it = macros.begin(); it != macros.end(); it++) {
+
+    auto id = m_firstID;
+    if (id < wxID_HIGHEST) {
+        wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
+    }
+    for (const auto& macro : macros) {
         // Don't redefine wx IDs
-        m_header->WriteLn(wxString::Format(wxT("#define %s %i"), it->c_str(), id));
-        id++;
+        m_header->WriteLn(wxString::Format("#define %s %i", macro, id++));
     }
-
     m_header->WriteLn(wxEmptyString);
 }
 
@@ -1842,20 +1837,9 @@ void CppCodeGenerator::UseRelativePath(bool relative, wxString basePath)
         }
     }
 }
-/*
-wxString CppCodeGenerator::ConvertToRelativePath(wxString path, wxString basePath)
-{
-wxString auxPath = path;
-if (basePath != "")
-{
-wxFileName filename(_WXSTR(auxPath));
-if (filename.MakeRelativeTo(_WXSTR(basePath)))
-auxPath = _STDSTR(filename.GetFullPath());
-}
-return auxPath;
-}*/
 
 #define ADD_PREDEFINED_MACRO(x) m_predMacros.insert(wxT(#x))
+
 void CppCodeGenerator::SetupPredefinedMacros()
 {
     /* no id matches this one when compared to it */
@@ -1988,3 +1972,5 @@ void CppCodeGenerator::SetupPredefinedMacros()
 
     ADD_PREDEFINED_MACRO(wxID_HIGHEST);
 }
+
+#undef ADD_PREDEFINED_MACRO

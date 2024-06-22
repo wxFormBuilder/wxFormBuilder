@@ -254,7 +254,7 @@ Lua code generation written by
 
   <templates class="wxStyledTextCtrl">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
       #utbl$name = wx.wxWindow( #utbl#wxparent $name )
     </template>
   </templates>

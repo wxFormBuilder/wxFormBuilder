@@ -47,12 +47,13 @@ jobs:
         include:
           - { sys: mingw32, arch: i686, pkg: i686 }
           - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
+    if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
-    - uses: msys2/setup-msys2@v2.22.0
+    - uses: msys2/setup-msys2@v2.23.0
       with:
         msystem: ${{ matrix.sys }}
         release: false
@@ -106,19 +107,19 @@ jobs:
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.arch }} /O. data\\packaging\\windows\\wxFormBuilder.iss
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: Windows Build Debugging ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       with:
         name: Windows Archive ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       with:
         name: Windows Installer ${{ matrix.pkg }}
         path: |

@@ -102,34 +102,24 @@ public:
 
 ////////////////////////////////////
 
-using namespace TypeConv;
-
-wxString TypeConv::_StringToWxString(const std::string& str)
+wxString TypeConv::StringToWxString(const std::string& str)
 {
-    return _StringToWxString(str.c_str());
+    return StringToWxString(str.c_str());
 }
 
-wxString TypeConv::_StringToWxString(const char* str)
+wxString TypeConv::StringToWxString(const char* str)
 {
-    wxString newstr(str, wxConvUTF8);
-    return newstr;
+    return wxString(str, wxConvUTF8);
 }
 
-std::string TypeConv::_WxStringToString(const wxString& str)
+std::string TypeConv::WxStringToString(const wxString& str)
 {
-    std::string newstr(str.mb_str(wxConvUTF8));
-    return newstr;
+    return std::string(str.mb_str(wxConvUTF8));
 }
 
-std::string TypeConv::_WxStringToAnsiString(const wxString& str)
+std::string TypeConv::WxStringToAnsiString(const wxString& str)
 {
-    std::string newstr(str.mb_str(wxConvISO8859_1));
-    return newstr;
-    //    setlocale(LC_ALL, "");
-    //    size_t len = wcstombs(NULL, str.char_str(), 0);
-    //    std::vector<char> buf(len + 1);
-    //    wcstombs(&buf[0], str.char_str(), len);
-    //    return std::string(&buf[0]);
+    return std::string(str.mb_str(wxConvISO8859_1));
 }
 
 bool TypeConv::StringToPoint(const wxString& val, wxPoint* point)
@@ -668,6 +658,8 @@ wxSystemColour TypeConv::StringToSystemColour(const wxString& str)
                                                 return systemVal;
 }
 
+#undef ElseIfSystemColourConvert
+
 wxColour TypeConv::StringToColour(const wxString& str)
 {
 
@@ -755,6 +747,8 @@ wxString TypeConv::SystemColourToString(long colour)
 
     return s;
 }
+
+#undef SystemColourConvertCase
 
 bool TypeConv::FlagSet(const wxString& flag, const wxString& currentValue)
 {
@@ -1045,9 +1039,6 @@ bool MacroDictionary::SearchSynonymous(wxString synName, wxString& result)
 
     return found;
 }
-/*
-#define MACRO(x) m_map.insert(MacroMap::value_type(#x,x))
-#define MACRO2(x,y) m_map.insert(MacroMap::value_type(#x,y))*/
 
 void MacroDictionary::AddMacro(wxString name, int value)
 {

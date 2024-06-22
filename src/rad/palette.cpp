@@ -41,8 +41,6 @@
 #endif
 
 
-#define DRAG_OPTION 0
-
 wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 3000;
 
 BEGIN_EVENT_TABLE(wxFbPalette, wxPanel)

@@ -20,10 +20,10 @@ wxFormBuilder runs on Windows, various Linux distributions and macOS.
 
 ## Install from Source
 
-Building from source requires the fairly recent CMake version 3.21. Most Linux distributions don't contain this version
-in their package repositories currently, the [CMake](https://cmake.org/download/) website offers binary downloads for
-multiple platforms. wxFormBuilder uses the [wxWidgets](https://wxwidgets.org/) framework itself, it is highly recommended using
-the current stable version 3.2.x. The previous stable version 3.0.x is known to cause multiple issues and should be avoided.
+Building from source requires CMake version 3.21, if this version is not available in the package repositories of your operating system,
+the [CMake](https://cmake.org/download/) website offers binary downloads for multiple platforms. wxFormBuilder uses the
+[wxWidgets](https://wxwidgets.org/) framework itself, it is highly recommended using the current stable version 3.2.x,
+the previous stable version 3.0.x is known to cause multiple issues and should be avoided.
 
 ### Windows
 

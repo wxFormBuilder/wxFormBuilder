@@ -56,21 +56,18 @@ END_EVENT_TABLE()
 
 LuaPanel::LuaPanel(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-    AppData()->AddHandler(this->GetEventHandler());
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
 
     m_luaPanel = new CodeEditor(this, wxID_ANY);
     InitStyledTextCtrl(m_luaPanel->GetTextCtrl());
 
-    top_sizer->Add(m_luaPanel, 1, wxEXPAND, 0);
+    topSizer->Add(m_luaPanel, 1, wxEXPAND, 0);
 
-    SetSizer(top_sizer);
-    SetAutoLayout(true);
-    // top_sizer->SetSizeHints( this );
-    top_sizer->Fit(this);
-    top_sizer->Layout();
+    SetSizer(topSizer);
 
-    m_luaCW = PTCCodeWriter(new TCCodeWriter(m_luaPanel->GetTextCtrl()));
+    m_luaCW = std::make_shared<TCCodeWriter>(m_luaPanel->GetTextCtrl());
+
+    AppData()->AddHandler(this->GetEventHandler());
 }
 
 LuaPanel::~LuaPanel()
@@ -225,7 +222,7 @@ void LuaPanel::OnCodeGeneration(wxFBEvent& event)
     }
 
     // Get First ID from Project File
-    unsigned int firstID = 1000;
+    int firstID = wxID_HIGHEST;
     PProperty pFirstID = project->GetProperty(wxT("first_id"));
     if (pFirstID) {
         firstID = pFirstID->GetValueAsInteger();
@@ -301,22 +298,21 @@ void LuaPanel::OnCodeGeneration(wxFBEvent& event)
 
             // Determine if Microsoft BOM should be used
             bool useMicrosoftBOM = false;
-
-            PProperty pUseMicrosoftBOM = project->GetProperty(wxT("use_microsoft_bom"));
-
-            if (pUseMicrosoftBOM) {
-                useMicrosoftBOM = (pUseMicrosoftBOM->GetValueAsInteger() != 0);
+            if (auto property = project->GetProperty("use_microsoft_bom"); property) {
+                useMicrosoftBOM = (property->GetValueAsInteger() != 0);
             }
-
-            // Determine if Utf8 or Ansi is to be created
+            // Determine encoding
             bool useUtf8 = false;
-            PProperty pUseUtf8 = project->GetProperty(_("encoding"));
-
-            if (pUseUtf8) {
-                useUtf8 = (pUseUtf8->GetValueAsString() != wxT("ANSI"));
+            if (auto property = project->GetProperty("encoding"); property) {
+                useUtf8 = (property->GetValueAsString() != wxT("ANSI"));
+            }
+            // Determine eol-style
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
             }
 
-            PCodeWriter lua_cw(new FileCodeWriter(path + file + wxT(".lua"), useMicrosoftBOM, useUtf8));
+            auto lua_cw = std::make_shared<FileCodeWriter>(path + file + wxT(".lua"), useMicrosoftBOM, useUtf8, useNativeEOL);
 
             codegen.SetSourceWriter(lua_cw);
             codegen.GenerateCode(project);

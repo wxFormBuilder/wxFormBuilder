@@ -149,6 +149,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
             break;
         }
         case PT_TEXT:
+        case PT_TEXT_ML:
         case PT_FLOAT:
         case PT_INT:
         case PT_UINT: {
@@ -297,6 +298,9 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
                 cid.Replace(wxT("wx"), wxT("wx.wx"));
 
                 result = wxT("wx.wxArtProvider.GetBitmap( ") + rid + wxT(", ") + cid + wxT(" )");
+            } else if (source == _("Load From SVG Resource")) {
+                wxLogWarning(wxT("Lua code generation does not support using SVG resources for bitmap properties:\n%s"), path);
+                result = wxT("wx.wxNullBitmap");
             }
             break;
         }
@@ -324,9 +328,6 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
 LuaCodeGenerator::LuaCodeGenerator()
 {
     SetupPredefinedMacros();
-    m_useRelativePath = false;
-    m_i18n = false;
-    m_firstID = 1000;
 
     // this classes aren't wrapped by wxLua - make exception
     m_strUnsupportedClasses.push_back(wxT("wxRichTextCtrl"));
@@ -549,7 +550,7 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     // Generating "defines" for macros
     GenDefines(project);
 
-    PProperty propNamespace = project->GetProperty(wxT("ui_table"));
+    PProperty propNamespace = project->GetProperty("lua_ui_table");
     if (propNamespace) {
         m_strUITable = propNamespace->GetValueAsString();
         if (m_strUITable.length() <= 0) {
@@ -560,7 +561,7 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     }
 
 
-    PProperty eventKindProp = project->GetProperty(wxT("skip_lua_events"));
+    PProperty eventKindProp = project->GetProperty("lua_skip_events");
     if (eventKindProp->GetValueAsInteger()) {
         m_strEventHandlerPostfix = wxT("event:Skip()");
     } else {
@@ -568,8 +569,10 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     }
 
 
-    PProperty disconnectMode = project->GetProperty(wxT("disconnect_mode"));
-    m_disconnecMode = disconnectMode->GetValueAsString();
+    // NOTE: This property does not exist, disconnection is actually unused, but due to copy-paste
+    //       the member variable does exist
+    //PProperty disconnectMode = project->GetProperty("lua_disconnect_mode");
+    //m_disconnecMode = disconnectMode->GetValueAsString();
 
     unsigned int dProjChildCount = project->GetChildCount();
     for (unsigned int i = 0; i < dProjChildCount; i++) {
@@ -850,7 +853,7 @@ wxString LuaCodeGenerator::GetConstruction(PObjectBase obj, bool silent, wxStrin
     // UI table code copied from TemplateParser
     wxString strTableName;
     const auto& project = AppData()->GetProjectData();
-    const auto& table = project->GetProperty(wxT("ui_table"));
+    const auto& table = project->GetProperty("lua_ui_table");
     if (table) {
         strTableName = table->GetValueAsString();
         if (strTableName.empty()) {
@@ -1413,30 +1416,29 @@ void LuaCodeGenerator::GenDefines(PObjectBase project)
 {
     std::vector<wxString> macros;
     FindMacros(project, &macros);
-    m_strUserIDsVec.erase(m_strUserIDsVec.begin(), m_strUserIDsVec.end());
+    m_strUserIDsVec.clear();
 
     // Remove the default macro from the set, for backward compatibility
-    std::vector<wxString>::iterator it;
-    it = std::find(macros.begin(), macros.end(), wxT("ID_DEFAULT"));
-    if (it != macros.end()) {
+    if (auto macro = std::find(macros.begin(), macros.end(), "ID_DEFAULT"); macro != macros.end()) {
         // The default macro is defined to wxID_ANY
-        m_source->WriteLn(wxT("wxID_DEFAULT = wxID_ANY -- Default"));
-        macros.erase(it);
+        m_source->WriteLn("wxID_DEFAULT = wxID_ANY -- Default");
+        macros.erase(macro);
     }
 
-    unsigned int id = m_firstID;
-    if (id < 1000) {
-        wxLogWarning(wxT("First ID is Less than 1000"));
+    if (macros.empty()) {
+        return;
     }
-    for (it = macros.begin(); it != macros.end(); it++) {
+
+    auto id = m_firstID;
+    if (id < wxID_HIGHEST) {
+        wxLogWarning(_("First ID is less than %i"), wxID_HIGHEST);
+    }
+    for (const auto& macro : macros) {
         // Don't redefine wx IDs
-        m_source->WriteLn(wxString::Format(wxT("%s = %i"), it->c_str(), id));
-        m_strUserIDsVec.push_back(*it);
-        id++;
+        m_source->WriteLn(wxString::Format("%s = %i", macro, id++));
+        m_strUserIDsVec.emplace_back(macro);
     }
-    if (!macros.empty()) {
-        m_source->WriteLn(wxEmptyString);
-    }
+    m_source->WriteLn(wxEmptyString);
 }
 
 void LuaCodeGenerator::GenSettings(PObjectInfo info, PObjectBase obj, wxString& strClassName)
@@ -1711,3 +1713,6 @@ void LuaTemplateParser::SetupModulePrefixes()
     ADD_PREDEFINED_PREFIX(wxAC_DEFAULT_STYLE, wx.);
     ADD_PREDEFINED_PREFIX(wxAC_NO_AUTORESIZE, wx.);
 }
+
+#undef ADD_PREDEFINED_MACRO
+#undef ADD_PREDEFINED_PREFIX

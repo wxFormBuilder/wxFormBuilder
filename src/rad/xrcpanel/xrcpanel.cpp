@@ -27,7 +27,6 @@
 
 #include "xrcpanel.h"
 
-#include <wx/aui/auibook.h>
 #include <wx/fdrepdlg.h>
 
 #include "codegen/codewriter.h"
@@ -55,21 +54,18 @@ END_EVENT_TABLE()
 
 XrcPanel::XrcPanel(wxWindow* parent, int id) : wxPanel(parent, id)
 {
-    AppData()->AddHandler(this->GetEventHandler());
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
 
     m_xrcPanel = new CodeEditor(this, wxID_ANY);
     InitStyledTextCtrl(m_xrcPanel->GetTextCtrl());
 
-    top_sizer->Add(m_xrcPanel, 1, wxEXPAND, 0);
+    topSizer->Add(m_xrcPanel, 1, wxEXPAND, 0);
 
-    SetSizer(top_sizer);
-    SetAutoLayout(true);
-    // top_sizer->SetSizeHints( this );
-    top_sizer->Fit(this);
-    top_sizer->Layout();
+    SetSizer(topSizer);
 
-    m_cw = PTCCodeWriter(new TCCodeWriter(m_xrcPanel->GetTextCtrl()));
+    m_cw = std::make_shared<TCCodeWriter>(m_xrcPanel->GetTextCtrl());
+
+    AppData()->AddHandler(this->GetEventHandler());
 }
 
 XrcPanel::~XrcPanel()
@@ -115,20 +111,7 @@ void XrcPanel::InitStyledTextCtrl(wxStyledTextCtrl* stc)
 
 void XrcPanel::OnFind(wxFindDialogEvent& event)
 {
-    wxAuiNotebook* notebook = wxDynamicCast(this->GetParent(), wxAuiNotebook);
-    if (NULL == notebook) {
-        return;
-    }
-
-    int selection = notebook->GetSelection();
-    if (selection < 0) {
-        return;
-    }
-
-    wxString text = notebook->GetPageText(selection);
-    if (wxT("XRC") == text) {
-        m_xrcPanel->GetEventHandler()->ProcessEvent(event);
-    }
+    m_xrcPanel->GetEventHandler()->ProcessEvent(event);
 }
 
 void XrcPanel::OnPropertyModified(wxFBPropertyEvent& event)
@@ -233,9 +216,9 @@ void XrcPanel::OnCodeGeneration(wxFBEvent& event)
             }
 
             wxString filePath;
-
             filePath << path << file << wxT(".xrc");
-            PCodeWriter cw(new FileCodeWriter(filePath));
+
+            auto cw= std::make_shared<FileCodeWriter>(filePath);
 
             codegen.SetWriter(cw);
             codegen.GenerateCode(project);

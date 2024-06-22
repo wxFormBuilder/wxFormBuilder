@@ -38,28 +38,27 @@
 #include "utils/typeconv.h"
 #include "utils/wxfbexception.h"
 
-//#define DEBUG_PRINT(x) cout << x
 
-#define OBJINFO_TAG "objectinfo"
-#define CODEGEN_TAG "codegen"
-#define TEMPLATE_TAG "template"
-#define NAME_TAG "name"
-#define DESCRIPTION_TAG "help"
-#define CUSTOM_EDITOR_TAG "editor"
-#define PROPERTY_TAG "property"
-#define CHILD_TAG "child"
-#define EVENT_TAG "event"
-#define EVENT_CLASS_TAG "class"
-#define CATEGORY_TAG "category"
-#define OBJECT_TAG "object"
-#define CLASS_TAG "class"
-#define PACKAGE_TAG "package"
-#define PKGDESC_TAG "desc"
-#define PRGLANG_TAG "language"
-#define ICON_TAG "icon"
-#define SMALL_ICON_TAG "smallIcon"
-#define EXPANDED_TAG "expanded"
-#define WXVERSION_TAG "wxversion"
+static constexpr const char* OBJINFO_TAG = "objectinfo";
+static constexpr const char* CODEGEN_TAG = "codegen";
+static constexpr const char* TEMPLATE_TAG = "template";
+static constexpr const char* NAME_TAG = "name";
+static constexpr const char* DESCRIPTION_TAG = "help";
+static constexpr const char* CUSTOM_EDITOR_TAG = "editor";
+static constexpr const char* PROPERTY_TAG = "property";
+static constexpr const char* CHILD_TAG = "child";
+static constexpr const char* EVENT_TAG = "event";
+static constexpr const char* EVENT_CLASS_TAG = "class";
+static constexpr const char* CATEGORY_TAG = "category";
+static constexpr const char* OBJECT_TAG = "object";
+static constexpr const char* CLASS_TAG = "class";
+static constexpr const char* PACKAGE_TAG = "package";
+static constexpr const char* PKGDESC_TAG = "desc";
+static constexpr const char* PRGLANG_TAG = "language";
+static constexpr const char* ICON_TAG = "icon";
+static constexpr const char* SMALL_ICON_TAG = "smallIcon";
+static constexpr const char* EXPANDED_TAG = "expanded";
+static constexpr const char* WXVERSION_TAG = "wxversion";
 
 
 ObjectPackage::ObjectPackage(wxString name, wxString desc, wxBitmap icon)
@@ -182,7 +181,7 @@ PObjectBase ObjectDatabase::NewObject(PObjectInfo obj_info)
     obj_info->IncrementInstanceCount();
 
     unsigned int ins = obj_info->GetInstanceCount();
-    PProperty pname = object->GetProperty(wxT(NAME_TAG));
+    PProperty pname = object->GetProperty(NAME_TAG);
     if (pname)
         pname->SetValue(pname->GetValue() + StringUtils::IntToStr(ins));
 
@@ -1124,33 +1123,35 @@ wxString ObjectDatabase::ParseObjectType(wxString str)
 }
 
 
-#define PT(x, y) m_propTypes.insert(PTMap::value_type(x, y))
 void ObjectDatabase::InitPropertyTypes()
 {
-    PT(wxT("bool"), PT_BOOL);
-    PT(wxT("text"), PT_TEXT);
-    PT(wxT("int"), PT_INT);
-    PT(wxT("uint"), PT_UINT);
-    PT(wxT("bitlist"), PT_BITLIST);
-    PT(wxT("intlist"), PT_INTLIST);
-    PT(wxT("uintlist"), PT_UINTLIST);
-    PT(wxT("intpairlist"), PT_INTPAIRLIST);
-    PT(wxT("uintpairlist"), PT_UINTPAIRLIST);
-    PT(wxT("option"), PT_OPTION);
-    PT(wxT("macro"), PT_MACRO);
-    PT(wxT("path"), PT_PATH);
-    PT(wxT("file"), PT_FILE);
-    PT(wxT("wxString"), PT_WXSTRING);
-    PT(wxT("wxPoint"), PT_WXPOINT);
-    PT(wxT("wxSize"), PT_WXSIZE);
-    PT(wxT("wxFont"), PT_WXFONT);
-    PT(wxT("wxColour"), PT_WXCOLOUR);
-    PT(wxT("bitmap"), PT_BITMAP);
-    PT(wxT("wxString_i18n"), PT_WXSTRING_I18N);
-    PT(wxT("stringlist"), PT_STRINGLIST);
-    PT(wxT("float"), PT_FLOAT);
-    PT(wxT("parent"), PT_PARENT);
-    PT(wxT("editoption"), PT_EDIT_OPTION);
+    m_propTypes = {
+        {"bool", PT_BOOL},
+        {"text", PT_TEXT},
+        {"text_ml", PT_TEXT_ML},
+        {"int", PT_INT},
+        {"uint", PT_UINT},
+        {"bitlist", PT_BITLIST},
+        {"intlist", PT_INTLIST},
+        {"uintlist", PT_UINTLIST},
+        {"intpairlist", PT_INTPAIRLIST},
+        {"uintpairlist", PT_UINTPAIRLIST},
+        {"option", PT_OPTION},
+        {"macro", PT_MACRO},
+        {"path", PT_PATH},
+        {"file", PT_FILE},
+        {"wxString", PT_WXSTRING},
+        {"wxPoint", PT_WXPOINT},
+        {"wxSize", PT_WXSIZE},
+        {"wxFont", PT_WXFONT},
+        {"wxColour", PT_WXCOLOUR},
+        {"bitmap", PT_BITMAP},
+        {"wxString_i18n", PT_WXSTRING_I18N},
+        {"stringlist", PT_STRINGLIST},
+        {"float", PT_FLOAT},
+        {"parent", PT_PARENT},
+        {"editoption", PT_EDIT_OPTION},
+    };
 }
 
 bool ObjectDatabase::LoadObjectTypes()

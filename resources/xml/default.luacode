@@ -75,12 +75,12 @@
         #ifequal $LeftDockable "0" @{:LeftDockable( $LeftDockable )@}
         #ifequal $RightDockable "0" @{:RightDockable( $RightDockable )@}
         #ifequal $floatable "0" @{:Floatable( $floatable )@}
-        #ifnotnull $aui_row @{:Row( $aui_row )@}
-        #ifnotnull $aui_position @{:Position( $aui_position )@}
+        #ifnotequal $aui_row "0" @{:Row( $aui_row )@}
+        #ifnotequal $aui_position "0" @{:Position( $aui_position )@}
         #ifnotnull $best_size @{:BestSize( $best_size )@}
         #ifnotnull $min_size @{:MinSize( $min_size )@}
         #ifnotnull $max_size @{:MaxSize( $max_size )@}
-        #ifnotnull $aui_layer @{:Layer( $aui_layer )@}
+        #ifnotequal $aui_layer "0" @{:Layer( $aui_layer )@}
         #ifequal $center_pane "1" @{:CentrePane()@}
         #ifequal $default_pane "1" @{:DefaultPane()@}
         #ifequal $toolbar_pane "1" @{:ToolbarPane()@}

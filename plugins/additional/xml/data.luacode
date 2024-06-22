@@ -35,7 +35,6 @@ Lua code generation written by
   </templates>
 
   <templates class="wxDataViewCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
     </template>
@@ -60,7 +59,6 @@ Lua code generation written by
   </templates>
 
   <templates class="wxDataViewTreeCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
     </template>
@@ -85,7 +83,6 @@ Lua code generation written by
   </templates>
 
   <templates class="wxDataViewListCtrl">
-    <template name="declaration">#class* $name;</template>
     <template name="construction">
       #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, $window_style);
     </template>
@@ -111,13 +108,13 @@ Lua code generation written by
 
   <templates class="dataViewListColumn">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
   <templates class="dataViewColumn">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
@@ -138,7 +135,7 @@ Lua code generation written by
 
   <templates class="wxCheckListBox">
     <template name="construction">
-      #utbl$name #append Choices = {$choices} #nl
+      #utbl$name #append Choices = { $choices } #nl
       #utbl$name = #class( #utbl#wxparent $name, $id, $pos, $size, #utbl$name #append Choices, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} )
     </template>
     <template name="evt_connect_OnCheckListBoxToggled">#utbl$name:Connect( wx.wxEVT_COMMAND_CHECKLISTBOX_TOGGLED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
@@ -258,27 +255,27 @@ Lua code generation written by
 
   <templates class="wxPropertyGrid">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
       #utbl$name = wx.wxWindow( #utbl#wxparent $name )
     </template>
   </templates>
 
   <templates class="wxPropertyGridManager">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
       #utbl$name = wx.wxWindow( #utbl#wxparent $name )
     </template>
   </templates>
 
   <templates class="propGridItem">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 
   <templates class="propGridPage">
     <template name="construction">
-      @# WARNING: wxLua code generation isn't supported for this widget yet. #nl
+      -- WARNING: wxLua code generation isn't supported for this widget yet. #nl
     </template>
   </templates>
 

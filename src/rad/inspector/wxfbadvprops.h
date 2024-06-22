@@ -96,15 +96,13 @@ public:
     wxPGProperty* CreatePropertyFilePath();
     wxPGProperty* CreatePropertyResourceName();
     wxPGProperty* CreatePropertyIconSize();
+    wxPGProperty* CreatePropertyDefaultSize();
     wxPGProperty* CreatePropertyXrcName();
     wxPGProperty* CreatePropertyArtId();
     wxPGProperty* CreatePropertyArtClient();
 
     wxString SetupImage(const wxString& imgPath = wxEmptyString);
     wxString SetupResource(const wxString& resName = wxEmptyString);
-
-    int prevSrc;
-    void SetPrevSource(int src) { prevSrc = src; }
 
     wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
@@ -113,12 +111,10 @@ public:
 
     void UpdateChildValues(const wxString& value);
 
-protected:
+private:
     void GetChildValues(const wxString& parentValue, wxArrayString& childValues) const;
 
-    static wxArrayString m_ids;
-    static wxArrayString m_clients;
-    wxArrayString m_strings;
+    int m_prevSrc;
 };
 
 // -----------------------------------------------------------------------

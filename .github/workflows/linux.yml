@@ -41,12 +41,12 @@ jobs:
   flatpak:
     name: Flatpak
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.ref, '/debian/') }}
+    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     container:
       image: bilelmoussaoui/flatpak-github-actions:freedesktop-23.08
       options: --privileged
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
@@ -68,17 +68,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-20.04]
-    if: ${{ !contains(github.ref, '/flatpak/') }}
+        include:
+          - { os: ubuntu-24.04, wxver: 3.2 }
+          - { os: ubuntu-latest, wxver: 3.0-gtk3 }
+          - { os: ubuntu-20.04, wxver: 3.0-gtk3 }
+    if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.1.1
+    - uses: actions/checkout@v4.1.7
       with:
         fetch-tags: true
         submodules: recursive
     - name: Setup environment
       run: |
         sudo apt update
-        sudo apt install libwxgtk3.0-gtk3-dev libwxgtk-media3.0-gtk3-dev libboost-dev debhelper fakeroot rename xvfb
+        sudo apt install libwxgtk${{ matrix.wxver }}-dev libwxgtk-media${{ matrix.wxver }}-dev libboost-dev debhelper fakeroot rename xvfb
     - name: Setup package build
       run: |
         cp -rf data/packaging/linux/debian/ ./debian/
@@ -91,7 +94,7 @@ jobs:
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g test/wxfbTest.fbp
-    - uses: actions/upload-artifact@v4.3.0
+    - uses: actions/upload-artifact@v4.3.3
       with:
         name: Debian Package ${{ matrix.os }}
         path: |

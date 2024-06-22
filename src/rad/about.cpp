@@ -32,7 +32,7 @@
 
 
 #if 0
-    #define ID_OK 1000
+static constexpr int ID_OK = 1000;
 
 BEGIN_EVENT_TABLE(AboutDialog,wxDialog)
   EVT_BUTTON(ID_OK,AboutDialog::OnButtonEvent)
@@ -45,7 +45,7 @@ class HtmlWindow : public wxHtmlWindow
 public:
     HtmlWindow(wxWindow* parent) :
       wxHtmlWindow(
-        parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_NEVER | wxHW_NO_SELECTION | wxRAISED_BORDER)
+        parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_NEVER | wxRAISED_BORDER)
     {
     }
 
@@ -118,7 +118,7 @@ AboutDialog::AboutDialog(wxWindow* parent, int id) : wxDialog(parent, id, wxT("A
     // work around a wxMac bug
     htmlWin->SetSize(450, 650);
 #else
-    htmlWin->SetMinSize(wxSize(450, 650));
+    htmlWin->SetMinSize(wxSize(550, 650));
 #endif
 
 
