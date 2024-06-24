@@ -49,8 +49,6 @@ EVT_BUTTON(wxID_ANY, wxFbPalette::OnButtonClick)
 #else
 EVT_TOOL(wxID_ANY, wxFbPalette::OnButtonClick)
 #endif
-EVT_SPIN_UP(wxID_ANY, wxFbPalette::OnSpinUp)
-EVT_SPIN_DOWN(wxID_ANY, wxFbPalette::OnSpinDown)
 END_EVENT_TABLE()
 
 
@@ -193,13 +191,6 @@ void wxFbPalette::Create()
     Fit();
 }
 
-void wxFbPalette::OnSpinUp(wxSpinEvent&)
-{
-}
-
-void wxFbPalette::OnSpinDown(wxSpinEvent&)
-{
-}
 
 void wxFbPalette::OnButtonClick(wxCommandEvent& event)
 {

@@ -44,7 +44,6 @@ private:
     ToolbarVector m_tv;
     wxAuiNotebook* m_notebook;
     static wxWindowID nextId;
-    std::vector<int> m_posVector;
 
     void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
 
@@ -60,8 +59,6 @@ public:
      * DataObservable.
      */
     void Create();
-    void OnSpinUp(wxSpinEvent& e);
-    void OnSpinDown(wxSpinEvent& e);
     void OnButtonClick(wxCommandEvent& event);
 };
 
