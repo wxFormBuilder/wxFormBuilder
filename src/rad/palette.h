@@ -37,22 +37,24 @@
 
 class wxFbPalette : public wxPanel
 {
-private:
-    wxAuiNotebook* m_notebook;
-
-    void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
-
 public:
     wxFbPalette(wxWindow* parent, wxWindowID id);
-
-    void SavePosition();
 
     /**
      * Crea la paleta, previamente se ha debido configurar el objeto
      * DataObservable.
      */
     void Create();
+
+    void SavePosition();
+
+private:
+    void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
+
     void OnButtonClick(wxCommandEvent& event, wxAuiToolBar* parent);
+
+private:
+    wxAuiNotebook* m_notebook;
 };
 
 #endif  // RAD_PALETTE_H

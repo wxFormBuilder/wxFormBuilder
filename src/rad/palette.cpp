@@ -46,56 +46,6 @@ wxFbPalette::wxFbPalette(wxWindow* parent, wxWindowID id) : wxPanel(parent, id),
 {
 }
 
-void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
-{
-    for (unsigned int i = 0; i < pkg->GetObjectCount(); ++i) {
-        auto info = pkg->GetObjectInfo(i);
-        if (info->IsStartOfGroup()) {
-            toolbar->AddSeparator();
-        }
-        if (!info->GetComponent()) {
-            LogDebug(wxString::Format(
-                "Missing Component for Class \"%s\" of Package \"%s\"",
-                info->GetClassName(),
-                pkg->GetPackageName()
-            ));
-            continue;
-        }
-
-        auto widget = info->GetClassName();
-        auto icon = info->GetIconFile();
-
-#ifdef __WXMAC__
-        auto* button = new wxBitmapButton(toolbar, wxID_ANY, icon);
-        button->SetToolTip(widget);
-        toolbar->AddControl(button);
-#else
-        toolbar->AddTool(wxID_ANY, widget, icon, widget);
-#endif
-    }
-    toolbar->Realize();
-
-#ifdef __WXMAC__
-    toolbar->Bind(wxEVT_BUTTON, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
-#else
-    toolbar->Bind(wxEVT_TOOL, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
-#endif
-}
-
-void wxFbPalette::SavePosition()
-{
-    auto* config = wxConfigBase::Get();
-    wxString pageOrder;
-
-    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
-        if (!pageOrder.empty()) {
-            pageOrder.append(wxT(","));
-        }
-        pageOrder.append(m_notebook->GetPageText(i));
-    }
-
-    config->Write("/palette/pageOrder", pageOrder);
-}
 
 void wxFbPalette::Create()
 {
@@ -183,6 +133,59 @@ void wxFbPalette::Create()
     SetMinSize(minsize);
     Layout();
     Fit();
+}
+
+
+void wxFbPalette::SavePosition()
+{
+    auto* config = wxConfigBase::Get();
+    wxString pageOrder;
+
+    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
+        if (!pageOrder.empty()) {
+            pageOrder.append(wxT(","));
+        }
+        pageOrder.append(m_notebook->GetPageText(i));
+    }
+
+    config->Write("/palette/pageOrder", pageOrder);
+}
+
+
+void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
+{
+    for (unsigned int i = 0; i < pkg->GetObjectCount(); ++i) {
+        auto info = pkg->GetObjectInfo(i);
+        if (info->IsStartOfGroup()) {
+            toolbar->AddSeparator();
+        }
+        if (!info->GetComponent()) {
+            LogDebug(wxString::Format(
+                "Missing Component for Class \"%s\" of Package \"%s\"",
+                info->GetClassName(),
+                pkg->GetPackageName()
+            ));
+            continue;
+        }
+
+        auto widget = info->GetClassName();
+        auto icon = info->GetIconFile();
+
+#ifdef __WXMAC__
+        auto* button = new wxBitmapButton(toolbar, wxID_ANY, icon);
+        button->SetToolTip(widget);
+        toolbar->AddControl(button);
+#else
+        toolbar->AddTool(wxID_ANY, widget, icon, widget);
+#endif
+    }
+    toolbar->Realize();
+
+#ifdef __WXMAC__
+    toolbar->Bind(wxEVT_BUTTON, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#else
+    toolbar->Bind(wxEVT_TOOL, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#endif
 }
 
 
