@@ -35,13 +35,10 @@
 #include "model/database.h"
 
 
-typedef std::vector<wxAuiToolBar*> ToolbarVector;
-
-
 class wxFbPalette : public wxPanel
 {
 private:
-    ToolbarVector m_tv;
+    std::vector<wxAuiToolBar*> m_tv;
     wxAuiNotebook* m_notebook;
     static wxWindowID nextId;
 
@@ -50,7 +47,7 @@ private:
     DECLARE_EVENT_TABLE()
 
 public:
-    wxFbPalette(wxWindow* parent, int id);
+    wxFbPalette(wxWindow* parent, wxWindowID id);
 
     void SavePosition();
 

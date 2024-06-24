@@ -52,39 +52,38 @@ EVT_TOOL(wxID_ANY, wxFbPalette::OnButtonClick)
 END_EVENT_TABLE()
 
 
-wxFbPalette::wxFbPalette(wxWindow* parent, int id) : wxPanel(parent, id), m_notebook(NULL)
+wxFbPalette::wxFbPalette(wxWindow* parent, wxWindowID id) : wxPanel(parent, id), m_notebook(nullptr)
 {
 }
 
 void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
 {
-    unsigned int j = 0;
-    while (j < pkg->GetObjectCount()) {
-        PObjectInfo info = pkg->GetObjectInfo(j);
+    for (unsigned int i = 0; i < pkg->GetObjectCount(); ++i) {
+        auto info = pkg->GetObjectInfo(i);
         if (info->IsStartOfGroup()) {
             toolbar->AddSeparator();
         }
-        if (NULL == info->GetComponent()) {
-            LogDebug(
-              _("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() +
-                "\"."));
-        } else {
-            wxString widget(info->GetClassName());
+        if (!info->GetComponent()) {
+            LogDebug(wxString::Format(
+                "Missing Component for Class \"%s\" of Package \"%s\"",
+                info->GetClassName(),
+                pkg->GetPackageName()
+            ));
+            continue;
+        }
 
-            wxBitmap icon = info->GetIconFile();
+        auto widget = info->GetClassName();
+        auto icon = info->GetIconFile();
 
 #ifdef __WXMAC__
-            wxBitmapButton* button = new wxBitmapButton(toolbar, nextId++, icon);
-            button->SetToolTip(widget);
-            toolbar->AddControl(button);
+        auto* button = new wxBitmapButton(toolbar, nextId++, icon);
+        button->SetToolTip(widget);
+        toolbar->AddControl(button);
 #else
-            toolbar->AddTool(nextId++, widget, icon, widget);
+        toolbar->AddTool(nextId++, widget, icon, widget);
 #endif
-
-            toolbar->Realize();
-        }
-        j++;
     }
+    toolbar->Realize();
 }
 
 void wxFbPalette::SavePosition()
@@ -99,20 +98,20 @@ void wxFbPalette::SavePosition()
         pageOrder.append(m_notebook->GetPageText(i));
     }
 
-    config->Write(wxT("/palette/pageOrder"), pageOrder);
+    config->Write("/palette/pageOrder", pageOrder);
 }
 
 void wxFbPalette::Create()
 {
     // Package count
-    unsigned int pkg_count = AppData()->GetPackageCount();
+    auto pkg_count = AppData()->GetPackageCount();
     // Lookup map of all packages
     std::map<wxString, PObjectPackage> packages;
     // List of pages to add to the notebook in desired order
     std::vector<std::pair<wxString, PObjectPackage>> pages;
     pages.reserve(pkg_count);
 
-    LogDebug(wxT("[Palette] Pages %d"), pkg_count);
+    LogDebug("[Palette] Pages %u", pkg_count);
 
     // Fill lookup map of packages
     for (unsigned int i = 0; i < pkg_count; ++i) {
@@ -124,8 +123,8 @@ void wxFbPalette::Create()
     auto* config = wxConfigBase::Get();
     wxStringTokenizer pageOrder(
       config->Read(
-        wxT("/palette/pageOrder"), wxT("Common,Additional,Data,Containers,Menu/Toolbar,Layout,Forms,Ribbon")),
-      wxT(","));
+        "/palette/pageOrder", "Common,Additional,Data,Containers,Menu/Toolbar,Layout,Forms,Ribbon"),
+      ",");
     while (pageOrder.HasMoreTokens()) {
         const auto packageName = pageOrder.GetNextToken();
         auto package = packages.find(packageName);
@@ -143,7 +142,7 @@ void wxFbPalette::Create()
     for (auto& package : packages) { pages.push_back(std::make_pair(package.first, package.second)); }
     packages.clear();
 
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* top_sizer = new wxBoxSizer(wxVERTICAL);
 
     m_notebook = new wxAuiNotebook(
       this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_TAB_MOVE);
@@ -154,11 +153,11 @@ void wxFbPalette::Create()
     for (size_t i = 0; i < pages.size(); ++i) {
         const auto& page = pages[i];
 
-        wxPanel* panel = new wxPanel(m_notebook, wxID_ANY);
+        auto* panel = new wxPanel(m_notebook, wxID_ANY);
         // panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-        wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+        auto* sizer = new wxBoxSizer(wxHORIZONTAL);
 
-        wxAuiToolBar* toolbar = new wxAuiToolBar(
+        auto* toolbar = new wxAuiToolBar(
           panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER);
         toolbar->SetToolBitmapSize(wxSize(22, 22));
         PopulateToolbar(page.second, toolbar);
@@ -171,7 +170,7 @@ void wxFbPalette::Create()
         sizer->Fit(panel);
         sizer->SetSizeHints(panel);
 
-        wxSize cursize = panel->GetSize();
+        auto cursize = panel->GetSize();
         if (cursize.x > minsize.x)
             minsize.x = cursize.x;
         if (cursize.y > minsize.y)
@@ -195,14 +194,14 @@ void wxFbPalette::Create()
 void wxFbPalette::OnButtonClick(wxCommandEvent& event)
 {
 #ifdef __WXMAC__
-    wxWindow* win = dynamic_cast<wxWindow*>(event.GetEventObject());
-    if (win != 0) {
+    auto* win = dynamic_cast<wxWindow*>(event.GetEventObject());
+    if (win) {
         AppData()->CreateObject(win->GetToolTip()->GetTip());
     }
 #else
     for (unsigned int i = 0; i < m_tv.size(); i++) {
         if (m_tv[i]->GetToolIndex(event.GetId()) != wxNOT_FOUND) {
-            wxString name = m_tv[i]->GetToolShortHelp(event.GetId());
+            auto name = m_tv[i]->GetToolShortHelp(event.GetId());
             AppData()->CreateObject(name);
             return;
         }
