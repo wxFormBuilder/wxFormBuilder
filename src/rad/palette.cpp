@@ -34,6 +34,7 @@
 #include "model/objectbase.h"
 #include "rad/appdata.h"
 #include "rad/auitabart.h"
+#include "rad/bitmaps.h"
 #include "utils/debug.h"
 
 #ifdef __WXMAC__
@@ -159,7 +160,7 @@ void wxFbPalette::Create()
 
         auto* toolbar = new wxAuiToolBar(
           panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER);
-        toolbar->SetToolBitmapSize(wxSize(22, 22));
+        toolbar->SetToolBitmapSize(wxSize(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon)));
         PopulateToolbar(page.second, toolbar);
         m_tv.push_back(toolbar);
 
