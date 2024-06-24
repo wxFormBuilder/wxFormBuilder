@@ -38,13 +38,9 @@
 class wxFbPalette : public wxPanel
 {
 private:
-    std::vector<wxAuiToolBar*> m_tv;
     wxAuiNotebook* m_notebook;
-    static wxWindowID nextId;
 
     void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
-
-    DECLARE_EVENT_TABLE()
 
 public:
     wxFbPalette(wxWindow* parent, wxWindowID id);
@@ -56,7 +52,7 @@ public:
      * DataObservable.
      */
     void Create();
-    void OnButtonClick(wxCommandEvent& event);
+    void OnButtonClick(wxCommandEvent& event, wxAuiToolBar* parent);
 };
 
 #endif  // RAD_PALETTE_H

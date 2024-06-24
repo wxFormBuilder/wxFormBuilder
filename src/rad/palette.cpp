@@ -42,17 +42,6 @@
 #endif
 
 
-wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 3000;
-
-BEGIN_EVENT_TABLE(wxFbPalette, wxPanel)
-#ifdef __WXMAC__
-EVT_BUTTON(wxID_ANY, wxFbPalette::OnButtonClick)
-#else
-EVT_TOOL(wxID_ANY, wxFbPalette::OnButtonClick)
-#endif
-END_EVENT_TABLE()
-
-
 wxFbPalette::wxFbPalette(wxWindow* parent, wxWindowID id) : wxPanel(parent, id), m_notebook(nullptr)
 {
 }
@@ -77,14 +66,20 @@ void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
         auto icon = info->GetIconFile();
 
 #ifdef __WXMAC__
-        auto* button = new wxBitmapButton(toolbar, nextId++, icon);
+        auto* button = new wxBitmapButton(toolbar, wxID_ANY, icon);
         button->SetToolTip(widget);
         toolbar->AddControl(button);
 #else
-        toolbar->AddTool(nextId++, widget, icon, widget);
+        toolbar->AddTool(wxID_ANY, widget, icon, widget);
 #endif
     }
     toolbar->Realize();
+
+#ifdef __WXMAC__
+    toolbar->Bind(wxEVT_BUTTON, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#else
+    toolbar->Bind(wxEVT_TOOL, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#endif
 }
 
 void wxFbPalette::SavePosition()
@@ -162,7 +157,6 @@ void wxFbPalette::Create()
           panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER);
         toolbar->SetToolBitmapSize(wxSize(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon)));
         PopulateToolbar(page.second, toolbar);
-        m_tv.push_back(toolbar);
 
         sizer->Add(toolbar, 1, wxEXPAND, 0);
 
@@ -192,7 +186,7 @@ void wxFbPalette::Create()
 }
 
 
-void wxFbPalette::OnButtonClick(wxCommandEvent& event)
+void wxFbPalette::OnButtonClick(wxCommandEvent& event, [[maybe_unused]] wxAuiToolBar* parent)
 {
 #ifdef __WXMAC__
     auto* win = dynamic_cast<wxWindow*>(event.GetEventObject());
@@ -200,12 +194,8 @@ void wxFbPalette::OnButtonClick(wxCommandEvent& event)
         AppData()->CreateObject(win->GetToolTip()->GetTip());
     }
 #else
-    for (unsigned int i = 0; i < m_tv.size(); i++) {
-        if (m_tv[i]->GetToolIndex(event.GetId()) != wxNOT_FOUND) {
-            auto name = m_tv[i]->GetToolShortHelp(event.GetId());
-            AppData()->CreateObject(name);
-            return;
-        }
+    if (parent->GetToolIndex(event.GetId()) != wxNOT_FOUND) {
+        AppData()->CreateObject(parent->GetToolShortHelp(event.GetId()));
     }
 #endif
 }
