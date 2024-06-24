@@ -64,43 +64,5 @@ public:
     void OnSpinDown(wxSpinEvent& e);
     void OnButtonClick(wxCommandEvent& event);
 };
-/*
-class PaletteButton : public wxBitmapButton
-{
- private:
-  wxString m_name;
-  DECLARE_EVENT_TABLE()
-
- public:
-  PaletteButton(wxWindow *parent, const wxBitmap &bitmap, wxString &name);
-  void OnButtonClick(wxCommandEvent &event);
-};
-
-*/
-/*
-class ToolPanel : public wxPanel, public DataObserver
-{
- protected:
-   DECLARE_EVENT_TABLE()
-
- public:
-   ToolPanel(wxWindow *parent, int id);
-   void OnSaveFile(wxCommandEvent &event);
-
-};  */
-
-/*
-class PaletteButtonEventHandler : public wxEvtHandler
-{
- private:
-  wxString m_name;
-  DECLARE_EVENT_TABLE()
-  DataObservable *m_data;
-
- public:
-  PaletteButtonEventHandler(wxString name, DataObservable *data);
-  void OnButtonClick(wxCommandEvent &event);
-};
-*/
 
 #endif  // RAD_PALETTE_H
