@@ -88,51 +88,45 @@ void wxFbPalette::Create()
     for (auto& package : packages) { pages.push_back(std::make_pair(package.first, package.second)); }
     packages.clear();
 
-    auto* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
+    auto minSize = wxSize(0, 0);
 
     m_notebook = new wxAuiNotebook(
       this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_TAB_MOVE);
     m_notebook->SetArtProvider(new AuiTabArt());
-
-    wxSize minsize;
 
     for (size_t i = 0; i < pages.size(); ++i) {
         const auto& page = pages[i];
 
         auto* panel = new wxPanel(m_notebook, wxID_ANY);
         // panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-        auto* sizer = new wxBoxSizer(wxHORIZONTAL);
+        auto* pageSizer = new wxBoxSizer(wxHORIZONTAL);
 
         auto* toolbar = new wxAuiToolBar(
           panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER);
         toolbar->SetToolBitmapSize(wxSize(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon)));
         PopulateToolbar(page.second, toolbar);
+        pageSizer->Add(toolbar, 1, wxEXPAND, 0);
 
-        sizer->Add(toolbar, 1, wxEXPAND, 0);
-
-        panel->SetAutoLayout(true);
-        panel->SetSizer(sizer);
-        sizer->Fit(panel);
-        sizer->SetSizeHints(panel);
-
-        auto cursize = panel->GetSize();
-        if (cursize.x > minsize.x)
-            minsize.x = cursize.x;
-        if (cursize.y > minsize.y)
-            minsize.y = cursize.y + 30;
+        panel->SetSizerAndFit(pageSizer);
+        auto curSize = panel->GetSize();
+        if (curSize.x > minSize.x) {
+            minSize.x = curSize.x;
+        }
+        if (curSize.y > minSize.y) {
+            minSize.y = curSize.y;
+        }
 
         m_notebook->InsertPage(i, panel, page.first, false);
         m_notebook->SetPageBitmap(i, page.second->GetPackageIcon());
     }
+    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
+        auto* pageWindow = m_notebook->GetPage(i);
+        pageWindow->SetMinSize(minSize);
+    }
 
-    // Title *title = new Title( this, wxT("Component Palette") );
-    // top_sizer->Add(title,0,wxEXPAND,0);
-    top_sizer->Add(m_notebook, 1, wxEXPAND, 0);
-    SetSizer(top_sizer);
-    SetSize(minsize);
-    SetMinSize(minsize);
-    Layout();
-    Fit();
+    topSizer->Add(m_notebook, 1, wxEXPAND, 0);
+    SetSizer(topSizer);
 }
 
 
