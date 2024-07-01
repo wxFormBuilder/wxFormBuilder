@@ -120,10 +120,16 @@ void wxFbPalette::Create()
         m_notebook->InsertPage(i, panel, page.first, false);
         m_notebook->SetPageBitmap(i, page.second->GetPackageIcon());
     }
+    // wxWidgets 3.0 does not honor page minimum size, no archaeological digging was done to figure out when this was fixed,
+    // but it is fixed in wxWidgets 3.2
+#if wxCHECK_VERSION(3, 2, 0)
     for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
         auto* pageWindow = m_notebook->GetPage(i);
         pageWindow->SetMinSize(minSize);
     }
+#else
+    m_notebook->SetMinSize(wxSize(minSize.GetX(), minSize.GetY() + m_notebook->GetTabCtrlHeight()));
+#endif
 
     topSizer->Add(m_notebook, 1, wxEXPAND, 0);
     SetSizer(topSizer);
