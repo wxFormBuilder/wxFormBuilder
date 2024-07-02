@@ -34,6 +34,7 @@
 #include "model/objectbase.h"
 #include "rad/appdata.h"
 #include "rad/auitabart.h"
+#include "rad/bitmaps.h"
 #include "utils/debug.h"
 
 #ifdef __WXMAC__
@@ -41,80 +42,22 @@
 #endif
 
 
-wxWindowID wxFbPalette::nextId = wxID_HIGHEST + 3000;
-
-BEGIN_EVENT_TABLE(wxFbPalette, wxPanel)
-#ifdef __WXMAC__
-EVT_BUTTON(wxID_ANY, wxFbPalette::OnButtonClick)
-#else
-EVT_TOOL(wxID_ANY, wxFbPalette::OnButtonClick)
-#endif
-EVT_SPIN_UP(wxID_ANY, wxFbPalette::OnSpinUp)
-EVT_SPIN_DOWN(wxID_ANY, wxFbPalette::OnSpinDown)
-END_EVENT_TABLE()
-
-
-wxFbPalette::wxFbPalette(wxWindow* parent, int id) : wxPanel(parent, id), m_notebook(NULL)
+wxFbPalette::wxFbPalette(wxWindow* parent, wxWindowID id) : wxPanel(parent, id), m_notebook(nullptr)
 {
 }
 
-void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
-{
-    unsigned int j = 0;
-    while (j < pkg->GetObjectCount()) {
-        PObjectInfo info = pkg->GetObjectInfo(j);
-        if (info->IsStartOfGroup()) {
-            toolbar->AddSeparator();
-        }
-        if (NULL == info->GetComponent()) {
-            LogDebug(
-              _("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() +
-                "\"."));
-        } else {
-            wxString widget(info->GetClassName());
-
-            wxBitmap icon = info->GetIconFile();
-
-#ifdef __WXMAC__
-            wxBitmapButton* button = new wxBitmapButton(toolbar, nextId++, icon);
-            button->SetToolTip(widget);
-            toolbar->AddControl(button);
-#else
-            toolbar->AddTool(nextId++, widget, icon, widget);
-#endif
-
-            toolbar->Realize();
-        }
-        j++;
-    }
-}
-
-void wxFbPalette::SavePosition()
-{
-    auto* config = wxConfigBase::Get();
-    wxString pageOrder;
-
-    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
-        if (!pageOrder.empty()) {
-            pageOrder.append(wxT(","));
-        }
-        pageOrder.append(m_notebook->GetPageText(i));
-    }
-
-    config->Write(wxT("/palette/pageOrder"), pageOrder);
-}
 
 void wxFbPalette::Create()
 {
     // Package count
-    unsigned int pkg_count = AppData()->GetPackageCount();
+    auto pkg_count = AppData()->GetPackageCount();
     // Lookup map of all packages
     std::map<wxString, PObjectPackage> packages;
     // List of pages to add to the notebook in desired order
     std::vector<std::pair<wxString, PObjectPackage>> pages;
     pages.reserve(pkg_count);
 
-    LogDebug(wxT("[Palette] Pages %d"), pkg_count);
+    LogDebug("[Palette] Pages %u", pkg_count);
 
     // Fill lookup map of packages
     for (unsigned int i = 0; i < pkg_count; ++i) {
@@ -126,8 +69,8 @@ void wxFbPalette::Create()
     auto* config = wxConfigBase::Get();
     wxStringTokenizer pageOrder(
       config->Read(
-        wxT("/palette/pageOrder"), wxT("Common,Additional,Data,Containers,Menu/Toolbar,Layout,Forms,Ribbon")),
-      wxT(","));
+        "/palette/pageOrder", "Common,Additional,Data,Containers,Ribbon,Menu/Toolbar,Layout,Forms"),
+      ",");
     while (pageOrder.HasMoreTokens()) {
         const auto packageName = pageOrder.GetNextToken();
         auto package = packages.find(packageName);
@@ -145,76 +88,117 @@ void wxFbPalette::Create()
     for (auto& package : packages) { pages.push_back(std::make_pair(package.first, package.second)); }
     packages.clear();
 
-    wxBoxSizer* top_sizer = new wxBoxSizer(wxVERTICAL);
+    auto* topSizer = new wxBoxSizer(wxVERTICAL);
+    auto minSize = wxSize(0, 0);
 
     m_notebook = new wxAuiNotebook(
       this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_NB_TOP | wxAUI_NB_SCROLL_BUTTONS | wxAUI_NB_TAB_MOVE);
     m_notebook->SetArtProvider(new AuiTabArt());
 
-    wxSize minsize;
-
     for (size_t i = 0; i < pages.size(); ++i) {
         const auto& page = pages[i];
 
-        wxPanel* panel = new wxPanel(m_notebook, wxID_ANY);
+        auto* panel = new wxPanel(m_notebook, wxID_ANY);
         // panel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_3DFACE ) );
-        wxBoxSizer* sizer = new wxBoxSizer(wxHORIZONTAL);
+        auto* pageSizer = new wxBoxSizer(wxHORIZONTAL);
 
-        wxAuiToolBar* toolbar = new wxAuiToolBar(
+        auto* toolbar = new wxAuiToolBar(
           panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_OVERFLOW | wxNO_BORDER);
-        toolbar->SetToolBitmapSize(wxSize(22, 22));
+        toolbar->SetToolBitmapSize(wxSize(AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon), AppBitmaps::GetPixelSize(AppBitmaps::Size::Icon)));
         PopulateToolbar(page.second, toolbar);
-        m_tv.push_back(toolbar);
+        pageSizer->Add(toolbar, 1, wxEXPAND, 0);
 
-        sizer->Add(toolbar, 1, wxEXPAND, 0);
-
-        panel->SetAutoLayout(true);
-        panel->SetSizer(sizer);
-        sizer->Fit(panel);
-        sizer->SetSizeHints(panel);
-
-        wxSize cursize = panel->GetSize();
-        if (cursize.x > minsize.x)
-            minsize.x = cursize.x;
-        if (cursize.y > minsize.y)
-            minsize.y = cursize.y + 30;
+        panel->SetSizerAndFit(pageSizer);
+        auto curSize = panel->GetSize();
+        if (curSize.x > minSize.x) {
+            minSize.x = curSize.x;
+        }
+        if (curSize.y > minSize.y) {
+            minSize.y = curSize.y;
+        }
 
         m_notebook->InsertPage(i, panel, page.first, false);
         m_notebook->SetPageBitmap(i, page.second->GetPackageIcon());
     }
+    // wxWidgets 3.0 does not honor page minimum size, no archaeological digging was done to figure out when this was fixed,
+    // but it is fixed in wxWidgets 3.2
+#if wxCHECK_VERSION(3, 2, 0)
+    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
+        auto* pageWindow = m_notebook->GetPage(i);
+        pageWindow->SetMinSize(minSize);
+    }
+#else
+    m_notebook->SetMinSize(wxSize(minSize.GetX(), minSize.GetY() + m_notebook->GetTabCtrlHeight()));
+#endif
 
-    // Title *title = new Title( this, wxT("Component Palette") );
-    // top_sizer->Add(title,0,wxEXPAND,0);
-    top_sizer->Add(m_notebook, 1, wxEXPAND, 0);
-    SetSizer(top_sizer);
-    SetSize(minsize);
-    SetMinSize(minsize);
-    Layout();
-    Fit();
+    topSizer->Add(m_notebook, 1, wxEXPAND, 0);
+    SetSizer(topSizer);
 }
 
-void wxFbPalette::OnSpinUp(wxSpinEvent&)
+
+void wxFbPalette::SavePosition()
 {
+    auto* config = wxConfigBase::Get();
+    wxString pageOrder;
+
+    for (size_t i = 0; i < m_notebook->GetPageCount(); ++i) {
+        if (!pageOrder.empty()) {
+            pageOrder.append(wxT(","));
+        }
+        pageOrder.append(m_notebook->GetPageText(i));
+    }
+
+    config->Write("/palette/pageOrder", pageOrder);
 }
 
-void wxFbPalette::OnSpinDown(wxSpinEvent&)
+
+void wxFbPalette::PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar)
 {
+    for (unsigned int i = 0; i < pkg->GetObjectCount(); ++i) {
+        auto info = pkg->GetObjectInfo(i);
+        if (info->IsStartOfGroup()) {
+            toolbar->AddSeparator();
+        }
+        if (!info->GetComponent()) {
+            LogDebug(wxString::Format(
+                "Missing Component for Class \"%s\" of Package \"%s\"",
+                info->GetClassName(),
+                pkg->GetPackageName()
+            ));
+            continue;
+        }
+
+        auto widget = info->GetClassName();
+        auto icon = info->GetIconFile();
+
+#ifdef __WXMAC__
+        auto* button = new wxBitmapButton(toolbar, wxID_ANY, icon);
+        button->SetToolTip(widget);
+        toolbar->AddControl(button);
+#else
+        toolbar->AddTool(wxID_ANY, widget, icon, widget);
+#endif
+    }
+    toolbar->Realize();
+
+#ifdef __WXMAC__
+    toolbar->Bind(wxEVT_BUTTON, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#else
+    toolbar->Bind(wxEVT_TOOL, [this, toolbar](wxCommandEvent& event){ OnButtonClick(event, toolbar); }, wxID_ANY);
+#endif
 }
 
-void wxFbPalette::OnButtonClick(wxCommandEvent& event)
+
+void wxFbPalette::OnButtonClick(wxCommandEvent& event, [[maybe_unused]] wxAuiToolBar* parent)
 {
 #ifdef __WXMAC__
-    wxWindow* win = dynamic_cast<wxWindow*>(event.GetEventObject());
-    if (win != 0) {
+    auto* win = dynamic_cast<wxWindow*>(event.GetEventObject());
+    if (win) {
         AppData()->CreateObject(win->GetToolTip()->GetTip());
     }
 #else
-    for (unsigned int i = 0; i < m_tv.size(); i++) {
-        if (m_tv[i]->GetToolIndex(event.GetId()) != wxNOT_FOUND) {
-            wxString name = m_tv[i]->GetToolShortHelp(event.GetId());
-            AppData()->CreateObject(name);
-            return;
-        }
+    if (parent->GetToolIndex(event.GetId()) != wxNOT_FOUND) {
+        AppData()->CreateObject(parent->GetToolShortHelp(event.GetId()));
     }
 #endif
 }

@@ -35,72 +35,26 @@
 #include "model/database.h"
 
 
-typedef std::vector<wxAuiToolBar*> ToolbarVector;
-
-
 class wxFbPalette : public wxPanel
 {
-private:
-    ToolbarVector m_tv;
-    wxAuiNotebook* m_notebook;
-    static wxWindowID nextId;
-    std::vector<int> m_posVector;
-
-    void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
-
-    DECLARE_EVENT_TABLE()
-
 public:
-    wxFbPalette(wxWindow* parent, int id);
-
-    void SavePosition();
+    wxFbPalette(wxWindow* parent, wxWindowID id);
 
     /**
      * Crea la paleta, previamente se ha debido configurar el objeto
      * DataObservable.
      */
     void Create();
-    void OnSpinUp(wxSpinEvent& e);
-    void OnSpinDown(wxSpinEvent& e);
-    void OnButtonClick(wxCommandEvent& event);
+
+    void SavePosition();
+
+private:
+    void PopulateToolbar(PObjectPackage pkg, wxAuiToolBar* toolbar);
+
+    void OnButtonClick(wxCommandEvent& event, wxAuiToolBar* parent);
+
+private:
+    wxAuiNotebook* m_notebook;
 };
-/*
-class PaletteButton : public wxBitmapButton
-{
- private:
-  wxString m_name;
-  DECLARE_EVENT_TABLE()
-
- public:
-  PaletteButton(wxWindow *parent, const wxBitmap &bitmap, wxString &name);
-  void OnButtonClick(wxCommandEvent &event);
-};
-
-*/
-/*
-class ToolPanel : public wxPanel, public DataObserver
-{
- protected:
-   DECLARE_EVENT_TABLE()
-
- public:
-   ToolPanel(wxWindow *parent, int id);
-   void OnSaveFile(wxCommandEvent &event);
-
-};  */
-
-/*
-class PaletteButtonEventHandler : public wxEvtHandler
-{
- private:
-  wxString m_name;
-  DECLARE_EVENT_TABLE()
-  DataObservable *m_data;
-
- public:
-  PaletteButtonEventHandler(wxString name, DataObservable *data);
-  void OnButtonClick(wxCommandEvent &event);
-};
-*/
 
 #endif  // RAD_PALETTE_H
