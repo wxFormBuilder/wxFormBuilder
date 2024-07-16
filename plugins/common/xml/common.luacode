@@ -72,7 +72,7 @@ Lua code generation written by
     <template name="construction">
       #utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )
     </template>
-      <template name="settings">#ifnotequal $checked "0" @{ #utbl$name:SetValue(True) @}</template>
+      <template name="settings">#ifnotequal $checked "0" @{ #utbl$name:SetValue(true) @}</template>
     <template name="evt_connect_OnCheckBox">#utbl$name:Connect( wx.wxEVT_COMMAND_CHECKBOX_CLICKED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
 
@@ -144,7 +144,7 @@ Lua code generation written by
     <template name="construction">#utbl$name = #class( #utbl#wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ +$window_style @} #ifnotnull $window_name @{, wx.wxDefaultValidator, $window_name @} )</template>
     <template name="settings">
         #ifnotequal $value "0"
-        @{ #utbl$name:SetValue( True ) @}
+        @{ #utbl$name:SetValue( true ) @}
     </template>
     <template name="evt_connect_OnRadioButton">#utbl$name:Connect( wx.wxEVT_COMMAND_RADIOBUTTON_SELECTED, function(event)#nl --implements  #handler#nl #skip #nl end )</template>
   </templates>
