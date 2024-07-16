@@ -168,6 +168,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
+                bit.Trim().Trim(false);
                 pred = m_predModulePrefix[bit];
 
                 if (pred.empty()) {
