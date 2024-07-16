@@ -422,7 +422,7 @@ Written by
 
   <objectinfo class="wxPropertyGrid" icon="propgrid.xpm" type="propgrid" startgroup="1" wxversion="2904" >
     <inherits class="wxWindow"/>
-    <inherits class="AUI"/> <property name="bitmap" type="bitmap" help="This is the bitmap shown in the default state, it must be always valid while all the other bitmaps are optional and don't have to be set."/>
+    <inherits class="AUI"/>
     <property name="style" type="bitlist">
       <option name="wxPG_AUTO_SORT" help="This will cause Sort() automatically after an item is added. When inserting a lot of items in this mode, it may make sense to use Freeze() before operations and Thaw() afterwards to increase performance."/>
       <option name="wxPG_HIDE_CATEGORIES" help="Categories are not initially shown (even if added)."/>
