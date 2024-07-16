@@ -72,7 +72,7 @@ LuaTemplateParser::LuaTemplateParser(
 
 wxString LuaTemplateParser::RootWxParentToCode()
 {
-    return wxT("NS.");
+    return wxT("#rootwxparent");
 }
 
 PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
