@@ -93,6 +93,7 @@
     <childtype name="menu" nmax="1"/>
     <childtype name="sizer" nmax="1"/>
     <childtype name="gbsizer" nmax="1"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="menubar_form">
@@ -209,6 +210,7 @@
     <childtype name="menu" nmax="1" aui_nmax="1"/>
     <childtype name="sizer" nmax="1" aui_nmax="1"/>
     <childtype name="gbsizer" nmax="1" aui_nmax="1"/>
+    <childtype name="nonvisual"/>
   </objtype>
 
   <objtype name="splitter">
