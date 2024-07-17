@@ -786,11 +786,6 @@ wxString LuaCodeGenerator::GetCode(
     }
 
     _template = code_info->GetTemplate(name);
-    if (!m_strUITable.empty()) {
-        _template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
-    } else {
-        _template.Replace(wxT("#utbl"), wxEmptyString);
-    }
 
     LuaTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec);
     wxString code = parser.ParseTemplate();
@@ -1230,8 +1225,7 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
                 case 1: {
                     PObjectBase sub1 = obj->GetChild(0)->GetChild(0);
                     wxString _template = wxT("#utbl$name:Initialize( ");
-                    _template = _template + wxT("#utbl") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(" )");
-                    _template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
+                    _template = _template + wxT("#utbl#nop ") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(" )");
 
                     LuaTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec);
                     m_source->WriteLn(parser.ParseTemplate());
@@ -1251,11 +1245,10 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
                         _template = wxT("#utbl$name:SplitHorizontally( ");
                     }
 
-                    _template = _template + wxT("#utbl") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(", #utbl") +
+                    _template = _template + wxT("#utbl#nop ") + sub1->GetProperty(wxT("name"))->GetValue() + wxT(", #utbl#nop ") +
                                 sub2->GetProperty(wxT("name"))->GetValue() + wxT(", $sashpos )");
                     _template = _template + wxT("#nl #utbl$name") + wxT(":SetSplitMode(") +
                                 wxString::Format(wxT("%d"), (bSplitVertical ? 1 : 0)) + wxT(")");
-                    _template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
 
                     LuaTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec);
                     m_source->WriteLn(parser.ParseTemplate());
