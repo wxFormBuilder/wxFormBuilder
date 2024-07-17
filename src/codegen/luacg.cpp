@@ -198,7 +198,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
             break;
         }
         case PT_BOOL: {
-            result = (value == wxT("0") ? wxT("False") : wxT("True"));
+            result = (value == wxT("0") ? wxT("false") : wxT("true"));
             break;
         }
         case PT_WXFONT: {
@@ -212,7 +212,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
                   "wx.wxFont( %s, %s, %s, %s, %s, %s )",
                   ((pointSize <= 0) ? "wx.wxNORMAL_FONT:GetPointSize()" : (wxString() << pointSize)),
                   "wx." + TypeConv::FontFamilyToString(fontContainer.GetFamily()), "wx." + font.GetStyleString(),
-                  "wx." + font.GetWeightString(), (fontContainer.GetUnderlined() ? "True" : "False"),
+                  "wx." + font.GetWeightString(), (fontContainer.GetUnderlined() ? "true" : "false"),
                   (fontContainer.GetFaceName().empty() ? "\"\"" : ("\"" + fontContainer.GetFaceName() + "\"")));
             } else {
                 result = wxT("wx.wxNORMAL_FONT");

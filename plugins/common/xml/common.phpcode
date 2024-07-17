@@ -71,7 +71,7 @@ PHP code generation written by
     <template name="construction">
       @$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );
     </template>
-    <template name="settings">#ifnotequal $checked "0" @{ @$this->$name->SetValue(True); @}</template>
+    <template name="settings">#ifnotequal $checked "0" @{ @$this->$name->SetValue(true); @}</template>
     <template name="evt_connect_OnCheckBox">@$this->$name->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, #handler );</template>
   </templates>
 
@@ -143,7 +143,7 @@ PHP code generation written by
     <template name="construction">@$this->$name = new #class( #wxparent $name, $id, $label, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} );</template>
     <template name="settings">
       #ifnotequal $value "0"
-      @{ @$this->$name->SetValue( True ); @}
+      @{ @$this->$name->SetValue( true ); @}
     </template>
     <template name="evt_connect_OnRadioButton">@$this->$name->Connect( wxEVT_COMMAND_RADIOBUTTON_SELECTED, #handler );</template>
   </templates>

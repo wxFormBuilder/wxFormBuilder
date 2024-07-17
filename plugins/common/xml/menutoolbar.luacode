@@ -78,12 +78,12 @@ Lua code generation written by
         #ifparenttypeequal "tool"
         @{
           function #utbl#parent $name #append OnDropDownMenu( event ) #indent #nl
-          if event.IsDropDownClicked() == True  then #indent #nl
-            #utbl#wxparent $name:SetToolSticky( event:GetId(), True ) #nl
+          if event.IsDropDownClicked() == true  then #indent #nl
+            #utbl#wxparent $name:SetToolSticky( event:GetId(), true ) #nl
             local rect = #utbl#wxparent $name:GetRect( event:GetId() ) #nl
             local pt = #utbl#wxparent$name:ScreenToClient( #utbl#wxparent $name:ClientToScreen( rect:GetBottomLeft() ) ); #nl
             #utbl#wxparent $name:PopupMenu( #utbl#wxparent$name, pt ) #nl
-            #utbl#wxparent $name:SetToolSticky( event:GetId(), False ) #nl #unindent end #unindent #nl end
+            #utbl#wxparent $name:SetToolSticky( event:GetId(), false ) #nl #unindent end #unindent #nl end
         @}
       @}@}
     </template>
@@ -285,7 +285,7 @@ Lua code generation written by
         @}
         #ifequal $context_menu "1"
         @{
-          #nl #utbl#parent $name:SetToolDropDown( #utbl$name:GetId(), True )
+          #nl #utbl#parent $name:SetToolDropDown( #utbl$name:GetId(), true )
           #nl
         @}
       @}
