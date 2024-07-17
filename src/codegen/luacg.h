@@ -52,16 +52,17 @@ private:
     bool m_i18n;
     bool m_useRelativePath;
     wxString m_basePath;
+    wxString m_rootWxParent;
+    std::vector<wxString> m_strUserIDsVec;
 
     std::map<wxString, wxString> m_predModulePrefix;
-    std::vector<wxString> m_strUserIDsVec;
 
     void SetupModulePrefixes();
 
 public:
     LuaTemplateParser(
       PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-      std::vector<wxString> strUserIDsVec);
+      wxString rootWxParent, std::vector<wxString> strUserIDsVec);
     LuaTemplateParser(const LuaTemplateParser& that, wxString _template);
 
     // overrides for Lua
@@ -155,11 +156,11 @@ private:
     /**
      * Generates the generated_event_handlers template
      */
-    void GetGenEventHandlers(PObjectBase obj);
+    void GetGenEventHandlers(PObjectBase obj, wxString& strClassName);
     /**
      * Generates the generated_event_handlers template
      */
-    void GenDefinedEventHandlers(PObjectInfo info, PObjectBase obj);
+    void GenDefinedEventHandlers(PObjectInfo info, PObjectBase obj, wxString& strClassName);
 
     /**
      * Generates the 'import' section for files.
@@ -199,7 +200,7 @@ private:
     /**
      * Makes the objects destructions.
      */
-    void GenDestruction(PObjectBase obj);
+    void GenDestruction(PObjectBase obj, wxString& strClassName);
 
     /**
      * Configures the object properties, both own and inherited ones.
@@ -212,8 +213,8 @@ private:
      * Adds a control for a toolbar. Needs the objectinfo (wxWindow type) where
      * the template is found, and the objectbase for the control.
      */
-    void GenAddToolbar(PObjectInfo info, PObjectBase obj);
-    void GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxArrayString& codelines);
+    void GenAddToolbar(PObjectInfo info, PObjectBase obj, wxString& strClassName);
+    void GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxString& strClassName, wxArrayString& codelines);
 
     void GenVirtualEventHandlers(
       const EventVector& events, const wxString& eventHandlerPostfix, const wxString& strClassName);
