@@ -72,7 +72,7 @@ LuaTemplateParser::LuaTemplateParser(
 
 wxString LuaTemplateParser::RootWxParentToCode()
 {
-    return wxT("NS.");
+    return wxT("#rootwxparent");
 }
 
 PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
@@ -95,7 +95,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
 
     switch (type) {
         case PT_WXPARENT: {
-            result = wxT("NS.") + value;
+            result = value;
             break;
         }
         case PT_WXPARENT_SB: {
@@ -103,7 +103,7 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
             break;
         }
         case PT_WXPARENT_CP: {
-            result = wxT("NS.") + value + wxT(":GetPane()");
+            result = value + wxT(":GetPane()");
             break;
         }
         case PT_WXSTRING:
@@ -787,9 +787,6 @@ wxString LuaCodeGenerator::GetCode(
     }
 
     _template = code_info->GetTemplate(name);
-    _template.Replace(wxT("#parentname"), strSelf);
-
-
     if (!m_strUITable.empty()) {
         _template.Replace(wxT("#utbl"), m_strUITable + wxT("."));
     } else {
@@ -809,15 +806,8 @@ wxString LuaCodeGenerator::GetCode(
         code.Prepend(wxT("--"));
 
     wxString strRootCode = parser.RootWxParentToCode();
-    int pos = code.Find(strRootCode);
-    if (pos != -1) {
-        wxString strMid = code.Mid(pos + strRootCode.length(), 3);
-        strMid.Trim(false);
-        if (strMid.GetChar(0) == ',') {
-            code.Replace(strRootCode, strSelf);
-        } else {
-            code.Replace(strRootCode, wxEmptyString);
-        }
+    if (code.Find(strRootCode) != -1) {
+        code.Replace(strRootCode, strSelf);
     }
 
     return code;
@@ -1223,17 +1213,16 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
                 // It's not a good practice to embed templates into the source code,
                 // because you will need to recompile...
 
-                // In Lua the root-element is also just a member of the UI-table, using #wxparent in Lua is pretty much always wrong
                 wxString _template =
-                  wxT("#utbl#parent $name:SetSizer( #utbl$name ) #nl") wxT("#utbl#parent $name:Layout()")
-                    wxT("#ifnull #parent $size") wxT("@{ #nl #utbl$name:Fit( #utbl#parent $name ) @}");
+                  wxT("#utbl#wxparent $name:SetSizer( #utbl$name ) #nl") wxT("#utbl#wxparent $name:Layout()")
+                    wxT("#ifnull #parent $size") wxT("@{ #nl #utbl$name:Fit( #utbl#wxparent $name ) @}");
 
                 LuaTemplateParser parser(obj, _template, m_i18n, m_useRelativePath, m_basePath, m_strUserIDsVec);
                 wxString res = parser.ParseTemplate();
-                // FIXME: This is pretty pointless here and will lead to an error if the UI-table uses the same name like
-                //        that magic value of LuaTemplateParser::RootWxParentToCode(). But this is also broken in other parts
-                //        and it is currently unknown why this was done in the first place.
-                res.Replace(parser.RootWxParentToCode(), wxEmptyString);
+                wxString strRootCode = parser.RootWxParentToCode();
+                if (res.Find(strRootCode) != -1) {
+                    res.Replace(strRootCode, strClassName);
+                }
                 m_source->WriteLn(res);
             }
         } else if (type == wxT("splitter")) {
