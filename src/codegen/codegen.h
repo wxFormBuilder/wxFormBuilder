@@ -149,6 +149,7 @@ private:
 
     typedef enum {
         ID_ERROR,
+        ID_NOP,
         ID_WXPARENT,
         ID_PARENT,
         ID_FORM,
@@ -201,6 +202,7 @@ private:
     Token GetNextToken();
 
 
+    bool ParseNop();
     bool ParseInnerTemplate();
     bool ParseWxParent();
     bool ParseParent();

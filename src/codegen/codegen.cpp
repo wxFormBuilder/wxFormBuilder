@@ -109,6 +109,8 @@ bool TemplateParser::ParseMacro()
 
     ident = ParseIdent();
     switch (ident) {
+        case ID_NOP:
+            return ParseNop();
         case ID_WXPARENT:
             return ParseWxParent();
             break;
@@ -304,6 +306,12 @@ bool TemplateParser::ParseText()
     }
 
     // LogDebug(wxT("Parsed Text: %s"),text);
+    return true;
+}
+
+bool TemplateParser::ParseNop()
+{
+    ignore_whitespaces();
     return true;
 }
 
@@ -860,7 +868,9 @@ TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
 {
     //  LogDebug("Parsing command %s",ident);
 
-    if (ident == wxT("wxparent"))
+    if (ident == "nop")
+        return ID_NOP;
+    else if (ident == wxT("wxparent"))
         return ID_WXPARENT;
     else if (ident == wxT("ifnotnull"))
         return ID_IFNOTNULL;
