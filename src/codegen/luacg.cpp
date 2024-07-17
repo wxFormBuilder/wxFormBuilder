@@ -550,16 +550,17 @@ bool LuaCodeGenerator::GenerateCode(PObjectBase project)
     // Generating "defines" for macros
     GenDefines(project);
 
-    PProperty propNamespace = project->GetProperty("lua_ui_table");
+    // m_strUITable shouldn't be empty
+    m_strUITable = "UI";
+    auto propNamespace = project->GetProperty("lua_ui_table");
     if (propNamespace) {
-        m_strUITable = propNamespace->GetValueAsString();
-        if (m_strUITable.length() <= 0) {
-            m_strUITable = wxT("UI");  // default value ... m_strUITable shouldn't be empty
+        auto valueNamespace = propNamespace->GetValueAsString();
+        if (!valueNamespace.empty()) {
+            m_strUITable = valueNamespace;
         }
-        code = m_strUITable + wxT(" = {} \n");
-        m_source->WriteLn(code);
     }
-
+    code = m_strUITable + wxT(" = {} \n");
+    m_source->WriteLn(code);
 
     PProperty eventKindProp = project->GetProperty("lua_skip_events");
     if (eventKindProp->GetValueAsInteger()) {
@@ -1071,9 +1072,7 @@ void LuaCodeGenerator::GenConstructor(
     }
 
     wxString strName = propName->GetValue();
-
-    if (m_strUITable.length() > 0)
-        strName = m_strUITable + wxT(".") + strName;
+    strName = m_strUITable + wxT(".") + strName;
 
     m_source->WriteLn();
     m_source->WriteLn(wxT("-- create ") + strClassName);
