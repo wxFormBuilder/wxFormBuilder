@@ -60,12 +60,12 @@ LuaTemplateParser::LuaTemplateParser(
 }
 
 LuaTemplateParser::LuaTemplateParser(
-  const LuaTemplateParser& that, wxString _template, std::vector<wxString> strUserIDsVec) :
+  const LuaTemplateParser& that, wxString _template) :
   TemplateParser(that, _template),
   m_i18n(that.m_i18n),
   m_useRelativePath(that.m_useRelativePath),
   m_basePath(that.m_basePath),
-  m_strUserIDsVec(strUserIDsVec)
+  m_strUserIDsVec(that.m_strUserIDsVec)
 {
     SetupModulePrefixes();
 }
@@ -79,8 +79,7 @@ PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser,
 {
     const LuaTemplateParser* luaOldParser = dynamic_cast<const LuaTemplateParser*>(oldparser);
     if (luaOldParser) {
-        std::vector<wxString> empty;
-        PTemplateParser newparser(new LuaTemplateParser(*luaOldParser, _template, empty));
+        PTemplateParser newparser(new LuaTemplateParser(*luaOldParser, _template));
         return newparser;
     }
     return PTemplateParser();

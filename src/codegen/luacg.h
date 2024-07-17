@@ -62,7 +62,7 @@ public:
     LuaTemplateParser(
       PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
       std::vector<wxString> strUserIDsVec);
-    LuaTemplateParser(const LuaTemplateParser& that, wxString _template, std::vector<wxString> strUserIDsVec);
+    LuaTemplateParser(const LuaTemplateParser& that, wxString _template);
 
     // overrides for Lua
     PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
