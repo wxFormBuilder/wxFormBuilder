@@ -44,7 +44,7 @@
 
 
 PHPTemplateParser::PHPTemplateParser(
-  PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath) :
+  PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath) :
   TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
 {
     if (!wxFileName::DirExists(m_basePath)) {
@@ -52,7 +52,7 @@ PHPTemplateParser::PHPTemplateParser(
     }
 }
 
-PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, wxString _template) :
+PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, const wxString& _template) :
   TemplateParser(that, _template),
   m_i18n(that.m_i18n),
   m_useRelativePath(that.m_useRelativePath),
@@ -61,7 +61,7 @@ PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, wxString _te
 }
 
 
-PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
+PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser, const wxString& _template) const
 {
     const PHPTemplateParser* phpOldParser = dynamic_cast<const PHPTemplateParser*>(oldparser);
     if (phpOldParser) {
@@ -72,7 +72,7 @@ PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser,
 }
 
 
-wxString PHPTemplateParser::RootWxParentToCode()
+wxString PHPTemplateParser::RootWxParentToCode() const
 {
     return wxT("$this");
 }
@@ -80,7 +80,7 @@ wxString PHPTemplateParser::RootWxParentToCode()
 /**
  * Convert the value of the property to PHP code
  */
-wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
+wxString PHPTemplateParser::ValueToCode(PropertyType type, const wxString& value) const
 {
     wxString result;
 

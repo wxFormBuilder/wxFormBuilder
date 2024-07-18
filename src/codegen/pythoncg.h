@@ -52,16 +52,16 @@ class PythonTemplateParser : public TemplateParser
 {
 public:
     PythonTemplateParser(
-      PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-      wxString imagePathWrapperFunctionName);
-    PythonTemplateParser(const PythonTemplateParser& that, wxString _template);
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
+      const wxString& imagePathWrapperFunctionName);
+    PythonTemplateParser(const PythonTemplateParser& that, const wxString& _template);
 
     // overrides for Python
-    PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+    PTemplateParser CreateParser(const TemplateParser* oldparser, const wxString& _template) const override;
 
 protected:
-    wxString RootWxParentToCode() override;
-    wxString ValueToCode(PropertyType type, wxString value) override;
+    wxString RootWxParentToCode() const override;
+    wxString ValueToCode(PropertyType type, const wxString& value) const override;
 
 private:
     void SetupModulePrefixes();

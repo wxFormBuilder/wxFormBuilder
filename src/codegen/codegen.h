@@ -170,15 +170,15 @@ private:
     };
 
 public:
-    TemplateParser(PObjectBase obj, wxString _template);
-    TemplateParser(const TemplateParser& that, wxString _template);
+    TemplateParser(PObjectBase obj, const wxString& _template);
+    TemplateParser(const TemplateParser& that, const wxString& _template);
     virtual ~TemplateParser();
 
     /**
      * This method creates a new parser with the same type that the object
      * calling such method.
      */
-    virtual PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) = 0;
+    virtual PTemplateParser CreateParser(const TemplateParser* oldparser, const wxString& _template) const = 0;
 
     /**
      * The "star" function for this class. Analyzes a template, returning the code.
@@ -191,18 +191,18 @@ protected:
      * In C++ it will be the "this" pointer, but in other languages it
      * could be named differently.
      */
-    virtual wxString RootWxParentToCode() = 0;
+    virtual wxString RootWxParentToCode() const = 0;
 
     /**
      * Generates the code from a property value.
      */
-    virtual wxString ValueToCode(PropertyType type, wxString value) = 0;
+    virtual wxString ValueToCode(PropertyType type, const wxString& value) const = 0;
 
     /**
      * Returns the code for a property value in the language format.
      * @note use ValueToCode
      */
-    wxString PropertyToCode(PProperty property);
+    wxString PropertyToCode(PProperty property) const;
 
 private:
     /**

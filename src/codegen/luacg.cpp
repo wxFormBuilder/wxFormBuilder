@@ -44,8 +44,8 @@
 
 
 LuaTemplateParser::LuaTemplateParser(
-  PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-  wxString rootWxParent, std::vector<wxString> strUserIDsVec) :
+  PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
+  const wxString& rootWxParent, const std::vector<wxString>& strUserIDsVec) :
   TemplateParser(obj, _template),
   m_i18n(useI18N),
   m_useRelativePath(useRelativePath),
@@ -61,7 +61,7 @@ LuaTemplateParser::LuaTemplateParser(
 }
 
 LuaTemplateParser::LuaTemplateParser(
-  const LuaTemplateParser& that, wxString _template) :
+  const LuaTemplateParser& that, const wxString& _template) :
   TemplateParser(that, _template),
   m_i18n(that.m_i18n),
   m_useRelativePath(that.m_useRelativePath),
@@ -73,7 +73,7 @@ LuaTemplateParser::LuaTemplateParser(
 }
 
 
-PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
+PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser, const wxString& _template) const
 {
     const LuaTemplateParser* luaOldParser = dynamic_cast<const LuaTemplateParser*>(oldparser);
     if (luaOldParser) {
@@ -84,7 +84,7 @@ PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser,
 }
 
 
-wxString LuaTemplateParser::RootWxParentToCode()
+wxString LuaTemplateParser::RootWxParentToCode() const
 {
     return m_rootWxParent;
 }
@@ -92,7 +92,7 @@ wxString LuaTemplateParser::RootWxParentToCode()
 /**
  * Convert the value of the property to Lua code
  */
-wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
+wxString LuaTemplateParser::ValueToCode(PropertyType type, const wxString& value) const
 {
     wxString result;
 
@@ -136,11 +136,9 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
         case PT_OPTION:
         case PT_EDIT_OPTION: {
             result = value;
-            wxString pred = m_predModulePrefix[value];
-
-            if (!pred.empty())
-                result.Replace(wxT("wx"), pred);
-            else {
+            if (auto pred = m_predModulePrefix.find(value); pred != m_predModulePrefix.end() && !pred->second.empty()) {
+                result.Replace(wxT("wx"), pred->second);
+            } else {
                 // prepend "wx." if value isn't UserID and contains "wx" prefix
                 if (
                   m_strUserIDsVec.end() == std::find(m_strUserIDsVec.begin(), m_strUserIDsVec.end(), value) &&
@@ -148,7 +146,6 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
                     result.Prepend(wxT("wx."));
                 }
             }
-
             break;
         }
         case PT_TEXT:
@@ -166,18 +163,17 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, wxString value)
             } else {
                 result = value;
             }
-            wxString pred, bit, res, pref;
+            wxString bit, res, pref;
             wxStringTokenizer bits(result, wxT("|"), wxTOKEN_STRTOK);
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
                 bit.Trim().Trim(false);
-                pred = m_predModulePrefix[bit];
 
-                if (pred.empty()) {
-                    res += pref + wxT("wx.") + bit;
+                if (auto pred = m_predModulePrefix.find(bit); pred != m_predModulePrefix.end() && !pred->second.empty()) {
+                    res += pref + pred->second + bit;
                 } else {
-                    res += pref + pred + bit;
+                    res += pref + wxT("wx.") + bit;
                 }
                 pref = wxT(" + ");
             }

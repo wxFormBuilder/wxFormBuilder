@@ -44,8 +44,8 @@
 
 
 PythonTemplateParser::PythonTemplateParser(
-  PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-  wxString imagePathWrapperFunctionName) :
+  PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
+  const wxString& imagePathWrapperFunctionName) :
   TemplateParser(obj, _template),
   m_i18n(useI18N),
   m_useRelativePath(useRelativePath),
@@ -59,7 +59,7 @@ PythonTemplateParser::PythonTemplateParser(
     SetupModulePrefixes();
 }
 
-PythonTemplateParser::PythonTemplateParser(const PythonTemplateParser& that, wxString _template) :
+PythonTemplateParser::PythonTemplateParser(const PythonTemplateParser& that, const wxString& _template) :
   TemplateParser(that, _template),
   m_i18n(that.m_i18n),
   m_useRelativePath(that.m_useRelativePath),
@@ -70,7 +70,7 @@ PythonTemplateParser::PythonTemplateParser(const PythonTemplateParser& that, wxS
 }
 
 
-PTemplateParser PythonTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
+PTemplateParser PythonTemplateParser::CreateParser(const TemplateParser* oldparser, const wxString& _template) const
 {
     const PythonTemplateParser* pythonOldParser = dynamic_cast<const PythonTemplateParser*>(oldparser);
     if (pythonOldParser) {
@@ -81,7 +81,7 @@ PTemplateParser PythonTemplateParser::CreateParser(const TemplateParser* oldpars
 }
 
 
-wxString PythonTemplateParser::RootWxParentToCode()
+wxString PythonTemplateParser::RootWxParentToCode() const
 {
     return wxT("self");
 }
@@ -89,7 +89,7 @@ wxString PythonTemplateParser::RootWxParentToCode()
 /**
  * Convert the value of the property to Python code
  */
-wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
+wxString PythonTemplateParser::ValueToCode(PropertyType type, const wxString& value) const
 {
     wxString result;
 
@@ -133,17 +133,15 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
         case PT_OPTION:
         case PT_EDIT_OPTION: {
             result = value;
-            wxString pred = m_predModulePrefix[value];
-
-            if (!pred.empty())
-                result.Replace(wxT("wx"), pred);
-            else {
-                if (result.StartsWith(wxT("XRCID")))
+            if (auto pred = m_predModulePrefix.find(value); pred != m_predModulePrefix.end() && !pred->second.empty()) {
+                result.Replace(wxT("wx"), pred->second);
+            } else {
+                if (result.StartsWith(wxT("XRCID"))) {
                     result.Prepend(wxT("wx.xrc."));
-                else
+                } else {
                     result.Replace(wxT("wx"), wxT("wx."));
+                }
             }
-
             break;
         }
         case PT_TEXT:
@@ -157,18 +155,18 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, wxString value)
         case PT_BITLIST: {
             result = (value.empty() ? wxT("0") : value);
 
-            wxString pred, bit;
+            wxString bit;
             wxStringTokenizer bits(result, wxT("|"), wxTOKEN_STRTOK);
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
-                pred = m_predModulePrefix[bit];
 
                 if (bit.Contains(wxT("wx"))) {
-                    if (!pred.empty())
-                        result.Replace(bit, pred + bit.AfterFirst('x'));
-                    else
+                    if (auto pred = m_predModulePrefix.find(bit); pred != m_predModulePrefix.end() && !pred->second.empty()) {
+                        result.Replace(bit, pred->second + bit.AfterFirst('x'));
+                    } else {
                         result.Replace(bit, wxT("wx.") + bit.AfterFirst('x'));
+                    }
                 }
             }
             break;

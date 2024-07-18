@@ -41,7 +41,7 @@
 
 
 CppTemplateParser::CppTemplateParser(
-  PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath) :
+  PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath) :
   TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
 {
     if (!wxFileName::DirExists(m_basePath)) {
@@ -49,7 +49,7 @@ CppTemplateParser::CppTemplateParser(
     }
 }
 
-CppTemplateParser::CppTemplateParser(const CppTemplateParser& that, wxString _template) :
+CppTemplateParser::CppTemplateParser(const CppTemplateParser& that, const wxString& _template) :
   TemplateParser(that, _template),
   m_i18n(that.m_i18n),
   m_useRelativePath(that.m_useRelativePath),
@@ -58,7 +58,7 @@ CppTemplateParser::CppTemplateParser(const CppTemplateParser& that, wxString _te
 }
 
 
-PTemplateParser CppTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
+PTemplateParser CppTemplateParser::CreateParser(const TemplateParser* oldparser, const wxString& _template) const
 {
     const CppTemplateParser* cppOldParser = dynamic_cast<const CppTemplateParser*>(oldparser);
     if (cppOldParser) {
@@ -69,7 +69,7 @@ PTemplateParser CppTemplateParser::CreateParser(const TemplateParser* oldparser,
 }
 
 
-wxString CppTemplateParser::RootWxParentToCode()
+wxString CppTemplateParser::RootWxParentToCode() const
 {
     return wxT("this");
 }
@@ -77,7 +77,7 @@ wxString CppTemplateParser::RootWxParentToCode()
 /**
  * Convert the value of the property to C++ code
  */
-wxString CppTemplateParser::ValueToCode(PropertyType type, wxString value)
+wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value) const
 {
     wxString result;
 

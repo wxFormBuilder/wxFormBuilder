@@ -68,12 +68,12 @@ void BufferedTextInputStream::readChar()
 
 
 
-TemplateParser::TemplateParser(PObjectBase obj, wxString _template) :
+TemplateParser::TemplateParser(PObjectBase obj, const wxString& _template) :
   m_obj(obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
 {
 }
 
-TemplateParser::TemplateParser(const TemplateParser& that, wxString _template) :
+TemplateParser::TemplateParser(const TemplateParser& that, const wxString& _template) :
   m_obj(that.m_obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
 {
 }
@@ -108,7 +108,7 @@ wxString TemplateParser::ParseTemplate()
 }
 
 
-wxString TemplateParser::PropertyToCode(PProperty property)
+wxString TemplateParser::PropertyToCode(PProperty property) const
 {
     if (property) {
         return ValueToCode(property->GetType(), property->GetValue());
