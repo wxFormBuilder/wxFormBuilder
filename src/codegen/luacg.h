@@ -48,17 +48,6 @@ none
  */
 class LuaTemplateParser : public TemplateParser
 {
-private:
-    bool m_i18n;
-    bool m_useRelativePath;
-    wxString m_basePath;
-    wxString m_rootWxParent;
-    std::vector<wxString> m_strUserIDsVec;
-
-    std::map<wxString, wxString> m_predModulePrefix;
-
-    void SetupModulePrefixes();
-
 public:
     LuaTemplateParser(
       PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
@@ -67,9 +56,24 @@ public:
 
     // overrides for Lua
     PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+
+protected:
     wxString RootWxParentToCode() override;
     wxString ValueToCode(PropertyType type, wxString value) override;
+
+private:
+    void SetupModulePrefixes();
+
+private:
+    bool m_i18n;
+    bool m_useRelativePath;
+    wxString m_basePath;
+    wxString m_rootWxParent;
+    std::vector<wxString> m_strUserIDsVec;
+
+    std::map<wxString, wxString> m_predModulePrefix;
 };
+
 
 /**
  * Generate the Lua code

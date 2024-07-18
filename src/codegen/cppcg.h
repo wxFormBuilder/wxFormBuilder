@@ -48,20 +48,23 @@ work.
  */
 class CppTemplateParser : public TemplateParser
 {
-private:
-    bool m_i18n;
-    bool m_useRelativePath;
-    wxString m_basePath;
-
 public:
     CppTemplateParser(PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath);
     CppTemplateParser(const CppTemplateParser& that, wxString _template);
 
     // overrides for C++
     PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+
+protected:
     wxString RootWxParentToCode() override;
     wxString ValueToCode(PropertyType type, wxString value) override;
+
+private:
+    bool m_i18n;
+    bool m_useRelativePath;
+    wxString m_basePath;
 };
+
 
 /**
  * Generate the C++ code

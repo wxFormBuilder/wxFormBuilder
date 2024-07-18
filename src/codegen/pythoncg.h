@@ -50,16 +50,6 @@ work.
  */
 class PythonTemplateParser : public TemplateParser
 {
-private:
-    bool m_i18n;
-    bool m_useRelativePath;
-    wxString m_basePath;
-    wxString m_imagePathWrapperFunctionName;
-
-    std::map<wxString, wxString> m_predModulePrefix;
-
-    void SetupModulePrefixes();
-
 public:
     PythonTemplateParser(
       PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
@@ -68,9 +58,23 @@ public:
 
     // overrides for Python
     PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
+
+protected:
     wxString RootWxParentToCode() override;
     wxString ValueToCode(PropertyType type, wxString value) override;
+
+private:
+    void SetupModulePrefixes();
+
+private:
+    bool m_i18n;
+    bool m_useRelativePath;
+    wxString m_basePath;
+    wxString m_imagePathWrapperFunctionName;
+
+    std::map<wxString, wxString> m_predModulePrefix;
 };
+
 
 /**
  * Generate the Python code

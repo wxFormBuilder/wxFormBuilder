@@ -60,10 +60,6 @@ PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, wxString _te
 {
 }
 
-wxString PHPTemplateParser::RootWxParentToCode()
-{
-    return wxT("$this");
-}
 
 PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
 {
@@ -73,6 +69,12 @@ PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser,
         return newparser;
     }
     return PTemplateParser();
+}
+
+
+wxString PHPTemplateParser::RootWxParentToCode()
+{
+    return wxT("$this");
 }
 
 /**

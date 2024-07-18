@@ -80,6 +80,7 @@ private:
     wxChar m_buffer;
 };
 
+
 /**
  * Template notes
  *
@@ -133,21 +134,7 @@ private:
 class TemplateParser
 {
 private:
-    PObjectBase m_obj;
-    wxStringInputStream m_stream;
-    wxTextInputStream m_text;
-    BufferedTextInputStream m_in;
-    wxString m_out;
-    wxString m_pred;
-    wxString m_npred;
-    void ignore_whitespaces();
-
-    // Current indentation level in the file
-    int m_indent;
-
-    typedef enum { TOK_ERROR, TOK_MACRO, TOK_TEXT, TOK_PROPERTY } Token;
-
-    typedef enum {
+    enum Ident {
         ID_ERROR,
         ID_NOP,
         ID_WXPARENT,
@@ -172,27 +159,52 @@ private:
         ID_UNINDENT,
         ID_IFTYPEEQUAL,
         ID_IFTYPENOTEQUAL,
-        ID_UTBL
-    } Ident;
+        ID_UTBL,
+    };
 
-    bool IsEqual(const wxString& value, const wxString& set);
+    enum Token {
+        TOK_ERROR,
+        TOK_MACRO,
+        TOK_TEXT,
+        TOK_PROPERTY,
+    };
 
-    Ident SearchIdent(wxString ident);
-    Ident ParseIdent();
+public:
+    TemplateParser(PObjectBase obj, wxString _template);
+    TemplateParser(const TemplateParser& that, wxString _template);
+    virtual ~TemplateParser();
 
-    wxString ParsePropertyName(wxString* child = nullptr);
     /**
-     * This routine extracts the source code from a template enclosed between
-     * the #begin and #end macros, having in mind that they can be nested
+     * This method creates a new parser with the same type that the object
+     * calling such method.
      */
-    wxString ExtractInnerTemplate();
+    virtual PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) = 0;
 
     /**
-     * A literal value is an string enclosed between '"' (e.g. "xxx"),
-     * The " character is represented with "".
+     * The "star" function for this class. Analyzes a template, returning the code.
      */
-    wxString ExtractLiteral();
+    wxString ParseTemplate();
 
+protected:
+    /**
+     * Returns the code for a "wxWindow *parent" root attribute' name.
+     * In C++ it will be the "this" pointer, but in other languages it
+     * could be named differently.
+     */
+    virtual wxString RootWxParentToCode() = 0;
+
+    /**
+     * Generates the code from a property value.
+     */
+    virtual wxString ValueToCode(PropertyType type, wxString value) = 0;
+
+    /**
+     * Returns the code for a property value in the language format.
+     * @note use ValueToCode
+     */
+    wxString PropertyToCode(PProperty property);
+
+private:
     /**
      * Look up for the following symbol from input and returns the token.
      * @return TOK_MACRO when it's followed by a command.
@@ -201,16 +213,33 @@ private:
      */
     Token GetNextToken();
 
+    /**
+     * Parse a macro.
+     */
+    bool ParseMacro();
+    /**
+     * Parse a property.
+     */
+    bool ParseProperty();
+    /**
+     * Parse text.
+     */
+    bool ParseText();
+
+    Ident ParseIdent();
+    Ident SearchIdent(wxString ident);
+    wxString ParsePropertyName(wxString* child = nullptr);
 
     bool ParseNop();
-    bool ParseInnerTemplate();
     bool ParseWxParent();
     bool ParseParent();
     bool ParseForm();
     bool ParseChild();
-    bool ParseForEach();
     bool ParseIfNotNull();
     bool ParseIfNull();
+    bool ParseForEach();
+    bool ParsePred();
+    bool ParseNPred();
     bool ParseNewLine();
     bool ParseIfEqual();
     bool ParseIfNotEqual();
@@ -226,62 +255,22 @@ private:
     bool ParseIfTypeNotEqual();
     void ParseLuaTable();
 
-    PProperty GetProperty(wxString* childName = nullptr);
+    void ignore_whitespaces();
+    /**
+     * A literal value is an string enclosed between '"' (e.g. "xxx"),
+     * The " character is represented with "".
+     */
+    wxString ExtractLiteral();
+    /**
+     * This routine extracts the source code from a template enclosed between
+     * the #begin and #end macros, having in mind that they can be nested
+     */
+    wxString ExtractInnerTemplate();
+
     PObjectBase GetWxParent();
+    PProperty GetProperty(wxString* childName = nullptr);
     PProperty GetRelatedProperty(PObjectBase relative);
-
-    /**
-     * Parse a macro.
-     */
-    bool ParseMacro();
-
-    /**
-     * Parse a property.
-     */
-    bool ParseProperty();
-
-
-    /**
-     * Parse text.
-     */
-    bool ParseText();
-
-    bool ParsePred();
-    bool ParseNPred();
-
-public:
-    TemplateParser(PObjectBase obj, wxString _template);
-    TemplateParser(const TemplateParser& that, wxString _template);
-    /**
-     * Returns the code for a property value in the language format.
-     * @note use ValueToCode
-     */
-    wxString PropertyToCode(PProperty property);
-
-    /**
-     * This method creates a new parser with the same type that the object
-     * calling such method.
-     */
-    virtual PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) = 0;
-
-    virtual ~TemplateParser();
-
-    /**
-     * Returns the code for a "wxWindow *parent" root attribute' name.
-     * In C++ it will be the "this" pointer, but in other languages it
-     * could be named differently.
-     */
-    virtual wxString RootWxParentToCode() = 0;
-
-    /**
-     * Generates the code from a property value.
-     */
-    virtual wxString ValueToCode(PropertyType type, wxString value) = 0;
-
-    /**
-     * The "star" function for this class. Analyzes a template, returning the code.
-     */
-    wxString ParseTemplate();
+    bool IsEqual(const wxString& value, const wxString& set);
 
     /**
      * Set the string for the #pred and #npred macros
@@ -291,7 +280,19 @@ public:
         m_pred = pred;
         m_npred = npred;
     }
+
+private:
+    PObjectBase m_obj;
+    wxStringInputStream m_stream;
+    wxTextInputStream m_text;
+    BufferedTextInputStream m_in;
+    wxString m_out;
+    wxString m_pred;
+    wxString m_npred;
+    // Current indentation level in the file
+    int m_indent;
 };
+
 
 /**
  * Code Generator

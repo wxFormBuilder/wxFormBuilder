@@ -72,10 +72,6 @@ LuaTemplateParser::LuaTemplateParser(
     SetupModulePrefixes();
 }
 
-wxString LuaTemplateParser::RootWxParentToCode()
-{
-    return m_rootWxParent;
-}
 
 PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
 {
@@ -85,6 +81,12 @@ PTemplateParser LuaTemplateParser::CreateParser(const TemplateParser* oldparser,
         return newparser;
     }
     return PTemplateParser();
+}
+
+
+wxString LuaTemplateParser::RootWxParentToCode()
+{
+    return m_rootWxParent;
 }
 
 /**

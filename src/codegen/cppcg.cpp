@@ -57,10 +57,6 @@ CppTemplateParser::CppTemplateParser(const CppTemplateParser& that, wxString _te
 {
 }
 
-wxString CppTemplateParser::RootWxParentToCode()
-{
-    return wxT("this");
-}
 
 PTemplateParser CppTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
 {
@@ -70,6 +66,12 @@ PTemplateParser CppTemplateParser::CreateParser(const TemplateParser* oldparser,
         return newparser;
     }
     return PTemplateParser();
+}
+
+
+wxString CppTemplateParser::RootWxParentToCode()
+{
+    return wxT("this");
 }
 
 /**

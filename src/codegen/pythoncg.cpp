@@ -69,10 +69,6 @@ PythonTemplateParser::PythonTemplateParser(const PythonTemplateParser& that, wxS
     SetupModulePrefixes();
 }
 
-wxString PythonTemplateParser::RootWxParentToCode()
-{
-    return wxT("self");
-}
 
 PTemplateParser PythonTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
 {
@@ -82,6 +78,12 @@ PTemplateParser PythonTemplateParser::CreateParser(const TemplateParser* oldpars
         return newparser;
     }
     return PTemplateParser();
+}
+
+
+wxString PythonTemplateParser::RootWxParentToCode()
+{
+    return wxT("self");
 }
 
 /**
