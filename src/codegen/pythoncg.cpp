@@ -160,6 +160,7 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, const wxString& va
 
             while (bits.HasMoreTokens()) {
                 bit = bits.GetNextToken();
+                bit.Trim().Trim(false);
 
                 if (bit.Contains(wxT("wx"))) {
                     if (auto pred = m_predModulePrefix.find(bit); pred != m_predModulePrefix.end() && !pred->second.empty()) {
