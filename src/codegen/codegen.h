@@ -314,7 +314,6 @@ public:
  */
 class CodeGenerator
 {
-protected:
 public:
     /**
      * Describes the properties and state of an array item
@@ -337,6 +336,7 @@ public:
      */
     typedef std::map<wxString, ArrayItem> ArrayItems;
 
+public:
     /**
      * Virtual destructor.
      */
