@@ -33,7 +33,7 @@
 
 
 BufferedTextInputStream::BufferedTextInputStream(wxTextInputStream& text) :
-  m_text(text), m_buffer(static_cast<wxChar>(wxEOF))
+    m_text(text), m_buffer(static_cast<wxChar>(wxEOF))
 {
     readChar();
 }
@@ -66,15 +66,13 @@ void BufferedTextInputStream::readChar()
 }
 
 
-
-
 TemplateParser::TemplateParser(PObjectBase obj, const wxString& _template) :
-  m_obj(obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
+    m_obj(obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
 {
 }
 
 TemplateParser::TemplateParser(const TemplateParser& that, const wxString& _template) :
-  m_obj(that.m_obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
+    m_obj(that.m_obj), m_stream(_template), m_text(m_stream, wxT(" \t"), wxConvUTF8), m_in(m_text), m_indent(0)
 {
 }
 
@@ -626,7 +624,8 @@ bool TemplateParser::ParseNewLine()
 {
     m_out << wxT('\n');
     // append custom indentation define in code templates (will be replace by '\t' in code writer)
-    for (int i = 0; i < m_indent; i++) m_out << wxT("%TAB%");
+    for (int i = 0; i < m_indent; i++)
+        m_out << wxT("%TAB%");
 
     return true;
 }
@@ -1108,8 +1107,6 @@ bool TemplateParser::IsEqual(const wxString& value, const wxString& set) const
 }
 
 
-
-
 CodeGenerator::~CodeGenerator() = default;
 
 
@@ -1136,7 +1133,9 @@ void CodeGenerator::FindArrayObjects(PObjectBase obj, ArrayItems& arrays, bool s
         }
     }
 
-    for (unsigned int i = 0; i < obj->GetChildCount(); ++i) { FindArrayObjects(obj->GetChild(i), arrays, false); }
+    for (unsigned int i = 0; i < obj->GetChildCount(); ++i) {
+        FindArrayObjects(obj->GetChild(i), arrays, false);
+    }
 }
 
 bool CodeGenerator::ParseArrayName(const wxString& name, wxString& baseName, ArrayItem& item)

@@ -42,7 +42,7 @@
 
 CppTemplateParser::CppTemplateParser(
   PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath) :
-  TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
+    TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
 {
     if (!wxFileName::DirExists(m_basePath)) {
         m_basePath.clear();
@@ -50,10 +50,10 @@ CppTemplateParser::CppTemplateParser(
 }
 
 CppTemplateParser::CppTemplateParser(const CppTemplateParser& that, const wxString& _template) :
-  TemplateParser(that, _template),
-  m_i18n(that.m_i18n),
-  m_useRelativePath(that.m_useRelativePath),
-  m_basePath(that.m_basePath)
+    TemplateParser(that, _template),
+    m_i18n(that.m_i18n),
+    m_useRelativePath(that.m_useRelativePath),
+    m_basePath(that.m_basePath)
 {
 }
 
@@ -164,7 +164,8 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value
                   ((pointSize <= 0) ? "wxNORMAL_FONT->GetPointSize()" : (wxString() << pointSize)),
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()), font.GetStyleString(),
                   font.GetWeightString(), (fontContainer.GetUnderlined() ? "true" : "false"),
-                  (fontContainer.GetFaceName().empty() ? "wxEmptyString" : ("wxT(\"" + fontContainer.GetFaceName() + "\")")));
+                  (fontContainer.GetFaceName().empty() ? "wxEmptyString"
+                                                       : ("wxT(\"" + fontContainer.GetFaceName() + "\")")));
             } else {
                 result = wxT("*wxNORMAL_FONT");
             }
@@ -258,10 +259,12 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value
                 if (rid.StartsWith(wxT("gtk-")))
                     rid = wxT("wxT(\"") + rid + wxT("\")");
 
-                result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") + path.AfterFirst(wxT(':')) + wxT(") )");
+                result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") +
+                         path.AfterFirst(wxT(':')) + wxT(") )");
             } else if (source == _("Load From SVG Resource")) {
-                result.Printf( wxT("wxBitmapBundle::FromSVGResource( wxT(\"%s\"), {%i, %i} )"),
-                               path, icoSize.GetWidth(), icoSize.GetHeight());
+                result.Printf(
+                  wxT("wxBitmapBundle::FromSVGResource( wxT(\"%s\"), {%i, %i} )"), path, icoSize.GetWidth(),
+                  icoSize.GetHeight());
             }
             break;
         }
@@ -1595,7 +1598,9 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayIte
         m_source->WriteLn(GetCode(obj, wxT("construction")));
     } else {
         // Generate the children
-        for (unsigned int i = 0; i < obj->GetChildCount(); i++) { GenConstruction(obj->GetChild(i), false, arrays); }
+        for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+            GenConstruction(obj->GetChild(i), false, arrays);
+        }
     }
 }
 
@@ -1618,7 +1623,9 @@ void CppCodeGenerator::FindMacros(PObjectBase obj, std::vector<wxString>* macros
         }
     }
 
-    for (i = 0; i < obj->GetChildCount(); i++) { FindMacros(obj->GetChild(i), macros); }
+    for (i = 0; i < obj->GetChildCount(); i++) {
+        FindMacros(obj->GetChild(i), macros);
+    }
 }
 
 void CppCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector& events)
@@ -1719,7 +1726,8 @@ void CppCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 
     GetAddToolbarCode(info, obj, arrCode);
 
-    for (size_t i = 0; i < arrCode.GetCount(); i++) m_source->WriteLn(arrCode[i]);
+    for (size_t i = 0; i < arrCode.GetCount(); i++)
+        m_source->WriteLn(arrCode[i]);
 }
 
 void CppCodeGenerator::GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxArrayString& codelines)

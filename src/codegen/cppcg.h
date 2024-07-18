@@ -49,7 +49,8 @@ work.
 class CppTemplateParser : public TemplateParser
 {
 public:
-    CppTemplateParser(PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath);
+    CppTemplateParser(
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath);
     CppTemplateParser(const CppTemplateParser& that, const wxString& _template);
 
     // overrides for C++

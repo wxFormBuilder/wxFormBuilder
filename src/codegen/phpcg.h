@@ -50,7 +50,8 @@ work.
 class PHPTemplateParser : public TemplateParser
 {
 public:
-    PHPTemplateParser(PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath);
+    PHPTemplateParser(
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath);
     PHPTemplateParser(const PHPTemplateParser& that, const wxString& _template);
 
     // overrides for PHP

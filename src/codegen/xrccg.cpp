@@ -82,7 +82,8 @@ tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2:
 {
     auto* objectXrc = m_xrc.NewElement("");
 
-    if (auto* objectComponent = object->GetObjectInfo()->GetComponent(); !(objectComponent && objectComponent->ExportToXrc(objectXrc, object.get()))) {
+    if (auto* objectComponent = object->GetObjectInfo()->GetComponent();
+        !(objectComponent && objectComponent->ExportToXrc(objectXrc, object.get()))) {
         // Return a special element for unknown objects
         if (object->GetObjectTypeName() != "nonvisual") {
             objectXrc->SetName("object");
@@ -147,7 +148,8 @@ tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2:
         if (parent) {
             auto parentXrcClass = XMLUtils::StringAttribute(parent, "class");
             if (parentXrcClass != "wxMenuBar" && parentXrcClass != "wxMenu") {
-                // Process the children and record context menu for delayed processing, context menus will be generated as top level menus
+                // Process the children and record context menu for delayed processing, context menus will be generated
+                // as top level menus
                 for (std::size_t i = 0; i < object->GetChildCount(); ++i) {
                     auto* childXrc = GetElement(object->GetChild(i), objectXrc);
                     if (childXrc) {

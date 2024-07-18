@@ -46,11 +46,11 @@
 PythonTemplateParser::PythonTemplateParser(
   PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
   const wxString& imagePathWrapperFunctionName) :
-  TemplateParser(obj, _template),
-  m_i18n(useI18N),
-  m_useRelativePath(useRelativePath),
-  m_basePath(basePath),
-  m_imagePathWrapperFunctionName(imagePathWrapperFunctionName)
+    TemplateParser(obj, _template),
+    m_i18n(useI18N),
+    m_useRelativePath(useRelativePath),
+    m_basePath(basePath),
+    m_imagePathWrapperFunctionName(imagePathWrapperFunctionName)
 {
     if (!wxFileName::DirExists(m_basePath)) {
         m_basePath.clear();
@@ -60,11 +60,11 @@ PythonTemplateParser::PythonTemplateParser(
 }
 
 PythonTemplateParser::PythonTemplateParser(const PythonTemplateParser& that, const wxString& _template) :
-  TemplateParser(that, _template),
-  m_i18n(that.m_i18n),
-  m_useRelativePath(that.m_useRelativePath),
-  m_basePath(that.m_basePath),
-  m_imagePathWrapperFunctionName(that.m_imagePathWrapperFunctionName)
+    TemplateParser(that, _template),
+    m_i18n(that.m_i18n),
+    m_useRelativePath(that.m_useRelativePath),
+    m_basePath(that.m_basePath),
+    m_imagePathWrapperFunctionName(that.m_imagePathWrapperFunctionName)
 {
     SetupModulePrefixes();
 }
@@ -163,7 +163,8 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, const wxString& va
                 bit.Trim().Trim(false);
 
                 if (bit.Contains(wxT("wx"))) {
-                    if (auto pred = m_predModulePrefix.find(bit); pred != m_predModulePrefix.end() && !pred->second.empty()) {
+                    if (auto pred = m_predModulePrefix.find(bit);
+                        pred != m_predModulePrefix.end() && !pred->second.empty()) {
                         result.Replace(bit, pred->second + bit.AfterFirst('x'));
                     } else {
                         result.Replace(bit, wxT("wx.") + bit.AfterFirst('x'));
@@ -205,7 +206,8 @@ wxString PythonTemplateParser::ValueToCode(PropertyType type, const wxString& va
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()).replace(0, 2, "wx."),
                   font.GetStyleString().replace(0, 2, "wx."), font.GetWeightString().replace(0, 2, "wx."),
                   (fontContainer.GetUnderlined() ? "True" : "False"),
-                  (fontContainer.GetFaceName().empty() ? "wx.EmptyString" : ("\"" + fontContainer.GetFaceName() + "\"")));
+                  (fontContainer.GetFaceName().empty() ? "wx.EmptyString"
+                                                       : ("\"" + fontContainer.GetFaceName() + "\"")));
             } else {
                 result = wxT("wx.NORMAL_FONT");
             }
@@ -1202,7 +1204,9 @@ void PythonCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, Array
         m_source->WriteLn(GetConstruction(obj, false, arrays));
     } else {
         // Generate the children
-        for (unsigned int i = 0; i < obj->GetChildCount(); i++) { GenConstruction(obj->GetChild(i), false, arrays); }
+        for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+            GenConstruction(obj->GetChild(i), false, arrays);
+        }
     }
 }
 
@@ -1257,7 +1261,9 @@ void PythonCodeGenerator::FindMacros(PObjectBase obj, std::vector<wxString>* mac
         }
     }
 
-    for (i = 0; i < obj->GetChildCount(); i++) { FindMacros(obj->GetChild(i), macros); }
+    for (i = 0; i < obj->GetChildCount(); i++) {
+        FindMacros(obj->GetChild(i), macros);
+    }
 }
 
 void PythonCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector& events)
@@ -1335,7 +1341,8 @@ void PythonCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 
     GetAddToolbarCode(info, obj, arrCode);
 
-    for (size_t i = 0; i < arrCode.GetCount(); i++) m_source->WriteLn(arrCode[i]);
+    for (size_t i = 0; i < arrCode.GetCount(); i++)
+        m_source->WriteLn(arrCode[i]);
 }
 
 void PythonCodeGenerator::GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxArrayString& codelines)
