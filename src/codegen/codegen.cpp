@@ -307,7 +307,7 @@ TemplateParser::Ident TemplateParser::ParseIdent()
     return ident;
 }
 
-TemplateParser::Ident TemplateParser::SearchIdent(wxString ident)
+TemplateParser::Ident TemplateParser::SearchIdent(const wxString& ident) const
 {
     //  LogDebug("Parsing command %s",ident);
 
@@ -1089,7 +1089,7 @@ PProperty TemplateParser::GetRelatedProperty(PObjectBase relative)
     return relative->GetProperty(propname);
 }
 
-bool TemplateParser::IsEqual(const wxString& value, const wxString& set)
+bool TemplateParser::IsEqual(const wxString& value, const wxString& set) const
 {
     bool contains = false;
 

@@ -227,7 +227,7 @@ private:
     bool ParseText();
 
     Ident ParseIdent();
-    Ident SearchIdent(wxString ident);
+    Ident SearchIdent(const wxString& ident) const;
     wxString ParsePropertyName(wxString* child = nullptr);
 
     bool ParseNop();
@@ -270,12 +270,12 @@ private:
     PObjectBase GetWxParent();
     PProperty GetProperty(wxString* childName = nullptr);
     PProperty GetRelatedProperty(PObjectBase relative);
-    bool IsEqual(const wxString& value, const wxString& set);
+    bool IsEqual(const wxString& value, const wxString& set) const;
 
     /**
      * Set the string for the #pred and #npred macros
      */
-    void SetPredefined(wxString pred, wxString npred)
+    void SetPredefined(const wxString& pred, const wxString& npred)
     {
         m_pred = pred;
         m_npred = npred;
