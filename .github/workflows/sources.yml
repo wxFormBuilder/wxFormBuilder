@@ -28,7 +28,7 @@ jobs:
     - name: Fetch tags
       run: |
         git fetch --prune --prune-tags --force --depth=1 --no-recurse-submodules
-    - uses: msys2/setup-msys2@v2.23.0
+    - uses: msys2/setup-msys2@v2.24.0
       with:
         msystem: mingw64
         release: false
