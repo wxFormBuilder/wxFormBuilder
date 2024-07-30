@@ -48,6 +48,22 @@ none
  */
 class LuaTemplateParser : public TemplateParser
 {
+public:
+    LuaTemplateParser(
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
+      const wxString& rootWxParent, const std::vector<wxString>& strUserIDsVec);
+    LuaTemplateParser(const LuaTemplateParser& that, const wxString& _template);
+
+    // overrides for Lua
+    PTemplateParser CreateParser(const TemplateParser* oldparser, const wxString& _template) const override;
+
+protected:
+    wxString RootWxParentToCode() const override;
+    wxString ValueToCode(PropertyType type, const wxString& value) const override;
+
+private:
+    void SetupModulePrefixes();
+
 private:
     bool m_i18n;
     bool m_useRelativePath;
@@ -56,20 +72,8 @@ private:
     std::vector<wxString> m_strUserIDsVec;
 
     std::map<wxString, wxString> m_predModulePrefix;
-
-    void SetupModulePrefixes();
-
-public:
-    LuaTemplateParser(
-      PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-      wxString rootWxParent, std::vector<wxString> strUserIDsVec);
-    LuaTemplateParser(const LuaTemplateParser& that, wxString _template);
-
-    // overrides for Lua
-    PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
-    wxString RootWxParentToCode() override;
-    wxString ValueToCode(PropertyType type, wxString value) override;
 };
+
 
 /**
  * Generate the Lua code

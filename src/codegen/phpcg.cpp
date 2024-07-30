@@ -44,28 +44,24 @@
 
 
 PHPTemplateParser::PHPTemplateParser(
-  PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath) :
-  TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
+  PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath) :
+    TemplateParser(obj, _template), m_i18n(useI18N), m_useRelativePath(useRelativePath), m_basePath(basePath)
 {
     if (!wxFileName::DirExists(m_basePath)) {
         m_basePath.clear();
     }
 }
 
-PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, wxString _template) :
-  TemplateParser(that, _template),
-  m_i18n(that.m_i18n),
-  m_useRelativePath(that.m_useRelativePath),
-  m_basePath(that.m_basePath)
+PHPTemplateParser::PHPTemplateParser(const PHPTemplateParser& that, const wxString& _template) :
+    TemplateParser(that, _template),
+    m_i18n(that.m_i18n),
+    m_useRelativePath(that.m_useRelativePath),
+    m_basePath(that.m_basePath)
 {
 }
 
-wxString PHPTemplateParser::RootWxParentToCode()
-{
-    return wxT("$this");
-}
 
-PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser, wxString _template)
+PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser, const wxString& _template) const
 {
     const PHPTemplateParser* phpOldParser = dynamic_cast<const PHPTemplateParser*>(oldparser);
     if (phpOldParser) {
@@ -75,10 +71,16 @@ PTemplateParser PHPTemplateParser::CreateParser(const TemplateParser* oldparser,
     return PTemplateParser();
 }
 
+
+wxString PHPTemplateParser::RootWxParentToCode() const
+{
+    return wxT("$this");
+}
+
 /**
  * Convert the value of the property to PHP code
  */
-wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
+wxString PHPTemplateParser::ValueToCode(PropertyType type, const wxString& value) const
 {
     wxString result;
 
@@ -168,7 +170,8 @@ wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
                   ((pointSize <= 0) ? "wxC2D(wxNORMAL_FONT)->GetPointSize()" : (wxString() << pointSize)),
                   TypeConv::FontFamilyToString(fontContainer.GetFamily()), font.GetStyleString(),
                   font.GetWeightString(), (fontContainer.GetUnderlined() ? "true" : "false"),
-                  (fontContainer.GetFaceName().empty() ? "wxEmptyString" : ("\"" + fontContainer.GetFaceName() + "\"")));
+                  (fontContainer.GetFaceName().empty() ? "wxEmptyString"
+                                                       : ("\"" + fontContainer.GetFaceName() + "\"")));
             } else {
                 result = "wxC2D(wxNORMAL_FONT)";
             }
@@ -243,7 +246,8 @@ wxString PHPTemplateParser::ValueToCode(PropertyType type, wxString value)
 
                 result = wxT("wxArtProvider::GetBitmap( ") + rid + wxT(", ") + path.AfterFirst(wxT(':')) + wxT(" )");
             } else if (source == _("Load From SVG Resource")) {
-                wxLogWarning(wxT("PHP code generation does not support using SVG resources for bitmap properties:\n%s"), path);
+                wxLogWarning(
+                  wxT("PHP code generation does not support using SVG resources for bitmap properties:\n%s"), path);
                 result = wxT("wxNullBitmap");
             }
             break;
@@ -1107,7 +1111,9 @@ void PHPCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayIte
         m_source->WriteLn(GetConstruction(obj, arrays));
     } else {
         // Generate the children
-        for (unsigned int i = 0; i < obj->GetChildCount(); i++) { GenConstruction(obj->GetChild(i), false, arrays); }
+        for (unsigned int i = 0; i < obj->GetChildCount(); i++) {
+            GenConstruction(obj->GetChild(i), false, arrays);
+        }
     }
 }
 
@@ -1157,7 +1163,9 @@ void PHPCodeGenerator::FindMacros(PObjectBase obj, std::vector<wxString>* macros
         }
     }
 
-    for (i = 0; i < obj->GetChildCount(); i++) { FindMacros(obj->GetChild(i), macros); }
+    for (i = 0; i < obj->GetChildCount(); i++) {
+        FindMacros(obj->GetChild(i), macros);
+    }
 }
 
 void PHPCodeGenerator::FindEventHandlers(PObjectBase obj, EventVector& events)
@@ -1234,7 +1242,8 @@ void PHPCodeGenerator::GenAddToolbar(PObjectInfo info, PObjectBase obj)
 
     GetAddToolbarCode(info, obj, arrCode);
 
-    for (size_t i = 0; i < arrCode.GetCount(); i++) m_source->WriteLn(arrCode[i]);
+    for (size_t i = 0; i < arrCode.GetCount(); i++)
+        m_source->WriteLn(arrCode[i]);
 }
 
 void PHPCodeGenerator::GetAddToolbarCode(PObjectInfo info, PObjectBase obj, wxArrayString& codelines)

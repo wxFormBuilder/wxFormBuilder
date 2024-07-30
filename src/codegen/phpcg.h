@@ -49,20 +49,24 @@ work.
  */
 class PHPTemplateParser : public TemplateParser
 {
+public:
+    PHPTemplateParser(
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath);
+    PHPTemplateParser(const PHPTemplateParser& that, const wxString& _template);
+
+    // overrides for PHP
+    PTemplateParser CreateParser(const TemplateParser* oldparser, const wxString& _template) const override;
+
+protected:
+    wxString RootWxParentToCode() const override;
+    wxString ValueToCode(PropertyType type, const wxString& value) const override;
+
 private:
     bool m_i18n;
     bool m_useRelativePath;
     wxString m_basePath;
-
-public:
-    PHPTemplateParser(PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath);
-    PHPTemplateParser(const PHPTemplateParser& that, wxString _template);
-
-    // overrides for PHP
-    PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
-    wxString RootWxParentToCode() override;
-    wxString ValueToCode(PropertyType type, wxString value) override;
 };
+
 
 /**
  * Generate the PHP code

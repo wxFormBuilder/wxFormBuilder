@@ -50,6 +50,22 @@ work.
  */
 class PythonTemplateParser : public TemplateParser
 {
+public:
+    PythonTemplateParser(
+      PObjectBase obj, const wxString& _template, bool useI18N, bool useRelativePath, const wxString& basePath,
+      const wxString& imagePathWrapperFunctionName);
+    PythonTemplateParser(const PythonTemplateParser& that, const wxString& _template);
+
+    // overrides for Python
+    PTemplateParser CreateParser(const TemplateParser* oldparser, const wxString& _template) const override;
+
+protected:
+    wxString RootWxParentToCode() const override;
+    wxString ValueToCode(PropertyType type, const wxString& value) const override;
+
+private:
+    void SetupModulePrefixes();
+
 private:
     bool m_i18n;
     bool m_useRelativePath;
@@ -57,20 +73,8 @@ private:
     wxString m_imagePathWrapperFunctionName;
 
     std::map<wxString, wxString> m_predModulePrefix;
-
-    void SetupModulePrefixes();
-
-public:
-    PythonTemplateParser(
-      PObjectBase obj, wxString _template, bool useI18N, bool useRelativePath, wxString basePath,
-      wxString imagePathWrapperFunctionName);
-    PythonTemplateParser(const PythonTemplateParser& that, wxString _template);
-
-    // overrides for Python
-    PTemplateParser CreateParser(const TemplateParser* oldparser, wxString _template) override;
-    wxString RootWxParentToCode() override;
-    wxString ValueToCode(PropertyType type, wxString value) override;
 };
+
 
 /**
  * Generate the Python code
