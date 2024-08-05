@@ -84,13 +84,13 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
-    - uses: actions/upload-artifact@v4.3.4
+    - uses: actions/upload-artifact@v4.3.5
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: macOS Build Debugging ${{ matrix.os }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.3.4
+    - uses: actions/upload-artifact@v4.3.5
       with:
         name: App Bundle ${{ matrix.os }}
         path: |
