@@ -42,7 +42,7 @@ jobs:
         git config --global core.autocrlf true
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
         git submodule foreach --recursive "git archive --output=module.zip \"--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/\$displaypath/\" HEAD && zipmerge \"$PWD/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.zip\" module.zip && rm -f module.zip"
-    - uses: actions/upload-artifact@v4.3.5
+    - uses: actions/upload-artifact@v4.4.0
       with:
         name: wxFormBuilder Source (CRLF)
         path: |
@@ -72,7 +72,7 @@ jobs:
         git archive "--output=wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar" "--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/" HEAD
         git submodule foreach --recursive "git archive --output=module.tar \"--prefix=wxFormBuilder-${{ steps.variables.outputs.result }}/\$displaypath/\" HEAD && tar -Af \"$PWD/wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar\" module.tar && rm -f module.tar"
         gzip "wxFormBuilder-${{ steps.variables.outputs.result }}-source-full.tar"
-    - uses: actions/upload-artifact@v4.3.5
+    - uses: actions/upload-artifact@v4.4.0
       with:
         name: wxFormBuilder Source (LF)
         path: |
