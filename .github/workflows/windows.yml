@@ -49,7 +49,7 @@ jobs:
           - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.1.7
+    - uses: actions/checkout@v4.2.0
       with:
         fetch-tags: true
         submodules: recursive
