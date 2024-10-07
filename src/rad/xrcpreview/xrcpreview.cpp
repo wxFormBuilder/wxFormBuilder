@@ -150,6 +150,7 @@ void XRCPreview::Show(PObjectBase form, const wxString& projectPath)
         ::wxSetWorkingDirectory(projectPath);
     wxXmlResource* res = wxXmlResource::Get();
     res->InitAllHandlers();
+    res->SetFlags(res->GetFlags() | wxXRC_USE_ENVVARS);
 
     const std::string& data = TypeConv::WxStringToString(cw->GetString());
     wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), data.c_str(), data.size());
@@ -229,6 +230,7 @@ void XRCPreview::Show(PObjectBase form, const wxString& projectPath)
     ::wxSetWorkingDirectory(workingDir);
 
     res->Unload(wxT("memory:xrcpreview.xrc"));
+    res->SetFlags(res->GetFlags() & ~wxXRC_USE_ENVVARS);
 
     wxMemoryFSHandler::RemoveFile(wxT("xrcpreview.xrc"));
 }
