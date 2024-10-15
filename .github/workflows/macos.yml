@@ -47,7 +47,7 @@ jobs:
         os: [macos-latest, macos-13, macos-12]
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.2.0
+    - uses: actions/checkout@v4.2.1
       with:
         fetch-tags: true
         submodules: recursive
