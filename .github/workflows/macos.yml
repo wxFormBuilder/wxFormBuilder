@@ -56,7 +56,6 @@ jobs:
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/ s//-\1/p" CMakeLists.txt `" >> $GITHUB_ENV
     - name: Setup environment
       run: |
-        export HOMEBREW_NO_INSTALLED_DEPENDENTS_CHECK=TRUE
         brew update
         brew install wxwidgets boost
     - name: Create build system
