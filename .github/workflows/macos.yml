@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-latest, macos-13, macos-12]
+        os: [macos-15, macos-14, macos-13]
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.2.1
