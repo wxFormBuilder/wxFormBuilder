@@ -406,6 +406,17 @@ Written by
     </property>
   </objectinfo>
 
+  <objectinfo class="wxVListBox" icon="list_box.xpm" type="widget">
+    <inherits class="wxWindow"/>
+    <inherits class="AUI"/>
+    <property name="name" type="text">m_vlistBox</property>
+    <property name="style" type="bitlist">
+      <option name="wxLB_MULTIPLE" help="Multiple-selection list: the user can toggle multiple items on and off."/>
+    </property>
+    <event name="OnListBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_SELECTED event, when an item on the list is selected."/>
+    <event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked."/>
+  </objectinfo>
+
   <objectinfo class="CustomControl" startgroup="1" icon="custom_control.xpm" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
