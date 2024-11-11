@@ -2480,6 +2480,104 @@ class RibbonGalleryItemComponent : public ComponentBase
 {
 };
 
+#include <wx/vlbox.h>
+
+namespace
+{
+    class wxVListBoxExample : public wxVListBox
+    {
+    public:
+        using wxVListBox::wxVListBox;
+
+        virtual wxSize DoGetBestClientSize() const override;
+
+        // the derived class must implement this function to actually draw the item
+        // with the given index on the provided DC
+        virtual void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const override;
+
+        // the derived class must implement this method to return the height of the
+        // specified item
+        virtual wxCoord OnMeasureItem(size_t n) const override;
+
+    private:
+        wxDECLARE_DYNAMIC_CLASS(wxVListBoxExample);
+        wxDECLARE_EVENT_TABLE();
+
+        /* XRC requires default constructor, and Create() is not
+            virtual, so initialization must be done here */
+        void OnCreate(wxWindowCreateEvent& event);
+
+        wxString GetItem(size_t n) const;
+    };
+
+    wxIMPLEMENT_DYNAMIC_CLASS(wxVListBoxExample, wxVListBox);
+
+    wxBEGIN_EVENT_TABLE(wxVListBoxExample, wxVListBox) EVT_WINDOW_CREATE(wxVListBoxExample::OnCreate)
+    wxEND_EVENT_TABLE()
+
+    wxSize wxVListBoxExample::DoGetBestClientSize() const
+    {
+        return wxSize(100, 50);
+    }
+
+    void wxVListBoxExample::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
+    {
+        dc.DrawText(GetItem(n), rect.GetLeftTop());
+    }
+
+    wxCoord wxVListBoxExample::OnMeasureItem(size_t n) const
+    {
+        // safe to const_cast since we're just using GetTextExtent()
+#if defined(wxHAS_INFO_DC)
+        wxInfoDC dc(const_cast<wxVListBoxExample*>(this));
+#else
+        wxClientDC dc(const_cast<wxVListBoxExample*>(this));
+#endif
+        return dc.GetTextExtent(GetItem(n)).y;
+    }
+
+    /* XRC requires default constructor, and Create() is not
+        virtual, so initialization must be done here */
+    void wxVListBoxExample::OnCreate(wxWindowCreateEvent& event)
+    {
+        SetItemCount(std::numeric_limits<size_t>::max());
+
+        event.Skip();
+    }
+
+    wxString wxVListBoxExample::GetItem(size_t n) const
+    {
+        return wxString::Format("Item %zu", n);
+    }
+}
+
+class VListBoxComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject* obj, wxObject* parent) override
+    {
+        wxVListBox* listbox = new wxVListBoxExample(
+          (wxWindow*)parent, wxID_ANY, obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
+          obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+        return listbox;
+    }
+
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
+
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
+    }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -2750,6 +2848,10 @@ MACRO(wxTL_CHECKBOX)
 MACRO(wxTL_3STATE)
 MACRO(wxTL_USER_3STATE)
 MACRO(wxTR_DEFAULT_STYLE)
+
+// wxVListBox
+WINDOW_COMPONENT("wxVListBox", VListBoxComponent)
+MACRO(wxLB_MULTIPLE)
 
 ABSTRACT_COMPONENT("wxTreeListCtrlColumn", wxcoreTreeListCtrlColumnComponent)
 MACRO(wxCOL_RESIZABLE)
