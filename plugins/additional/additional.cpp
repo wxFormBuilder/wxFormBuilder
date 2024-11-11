@@ -2528,7 +2528,11 @@ namespace
     wxCoord wxVListBoxExample::OnMeasureItem(size_t n) const
     {
         // safe to const_cast since we're just using GetTextExtent()
+#if defined(wxHAS_INFO_DC)
         wxInfoDC dc(const_cast<wxVListBoxExample*>(this));
+#else
+        wxClientDC dc(const_cast<wxVListBoxExample*>(this));
+#endif
         return dc.GetTextExtent(GetItem(n)).y;
     }
 
