@@ -549,6 +549,23 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
         file = wxT("noname");
     }
 
+    // Generate the subclass sets
+    std::set<wxString> subclasses;
+    std::set<wxString> subclassSourceIncludes;
+    std::vector<wxString> headerIncludes;
+
+    GenSubclassSets(project, &subclasses, &subclassSourceIncludes, &headerIncludes);
+
+    wxString base_name = file;
+    if (project->GetChildCount() == 1) {
+        PObjectBase base_obj = project->GetChild(0);
+        if (base_obj && (!base_obj->IsPropertyNull("name"))) {
+            base_name = base_obj->GetPropertyAsString(wxT("name"));
+        }
+    }
+    m_header->WriteLn(wxT("#ifndef __WX_FORM_BUILDER_GEN_") + base_name.Upper() + wxT("_H__"));
+    m_header->WriteLn(wxT("#define __WX_FORM_BUILDER_GEN_") + base_name.Upper() + wxT("_H__"));
+
     m_header->WriteLn(wxT("#pragma once"));
     m_header->WriteLn(wxEmptyString);
 
@@ -556,13 +573,6 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     if (!code.empty()) {
         m_header->WriteLn(code);
     }
-
-    // Generate the subclass sets
-    std::set<wxString> subclasses;
-    std::set<wxString> subclassSourceIncludes;
-    std::vector<wxString> headerIncludes;
-
-    GenSubclassSets(project, &subclasses, &subclassSourceIncludes, &headerIncludes);
 
     // Write the forward declaration lines
     std::set<wxString>::iterator subclass_it;
@@ -643,7 +653,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
     }
 
     // Generated header
-    m_source->WriteLn(wxT("#include \"") + file + wxT(".h\""));
+    m_source->WriteLn(wxT("#include \"") + base_name + wxT(".h\""));
 
     m_source->WriteLn(wxEmptyString);
     GenEmbeddedBitmapIncludes(project);
@@ -704,6 +714,7 @@ bool CppCodeGenerator::GenerateCode(PObjectBase project)
             m_header->Unindent();
             m_header->WriteLn(wxT("} // namespace ") + namespaceArray[i - 1]);
         }
+        m_header->WriteLn(wxT("#endif"));
         m_header->WriteLn(wxEmptyString);
     }
 
