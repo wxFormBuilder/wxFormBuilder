@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20...3.31)
 
 #[[
 Determine svn revision and generate target file from template file if it did change.

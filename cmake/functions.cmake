@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.21...3.31)
 
 #[[
 Set default build type.
@@ -610,7 +610,6 @@ function(wxfb_copy_target_resources arg_TARGET arg_NAME arg_FOLDER arg_SOURCE_IT
       OUTPUT ${arg_DESTINATION_ITEMS}
       COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${src}" "${dst}"
       DEPENDS "${src}"
-      VERBATIM
       APPEND
     )
   endforeach()

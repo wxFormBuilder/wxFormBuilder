@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.21...3.31)
 
 # Do not change the format of this line! It must stay as-is up to and including the keyword LANGUAGES.
 # External tools parse the version number from this line.
@@ -103,9 +103,11 @@ add_subdirectory(plugins)
 add_subdirectory(sdk)
 add_subdirectory(third_party/md5)
 add_subdirectory(third_party/stack_trace)
+stash_variable(CMAKE_POLICY_DEFAULT_CMP0177 VALUE NEW)
 stash_variable(BUILD_SHARED_LIBS VALUE ${WXFB_TINYXML2_SHARED})
 add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
 restore_variable(BUILD_SHARED_LIBS)
+restore_variable(CMAKE_POLICY_DEFAULT_CMP0177)
 
 if(NOT WXFB_BUILD_PLUGIN_HOST)
   wxfb_configure_postbuild()
