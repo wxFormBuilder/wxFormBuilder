@@ -103,7 +103,7 @@ add_subdirectory(plugins)
 add_subdirectory(sdk)
 add_subdirectory(third_party/md5)
 add_subdirectory(third_party/stack_trace)
-stash_variable(BUILD_SHARED_LIBS ${WXFB_TINYXML2_SHARED})
+stash_variable(BUILD_SHARED_LIBS VALUE ${WXFB_TINYXML2_SHARED})
 add_subdirectory(third_party/tinyxml2 EXCLUDE_FROM_ALL)
 restore_variable(BUILD_SHARED_LIBS)
 
