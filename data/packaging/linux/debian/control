@@ -1,7 +1,7 @@
 Source: wxformbuilder
 Section: devel
 Priority: optional
-Maintainer: Steffen Olszewski <steffen.olszewski@gero-mess.de>
+Maintainer: Steffen Olszewski <steffen.o.dev@gmail.com>
 Build-Depends: debhelper-compat (= 12),
                cmake (>= 3.21),
                git,

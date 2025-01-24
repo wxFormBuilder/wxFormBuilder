@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: wxformbuilder
-Upstream-Contact: Steffen Olszewski <steffen.olszewski@gero-mess.de>
+Upstream-Contact: Steffen Olszewski <steffen.o.dev@gmail.com>
 Source: https://github.com/wxFormBuilder/wxFormBuilder
 
 Files: *
@@ -97,15 +97,15 @@ License: md5
  Version: 1.00 (28 Aug 95)
  Version: 1.02 (22 Sep 97)
  .
-  Translation and modification (c) 1995 by Mordechai T. Abzug 
+  Translation and modification (c) 1995 by Mordechai T. Abzug
   Thanks to Martin Cleaver for for making it happy on Windows NT and Solaris.
  .
-  This translation/ modification is provided "as is," without express or 
+  This translation/ modification is provided "as is," without express or
   implied warranty of any kind.
  .
-  The translator/ modifier does not claim (1) that MD5 will do what you think 
-  it does; (2) that this translation/ modification is accurate; or (3) that 
-  this software is "merchantible."  (Language for this disclaimer partially 
+  The translator/ modifier does not claim (1) that MD5 will do what you think
+  it does; (2) that this translation/ modification is accurate; or (3) that
+  this software is "merchantible."  (Language for this disclaimer partially
   copied from the disclaimer below).
  .
  Based on:

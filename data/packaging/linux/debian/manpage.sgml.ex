@@ -24,7 +24,7 @@ manpage.1: manpage.sgml
   <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
        allowed: see man(7), man(1). -->
   <!ENTITY dhsection   "<manvolnum>SECTION</manvolnum>">
-  <!ENTITY dhemail     "<email>steffen.olszewski@gero-mess.de</email>">
+  <!ENTITY dhemail     "<email>steffen.o.dev@gmail.com</email>">
   <!ENTITY dhusername  "Steffen Olszewski">
   <!ENTITY dhucpackage "<refentrytitle>Wxformbuilder</refentrytitle>">
   <!ENTITY dhpackage   "wxformbuilder">
