@@ -1465,8 +1465,10 @@ wxMenu* MainFrame::CreateSubmenuComponents(PObjectPackage pkg)
 
         if (nullptr == info->GetComponent()) {
             LogDebug(
-              _("Missing Component for Class \"" + info->GetClassName() + "\" of Package \"" + pkg->GetPackageName() +
-                "\"."));
+              "Missing Component for Class \"%s\" of Package \"%s\".",
+              info->GetClassName(),
+              pkg->GetPackageName()
+            );
         } else {
             auto* item = new wxMenuItem(submenu, wxID_ANY, info->GetClassName());
             item->SetBitmap(info->GetIconFile());
