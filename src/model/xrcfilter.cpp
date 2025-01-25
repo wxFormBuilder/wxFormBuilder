@@ -25,6 +25,8 @@
 
 #include "xrcfilter.h"
 
+#include <cstring>
+
 #include <wx/log.h>
 
 #include <common/xmlutils.h>
@@ -133,6 +135,10 @@ PObjectBase XrcLoader::GetObject(const tinyxml2::XMLElement* object, PObjectBase
                 className
             );
 
+            return PObjectBase();
+        }
+        if (std::strlen(objectXfb->Name()) == 0) {
+            // Special case empty element name, this element shall not be imported from XRC
             return PObjectBase();
         }
 

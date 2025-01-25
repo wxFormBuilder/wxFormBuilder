@@ -245,7 +245,7 @@ public:
      *
      * @param xrc Target node, must be an empty node
      * @param obj Object properties
-     * @return On success, xrc is returned, otherwise nullptr
+     * @return On success, xrc is returned, otherwise nullptr. If xrc has an empty name, this object will be omitted from XRC.
      */
     virtual tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) = 0;
     /**
@@ -255,7 +255,7 @@ public:
      *
      * @param xfb Target node, must be an empty node
      * @param xrc XRC node
-     * @return On success, xfb is returned, otherwise nullptr
+     * @return On success, xfb is returned, otherwise nullptr. If xfb has an empty name, this object will be omitted from XFB.
      */
     virtual tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) = 0;
 };

@@ -25,6 +25,8 @@
 
 #include "xrccg.h"
 
+#include <cstring>
+
 #include <common/xmlutils.h>
 
 #include "codegen/codewriter.h"
@@ -94,6 +96,13 @@ tinyxml2::XMLElement* XrcCodeGenerator::GetElement(PObjectBase object, tinyxml2:
         }
 
         // Don't return an element for nonvisual objects
+        m_xrc.DeleteNode(objectXrc);
+
+        return nullptr;
+    }
+
+    if (std::strlen(objectXrc->Name()) == 0) {
+        // Special case empty element name, this element shall not be exported to XRC
         m_xrc.DeleteNode(objectXrc);
 
         return nullptr;
