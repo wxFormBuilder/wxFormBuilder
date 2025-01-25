@@ -552,7 +552,11 @@ public:
           obj->GetPropertyAsSize(_("size")),
           obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
 
-        if (!obj->IsPropertyNull(_("maxlength"))) {
+        if (!obj->IsPropertyNull(_("maxlength"))
+    #ifdef __WXGTK__
+            && !(obj->GetPropertyAsInteger(_("style")) & wxTE_MULTILINE)
+    #endif
+        ) {
             tc->SetMaxLength(obj->GetPropertyAsInteger(_("maxlength")));
         }
 
