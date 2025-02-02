@@ -306,6 +306,8 @@ bool MyApp::OnInit()
 
 int MyApp::OnExit()
 {
+    // Clear all handlers before the plugins get unloaded to prevent a crash if a plugin added a private handler
+    wxXmlResource::Get()->ClearHandlers();
     MacroDictionary::Destroy();
     ApplicationData::Destroy();
 
