@@ -149,7 +149,6 @@ void XRCPreview::Show(PObjectBase form, const wxString& projectPath)
     if (!projectPath.IsEmpty())
         ::wxSetWorkingDirectory(projectPath);
     wxXmlResource* res = wxXmlResource::Get();
-    res->InitAllHandlers();
 
     const std::string& data = TypeConv::WxStringToString(cw->GetString());
     wxMemoryFSHandler::AddFile(wxT("xrcpreview.xrc"), data.c_str(), data.size());
