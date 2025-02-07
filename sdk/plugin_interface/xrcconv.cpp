@@ -56,9 +56,6 @@ static wxString StringToXrcText(const wxString& str)
             case '_':
                 result += "__";
                 break;
-            case '&':
-                result += "_";
-                break;
             default:
                 result += ch;
                 break;
