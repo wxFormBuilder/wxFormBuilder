@@ -44,6 +44,7 @@
 #include <wx/tglbtn.h>
 #include <wx/timectrl.h>
 #include <wx/treelist.h>
+#include <wx/vlbox.h>
 
 #include <common/xmlutils.h>
 #include <plugin_interface/plugin.h>
@@ -2480,6 +2481,35 @@ class RibbonGalleryItemComponent : public ComponentBase
 {
 };
 
+#if wxCHECK_VERSION(3, 3, 0)
+class VListBoxComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject* obj, wxObject* parent) override
+    {
+        wxVListBox* listbox = new wxXRCPreviewVListBox(
+          (wxWindow*)parent, wxID_ANY, obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
+          obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+        return listbox;
+    }
+
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
+
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
+    }
+};
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
@@ -2750,6 +2780,12 @@ MACRO(wxTL_CHECKBOX)
 MACRO(wxTL_3STATE)
 MACRO(wxTL_USER_3STATE)
 MACRO(wxTR_DEFAULT_STYLE)
+
+#if wxCHECK_VERSION(3, 3, 0)
+// wxVListBox
+WINDOW_COMPONENT("wxVListBox", VListBoxComponent)
+MACRO(wxLB_MULTIPLE)
+#endif
 
 ABSTRACT_COMPONENT("wxTreeListCtrlColumn", wxcoreTreeListCtrlColumnComponent)
 MACRO(wxCOL_RESIZABLE)
