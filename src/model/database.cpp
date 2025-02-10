@@ -785,7 +785,9 @@ void ObjectDatabase::LoadCodeGen(const wxString& file)
             if (auto objectInfo = GetObjectInfo(className); objectInfo) {
                 objectInfo->AddCodeInfo(language, codeInfo);
             } else {
-                wxLogError(_("%s: Code template for unknown class \"%s\""), file, className);
+                // TODO: The object info might not be available due to unsatisfied version constraints,
+                //       revert to the previous state and ignore this case silently
+                //wxLogError(_("%s: Code template for unknown class \"%s\""), file, className);
             }
         }
     }
