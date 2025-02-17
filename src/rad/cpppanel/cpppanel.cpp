@@ -45,6 +45,7 @@
 
 BEGIN_EVENT_TABLE(CppPanel, wxPanel)
 EVT_FB_CODE_GENERATION(CppPanel::OnCodeGeneration)
+EVT_FB_CODE_GENERATION_TO_FILES(CppPanel::OnCodeGenerationToFiles)
 EVT_FB_PROJECT_REFRESH(CppPanel::OnProjectRefresh)
 EVT_FB_PROPERTY_MODIFIED(CppPanel::OnPropertyModified)
 EVT_FB_OBJECT_CREATED(CppPanel::OnObjectChange)
@@ -357,6 +358,115 @@ void CppPanel::OnCodeGeneration(wxFBEvent& event)
             wxLogStatus(wxT("Code generated on \'%s\'."), path);
         } catch (wxFBException& ex) {
             wxLogError(ex.what());
+        }
+    }
+}
+
+void CppPanel::_CodeGenerationOneFile(PObjectBase objectToGenerate)
+{
+    // Create copy of the original project due to possible temporary modifications
+    PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
+
+    // If C++ generation is not enabled, do not generate the file
+    bool doFile = false;
+    PProperty pCodeGen = project->GetProperty(wxT("code_generation"));
+    if (pCodeGen) {
+        doFile = TypeConv::FlagSet(wxT("C++"), pCodeGen->GetValue());
+    }
+
+    if ( !doFile) {
+        return;
+    }
+
+    // Get First ID from Project File
+    int firstID = wxID_HIGHEST;
+    PProperty pFirstID = project->GetProperty(wxT("first_id"));
+    if (pFirstID) {
+        firstID = pFirstID->GetValueAsInteger();
+    }
+
+    // Determine if the path is absolute or relative
+    bool useRelativePath = false;
+    PProperty pRelPath = project->GetProperty(wxT("relative_path"));
+    if (pRelPath) {
+        useRelativePath = (pRelPath->GetValueAsInteger() ? true : false);
+    }
+
+    // Get the output path
+    wxString path;
+    try {
+        path = AppData()->GetOutputPath();
+    } catch (wxFBException& ex) {
+        if (doFile) {
+            path = wxEmptyString;
+            wxLogWarning(ex.what());
+            return;
+        }
+    }
+    wxString file;
+    if (project->GetChildCount() > 0) {
+        unsigned int i = 0;
+        while (project->GetChildCount() > 1) {
+            if (project->GetChild(i) != objectToGenerate) {
+                project->RemoveChild(i);
+                // get file name from class name.
+                file = objectToGenerate->GetPropertyAsString(wxT("name"));
+            } else
+                i++;
+        }
+    }
+    if (file.empty()) {
+        file = wxT("noname");
+    }
+    // Generate code in the file
+    if (doFile) {
+        try {
+            CppCodeGenerator codegen;
+            codegen.UseRelativePath(useRelativePath, path);
+
+            if (pFirstID) {
+                codegen.SetFirstID(firstID);
+            }
+
+            // Determine if Microsoft BOM should be used
+            bool useMicrosoftBOM = false;
+            if (auto property = project->GetProperty("use_microsoft_bom"); property) {
+                useMicrosoftBOM = (property->GetValueAsInteger() != 0);
+            }
+            // Determine encoding
+            bool useUtf8 = false;
+            if (auto property = project->GetProperty("encoding"); property) {
+                useUtf8 = (property->GetValueAsString() != wxT("ANSI"));
+            }
+            // Determine eol-style
+            bool useNativeEOL = false;
+            if (auto property = project->GetProperty("use_native_eol"); property) {
+                useNativeEOL = (property->GetValueAsInteger() != 0);
+            }
+
+            auto h_cw = std::make_shared<FileCodeWriter>(path + file + wxT(".h"), useMicrosoftBOM, useUtf8, useNativeEOL);
+            auto cpp_cw = std::make_shared<FileCodeWriter>(path + file + wxT(".cpp"), useMicrosoftBOM, useUtf8, useNativeEOL);
+
+            codegen.SetHeaderWriter(h_cw);
+            codegen.SetSourceWriter(cpp_cw);
+            codegen.GenerateCode(project);
+            wxLogStatus(wxT("Code generated on \'%s\'."), path);
+        } catch (wxFBException& ex) {
+            wxLogError(ex.what());
+        }
+    }
+}
+
+void CppPanel::OnCodeGenerationToFiles(wxFBEvent&)
+{
+    // Create copy of the original project due to possible temporary modifications
+    PObjectBase project = PObjectBase(new ObjectBase(*AppData()->GetProjectData()));
+
+    // Generate code for each class
+    if (project->GetChildCount() > 0) {
+        for (unsigned int i = 0; i < project->GetChildCount(); i++)
+        {
+            _CodeGenerationOneFile(project->GetChild(i));
         }
     }
 }
