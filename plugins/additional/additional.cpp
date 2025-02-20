@@ -2489,8 +2489,8 @@ class RibbonGalleryItemComponent : public ComponentBase
         {
         public:
             wxVListBoxXmlHandler();
-            virtual wxObject *DoCreateResource() override;
-            virtual bool CanHandle(wxXmlNode *node) override;
+            wxObject *DoCreateResource() override;
+            bool CanHandle(wxXmlNode *node) override;
         };
     }
 
