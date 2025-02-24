@@ -44,6 +44,8 @@
 #include <wx/tglbtn.h>
 #include <wx/timectrl.h>
 #include <wx/treelist.h>
+#include <wx/vlbox.h>
+#include <wx/xrc/xmlres.h>
 
 #include <common/xmlutils.h>
 #include <plugin_interface/plugin.h>
@@ -2480,9 +2482,224 @@ class RibbonGalleryItemComponent : public ComponentBase
 {
 };
 
+#if !wxCHECK_VERSION(3, 3, 0)
+    namespace
+    {
+        class wxVListBoxXmlHandler : public wxXmlResourceHandler
+        {
+        public:
+            wxVListBoxXmlHandler();
+            wxObject *DoCreateResource() override;
+            bool CanHandle(wxXmlNode *node) override;
+        };
+    }
+
+    namespace
+    {
+        const char wxXRCPreviewVListBoxNameStr[] = "wxXRCPreviewVListBox";
+
+        /*
+            GUI editors, e.g., wxFormBuilder, typically allow users to lay out
+            instances of controls.  However, wxVListBox is an abstract class, so a GUI
+            editor can only create instances of a subclass of wxVListBox.  Rather than
+            require every GUI editor to repeat the work of subclassing wxVListBox for
+            GUI editing, and because the user's intended subclass will not exist in GUI
+            editors, provide a class that GUI editors can use.  Also, the
+            wxVListBoxXmlHandler can create instances of this class when in
+            wxXRC_NO_SUBCLASSING mode;
+         */
+        class wxXRCPreviewVListBox : public wxVListBox
+        {
+        public:
+            // default constructor, you must call Create() later
+            wxXRCPreviewVListBox() = default;
+
+            // normal constructor which calls Create() internally
+            wxXRCPreviewVListBox(wxWindow *parent,
+                                    wxWindowID id = wxID_ANY,
+                                    const wxPoint& pos = wxDefaultPosition,
+                                    const wxSize& size = wxDefaultSize,
+                                    long style = 0,
+                                    const wxString& name = wxString::FromAscii(wxXRCPreviewVListBoxNameStr))
+            {
+                (void)Create(parent, id, pos, size, style, name);
+            }
+
+            // really creates the control and sets the initial number of items in it
+            // (which may be changed later with SetItemCount())
+            //
+            // the only special style which may be specified here is wxLB_MULTIPLE
+            //
+            // returns true on success or false if the control couldn't be created
+            bool Create(wxWindow *parent,
+                        wxWindowID id = wxID_ANY,
+                        const wxPoint& pos = wxDefaultPosition,
+                        const wxSize& size = wxDefaultSize,
+                        long style = 0,
+                        const wxString& name = wxString::FromAscii(wxXRCPreviewVListBoxNameStr));
+
+        protected:
+            // avoid defaulting to tiny window
+            wxSize DoGetBestClientSize() const override;
+
+            // the derived class must implement this function to actually draw the item
+            // with the given index on the provided DC
+            void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const override;
+
+            // the derived class must implement this method to return the height of the
+            // specified item
+            wxCoord OnMeasureItem(size_t n) const override;
+
+        private:
+            wxDECLARE_DYNAMIC_CLASS_NO_COPY(wxXRCPreviewVListBox);
+
+            wxString GetItem(size_t n) const;
+        };
+
+        wxIMPLEMENT_DYNAMIC_CLASS(wxXRCPreviewVListBox, wxVListBox);
+
+        bool wxXRCPreviewVListBox::Create(wxWindow *parent,
+                    wxWindowID id /*= wxID_ANY*/,
+                    const wxPoint& pos /*= wxDefaultPosition*/,
+                    const wxSize& size /*= wxDefaultSize*/,
+                    long style /*= 0*/,
+                    const wxString& name /*= wxASCII_STR(wxVListBoxNameStr)*/)
+        {
+            bool retval = wxVListBox::Create(parent, id, pos, size, style, name);
+            if (retval)
+            {
+                SetItemCount(std::numeric_limits<int>::max());
+            }
+            return retval;
+        }
+
+        // avoid defaulting to tiny window
+        wxSize wxXRCPreviewVListBox::DoGetBestClientSize() const
+        {
+            // safe to const_cast since we're just using GetTextExtent()/GetMetric()
+            wxXRCPreviewVListBox* nonConstThis = const_cast<wxXRCPreviewVListBox*>(this);
+            wxClientDC dc(nonConstThis);
+            wxSize item99Size = dc.GetTextExtent(GetItem(99));
+            return wxSize(item99Size.x + wxSystemSettings::GetMetric(wxSYS_VSCROLL_X, nonConstThis),
+                            5 * item99Size.y);
+        }
+
+        void wxXRCPreviewVListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
+        {
+            dc.DrawText(GetItem(n), rect.GetLeftTop());
+        }
+
+        wxCoord wxXRCPreviewVListBox::OnMeasureItem(size_t n) const
+        {
+            // safe to const_cast since we're just using GetTextExtent()
+            wxWindowDC dc(const_cast<wxXRCPreviewVListBox*>(this));
+            return dc.GetTextExtent(GetItem(n)).y;
+        }
+
+        wxString wxXRCPreviewVListBox::GetItem(size_t n) const
+        {
+            return wxString::Format("Item %zu", n);
+        }
+
+        wxVListBoxXmlHandler::wxVListBoxXmlHandler() : wxXmlResourceHandler()
+        {
+            // panel styles
+            XRC_ADD_STYLE(wxTAB_TRAVERSAL);
+
+            // listbox styles
+            XRC_ADD_STYLE(wxLB_MULTIPLE);
+
+            AddWindowStyles();
+        }
+
+        wxObject * wxVListBoxXmlHandler::DoCreateResource()
+        {
+            // see comment for wxXRCPreviewVListBox
+
+            /* Create() isn't virtual, but the preview class has its
+                own implementation, so we need to use the static type
+                of the pointer to get the correct version */
+            wxXRCPreviewVListBox* preview = nullptr;
+            if (!m_instance &&
+                m_resource->GetFlags() & wxXRC_NO_SUBCLASSING)
+            {
+                preview = new wxXRCPreviewVListBox;
+                m_instance = preview;
+            }
+
+            /* non-standard because wxVListBox is an abstract
+                class, so "subclass" must be used */
+            wxCHECK_MSG(m_instance,
+                        nullptr,
+                        "wxVListBox requires \"subclass\" attribute");
+            wxVListBox* const vlistbox = wxStaticCast(m_instance, wxVListBox);
+            if (GetBool(wxT("hidden"), 0) == 1)
+                vlistbox->Hide();
+
+            if (!preview)
+            {
+                vlistbox->Create(m_parentAsWindow,
+                              GetID(),
+                              GetPosition(), GetSize(),
+                              GetStyle(wxT("style"), wxTAB_TRAVERSAL),
+                              GetName());
+            }
+            else
+            {
+                preview->Create(m_parentAsWindow,
+                              GetID(),
+                              GetPosition(), GetSize(),
+                              GetStyle(wxT("style"), wxTAB_TRAVERSAL),
+                              GetName());
+            }
+
+            SetupWindow(vlistbox);
+            CreateChildren(vlistbox);
+
+            return vlistbox;
+        }
+
+        bool wxVListBoxXmlHandler::CanHandle(wxXmlNode *node)
+        {
+            return IsOfClass(node, wxT("wxVListBox"));
+        }
+    }
+#endif
+
+class VListBoxComponent : public ComponentBase
+{
+public:
+    wxObject* Create(IObject* obj, wxObject* parent) override
+    {
+        wxVListBox* listbox = new wxXRCPreviewVListBox(
+          (wxWindow*)parent, wxID_ANY, obj->GetPropertyAsPoint(_("pos")), obj->GetPropertyAsSize(_("size")),
+          obj->GetPropertyAsInteger(_("style")) | obj->GetPropertyAsInteger(_("window_style")));
+
+        return listbox;
+    }
+
+    tinyxml2::XMLElement* ExportToXrc(tinyxml2::XMLElement* xrc, const IObject* obj) override
+    {
+        ObjectToXrcFilter filter(xrc, GetLibrary(), obj);
+        filter.AddWindowProperties();
+        return xrc;
+    }
+
+    tinyxml2::XMLElement* ImportFromXrc(tinyxml2::XMLElement* xfb, const tinyxml2::XMLElement* xrc) override
+    {
+        XrcToXfbFilter filter(xfb, GetLibrary(), xrc);
+        filter.AddWindowProperties();
+        return xfb;
+    }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 BEGIN_LIBRARY()
+
+#if !wxCHECK_VERSION(3, 3, 0)
+    wxXmlResource::Get()->AddHandler(new wxVListBoxXmlHandler);
+#endif
 
 WINDOW_COMPONENT("wxCalendarCtrl", CalendarCtrlComponent)
 WINDOW_COMPONENT("wxDatePickerCtrl", DatePickerCtrlComponent)
@@ -2750,6 +2967,10 @@ MACRO(wxTL_CHECKBOX)
 MACRO(wxTL_3STATE)
 MACRO(wxTL_USER_3STATE)
 MACRO(wxTR_DEFAULT_STYLE)
+
+// wxVListBox
+WINDOW_COMPONENT("wxVListBox", VListBoxComponent)
+MACRO(wxLB_MULTIPLE)
 
 ABSTRACT_COMPONENT("wxTreeListCtrlColumn", wxcoreTreeListCtrlColumnComponent)
 MACRO(wxCOL_RESIZABLE)

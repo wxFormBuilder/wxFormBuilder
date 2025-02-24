@@ -263,6 +263,14 @@ Python code generation written by
     <template name="include">import wx.media</template>
   </templates>
 
+  <templates class="wxVListBox">
+    <template name="construction">
+      self.$name = #class( #wxparent $name, $id, $pos, $size, $style #ifnotnull $window_style @{ |$window_style @} #ifnotnull $window_name @{, $window_name @} )
+    </template>
+    <template name="evt_connect_OnListBox">self.$name.Bind( wx.EVT_LISTBOX, #handler )</template>
+    <template name="evt_connect_OnListBoxDClick">self.$name.Bind( wx.EVT_LISTBOX_DCLICK, #handler )</template>
+  </templates>
+
   <templates class="wxTimer">
     <template name="construction">
       self.$name = #class() #nl

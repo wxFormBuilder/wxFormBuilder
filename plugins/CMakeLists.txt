@@ -27,6 +27,7 @@ wxfb_add_plugin(additional
     grid.xpm
     htmlwin.xpm
     hyperlink_ctrl.xpm
+    list_box.xpm
     media_ctrl.xpm
     propgrid.xpm
     propgriditem.xpm
