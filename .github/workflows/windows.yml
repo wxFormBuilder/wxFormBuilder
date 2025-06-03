@@ -107,19 +107,19 @@ jobs:
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.arch }} /O. data\\packaging\\windows\\wxFormBuilder.iss
-    - uses: actions/upload-artifact@v4.6.1
+    - uses: actions/upload-artifact@v4.6.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: Windows Build Debugging ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.6.1
+    - uses: actions/upload-artifact@v4.6.2
       with:
         name: Windows Archive ${{ matrix.pkg }}
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.6.1
+    - uses: actions/upload-artifact@v4.6.2
       with:
         name: Windows Installer ${{ matrix.pkg }}
         path: |
