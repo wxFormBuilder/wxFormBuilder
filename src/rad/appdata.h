@@ -140,6 +140,7 @@ public:
     PObjectBase GetClipboardObject() const { return m_clipboard; }
 
     void GenerateCode(bool panelOnly = false, bool noDelayed = false);
+    void GenerateCodeToFiles(bool noDelayed = false);
     void GenerateInheritedClass(PObjectBase form, const wxString& className, const wxString& path, const wxString& file);
     void ShowXrcPreview();
 
@@ -300,6 +301,7 @@ private:
     void NotifyEventHandlerModified(PEvent evtHandler);
 
     void NotifyCodeGeneration(bool panelOnly = false, bool forcedelayed = false);
+    void NotifyCodeGenerationToFiles(bool forcedelayed = false);
 
 private:
     static ApplicationData* s_instance;
