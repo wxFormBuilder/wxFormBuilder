@@ -71,7 +71,6 @@ jobs:
         include:
           - { os: ubuntu-24.04, wxver: 3.2 }
           - { os: ubuntu-22.04, wxver: 3.0-gtk3 }
-          - { os: ubuntu-20.04, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.2.2
