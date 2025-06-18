@@ -45,7 +45,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { sys: mingw32, arch: i686, pkg: i686 }
           - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
