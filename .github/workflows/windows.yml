@@ -61,7 +61,7 @@ jobs:
           mingw-w64-${{ matrix.pkg }}-toolchain
           mingw-w64-${{ matrix.pkg }}-cmake
           mingw-w64-${{ matrix.pkg }}-make
-          mingw-w64-${{ matrix.pkg }}-wxWidgets3.2
+          mingw-w64-${{ matrix.pkg }}-wxwidgets3.2-msw
           mingw-w64-${{ matrix.pkg }}-boost
           base-devel
           git
