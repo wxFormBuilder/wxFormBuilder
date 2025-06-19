@@ -21,8 +21,11 @@
 #define MySetupArchitecture
 #ifdef Arch
   #if Arch == "x86_64"
-    #define MyAppArchitecture "x64"
+    #define MyAppArchitecture "x64compatible and not arm64"
     #define MySetupArchitecture "-x64"
+  #elif Arch == "aarch64"
+    #define MyAppArchitecture "arm64"
+    #define MySetupArchitecture "-arm64"
   #else
     #define MySetupArchitecture "-x86"
   #endif
