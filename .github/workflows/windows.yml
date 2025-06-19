@@ -46,6 +46,7 @@ jobs:
       matrix:
         include:
           - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
+          - { sys: clangarm64, arch: aarch64, pkg: clang-aarch64 }
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.2.2
