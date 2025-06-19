@@ -45,8 +45,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
-          - { sys: clangarm64, arch: aarch64, pkg: clang-aarch64 }
+          - { sys: ucrt64, arch: x86_64, host: ucrt-x86_64, pkg: ucrt-x86_64 }
+          - { sys: clangarm64, arch: aarch64, host: ucrt-x86_64, pkg: clang-aarch64 }
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v4.2.2
@@ -59,9 +59,9 @@ jobs:
         release: false
         update: false
         install: >-
-          mingw-w64-${{ matrix.pkg }}-toolchain
-          mingw-w64-${{ matrix.pkg }}-cmake
-          mingw-w64-${{ matrix.pkg }}-make
+          mingw-w64-${{ matrix.host }}-toolchain
+          mingw-w64-${{ matrix.host }}-cmake
+          mingw-w64-${{ matrix.host }}-make
           mingw-w64-${{ matrix.pkg }}-wxwidgets3.2-msw
           mingw-w64-${{ matrix.pkg }}-boost
           base-devel
