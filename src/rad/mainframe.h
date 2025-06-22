@@ -118,6 +118,7 @@ public:
     void OnOpenProject(wxCommandEvent& event);
     void OnNewProject(wxCommandEvent& event);
     void OnGenerateCode(wxCommandEvent& event);
+    void OnGenerateCodeToFiles(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
     void OnClose(wxCloseEvent& event);
@@ -156,6 +157,7 @@ public:
     void OnPropertyModified(wxFBPropertyEvent& event);
     void OnEventHandlerModified(wxFBEventHandlerEvent& event);
     void OnCodeGeneration(wxFBEvent& event);
+    void OnCodeGenerationToFiles(wxFBEvent& event);
     void OnProjectRefresh(wxFBEvent& event);
 
     void OnSplitterChanged(wxSplitterEvent& event);
