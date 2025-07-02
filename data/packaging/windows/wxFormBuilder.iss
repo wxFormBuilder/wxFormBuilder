@@ -21,7 +21,9 @@
 #define MySetupArchitecture
 #ifdef Arch
   #if Arch == "x86_64"
-    #define MyAppArchitecture "x64compatible and not arm64"
+    ; The arm64 variant cannot be build by GitHub CI currently so allow emulation mode for arm64
+    ;#define MyAppArchitecture "x64compatible and not arm64"
+    #define MyAppArchitecture "x64compatible"
     #define MySetupArchitecture "-x64"
   #elif Arch == "aarch64"
     #define MyAppArchitecture "arm64"
