@@ -336,20 +336,20 @@ Written by
 
   <templates class="CustomControl">
     <template name="declaration">
-      #ifnotnull $declaration @{ $declaration @}
-      #ifnull $declaration @{ $class* $name; @}
+      #ifnotnull $cpp_declaration @{ $cpp_declaration @}
+      #ifnull $cpp_declaration @{ $class* $name; @}
     </template>
     <template name="construction">
-      #ifnotnull $construction @{ $construction @}
-      #ifnull $construction @{ $name = new $class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); @}
+      #ifnotnull $cpp_construction @{ $cpp_construction @}
+      #ifnull $cpp_construction @{ $name = new $class( #wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, wxDefaultValidator, $window_name @} ); @}
     </template>
-    <template name="settings">$settings</template>
-    <template name="include">$include</template>
+    <template name="settings">$cpp_settings</template>
+    <template name="include">$cpp_include</template>
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$include_cpp</template>
-    <template name="construction">$code_cpp</template>
+    <template name="include">$cpp_include</template>
+    <template name="construction">$cpp_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">
@@ -436,7 +436,7 @@ Written by
       #ifnotequal $line_numbers "1"
       @{
         #nl $name->SetMarginWidth( 0, 0 );
-      @}      
+      @}
       #ifnotnull $font
       @{
         #nl {

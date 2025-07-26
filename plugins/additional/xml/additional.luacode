@@ -212,14 +212,17 @@ Lua code generation written by
   </templates>
 
   <templates class="CustomControl">
-    <template name="construction">$construction</template>
-    <template name="settings">$settings</template>
-    <template name="include">$include</template>
+    <template name="construction">
+      #ifnotnull $lua_construction @{ $lua_construction @}
+      #ifnull $lua_construction @{ #utbl$name = $class( #utbl#wxparent $name, $id, $pos, $size, $window_style #ifnotnull $window_name @{, wx.DefaultValidator, $window_name @} ) @}
+    </template>
+    <template name="settings">$lua_settings</template>
+    <template name="include">$lua_require</template>
   </templates>
 
   <templates class="CustomCode">
-    <template name="include">$require_lua</template>
-    <template name="construction">$code_lua</template>
+    <template name="include">$lua_require</template>
+    <template name="construction">$lua_code</template>
   </templates>
 
   <templates class="wxMediaCtrl">
