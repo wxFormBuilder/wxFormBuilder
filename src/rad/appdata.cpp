@@ -1190,6 +1190,8 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
     if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 19)) {
         if (objectClass == "wxStaticBoxSizer") {
             RemoveProperties(object, {"id"});
+        } else if (objectClass == "wxPropertyGrid") {
+            RemoveProperties(object, {"bitmap"});
         } else if (objectClass == "CustomCode") {
             auto properties = GetProperties(object, {
                 "include_cpp", "code_cpp",
