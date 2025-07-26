@@ -458,8 +458,7 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
-    // TODO: Update for next release
-    m_fbpVersion{1, 18},
+    m_fbpVersion{1, 19},
     m_ipc(std::make_shared<wxFBIPC>()),
     m_rootDir(rootdir),
     m_manager(std::make_shared<wxFBManager>()),
