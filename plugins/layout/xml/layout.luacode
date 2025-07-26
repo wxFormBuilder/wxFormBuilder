@@ -52,7 +52,16 @@ Lua code generation written by
   </templates>
 
   <templates class="wxStaticBoxSizer">
-    <template name="construction">#utbl$name = wx.wxStaticBoxSizer( wx.wxStaticBox( #utbl#wxparent $name, $id, $label ), $orient ) #nl</template>
+    <template name="construction">
+      #ifnull $staticbox
+      @{
+        #utbl$name = wx.wxStaticBoxSizer( $orient, #utbl#wxparent $name, $label ) #nl
+      @}
+      #ifnotnull $staticbox
+      @{
+        #utbl$name = wx.wxStaticBoxSizer( #utbl$staticbox, $orient ) #nl
+      @}
+    </template>
     <template name="evt_connect_OnUpdateUI">-- event #utbl$name:evt_connect_OnUpdateUI isn't currently supported by wxLua</template>
   </templates>
 

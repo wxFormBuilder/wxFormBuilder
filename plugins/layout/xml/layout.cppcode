@@ -56,8 +56,17 @@ Written by
       @#include &lt;wx/sizer.h&gt; #nl
       @#include &lt;wx/statbox.h&gt;
     </template>
-    <template name="construction">$name = new wxStaticBoxSizer( new wxStaticBox( #wxparent $name, $id, $label ), $orient ); #nl</template>
-    <template name="evt_entry_OnUpdateUI">EVT_UPDATE_UI( $id, #handler )</template>
+    <template name="construction">
+      #ifnull $staticbox
+      @{
+        $name = new wxStaticBoxSizer( $orient, #wxparent $name, $label ); #nl
+      @}
+      #ifnotnull $staticbox
+      @{
+        $name = new wxStaticBoxSizer( $staticbox, $orient ); #nl
+      @}
+    </template>
+    <template name="evt_entry_OnUpdateUI">@#error Cannot access wxWindowID of the internal wxStaticBox globally, so wxEVT_UPDATE_UI from $name can only be handled with Connect()</template>
     <template name="evt_connect_OnUpdateUI">$name->GetStaticBox()->Connect( wxEVT_UPDATE_UI, #handler, NULL, this );</template>
   </templates>
 
