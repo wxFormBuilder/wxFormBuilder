@@ -57,7 +57,7 @@ jobs:
     - name: Setup environment
       run: |
         brew update
-        brew install wxwidgets boost
+        brew install wxwidgets webp boost
     - name: Create build system
       run: |
         cmake -S . -B _build -G "Unix Makefiles" --install-prefix "$PWD/_install" -DCMAKE_BUILD_TYPE=Release
