@@ -1267,6 +1267,11 @@ void ApplicationData::GenerateCode(bool panelOnly, bool noDelayed)
     NotifyCodeGeneration(panelOnly, !noDelayed);
 }
 
+void ApplicationData::GenerateCodeToFiles(bool noDelayed)
+{
+    NotifyCodeGenerationToFiles(!noDelayed);
+}
+
 void ApplicationData::GenerateInheritedClass(
   PObjectBase form, const wxString& className, const wxString& path, const wxString& file)
 {
@@ -2786,6 +2791,13 @@ void ApplicationData::NotifyCodeGeneration(bool panelOnly, bool forcedelayed)
 
     // Using the previously unused Id field in the event to carry a boolean
     event.SetId(panelOnly ? 1 : 0);
+
+    NotifyEvent(event, forcedelayed);
+}
+
+void ApplicationData::NotifyCodeGenerationToFiles(bool forcedelayed)
+{
+    wxFBEvent event(wxEVT_FB_CODE_GENERATION_TO_FILES);
 
     NotifyEvent(event, forcedelayed);
 }

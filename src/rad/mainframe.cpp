@@ -59,6 +59,7 @@ enum {
     ID_OPEN_PRJ,
     ID_NEW_PRJ,
     ID_GENERATE_CODE,
+    ID_GENERATE_CODE_TO_FILES,
     ID_IMPORT_XRC,
     ID_UNDO,
     ID_REDO,
@@ -125,6 +126,7 @@ EVT_MENU(wxID_ABOUT, MainFrame::OnAbout)
 EVT_MENU(wxID_EXIT, MainFrame::OnExit)
 EVT_MENU(ID_IMPORT_XRC, MainFrame::OnImportXrc)
 EVT_MENU(ID_GENERATE_CODE, MainFrame::OnGenerateCode)
+EVT_MENU(ID_GENERATE_CODE_TO_FILES, MainFrame::OnGenerateCodeToFiles)
 EVT_MENU(ID_UNDO, MainFrame::OnUndo)
 EVT_MENU(ID_REDO, MainFrame::OnRedo)
 EVT_MENU(ID_DELETE, MainFrame::OnDelete)
@@ -159,6 +161,7 @@ EVT_UPDATE_UI(ID_CLIPBOARD_PASTE, MainFrame::OnClipboardPasteUpdateUI)
 EVT_CLOSE(MainFrame::OnClose)
 
 EVT_FB_CODE_GENERATION(MainFrame::OnCodeGeneration)
+EVT_FB_CODE_GENERATION_TO_FILES(MainFrame::OnCodeGenerationToFiles)
 EVT_FB_OBJECT_CREATED(MainFrame::OnObjectCreated)
 EVT_FB_OBJECT_REMOVED(MainFrame::OnObjectRemoved)
 EVT_FB_OBJECT_EXPANDED(MainFrame::OnObjectExpanded)
@@ -647,6 +650,11 @@ void MainFrame::OnGenerateCode(wxCommandEvent&)
     AppData()->GenerateCode(false);
 }
 
+void MainFrame::OnGenerateCodeToFiles(wxCommandEvent&)
+{
+    AppData()->GenerateCodeToFiles(false);
+}
+
 void MainFrame::OnAbout(wxCommandEvent&)
 {
     AboutDialog* dlg = new AboutDialog(this);
@@ -819,6 +827,11 @@ void MainFrame::OnCodeGeneration(wxFBEvent& event)
     if (panelOnly) {
         GetStatusBar()->SetStatusText(wxT("Code Generated!"));
     }
+}
+
+void MainFrame::OnCodeGenerationToFiles(wxFBEvent& event)
+{
+    GetStatusBar()->SetStatusText(wxT("Code Generated(Split Files)!"));
 }
 
 void MainFrame::OnProjectRefresh(wxFBEvent&)
@@ -1330,6 +1343,7 @@ wxMenuBar* MainFrame::CreateFBMenuBar()
     menuFile->Append(ID_IMPORT_XRC, wxT("&Import XRC..."), wxT("Import XRC file"));
     menuFile->AppendSeparator();
     menuFile->Append(ID_GENERATE_CODE, wxT("&Generate Code\tF8"), wxT("Generate Code"));
+    menuFile->Append(ID_GENERATE_CODE_TO_FILES, wxT("&Generate Code To Split Files\tShift+F8"), wxT("Generate Code To Split Files"));
     menuFile->AppendSeparator();
     menuFile->Append(wxID_EXIT, wxT("E&xit\tAlt-F4"), wxT("Quit wxFormBuilder"));
 
@@ -1518,6 +1532,9 @@ wxToolBar* MainFrame::CreateFBToolBar()
     toolbar->AddTool(
       ID_GENERATE_CODE, wxT("Generate Code"), AppBitmaps::GetBitmap(wxT("generate"), AppBitmaps::Size::Tool), wxNullBitmap,
       wxITEM_NORMAL, wxT("Generate Code (F8)"), wxT("Create code from the current project."));
+    toolbar->AddTool(
+      ID_GENERATE_CODE_TO_FILES, wxT("Generate Code To Split Files"), AppBitmaps::GetBitmap(wxT("generate"), AppBitmaps::Size::Tool), wxNullBitmap,
+      wxITEM_NORMAL, wxT("Generate Code To Split Files (Shift + F8)"), wxT("Create code from the current project."));
     toolbar->AddSeparator();
     toolbar->AddTool(
       ID_ALIGN_LEFT, wxT(""), AppBitmaps::GetBitmap(wxT("lalign"), AppBitmaps::Size::Tool), wxNullBitmap, wxITEM_CHECK,
