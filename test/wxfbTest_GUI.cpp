@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.1.0-132-g5d6740ed)
+// C++ code generated with wxFormBuilder (version 4.2.1-110-g61ece364)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -101,7 +101,7 @@ MainPanel::MainPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, const
 	bSizer1->Add( bSizer2, 0, wxEXPAND, 5 );
 
 	wxStaticBoxSizer* sbSizer1;
-	sbSizer1 = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, wxT("Static Box Sizer") ), wxHORIZONTAL );
+	sbSizer1 = new wxStaticBoxSizer( wxHORIZONTAL, this, wxT("Static Box Sizer") );
 
 	m_listBox1 = new wxListBox( sbSizer1->GetStaticBox(), ID_DEFAULT, wxDefaultPosition, wxDefaultSize, 0, NULL, 0 );
 	m_listBox1->Append( wxT("Test1") );

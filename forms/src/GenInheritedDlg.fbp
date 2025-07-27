@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <wxFormBuilder_Project>
-  <FileVersion major="1" minor="18"/>
+  <FileVersion major="1" minor="19"/>
   <object class="Project" expanded="true">
     <property name="code_generation">C++</property>
     <property name="cpp_class_decoration"></property>
@@ -69,13 +69,13 @@
           <property name="flag">wxEXPAND|wxLEFT|wxRIGHT|wxTOP</property>
           <property name="proportion">0</property>
           <object class="wxStaticBoxSizer" expanded="true">
-            <property name="id">wxID_ANY</property>
             <property name="label">Instructions</property>
             <property name="minimum_size"></property>
             <property name="name">instructionsSbSizer</property>
             <property name="orient">wxVERTICAL</property>
             <property name="parent">1</property>
             <property name="permission">none</property>
+            <property name="staticbox"></property>
             <object class="sizeritem" expanded="true">
               <property name="border">5</property>
               <property name="flag">wxALL|wxEXPAND</property>
@@ -211,13 +211,13 @@
           <property name="flag">wxEXPAND|wxRIGHT|wxLEFT</property>
           <property name="proportion">0</property>
           <object class="wxStaticBoxSizer" expanded="true">
-            <property name="id">wxID_ANY</property>
             <property name="label">Class Details</property>
             <property name="minimum_size"></property>
             <property name="name">classDescriptionSbSizer</property>
             <property name="orient">wxVERTICAL</property>
             <property name="parent">1</property>
             <property name="permission">none</property>
+            <property name="staticbox"></property>
             <object class="sizeritem" expanded="true">
               <property name="border">5</property>
               <property name="flag">wxLEFT|wxRIGHT|wxTOP</property>

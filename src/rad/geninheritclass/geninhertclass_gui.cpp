@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version 4.1.0-113-ge9c16a2d)
+// C++ code generated with wxFormBuilder (version 4.2.1-110-g61ece364)
 // http://www.wxformbuilder.org/
 //
 // PLEASE DO *NOT* EDIT THIS FILE!
@@ -17,7 +17,7 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	mainSizer = new wxBoxSizer( wxVERTICAL );
 
 	wxStaticBoxSizer* instructionsSbSizer;
-	instructionsSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Instructions") ), wxVERTICAL );
+	instructionsSbSizer = new wxStaticBoxSizer( wxVERTICAL, this, _("Instructions") );
 
 	m_instructionsStaticText = new wxStaticText( instructionsSbSizer->GetStaticBox(), wxID_ANY, _("1. Check the forms you would like to create the inherited class for.\n2. You can edit individual class details by clicking on their names in the list\nand then:\n\t2a. Edit the 'Class Name:' as required.\n\t2b. Edit the 'File Names: (.h/.cpp)' as required.\n3. Click 'OK'."), wxDefaultPosition, wxDefaultSize, wxST_NO_AUTORESIZE );
 	m_instructionsStaticText->Wrap( -1 );
@@ -33,7 +33,7 @@ GenInheritedClassDlgBase::GenInheritedClassDlgBase( wxWindow* parent, wxWindowID
 	mainSizer->Add( m_formsCheckList, 0, wxALL|wxEXPAND, 5 );
 
 	wxStaticBoxSizer* classDescriptionSbSizer;
-	classDescriptionSbSizer = new wxStaticBoxSizer( new wxStaticBox( this, wxID_ANY, _("Class Details") ), wxVERTICAL );
+	classDescriptionSbSizer = new wxStaticBoxSizer( wxVERTICAL, this, _("Class Details") );
 
 	m_classNameStaticText = new wxStaticText( classDescriptionSbSizer->GetStaticBox(), wxID_ANY, _("Class Name:"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_classNameStaticText->Wrap( -1 );
