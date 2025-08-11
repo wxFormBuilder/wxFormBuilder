@@ -46,7 +46,7 @@ jobs:
       image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
       options: --privileged
     steps:
-    - uses: actions/checkout@v4.2.2
+    - uses: actions/checkout@v5.0.0
       with:
         fetch-tags: true
         submodules: recursive
@@ -73,7 +73,7 @@ jobs:
           - { os: ubuntu-22.04, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v4.2.2
+    - uses: actions/checkout@v5.0.0
       with:
         fetch-tags: true
         submodules: recursive
