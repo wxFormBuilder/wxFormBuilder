@@ -79,6 +79,12 @@ jobs:
       run: |
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -v
         _install/wxFormBuilder.app/Contents/MacOS/wxFormBuilder -g test/wxfbTest.fbp
+    - name: Debug output
+      run: |
+        cd _install
+        otool -l wxFormBuilder.app/Contents/MacOS/wxFormBuilder
+        otool -l wxFormBuilder.app/Contents/Frameworks/libwebp.7.2.0.dylib
+        otool -l wxFormBuilder.app/Contents/Frameworks/libwebp.7.dylib
     - name: Package app bundle
       run: |
         cd _install
