@@ -52,6 +52,8 @@ private:
 
     void InitStyledTextCtrl(wxStyledTextCtrl* stc);
 
+    void _CodeGenerationOneFile(PObjectBase objectToGenerate);
+
 public:
     CppPanel(wxWindow* parent, int id);
     ~CppPanel() override;
@@ -59,6 +61,7 @@ public:
     void OnPropertyModified(wxFBPropertyEvent& event);
     void OnProjectRefresh(wxFBEvent& event);
     void OnCodeGeneration(wxFBEvent& event);
+    void OnCodeGenerationToFiles(wxFBEvent& event);
     void OnObjectChange(wxFBObjectEvent& event);
     void OnEventHandlerModified(wxFBEventHandlerEvent& event);
 
