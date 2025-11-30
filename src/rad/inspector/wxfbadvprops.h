@@ -68,7 +68,6 @@ class wxFBPointProperty : public wxPGProperty
 public:
     wxFBPointProperty(
       const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxPoint& value = wxPoint());
-    ~wxFBPointProperty() override;
 
     wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 
@@ -90,11 +89,10 @@ public:
     wxFBBitmapProperty(
       const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL, const wxString& value = wxString());
 
-    ~wxFBBitmapProperty() override;
-
     wxPGProperty* CreatePropertySource(int sourceIndex = 0);
     wxPGProperty* CreatePropertyFilePath();
     wxPGProperty* CreatePropertyResourceName();
+    wxPGProperty* CreatePropertyResourceNameDark();
     wxPGProperty* CreatePropertyIconSize();
     wxPGProperty* CreatePropertyDefaultSize();
     wxPGProperty* CreatePropertyXrcName();
@@ -112,9 +110,10 @@ public:
     void UpdateChildValues(const wxString& value);
 
 private:
-    void GetChildValues(const wxString& parentValue, wxArrayString& childValues) const;
+    int m_prevSrc = -1;
 
-    int m_prevSrc;
+    void create_children(int load_from, unsigned int expected_cnt = 0);
+    void GetChildValues(const wxString& parentValue, wxArrayString& childValues) const;
 };
 
 // -----------------------------------------------------------------------
@@ -139,7 +138,6 @@ class wxPGSliderEditor : public wxPGEditor
 public:
     wxPGSliderEditor() : m_max(10000) {}
 
-    ~wxPGSliderEditor() override;
     wxPGWindowList CreateControls(
       wxPropertyGrid* propgrid, wxPGProperty* property, const wxPoint& pos, const wxSize& size) const override;
     void UpdateControl(wxPGProperty* property, wxWindow* wnd) const override;
@@ -163,7 +161,6 @@ public:
     wxFBFontProperty(
       const wxString& label = wxPG_LABEL, const wxString& name = wxPG_LABEL,
       const wxFontContainer& value = *wxNORMAL_FONT);
-    ~wxFBFontProperty() override;
 
     wxVariant ChildChanged(wxVariant& thisValue, int childIndex, wxVariant& childValue) const override;
 

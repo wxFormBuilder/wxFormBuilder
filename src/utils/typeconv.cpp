@@ -491,60 +491,64 @@ wxBitmap TypeConv::StringToBitmap(const wxString& filename)
     return wxBitmap(img);
 }
 
-void TypeConv::ParseBitmapWithResource(const wxString& value, wxString* image, wxString* source, wxSize* icoSize)
+/*
+ * Parses following strings:
+ * 
+ * "Load From File; FILE_PATH",
+ * "Load From Embedded File; FILE_PATH",
+ * "Load From Resource; NAME; DARK",
+ * "Load From Icon Resource; NAME; DARK; [-1; -1]",
+ * "Load From SVG Resource; check_svg; DARK; [24; 24]",
+ * "Load From XRC; XRC",
+ * "Load From Art Provider; wxART_ADD_BOOKMARK; wxART_OTHER",
+ */
+void TypeConv::ParseBitmapWithResource(const wxString& value, wxString& source, wxString& image, wxString& image_dark, wxSize& icoSize)
 {
-    // Splitting bitmap resource property value - it is of the form "path; source [width; height]"
-
-    *image = value;
-    *source = _("Load From File");
-    *icoSize = wxDefaultSize;
+    image.clear();
+    image_dark.clear();
+    icoSize = wxDefaultSize;
 
     wxArrayString children;
-    wxStringTokenizer tkz(value, wxT("[];"), wxTOKEN_RET_EMPTY);
-    while (tkz.HasMoreTokens()) {
-        wxString child = tkz.GetNextToken();
+
+    for (wxStringTokenizer tkz(value, wxT(";[]"), wxTOKEN_RET_EMPTY); tkz.HasMoreTokens(); ) {
+        auto child = tkz.GetNextToken();
         child.Trim(false);
         child.Trim(true);
         children.Add(child);
     }
 
-    if (children.Index(_("Load From Art Provider")) == wxNOT_FOUND) {
-        long temp;
-        switch (children.size()) {
-            case 5:
-            case 4:
-                if (children.size() > 4) {
-                    children[4].ToLong(&temp);
-                    icoSize->SetHeight(temp);
-                }
-                wxFALLTHROUGH;
-            case 3:
-                if (children.size() > 3) {
-                    children[3].ToLong(&temp);
-                    icoSize->SetWidth(temp);
-                }
-                wxFALLTHROUGH;
-            case 2:
-                if (children.size() > 1)
-                    *image = children[1];
-                wxFALLTHROUGH;
-            case 1:
-                if (children.size() > 0)
-                    *source = children[0];
-                break;
-            default:
-                break;
+    auto cnt = children.size();
+    source = cnt > 0 ? children[0] : _("Load From File");
+
+    if (source == _("Load From Art Provider")) {
+        if (cnt == 3) {
+            image = wxString::Format(wxT("%s:%s"), children[1], children[2]);
         }
-    } else {
-        if (children.size() == 3) {
-            *image = children[1] + wxT(":") + children[2];
-            *source = children[0];
-        } else {
-            *image = wxT("");
-            *source = children[0];
-        }
+        return;
     }
-    wxLogDebug(wxT("TypeConv:ParseBitmap: source:%s image:%s "), source->c_str(), image->c_str());
+
+    switch (cnt) {
+    case 6:
+            if (long val{}; children[5].ToLong(&val)) {
+                icoSize.SetHeight(val);
+            }
+            wxFALLTHROUGH;
+    case 5:
+            if (long val{}; children[4].ToLong(&val)) {
+                icoSize.SetWidth(val);
+            }
+            wxFALLTHROUGH;
+    case 4: // empty string from "; ["
+    case 3:
+            image_dark = children[2];
+            wxFALLTHROUGH;
+    case 2:
+            image = children[1];
+            break;
+    }
+    
+    wxLogDebug(wxT("TypeConv:ParseBitmap: source:'%s', image:'%s', image_dark:'%s', width:%d, height:%d"), 
+        source, image, image_dark, icoSize.GetWidth(), icoSize.GetHeight());
 }
 
 wxString TypeConv::MakeAbsolutePath(const wxString& filename, const wxString& basePath)

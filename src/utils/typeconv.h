@@ -72,7 +72,7 @@ wxString BoolToString(bool val);
 wxArrayString StringToArrayString(const wxString& str);
 wxString ArrayStringToString(const wxArrayString& arrayStr);
 
-void ParseBitmapWithResource(const wxString& value, wxString* image, wxString* source, wxSize* icoSize);
+void ParseBitmapWithResource(const wxString& value, wxString& source, wxString& image, wxString& image_dark, wxSize& icoSize);
 
 /**
 @internal

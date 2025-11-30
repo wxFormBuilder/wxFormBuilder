@@ -234,10 +234,11 @@ wxString LuaTemplateParser::ValueToCode(PropertyType type, const wxString& value
             break;
         }
         case PT_BITMAP: {
-            wxString path;
             wxString source;
+            wxString path;
+            wxString path_dark;
             wxSize icoSize;
-            TypeConv::ParseBitmapWithResource(value, &path, &source, &icoSize);
+            TypeConv::ParseBitmapWithResource(value, source, path, path_dark, icoSize);
 
             if (path.empty()) {
                 // Empty path, generate Null Bitmap
@@ -1300,9 +1301,9 @@ void LuaCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, wxString
             PProperty prop = obj->GetProperty(_("bitmap"));
             if (prop) {
                 wxString oldVal = prop->GetValueAsString();
-                wxString path, source;
+                wxString source, path, path_dark;
                 wxSize toolsize;
-                TypeConv::ParseBitmapWithResource(oldVal, &path, &source, &toolsize);
+                TypeConv::ParseBitmapWithResource(oldVal, source, path, path_dark, toolsize);
                 if (_("Load From Icon Resource") == source && wxDefaultSize == toolsize) {
                     prop->SetValue(wxString::Format(
                       wxT("%s; %s [%i; %i]"), path, source, toolbarsize.GetWidth(), toolbarsize.GetHeight()));

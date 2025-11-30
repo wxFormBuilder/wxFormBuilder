@@ -458,7 +458,7 @@ void ApplicationData::Destroy()
 
 
 ApplicationData::ApplicationData(const wxString& rootdir) :
-    m_fbpVersion{1, 19},
+    m_fbpVersion{1, 20},
     m_ipc(std::make_shared<wxFBIPC>()),
     m_rootDir(rootdir),
     m_manager(std::make_shared<wxFBManager>()),
@@ -1232,6 +1232,18 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
                 }
 
                 object->DeleteChild(property);
+            }
+        }
+    }
+
+    // Convert to version 1.20
+    if (versionMajor < 1 || (versionMajor == 1 && versionMinor < 20)) {
+        if (auto properties = GetProperties(object, {"bitmap"}); !properties.empty()) {
+            auto* bitmapProperty = *properties.begin();
+            auto bitmapValue = XMLUtils::GetText(bitmapProperty);
+            if (auto pos = bitmapValue.Find(wxT("; [")); pos != wxNOT_FOUND) {
+                bitmapValue.insert(pos, wxT("; ")); // add new attribute 'resource_name_dark'
+                XMLUtils::SetText(bitmapProperty, bitmapValue);
             }
         }
     }
