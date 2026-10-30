@@ -62,7 +62,7 @@ jobs:
           mingw-w64-${{ matrix.pkg }}-toolchain
           mingw-w64-${{ matrix.pkg }}-cmake
           mingw-w64-${{ matrix.pkg }}-make
-          mingw-w64-${{ matrix.pkg }}-wxwidgets3.2-msw
+          mingw-w64-${{ matrix.pkg }}-wxwidgets3.3-msw
           mingw-w64-${{ matrix.pkg }}-boost
           base-devel
           git
@@ -111,16 +111,19 @@ jobs:
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: Windows Build Debugging ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v7.0.2
       with:
         name: Windows Archive ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v7.0.2
       with:
         name: Windows Installer ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*.exe
