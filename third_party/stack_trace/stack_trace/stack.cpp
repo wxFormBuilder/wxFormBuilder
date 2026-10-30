@@ -274,11 +274,20 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         context = *fromContext;
     }
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit
+    DWORD machine_type = IMAGE_FILE_MACHINE_I386;
+
+    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit Intel/AMD
+    machine_type = IMAGE_FILE_MACHINE_AMD64;
     frame.AddrPC.Offset = context.Rip;
     frame.AddrStack.Offset = context.Rsp;
     frame.AddrFrame.Offset = context.Rbp;
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)  // 32-bit
+    #elif defined(__aarch64__) || defined(_M_ARM64)                    // 64-bit ARM64
+    machine_type = IMAGE_FILE_MACHINE_ARM64;
+    frame.AddrPC.Offset = context.Pc;
+    frame.AddrStack.Offset = context.Sp;
+    frame.AddrFrame.Offset = context.Fp;
+    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)        // 32-bit Intel
+    machine_type = IMAGE_FILE_MACHINE_I386;
     frame.AddrPC.Offset = context.Eip;
     frame.AddrStack.Offset = context.Esp;
     frame.AddrFrame.Offset = context.Ebp;
@@ -297,7 +306,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     char module_name_raw[MAX_PATH];
 
     while (StackWalk(
-      IMAGE_FILE_MACHINE_I386, process, thread, &frame, &context, 0, SymFunctionTableAccess, SymGetModuleBase, 0)) {
+      machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess, SymGetModuleBase, 0)) {
         if (skip < 1) {
             ++skip;
             continue;
@@ -310,9 +319,9 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         symbol->SizeOfStruct = (sizeof *symbol) + 255;
         symbol->MaxNameLength = 254;
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit
+    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) || defined(__aarch64__) || defined(_M_ARM64)
         DWORD64 module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)  // 32-bit
+    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)
         DWORD module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
     #endif
 
@@ -325,19 +334,19 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
         if (func.empty()) {
         #if defined(__amd64__) || defined(__x86_64__)  // 64-bit
-            DWORD64 displacement = 0;                  // dummy variable
+            DWORD64 displacement = 0;
         #elif defined(__i386__) || defined(_X86_)      // 32-bit
-            DWORD displacement = 0;  // dummy variable
+            DWORD displacement = 0;
         #endif
 
             BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
             func = got_symbol ? symbol->Name : "[unknown function]";
         }
     #else
-        #if defined(_M_AMD64)   // 64-bit
-        DWORD64 displacement = 0;  // dummy variable
-        #elif defined(_M_IX86)  // 32-bit
-        DWORD displacement = 0;  // dummy variable
+        #if defined(_M_AMD64) || defined(__amd64__) || defined(__x86_64__) || defined(_M_ARM64) || defined(__aarch64__)
+        DWORD64 displacement = 0;  // 64-bit displacement for x64 and ARM64
+        #elif defined(_M_IX86) || defined(__i386__) || defined(_X86_)
+        DWORD displacement = 0;    // 32-bit displacement for x86
         #endif
 
         BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
