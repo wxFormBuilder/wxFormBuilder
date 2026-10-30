@@ -17,7 +17,7 @@
     #include <imagehlp.h>  // link against imagehlp.lib
     #include <windows.h>
 
-    #if defined(__MINGW32__)
+    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
         #define PACKAGE
         #include <bfd.h>  // link against libbfd and libiberty
         #include <cxxabi.h>
@@ -59,7 +59,7 @@ private:
     uncopyable& operator=(const uncopyable&);  // remains undefined
 };
 
-    #if defined(__MINGW32__)
+    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
 class bfd_context : uncopyable
 {
 private:
@@ -251,7 +251,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 {
     scoped_lock lk(fill_frames_mtx_);
 
-    #if defined(__MINGW32__)
+    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
     static bfd_context bfdc;
     #endif
 
@@ -318,7 +318,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         if (module_base && GetModuleFileNameA(reinterpret_cast<HINSTANCE>(module_base), module_name_raw, MAX_PATH))
             module_name = module_name_raw;
 
-    #if defined(__MINGW32__)
+    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
         std::string func = bfdc.get_function_name(frame.AddrPC.Offset);
 
         if (func.empty()) {
