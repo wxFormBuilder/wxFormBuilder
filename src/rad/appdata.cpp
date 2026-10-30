@@ -2733,7 +2733,7 @@ void ApplicationData::NotifyProjectSaved()
 void ApplicationData::NotifyProjectRefresh()
 {
     wxFBEvent event(wxEVT_FB_PROJECT_REFRESH);
-    NotifyEvent(event);
+    NotifyEvent(event,true);
 }
 
 
