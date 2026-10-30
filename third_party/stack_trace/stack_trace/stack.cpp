@@ -14,14 +14,16 @@
 #include <sstream>
 
 #if defined(_WIN32)
-    #include <imagehlp.h>  // link against imagehlp.lib
     #include <windows.h>
+    #include <imagehlp.h>  // link against imagehlp.lib
+    #include <psapi.h>  // link against psapi
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+    #if defined(__MINGW32__)
         #define PACKAGE
+            #if !defined(_M_ARM64) && !defined(__aarch64__)
         #include <bfd.h>  // link against libbfd and libiberty
+            #endif
         #include <cxxabi.h>
-        #include <psapi.h>  // link against psapi
     #endif
 #elif defined(__GNUC__)
     #include <cxxabi.h>

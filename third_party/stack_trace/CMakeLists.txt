@@ -40,12 +40,12 @@ if(WIN32)
         ZLIB::ZLIB
         zstd::libzstd_shared
         $<TARGET_NAME_IF_EXISTS:SFrame::SFrame>
-        psapi # TODO: Only required for systems older than Windows 7
     )
   endif()
   target_link_libraries(stack_trace_stack
     PRIVATE
       imagehlp
+      psapi # TODO: Only required for systems older than Windows 7
   )
 else()
   target_link_libraries(stack_trace_stack
