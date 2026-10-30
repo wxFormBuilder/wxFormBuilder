@@ -56,12 +56,11 @@ jobs:
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
-    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
       with:
         arch: x86_64
         bundle: wxFormBuilder${{ env.project_version }}.flatpak
         manifest-path: data/packaging/linux/flatpak/org.wxformbuilder.wxFormBuilder.json
-        cache-key: flatpak-builder-${{ github.sha }}
   debian:
     name: Debian Package
     runs-on: ${{ matrix.os }}
