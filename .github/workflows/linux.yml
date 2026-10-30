@@ -40,11 +40,19 @@ on:
 jobs:
   flatpak:
     name: Flatpak
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
+    runs-on: ${{ matrix.variant.runner }}
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-26.08
       options: --privileged
+    strategy:
+      fail-fast: false
+      matrix:
+        variant:
+          - runner: ubuntu-26.04
+            arch: x86_64
+          - runner: ubuntu-26.04-arm
+            arch: aarch64
+    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v7.0.1
       with:
@@ -56,12 +64,12 @@ jobs:
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
-    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
       with:
-        arch: x86_64
-        bundle: wxFormBuilder${{ env.project_version }}.flatpak
+        arch: ${{ matrix.variant.arch }}
+        bundle: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}.flatpak
+        artifact-name: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}-flatpak
         manifest-path: data/packaging/linux/flatpak/org.wxformbuilder.wxFormBuilder.json
-        cache-key: flatpak-builder-${{ github.sha }}
   debian:
     name: Debian Package
     runs-on: ${{ matrix.os }}
