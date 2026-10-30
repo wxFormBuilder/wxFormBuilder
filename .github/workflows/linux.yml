@@ -69,8 +69,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { os: ubuntu-26.04, wxver: 3.2 }
+          - { os: ubuntu-26.04-arm, wxver: 3.2 }
           - { os: ubuntu-24.04, wxver: 3.2 }
+          - { os: ubuntu-24.04-arm, wxver: 3.2 }
           - { os: ubuntu-22.04, wxver: 3.0-gtk3 }
+          - { os: ubuntu-22.04-arm, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v7.0.1
@@ -96,5 +100,6 @@ jobs:
     - uses: actions/upload-artifact@v7.0.2
       with:
         name: Debian Package ${{ matrix.os }}
+        archive: false
         path: |
           ${{ env.package_basedir }}/*.deb
