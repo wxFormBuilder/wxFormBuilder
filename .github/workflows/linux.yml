@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-26.08
       options: --privileged
     steps:
     - uses: actions/checkout@v7.0.1
