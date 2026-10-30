@@ -44,7 +44,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-15, macos-14, macos-13]
+        os: [macos-26, macos-15]
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
     - uses: actions/checkout@v7.0.1
@@ -87,10 +87,12 @@ jobs:
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: macOS Build Debugging ${{ matrix.os }}
+        archive: false
         path: |
           wxFormBuilder-*-build.zip
     - uses: actions/upload-artifact@v7.0.2
       with:
         name: App Bundle ${{ matrix.os }}
+        archive: false
         path: |
           wxFormBuilder-*-bundle.zip
