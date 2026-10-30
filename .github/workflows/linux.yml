@@ -68,7 +68,7 @@ jobs:
       with:
         arch: ${{ matrix.variant.arch }}
         bundle: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}.flatpak
-        artifact-name: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}
+        artifact-name: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}-flatpak
         manifest-path: data/packaging/linux/flatpak/org.wxformbuilder.wxFormBuilder.json
   debian:
     name: Debian Package
