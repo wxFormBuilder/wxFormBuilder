@@ -24,26 +24,34 @@ Perform post build configuration steps after building all wxFormBuilder componen
 ]]
 macro(wxfb_configure_postbuild)
   if(APPLE)
-    # TODO: Is there any possibility to determine the output filenames of the plugins to create a list that can be inserted literal?
-    # TODO: The fixup_bundle command erases all present RPATH information. Since it fixes the loader paths of all libraries and none
-    #       of them loads libraries dynamically, it is sufficient to add an RPATH only to the PlugIns directory which contains the
-    #       libraries that get loaded dynamically.
+    # Libraries that are referenced via @rpath by the application, the plugins or their dependencies can only be found
+    # if their location is known. The system search paths cannot be used, because the libraries are not necessarily
+    # installed in a standard location.
+    set(searchDirectories "")
+    if(DEFINED wxWidgets_LIBRARY_DIRS)
+      list(APPEND searchDirectories ${wxWidgets_LIBRARY_DIRS})
+    endif()
+    if(DEFINED ENV{HOMEBREW_PREFIX})
+      list(APPEND searchDirectories "$ENV{HOMEBREW_PREFIX}/lib")
+    endif()
+    foreach(prefix IN LISTS CMAKE_PREFIX_PATH CMAKE_SYSTEM_PREFIX_PATH)
+      list(APPEND searchDirectories "${prefix}/lib")
+    endforeach()
+    list(REMOVE_DUPLICATES searchDirectories)
+    # Copy the required libraries into the bundle and make the whole bundle self-contained.
+    # This must run after all other installation steps, because it operates on the installed bundle.
     install(
       CODE
       "
-        include(BundleUtilities)
-        file(GLOB moduleDependencies LIST_DIRECTORIES false \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/PlugIns/*.dylib\")
-        fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\" \"\${moduleDependencies}\" \"\")
-        unset(moduleDependencies)
-
-        find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
-        mark_as_advanced(install_name_tool_cmd)
-        execute_process(COMMAND \"\${install_name_tool_cmd}\" -add_rpath @executable_path/../PlugIns \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app/Contents/MacOS/wxFormBuilder\")
-
-        find_program(codesign_cmd NAMES codesign REQUIRED)
-        mark_as_advanced(codesign_cmd)
-        execute_process(COMMAND \"\${codesign_cmd}\" -s - -f --deep --verbose \"\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\")
+        include(\"${PROJECT_SOURCE_DIR}/cmake/macos-bundle.cmake\")
+        wxfb_macos_bundle_fixup(
+          \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\"
+          EXECUTABLE wxFormBuilder
+          DIRECTORIES \"${searchDirectories}\"
+        )
       "
     )
+    unset(searchDirectories)
+    unset(prefix)
   endif()
 endmacro()
