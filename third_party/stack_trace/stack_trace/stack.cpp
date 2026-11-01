@@ -415,19 +415,15 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             break;
     }
 
-    // TEMPORARY DIAGNOSTIC, remove after the macOS investigation
-    std::fprintf(stderr, "DIAG callerPc=%p\n", callerPc);
-    for (std::size_t i = 0; i < count && i < 8; ++i)
-        std::fprintf(stderr, "DIAG ips[%zu]=%p\n", i, ips[i]);
-
     // Drop the frames of this function and the stack constructor, the walk starts at the constructor's caller
     std::size_t first = 0;
     while (first < count && ips[first] != callerPc)
         ++first;
     if (first == count)
-        return;
+        first = 0;
 
     const bool has_limit = limit != 0;
+    bool leading = true;
     for (std::size_t i = first; i < count; ++i) {
         if (has_limit && frames.size() >= limit)
             break;
@@ -441,6 +437,12 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             if (info.dli_fname)
                 module = info.dli_fname;
         }
+
+        // On macOS the constructor's own frame can still be reported as the first one, so leading constructor frames go
+        if (leading && function.compare(0, 18, "dbg::stack::stack(") == 0)
+            continue;
+        leading = false;
+
         frames.push_back(dbg::stack_frame(ips[i], function + " in " + module));
     }
 }
