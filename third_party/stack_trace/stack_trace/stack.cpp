@@ -47,7 +47,13 @@ std::string demangle(const char* name)
     char* d = 0;
     std::string ret = name;
     try {
-        if ((d = abi::__cxa_demangle(name, 0, 0, &status)))
+        d = abi::__cxa_demangle(name, 0, 0, &status);
+        // Some MinGW symbol names lack the leading underscore of the Itanium mangling prefix
+        if (!d && name[0] == 'Z') {
+            const std::string prefixed = std::string("_") + name;
+            d = abi::__cxa_demangle(prefixed.c_str(), 0, 0, &status);
+        }
+        if (d)
             ret = d;
     } catch (...) {
     }
@@ -350,12 +356,16 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         if (func.empty()) {
             DWORD64 displacement = 0;
             BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
-            func = got_symbol ? symbol->Name : "[unknown function]";
+            func = got_symbol ? demangle(symbol->Name) : "[unknown function]";
         }
 #else
         DWORD64 displacement = 0;
         BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
+#if defined(__GNUC__)
+        std::string func = got_symbol ? demangle(symbol->Name) : "[unknown function]";
+#else
         std::string func = got_symbol ? symbol->Name : "[unknown function]";
+#endif
 #endif
 
         dbg::stack_frame f(reinterpret_cast<const void*>(frame.AddrPC.Offset), func + " in " + module_name);
