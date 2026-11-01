@@ -24,34 +24,8 @@ Perform post build configuration steps after building all wxFormBuilder componen
 ]]
 macro(wxfb_configure_postbuild)
   if(APPLE)
-    # Libraries that are referenced via @rpath by the application, the plugins or their dependencies can only be found
-    # if their location is known. The system search paths cannot be used, because the libraries are not necessarily
-    # installed in a standard location.
-    set(searchDirectories "")
-    if(DEFINED wxWidgets_LIBRARY_DIRS)
-      list(APPEND searchDirectories ${wxWidgets_LIBRARY_DIRS})
-    endif()
-    if(DEFINED ENV{HOMEBREW_PREFIX})
-      list(APPEND searchDirectories "$ENV{HOMEBREW_PREFIX}/lib")
-    endif()
-    foreach(prefix IN LISTS CMAKE_PREFIX_PATH CMAKE_SYSTEM_PREFIX_PATH)
-      list(APPEND searchDirectories "${prefix}/lib")
-    endforeach()
-    list(REMOVE_DUPLICATES searchDirectories)
-    # Copy the required libraries into the bundle and make the whole bundle self-contained.
-    # This must run after all other installation steps, because it operates on the installed bundle.
-    install(
-      CODE
-      "
-        include(\"${PROJECT_SOURCE_DIR}/cmake/macos-bundle.cmake\")
-        wxfb_macos_bundle_fixup(
-          \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/wxFormBuilder.app\"
-          EXECUTABLE wxFormBuilder
-          DIRECTORIES \"${searchDirectories}\"
-        )
-      "
-    )
-    unset(searchDirectories)
-    unset(prefix)
+    # The libraries are installed into the bundle by the runtime dependency set of the application, this step
+    # must run after all other installation steps, because it operates on the installed bundle.
+    macos_bundle_install_fixup(wxFormBuilder.app)
   endif()
 endmacro()

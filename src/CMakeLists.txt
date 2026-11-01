@@ -388,4 +388,12 @@ if(WIN32)
     )
   endif()
   unset(extraDirectories)
+elseif(APPLE)
+  # The libraries are installed into the default location, which is the Frameworks directory of the bundle.
+  # The references to them are adjusted afterwards by the bundle fixup step, see wxfb_configure_postbuild.
+  install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
+    PRE_EXCLUDE_REGEXES
+      [[^/usr/lib/.*]]
+      [[^/System/Library/.*]]
+  )
 endif()
