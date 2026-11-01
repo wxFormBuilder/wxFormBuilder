@@ -275,6 +275,12 @@ private:
 mutex fill_frames_mtx_;
 
 
+// Must not be inlined into the stack constructor, the number of frames skipped below depends on it
+#if defined(_MSC_VER)
+__declspec(noinline)
+#else
+__attribute__((noinline))
+#endif
 void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, CONTEXT* fromContext = 0)
 {
     scoped_lock lk(fill_frames_mtx_);
@@ -326,6 +332,8 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     HANDLE process = GetCurrentProcess();
     HANDLE thread = GetCurrentThread();
 
+    // Skip fill_frames and, when capturing the current context, the stack constructor calling it
+    const dbg::stack::depth_type skip_count = fromContext ? 1 : 2;
     dbg::stack::depth_type skip = 0;
     bool has_limit = limit != 0;
     char symbol_buffer[sizeof(IMAGEHLP_SYMBOL64) + 255];
@@ -333,7 +341,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     while (StackWalk64(
       machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0)) {
-        if (skip < 1) {
+        if (skip < skip_count) {
             ++skip;
             continue;
         }
@@ -347,10 +355,13 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
         DWORD64 module_base = SymGetModuleBase64(process, frame.AddrPC.Offset);
 
+        // A PC outside every module means the unwinder ran past the bottom of the stack
+        if (!module_base)
+            break;
+
         std::string module_name = "[unknown module]";
-        if (
-          module_base &&
-          GetModuleFileNameA(reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
+        if (GetModuleFileNameA(
+              reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
             module_name = module_name_raw;
 
 #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
