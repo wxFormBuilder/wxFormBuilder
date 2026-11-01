@@ -117,12 +117,15 @@ public:
         }
         free(formats);
 
-        // Load symbol table
-        unsigned dummy = 0;
-        if (
-          bfd_read_minisymbols(abfd_, FALSE, (void**)&symbol_table_, &dummy) == 0 &&
-          bfd_read_minisymbols(abfd_, TRUE, (void**)&symbol_table_, &dummy) < 0) {
-            free(symbol_table_);
+        // Load symbol table in the form bfd_find_nearest_line expects
+        const long symtab_size = bfd_get_symtab_upper_bound(abfd_);
+        if (symtab_size <= 0) {
+            bfd_close(abfd_);
+            throw dbg::stack_error("Failed to parse object data for the executable");
+        }
+        symbol_table_ = static_cast<asymbol**>(std::malloc(static_cast<std::size_t>(symtab_size)));
+        if (!symbol_table_ || bfd_canonicalize_symtab(abfd_, symbol_table_) < 0) {
+            std::free(symbol_table_);
             bfd_close(abfd_);
             throw dbg::stack_error("Failed to parse object data for the executable");
         }
@@ -130,7 +133,7 @@ public:
 
     ~bfd_context()
     {
-        free(symbol_table_);
+        std::free(symbol_table_);
         bfd_close(abfd_);
     }
 

@@ -23,14 +23,23 @@ STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_leaf()
 {
     dbg::stack full;
     bool found = false;
+    int mid_count = 0;
     for (dbg::stack::const_iterator it = full.begin(); it != full.end(); ++it) {
         std::cout << *it << "\n";
         if (it->function().find("stack_test_leaf") != std::string::npos)
             found = true;
+        if (it->function().find("stack_test_mid") != std::string::npos)
+            ++mid_count;
     }
 
     if (!found) {
         std::cerr << "stack_test_leaf not found in the captured stack\n";
+        return 1;
+    }
+
+    // main calls stack_test_mid only once, so a second match means a frame was mislabelled
+    if (mid_count != 1) {
+        std::cerr << "stack_test_mid found " << mid_count << " times in the captured stack, expected 1\n";
         return 1;
     }
 
@@ -45,7 +54,9 @@ STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_leaf()
 
 STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_mid()
 {
-    return stack_test_leaf();
+    // Reading the volatile result after the call keeps stack_test_mid's frame from being tail-call optimised away
+    volatile int result = stack_test_leaf();
+    return result;
 }
 
 int main()
