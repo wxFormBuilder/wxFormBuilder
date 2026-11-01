@@ -349,29 +349,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     }
 }
 #elif defined(__GNUC__)
-    #if defined(__ppc__)
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
-{
-    // Based on code found at:
-    // http://www.informit.com/articles/article.aspx?p=606582&seqNum=4&rl=1
-
-    void* ip = __builtin_return_address(0);
-    void** frame = static_cast<void**>(__builtin_frame_address(1));
-    bool has_limit = limit != 0;
-    Dl_info info;
-
-    do {
-        if (has_limit && limit-- == 0)
-            break;
-
-        if (dladdr(ip, &info))
-            frames.push_back(dbg::stack_frame(ip, demangle(info.dli_sname) + " in " + info.dli_fname));
-
-        if (frame && (frame = static_cast<void**>(*frame)))
-            ip = *(frame + 2);
-    } while (frame && ip);
-}
-    #elif defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+    #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
 // The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
 __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
 {
@@ -405,7 +383,7 @@ __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, 
     }
 }
     #else
-// GNU, but neither x86, x86_64, arm64 or PPC
+// GNU, but neither x86, x86_64 or arm64
 //#error "Sorry but dbg::stack is not supported on this architecture"
 void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
 {
