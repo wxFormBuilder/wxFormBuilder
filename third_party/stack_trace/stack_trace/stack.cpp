@@ -28,6 +28,10 @@
 #elif defined(__GNUC__)
     #include <cxxabi.h>
     #include <dlfcn.h>
+    #if defined(__x86_64__) || defined(__aarch64__)
+        #include <execinfo.h>
+        #include <vector>
+    #endif
 #endif
 
 
@@ -111,11 +115,11 @@ public:
         bfd_close(abfd_);
     }
 
-    std::string get_function_name(DWORD offset)
+    std::string get_function_name(DWORD64 offset)
     {
         find_data data;
         data.symbol_table = symbol_table_;
-        data.counter = offset;
+        data.counter = static_cast<bfd_vma>(offset);
 
         bfd_map_over_sections(abfd_, &find_function_name_in_section, &data);
 
@@ -259,7 +263,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     symbol_context sc;
 
-    STACKFRAME frame;
+    STACKFRAME64 frame;
     std::memset(&frame, 0, sizeof frame);
     CONTEXT context;
 
@@ -302,11 +306,11 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     dbg::stack::depth_type skip = 0;
     bool has_limit = limit != 0;
-    char symbol_buffer[sizeof(IMAGEHLP_SYMBOL) + 255];
+    char symbol_buffer[sizeof(IMAGEHLP_SYMBOL64) + 255];
     char module_name_raw[MAX_PATH];
 
-    while (StackWalk(
-      machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess, SymGetModuleBase, 0)) {
+    while (StackWalk64(
+      machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0)) {
         if (skip < 1) {
             ++skip;
             continue;
@@ -315,41 +319,28 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         if (has_limit && limit-- == 0)
             break;
 
-        IMAGEHLP_SYMBOL* symbol = reinterpret_cast<IMAGEHLP_SYMBOL*>(symbol_buffer);
+        IMAGEHLP_SYMBOL64* symbol = reinterpret_cast<IMAGEHLP_SYMBOL64*>(symbol_buffer);
         symbol->SizeOfStruct = (sizeof *symbol) + 255;
         symbol->MaxNameLength = 254;
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) || defined(__aarch64__) || defined(_M_ARM64)
-        DWORD64 module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)
-        DWORD module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
-    #endif
+        DWORD64 module_base = SymGetModuleBase64(process, frame.AddrPC.Offset);
 
         std::string module_name = "[unknown module]";
-        if (module_base && GetModuleFileNameA(reinterpret_cast<HINSTANCE>(module_base), module_name_raw, MAX_PATH))
+        if (module_base &&
+            GetModuleFileNameA(reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
             module_name = module_name_raw;
 
     #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
         std::string func = bfdc.get_function_name(frame.AddrPC.Offset);
 
         if (func.empty()) {
-        #if defined(__amd64__) || defined(__x86_64__)  // 64-bit
             DWORD64 displacement = 0;
-        #elif defined(__i386__) || defined(_X86_)      // 32-bit
-            DWORD displacement = 0;
-        #endif
-
-            BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
+            BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
             func = got_symbol ? symbol->Name : "[unknown function]";
         }
     #else
-        #if defined(_M_AMD64) || defined(__amd64__) || defined(__x86_64__) || defined(_M_ARM64) || defined(__aarch64__)
-        DWORD64 displacement = 0;  // 64-bit displacement for x64 and ARM64
-        #elif defined(_M_IX86) || defined(__i386__) || defined(_X86_)
-        DWORD displacement = 0;    // 32-bit displacement for x86
-        #endif
-
-        BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
+        DWORD64 displacement = 0;
+        BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
         std::string func = got_symbol ? symbol->Name : "[unknown function]";
     #endif
 
@@ -410,8 +401,41 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             ip = *(frame + 2);
     } while (frame && ip);
 }
+    #elif defined(__x86_64__) || defined(__aarch64__)
+// The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
+__attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
+{
+    // Skip this function and the stack constructor calling it
+    const std::size_t skip = 2;
+    const bool has_limit = limit != 0;
+    std::size_t capacity = has_limit ? limit + skip : 128;
+
+    std::vector<void*> ips;
+    std::size_t count = 0;
+    for (;;) {
+        ips.resize(capacity);
+        const int n = backtrace(ips.data(), static_cast<int>(capacity));
+        count = n > 0 ? static_cast<std::size_t>(n) : 0;
+        if (has_limit || count < capacity)
+            break;
+        capacity *= 2;
+    }
+
+    for (std::size_t i = skip; i < count; ++i) {
+        Dl_info info;
+        std::string function = "[unknown function]";
+        std::string module = "[unknown module]";
+        if (dladdr(ips[i], &info)) {
+            if (info.dli_sname)
+                function = demangle(info.dli_sname);
+            if (info.dli_fname)
+                module = info.dli_fname;
+        }
+        frames.push_back(dbg::stack_frame(ips[i], function + " in " + module));
+    }
+}
     #else
-// GNU, but neither x86 or PPC
+// GNU, but neither x86, x86_64, arm64 or PPC
 //#error "Sorry but dbg::stack is not supported on this architecture"
 void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
 {
