@@ -51,6 +51,7 @@ function(macos_bundle_install_fixup bundle)
 endfunction()
 
 function(macos_bundle_fixup bundle)
+  find_program(file_cmd NAMES file REQUIRED)
   find_program(otool_cmd NAMES otool REQUIRED)
   find_program(install_name_tool_cmd NAMES install_name_tool REQUIRED)
   find_program(codesign_cmd NAMES codesign REQUIRED)
@@ -70,9 +71,14 @@ function(macos_bundle_fixup bundle)
     if(IS_SYMLINK "${candidate}")
       continue()
     endif()
-    # Mach-O and universal binary magic numbers
-    file(READ "${candidate}" magic LIMIT 4 HEX)
-    if(magic MATCHES "^(cffaedfe|cefaedfe|feedfacf|feedface|cafebabe|bebafeca)$")
+    # Mach-O (including universal) binaries; static archives and other files are skipped
+    execute_process(
+      COMMAND "${file_cmd}" --brief --mime-type "${candidate}"
+      OUTPUT_VARIABLE mimeType
+      OUTPUT_STRIP_TRAILING_WHITESPACE
+      COMMAND_ERROR_IS_FATAL ANY
+    )
+    if(mimeType STREQUAL "application/x-mach-binary")
       list(APPEND binaries "${candidate}")
     endif()
   endforeach()
