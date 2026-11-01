@@ -20,6 +20,8 @@
 
     #if defined(__MINGW32__)
             #if !defined(_M_ARM64) && !defined(__aarch64__)
+        // bfd.h requires PACKAGE (normally set by config.h) to be defined
+        #define PACKAGE
         #include <bfd.h>  // link against libbfd and libiberty
             #endif
         #include <cxxabi.h>
