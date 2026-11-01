@@ -8,31 +8,34 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+
 #include <iomanip>
 #include <iostream>
 #include <ostream>
 #include <sstream>
 
 #if defined(_WIN32)
-    #include <windows.h>
-    #include <imagehlp.h>  // link against imagehlp.lib
-    #include <psapi.h>  // link against psapi
+// The windows header must be included first
+#include <windows.h>
+#include <imagehlp.h>  // link against imagehlp.lib
+#include <psapi.h>     // link against psapi
 
-    #if defined(__MINGW32__)
-            #if !defined(_M_ARM64) && !defined(__aarch64__)
-        // bfd.h requires PACKAGE (normally set by config.h) to be defined
-        #define PACKAGE
-        #include <bfd.h>  // link against libbfd and libiberty
-            #endif
-        #include <cxxabi.h>
-    #endif
+#if defined(__MINGW32__)
+#if !defined(_M_ARM64) && !defined(__aarch64__)
+// bfd.h requires PACKAGE (normally set by config.h) to be defined
+#define PACKAGE
+#include <bfd.h>  // link against libbfd and libiberty
+#endif
+#include <cxxabi.h>
+#endif
 #elif defined(__GNUC__)
-    #include <cxxabi.h>
-    #include <dlfcn.h>
-    #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
-        #include <execinfo.h>
-        #include <vector>
-    #endif
+#include <cxxabi.h>
+#include <dlfcn.h>
+#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+#include <execinfo.h>
+
+#include <vector>
+#endif
 #endif
 
 
@@ -66,7 +69,7 @@ private:
     uncopyable& operator=(const uncopyable&);  // remains undefined
 };
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
 class bfd_context : uncopyable
 {
 private:
@@ -138,26 +141,26 @@ private:
             return;  // already found it
 
         auto flags =
-        #ifdef bfd_get_section_flags
+#ifdef bfd_get_section_flags
           bfd_get_section_flags(abfd, sec);
-        #else
+#else
           bfd_section_flags(sec);
-        #endif
+#endif
         if (!(flags & SEC_ALLOC))
             return;
 
         auto vma =
-        #ifdef bfd_get_section_vma
+#ifdef bfd_get_section_vma
           bfd_get_section_vma(abfd, sec);
-        #else
+#else
           bfd_section_vma(sec);
-        #endif
+#endif
         auto size =
-        #ifdef bfd_get_section_size
+#ifdef bfd_get_section_size
           bfd_get_section_size(sec);
-        #else
+#else
           bfd_section_size(sec);
-        #endif
+#endif
         if (data.counter < vma || vma + size <= data.counter)
             return;
 
@@ -174,7 +177,7 @@ private:
     asection* sec_;
     asymbol** symbol_table_;
 };
-    #endif  // __MINGW32__
+#endif  // __MINGW32__
 
 class auto_cast_function_ptr
 {
@@ -258,9 +261,9 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 {
     scoped_lock lk(fill_frames_mtx_);
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
     static bfd_context bfdc;
-    #endif
+#endif
 
     symbol_context sc;
 
@@ -281,22 +284,22 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     DWORD machine_type = IMAGE_FILE_MACHINE_I386;
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit Intel/AMD
+#if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit Intel/AMD
     machine_type = IMAGE_FILE_MACHINE_AMD64;
     frame.AddrPC.Offset = context.Rip;
     frame.AddrStack.Offset = context.Rsp;
     frame.AddrFrame.Offset = context.Rbp;
-    #elif defined(__aarch64__) || defined(_M_ARM64)                    // 64-bit ARM64
+#elif defined(__aarch64__) || defined(_M_ARM64)                     // 64-bit ARM64
     machine_type = IMAGE_FILE_MACHINE_ARM64;
     frame.AddrPC.Offset = context.Pc;
     frame.AddrStack.Offset = context.Sp;
     frame.AddrFrame.Offset = context.Fp;
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)        // 32-bit Intel
+#elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)       // 32-bit Intel
     machine_type = IMAGE_FILE_MACHINE_I386;
     frame.AddrPC.Offset = context.Eip;
     frame.AddrStack.Offset = context.Esp;
     frame.AddrFrame.Offset = context.Ebp;
-    #endif
+#endif
 
     frame.AddrPC.Mode = AddrModeFlat;
     frame.AddrStack.Mode = AddrModeFlat;
@@ -327,11 +330,12 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         DWORD64 module_base = SymGetModuleBase64(process, frame.AddrPC.Offset);
 
         std::string module_name = "[unknown module]";
-        if (module_base &&
-            GetModuleFileNameA(reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
+        if (
+          module_base &&
+          GetModuleFileNameA(reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
             module_name = module_name_raw;
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
         std::string func = bfdc.get_function_name(frame.AddrPC.Offset);
 
         if (func.empty()) {
@@ -339,18 +343,18 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
             func = got_symbol ? symbol->Name : "[unknown function]";
         }
-    #else
+#else
         DWORD64 displacement = 0;
         BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
         std::string func = got_symbol ? symbol->Name : "[unknown function]";
-    #endif
+#endif
 
         dbg::stack_frame f(reinterpret_cast<const void*>(frame.AddrPC.Offset), func + " in " + module_name);
         frames.push_back(f);
     }
 }
 #elif defined(__GNUC__)
-    #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
 // The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
 __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
 {
@@ -383,16 +387,16 @@ __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, 
         frames.push_back(dbg::stack_frame(ips[i], function + " in " + module));
     }
 }
-    #else
+#else
 // GNU, but neither x86, x86_64 or arm64
-//#error "Sorry but dbg::stack is not supported on this architecture"
+// #error "Sorry but dbg::stack is not supported on this architecture"
 void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
 {
 }
-    #endif
+#endif
 #else
 // Unsupported compiler
-//#error "Sorry but dbg::stack is not supported on this compiler"
+// #error "Sorry but dbg::stack is not supported on this compiler"
 void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
 {
 }
@@ -417,7 +421,7 @@ const char* stack_error::what() const throw()
 
 
 stack_frame::stack_frame(const void* instruction, const std::string& function) :
-  instruction_(instruction), function_(function)
+    instruction_(instruction), function_(function)
 {
 }
 
