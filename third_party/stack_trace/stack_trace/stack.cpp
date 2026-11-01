@@ -415,6 +415,11 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             break;
     }
 
+    // TEMPORARY DIAGNOSTIC, remove after the macOS investigation
+    std::fprintf(stderr, "DIAG callerPc=%p\n", callerPc);
+    for (std::size_t i = 0; i < count && i < 8; ++i)
+        std::fprintf(stderr, "DIAG ips[%zu]=%p\n", i, ips[i]);
+
     // Drop the frames of this function and the stack constructor, the walk starts at the constructor's caller
     std::size_t first = 0;
     while (first < count && ips[first] != callerPc)
