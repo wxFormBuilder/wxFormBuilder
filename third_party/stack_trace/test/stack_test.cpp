@@ -12,7 +12,14 @@
     #define STACK_TEST_NOINLINE __attribute__((noinline))
 #endif
 
-STACK_TEST_NOINLINE int stack_test_leaf()
+// Without debug info, DbgHelp can only name exported symbols on Windows
+#if defined(_WIN32)
+    #define STACK_TEST_EXPORT __declspec(dllexport)
+#else
+    #define STACK_TEST_EXPORT
+#endif
+
+STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_leaf()
 {
     dbg::stack full;
     bool found = false;
@@ -36,7 +43,7 @@ STACK_TEST_NOINLINE int stack_test_leaf()
     return 0;
 }
 
-STACK_TEST_NOINLINE int stack_test_mid()
+STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_mid()
 {
     return stack_test_leaf();
 }
