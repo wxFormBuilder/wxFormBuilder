@@ -28,7 +28,7 @@
 #elif defined(__GNUC__)
     #include <cxxabi.h>
     #include <dlfcn.h>
-    #if defined(__x86_64__) || defined(__aarch64__)
+    #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
         #include <execinfo.h>
         #include <vector>
     #endif
@@ -349,37 +349,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     }
 }
 #elif defined(__GNUC__)
-    #if defined(__i386__)
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
-{
-    // Based on code found at:
-    // http://www.tlug.org.za/wiki/index.php/Obtaining_a_stack_trace_in_C_upon_SIGSEGV
-
-    Dl_info info;
-    void** frame = static_cast<void**>(__builtin_frame_address(0));
-    void** bp = static_cast<void**>(*frame);
-    void* ip = frame[1];
-
-    bool has_limit = limit != 0;
-    dbg::stack::depth_type skip = 0;
-
-    while (bp && ip && dladdr(ip, &info)) {
-        if (skip < 1)
-            ++skip;
-        else {
-            if (has_limit && limit-- == 0)
-                break;
-            frames.push_back(dbg::stack_frame(ip, demangle(info.dli_sname) + " in " + info.dli_fname));
-
-            if (info.dli_sname && !std::strcmp(info.dli_sname, "main"))
-                break;
-        }
-
-        ip = bp[1];
-        bp = static_cast<void**>(bp[0]);
-    }
-}
-    #elif defined(__ppc__)
+    #if defined(__ppc__)
 void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
 {
     // Based on code found at:
@@ -401,7 +371,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             ip = *(frame + 2);
     } while (frame && ip);
 }
-    #elif defined(__x86_64__) || defined(__aarch64__)
+    #elif defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
 // The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
 __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
 {
