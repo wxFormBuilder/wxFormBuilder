@@ -15,7 +15,13 @@ macro(wxfb_configure_prebuild)
     set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_BINDIR}")
     set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
+    if(APPLE)
+      # The installation of the application target copies the whole staged bundle, the static libraries
+      # must not be located inside of it, otherwise they end up in the installed bundle.
+      set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/lib")
+    else()
+      set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${WXFB_STAGE_DIR}/${CMAKE_INSTALL_LIBDIR}")
+    endif()
   endif()
 endmacro()
 
