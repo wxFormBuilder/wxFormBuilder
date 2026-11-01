@@ -1,8 +1,8 @@
 # wxFormBuilder
 
-[![Windows Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/windows.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/windows.yml)
-[![Linux Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/linux.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/linux.yml)
-[![macOS Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/macos.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/macos.yml)
+[![Windows Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-windows.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-windows.yml)
+[![Linux Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-linux.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-linux.yml)
+[![macOS Status](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-macos.yml/badge.svg?branch=master)](https://github.com/wxFormBuilder/wxFormBuilder/actions/workflows/ci-macos.yml)
 
 wxFormBuilder is a GUI builder for the wxWidgets framework.
 

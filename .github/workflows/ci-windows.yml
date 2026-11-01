@@ -6,9 +6,9 @@ on:
       - '**/linux/**'
       - '**/macos/**'
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/linux.yml'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-linux.yml'
+      - '.github/workflows/ci-macos.yml'
       - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/linux/**'
@@ -23,9 +23,9 @@ on:
       - '**.md'
   pull_request:
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/linux.yml'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-linux.yml'
+      - '.github/workflows/ci-macos.yml'
       - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/linux/**'
