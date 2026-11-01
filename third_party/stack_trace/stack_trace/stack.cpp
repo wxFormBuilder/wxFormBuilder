@@ -15,8 +15,6 @@
 #include <sstream>
 
 #if defined(_WIN32)
-// The windows header must be included first
-#include <windows.h>
 #include <imagehlp.h>  // link against imagehlp.lib
 #include <psapi.h>     // link against psapi
 
