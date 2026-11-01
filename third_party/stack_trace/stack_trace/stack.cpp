@@ -14,6 +14,18 @@
 #include <ostream>
 #include <sstream>
 
+#if defined(_MSC_VER)
+#include <intrin.h>
+#endif
+
+// Return address of the stack constructor's caller, the trace starts at the frame with this address so the constructor
+// itself is not part of it
+#if defined(_MSC_VER)
+#define STACK_CALLER_PC() _ReturnAddress()
+#else
+#define STACK_CALLER_PC() __builtin_return_address(0)
+#endif
+
 #if defined(_WIN32)
 #include <imagehlp.h>  // link against imagehlp.lib
 #include <psapi.h>     // link against psapi
@@ -275,7 +287,8 @@ private:
 mutex fill_frames_mtx_;
 
 
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, CONTEXT* fromContext = 0)
+void fill_frames(
+  std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, const void* callerPc, CONTEXT* fromContext = 0)
 {
     scoped_lock lk(fill_frames_mtx_);
 
@@ -326,6 +339,9 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     HANDLE process = GetCurrentProcess();
     HANDLE thread = GetCurrentThread();
 
+    // Frames up to the caller of the stack constructor are dropped, a given context keeps all frames from its start
+    bool found = callerPc == 0;
+    const DWORD64 callerAddress = static_cast<DWORD64>(reinterpret_cast<UINT_PTR>(callerPc));
     dbg::stack::depth_type skip = 0;
     bool has_limit = limit != 0;
     char symbol_buffer[sizeof(IMAGEHLP_SYMBOL64) + 255];
@@ -333,7 +349,13 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     while (StackWalk64(
       machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0)) {
-        if (skip < 1) {
+        if (!found) {
+            if (frame.AddrPC.Offset != callerAddress)
+                continue;
+            found = true;
+        }
+
+        if (fromContext && skip < 1) {
             ++skip;
             continue;
         }
@@ -381,25 +403,30 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 #elif defined(__GNUC__)
 #if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
 // The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
-__attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
+void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, const void* callerPc)
 {
-    // Skip this function and the stack constructor calling it
-    const std::size_t skip = 2;
-    const bool has_limit = limit != 0;
-    std::size_t capacity = has_limit ? limit + skip : 128;
-
     std::vector<void*> ips;
     std::size_t count = 0;
-    for (;;) {
+    for (std::size_t capacity = 128;; capacity *= 2) {
         ips.resize(capacity);
         const int n = backtrace(ips.data(), static_cast<int>(capacity));
         count = n > 0 ? static_cast<std::size_t>(n) : 0;
-        if (has_limit || count < capacity)
+        if (count < capacity)
             break;
-        capacity *= 2;
     }
 
-    for (std::size_t i = skip; i < count; ++i) {
+    // Drop the frames of this function and the stack constructor, the walk starts at the constructor's caller
+    std::size_t first = 0;
+    while (first < count && ips[first] != callerPc)
+        ++first;
+    if (first == count)
+        return;
+
+    const bool has_limit = limit != 0;
+    for (std::size_t i = first; i < count; ++i) {
+        if (has_limit && frames.size() >= limit)
+            break;
+
         Dl_info info;
         std::string function = "[unknown function]";
         std::string module = "[unknown module]";
@@ -415,14 +442,14 @@ __attribute__((noinline)) void fill_frames(std::list<dbg::stack_frame>& frames, 
 #else
 // GNU, but neither x86, x86_64 or arm64
 // #error "Sorry but dbg::stack is not supported on this architecture"
-void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
+void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type, const void*)
 {
 }
 #endif
 #else
 // Unsupported compiler
 // #error "Sorry but dbg::stack is not supported on this compiler"
-void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
+void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type, const void*)
 {
 }
 #endif
@@ -468,13 +495,13 @@ std::ostream& operator<<(std::ostream& out, const stack_frame& frame)
 #if defined(_WIN32)
 stack::stack(depth_type limit, CONTEXT* fromContext)
 {
-    fill_frames(frames_, limit, fromContext);
+    fill_frames(frames_, limit, 0, fromContext);
 }
 #endif
 
 stack::stack(depth_type limit)
 {
-    fill_frames(frames_, limit);
+    fill_frames(frames_, limit, STACK_CALLER_PC());
 }
 
 stack::const_iterator stack::begin() const
