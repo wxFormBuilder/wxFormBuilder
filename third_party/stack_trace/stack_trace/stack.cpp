@@ -68,6 +68,17 @@ private:
 };
 
 #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+// bfd addresses sections relative to the preferred image base, not the address the module was loaded at
+DWORD64 preferred_address(DWORD64 address, DWORD64 module_base)
+{
+    if (!module_base)
+        return address;
+    const IMAGE_NT_HEADERS* nt = ImageNtHeader(reinterpret_cast<PVOID>(static_cast<UINT_PTR>(module_base)));
+    if (!nt)
+        return address;
+    return address - module_base + nt->OptionalHeader.ImageBase;
+}
+
 class bfd_context : uncopyable
 {
 private:
@@ -334,7 +345,7 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
             module_name = module_name_raw;
 
 #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
-        std::string func = bfdc.get_function_name(frame.AddrPC.Offset);
+        std::string func = bfdc.get_function_name(preferred_address(frame.AddrPC.Offset, module_base));
 
         if (func.empty()) {
             DWORD64 displacement = 0;
