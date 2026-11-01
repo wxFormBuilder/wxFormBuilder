@@ -19,7 +19,6 @@
     #include <psapi.h>  // link against psapi
 
     #if defined(__MINGW32__)
-        #define PACKAGE
             #if !defined(_M_ARM64) && !defined(__aarch64__)
         #include <bfd.h>  // link against libbfd and libiberty
             #endif
