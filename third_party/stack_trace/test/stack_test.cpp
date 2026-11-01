@@ -1,4 +1,4 @@
-// Smoke test for the stack walker, built and run by .github/workflows/stack-trace.yml.
+// Smoke test for the stack walker, built and run by .github/workflows/test-stack_trace.yml.
 // Functions have external linkage so that the symbol can be resolved on every platform.
 
 #include "stack_trace/stack.hpp"
