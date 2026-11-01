@@ -83,6 +83,32 @@ jobs:
       run: |
         cd _install
         zip -ry ../wxFormBuilder${{ env.project_version }}-macos-`sw_vers -productVersion | cut -d . -f 1-2`-`uname -m`-bundle.zip wxFormBuilder.app
+    - name: Test app bundle without external dependencies
+      run: |
+        # Use the packaged bundle at a different location to ensure it is relocatable and self-contained
+        mkdir _bundle_test
+        unzip -q wxFormBuilder*-bundle.zip -d _bundle_test
+        bundle="$PWD/_bundle_test/wxFormBuilder.app"
+
+        # Every library must either be a system library or be located inside the bundle
+        for file in "$bundle"/Contents/MacOS/wxFormBuilder "$bundle"/Contents/PlugIns/*.dylib "$bundle"/Contents/Frameworks/*.dylib; do
+          if otool -L "$file" | tail -n +2 | awk '{print $1}' | grep -v -E '^(/usr/lib/|/System/Library/|@rpath/|@loader_path/)'; then
+            echo "::error::$file references libraries outside of the bundle"
+            exit 1
+          fi
+        done
+        codesign --verify --deep --strict --verbose=2 "$bundle"
+
+        # Hide all packages installed by Homebrew, so only the bundled libraries are available
+        brew_prefix="`brew --prefix`"
+        sudo mv "$brew_prefix" "$brew_prefix-hidden"
+        if test -e "$brew_prefix"; then
+          echo "::error::Unable to hide the Homebrew installation"
+          exit 1
+        fi
+
+        "$bundle/Contents/MacOS/wxFormBuilder" -v
+        "$bundle/Contents/MacOS/wxFormBuilder" -g test/wxfbTest.fbp
     - uses: actions/upload-artifact@v7.0.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
