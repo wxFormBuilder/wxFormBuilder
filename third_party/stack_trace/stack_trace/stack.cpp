@@ -8,26 +8,44 @@
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
+
 #include <iomanip>
 #include <iostream>
 #include <ostream>
 #include <sstream>
 
-#if defined(_WIN32)
-    #include <windows.h>
-    #include <imagehlp.h>  // link against imagehlp.lib
-    #include <psapi.h>  // link against psapi
+#if defined(_MSC_VER)
+#include <intrin.h>
+#endif
 
-    #if defined(__MINGW32__)
-        #define PACKAGE
-            #if !defined(_M_ARM64) && !defined(__aarch64__)
-        #include <bfd.h>  // link against libbfd and libiberty
-            #endif
-        #include <cxxabi.h>
-    #endif
+// Return address of the stack constructor's caller, the trace starts at the frame with this address so the constructor
+// itself is not part of it
+#if defined(_MSC_VER)
+#define STACK_CALLER_PC() _ReturnAddress()
+#else
+#define STACK_CALLER_PC() __builtin_return_address(0)
+#endif
+
+#if defined(_WIN32)
+#include <imagehlp.h>  // link against imagehlp.lib
+#include <psapi.h>     // link against psapi
+
+#if defined(__MINGW32__)
+#if !defined(_M_ARM64) && !defined(__aarch64__)
+// bfd.h requires PACKAGE (normally set by config.h) to be defined
+#define PACKAGE
+#include <bfd.h>  // link against libbfd and libiberty
+#endif
+#include <cxxabi.h>
+#endif
 #elif defined(__GNUC__)
-    #include <cxxabi.h>
-    #include <dlfcn.h>
+#include <cxxabi.h>
+#include <dlfcn.h>
+#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+#include <execinfo.h>
+
+#include <vector>
+#endif
 #endif
 
 
@@ -41,7 +59,13 @@ std::string demangle(const char* name)
     char* d = 0;
     std::string ret = name;
     try {
-        if ((d = abi::__cxa_demangle(name, 0, 0, &status)))
+        d = abi::__cxa_demangle(name, 0, 0, &status);
+        // Some MinGW symbol names lack the leading underscore of the Itanium mangling prefix
+        if (!d && name[0] == 'Z') {
+            const std::string prefixed = std::string("_") + name;
+            d = abi::__cxa_demangle(prefixed.c_str(), 0, 0, &status);
+        }
+        if (d)
             ret = d;
     } catch (...) {
     }
@@ -61,7 +85,18 @@ private:
     uncopyable& operator=(const uncopyable&);  // remains undefined
 };
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+// bfd addresses sections relative to the preferred image base, not the address the module was loaded at
+DWORD64 preferred_address(DWORD64 address, DWORD64 module_base)
+{
+    if (!module_base)
+        return address;
+    const IMAGE_NT_HEADERS* nt = ImageNtHeader(reinterpret_cast<PVOID>(static_cast<UINT_PTR>(module_base)));
+    if (!nt)
+        return address;
+    return address - module_base + nt->OptionalHeader.ImageBase;
+}
+
 class bfd_context : uncopyable
 {
 private:
@@ -94,12 +129,15 @@ public:
         }
         free(formats);
 
-        // Load symbol table
-        unsigned dummy = 0;
-        if (
-          bfd_read_minisymbols(abfd_, FALSE, (void**)&symbol_table_, &dummy) == 0 &&
-          bfd_read_minisymbols(abfd_, TRUE, (void**)&symbol_table_, &dummy) < 0) {
-            free(symbol_table_);
+        // Load symbol table in the form bfd_find_nearest_line expects
+        const long symtab_size = bfd_get_symtab_upper_bound(abfd_);
+        if (symtab_size <= 0) {
+            bfd_close(abfd_);
+            throw dbg::stack_error("Failed to parse object data for the executable");
+        }
+        symbol_table_ = static_cast<asymbol**>(std::malloc(static_cast<std::size_t>(symtab_size)));
+        if (!symbol_table_ || bfd_canonicalize_symtab(abfd_, symbol_table_) < 0) {
+            std::free(symbol_table_);
             bfd_close(abfd_);
             throw dbg::stack_error("Failed to parse object data for the executable");
         }
@@ -107,15 +145,15 @@ public:
 
     ~bfd_context()
     {
-        free(symbol_table_);
+        std::free(symbol_table_);
         bfd_close(abfd_);
     }
 
-    std::string get_function_name(DWORD offset)
+    std::string get_function_name(DWORD64 offset)
     {
         find_data data;
         data.symbol_table = symbol_table_;
-        data.counter = offset;
+        data.counter = static_cast<bfd_vma>(offset);
 
         bfd_map_over_sections(abfd_, &find_function_name_in_section, &data);
 
@@ -133,26 +171,26 @@ private:
             return;  // already found it
 
         auto flags =
-        #ifdef bfd_get_section_flags
+#ifdef bfd_get_section_flags
           bfd_get_section_flags(abfd, sec);
-        #else
+#else
           bfd_section_flags(sec);
-        #endif
+#endif
         if (!(flags & SEC_ALLOC))
             return;
 
         auto vma =
-        #ifdef bfd_get_section_vma
+#ifdef bfd_get_section_vma
           bfd_get_section_vma(abfd, sec);
-        #else
+#else
           bfd_section_vma(sec);
-        #endif
+#endif
         auto size =
-        #ifdef bfd_get_section_size
+#ifdef bfd_get_section_size
           bfd_get_section_size(sec);
-        #else
+#else
           bfd_section_size(sec);
-        #endif
+#endif
         if (data.counter < vma || vma + size <= data.counter)
             return;
 
@@ -169,7 +207,7 @@ private:
     asection* sec_;
     asymbol** symbol_table_;
 };
-    #endif  // __MINGW32__
+#endif  // __MINGW32__
 
 class auto_cast_function_ptr
 {
@@ -249,17 +287,18 @@ private:
 mutex fill_frames_mtx_;
 
 
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, CONTEXT* fromContext = 0)
+void fill_frames(
+  std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, const void* callerPc, CONTEXT* fromContext = 0)
 {
     scoped_lock lk(fill_frames_mtx_);
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
     static bfd_context bfdc;
-    #endif
+#endif
 
     symbol_context sc;
 
-    STACKFRAME frame;
+    STACKFRAME64 frame;
     std::memset(&frame, 0, sizeof frame);
     CONTEXT context;
 
@@ -276,22 +315,22 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
 
     DWORD machine_type = IMAGE_FILE_MACHINE_I386;
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit Intel/AMD
+#if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64)  // 64-bit Intel/AMD
     machine_type = IMAGE_FILE_MACHINE_AMD64;
     frame.AddrPC.Offset = context.Rip;
     frame.AddrStack.Offset = context.Rsp;
     frame.AddrFrame.Offset = context.Rbp;
-    #elif defined(__aarch64__) || defined(_M_ARM64)                    // 64-bit ARM64
+#elif defined(__aarch64__) || defined(_M_ARM64)                     // 64-bit ARM64
     machine_type = IMAGE_FILE_MACHINE_ARM64;
     frame.AddrPC.Offset = context.Pc;
     frame.AddrStack.Offset = context.Sp;
     frame.AddrFrame.Offset = context.Fp;
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)        // 32-bit Intel
+#elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)       // 32-bit Intel
     machine_type = IMAGE_FILE_MACHINE_I386;
     frame.AddrPC.Offset = context.Eip;
     frame.AddrStack.Offset = context.Esp;
     frame.AddrFrame.Offset = context.Ebp;
-    #endif
+#endif
 
     frame.AddrPC.Mode = AddrModeFlat;
     frame.AddrStack.Mode = AddrModeFlat;
@@ -300,14 +339,23 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
     HANDLE process = GetCurrentProcess();
     HANDLE thread = GetCurrentThread();
 
+    // Frames up to the caller of the stack constructor are dropped, a given context keeps all frames from its start
+    bool found = callerPc == 0;
+    const DWORD64 callerAddress = static_cast<DWORD64>(reinterpret_cast<UINT_PTR>(callerPc));
     dbg::stack::depth_type skip = 0;
     bool has_limit = limit != 0;
-    char symbol_buffer[sizeof(IMAGEHLP_SYMBOL) + 255];
+    char symbol_buffer[sizeof(IMAGEHLP_SYMBOL64) + 255];
     char module_name_raw[MAX_PATH];
 
-    while (StackWalk(
-      machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess, SymGetModuleBase, 0)) {
-        if (skip < 1) {
+    while (StackWalk64(
+      machine_type, process, thread, &frame, &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0)) {
+        if (!found) {
+            if (frame.AddrPC.Offset != callerAddress)
+                continue;
+            found = true;
+        }
+
+        if (fromContext && skip < 1) {
             ++skip;
             continue;
         }
@@ -315,112 +363,100 @@ void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type lim
         if (has_limit && limit-- == 0)
             break;
 
-        IMAGEHLP_SYMBOL* symbol = reinterpret_cast<IMAGEHLP_SYMBOL*>(symbol_buffer);
+        IMAGEHLP_SYMBOL64* symbol = reinterpret_cast<IMAGEHLP_SYMBOL64*>(symbol_buffer);
         symbol->SizeOfStruct = (sizeof *symbol) + 255;
         symbol->MaxNameLength = 254;
 
-    #if defined(__amd64__) || defined(__x86_64__) || defined(_M_AMD64) || defined(__aarch64__) || defined(_M_ARM64)
-        DWORD64 module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
-    #elif defined(__i386__) || defined(_X86_) || defined(_M_IX86)
-        DWORD module_base = SymGetModuleBase(process, frame.AddrPC.Offset);
-    #endif
+        DWORD64 module_base = SymGetModuleBase64(process, frame.AddrPC.Offset);
+
+        // A PC outside every module means the unwinder ran past the bottom of the stack
+        if (!module_base)
+            break;
 
         std::string module_name = "[unknown module]";
-        if (module_base && GetModuleFileNameA(reinterpret_cast<HINSTANCE>(module_base), module_name_raw, MAX_PATH))
+        if (GetModuleFileNameA(
+              reinterpret_cast<HMODULE>(static_cast<UINT_PTR>(module_base)), module_name_raw, MAX_PATH))
             module_name = module_name_raw;
 
-    #if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
-        std::string func = bfdc.get_function_name(frame.AddrPC.Offset);
+#if defined(__MINGW32__) && !defined(_M_ARM64) && !defined(__aarch64__)
+        std::string func = bfdc.get_function_name(preferred_address(frame.AddrPC.Offset, module_base));
 
         if (func.empty()) {
-        #if defined(__amd64__) || defined(__x86_64__)  // 64-bit
             DWORD64 displacement = 0;
-        #elif defined(__i386__) || defined(_X86_)      // 32-bit
-            DWORD displacement = 0;
-        #endif
-
-            BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
-            func = got_symbol ? symbol->Name : "[unknown function]";
+            BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
+            func = got_symbol ? demangle(symbol->Name) : "[unknown function]";
         }
-    #else
-        #if defined(_M_AMD64) || defined(__amd64__) || defined(__x86_64__) || defined(_M_ARM64) || defined(__aarch64__)
-        DWORD64 displacement = 0;  // 64-bit displacement for x64 and ARM64
-        #elif defined(_M_IX86) || defined(__i386__) || defined(_X86_)
-        DWORD displacement = 0;    // 32-bit displacement for x86
-        #endif
-
-        BOOL got_symbol = SymGetSymFromAddr(process, frame.AddrPC.Offset, &displacement, symbol);
+#else
+        DWORD64 displacement = 0;
+        BOOL got_symbol = SymGetSymFromAddr64(process, frame.AddrPC.Offset, &displacement, symbol);
+#if defined(__GNUC__)
+        std::string func = got_symbol ? demangle(symbol->Name) : "[unknown function]";
+#else
         std::string func = got_symbol ? symbol->Name : "[unknown function]";
-    #endif
+#endif
+#endif
 
         dbg::stack_frame f(reinterpret_cast<const void*>(frame.AddrPC.Offset), func + " in " + module_name);
         frames.push_back(f);
     }
 }
 #elif defined(__GNUC__)
-    #if defined(__i386__)
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
+#if defined(__i386__) || defined(__x86_64__) || defined(__aarch64__)
+// The unwinder used by backtrace() does not rely on frame pointers, which are usually omitted in optimized builds
+void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit, const void* callerPc)
 {
-    // Based on code found at:
-    // http://www.tlug.org.za/wiki/index.php/Obtaining_a_stack_trace_in_C_upon_SIGSEGV
-
-    Dl_info info;
-    void** frame = static_cast<void**>(__builtin_frame_address(0));
-    void** bp = static_cast<void**>(*frame);
-    void* ip = frame[1];
-
-    bool has_limit = limit != 0;
-    dbg::stack::depth_type skip = 0;
-
-    while (bp && ip && dladdr(ip, &info)) {
-        if (skip < 1)
-            ++skip;
-        else {
-            if (has_limit && limit-- == 0)
-                break;
-            frames.push_back(dbg::stack_frame(ip, demangle(info.dli_sname) + " in " + info.dli_fname));
-
-            if (info.dli_sname && !std::strcmp(info.dli_sname, "main"))
-                break;
-        }
-
-        ip = bp[1];
-        bp = static_cast<void**>(bp[0]);
+    std::vector<void*> ips;
+    std::size_t count = 0;
+    for (std::size_t capacity = 128;; capacity *= 2) {
+        ips.resize(capacity);
+        const int n = backtrace(ips.data(), static_cast<int>(capacity));
+        count = n > 0 ? static_cast<std::size_t>(n) : 0;
+        if (count < capacity)
+            break;
     }
-}
-    #elif defined(__ppc__)
-void fill_frames(std::list<dbg::stack_frame>& frames, dbg::stack::depth_type limit)
-{
-    // Based on code found at:
-    // http://www.informit.com/articles/article.aspx?p=606582&seqNum=4&rl=1
 
-    void* ip = __builtin_return_address(0);
-    void** frame = static_cast<void**>(__builtin_frame_address(1));
-    bool has_limit = limit != 0;
-    Dl_info info;
+    // Drop the frames of this function and the stack constructor, the walk starts at the constructor's caller
+    std::size_t first = 0;
+    while (first < count && ips[first] != callerPc)
+        ++first;
+    if (first == count)
+        first = 0;
 
-    do {
-        if (has_limit && limit-- == 0)
+    const bool has_limit = limit != 0;
+    bool leading = true;
+    for (std::size_t i = first; i < count; ++i) {
+        if (has_limit && frames.size() >= limit)
             break;
 
-        if (dladdr(ip, &info))
-            frames.push_back(dbg::stack_frame(ip, demangle(info.dli_sname) + " in " + info.dli_fname));
+        Dl_info info;
+        std::string function = "[unknown function]";
+        std::string module = "[unknown module]";
+        if (dladdr(ips[i], &info)) {
+            if (info.dli_sname)
+                function = demangle(info.dli_sname);
+            if (info.dli_fname)
+                module = info.dli_fname;
+        }
 
-        if (frame && (frame = static_cast<void**>(*frame)))
-            ip = *(frame + 2);
-    } while (frame && ip);
+        // On macOS the constructor's own frame can still be reported as the first one, so leading constructor frames go
+        if (leading && function.compare(0, 18, "dbg::stack::stack(") == 0)
+            continue;
+        leading = false;
+
+        frames.push_back(dbg::stack_frame(ips[i], function + " in " + module));
+    }
 }
-    #else
-// GNU, but neither x86 or PPC
-//#error "Sorry but dbg::stack is not supported on this architecture"
-void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
+#else
+// GNU, but neither x86, x86_64 or arm64
+// #error "Sorry but dbg::stack is not supported on this architecture"
+void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type, const void*)
 {
 }
-    #endif
+#endif
 #else
 // Unsupported compiler
-//#error "Sorry but dbg::stack is not supported on this compiler"
-void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type)
+// #error "Sorry but dbg::stack is not supported on this compiler"
+void fill_frames(std::list<dbg::stack_frame>&, dbg::stack::depth_type, const void*)
 {
 }
 #endif
@@ -444,7 +480,7 @@ const char* stack_error::what() const throw()
 
 
 stack_frame::stack_frame(const void* instruction, const std::string& function) :
-  instruction_(instruction), function_(function)
+    instruction_(instruction), function_(function)
 {
 }
 
@@ -466,13 +502,13 @@ std::ostream& operator<<(std::ostream& out, const stack_frame& frame)
 #if defined(_WIN32)
 stack::stack(depth_type limit, CONTEXT* fromContext)
 {
-    fill_frames(frames_, limit, fromContext);
+    fill_frames(frames_, limit, 0, fromContext);
 }
 #endif
 
 stack::stack(depth_type limit)
 {
-    fill_frames(frames_, limit);
+    fill_frames(frames_, limit, STACK_CALLER_PC());
 }
 
 stack::const_iterator stack::begin() const
