@@ -12,7 +12,8 @@
     #define STACK_TEST_NOINLINE __attribute__((noinline))
 #endif
 
-// Without debug info, DbgHelp can only name exported symbols on Windows
+// Without debug info, DbgHelp can only name exported symbols on Windows and attributes any
+// unexported address to the closest preceding export, so main must be exported too
 #if defined(_WIN32)
     #define STACK_TEST_EXPORT __declspec(dllexport)
 #else
@@ -59,7 +60,7 @@ STACK_TEST_EXPORT STACK_TEST_NOINLINE int stack_test_mid()
     return result;
 }
 
-int main()
+STACK_TEST_EXPORT int main()
 {
     return stack_test_mid();
 }
