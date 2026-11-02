@@ -31,13 +31,13 @@ unset(wxfbTinyxml2ProviderDefault)
 unset(wxfbTinyxml2ProviderValues)
 option(WXFB_BUILD_PLUGIN_HOST "Build as plugin host. Disables build steps that must be performed by the toplevel project." OFF)
 if(PROJECT_IS_TOP_LEVEL OR WXFB_BUILD_PLUGIN_HOST)
-  set(stageBuildDefault ON)
+  set(wxfbStageBuildDefault ON)
 else()
   # TODO: Maybe check if the required variables are all unset and enable by default in that case
-  set(stageBuildDefault OFF)
+  set(wxfbStageBuildDefault OFF)
 endif()
-option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${stageBuildDefault})
-unset(stageBuildDefault)
+option(WXFB_STAGE_BUILD "Use stage directory to build directly executable variant that doesn't need to be installed." ${wxfbStageBuildDefault})
+unset(wxfbStageBuildDefault)
 option(WXFB_ENABLE_EXTRA_CHECKS "Enable additional static code analysis." OFF)
 
 # TODO: Currently generator languages cannot be configured
