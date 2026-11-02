@@ -113,7 +113,7 @@ wxfb_configure_prebuild()
 
 # Must be done before the subdirectories, so the tinyxml2::tinyxml2 target is visible to them
 if(WXFB_TINYXML2_PROVIDER STREQUAL "system")
-  find_package(tinyxml2 CONFIG REQUIRED)
+  find_package(tinyxml2 10.0 CONFIG REQUIRED)
 else()
   if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third_party/tinyxml2/CMakeLists.txt")
     message(FATAL_ERROR "The TinyXML-2 submodule is missing, run 'git submodule update --init' or set WXFB_TINYXML2_PROVIDER to 'system'.")
