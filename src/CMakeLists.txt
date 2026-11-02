@@ -291,53 +291,26 @@ if(NOT WIN32 AND NOT APPLE)
 endif()
 
 if(WIN32)
-  # The installation of runtime dependencies does not take the set paths into account and
-  # only searches in system default paths. Therefor paths of libraries not in such locations
-  # need to be specified manually. Depending on the used compiler these are different.
-  # TODO: Should both variables be used? What do the find_* commands do?
-  set(extraDirectories "")
-  set(prefixPaths "")
-  if(DEFINED ENV{CMAKE_PREFIX_PATH})
-    cmake_path(CONVERT "$ENV{CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST pathList NORMALIZE)
-    list(APPEND prefixPaths ${pathList})
-    unset(pathList)
+  # The installation of runtime dependencies does not take the configured search paths into account and
+  # only searches in system default paths, additional directories must be specified.
+  # The directories of all shared imported targets in the link closure of the application are determined
+  # by CMake itself, this includes the libraries of Boost and wxWidgets in case they were found in config mode.
+  set(extraDirectories "$<TARGET_RUNTIME_DLL_DIRS:wxFormBuilder_app>")
+  # Libraries found by Find Modules are not necessarily shared imported targets, but provide their
+  # library directories, the runtime libraries are expected to be located there.
+  if(wxWidgets_LIBRARY_DIRS)
+    list(APPEND extraDirectories ${wxWidgets_LIBRARY_DIRS})
   endif()
-  if(DEFINED CMAKE_PREFIX_PATH)
-    cmake_path(CONVERT "${CMAKE_PREFIX_PATH}" TO_CMAKE_PATH_LIST pathList NORMALIZE)
-    list(APPEND prefixPaths ${pathList})
-    unset(pathList)
+  if(Boost_LIBRARY_DIRS)
+    list(APPEND extraDirectories ${Boost_LIBRARY_DIRS})
   endif()
-  # TODO: To find the external libraries, the search path must be augmented for certain libraries
-  #       which don't use a standard prefix layout, a certain naming of their directories is assumed.
-  #       An alternative would be to install the IMPORTED_RUNTIME_ARTIFACTS of the libraries themself,
-  #       but this does not work easily currently because of its limitations
-  #       (does not work with UNKNOWN IMPORTED or ALIAS libraries).
-  foreach(entry IN LISTS prefixPaths)
-    cmake_path(GET entry PARENT_PATH libraryPath)
-    cmake_path(GET libraryPath FILENAME libraryName)
-    if(libraryName STREQUAL "boost")
-      list(APPEND extraDirectories "${entry}/lib")
-    elseif(libraryName STREQUAL "wxWidgets")
-      if(MSVC)
-        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-          list(APPEND extraDirectories "${entry}/lib/vc_x64_dll")
-        else()
-          list(APPEND extraDirectories "${entry}/lib/vc_dll")
-        endif()
-      else()
-        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-          list(APPEND extraDirectories "${entry}/lib/gcc_dll_x64")
-        else()
-          list(APPEND extraDirectories "${entry}/lib/gcc_dll")
-        endif()
-      endif()
-    else()
-      list(APPEND extraDirectories "${entry}/bin")
-    endif()
-  endforeach()
-  unset(prefixPaths)
-  unset(libraryPath)
-  unset(libraryName)
+  if(MINGW)
+    # The libraries of the toolchain (including the ones of MSYS2 environments) are found as import libraries
+    # which are not shared imported targets. They are located next to the compiler.
+    cmake_path(GET CMAKE_CXX_COMPILER PARENT_PATH compilerDir)
+    list(APPEND extraDirectories "${compilerDir}")
+    unset(compilerDir)
+  endif()
   if(MSVC)
     # The compiler runtime libraries are installed in system default paths, because it is expected
     # that the runtime distributables are getting installed along the application, these need to get
@@ -356,23 +329,6 @@ if(WIN32)
         [[.*[/\]system32/.*\.dll]]
     )
   elseif(MINGW)
-    # This environment has its own search paths which are not taken into account and must be specified.
-    if(MSYS)
-      # The "virtual" paths used by the MSYS environment cannot be used, they must be translated into physical
-      # paths of the system.
-      find_program(cygpath_cmd NAMES cygpath REQUIRED)
-      mark_as_advanced(cygpath_cmd)
-      # The mixed mode output equals the CMake path format
-      execute_process(COMMAND "${cygpath_cmd}" -m "$ENV{MSYSTEM_PREFIX}/bin" OUTPUT_VARIABLE msysSystemDir OUTPUT_STRIP_TRAILING_WHITESPACE)
-      list(APPEND extraDirectories "${msysSystemDir}")
-      unset(msysSystemDir)
-    else()
-      # In plain MinGW environments it is more difficult to determine the paths in a system independent manner.
-      # As best effort search the path of the compiler and hope that contains all system libraries.
-      find_path(compilerSystemDir NAMES gcc.exe REQUIRED)
-      mark_as_advanced(compilerSystemDir)
-      list(APPEND extraDirectories "${compilerSystemDir}")
-    endif()
     install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
       DIRECTORIES
         ${extraDirectories}

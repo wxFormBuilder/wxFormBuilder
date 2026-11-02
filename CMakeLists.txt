@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21...3.31)
+cmake_minimum_required(VERSION 3.27...3.31)
 
 # Do not change the format of this line! It must stay as-is up to and including the keyword LANGUAGES.
 # External tools parse the version number from this line.

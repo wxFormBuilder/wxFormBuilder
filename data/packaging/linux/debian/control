@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Steffen Olszewski <steffen.o.dev@gmail.com>
 Build-Depends: debhelper-compat (= 12),
-               cmake (>= 3.21),
+               cmake (>= 3.27),
                git,
                libwxgtk3.2-dev | libwxgtk3.0-gtk3-dev,
                libwxgtk-media3.2-dev | libwxgtk-media3.0-gtk3-dev,
