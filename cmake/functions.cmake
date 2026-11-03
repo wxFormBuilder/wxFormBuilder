@@ -1,5 +1,13 @@
 cmake_minimum_required(VERSION 3.27...3.31)
 
+# CMake 4.3 and later normalize the paths to forward slashes before the install(RUNTIME_DEPENDENCY_SET) filters get applied
+# and warn if the behavior has not been chosen. The filters of this project match both kinds of path separators, so
+# the new behavior can be used. The policy status gets recorded at the time of the install() call, which is made
+# from the functions of this file, and those use the policy state of the point of their definition.
+if(POLICY CMP0207)
+  cmake_policy(SET CMP0207 NEW)
+endif()
+
 #[[
 Set default build type.
 
