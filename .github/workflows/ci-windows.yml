@@ -97,6 +97,31 @@ jobs:
       shell: msys2 {0}
       run: |
         cmake --install _build --config Release --strip
+    - name: Verify installed dependencies
+      shell: msys2 {0}
+      run: |
+        # Every DLL referenced by an installed binary must be installed next to the binary or next to
+        # the application, or must be provided by the operating system.
+        installRoot="$PWD/_install"
+        systemDir="`cygpath -u "$SYSTEMROOT"`/System32"
+        status=0
+        while IFS= read -r -d '' file; do
+          fileDir="`dirname "$file"`"
+          for dll in `objdump -p "$file" | sed -n -E 's/^[[:space:]]*DLL Name: (.*)$/\1/p'`; do
+            if [ -n "`find "$fileDir" "$installRoot" -maxdepth 1 -iname "$dll" -print -quit`" ]; then
+              continue
+            fi
+            case "$dll" in
+              api-ms-win-*|ext-ms-*) continue ;;
+            esac
+            if [ -n "`find "$systemDir" -maxdepth 1 -iname "$dll" -print -quit`" ]; then
+              continue
+            fi
+            echo "::error::${file#$installRoot/} requires $dll, which is neither installed nor provided by the system"
+            status=1
+          done
+        done < <(find "$installRoot" -type f \( -iname '*.exe' -o -iname '*.dll' \) -print0)
+        exit $status
     - name: Test install
       shell: cmd
       run: |
