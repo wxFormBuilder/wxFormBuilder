@@ -290,61 +290,8 @@ if(NOT WIN32 AND NOT APPLE)
   )
 endif()
 
-if(WIN32)
-  # The installation of runtime dependencies does not take the configured search paths into account and
-  # only searches in system default paths, additional directories must be specified.
-  # The directories of all shared imported targets in the link closure of the application are determined
-  # by CMake itself, this includes the libraries of Boost and wxWidgets in case they were found in config mode.
-  set(extraDirectories "$<TARGET_RUNTIME_DLL_DIRS:wxFormBuilder_app>")
-  # Libraries found by Find Modules are not necessarily shared imported targets, but provide their
-  # library directories, the runtime libraries are expected to be located there.
-  if(wxWidgets_LIBRARY_DIRS)
-    list(APPEND extraDirectories ${wxWidgets_LIBRARY_DIRS})
-  endif()
-  if(Boost_LIBRARY_DIRS)
-    list(APPEND extraDirectories ${Boost_LIBRARY_DIRS})
-  endif()
-  if(MINGW)
-    # The libraries of the toolchain (including the ones of MSYS2 environments) are found as import libraries
-    # which are not shared imported targets. They are located next to the compiler.
-    cmake_path(GET CMAKE_CXX_COMPILER PARENT_PATH compilerDir)
-    list(APPEND extraDirectories "${compilerDir}")
-    unset(compilerDir)
-  endif()
-  if(MSVC)
-    # The compiler runtime libraries are installed in system default paths, because it is expected
-    # that the runtime distributables are getting installed along the application, these need to get
-    # filtered.
-    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
-      DIRECTORIES
-        ${extraDirectories}
-      PRE_EXCLUDE_REGEXES
-        [[api-ms-win-.*]]
-        [[ext-ms-.*]]
-        [[kernel32\.dll]]
-        [[msvcp.*\.dll]]
-        [[vcruntime.*\.dll]]
-      POST_EXCLUDE_REGEXES
-        # For some reason some dependencies use forward slashes, some backward slashes
-        [[.*[/\]system32/.*\.dll]]
-    )
-  elseif(MINGW)
-    install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies
-      DIRECTORIES
-        ${extraDirectories}
-      PRE_EXCLUDE_REGEXES
-        [[api-ms-win-.*]]
-        [[ext-ms-.*]]
-        [[kernel32\.dll]]
-        [[user32\.dll]]
-        [[msvcrt.*\.dll]]
-      POST_EXCLUDE_REGEXES
-        # For some reason some dependencies use forward slashes, some backward slashes
-        [[.*[/\]system32/.*\.dll]]
-    )
-  endif()
-  unset(extraDirectories)
-elseif(APPLE)
+# On Windows the runtime dependency set gets installed after all plugins are known, see wxfb_configure_postbuild.
+if(APPLE)
   # The libraries are installed into the default location, which is the Frameworks directory of the bundle.
   # The references to them are adjusted afterwards by the bundle fixup step, see wxfb_configure_postbuild.
   install(RUNTIME_DEPENDENCY_SET wxFormBuilder_dependencies

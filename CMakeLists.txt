@@ -104,6 +104,11 @@ restore_variable(BUILD_SHARED_LIBS)
 # TODO: Some Boost packages do not include the CMake config files so config mode with the headers component can't be used
 find_package(Boost 1.71.0 REQUIRED)
 
+# Libraries found by Find Modules are not necessarily shared imported targets, but provide their library directories,
+# the runtime libraries are expected to be located there. Store them globally, so they are available when the
+# installation is configured by a plugin host.
+set_property(GLOBAL PROPERTY WXFB_RUNTIME_DIRECTORIES ${wxWidgets_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
+
 include(cmake/macos-bundle.cmake)
 include(cmake/macros.cmake)
 include(cmake/revision.cmake)

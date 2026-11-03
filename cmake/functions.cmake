@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21...3.31)
+cmake_minimum_required(VERSION 3.27...3.31)
 
 #[[
 Set default build type.
@@ -302,6 +302,9 @@ libraries can be specified with DEFINITIONS and LIBRARIES.
 If no COMPONENTS are specified a single component <name> must exist (XML definition file and code templates) in the
 xml directory inside the root directory, otherwise these files must exist for every component.
 Icon resources are specified with ICONS, the paths must be relative to the icon directory inside the root directory.
+
+The plugin target gets registered in the global property WXFB_PLUGIN_TARGETS, which allows to collect the
+runtime dependencies of all plugins, see wxfb_install_windows_runtime_dependencies().
 ]]
 function(wxfb_add_plugin PLUGIN_NAME)
   set(options "")
@@ -381,6 +384,9 @@ function(wxfb_add_plugin PLUGIN_NAME)
   set_target_properties(wxFormBuilder_plugin_${PLUGIN_NAME} PROPERTIES FOLDER "Plugins/${PLUGIN_NAME}")
   wxfb_target_source_groups(wxFormBuilder_plugin_${PLUGIN_NAME} STRIP_PREFIX "${PLUGIN_DIRECTORY}")
 
+  # Plugins are not linked by the application, so their dependencies must be tracked separately, see wxfb_install_runtime_dependencies()
+  set_property(GLOBAL APPEND PROPERTY WXFB_PLUGIN_TARGETS wxFormBuilder_plugin_${PLUGIN_NAME})
+
   # Do not install the RUNTIME_DEPENDENCIES here, because of the currently defined install locations
   # they would get installed next to the plugin. Instead, register the dependencies in a RUNTIME_DEPENDENCY_SET
   # and let the main application install them. This way the dependencies get installed into the locations
@@ -409,6 +415,83 @@ function(wxfb_add_plugin PLUGIN_NAME)
       INSTALL_DIRECTORY "${resourceDestination}"
       FOLDER "Plugins/${PLUGIN_NAME}"
       ICONS ${PLUGIN_ICONS}
+    )
+  endif()
+endfunction()
+
+
+#[[
+Install the runtime dependencies of a runtime dependency set on Windows.
+
+wxfb_install_windows_runtime_dependencies(<set-name>
+                                          TARGETS <target>...
+                                          [DIRECTORIES <directory>...])
+
+Installs the runtime dependency set <set-name>, see install(RUNTIME_DEPENDENCY_SET). The directories that are
+searched for the dependencies are the directories of the shared imported targets <target>... depend on
+(TARGET_RUNTIME_DLL_DIRS), the additionally specified <directory>... and, for MinGW, the directory of the compiler.
+Libraries that are not found as shared imported targets, e.g. by a Find Module, must be specified by DIRECTORIES.
+<target>... must contain every target that was added to the set, the targets must be executables, shared libraries
+or modules and must exist at the time of the call.
+
+The runtime libraries of the compiler and the operating system are not installed, they are expected to be provided
+by the environment.
+]]
+function(wxfb_install_windows_runtime_dependencies SET_NAME)
+  set(options "")
+  set(singleValues "")
+  set(multiValues TARGETS DIRECTORIES)
+  cmake_parse_arguments(arg "${options}" "${singleValues}" "${multiValues}" ${ARGN})
+
+  if(NOT WIN32)
+    message(FATAL_ERROR "wxfb_install_windows_runtime_dependencies() is only supported on Windows")
+  endif()
+  if(NOT arg_TARGETS)
+    message(FATAL_ERROR "wxfb_install_windows_runtime_dependencies() requires at least one target")
+  endif()
+
+  # The installation of runtime dependencies does not take the configured search paths into account and
+  # only searches in system default paths, additional directories must be specified.
+  # The directories of all shared imported targets in the link closure of the targets are determined
+  # by CMake itself, this includes the libraries of Boost and wxWidgets in case they were found in config mode.
+  set(extraDirectories ${arg_TARGETS})
+  list(TRANSFORM extraDirectories REPLACE [[^(.+)$]] [[$<TARGET_RUNTIME_DLL_DIRS:\1>]])
+  list(APPEND extraDirectories ${arg_DIRECTORIES})
+
+  if(MSVC)
+    # The compiler runtime libraries are installed in system default paths, because it is expected
+    # that the runtime distributables are getting installed along the application, these need to get
+    # filtered.
+    install(RUNTIME_DEPENDENCY_SET ${SET_NAME}
+      DIRECTORIES
+        ${extraDirectories}
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[msvcp.*\.dll]]
+        [[vcruntime.*\.dll]]
+      POST_EXCLUDE_REGEXES
+        # For some reason some dependencies use forward slashes, some backward slashes
+        [[.*[/\]system32/.*\.dll]]
+    )
+  elseif(MINGW)
+    # The libraries of the toolchain (including the ones of MSYS2 environments) are found as import libraries
+    # which are not shared imported targets. They are located next to the compiler.
+    cmake_path(GET CMAKE_CXX_COMPILER PARENT_PATH compilerDir)
+    list(APPEND extraDirectories "${compilerDir}")
+    install(RUNTIME_DEPENDENCY_SET ${SET_NAME}
+      DIRECTORIES
+        ${extraDirectories}
+      PRE_EXCLUDE_REGEXES
+        [[api-ms-win-.*]]
+        [[ext-ms-.*]]
+        [[kernel32\.dll]]
+        [[user32\.dll]]
+        [[msvcrt.*\.dll]]
+      POST_EXCLUDE_REGEXES
+        # For some reason some dependencies use forward slashes, some backward slashes
+        [[.*[/\]system32/.*\.dll]]
     )
   endif()
 endfunction()

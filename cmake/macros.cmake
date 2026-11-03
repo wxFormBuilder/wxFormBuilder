@@ -29,7 +29,21 @@ endmacro()
 Perform post build configuration steps after building all wxFormBuilder components.
 ]]
 macro(wxfb_configure_postbuild)
-  if(APPLE)
+  if(WIN32)
+    # The plugins are not linked by the application, so their dependencies must be searched explicitly. A plugin host
+    # may add additional plugins, this step must therefore run after all plugins are known.
+    get_property(wxfbPluginTargets GLOBAL PROPERTY WXFB_PLUGIN_TARGETS)
+    get_property(wxfbRuntimeDirectories GLOBAL PROPERTY WXFB_RUNTIME_DIRECTORIES)
+    wxfb_install_windows_runtime_dependencies(wxFormBuilder_dependencies
+      TARGETS
+        wxFormBuilder_app
+        ${wxfbPluginTargets}
+      DIRECTORIES
+        ${wxfbRuntimeDirectories}
+    )
+    unset(wxfbPluginTargets)
+    unset(wxfbRuntimeDirectories)
+  elseif(APPLE)
     # The libraries are installed into the bundle by the runtime dependency set of the application, this step
     # must run after all other installation steps, because it operates on the installed bundle.
     macos_bundle_install_fixup(wxFormBuilder.app)
