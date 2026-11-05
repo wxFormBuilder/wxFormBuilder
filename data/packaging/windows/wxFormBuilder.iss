@@ -112,24 +112,24 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
     #define private PluginsSourceDir AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + FileName
     #define private PluginsDestDir AddBackslash(PluginsBaseDir) + FileName
     Source: {#PluginsSourceDir}\lib{#FileName}.dll; DestDir: {app}\{#PluginsDestDir}; Flags: ignoreversion; Components: main
-    Source: {#PluginsSourceDir}\icons\*; DestDir: {app}\{#PluginsDestDir}\icons; Flags: recursesubdirs createallsubdirs; Components: main
-    Source: {#PluginsSourceDir}\xml\*; DestDir: {app}\{#PluginsDestDir}\xml; Flags: recursesubdirs createallsubdirs; Components: main
+    Source: {#PluginsSourceDir}\icons\*; DestDir: {app}\{#PluginsDestDir}\icons; Flags: recursesubdirs createallsubdirs ignoreversion; Components: main
+    Source: {#PluginsSourceDir}\xml\*; DestDir: {app}\{#PluginsDestDir}\xml; Flags: recursesubdirs createallsubdirs ignoreversion; Components: main
   #endif
 #endsub
 
-Source: {#RootInstallDir}\CHANGELOG.md; DestDir: {app}; Components: main
-Source: {#RootInstallDir}\LICENSE; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\CHANGELOG.md; DestDir: {app}; Flags: ignoreversion; Components: main
+Source: {#RootInstallDir}\LICENSE; DestDir: {app}; Flags: ignoreversion; Components: main
 Source: {#RootInstallDir}\wxFormBuilder.exe; DestDir: {app}; Flags: ignoreversion; Components: main
-Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs; Components: main
+Source: {#RootInstallDir}\resources\*; DestDir: {app}\resources; Flags: recursesubdirs createallsubdirs ignoreversion; Components: main
 #for {FindHandle = FindResult = FindFirst(AddBackslash(RootInstallDir) + AddBackslash(PluginsBaseDir) + "*", faDirectory); FindResult; FindResult = FindNext(FindHandle)} ProcessFoundPlugin
 #if FindHandle
   #expr FindClose(FindHandle)
 #endif
 
-Source: {#RootInstallDir}\wx*.dll; DestDir: {app}; Components: main
+Source: {#RootInstallDir}\wx*.dll; DestDir: {app}; Flags: ignoreversion; Components: main
 
-Source: {#RootInstallDir}\lib*.dll; DestDir: {app}; Components: runtime
-Source: {#RootInstallDir}\zlib1.dll; DestDir: {app}; Components: runtime
+Source: {#RootInstallDir}\lib*.dll; DestDir: {app}; Flags: ignoreversion; Components: runtime
+Source: {#RootInstallDir}\zlib1.dll; DestDir: {app}; Flags: ignoreversion; Components: runtime
 
 
 [Icons]
