@@ -187,16 +187,20 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value
             break;
         }
         case PT_BITMAP: {
-            wxString path;
             wxString source;
+            wxString path;
+            wxString path_dark;
             wxSize icoSize;
-            TypeConv::ParseBitmapWithResource(value, &path, &source, &icoSize);
+            TypeConv::ParseBitmapWithResource(value, source, path, path_dark, icoSize);
 
             if (path.empty()) {
                 // Empty path, generate Null Bitmap
                 result = wxT("wxNullBitmap");
                 break;
             }
+
+            auto path_expr = path_dark.empty() ? wxString::Format(wxT("wxT(\"%s\")"), path) :
+                wxString::Format(wxT("pick_resname(wxT(\"%s\"), wxT(\"%s\"))"), path, path_dark);
 
             if (path.StartsWith(wxT("file:"))) {
                 wxLogWarning(wxT("C++ code generation does not support using URLs for bitmap properties:\n%s"), path);
@@ -243,14 +247,13 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value
                     result << CppCodeGenerator::ConvertEmbeddedBitmapName(path) << wxT("_to_wx_bitmap()");
                 }
             } else if (source == _("Load From Resource")) {
-                result << wxT("wxBitmap( wxT(\"") << path << wxT("\"), wxBITMAP_TYPE_RESOURCE )");
+                result.Printf(wxT("wxBitmap( %s, wxBITMAP_TYPE_RESOURCE )"), path_expr);
             } else if (source == _("Load From Icon Resource")) {
                 if (wxDefaultSize == icoSize) {
-                    result << wxT("wxICON( ") << path << wxT(" )");
+                    result.Printf(wxT("wxICON( %s )"), path_expr);
                 } else {
-                    result.Printf(
-                      wxT("wxIcon( wxT(\"%s\"), wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"), path, icoSize.GetWidth(),
-                      icoSize.GetHeight());
+                    result.Printf(wxT("wxIcon( %s, wxBITMAP_TYPE_ICO_RESOURCE, %i, %i )"),
+                        path_expr, icoSize.GetWidth(), icoSize.GetHeight());
                 }
             } else if (source == _("Load From XRC")) {
                 result << wxT("wxXmlResource::Get()->LoadBitmap( wxT(\"") << path << wxT("\") )");
@@ -262,9 +265,8 @@ wxString CppTemplateParser::ValueToCode(PropertyType type, const wxString& value
                 result = wxT("wxArtProvider::GetBitmap( wxASCII_STR(") + rid + wxT("), wxASCII_STR(") +
                          path.AfterFirst(wxT(':')) + wxT(") )");
             } else if (source == _("Load From SVG Resource")) {
-                result.Printf(
-                  wxT("wxBitmapBundle::FromSVGResource( wxT(\"%s\"), {%i, %i} )"), path, icoSize.GetWidth(),
-                  icoSize.GetHeight());
+                result.Printf(wxT("wxBitmapBundle::FromSVGResource( %s, {%i, %i} )"),
+                    path_expr, icoSize.GetWidth(), icoSize.GetHeight());
             }
             break;
         }
@@ -870,6 +872,24 @@ void CppCodeGenerator::GenAttributeDeclaration(PObjectBase obj, Permission perm,
         GenAttributeDeclaration(child, perm, arrays);
     }
 }
+
+void CppCodeGenerator::GenDarkModeHelper()
+{
+    m_source->WriteLn(wxT("#if wxCHECK_VERSION(3, 1, 3)"));
+    m_source->WriteLn(wxT("[[maybe_unused]] auto pick_resname = [dark = wxSystemSettings::GetAppearance().IsDark()] "
+                          "(const auto& name, const auto& name_dark) -> decltype(auto)"));
+    m_source->WriteLn(wxT("{"));
+
+    m_source->Indent();
+    m_source->WriteLn(wxT("return dark ? name_dark : name;"));
+    m_source->Unindent();
+
+    m_source->WriteLn(wxT("};"));
+    m_source->WriteLn(wxT("#else"));
+    m_source->WriteLn(wxT("[[maybe_unused]] auto pick_resname = [] (const auto& name, const auto&) -> decltype(auto) { return name; };"));
+    m_source->WriteLn(wxT("#endif\n"));
+}
+
 void CppCodeGenerator::GenValidatorVariables(PObjectBase obj)
 {
     GenValVarsBase(obj->GetObjectInfo(), obj);
@@ -1388,6 +1408,8 @@ void CppCodeGenerator::GenConstructor(PObjectBase class_obj, const EventVector& 
     m_source->WriteLn(wxT("{"));
     m_source->Indent();
 
+    GenDarkModeHelper();
+
     wxString settings = GetCode(class_obj, wxT("settings"));
     if (!settings.empty()) {
         m_source->WriteLn(settings);
@@ -1583,9 +1605,9 @@ void CppCodeGenerator::GenConstruction(PObjectBase obj, bool is_widget, ArrayIte
             PProperty prop = obj->GetProperty(_("bitmap"));
             if (prop) {
                 wxString oldVal = prop->GetValueAsString();
-                wxString path, source;
+                wxString source, path, path_dark;
                 wxSize toolsize;
-                TypeConv::ParseBitmapWithResource(oldVal, &path, &source, &toolsize);
+                TypeConv::ParseBitmapWithResource(oldVal, source, path, path_dark, toolsize);
                 if (_("Load From Icon Resource") == source && wxDefaultSize == toolsize) {
                     prop->SetValue(wxString::Format(
                       wxT("%s; %s [%i; %i]"), path, source, toolbarsize.GetWidth(), toolbarsize.GetHeight()));
@@ -1795,10 +1817,11 @@ void CppCodeGenerator::FindEmbeddedBitmapProperties(PObjectBase obj, std::set<wx
         if (property->GetType() == PT_BITMAP) {
             wxString propValue = property->GetValue();
 
-            wxString path;
             wxString source;
+            wxString path;
+            wxString path_dark;
             wxSize icoSize;
-            TypeConv::ParseBitmapWithResource(propValue, &path, &source, &icoSize);
+            TypeConv::ParseBitmapWithResource(propValue, source, path, path_dark, icoSize);
 
             wxFileName bmpFileName(path);
             if (bmpFileName.GetExt().Upper() == wxT("XPM")) {
