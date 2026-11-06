@@ -415,6 +415,17 @@ void CppCodeGenerator::GenerateInheritedClass(PObjectBase userClasses, PObjectBa
         code = GetCode(userClasses, wxT("event_handler_comment"));
         m_header->WriteLn(code);
 
+        /** get the event handler kind */
+        wxString eventHandlerKind;
+        PProperty eventHandlerKindProp = form->GetProperty(wxT("event_handler"));
+        if (eventHandlerKindProp) {
+            eventHandlerKind = eventHandlerKindProp->GetValueAsString();
+        }
+        bool is_virtual = true;
+        if (0 == eventHandlerKind.compare(wxT("decl"))) {
+            is_virtual = false;
+        }
+
         wxString className = userClasses->GetPropertyAsString(_("name"));
         std::set<wxString> generatedHandlers;
         for (size_t i = 0; i < events.size(); i++) {
@@ -423,7 +434,12 @@ void CppCodeGenerator::GenerateInheritedClass(PObjectBase userClasses, PObjectBa
             if (generatedHandlers.find(event->GetValue()) == generatedHandlers.end()) {
                 prototype = wxString::Format(
                   wxT("%s( %s& event )"), event->GetValue(), event->GetEventInfo()->GetEventClassName());
-                m_header->WriteLn(wxString::Format(wxT("void %s;"), prototype));
+                /** If it is virtual inherited, add keyword virtual + override */
+                if (is_virtual) {
+                    m_header->WriteLn(wxString::Format(wxT("virtual void %s override;"), prototype));
+                } else {
+                    m_header->WriteLn(wxString::Format(wxT("void %s;"), prototype));
+                }
                 userCode = m_inheritedCodeParser.GetFunctionDocumentation(event->GetValue());
                 if (!userCode.IsEmpty()) {
                     m_source->Write(userCode);
