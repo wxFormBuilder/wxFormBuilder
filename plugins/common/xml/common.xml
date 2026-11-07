@@ -92,7 +92,7 @@ Written by
       <option name="wxHSCROLL" help="A horizontal scrollbar will be created and used, so that text won't be wrapped. No effect under wxGTK1."/>
       <option name="wxTE_NO_VSCROLL" help="For multiline controls only: vertical scrollbar will never be created. This limits the amount of text which can be entered into the control to what can be displayed in it under MSW but not under GTK2. Currently not implemented for the other platforms."/>
       <option name="wxTE_LEFT" help="The text in the control will be left-justified (default)."/>
-      <option name="wxTE_CENTER" help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
+      <option name="wxTE_CENTRE" help="The text in the control will be centered (currently wxMSW and wxGTK2 only). "/>
       <option name="wxTE_RIGHT" help="The text in the control will be right-justified (currently wxMSW and wxGTK2 only)."/>
       <option name="wxTE_DONTWRAP" help="Same as wxHSCROLL style: don't wrap at all, show horizontal scrollbar instead."/>
       <option name="wxTE_CHARWRAP" help="Wrap the lines too long to be shown entirely at any position (wxUniv and wxGTK2 only)."/>

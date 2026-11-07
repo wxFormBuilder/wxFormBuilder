@@ -1097,7 +1097,7 @@ void ApplicationData::ConvertObject(tinyxml2::XMLElement* object, int versionMaj
                 if (!styleValue.empty()) {
                     if (TypeConv::FlagSet("wxTE_CENTRE", styleValue)) {
                         styleValue = TypeConv::ClearFlag("wxTE_CENTRE", styleValue);
-                        styleValue = TypeConv::SetFlag("wxTE_CENTER", styleValue);
+                        styleValue = TypeConv::SetFlag("wxTE_CENTRE", styleValue);
                     }
                     XMLUtils::SetText(styleProperty, styleValue);
                 }
