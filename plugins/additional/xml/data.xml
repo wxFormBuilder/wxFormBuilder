@@ -227,7 +227,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxDataViewCtrl" icon="dataviewtree_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
+  <objectinfo class="wxDataViewCtrl" icon="dataview_ctrl.xpm" startgroup="1" type="dataviewctrl" wxversion="2904" >
     <inherits class="wxControl"/>
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_dataViewCtrl</property>
