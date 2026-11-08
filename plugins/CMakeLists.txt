@@ -106,17 +106,17 @@ wxfb_add_plugin(containers
 
 wxfb_add_plugin(forms
   ICONS
-    dialog.xpm
-    document.xpm
-    doc_mdi_parent_frame.xpm
-    doc_parent_frame.xpm
-    frame.xpm
+    dialog.png
+    document.png
+    doc_mdi_parent_frame.png
+    doc_parent_frame.png
+    frame.png
     frame16x16.png
-    menubar.xpm
-    panel.xpm
-    toolbar.xpm
-    wizard.xpm
-    wizpage.xpm
+    menubar.png
+    panel.png
+    toolbar.png
+    wizard.png
+    wizpage.png
 )
 
 wxfb_add_plugin(layout

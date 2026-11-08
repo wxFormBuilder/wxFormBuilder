@@ -47,7 +47,7 @@ Written by
     <event name="OnAuiRender" class="wxAuiManagerEvent" help="Event is emitted under AUI-managed form only."/>
   </objectinfo>
 
-  <objectinfo class="Frame" icon="frame.xpm" type="form">
+  <objectinfo class="Frame" icon="frame.png" type="form">
     <inherits class="wxTopLevelWindow"/>
     <inherits class="AUI Events"/>
     <inherits class="wxWindow">
@@ -109,7 +109,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="Panel" icon="panel.xpm" type="form">
+  <objectinfo class="Panel" icon="panel.png" type="form">
     <inherits class="AUI Events"/>
     <inherits class="wxWindow">
       <property name="window_style">wxTAB_TRAVERSAL</property>
@@ -140,7 +140,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="Dialog" icon="dialog.xpm" type="form" base="wxDialog">
+  <objectinfo class="Dialog" icon="dialog.png" type="form" base="wxDialog">
     <inherits class="wxTopLevelWindow"/>
     <inherits class="AUI Events"/>
     <inherits class="wxWindow"/>
@@ -193,7 +193,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="Wizard" icon="wizard.xpm" type="wizard" startgroup="1">
+  <objectinfo class="Wizard" icon="wizard.png" type="wizard" startgroup="1">
     <inherits class="wxTopLevelWindow"/>
     <inherits class="wxWindow"/>
     <property name="name" type="text">MyWizard</property>
@@ -238,13 +238,13 @@ Written by
     <event name="OnWizardFinished" class="wxWizardEvent" help="The wizard finished button was pressed."/>
   </objectinfo>
 
-  <objectinfo class="WizardPageSimple" icon="wizpage.xpm" type="wizardpagesimple">
+  <objectinfo class="WizardPageSimple" icon="wizpage.png" type="wizardpagesimple">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_wizPage</property>
     <property name="bitmap" type="bitmap" help="Page-specific bitmap (default: none)."/>
   </objectinfo>
 
-  <objectinfo class="MenuBar" icon="menubar.xpm" type="menubar_form" startgroup="1">
+  <objectinfo class="MenuBar" icon="menubar.png" type="menubar_form" startgroup="1">
     <inherits class="wxWindow"/>
     <property name="name" type="text">MyMenuBar</property>
     <property name="label" type="wxString_i18n">MyMenuBar</property>
@@ -253,7 +253,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="ToolBar" icon="toolbar.xpm" type="toolbar_form">
+  <objectinfo class="ToolBar" icon="toolbar.png" type="toolbar_form">
     <inherits class="wxWindow"/>
     <property name="name" type="text">MyToolBar</property>
     <property name="bitmapsize" type="wxSize" help="Default size of each tool bitmap. The default bitmap size is 16 by 15 pixels."/>
