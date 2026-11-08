@@ -121,13 +121,13 @@ wxfb_add_plugin(forms
 
 wxfb_add_plugin(layout
   ICONS
-    flex_grid_sizer.xpm
-    grid_bag_sizer.xpm
-    grid_sizer.xpm
-    sizer.xpm
-    sizer16x16.xpm
-    spacer.xpm
-    staticbox_sizer.xpm
-    stddialogbuttonsizer.xpm
-    wrap_sizer.xpm
+    flex_grid_sizer.png
+    grid_bag_sizer.png
+    grid_sizer.png
+    sizer.png
+    sizer16x16.png
+    spacer.png
+    staticbox_sizer.png
+    stddialogbuttonsizer.png
+    wrap_sizer.png
 )
