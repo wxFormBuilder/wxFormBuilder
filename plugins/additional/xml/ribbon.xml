@@ -21,9 +21,9 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Ribbon" lib="additional" icon="ribbon_bar.xpm" desc="wxWidgets Ribbon">
+<package name="Ribbon" lib="additional" icon="ribbon_bar.png" desc="wxWidgets Ribbon">
 
-  <objectinfo class="wxRibbonBar" icon="ribbon_bar.xpm" type="ribbonbar" startgroup="0" wxversion="2904">
+  <objectinfo class="wxRibbonBar" icon="ribbon_bar.png" type="ribbonbar" startgroup="0" wxversion="2904">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_ribbonBar</property>
@@ -57,7 +57,7 @@ Written by
     <event name="OnRibbonBarHelpClick" class="wxRibbonBarEvent" help="Triggered when the help button is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRibbonPage" icon="ribbon_page.xpm" type="ribbonpage" startgroup="0" wxversion="2904">
+  <objectinfo class="wxRibbonPage" icon="ribbon_page.png" type="ribbonpage" startgroup="0" wxversion="2904">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_ribbonPage</property>
     <property name="label" type="wxString_i18n">MyRibbonPage</property>
@@ -65,7 +65,7 @@ Written by
     <property name="select" type="bool" help="Select this ribbon page when adding.">0</property>
   </objectinfo>
 
-  <objectinfo class="wxRibbonPanel" icon="ribbon_panel.xpm" type="ribbonpanel" startgroup="0" wxversion="2904">
+  <objectinfo class="wxRibbonPanel" icon="ribbon_panel.png" type="ribbonpanel" startgroup="0" wxversion="2904">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_ribbonPanel</property>
     <property name="label" type="wxString_i18n">MyRibbonPanel</property>
@@ -82,12 +82,12 @@ Written by
     <event name="OnRibbonPanelExtbuttonActivated" class="wxRibbonPanelEvent" help="Triggered when the user activate the panel extension button."/>
   </objectinfo>
 
-  <objectinfo class="wxRibbonButtonBar" icon="ribbon_buttonbar.xpm" type="ribbonbuttonbar" startgroup="1" wxversion="2904">
+  <objectinfo class="wxRibbonButtonBar" icon="ribbon_buttonbar.png" type="ribbonbuttonbar" startgroup="1" wxversion="2904">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_ribbonButtonBar</property>
   </objectinfo>
 
-  <objectinfo class="ribbonButton" icon="ribbon_button.xpm" type="ribbonbutton" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonButton" icon="ribbon_button.png" type="ribbonbutton" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonButton</property>
     <property name="bitmap" type="bitmap" help="ribbonButton bitmap."/>
@@ -95,7 +95,7 @@ Written by
     <event name="OnRibbonButtonClicked" class="wxRibbonButtonBarEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked."/>
   </objectinfo>
 
-  <objectinfo class="ribbonDropdownButton" icon="ribbon_button_dropdown.xpm" type="ribbondropdownbutton" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonDropdownButton" icon="ribbon_button_dropdown.png" type="ribbondropdownbutton" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonDropdownButton</property>
     <property name="bitmap" type="bitmap" help="ribbonDropdownButton bitmap."/>
@@ -103,7 +103,7 @@ Written by
     <event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)."/>
   </objectinfo>
 
-  <objectinfo class="ribbonHybridButton" icon="ribbon_button_hybrid.xpm" type="ribbonhybridbutton" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonHybridButton" icon="ribbon_button_hybrid.png" type="ribbonhybridbutton" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonHybridButton</property>
     <property name="bitmap" type="bitmap" help="ribbonHybridButton bitmap."/>
@@ -112,7 +112,7 @@ Written by
     <event name="OnRibbonButtonDropdownClicked" class="wxRibbonButtonBarEvent" help="Triggered when the dropdown region of a button on the button bar is clicked. wxRibbonButtonBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown buttons should be doing)."/>
   </objectinfo>
 
-  <objectinfo class="ribbonToggleButton" icon="ribbon_button_toggle.xpm" type="ribbontogglebutton" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonToggleButton" icon="ribbon_button_toggle.png" type="ribbontogglebutton" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonToggleButton</property>
     <property name="bitmap" type="bitmap" help="ribbonToggleButton bitmap."/>
@@ -120,12 +120,12 @@ Written by
     <event name="OnRibbonButtonClicked" class="wxCommandEvent" help="Triggered when the normal (non-dropdown) region of a button on the button bar is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRibbonToolBar" icon="ribbon_buttonbar.xpm" type="ribbontoolbar" startgroup="1" wxversion="2904">
+  <objectinfo class="wxRibbonToolBar" icon="ribbon_buttonbar.png" type="ribbontoolbar" startgroup="1" wxversion="2904">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_ribbonToolBar</property>
   </objectinfo>
 
-  <objectinfo class="ribbonTool" icon="ribbon_button.xpm" type="ribbontool" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonTool" icon="ribbon_button.png" type="ribbontool" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonTool</property>
     <property name="bitmap" type="bitmap" help="ribbonTool bitmap."/>
@@ -133,7 +133,7 @@ Written by
     <event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked."/>
   </objectinfo>
 
-  <objectinfo class="ribbonDropdownTool" icon="ribbon_button_dropdown.xpm" type="ribbondropdowntool" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonDropdownTool" icon="ribbon_button_dropdown.png" type="ribbondropdowntool" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonDropdownTool</property>
     <property name="bitmap" type="bitmap" help="ribbonDropdownTool bitmap."/>
@@ -141,7 +141,7 @@ Written by
     <event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)."/>
   </objectinfo>
 
-  <objectinfo class="ribbonHybridTool" icon="ribbon_button_hybrid.xpm" type="ribbonhybridtool" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonHybridTool" icon="ribbon_button_hybrid.png" type="ribbonhybridtool" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonHybridTool</property>
     <property name="bitmap" type="bitmap" help="ribbonHybridTool bitmap."/>
@@ -150,7 +150,7 @@ Written by
     <event name="OnRibbonToolDropdownClicked" class="wxRibbonToolBarEvent" help="Triggered when the dropdown region of a tool on the tool bar is clicked. wxRibbonToolBarEvent::PopupMenu() should be called by the event handler if it wants to display a popup menu (which is what most dropdown tools should be doing)."/>
   </objectinfo>
 
-  <objectinfo class="ribbonToggleTool" icon="ribbon_button_toggle.xpm" type="ribbontoggletool" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonToggleTool" icon="ribbon_button_toggle.png" type="ribbontoggletool" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="label" type="wxString_i18n">MyRibbonToggleTool</property>
     <property name="bitmap" type="bitmap" help="ribbonToggleTool bitmap."/>
@@ -158,7 +158,7 @@ Written by
     <event name="OnRibbonToolClicked" class="wxRibbonToolBarEvent" help="Triggered when the normal (non-dropdown) region of a tool on the tool bar is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRibbonGallery" icon="ribbon_gallery.xpm" type="ribbongallery" startgroup="1" wxversion="2904">
+  <objectinfo class="wxRibbonGallery" icon="ribbon_gallery.png" type="ribbongallery" startgroup="1" wxversion="2904">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_ribbonGallery</property>
     <event name="OnRibbonGallerySelected" class="wxRibbonGalleryEvent" help="Triggered when the user selects an item from the gallery."/>
@@ -167,7 +167,7 @@ Written by
     <event name="OnRibbonGalleryExtensionButtonPressed" class="wxCommandEvent" help="Triggered when the extension button of the gallery is pressed."/>
   </objectinfo>
 
-  <objectinfo class="ribbonGalleryItem" icon="ribbon_button.xpm" type="ribbongalleryitem" startgroup="0" wxversion="2904">
+  <objectinfo class="ribbonGalleryItem" icon="ribbon_button.png" type="ribbongalleryitem" startgroup="0" wxversion="2904">
     <property name="id" type="macro"/>
     <property name="bitmap" type="bitmap" help="ribbonGalleryItem bitmap."/>
   </objectinfo>

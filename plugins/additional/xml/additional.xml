@@ -21,9 +21,9 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Additional" lib="additional" icon="tree_ctrl.xpm" desc="wxWidgets additional controls">
+<package name="Additional" lib="additional" icon="tree_ctrl.png" desc="wxWidgets additional controls">
 
-  <objectinfo class="wxHtmlWindow" icon="htmlwin.xpm" type="widget">
+  <objectinfo class="wxHtmlWindow" icon="htmlwin.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_htmlWin</property>
@@ -38,7 +38,7 @@ Written by
     <event name="OnHtmlLinkClicked" class="wxHtmlLinkEvent" help="A wxHtmlCell which contains an hyperlink was clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRichTextCtrl" icon="richtextctrl.xpm" type="expanded_widget">
+  <objectinfo class="wxRichTextCtrl" icon="richtextctrl.png" type="expanded_widget">
     <inherits class="wxWindow">
       <property name="window_style">wxVSCROLL|wxHSCROLL|wxNO_BORDER|wxWANTS_CHARS</property>
     </inherits>
@@ -67,7 +67,7 @@ Written by
     <event name="OnRichTextContentDeleted" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RICHTEXT_CONTENT_DELETED event, generated when content has been deleted from the control. Valid event functions: GetPosition, GetRange."/>
   </objectinfo>
 
-  <objectinfo class="wxStyledTextCtrl" icon="scintilla.xpm" type="expanded_widget">
+  <objectinfo class="wxStyledTextCtrl" icon="scintilla.png" type="expanded_widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text" >m_scintilla</property>
@@ -83,7 +83,7 @@ Written by
     <property name="read_only" type="bool" help="Set ReadOnly Mode. Disable editing.">0</property>
   </objectinfo>
 
-  <objectinfo class="wxToggleButton" startgroup="1" icon="toggle_button.xpm" type="widget">
+  <objectinfo class="wxToggleButton" startgroup="1" icon="toggle_button.png" type="widget">
     <inherits class="wxAnyButton"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
@@ -93,13 +93,13 @@ Written by
     <event name="OnToggleButton" class="wxCommandEvent" help="Handles a wxEVT_TOGGLEBUTTON event."/>
   </objectinfo>
 
-  <objectinfo class="wxBitmapToggleButton" icon="bitmap_toggle_button.xpm" type="widget">
+  <objectinfo class="wxBitmapToggleButton" icon="bitmap_toggle_button.png" type="widget">
     <inherits class="wxToggleButton">
       <property name="name">m_bmToggleBtn</property>
     </inherits>
   </objectinfo>
 
-  <objectinfo class="wxSearchCtrl" icon="search.xpm" type="widget">
+  <objectinfo class="wxSearchCtrl" icon="search.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -122,7 +122,7 @@ Written by
     <event name="OnCancelButton" class="wxCommandEvent" help="Respond to a wxEVT_SEARCHCTRL_CANCEL_BTN event, generated when the cancel button is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxColourPickerCtrl" startgroup="1" icon="colourPickerIcon.xpm" type="widget">
+  <objectinfo class="wxColourPickerCtrl" startgroup="1" icon="colourPickerIcon.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -137,7 +137,7 @@ Written by
     <event name="OnColourChanged" class="wxColourPickerEvent" help="The user changed the colour selected in the control either using the button or using text control (see wxCLRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
   </objectinfo>
 
-  <objectinfo class="wxFontPickerCtrl" icon="fontPicker.xpm" type="widget">
+  <objectinfo class="wxFontPickerCtrl" icon="fontPicker.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -154,7 +154,7 @@ Written by
     <event name="OnFontChanged" class="wxFontPickerEvent" help="The user changed the font selected in the control either using the button or using text control (see wxFNTP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, i.e. recognizable)."/>
   </objectinfo>
 
-  <objectinfo class="wxFilePickerCtrl" icon="filePicker.xpm" type="widget">
+  <objectinfo class="wxFilePickerCtrl" icon="filePicker.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -176,7 +176,7 @@ Written by
     <event name="OnFileChanged" class="wxFileDirPickerEvent" help="The user changed the file selected in the control either using the button or using text control (see wxFLP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing file path if wxFLP_FILE_MUST_EXIST was given)."/>
   </objectinfo>
 
-  <objectinfo class="wxDirPickerCtrl" icon="dirPicker.xpm" type="widget">
+  <objectinfo class="wxDirPickerCtrl" icon="dirPicker.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -194,7 +194,7 @@ Written by
     <event name="OnDirChanged" class="wxFileDirPickerEvent" help="The user changed the directory selected in the control either using the button or using text control (see wxDIRP_USE_TEXTCTRL; note that in this case the event is fired only if the user's input is valid, e.g. an existing directory path)."/>
   </objectinfo>
 
-  <objectinfo class="wxDatePickerCtrl" icon="datepicker.xpm" type="widget">
+  <objectinfo class="wxDatePickerCtrl" icon="datepicker.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -210,7 +210,7 @@ Written by
     <event name="OnDateChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control."/>
   </objectinfo>
 
-  <objectinfo class="wxTimePickerCtrl" icon="timepicker.xpm" type="widget">
+  <objectinfo class="wxTimePickerCtrl" icon="timepicker.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -222,7 +222,7 @@ Written by
     <event name="OnTimeChanged" class="wxDateEvent" help="This event fires when the user changes the current selection in the control."/>
   </objectinfo>
 
-  <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.xpm" type="widget">
+  <objectinfo class="wxCalendarCtrl" startgroup="1" icon="calendar.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -248,7 +248,7 @@ Written by
     <event name="OnCalendarWeekClicked" class="wxCalendarEvent" help="User clicked on the week of the year number (only generic)."/>
   </objectinfo>
 
-  <objectinfo class="wxScrollBar" icon="scrollbar.xpm" type="widget">
+  <objectinfo class="wxScrollBar" icon="scrollbar.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -284,7 +284,7 @@ Written by
     <event name="OnCommandScrollChanged" class="wxScrollEvent" help="Process wxEVT_SCROLL_CHANGED end of scrolling events (MSW only). Variant taking a window identifier."/>
   </objectinfo>
 
-  <objectinfo class="wxSpinCtrl" icon="spin_ctrl.xpm" type="widget">
+  <objectinfo class="wxSpinCtrl" icon="spin_ctrl.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_spinCtrl</property>
@@ -306,7 +306,7 @@ Written by
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)."/>
   </objectinfo>
 
-  <objectinfo class="wxSpinCtrlDouble" icon="spin_ctrl_double.xpm" type="widget">
+  <objectinfo class="wxSpinCtrlDouble" icon="spin_ctrl_double.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_spinCtrlDouble</property>
@@ -330,7 +330,7 @@ Written by
     <event name="OnTextEnter" class="wxCommandEvent" help="Respond to a wxEVT_COMMAND_TEXT_ENTER event, generated when enter is pressed in the edit part of the spin control (which must have wxTE_PROCESS_ENTER style for this event to be generated)."/>
   </objectinfo>
 
-  <objectinfo class="wxSpinButton" icon="spinbtn.xpm" type="widget">
+  <objectinfo class="wxSpinButton" icon="spinbtn.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_spinBtn</property>
@@ -345,7 +345,7 @@ Written by
     <event name="OnSpinDown" class="wxSpinEvent" help="Generated when right/down arrow is pressed."/>
   </objectinfo>
 
-  <objectinfo class="wxHyperlinkCtrl" icon="hyperlink_ctrl.xpm" type="widget">
+  <objectinfo class="wxHyperlinkCtrl" icon="hyperlink_ctrl.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_hyperlink</property>
@@ -365,7 +365,7 @@ Written by
     <event name="OnHyperlink" class="wxHyperlinkEvent" help="The hyperlink was (left) clicked. If this event is not handled in user's code (or it's skipped; see wxEvent::Skip), then a call to wxLaunchDefaultBrowser is done with the hyperlink's URL."/>
   </objectinfo>
 
-  <objectinfo class="wxGenericDirCtrl" icon="genericdir_ctrl.xpm" type="expanded_widget">
+  <objectinfo class="wxGenericDirCtrl" icon="genericdir_ctrl.png" type="expanded_widget">
     <inherits class="wxTreeCtrlBase"/>
     <inherits class="wxWindow">
       <property name="window_style">wxSUNKEN_BORDER</property>
@@ -389,7 +389,7 @@ Written by
     <event name="OnDirctrlFileActivated" class="wxCommandEvent" help="The user activated a file by double-clicking or pressing Enter. Available since wxWidgets 2.9.5."/>
   </objectinfo>
 
-  <objectinfo class="wxMediaCtrl" icon="media_ctrl.xpm" type="widget">
+  <objectinfo class="wxMediaCtrl" icon="media_ctrl.png" type="widget">
     <inherits class="wxControl"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
@@ -406,7 +406,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxVListBox" icon="list_box.xpm" type="widget">
+  <objectinfo class="wxVListBox" icon="list_box.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_vlistBox</property>
@@ -417,7 +417,7 @@ Written by
     <event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked."/>
   </objectinfo>
 
-  <objectinfo class="CustomControl" startgroup="1" icon="custom_control.xpm" type="widget">
+  <objectinfo class="CustomControl" startgroup="1" icon="custom_control.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_customControl</property>
@@ -445,7 +445,7 @@ Written by
     </category>
   </objectinfo>
 
-  <objectinfo class="CustomCode" startgroup="1" icon="customcode.xpm" type="nonvisual">
+  <objectinfo class="CustomCode" startgroup="1" icon="customcode.png" type="nonvisual">
     <property name="name" type="text" help="Informal name, this is not used in the generated code and therefor doesn't need to be unique.">MyCode</property>
     <category name="C++">
       <property name="cpp_include" type="text_ml" help="Optional include directive for C++."></property>
@@ -465,7 +465,7 @@ Written by
     </category>
   </objectinfo>
 
-  <objectinfo class="wxTimer" icon="timer.xpm" type="nonvisual">
+  <objectinfo class="wxTimer" icon="timer.png" type="nonvisual">
     <property name="name" type="text">m_timer</property>
     <property name="id" type="macro" help="Timer identifier.">wxID_ANY</property>
     <property name="period" type="int" help="Timer period in milliseconds.">1000</property>
