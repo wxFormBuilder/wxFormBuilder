@@ -21,9 +21,9 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Containers" lib="containers" icon="splitter_window.xpm" desc="wxWidgets container controls">
+<package name="Containers" lib="containers" icon="splitter_window.png" desc="wxWidgets container controls">
 
-  <objectinfo class="wxPanel" icon="panel.xpm" type="container">
+  <objectinfo class="wxPanel" icon="panel.png" type="container">
     <inherits class="wxWindow">
       <property name="window_style">wxTAB_TRAVERSAL</property>
     </inherits>
@@ -31,7 +31,7 @@ Written by
     <property name="name" type="text">m_panel</property>
   </objectinfo>
 
-  <objectinfo class="wxCollapsiblePane" icon="collpane.xpm" type="container">
+  <objectinfo class="wxCollapsiblePane" icon="collpane.png" type="container">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -46,7 +46,7 @@ Written by
     <event name="OnCollapsiblePaneChanged" class="wxCollapsiblePaneEvent" help="The user expanded or collapsed the collapsible pane."/>
   </objectinfo>
 
-  <objectinfo class="wxSplitterWindow" icon="splitter_window.xpm" type="splitter" startgroup="1">
+  <objectinfo class="wxSplitterWindow" icon="splitter_window.png" type="splitter" startgroup="1">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_splitter</property>
@@ -80,7 +80,7 @@ Written by
 
   <objectinfo class="splitteritem" type="splitteritem"/>
 
-  <objectinfo class="wxScrolledWindow" icon="scrollwin.xpm" type="container">
+  <objectinfo class="wxScrolledWindow" icon="scrollwin.png" type="container">
     <inherits class="wxWindow">
       <property name="window_style">wxHSCROLL|wxVSCROLL</property>
     </inherits>
@@ -90,7 +90,7 @@ Written by
     <property name="scroll_rate_y" type="uint" help="Set the vertical scrolling increment.">5</property>
   </objectinfo>
 
-  <objectinfo class="wxNotebook" icon="notebook.xpm" type="notebook" startgroup="1">
+  <objectinfo class="wxNotebook" icon="notebook.png" type="notebook" startgroup="1">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_notebook</property>
@@ -108,13 +108,13 @@ Written by
     <event name="OnNotebookPageChanging" class="wxNotebookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGING event. This event can be vetoed."/>
   </objectinfo>
 
-  <objectinfo class="notebookpage" icon="notebook.xpm" type="notebookpage">
+  <objectinfo class="notebookpage" icon="notebook.png" type="notebookpage">
     <property name="label" type="wxString_i18n">a page</property>
     <property name="bitmap" type="bitmap" help="Page Image"/>
     <property name="select" type="bool" help="Select Page when Adding">0</property>
   </objectinfo>
 
-  <objectinfo class="wxAuiNotebook" icon="auinotebook.xpm" type="auinotebook">
+  <objectinfo class="wxAuiNotebook" icon="auinotebook.png" type="auinotebook">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_auinotebook</property>
@@ -153,13 +153,13 @@ Written by
     <event name="OnAuiNotebookBGDClick" class="wxAuiNotebookEvent" help="Double clicked on the tabs background area. Processes a wxEVT_AUINOTEBOOK_BG_DCLICK event."/>
   </objectinfo>
 
-  <objectinfo class="auinotebookpage" icon="auinotebook.xpm" type="auinotebookpage">
+  <objectinfo class="auinotebookpage" icon="auinotebook.png" type="auinotebookpage">
     <property name="label" type="wxString_i18n">a page</property>
     <property name="bitmap" type="bitmap" help="Page Image"/>
     <property name="select" type="bool" help="Select Page when Adding">0</property>
   </objectinfo>
 
-  <objectinfo class="wxListbook" icon="listbook.xpm" type="listbook">
+  <objectinfo class="wxListbook" icon="listbook.png" type="listbook">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_listbook</property>
@@ -176,13 +176,13 @@ Written by
     <event name="OnListbookPageChanging" class="wxListbookEvent" help="The page selection is about to be changed. Processes a wxEVT_COMMAND_LISTBOOK_PAGE_CHANGING event. This event can be vetoed."/>
   </objectinfo>
 
-  <objectinfo class="listbookpage" icon="listbook.xpm" type="listbookpage">
+  <objectinfo class="listbookpage" icon="listbook.png" type="listbookpage">
     <property name="label" type="wxString_i18n">a page</property>
     <property name="bitmap" type="bitmap" help="Page Image"/>
     <property name="select" type="bool" help="Select Page when Adding">0</property>
   </objectinfo>
 
-  <objectinfo class="wxChoicebook" icon="choicebook.xpm" type="choicebook">
+  <objectinfo class="wxChoicebook" icon="choicebook.png" type="choicebook">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_choicebook</property>
@@ -198,12 +198,12 @@ Written by
     <event name="OnChoicebookPageChanging" class="wxChoicebookEvent" help="The page selection is about to be changed. Processes a wxEVT_CHOICEBOOK_PAGE_CHANGING event. This event can be vetoed (using wxNotifyEvent::Veto())."/>
   </objectinfo>
 
-  <objectinfo class="choicebookpage" icon="choicebook.xpm" type="choicebookpage">
+  <objectinfo class="choicebookpage" icon="choicebook.png" type="choicebookpage">
     <property name="label" type="wxString_i18n">a page</property>
     <property name="select" type="bool" help="Select Page when Adding">0</property>
   </objectinfo>
 
-  <objectinfo class="wxSimplebook" icon="panel.xpm" type="simplebook">
+  <objectinfo class="wxSimplebook" icon="panel.png" type="simplebook">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_simplebook</property>
@@ -211,7 +211,7 @@ Written by
     <event name="OnSimplebookPageChanging" class="wxBookCtrlEvent" help="The page selection is about to be changed. Processes a wxEVT_BOOKCTRL_PAGE_CHANGING event. This event can be vetoed."/>
   </objectinfo>
 
-  <objectinfo class="simplebookpage" icon="choicebook.xpm" type="simplebookpage">
+  <objectinfo class="simplebookpage" icon="choicebook.png" type="simplebookpage">
     <property name="label" type="wxString_i18n">a page</property>
     <property name="select" type="bool" help="Select Page when Adding">0</property>
   </objectinfo>

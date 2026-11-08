@@ -94,14 +94,14 @@ wxfb_add_plugin(containers
   SOURCES
     bookutils.h
   ICONS
-    auinotebook.xpm
-    choicebook.xpm
-    collpane.xpm
-    listbook.xpm
-    notebook.xpm
-    panel.xpm
-    scrollwin.xpm
-    splitter_window.xpm
+    auinotebook.png
+    choicebook.png
+    collpane.png
+    listbook.png
+    notebook.png
+    panel.png
+    scrollwin.png
+    splitter_window.png
 )
 
 wxfb_add_plugin(forms
