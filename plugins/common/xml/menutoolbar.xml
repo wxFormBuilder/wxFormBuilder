@@ -21,9 +21,9 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Menu/Toolbar" lib="common" icon="menubar.xpm" desc="wxWidgets Menu and Toolbar Controls">
+<package name="Menu/Toolbar" lib="common" icon="menubar.png" desc="wxWidgets Menu and Toolbar Controls">
 
-  <objectinfo class="wxStatusBar" icon="statusbar.xpm" type="statusbar">
+  <objectinfo class="wxStatusBar" icon="statusbar.png" type="statusbar">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_statusBar</property>
     <property name="fields" type="uint" help="Number of fields in the statusbar.">1</property>
@@ -38,7 +38,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxMenuBar" icon="menubar.xpm" type="menubar" startgroup="1">
+  <objectinfo class="wxMenuBar" icon="menubar.png" type="menubar" startgroup="1">
     <inherits class="wxWindow"/>
     <property name="name" type="text">m_menubar</property>
     <property name="style" type="bitlist">
@@ -46,18 +46,18 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxMenu" icon="menu.xpm" type="menu">
+  <objectinfo class="wxMenu" icon="menu.png" type="menu">
     <property name="name" type="text">m_menu</property>
     <property name="label" type="wxString_i18n">MyMenu</property>
   </objectinfo>
 
-  <objectinfo class="submenu" icon="submenu.xpm" type="submenu">
+  <objectinfo class="submenu" icon="submenu.png" type="submenu">
     <property name="name" type="text">m_menu</property>
     <property name="bitmap" type="bitmap" help="Bitmap for the menu item. (Windows, GTK+, and OSX only) This doubles as the checked bitmap is the menu item is wxITEM_CHECK."/>
     <property name="label" type="wxString_i18n">MyMenu</property>
   </objectinfo>
 
-  <objectinfo class="wxMenuItem" icon="menuitem.xpm" type="menuitem">
+  <objectinfo class="wxMenuItem" icon="menuitem.png" type="menuitem">
     <property name="name" type="text">m_menuItem</property>
     <property name="label" type="wxString_i18n" help="Text for the menu item, as shown on the menu. An accelerator key can be specified using the ampersand &quot;&amp;&quot; character.">MyMenuItem</property>
     <property name="shortcut" type="wxString" help="Optional shortcut keyboard shortcut. Remarks: The general syntax is any combination of &quot;CTRL&quot;, &quot;ALT&quot; and &quot;SHIFT&quot; strings (case doesn't matter) separated by either '-' or '+' characters and followed by the accelerator itself. The accelerator may be any alphanumeric character, any function key (from F1 to F12)"/>
@@ -77,11 +77,11 @@ Written by
     <event name="OnUpdateUI" class="wxUpdateUIEvent" help="Process a wxEVT_UPDATE_UI event."/>
   </objectinfo>
 
-  <objectinfo class="separator" icon="separator.xpm" type="menuitem">
+  <objectinfo class="separator" icon="separator.png" type="menuitem">
     <property name="name" type="text">m_separator</property>
   </objectinfo>
 
-  <objectinfo class="wxToolBar" icon="toolbar.xpm" type="toolbar" startgroup="1">
+  <objectinfo class="wxToolBar" icon="toolbar.png" type="toolbar" startgroup="1">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_toolBar</property>
@@ -108,7 +108,7 @@ Written by
     </property>
   </objectinfo>
 
- <objectinfo class="wxAuiToolBar" icon="auitoolbar.xpm" type="toolbar">
+ <objectinfo class="wxAuiToolBar" icon="auitoolbar.png" type="toolbar">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_auiToolBar</property>
@@ -133,7 +133,7 @@ Written by
     <property name="use_explicit_ids" type="bool" help="Use user-specified tool IDs instead of automatically assigned ones (needed for old wxAuiToolBar implementation).">0</property>
   </objectinfo>
 
-  <objectinfo class="tool" icon="tool.xpm" type="tool">
+  <objectinfo class="tool" icon="tool.png" type="tool">
     <property name="name" type="text">m_tool</property>
     <property name="label" type="wxString_i18n">tool</property>
     <property name="bitmap" type="bitmap" help="The primary tool bitmap."/>
@@ -159,10 +159,10 @@ Written by
     <event name="OnAuiToolBarBeginDrag" class="wxAuiToolBarEvent" help="Process a wxEVT_COMMAND_AUITOOLBAR_BEGIN_DRAG event."/>
   </objectinfo>
 
-  <objectinfo class="toolSeparator" icon="toolSeparator.xpm" type="tool">
+  <objectinfo class="toolSeparator" icon="toolSeparator.png" type="tool">
   </objectinfo>
 
-  <objectinfo class="wxInfoBar" icon="infobar.xpm" type="widget" wxversion="2904" startgroup="1">
+  <objectinfo class="wxInfoBar" icon="infobar.png" type="widget" wxversion="2904" startgroup="1">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_infoCtrl</property>

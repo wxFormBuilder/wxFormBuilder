@@ -21,9 +21,9 @@ Written by
   José Antonio Hurtado - joseantonio.hurtado@gmail.com
   Juan Antonio Ortega  - jortegalalmolda@gmail.com
 -->
-<package name="Common" lib="common" icon="button16x16.xpm" desc="wxWidgets common controls">
+<package name="Common" lib="common" icon="button16x16.png" desc="wxWidgets common controls">
 
-  <objectinfo class="wxButton" icon="button.xpm" type="widget">
+  <objectinfo class="wxButton" icon="button.png" type="widget">
     <inherits class="wxAnyButton"/>
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
@@ -43,7 +43,7 @@ Written by
     <event name="OnButtonClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_BUTTON_CLICKED event, when the button is clicked"/>
   </objectinfo>
 
-  <objectinfo class="wxBitmapButton" icon="bitmap_button.xpm" type="widget">
+  <objectinfo class="wxBitmapButton" icon="bitmap_button.png" type="widget">
     <inherits class="wxButton">
       <property name="name">m_bpButton</property>
     </inherits>
@@ -56,7 +56,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxStaticText" icon="static_text.xpm" type="widget">
+  <objectinfo class="wxStaticText" icon="static_text.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_staticText</property>
@@ -74,7 +74,7 @@ Written by
     <property name="wrap" type="int" help="Wraps the control's label so that each of its lines becomes at most this many pixels wide if possible (the lines are broken at words boundaries so it might not be the case if words are too long). If width is negative, no wrapping is done.">-1</property>
   </objectinfo>
 
-  <objectinfo class="wxTextCtrl" icon="text_ctrl.xpm" type="widget">
+  <objectinfo class="wxTextCtrl" icon="text_ctrl.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -108,14 +108,14 @@ Written by
     <event name="OnTextMaxLen" class="wxCommandEvent" help="User tried to enter more text into the control than the limit set by SetMaxLength."/>
   </objectinfo>
 
-  <objectinfo class="wxStaticBitmap" icon="static_bitmap.xpm" type="widget">
+  <objectinfo class="wxStaticBitmap" icon="static_bitmap.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_bitmap</property>
     <property name="bitmap" type="bitmap"/>
   </objectinfo>
 
-  <objectinfo class="wxAnimationCtrl" icon="animation.xpm" type="widget">
+  <objectinfo class="wxAnimationCtrl" icon="animation.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_animCtrl</property>
@@ -129,7 +129,7 @@ Written by
     <property name="play" type="bool">0</property>
   </objectinfo>
 
-  <objectinfo class="wxComboBox" icon="combo_box.xpm" type="widget">
+  <objectinfo class="wxComboBox" icon="combo_box.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -151,7 +151,7 @@ Written by
     <event name="OnComboboxCloseup" class="wxCommandEvent" help="Process a wxEVT_COMBOBOX_CLOSEUP event, which is generated when the list box of the combo box disappears (closes up). This event is only generated for the same platforms as wxEVT_COMBOBOX_DROPDOWN above. Also note that only wxMSW and wxOSX/Cocoa support adding or deleting items in this event."/>
   </objectinfo>
 
-  <objectinfo class="wxBitmapComboBox" icon="combo_box.xpm" type="widget">
+  <objectinfo class="wxBitmapComboBox" icon="combo_box.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -169,7 +169,7 @@ Written by
     <event name="OnTextEnter" class="wxCommandEvent" help="Process a wxEVT_COMMAND_TEXT_ENTER event, when &lt;RETURN&gt; is pressed in the combobox."/>
   </objectinfo>
 
-  <objectinfo class="wxChoice" icon="choice.xpm" type="widget">
+  <objectinfo class="wxChoice" icon="choice.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -182,7 +182,7 @@ Written by
     <event name="OnChoice" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHOICE_SELECTED event, when an item on the list is selected."/>
   </objectinfo>
 
-  <objectinfo class="wxListBox" icon="list_box.xpm" type="widget">
+  <objectinfo class="wxListBox" icon="list_box.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -202,7 +202,7 @@ Written by
     <event name="OnListBoxDClick" class="wxCommandEvent" help="Process a wxEVT_COMMAND_LISTBOX_DOUBLECLICKED event, when the listbox is double-clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxListCtrl" icon="list_ctrl.xpm" type="widget">
+  <objectinfo class="wxListCtrl" icon="list_ctrl.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -249,7 +249,7 @@ Written by
     <event name="OnListItemUnchecked" class="wxListEvent" help="The item has been unchecked."/>
   </objectinfo>
 
-  <objectinfo class="wxCheckBox" icon="checkbox.xpm" type="widget">
+  <objectinfo class="wxCheckBox" icon="checkbox.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -265,7 +265,7 @@ Written by
     <event name="OnCheckBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_CHECKBOX_CLICKED event, when the checkbox is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRadioBox" icon="radio_box.xpm" type="widget">
+  <objectinfo class="wxRadioBox" icon="radio_box.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -282,7 +282,7 @@ Written by
     <event name="OnRadioBox" class="wxCommandEvent" help="Process a wxEVT_COMMAND_RADIOBOX_SELECTED event, when a radiobutton is clicked."/>
   </objectinfo>
 
-  <objectinfo class="wxRadioButton" icon="radio_button.xpm" type="widget">
+  <objectinfo class="wxRadioButton" icon="radio_button.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -296,7 +296,7 @@ Written by
     <event name="OnRadioButton" class="wxCommandEvent" help="Handles a toggle button click event."/>
   </objectinfo>
 
-  <objectinfo class="wxStaticLine" icon="static_line.xpm" type="widget">
+  <objectinfo class="wxStaticLine" icon="static_line.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <property name="name" type="text">m_staticline</property>
@@ -307,7 +307,7 @@ Written by
     </property>
   </objectinfo>
 
-  <objectinfo class="wxSlider" icon="slider.xpm" type="widget">
+  <objectinfo class="wxSlider" icon="slider.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>
@@ -354,7 +354,7 @@ Written by
     <event name="OnSlider" class="wxCommandEvent" help="Process wxEVT_SLIDER which is generated after any change of wxSlider position in addition to one of the events above. Notice that the handler of this event receives a wxCommandEvent as argument and not wxScrollEvent, as all the other handlers."/>
   </objectinfo>
 
-  <objectinfo class="wxGauge" icon="gauge.xpm" type="widget">
+  <objectinfo class="wxGauge" icon="gauge.png" type="widget">
     <inherits class="wxWindow"/>
     <inherits class="AUI"/>
     <inherits class="Validator"/>

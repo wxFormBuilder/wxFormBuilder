@@ -60,34 +60,34 @@ wxfb_add_plugin(common
     common
     menutoolbar
   ICONS
-    animation.xpm
-    auitoolbar.xpm
-    bitmap_button.xpm
-    button.xpm
-    button16x16.xpm
-    checkbox.xpm
-    choice.xpm
-    combo_box.xpm
-    gauge.xpm
-    infobar.xpm
-    list_box.xpm
-    list_ctrl.xpm
-    menu.xpm
-    menubar.xpm
-    menuitem.xpm
-    radio_box.xpm
-    radio_button.xpm
-    separator.xpm
-    slider.xpm
-    static_bitmap.xpm
-    static_line.xpm
-    static_text.xpm
-    statusbar.xpm
-    submenu.xpm
-    text_ctrl.xpm
-    tool.xpm
-    toolbar.xpm
-    toolSeparator.xpm
+    animation.png
+    auitoolbar.png
+    bitmap_button.png
+    button.png
+    button16x16.png
+    checkbox.png
+    choice.png
+    combo_box.png
+    gauge.png
+    infobar.png
+    list_box.png
+    list_ctrl.png
+    menu.png
+    menubar.png
+    menuitem.png
+    radio_box.png
+    radio_button.png
+    separator.png
+    slider.png
+    static_bitmap.png
+    static_line.png
+    static_text.png
+    statusbar.png
+    submenu.png
+    text_ctrl.png
+    tool.png
+    toolbar.png
+    toolSeparator.png
 )
 
 wxfb_add_plugin(containers
