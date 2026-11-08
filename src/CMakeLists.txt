@@ -156,10 +156,10 @@ set(commonResources
 )
 set(commonIcons
   balign.png
-  bottom.xpm
+  bottom.png
   c++.png
   chalign.png
-  copy.xpm
+  copy.png
   cpp.png
   cut.png
   cvalign.png
@@ -170,28 +170,26 @@ set(commonIcons
   generate.png
   h.png
   lalign.png
-  left.xpm
+  left.png
   logo.png
-  logo.xpm
   lua.png
   new.png
   open.png
   paste.png
   php.png
-  prefs.xpm
-  project.xpm
+  project.png
   properties.png
   python.png
   ralign.png
   redo.png
-  right.xpm
+  right.png
   save.png
   stretch.png
   swap.png
   talign.png
-  top.xpm
+  top.png
   undo.png
-  wxwin16x16.xpm
+  wxwin16x16.png
   xrc.png
 )
 if(APPLE)

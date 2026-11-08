@@ -2,7 +2,7 @@
 <icons>
 
   <!-- Main Application Icon-->
-  <icon name="app16" file="wxwin16x16.xpm"/>
+  <icon name="app16" file="wxwin16x16.png"/>
   <icon name="app32" file="logo.png"/>
 
   <!-- Toolbar Icons -->
@@ -11,7 +11,7 @@
   <icon name="save" file="save.png"/>
   <icon name="undo" file="undo.png"/>
   <icon name="redo" file="redo.png"/>
-  <icon name="copy" file="copy.xpm"/>
+  <icon name="copy" file="copy.png"/>
   <icon name="paste" file="paste.png"/>
   <icon name="cut" file="cut.png"/>
   <icon name="delete" file="delete.png"/>
@@ -24,17 +24,17 @@
   <icon name="balign" file="balign.png"/>
   <icon name="expand" file="expand.png"/>
   <icon name="stretch" file="stretch.png"/>
-  <icon name="left" file="left.xpm"/>
-  <icon name="right" file="right.xpm"/>
-  <icon name="top" file="top.xpm"/>
-  <icon name="bottom" file="bottom.xpm"/>
+  <icon name="left" file="left.png"/>
+  <icon name="right" file="right.png"/>
+  <icon name="top" file="top.png"/>
+  <icon name="bottom" file="bottom.png"/>
   <icon name="swap" file="swap.png"/>
 
   <!-- Object Tree -->
-  <icon name="project" file="project.xpm"/>
+  <icon name="project" file="project.png"/>
 
   <!-- Replace Unknown Icon -->
-  <!-- <icon name="unknown" file="unknown.xpm"/> -->
+  <!-- <icon name="unknown" file="unknown.png"/> -->
 
   <!-- Visual Editor -->
   <icon name="cpp" file="cpp.png"/>
