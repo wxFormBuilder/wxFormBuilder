@@ -23,6 +23,7 @@ wxfb_add_plugin(additional
     fontPicker.png
     genericdir_ctrl.png
     grid.png
+    grid16x16.png
     htmlwin.png
     hyperlink_ctrl.png
     list_box.png
@@ -32,6 +33,7 @@ wxfb_add_plugin(additional
     propgridman.png
     propgridpage.png
     ribbon_bar.png
+    ribbon_bar16x16.png
     ribbon_button.png
     ribbon_buttonbar.png
     ribbon_button_dropdown.png
@@ -53,6 +55,7 @@ wxfb_add_plugin(additional
     treelistctrl.png
     treelistctrlcolumn.png
     tree_ctrl.png
+    tree_ctrl16x16.png
 )
 
 wxfb_add_plugin(common
@@ -74,6 +77,7 @@ wxfb_add_plugin(common
     list_ctrl.png
     menu.png
     menubar.png
+    menubar16x16.png
     menuitem.png
     radio_box.png
     radio_button.png
@@ -102,6 +106,7 @@ wxfb_add_plugin(containers
     panel.png
     scrollwin.png
     splitter_window.png
+    splitter_window16x16.png
 )
 
 wxfb_add_plugin(forms
