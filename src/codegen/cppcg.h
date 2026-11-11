@@ -153,6 +153,11 @@ private:
     void GenAttributeDeclaration(PObjectBase obj, Permission perm, ArrayItems& arrays);
 
     /**
+     * Dark mode helper.
+     */
+    void GenDarkModeHelper();
+
+    /**
      * Recursive function for the validators' variables declaration, used inside GenClassDeclaration.
      */
     void GenValidatorVariables(PObjectBase obj);
