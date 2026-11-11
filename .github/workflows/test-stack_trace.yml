@@ -1,0 +1,158 @@
+name: Test - Stack Trace
+on:
+  push:
+    paths:
+      - '.github/workflows/test-stack_trace.yml'
+      - 'third_party/stack_trace/**'
+  pull_request:
+    paths:
+      - '.github/workflows/test-stack_trace.yml'
+      - 'third_party/stack_trace/**'
+  workflow_dispatch:
+
+jobs:
+  gnu:
+    name: GCC/Clang ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: x86_64 gcc, runner: ubuntu-26.04, cxx: g++, flags: '' }
+          - { name: x86_64 clang, runner: ubuntu-26.04, cxx: clang++, flags: '' }
+          - { name: i386 gcc, runner: ubuntu-26.04, cxx: g++, flags: '-m32' }
+          - { name: aarch64 gcc, runner: ubuntu-26.04-arm, cxx: g++, flags: '' }
+    steps:
+    - uses: actions/checkout@v7.0.1
+    - name: Install toolchain
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y clang
+    - name: Install 32-bit multilib
+      if: matrix.flags == '-m32'
+      run: sudo apt-get install -y g++-multilib
+    - name: Build and run stack test
+      run: |
+        for opt in -O0 -O2; do
+          ${{ matrix.cxx }} $opt -g -std=c++17 -Wall -Wextra -Wpedantic -rdynamic ${{ matrix.flags }} \
+            -I third_party/stack_trace \
+            third_party/stack_trace/stack_trace/stack.cpp third_party/stack_trace/test/stack_test.cpp \
+            -ldl -o stack_test
+          ./stack_test
+        done
+
+  macos:
+    name: Clang macOS ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: arm64, runner: macos-15 }
+          - { name: x86_64, runner: macos-15-intel }
+    steps:
+    - uses: actions/checkout@v7.0.1
+    - name: Build and run stack test
+      run: |
+        for opt in -O0 -O2; do
+          clang++ $opt -g -std=c++17 -Wall -Wextra -Wpedantic -Wl,-export_dynamic \
+            -I third_party/stack_trace \
+            third_party/stack_trace/stack_trace/stack.cpp third_party/stack_trace/test/stack_test.cpp \
+            -o stack_test
+          ./stack_test
+        done
+
+  msys2:
+    name: MSYS2 ${{ matrix.msystem }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - msystem: UCRT64
+            runner: windows-latest
+            cxx: g++
+            packages: mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-binutils mingw-w64-ucrt-x86_64-gettext mingw-w64-ucrt-x86_64-zlib mingw-w64-ucrt-x86_64-zstd
+            libs: -lbfd -lsframe -liberty -lintl -lz -lzstd
+          - msystem: CLANGARM64
+            runner: windows-11-arm
+            cxx: clang++
+            packages: mingw-w64-clang-aarch64-clang
+            libs: ''
+    steps:
+    - uses: actions/checkout@v7.0.1
+    - name: Set up MSYS2
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.msystem }}
+        update: true
+        install: ${{ matrix.packages }}
+    - name: Build and run stack test
+      shell: msys2 {0}
+      run: |
+        for opt in -O0 -O2; do
+          ${{ matrix.cxx }} $opt -g -std=c++17 -Wall -Wextra -Wpedantic \
+            -I third_party/stack_trace \
+            third_party/stack_trace/stack_trace/stack.cpp third_party/stack_trace/test/stack_test.cpp \
+            ${{ matrix.libs }} -limagehlp -lpsapi -o stack_test.exe
+          ./stack_test.exe
+        done
+
+  msvc:
+    name: MSVC ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: x86, runner: windows-latest, arch: x86 }
+          - { name: x64, runner: windows-latest, arch: x64 }
+          - { name: arm64, runner: windows-11-arm, arch: arm64 }
+    steps:
+    - uses: actions/checkout@v7.0.1
+    - name: Set up MSVC environment
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+    - name: Build and run stack test
+      shell: pwsh
+      run: |
+        foreach ($opt in '/Od', '/O2') {
+          cl /nologo /std:c++17 /EHsc /W4 /Zi $opt /I third_party\stack_trace `
+            /Fe:stack_test.exe third_party\stack_trace\stack_trace\stack.cpp third_party\stack_trace\test\stack_test.cpp `
+            /link /DEBUG imagehlp.lib psapi.lib
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\stack_test.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
+
+  clang-cl:
+    name: clang-cl ${{ matrix.name }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: x86, runner: windows-latest, arch: x86, triple: i686-pc-windows-msvc }
+          - { name: x64, runner: windows-latest, arch: x64, triple: x86_64-pc-windows-msvc }
+          - { name: arm64, runner: windows-11-arm, arch: arm64, triple: aarch64-pc-windows-msvc }
+    steps:
+    - uses: actions/checkout@v7.0.1
+    - name: Set up MSVC environment
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+    - name: Install LLVM
+      shell: pwsh
+      run: choco install llvm -y --no-progress
+    - name: Build and run stack test
+      shell: pwsh
+      run: |
+        foreach ($opt in '/Od', '/O2') {
+          clang-cl --target=${{ matrix.triple }} /nologo /std:c++17 /EHsc /W4 /Zi $opt /I third_party\stack_trace `
+            /Fe:stack_test.exe third_party\stack_trace\stack_trace\stack.cpp third_party\stack_trace\test\stack_test.cpp `
+            /link /DEBUG imagehlp.lib psapi.lib
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\stack_test.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }

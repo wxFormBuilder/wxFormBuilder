@@ -6,9 +6,10 @@ on:
       - '**/linux/**'
       - '**/macos/**'
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/linux.yml'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-linux.yml'
+      - '.github/workflows/ci-macos.yml'
+      - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/linux/**'
       - 'data/packaging/macos/**'
@@ -19,12 +20,14 @@ on:
       - '.git-blame-ignore-revs'
       - '.git-properties'
       - 'LICENSE'
+      - '**/test/*'
       - '**.md'
   pull_request:
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/linux.yml'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-linux.yml'
+      - '.github/workflows/ci-macos.yml'
+      - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/linux/**'
       - 'data/packaging/macos/**'
@@ -35,24 +38,26 @@ on:
       - '.git-blame-ignore-revs'
       - '.git-properties'
       - 'LICENSE'
+      - '**/test/*'
       - '**.md'
 
 jobs:
   installer:
     name: Installer
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         include:
-          - { sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
+          - { os: windows-latest, sys: ucrt64, arch: x86_64, pkg: ucrt-x86_64 }
+          - { os: windows-11-arm, sys: clangarm64, arch: aarch64, pkg: clang-aarch64 }
     if: ${{ !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v5.0.0
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-tags: true
         submodules: recursive
-    - uses: msys2/setup-msys2@v2.29.0
+    - uses: msys2/setup-msys2@v2.33.0
       with:
         msystem: ${{ matrix.sys }}
         release: false
@@ -61,7 +66,7 @@ jobs:
           mingw-w64-${{ matrix.pkg }}-toolchain
           mingw-w64-${{ matrix.pkg }}-cmake
           mingw-w64-${{ matrix.pkg }}-make
-          mingw-w64-${{ matrix.pkg }}-wxwidgets3.2-msw
+          mingw-w64-${{ matrix.pkg }}-wxwidgets3.3-msw
           mingw-w64-${{ matrix.pkg }}-boost
           base-devel
           git
@@ -106,20 +111,23 @@ jobs:
       shell: cmd
       run: |
         ISCC.exe /DArch=${{ matrix.arch }} /O. data\\packaging\\windows\\wxFormBuilder.iss
-    - uses: actions/upload-artifact@v4.6.2
+    - uses: actions/upload-artifact@v7.0.2
       if: ${{ contains(github.ref, '/build/') }}
       with:
         name: Windows Build Debugging ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.6.2
+    - uses: actions/upload-artifact@v7.0.2
       with:
         name: Windows Archive ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*.zip
           !wxFormBuilder-*-build.zip
-    - uses: actions/upload-artifact@v4.6.2
+    - uses: actions/upload-artifact@v7.0.2
       with:
         name: Windows Installer ${{ matrix.pkg }}
+        archive: false
         path: |
           wxFormBuilder-*.exe

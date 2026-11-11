@@ -1,5 +1,5 @@
 if(WIN32)
-  if(MINGW)
+  if(MINGW AND NOT CMAKE_SYSTEM_PROCESSOR MATCHES "(ARM64|aarch64)")
     find_package(BFD REQUIRED)
     find_package(Iberty REQUIRED)
     # Non-MSYS2-MinGW builds seem not to require Intl but only ZLIB
@@ -31,7 +31,7 @@ target_include_directories(stack_trace_stack
 )
 
 if(WIN32)
-  if(MINGW)
+  if(MINGW AND NOT CMAKE_SYSTEM_PROCESSOR MATCHES "(ARM64|aarch64)")
     target_link_libraries(stack_trace_stack
       PRIVATE
         BFD::BFD
@@ -40,12 +40,12 @@ if(WIN32)
         ZLIB::ZLIB
         zstd::libzstd_shared
         $<TARGET_NAME_IF_EXISTS:SFrame::SFrame>
-        psapi # TODO: Only required for systems older than Windows 7
     )
   endif()
   target_link_libraries(stack_trace_stack
     PRIVATE
       imagehlp
+      psapi # TODO: Only required for systems older than Windows 7
   )
 else()
   target_link_libraries(stack_trace_stack

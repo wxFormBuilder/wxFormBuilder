@@ -6,9 +6,10 @@ on:
       - '**/windows/**'
       - '**/macos/**'
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/macos.yml'
-      - '.github/workflows/windows.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-macos.yml'
+      - '.github/workflows/ci-windows.yml'
+      - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/macos/**'
       - 'data/packaging/windows/**'
@@ -19,12 +20,14 @@ on:
       - '.git-blame-ignore-revs'
       - '.git-properties'
       - 'LICENSE'
+      - '**/test/*'
       - '**.md'
   pull_request:
     paths-ignore:
-      - '.github/workflows/sources.yml'
-      - '.github/workflows/macos.yml'
-      - '.github/workflows/windows.yml'
+      - '.github/workflows/ci-sources.yml'
+      - '.github/workflows/ci-macos.yml'
+      - '.github/workflows/ci-windows.yml'
+      - '.github/workflows/test-*.yml'
       - 'data/artwork/**'
       - 'data/packaging/macos/**'
       - 'data/packaging/windows/**'
@@ -35,18 +38,27 @@ on:
       - '.git-blame-ignore-revs'
       - '.git-properties'
       - 'LICENSE'
+      - '**/test/*'
       - '**.md'
 
 jobs:
   flatpak:
     name: Flatpak
-    runs-on: ubuntu-latest
-    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
+    runs-on: ${{ matrix.variant.runner }}
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-24.08
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-26.08
       options: --privileged
+    strategy:
+      fail-fast: false
+      matrix:
+        variant:
+          - runner: ubuntu-26.04
+            arch: x86_64
+          - runner: ubuntu-26.04-arm
+            arch: aarch64
+    if: ${{ !contains(github.ref, '/debian/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v5.0.0
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-tags: true
         submodules: recursive
@@ -56,12 +68,12 @@ jobs:
     - name: Parse project data
       run: |
         echo "project_version=`sed -n -E -e "/^project\(wxFormBuilder[[:space:]]+VERSION[[:space:]]+(.*)[[:space:]]+LANGUAGES.*$/{s//-\1/p;q}" CMakeLists.txt `" >> $GITHUB_ENV
-    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.6
+    - uses: flatpak/flatpak-github-actions/flatpak-builder@v6.8
       with:
-        arch: x86_64
-        bundle: wxFormBuilder${{ env.project_version }}.flatpak
+        arch: ${{ matrix.variant.arch }}
+        bundle: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}.flatpak
+        artifact-name: wxFormBuilder${{ env.project_version }}-${{ matrix.variant.arch }}-flatpak
         manifest-path: data/packaging/linux/flatpak/org.wxformbuilder.wxFormBuilder.json
-        cache-key: flatpak-builder-${{ github.sha }}
   debian:
     name: Debian Package
     runs-on: ${{ matrix.os }}
@@ -69,11 +81,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { os: ubuntu-26.04, wxver: 3.2 }
+          - { os: ubuntu-26.04-arm, wxver: 3.2 }
           - { os: ubuntu-24.04, wxver: 3.2 }
+          - { os: ubuntu-24.04-arm, wxver: 3.2 }
           - { os: ubuntu-22.04, wxver: 3.0-gtk3 }
+          - { os: ubuntu-22.04-arm, wxver: 3.0-gtk3 }
     if: ${{ !contains(github.ref, '/flatpak/') && !(github.event_name == 'pull_request' && github.actor == 'dependabot[bot]') }}
     steps:
-    - uses: actions/checkout@v5.0.0
+    - uses: actions/checkout@v7.0.1
       with:
         fetch-tags: true
         submodules: recursive
@@ -93,8 +109,9 @@ jobs:
       run: |
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -v
         xvfb-run --server-args="-screen 0, 1280x720x24" -a debian/wxformbuilder/usr/bin/wxformbuilder -g test/wxfbTest.fbp
-    - uses: actions/upload-artifact@v4.6.2
+    - uses: actions/upload-artifact@v7.0.2
       with:
         name: Debian Package ${{ matrix.os }}
+        archive: false
         path: |
           ${{ env.package_basedir }}/*.deb

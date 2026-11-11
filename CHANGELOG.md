@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- Replaced the CMake option `WXFB_TINYXML2_SHARED` with `WXFB_TINYXML2_PROVIDER`, which accepts `static`, `shared` or `system` to use the bundled TinyXML-2 submodule or an installed system library
+
+### Fixed
+
+- Fix the macOS app bundle creation to work in current environments, the required libraries are now stored in `Contents/Frameworks`
+
 ## [4.2.1] - 2024-05-29
 
 ### Fixed
