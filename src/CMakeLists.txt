@@ -172,6 +172,7 @@ set(commonIcons
   lalign.png
   left.png
   logo.png
+  logo16x16.png
   lua.png
   new.png
   open.png
@@ -189,7 +190,6 @@ set(commonIcons
   talign.png
   top.png
   undo.png
-  wxwin16x16.png
   xrc.png
 )
 if(APPLE)
