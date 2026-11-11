@@ -173,6 +173,7 @@ set(commonIcons
   left.png
   logo.png
   logo16x16.png
+  logo32x32.png
   lua.png
   new.png
   open.png

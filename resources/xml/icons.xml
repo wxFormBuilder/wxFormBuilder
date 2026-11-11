@@ -3,7 +3,7 @@
 
   <!-- Main Application Icon-->
   <icon name="app16" file="logo16x16.png"/>
-  <icon name="app32" file="logo.png"/>
+  <icon name="app32" file="logo32x32.png"/>
 
   <!-- Toolbar Icons -->
   <icon name="new" file="new.png"/>
