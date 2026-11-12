@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-auitoolbar-pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c4e8ff"/></linearGradient><linearGradient id="common-auitoolbar-fo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffd00"/><stop offset="1" stop-color="#ffda00"/></linearGradient><linearGradient id="common-auitoolbar-dk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#0083d7"/><stop offset="1" stop-color="#48a5e9"/></linearGradient></defs>
+<path d="M0 4H22V7H0Z" fill="#aca899"/>
+<path d="M0 4h1v1h-1zM2 4h1v1h-1zM1 5h1v1h-1zM0 6h1v1h-1zM2 6h1v1h-1z" fill="#000000"/>
+<path d="M0 7H22V15H0Z" fill="#ffffff"/>
+<path d="M0 15.5H22" fill="none" stroke="#aca99d" stroke-width="1"/>
+<path d="M0 16.5H22" fill="none" stroke="#dadad5" stroke-width="1"/>
+<path d="M0.5 8.5H3.5L5.5 10.5V14.5H0.5Z" fill="url(#common-auitoolbar-pg)" stroke="#666699" stroke-width="1"/>
+<path d="M7.5 13.5V9.5L8.5 8.5H9.5L10.5 9.5V10.5H13.5L14.5 11.5V13.5L13.5 14.5H8.5Z" fill="url(#common-auitoolbar-fo)" stroke="#cc9900" stroke-width="1"/><path d="M8.5 11V14" fill="none" stroke="#cc9900" stroke-width="1"/>
+<path d="M17.5 8.5H20.5A1 1 0 0 1 21.5 9.5V13.5A1 1 0 0 1 20.5 14.5H17.5A1 1 0 0 1 16.5 13.5V9.5A1 1 0 0 1 17.5 8.5Z" fill="url(#common-auitoolbar-dk)"/><path d="M17 12h4v2h-4z" fill="#c8c8c8"/><path d="M18 9h2v2h-2z" fill="#ffffff"/><path d="M18 13h1v1h-1z" fill="#48a5e9"/><path d="M17.5 8.5H20.5A1 1 0 0 1 21.5 9.5V13.5A1 1 0 0 1 20.5 14.5H17.5A1 1 0 0 1 16.5 13.5V9.5A1 1 0 0 1 17.5 8.5Z" fill="none" stroke="#003399" stroke-width="1"/>
+</svg>

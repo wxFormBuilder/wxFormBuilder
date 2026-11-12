@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-richtextctrl-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fdfdfd"/><stop offset="1" stop-color="#f2f2f2"/></linearGradient><linearGradient id="additional-richtextctrl-y" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcc00"/><stop offset="1" stop-color="#ffed64"/></linearGradient><linearGradient id="additional-richtextctrl-g" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#0e7407"/><stop offset="1" stop-color="#5bc62e"/></linearGradient><linearGradient id="additional-richtextctrl-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6e6e6"/><stop offset="0.45" stop-color="#acacac"/><stop offset="1" stop-color="#dedede"/></linearGradient></defs>
+<path d="M2.5 0.5H19.5V21.5H2.5Z" fill="url(#additional-richtextctrl-bg)"/>
+<path d="M13 2H18V5H13ZM13 6H18V9H13ZM4 10H18V15H4ZM4 16H18V20H4Z" fill="url(#additional-richtextctrl-t)"/>
+<path d="M4.5 2.5H11.5V9.5H4.5Z" fill="url(#additional-richtextctrl-y)" stroke="#cc9900" stroke-width="1"/>
+<path d="M12 4.5V10H7.5Z" fill="url(#additional-richtextctrl-g)"/>
+<path d="M2.5 0.5H19.5V21.5H2.5Z" fill="none" stroke="#3e9ade" stroke-width="1"/>
+</svg>

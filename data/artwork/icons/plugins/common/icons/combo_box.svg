@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-combo_box-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.35" stop-color="#ffffff"/><stop offset="1" stop-color="#dfffff"/></linearGradient><linearGradient id="common-combo_box-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9bcdff"/><stop offset="1" stop-color="#cef3ff"/></linearGradient></defs>
+<path d="M0.5 6.5H21.5V15.5H0.5Z" fill="url(#common-combo_box-f)"/>
+<path d="M14.5 6.5H21.5V15.5H14.5Z" fill="url(#common-combo_box-d)"/>
+<path d="M3 9h2v1h-2zM5 10h1v4h-1zM3 11h2v1h-2zM2 12h1v1h-1zM3 13h2v1h-2z" fill="#000000"/>
+<path d="M8 8h1v1h-1zM10 8h1v1h-1zM9 9h1v4h-1zM8 13h1v1h-1zM10 13h1v1h-1z" fill="#808080"/>
+<path d="M16 10h4v1h-4zM17 11h2v1h-2z" fill="#808080"/>
+<path d="M0.5 6.5H21.5V15.5H0.5ZM14.5 7V15" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

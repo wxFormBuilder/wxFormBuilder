@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="containers-auinotebook-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8b8b8"/><stop offset="1" stop-color="#d2d2d2"/></linearGradient><linearGradient id="containers-auinotebook-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbf0"/><stop offset="1" stop-color="#ebebeb"/></linearGradient></defs>
+<path d="M1.5 1.5H20.5V20.5H1.5Z" fill="#dde2ec"/>
+<path d="M2 2.5H20M2 7.5H20" fill="none" stroke="#9f9f9f" stroke-width="1"/>
+<path d="M2 3H20V6H2Z" fill="url(#containers-auinotebook-s)"/>
+<path d="M4 4H12V7H4Z" fill="url(#containers-auinotebook-t)"/>
+<path d="M2 6.5H3.5V4.5A1 1 0 0 1 4.5 3.5H11.5A1 1 0 0 1 12.5 4.5V6.5H20M2 8.5H20" fill="none" stroke="#525252" stroke-width="1"/>
+<path d="M8 4h1v1h-1zM10 4h1v1h-1zM9 5h1v1h-1zM8 6h1v1h-1zM10 6h1v1h-1z" fill="#393939"/>
+<path d="M1.5 1.5H20.5V20.5H1.5Z" fill="none" stroke="#708cbd" stroke-width="1"/>
+</svg>

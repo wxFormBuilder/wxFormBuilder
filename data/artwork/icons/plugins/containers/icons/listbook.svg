@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="containers-listbook-l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="0.55" stop-color="#f9ffff"/><stop offset="1" stop-color="#e3ffff"/></linearGradient></defs>
+<path d="M1.5 1.5H20.5V20.5H1.5Z" fill="#dde2ec"/>
+<path d="M2 2H9V20H2Z" fill="url(#containers-listbook-l)"/>
+<path d="M3 5.5H8M3 15.5H8" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M2 9H9V12H2Z" fill="#0066cc"/>
+<path d="M3 10.5H8" fill="none" stroke="#ffffff" stroke-width="1"/>
+<path d="M20 3.5H11.5V6.5H20M20 8.5H11.5V11.5H20" fill="#ffffff" stroke="#808080" stroke-width="1"/>
+<path d="M12 15H19V18H12Z" fill="#ecffff"/>
+<path d="M12 14.5H19M11.5 15V18.5H19.5V15" fill="none" stroke="#ebebeb" stroke-width="1"/>
+<path d="M12 19.5H19" fill="none" stroke="#848284" stroke-width="1"/>
+<path d="M13 15h1v1h-1zM16 15h1v1h-1zM18 15h1v1h-1zM12 16h1v1h-1zM14 16h1v1h-1zM16 16h2v1h-2zM13 17h1v1h-1zM16 17h1v1h-1zM18 17h1v1h-1z" fill="#000000"/>
+<path d="M1.5 1.5H20.5V20.5H1.5ZM9.5 2V20" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

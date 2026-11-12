@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-calendar-ct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ab4ec"/><stop offset="0.34" stop-color="#86a5e4"/><stop offset="0.5" stop-color="#3c71d4"/><stop offset="1" stop-color="#3672c2"/></linearGradient><linearGradient id="additional-calendar-cm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcf47b"/><stop offset="0.45" stop-color="#ffd02a"/><stop offset="1" stop-color="#c57a00"/></linearGradient></defs>
+<path d="M1 6H21V19H1Z" fill="#ffffff"/>
+<path d="M4 7h2V18h-2zM8 7h2V18h-2zM12 7h2V18h-2zM16 7h2V18h-2zM2 9H20v2H2zM2 14H20v1H2z" fill="#e7e7e7"/>
+<path d="M2 6H20v1H2z" fill="#e7eff5"/>
+<path d="M4 6h2v1h-2zM8 6h2v1h-2zM12 6h2v1h-2zM16 6h2v1h-2z" fill="#cdd6dc"/>
+<path d="M13 14h4v1h-4z" fill="#b8a47c"/>
+<path d="M13.5 10.5h3v3h-3z" fill="url(#additional-calendar-cm)" stroke="#b4882a" stroke-width="1"/>
+<path d="M1.5 6V18.5H20.5V6" fill="none" stroke="#9cbce0" stroke-width="1"/>
+<path d="M1 3H21V6H1Z" fill="url(#additional-calendar-ct)"/>
+<path d="M16 3h2v2h-2z" fill="#86a5e4"/><path d="M19 3h2v2h-2z" fill="#b1c4f0"/>
+<path d="M0.5 2.5H21.5V19.5H0.5Z" fill="none" stroke="#2a6db2" stroke-width="1"/>
+</svg>

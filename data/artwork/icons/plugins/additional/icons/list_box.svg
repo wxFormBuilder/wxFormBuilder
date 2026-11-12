@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-list_box-sb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#deffff"/><stop offset="0.5" stop-color="#b8e5f6"/><stop offset="1" stop-color="#7abae9"/></linearGradient><linearGradient id="additional-list_box-st" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cccbcc"/><stop offset="1" stop-color="#ebeaeb"/></linearGradient><linearGradient id="additional-list_box-lb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="0.6" stop-color="#f5ffff"/><stop offset="1" stop-color="#e3ffff"/></linearGradient></defs>
+<path d="M1 4H14V18H1Z" fill="url(#additional-list_box-lb)"/>
+<path d="M1 9H14V12H1Z" fill="#0066cc"/>
+<path d="M2 6.5H13M2 14.5H13" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M2 10h11v1h-11z" fill="#ffffff"/>
+<path d="M15 4H21V9H15ZM15 13H21V18H15Z" fill="url(#additional-list_box-sb)"/>
+<path d="M15 10H21V12H15Z" fill="url(#additional-list_box-st)"/>
+<path d="M17 5h2v1h1v1h-4v-1h1zM16 15h4v1h-1v1h-2v-1h-1z" fill="#808080"/>
+<path d="M0.5 3.5H21.5V18.5H0.5ZM14.5 4V18M15 9.5H21M15 12.5H21" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

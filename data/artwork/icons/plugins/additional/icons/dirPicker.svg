@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-dirPicker-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6d6d6"/><stop offset="1" stop-color="#a2a2a2"/></linearGradient><linearGradient id="additional-dirPicker-f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ebcdd"/><stop offset="0.45" stop-color="#89aed6"/><stop offset="1" stop-color="#6b9cce"/></linearGradient><linearGradient id="additional-dirPicker-lh" x1="20" y1="17" x2="18" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d6bd9a"/><stop offset="0.5" stop-color="#f9e9d0"/><stop offset="1" stop-color="#d6bd9a"/></linearGradient><radialGradient id="additional-dirPicker-lt" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#aecce8"/><stop offset="0.45" stop-color="#c3d9ee"/><stop offset="0.8" stop-color="#ebf2f9"/><stop offset="1" stop-color="#9cb7cf"/></radialGradient><radialGradient id="additional-dirPicker-lb" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#71a5d6"/><stop offset="0.45" stop-color="#96bce1"/><stop offset="0.75" stop-color="#dce9f5"/><stop offset="1" stop-color="#96b3cd"/></radialGradient></defs>
+<path d="M0.5 16.5V0.5H7.5L8.5 1.5V2.5H15.5V5" fill="url(#additional-dirPicker-k)" stroke="#626460" stroke-width="1" stroke-linejoin="round"/>
+<path d="M1 2.5H8" fill="none" stroke="#8e8e8d" stroke-width="1"/>
+<path d="M2.5 4.5H19.5V16.5H2.5Z" fill="url(#additional-dirPicker-f)" stroke="#3465a4" stroke-width="1"/>
+<path d="M3.5 16V5.5H19" fill="none" stroke="#aac4e2" stroke-width="1"/>
+<circle cx="13" cy="13" r="4.5" fill="none" stroke="#b7b6ac" stroke-width="1"/>
+<path d="M14 16L17 13L22.5 18.5L19.5 21.5Z" fill="none" stroke="#b7b6ac" stroke-width="1" stroke-linejoin="round"/>
+<path d="M14.5 15.5L16.5 13.5L21.5 18.5L19.5 20.5Z" fill="url(#additional-dirPicker-lh)" stroke="#ba945c" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="13" cy="12" r="4.5" fill="url(#additional-dirPicker-lt)"/>
+<path d="M8.5 12H17.5A4.5 4.5 0 0 1 8.5 12Z" fill="url(#additional-dirPicker-lb)"/>
+<circle cx="13" cy="12" r="4.5" fill="none" stroke="#668eb0" stroke-width="1"/>
+</svg>

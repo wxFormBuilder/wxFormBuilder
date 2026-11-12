@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-datepicker-ct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ab4ec"/><stop offset="0.34" stop-color="#86a5e4"/><stop offset="0.5" stop-color="#3c71d4"/><stop offset="1" stop-color="#3672c2"/></linearGradient><linearGradient id="additional-datepicker-cm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcf47b"/><stop offset="0.45" stop-color="#ffd02a"/><stop offset="1" stop-color="#c57a00"/></linearGradient><linearGradient id="additional-datepicker-lh" x1="20" y1="17" x2="18" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d6bd9a"/><stop offset="0.5" stop-color="#f9e9d0"/><stop offset="1" stop-color="#d6bd9a"/></linearGradient><radialGradient id="additional-datepicker-lt" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#aecce8"/><stop offset="0.45" stop-color="#c3d9ee"/><stop offset="0.8" stop-color="#ebf2f9"/><stop offset="1" stop-color="#9cb7cf"/></radialGradient><radialGradient id="additional-datepicker-lb" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#71a5d6"/><stop offset="0.45" stop-color="#96bce1"/><stop offset="0.75" stop-color="#dce9f5"/><stop offset="1" stop-color="#96b3cd"/></radialGradient></defs>
+<path d="M1 4H21V17H1Z" fill="#ffffff"/>
+<path d="M4 5h2V16h-2zM8 5h2V16h-2zM12 5h2V16h-2zM16 5h2V16h-2zM2 7H20v2H2zM2 12H20v1H2z" fill="#e7e7e7"/>
+<path d="M2 4H20v1H2z" fill="#e7eff5"/>
+<path d="M4 4h2v1h-2zM8 4h2v1h-2zM12 4h2v1h-2zM16 4h2v1h-2z" fill="#cdd6dc"/>
+<path d="M5 8h4v1h-4z" fill="#b8a47c"/>
+<path d="M5.5 4.5h3v3h-3z" fill="url(#additional-datepicker-cm)" stroke="#b4882a" stroke-width="1"/>
+<path d="M1.5 4V16.5H20.5V4" fill="none" stroke="#9cbce0" stroke-width="1"/>
+<path d="M1 1H21V4H1Z" fill="url(#additional-datepicker-ct)"/>
+<path d="M16 1h2v2h-2z" fill="#86a5e4"/><path d="M19 1h2v2h-2z" fill="#b1c4f0"/>
+<path d="M0.5 0.5H21.5V17.5H0.5Z" fill="none" stroke="#2a6db2" stroke-width="1"/>
+<circle cx="13" cy="13" r="4.5" fill="none" stroke="#b7b6ac" stroke-width="1"/>
+<path d="M14 16L17 13L22.5 18.5L19.5 21.5Z" fill="none" stroke="#b7b6ac" stroke-width="1" stroke-linejoin="round"/>
+<path d="M14.5 15.5L16.5 13.5L21.5 18.5L19.5 20.5Z" fill="url(#additional-datepicker-lh)" stroke="#ba945c" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="13" cy="12" r="4.5" fill="url(#additional-datepicker-lt)"/>
+<path d="M8.5 12H17.5A4.5 4.5 0 0 1 8.5 12Z" fill="url(#additional-datepicker-lb)"/>
+<circle cx="13" cy="12" r="4.5" fill="none" stroke="#668eb0" stroke-width="1"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-checkbox-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d6d6d6"/><stop offset="1" stop-color="#fcfcfc"/></linearGradient></defs>
+<path d="M4.5 5.5H15.5V16.5H4.5Z" fill="url(#common-checkbox-b)"/>
+<path d="M13 7H14V10L9 15H8L6 13V10H7L8.5 12Z" fill="#009900"/>
+<path d="M4.5 5.5H15.5V16.5H4.5Z" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-scrollbar-a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#deffff"/><stop offset="1" stop-color="#7abae9"/></linearGradient><linearGradient id="additional-scrollbar-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebeaeb"/><stop offset="1" stop-color="#cccbcb"/></linearGradient></defs>
+<path d="M1.5 7.5H7.5V14.5H1.5ZM14.5 7.5H20.5V14.5H14.5Z" fill="url(#additional-scrollbar-a)"/>
+<path d="M7.5 7.5H14.5V14.5H7.5Z" fill="url(#additional-scrollbar-t)"/>
+<path d="M4 9h1v4h-1v-1h-1v-2h1zM17 9h1v1h1v2h-1v1h-1z" fill="#808080"/>
+<path d="M1.5 7.5H20.5V14.5H1.5ZM7.5 8V14M14.5 8V14" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><radialGradient id="forms-wizpage-st" cx="7" cy="7" r="5.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffbe0"/><stop offset="0.15" stop-color="#fff78c"/><stop offset="0.3" stop-color="#f7e742"/><stop offset="0.5" stop-color="#ffa518"/><stop offset="0.7" stop-color="#f77329"/><stop offset="1" stop-color="#d81c08"/></radialGradient><linearGradient id="forms-wizpage-wk" x1="11.5" y1="14" x2="13.5" y2="12" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#101010"/><stop offset="0.5" stop-color="#101010"/><stop offset="0.78" stop-color="#4a4a4a"/><stop offset="1" stop-color="#8c8c8c"/></linearGradient><linearGradient id="forms-wizpage-wt" x1="14" y1="15.5" x2="16" y2="13.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6b6b6b"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="1" stop-color="#a5a5a5"/></linearGradient></defs>
+<path d="M0.5 0.5H20.5V20.5H0.5Z" fill="#dde2ec"/>
+<path d="M10 8.5L8 10.5L13 15.5L15 13.5Z" fill="url(#forms-wizpage-wk)"/>
+<path d="M15 13.5L13 15.5L15 17.5L17 15.5Z" fill="url(#forms-wizpage-wt)"/>
+<path d="M13 7L9.12 7.88L9.55 9.55L7.88 9.12L7 12.5L6.12 9.12L4.45 9.55L4.88 7.88L2 7L4.88 6.12L4.45 4.45L6.12 4.88L7 2L7.88 4.88L9.55 4.45L9.12 6.12Z" fill="url(#forms-wizpage-st)"/>
+<path d="M0.5 20V0.5H20" fill="none" stroke="#ffffff" stroke-width="1"/>
+<path d="M1 20.5H20.5V1" fill="none" stroke="#708cbd" stroke-width="1"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="res-logo16x16-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa088"/><stop offset="0.5" stop-color="#f0401c"/><stop offset="1" stop-color="#c41800"/></linearGradient><linearGradient id="res-logo16x16-u" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4ecff"/><stop offset="0.5" stop-color="#62aef2"/><stop offset="1" stop-color="#2a78d0"/></linearGradient><linearGradient id="res-logo16x16-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8b0"/><stop offset="0.5" stop-color="#ffe000"/><stop offset="1" stop-color="#f0aa00"/></linearGradient><linearGradient id="res-logo16x16-t" x1="0" y1="11" x2="0" y2="16" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a8ff0"/><stop offset="1" stop-color="#1848a0"/></linearGradient></defs>
+<rect x="0.5" y="4.5" width="6" height="6" rx="1" fill="url(#res-logo16x16-r)" stroke="#a01000" stroke-width="1"/>
+<rect x="4.5" y="0.5" width="6" height="6" rx="1" fill="url(#res-logo16x16-u)" stroke="#1858b0" stroke-width="1"/>
+<rect x="8.5" y="3.5" width="6" height="6" rx="1" fill="url(#res-logo16x16-w)" stroke="#c08800" stroke-width="1"/>
+<path d="M0 12h1v2h-1zM2 12h1v2h-1zM4 12h1v2h-1zM1 14h1v2h-1zM3 14h1v2h-1zM6 12h1v1h-1zM8 12h1v1h-1zM7 13h1v2h-1zM6 15h1v1h-1zM8 15h1v1h-1zM10 11h2v1h-2zM10 12h1v4h-1zM11 13h1v1h-1zM13 11h2v1h-2zM13 12h1v3h-1zM14 13h1v1h-1zM13 15h2v1h-2zM15 12h1v1h-1zM15 14h1v1h-1z" fill="url(#res-logo16x16-t)"/>
+</svg>

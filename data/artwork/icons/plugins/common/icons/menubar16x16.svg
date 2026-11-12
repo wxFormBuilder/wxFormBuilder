@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="common-menubar16x16-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-menubar16x16-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient></defs>
+<path d="M0 1H16V6H0Z" fill="#ffffff"/>
+<path d="M1 2H6V5H1Z" fill="#0066cc"/>
+<path d="M2 3h3v1h-3z" fill="#ffffff"/>
+<path d="M9 7h1v8h-8v-1h7z" fill="#c0c0c0"/>
+<path d="M1.5 5.5H8.5V13.5H1.5Z" fill="#ffffff"/>
+<path d="M7 3h4v1h-4zM13 3h3v1h-3zM3 7h4v1h-4zM3 9h2v1h-2zM3 11h4v1h-4z" fill="#0066cc"/>
+<path d="M16 1.5H0.5V5.5H16M1.5 6V13.5H8.5V6" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M10.5 6.5L15.5 11.5H13.5L15.5 15.5H14L12.5 12.5L10.5 14.5Z" fill="url(#common-menubar16x16-cf)" stroke="url(#common-menubar16x16-cs)" stroke-width="1" stroke-linejoin="round"/>
+</svg>

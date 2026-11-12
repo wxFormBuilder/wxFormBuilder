@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><radialGradient id="redo-s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000000" stop-opacity="0.35"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient><linearGradient id="redo-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d2e6fa"/><stop offset="1" stop-color="#6a9fdc"/></linearGradient></defs>
+<ellipse cx="11" cy="19.5" rx="10" ry="2.5" fill="url(#redo-s)"/>
+<path d="M14.5 1.5L21 8L14.5 14.5V10.5H13A3.5 3.5 0 0 0 9.5 14V18.5H4.5V14A8.5 8.5 0 0 1 13 5.5H14.5Z" fill="url(#redo-a)" stroke="#3d6fb5" stroke-width="1" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-menu-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-menu-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient><linearGradient id="common-menu-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfffff"/></linearGradient></defs>
+<path d="M15 4h1v15h-11v-1h10z" fill="#c0c0c0"/>
+<path d="M4.5 2.5H14.5V17.5H4.5Z" fill="url(#common-menu-m)"/>
+<path d="M5 6H14V9H5Z" fill="#0066cc"/>
+<path d="M6 7h5v1h-5z" fill="#ffffff"/>
+<path d="M6 4h6v1h-6zM6 12h5v1h-5zM6 15h6v1h-6z" fill="#333366"/>
+<path d="M4.5 2.5H14.5V17.5H4.5ZM5 10.5H14" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M12.5 8.5L18.5 14.5V15.5H16.5L18.5 19.5H16.5L14.5 16.5L12.5 18.5Z" fill="url(#common-menu-cf)" stroke="url(#common-menu-cs)" stroke-width="1" stroke-linejoin="round"/>
+</svg>

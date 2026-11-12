@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-media_ctrl-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8a8a"/><stop offset="1" stop-color="#3c3c3c"/></linearGradient><radialGradient id="additional-media_ctrl-f" cx="0.5" cy="0.6" r="0.6"><stop offset="0" stop-color="#f6f6f6"/><stop offset="0.55" stop-color="#d6d6d6"/><stop offset="1" stop-color="#a4a4a4"/></radialGradient><linearGradient id="additional-media_ctrl-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a7a7a"/><stop offset="1" stop-color="#262626"/></linearGradient></defs>
+<ellipse cx="11" cy="11.5" rx="10.5" ry="7" fill="url(#additional-media_ctrl-s)" stroke="#444444" stroke-width="1"/>
+<ellipse cx="11" cy="9" rx="10.5" ry="6.5" fill="url(#additional-media_ctrl-f)" stroke="#7a7a7a" stroke-width="1"/>
+<path fill="url(#additional-media_ctrl-h)" d="M9 3.8A2 1 0 0 0 13 3.8A2 1 0 0 0 9 3.8ZM3.6 7.3A1.9 1.2 0 0 0 7.4 7.3A1.9 1.2 0 0 0 3.6 7.3ZM14.2 7.3A1.9 1.2 0 0 0 18 7.3A1.9 1.2 0 0 0 14.2 7.3ZM5.3 12.2A2.1 1.4 0 0 0 9.5 12.2A2.1 1.4 0 0 0 5.3 12.2ZM12.5 12.2A2.1 1.4 0 0 0 16.7 12.2A2.1 1.4 0 0 0 12.5 12.2Z"/>
+</svg>

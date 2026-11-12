@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-slider-t" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ece9d8"/><stop offset="1" stop-color="#d4d1c3"/></linearGradient></defs>
+<path d="M1 10H21V11H1Z" fill="#ece9d8"/>
+<path d="M1 9.5H21M1 11.5H21M0.5 10V11M21.5 10V11" fill="none" stroke="#bbb9ad" stroke-width="1"/>
+<path d="M5.5 5.5H7.5L8.5 6.5V14.5L7.5 15.5H5.5L4.5 14.5V6.5Z" fill="url(#common-slider-t)" stroke="#716f64" stroke-width="1"/>
+<path d="M5 6h3v1h-3zM5 14h3v1h-3z" fill="#66cc33"/>
+</svg>

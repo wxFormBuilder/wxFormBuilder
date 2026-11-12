@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-submenu-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-submenu-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient><linearGradient id="common-submenu-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eeffff"/></linearGradient><linearGradient id="common-submenu-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.2" stop-color="#ffffff"/><stop offset="1" stop-color="#dfffff"/></linearGradient></defs>
+<path d="M1 8h9v1h-9zM10 1h1v2h-1z" fill="#c0c0c0"/>
+<path d="M0 0H9.5V7.5H0Z" fill="url(#common-submenu-m)"/>
+<path d="M1 1h6v1h-6z" fill="#333366"/>
+<path d="M0 3H9V6H0Z" fill="#0066cc"/>
+<path d="M1 4h5v1h-5zM7 3h1v3h-1zM8 4h1v1h-1z" fill="#ffffff"/>
+<path d="M9.5 0V7.5H0" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M21 5h1v15h-11v-1h10z" fill="#c0c0c0"/>
+<path d="M10.5 3.5H20.5V18.5H10.5Z" fill="url(#common-submenu-n)"/>
+<path d="M11 7H20V10H11Z" fill="#0066cc"/>
+<path d="M12 8h5v1h-5z" fill="#ffffff"/>
+<path d="M12 5h6v1h-6zM12 13h6v1h-6zM12 16h6v1h-6z" fill="#333366"/>
+<path d="M10.5 3.5H20.5V18.5H10.5ZM11 11.5H20" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M15.5 9.5L21.5 15.5V16.5H19.5L21.5 20.5H19.5L17.5 17.5L15.5 19.5Z" fill="url(#common-submenu-cf)" stroke="url(#common-submenu-cs)" stroke-width="1" stroke-linejoin="round"/>
+</svg>

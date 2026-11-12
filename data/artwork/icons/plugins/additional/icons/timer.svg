@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-timer-r" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#fdfcfb"/><stop offset="0.5" stop-color="#c4c4d1"/><stop offset="1" stop-color="#6e6e85"/></linearGradient><linearGradient id="additional-timer-o" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#b4b4c4"/><stop offset="1" stop-color="#30303e"/></linearGradient><radialGradient id="additional-timer-f" cx="0.45" cy="0.4" r="0.62"><stop offset="0" stop-color="#f0faff"/><stop offset="0.45" stop-color="#c9edff"/><stop offset="1" stop-color="#5d9bf0"/></radialGradient></defs>
+<circle cx="10.5" cy="10.5" r="10" fill="url(#additional-timer-r)" stroke="url(#additional-timer-o)" stroke-width="1"/>
+<circle cx="10.5" cy="10.5" r="7.5" fill="url(#additional-timer-f)" stroke="#5b79ba" stroke-width="1"/>
+<path d="M10 3h1v2h-1zM10 16h1v2h-1zM3 10h2v1h-2zM16 10h2v1h-2z" fill="#4766db"/>
+<path d="M9 10H14V12H9Z" fill="#3c4d5a" fill-opacity=".75"/>
+<path d="M9 11L13.3 6.7L14.3 7.7L10 12Z" fill="#12181f"/>
+</svg>

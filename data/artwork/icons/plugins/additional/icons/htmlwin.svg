@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-htmlwin-pg" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e9e9e9"/></linearGradient><radialGradient id="additional-htmlwin-g" cx="0.62" cy="0.22" r="0.85"><stop offset="0" stop-color="#e4e7f6"/><stop offset="0.45" stop-color="#8f9cd2"/><stop offset="0.8" stop-color="#2f47a3"/><stop offset="1" stop-color="#0c2792"/></radialGradient></defs>
+<path d="M2 0H15.5L19.5 4.5V21.5H2Z" fill="url(#additional-htmlwin-pg)"/>
+<path d="M19.5 4.5V21.5H2" fill="none" stroke="#cdcdcd" stroke-width="1"/>
+<path d="M15.5 0.5V4.5H19.5" fill="#f2f2f2" stroke="#b6b6b6" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="10.5" cy="12" r="6" fill="url(#additional-htmlwin-g)" stroke="#3a4fa6" stroke-width="1"/>
+<path d="M6 8C7.6 6.4 13 6.2 15 8C13 8.8 8.5 8.9 6 8Z" fill="#e0e4f5"/>
+<path d="M8 11C9 10.6 10 11 10 12L9.8 15.6C9.3 16.3 8.6 16 8.4 15.2L8 12.5ZM11.2 9.2C12.5 8.6 14.6 9 15 10.3C14.6 11.3 14 11.6 13.6 12.8C13 13.4 12.4 12.8 12.4 12C12.2 11 11.3 10.6 11.2 9.2Z" fill="#c4cbea"/>
+</svg>

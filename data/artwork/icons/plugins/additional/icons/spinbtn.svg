@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-spinbtn-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#deffff"/><stop offset="1" stop-color="#7abae9"/></linearGradient></defs>
+<path d="M7.5 4.5H14.5V10.5H7.5ZM7.5 10.5H14.5V16.5H7.5Z" fill="url(#additional-spinbtn-a)"/>
+<path d="M10 6h2v1h1v1h-4v-1h1zM9 13h4v1h-1v1h-2v-1h-1z" fill="#808080"/>
+<path d="M7.5 4.5H14.5V16.5H7.5ZM8 10.5H14" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>
