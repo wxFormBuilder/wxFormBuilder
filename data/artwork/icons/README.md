@@ -60,8 +60,11 @@ Small sizes use pixel-hinted sources: app 16/32 → `logo16x16`/`logo32x32`, app
 ## Design decisions
 
 - Pixel icons follow their bitmap's grid with 1 px contours on .5 coordinates (see `STYLE.md`).
+- Logo squares are flat: a subtle two-stop gradient per colour, no gloss highlight (fits the
+  Windows 11 and current macOS icon styles).
 - Logo lettering "wxFB": angular letters without chamfers, slanted w with the middle apex at
-  x-height, F with a wide top bar, B with two equal bowls and rounded right corners; lettering is
+  x-height and counters open down to their tips (like the x), F with a wide top bar, B with two
+  equal bowls and rounded right corners; flat light blue fill with a dark outline. Lettering is
   paths, not a font, so every renderer shows it identically.
 - `logo32x32` has no outline around the lettering: at 8 px cap height an outline closes the
   counters and letter gaps.
@@ -72,5 +75,5 @@ Small sizes use pixel-hinted sources: app 16/32 → `logo16x16`/`logo32x32`, app
 
 - Replace the bitmap icons in the application by the SVGs (planned on this branch,
   `feature/vectorize-icons`; no code has been changed yet).
-- Optional: flatter square gradients for a Windows 11 look; a lettering-free Linux variant for
-  GNOME, whose guidelines discourage text in app icons.
+- Optional: a lettering-free Linux variant for GNOME, whose guidelines discourage text in app
+  icons.
