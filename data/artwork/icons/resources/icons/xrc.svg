@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-<defs><linearGradient id="res-xrc-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="res-xrc-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient><linearGradient id="res-xrc-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a8ff0"/><stop offset="1" stop-color="#1f5fc0"/></linearGradient></defs>
-<path d="M3.5 0.5H11.5L14.5 3.5V15.5H3.5Z" fill="url(#res-xrc-pg)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/><path d="M11.5 0.5V3.5H14.5" fill="url(#res-xrc-fd)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
-<path d="M3 4.5H5L2.5 7.5L5 10.5H3L0.5 7.5ZM6.5 4.5H8.5L11 7.5L8.5 10.5H6.5L9 7.5Z" fill="url(#res-xrc-c)"/>
+<defs><linearGradient id="res-xrc-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="res-xrc-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient><linearGradient id="res-xrc-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a8ff0"/><stop offset="1" stop-color="#1f5fc0"/></linearGradient><linearGradient id="res-xrc-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f25a3c"/><stop offset="1" stop-color="#cf2a12"/></linearGradient><linearGradient id="res-xrc-u" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#55a9f2"/><stop offset="1" stop-color="#2a74cc"/></linearGradient><linearGradient id="res-xrc-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd93a"/><stop offset="1" stop-color="#f0ae00"/></linearGradient></defs>
+<path d="M4.5 0.5H12.5L15.5 3.5V15.5H4.5Z" fill="url(#res-xrc-pg)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/><path d="M12.5 0.5V3.5H15.5" fill="url(#res-xrc-fd)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
+<path d="M3 4.5H4.5L2.5 7.5L4.5 10.5H3L1 7.5ZM9 4.5H10.5L12.5 7.5L10.5 10.5H9L11 7.5Z" fill="url(#res-xrc-c)"/>
+<path d="M4.5 7.5h2v2h-2z" fill="url(#res-xrc-r)"/>
+<path d="M5.5 5.5h2v2h-2z" fill="url(#res-xrc-u)"/>
+<path d="M7 7h2v2h-2z" fill="url(#res-xrc-w)"/>
 </svg>
