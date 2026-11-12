@@ -70,6 +70,8 @@ Small sizes use pixel-hinted sources: app 16/32 → `logo16x16`/`logo32x32`, app
   counters and letter gaps.
 - macOS icons use Apple's 1024 grid (plate 824 px at 100,100, radius 185.4, soft drop shadow);
   Windows and Linux use the free-standing logo without plate.
+- On every platform the app icon keeps the "wxFB" lettering and the document icon its "FBP"
+  label (from 32 px up): the three squares alone equal the wxWidgets logo.
 
 ## Open points
 
