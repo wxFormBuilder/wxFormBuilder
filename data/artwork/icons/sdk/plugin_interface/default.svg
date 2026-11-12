@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<path d="M9.5 3.5H13.5L15.5 5.5V9.5L12.5 12.5V15.5H9.5V12.5L12.5 9.5V6.5H9.5L8.5 7.5H7.5V5.5Z" fill="#ff0000" stroke="#000000" stroke-width="1" stroke-linejoin="round"/>
-<path d="M9.5 15.5H12.5V18.5H9.5Z" fill="#ff0000" stroke="#000000" stroke-width="1"/>
-<path d="M10 4h3v1h-3zM9 5h5v1h-5zM13 6h1v1h-1zM13 7h1v1h-1zM13 8h1v1h-1zM13 9h1v1h-1zM12 10h1v1h-1zM11 11h1v1h-1zM10 12h1v1h-1zM10 13h1v1h-1zM10 16h1v1h-1z" fill="#ff6262"/>
+<defs><linearGradient id="plugin_interface-default-q" x1="0" y1="3" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f2654e"/><stop offset="1" stop-color="#cf2a14"/></linearGradient></defs>
+<path d="M7.5 6.5A3.5 3.5 0 1 1 13.47 8.97L11 11.4V13.75" fill="none" stroke="#2a1010" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7.5 6.5A3.5 3.5 0 1 1 13.47 8.97L11 11.4V13.75" fill="none" stroke="url(#plugin_interface-default-q)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="11" cy="19.25" r="2.5" fill="#2a1010"/><circle cx="11" cy="19.25" r="1.5" fill="url(#plugin_interface-default-q)"/>
 </svg>

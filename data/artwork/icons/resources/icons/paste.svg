@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><linearGradient id="paste-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dca04a"/><stop offset="1" stop-color="#9a5a10"/></linearGradient><linearGradient id="paste-d" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e4e4e4"/></linearGradient><linearGradient id="paste-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f4f4"/><stop offset="1" stop-color="#9a9a9a"/></linearGradient></defs>
+<defs><linearGradient id="paste-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dca253"/><stop offset="1" stop-color="#a8661c"/></linearGradient><linearGradient id="paste-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="paste-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient><linearGradient id="paste-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f5"/><stop offset="1" stop-color="#a3acb9"/></linearGradient></defs>
 <rect x="2.5" y="3.5" width="17" height="17" rx="1.5" fill="url(#paste-b)" stroke="#6e3f0c" stroke-width="1"/>
-<path d="M5.5 6.5H16.5V15.5L12.5 19.5H5.5Z" fill="url(#paste-d)" stroke="#8a8a8a" stroke-width="1" stroke-linejoin="round"/>
-<path d="M16.5 15.5H12.5V19.5" fill="#d0d0d0" stroke="#8a8a8a" stroke-width="1" stroke-linejoin="round"/>
-<path d="M7 9.5H15M7 11.5H15M7 13.5H11" stroke="#a8a8a8" stroke-width="1"/>
-<path d="M7.5 6.5V3.5H9.5A1.5 1.5 0 0 1 12.5 3.5H14.5V6.5Z" fill="url(#paste-c)" stroke="#505050" stroke-width="1" stroke-linejoin="round"/>
+<path d="M5.5 6.5H16.5V15.5L12.5 19.5H5.5Z" fill="url(#paste-pg)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
+<path d="M16.5 15.5H12.5V19.5" fill="url(#paste-fd)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
+<path d="M7 9.5H15M7 11.5H15M7 13.5H11" stroke="#b4bcc8" stroke-width="1"/>
+<path d="M7.5 6.5V3.5H9.5A1.5 1.5 0 0 1 12.5 3.5H14.5V6.5Z" fill="url(#paste-c)" stroke="#5f6878" stroke-width="1" stroke-linejoin="round"/>
 </svg>

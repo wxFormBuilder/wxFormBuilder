@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-<defs><linearGradient id="res-designer-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#92b9e8"/><stop offset="1" stop-color="#6a8fc6"/></linearGradient><linearGradient id="res-designer-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6f6f6"/><stop offset="1" stop-color="#e2e2e2"/></linearGradient></defs>
-<path d="M0.5 1.5H14.5V13.5H0.5Z" fill="url(#res-designer-w)"/>
-<path d="M0.5 1.5H14.5V3.5H0.5Z" fill="url(#res-designer-t)" stroke="#5a7cb2" stroke-width="1"/>
-<path d="M2 6H5V7H2ZM2 10H5V11H2Z" fill="#5883d2"/>
-<path d="M6.5 5.5H13.5V7.5H6.5ZM6.5 9.5H13.5V11.5H6.5Z" fill="#ffffff" stroke="#a8a8a8" stroke-width="1"/>
-<path d="M0.5 1.5H14.5V13.5H0.5Z" fill="none" stroke="#5a7cb2" stroke-width="1"/>
+<defs><linearGradient id="res-designer-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79a3e2"/><stop offset="1" stop-color="#4a78c4"/></linearGradient><linearGradient id="res-designer-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5e8ec"/><stop offset="1" stop-color="#b3bac4"/></linearGradient></defs>
+<path d="M0.5 1.5H15.5V14.5H0.5Z" fill="url(#res-designer-w)"/>
+<path d="M0.5 1.5H15.5V3.5H0.5Z" fill="url(#res-designer-t)" stroke="#3f69ad" stroke-width="1"/>
+<path d="M2 6H5V7H2ZM2 11H5V12H2Z" fill="#4b93e2"/>
+<path d="M6.5 5.5H13.5V7.5H6.5ZM6.5 10.5H13.5V12.5H6.5Z" fill="#ffffff" stroke="#6b7380" stroke-width="1"/>
+<path d="M0.5 1.5H15.5V14.5H0.5Z" fill="none" stroke="#3f69ad" stroke-width="1"/>
 </svg>

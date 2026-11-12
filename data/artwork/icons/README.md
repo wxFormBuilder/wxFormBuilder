@@ -42,6 +42,7 @@ node data/artwork/icons/tools/verify.js             # only verify
 | `gen_containers_forms_layout_sdk.js` | `plugins/{containers,forms,layout}/icons`, `sdk/plugin_interface` |
 | `build_platform.js` | `data/platform/{macos,windows,linux}` icons and the installer icon from the SVG sources |
 | `verify.js` | Checks the set against the bitmaps: coverage, viewBox, stroke widths, ids, references |
+| `palette.js` | Shared flat colour materials of the application icons (module, no output) |
 | `raster.js` | Renders SVG to PNG with resvg (module, no output) |
 
 The generators and `verify.js` are plain Node.js. Everything that rasterises uses `raster.js`, which

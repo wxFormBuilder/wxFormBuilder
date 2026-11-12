@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><linearGradient id="open-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ececec"/><stop offset="1" stop-color="#a4a4a4"/></linearGradient><linearGradient id="open-f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd6f6"/><stop offset="1" stop-color="#4f82cc"/></linearGradient></defs>
-<path d="M1.5 3.5H7.5L9.5 5.5H17.5V18.5H1.5Z" fill="url(#open-k)" stroke="#666666" stroke-width="1" stroke-linejoin="round"/>
-<path d="M4.5 1.5H16.5V12.5H4.5Z" fill="#ffffff" stroke="#9a9a9a" stroke-width="1"/>
-<path d="M6 4.5H15M6 6.5H15M6 8.5H15" stroke="#c8c8c8" stroke-width="1"/>
+<defs><linearGradient id="open-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5e8ec"/><stop offset="1" stop-color="#b3bac4"/></linearGradient><linearGradient id="open-f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a3c8f3"/><stop offset="1" stop-color="#5b8fd8"/></linearGradient></defs>
+<path d="M1.5 3.5H7.5L9.5 5.5H17.5V18.5H1.5Z" fill="url(#open-k)" stroke="#6b7380" stroke-width="1" stroke-linejoin="round"/>
+<path d="M4.5 1.5H16.5V12.5H4.5Z" fill="#ffffff" stroke="#8f99a6" stroke-width="1"/>
+<path d="M6 4.5H15M6 6.5H15M6 8.5H15" stroke="#b4bcc8" stroke-width="1"/>
 <path d="M1.5 19.5L4.5 9.5H20.5L17.5 19.5Z" fill="url(#open-f)" stroke="#3a64a8" stroke-width="1" stroke-linejoin="round"/>
 </svg>

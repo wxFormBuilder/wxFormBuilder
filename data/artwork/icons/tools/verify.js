@@ -1,7 +1,7 @@
 // Checks the SVG icon set in <svgRoot> (default: the data/artwork/icons directory) against the
 // bitmap icons of the repository (resources/icons, plugins/*/icons, sdk/plugin_interface):
 // every bitmap has an SVG at the same relative path, its viewBox equals the bitmap size (logo: 512),
-// only stroke-width 1 is used (except the logos), no <text>/<image>/comments, gradient ids are
+// only stroke-width 1 is used (except the logos and round-capped lettering glyphs), no <text>/<image>/comments, gradient ids are
 // unique across the whole set and every url(#id) reference resolves.
 // Usage: node verify.js [<svgRoot>]
 'use strict';
@@ -38,7 +38,9 @@ for (const bmp of bitmaps) {
   const vb = (svg.match(/viewBox="0 0 (\d+) (\d+)"/) || []).slice(1).map(Number);
   if (vb[0] !== expect || vb[1] !== expect) problems.push(`viewBox ${vb.join('x')} != ${expect}: ${rel}`);
   sizes[expect] = (sizes[expect] || 0) + 1;
-  const widths = [...svg.matchAll(/stroke-width="([^"]*)"/g)].map(m => m[1]).filter(v => v !== '1');
+  // Lettering glyphs drawn as round-capped centre lines may use other stroke widths.
+  const widths = [...svg.matchAll(/<[^>]*stroke-width="([^"]*)"[^>]*>/g)]
+    .filter(m => !m[0].includes('stroke-linecap="round"')).map(m => m[1]).filter(v => v !== '1');
   if (widths.length && !isLogo) problems.push(`stroke-width ${[...new Set(widths)]}: ${rel}`);
   if (/<text|<image|<!--/.test(svg)) problems.push(`text, image or comment: ${rel}`);
 }
