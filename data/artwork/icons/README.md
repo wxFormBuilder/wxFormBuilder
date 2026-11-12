@@ -39,6 +39,7 @@ node data/artwork/icons/tools/verify.js             # only verify
 | `gen_containers_forms_layout_sdk.js` | `plugins/{containers,forms,layout}/icons`, `sdk/plugin_interface` |
 | `build_platform.js` | `data/platform/{macos,windows,linux}` icons and the installer icon from the SVG sources |
 | `verify.js` | Checks the set against the bitmaps: coverage, viewBox, stroke widths, ids, references |
+| `palette.js` | Shared flat colour materials of the application icons (module, no output) |
 
 `build_platform.js` renders with headless Microsoft Edge and crops with System.Drawing, so it needs
 Windows. Its output is deterministic. Developer helpers in `tools/dev`: `dump.ps1` prints a bitmap

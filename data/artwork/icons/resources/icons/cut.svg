@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><linearGradient id="cut-m" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f4f5f7"/><stop offset="1" stop-color="#a4aab6"/></linearGradient><linearGradient id="cut-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f08080"/><stop offset="1" stop-color="#c00000"/></linearGradient></defs>
-<path d="M17 0.5L15.5 1.5L7.5 13.5L9.5 14.5ZM5 0.5L6.5 1.5L14.5 13.5L12.5 14.5Z" fill="url(#cut-m)" stroke="#7d8699" stroke-width="1" stroke-linejoin="round"/>
-<circle cx="11" cy="10.5" r="1" fill="#5a6070"/>
-<path d="M10 17A4 4 0 1 0 2 17A4 4 0 1 0 10 17ZM8 17A2 2 0 1 0 4 17A2 2 0 1 0 8 17ZM20 17A4 4 0 1 0 12 17A4 4 0 1 0 20 17ZM18 17A2 2 0 1 0 14 17A2 2 0 1 0 18 17Z" fill="url(#cut-r)" fill-rule="evenodd" stroke="#900000" stroke-width="1"/>
+<defs><linearGradient id="cut-m" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef1f5"/><stop offset="1" stop-color="#a3acb9"/></linearGradient><linearGradient id="cut-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2654e"/><stop offset="1" stop-color="#cf2a14"/></linearGradient></defs>
+<path d="M5.5 0.5Q4.7 4.5 10.3 11L12.35 14.5L14.5 13.5Z" fill="url(#cut-m)" stroke="#5f6878" stroke-width="1" stroke-linejoin="round"/>
+<path d="M16.5 0.5Q17.3 4.5 11.7 11L9.65 14.5L7.5 13.5Z" fill="url(#cut-m)" stroke="#5f6878" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="11" cy="10" r="1" fill="#5f6878"/>
+<path d="M10 17A4 4 0 1 0 2 17A4 4 0 1 0 10 17ZM8 17A2 2 0 1 0 4 17A2 2 0 1 0 8 17ZM20 17A4 4 0 1 0 12 17A4 4 0 1 0 20 17ZM18 17A2 2 0 1 0 14 17A2 2 0 1 0 18 17Z" fill="url(#cut-r)" fill-rule="evenodd" stroke="#9b1508" stroke-width="1"/>
 </svg>

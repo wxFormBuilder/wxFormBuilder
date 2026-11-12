@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><linearGradient id="save-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8eb0e6"/><stop offset="1" stop-color="#3a5ca6"/></linearGradient><linearGradient id="save-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f46060"/><stop offset="1" stop-color="#c82020"/></linearGradient><linearGradient id="save-s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0f0f0"/><stop offset="1" stop-color="#8a8a8a"/></linearGradient></defs>
+<defs><linearGradient id="save-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6f97da"/><stop offset="1" stop-color="#3d61ab"/></linearGradient><linearGradient id="save-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2654e"/><stop offset="1" stop-color="#cf2a14"/></linearGradient><linearGradient id="save-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef1f5"/><stop offset="1" stop-color="#a3acb9"/></linearGradient></defs>
 <path d="M1.5 1.5H18.5L20.5 3.5V20.5H1.5Z" fill="url(#save-b)"/>
 <path d="M4.5 1.5V9.5H17.5V1.5" fill="#ffffff" stroke="#9fb4d8" stroke-width="1"/>
 <path d="M5 2H17V4H5Z" fill="url(#save-r)"/>
-<path d="M7 6.5H15" stroke="#c0c0c0" stroke-width="1"/>
-<path d="M6.5 13.5H15.5V20.5H6.5Z" fill="url(#save-s)" stroke="#444444" stroke-width="1"/>
-<path d="M9 15H11V19H9Z" fill="#333333"/>
-<path d="M1.5 1.5H18.5L20.5 3.5V20.5H1.5Z" fill="none" stroke="#2c4a88" stroke-width="1" stroke-linejoin="round"/>
+<path d="M7 6.5H15" stroke="#b4bcc8" stroke-width="1"/>
+<path d="M6.5 13.5H15.5V20.5H6.5Z" fill="url(#save-s)" stroke="#5f6878" stroke-width="1"/>
+<path d="M9 15H11V19H9Z" fill="#2a4885"/>
+<path d="M1.5 1.5H18.5L20.5 3.5V20.5H1.5Z" fill="none" stroke="#2a4885" stroke-width="1" stroke-linejoin="round"/>
 </svg>

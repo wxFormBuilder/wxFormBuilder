@@ -1,4 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><radialGradient id="delete-x" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#ffb8b8"/><stop offset="0.45" stop-color="#f03838"/><stop offset="1" stop-color="#c80000"/></radialGradient></defs>
-<path d="M1 5L5 1L11 7L17 1L21 5L15 11L21 17L17 21L11 15L5 21L1 17L7 11Z" fill="url(#delete-x)" stroke="#a01818" stroke-width="1" stroke-linejoin="round"/>
+<defs><linearGradient id="delete-x" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2654e"/><stop offset="1" stop-color="#cf2a14"/></linearGradient></defs>
+<path d="M1 5L5 1L11 7L17 1L21 5L15 11L21 17L17 21L11 15L5 21L1 17L7 11Z" fill="url(#delete-x)" stroke="#9b1508" stroke-width="1" stroke-linejoin="round"/>
 </svg>

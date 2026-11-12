@@ -1,5 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
-<defs><radialGradient id="undo-s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000000" stop-opacity="0.35"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient><linearGradient id="undo-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d2e6fa"/><stop offset="1" stop-color="#6a9fdc"/></linearGradient></defs>
-<ellipse cx="11" cy="19.5" rx="10" ry="2.5" fill="url(#undo-s)"/>
-<path d="M7.5 1.5L1 8L7.5 14.5V10.5H9A3.5 3.5 0 0 1 12.5 14V18.5H17.5V14A8.5 8.5 0 0 0 9 5.5H7.5Z" fill="url(#undo-a)" stroke="#3d6fb5" stroke-width="1" stroke-linejoin="round"/>
+<defs><linearGradient id="undo-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9cdf5"/><stop offset="1" stop-color="#5b93dc"/></linearGradient></defs>
+<path d="M7.5 1.5L1 8L7.5 14.5V10.5H9A3.5 3.5 0 0 1 12.5 14V20.5H17.5V14A8.5 8.5 0 0 0 9 5.5H7.5Z" fill="url(#undo-a)" stroke="#2f62b0" stroke-width="1" stroke-linejoin="round"/>
 </svg>

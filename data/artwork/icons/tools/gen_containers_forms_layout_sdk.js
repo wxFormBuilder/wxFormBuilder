@@ -341,10 +341,15 @@ const icons = {
     fill('M3 10.5L6 8V13ZM17 10.5L14 8V13ZM6 10H14V11H6Z', '#000000')]],
 
   // ===== sdk =====
-  'sdk/plugin_interface/default': [22, () => ['',
-    shape('M9.5 3.5H13.5L15.5 5.5V9.5L12.5 12.5V15.5H9.5V12.5L12.5 9.5V6.5H9.5L8.5 7.5H7.5V5.5Z', '#ff0000', '#000000', ' stroke-linejoin="round"'),
-    shape(box(9, 15, 12, 18), '#ff0000', '#000000'),
-    bits(9, 4, ['.###', '#####', '....#', '....#', '....#', '....#', '...#', '..#', '.#', '.#', '', '', '.#'], '#ff6262')]],
+  // Question mark as a lettering glyph: 3 px red stroke with a 1 px dark outline (a 5 px stroke below).
+  'sdk/plugin_interface/default': [22, p => {
+    const red = require('./palette.js').MATERIALS.red, dark = '#2a1010';
+    const hook = 'M7.5 6.5A3.5 3.5 0 1 1 13.47 8.97L11 11.4V13.75';
+    return [linU(`${p}-q`, [[0, red.top], [1, red.bottom]], 0, 3, 0, 20),
+      `<path d="${hook}" fill="none" stroke="${dark}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>`,
+      `<path d="${hook}" fill="none" stroke="url(#${p}-q)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+      `<circle cx="11" cy="19.25" r="2.5" fill="${dark}"/><circle cx="11" cy="19.25" r="1.5" fill="url(#${p}-q)"/>`];
+  }],
 };
 
 // ---------- write ----------

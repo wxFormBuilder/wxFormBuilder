@@ -56,11 +56,12 @@ function xform(d, k, [fx, fy], [tx, ty]) {
 }
 
 // ---------- shared parts ----------
-const pageDefs = p => lin(`${p}-pg`, [[0, '#ffffff'], [1, '#e2e2e2']], 0, 0, 1, 1);
+const palette = require('./palette.js');
+const pageDefs = p => palette.fill(`${p}-pg`, 'paper') + palette.fill(`${p}-fd`, 'fold', 1, 1);
 const page16 = (p, x0) =>
-  `<path d="M${x0}.5 0.5H11.5L14.5 3.5V15.5H${x0}.5Z" fill="url(#${p}-pg)" stroke="#9a9a9a" ${SW} stroke-linejoin="round"/>` +
-  `<path d="M11.5 0.5V3.5H14.5" fill="#dcdcdc" stroke="#9a9a9a" ${SW} stroke-linejoin="round"/>`;
-const glyphDefs = p => lin(`${p}-c`, [[0, '#8ab8f2'], [1, '#2a5aa8']]);
+  `<path d="M${x0}.5 0.5H11.5L14.5 3.5V15.5H${x0}.5Z" fill="url(#${p}-pg)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>` +
+  `<path d="M11.5 0.5V3.5H14.5" fill="url(#${p}-fd)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>`;
+const glyphDefs = p => palette.fill(`${p}-c`, 'glyph');
 
 // Flat logo squares: a subtle top-to-bottom gradient per colour, no gloss highlight.
 const squaresDefs = p =>
@@ -167,17 +168,15 @@ function xformRel(d, dx, dy) {
 
 // ---------- 16x16 icons ----------
 const icons16 = {
-  'c++': p => [lin(`${p}-pg`, [[0, '#ffffff'], [1, '#b8d6f4']], 0, 0, 1, 1) +
-               rad(`${p}-g`, [[0, '#f8f8f8'], [1, '#9a9a9a']], 0.4, 0.35, 0.7),
-    `<path d="M1.5 0.5H11.5L14.5 3.5V15.5H1.5Z" fill="url(#${p}-pg)" stroke="#5a8fcb" ${SW} stroke-linejoin="round"/>`,
-    `<path d="M11.5 0.5V3.5H14.5" fill="#c0daf4" stroke="#5a8fcb" ${SW} stroke-linejoin="round"/>`,
-    `<path d="M4 3.5H9M4 5.5H7" stroke="#a6cbe9" ${SW}/>`,
-    `<path fill-rule="evenodd" d="${gear(10.5, 10.5, 5, 3.6, 1.3, 8, 0.22, 0.32)}" fill="url(#${p}-g)" stroke="#5d5d5d" ${SW} stroke-linejoin="round"/>`],
+  'c++': p => [pageDefs(p) + palette.fill(`${p}-g`, 'metal'),
+    page16(p, 1),
+    `<path d="M4 3.5H9M4 5.5H7" stroke="${palette.LINE}" ${SW}/>`,
+    `<path fill-rule="evenodd" d="${gear(10.5, 10.5, 5, 3.6, 1.3, 8, 0.22, 0.32)}" fill="url(#${p}-g)" stroke="${palette.stroke('metal')}" ${SW} stroke-linejoin="round"/>`],
 
   cpp: p => [pageDefs(p) + glyphDefs(p),
     page16(p, 3),
     `<path d="M7.18 5.25A3.5 3.5 0 1 0 7.18 9.75L5.73 8.53A1.6 1.6 0 1 1 5.73 6.47Z" fill="url(#${p}-c)"/>`,
-    `<path d="M8 7.5H11M9.5 6V9M12 7.5H15M13.5 6V9" stroke="#3c74d0" ${SW}/>`],
+    `<path d="M8 7.5H11M9.5 6V9M12 7.5H15M13.5 6V9" stroke="${palette.MATERIALS.glyph.bottom}" ${SW}/>`],
 
   h: p => [pageDefs(p) + glyphDefs(p),
     page16(p, 2),
@@ -187,43 +186,53 @@ const icons16 = {
     page16(p, 3),
     `<path d="M3 4.5H5L2.5 7.5L5 10.5H3L0.5 7.5ZM6.5 4.5H8.5L11 7.5L8.5 10.5H6.5L9 7.5Z" fill="url(#${p}-c)"/>`],
 
-  php: p => [pageDefs(p) + lin(`${p}-e`, [[0, '#a4a8e6'], [1, '#585ea6']]),
+  // "php" in white 1 px letters with round bowls on the PHP-violet ellipse.
+  php: p => [pageDefs(p) + lin(`${p}-e`, [[0, '#9a9fe0'], [1, '#5d63ad']]),
     page16(p, 3),
     `<ellipse cx="7" cy="7" rx="6.5" ry="3.75" fill="url(#${p}-e)" stroke="#3c4078" ${SW}/>`,
-    `<path d="M2.5 5V10M3 5.5H4.5V7.5H3M6.5 4V8.5M7 5.5H8.5V8.5M10.5 5V9.5M11 5.5H12.5V7.5H11" fill="none" stroke="#ffffff" ${SW}/>`],
+    `<path d="M2.5 5V10M2.5 5.5H3.5A1 1 0 0 1 3.5 7.5H2.5M6.5 4V8.5M6.5 5.5H7.5A1 1 0 0 1 8.5 6.5V8.5` +
+      `M10.5 5V9.5M10.5 5.5H11.5A1 1 0 0 1 11.5 7.5H10.5" fill="none" stroke="#ffffff" ${SW}/>`],
 
   python: p => [pageDefs(p) +
-      lin(`${p}-b`, [[0, '#6aaee4'], [1, '#2f6698']], 0, 0, 1, 1) +
-      lin(`${p}-y`, [[0, '#ffd43b'], [1, '#ffef9a']], 0, 0, 1, 1),
+      lin(`${p}-b`, [[0, '#5a9fd6'], [1, '#306998']]) +
+      lin(`${p}-y`, [[0, '#ffe873'], [1, '#ffd43b']]),
     page16(p, 1),
     `<path d="${xform(PY_BLUE, 0.625, [11, 12], [7.5, 8.5])}" fill="url(#${p}-b)"/>`,
     `<path d="${xform(PY_YELLOW, 0.625, [11, 12], [7.5, 8.5])}" fill="url(#${p}-y)"/>`],
 
-  designer: p => [lin(`${p}-t`, [[0, '#92b9e8'], [1, '#6a8fc6']]) +
-                  lin(`${p}-w`, [[0, '#f6f6f6'], [1, '#e2e2e2']]),
-    `<path d="M0.5 1.5H14.5V13.5H0.5Z" fill="url(#${p}-w)"/>`,
-    `<path d="M0.5 1.5H14.5V3.5H0.5Z" fill="url(#${p}-t)" stroke="#5a7cb2" ${SW}/>`,
-    `<path d="M2 6H5V7H2ZM2 10H5V11H2Z" fill="#5883d2"/>`,
-    `<path d="M6.5 5.5H13.5V7.5H6.5ZM6.5 9.5H13.5V11.5H6.5Z" fill="#ffffff" stroke="#a8a8a8" ${SW}/>`,
-    `<path d="M0.5 1.5H14.5V13.5H0.5Z" fill="none" stroke="#5a7cb2" ${SW}/>`],
+  // Form window centred in the icon (16 x 14 px); label and field rows keep 1 px to the frame and 2 px
+  // between each other.
+  designer: p => [palette.fill(`${p}-t`, 'title') + palette.fill(`${p}-w`, 'grey'),
+    `<path d="M0.5 1.5H15.5V14.5H0.5Z" fill="url(#${p}-w)"/>`,
+    `<path d="M0.5 1.5H15.5V3.5H0.5Z" fill="url(#${p}-t)" stroke="${palette.stroke('title')}" ${SW}/>`,
+    `<path d="M2 6H5V7H2ZM2 11H5V12H2Z" fill="${palette.MATERIALS.blue.bottom}"/>`,
+    `<path d="M6.5 5.5H13.5V7.5H6.5ZM6.5 10.5H13.5V12.5H6.5Z" fill="#ffffff" stroke="${palette.stroke('grey')}" ${SW}/>`,
+    `<path d="M0.5 1.5H15.5V14.5H0.5Z" fill="none" stroke="${palette.stroke('title')}" ${SW}/>`],
 
-  properties: p => [lin(`${p}-w`, [[0, '#ffffff'], [1, '#e2ebf6']]) +
-                    lin(`${p}-t`, [[0, '#8fb4ea'], [1, '#4f84d6']]) +
-                    lin(`${p}-h`, [[0, '#fbe4bc'], [1, '#d49a5e']], 0, 0, 1, 1),
+  properties: p => [palette.fill(`${p}-w`, 'paper') + palette.fill(`${p}-t`, 'title') + palette.fill(`${p}-h`, 'skin'),
     `<path d="M0.5 4.5H13.5V14.5H0.5Z" fill="url(#${p}-w)"/>`,
     `<path d="M0.5 4.5H13.5V6.5H0.5Z" fill="url(#${p}-t)"/>`,
     `<path d="M2 8H4V9H2Z" fill="#2a9a2a"/>`,
-    `<path d="M2 10H4V11H2Z" fill="#cc3c3c"/>`,
-    `<path d="M2 12H4V13H2Z" fill="#4a86d8"/>`,
-    `<path d="M5 8H12V9H5ZM5 10H12V11H5ZM5 12H12V13H5Z" fill="#c8c8c8"/>`,
-    `<path d="M0.5 4.5H13.5V14.5H0.5Z" fill="none" stroke="#3f73c4" ${SW}/>`,
-    `<path d="M6.5 0.5H13.5A1.5 1.5 0 0 1 15 2V3H13V4.5A1 1 0 0 1 11 4.5V5.5A1 1 0 0 1 9 5.5V6A1 1 0 0 1 7 6V5.5A1 1 0 0 1 5 5.5V2A1.5 1.5 0 0 1 6.5 0.5Z" fill="url(#${p}-h)" stroke="#8a5a2a" ${SW} stroke-linejoin="round"/>`],
+    `<path d="M2 10H4V11H2Z" fill="${palette.MATERIALS.red.bottom}"/>`,
+    `<path d="M2 12H4V13H2Z" fill="${palette.MATERIALS.blue.bottom}"/>`,
+    `<path d="M5 8H12V9H5ZM5 10H12V11H5ZM5 12H12V13H5Z" fill="${palette.LINE}"/>`,
+    `<path d="M0.5 4.5H13.5V14.5H0.5Z" fill="none" stroke="${palette.stroke('title')}" ${SW}/>`,
+    // Pointing hand, drawn pointing left and turned to point down-left at the list: back of the hand,
+    // three curled fingers below the stretched index finger and the thumb on top.
+    `<g transform="translate(11.8 4.2) rotate(-45) translate(-6.4 -1.6)" fill="url(#${p}-h)" stroke="${palette.stroke('skin')}" ${SW} stroke-linejoin="round">` +
+      '<rect x="4" y="-0.8" width="5.2" height="5.6" rx="1.6"/>' +
+      '<rect x="2.6" y="3.7" width="2.6" height="1.3" rx="0.65"/>' +
+      '<rect x="2.4" y="2.4" width="2.8" height="1.3" rx="0.65"/>' +
+      '<rect x="2.2" y="1.1" width="3" height="1.3" rx="0.65"/>' +
+      '<rect x="0" y="-0.4" width="5.8" height="1.5" rx="0.75"/>' +
+      '<rect x="4.8" y="-1.6" width="3.4" height="1.3" rx="0.65"/>' +
+    '</g>'],
 
-  events: p => [lin(`${p}-z`, [[0, '#fff8c8'], [0.4, '#ffe400'], [1, '#ff7a00']]),
+  events: p => [lin(`${p}-z`, [[0, '#ffe25a'], [1, '#ff8a00']]),
     `<path d="M6 0.5H11L9 4.5H11.5L5.5 15.5L7 8.5H4.5Z" fill="url(#${p}-z)" stroke="#b05400" ${SW} stroke-linejoin="round"/>`],
 
-  lua: p => [squaresDefs(p) + rad(`${p}-m`, [[0, '#8a8af0'], [1, '#000080']], 0.35, 0.3, 0.75),
-    `<circle cx="8" cy="8.5" r="6.5" fill="none" stroke="#d8d8d8" ${SW}/>`,
+  lua: p => [squaresDefs(p) + lin(`${p}-m`, [[0, '#4a4ad0'], [1, '#000080']]),
+    `<circle cx="8" cy="8.5" r="6.5" fill="none" stroke="#d0d5dc" ${SW}/>`,
     sq(`${p}-r`, 2.5, 9.5, 3, 3, 1, '#a01000'),
     sq(`${p}-u`, 5.5, 5.5, 3, 3, 1, '#1858b0'),
     sq(`${p}-w`, 9.5, 8.5, 3, 3, 1, '#c08800'),
@@ -351,11 +360,12 @@ const docSmall = (p, size) => {
 };
 
 // ---------- project (22 px): page + the 16 px logo placed at (6, 6) ----------
+// The logo part, squares and "wxFB" pixel lettering, is exactly the 16 px logo of the platform icons.
 const project = p => {
   const [logoDefs, ...logoBody] = logo16Parts(p, 6, 6);
-  return [logoDefs + lin(`${p}-d`, [[0, '#ffffff'], [1, '#e2e2e2']], 0, 0, 1, 1),
-    `<path d="M1.5 1.5H14.5V15.5H1.5Z" fill="url(#${p}-d)" stroke="#8a8a8a" ${SW}/>`,
-    `<path d="M3 4.5H12M3 6.5H8M3 8.5H5M3 10.5H5M3 12.5H5" stroke="#b4b4b4" ${SW}/>`,
+  return [logoDefs + palette.fill(`${p}-d`, 'paper'),
+    `<path d="M1.5 1.5H14.5V15.5H1.5Z" fill="url(#${p}-d)" stroke="${palette.stroke('paper')}" ${SW}/>`,
+    `<path d="M3 4.5H12M3 6.5H8M3 8.5H5M3 10.5H5M3 12.5H5" stroke="${palette.LINE}" ${SW}/>`,
     ...logoBody];
 };
 

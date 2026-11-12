@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-<defs><linearGradient id="res-cpp-pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2e2e2"/></linearGradient><linearGradient id="res-cpp-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8ab8f2"/><stop offset="1" stop-color="#2a5aa8"/></linearGradient></defs>
-<path d="M3.5 0.5H11.5L14.5 3.5V15.5H3.5Z" fill="url(#res-cpp-pg)" stroke="#9a9a9a" stroke-width="1" stroke-linejoin="round"/><path d="M11.5 0.5V3.5H14.5" fill="#dcdcdc" stroke="#9a9a9a" stroke-width="1" stroke-linejoin="round"/>
+<defs><linearGradient id="res-cpp-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="res-cpp-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient><linearGradient id="res-cpp-c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a8ff0"/><stop offset="1" stop-color="#1f5fc0"/></linearGradient></defs>
+<path d="M3.5 0.5H11.5L14.5 3.5V15.5H3.5Z" fill="url(#res-cpp-pg)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/><path d="M11.5 0.5V3.5H14.5" fill="url(#res-cpp-fd)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
 <path d="M7.18 5.25A3.5 3.5 0 1 0 7.18 9.75L5.73 8.53A1.6 1.6 0 1 1 5.73 6.47Z" fill="url(#res-cpp-c)"/>
-<path d="M8 7.5H11M9.5 6V9M12 7.5H15M13.5 6V9" stroke="#3c74d0" stroke-width="1"/>
+<path d="M8 7.5H11M9.5 6V9M12 7.5H15M13.5 6V9" stroke="#1f5fc0" stroke-width="1"/>
 </svg>
