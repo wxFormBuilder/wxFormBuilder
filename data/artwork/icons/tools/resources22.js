@@ -3,25 +3,9 @@
 // Flat style: colours come from palette.js, no gloss highlights or ground shadows.
 'use strict';
 
-const { fill, stroke, DARK, LINE } = require('./palette.js');
+const { fill, stroke, DARK, LINE, MATERIALS } = require('./palette.js');
 
 const SW = 'stroke-width="1"';
-const n = v => +v.toFixed(2);
-
-// Gear outline (teeth + centre hole as evenodd sub-path).
-function gear(cx, cy, rOut, rIn, rHole, teeth, tipHalf, baseHalf) {
-  const pt = (r, a) => `${n(cx + r * Math.cos(a))} ${n(cy + r * Math.sin(a))}`;
-  const step = 2 * Math.PI / teeth;
-  let d = '';
-  for (let i = 0; i < teeth; i++) {
-    const a = i * step - Math.PI / 2;
-    d += (i === 0 ? `M${pt(rIn, a - baseHalf)}` : `A${rIn} ${rIn} 0 0 1 ${pt(rIn, a - baseHalf)}`) +
-      `L${pt(rOut, a - tipHalf)}A${rOut} ${rOut} 0 0 1 ${pt(rOut, a + tipHalf)}L${pt(rIn, a + baseHalf)}`;
-  }
-  d += `A${rIn} ${rIn} 0 0 1 ${pt(rIn, -Math.PI / 2 - baseHalf)}Z`;
-  d += `M${n(cx + rHole)} ${cy}A${rHole} ${rHole} 0 1 0 ${n(cx - rHole)} ${cy}A${rHole} ${rHole} 0 1 0 ${n(cx + rHole)} ${cy}Z`;
-  return d;
-}
 
 // 2x2 squares as one filled path; cells = [[col,row],...]
 const dots = cells => `<path d="${cells.map(([x, y]) => `M${x} ${y}h2v2h-2z`).join('')}" fill="#0066cc"/>`;
@@ -132,8 +116,17 @@ const icons = {
     `<path d="M9 15H11V19H9Z" fill="${stroke('disk')}"/>`,
     `<path d="M1.5 1.5H18.5L20.5 3.5V20.5H1.5Z" fill="none" stroke="${stroke('disk')}" ${SW} stroke-linejoin="round"/>`],
 
-  generate: p => [fill(`${p}-g`, 'violet'),
-    `<path fill-rule="evenodd" d="${gear(11, 11, 10, 7, 3, 8, 0.2, 0.3)}" fill="url(#${p}-g)" stroke="${stroke('violet')}" ${SW} stroke-linejoin="round"/>`],
+  // Generate code: a designed form window turns into a page of source code.
+  generate: p => [fill(`${p}-w`, 'paper') + fill(`${p}-t`, 'title') + pageDefs(p) + fill(`${p}-a`, 'accent', 1, 0),
+    `<path d="M1.5 1.5H11.5V9.5H1.5Z" fill="url(#${p}-w)"/>`,
+    `<path d="M1.5 1.5H11.5V3.5H1.5Z" fill="url(#${p}-t)"/>`,
+    `<path d="M3 5.5H6M3 7.5H5" stroke="${MATERIALS.blue.bottom}" ${SW}/>`,
+    `<path d="M7.5 5H10V6H7.5ZM7.5 7H10V8H7.5Z" fill="${LINE}"/>`,
+    `<path d="M1.5 1.5H11.5V9.5H1.5Z" fill="none" stroke="${stroke('title')}" ${SW}/>`,
+    `<path d="M10.5 9.5H17.5L20.5 12.5V21.5H10.5Z" fill="url(#${p}-pg)" stroke="${stroke('paper')}" ${SW} stroke-linejoin="round"/>`,
+    `<path d="M17.5 9.5V12.5H20.5" fill="url(#${p}-fd)" stroke="${stroke('paper')}" ${SW} stroke-linejoin="round"/>`,
+    `<path d="M12 13.5H15M13 15.5H18M13 17.5H16M12 19.5H14" stroke="#8a94a3" ${SW}/>`,
+    `<path d="M1 14H4.5V11.5L9 15.5L4.5 19.5V17H1Z" fill="url(#${p}-a)" stroke="${stroke('accent')}" ${SW} stroke-linejoin="round"/>`],
 };
 
 // ---------- rendering ----------
@@ -142,4 +135,4 @@ const render = name => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">\n` +
     (defs ? `<defs>${defs}</defs>\n` : '') + body.join('\n') + '\n</svg>\n';
 };
-module.exports = { icons, render, gear };
+module.exports = { icons, render };

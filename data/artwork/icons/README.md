@@ -74,6 +74,13 @@ Small sizes use pixel-hinted sources: app 16/32 → `logo16x16`/`logo32x32`, app
 - On every platform the app icon keeps the "wxFB" lettering and the document icon its "FBP"
   label (from 32 px up): the three squares alone equal the wxWidgets logo.
 
+- Language and file type icons (`c++`, `cpp`, `h`, `lua`, `php`, `python`, `xrc`) share one page;
+  their marks sit at the top left of the page on a common centre line (logos centred, letters
+  starting at the left edge, `cpp` and `h` with equal letter height). `c++` shows the three-tone
+  C++ hexagon, `lua` the Lua logo, `xrc` angle brackets around the wx squares. The usage terms of
+  the C++ and Lua marks still have to be checked.
+- `generate` shows a designed form window turning into a page of code.
+
 ## Open points
 
 - Replace the bitmap icons in the application by the SVGs (planned on this branch,

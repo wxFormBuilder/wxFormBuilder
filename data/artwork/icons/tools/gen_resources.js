@@ -19,20 +19,6 @@ const rad = (id, stops, cx = 0.5, cy = 0.5, r = 0.5, extra = '') =>
   `<radialGradient id="${id}" cx="${cx}" cy="${cy}" r="${r}"${extra}>${stopsXml(stops)}</radialGradient>`;
 const n = v => +v.toFixed(2);
 
-function gear(cx, cy, rOut, rIn, rHole, teeth, tipHalf, baseHalf) {
-  const pt = (r, a) => `${n(cx + r * Math.cos(a))} ${n(cy + r * Math.sin(a))}`;
-  const step = 2 * Math.PI / teeth;
-  let d = '';
-  for (let i = 0; i < teeth; i++) {
-    const a = i * step - Math.PI / 2;
-    d += (i === 0 ? `M${pt(rIn, a - baseHalf)}` : `A${rIn} ${rIn} 0 0 1 ${pt(rIn, a - baseHalf)}`) +
-      `L${pt(rOut, a - tipHalf)}A${rOut} ${rOut} 0 0 1 ${pt(rOut, a + tipHalf)}L${pt(rIn, a + baseHalf)}`;
-  }
-  d += `A${rIn} ${rIn} 0 0 1 ${pt(rIn, -Math.PI / 2 - baseHalf)}Z`;
-  d += `M${n(cx + rHole)} ${cy}A${rHole} ${rHole} 0 1 0 ${n(cx - rHole)} ${cy}A${rHole} ${rHole} 0 1 0 ${n(cx + rHole)} ${cy}Z`;
-  return d;
-}
-
 // Uniformly scales + translates an absolute path (M L H V C A Z only): p' = (p - from) * k + to.
 function xform(d, k, [fx, fy], [tx, ty]) {
   const X = v => n((v - fx) * k + tx), Y = v => n((v - fy) * k + ty), R = v => n(v * k);
@@ -58,9 +44,11 @@ function xform(d, k, [fx, fy], [tx, ty]) {
 // ---------- shared parts ----------
 const palette = require('./palette.js');
 const pageDefs = p => palette.fill(`${p}-pg`, 'paper') + palette.fill(`${p}-fd`, 'fold', 1, 1);
-const page16 = (p, x0) =>
-  `<path d="M${x0}.5 0.5H11.5L14.5 3.5V15.5H${x0}.5Z" fill="url(#${p}-pg)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>` +
-  `<path d="M11.5 0.5V3.5H14.5" fill="url(#${p}-fd)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>`;
+// Common page of the language and file type icons (c++, cpp, h, lua, php, python, xrc). Their marks sit
+// on the same centre line y = 10.5: logos centred at x = 7, letters starting at x = 1 with 7 px height.
+const page16 = p =>
+  `<path d="M4.5 0.5H12.5L15.5 3.5V15.5H4.5Z" fill="url(#${p}-pg)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>` +
+  `<path d="M12.5 0.5V3.5H15.5" fill="url(#${p}-fd)" stroke="${palette.stroke('paper')}" ${SW} stroke-linejoin="round"/>`;
 const glyphDefs = p => palette.fill(`${p}-c`, 'glyph');
 
 // Flat logo squares: a subtle top-to-bottom gradient per colour, no gloss highlight.
@@ -167,38 +155,57 @@ function xformRel(d, dx, dy) {
 }
 
 // ---------- 16x16 icons ----------
+// Three small wx squares (2 px, flat) with the top-left corner of the blue square at (x, y).
+const wxDots = (p, x, y) => [
+  `<path d="M${x - 1} ${y + 2}h2v2h-2z" fill="url(#${p}-r)"/>`,
+  `<path d="M${x} ${y}h2v2h-2z" fill="url(#${p}-u)"/>`,
+  `<path d="M${x + 1.5} ${y + 1.5}h2v2h-2z" fill="url(#${p}-w)"/>`];
+
 const icons16 = {
-  'c++': p => [pageDefs(p) + palette.fill(`${p}-g`, 'metal'),
-    page16(p, 1),
-    `<path d="M4 3.5H9M4 5.5H7" stroke="${palette.LINE}" ${SW}/>`,
-    `<path fill-rule="evenodd" d="${gear(10.5, 10.5, 5, 3.6, 1.3, 8, 0.22, 0.32)}" fill="url(#${p}-g)" stroke="${palette.stroke('metal')}" ${SW} stroke-linejoin="round"/>`],
+  // C++: the C++ hexagon, split like the official mark by lines from the centre to the upper-right,
+  // lower-right and lower-left corners (light top and left, mid right side, dark bottom), with a white
+  // "C++": a ring with straight cut ends and two crosses.
+  'c++': p => [pageDefs(p),
+    page16(p),
+    '<path d="M6 7.5L10.5 4.9L6 2.3L1.5 4.9V10.1Z" fill="#659ad2"/>',
+    '<path d="M6 7.5L10.5 4.9V10.1Z" fill="#00599c"/>',
+    '<path d="M6 7.5L10.5 10.1L6 12.7L1.5 10.1Z" fill="#004482"/>',
+    `<path d="M6 2.3L10.5 4.9V10.1L6 12.7L1.5 10.1V4.9Z" fill="none" stroke="#003a70" ${SW} stroke-linejoin="round"/>`,
+    '<path d="M5.69 6.02A2.1 2.1 0 1 0 5.69 8.98L4.98 8.28A1.1 1.1 0 1 1 4.98 6.72Z" fill="#ffffff"/>',
+    '<path d="M6 6.4H6.8V7.1H7.5V7.9H6.8V8.6H6V7.9H5.3V7.1H6ZM8.5 6.4H9.3V7.1H10V7.9H9.3V8.6H8.5V7.9H7.8V7.1H8.5Z" fill="#ffffff"/>'],
 
   cpp: p => [pageDefs(p) + glyphDefs(p),
-    page16(p, 3),
-    `<path d="M7.18 5.25A3.5 3.5 0 1 0 7.18 9.75L5.73 8.53A1.6 1.6 0 1 1 5.73 6.47Z" fill="url(#${p}-c)"/>`,
-    `<path d="M8 7.5H11M9.5 6V9M12 7.5H15M13.5 6V9" stroke="${palette.MATERIALS.glyph.bottom}" ${SW}/>`],
+    page16(p),
+    `<path d="M6.18 5.25A3.5 3.5 0 1 0 6.18 9.75L4.8 8.59A1.7 1.7 0 1 1 4.8 6.41Z" fill="url(#${p}-c)"/>`,
+    `<path d="M7 7.5H10M8.5 6V9M11 7.5H14M12.5 6V9" stroke="${palette.MATERIALS.glyph.bottom}" ${SW}/>`],
 
   h: p => [pageDefs(p) + glyphDefs(p),
-    page16(p, 2),
-    `<path d="M0.5 3.5H2.5V7H5A2 2 0 0 1 7 9V12.5H5V9.5H2.5V12.5H0.5Z" fill="url(#${p}-c)"/>`],
+    page16(p),
+    `<path d="M0 4H2V6.5H3.5A2 2 0 0 1 5.5 8.5V11H3.5V8.5H2V11H0Z" fill="url(#${p}-c)"/>`],
 
-  xrc: p => [pageDefs(p) + glyphDefs(p),
-    page16(p, 3),
-    `<path d="M3 4.5H5L2.5 7.5L5 10.5H3L0.5 7.5ZM6.5 4.5H8.5L11 7.5L8.5 10.5H6.5L9 7.5Z" fill="url(#${p}-c)"/>`],
+  // XRC, the XML resource format of wxWidgets: angle brackets around the three wx squares ("<wx>"),
+  // brackets (x 1..12.5) close around the squares (x 4.5..9), both centred on x = 6.75.
+  xrc: p => [pageDefs(p) + glyphDefs(p) + squaresDefs(p),
+    page16(p),
+    `<path d="M3 4.5H4.5L2.5 7.5L4.5 10.5H3L1 7.5ZM9 4.5H10.5L12.5 7.5L10.5 10.5H9L11 7.5Z" fill="url(#${p}-c)"/>`,
+    ...wxDots(p, 5.5, 5.5)],
 
-  // "php" in white 1 px letters with round bowls on the PHP-violet ellipse.
+  // "php" in white 1 px letters inside the PHP-violet ellipse: straight stems with square ends, small
+  // round bowls; the p stems start at the top of their bowls, all letters keep clear of the contour.
   php: p => [pageDefs(p) + lin(`${p}-e`, [[0, '#9a9fe0'], [1, '#5d63ad']]),
-    page16(p, 3),
-    `<ellipse cx="7" cy="7" rx="6.5" ry="3.75" fill="url(#${p}-e)" stroke="#3c4078" ${SW}/>`,
-    `<path d="M2.5 5V10M2.5 5.5H3.5A1 1 0 0 1 3.5 7.5H2.5M6.5 4V8.5M6.5 5.5H7.5A1 1 0 0 1 8.5 6.5V8.5` +
-      `M10.5 5V9.5M10.5 5.5H11.5A1 1 0 0 1 11.5 7.5H10.5" fill="none" stroke="#ffffff" ${SW}/>`],
+    page16(p),
+    `<ellipse cx="6" cy="7.5" rx="5.5" ry="4" fill="url(#${p}-e)" stroke="#3c4078" ${SW}/>`,
+    `<path d="M2.5 6V9.5M2.5 6.5H3.25A0.75 0.75 0 0 1 3.25 8H2.5M5.5 4.5V9M5.5 6.5H6.25A0.75 0.75 0 0 1 7 7.25V9` +
+      `M8.5 6V9.5M8.5 6.5H9.25A0.75 0.75 0 0 1 9.25 8H8.5" fill="none" stroke="#ffffff" ${SW}/>`],
 
+  // Python: the two snakes, each with its white eye as in the original logo.
   python: p => [pageDefs(p) +
       lin(`${p}-b`, [[0, '#5a9fd6'], [1, '#306998']]) +
       lin(`${p}-y`, [[0, '#ffe873'], [1, '#ffd43b']]),
-    page16(p, 1),
-    `<path d="${xform(PY_BLUE, 0.625, [11, 12], [7.5, 8.5])}" fill="url(#${p}-b)"/>`,
-    `<path d="${xform(PY_YELLOW, 0.625, [11, 12], [7.5, 8.5])}" fill="url(#${p}-y)"/>`],
+    page16(p),
+    `<path d="${xform(PY_BLUE, 0.625, [11, 12], [6, 7.5])}" fill="url(#${p}-b)"/>`,
+    `<path d="${xform(PY_YELLOW, 0.625, [11, 12], [6, 7.5])}" fill="url(#${p}-y)"/>`,
+    '<circle cx="5.06" cy="3.44" r="0.55" fill="#ffffff"/><circle cx="6.94" cy="11.56" r="0.55" fill="#ffffff"/>'],
 
   // Form window centred in the icon (16 x 14 px); label and field rows keep 1 px to the frame and 2 px
   // between each other.
@@ -231,12 +238,13 @@ const icons16 = {
   events: p => [lin(`${p}-z`, [[0, '#ffe25a'], [1, '#ff8a00']]),
     `<path d="M6 0.5H11L9 4.5H11.5L5.5 15.5L7 8.5H4.5Z" fill="url(#${p}-z)" stroke="#b05400" ${SW} stroke-linejoin="round"/>`],
 
-  lua: p => [squaresDefs(p) + lin(`${p}-m`, [[0, '#4a4ad0'], [1, '#000080']]),
-    `<circle cx="8" cy="8.5" r="6.5" fill="none" stroke="#d0d5dc" ${SW}/>`,
-    sq(`${p}-r`, 2.5, 9.5, 3, 3, 1, '#a01000'),
-    sq(`${p}-u`, 5.5, 5.5, 3, 3, 1, '#1858b0'),
-    sq(`${p}-w`, 9.5, 8.5, 3, 3, 1, '#c08800'),
-    `<circle cx="12.5" cy="3" r="2.5" fill="url(#${p}-m)" stroke="#000060" ${SW}/>`],
+  // Lua: the Lua logo (dark blue planet with white crater, moon, dashed orbit).
+  lua: p => [pageDefs(p) + lin(`${p}-m`, [[0, '#2a2aa8'], [1, '#000080']]),
+    page16(p),
+    `<path d="M0.8 8A5.2 5.2 0 0 1 11.2 8" fill="none" stroke="#8f99a6" ${SW} stroke-dasharray="1 1"/>`,
+    `<circle cx="6" cy="8" r="3.8" fill="url(#${p}-m)"/>`,
+    '<circle cx="7.4" cy="6.6" r="1.1" fill="#ffffff"/>',
+    `<circle cx="9.68" cy="4.32" r="1.3" fill="url(#${p}-m)"/>`],
 
   logo16x16: p => logo16Parts(p),
 };
