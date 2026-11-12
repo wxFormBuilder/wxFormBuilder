@@ -25,4 +25,7 @@
 
 #include <wx/msw/wx.rc>
 
+// Icon resources are ordered by name: A (index 0) is the application icon,
+// DOCICON (index 1) the icon of .fbp project files used by the installer.
 A ICON "wxFormBuilder.ico"
+DOCICON ICON "docicon.ico"
