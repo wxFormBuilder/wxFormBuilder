@@ -62,10 +62,11 @@ const page16 = (p, x0) =>
   `<path d="M11.5 0.5V3.5H14.5" fill="#dcdcdc" stroke="#9a9a9a" ${SW} stroke-linejoin="round"/>`;
 const glyphDefs = p => lin(`${p}-c`, [[0, '#8ab8f2'], [1, '#2a5aa8']]);
 
+// Flat logo squares: a subtle top-to-bottom gradient per colour, no gloss highlight.
 const squaresDefs = p =>
-  lin(`${p}-r`, [[0, '#ffa088'], [0.5, '#f0401c'], [1, '#c41800']]) +
-  lin(`${p}-u`, [[0, '#d4ecff'], [0.5, '#62aef2'], [1, '#2a78d0']]) +
-  lin(`${p}-w`, [[0, '#fff8b0'], [0.5, '#ffe000'], [1, '#f0aa00']]);
+  lin(`${p}-r`, [[0, '#f25a3c'], [1, '#cf2a12']]) +
+  lin(`${p}-u`, [[0, '#55a9f2'], [1, '#2a74cc']]) +
+  lin(`${p}-w`, [[0, '#ffd93a'], [1, '#f0ae00']]);
 const sq = (id, x, y, w, h, r, stroke, sw = 1) =>
   `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="url(#${id})" stroke="${stroke}" stroke-width="${sw}"/>`;
 
@@ -155,8 +156,9 @@ const LOGO_TEXT16 =
   'M6 12h1v1h-1zM8 12h1v1h-1zM7 13h1v2h-1zM6 15h1v1h-1zM8 15h1v1h-1z' +
   'M10 11h2v1h-2zM10 12h1v4h-1zM11 13h1v1h-1z' +
   'M13 11h2v1h-2zM13 12h1v3h-1zM14 13h1v1h-1zM13 15h2v1h-2zM15 12h1v1h-1zM15 14h1v1h-1z';
+// Lettering of the large and 32 px logos: flat light blue, set off against the dark outline.
 const logoTextDefs = (p, y1, y2) =>
-  lin(`${p}-t`, [[0, '#b4dcff'], [0.5, '#4a94f0'], [1, '#1a56b8']], 0, y1, 0, y2, ' gradientUnits="userSpaceOnUse"');
+  lin(`${p}-t`, [[0, '#6eb1f6'], [1, '#3b80dc']], 0, y1, 0, y2, ' gradientUnits="userSpaceOnUse"');
 
 // 1 px pixel lettering needs a darker gradient than the outlined lettering of the large logo.
 const pixTextDefs = (p, y1, y2) =>
@@ -241,18 +243,10 @@ const icons16 = {
 };
 
 // ---------- 32x32 logo ----------
-const glossDefs = p => lin(`${p}-gl`, [[0, '#ffffff', 0.75], [1, '#ffffff', 0.1]]);
-// Glossy highlight in the upper part of a rounded square (x, y, size, inset, corner radius).
-const gloss = (p, x, y, w, h, i, r) => {
-  const L = x + i, T = y + i, Rr = x + w - i;
-  return `<path d="M${n(L)} ${n(T + r)}A${r} ${r} 0 0 1 ${n(L + r)} ${n(T)}H${n(Rr - r)}A${r} ${r} 0 0 1 ${n(Rr)} ${n(T + r)}` +
-    `V${n(y + h * 0.42)}C${n(x + w * 0.7)} ${n(y + h * 0.3)} ${n(x + w * 0.35)} ${n(y + h * 0.62)} ${n(L)} ${n(y + h * 0.5)}Z" fill="url(#${p}-gl)"/>`;
-};
-
 // 32 px: squares on the pixel grid (1 px contour), lettering 2 px strong without outline.
-const logo32 = p => [squaresDefs(p) + glossDefs(p) + logoTextDefs(p, 23, 31),
+const logo32 = p => [squaresDefs(p) + logoTextDefs(p, 23, 31),
   ...LOGO_SQUARES.map(([c, stroke, x, y]) =>
-    sq(`${p}-${c}`, x + 0.5, y + 0.5, LOGO_SQ - 1, LOGO_SQ - 1, 2, stroke) + gloss(p, x + 0.5, y + 0.5, LOGO_SQ - 1, LOGO_SQ - 1, 1.5, 1)),
+    sq(`${p}-${c}`, x + 0.5, y + 0.5, LOGO_SQ - 1, LOGO_SQ - 1, 2, stroke)),
   `<path d="${strokesD(1)}" fill="none" stroke="url(#${p}-t)" stroke-width="2" stroke-linecap="square"/>`,
   `<path d="${xD(1, 1)}" fill="url(#${p}-t)"/>`];
 
@@ -263,11 +257,9 @@ const logo512 = p => {
   const S = LOGO_SQ * LOGO_K - LOGO_SW, h = LOGO_TEXT_W / 2 / LOGO_K, gap = 2 * LOGO_TEXT_OUTLINE / LOGO_K;
   const cover = LOGO_STROKES.flatMap(pts => strokeCover(pts, h)).concat(logoX(h, gap))
     .map(pts => shapeD(pts, LOGO_K)).join('') + bCover(h, LOGO_K);
-  return [squaresDefs(p) + glossDefs(p) + logoTextDefs(p, 23 * LOGO_K, 31 * LOGO_K),
-    ...LOGO_SQUARES.map(([c, stroke, x, y]) => {
-      const rx = x * LOGO_K + LOGO_SW / 2, ry = y * LOGO_K + LOGO_SW / 2;
-      return sq(`${p}-${c}`, rx, ry, S, S, 32, stroke, LOGO_SW) + gloss(p, rx, ry, S, S, 14, 22);
-    }),
+  return [squaresDefs(p) + logoTextDefs(p, 23 * LOGO_K, 31 * LOGO_K),
+    ...LOGO_SQUARES.map(([c, stroke, x, y]) =>
+      sq(`${p}-${c}`, x * LOGO_K + LOGO_SW / 2, y * LOGO_K + LOGO_SW / 2, S, S, 32, stroke, LOGO_SW)),
     `<path d="${cover}" fill="#123c8c" stroke="#123c8c" stroke-width="${2 * LOGO_TEXT_OUTLINE}" stroke-linejoin="round"/>`,
     `<path d="${strokesD(LOGO_K)}" fill="none" stroke="url(#${p}-t)" stroke-width="${LOGO_TEXT_W}" stroke-linecap="square"/>`,
     `<path d="${xD(h, LOGO_K, gap)}" fill="url(#${p}-t)"/>`];
