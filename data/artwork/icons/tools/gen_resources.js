@@ -101,30 +101,20 @@ const bCover = (h, k) => {
 };
 // Diagonal bars with horizontal cuts: centre line from (x0, y0) to (x1, y1), horizontal width w.
 const bar = (x0, y0, x1, y1, w) => [[x0 - w / 2, y0], [x0 + w / 2, y0], [x1 + w / 2, y1], [x1 - w / 2, y1]];
-// Fills the acute tip of the counter between edge a (left) and edge b (right) up to the point where
-// the counter is `gap` wide, so an outline of that width does not leave dark slivers in the tip.
-function counterTip([[ax0, ay0], [ax1, ay1]], [[bx0, by0], [bx1, by1]], gap) {
-  const ka = (ax1 - ax0) / (ay1 - ay0), kb = (bx1 - bx0) / (by1 - by0);
-  const xa = y => ax0 + ka * (y - ay0), xb = y => bx0 + kb * (y - by0);
-  const yp = (ax0 - ka * ay0 - bx0 + kb * by0) / (kb - ka), yg = yp + gap / (kb - ka);
-  return [[xa(yp), yp], [xa(yg), yg], [xb(yg), yg]];
-}
-// w and x as diagonal bars for half letter weight h (in grid units); `gap` > 0 adds counter tips.
-const logoX = (h, gap = 0) => {
-  const t = 26 - h, b = 30 + h, apex = t, ww = 1.9 * h, xw = 2.4 * h;
+// w and x as diagonal bars for half letter weight h (in grid units). Their counters stay open into
+// the acute tips; the outline of the large logo runs into them as a continuous line.
+const logoX = h => {
+  const t = 26 - h, b = 30 + h, ww = 1.9 * h, xw = 2.4 * h;
   const l = 11.5 - h + xw / 2, r = 15 + h - xw / 2;
-  const w = [bar(1.5, t, 3.6, b, ww), bar(3.6, b, 5.3, apex, ww), bar(5.3, apex, 7, b, ww), bar(7, b, 9.1, t, ww)];
-  const right = s => [s[1], s[2]], left = s => [s[0], s[3]];
-  const tips = gap ? [counterTip(right(w[0]), left(w[1]), gap), counterTip(right(w[1]), left(w[2]), gap),
-    counterTip(right(w[2]), left(w[3]), gap)] : [];
-  return [...w, ...tips, bar(l, t, r, b, xw), bar(r, t, l, b, xw)];
+  return [bar(1.5, t, 3.6, b, ww), bar(3.6, b, 5.3, t, ww), bar(5.3, t, 7, b, ww), bar(7, b, 9.1, t, ww),
+    bar(l, t, r, b, xw), bar(r, t, l, b, xw)];
 };
 const polyD = (pts, k = 1) => 'M' + pts.map(([x, y]) => `${n(x * k)} ${n(y * k)}`).join('L');
 // Closed polygon with clockwise orientation, so overlapping polygons never cancel under nonzero fill.
 const area = pts => pts.reduce((s, [x, y], i) => { const [x2, y2] = pts[(i + 1) % pts.length]; return s + x * y2 - x2 * y; }, 0);
 const shapeD = (pts, k = 1) => polyD(area(pts) < 0 ? [...pts].reverse() : pts, k) + 'Z';
 const strokesD = k => LOGO_STROKES.map(pts => polyD(pts, k)).join('') + xform(LOGO_B, k, [0, 0], [0, 0]);
-const xD = (h, k, gap = 0) => logoX(h, gap).map(pts => shapeD(pts, k)).join('');
+const xD = (h, k) => logoX(h).map(pts => shapeD(pts, k)).join('');
 
 // Polygon cover of a miter-joined, square-capped stroke (half width h): one quad per segment plus
 // the miter wedges. Used for the outline layer, which is stroked with round joins behind the letters.
@@ -254,15 +244,15 @@ const logo32 = p => [squaresDefs(p) + logoTextDefs(p, 23, 31),
 // Letter weight 24 plus a 6 px outline whose round joins give the corners a slight rounding.
 const LOGO_K = 16, LOGO_SW = 12, LOGO_TEXT_W = 24, LOGO_TEXT_OUTLINE = 6;
 const logo512 = p => {
-  const S = LOGO_SQ * LOGO_K - LOGO_SW, h = LOGO_TEXT_W / 2 / LOGO_K, gap = 2 * LOGO_TEXT_OUTLINE / LOGO_K;
-  const cover = LOGO_STROKES.flatMap(pts => strokeCover(pts, h)).concat(logoX(h, gap))
+  const S = LOGO_SQ * LOGO_K - LOGO_SW, h = LOGO_TEXT_W / 2 / LOGO_K;
+  const cover = LOGO_STROKES.flatMap(pts => strokeCover(pts, h)).concat(logoX(h))
     .map(pts => shapeD(pts, LOGO_K)).join('') + bCover(h, LOGO_K);
   return [squaresDefs(p) + logoTextDefs(p, 23 * LOGO_K, 31 * LOGO_K),
     ...LOGO_SQUARES.map(([c, stroke, x, y]) =>
       sq(`${p}-${c}`, x * LOGO_K + LOGO_SW / 2, y * LOGO_K + LOGO_SW / 2, S, S, 32, stroke, LOGO_SW)),
     `<path d="${cover}" fill="#123c8c" stroke="#123c8c" stroke-width="${2 * LOGO_TEXT_OUTLINE}" stroke-linejoin="round"/>`,
     `<path d="${strokesD(LOGO_K)}" fill="none" stroke="url(#${p}-t)" stroke-width="${LOGO_TEXT_W}" stroke-linecap="square"/>`,
-    `<path d="${xD(h, LOGO_K, gap)}" fill="url(#${p}-t)"/>`];
+    `<path d="${xD(h, LOGO_K)}" fill="url(#${p}-t)"/>`];
 };
 
 // ---------- macOS application icon (Apple 1024 grid) ----------
