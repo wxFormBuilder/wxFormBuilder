@@ -4,5 +4,5 @@
 <rect x="8.5" y="1.5" width="13" height="13" rx="2" fill="url(#res-logo32x32-u)" stroke="#1858b0" stroke-width="1"/>
 <rect x="17.5" y="7.5" width="13" height="13" rx="2" fill="url(#res-logo32x32-w)" stroke="#c08800" stroke-width="1"/>
 <path d="M18 30L18 24L22 24M18 27L21 27M26 27H29A1 1 0 0 0 30 26V25A1 1 0 0 0 29 24H25V30H29A1 1 0 0 0 30 29V28A1 1 0 0 0 29 27H26" fill="none" stroke="url(#res-logo32x32-t)" stroke-width="2" stroke-linecap="square"/>
-<path d="M0.55 25L2.45 25L4.55 31L2.65 31ZM4.35 25L6.25 25L4.55 31L2.65 31ZM4.35 25L6.25 25L7.95 31L6.05 31ZM8.15 25L10.05 25L7.95 31L6.05 31ZM10.5 25L12.9 25L16 31L13.6 31ZM13.6 25L16 25L12.9 31L10.5 31Z" fill="url(#res-logo32x32-t)"/>
+<path d="M0.55 25L2.45 25L4.55 31L2.65 31ZM4.35 25L6.25 25L4.55 31L2.65 31ZM4.35 25L6.25 25L7.95 31L6.05 31ZM8.15 25L10.05 25L7.95 31L6.05 31ZM10.5 25L12.6 25L16 31L13.9 31ZM13.9 25L16 25L12.6 31L10.5 31Z" fill="url(#res-logo32x32-t)"/>
 </svg>
