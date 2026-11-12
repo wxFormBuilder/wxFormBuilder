@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-gauge-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#deffff"/></linearGradient><linearGradient id="common-gauge-g" x1="0" y1="8" x2="0" y2="13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#009900"/><stop offset="1" stop-color="#6ce148"/></linearGradient></defs>
+<path d="M0.5 6.5H21.5V14.5H0.5Z" fill="url(#common-gauge-f)"/>
+<path d="M2 8h3v5h-3zM6 8h3v5h-3zM10 8h3v5h-3zM14 8h3v5h-3z" fill="url(#common-gauge-g)"/>
+<rect x="0.5" y="6.5" width="21" height="8" rx="1" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

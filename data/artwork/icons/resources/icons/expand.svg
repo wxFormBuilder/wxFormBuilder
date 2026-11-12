@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><radialGradient id="expand-a" cx="11" cy="11" r="15.6" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6ab8ff"/><stop offset="1" stop-color="#0a5cc6"/></radialGradient></defs>
+<path fill="url(#expand-a)" d="M0 0H6.5L4.5 2L8 5.5L5.5 8L2 4.5L0 6.5ZM22 0H15.5L17.5 2L14 5.5L16.5 8L20 4.5L22 6.5ZM0 22H6.5L4.5 20L8 16.5L5.5 14L2 17.5L0 15.5ZM22 22H15.5L17.5 20L14 16.5L16.5 14L20 17.5L22 15.5Z"/>
+<path d="M7 7H15V15H7ZM9 9V13H13V9Z" fill="#4c4465" fill-rule="evenodd"/>
+</svg>

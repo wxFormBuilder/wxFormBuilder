@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-animation-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8a8a"/><stop offset="1" stop-color="#2c2c2c"/></linearGradient><radialGradient id="common-animation-t" cx="0.5" cy="0.55" r="0.6"><stop offset="0" stop-color="#f8f8f8"/><stop offset="0.6" stop-color="#e2e2e2"/><stop offset="1" stop-color="#a8a8a8"/></radialGradient><linearGradient id="common-animation-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e8e8e"/><stop offset="1" stop-color="#1e1e1e"/></linearGradient></defs>
+<ellipse cx="11" cy="11.5" rx="10.5" ry="7" fill="url(#common-animation-r)"/>
+<ellipse cx="11" cy="9" rx="10.5" ry="6.5" fill="url(#common-animation-t)" stroke="#8a8a8a" stroke-width="1"/>
+<path d="M9 3.5A1.6 0.9 0 0 0 12.2 3.5A1.6 0.9 0 0 0 9 3.5ZM3.2 7.4A1.8 1 0 0 0 6.8 7.4A1.8 1 0 0 0 3.2 7.4ZM15.2 7.4A1.8 1 0 0 0 18.8 7.4A1.8 1 0 0 0 15.2 7.4ZM5.6 12A2.1 1.4 0 0 0 9.8 12A2.1 1.4 0 0 0 5.6 12ZM12.2 12A2.1 1.4 0 0 0 16.4 12A2.1 1.4 0 0 0 12.2 12Z" fill="url(#common-animation-h)"/>
+</svg>

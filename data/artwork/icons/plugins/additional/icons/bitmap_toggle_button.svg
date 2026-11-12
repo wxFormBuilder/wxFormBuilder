@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-bitmap_toggle_button-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fafdff"/><stop offset="1" stop-color="#c3e7ff"/></linearGradient><radialGradient id="additional-bitmap_toggle_button-r" cx="0.65" cy="0.7" r="0.65"><stop offset="0" stop-color="#ff8a40"/><stop offset="0.45" stop-color="#ff3300"/><stop offset="1" stop-color="#a00c04"/></radialGradient><linearGradient id="additional-bitmap_toggle_button-y" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcc00"/><stop offset="1" stop-color="#ffee66"/></linearGradient><linearGradient id="additional-bitmap_toggle_button-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7ad448"/><stop offset="1" stop-color="#13840a"/></linearGradient></defs>
+<path d="M1 7H21V17H1Z" fill="url(#additional-bitmap_toggle_button-bg)"/>
+<circle cx="6.5" cy="12.5" r="3.5" fill="url(#additional-bitmap_toggle_button-r)"/>
+<path d="M7.5 7.5H14.5V14.5H7.5Z" fill="url(#additional-bitmap_toggle_button-y)" stroke="#cc9900" stroke-width="1"/>
+<path d="M13.5 10L18.5 16.5H11.5Z" fill="url(#additional-bitmap_toggle_button-g)" stroke="#0a7005" stroke-width="1" stroke-linejoin="round"/>
+<rect x="0.5" y="6.5" width="21" height="11" rx="1" fill="none" stroke="#003399" stroke-width="1"/>
+</svg>

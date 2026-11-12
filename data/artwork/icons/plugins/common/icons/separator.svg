@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-separator-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-separator-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient></defs>
+<path d="M14 3h1v11h-1z" fill="#c0c0c0"/>
+<path d="M4 5H13V12H4Z" fill="#ffffff"/>
+<path d="M4 4H13V5H4ZM4 12H13V13H4Z" fill="#ffffff" fill-opacity=".5"/>
+<path d="M4 8.5H13" fill="none" stroke="#aca899" stroke-width="1"/>
+<path d="M3.5 3V14M13.5 3V14" fill="none" stroke="#aca899" stroke-width="1"/>
+<path d="M11.5 8.5L17.5 14.5V15.5H15.5L17.5 19.5H15.5L13.5 16.5L11.5 18.5Z" fill="url(#common-separator-cf)" stroke="url(#common-separator-cs)" stroke-width="1" stroke-linejoin="round"/>
+</svg>

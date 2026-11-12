@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="chalign-y" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffd0"/><stop offset="0.35" stop-color="#fff200"/><stop offset="1" stop-color="#ffbc00"/></linearGradient><linearGradient id="chalign-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecf7ff"/><stop offset="0.2" stop-color="#a9d7ff"/><stop offset="1" stop-color="#59a6ff"/></linearGradient></defs>
+<path d="M10 1H12V20H10Z" fill="#4c4465"/>
+<path d="M6.5 2.5H15.5V7.5H6.5Z" fill="url(#chalign-y)" stroke="#b86920" stroke-width="1"/>
+<path d="M5.5 10.5H16.5V18.5H5.5Z" fill="url(#chalign-b)" stroke="#1b6cd0" stroke-width="1"/>
+</svg>

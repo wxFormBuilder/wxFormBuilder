@@ -1,0 +1,17 @@
+{
+  "name": "wxformbuilder-icon-tools",
+  "version": "1.0.0",
+  "description": "Generators and build tools of the wxFormBuilder vector icons",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "build:platform": "node build.js --platform",
+    "verify": "node verify.js"
+  },
+  "dependencies": {
+    "@resvg/resvg-wasm": "2.6.2"
+  }
+}

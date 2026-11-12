@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="res-properties-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e2ebf6"/></linearGradient><linearGradient id="res-properties-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fb4ea"/><stop offset="1" stop-color="#4f84d6"/></linearGradient><linearGradient id="res-properties-h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fbe4bc"/><stop offset="1" stop-color="#d49a5e"/></linearGradient></defs>
+<path d="M0.5 4.5H13.5V14.5H0.5Z" fill="url(#res-properties-w)"/>
+<path d="M0.5 4.5H13.5V6.5H0.5Z" fill="url(#res-properties-t)"/>
+<path d="M2 8H4V9H2Z" fill="#2a9a2a"/>
+<path d="M2 10H4V11H2Z" fill="#cc3c3c"/>
+<path d="M2 12H4V13H2Z" fill="#4a86d8"/>
+<path d="M5 8H12V9H5ZM5 10H12V11H5ZM5 12H12V13H5Z" fill="#c8c8c8"/>
+<path d="M0.5 4.5H13.5V14.5H0.5Z" fill="none" stroke="#3f73c4" stroke-width="1"/>
+<path d="M6.5 0.5H13.5A1.5 1.5 0 0 1 15 2V3H13V4.5A1 1 0 0 1 11 4.5V5.5A1 1 0 0 1 9 5.5V6A1 1 0 0 1 7 6V5.5A1 1 0 0 1 5 5.5V2A1.5 1.5 0 0 1 6.5 0.5Z" fill="url(#res-properties-h)" stroke="#8a5a2a" stroke-width="1" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-colourPickerIcon-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fafdff"/><stop offset="1" stop-color="#cbebff"/></linearGradient><linearGradient id="additional-colourPickerIcon-lh" x1="20" y1="17" x2="18" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d6bd9a"/><stop offset="0.5" stop-color="#f9e9d0"/><stop offset="1" stop-color="#d6bd9a"/></linearGradient><radialGradient id="additional-colourPickerIcon-lt" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#aecce8"/><stop offset="0.45" stop-color="#c3d9ee"/><stop offset="0.8" stop-color="#ebf2f9"/><stop offset="1" stop-color="#9cb7cf"/></radialGradient><radialGradient id="additional-colourPickerIcon-lb" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#71a5d6"/><stop offset="0.45" stop-color="#96bce1"/><stop offset="0.75" stop-color="#dce9f5"/><stop offset="1" stop-color="#96b3cd"/></radialGradient></defs>
+<path d="M1 2H21V10H1Z" fill="url(#additional-colourPickerIcon-bg)"/>
+<path d="M1 3H21V9H1Z" fill="#c5c5c5"/>
+<path d="M2 3H20V9H2Z" fill="#9b0032"/>
+<path d="M3 4h1v1h-1zM5 4h2v1h-2zM8 4h1v1h-1zM12 4h1v1h-1zM14 4h1v1h-1zM17 4h1v1h-1zM2 5h1v1h-1zM5 5h1v1h-1zM7 5h1v1h-1zM9 5h1v1h-1zM11 5h2v1h-2zM15 5h1v1h-1zM17 5h2v1h-2zM3 6h1v1h-1zM5 6h2v1h-2zM8 6h2v1h-2zM12 6h1v1h-1zM14 6h1v1h-1zM17 6h1v1h-1zM2 7h1v1h-1zM5 7h1v1h-1zM9 7h1v1h-1zM15 7h1v1h-1zM17 7h1v1h-1z" fill="#000000"/>
+<rect x="0.5" y="1.5" width="21" height="9" rx="1" fill="none" stroke="#003399" stroke-width="1"/>
+<circle cx="13" cy="13" r="4.5" fill="none" stroke="#b7b6ac" stroke-width="1"/>
+<path d="M14 16L17 13L22.5 18.5L19.5 21.5Z" fill="none" stroke="#b7b6ac" stroke-width="1" stroke-linejoin="round"/>
+<path d="M14.5 15.5L16.5 13.5L21.5 18.5L19.5 20.5Z" fill="url(#additional-colourPickerIcon-lh)" stroke="#ba945c" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="13" cy="12" r="4.5" fill="url(#additional-colourPickerIcon-lt)"/>
+<path d="M8.5 12H17.5A4.5 4.5 0 0 1 8.5 12Z" fill="url(#additional-colourPickerIcon-lb)"/>
+<circle cx="13" cy="12" r="4.5" fill="none" stroke="#668eb0" stroke-width="1"/>
+</svg>

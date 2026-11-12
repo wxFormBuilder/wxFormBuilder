@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="forms-wizard-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86b0e4"/><stop offset="0.3" stop-color="#8fb6e6"/><stop offset="0.6" stop-color="#80abe0"/><stop offset="1" stop-color="#9abbe3"/></linearGradient><linearGradient id="forms-wizard-l" x1="0" y1="3" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#85aada"/><stop offset="1" stop-color="#6c8fc2"/></linearGradient><linearGradient id="forms-wizard-r" x1="0" y1="3" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8da8d2"/><stop offset="1" stop-color="#708cbd"/></linearGradient><linearGradient id="forms-wizard-bt" x1="1" y1="0" x2="21" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5a7bab"/><stop offset="1" stop-color="#4f6b9c"/></linearGradient><linearGradient id="forms-wizard-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7094d6"/><stop offset="1" stop-color="#a0b6e0"/></linearGradient><radialGradient id="forms-wizard-st" cx="8" cy="8" r="5.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fffbe0"/><stop offset="0.15" stop-color="#fff78c"/><stop offset="0.3" stop-color="#f7e742"/><stop offset="0.5" stop-color="#ffa518"/><stop offset="0.7" stop-color="#f77329"/><stop offset="1" stop-color="#d81c08"/></radialGradient><linearGradient id="forms-wizard-wk" x1="12.5" y1="15" x2="14.5" y2="13" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#101010"/><stop offset="0.5" stop-color="#101010"/><stop offset="0.78" stop-color="#4a4a4a"/><stop offset="1" stop-color="#8c8c8c"/></linearGradient><linearGradient id="forms-wizard-wt" x1="15" y1="16.5" x2="17" y2="14.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#6b6b6b"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="1" stop-color="#a5a5a5"/></linearGradient></defs>
+<path d="M0 2H22V21H0Z" fill="#c9d8eb"/>
+<path d="M1 2H21V6H1Z" fill="url(#forms-wizard-t)"/>
+<path d="M1 6H21V20H1Z" fill="#f4f2f0"/>
+<path d="M2 6.5H20" fill="none" stroke="#e8edf3" stroke-width="1"/>
+<path d="M1.5 6V19" fill="none" stroke="#c4d3e6" stroke-width="1"/>
+<path d="M20.5 6V19" fill="none" stroke="#e2e5ea" stroke-width="1"/>
+<path d="M1 19.5H21" fill="none" stroke="#b4c3d9" stroke-width="1"/>
+<path d="M4 7.5H18" fill="none" stroke="#dad9d7" stroke-width="1"/>
+<path d="M4.5 12V8.5H18" fill="none" stroke="#cbcbcb" stroke-width="1"/>
+<path d="M5 9H19V12H5Z" fill="#ffffff"/>
+<path d="M3 14H9V17H3ZM13 14H19V17H13Z" fill="#d4dce8"/>
+<path d="M4 15H8V17H4ZM14 15H18V17H14Z" fill="url(#forms-wizard-k)"/>
+<path d="M11 9.5L9 11.5L14 16.5L16 14.5Z" fill="url(#forms-wizard-wk)"/>
+<path d="M16 14.5L14 16.5L16 18.5L18 16.5Z" fill="url(#forms-wizard-wt)"/>
+<path d="M14 8L10.12 8.88L10.55 10.55L8.88 10.12L8 13.5L7.12 10.12L5.45 10.55L5.88 8.88L3 8L5.88 7.12L5.45 5.45L7.12 5.88L8 3L8.88 5.88L10.55 5.45L10.12 7.12Z" fill="url(#forms-wizard-st)"/>
+<path d="M0.5 3V20" fill="none" stroke="url(#forms-wizard-l)" stroke-width="1"/>
+<path d="M21.5 3V20" fill="none" stroke="url(#forms-wizard-r)" stroke-width="1"/>
+<path d="M1 20.5H21" fill="none" stroke="url(#forms-wizard-bt)" stroke-width="1"/>
+</svg>

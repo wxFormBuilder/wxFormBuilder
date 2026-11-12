@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-statusbar-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bbb9ad"/><stop offset="0.25" stop-color="#dfdccd"/><stop offset="0.33" stop-color="#ece9d8"/><stop offset="1" stop-color="#ece9d8"/></linearGradient></defs>
+<path d="M0 7H21V17H0Z" fill="url(#common-statusbar-s)"/>
+<path d="M18 11h1v1h-1zM16 13h1v1h-1zM18 13h1v1h-1zM14 15h1v1h-1zM16 15h1v1h-1zM18 15h1v1h-1z" fill="#aca899"/>
+<path d="M0 17.5H21.5V7" fill="none" stroke="#716f64" stroke-width="1"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-static_bitmap-r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3300"/><stop offset="1" stop-color="#ffa167"/></linearGradient><linearGradient id="common-static_bitmap-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1871ce"/><stop offset="1" stop-color="#a4d7fa"/></linearGradient><linearGradient id="common-static_bitmap-y" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcc00"/><stop offset="0.5" stop-color="#ffe13f"/><stop offset="1" stop-color="#fff780"/></linearGradient></defs>
+<rect x="1.5" y="2.5" width="9" height="9" rx="1" fill="url(#common-static_bitmap-r)" stroke="#990000" stroke-width="1"/>
+<path d="M6 11.5L15.5 18.5H2.5Z" fill="url(#common-static_bitmap-b)" stroke="#1c51ab" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="14" cy="11.5" r="6.3" fill="url(#common-static_bitmap-y)" fill-opacity=".92" stroke="#e0ac00" stroke-width="1"/>
+</svg>

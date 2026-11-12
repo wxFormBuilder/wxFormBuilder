@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-bitmap_button-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fafdff"/><stop offset="1" stop-color="#c7eaff"/></linearGradient><radialGradient id="common-bitmap_button-r" cx="0.6" cy="0.65" r="0.6"><stop offset="0" stop-color="#ffa060"/><stop offset="0.6" stop-color="#ff3300"/><stop offset="1" stop-color="#d92000"/></radialGradient><linearGradient id="common-bitmap_button-y" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffcc00"/><stop offset="1" stop-color="#ffed64"/></linearGradient><linearGradient id="common-bitmap_button-g" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b9116"/><stop offset="1" stop-color="#5bc62e"/></linearGradient></defs>
+<path d="M0.5 6.5H21.5V17.5H0.5Z" fill="url(#common-bitmap_button-b)"/>
+<circle cx="5.5" cy="12.5" r="3" fill="url(#common-bitmap_button-r)" stroke="#9c0e0f" stroke-width="1"/>
+<path d="M7.5 7.5H14.5V14.5H7.5Z" fill="url(#common-bitmap_button-y)" stroke="#cc9900" stroke-width="1"/>
+<path d="M14 10.5L18.5 16.5H11.5Z" fill="url(#common-bitmap_button-g)" stroke="#0a7005" stroke-width="1" stroke-linejoin="round"/>
+<rect x="0.5" y="6.5" width="21" height="11" rx="1" fill="none" stroke="#003399" stroke-width="1"/>
+</svg>

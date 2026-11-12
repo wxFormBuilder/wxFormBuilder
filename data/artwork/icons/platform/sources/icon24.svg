@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+<defs><linearGradient id="small-icon24-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa088"/><stop offset="0.5" stop-color="#f0401c"/><stop offset="1" stop-color="#c41800"/></linearGradient><linearGradient id="small-icon24-u" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4ecff"/><stop offset="0.5" stop-color="#62aef2"/><stop offset="1" stop-color="#2a78d0"/></linearGradient><linearGradient id="small-icon24-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8b0"/><stop offset="0.5" stop-color="#ffe000"/><stop offset="1" stop-color="#f0aa00"/></linearGradient><linearGradient id="small-icon24-t" x1="0" y1="19" x2="0" y2="24" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4a8ff0"/><stop offset="1" stop-color="#1848a0"/></linearGradient></defs>
+<rect x="1.5" y="8.5" width="9" height="9" rx="1" fill="url(#small-icon24-r)" stroke="#a01000" stroke-width="1"/>
+<rect x="6.5" y="0.5" width="9" height="9" rx="1" fill="url(#small-icon24-u)" stroke="#1858b0" stroke-width="1"/>
+<rect x="13.5" y="5.5" width="9" height="9" rx="1" fill="url(#small-icon24-w)" stroke="#c08800" stroke-width="1"/>
+<path d="M4 20h1v2h-1zM6 20h1v2h-1zM8 20h1v2h-1zM5 22h1v2h-1zM7 22h1v2h-1zM10 20h1v1h-1zM12 20h1v1h-1zM11 21h1v2h-1zM10 23h1v1h-1zM12 23h1v1h-1zM14 19h2v1h-2zM14 20h1v4h-1zM15 21h1v1h-1zM17 19h2v1h-2zM17 20h1v3h-1zM18 21h1v1h-1zM17 23h2v1h-2zM19 20h1v1h-1zM19 22h1v1h-1z" fill="url(#small-icon24-t)"/>
+</svg>

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-list_ctrl-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebeadb"/><stop offset="0.6" stop-color="#ebeadb"/><stop offset="1" stop-color="#e2e0d1"/></linearGradient><linearGradient id="common-list_ctrl-l" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.45" stop-color="#ffffff"/><stop offset="1" stop-color="#deffff"/></linearGradient></defs>
+<path d="M0.5 2.5H21.5V19.5H0.5Z" fill="url(#common-list_ctrl-l)"/>
+<path d="M1 3H21V6H1Z" fill="url(#common-list_ctrl-h)"/>
+<path d="M1 6.5H21" fill="none" stroke="#d4d2c2" stroke-width="1"/>
+<path d="M11.5 4V6" fill="none" stroke="#cbc7b8" stroke-width="1"/>
+<path d="M12.5 4V6" fill="none" stroke="#ffffff" stroke-width="1"/>
+<path d="M1 12H21V15H1Z" fill="#0066cc"/>
+<path d="M2 13h4v1h-4zM14 13h4v1h-4z" fill="#ffffff"/>
+<path d="M2 9h7v1h-7zM14 9h3v1h-3zM2 17h6v1h-6zM14 17h5v1h-5z" fill="#333366"/>
+<path d="M0.5 2.5H21.5V19.5H0.5Z" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

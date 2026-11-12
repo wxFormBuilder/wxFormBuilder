@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-fontPicker-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fefefe"/><stop offset="1" stop-color="#efefed"/></linearGradient><linearGradient id="additional-fontPicker-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ab9da"/><stop offset="1" stop-color="#4f7eb6"/></linearGradient><linearGradient id="additional-fontPicker-lh" x1="20" y1="17" x2="18" y2="19" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#d6bd9a"/><stop offset="0.5" stop-color="#f9e9d0"/><stop offset="1" stop-color="#d6bd9a"/></linearGradient><radialGradient id="additional-fontPicker-lt" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#aecce8"/><stop offset="0.45" stop-color="#c3d9ee"/><stop offset="0.8" stop-color="#ebf2f9"/><stop offset="1" stop-color="#9cb7cf"/></radialGradient><radialGradient id="additional-fontPicker-lb" cx="13" cy="12" r="4.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#71a5d6"/><stop offset="0.45" stop-color="#96bce1"/><stop offset="0.75" stop-color="#dce9f5"/><stop offset="1" stop-color="#96b3cd"/></radialGradient></defs>
+<path d="M0 0H16.5V17.5H0Z" fill="url(#additional-fontPicker-bg)"/>
+<path d="M0 16.5H15.5V0" fill="none" stroke="#ffffff" stroke-width="1"/>
+<path d="M0 17.5H16.5V0" fill="none" stroke="#8c8e89" stroke-width="1"/>
+<path d="M3.6 8H9.6V10H3Z" fill="#b2c6dd"/>
+<path d="M7.8 0.3H9.9L11 11H8.4ZM7.8 0.3H8.9L2.1 13.5H0.9Z" fill="url(#additional-fontPicker-a)"/>
+<path d="M0 13.5H4" fill="none" stroke="#7a9ecb" stroke-width="1"/>
+<circle cx="13" cy="13" r="4.5" fill="none" stroke="#b7b6ac" stroke-width="1"/>
+<path d="M14 16L17 13L22.5 18.5L19.5 21.5Z" fill="none" stroke="#b7b6ac" stroke-width="1" stroke-linejoin="round"/>
+<path d="M14.5 15.5L16.5 13.5L21.5 18.5L19.5 20.5Z" fill="url(#additional-fontPicker-lh)" stroke="#ba945c" stroke-width="1" stroke-linejoin="round"/>
+<circle cx="13" cy="12" r="4.5" fill="url(#additional-fontPicker-lt)"/>
+<path d="M8.5 12H17.5A4.5 4.5 0 0 1 8.5 12Z" fill="url(#additional-fontPicker-lb)"/>
+<circle cx="13" cy="12" r="4.5" fill="none" stroke="#668eb0" stroke-width="1"/>
+</svg>

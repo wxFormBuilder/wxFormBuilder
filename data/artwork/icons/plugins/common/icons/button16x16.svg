@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="common-button16x16-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4fbff"/><stop offset="1" stop-color="#c7eaff"/></linearGradient></defs>
+<path d="M0.5 4.5H15.5V11.5H0.5Z" fill="url(#common-button16x16-b)"/>
+<path d="M5 6h2v1h-2zM4 7h1v2h-1zM7 7h1v2h-1zM5 9h2v1h-2zM9 6h1v4h-1zM11 7h1v1h-1zM10 8h1v1h-1zM11 9h1v1h-1z" fill="#000000"/>
+<rect x="0.5" y="4.5" width="15" height="7" rx="1" fill="none" stroke="#003399" stroke-width="1"/>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="forms-dialog-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#86b0e4"/><stop offset="0.3" stop-color="#8fb6e6"/><stop offset="0.6" stop-color="#80abe0"/><stop offset="1" stop-color="#9abbe3"/></linearGradient><linearGradient id="forms-dialog-l" x1="0" y1="3" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#85aada"/><stop offset="1" stop-color="#6c8fc2"/></linearGradient><linearGradient id="forms-dialog-r" x1="0" y1="3" x2="0" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8da8d2"/><stop offset="1" stop-color="#708cbd"/></linearGradient><linearGradient id="forms-dialog-bt" x1="1" y1="0" x2="21" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5a7bab"/><stop offset="1" stop-color="#4f6b9c"/></linearGradient><linearGradient id="forms-dialog-k" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7094d6"/><stop offset="1" stop-color="#a0b6e0"/></linearGradient></defs>
+<path d="M0 2H22V21H0Z" fill="#c9d8eb"/>
+<path d="M1 2H21V6H1Z" fill="url(#forms-dialog-t)"/>
+<path d="M1 6H21V20H1Z" fill="#f4f2f0"/>
+<path d="M2 6.5H20" fill="none" stroke="#e8edf3" stroke-width="1"/>
+<path d="M1.5 6V19" fill="none" stroke="#c4d3e6" stroke-width="1"/>
+<path d="M20.5 6V19" fill="none" stroke="#e2e5ea" stroke-width="1"/>
+<path d="M1 19.5H21" fill="none" stroke="#b4c3d9" stroke-width="1"/>
+<path d="M4 7.5H18" fill="none" stroke="#dad9d7" stroke-width="1"/>
+<path d="M4.5 12V8.5H18" fill="none" stroke="#cbcbcb" stroke-width="1"/>
+<path d="M5 9H19V12H5Z" fill="#ffffff"/>
+<path d="M3 14H9V17H3ZM13 14H19V17H13Z" fill="#d4dce8"/>
+<path d="M4 15H8V17H4ZM14 15H18V17H14Z" fill="url(#forms-dialog-k)"/>
+<path d="M0.5 3V20" fill="none" stroke="url(#forms-dialog-l)" stroke-width="1"/>
+<path d="M21.5 3V20" fill="none" stroke="url(#forms-dialog-r)" stroke-width="1"/>
+<path d="M1 20.5H21" fill="none" stroke="url(#forms-dialog-bt)" stroke-width="1"/>
+</svg>

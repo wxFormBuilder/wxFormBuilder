@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="small-docicon16-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa088"/><stop offset="0.5" stop-color="#f0401c"/><stop offset="1" stop-color="#c41800"/></linearGradient><linearGradient id="small-docicon16-u" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4ecff"/><stop offset="0.5" stop-color="#62aef2"/><stop offset="1" stop-color="#2a78d0"/></linearGradient><linearGradient id="small-docicon16-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8b0"/><stop offset="0.5" stop-color="#ffe000"/><stop offset="1" stop-color="#f0aa00"/></linearGradient><linearGradient id="small-docicon16-page" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e9edf2"/></linearGradient><linearGradient id="small-docicon16-fold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4f6f9"/><stop offset="1" stop-color="#c9d0da"/></linearGradient></defs>
+<path d="M2.5 0.5H9.5L13.5 4.5V15.5H2.5Z" fill="url(#small-docicon16-page)" stroke="#8f99a6" stroke-width="1"/>
+<path d="M9.5 0.5V4.5H13.5Z" fill="url(#small-docicon16-fold)" stroke="#8f99a6" stroke-width="1" stroke-linejoin="round"/>
+<rect x="4.5" y="8.5" width="3" height="3" rx="1" fill="url(#small-docicon16-r)" stroke="#a01000" stroke-width="1"/>
+<rect x="6.5" y="5.5" width="3" height="3" rx="1" fill="url(#small-docicon16-u)" stroke="#1858b0" stroke-width="1"/>
+<rect x="8.5" y="7.5" width="3" height="3" rx="1" fill="url(#small-docicon16-w)" stroke="#c08800" stroke-width="1"/>
+</svg>

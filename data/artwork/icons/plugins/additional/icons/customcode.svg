@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-customcode-pg" x1="0" y1="0" x2="0.6" y2="1"><stop offset="0" stop-color="#fbfbfb"/><stop offset="1" stop-color="#e9e9e9"/></linearGradient></defs>
+<path d="M2 0H15.5L19.5 4.5V21.5H2Z" fill="url(#additional-customcode-pg)"/>
+<path d="M19.5 4.5V21.5H2" fill="none" stroke="#cdcdcd" stroke-width="1"/>
+<path d="M15.5 0.5V4.5H19.5" fill="#f2f2f2" stroke="#b6b6b6" stroke-width="1" stroke-linejoin="round"/>
+<path d="M3.5 5.5H17.5V8.5H3.5ZM3.5 10.5H17.5V13.5H3.5ZM3.5 15.5H17.5V18.5H3.5Z" fill="#606060" stroke="#d9d9d9" stroke-width="1"/>
+</svg>

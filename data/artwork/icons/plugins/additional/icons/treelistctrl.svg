@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-treelistctrl-b" x1="0" y1="0" x2="1" y2="0"><stop offset="0.55" stop-color="#ffffff"/><stop offset="1" stop-color="#e0ffff"/></linearGradient><linearGradient id="additional-treelistctrl-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ebeadb"/><stop offset="0.5" stop-color="#e6e4d5"/><stop offset="1" stop-color="#d4d1c2"/></linearGradient></defs>
+<path d="M1.5 1.5H21.5V21.5H1.5Z" fill="url(#additional-treelistctrl-b)"/>
+<path d="M1 2H21V6H1Z" fill="url(#additional-treelistctrl-h)"/>
+<path d="M14 3h1v2h-1z" fill="#cbc7b8"/>
+<path d="M15 3h1v2h-1z" fill="#ffffff"/>
+<path d="M7 10H21V13H7Z" fill="#0066cc"/>
+<path d="M8 11h2v1h-2zM15 11h4v1h-4z" fill="#ffffff"/>
+<path d="M7 7.5H11M15 7.5H20M9 15.5H11M15 15.5H20M9 18.5H11M7 20.5H11M15 20.5H20" fill="none" stroke="#333366" stroke-width="1"/>
+<path d="M4.5 6V21M5 11.5H6M5 15.5H7M7.5 16V19M8 18.5H9M5 20.5H6M3 7.5H6M4.5 6V9M6 15.5H9M7.5 14V17" fill="none" stroke="#555753" stroke-width="1"/>
+<path d="M4 7h1v1h-1zM7 15h1v1h-1z" fill="#00aaf0"/>
+<path d="M1.5 1.5H21.5V21.5H1.5Z" fill="none" stroke="#333366" stroke-width="1"/>
+</svg>

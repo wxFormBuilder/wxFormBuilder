@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="common-radio_button-o" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#343466"/><stop offset="1" stop-color="#9898b0"/></linearGradient><linearGradient id="common-radio_button-i" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c8c8c8"/><stop offset="1" stop-color="#f8f8f8"/></linearGradient><linearGradient id="common-radio_button-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#009900"/><stop offset="0.5" stop-color="#41c52b"/><stop offset="1" stop-color="#c7efb7"/></linearGradient></defs>
+<circle cx="10" cy="11" r="5.5" fill="url(#common-radio_button-i)" stroke="url(#common-radio_button-o)" stroke-width="1"/>
+<circle cx="9.75" cy="10.75" r="3.25" fill="url(#common-radio_button-g)"/>
+</svg>

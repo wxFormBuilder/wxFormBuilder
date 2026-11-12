@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<defs><linearGradient id="additional-toggle_button-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cbebff"/><stop offset="1" stop-color="#fafdff"/></linearGradient></defs>
+<rect x="0.5" y="6.5" width="21" height="9" rx="1" fill="url(#additional-toggle_button-b)" stroke="#003399" stroke-width="1"/>
+<path d="M7 8h2v1h-2zM11 8h1v1h-1zM15 8h1v4h-1zM6 9h1v4h-1zM9 9h1v4h-1zM11 9h2v1h-2zM11 10h1v4h-1zM13 10h1v2h-1zM14 12h2v1h-2zM7 13h2v1h-2zM15 13h1v1h-1z" fill="#000000"/>
+</svg>

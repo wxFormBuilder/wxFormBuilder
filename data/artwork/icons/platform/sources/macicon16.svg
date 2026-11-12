@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="small-macicon16-r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffa088"/><stop offset="0.5" stop-color="#f0401c"/><stop offset="1" stop-color="#c41800"/></linearGradient><linearGradient id="small-macicon16-u" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d4ecff"/><stop offset="0.5" stop-color="#62aef2"/><stop offset="1" stop-color="#2a78d0"/></linearGradient><linearGradient id="small-macicon16-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff8b0"/><stop offset="0.5" stop-color="#ffe000"/><stop offset="1" stop-color="#f0aa00"/></linearGradient><linearGradient id="small-macicon16-plate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfe7f1"/></linearGradient></defs>
+<path d="M3 15h10v1h-10z" fill="#000000" fill-opacity="0.08"/>
+<rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="url(#small-macicon16-plate)" stroke="#000000" stroke-opacity="0.15" stroke-width="1"/>
+<rect x="3.5" y="7.5" width="4" height="4" rx="1" fill="url(#small-macicon16-r)" stroke="#a01000" stroke-width="1"/>
+<rect x="5.5" y="4.5" width="4" height="4" rx="1" fill="url(#small-macicon16-u)" stroke="#1858b0" stroke-width="1"/>
+<rect x="8.5" y="6.5" width="4" height="4" rx="1" fill="url(#small-macicon16-w)" stroke="#c08800" stroke-width="1"/>
+</svg>

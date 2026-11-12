@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+<defs><linearGradient id="forms-frame16x16-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#86acdc"/><stop offset="0.5" stop-color="#6e95cb"/><stop offset="1" stop-color="#5171a9"/></linearGradient><linearGradient id="forms-frame16x16-c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fdfdfd"/><stop offset="1" stop-color="#efefef"/></linearGradient></defs>
+<path d="M0 1h16v14h-16z" fill="url(#forms-frame16x16-f)"/>
+<path d="M1 2h14v1h-14z" fill="#92b9e8"/>
+<path d="M1 2h1v1h-1z" fill="#cedcf1"/>
+<path d="M2 2h1v1h-1z" fill="#a0c1ea"/>
+<path d="M9 2h1v1h-1zM11 2h1v1h-1z" fill="#c5c8cd"/>
+<path d="M13 2h1v1h-1z" fill="#ff6444"/>
+<path d="M14 2h1v1h-1z" fill="#a7c4e8"/>
+<path d="M1 4.5h14" fill="none" stroke="#d4d4d4" stroke-width="1"/>
+<path d="M1 5h14v8h-14z" fill="#ffffff"/>
+<path d="M2 6h12v6h-12z" fill="url(#forms-frame16x16-c)"/>
+<path d="M1 13.5h13" fill="none" stroke="#c8c8c8" stroke-width="1"/>
+<path d="M14 13.5h1" fill="none" stroke="#afafaf" stroke-width="1"/>
+</svg>
