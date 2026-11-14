@@ -144,7 +144,7 @@
       $name->Connect( wxEVT_AUX1_DOWN, #handler, NULL, this ); #nl
       $name->Connect( wxEVT_AUX1_UP, #handler, NULL, this ); #nl
       $name->Connect( wxEVT_AUX2_DOWN, #handler, NULL, this ); #nl
-      $name->Connect( wxEVT_AUX1_UP, #handler, NULL, this ); #nl
+      $name->Connect( wxEVT_AUX2_UP, #handler, NULL, this ); #nl
       $name->Connect( wxEVT_MOTION, #handler, NULL, this ); #nl
       $name->Connect( wxEVT_LEFT_DCLICK, #handler, NULL, this ); #nl
       $name->Connect( wxEVT_MIDDLE_DCLICK, #handler, NULL, this ); #nl
