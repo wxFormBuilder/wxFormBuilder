@@ -1,5 +1,5 @@
-// Building blocks of the developer sheets (module, no output): preview.js composes one SVG from
-// bitmaps, icon SVGs and labels and renders it with ../raster.js.
+// Building blocks of the developer sheets (module, no output): overview.js and preview.js compose one
+// SVG from bitmaps, icon SVGs and labels and render it with ../raster.js.
 'use strict';
 const fs = require('fs');
 const path = require('path');

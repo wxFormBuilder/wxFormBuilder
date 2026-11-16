@@ -54,6 +54,7 @@ Developer helpers in `tools/dev`:
 
 | Script | Purpose |
 |---|---|
+| `overview.js <out.png>` | One large sheet of all bitmaps next to their SVGs |
 | `preview.js <out.png> <bitmap> <svg> ...` | Selected bitmaps and SVGs side by side, enlarged 7x |
 | `dump.js <bitmap> ...` | Prints bitmaps as character grids with their palette |
 | `sheet.js` | Building blocks of the sheets (module, no output) |

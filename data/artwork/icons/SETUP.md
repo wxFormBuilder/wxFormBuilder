@@ -11,7 +11,7 @@ described in [`README.md`](README.md), how icons are drawn in [`STYLE.md`](STYLE
 | Git | any current version | the repository |
 | Node.js with npm | 18 or newer | all scripts in `tools` |
 | `@resvg/resvg-wasm` | pinned in `tools/package-lock.json` | rendering SVG to PNG, installed by `npm ci` |
-| A TrueType font | optional | labels of the developer sheets (`tools/dev/preview.js`) |
+| A TrueType font | optional | labels of the developer sheets (`tools/dev/overview.js`, `preview.js`) |
 
 No browser and no native build tools are needed. The icons contain no text, so
 fonts do not affect any icon.
@@ -77,6 +77,7 @@ CPU, so the output does not depend on the machine.
 3. Look at the result, for example next to its bitmap:
    ```sh
    node data/artwork/icons/tools/dev/preview.js preview.png resources/icons/cut.png data/artwork/icons/resources/icons/cut.svg
+   node data/artwork/icons/tools/dev/overview.js overview.png
    ```
    Write such images to a place outside the repository.
 4. If a logo or a platform source changed, rebuild the platform icons with `build.js --platform`.
