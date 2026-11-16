@@ -3,6 +3,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { iconDoc } = require('./canvas.js');
 
 const root = process.argv[2] || path.resolve(__dirname, '..');
 const SW = 'stroke-width="1"';
@@ -359,10 +360,7 @@ for (const [rel, [size, fn]] of Object.entries(icons)) {
     ? path.basename(path.dirname(path.dirname(rel))) : path.basename(path.dirname(rel));
   const prefix = `${folder}-${path.basename(rel)}`;
   const [defs, ...body] = fn(prefix);
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">\n` +
-    (defs ? `<defs>${defs}</defs>\n` : '') +
-    body.join('\n') + '\n</svg>\n';
+  const svg = iconDoc(size, defs, body);
   const file = path.join(root, rel + '.svg');
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, svg);

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="common-menu-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-menu-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient><linearGradient id="common-menu-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dfffff"/></linearGradient></defs>
 <path d="M15 4h1v15h-11v-1h10z" fill="#c0c0c0"/>
 <path d="M4.5 2.5H14.5V17.5H4.5Z" fill="url(#common-menu-m)"/>

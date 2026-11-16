@@ -4,6 +4,7 @@
 'use strict';
 
 const { fill, stroke, DARK, LINE, MATERIALS } = require('./palette.js');
+const { iconDoc } = require('./canvas.js');
 
 const SW = 'stroke-width="1"';
 
@@ -133,7 +134,6 @@ const icons = {
 // ---------- rendering ----------
 const render = name => {
   const [defs, ...body] = icons[name](name.replace(/\+/g, 'x'));
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">\n` +
-    (defs ? `<defs>${defs}</defs>\n` : '') + body.join('\n') + '\n</svg>\n';
+  return iconDoc(22, defs, body);
 };
 module.exports = { icons, render };

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="additional-timer-r" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#fdfcfb"/><stop offset="0.5" stop-color="#c4c4d1"/><stop offset="1" stop-color="#6e6e85"/></linearGradient><linearGradient id="additional-timer-o" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#b4b4c4"/><stop offset="1" stop-color="#30303e"/></linearGradient><radialGradient id="additional-timer-f" cx="0.45" cy="0.4" r="0.62"><stop offset="0" stop-color="#f0faff"/><stop offset="0.45" stop-color="#c9edff"/><stop offset="1" stop-color="#5d9bf0"/></radialGradient></defs>
 <circle cx="10.5" cy="10.5" r="10" fill="url(#additional-timer-r)" stroke="url(#additional-timer-o)" stroke-width="1"/>
 <circle cx="10.5" cy="10.5" r="7.5" fill="url(#additional-timer-f)" stroke="#5b79ba" stroke-width="1"/>

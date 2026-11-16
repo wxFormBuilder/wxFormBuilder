@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="generate-w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="generate-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79a3e2"/><stop offset="1" stop-color="#4a78c4"/></linearGradient><linearGradient id="generate-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="generate-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient><linearGradient id="generate-a" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#4aa3f5"/><stop offset="1" stop-color="#0a63cc"/></linearGradient></defs>
 <path d="M1.5 1.5H11.5V9.5H1.5Z" fill="url(#generate-w)"/>
 <path d="M1.5 1.5H11.5V3.5H1.5Z" fill="url(#generate-t)"/>

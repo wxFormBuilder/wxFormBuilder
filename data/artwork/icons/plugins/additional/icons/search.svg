@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><radialGradient id="additional-search-s" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#000000" stop-opacity="0.08"/><stop offset="1" stop-color="#000000" stop-opacity="0"/></radialGradient><radialGradient id="additional-search-g" cx="0.4" cy="0.35" r="0.65"><stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#e1ebf5"/><stop offset="1" stop-color="#9cb0c3"/></radialGradient><linearGradient id="additional-search-r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eeefed"/><stop offset="1" stop-color="#a6a8a5"/></linearGradient><linearGradient id="additional-search-h" x1="16.5" y1="14.5" x2="14.5" y2="16.5" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f3e1c5"/><stop offset="0.35" stop-color="#deb26b"/><stop offset="0.7" stop-color="#c2821e"/><stop offset="1" stop-color="#986410"/></linearGradient></defs>
 <path d="M0.5 0.5H21.5V21.5H0.5Z" fill="#ffffff"/>
 <ellipse cx="10" cy="16.5" rx="7.5" ry="2.5" fill="url(#additional-search-s)"/>

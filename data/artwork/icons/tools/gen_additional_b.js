@@ -4,6 +4,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { iconDoc } = require('./canvas.js');
 
 const outDir = path.join(process.argv[2] || path.resolve(__dirname, '..'), 'plugins', 'additional', 'icons');
 const SW = 'stroke-width="1"';
@@ -277,10 +278,7 @@ fs.mkdirSync(outDir, { recursive: true });
 for (const [name, fn] of Object.entries(icons)) {
   const size = /16x16$/.test(name) ? 16 : 22;
   const [defs, ...body] = fn(`additional-${name}`);
-  const svg =
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">\n` +
-    (defs ? `<defs>${defs}</defs>\n` : '') +
-    body.join('\n') + '\n</svg>\n';
+  const svg = iconDoc(size, defs, body);
   fs.writeFileSync(path.join(outDir, `${name}.svg`), svg);
 }
 console.log(`${Object.keys(icons).length} icons written to ${outDir}`);

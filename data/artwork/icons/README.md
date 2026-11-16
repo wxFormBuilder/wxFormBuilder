@@ -43,6 +43,7 @@ node data/artwork/icons/tools/verify.js             # only verify
 | `build_platform.js` | `data/platform/{macos,windows,linux}` icons and the installer icon from the SVG sources |
 | `verify.js` | Checks the set against the bitmaps: coverage, viewBox, stroke widths, ids, references |
 | `palette.js` | Shared flat colour materials of the application icons (module, no output) |
+| `canvas.js` | Canvas and SVG document of the application and plugin icons (module, no output) |
 | `raster.js` | Renders SVG to PNG with resvg (module, no output) |
 
 The generators and `verify.js` are plain Node.js. Everything that rasterises uses `raster.js`, which
@@ -73,6 +74,12 @@ Small sizes use pixel-hinted sources: app 16/32 → `logo16x16`/`logo32x32`, app
 ## Design decisions
 
 - Pixel icons follow their bitmap's grid with 1 px contours on .5 coordinates (see `STYLE.md`).
+- The 22 px icons are placed unchanged with a 1 px margin on a 24 px canvas
+  (`viewBox="-1 -1 24 24"`), so they differ in size from the 22 px bitmaps still in use. Desktop
+  guidelines use 16 px as base size and 24 px for toolbars (22 px only in KDE); unlike 22 px, 24 px
+  stays integral at the Windows scale factors 125 % and 175 %. The 16 px icons keep their canvas.
+  When the application switches to the SVGs, its icon sizes `Tool` and `Icon` in
+  `src/rad/bitmaps.h` change from 22 to 24.
 - Logo squares are flat: a subtle two-stop gradient per colour, no gloss highlight (fits the
   Windows 11 and current macOS icon styles).
 - Logo lettering "wxFB": angular letters without chamfers, slanted w with the middle apex at

@@ -1,12 +1,14 @@
 // Checks the SVG icon set in <svgRoot> (default: the data/artwork/icons directory) against the
 // bitmap icons of the repository (resources/icons, plugins/*/icons, sdk/plugin_interface):
-// every bitmap has an SVG at the same relative path, its viewBox equals the bitmap size (logo: 512),
+// every bitmap has an SVG at the same relative path, its viewBox is the canvas of the bitmap size (see
+// canvas.js: 22 px drawings sit on a 24 px canvas; logo: 512),
 // only stroke-width 1 is used (except the logos and round-capped lettering glyphs), no <text>/<image>/comments, gradient ids are
 // unique across the whole set and every url(#id) reference resolves.
 // Usage: node verify.js [<svgRoot>]
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { canvasOf, viewBoxOf } = require('./canvas.js');
 
 const svgRoot = process.argv[2] || path.resolve(__dirname, '..');
 const repoRoot = path.resolve(svgRoot, '..', '..', '..');
@@ -35,9 +37,10 @@ for (const bmp of bitmaps) {
   const svg = fs.readFileSync(svgFile, 'utf8'), [w] = bitmapSize(bmp) || [0];
   const isLogo = /[\\/]resources[\\/]icons[\\/]logo(16x16|32x32)?\.png$/.test(bmp);
   const expect = /[\\/]logo\.png$/.test(bmp) ? 512 : w;
-  const vb = (svg.match(/viewBox="0 0 (\d+) (\d+)"/) || []).slice(1).map(Number);
-  if (vb[0] !== expect || vb[1] !== expect) problems.push(`viewBox ${vb.join('x')} != ${expect}: ${rel}`);
-  sizes[expect] = (sizes[expect] || 0) + 1;
+  const canvas = canvasOf(expect), vb = (svg.match(/viewBox="([^"]*)"/) || [])[1];
+  if (vb !== viewBoxOf(expect)) problems.push(`viewBox "${vb}" != "${viewBoxOf(expect)}": ${rel}`);
+  if (!svg.includes(`width="${canvas}" height="${canvas}"`)) problems.push(`size != ${canvas}: ${rel}`);
+  sizes[canvas] = (sizes[canvas] || 0) + 1;
   // Lettering glyphs drawn as round-capped centre lines may use other stroke widths.
   const widths = [...svg.matchAll(/<[^>]*stroke-width="([^"]*)"[^>]*>/g)]
     .filter(m => !m[0].includes('stroke-linecap="round"')).map(m => m[1]).filter(v => v !== '1');

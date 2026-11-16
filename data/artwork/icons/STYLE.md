@@ -5,8 +5,12 @@ Binding rules for the vector icons in this directory. They are redraws of the bi
 
 ## Pixel icons (16, 22 and 32 px)
 
-1. **viewBox = native bitmap size**: a 22×22 bitmap becomes `viewBox="0 0 22 22" width="22" height="22"`,
-   a 16×16 bitmap `viewBox="0 0 16 16"`. Never rescale between grids; a 16 px icon is drawn on its own grid.
+1. **Drawing grid = native bitmap size**: a 16×16 bitmap becomes `viewBox="0 0 16 16" width="16" height="16"`.
+   Never rescale between grids; a 16 px icon is drawn on its own grid.
+   **22 px drawings sit on a 24 px canvas** with a 1 px margin: `viewBox="-1 -1 24 24" width="24" height="24"`.
+   The drawing keeps its 22 px coordinates (0..22). 24 px is a standard toolbar icon size and stays
+   integral at every display scale factor (30 px at 125 %, 42 px at 175 %), which 22 px does not. The
+   canvas is defined once in `tools/canvas.js`.
 2. **Every contour uses `stroke-width="1"`** and lies on pixel centres, i.e. on .5 coordinates
    (`M2.5 6.5H8.5V14.5H2.5Z`), so it is sharp at 1× and 2×. A frame around pixel columns x0..x1 and
    rows y0..y1 is `M(x0+.5) (y0+.5)H(x1+.5)V(y1+.5)H(x0+.5)Z`.
@@ -54,10 +58,10 @@ vectors, not as pixel copies:
   pixel-hinted source in `platform/sources`; larger sizes are rendered from the masters.
 - Stroke widths other than 1 occur only in the logo files and the platform masters.
 
-## Example (22 px)
+## Example (22 px drawing on the 24 px canvas)
 
 ```xml
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="layout-sizer-b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecf7ff"/><stop offset="1" stop-color="#59a6ff"/></linearGradient></defs>
 <path d="M11.5 4.5H19.5V14.5H11.5Z" fill="url(#layout-sizer-b)" stroke="#1b6cd0" stroke-width="1"/>
 <path d="M1 16H21V18H1Z" fill="#4c4465"/>

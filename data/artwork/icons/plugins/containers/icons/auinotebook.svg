@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="containers-auinotebook-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8b8b8"/><stop offset="1" stop-color="#d2d2d2"/></linearGradient><linearGradient id="containers-auinotebook-t" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffbf0"/><stop offset="1" stop-color="#ebebeb"/></linearGradient></defs>
 <path d="M1.5 1.5H20.5V20.5H1.5Z" fill="#dde2ec"/>
 <path d="M2 2.5H20M2 7.5H20" fill="none" stroke="#9f9f9f" stroke-width="1"/>

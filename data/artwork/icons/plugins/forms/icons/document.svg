@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="forms-document-f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#86acdc"/><stop offset="0.5" stop-color="#6e95cb"/><stop offset="1" stop-color="#5171a9"/></linearGradient><linearGradient id="forms-document-c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fdfdfd"/><stop offset="1" stop-color="#efefef"/></linearGradient></defs>
 <path d="M0 0h16v14h-16z" fill="url(#forms-document-f)"/>
 <path d="M1 1h14v1h-14z" fill="#92b9e8"/>

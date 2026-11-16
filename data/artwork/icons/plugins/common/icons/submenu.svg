@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="common-submenu-cf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfd0f6"/></linearGradient><linearGradient id="common-submenu-cs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5a5ff"/><stop offset="1" stop-color="#6f86ca"/></linearGradient><linearGradient id="common-submenu-m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#eeffff"/></linearGradient><linearGradient id="common-submenu-n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.2" stop-color="#ffffff"/><stop offset="1" stop-color="#dfffff"/></linearGradient></defs>
 <path d="M1 8h9v1h-9zM10 1h1v2h-1z" fill="#c0c0c0"/>
 <path d="M0 0H9.5V7.5H0Z" fill="url(#common-submenu-m)"/>

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-1 -1 24 24">
 <defs><linearGradient id="copy-pg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#edf0f4"/></linearGradient><linearGradient id="copy-fd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2f4f7"/><stop offset="1" stop-color="#cfd6df"/></linearGradient></defs>
 <path d="M0.5 0.5H14.5V15.5H0.5Z" fill="url(#copy-pg)" stroke="#8f99a6" stroke-width="1"/>
 <path d="M3 4.5H12M3 6.5H12M3 8.5H12M3 10.5H12M3 12.5H12" stroke="#b4bcc8" stroke-width="1"/>

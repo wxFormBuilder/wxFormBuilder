@@ -1,5 +1,6 @@
 // Renders bitmaps and SVGs side by side for comparison while drawing an icon. Each pair shows the
-// bitmap enlarged 7x pixel-exact, the SVG enlarged 7x as vector and the SVG at its own size.
+// bitmap enlarged 7x pixel-exact, the SVG enlarged 7x as vector and the SVG at its own canvas size
+// (larger than the bitmap for 22 px icons, whose SVGs use the 24 px canvas).
 // Usage: node preview.js <out.png> <bitmap1> <svg1> [<bitmap2> <svg2> ...]
 'use strict';
 const path = require('path');

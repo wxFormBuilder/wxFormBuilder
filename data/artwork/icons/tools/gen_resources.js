@@ -43,6 +43,7 @@ function xform(d, k, [fx, fy], [tx, ty]) {
 
 // ---------- shared parts ----------
 const palette = require('./palette.js');
+const { iconDoc } = require('./canvas.js');
 const pageDefs = p => palette.fill(`${p}-pg`, 'paper') + palette.fill(`${p}-fd`, 'fold', 1, 1);
 // Common page of the language and file type icons (c++, cpp, h, lua, php, python, xrc). Their marks sit
 // at its top left: logos centred at (6, 7.5), letters starting at the left edge on the base line y = 11
@@ -382,6 +383,7 @@ const project = p => {
 };
 
 // ---------- write ----------
+// Plain document on a size x size canvas (logos and platform sources); the application icons use iconDoc.
 const svgDoc = (size, defs, body) =>
   `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">\n` +
   (defs ? `<defs>${defs}</defs>\n` : '') + body.join('\n') + '\n</svg>\n';
@@ -391,7 +393,7 @@ fs.mkdirSync(outDir, { recursive: true });
 const written = [];
 for (const [name, fn] of Object.entries(icons16)) {
   const [defs, ...body] = fn(prefixOf(name));
-  fs.writeFileSync(path.join(outDir, `${name}.svg`), svgDoc(16, defs, body)); written.push(name);
+  fs.writeFileSync(path.join(outDir, `${name}.svg`), iconDoc(16, defs, body)); written.push(name);
 }
 { const [defs, ...body] = logo32(prefixOf('logo32x32'));
   fs.writeFileSync(path.join(outDir, 'logo32x32.svg'), svgDoc(32, defs, body)); written.push('logo32x32'); }
@@ -426,7 +428,7 @@ for (const size of Object.keys(SMALL_DOC).map(Number)) {
   writeTo(`sources/docicon${size}.svg`, svgDoc(size, defs, body));
 }
 { const [defs, ...body] = project(prefixOf('project'));
-  fs.writeFileSync(path.join(outDir, 'project.svg'), svgDoc(22, defs, body)); written.push('project'); }
+  fs.writeFileSync(path.join(outDir, 'project.svg'), iconDoc(22, defs, body)); written.push('project'); }
 
 // Remaining 22x22 resource icons come from resources22.js.
 const res22 = require('./resources22.js');
